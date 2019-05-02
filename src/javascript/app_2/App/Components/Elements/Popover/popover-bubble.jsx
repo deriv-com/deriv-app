@@ -28,7 +28,7 @@ class PopoverBubble extends React.PureComponent {
         switch (alignment) {
             case 'top': return {
                 left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
-                bottom   : `calc(100% - ${popover_trigger_rectangle.top}px)`,
+                bottom   : window.innerHeight - popover_trigger_rectangle.top,
                 transform: 'translateX(-50%)',
             };
             case 'bottom': return {
@@ -37,7 +37,7 @@ class PopoverBubble extends React.PureComponent {
                 transform: 'translateX(-50%)',
             };
             case 'left': return {
-                right    : `calc(100% - ${popover_trigger_rectangle.left}px)`,
+                right    : window.innerWidth - popover_trigger_rectangle.left,
                 top      : popover_trigger_rectangle.top + (popover_trigger_rectangle.height / 2),
                 transform: 'translateY(-50%)',
             };

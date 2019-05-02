@@ -24,7 +24,7 @@ const FadeIn = posed.div({
 });
 
 class PopoverBubble extends React.PureComponent {
-    getPopoverBubblePosition = () => {
+    calculatePosition = () => {
         const { alignment, popover_trigger_rectangle } = this.props;
 
         switch (alignment) {
@@ -66,7 +66,7 @@ class PopoverBubble extends React.PureComponent {
             <PoseGroup>
                 <FadeIn key='fade_in' initialPose='exit'>
                     <span
-                        style={this.getPopoverBubblePosition()}
+                        style={this.calculatePosition()}
                         className={classNames(
                             'popover__bubble',
                             alignment ? `popover__bubble--${alignment}` : '',

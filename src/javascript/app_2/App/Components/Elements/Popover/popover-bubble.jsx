@@ -24,36 +24,31 @@ const FadeIn = posed.div({
 });
 
 class PopoverBubble extends React.PureComponent {
-
-    getHorizontalCenter = rectangle => rectangle.left + (rectangle.width / 2);
-
-    getVerticalCenter = rectangle => rectangle.top + (rectangle.height / 2);
-
-    getBubblePositionStyle = (alignment, popover_trigger_rectangle) => {
+    getPopoverBubblePosition = (alignment, popover_trigger_rectangle) => {
         switch (alignment) {
             case 'top': return {
-                left     : this.getHorizontalCenter(popover_trigger_rectangle),
-                transform: 'translateX(-50%)',
+                left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
                 bottom   : `calc(100% - ${popover_trigger_rectangle.top}px)`,
-            };
-            case 'right': return {
-                left     : popover_trigger_rectangle.x + popover_trigger_rectangle.width,
-                top      : this.getVerticalCenter(popover_trigger_rectangle),
-                transform: 'translateY(-50%)',
+                transform: 'translateX(-50%)',
             };
             case 'bottom': return {
-                left     : this.getHorizontalCenter(popover_trigger_rectangle),
+                left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
+                top      : popover_trigger_rectangle.bottom,
                 transform: 'translateX(-50%)',
-                top      : popover_trigger_rectangle.y + popover_trigger_rectangle.height,
             };
             case 'left': return {
                 right    : `calc(100% - ${popover_trigger_rectangle.left}px)`,
-                top      : this.getVerticalCenter(popover_trigger_rectangle),
+                top      : popover_trigger_rectangle.top + (popover_trigger_rectangle.height / 2),
+                transform: 'translateY(-50%)',
+            };
+            case 'right': return {
+                left     : popover_trigger_rectangle.right,
+                top      : popover_trigger_rectangle.top + (popover_trigger_rectangle.height / 2),
                 transform: 'translateY(-50%)',
             };
             default: return {
-                left: popover_trigger_rectangle.x,
-                top : popover_trigger_rectangle.y,
+                left: popover_trigger_rectangle.left,
+                top : popover_trigger_rectangle.top,
             };
         }
     }
@@ -70,7 +65,7 @@ class PopoverBubble extends React.PureComponent {
             <PoseGroup>
                 <FadeIn key='fade_in' initialPose='exit'>
                     <span
-                        style={this.getBubblePositionStyle(
+                        style={this.getPopoverBubblePosition(
                             alignment,
                             popover_trigger_rectangle,
                         )}

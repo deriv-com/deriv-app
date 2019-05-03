@@ -5,6 +5,8 @@
         padding: 0.7em;
         max-width: 280px;
         border-radius: 4px;
+        display: flex;
+        flex-direction: row;
         @include typeface(--small-center-normal-active, none);
         @include themify($themes) {
             background: themed('tooltip_background_color');
@@ -12,7 +14,13 @@
         }
 
         &__icon {
-            margin-right: 5px;
+            flex-grow: 1;
+            margin-right: 0.7em;
+            padding-top: 3px;
+        }
+        &__text {
+            flex-grow: 2;
+            text-align: left;
         }
         &--left, &--right {
             margin: 0 1em;

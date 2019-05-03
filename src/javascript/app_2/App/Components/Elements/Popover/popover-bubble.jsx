@@ -84,7 +84,9 @@ class PopoverBubble extends React.PureComponent {
                                 {(icon === 'dot')      && <Icon icon={IconRedDot} />}
                             </span>
                         }
-                        { message }
+                        <span className='popover__bubble__text'>
+                            { message }
+                        </span>
                     </span>
                 </FadeIn>
             </PoseGroup>,

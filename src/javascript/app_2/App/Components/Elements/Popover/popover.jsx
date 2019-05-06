@@ -9,8 +9,7 @@ class Popover extends React.PureComponent {
         this.popover_trigger_reference = React.createRef();
     }
 
-    onMouseEnter = () => this.setState({ is_open: true });
-    onMouseLeave = () => this.setState({ is_open: false });
+    toggleIsOpen = () => this.setState({ is_open: !this.state.is_open });
 
     render() {
         const {
@@ -22,8 +21,8 @@ class Popover extends React.PureComponent {
         return (
             <div
                 className='popover'
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
+                onMouseEnter={this.toggleIsOpen}
+                onMouseLeave={this.toggleIsOpen}
             >
                 <div
                     ref={this.popover_trigger_reference}

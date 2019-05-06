@@ -1,0 +1,199 @@
+/* Specific rules for languages */
+body {
+    .calls_recording {
+        display: none;
+    }
+    ul.checked > li {
+        @include BIDIR_VALUE(background-position, left top, right top);
+        @include BIDIR_PROP(padding-left, padding-right, 35px);
+    }
+    .app-store-badge, .google-play-badge {
+        background-repeat: no-repeat;
+        width: 140px;
+        height: 38px;
+        display: inline-block;
+        background-size: contain;
+    }
+}
+
+body.EN, body.ID, body.RU {
+    .calls_recording {
+        display: block !important;
+    }
+}
+
+/*Vietnamese Language */
+body.VI {
+    font-kerning: none;
+
+    #legal-tab li.tm-li-2 {
+        margin-right: 0 !important;
+        padding: 0 8px !important;
+    }
+    #trading_socket_container #contract_form_name_nav {
+        font-size: $FONT_SIZE_N;
+
+        > li a.tm-a {
+            font-size: $FONT_SIZE_XXS;
+        }
+    }
+}
+
+/*French Language */
+body.FR {
+    a, button, .button, span, input {
+        text-transform: initial !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: initial !important;
+    }
+    #trading_socket_container #contract_form_name_nav {
+        font-size: $FONT_SIZE_N;
+
+        > li a.tm-a {
+            font-size: $FONT_SIZE_XXS;
+        }
+    }
+    #trading_socket_container #contract_prices_container {
+        .price_container {
+            .contract_heading {
+                font-size: $FONT_SIZE_S;
+                background-size: 36px;
+                padding-top: 46px;
+                width: 110px;
+            }
+        }
+    }
+    #header .account-type {
+        font-size: $FONT_SIZE_S;
+    }
+}
+
+body.IT, body.DE {
+    #legal-tab li.tm-li-2 {
+        margin-right: 0 !important;
+        padding: 0 8px !important;
+    }
+    a, button, .button, span, input {
+        text-transform: initial !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: initial !important;
+    }
+}
+
+body.ES {
+    #trading_socket_container #contract_form_name_nav {
+        font-size: $FONT_SIZE_XS;
+    }
+    #header li.wordwrap a {
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+body.RU {
+    #frm_verify_email button {
+        font-size: $FONT_SIZE_XS;
+    }
+    #trading_socket_container {
+        #contract_form_name_nav {
+            font-size: $FONT_SIZE_N;
+
+            > li a.tm-a {
+                font-size: $FONT_SIZE_XXS;
+            }
+        }
+        .price_container .price_wrapper .contract_heading {
+            font-size: $FONT_SIZE_S;
+            background-size: 36px;
+            padding-top: 46px;
+            width: 110px !important;
+        }
+        #expiry_type {
+            max-width: 185px;
+        }
+    }
+    .ru-hide {
+        display: none !important;
+    }
+    #header .account-type {
+        font-size: $FONT_SIZE_N;
+    }
+}
+
+body.PT, body.RU {
+    a, button, .button, span, input {
+        text-transform: initial !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: initial !important;
+    }
+}
+
+body.DE {
+    #trading_socket_container {
+        #contract_form_name_nav {
+            font-size: $FONT_SIZE_N;
+
+            > li a.tm-a {
+                font-size: $FONT_SIZE_XS;
+            }
+        }
+        .contract_heading {
+            font-size: $FONT_SIZE_S;
+            background-size: 36px;
+            padding-top: 46px;
+            width: 110px;
+        }
+    }
+}
+
+body.ZH_TW {
+    #trading_socket_container #contract_form_name_nav {
+        &, > li a.tm-a {
+            font-size: $FONT_SIZE_N;
+        }
+    }
+}
+
+body.ZH_CN, body.ZH_TW {
+    .contact-content .border-bottom {
+        min-height: 215px;
+    }
+}
+
+body.PL {
+    a, button, .button, span, input {
+        text-transform: initial !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: initial !important;
+    }
+}
+
+$list:
+    ('EN', 'en'),
+    ('DE', 'de'),
+    ('ES', 'es'),
+    ('FR', 'fr'),
+    ('ID', 'id'),
+    ('IT', 'it'),
+    ('PL', 'pl'),
+    ('PT', 'pt'),
+    ('RU', 'ru'),
+    ('TH', 'th'),
+    ('VI', 'vi'),
+    ('ZH_CN', 'zh_cn'),
+    ('ZH_TW', 'zh_tw');
+
+@each $language, $image in $list {
+    body.#{$language} {
+        .app-store-badge {
+            background-image: url('../images/pages/applications/appstore_#{$image}.svg');
+        }
+        .google-play-badge {
+            background-image: url('../images/pages/applications/googleplay_#{$image}.svg');
+        }
+    }
+}

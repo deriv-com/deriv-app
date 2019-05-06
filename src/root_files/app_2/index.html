@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style id="antiClickjack">body{display:none !important;}</style>
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
+        <title>Binary.com</title>
+        <meta charset="utf-8" />
+        <meta name="google-site-verification" content="Myh35QddfEArh0686LcO2zMjrgv0C7L4FCBU0k0oZvU" />
+        <script type="text/javascript">
+            var lang;
+            function getCookieItem(sKey) {
+                'use strict';
+                if (!sKey) { return null; }
+                return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+            }
+            function getLanguage(country) {
+                var langs = {
+                    'de': 'de|at|li',
+                    'es': 'ar|bo|cl|co|cr|cu|do|ec|sv|gt|hn|mx|ni|pa|py|pr|es|uy|ve',
+                    'fr': 'fr|ad|bj|bf|cf|cg|ga|gn|ml|mc|ne|sn|tg',
+                    'id': 'id',
+                    'it': 'it',
+                    'ko': 'kr',
+                    'pl': 'po',
+                    'pt': 'br|mz|ao|pt|gw|pg|cv|st',
+                    'ru': 'ru|ua|by|kz',
+                    'th': 'th',
+                    'vi': 'vn',
+                    'zh_tw': 'tw|mo',
+                    'zh_cn': 'cn',
+                };
+                var con_lang = 'en';
+                if (country) {
+                    Object.keys(langs).map(function(l) {
+                        if ((new RegExp(langs[l], 'i')).test(country)) con_lang = l;
+                    });
+                }
+                return con_lang;
+            }
+            // store consistent names with other API calls
+            // API_V4: send consistent names
+            var map_names = {
+                country             : 'residence',
+                landing_company_name: 'landing_company_shortcode',
+            };
+
+            function storeClientAccounts(obj_params, account_list) {
+                var client_object = {};
+                var active_loginid;
+
+                account_list.forEach(function(account) {
+                    Object.keys(account).forEach(function(param) {
+                        if (param === 'loginid') {
+                            if (!active_loginid && !account.is_disabled) {
+                                if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging clients into virtual for app_2
+                                    active_loginid = account[param];
+                                }
+                            }
+                        } else {
+                            const param_to_set = map_names[param] || param;
+                            const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
+                            if (!(account.loginid in client_object)) {
+                                client_object[account.loginid] = {};
+                            }
+                            client_object[account.loginid][param_to_set] = value_to_set;
+                        }
+                    });
+                });
+
+                var i = 1;
+                while (obj_params['acct' + i]) {
+                    const loginid = obj_params['acct' + i];
+                    const token   = obj_params['token' + i];
+                    if (loginid && token) {
+                        client_object[loginid].token = token;
+                    }
+                    i++;
+                }
+
+                // if didn't find any login ID that matched the above condition
+                // or the selected one doesn't have a token, set the first one
+                if (!active_loginid || !client_object[active_loginid].token) {
+                    active_loginid = obj_params.acct1;
+                }
+
+                // TODO: send login flag to GTM if needed
+
+                if (active_loginid && Object.keys(client_object).length) {
+                    localStorage.setItem('active_loginid', active_loginid);
+                    localStorage.setItem('client.accounts', JSON.stringify(client_object));
+                }
+            };
+
+            function isEqualArray(arr_1, arr_2) {
+                if (arr_1 === arr_2) return true;
+                if (arr_1 == null || arr_2 == null) return false;
+                if (arr_1.length !== arr_2.length) return false;
+
+                arr_1.sort();
+                arr_2.sort();
+
+                for (var i = 0; i < arr_1.length; ++i) {
+                    if (arr_1[i] !== arr_2[i]) return false;
+                }
+                return true;
+            }
+            function redirect() {
+                var search                = window.location.search ? window.location.search : '';
+                var has_external_referrer = document.referrer && !/\.(binary\.(com|me)|deriv\.com)/.test(document.referrer);
+                var has_utm_source        = /utm_source/.test(search);
+                var utm_source            = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
+
+                window.location.href = (/\/app\//.test(window.location.pathname) ? '' : 'app/') + (lang || 'en').toLowerCase() + '/trade' + search + utm_source;
+            }
+
+            if (document.referrer) {
+                localStorage.setItem('index_referrer', document.referrer);
+            }
+            lang = getCookieItem('language');
+            // Parse url for loginids, tokens, and currencies returned by OAuth
+            var obj_params = {};
+            var search     = window.location.search;
+            if (search) {
+                var arr_params = window.location.search.substr(1).split('&');
+                arr_params.forEach(function(param) {
+                    if (param) {
+                        var param_value = param.split('=');
+                        if (param_value) {
+                            obj_params[param_value[0]] = param_value[1];
+                        }
+                    }
+                });
+            }
+            if (lang && !obj_params.token1) { // we have language and client is not trying to log in
+                redirect();
+            } else {
+                var server_url = localStorage.getItem('config.server_url');
+                var ws = new WebSocket('wss://' + (server_url || 'frontend.binaryws.com') + '/websockets/v3?app_id=1');
+                var requests = [];
+                var responses = [];
+                ws.onopen = function(e) {
+                    if (!lang) { // we don't have language
+                        requests.push('website_status');
+                        ws.send(JSON.stringify({'website_status': '1'}));
+                    }
+                    if (obj_params.token1) { // client is trying to log in
+                        requests.push('authorize');
+                        ws.send(JSON.stringify({ authorize: obj_params.token1 }));
+                    }
+                };
+                ws.onmessage = function(msg) {
+                    var response = JSON.parse(msg.data);
+                    if (response.msg_type === 'website_status') {
+                        if (!response.error && response.hasOwnProperty('website_status')) {
+                            lang = getLanguage(response.website_status.clients_country);
+                        }
+                    } else if (response.msg_type === 'authorize') {
+                        if (!response.error && response.hasOwnProperty('authorize')) {
+                            const account_list = (response.authorize || {}).account_list;
+                            if (account_list) {
+                                storeClientAccounts(obj_params, account_list);
+                            }
+                        }
+                    }
+                    responses.push(response.msg_type);
+                    if (isEqualArray(requests, responses)) {
+                        ws.close();
+                        redirect();
+                    }
+                };
+            }
+        </script>
+    </head>
+</html>

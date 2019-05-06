@@ -1,0 +1,180 @@
+// TODO: Combine whatever selector / rule that's still needed from this and merge into positions_drawer
+/** @define portfolio; weak */
+.portfolio {
+    padding: 1.5em 1.2em;
+    height: 100%;
+
+    &--card-view {
+        background: $COLOR_LIGHT_BLACK_4_SOLID;
+    }
+    &__table {
+        height: 100%;
+    }
+    &__row {
+        grid-template-columns: 6.5em 7em 1fr 6em 9em 6em 5em;
+    }
+    /* postcss-bem-linter: ignore */
+    .payout, .indicative, .purchase, .remaining_time {
+        justify-content: flex-end;
+    }
+    .container {
+        @include themify($themes) {
+            background: themed('background_container_color');
+        }
+    }
+    .contract-type {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .type-wrapper {
+            width: 2em;
+            height: 2em;
+            padding: 0.5em;
+            margin-bottom: 0.3em;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            @include themify($themes) {
+                background: themed('background_icon_color');
+            }
+        }
+    }
+    .reference a {
+        color: $COLOR_SKY_BLUE;
+        text-decoration: none;
+    }
+    .table__body .indicative {
+        font-weight: bold;
+    }
+    .indicative {
+        text-align: right;
+
+        &--price-moved-up {
+            color: $COLOR_GREEN_1;
+        }
+        &--price-moved-down {
+            color: $COLOR_RED;
+        }
+        &--no-resale {
+            color: $COLOR_LIGHT_GRAY_2;
+        }
+        &__no-resale-msg {
+            font-size: 1em;
+            font-weight: 400;
+        }
+    }
+}
+
+// empty portfolio message
+/** @define portfolio-empty */
+.portfolio-empty {
+    height: calc(100vh - 240px);
+    display: flex;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    &__icon {
+        @extend %inline-icon;
+        height: 4.8em;
+        width: 4.8em;
+        margin-bottom: 1.6em;
+        @include themify($themes) {
+            /* postcss-bem-linter: ignore */
+            path {
+                fill: themed('slider_hover_color') !important;
+            }
+        }
+    }
+    &__text {
+        font-size: 1.4em;
+        @include themify($themes) {
+            color: themed('disabled_color');
+        }
+    }
+}
+
+// portfolio card
+// TODO: reuse statement styles (common component?)
+/** @define portfolio-card */
+.portfolio-card {
+    &__header {
+        font-size: 1em;
+        padding: 0.5em;
+        border-bottom: 1px solid $COLOR_LIGHT_BLACK_4;
+        display: flex;
+        justify-content: space-between;
+    }
+    /* postcss-bem-linter: ignore */
+    &__refid a {
+        color: $COLOR_SKY_BLUE;
+        text-decoration: none;
+    }
+    &__body {
+        padding: 0.5em;
+        font-size: 1.2em;
+    }
+    &__desc {
+        margin-bottom: 0.7em;
+    }
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        font-weight: bold;
+    }
+    &__cell-text {
+        vertical-align: middle;
+    }
+    &__cell:before {
+        content: '';
+        display: inline-block;
+        height: 1.6em;
+        width: 1.6em;
+        background-size: 1.6em 1.6em;
+        vertical-align: middle;
+        margin-right: 0.5em;
+    }
+    &__purchase:before {
+        background-image: url('../images/portfolio/ic_purchase_light.svg');
+    }
+    // &__payout:before {
+    //     background-image: url('../images/statement/ic_payout_light.svg');
+    // }
+    &__indicative {
+        &--price-moved-up {
+            color: $COLOR_GREEN_1;
+
+            &:before {
+                background-image: url('../images/portfolio/ic_price_up.svg');
+            }
+        }
+        &--price-moved-down {
+            color: $COLOR_RED;
+
+            &:before {
+                background-image: url('../images/portfolio/ic_price_down.svg');
+            }
+        }
+        &--price-stable {
+            &:before {
+                background-image: url('../images/portfolio/ic_price_stable_light.svg');
+            }
+        }
+        &--no-resale {
+            color: $COLOR_LIGHT_BLACK_4;
+
+            &:before {
+                background-image: url('../images/portfolio/ic_no_resale.svg');
+            }
+        }
+    }
+}

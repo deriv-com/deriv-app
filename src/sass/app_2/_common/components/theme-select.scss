@@ -1,0 +1,60 @@
+.theme-select-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+    &__title {
+        font-weight: bold;
+        font-size: 14px;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        margin-bottom: 16px;
+    }
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+    }
+    &__option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 234px;
+        height: 207px;
+
+        &__title {
+            margin-top: 9px;
+            font-size: 14px;
+            line-height: 1.43;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+
+            &--selected {
+                font-weight: bold;
+                @include themify($themes) {
+                    color: themed('text_color');
+                }
+
+            }
+        }
+        &__icon {
+            width: 234px;
+            height: 178px;
+            cursor: pointer;
+            border-radius: 4px;
+            @include themify($themes) {
+                border: 1px solid themed('text_primary_color');
+            }
+        }
+        &__icon--active, &__icon:hover {
+            @include themify($themes) {
+                box-shadow: 0 0 0 2px themed('border_outline_color');
+            }
+        }
+    }
+}

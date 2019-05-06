@@ -1,0 +1,51 @@
+/* GET-STARTED PAGES RULES */
+.get-started {
+    a:hover {
+        text-decoration: none;
+    }
+    .circle-wrapper {
+        display: flex;
+
+        .orange-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: $COLOR_ORANGE;
+            margin-left: -30px;
+            margin-right: 10px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: $COLOR_WHITE;
+
+            @media screen and (max-width: 480px) {
+                margin-left: 0;
+            }
+        }
+    }
+    .notice-circle {
+        border-color: $COLOR_RED;
+        color: $COLOR_RED;
+    }
+    #step-2 {
+        background-image: url('../images/pages//get-started/mt5/how-to-trade-binary/step-2-bg.png');
+        height: 311px;
+
+        > div {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
+
+.formula span {
+    display: inline-block;
+    padding: 10px 20px;
+    min-width: 60%;
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background: $COLOR_LIGHT_GRAY;
+    color: $COLOR_BLUE_SHADE;
+}

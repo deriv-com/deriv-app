@@ -1,0 +1,48 @@
+*, *:after, *:before {
+    transition: opacity 0.2s, color 0.2s, background 0.2s;
+}
+
+@keyframes pulsing {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes pulsing {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+.pulser {
+    -webkit-animation: pulsing 3s infinite ease;
+    animation: pulsing 3s infinite ease;
+}
+
+.blinker {
+    -webkit-animation: pulsing 1.5s infinite ease;
+    animation: pulsing 1.5s infinite ease;
+}

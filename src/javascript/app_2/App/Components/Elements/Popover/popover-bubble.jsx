@@ -58,6 +58,8 @@ class PopoverBubble extends React.PureComponent {
     render() {
         const {
             alignment,
+            className,
+            has_error,
             icon,
             message,
         } = this.props;
@@ -68,8 +70,10 @@ class PopoverBubble extends React.PureComponent {
                     <span
                         style={this.calculatePosition()}
                         className={classNames(
+                            className,
                             'popover__bubble',
                             alignment ? `popover__bubble--${alignment}` : '',
+                            { 'popover__bubble--error': has_error },
                         )}
                     >
                         <span className={classNames(
@@ -78,11 +82,11 @@ class PopoverBubble extends React.PureComponent {
                         )}
                         />
                         { icon &&
-                            <span className='popover__bubble__icon'>
+                            <i className='popover__bubble__icon'>
                                 {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
                                 {(icon === 'question') && <Icon icon={IconQuestion} />}
                                 {(icon === 'dot')      && <Icon icon={IconRedDot} />}
-                            </span>
+                            </i>
                         }
                         <span className='popover__bubble__text'>
                             { message }
@@ -96,8 +100,13 @@ class PopoverBubble extends React.PureComponent {
 }
 
 PopoverBubble.propTypes = {
-    alignment                : PropTypes.string,
-    children                 : PropTypes.node,
+    alignment: PropTypes.string,
+    children : PropTypes.node,
+    className: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array,
+    ]),
+    icon                     : PropTypes.string,
     message                  : PropTypes.string,
     tooltip_trigger_rectangle: PropTypes.object,
 };

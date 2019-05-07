@@ -27,23 +27,23 @@ class PopoverBubble extends React.PureComponent {
     calculatePosition = (alignment, target_rectangle, margin) => {
         switch (alignment) {
             case 'top': return {
-                left     : target_rectangle.left + (target_rectangle.width / 2),
-                bottom   : window.innerHeight - target_rectangle.top,
+                left     : (target_rectangle.width / 2) + target_rectangle.left,
+                bottom   : (window.innerHeight - target_rectangle.top) + margin,
                 transform: 'translateX(-50%)',
             };
             case 'bottom': return {
-                left     : target_rectangle.left + (target_rectangle.width / 2),
-                top      : target_rectangle.bottom,
+                left     : (target_rectangle.width / 2) + target_rectangle.left,
+                top      : target_rectangle.bottom + margin,
                 transform: 'translateX(-50%)',
             };
             case 'left': return {
-                right    : (window.innerWidth - target_rectangle.left) + (margin || 0),
-                top      : target_rectangle.top + (target_rectangle.height / 2),
+                right    : (window.innerWidth - target_rectangle.left) + margin,
+                top      : (target_rectangle.height / 2) + target_rectangle.top,
                 transform: 'translateY(-50%)',
             };
             case 'right': return {
-                left     : target_rectangle.right,
-                top      : target_rectangle.top + (target_rectangle.height / 2),
+                left     : target_rectangle.right + margin,
+                top      : (target_rectangle.height / 2) + target_rectangle.top,
                 transform: 'translateY(-50%)',
             };
             default: return {
@@ -60,7 +60,7 @@ class PopoverBubble extends React.PureComponent {
             has_error,
             icon,
             is_open,
-            margin,
+            margin = 0,
             message,
             target_rectangle,
         } = this.props;

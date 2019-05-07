@@ -5,9 +5,9 @@ import {
 import PropTypes                 from 'prop-types';
 import React                     from 'react';
 import { isCryptocurrency }      from '_common/base/currency_base';
+import Tooltip                   from 'App/Components/Elements/tooltip.jsx';
 import IncrementButtons          from './increment-buttons.jsx';
 import Input                     from './input.jsx';
-import { Popover }               from '../../Elements/Popover';
 
 class InputField extends React.Component {
     render () {
@@ -189,34 +189,27 @@ class InputField extends React.Component {
             />;
 
         const input_tooltip =
-            has_error ?
-                <Popover
-                    className={classNames({ 'tooltip--with-label': label })}
-                    alignment='left'
-                    message={has_error ? error_messages[0] : null}
-                    has_error={has_error}
-                >
-                    {is_increment_input ?
-                        <div className='input-wrapper'>
-                            {increment_buttons}
-                            {input}
-                        </div>
-                        :
-                        input
-                    }
-                </Popover>
-                :
-                <React.Fragment>
-                    {is_increment_input ?
-                        <div className='input-wrapper'>
-                            {increment_buttons}
-                            {input}
-                        </div>
-                        :
-                        input
-                    }
-                </React.Fragment>
-            ;
+            <Tooltip
+                className={classNames('', { 'tooltip--with-label': label })}
+                alignment='left'
+                message={has_error ? error_messages[0] : null}
+                has_error={has_error}
+            >
+                {!!label &&
+                <label htmlFor={name} className='input-field__label'>{label}</label>
+                }
+                {!!helper &&
+                <span className='input-field__helper'>{helper}</span>
+                }
+                {is_increment_input ?
+                    <div className='input-wrapper'>
+                        {increment_buttons}
+                        {input}
+                    </div>
+                    :
+                    input
+                }
+            </Tooltip>;
 
         return (
             <React.Fragment>
@@ -228,12 +221,6 @@ class InputField extends React.Component {
                 <div
                     className={classNames('input-field', className)}
                 >
-                    {!!label &&
-                    <label htmlFor={name} className='input-field__label'>{label}</label>
-                    }
-                    {!!helper &&
-                    <span className='input-field__helper'>{helper}</span>
-                    }
                     {input_tooltip}
                 </div>
             </React.Fragment>

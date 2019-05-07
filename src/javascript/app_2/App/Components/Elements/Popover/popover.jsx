@@ -54,7 +54,7 @@ class Popover extends React.PureComponent {
                         className={className}
                         has_error={has_error}
                         icon={icon}
-                        is_open={(has_error || this.state.is_open) && this.state.target_rectangle}
+                        is_open={(has_error || this.state.is_open) && Boolean(this.state.target_rectangle)}
                         target_rectangle={this.state.target_rectangle}
                         margin={margin}
                         message={message}

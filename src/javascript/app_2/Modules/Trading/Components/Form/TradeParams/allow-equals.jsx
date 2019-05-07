@@ -49,7 +49,7 @@ const AllowEquals = ({
                     classNameIcon='allow-equals__tooltip-info'
                     icon='info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
-                    margin={110}
+                    margin={115}
                 />
             </div>
     );

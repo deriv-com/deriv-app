@@ -66,17 +66,14 @@ class Popover extends React.PureComponent {
 }
 
 Popover.propTypes = {
-    alignment: PropTypes.string,
-    children : PropTypes.node,
-    className: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.array,
-    ]),
+    alignment    : PropTypes.string,
+    children     : PropTypes.node,
+    className    : PropTypes.string,
     classNameIcon: PropTypes.string,
     has_error    : PropTypes.bool,
     icon         : PropTypes.string,
     margin       : PropTypes.number,
-    message      : PropTypes.string,
+    message      : PropTypes.string.isRequired,
 };
 
 export default Popover;

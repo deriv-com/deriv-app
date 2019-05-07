@@ -1,7 +1,7 @@
 import React                    from 'react';
 import PropTypes                from 'prop-types';
 import { localize }             from '_common/localize';
-import Tooltip                  from 'App/Components/Elements/tooltip.jsx';
+import { Popover }              from 'App/Components/Elements/Popover';
 import InputField               from 'App/Components/Form/InputField';
 import {
     hasCallPutEqual,
@@ -43,12 +43,13 @@ const AllowEquals = ({
                     value={value}
                 />
                 <label className='allow-equals__label' htmlFor='allow_equals'>{localize('Allow equals')}</label>
-                <Tooltip
+                <Popover
                     alignment='left'
                     className='allow-equals__tooltip'
                     classNameIcon='allow-equals__tooltip-info'
                     icon='info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
+                    margin={110}
                 />
             </div>
     );

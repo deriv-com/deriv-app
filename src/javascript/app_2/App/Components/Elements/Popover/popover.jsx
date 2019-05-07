@@ -43,7 +43,7 @@ class Popover extends React.PureComponent {
                 onMouseEnter={this.toggleIsOpen}
                 onMouseLeave={this.toggleIsOpen}
             >
-                <div className='popover__target' ref={this.target_reference}>
+                <div className={classNames(className, 'popover__target')} ref={this.target_reference}>
                     { children }
                     { icon === 'info' && <Icon icon={IconInfoOutline} className={icon_class} /> }
                 </div>

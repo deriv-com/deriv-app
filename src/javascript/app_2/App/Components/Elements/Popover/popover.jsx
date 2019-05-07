@@ -32,6 +32,7 @@ class Popover extends React.PureComponent {
             classNameIcon,
             has_error,
             icon,
+            margin,
             message,
         } = this.props;
 
@@ -54,6 +55,7 @@ class Popover extends React.PureComponent {
                     icon={icon}
                     is_open={(has_error || this.state.is_open) && this.state.target_rectangle}
                     target_rectangle={this.state.target_rectangle}
+                    margin={margin}
                     message={message}
                 />
             </div>
@@ -71,6 +73,7 @@ Popover.propTypes = {
     classNameIcon: PropTypes.string,
     has_error    : PropTypes.bool,
     icon         : PropTypes.string,
+    margin       : PropTypes.number,
     message      : PropTypes.string,
 };
 

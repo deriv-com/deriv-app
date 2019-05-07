@@ -77,8 +77,10 @@ class PopoverBubble extends React.PureComponent {
                                 className={classNames(
                                     className,
                                     'popover__bubble',
-                                    alignment ? `popover__bubble--${alignment}` : '',
-                                    { 'popover__bubble--error': has_error },
+                                    {
+                                        [`popover__bubble--${alignment}`]: alignment,
+                                        'popover__bubble--error'         : has_error,
+                                    },
                                 )}
                             >
                                 <span className={classNames(

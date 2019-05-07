@@ -28,30 +28,30 @@ class Popover extends React.PureComponent {
         const {
             alignment,
             children,
-            className,
-            classNameIcon,
+            classNameBubble,
+            classNameTarget,
+            classNameTargetIcon,
             has_error,
             icon,
             margin,
             message,
         } = this.props;
 
-        const icon_class = classNames(classNameIcon, icon);
         return (
             <div
                 className='popover'
                 onMouseEnter={this.toggleIsOpen}
                 onMouseLeave={this.toggleIsOpen}
             >
-                <div className={classNames(className, 'popover__target')} ref={this.target_reference}>
+                <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
                     { children }
-                    { icon === 'info' && <Icon icon={IconInfoOutline} className={icon_class} /> }
+                    { icon === 'info' && <Icon icon={IconInfoOutline} className={classNames(classNameTargetIcon, icon)} /> }
                 </div>
 
                 { message &&
                     <PopoverBubble
                         alignment={alignment}
-                        className={className}
+                        className={classNameBubble}
                         has_error={has_error}
                         icon={icon}
                         is_open={(has_error || this.state.is_open) && Boolean(this.state.target_rectangle)}
@@ -66,14 +66,15 @@ class Popover extends React.PureComponent {
 }
 
 Popover.propTypes = {
-    alignment    : PropTypes.string,
-    children     : PropTypes.node,
-    className    : PropTypes.string,
-    classNameIcon: PropTypes.string,
-    has_error    : PropTypes.bool,
-    icon         : PropTypes.string,
-    margin       : PropTypes.number,
-    message      : PropTypes.string.isRequired,
+    alignment          : PropTypes.string,
+    children           : PropTypes.node,
+    classNameBubble    : PropTypes.string,
+    classNameTarget    : PropTypes.string,
+    classNameTargetIcon: PropTypes.string,
+    has_error          : PropTypes.bool,
+    icon               : PropTypes.string,
+    margin             : PropTypes.number,
+    message            : PropTypes.string.isRequired,
 };
 
 export default Popover;

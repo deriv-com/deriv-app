@@ -45,11 +45,11 @@ const AllowEquals = ({
                 <label className='allow-equals__label' htmlFor='allow_equals'>{localize('Allow equals')}</label>
                 <Popover
                     alignment='left'
-                    className='allow-equals__tooltip'
-                    classNameIcon='allow-equals__tooltip-info'
+                    classNameTarget='allow-equals__tooltip'
+                    classNameTargetIcon='allow-equals__tooltip-info'
                     icon='info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
-                    margin={115}
+                    margin={113}
                 />
             </div>
     );

@@ -4,6 +4,7 @@ import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from '_common/localize';
 import Money                 from 'App/Components/Elements/money.jsx';
+import Tooltip               from 'App/Components/Elements/tooltip.jsx';
 import { Popover }           from 'App/Components/Elements/Popover';
 import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
 

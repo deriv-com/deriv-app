@@ -1,7 +1,7 @@
 .popover {
     &__bubble {
         cursor: help;
-        position: absolute;
+        position: fixed;
         padding: 0.7em;
         max-width: 280px;
         border-radius: 4px;

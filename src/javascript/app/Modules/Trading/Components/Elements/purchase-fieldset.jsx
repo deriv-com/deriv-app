@@ -87,11 +87,7 @@ class PurchaseFieldset extends React.PureComponent {
                         {(is_proposal_error) ?
                             <Popover
                                 alignment='left'
-<<<<<<< HEAD:src/javascript/app/Modules/Trading/Components/Elements/purchase-fieldset.jsx
-                                classNameBubble='purchase-container__popover-bubble'
-=======
                                 className='tooltip--error-secondary'
->>>>>>> fix popup shows with no message:src/javascript/app_2/Modules/Trading/Components/Elements/purchase-fieldset.jsx
                                 message={info.message}
                             >
                                 { purchase_button }

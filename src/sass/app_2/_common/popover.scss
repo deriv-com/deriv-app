@@ -92,6 +92,7 @@
             }
         }
         &--error-secondary {
+            width: 220px;
             @include themify($themes) {
                 background-color: themed('tooltip_background_color');
 

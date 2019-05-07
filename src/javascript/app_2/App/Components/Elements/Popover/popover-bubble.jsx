@@ -24,7 +24,7 @@ const FadeIn = posed.div({
 });
 
 class PopoverBubble extends React.PureComponent {
-    calculatePosition = (alignment, target_rectangle, margin) => {
+    calculatePosition = (alignment, target_rectangle, margin = 0) => {
         switch (alignment) {
             case 'top': return {
                 left     : (target_rectangle.width / 2) + target_rectangle.left,
@@ -60,7 +60,7 @@ class PopoverBubble extends React.PureComponent {
             has_error,
             icon,
             is_open,
-            margin = 0,
+            margin,
             message,
             target_rectangle,
         } = this.props;

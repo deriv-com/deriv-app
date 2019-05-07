@@ -61,7 +61,7 @@ class PopoverBubble extends React.PureComponent {
             icon,
             is_open,
             message,
-            target_reference,
+            target_rectangle,
         } = this.props;
 
         const popover_bubble = (
@@ -72,7 +72,7 @@ class PopoverBubble extends React.PureComponent {
                             <span
                                 style={this.calculatePosition(
                                     alignment,
-                                    target_reference.current.getBoundingClientRect()
+                                    target_rectangle,
                                 )}
                                 className={classNames(
                                     className,

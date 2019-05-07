@@ -4,7 +4,6 @@ import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from '_common/localize';
 import Money                 from 'App/Components/Elements/money.jsx';
-import Tooltip               from 'App/Components/Elements/tooltip.jsx';
 import { Popover }           from 'App/Components/Elements/Popover';
 import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
 
@@ -64,6 +63,7 @@ const ContractInfo = ({
                 className={classNames('trade-container__price-tooltip', { 'trade-container__price-tooltip--disabled': has_error_or_not_loaded })}
                 classNameIcon='trade-container__price-tooltip-i'
                 icon='info'
+                margin={210}
                 message={has_error_or_not_loaded ? '' : proposal_info.message}
             />
         </div>

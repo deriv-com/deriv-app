@@ -24,9 +24,7 @@ const FadeIn = posed.div({
 });
 
 class PopoverBubble extends React.PureComponent {
-    calculatePosition = () => {
-        const { alignment, popover_trigger_rectangle } = this.props;
-
+    calculatePosition = (alignment, popover_trigger_rectangle) => {
         switch (alignment) {
             case 'top': return {
                 left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
@@ -61,39 +59,51 @@ class PopoverBubble extends React.PureComponent {
             className,
             has_error,
             icon,
+            is_open,
             message,
         } = this.props;
+
+        const popover_bubble = (
+            <React.Fragment>
+                { is_open &&
+                    <PoseGroup>
+                        <FadeIn key='fade_in' initialPose='exit'>
+                            <span
+                                style={this.calculatePosition(
+                                    alignment,
+                                    this.props.trigger_reference.current.getBoundingClientRect()
+                                )}
+                                className={classNames(
+                                    className,
+                                    'popover__bubble',
+                                    alignment ? `popover__bubble--${alignment}` : '',
+                                    { 'popover__bubble--error': has_error },
+                                )}
+                            >
+                                <span className={classNames(
+                                    'popover__bubble__arrow',
+                                    alignment ? `popover__bubble__arrow--${alignment}` : '',
+                                )}
+                                />
+                                { icon &&
+                                    <i className='popover__bubble__icon'>
+                                        {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
+                                        {(icon === 'question') && <Icon icon={IconQuestion} />}
+                                        {(icon === 'dot')      && <Icon icon={IconRedDot} />}
+                                    </i>
+                                }
+                                <span className='popover__bubble__text'>
+                                    { message }
+                                </span>
+                            </span>
+                        </FadeIn>
+                    </PoseGroup>
+                }
+            </React.Fragment>
+        );
         
         return ReactDOM.createPortal(
-            <PoseGroup>
-                <FadeIn key='fade_in' initialPose='exit'>
-                    <span
-                        style={this.calculatePosition()}
-                        className={classNames(
-                            className,
-                            'popover__bubble',
-                            alignment ? `popover__bubble--${alignment}` : '',
-                            { 'popover__bubble--error': has_error },
-                        )}
-                    >
-                        <span className={classNames(
-                            'popover__bubble__arrow',
-                            alignment ? `popover__bubble__arrow--${alignment}` : '',
-                        )}
-                        />
-                        { icon &&
-                            <i className='popover__bubble__icon'>
-                                {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
-                                {(icon === 'question') && <Icon icon={IconQuestion} />}
-                                {(icon === 'dot')      && <Icon icon={IconRedDot} />}
-                            </i>
-                        }
-                        <span className='popover__bubble__text'>
-                            { message }
-                        </span>
-                    </span>
-                </FadeIn>
-            </PoseGroup>,
+            popover_bubble,
             document.getElementById('binary_app')
         );
     }

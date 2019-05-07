@@ -24,31 +24,31 @@ const FadeIn = posed.div({
 });
 
 class PopoverBubble extends React.PureComponent {
-    calculatePosition = (alignment, popover_trigger_rectangle) => {
+    calculatePosition = (alignment, target_rectangle) => {
         switch (alignment) {
             case 'top': return {
-                left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
-                bottom   : window.innerHeight - popover_trigger_rectangle.top,
+                left     : target_rectangle.left + (target_rectangle.width / 2),
+                bottom   : window.innerHeight - target_rectangle.top,
                 transform: 'translateX(-50%)',
             };
             case 'bottom': return {
-                left     : popover_trigger_rectangle.left + (popover_trigger_rectangle.width / 2),
-                top      : popover_trigger_rectangle.bottom,
+                left     : target_rectangle.left + (target_rectangle.width / 2),
+                top      : target_rectangle.bottom,
                 transform: 'translateX(-50%)',
             };
             case 'left': return {
-                right    : window.innerWidth - popover_trigger_rectangle.left,
-                top      : popover_trigger_rectangle.top + (popover_trigger_rectangle.height / 2),
+                right    : window.innerWidth - target_rectangle.left,
+                top      : target_rectangle.top + (target_rectangle.height / 2),
                 transform: 'translateY(-50%)',
             };
             case 'right': return {
-                left     : popover_trigger_rectangle.right,
-                top      : popover_trigger_rectangle.top + (popover_trigger_rectangle.height / 2),
+                left     : target_rectangle.right,
+                top      : target_rectangle.top + (target_rectangle.height / 2),
                 transform: 'translateY(-50%)',
             };
             default: return {
-                left: popover_trigger_rectangle.left,
-                top : popover_trigger_rectangle.top,
+                left: target_rectangle.left,
+                top : target_rectangle.top,
             };
         }
     }
@@ -61,6 +61,7 @@ class PopoverBubble extends React.PureComponent {
             icon,
             is_open,
             message,
+            target_reference,
         } = this.props;
 
         const popover_bubble = (
@@ -71,7 +72,7 @@ class PopoverBubble extends React.PureComponent {
                             <span
                                 style={this.calculatePosition(
                                     alignment,
-                                    this.props.trigger_reference.current.getBoundingClientRect()
+                                    target_reference.current.getBoundingClientRect()
                                 )}
                                 className={classNames(
                                     className,
@@ -116,9 +117,8 @@ PopoverBubble.propTypes = {
         PropTypes.string,
         PropTypes.array,
     ]),
-    icon                     : PropTypes.string,
-    message                  : PropTypes.string,
-    tooltip_trigger_rectangle: PropTypes.object,
+    icon   : PropTypes.string,
+    message: PropTypes.string,
 };
 
 export default PopoverBubble;

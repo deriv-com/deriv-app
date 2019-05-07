@@ -5,22 +5,11 @@ import PopoverBubble from './popover-bubble.jsx';
 class Popover extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            is_open          : false,
-            trigger_rectangle: null,
-        };
+        this.state = { is_open: false };
         this.trigger_reference = React.createRef();
     }
 
-    componentDidMount() {
-        this.setState({ trigger_rectangle: this.getTriggerRectangle() });
-    }
-
-    getTriggerRectangle = () => this.trigger_reference.current.getBoundingClientRect();
-    toggleIsOpen = () => {
-        this.setState({ is_open: !this.state.is_open });
-        this.setState({ trigger_rectangle: this.getTriggerRectangle() });
-    }
+    toggleIsOpen = () => this.setState({ is_open: !this.state.is_open });
 
     render() {
         const {
@@ -35,22 +24,22 @@ class Popover extends React.PureComponent {
         return (
             <div
                 className='popover'
-                ref={this.trigger_reference}
                 onMouseEnter={this.toggleIsOpen}
                 onMouseLeave={this.toggleIsOpen}
             >
-                { children }
-                
-                { ((this.state.is_open || has_error) && this.state.trigger_rectangle) &&
-                    <PopoverBubble
-                        alignment={alignment}
-                        className={className}
-                        has_error={has_error}
-                        icon={icon}
-                        popover_trigger_rectangle={this.state.trigger_rectangle}
-                        message={message}
-                    />
-                }
+                <div className='popover__trigger' ref={this.trigger_reference}>
+                    { children }
+                </div>
+
+                <PopoverBubble
+                    alignment={alignment}
+                    className={className}
+                    has_error={has_error}
+                    icon={icon}
+                    is_open={(has_error || this.state.is_open) && this.trigger_reference.current}
+                    trigger_reference={this.trigger_reference}
+                    message={message}
+                />
             </div>
         );
     }

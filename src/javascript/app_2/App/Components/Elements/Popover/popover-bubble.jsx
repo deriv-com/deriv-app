@@ -37,7 +37,7 @@ class PopoverBubble extends React.PureComponent {
                 transform: 'translateX(-50%)',
             };
             case 'left': return {
-                right    : (window.innerWidth - target_rectangle.left) + margin,
+                right    : (window.innerWidth - target_rectangle.left) + (margin || 0),
                 top      : target_rectangle.top + (target_rectangle.height / 2),
                 transform: 'translateY(-50%)',
             };

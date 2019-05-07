@@ -48,16 +48,18 @@ class Popover extends React.PureComponent {
                     { icon === 'info' && <Icon icon={IconInfoOutline} className={icon_class} /> }
                 </div>
 
-                <PopoverBubble
-                    alignment={alignment}
-                    className={className}
-                    has_error={has_error}
-                    icon={icon}
-                    is_open={(has_error || this.state.is_open) && this.state.target_rectangle}
-                    target_rectangle={this.state.target_rectangle}
-                    margin={margin}
-                    message={message}
-                />
+                { message &&
+                    <PopoverBubble
+                        alignment={alignment}
+                        className={className}
+                        has_error={has_error}
+                        icon={icon}
+                        is_open={(has_error || this.state.is_open) && this.state.target_rectangle}
+                        target_rectangle={this.state.target_rectangle}
+                        margin={margin}
+                        message={message}
+                    />
+                }
             </div>
         );
     }

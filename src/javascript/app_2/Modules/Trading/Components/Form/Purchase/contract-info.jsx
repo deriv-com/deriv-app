@@ -58,14 +58,16 @@ const ContractInfo = ({
                 </div>
                 }
             </div>
-            <Popover
-                alignment='left'
-                className={classNames('trade-container__price-tooltip', { 'trade-container__price-tooltip--disabled': has_error_or_not_loaded })}
-                classNameIcon='trade-container__price-tooltip-i'
-                icon='info'
-                margin={210}
-                message={has_error_or_not_loaded ? '' : proposal_info.message}
-            />
+            { !has_error_or_not_loaded &&
+                <Popover
+                    alignment='left'
+                    className={classNames('trade-container__price-tooltip', { 'trade-container__price-tooltip--disabled': has_error_or_not_loaded })}
+                    classNameIcon='trade-container__price-tooltip-i'
+                    icon='info'
+                    margin={210}
+                    message={proposal_info.message}
+                />
+            }
         </div>
     );
 };

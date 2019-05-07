@@ -3,24 +3,18 @@ import React          from 'react';
 import PropTypes      from 'prop-types';
 // import { localize }   from '_common/localize';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
-import Tooltip        from 'App/Components/Elements/tooltip.jsx';
+import { Popover }    from 'App/Components/Elements/Popover';
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
 import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 // import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 
 class PurchaseFieldset extends React.PureComponent {
-    state = {
-        show_tooltip: false,
-        should_fade : false,
-    }
+    state = { should_fade: false }
 
     componentDidMount() {
         this.setState({ should_fade: true });
     }
-
-    onMouseEnter = () => this.setState({ show_tooltip: true });
-    onMouseLeave = () => this.setState({ show_tooltip: false });
 
     render() {
         const {
@@ -82,22 +76,24 @@ class PurchaseFieldset extends React.PureComponent {
                             if (!is_disabled) {
                                 onHoverPurchase(true, type);
                             }
-                            this.onMouseEnter();
                         }}
                         onMouseLeave={() => {
                             if (!is_disabled) {
                                 onHoverPurchase(false);
                             }
-                            this.onMouseLeave();
                         }}
                     >
                         <div className='btn-purchase__box-shadow' />
-                        {(is_proposal_error && this.state.show_tooltip) &&
-                        <Tooltip
-                            alignment='left'
-                            className='tooltip--error-secondary'
-                            message={info.message}
-                        />
+                        {(is_proposal_error) ?
+                            <Popover
+                                alignment='left'
+                                className='tooltip--error-secondary'
+                                message={info.message}
+                            >
+                                { purchase_button }
+                            </Popover>
+                            :
+                            purchase_button
                         }
                         {
                             // is_purchase_confirm_on ?
@@ -110,7 +106,7 @@ class PurchaseFieldset extends React.PureComponent {
                             //         {purchase_button}
                             //     </PopConfirm>
                             //     :
-                            purchase_button
+                            //     purchase_button
                         }
                     </div>
                 </React.Fragment>

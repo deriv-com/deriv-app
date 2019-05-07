@@ -1,6 +1,9 @@
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import PopoverBubble from './popover-bubble.jsx';
+import classNames          from 'classnames';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { Icon }            from 'Assets/Common/icon.jsx';
+import { IconInfoOutline } from 'Assets/Common/icon-info-outline.jsx';
+import PopoverBubble       from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {
     constructor(props) {
@@ -26,11 +29,13 @@ class Popover extends React.PureComponent {
             alignment,
             children,
             className,
+            classNameIcon,
             has_error,
             icon,
             message,
         } = this.props;
 
+        const icon_class = classNames(classNameIcon, icon);
         return (
             <div
                 className='popover'
@@ -39,6 +44,7 @@ class Popover extends React.PureComponent {
             >
                 <div className='popover__target' ref={this.target_reference}>
                     { children }
+                    { icon === 'info' && <Icon icon={IconInfoOutline} className={icon_class} /> }
                 </div>
 
                 <PopoverBubble
@@ -62,9 +68,10 @@ Popover.propTypes = {
         PropTypes.string,
         PropTypes.array,
     ]),
-    has_error: PropTypes.bool,
-    icon     : PropTypes.string,
-    message  : PropTypes.string,
+    classNameIcon: PropTypes.string,
+    has_error    : PropTypes.bool,
+    icon         : PropTypes.string,
+    message      : PropTypes.string,
 };
 
 export default Popover;

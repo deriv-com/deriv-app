@@ -1,0 +1,98 @@
+/* GLOBAL RULES */
+
+/*
+ * To simplify usage of a property
+ * with different values for LTR and RTL languages
+ * sample usage: @include BIDIR_VALUE(float, left, right);
+ */
+@mixin BIDIR_VALUE($prop, $ltr_value, $rtl_value) {
+    #{$prop}: if($IS_LTR, $ltr_value, $rtl_value);
+}
+
+/*
+ * To simplify usage of different properties
+ * with the same value for LTR and RTL languages
+ * sample usage: @include BIDIR_PROP(margin-left, margin-right, 5px);
+ */
+@mixin BIDIR_PROP($ltr_prop, $rtl_prop, $value) {
+    @if $IS_LTR {
+        #{$ltr_prop}: $value;
+    }
+    @else {
+        #{$rtl_prop}: $value;
+    }
+}
+
+@mixin menu-left {
+    ul {
+        font-size: $FONT_SIZE_N;
+
+        li {
+            list-style-image: none;
+            margin: 0;
+            background: $COLOR_LIGHT_GRAY;
+            line-height: 150%;
+            border-bottom: 1px solid $COLOR_WHITE;
+
+            &:hover {
+                background: $COLOR_GRAY;
+            }
+            a {
+                font-weight: normal;
+                text-decoration: none;
+                display: block;
+                padding: 5px 5px 5px 10px;
+                color: $COLOR_BLUE;
+            }
+        }
+        li.selected {
+            background: $COLOR_BLUE;
+
+            a {
+                color: $COLOR_WHITE;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+@mixin link-button {
+    color: $COLOR_WHITE;
+    text-align: center;
+    background: $COLOR_GREEN;
+    border-radius: $BORDER_RADIUS;
+    padding: 10px 25px;
+    display: inline-block;
+    letter-spacing: 0.75px;
+
+    &:visited {
+        color: $COLOR_WHITE;
+    }
+    &:hover, &:active {
+        text-decoration: none;
+        background-color: $COLOR_DARK_GREEN;
+    }
+}
+
+@mixin portfolio_second_row_description {
+    .details {
+        display: table-column;
+        width: 0 !important;
+    }
+    tr {
+        td {
+            padding: 10px 5px 5px;
+        }
+        &.tr-first td {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        &.tr-desc {
+            display: table-row;
+
+            td {
+                padding-top: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+/** @define number-selector */
+.number-selector {
+    margin-top: 1.2em;
+    text-align: center;
+
+    &__row:first-child {
+        margin-bottom: 0.8em;
+    }
+    &__selection {
+        width: calc(20% - 4px);
+        height: 24px;
+        border-radius: $BORDER_RADIUS;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        @include typeface(--paragraph-left-normal-black);
+        @include themify($themes) {
+            background-color: themed('container_color');
+            color: themed('text_primary_color');
+        }
+
+        &:not(:first-child) {
+            margin-left: 5px;
+        }
+        &--selected {
+            @include typeface(--paragraph-left-bold-active);
+            @include themify($themes) {
+                background-color: themed('active_color');
+                color: themed('text_active_color');
+            }
+        }
+        &:hover:not(&--selected) {
+            cursor: pointer;
+            @include themify($themes) {
+                background-color: themed('tab_hover_color');
+            }
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

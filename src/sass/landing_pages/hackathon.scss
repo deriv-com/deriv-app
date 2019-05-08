@@ -1,0 +1,243 @@
+.container {
+    max-width: 1200px !important;
+}
+
+body {
+    background: $COLOR_BLUE;
+    font-family: $FONT-STACK;
+    font-size: 18px;
+    color: $COLOR_WHITE;
+    overflow-x: hidden;
+}
+
+h1, h2 {
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 28px;
+    font-weight: 300;
+    margin-top: 50px;
+}
+
+p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+section {
+    margin: 50px 0 20px;
+    text-align: center;
+}
+
+.intro {
+    background: $COLOR_BLUE;
+    padding-top: 100px;
+
+    span {
+        color: $COLOR_WHITE;
+    }
+    span ~ span {
+        color: $COLOR_ORANGE;
+    }
+    &-bg {
+        background: url('../images/hackathon/hackathon_bg.svg') 0 0/cover;
+        background-position: center;
+        height: 617px;
+        width: 100%;
+        @media (max-width: 575px) {
+            height: 300px;
+        }
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-thin {
+    font-weight: 300;
+}
+
+.white-bg {
+    background: $COLOR_WHITE;
+    color: $COLOR_BLUE;
+    margin: -5px;
+    padding: 50px 0;
+}
+
+.button-outline {
+    width: 400px;
+    height: 65px;
+    border-radius: 5px;
+    border: 2px solid $COLOR_ORANGE;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-size: 22px;
+    transition: all 0.3s;
+
+    &:hover {
+        background: $COLOR_ORANGE;
+        color: $COLOR_WHITE;
+        text-decoration: none;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: $COLOR_ORANGE;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    border-top: 1px solid $COLOR_GRAY;
+    margin: 20px;
+    padding: 0;
+}
+
+// Navbar
+.navbar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    top: 0;
+    height: 50px;
+    border-width: 0 0 1px;
+    margin-bottom: 20px;
+    -webkit-transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
+    -moz-transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
+    transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
+    overflow: hidden;
+    padding: 10px 0;
+    background: $COLOR_BLUE;
+}
+
+.navbar-brand {
+    float: left;
+}
+
+.logo {
+    background: url('../images/logo/binary_logo_light.svg') no-repeat;
+    width: 200px !important;
+    height: 36px;
+    margin: auto;
+    padding: 5px;
+    display: block;
+}
+
+.navbar-nav {
+    float: right;
+    display: flex;
+
+    > li {
+        padding: 15px;
+    }
+    a, a:visited {
+        color: $COLOR_WHITE !important;
+        font-weight: 100 !important;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+    a:hover, a:focus {
+        text-decoration: none;
+        color: $COLOR_GREEN;
+    }
+}
+
+.navbar-fixed-top.top-nav-collapse {
+    padding: 0;
+    background: $COLOR_BLUE !important;
+}
+
+.navbar-toggle {
+    position: relative;
+    float: right;
+    background: url('../images/common/nav/main_menu.svg') no-repeat;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    display: none; // hide on desktop
+}
+
+.navbar-toggle:focus {
+    outline: 0;
+}
+
+@media (max-width: 1199px) {
+    .intro {
+        height: 95%;
+        padding-top: 50px;
+
+        h1 {
+            font-size: 36px;
+        }
+    }
+    .navbar {
+        position: fixed;
+        background: $COLOR_BLUE;
+        margin-bottom: 0;
+        height: 50px;
+        overflow: hidden;
+        padding: 0;
+        -webkit-transition: height 0.5s;
+        -moz-transition: height 0.5s;
+        -ms-transition: height 0.5s;
+        -o-transition: height 0.5s;
+        transition: height 0.5s;
+
+        .navbar-header {
+            padding: 10px;
+        }
+    }
+    .navbar.expand {
+        height: 180px;
+    }
+    .navbar-brand {
+        float: none;
+        margin: 0;
+        height: 30px;
+    }
+    .navbar-toggle {
+        display: block;
+        height: 30px;
+        width: 30px;
+    }
+    .navbar-nav {
+        background: transparent;
+        float: none;
+        display: block;
+
+        > li {
+            padding: 0;
+            margin: 10px 15px;
+        }
+    }
+    .logo {
+        padding: 0;
+    }
+}

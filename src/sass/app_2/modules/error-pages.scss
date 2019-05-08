@@ -1,0 +1,53 @@
+/** @define page-error */
+.page-error {
+    &__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 83px);
+    }
+    &__box {
+        @include themify($themes) {
+            background: themed('container_color');
+            border: 1px solid themed('container_color');
+        }
+        padding: 5em;
+        text-align: center;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+
+        @media screen and (min-width: 1008px) {
+            max-width: calc(100vw - 45%);
+        }
+        /* postcss-bem-linter: ignore */
+        .inline-icon {
+            margin: 0 auto;
+        }
+    }
+    &__header {
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        @include typeface(--heading-center-bold-black, none);
+        line-height: 44px;
+    }
+    &__message {
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        @include typeface(--paragraph-center-normal-black, none);
+        @include toEm(margin, 16px 0px, 14px);
+        line-height: 1.45;
+        max-width: 400px;
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    &__code {
+        font-weight: bold;
+    }
+}

@@ -1,0 +1,105 @@
+/** @define contract-type-widget; */
+.contract-type-widget {
+    position: relative;
+    z-index: 2;
+    border-radius: 4px;
+    transition: transform 0.3s, opacity 0.3s;
+    @include themify($themes) {
+        color: themed('text_primary_color');
+        background: themed('container_color');
+        border: solid 1px themed('container_color');
+    }
+
+    &__display {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row;
+        padding: 1.6em;
+
+        /* postcss-bem-linter: ignore */
+        span[name=contract_type] {
+            @include typeface(--paragraph-left-normal-black);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            vertical-align: middle;
+            padding-left: 0.4em;
+        }
+        &:hover, &:focus {
+            border-color: $COLOR_DARK_BLUE_5;
+            outline: none;
+        }
+        &--clicked {
+            border-color: $COLOR_DARK_BLUE_5;
+
+            .contract-type-widget__select-arrow {
+                transform: rotate(-90deg);
+            }
+        }
+    }
+    &__select-arrow {
+        display: inline-block;
+        font-style: normal;
+        vertical-align: baseline;
+        text-align: center;
+        text-transform: none;
+        text-rendering: optimizeLegibility;
+        position: absolute;
+        pointer-events: none;
+        top: 37%;
+        left: 0.6em;
+        line-height: 1;
+        transition: transform 0.25s ease;
+        transform: rotate(90deg);
+        transform-origin: 45% 45;
+        color: $COLOR_LIGHT_BLACK_4;
+        @extend %inline-icon;
+    }
+    &__icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 1.2em;
+
+        /* postcss-bem-linter: ignore */
+        .category-wrapper {
+            margin: 0 0.2em;
+
+            /* postcss-bem-linter: ignore */
+            .category-type {
+                @include themify($themes) {
+                    /* postcss-bem-linter: ignore */
+                    path, rect {
+                        /* postcss-bem-linter: ignore */
+                        &:not(.important) {
+                            fill: themed('icon_color');
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &.transparent {
+                            fill: themed('background_icon_color');
+                        }
+                    }
+                    /* postcss-bem-linter: ignore */
+                    .stroke-active {
+                        stroke: themed('icon_color');
+                    }
+                }
+            }
+        }
+    }
+    &:hover {
+        @include themify($themes) {
+            border-color: themed('border_hover_color');
+        }
+    }
+    &:active, &:focus, &--show {
+        outline: none;
+        border-radius: 4px;
+        @include themify($themes) {
+            border-color: themed('border_hover_color');
+            box-shadow: 0 0 0 2px themed('border_outline_color');
+        }
+    }
+}

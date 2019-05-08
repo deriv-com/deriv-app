@@ -1,0 +1,28 @@
+{
+    "presets": ["env", "stage-1", "react"],
+    "plugins": [
+        "transform-decorators-legacy",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "babel-plugin-syntax-dynamic-import",
+        [
+            "module-resolver",
+            {
+                "root": [
+                    "./src/javascript"
+                ],
+                "alias": {
+                    "_common"  : "./src/javascript/_common",
+                    "App"      : "./src/javascript/app_2/App",
+                    "Assets"   : "./src/javascript/app_2/Assets",
+                    "Constants": "./src/javascript/app_2/Constants",
+                    "Modules"  : "./src/javascript/app_2/Modules",
+                    "Services" : "./src/javascript/app_2/Services",
+                    "Stores"   : "./src/javascript/app_2/Stores",
+                    "Utils"    : "./src/javascript/app_2/Utils",
+                    "Images"   : "./src/images/"
+                }
+            }
+        ]
+    ]
+}

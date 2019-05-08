@@ -1,0 +1,198 @@
+// Dark Theme
+// .theme--dark {
+//     background-color: $COLOR_DARK_BLUE_1;
+
+//     .card-list {
+//         &__card {
+//             background: $COLOR_DARK_BLUE_5;
+//             border-color: $COLOR_DARK_BLUE_5;
+
+//             div[class*='-card__header'] {
+//                 background: $COLOR_DARK_BLUE_3;
+//                 border-color: $COLOR_DARK_BLUE_5;
+//                 color: $COLOR_DARK_BLUE_7;
+//             }
+//             div[class*='-card__body'] {
+//                 color: $COLOR_DARK_BLUE_7;
+//             }
+//         }
+//     }
+//     .portfolio.container {
+//         background: $COLOR_DARK_BLUE_5;
+//     }
+//     .portfolio-empty, .statement-empty {
+//         span {
+//             color: $COLOR_DARK_BLUE_7;
+//         }
+//         button.btn span {
+//             color: unset;
+//         }
+//     }
+//     .portfolio-empty {
+//         &__text {
+//             color: $COLOR_DARK_BLUE_8 !important;
+//         }
+//     }
+//     .statement.container {
+//         .statement__filter {
+//             background: $COLOR_DARK_BLUE_1;
+//             color: $COLOR_DARK_BLUE_7;
+//             border-color: $COLOR_DARK_BLUE_1;
+//         }
+//         .statement__content {
+//             background: $COLOR_DARK_BLUE_1;
+//         }
+//     }
+//     .table {
+//         border-color: $COLOR_DARK_BLUE_5;
+
+//         &__head, &__foot {
+//             background: $COLOR_DARK_BLUE_3;
+//         }
+//         &__head, &__foot, &__row {
+//             border-color: $COLOR_DARK_BLUE_5;
+//         }
+//         &__body {
+//             a.table__row:hover {
+//                 background: $COLOR_DARK_BLUE_5;
+//             }
+//             .table__row {
+//                 &, &:active, &:visited {
+//                     color: $COLOR_DARK_BLUE_7;
+//                 }
+//             }
+//         }
+//         &__cell {
+//             color: $COLOR_DARK_BLUE_7;
+//         }
+//     }
+//     .statement, .portfolio {
+//         &-card__header {
+//             border-color: $COLOR_DARK_BLUE_5;
+//         }
+//     }
+//     .portfolio-card {
+//         &__purchase:before {
+//             background-image: url('../images/portfolio/ic_purchase_dark.svg');
+//         }
+//         // &__payout:before {
+//         //     background-image: url('../images/statement/ic_payout_dark.svg');
+//         // }
+//         &__indicative--price-stable:before {
+//             background-image: url('../images/portfolio/ic_price_stable_dark.svg');
+//         }
+//     }
+//     .statement-card__icon {
+//         @extend %inline-icon.white;
+//     }
+//     .login-message-wrapper {
+//         .message a {
+//             color: $COLOR_DARK_BLUE_7;
+
+//             &:hover {
+//                 color: $COLOR_WHITE;
+//             }
+//         }
+//     }
+//     .mobile-widget {
+//         border-color: $COLOR_DARK_BLUE_5;
+
+//         .fieldset-minimized {
+//             color: $COLOR_DARK_BLUE_7;
+
+//             &__basis {
+//                 color: $COLOR_DARK_BLUE_7;
+//             }
+//         }
+//         &:hover, &:focus, &:active {
+//             border-color: $COLOR_WHITE;
+//         }
+//     }
+//     .barspinner__rect {
+//         background-color: $COLOR_WHITE;
+//     }
+//     .toggle-button {
+//         background-color: $COLOR_LIGHT_BLACK_1;
+//         color: $COLOR_LIGHT_BLACK_4;
+
+//         &_selected {
+//             background-color: $COLOR_DARK_BLUE_2;
+//             color: $COLOR_WHITE;
+//         }
+//     }
+//     .fullscreen-dialog {
+//         background: $COLOR_DARK_BLUE_5;
+
+//         &__header, &__header-shadow-cover, &__content {
+//             background: $COLOR_DARK_BLUE_5;
+//         }
+//         &__header-shadow-cover {
+//             box-shadow: 0 1px 0px $COLOR_DARK_BLUE_5;
+//         }
+//         &__title {
+//             color: $COLOR_DARK_BLUE_7;
+//         }
+//         &__trade-type-info-modal {
+//             .info-header {
+//                 .title {
+//                     color: $COLOR_DARK_BLUE_2;
+//                 }
+//             }
+//             .info-gif {
+//                 background-color: $COLOR_DARK_BLUE_2;
+//             }
+//             .info-content {
+//                 color: $COLOR_LIGHT_BLACK_1;
+//             }
+//             .info-navigation {
+//                 &__list {
+//                     .circle-button {
+//                         background-color: $COLOR_WHITE;
+
+//                         &.active {
+//                             background-color: $COLOR_LIGHT_BLACK_4;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     .drawer__bg .drawer {
+//         background: $COLOR_DARK_BLUE_5;
+//         color: $COLOR_WHITE;
+//         box-shadow: 0 1px 6px 0 rgba(42, 48, 82, 0.14), 0 2px 8px 0 rgba(20, 20, 20, 0.3);
+
+//         .drawer__item {
+//             &-link {
+//                 &:before {
+//                     color: $COLOR_DARK_BLUE_7;
+//                 }
+//                 &:hover:before {
+//                     color: $COLOR_WHITE;
+//                 }
+//                 &-text {
+//                     color: $COLOR_DARK_BLUE_7;
+//                 }
+//             }
+//             &:hover {
+//                 background: $COLOR_DARK_BLUE_5;
+
+//                 .drawer__item-link-text {
+//                     color: $COLOR_WHITE;
+//                 }
+//             }
+//         }
+//         &--left, &--right {
+//             .drawer__header, .drawer__footer {
+//                 border-color: $COLOR_DARK_BLUE_5;
+
+//                 .drawer__brand-logo, &.btn-close {
+//                     border-color: $COLOR_DARK_BLUE_5;
+//                 }
+//                 .drawer__brand-logo .drawer__img:before {
+//                     background-image: url('../images/header/binary_logo_dark.svg');
+//                 }
+//             }
+//         }
+//     }
+// }

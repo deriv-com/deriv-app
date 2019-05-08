@@ -1,0 +1,36 @@
+/** @define native-select */
+.native-select {
+    &__wrapper {
+        position: relative;
+
+        &:after {
+            content: '\25bc';
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            font-size: 12px;
+            transform: translateY(-50%);
+        }
+    }
+    &__select {
+        width: 100%;
+        height: 32px;
+        margin: 8px 0;
+        display: block;
+        font-weight: 300;
+        align-self: center;
+        appearance: none;
+        box-sizing: border-box;
+        background: $COLOR_WHITE;
+
+        &:hover {
+            border-color: $COLOR_DARK_BLUE_5;
+        }
+        &:active, &:focus {
+            outline: 0;
+            border-color: $COLOR_DARK_BLUE_5;
+            box-shadow: 0 0 0 2px rgba(42, 48, 82, 0.2);
+        }
+    }
+}

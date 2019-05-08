@@ -1,0 +1,32 @@
+.open-positions {
+    .one-line {
+        margin-bottom: 42px;
+    }
+    img.responsive {
+        margin-top: 1.1em;
+        width: 50%;
+    }
+}
+
+.job-details .dept-image {
+    width: 80%;
+}
+
+@media screen and (max-width: 680px) {
+    .open-positions {
+        img.responsive {
+            width: 30%;
+        }
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .open-positions {
+        h1 {
+            text-align: center;
+        }
+        img.responsive {
+            width: 40%;
+        }
+    }
+}

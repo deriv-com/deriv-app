@@ -1,0 +1,95 @@
+.price_moved_up {
+    background-color: $COLOR_LIGHT_BLUE;
+    color: $COLOR_WHITE;
+}
+
+.price_moved_down {
+    background-color: $COLOR_RED;
+    color: $COLOR_WHITE;
+}
+
+a.close {
+    position: absolute;
+    display: block;
+    padding: 0;
+    cursor: pointer;
+    color: $COLOR_WHITE;
+    @include BIDIR_PROP(right, left, 0);
+    z-index: 1;
+    width: 35px;
+    height: 35px;
+    background: svg-url('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="14" height="14"><path fill="#{rgba($COLOR_WHITE, 1)}" d="M50,5,45,0,25,20,5,0,0,5,20,25,0,45l5,5L25,30,45,50l5-5L30,25Z"/></svg>') no-repeat center;
+
+    &:hover {
+        background-image: svg-url('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="14" height="14"><path fill="#{rgba($COLOR_ORANGE, 1)}" d="M50,5,45,0,25,20,5,0,0,5,20,25,0,45l5,5L25,30,45,50l5-5L30,25Z"/></svg>');
+    }
+}
+
+a.previous-wrapper {
+    display: flex;
+    cursor: pointer;
+
+    span {
+        &.previous {
+            display: block;
+            z-index: 1;
+            width: 16px;
+            height: 14px;
+            background: svg-url('<svg width="16" height="14" viewBox="0 0 16 14" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="#{rgba($COLOR_BLUE, 1)}"><path d="M7.737 1.676L6.263.324.14 7l6.124 6.676 1.474-1.352L2.853 7z"/><path d="M2 8h14V6H2z"/></g></svg>') no-repeat center;
+        }
+        &.nowrap {
+            padding-left: 5px;
+        }
+    }
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.profit {
+    color: $COLOR_GREEN;
+}
+
+.loss {
+    color: $COLOR_RED;
+}
+
+.pending {
+    color: $COLOR_BLACK;
+    font-weight: 400;
+    font-style: italic;
+}
+
+#notifications_wrapper {
+    .notice-msg {
+        margin-bottom: 5px;
+        padding: 10px 26px;
+        line-height: 25px;
+        font-size: $FONT_SIZE_S;
+        position: relative;
+
+        &.dismissible {
+            cursor: pointer;
+        }
+        .notification-dismiss {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: $COLOR_BLUE;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            font-family: 'Arial';
+            font-size: $FONT_SIZE_N;
+        }
+        &:hover .notification-dismiss {
+            color: $COLOR_ORANGE;
+        }
+    }
+}
+
+#trading_socket_container {
+    #notifications_wrapper .notice-msg {
+        margin-bottom: 10px;
+    }
+}

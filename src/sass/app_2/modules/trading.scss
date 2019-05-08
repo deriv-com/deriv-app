@@ -309,6 +309,9 @@
         height: calc(100% + 2px);
         left: -2px;
     }
+    &__popover-bubble {
+        width: 220px;
+    }
     //&__lock {
     //    position: absolute;
     //    display: flex;

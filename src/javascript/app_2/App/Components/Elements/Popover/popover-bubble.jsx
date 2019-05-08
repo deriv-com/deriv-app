@@ -12,19 +12,21 @@ const FadeIn = posed.div({
     enter: {
         opacity   : 1,
         transition: {
-            duration: 300,
+            duration: 200,
         },
     },
     exit: {
         opacity   : 0,
         transition: {
-            duration: 300,
+            duration: 200,
         },
     },
 });
 
 class PopoverBubble extends React.PureComponent {
-    calculatePosition = (alignment, target_rectangle, margin = 0) => {
+    calculatePosition = () => {
+        const { alignment, target_rectangle, margin = 0 } = this.props;
+
         switch (alignment) {
             case 'top': return {
                 left     : (target_rectangle.width / 2) + target_rectangle.left,
@@ -60,51 +62,38 @@ class PopoverBubble extends React.PureComponent {
             has_error,
             icon,
             is_open,
-            margin,
             message,
-            target_rectangle,
         } = this.props;
 
         const popover_bubble = (
-            <React.Fragment>
+            <PoseGroup>
                 { is_open &&
-                    <PoseGroup>
-                        <FadeIn key='fade_in' initialPose='exit'>
-                            <span
-                                style={this.calculatePosition(
-                                    alignment,
-                                    target_rectangle,
-                                    margin,
-                                )}
-                                className={classNames(
-                                    className,
-                                    'popover__bubble',
-                                    {
-                                        [`popover__bubble--${alignment}`]: alignment,
-                                        'popover__bubble--error'         : has_error,
-                                    },
-                                )}
-                            >
-                                <span className={classNames(
-                                    'popover__bubble__arrow',
-                                    alignment ? `popover__bubble__arrow--${alignment}` : '',
-                                )}
-                                />
-                                { icon &&
-                                    <i className='popover__bubble__icon'>
-                                        {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
-                                        {(icon === 'question') && <Icon icon={IconQuestion} />}
-                                        {(icon === 'dot')      && <Icon icon={IconRedDot} />}
-                                    </i>
-                                }
-                                <span className='popover__bubble__text'>
-                                    { message }
-                                </span>
+                    <FadeIn key='fade_in' initialPose='exit'>
+                        <span
+                            style={this.calculatePosition()}
+                            data-popover-pos={alignment}
+                            className={classNames(
+                                className,
+                                'popover__bubble',
+                                { 'popover__bubble--error': has_error },
+                            )}
+                        >
+                            { icon &&
+                                <i className='popover__bubble__icon'>
+                                    {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
+                                    {(icon === 'question') && <Icon icon={IconQuestion} />}
+                                    {(icon === 'dot')      && <Icon icon={IconRedDot} />}
+                                </i>
+                            }
+
+                            <span className='popover__bubble__text'>
+                                { message }
                             </span>
-                        </FadeIn>
-                    </PoseGroup>
+                            <span className='popover__bubble__arrow' />
+                        </span>
+                    </FadeIn>
                 }
-            </React.Fragment>
+            </PoseGroup>
         );
         
         return ReactDOM.createPortal(

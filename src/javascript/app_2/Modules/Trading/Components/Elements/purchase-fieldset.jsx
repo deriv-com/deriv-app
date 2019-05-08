@@ -87,7 +87,7 @@ class PurchaseFieldset extends React.PureComponent {
                         {(is_proposal_error) ?
                             <Popover
                                 alignment='left'
-                                classNameBubble='popover__bubble--error-secondary'
+                                classNameBubble='purchase-container__popover-bubble'
                                 message={info.message}
                             >
                                 { purchase_button }

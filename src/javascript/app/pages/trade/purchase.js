@@ -134,6 +134,20 @@ const Purchase = (() => {
                                 additional_message = localize('Try our other markets.');
                             }
                             message = `${error.message}. ${additional_message}`;
+                        } else if (/ClientUnwelcome/.test(error.code) && /gb/.test(Client.get('residence'))) {
+                            let message_text = '';
+                            let additional_message = '';
+
+                            if (!Client.hasAccountType('real') && Client.get('is_virtual')) {
+                                message_text = localize('Please complete the [_1]Real Account form[_2] to verify your age as required by the [_3]UK Gambling[_4] Commission (UKGC).', [`<a href='${urlFor('new_account/realws')}'>`, '</a>', '<strong>', '</strong>']);
+                                message = message_text;
+                            } else if (Client.hasAccountType('real') && /^virtual|iom$/i.test(Client.get('landing_company_shortcode'))) {
+                                message_text = localize('Your age verification failed. Please contact customer service for assistance. [_1][_1] [_2]Telephone:[_3] [_1] United Kingdom [_1] +44 (0) 1666 800042 [_1] 0800 011 9847 (Toll Free)', ['<br/>', '<strong>', '</strong>']);
+                                additional_message = localize('[_1]Telephone numbers in other locations[_2]', [`<a href='${urlFor('contact')}'>`, '</a>']);
+                                message = `${message_text} <br/><br/> ${additional_message}`;
+                            } else {
+                                message = error.message;
+                            }
                         }
                         CommonFunctions.elementInnerHtml(confirmation_error, message);
                     });

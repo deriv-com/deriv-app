@@ -28,6 +28,9 @@ import {
 const Real = () => (
     <div className='gr-12 static_full'>
         <h1>{it.L('Real Money Account Opening')}</h1>
+        <div className='notice-msg invisible' id='ukgc_age_verification'>
+            <p>{it.L('Please complete the Real Account form to verify your age as required by the [_1]UK Gambling[_2] Commission (UKGC).', '<strong>', '</strong>')}</p>
+        </div>
         <form id='frm_real' className='gr-padding-10'>
             <Fieldset legend={it.L('Details')}>
                 <Salutation />

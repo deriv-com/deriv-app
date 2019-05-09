@@ -10,7 +10,7 @@
                 top.location = self.location;
             }
         </script>
-        <title>Binary.com</title>
+        <title>Deriv.com</title>
         <meta charset="utf-8" />
         <meta name="google-site-verification" content="Myh35QddfEArh0686LcO2zMjrgv0C7L4FCBU0k0oZvU" />
         <script type="text/javascript">
@@ -113,7 +113,7 @@
             }
             function redirect() {
                 var search                = window.location.search ? window.location.search : '';
-                var has_external_referrer = document.referrer && !/\.(binary\.(com|me)|deriv\.com)/.test(document.referrer);
+                var has_external_referrer = document.referrer && !/\.deriv\.com/.test(document.referrer);
                 var has_utm_source        = /utm_source/.test(search);
                 var utm_source            = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
 

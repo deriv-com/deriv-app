@@ -1,4 +1,5 @@
 const Client              = require('./client_base');
+const getElementById      = require('../common_functions').getElementById;
 const getLanguage         = require('../language').get;
 const isMobile            = require('../os_detect').isMobile;
 const isStorageSupported  = require('../storage').isStorageSupported;
@@ -27,13 +28,16 @@ const Login = (() => {
         );
     };
 
+    // TODO: update this to handle logging into /app/ url
     const isLoginPages = () => /logged_inws|redirect/i.test(window.location.pathname);
 
     const socialLoginUrl = brand => (`${loginUrl()}&social_signup=${brand}`);
 
     const initOneAll = () => {
         ['google', 'facebook'].forEach(provider => {
-            $(`#button_${provider}`).off('click').on('click', e => {
+            const el_button = getElementById(`#button_${provider}`);
+            el_button.removeEventListener('click');
+            el_button.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.location.href = socialLoginUrl(provider);
             });

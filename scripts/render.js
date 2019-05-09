@@ -214,7 +214,7 @@ const createContextBuilder = async (sections) => {
         ],
         css_files  : css_files_list[section],
         languages  : config.languages,
-        broker_name: 'Binary.com',
+        broker_name: 'Deriv.com',
         static_hash: static_hash[section],
     });
 
@@ -249,9 +249,8 @@ async function compile(page) {
     const save_path_template  = Path.join(config.dist_path, section_path, 'LANG_PLACEHOLDER', `${page.save_as}.html`);
 
     const tasks = languages.map(async lang => {
-        const affiliate_language_code = common.getAffiliateSignupLanguage(lang);
         const model = {
-            website_name   : 'Binary.com',
+            website_name   : 'Deriv.com',
             title          : page.title,
             layout         : page.layout,
             language       : lang.toUpperCase(),
@@ -260,10 +259,6 @@ async function compile(page) {
             current_path   : page.save_as,
             current_route  : page.current_route,
             is_pjax_request: false,
-
-            affiliate_signup_url  : `https://login.binary.com/signup.php?lang=${affiliate_language_code}`,
-            affiliate_password_url: `https://login.binary.com/password-reset.php?lang=${affiliate_language_code}`,
-            affiliate_email       : 'affiliates@binary.com',
         };
 
         const context     = context_builder.buildFor(model);

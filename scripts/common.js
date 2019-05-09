@@ -35,23 +35,6 @@ exports.sections_config = {
 // ---------- Languages ----------
 exports.languages = ['EN', 'DE', 'ES', 'FR', 'ID', 'IT', 'KO', 'PL', 'PT', 'RU', 'TH', 'VI', 'ZH_CN', 'ZH_TW'];
 
-const affiliates_signup_language_map = { // object used instead of array to prevent accidental index changes
-    EN   : 0,
-    RU   : 1,
-    FR   : 2,
-    IT   : 3,
-    ID   : 4,
-    PL   : 5,
-    VI   : 6,
-    DE   : 7,
-    ES   : 8,
-    PT   : 9,
-    ZH_CN: 10,
-    ZH_TW: 11,
-    TH   : 12,
-};
-exports.getAffiliateSignupLanguage = (lang = '') => (affiliates_signup_language_map[lang.toUpperCase()] || 0);
-
 // ---------- Helpers ----------
 exports.print = (text) => {
     process.stdout.clearLine();

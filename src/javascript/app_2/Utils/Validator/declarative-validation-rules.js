@@ -2,7 +2,7 @@ import Client                    from '_common/base/client_base';
 import {
     addComma,
     getDecimalPlaces }           from '_common/base/currency_base';
-import Password                  from '_common/check_password';
+import { getElementById }        from '_common/common_functions';
 import { localize }              from '_common/localize';
 import { compareBigUnsignedInt } from '_common/string_util';
 import { cloneObject }           from '_common/utility';
@@ -19,14 +19,7 @@ const validRequired     = (value/* , options, field */) => {
     return str.length > 0;
 };
 const validEmail        = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validPassword     = (value, options, field) => {
-    if (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value)) {
-        Password.checkPassword(field.selector);
-        return true;
-    }
-    // else
-    return false;
-};
+const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral      = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
@@ -37,8 +30,8 @@ const validEmailToken   = value => value.trim().length === 8;
 const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
 const validBarrier      = value => /^[+-]?\d+\.?\d*$/.test(value);
 
-const validCompare  = (value, options) => value === $(options.to).val();
-const validNotEqual = (value, options) => value !== $(options.to).val();
+const validCompare  = (value, options) => value === getElementById(options.to.substr(1)).value;
+const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;
 const validMin      = (value, options) => (options.min ? value.length >= options.min : true);
 const validLength   = (value, options) => (
     (options.min ? value.length >= options.min : true) &&

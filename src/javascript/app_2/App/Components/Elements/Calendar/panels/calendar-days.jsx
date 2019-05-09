@@ -1,7 +1,9 @@
 import classNames       from 'classnames';
 import PropTypes        from 'prop-types';
 import React            from 'react';
+import { localize }     from '_common/localize';
 import { padLeft }      from '_common/string_util';
+import { Popover }      from 'App/Components/Elements/Popover';
 import {
     getDaysOfTheWeek,
     week_headers_abbr } from 'Constants/date-time';
@@ -12,9 +14,7 @@ import {
     subDays,
     subMonths,
     toMoment }          from 'Utils/Date';
-import { localize }     from '_common/localize';
 import CommonPropTypes  from './types';
-import Tooltip          from '../../tooltip.jsx';
 
 const getDays = ({
     calendar_date,
@@ -115,10 +115,10 @@ const getDays = ({
                 onMouseLeave={onMouseLeave}
             >
                 {((has_events || is_closes_early) && !is_other_month && !is_before_min_or_after_max_date) &&
-                    <Tooltip
+                    <Popover
                         alignment='top'
-                        className='calendar__cell-tooltip'
-                        classNameIcon='calendar__cell-tooltip-icon'
+                        classNameTarget='calendar__cell-tooltip'
+                        classNameTargetIcon='calendar__cell-tooltip-icon'
                         icon='dot'
                         message={message}
                     />

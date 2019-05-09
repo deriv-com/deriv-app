@@ -3,7 +3,7 @@ import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { NetworkStatus }      from '../network-status.jsx';
-import Tooltip                from '../../../Elements/tooltip.jsx';
+import { Popover }            from 'App/Components/Elements/Popover';
 
 configure({ adapter: new Adapter() });
 
@@ -27,18 +27,18 @@ describe('NetworkStatus', () => {
     it('should contain Tooltip message passed in status', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
         expect(wrapper.contains(
-            <Tooltip className='network-status__tooltip' alignment='top' message='Network status: Online'>
+            <Popover className='network-status__tooltip' alignment='top' message='Network status: Online'>
                 <div className='network-status__circle network-status__circle--online' />
-            </Tooltip>
+            </Popover>
         )).to.be.true;
     });
     it('should contain Tooltip with default message and div with only default class if status does not contain them', () => {
         status = {};
         const wrapper = shallow(<NetworkStatus status={status} />);
         expect(wrapper.contains(
-            <Tooltip className='network-status__tooltip' alignment='top' message='Network status: Connecting to server'>
+            <Popover className='network-status__tooltip' alignment='top' message='Network status: Connecting to server'>
                 <div className='network-status__circle' />
-            </Tooltip>
+            </Popover>
         )).to.be.true;
     });
 });

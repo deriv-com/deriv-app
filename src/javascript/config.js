@@ -97,6 +97,7 @@ const getSocketURL = () => {
 };
 
 module.exports = {
+    domain_app_ids,
     getCurrentBinaryDomain,
     isProduction,
     getAppId,

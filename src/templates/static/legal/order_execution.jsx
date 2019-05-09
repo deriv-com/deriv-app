@@ -3,30 +3,30 @@ import React from 'react';
 const OrderExecution = () => (
     <div>
         <h2 data-anchor='summary-order-execution-policy'>{it.L('Summary of the order execution policy')}</h2>
-        <p>{it.L('The Company has a general duty to conduct its business with the client honestly, fairly, and professionally and to act in the client\'s best interests when opening and closing binary options trades with the client.')}</p>
-        <p>{it.L('More specifically, when the Company enters into a binary option trade with the client (each, a "Contract"), the Company has a duty to provide the client with \'best execution\'. Best execution means that the Company must take reasonable steps to obtain the best possible result for the client when executing a client order. This document provides a summary of the Company\'s best execution policy.')}</p>
-        <p>{it.L('The client should note that the Company\'s duty to provide the client with best execution does not apply to any gaming products that the client places with the Company, when there is no underlying financial market.')}</p>
+        <p>{it.L('The Company has a general duty to conduct its business with the client honestly, fairly, and professionally and to act in the client\'s best interests when opening and closing Binary Options trades with the client.')}</p>
+        <p>{it.L('More specifically, when the Company enters into a Binary Option trade with the client (each, a "Contract"), the Company has a duty to provide the client with \'best execution\'. Best execution means that the Company must take reasonable steps to obtain the best possible result for the client when executing a client order. This document provides a summary of the Company\'s best execution policy.')}</p>
+        <p>{it.L('The client should note that the Company\'s duty to provide the client with best execution does not apply to any gambling products that the client places with the Company when there is no underlying financial market.')}</p>
         <p>{it.L('This policy applies to clients classified as retail or professional. Clients classified as eligible counterparties are outside the scope of this policy.')}</p>
 
         <h2 data-anchor='general'>{it.L('General')}</h2>
-        <p>{it.L('The Company\'s order execution policy comprises a set of procedures that are designed to obtain the best possible execution result for the client, subject to and taking into account:')}</p>
+        <p>{it.L('The Company\'s order execution policy comprises a set of procedures that are designed to obtain the best possible execution result for the client, subject to and taking into account the following factors:')}</p>
         <ul>
-            <li>{it.L('(a) the nature of the client\'s Contracts;')}</li>
-            <li>{it.L('(b) the priorities that the client has identified for the Company in relation to entering into those Contracts; and')}</li>
-            <li>{it.L('(c) the practices relating to the market in question, with the aim of producing a result that provides, in the Company\'s view, the best balance across a range of sometimes conflicting factors.')}</li>
+            <li>{it.L('(a) The nature of the client\'s Contracts')}</li>
+            <li>{it.L('(b) The priorities that the client has identified for the Company in relation to entering into those Contracts')}</li>
+            <li>{it.L('(c) The practices relating to the market in question, with the aim of producing a result that provides, in the Company\'s view, the best balance across a range of sometimes conflicting factors')}</li>
         </ul>
         <p>{it.L('The Company\'s policy cannot provide a guarantee, however, that when entering into Contracts with the client, the price will always be better than one that is or might have been available elsewhere.')}</p>
 
         <h2 data-anchor='order-execution'>{it.L('Order execution')}</h2>
-        <p>{it.L('The Company is licensed to deal in derivatives on its own account. Client orders will be executed by the Company and the Company will always be the client\'s sole execution venue for all of the trades a client makes in binary options. This means that the Company will always act as the client\'s counterparty, wherein it takes the other side of the client\'s trade. The clients should be aware that they are exposed to higher risks as all binary options contracts are traded on the over-the-counter (OTC) markets, as opposed to regulated exchanges. This section of the policy will outline how the Company intends to comply with its best execution obligations.')}</p>
+        <p>{it.L('The Company is licensed to deal in derivatives on its own account. Client orders will be executed by the Company and the Company will always be the client\'s sole execution venue for all of the trades a client makes in binary options. This means that the Company will always act as the client\'s counterparty, wherein it takes the other side of the client\'s trade. The clients should be aware that they are exposed to higher risks as all Binary Options contracts are traded on over-the-counter (OTC) markets, as opposed to regulated exchanges. This section of the policy will outline how the Company intends to comply with its best execution obligations.')}</p>
 
         <h2 data-anchor='classes-of-instruments'>{it.L('Classes of instruments')}</h2>
         <p>{it.L('The Company offers binary options through its online interactive platform.')}</p>
-        <p>{it.L('A binary option is a contract in which one party undertakes to pay the other party a specified amount if the value of a given asset changes in a specific direction within a predetermined period. The three major underlying asset classes for binary options offered by the Company are:')}</p>
+        <p>{it.L('A binary option is a contract in which one party undertakes to pay the other party a specified amount if the value of a given asset changes in a specific direction within a predetermined period. The three major underlying asset classes for binary options offered by the Company are')}</p>
         <ul className='bullet'>
-            <li>{it.L('Forex;')}</li>
-            <li>{it.L('indices; and')}</li>
-            <li>{it.L('commodities.')}</li>
+            <li>{it.L('Forex')}</li>
+            <li>{it.L('Indices')}</li>
+            <li>{it.L('Commodities')}</li>
         </ul>
 
         <h2 data-anchor='best-execution-factors'>{it.L('Best execution factors')}</h2>
@@ -37,7 +37,7 @@ const OrderExecution = () => (
         <ul>
             <li>
                 {it.L('(a) Price and cost')}
-                <p>{it.L('The Company has internally set appropriate controls and monitoring to verify that its aggregate return on the various underlying options and durations is equal to its commission charge of 3 - 5%. Proper back-testing is conducted on a quarterly basis to certify that the Company\'s return does not exceed this set mark-up and hence ascertain continued fair prices to the clientele, whilst mitigating the Company\'s conflicts of interest.')}</p>
+                <p>{it.L('The Company has internally set appropriate controls and monitoring to verify that its aggregate return on various underlying options and durations is equal to its commission charge of 3 - 5%. Proper back-testing is conducted on a quarterly basis to certify that the Company\'s return does not exceed this set mark-up and hence ascertain continued fair prices to the clientele, whilst mitigating the Company\'s conflicts of interest.')}</p>
             </li>
             <li>
                 {it.L('(b) Speed')}

@@ -1,15 +1,12 @@
 const release_targets = {
     production: {
-        repo : 'git@github.com:binary-static-deployed/binary-static.git',
-        CNAME: 'www.binary.com',
+        repo       : 'git@github.com:binary-com/deriv-app.git',
+        target_repo: 'git@github.com:binary-com/deriv-app-production.git',
+        CNAME      : 'deriv.app',
     },
     staging: {
-        repo : 'git@github.com:binary-com/binary-static.git',
-        CNAME: 'staging.binary.com',
-    },
-    binarynex: {
-        repo : 'git@github.com:binary-com/binarynex-deployed.git',
-        CNAME: 'www.binarynex.com',
+        repo : 'git@github.com:binary-com/deriv-app.git',
+        CNAME: 'staging.deriv.app',
     },
 };
 
@@ -25,14 +22,15 @@ const release_config = {
     production: {
         branch        : 'master',
         target_folder : '',
-        valid_sections: ['app', 'app_2', 'all'],
+        valid_sections: ['app_2'],
         origin        : release_targets.production.repo,
+        target_repo   : release_targets.production.target_repo,
         CNAME         : release_targets.production.CNAME,
     },
     staging: {
         branch        : 'master',
         target_folder : '',
-        valid_sections: ['app', 'app_2', 'all'],
+        valid_sections: ['app_2'],
         origin        : release_targets.staging.repo,
         CNAME         : release_targets.staging.CNAME,
     },
@@ -42,22 +40,6 @@ const release_config = {
         valid_sections: ['app'],
         origin        : release_targets.staging.repo,
         CNAME         : release_targets.staging.CNAME,
-    },
-    nex_production: {
-        branch        : 'master',
-        target_folder : '',
-        valid_sections: ['app_2'],
-        origin        : release_targets.staging.repo,
-        target_repo   : release_targets.binarynex.repo,
-        CNAME         : release_targets.binarynex.CNAME,
-    },
-    nex_beta: {
-        branch        : 'master',
-        target_folder : 'beta',
-        valid_sections: ['app_2'],
-        origin        : release_targets.staging.repo,
-        target_repo   : release_targets.binarynex.repo,
-        CNAME         : release_targets.binarynex.CNAME,
     },
 };
 

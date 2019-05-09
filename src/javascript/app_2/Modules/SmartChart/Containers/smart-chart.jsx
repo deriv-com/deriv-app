@@ -44,25 +44,26 @@ class Chart extends React.Component {
                 bottomWidgets={(!this.props.is_digit_contract || this.props.should_show_last_digit_stats) ?
                     null : this.bottomWidgets }
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
+                chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
+                clearChart={this.props.should_clear_chart}
                 endEpoch={this.props.range.end_epoch}
                 id={this.props.chart_id}
+                importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
+                isConnectionOpened={this.props.is_socket_opened}
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}
+                onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestSubscribe={this.props.wsSubscribe}
+                scrollToEpoch={this.props.scroll_to_epoch}
+                scrollToEpochOffset={this.props.scroll_to_offset}
                 settings={this.props.settings}
                 showLastDigitStats={this.props.should_show_last_digit_stats}
                 startEpoch={this.props.range.start_epoch}
-                scrollToEpoch={this.props.scroll_to_epoch}
-                scrollToEpochOffset={this.props.scroll_to_offset}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
-                isConnectionOpened={this.props.is_socket_opened}
-                clearChart={this.props.should_clear_chart}
-                importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
-                onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
@@ -83,6 +84,7 @@ Chart.propTypes = {
     chart_type                  : PropTypes.string,
     end_epoch                   : PropTypes.number,
     exportLayout                : PropTypes.func,
+    getChartStatus              : PropTypes.func,
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
@@ -119,6 +121,7 @@ export default connect(
         chart_type          : modules.smart_chart.chart_type,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         exportLayout        : modules.smart_chart.exportLayout,
+        getChartStatus      : modules.smart_chart.getChartStatus,
         granularity         : modules.smart_chart.granularity,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
         markers_array       : modules.smart_chart.markers_array,

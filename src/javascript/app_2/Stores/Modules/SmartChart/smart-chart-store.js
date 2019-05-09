@@ -31,11 +31,18 @@ export default class SmartChartStore extends BaseStore {
     @observable scroll_to_left_epoch_offset = 0;
 
     @observable chart_id             = 'trade';
+    @observable is_chart_loading     = false;
+    @observable is_chart_ready       = false;
     @observable should_import_layout = false;
     @observable should_export_layout = false;
     @observable should_clear_chart   = false;
     @observable trade_chart_layout   = null;
     trade_chart_symbol               = null;
+
+    @action.bound
+    getChartStatus(status) {
+        this.is_chart_ready = status;
+    }
 
     @action.bound
     updateChartType(type) {

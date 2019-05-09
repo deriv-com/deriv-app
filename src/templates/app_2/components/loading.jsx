@@ -1,3 +1,4 @@
+import classNames          from 'classnames';
 import React               from 'react';
 import PropTypes           from 'prop-types';
 import {
@@ -12,7 +13,7 @@ class Loading extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.status !== this.props.status || nextProps.theme !== this.props.theme;
+        return (nextProps.status !== this.props.status) || (nextProps.theme !== this.props.theme);
     }
 
     componentDidMount() {
@@ -22,11 +23,18 @@ class Loading extends React.Component {
     }
 
     render() {
+        const { id, status, theme } = this.props;
+        const { is_mounted }        = this.state;
         return (
-            <div id={this.props.id} className={`initial-loader initial-loader--${this.props.theme}`}>
-                { this.state.is_mounted &&
+            <div
+                className={classNames('initial-loader', {
+                    [`initial-loader--${theme}`]: theme,
+                })}
+                id={id}
+            >
+                {is_mounted &&
                     <React.Fragment>
-                        { this.props.theme === 'dark' &&
+                        { theme === 'dark' &&
                             <Icon
                                 icon={IconInitialLogoDark}
                                 className='initial-loader__image'
@@ -34,7 +42,7 @@ class Loading extends React.Component {
                                 classNameRect='initial-loader__fill'
                             />
                         }
-                        { this.props.theme === 'light' &&
+                        { theme === 'light' &&
                             <Icon
                                 icon={IconInitialLogoLight}
                                 className='initial-loader__image'
@@ -42,7 +50,7 @@ class Loading extends React.Component {
                                 classNameRect='initial-loader__fill'
                             />
                         }
-                        { this.props.status && <h1 className='initial-loader__status'>{this.props.status}</h1>}
+                        { status && <h1 className='initial-loader__status'>{status}</h1> }
                     </React.Fragment>
                 }
             </div>

@@ -61,7 +61,7 @@ const ContractInfo = ({
             { !has_error_or_not_loaded &&
                 <Popover
                     alignment='left'
-                    classNameTarget={classNames('trade-container__price-tooltip', { 'trade-container__price-tooltip--disabled': has_error_or_not_loaded })}
+                    classNameBubble={classNames('trade-container__price-tooltip', { 'trade-container__price-tooltip--disabled': has_error_or_not_loaded })}
                     classNameTargetIcon='trade-container__price-tooltip-i'
                     icon='info'
                     margin={210}

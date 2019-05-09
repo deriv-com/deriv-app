@@ -35,6 +35,7 @@ import {
     getProposalInfo,
     getProposalParametersName }          from './Helpers/proposal';
 import { pickDefaultSymbol }             from './Helpers/symbol';
+import { isDigitContract }               from '../Contract/Helpers/digits';
 import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
 import BaseStore                         from '../../base-store';
 
@@ -96,6 +97,7 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     @observable last_digit = 5;
+    @observable is_digit_contract = false;
 
     // Purchase
     @observable proposal_info = {};
@@ -453,6 +455,7 @@ export default class TradeStore extends BaseStore {
         }
 
         this.is_purchase_enabled = true;
+        this.is_digit_contract = isDigitContract(contract_type);
     }
 
     @action.bound

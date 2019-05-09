@@ -1,11 +1,11 @@
 const release_targets = {
     production: {
-        repo       : 'git@github.com:binary-com/binary-deriv.git',
-        target_repo: '',
+        repo       : 'git@github.com:binary-com/deriv-com.git',
+        target_repo: 'git@github.com:binary-com/deriv-app-production.git',
         CNAME      : 'deriv.app',
     },
     staging: {
-        repo : 'git@github.com:binary-com/binary-deriv.git',
+        repo : 'git@github.com:binary-com/deriv-com.git',
         CNAME: 'staging.deriv.app',
     },
 };

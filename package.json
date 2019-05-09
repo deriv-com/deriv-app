@@ -1,7 +1,7 @@
 {
-  "name": "binary-static",
+  "name": "deriv-com",
   "version": "3.8.0",
-  "description": "Binary.com static content",
+  "description": "Deriv.com content",
   "scripts": {
     "test": "grunt test",
     "livereload": "sudo -p 'enter password for sudo:' grunt livereload",
@@ -10,18 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/binary-com/binary-static.git"
+    "url": "https://github.com/binary-com/deriv-com.git"
   },
   "keywords": [
-    "binary",
-    "static"
+    "deriv"
   ],
-  "author": "Binary.com",
+  "author": "Deriv.com",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/binary-com/binary-static/issues"
+    "url": "https://github.com/binary-com/deriv-com/issues"
   },
-  "homepage": "https://github.com/binary-com/binary-static",
+  "homepage": "https://github.com/binary-com/deriv-come",
   "devDependencies": {
     "@babel/parser": "7.1.2",
     "app-root-path": "2.0.1",
@@ -110,7 +109,6 @@
   },
   "dependencies": {
     "@binary-com/binary-document-uploader": "^2.4.3",
-    "@binary-com/binary-style": "0.2.17",
     "@binary-com/webtrader-charts": "0.4.2",
     "babel-polyfill": "6.26.0",
     "classnames": "2.2.5",

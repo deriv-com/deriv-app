@@ -16,15 +16,6 @@ describe('StringUtil', () => {
 
     const readable_date = '22 Jun, 2017';
     const iso_date      = '2017-06-22';
-    describe('.toISOFormat()', () => {
-        it('works as expected', () => {
-            expect(StringUtil.toISOFormat(moment.utc(iso_date))).to.eq(iso_date);
-        });
-        it('doesn\'t break with non-moment date', () => {
-            expect(StringUtil.toISOFormat(iso_date)).to.eq('');
-            expect(StringUtil.toISOFormat(undefined)).to.eq('');
-        });
-    });
 
     describe('.padLeft()', () => {
         it('puts 0 in front of single digit when length is 2', () => {

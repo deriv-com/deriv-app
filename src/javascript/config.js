@@ -8,13 +8,11 @@
  * git update-index --assume-unchanged src/javascript/config.js
  *
  */
-const domain_app_ids = { // these domains also being used in '_common/url.js' as supported "production domains"
-    'binary.com': 1,
-    'binary.me' : 15284,
-    'deriv.com' : 16929,
+const domain_app_ids = { // these domains as supported "production domains"
+    'deriv.com': 16929,
 };
 
-const getCurrentBinaryDomain = () =>
+const getCurrentProductionDomain = () =>
     Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
 
 const isProduction = () => {
@@ -45,14 +43,12 @@ const getAppId = () => {
         app_id = 1159;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        const current_domain = getCurrentBinaryDomain();
+        const current_domain = getCurrentProductionDomain();
         // TODO: remove is_new_app && deriv.com check when repos are split
         app_id = (is_new_app && current_domain !== 'deriv.com') ? 15265 : (domain_app_ids[current_domain] || 1);
     }
     return app_id;
 };
-
-const isBinaryApp = () => +getAppId() === binary_desktop_app_id;
 
 const getSocketURL = () => {
     let server_url = window.localStorage.getItem('config.server_url');
@@ -97,9 +93,8 @@ const getSocketURL = () => {
 };
 
 module.exports = {
-    getCurrentBinaryDomain,
+    getCurrentProductionDomain,
     isProduction,
     getAppId,
-    isBinaryApp,
     getSocketURL,
 };

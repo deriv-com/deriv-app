@@ -1,11 +1,11 @@
-Binary-Static 
-=============
+Deriv-com
+=========
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Binary.com](http://www.binary.com) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv.com](https://www.deriv.com) website.
 
 ## Installation
 
-In order to work on your own version of the Binary.com Javascript and CSS, please **fork this project**.
+In order to work on your own version of the Deriv.com Javascript and CSS, please **fork this project**.
 
 You will also need to install the following on your development machine:
 
@@ -25,7 +25,7 @@ How to work with this project
 ### Deploy to your gh-pages for the first time
 
 1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
-Use `https://YOUR_GITHUB_USERNAME.github.io/binary-static/en/logged_inws.html` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/binary-static/en/redirect.html` for the Verification URL.
+Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/logged_inws.html` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/redirect.html` for the Verification URL.
 
     If you're using a custom domain, replace the github URLs above with your domain.
 
@@ -59,7 +59,7 @@ grunt dev --path=about-us
 ### Using sub-folders
 There are times that you are working on various branches at the same time, and you want to deploy/test each branch separately on your gh-pages, you can simply use `--branch=branchname` for grunt commands:
 - `grunt dev --branch=branchname`
-This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/binary-static/br_branchname/
+This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/deriv-com/br_branchname/
 
 In order to remove the created folders from your gh-pages, you can use either:
 - `grunt dev --cleanup`: removes all `br_*` folders and deploys to the root folder.
@@ -103,7 +103,7 @@ grunt release --{release type}=1 --section=app|app_2 [--cleanup] [--reset]
   - Your current branch will be checked to be the correct branch of the given parameter.
 - `--section` (mandatory)
   - In order to prevent mistakes during the release, it is mandatory to specify the section.
-  - Valid section depends on the release target. Please refer to `release_config` [here](https://github.com/binary-com/binary-static/blob/new-app/build/config/constants.js).
+  - Valid section depends on the release target. Please refer to `release_config` [here](https://github.com/binary-com/deriv-com/blob/new-app/build/config/constants.js).
 - `--cleanup` [optional]
   - Create CNAME file with proper value according to remote origin
   - Deploy to gh-pages with the option `add: false`

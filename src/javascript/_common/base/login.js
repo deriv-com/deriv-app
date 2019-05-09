@@ -27,6 +27,7 @@ const Login = (() => {
         );
     };
 
+    // TODO: update this to handle logging into /app/ url
     const isLoginPages = () => /logged_inws|redirect/i.test(window.location.pathname);
 
     const socialLoginUrl = brand => (`${loginUrl()}&social_signup=${brand}`);

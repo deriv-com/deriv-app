@@ -10,7 +10,7 @@ import Filter                         from './statement-filter.jsx';
 import StatementCardList              from '../Components/statement-card-list.jsx';
 import EmptyStatementMessage          from '../Components/empty-statement-message.jsx';
 import { getTableColumnsTemplate }    from '../Constants/data-table-constants';
-import Loading                        from '../../../../../templates/_common/components/loading.jsx';
+import Loading                        from '../../../../../templates/app_2/components/loading.jsx';
 
 class Statement extends React.Component {
     componentDidMount()    { this.props.onMount(); }

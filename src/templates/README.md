@@ -7,7 +7,7 @@ jsx Rules
 - Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
 - Use `it.L('...')` for translations.
 - Use `it.url_for('...')` to build URLs.
-- Use `it.website_name` instead of `Binary.com`.
+- Use `it.website_name` instead of `Deriv.com`.
 - Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
 - Components with less than four arguments should stay list all in one line, for example:
 
@@ -80,7 +80,7 @@ export default Loading;
 - There are cases where you do not want your strings to be escaped (i.g. when you place `<a/>` tags inside a `<Table />`). To bypass HTML escape, you can use `it.dangreouslyRenderHtml()` (under normal circumstances do NOT use this.):
 
 ```
-it.dangreouslyRenderHtml('<a href="https://binary.com"></a>');
+it.dangreouslyRenderHtml('<a href="https://deriv.com"></a>');
 ```
 
 - Blocks need to have a single space after `{`, for example:

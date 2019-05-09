@@ -1,6 +1,6 @@
-const urlForLanguage         = require('./language').urlFor;
-const urlLang                = require('./language').urlLang;
-const getCurrentBinaryDomain = require('../config').getCurrentBinaryDomain;
+const urlForLanguage             = require('./language').urlFor;
+const urlLang                    = require('./language').urlLang;
+const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
 const Url = (() => {
@@ -60,7 +60,7 @@ const Url = (() => {
     };
 
     const urlForCurrentDomain = (href) => {
-        const current_domain = getCurrentBinaryDomain();
+        const current_domain = getCurrentProductionDomain();
 
         if (!current_domain) {
             return href; // don't change when domain is not supported

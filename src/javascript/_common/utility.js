@@ -1,34 +1,6 @@
 const extend = require('extend');
 require('./lib/polyfills/element.matches');
 
-/**
- * Returns the highest z-index in the page.
- * Accepts a selector to only check those elements,
- * uses all container tags by default
- * If no element found, returns null.
- *
- * @param selector: a selector for target elements
- * @return int|null
- */
-const getHighestZIndex = (selector = 'div,p,area,nav,section,header,canvas,aside,span') => {
-    const elements = selector.split(',');
-    const all      = [];
-
-    for (let i = 0; i < elements.length; i++) {
-        const els = document.getElementsByTagName(elements);
-        for (let j = 0; j < els.length; j++) {
-            if (els[i].offsetParent) {
-                const z = els[i].style['z-index'];
-                if (!isNaN(z)) {
-                    all.push(z);
-                }
-            }
-        }
-    }
-
-    return all.length ? Math.max(...all) : null;
-};
-
 const template = (string, content) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
@@ -91,13 +63,6 @@ const getPropertyValue = (obj, k) => {
     return obj ? cloneObject(obj[keys[0]]) : undefined;
 };
 
-const handleHash = () => {
-    const hash = window.location.hash;
-    if (hash) {
-        document.querySelector(`a[href="${hash}"]`).click();
-    }
-};
-
 /**
  * Creates a DOM element and adds any attributes to it.
  *
@@ -120,52 +85,6 @@ const createElement = (tag_name, attributes = {}) => {
     return el;
 };
 
-/**
- * Apply function to all elements based on selector passed
- *
- * @param {String|Element} selector: selector of the elements to apply the function to, e.g. '.class', '#id', 'tag', etc
- * can also be a DOM element
- * @param {Function} funcToRun: function to apply
- * @param {String} func_selector: method of finding the selector, optional
- * @param {Element} el_parent: parent of the selector, document by default
- */
-const applyToAllElements = (selector, funcToRun, func_selector, el_parent) => {
-    if (!selector || !funcToRun) {
-        return;
-    }
-
-    let function_selector = func_selector;
-    let element_to_select = selector;
-    if (!func_selector && !element_to_select.nodeName) {
-        if (/[\s#]/.test(element_to_select) || element_to_select.lastIndexOf('.') !== 0) {
-            function_selector = 'querySelectorAll';
-        } else if (element_to_select.lastIndexOf('.') === 0) {
-            function_selector = 'getElementsByClassName';
-            element_to_select = element_to_select.substring(1);
-        } else if (/^[a-zA-Z]+$/.test(element_to_select)) {
-            function_selector = 'getElementsByTagName';
-        }
-    }
-    const parent_element = el_parent || document;
-    const el = element_to_select.nodeName || typeof element_to_select === 'object' ? element_to_select : parent_element[function_selector](element_to_select);
-    for (let i = 0; i < el.length; i++) {
-        funcToRun(el[i]);
-    }
-};
-
-/**
- * Returns the first parent element that matches the selector (including el itself)
- *
- * @param {Element} el      : element to start looking for parent
- * @param {String}  selector: selector to find the element that matches to, e.g. '.class', '#id', 'tag', or a combination of them
- */
-const findParent = (el, selector) => {
-    if (el && el.nodeName !== 'BODY' && typeof el.matches === 'function') {
-        return el.matches(selector) ? el : findParent(el.parentNode, selector);
-    }
-    return null;
-};
-
 let static_hash;
 const getStaticHash = () => {
     static_hash = static_hash || (document.querySelector('script[src*="binary"]').getAttribute('src') || '').split('?')[1];
@@ -182,17 +101,13 @@ class PromiseClass {
 }
 
 module.exports = {
-    getHighestZIndex,
     template,
     isEmptyObject,
     cloneObject,
     isDeepEqual,
     unique,
     getPropertyValue,
-    handleHash,
     createElement,
-    applyToAllElements,
-    findParent,
     getStaticHash,
     PromiseClass,
 };

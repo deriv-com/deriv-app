@@ -1,10 +1,6 @@
-const moment     = require('moment');
-
 const toTitleCase = str => (
     (str || '').replace(/\w[^\s/\\]*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 );
-
-const toISOFormat = date => (date instanceof moment ? date.format('YYYY-MM-DD') : '');
 
 const padLeft = (txt, len, char) => {
     const text = String(txt || '');
@@ -33,10 +29,8 @@ const compareBigUnsignedInt = (a, b) => {
 const numberToString = n => (typeof n === 'number' ? String(n) : n);
 
 module.exports = {
-    toISOFormat,
     toTitleCase,
     padLeft,
     numberToString,
-
     compareBigUnsignedInt,
 };

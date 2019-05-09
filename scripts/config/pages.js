@@ -3,5 +3,5 @@ module.exports = [
 
     // ==================== Section: "app_2" ====================
     // According to its section path ('app') would be saved to: /app/{lang}/index.html
-    ['index',                                   'app_2/app',                                   null,         'Trusted by traders since 2000',     null, 'app_2'],
+    ['index',                                   'app_2/app',                                   null,         'Trusted by traders since 2000',     'NOT-en',          'app_2'],
 ];

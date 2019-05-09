@@ -29,7 +29,7 @@ const TradingDatePicker = ({
         has_today_btn,
         is_read_only;
     const has_intraday_unit = hasIntradayDurationUnit(duration_units_list);
-    const min_duration = has_intraday_unit ? toMoment(server_time) : toMoment(server_time).add(duration_min_max.daily.min, 'second');
+    const min_duration = has_intraday_unit ? toMoment(server_time).clone() : toMoment(server_time).clone().add(duration_min_max.daily.min, 'second');
     const moment_contract_start_date_time =
         setTime(toMoment(min_duration), (isTimeValid(start_time) ? start_time : server_time.format('HH:mm:ss')));
 

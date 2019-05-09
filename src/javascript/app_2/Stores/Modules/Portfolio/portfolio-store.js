@@ -2,7 +2,6 @@ import {
     action,
     computed,
     observable }                   from 'mobx';
-import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import {
@@ -12,8 +11,8 @@ import {
     getDurationUnitText }          from './Helpers/details';
 import {
     getDisplayStatus,
-    getEndSpot,
     getEndSpotTime,
+    isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
 
@@ -21,7 +20,6 @@ export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
     @observable is_loading = false;
     @observable error      = '';
-    getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     @action.bound
     initializePortfolio = () => {
@@ -161,7 +159,7 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         this.positions[i].contract_info    = contract_response;
-        this.positions[i].exit_spot        = getEndSpot(contract_response) || contract_response.current_spot; // workaround if no exit_spot in proposal_open_contract, use latest spot
+        this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].duration         = getDurationTime(contract_response);
         this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
@@ -175,8 +173,11 @@ export default class PortfolioStore extends BaseStore {
             this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
 
+        // remove exit_spot for manually sold contracts
+        if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
+
         this.positions[i].is_loading = false;
-    };
+    }
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -254,11 +255,6 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get all_positions() {
         return this.positions;
-    }
-
-    @computed
-    get is_active_empty() {
-        return !this.is_loading && this.active_positions.length === 0;
     }
 
     @computed

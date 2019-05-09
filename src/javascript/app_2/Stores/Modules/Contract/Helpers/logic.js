@@ -32,13 +32,13 @@ export const getDisplayStatus = (contract_info) => {
     return status;
 };
 
-export const getEndSpot = (contract_info) => (
-    isUserSold(contract_info) ? contract_info.sell_spot : contract_info.exit_tick
-);
-
-export const getEndSpotTime = (contract_info) => (
-    isUserSold(contract_info) ? +contract_info.sell_spot_time : +contract_info.exit_tick_time
-);
+export const getEndSpotTime = (contract_info) => {
+    if (isUserSold(contract_info)) {
+        return (+contract_info.sell_time > +contract_info.date_expiry) ?
+            +contract_info.date_expiry : +contract_info.sell_time;
+    }
+    return +contract_info.exit_tick_time;
+};
 
 export const getFinalPrice = (contract_info) => (
     +(contract_info.sell_price || contract_info.bid_price)

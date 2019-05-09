@@ -74,32 +74,6 @@ describe('logic', () => {
         });
     });
 
-    describe('getEndSpot', () => {
-        it('should return contract\'s exit spot if contract is path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": true,
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick if contract is not path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": false,
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick if is_path_dependent is undefined', () => {
-            const contract_info = {
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-    });
-
     describe('getEndSpotTime', () => {
         it('should return contract\'s exit tick time if it is path dependent', () => {
             const contract_info = {

@@ -6,11 +6,13 @@ import { withRouter }                 from 'react-router-dom';
 import DataTable                      from 'App/Components/Elements/DataTable';
 import { getContractPath }            from 'App/Components/Routes/helpers';
 import { connect }                    from 'Stores/connect';
-import Filter                         from './statement-filter.jsx';
 import StatementCardList              from '../Components/statement-card-list.jsx';
 import EmptyStatementMessage          from '../Components/empty-statement-message.jsx';
 import { getTableColumnsTemplate }    from '../Constants/data-table-constants';
 import Loading                        from '../../../../../templates/app_2/components/loading.jsx';
+
+// This file will be scrapped - DO NOT WORK ON IT
+// A new `Statement` Component will be/is generated in `Reports` module
 
 class Statement extends React.Component {
     componentDidMount()    { this.props.onMount(); }
@@ -48,7 +50,6 @@ class Statement extends React.Component {
 
         return (
             <div className={classnames('statement container', { 'statement--card-view': should_show_cards })}>
-                <Filter use_native_pickers={should_show_cards} />
                 <div className='statement__content'>
                     {
                         should_show_cards ?
@@ -66,7 +67,7 @@ class Statement extends React.Component {
                                 data_source={data}
                                 columns={columns}
                                 onScroll={handleScroll}
-                                getRowLink={(row_obj) => row_obj.id ? getContractPath(row_obj.id) : undefined}
+                                getRowAction={(row_obj) => row_obj.id ? getContractPath(row_obj.id) : undefined}
                                 is_empty={is_empty}
                             >
                                 {renderGUI()}

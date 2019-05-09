@@ -91,6 +91,7 @@
             padding: 0.5em 0.5em 0.5em 0;
             position: relative;
             @include themify($themes) {
+                @include colorIcon(themed('text_primary_color'), none);
                 color: themed('text_primary_color');
             }
 

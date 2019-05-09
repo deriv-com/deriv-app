@@ -1,7 +1,8 @@
-import React             from 'react';
-import { localize }      from '_common/localize';
-// import { IconStatement } from 'Assets/Header/NavBar/index';
-import { routes }        from 'Constants/index';
+import React           from 'react';
+import { localize }    from '_common/localize';
+import { Icon }        from 'Assets/Common';
+import { IconReports } from 'Assets/Header/NavBar/index';
+import { routes }      from 'Constants/index';
 
 const header_links = [
     {
@@ -9,12 +10,12 @@ const header_links = [
         text   : localize('BinaryNex'),
         link_to: routes.trade,
     },
-    // {
-    //     icon      : <IconStatement className='header__icon' />,
-    //     text      : localize('Reports'),
-    //     link_to   : routes.statement,
-    //     login_only: true,
-    // },
+    {
+        icon      : <Icon icon={IconReports} className='header__icon' />,
+        text      : localize('Reports'),
+        link_to   : routes.reports,
+        login_only: true,
+    },
 ];
 
 export default header_links;

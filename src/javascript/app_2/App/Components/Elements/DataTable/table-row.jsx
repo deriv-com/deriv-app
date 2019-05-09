@@ -1,18 +1,20 @@
-import classNames  from 'classnames';
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import { NavLink } from 'react-router-dom';
-import TableCell   from './table-cell.jsx';
+import classNames   from 'classnames';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { NavLink }  from 'react-router-dom';
+import TableCell    from './table-cell.jsx';
+import TableRowInfo from './table-row-info.jsx';
 
 const TableRow = ({
     className,
     columns,
     is_footer,
     is_header,
+    replace,
     row_obj = {},
     to,
 }) => {
-    const cells = columns.map(({ col_index, renderCellContent, title }) => {
+    const cells = columns.map(({ col_index, renderCellContent, title, key }) => {
         let cell_content = title;
         if (!is_header) {
             const cell_value = row_obj[col_index] || '';
@@ -22,13 +24,13 @@ const TableRow = ({
         }
 
         return (
-            <TableCell col_index={col_index} key={col_index}>
+            <TableCell col_index={col_index} key={key || col_index}>
                 {cell_content}
             </TableCell>
         );
     });
 
-    const row_class_name = classNames('table__row', { 'table__row-link': to }, { [`${className}__row`]: className });
+    const row_class_name = classNames('table__row', { 'table__row-link': to || replace }, { [`${className}__row`]: className });
 
     return (
         to ?
@@ -36,9 +38,12 @@ const TableRow = ({
                 {cells}
             </NavLink>
             :
-            <div className={row_class_name}>
-                {cells}
-            </div>
+            <TableRowInfo
+                className={row_class_name}
+                cells={cells}
+                replace={replace}
+                is_footer={is_footer}
+            />
     );
 };
 
@@ -47,6 +52,7 @@ TableRow.propTypes = {
     columns  : PropTypes.array,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
+    replace  : PropTypes.object,
     row_obj  : PropTypes.object,
     to       : PropTypes.string,
 };

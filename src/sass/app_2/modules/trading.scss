@@ -184,23 +184,16 @@
             }
         }
         &-tooltip {
+            text-decoration: none;
+            white-space: normal;
+            max-width: calc(3em + 265px);
+            width: calc(3em + 265px);
+
             &-i {
                 @extend %inline-icon.secondary;
             }
             &--disabled {
                 pointer-events: none;
-            }
-            &[data-tooltip] {
-                text-decoration: none;
-
-                &:before, &:after {
-                    right: 230px !important;
-                }
-                &:before {
-                    padding-left: 3em;
-                    white-space: normal;
-                    width: 265px;
-                }
             }
             &:hover {
                 .trade-container__price-tooltip-i {

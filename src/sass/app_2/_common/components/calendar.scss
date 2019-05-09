@@ -250,21 +250,17 @@
             }
         }
         &-tooltip {
-            &[data-tooltip] {
-                position: absolute;
-                display: inline-grid;
-                cursor: default;
-                height: 0;
-                top: 0;
-                justify-content: center;
+            position: absolute;
+            display: inline-grid;
+            cursor: default;
+            height: 0;
+            top: 0;
+            justify-content: center;
+            width: 60%;
 
-                &:before {
-                    white-space: nowrap;
-                    width: auto;
-                }
-            }
             &-icon {
                 margin-top: 0.1em;
+                display: inherit;
             }
         }
     }

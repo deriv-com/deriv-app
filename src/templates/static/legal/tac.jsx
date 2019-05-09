@@ -24,7 +24,7 @@ const Tac = () => (
                         id     : 'legal',
                         text   : it.L('Terms and Conditions'),
                         submenu: [
-                            { id: 'legal-binary', text: it.L('Binary Options') },
+                            { id: 'legal-binary', text: it.L('General') },
                             { id: 'legal-mt',     text: it.L('MetaTrader') },
                         ],
                     },

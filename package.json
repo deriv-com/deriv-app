@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/binary-com/deriv-com/issues"
   },
-  "homepage": "https://github.com/binary-com/deriv-come",
+  "homepage": "https://github.com/binary-com/deriv-com",
   "devDependencies": {
     "@babel/parser": "7.1.2",
     "app-root-path": "2.0.1",

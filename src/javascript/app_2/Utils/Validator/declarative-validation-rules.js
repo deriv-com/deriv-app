@@ -2,7 +2,6 @@ import Client                    from '_common/base/client_base';
 import {
     addComma,
     getDecimalPlaces }           from '_common/base/currency_base';
-import Password                  from '_common/check_password';
 import { localize }              from '_common/localize';
 import { compareBigUnsignedInt } from '_common/string_util';
 import { cloneObject }           from '_common/utility';
@@ -19,14 +18,7 @@ const validRequired     = (value/* , options, field */) => {
     return str.length > 0;
 };
 const validEmail        = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validPassword     = (value, options, field) => {
-    if (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value)) {
-        Password.checkPassword(field.selector);
-        return true;
-    }
-    // else
-    return false;
-};
+const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral      = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);

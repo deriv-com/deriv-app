@@ -20,37 +20,6 @@ describe('CommonFunctions', () => {
         });
     });
 
-    describe('.makeOption()', () => {
-        it('creates option as expected', () => {
-            const option = CommonFunctions.makeOption({ text: 'Please select' });
-            expect(option.textContent).to.eq('Please select');
-            expect(option.value).to.eq('');
-            expect(option.disabled).to.eq(false);
-            expect(option.className).to.eq('');
-            expect(option.selected).to.eq(false);
-        });
-        it('creates disabled option as expected', () => {
-            const option = CommonFunctions.makeOption({
-                text       : 'Text',
-                value      : 'text',
-                class      : 'text',
-                is_disabled: 'disabled',
-                is_selected: true,
-            });
-            expect(option.textContent).to.eq('Text');
-            expect(option.value).to.eq('text');
-            expect(option.className).to.eq('text');
-            expect(option.disabled).to.eq(true);
-            expect(option.selected).to.eq(true);
-        });
-    });
-
-    describe('.checkInput()', () => {
-        it('detects that mochaTest does not support date type', () => {
-            expect(CommonFunctions.checkInput('date', 'not-a-date')).to.eq(false);
-        });
-    });
-
     describe('.dateValueChanged()', () => {
         it('detects value hasn\'t changed', () => {
             expect(CommonFunctions.dateValueChanged(date_element, 'date')).to.eq(false);

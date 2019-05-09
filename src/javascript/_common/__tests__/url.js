@@ -41,22 +41,6 @@ function runTests(url) {
         });
     });
 
-    describe('.getLocation()', () => {
-        it('works as expected', () => {
-            expect(Url.getLocation().hostname).to.eq(url.replace(/^https:\/\//, ''));
-        });
-    });
-
-    describe('.paramsHashToString()', () => {
-        it('returns an empty string if empty object or undefined passed', () => {
-            expect(Url.paramsHashToString({})).to.eq('');
-            expect(Url.paramsHashToString()).to.eq('');
-        });
-        it('returns the expected conversion of object to string', () => {
-            expect(Url.paramsHashToString(params_obj)).to.eq(query_string);
-        });
-    });
-
     describe('.urlFor()', () => {
         it('returns home as default', () => {
             [undefined, null, '', '/', 'home'].forEach((path) => {

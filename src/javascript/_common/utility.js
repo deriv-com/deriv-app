@@ -2,17 +2,6 @@ const extend = require('extend');
 require('./lib/polyfills/element.matches');
 
 /**
- * Write loading image to a container for ajax request
- *
- * @param container: a DOM element
- * @param theme: dark or white
- */
-const showLoadingImage = (container, theme = 'dark') => {
-    const loading_div = createElement('div', { class: `barspinner ${theme}`, html: Array.from(new Array(5)).map((x, i) => `<div class="rect${i + 1}"></div>`).join('') });
-    container.html(loading_div);
-};
-
-/**
  * Returns the highest z-index in the page.
  * Accepts a selector to only check those elements,
  * uses all container tags by default
@@ -38,21 +27,6 @@ const getHighestZIndex = (selector = 'div,p,area,nav,section,header,canvas,aside
     }
 
     return all.length ? Math.max(...all) : null;
-};
-
-const downloadCSV = (csv_contents, filename = 'data.csv') => {
-    if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(new Blob([csv_contents], { type: 'text/csv;charset=utf-8;' }), filename);
-    } else { // Other browsers
-        const csv           = `data:text/csv;charset=utf-8,${csv_contents}`;
-        const download_link = createElement('a', { href: encodeURI(csv), download: filename });
-
-        if (document.body) {
-            document.body.appendChild(download_link);
-            download_link.click();
-            document.body.removeChild(download_link);
-        }
-    }
 };
 
 const template = (string, content) => {
@@ -122,25 +96,6 @@ const handleHash = () => {
     if (hash) {
         document.querySelector(`a[href="${hash}"]`).click();
     }
-};
-
-const clearable = (element) => {
-    element.addClass('clear');
-    document.addEventListener('mousemove', (e) => {
-        if (/clear/.test(e.target.classList)) {
-            e.stopPropagation();
-            e.target.toggleClass('onClear', e.target.offsetWidth - 18 < e.clientX - e.target.getBoundingClientRect().left);
-        }
-    });
-    document.addEventListener('mousedown', (e) => {
-        if (/onClear/.test(e.target.classList)) {
-            e.stopPropagation();
-            e.target.setAttribute('data-value', '');
-            e.target.classList.remove('clear', 'onClear');
-            e.target.value = '';
-            e.target.dispatchEvent(new Event('change'));
-        }
-    });
 };
 
 /**
@@ -227,9 +182,7 @@ class PromiseClass {
 }
 
 module.exports = {
-    showLoadingImage,
     getHighestZIndex,
-    downloadCSV,
     template,
     isEmptyObject,
     cloneObject,
@@ -237,7 +190,6 @@ module.exports = {
     unique,
     getPropertyValue,
     handleHash,
-    clearable,
     createElement,
     applyToAllElements,
     findParent,

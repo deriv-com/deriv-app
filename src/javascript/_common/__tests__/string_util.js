@@ -26,20 +26,6 @@ describe('StringUtil', () => {
         });
     });
 
-    describe('.toReadableFormat()', () => {
-        it('works as expected when width more than 770', () => {
-            expect(StringUtil.toReadableFormat(moment.utc(iso_date))).to.eq(readable_date);
-        });
-        window.innerWidth = 600;
-        it('works as expected when width less than 770 since mocha doesn\'t have datepicker', () => {
-            expect(StringUtil.toReadableFormat(moment.utc(iso_date))).to.eq(readable_date);
-        });
-        it('doesn\'t break with non-moment date', () => {
-            expect(StringUtil.toReadableFormat(iso_date)).to.eq('');
-            expect(StringUtil.toReadableFormat(undefined)).to.eq('');
-        });
-    });
-
     describe('.padLeft()', () => {
         it('puts 0 in front of single digit when length is 2', () => {
             expect(StringUtil.padLeft(1, 2, 0)).to.eq('01');

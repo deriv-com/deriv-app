@@ -16,8 +16,6 @@ const Crowdin = (() => {
      */
     const init = () => {
         if (isInContextEnvironment()) {
-            const lang = document.querySelector('#topbar ul[id$="_language"]');
-            if (lang) lang.setVisibility(0);
             /* eslint-disable no-underscore-dangle */
             window._jipt = [];
             window._jipt.push(['project', 'binary-static']);

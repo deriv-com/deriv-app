@@ -11,39 +11,12 @@ const jqueryuiTabsToDropdown = ($container) => {
     return $ddl;
 };
 
-const makeOption = (options) => {
-    // setting null value helps with detecting required error
-    // on 'Please select' options
-    // that have no value of their own
-    const option_el = createElement('option', { text: options.text, value: options.value || '' });
-
-    if (options.is_disabled && options.is_disabled.toLowerCase() === 'disabled') {
-        option_el.setAttribute('disabled', 'disabled');
-    }
-    if (options.class) {
-        option_el.className = options.class;
-    }
-    if (options.is_selected) {
-        option_el.setAttribute('selected', 'selected');
-    }
-    return option_el;
-};
-
 /*
  * function to check if element is visible or not
  *
  * alternative to jquery $('#id').is(':visible')
  */
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
-
-/*
- * function to check if browser supports the type date/time
- * send a wrong val in case browser 'pretends' to support
- */
-const checkInput = (type, wrong_val) => {
-    const input = createElement('input', { type, value: wrong_val });
-    return (input.value !== wrong_val);
-};
 
 /*
  * function to check if new date is selected using native picker
@@ -92,9 +65,7 @@ const getVisibleElement = (class_name, parent = document) =>
 
 module.exports = {
     jqueryuiTabsToDropdown,
-    makeOption,
     isVisible,
-    checkInput,
     dateValueChanged,
     selectorExists,
     getElementById,

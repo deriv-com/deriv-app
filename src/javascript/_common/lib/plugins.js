@@ -30,12 +30,6 @@ Element.prototype.setVisibility = function(make_visible) {
     return this;
 };
 
-Element.prototype.insertAfter = function(referenceNode) {
-    if (referenceNode && referenceNode.parentNode) {
-        referenceNode.parentNode.insertBefore(this, referenceNode.nextSibling);
-    }
-    return this;
-};
 
 Element.prototype.html = function(content) {
     if (typeof content === 'object') {

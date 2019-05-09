@@ -1,7 +1,7 @@
 const Pushwoosh              = require('web-push-notifications').Pushwoosh;
+const Client                 = require('../base/client_base');
 const getLanguage            = require('../language').get;
 const urlForCurrentDomain    = require('../url').urlForCurrentDomain;
-const Client                 = require('../../app/base/client');
 const getCurrentBinaryDomain = require('../../config').getCurrentBinaryDomain;
 
 const BinaryPushwoosh = (() => {

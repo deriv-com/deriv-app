@@ -9,7 +9,7 @@ import { connect }                    from 'Stores/connect';
 import CardList                       from '../Components/card-list.jsx';
 import EmptyPortfolioMessage          from '../Components/empty-portfolio-message.jsx';
 import { getTableColumnsTemplate }    from '../Constants/data-table-constants';
-import Loading                        from '../../../../../templates/app_2/components/loading.jsx';
+import Loading                        from '../../../../../templates/_common/components/loading.jsx';
 
 class Portfolio extends React.Component {
     componentDidMount()    { this.props.onMount(); }

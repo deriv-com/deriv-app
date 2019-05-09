@@ -9,7 +9,7 @@ import { connect }                    from 'Stores/connect';
 import StatementCardList              from '../Components/statement-card-list.jsx';
 import EmptyStatementMessage          from '../Components/empty-statement-message.jsx';
 import { getTableColumnsTemplate }    from '../Constants/data-table-constants';
-import Loading                        from '../../../../../templates/app_2/components/loading.jsx';
+import Loading                        from '../../../../../templates/_common/components/loading.jsx';
 
 // This file will be scrapped - DO NOT WORK ON IT
 // A new `Statement` Component will be/is generated in `Reports` module

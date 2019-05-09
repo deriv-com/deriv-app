@@ -16,6 +16,7 @@ import {
 import { WS }                            from 'Services';
 import GTM                               from 'Utils/gtm';
 import URLHelper                         from 'Utils/URL/url-helper';
+import { LocalStore }                    from '_common/storage';
 import { processPurchase }               from './Actions/purchase';
 import * as Symbol                       from './Actions/symbol';
 import {
@@ -210,6 +211,38 @@ export default class TradeStore extends BaseStore {
                     ...query_string_values,
                 });
             }));
+        }
+
+        // Change default symbol based on client's favorite's symbols, current symbol and exchange_is_open status
+        const current_active_symbol = active_symbols.active_symbols.find(s => s.symbol === this.symbol);
+        const client_favorite_store = JSON.parse(LocalStore.get('cq-favorites'))['chartTitle&Comparison'];
+        const updateDefaultSymbol = (symbol) => {
+            URLHelper.setQueryParam({ 'symbol': symbol });
+            query_string_values = this.updateQueryString();
+        };
+
+        if (client_favorite_store.length === 0) {
+            if (current_active_symbol.exchange_is_open !== 1) {
+                const first_open_store = active_symbols.active_symbols.find(s => s.exchange_is_open === 1);
+                if (first_open_store !== undefined) {
+                    updateDefaultSymbol(first_open_store.symbol);
+                } else {
+                    updateDefaultSymbol(pickDefaultSymbol(active_symbols.active_symbols));
+                }
+            }
+        } else {
+            const client_first_open_symbol = active_symbols.active_symbols.find(symbol => client_favorite_store
+                .find(favorite_symbol => symbol.symbol === favorite_symbol && symbol.exchange_is_open === 1));
+            if (client_first_open_symbol !== undefined) {
+                updateDefaultSymbol(client_first_open_symbol.symbol);
+            } else {
+                const first_open_store = active_symbols.active_symbols.find(s => s.exchange_is_open === 1);
+                if (first_open_store !== undefined) {
+                    updateDefaultSymbol(first_open_store.symbol);
+                } else {
+                    updateDefaultSymbol(pickDefaultSymbol(active_symbols.active_symbols));
+                }
+            }
         }
     }
 

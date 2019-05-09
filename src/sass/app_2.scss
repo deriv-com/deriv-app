@@ -20,6 +20,7 @@
 
 // Drawer
 @import 'app_2/_common/drawer/drawer';
+@import 'app_2/_common/drawer/contract-drawer';
 @import 'app_2/_common/drawer/positions-drawer';
 @import 'app_2/_common/drawer/positions-drawer-card';
 @import 'app_2/_common/drawer/positions-drawer-card-details';
@@ -33,23 +34,28 @@
 @import 'app_2/_common/form/time-picker';
 
 // Components
+@import 'app_2/_common/components/amount';
 @import 'app_2/_common/components/account-switcher';
 @import 'app_2/_common/components/allow-equals';
 @import 'app_2/_common/components/calendar';
 @import 'app_2/_common/components/card-list';
 @import 'app_2/_common/components/checkbox';
+@import 'app_2/_common/components/contract-audit';
 @import 'app_2/_common/components/contract-type-dialog';
 @import 'app_2/_common/components/contract-type-widget';
 @import 'app_2/_common/components/contract-type-list';
+@import 'app_2/_common/components/label';
 @import 'app_2/_common/components/trade-type-info-dialog';
 @import 'app_2/_common/components/data-table';
 @import 'app_2/_common/components/date-picker';
 @import 'app_2/_common/components/error-boundary';
 @import 'app_2/_common/components/login-prompt';
+@import 'app_2/_common/components/market-symbol-icon';
 @import 'app_2/_common/components/media-item';
 @import 'app_2/_common/components/notification-bar';
 @import 'app_2/_common/components/number-selector';
 @import 'app_2/_common/components/popconfirm';
+@import 'app_2/_common/components/pl-card';
 @import 'app_2/_common/components/radio-group';
 @import 'app_2/_common/components/range-slider';
 @import 'app_2/_common/components/settings-dialog';
@@ -73,9 +79,9 @@
 @import 'app_2/modules/contract/digits';
 @import 'app_2/modules/error-pages';
 @import 'app_2/modules/portfolio';
+@import 'app_2/modules/reports';
 @import 'app_2/modules/settings';
 @import 'app_2/modules/smart-chart';
-@import 'app_2/modules/statement';
 @import 'app_2/modules/trading';
 
 // Themes

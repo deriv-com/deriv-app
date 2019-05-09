@@ -1,16 +1,52 @@
-import React from 'react';
+import React                       from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Icon }                    from 'Assets/Common';
+import routes                      from 'Constants/routes';
 
 class VerticalTabContentContainer extends React.PureComponent {
     render() {
-        const selected   = this.props.items.find(item => item.label === this.props.selected.label);
-        const TabContent = selected.value;
+        const {
+            action_bar,
+            is_routed,
+            items,
+            selected,
+        } = this.props;
+        const selected_item = items.find(item => item.label === selected.label);
+        const TabContent    = selected_item.value;
 
         return (
             <div className='vertical-tab__content'>
-                <TabContent
-                    key={selected.label}
-                    className='item-id'
-                />
+                { action_bar &&
+                    <div className='vertical-tab__action-bar'>
+                        {
+                            action_bar.map(({ icon, onClick, title }) => (
+                                <Icon className='vertical-tab__action-bar--icon' key={title} icon={icon} onClick={onClick} />
+                            ))
+                        }
+                    </div>
+                }
+                { is_routed ?
+                    <Switch>
+                        <Redirect exact from={routes.reports} to={routes.positions} />
+                        {
+                            items.map(({ value, path, icon }) => {
+                                const Component = value;
+                                return (
+                                    <Route
+                                        key={path}
+                                        path={path}
+                                        render={() => <Component component_icon={icon} />}
+                                    />
+                                );
+                            })
+                        }
+                    </Switch>
+                    :
+                    <TabContent
+                        key={selected_item.label}
+                        className='item-id'
+                    />
+                }
             </div>
         );
     }

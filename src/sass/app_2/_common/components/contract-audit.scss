@@ -1,0 +1,55 @@
+.contract-audit {
+    width: 100%;
+
+    &__toggle {
+        width: 100%;
+        padding: 8px;
+    }
+    &__details {
+        display: grid;
+        grid-row-gap: 8px;
+        grid-template-rows: minmax(1fr, 100%);
+        width: 100%;
+
+        &--is-expanded {
+            display: grid;
+        }
+        &--is-hidden {
+            display: none;
+        }
+        & > .pairs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 8px;
+        }
+        & > .border {
+            height: 1px;
+            border-radius: $BORDER_RADIUS;
+            @include themify($themes) {
+                background-color: themed('background_container_color');
+            }
+        }
+    }
+    &__arrow {
+        transition: transform 250ms ease-out;
+
+        &--is-open {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.pair {
+    &__label {
+        @include typeface(--xsmall-left-normal-black);
+        @include themify($themes) {
+            color: themed('label_default_background');
+        }
+    }
+    &__value {
+        @include typeface(--xsmall-left-normal-black);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+    }
+}

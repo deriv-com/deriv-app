@@ -17,6 +17,9 @@ class Trade extends React.Component {
     }
 
     componentWillUnmount() {
+        if (this.props.is_contract_mode) {
+            this.props.onCloseContract();
+        }
         this.props.onUnmount();
     }
 

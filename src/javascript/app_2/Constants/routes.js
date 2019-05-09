@@ -11,9 +11,12 @@ const routes = {
     limits          : '/settings/limits',
     personal        : '/settings/personal',
     portfolio       : '/portfolio',
+    positions       : '/reports/positions',
+    profit          : '/reports/profit',
+    reports         : '/reports',
     root            : '/',
     settings        : '/settings',
-    statement       : '/statement',
+    statement       : '/reports/statement',
     token           : '/settings/token',
     trade           : '/trade',
 };

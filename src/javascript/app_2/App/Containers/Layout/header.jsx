@@ -13,6 +13,7 @@ import {
     ToggleMenuDrawer,
     UpgradeButton }    from 'App/Components/Layout/Header';
 import header_links    from 'App/Constants/header-links';
+import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
 
 const Header = ({
@@ -26,13 +27,14 @@ const Header = ({
     is_logged_in,
     is_mobile,
     is_virtual,
+    location,
     loginid,
     onClickUpgrade,
     toggleAccountsDialog,
 }) => (
     <header className={classNames('header', {
         'header--is-blurred': is_fully_blurred,
-        'header--show'      : !is_loading,
+        'header--show'      : !is_loading || location.pathname !== routes.trade,
     })}
     >
         <div className='header__menu-items'>

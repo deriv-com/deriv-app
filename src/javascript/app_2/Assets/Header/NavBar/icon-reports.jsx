@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-const IconStatement = ({ className }) => (
+const IconReports = ({ className }) => (
     <svg className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
         <g className='color2-fill' fill='none' fillRule='evenodd'>
             <g className='color1-stroke' stroke='#2A3052'>
@@ -13,8 +13,8 @@ const IconStatement = ({ className }) => (
     </svg>
 );
 
-IconStatement.propTypes = {
+IconReports.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconStatement };
+export { IconReports };

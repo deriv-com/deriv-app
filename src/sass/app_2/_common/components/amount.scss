@@ -1,0 +1,12 @@
+.amount {
+    &--profit {
+        @include themify($themes) {
+            color: themed('label_success_color');
+        }
+    }
+    &--loss {
+        @include themify($themes) {
+            color: themed('label_danger_color');
+        }
+    }
+}

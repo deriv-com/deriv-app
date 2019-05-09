@@ -11,6 +11,19 @@ import TableRow                       from './table-row.jsx';
 */
 
 class DataTable extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            height: 200,
+        };
+    }
+
+    componentDidMount() {
+        this.setState({
+            height: this.el_table_body.clientHeight,
+        });
+    }
+
     componentDidUpdate() {
         this.alignHeader();
     }
@@ -26,31 +39,44 @@ class DataTable extends React.PureComponent {
     render() {
         const {
             children,
+            className,
             columns,
+            data_source,
             footer,
-            getRowLink,
+            getRowAction,
             is_empty,
             onScroll,
         } = this.props;
 
         const TableData =
             <React.Fragment>
-                {this.props.data_source.map((row_obj, id) =>
-                    <TableRow
-                        className={this.props.className}
-                        row_obj={row_obj}
-                        columns={columns}
-                        key={id}
-                        to={getRowLink && getRowLink(row_obj)}
-                    />
+                {data_source.map((row_obj, id) => {
+                    const action = getRowAction && getRowAction(row_obj);
+
+                    return (
+                        <TableRow
+                            className={className}
+                            row_obj={row_obj}
+                            columns={columns}
+                            key={id}
+                            to={typeof action === 'string' ? action : undefined}
+                            replace={typeof action === 'object' ? action : undefined}
+                        />
+                    );
+                }
                 )}
                 {children}
             </React.Fragment>;
 
         return (
-            <div className={classNames('table', { [`${this.props.className}__table`]: this.props.className })}>
+            <div className={classNames('table', {
+                [`${className}`]         : className,
+                [`${className}__table`]  : className,
+                [`${className}__content`]: className,
+            })}
+            >
                 <div className='table__head' ref={el => { this.el_table_head = el; }}>
-                    <TableRow className={this.props.className} columns={columns} is_header />
+                    <TableRow className={className} columns={columns} is_header />
                 </div>
                 <div
                     className='table__body'
@@ -61,7 +87,8 @@ class DataTable extends React.PureComponent {
                         TableData
                         :
                         <Scrollbars
-                            style={{ width: '100%', height: 'calc(100vh - 35px)' }}
+                            autoHeight
+                            autoHeightMax={this.state.height}
                             autoHide
                         >
                             {TableData}
@@ -69,10 +96,10 @@ class DataTable extends React.PureComponent {
                     }
                 </div>
 
-                {this.props.footer &&
+                {footer &&
                     <div className='table__foot'>
                         <TableRow
-                            className={this.props.className}
+                            className={className}
                             row_obj={footer}
                             columns={columns}
                             is_footer
@@ -89,12 +116,12 @@ DataTable.propTypes = {
         PropTypes.node,
         PropTypes.arrayOf(PropTypes.node),
     ]),
-    className  : PropTypes.string,
-    columns    : PropTypes.array,
-    data_source: MobxPropTypes.arrayOrObservableArray,
-    footer     : PropTypes.object,
-    getRowLink : PropTypes.func,
-    onScroll   : PropTypes.func,
+    className   : PropTypes.string,
+    columns     : PropTypes.array,
+    data_source : MobxPropTypes.arrayOrObservableArray,
+    footer      : PropTypes.object,
+    getRowAction: PropTypes.func,
+    onScroll    : PropTypes.func,
 };
 
 export default DataTable;

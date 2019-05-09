@@ -36,7 +36,9 @@
         }
     }
     &--dark .barspinner__rect {
-        background-color: $COLOR_DARK_BLUE_5;
+        @include themify($themes) {
+            background-color: themed('spinner_background_color');
+        }
     }
 }
 

@@ -42,6 +42,24 @@ const WS = (() => {
     const portfolio = () =>
         BinarySocket.send({ portfolio: 1 });
 
+    const profitTable = (params) => {
+        const {
+            date_to   = Math.floor((new Date()).getTime() / 1000),
+            date_from = 0,
+            limit     = 50,
+            offset    = 0,
+        } = params;
+
+        return BinarySocket.send({
+            profit_table: 1,
+            description : 1,
+            date_from,
+            date_to,
+            offset,
+            limit,
+        });
+    };
+
     const proposalOpenContract = (contract_id) =>
         BinarySocket.send({ proposal_open_contract: 1, contract_id });
 
@@ -107,6 +125,7 @@ const WS = (() => {
         oauthApps,
         portfolio,
         payoutCurrencies,
+        profitTable,
         proposalOpenContract,
         sell,
         sellExpired,

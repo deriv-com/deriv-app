@@ -1,0 +1,98 @@
+$header-height: 4em;
+
+.contract-drawer {
+    width: $POSITIONS_DRAWER_WIDTH;
+    // removing 2px below for borders
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
+    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
+    position: absolute;
+    z-index: 2;
+    padding: 8px;
+    top: 0;
+    left: 4px;
+    box-sizing: border-box;
+    color: $COLOR_LIGHT_BLACK_1;
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: $BORDER_RADIUS;
+    @include themify($themes) {
+        border: 1px solid themed('background_container_color');
+        background-color: themed('background_container_color');
+        color: themed('text_color');
+    }
+
+    svg {
+        @extend %inline-icon;
+    }
+    h2 {
+        margin-left: 8px;
+    }
+    &--contract-mode {
+        &:before {
+            @include themify($themes) {
+                background: themed('background_container_color');
+            }
+            content: '';
+            position: absolute;
+            top: 38px;
+            left: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% - 32px);
+            filter: blur(3px);
+        }
+    }
+    &__heading {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 56px;
+        @include typeface(--title-left-bold-black);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
+    &__icon {
+        margin-right: 16px;
+    }
+}
+
+/** @define .contract-card */
+.contract-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    border-radius: $BORDER_RADIUS;
+    padding: 4px;
+    @include themify($themes) {
+        background-color: themed('background_cover');
+        color: themed('text_color');
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    &__body {
+        border-radius: $BORDER_RADIUS;
+        width: 100%;
+        padding: 8px;
+        @include themify($themes) {
+            background-color: themed('background_container_color');
+            color: themed('text_color');
+        }
+    }
+    &__footer {
+        @include typeface(--small-center-normal-black);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        padding: 8px 8px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

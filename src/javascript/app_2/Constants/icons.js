@@ -32,32 +32,32 @@ import { IconFlagSVG }            from 'Assets/Contract/icon-flag.jsx';
 import { IconStartTimeSVG }       from 'Assets/Contract/icon-start-time.jsx';
 import { IconTickSVG }            from 'Assets/Contract/icon-tick.jsx';
 
-import { IconMaximize }           from 'Assets/Footer/icon-maximize.jsx';
-import { IconPositions }          from 'Assets/Footer/icon-positions.jsx';
-import { IconSettings }           from 'Assets/Footer/icon-settings.jsx';
+import { IconMaximize }  from 'Assets/Footer/icon-maximize.jsx';
+import { IconPositions } from 'Assets/Footer/icon-positions.jsx';
+import { IconSettings }  from 'Assets/Footer/icon-settings.jsx';
 
-import { IconAccountsCurrency }   from 'Assets/Header/AccountsCurrency/icon_accounts_currency.jsx';
-import { IconLogout }             from 'Assets/Header/Drawer/icon-logout.jsx';
-import { IconBell }               from 'Assets/Header/NavBar/icon-bell.jsx';
-import { IconCashier }            from 'Assets/Header/NavBar/icon-cashier.jsx';
-import { IconHamburger }          from 'Assets/Header/NavBar/icon-hamburger.jsx';
-import { IconPortfolio }          from 'Assets/Header/NavBar/icon-portfolio.jsx';
-import { IconStatement }          from 'Assets/Header/NavBar/icon-statement.jsx';
-import { IconTrade }              from 'Assets/Header/NavBar/icon-trade.jsx';
+import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency/icon_accounts_currency.jsx';
+import { IconLogout }           from 'Assets/Header/Drawer/icon-logout.jsx';
+import { IconBell }             from 'Assets/Header/NavBar/icon-bell.jsx';
+import { IconCashier }          from 'Assets/Header/NavBar/icon-cashier.jsx';
+import { IconHamburger }        from 'Assets/Header/NavBar/icon-hamburger.jsx';
+import { IconPortfolio }        from 'Assets/Header/NavBar/icon-portfolio.jsx';
+import { IconReports }          from 'Assets/Header/NavBar/icon-reports.jsx';
+import { IconTrade }            from 'Assets/Header/NavBar/icon-trade.jsx';
 
-import { IconBuy }                from 'Assets/Statement/icon-buy.jsx';
-import { IconDeposit }            from 'Assets/Statement/icon-deposit.jsx';
-import { IconPayout }             from 'Assets/Statement/icon-payout.jsx';
-import { IconSell }               from 'Assets/Statement/icon-sell.jsx';
-import { IconWallet }             from 'Assets/Statement/icon-wallet.jsx';
-import { IconWithdrawal }         from 'Assets/Statement/icon-withdrawal.jsx';
+import { IconBuy }        from 'Assets/Statement/icon-buy.jsx';
+import { IconDeposit }    from 'Assets/Statement/icon-deposit.jsx';
+import { IconPayout }     from 'Assets/Statement/icon-payout.jsx';
+import { IconSell }       from 'Assets/Statement/icon-sell.jsx';
+import { IconWallet }     from 'Assets/Statement/icon-wallet.jsx';
+import { IconWithdrawal } from 'Assets/Statement/icon-withdrawal.jsx';
 
-import { IconBarrierDown }        from 'Assets/Trading/Barriers/icon-barrier-down.jsx';
-import { IconBarrierUp }          from 'Assets/Trading/Barriers/icon-barrier-up.jsx';
-import { IconTradeCategory }      from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import { IconTradeType }          from 'Assets/Trading/Types/icon-trade-types.jsx';
-import { IconLock }               from 'Assets/Trading/icon-lock.jsx';
-import { IconPriceMove }          from 'Assets/Trading/icon-price-move.jsx';
+import { IconBarrierDown }   from 'Assets/Trading/Barriers/icon-barrier-down.jsx';
+import { IconBarrierUp }     from 'Assets/Trading/Barriers/icon-barrier-up.jsx';
+import { IconTradeCategory } from 'Assets/Trading/Categories/icon-trade-categories.jsx';
+import { IconTradeType }     from 'Assets/Trading/Types/icon-trade-types.jsx';
+import { IconLock }          from 'Assets/Trading/icon-lock.jsx';
+import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
 
 const ICONS = {
     COMMON: {
@@ -108,7 +108,7 @@ const ICONS = {
         CASHIER          : IconCashier,
         HAMBURGER        : IconHamburger,
         PORTFOLIO        : IconPortfolio,
-        STATEMENT        : IconStatement,
+        REPORTS          : IconReports,
         TRADE            : IconTrade,
     },
     STATEMENT: {

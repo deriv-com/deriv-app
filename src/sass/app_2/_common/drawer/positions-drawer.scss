@@ -65,9 +65,7 @@ $header-height: 4em;
         padding: 0 1em;
     }
     &__body {
-        // TODO: Enable rule below once positions footer / reports is ready
-        // height: calc(100% - #{$header-height * 2.5});
-        height: calc(100% - #{$header-height});
+        height: calc(100% - #{$header-height * 2.5});
         padding: 0.8em 0 0;
         box-sizing: border-box;
         overflow: hidden;

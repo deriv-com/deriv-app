@@ -2,6 +2,7 @@ import {
     action,
     computed,
     observable }                   from 'mobx';
+import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import {
@@ -20,6 +21,7 @@ export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
     @observable is_loading = false;
     @observable error      = '';
+    getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     @action.bound
     initializePortfolio = () => {
@@ -174,7 +176,7 @@ export default class PortfolioStore extends BaseStore {
         }
 
         this.positions[i].is_loading = false;
-    }
+    };
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -252,6 +254,11 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get all_positions() {
         return this.positions;
+    }
+
+    @computed
+    get is_active_empty() {
+        return !this.is_loading && this.active_positions.length === 0;
     }
 
     @computed

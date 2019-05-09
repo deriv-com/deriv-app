@@ -9,7 +9,7 @@ import { IconLogout }    from 'Assets/Header/Drawer';
 import {
     IconTrade,
     IconPortfolio,
-    IconStatement }      from 'Assets/Header/NavBar';
+    IconReports }        from 'Assets/Header/NavBar';
 import routes            from 'Constants/routes';
 import { requestLogout } from 'Services';
 import { connect }       from 'Stores/connect';
@@ -42,7 +42,7 @@ const MenuDrawer = ({
                 />
                 <DrawerItem
                     text={localize('Statement')}
-                    icon={<Icon icon={IconStatement} className='drawer__icon' />}
+                    icon={<Icon icon={IconReports} className='drawer__icon' />}
                     link_to={routes.statement}
                 />
                 <hr className='hr' />

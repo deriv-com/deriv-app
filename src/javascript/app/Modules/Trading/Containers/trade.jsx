@@ -26,7 +26,7 @@ class Trade extends React.Component {
     render() {
         const contract_id = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_digit_contract = ['match_diff', 'even_odd', 'over_under'].includes(this.props.contract_type);
+
         return (
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
@@ -37,11 +37,11 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 Digits={<Digits is_trade_page />}
                                 InfoBox={<InfoBox is_trade_page />}
-                                is_digit_contract={is_digit_contract}
+                                is_digit_contract={this.props.is_digit_contract}
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
-                                should_show_last_digit_stats={(is_digit_contract && !this.props.is_contract_mode)}
+                                should_show_last_digit_stats={(this.props.is_digit_contract && !this.props.is_contract_mode)}
                                 symbol={this.props.symbol}
                             />
                         </React.Suspense>
@@ -94,6 +94,7 @@ export default connect(
         scroll_to_offset                   : modules.smart_chart.scroll_to_left_epoch_offset,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
         contract_type                      : modules.trade.contract_type,
+        is_digit_contract                  : modules.trade.is_digit_contract,
         is_trade_enabled                   : modules.trade.is_trade_enabled,
         onClickNewTrade                    : modules.trade.onClickNewTrade,
         onMount                            : modules.trade.onMount,

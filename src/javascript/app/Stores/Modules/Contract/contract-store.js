@@ -161,6 +161,8 @@ export default class ContractStore extends BaseStore {
             this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
         }
 
+        this.root_store.modules.trade.is_digit_contract = isDigitContract(this.contract_info.contract_type);
+
         this.drawChart(this.smart_chart, this.contract_info);
     }
 

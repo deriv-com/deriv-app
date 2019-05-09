@@ -3,6 +3,8 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import { Icon }            from 'Assets/Common/icon.jsx';
 import { IconInfoOutline } from 'Assets/Common/icon-info-outline.jsx';
+import { IconQuestion }    from 'Assets/Common/icon-question.jsx';
+import { IconRedDot }      from 'Assets/Common/icon-red-dot.jsx';
 import PopoverBubble       from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {
@@ -46,8 +48,11 @@ class Popover extends React.PureComponent {
                 onMouseLeave={this.toggleIsOpen}
             >
                 <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
+                    {(icon === 'info') && <Icon icon={IconInfoOutline} className={classNames(classNameTargetIcon, icon)} /> }
+                    {(icon === 'question') && <Icon icon={IconQuestion} className={classNames(classNameTargetIcon, icon)} />}
+                    {(icon === 'dot')      && <Icon icon={IconRedDot} className={classNames(classNameTargetIcon, icon)} />}
+
                     { children }
-                    { icon === 'info' && <Icon icon={IconInfoOutline} className={classNames(classNameTargetIcon, icon)} /> }
                 </div>
 
                 { message &&

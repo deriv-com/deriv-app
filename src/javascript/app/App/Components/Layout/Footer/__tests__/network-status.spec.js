@@ -28,7 +28,7 @@ describe('NetworkStatus', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
         console.log(wrapper);
         expect(wrapper.contains(
-            <Popover classNameBubble='network-status__tooltip' alignment='top' message='Network status: Online'>
+            <Popover className='network-status__tooltip' alignment='top' message='Network status: Online'>
                 <div className='network-status__circle network-status__circle--online' />
             </Popover>
         )).to.be.true;
@@ -38,7 +38,7 @@ describe('NetworkStatus', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
         console.log(wrapper);
         expect(wrapper.contains(
-            <Popover classNameBubble='network-status__tooltip' alignment='top' message='Network status: Connecting to server'>
+            <Popover className='network-status__tooltip' alignment='top' message='Network status: Connecting to server'>
                 <div className='network-status__circle' />
             </Popover>
         )).to.be.true;

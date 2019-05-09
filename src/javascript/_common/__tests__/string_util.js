@@ -1,7 +1,6 @@
 const expect     = require('chai').expect;
 const moment     = require('moment');
 const StringUtil = require('../string_util');
-global.$         = require('jquery');
 
 describe('StringUtil', () => {
     describe('.toTitleCase()', () => {

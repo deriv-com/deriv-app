@@ -3,7 +3,6 @@ const createElement = require('./utility').createElement;
 /*
  * function to check if element is visible or not
  *
- * alternative to jquery $('#id').is(':visible')
  */
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 

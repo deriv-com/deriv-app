@@ -2,6 +2,7 @@ import Client                    from '_common/base/client_base';
 import {
     addComma,
     getDecimalPlaces }           from '_common/base/currency_base';
+import { getElementById }        from '_common/common_functions';
 import { localize }              from '_common/localize';
 import { compareBigUnsignedInt } from '_common/string_util';
 import { cloneObject }           from '_common/utility';
@@ -29,8 +30,8 @@ const validEmailToken   = value => value.trim().length === 8;
 const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
 const validBarrier      = value => /^[+-]?\d+\.?\d*$/.test(value);
 
-const validCompare  = (value, options) => value === $(options.to).val();
-const validNotEqual = (value, options) => value !== $(options.to).val();
+const validCompare  = (value, options) => value === getElementById(options.to.substr(1)).value;
+const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;
 const validMin      = (value, options) => (options.min ? value.length >= options.min : true);
 const validLength   = (value, options) => (
     (options.min ? value.length >= options.min : true) &&

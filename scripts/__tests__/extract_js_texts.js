@@ -7,7 +7,7 @@ describe('extract_js_texts.js', () => {
 
     before(function (done) {
         this.timeout(60000);
-        errors_count = ['app', 'app_2'].reduce((acc, app) => {
+        errors_count = ['app_2'].reduce((acc, app) => {
             extract.parse(app, true);
             return acc +  extract.getErrorsCount();
         }, 0);

@@ -5,7 +5,6 @@ module.exports = {
         browser: true,
         amd    : true,
         mocha  : true,
-        jquery : true,
     },
     globals: {
         dataLayer : true,

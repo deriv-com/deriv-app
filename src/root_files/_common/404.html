@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Binary.com</title>
+    <title>Deriv.com</title>
     <meta charset="utf-8" />
     <script type="text/javascript">
     function getCookieItem(sKey) {
@@ -48,7 +48,7 @@
             redirectToReactRoute: function(lang) {
                 // Converts the path and query strings into just query strings and
                 // then redirects the browser to the new url with query strings and hash fragment.
-                // https://www.binary.com/app/en/statement -> https://www.binary.com/app/en?p=/statement
+                // https://www.deriv.com/app/en/statement -> https://www.deriv.com/app/en?p=/statement
 
                 var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
                 var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
@@ -56,9 +56,9 @@
                 var app_url_segment_idx = path_name_split.findIndex(function(path_segment) { return path_segment.toLowerCase() === 'app' });
 
                 location.replace(
-                    base +                                                                            // https://www.binary.com/
+                    base +                                                                            // https://www.deriv.com/
                     path_name_split.slice(0, app_url_segment_idx + 1).join('/') + '/'                 // /app/
-                    + lang.toLowerCase() + '?from_404=true&s=app2&p=' +                                                    // en?p=
+                    + lang.toLowerCase() + '?from_404=true&s=app2&p=' +                               // en?p=
                     path_name_split.slice(app_url_segment_idx + 2).join('/').replace(/&/g, '~and~') + // statement
                     (location.search ?
                         '&q=' + location.search.slice(1).replace(/&/g, '~and~') : '')
@@ -71,7 +71,7 @@
 
                 function getRoot() {
                     return /^(.+?).github.io$/.test(location.hostname) ?
-                        location.origin + '/binary-static' :
+                        location.origin + '/deriv-com' :
                         location.origin;
                 }
             }
@@ -120,6 +120,6 @@
 </head>
 <body>
     <h1>404</h1>
-    <p style='font-size: 1.5em;'><a href='https://binary.com'>https://binary.com</a></p>
+    <p style='font-size: 1.5em;'><a href='https://deriv.com'>https://deriv.com</a></p>
 </body>
 </html>

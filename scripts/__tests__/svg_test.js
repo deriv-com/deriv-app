@@ -5,9 +5,7 @@ const expect = require('chai').expect;
 const exec   = util.promisify(require('child_process').exec);
 const common = require('../common');
 
-const ignored_files = [
-    'src/images/pages/regulation/map.svg',
-];
+const ignored_files = [];
 
 let changed_files = [];
 

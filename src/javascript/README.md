@@ -42,13 +42,6 @@ const myFunction = () => { ... };
 const MyModule = (() => { ... })();
 ```
 
-<a id="naming-conventions-jquery-variables"></a>
-**[jQuery variables:](#naming-conventions-jquery-variables)** jQuery variables should have a `$` in the beginning to mark them.
-    
-```js
-const $test = $('#test');
-```
-
 <a id="naming-conventions-javascript-elements"></a>
 **[JavaScript elements:](#naming-conventions-javascript-elements)** JavaScript elements start with `el_` for a similar effect.
     

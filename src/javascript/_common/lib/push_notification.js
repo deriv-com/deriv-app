@@ -17,7 +17,7 @@ const BinaryPushwoosh = (() => {
                 logLevel                : 'error', // or info or debug
                 applicationCode         : 'D04E6-FA474',
                 safariWebsitePushID     : 'web.com.binary',
-                defaultNotificationTitle: 'Deriv.app',
+                defaultNotificationTitle: 'DTrader',
                 defaultNotificationImage: urlForCurrentDomain('https://style.binary.com/images/logo/logomark.png'),
             }]);
             initialised = true;

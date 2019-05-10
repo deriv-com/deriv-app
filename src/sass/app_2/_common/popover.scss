@@ -1,4 +1,20 @@
 .popover {
+    &__target {
+        &__icon .info {
+            @extend %inline-icon.secondary;
+
+            &:hover {
+                @extend %inline-icon.white;
+            }
+        }
+        &__icon--disabled .info {
+            @extend %inline-icon.disabled;
+
+            &:hover {
+                @extend %inline-icon.disabled;
+            }
+        }
+    }
     &__bubble {
         cursor: help;
         position: fixed;

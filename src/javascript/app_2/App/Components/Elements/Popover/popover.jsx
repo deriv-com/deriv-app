@@ -41,6 +41,7 @@ class Popover extends React.PureComponent {
             message,
         } = this.props;
 
+        const icon_class_name = classNames(classNameTargetIcon, icon);
         return (
             <div
                 className='popover'
@@ -48,9 +49,11 @@ class Popover extends React.PureComponent {
                 onMouseLeave={this.toggleIsOpen}
             >
                 <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
-                    {(icon === 'info') && <Icon icon={IconInfoOutline} className={classNames(classNameTargetIcon, icon)} /> }
-                    {(icon === 'question') && <Icon icon={IconQuestion} className={classNames(classNameTargetIcon, icon)} />}
-                    {(icon === 'dot')      && <Icon icon={IconRedDot} className={classNames(classNameTargetIcon, icon)} />}
+                    <i className={message ? 'popover__target__icon' : 'popover__target__icon--disabled'}>
+                        {(icon === 'info')     && <Icon icon={IconInfoOutline} className={icon_class_name} /> }
+                        {(icon === 'question') && <Icon icon={IconQuestion}    className={icon_class_name} />}
+                        {(icon === 'dot')      && <Icon icon={IconRedDot}      className={icon_class_name} />}
+                    </i>
 
                     { children }
                 </div>
@@ -81,7 +84,7 @@ Popover.propTypes = {
     has_error          : PropTypes.bool,
     icon               : PropTypes.string,
     margin             : PropTypes.number,
-    message            : PropTypes.string.isRequired,
+    message            : PropTypes.string,
 };
 
 export default Popover;

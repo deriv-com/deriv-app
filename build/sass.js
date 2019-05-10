@@ -19,7 +19,7 @@ module.exports = function (grunt) {
 
     const config = {
         app  : generateConfig(['*.scss', '!app_2.scss'], `${global.dist}/css`),
-        app_2: generateConfig(['app_2.scss'],            `${global.dist_app_2}/css`),
+        app_2: generateConfig(['app_2.scss'],            `${global.dist}/css`),
         get all() {
             return {
                 options,

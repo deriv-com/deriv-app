@@ -25,7 +25,7 @@ exports.sections_config = {
         has_pjax : true,
     },
     app_2: {
-        path     : 'app',
+        path     : '',
         js_files : ['vendor', 'react_mobx', 'binary_common', 'binary'],
         css_files: ['app_2.min', 'smartcharts'],
         has_pjax : false,

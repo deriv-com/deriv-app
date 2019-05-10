@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    const app_2_file = `${global.dist}/app/css/app_2.css`;
+    const app_2_file = `${global.dist}/css/app_2.css`;
 
     const config = {
         app: {},

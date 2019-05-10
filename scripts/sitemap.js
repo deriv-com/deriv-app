@@ -29,7 +29,7 @@ const urlFor = (section, lang, path) => {
         return `${lang}/${path}.html`;
     }
     // else: app_2
-    return `app/${lang}/${path}`;
+    return `${lang}/${path}`;
 };
 
 const createSitemap = (conf) => {

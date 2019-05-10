@@ -43,7 +43,7 @@ const Url = (() => {
         const url = window.location.href;
         let domain = url.substring(0, url.indexOf(`/${url_lang}/`) + url_lang.length + 2);
         if (should_change_to_legacy) {
-            domain = domain.replace(/\/app/,'');
+            domain = domain.replace(/deriv\.app/, 'binary\.com');
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
         // replace old lang with new lang

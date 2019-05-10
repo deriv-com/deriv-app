@@ -38,50 +38,29 @@
         return conLang;
     }
 
-    var routeHandler = (function routeHandler() {
-        var location = window.location;
+    function redirectToReactRoute(lang) {
+        // Converts the path and query strings into just query strings and
+        // then redirects the browser to the new url with query strings and hash fragment.
+        // https://www.deriv.com/en/statement -> https://www.deriv.com/en?p=/statement
 
-        return {
-            isApp2: function() {
-                return location.href.includes('/app/');
-            },
-            redirectToReactRoute: function(lang) {
-                // Converts the path and query strings into just query strings and
-                // then redirects the browser to the new url with query strings and hash fragment.
-                // https://www.deriv.com/app/en/statement -> https://www.deriv.com/app/en?p=/statement
+        var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
+        var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+        var path_name_split = pathname.split('/');
 
-                var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
-                var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-                var path_name_split = pathname.split('/');
-                var app_url_segment_idx = path_name_split.findIndex(function(path_segment) { return path_segment.toLowerCase() === 'app' });
-
-                location.replace(
-                    base +                                                                            // https://www.deriv.com/
-                    path_name_split.slice(0, app_url_segment_idx + 1).join('/') + '/'                 // /app/
-                    + lang.toLowerCase() + '?from_404=true&s=app2&p=' +                               // en?p=
-                    path_name_split.slice(app_url_segment_idx + 2).join('/').replace(/&/g, '~and~') + // statement
-                    (location.search ?
-                        '&q=' + location.search.slice(1).replace(/&/g, '~and~') : '')
-                    + location.hash
-                );
-            },
-            redirect: function(lang) {
-                var redirect_href = getRoot() + '/' + lang.toLowerCase() + '/' + '404';
-                window.location = redirect_href;
-
-                function getRoot() {
-                    return /^(.+?).github.io$/.test(location.hostname) ?
-                        location.origin + '/deriv-com' :
-                        location.origin;
-                }
-            }
-        }
-    })();
+        location.replace(
+            base + '/'                                                          // https://www.deriv.com/
+            + lang.toLowerCase() + '?from_404=true&p=' +                        // en?p=
+            path_name_split.slice(2).join('/').replace(/&/g, '~and~') +         // statement
+            (location.search ?
+                '&q=' + location.search.slice(1).replace(/&/g, '~and~') : '')
+            + location.hash
+        );
+    }
 
     function openWSAndGetLanguage(cb) {
         var ws = new WebSocket('wss://frontend.binaryws.com/websockets/v3?app_id=1');
 
-        ws.onopen = function(e) {
+        ws.onopen = function() {
             ws.send(JSON.stringify({ website_status: 1 }));
         };
 
@@ -98,11 +77,6 @@
         };
     }
     var all_lang_regex = new RegExp('(' + all_languages.join('|') + ')', 'i');
-    var is_from_404 = location.search &&
-        location.search.toLowerCase().indexOf('from_404') !== -1;
-    var is_from_app2 = location.search &&
-        location.search.toLowerCase().indexOf('app2') !== -1;
-    var redirectFn = ((routeHandler.isApp2() && !is_from_404) || is_from_app2) ? routeHandler.redirectToReactRoute : routeHandler.redirect;
 
     var lang = location.href
         .split('/')
@@ -110,10 +84,10 @@
         || getCookieItem('language');
 
     if (lang && all_languages.indexOf(lang.toLowerCase()) > -1) {
-        redirectFn(lang);
+        redirectToReactRoute(lang);
     } else {
         openWSAndGetLanguage(function(lang) {
-            if (lang) redirectFn(lang);
+            if (lang) redirectToReactRoute(lang);
         });
     }
     </script>

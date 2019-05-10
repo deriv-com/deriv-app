@@ -66,15 +66,6 @@ const Head = () => (
             <script key={inx} src={js_file.replace('{PLACEHOLDER_FOR_LANG}', it.language.toLowerCase())} defer />
         ))}
         <script type='text/javascript' src={`${it.root_url}pushwoosh-web-notifications.js`} defer />
-        { it.language.toLowerCase() !== 'en' &&
-            // TODO remove this script and the inline if wrapping this when the design is ready.
-            <script
-                type='text/javascript'
-                dangerouslySetInnerHTML={{ __html: `
-                    (window.location.href = window.location.href.replace(/\\/app\\/(\\w{2}|\\w{2}_\\w{2})\\//, '/app/en/'))
-                ` }}
-            />
-        }
     </head>
 );
 

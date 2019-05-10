@@ -51,7 +51,6 @@ const config = {
     branch_prefix  : 'br_',
     valid_sections : ['all', 'app', 'app_2'],
     default_section: 'all',
-    app_2_folder   : 'app',
 };
 
 module.exports = {

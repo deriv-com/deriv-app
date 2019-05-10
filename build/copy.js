@@ -32,13 +32,6 @@ module.exports = function (grunt) {
                 { expand: true, cwd: `${global.node_modules_paths.smartcharts}/dist/`, src: ['smartcharts.css*'], dest: `${global.dist}/css/` },
             ],
         },
-        get all() {
-            return {
-                files: [
-                    ...this.app_2.files,
-                ],
-            };
-        },
     };
 
     return { [global.section]: config[global.section] };

@@ -1,15 +1,8 @@
-module.exports = function (grunt) {
+module.exports = function () {
     const files = {
-        app: [],
         app_2: [
             { src: `${global.dist}/css/app_2.css`, dest: `${global.dist}/css/app_2.min.css` },
         ],
-        get all() {
-            return [
-                ...this.app,
-                ...this.app_2,
-            ];
-        },
     };
 
     return {

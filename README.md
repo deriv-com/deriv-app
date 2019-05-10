@@ -87,7 +87,7 @@ grunt release --{release type}=1 [--cleanup] [--reset]
 
 ### Parameters:
 - `{release type}` (mandatory)
-  - Should be one of `staging`, `production`, `translations`, `nex_beta`, `nex_production`.
+  - Should be one of `staging`, `production`, `translations`.
   - In order to prevent accidentally releasing to the wrong target, it is mandatory to provide one of these parameters.
   - Your remote origin will be checked to be the correct target of the given parameter.
   - Your current branch will be checked to be the correct branch of the given parameter.

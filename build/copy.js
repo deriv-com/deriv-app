@@ -10,6 +10,7 @@ module.exports = function (grunt) {
         // This branch
         { expand: true, cwd: 'src/download/fonts', src: ['binary_symbols.woff'], dest: `${global.dist}/download/fonts/` },
 
+        { expand: true, cwd: `src/images/favicons`, src: ['favicon.ico'], dest: global.dist },
         { expand: true, cwd: `src/images/favicons`, src: ['**'], dest: `${global.dist}/images/favicons/` },
 
         // Serve pushwoosh SDKs

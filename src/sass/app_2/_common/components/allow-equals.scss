@@ -13,33 +13,7 @@
         }
         cursor: pointer;
     }
-    & &__tooltip {
+    &__tooltip {
         margin-top: 1em;
-
-        &[data-tooltip] {
-            width: 12px;
-            height: 12px;
-            text-decoration: none;
-
-            &:before {
-                width: 270px;
-                padding-left: 3.25em;
-            }
-            &:before, &:after {
-                top: 18px;
-            }
-        }
-        &-info {
-            @extend %inline-icon.secondary;
-        }
-        &-info-balloon-icon {
-            top: 9px;
-            left: -317px;
-        }
-        &:hover {
-            .allow-equals__tooltip-info {
-                @extend %inline-icon.white;
-            }
-        }
     }
 }

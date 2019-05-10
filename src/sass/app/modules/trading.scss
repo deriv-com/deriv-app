@@ -183,24 +183,6 @@
                 position: relative;
             }
         }
-        &-tooltip {
-            text-decoration: none;
-            white-space: normal;
-            max-width: calc(3em + 265px);
-            width: calc(3em + 265px);
-
-            &-i {
-                @extend %inline-icon.secondary;
-            }
-            &--disabled {
-                pointer-events: none;
-            }
-            &:hover {
-                .trade-container__price-tooltip-i {
-                    @extend %inline-icon.white;
-                }
-            }
-        }
     }
     &__barriers {
         display: flex;

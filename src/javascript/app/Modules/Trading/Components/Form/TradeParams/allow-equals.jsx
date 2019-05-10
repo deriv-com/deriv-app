@@ -46,7 +46,6 @@ const AllowEquals = ({
                 <Popover
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'
-                    classNameTargetIcon='allow-equals__tooltip-info'
                     icon='info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
                     margin={113}

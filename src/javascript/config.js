@@ -12,8 +12,10 @@ const domain_app_ids = { // these domains as supported "production domains"
     'deriv.app': 16929,
 };
 
-const getCurrentProductionDomain = () =>
-    Object.keys(domain_app_ids).find(domain => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
+const getCurrentProductionDomain = () => (
+    !/^staging\./.test(window.location.hostname) &&
+    Object.keys(domain_app_ids).find(domain => (new RegExp(`.${domain}$`, 'i').test(window.location.hostname)))
+);
 
 const isProduction = () => {
     const all_domains = Object.keys(domain_app_ids).map(domain => `www\\.${domain.replace('.', '\\.')}`);

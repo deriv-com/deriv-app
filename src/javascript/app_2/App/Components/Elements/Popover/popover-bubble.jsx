@@ -45,11 +45,12 @@ class PopoverBubble extends React.PureComponent {
             icon,
             is_open,
             message,
+            target_rectangle,
         } = this.props;
 
         const popover_bubble = (
             <span
-                style={is_open ? this.calculatePosition() : {}}
+                style={ target_rectangle ? this.calculatePosition() : {}}
                 data-popover-pos={alignment}
                 className={classNames(
                     className,

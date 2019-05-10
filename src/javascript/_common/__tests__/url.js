@@ -2,7 +2,7 @@ const { expect, setURL } = require('./tests_common');
 const Url                = require('../url');
 
 const urls = [
-    'https://www.deriv.com',
+    'https://deriv.app',
 ];
 
 describe('Url', () => {
@@ -60,13 +60,13 @@ function runTests(url) {
         });
     });
 
-    if (!/deriv.com/.test(url)) {
+    if (!/deriv.app/.test(url)) {
         describe('.urlForCurrentDomain()', () => {
             const path_query_hash = 'path/to/file.html?q=value&n=1#hash';
 
             it('updates domain correctly', () => {
-                expect(Url.urlForCurrentDomain('https://www.deriv.com/')).to.eq(`${url}/`);
-                expect(Url.urlForCurrentDomain(`https://www.deriv.com/${path_query_hash}`)).to.eq(`${url}/${path_query_hash}`);
+                expect(Url.urlForCurrentDomain('https://www.deriv.app/')).to.eq(`${url}/`);
+                expect(Url.urlForCurrentDomain(`https://www.deriv.app/${path_query_hash}`)).to.eq(`${url}/${path_query_hash}`);
             });
             it('updates host maps correctly', () => {
                 const host_map = Url.getHostMap();
@@ -88,7 +88,7 @@ function runTests(url) {
             });
             it('doesn\'t update when current domain is not supported', () => {
                 setURL('https://user.github.io/');
-                ['https://www.deriv.com', 'https://www.deriv.com/', 'https://bot.binary.com', 'mailto:affiliates@binary.com'].forEach(u => {
+                ['https://deriv.app', 'https://www.deriv.app/', 'https://bot.binary.com', 'mailto:affiliates@binary.com'].forEach(u => {
                     expect(Url.urlForCurrentDomain(u)).to.eq(u);
                 });
                 setURL(url); // reset for the next test

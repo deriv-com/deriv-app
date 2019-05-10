@@ -26,10 +26,10 @@ module.exports = function (grunt) {
 
                     const rules = [
                         '^/binary-static/(.*)$ /$1',
-                        `^/app/(${lang_regex})/index(\\.html)?/(.*)$ /app/$1/$2 [L]`,
-                        `^/app/(${lang_regex})/service-worker\\.js$ - [L]`,
-                        `^/app/(${lang_regex})/manifest\\.json$ - [L]`,
-                        `^/app/(${lang_regex})/.*$ /app/$1/ [L]`,
+                        `^/(${lang_regex})/index(\\.html)?/(.*)$ /$1/$2 [L]`,
+                        `^/(${lang_regex})/service-worker\\.js$ - [L]`,
+                        `^/(${lang_regex})/manifest\\.json$ - [L]`,
+                        `^/(${lang_regex})/.*$ /$1/ [L]`,
                     ];
                     middlewares.push(rewrite(rules));
 

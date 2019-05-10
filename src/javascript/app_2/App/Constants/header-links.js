@@ -7,7 +7,7 @@ import { routes }      from 'Constants/index';
 const header_links = [
     {
         logo   : <div className='header__logo'>{localize('BETA')}</div>,
-        text   : localize('BinaryNex'),
+        text   : localize('Deriv'),
         link_to: routes.trade,
     },
     {

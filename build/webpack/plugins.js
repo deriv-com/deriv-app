@@ -30,13 +30,13 @@ const getPlugins = (app, grunt) => ([
                 dontCacheBustUrlsMatching    : /\.\w{8}\./,
                 minify                       : false,
                 navigateFallback             : '',
-                filepath                     : path.resolve(PATHS.DIST, `app/${lang.toLowerCase()}/service-worker.js`),
+                filepath                     : path.resolve(PATHS.DIST, `${lang.toLowerCase()}/service-worker.js`),
                 // TODO Uncomment below lines when changing the release process order to execute `js` task after `render`
                 // staticFileGlobs          : [
-                //     path.resolve(PATHS.DIST, `app/${lang.toLowerCase()}/index.html`),
+                //     path.resolve(PATHS.DIST, `${lang.toLowerCase()}/index.html`),
                 // ],
                 // mergeStaticsConfig           : true,
-                // stripPrefixMulti             : { [path.join(PATHS.DIST, `app/${lang.toLowerCase()}/`)]: `/app/${lang.toLowerCase()}/` },
+                // stripPrefixMulti             : { [path.join(PATHS.DIST, `${lang.toLowerCase()}/`)]: `/${lang.toLowerCase()}/` },
                 staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
                 logger(message) {
                     if (message.indexOf('Total precache size is') === 0) {

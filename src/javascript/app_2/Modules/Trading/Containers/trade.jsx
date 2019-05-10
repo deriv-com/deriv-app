@@ -4,6 +4,7 @@ import { getPropertyValue } from '_common/utility';
 import UILoader             from 'App/Components/Elements/ui-loader.jsx';
 import { connect }          from 'Stores/connect';
 import PositionsDrawer      from 'App/Components/Elements/PositionsDrawer';
+import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import Test                 from './test.jsx';
 import FormLayout           from '../Components/Form/form-layout.jsx';
 import Digits               from '../../Contract/Containers/digits.jsx';
@@ -31,6 +32,7 @@ class Trade extends React.Component {
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
                 <div className='chart-container'>
+                    <NotificationMessages />
                     { this.props.symbol &&
                         <React.Suspense fallback={<UILoader />} >
                             <SmartChart

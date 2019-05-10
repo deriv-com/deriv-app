@@ -2,21 +2,22 @@ import {
     action,
     computed,
     observable,
-    when }                     from 'mobx';
-import moment                  from 'moment';
+    when }                           from 'mobx';
+import moment                        from 'moment';
 import {
     requestLogout,
-    WS }                       from 'Services';
-import { getAccountTitle }     from '_common/base/client_base';
-import GTM                     from '_common/base/gtm';
-import BinarySocket            from '_common/base/socket_base';
-import * as SocketCache        from '_common/base/socket_cache';
-import { localize }            from '_common/localize';
+    WS }                             from 'Services';
+import { getAccountTitle }           from '_common/base/client_base';
+import GTM                           from '_common/base/gtm';
+import BinarySocket                  from '_common/base/socket_base';
+import * as SocketCache              from '_common/base/socket_cache';
+import { localize }                  from '_common/localize';
 import {
     LocalStore,
-    State }                    from '_common/storage';
-import BaseStore               from './base-store';
-import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+    State }                          from '_common/storage';
+import BaseStore                     from './base-store';
+import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
+import { handleClientNotifications } from './Helpers/client-notifications';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -226,6 +227,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     switchAccount(loginid) {
+        this.root_store.ui.removeAllNotifications();
         this.switched = loginid;
     }
 
@@ -245,6 +247,13 @@ export default class ClientStore extends BaseStore {
         this.loginid  = LocalStore.get('active_loginid');
         this.accounts = LocalStore.getObject(storage_key);
         this.switched = '';
+
+        const client = this.accounts[this.loginid];
+        if (client && !client.is_virtual) {
+            BinarySocket.wait('landing_company', 'website_status', 'get_settings').then(() => {
+                handleClientNotifications(State, client, this.root_store.ui);
+            });
+        }
 
         this.selectCurrency('');
 
@@ -313,9 +322,9 @@ export default class ClientStore extends BaseStore {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
             // Logout if the switched_account doesn't belong to any loginid.
             if (!this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid) {
-                this.root_store.ui.addToastMessage({
+                this.root_store.ui.addNotification({
                     message: localize('Could not switch to default account.'),
-                    type   : 'error',
+                    type   : 'danger',
                 });
                 // request a logout
                 requestLogout();
@@ -323,7 +332,7 @@ export default class ClientStore extends BaseStore {
             }
 
             // Send a toast message to let the user know we can't switch his account.
-            this.root_store.ui.addToastMessage({
+            this.root_store.ui.addNotification({
                 message: localize('Switching to default account.'),
                 type   : 'info',
             });

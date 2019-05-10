@@ -51,7 +51,7 @@ const BinarySocketGeneral = (() => {
                     } else {
                         client_store.responseAuthorize(response);
                         WS.subscribeBalance(ResponseHandlers.balance, true);
-                        WS.getSettings();
+                        WS.sendRequest({ get_settings: 1 }, { forced: true });
                         WS.getAccountStatus();
                         WS.payoutCurrencies();
                         WS.mt5LoginList();

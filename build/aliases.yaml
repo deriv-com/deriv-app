@@ -61,4 +61,3 @@ release:
   - 'shell:reset_ghpages'
   - 'shell:make_cname'
   - 'gh-pages:main'
-  - 'shell:trigger_tests'

@@ -2,8 +2,24 @@ import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
+import posed, { PoseGroup } from 'react-pose';
 import { Icon }             from 'Assets/Common/icon.jsx';
 import { IconInfoBlue }     from 'Assets/Common/icon-info-blue.jsx';
+
+const FadeIn = posed.span({
+    enter: {
+        opacity   : 1,
+        transition: {
+            duration: 150,
+        },
+    },
+    exit: {
+        opacity   : 0,
+        transition: {
+            duration: 150,
+        },
+    },
+});
 
 class PopoverBubble extends React.PureComponent {
     calculatePosition = () => {
@@ -49,29 +65,34 @@ class PopoverBubble extends React.PureComponent {
         } = this.props;
 
         const popover_bubble = (
-            <span
-                style={ target_rectangle ? this.calculatePosition() : {}}
-                data-popover-pos={alignment}
-                className={classNames(
-                    className,
-                    'popover__bubble',
-                    {
-                        'popover__bubble--error': has_error,
-                        'popover__bubble--show' : is_open,
-                    },
-                )}
-            >
-                { icon === 'info' &&
-                    <i className='popover__bubble__icon'>
-                        <Icon icon={IconInfoBlue} />
-                    </i>
-                }
+            <PoseGroup>
+                { is_open &&
+                <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
+                    <span
+                        style={ target_rectangle ? this.calculatePosition() : {}}
+                        data-popover-pos={alignment}
+                        className={classNames(
+                            className,
+                            'popover__bubble',
+                            {
+                                'popover__bubble--error': has_error,
+                            },
+                        )}
+                    >
+                        { icon === 'info' &&
+                            <i className='popover__bubble__icon'>
+                                <Icon icon={IconInfoBlue} />
+                            </i>
+                        }
 
-                <span className='popover__bubble__text'>
-                    { message }
-                </span>
-                <span className='popover__bubble__arrow' />
-            </span>
+                        <span className='popover__bubble__text'>
+                            { message }
+                        </span>
+                        <span className='popover__bubble__arrow' />
+                    </span>
+                </FadeIn>
+                }
+            </PoseGroup>
         );
         
         return ReactDOM.createPortal(

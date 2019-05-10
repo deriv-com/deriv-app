@@ -23,19 +23,12 @@
         border-radius: 4px;
         display: flex;
         flex-direction: row;
-        z-index: 999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
         @include typeface(--small-center-normal-active, none);
         @include themify($themes) {
             background: themed('tooltip_background_color');
             color: themed('text_active_color');
         }
 
-        &--show {
-            opacity: 1;
-            transition: opacity 0.3s ease;
-        }
         &__icon {
             flex-grow: 1;
             margin-right: 0.7em;

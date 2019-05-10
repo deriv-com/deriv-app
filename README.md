@@ -1,11 +1,11 @@
 Deriv App
 =============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [deriv.app](http://www.deriv.app) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [deriv.app](http://deriv.app) website.
 
 ## Installation
 
-In order to work on your own version of the Deriv.com Javascript and CSS, please **fork this project**.
+In order to work on your own version of the Deriv.app Javascript and CSS, please **fork this project**.
 
 You will also need to install the following on your development machine:
 

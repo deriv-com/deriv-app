@@ -15,7 +15,7 @@ program
 
 const config = [
     {
-        url_prefix: 'https://www.deriv.com/',
+        url_prefix: 'https://deriv.app/',
         filename  : 'sitemap.app_2.xml',
         section   : 'app_2',
     },

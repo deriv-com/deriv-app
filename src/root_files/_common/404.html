@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Deriv.com</title>
+    <title>Deriv.app</title>
     <meta charset="utf-8" />
     <script type="text/javascript">
     function getCookieItem(sKey) {
@@ -41,14 +41,14 @@
     function redirectToReactRoute(lang) {
         // Converts the path and query strings into just query strings and
         // then redirects the browser to the new url with query strings and hash fragment.
-        // https://www.deriv.com/en/statement -> https://www.deriv.com/en?p=/statement
+        // https://deriv.app/en/statement -> https://deriv.app/en?p=/statement
 
         var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
         var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
         var path_name_split = pathname.split('/');
 
         location.replace(
-            base + '/'                                                          // https://www.deriv.com/
+            base + '/'                                                          // https://deriv.app/
             + lang.toLowerCase() + '?from_404=true&p=' +                        // en?p=
             path_name_split.slice(2).join('/').replace(/&/g, '~and~') +         // statement
             (location.search ?
@@ -94,6 +94,6 @@
 </head>
 <body>
     <h1>404</h1>
-    <p style='font-size: 1.5em;'><a href='https://deriv.com'>https://deriv.com</a></p>
+    <p style='font-size: 1.5em;'><a href='https://deriv.app'>https://deriv.app</a></p>
 </body>
 </html>

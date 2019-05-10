@@ -9,7 +9,7 @@
  *
  */
 const domain_app_ids = { // these domains as supported "production domains"
-    'deriv.com': 16929,
+    'deriv.app': 16929,
 };
 
 const getCurrentProductionDomain = () =>

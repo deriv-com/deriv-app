@@ -26,7 +26,7 @@ const Login = (() => {
 
         return ((server_url && /qa/.test(server_url)) ?
             `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}` :
-            getAppId() === domain_app_ids['deriv.com'] ?
+            getAppId() === domain_app_ids['deriv.app'] ?
                 default_binary_url
                 : urlForCurrentDomain(default_binary_url)
         );

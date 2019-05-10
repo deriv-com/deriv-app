@@ -18,12 +18,15 @@ class Popover extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.setState({ target_rectangle: this.target_reference.current.getBoundingClientRect() });
+        this.setState({
+            is_open         : this.props.has_error,
+            target_rectangle: this.target_reference.current.getBoundingClientRect(),
+        });
     }
 
     toggleIsOpen = () => {
         this.setState({
-            is_open         : !this.state.is_open,
+            is_open         : !this.state.is_open && Boolean(this.props.message),
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
         });
     }
@@ -58,18 +61,16 @@ class Popover extends React.PureComponent {
                     { children }
                 </div>
 
-                { message &&
-                    <PopoverBubble
-                        alignment={alignment}
-                        className={classNameBubble}
-                        has_error={has_error}
-                        icon={icon}
-                        is_open={(has_error || this.state.is_open) && Boolean(this.state.target_rectangle)}
-                        target_rectangle={this.state.target_rectangle}
-                        margin={margin}
-                        message={message}
-                    />
-                }
+                <PopoverBubble
+                    alignment={alignment}
+                    className={classNameBubble}
+                    has_error={has_error}
+                    icon={icon}
+                    is_open={this.state.is_open}
+                    target_rectangle={this.state.target_rectangle}
+                    margin={margin}
+                    message={message}
+                />
             </div>
         );
     }

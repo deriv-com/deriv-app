@@ -1,7 +1,7 @@
 {
   "name": "deriv-com",
   "version": "3.8.0",
-  "description": "Deriv.com content",
+  "description": "Deriv.app content",
   "scripts": {
     "test": "grunt test",
     "livereload": "sudo -p 'enter password for sudo:' grunt livereload",
@@ -15,7 +15,7 @@
   "keywords": [
     "deriv"
   ],
-  "author": "Deriv.com",
+  "author": "Deriv.app",
   "license": "Apache License 2.0",
   "bugs": {
     "url": "https://github.com/binary-com/deriv-com/issues"

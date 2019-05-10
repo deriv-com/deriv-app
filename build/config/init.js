@@ -36,9 +36,8 @@ const initGlobals = (grunt) => {
     }
 
     // ----- paths -----
-    global.dist       = Helpers.getDistPath();
-    global.dist_app_2 = `${global.dist}/${Constants.config.app_2_folder}`;
-    global.path       = grunt.option('path');
+    global.dist = Helpers.getDistPath();
+    global.path = grunt.option('path');
 
     // ----- compile templates -----
     global.compileCommand = params => Helpers.generateCompileCommand(params);

@@ -9,7 +9,7 @@
  *
  */
 const domain_app_ids = { // these domains as supported "production domains"
-    'deriv.com': 16929,
+    'deriv.app': 16929,
 };
 
 const getCurrentProductionDomain = () =>
@@ -26,16 +26,15 @@ const getAppId = () => {
     let app_id = null;
     const user_app_id   = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
-    const is_new_app    = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
         app_id = config_app_id;
     } else if (/desktop-app/i.test(window.location.href) || window.localStorage.getItem('config.is_desktop_app')) {
         window.localStorage.removeItem('config.default_app_id');
         window.localStorage.setItem('config.is_desktop_app', 1);
         app_id = binary_desktop_app_id;
-    } else if (/staging\.binary\.com/i.test(window.location.hostname)) {
+    } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = is_new_app ? 16303 : 1098;
+        app_id = 16303;
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id); // it's being used in endpoint chrome extension - please do not remove
         app_id = user_app_id;
@@ -44,8 +43,7 @@ const getAppId = () => {
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();
-        // TODO: remove is_new_app && deriv.com check when repos are split
-        app_id = (is_new_app && current_domain !== 'deriv.com') ? 15265 : (domain_app_ids[current_domain] || 1);
+        app_id = domain_app_ids[current_domain] || 16929;
     }
     return app_id;
 };

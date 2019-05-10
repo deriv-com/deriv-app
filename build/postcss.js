@@ -1,6 +1,6 @@
 module.exports = function () {
     const src = {
-        app_2: `${global.dist_app_2}/css/app_2.css`,
+        app_2: `${global.dist}/css/app_2.css`,
     };
 
     return {

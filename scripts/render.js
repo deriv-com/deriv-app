@@ -207,7 +207,7 @@ const createContextBuilder = async (sections) => {
         ],
         css_files  : css_files_list[section],
         languages  : config.languages,
-        broker_name: 'Deriv.com',
+        broker_name: 'Deriv.app',
         static_hash: static_hash[section],
     });
 
@@ -243,7 +243,7 @@ async function compile(page) {
 
     const tasks = languages.map(async lang => {
         const model = {
-            website_name   : 'Deriv.com',
+            website_name   : 'Deriv.app',
             title          : page.title,
             layout         : page.layout,
             language       : lang.toUpperCase(),

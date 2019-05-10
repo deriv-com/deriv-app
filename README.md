@@ -1,7 +1,7 @@
 Deriv App
 =============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [deriv.app](http://deriv.app) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [DTrader](http://deriv.app) website.
 
 ## Installation
 

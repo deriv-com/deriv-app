@@ -10,8 +10,8 @@ const app2Config = (grunt) => ({
         [global.is_release ? 'binary.min' : 'binary']: path.resolve(PATHS.SRC, 'javascript', 'app_2'),
     },
     output: {
-        path         : path.resolve(PATHS.DIST, 'app/js'),
-        publicPath   : publicPathFactory(grunt, 'app_2')(),
+        path         : path.resolve(PATHS.DIST, 'js'),
+        publicPath   : publicPathFactory(grunt)(),
         chunkFilename: '[name]-[chunkhash].js',
     },
     optimization: {

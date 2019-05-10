@@ -5,11 +5,11 @@ import { setURL }     from '../../../../_common/__tests__/tests_common';
 
 describe('base_name.getBaseName', () => {
     it('expect return correct value when pathname is not set', () => {
-        expect(getBaseName()).to.eq('/app/en/');
+        expect(getBaseName()).to.eq('/en');
     });
     it('expect return correct value when pathname is set', () => {
-        setURL(`${websiteUrl()}app/de/home.html`);
-        expect(getBaseName()).to.eq('/app/de');
+        setURL(`${websiteUrl()}de/home.html`);
+        expect(getBaseName()).to.eq('/de');
     });
     after(() => {
         setURL(`${websiteUrl()}en/home.html`);

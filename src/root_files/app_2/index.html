@@ -10,7 +10,7 @@
                 top.location = self.location;
             }
         </script>
-        <title>Deriv.com</title>
+        <title>DTrader</title>
         <meta charset="utf-8" />
         <meta name="google-site-verification" content="Myh35QddfEArh0686LcO2zMjrgv0C7L4FCBU0k0oZvU" />
         <script type="text/javascript">
@@ -59,7 +59,7 @@
                     Object.keys(account).forEach(function(param) {
                         if (param === 'loginid') {
                             if (!active_loginid && !account.is_disabled) {
-                                if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging clients into virtual for app_2
+                                if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging clients into virtual
                                     active_loginid = account[param];
                                 }
                             }
@@ -117,7 +117,7 @@
                 var has_utm_source        = /utm_source/.test(search);
                 var utm_source            = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
 
-                window.location.href = (/\/app\//.test(window.location.pathname) ? '' : 'app/') + (lang || 'en').toLowerCase() + '/trade' + search + utm_source;
+                window.location.href = (lang || 'en').toLowerCase() + '/trade' + search + utm_source;
             }
 
             if (document.referrer) {

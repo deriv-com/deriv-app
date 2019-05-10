@@ -1,11 +1,11 @@
-Deriv-com
-=========
+Deriv App
+=============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv.com](https://www.deriv.com) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [DTrader](http://deriv.app) website.
 
 ## Installation
 
-In order to work on your own version of the Deriv.com Javascript and CSS, please **fork this project**.
+In order to work on your own version of the DTrader Javascript and CSS, please **fork this project**.
 
 You will also need to install the following on your development machine:
 
@@ -87,7 +87,7 @@ grunt release --{release type}=1 [--cleanup] [--reset]
 
 ### Parameters:
 - `{release type}` (mandatory)
-  - Should be one of `staging`, `production`, `translations`, `nex_beta`, `nex_production`.
+  - Should be one of `staging`, `production`, `translations`.
   - In order to prevent accidentally releasing to the wrong target, it is mandatory to provide one of these parameters.
   - Your remote origin will be checked to be the correct target of the given parameter.
   - Your current branch will be checked to be the correct branch of the given parameter.

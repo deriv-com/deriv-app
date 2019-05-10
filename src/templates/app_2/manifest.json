@@ -1,7 +1,7 @@
 {
-  "name": "Binary.com",
-  "short_name": "Binary.com",
-  "description":"Binary.com gives everyone an easy way to participate in the financial markets.",
+  "name": "Deriv.com",
+  "short_name": "Deriv.com",
+  "description":"Deriv.com gives everyone an easy way to participate in the financial markets.",
   "start_url": "{start_url_base}/?utm_source=pwa",
   "display": "standalone",
   "orientation": "portrait",

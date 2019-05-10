@@ -2,8 +2,6 @@ const { expect, setURL } = require('./tests_common');
 const Url                = require('../url');
 
 const urls = [
-    'https://www.binary.com',
-    'https://www.binary.me',
     'https://www.deriv.com',
 ];
 
@@ -41,22 +39,6 @@ function runTests(url) {
         });
     });
 
-    describe('.getLocation()', () => {
-        it('works as expected', () => {
-            expect(Url.getLocation().hostname).to.eq(url.replace(/^https:\/\//, ''));
-        });
-    });
-
-    describe('.paramsHashToString()', () => {
-        it('returns an empty string if empty object or undefined passed', () => {
-            expect(Url.paramsHashToString({})).to.eq('');
-            expect(Url.paramsHashToString()).to.eq('');
-        });
-        it('returns the expected conversion of object to string', () => {
-            expect(Url.paramsHashToString(params_obj)).to.eq(query_string);
-        });
-    });
-
     describe('.urlFor()', () => {
         it('returns home as default', () => {
             [undefined, null, '', '/', 'home'].forEach((path) => {
@@ -78,13 +60,13 @@ function runTests(url) {
         });
     });
 
-    if (!/binary.com/.test(url)) {
+    if (!/deriv.com/.test(url)) {
         describe('.urlForCurrentDomain()', () => {
             const path_query_hash = 'path/to/file.html?q=value&n=1#hash';
 
             it('updates domain correctly', () => {
-                expect(Url.urlForCurrentDomain('https://www.binary.com/')).to.eq(`${url}/`);
-                expect(Url.urlForCurrentDomain(`https://www.binary.com/${path_query_hash}`)).to.eq(`${url}/${path_query_hash}`);
+                expect(Url.urlForCurrentDomain('https://www.deriv.com/')).to.eq(`${url}/`);
+                expect(Url.urlForCurrentDomain(`https://www.deriv.com/${path_query_hash}`)).to.eq(`${url}/${path_query_hash}`);
             });
             it('updates host maps correctly', () => {
                 const host_map = Url.getHostMap();
@@ -106,7 +88,7 @@ function runTests(url) {
             });
             it('doesn\'t update when current domain is not supported', () => {
                 setURL('https://user.github.io/');
-                ['https://www.binary.com', 'https://www.binary.com/', 'https://bot.binary.com', 'mailto:affiliates@binary.com'].forEach(u => {
+                ['https://www.deriv.com', 'https://www.deriv.com/', 'https://bot.binary.com', 'mailto:affiliates@binary.com'].forEach(u => {
                     expect(Url.urlForCurrentDomain(u)).to.eq(u);
                 });
                 setURL(url); // reset for the next test

@@ -1,13 +1,13 @@
-import React         from 'react';
-import { localize }  from '_common/localize';
-import URL           from '_common/url';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import Button        from 'App/Components/Form/button.jsx';
-import { IconWip }   from 'Assets/Common/icon-wip.jsx';
-import { connect }   from 'Stores/connect';
+import React          from 'react';
+import { localize }   from '_common/localize';
+import { websiteUrl } from '_common/url';
+import Localize       from 'App/Components/Elements/localize.jsx';
+import Button         from 'App/Components/Form/button.jsx';
+import { IconWip }    from 'Assets/Common/icon-wip.jsx';
+import { connect }    from 'Stores/connect';
 
 const onClick = () => {
-    window.location.href = URL.websiteUrl();
+    window.location.href = websiteUrl();
 };
 
 const Wip = (ui) => (

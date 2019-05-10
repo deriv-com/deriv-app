@@ -1,6 +1,5 @@
 import { expect }   from 'chai';
 import { setURL }   from '../../../../_common/__tests__/tests_common';
-import Url          from '../../../../_common/url';
 import URLHelper    from '../url-helper';
 
 describe('URLHelper', () => {

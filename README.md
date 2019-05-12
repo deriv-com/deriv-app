@@ -25,7 +25,7 @@ How to work with this project
 ### Deploy to your gh-pages for the first time
 
 1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
-Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/logged_inws.html` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/redirect.html` for the Verification URL.
+Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Verification URL.
 
     If you're using a custom domain, replace the github URLs above with your domain.
 
@@ -59,7 +59,7 @@ grunt dev --path=about-us
 ### Using sub-folders
 There are times that you are working on various branches at the same time, and you want to deploy/test each branch separately on your gh-pages, you can simply use `--branch=branchname` for grunt commands:
 - `grunt dev --branch=branchname`
-This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/deriv-com/br_branchname/
+This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/deriv-app/br_branchname/
 
 In order to remove the created folders from your gh-pages, you can use either:
 - `grunt dev --cleanup`: removes all `br_*` folders and deploys to the root folder.

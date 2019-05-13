@@ -43,6 +43,7 @@ const initRoutesConfig = () => ([
         path            : routes.reports,
         component       : Reports,
         is_authenticated: true,
+        title           : localize('Reports'),
         routes          : [
             { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: IconOpenPositions, default: true },
             { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: IconProfitTable },

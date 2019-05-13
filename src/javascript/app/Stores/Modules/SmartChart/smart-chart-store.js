@@ -101,9 +101,13 @@ export default class SmartChartStore extends BaseStore {
 
     // --------- All Contracts ---------
     @action.bound
-    setRange(start, end) {
+    setRangeStart(start) {
         this.range.start_epoch = start;
-        this.range.end_epoch   = end;
+    }
+
+    @action.bound
+    setRangeEnd(end) {
+        this.range.end_epoch = end;
     }
 
     @action.bound

@@ -56,7 +56,7 @@ export default class ContractStore extends BaseStore {
 
         const { date_start }           = contract_info;
         const end_time                 = getEndTime(contract_info);
-        const should_update_chart_type = !contract_info.tick_count && !this.is_granularity_set;
+        const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
 
         SmartChartStore.setRangeStart(date_start);
         if (end_time) {

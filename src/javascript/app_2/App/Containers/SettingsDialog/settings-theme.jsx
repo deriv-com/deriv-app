@@ -37,7 +37,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
                             'theme-select-settings__option__title--selected': is_dark_mode,
                         })}
                         >
-                            <Localize str='Brand Dark' />
+                            <Localize str='Dark' />
                         </p>
                     </div>
                     <div className='theme-select-settings__option'>

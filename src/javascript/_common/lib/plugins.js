@@ -30,12 +30,6 @@ Element.prototype.setVisibility = function(make_visible) {
     return this;
 };
 
-Element.prototype.insertAfter = function(referenceNode) {
-    if (referenceNode && referenceNode.parentNode) {
-        referenceNode.parentNode.insertBefore(this, referenceNode.nextSibling);
-    }
-    return this;
-};
 
 Element.prototype.html = function(content) {
     if (typeof content === 'object') {
@@ -46,10 +40,3 @@ Element.prototype.html = function(content) {
     }
     return this;
 };
-
-(function ($) {
-    $.fn.setVisibility = function(make_visible) {
-        this[(make_visible ? 'remove' : 'add') + 'Class']('invisible');
-        return this;
-    };
-})(jQuery);

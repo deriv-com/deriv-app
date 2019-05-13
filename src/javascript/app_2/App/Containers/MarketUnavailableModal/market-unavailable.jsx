@@ -1,17 +1,17 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { localize }  from '_common/localize';
-import URL           from '_common/url';
-import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import { connect }   from 'Stores/connect';
+import React          from 'react';
+import PropTypes      from 'prop-types';
+import { localize }   from '_common/localize';
+import { websiteUrl } from '_common/url';
+import FullPageModal  from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import Localize       from 'App/Components/Elements/localize.jsx';
+import { connect }    from 'Stores/connect';
 
 const MarketUnavailableModal = ({ is_visible, setHasOnlyForwardingContracts }) => (
     <FullPageModal
         cancel_button_text={localize('Go to SmartTrader')}
         confirm_button_text={localize('No, stay on BinaryNex')}
         is_visible={is_visible}
-        onCancel={() => window.open(URL.websiteUrl()) && setHasOnlyForwardingContracts(false)}
+        onCancel={() => window.open(websiteUrl()) && setHasOnlyForwardingContracts(false)}
         onConfirm={() => setHasOnlyForwardingContracts(false)}
         title={localize('Market is unavailable')}
     >

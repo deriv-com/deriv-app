@@ -15,19 +15,7 @@ program
 
 const config = [
     {
-        url_prefix : 'https://www.binary.com/',
-        filename   : 'sitemap.xml',
-        lang_filter: '^(?!id$)',
-        section    : 'app',
-    },
-    {
-        url_prefix : 'https://www.binary.me/',
-        filename   : 'sitemap.id.xml',
-        lang_filter: '^id$',
-        section    : 'app',
-    },
-    {
-        url_prefix: 'https://www.deriv.com/',
+        url_prefix: 'https://deriv.app/',
         filename  : 'sitemap.app_2.xml',
         section   : 'app_2',
     },
@@ -41,7 +29,7 @@ const urlFor = (section, lang, path) => {
         return `${lang}/${path}.html`;
     }
     // else: app_2
-    return `app/${lang}/${path}`;
+    return `${lang}/${path}`;
 };
 
 const createSitemap = (conf) => {

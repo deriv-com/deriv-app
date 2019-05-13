@@ -1,5 +1,3 @@
-const Constants = require('./constants');
-
 const isRelease = (grunt) => grunt.cli.tasks[0] === 'release';
 
 const getReleaseTarget = (grunt) => {
@@ -10,28 +8,6 @@ const getReleaseTarget = (grunt) => {
     }
 
     return release_target;
-};
-
-const validateSection = (grunt, section) => {
-    let { valid_sections } = Constants.config;
-
-    if (isRelease(grunt)) {
-        valid_sections = [...global.release_config[global.release_target].valid_sections];
-
-        if (!grunt.option('section')) { // To prevent mistakes, section is mandatory when releasing
-            grunt.fail.fatal(`It is mandatory to specify the section when releasing. (--section=...)\nValid sections are: ${valid_sections.join(', ')}`);
-        }
-    }
-
-    if (!valid_sections.includes(section)) {
-        grunt.fail.fatal(`Unknown or wrong section: '${section}'.\nValid sections are: ${valid_sections.join(', ')}.`);
-    }
-};
-
-const getSection = (grunt) => {
-    const section = grunt.option('section') || Constants.config.default_section;
-    validateSection(grunt, section);
-    return section;
 };
 
 const getGhpagesCloneFolder = () => ( // clone each repo to a unique folder to prevent local cache issues when releasing
@@ -48,7 +24,6 @@ const generateCompileCommand = (params) => (
             params || '',
             global.branch ? `-b ${global.branch_prefix}${global.branch}` : '',
             global.path ? `-p ${global.path}` : '',
-            `-s ${global.section}`,
         ],
     ].join(' ')
 );
@@ -56,7 +31,6 @@ const generateCompileCommand = (params) => (
 module.exports = {
     isRelease,
     getReleaseTarget,
-    getSection,
     getGhpagesCloneFolder,
     getDistPath,
     generateCompileCommand,

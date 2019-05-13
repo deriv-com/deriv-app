@@ -22,7 +22,7 @@ const URLHandler = () => (
                             // Converts paths in query string to HTML5 route and refresh the url
                             if (query.p !== undefined) {
                                 window.history.replaceState(null, null,
-                                    l.pathname.slice(0) + (query.p || '') +
+                                    l.pathname.slice(0) + (query.p.split('::').join('/') || '') +
                                     (query.q ? ('?' + query.q) : '') + l.hash
                                 );
                             }

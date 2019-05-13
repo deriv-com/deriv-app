@@ -1,7 +1,7 @@
 module.exports = function () {
     const files = {
-        app_2: [
-            { src: `${global.dist}/css/app_2.css`, dest: `${global.dist}/css/app_2.min.css` },
+        app: [
+            { src: `${global.dist}/css/app.css`, dest: `${global.dist}/css/app.min.css` },
         ],
     };
 

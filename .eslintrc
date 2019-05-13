@@ -1,0 +1,40 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "binary",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jquery": true,
+    "jasmine": true
+  },
+  "globals": {
+    "Blockly": false,
+    "trackJs": false,
+    "jest": false
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "import/no-extraneous-dependencies": 0,
+    "linebreak-style": 0
+  },
+  "settings": {
+    "react": {
+      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "15.0" // React version, default to the latest React stable release
+    }
+  }
+}

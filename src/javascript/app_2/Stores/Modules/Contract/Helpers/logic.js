@@ -32,17 +32,6 @@ export const getDisplayStatus = (contract_info) => {
     return status;
 };
 
-export const getEndSpotTime = (contract_info) => {
-    const { date_expiry, exit_tick_time, sell_time, tick_count: is_tick_contract } = contract_info;
-    if (isUserSold(contract_info)) {
-        return (sell_time > date_expiry) ?
-            date_expiry : sell_time;
-    } else if (!is_tick_contract && (sell_time > date_expiry)) {
-        return date_expiry;
-    }
-    return exit_tick_time;
-};
-
 export const getFinalPrice = (contract_info) => (
     +(contract_info.sell_price || contract_info.bid_price)
 );
@@ -82,8 +71,14 @@ export const isValidToSell = (contract_info) => (
 export const getEndTime = (contract_info) => {
     const { exit_tick_time, date_expiry, sell_time, tick_count : is_tick_contract, is_sold } = contract_info;
 
-    if (is_tick_contract) return exit_tick_time;
     if (!is_sold) return undefined;
 
-    return  sell_time <  date_expiry ? exit_tick_time : date_expiry;
+    if (isUserSold(contract_info)) {
+        return (sell_time > date_expiry) ?
+            date_expiry : sell_time;
+    } else if (!is_tick_contract && (sell_time > date_expiry)) {
+        return date_expiry;
+    }
+
+    return exit_tick_time;
 };

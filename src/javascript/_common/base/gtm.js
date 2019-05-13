@@ -26,7 +26,7 @@ const GTM = (() => {
             bom_email: ClientBase.get('email'),
         },
         ...('is_dark_mode_on' in LocalStore.getObject('ui_store')) && {
-            theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light'
+            theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light',
         },
     });
 

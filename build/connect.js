@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                     appName: {
                         app: 'Google\ Chrome'
                     },
-                    target : 'https://localhost',
+                    target : 'https://localhost.binary.sx',
                 },
                 middleware: (connect, options) => {
                     const middlewares = [
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
                     ];
 
                     const rules = [
-                        '^/binary-static/(.*)$ /$1',
+                        '^/deriv-app/(.*)$ /$1',
                         `^/(${lang_regex})/index(\\.html)?/(.*)$ /$1/$2 [L]`,
                         `^/(${lang_regex})/service-worker\\.js$ - [L]`,
                         `^/(${lang_regex})/manifest\\.json$ - [L]`,

@@ -1,5 +1,5 @@
 {
-  "name": "deriv-com",
+  "name": "deriv-app",
   "version": "3.8.0",
   "description": "DTrader content",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/binary-com/deriv-com.git"
+    "url": "https://github.com/binary-com/deriv-app.git"
   },
   "keywords": [
     "deriv"
@@ -18,9 +18,9 @@
   "author": "DTrader",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/binary-com/deriv-com/issues"
+    "url": "https://github.com/binary-com/deriv-app/issues"
   },
-  "homepage": "https://github.com/binary-com/deriv-com",
+  "homepage": "https://github.com/binary-com/deriv-app",
   "devDependencies": {
     "@babel/parser": "7.1.2",
     "app-root-path": "2.0.1",
@@ -126,7 +126,7 @@
     "react-router-dom": "5.0.0",
     "react-transition-group": "2.4.0",
     "sinon": "7.2.2",
-    "smartcharts-beta": "0.4.24",
+    "smartcharts-beta": "0.4.25",
     "tt-react-custom-scrollbars": "4.2.1-tt2",
     "url-polyfill": "1.0.9",
     "web-push-notifications": "3.2.15"

@@ -25,7 +25,7 @@ How to work with this project
 ### Deploy to your gh-pages for the first time
 
 1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
-Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/logged_inws.html` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-com/en/redirect.html` for the Verification URL.
+Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL.
 
     If you're using a custom domain, replace the github URLs above with your domain.
 
@@ -59,7 +59,9 @@ grunt dev --path=about-us
 ### Using sub-folders
 There are times that you are working on various branches at the same time, and you want to deploy/test each branch separately on your gh-pages, you can simply use `--branch=branchname` for grunt commands:
 - `grunt dev --branch=branchname`
-This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/deriv-com/br_branchname/
+This will deploy your changes to a sub-folder named: `br_branchname` and it can be browsed at: https://YOUR_GITHUB_USERNAME.github.io/deriv-app/br_branchname/
+
+**Important**: Note that you can use the same app ID created above for all your branches. There is no need to create multiple app IDs for each branch.
 
 In order to remove the created folders from your gh-pages, you can use either:
 - `grunt dev --cleanup`: removes all `br_*` folders and deploys to the root folder.
@@ -71,8 +73,14 @@ In order to remove the created folders from your gh-pages, you can use either:
 - `grunt shell:remove_folder --keep --folder=br_branchname1,br_branchname2,...`: only keeps the specified folder(s) on your gh-pages and removes everything else. Just add the `--keep` flag.
 
 ### Preview on your local machine
-- To preview your changes locally, run `sudo grunt serve`
-- It will watch for js/css changes and rebuild on every change you make.
+- Edit your `/etc/hosts` file to include this domain:
+```
+127.0.0.1   localhost.binary.sx
+```
+- To preview your changes locally for the first time, run `grunt start`:
+    - It will compile all templates, css, and js as well as watch for further js/css changes and rebuild on every change you make.
+- To preview your changes locally without re-compiling any css/js/templates run `grunt serve`
+    - It will watch for js/css changes and rebuild on every change you make.
 - To test changes made to templates, you need to re-compile them:
   - `grunt shell:compile_dev` to re-compile all templates.
   - `grunt shell:compile_dev --path=about-us` to re-compile only template(s) which serve about-us path in URL.

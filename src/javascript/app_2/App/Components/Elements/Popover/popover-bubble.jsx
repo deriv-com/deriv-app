@@ -5,55 +5,50 @@ import ReactDOM             from 'react-dom';
 import posed, { PoseGroup } from 'react-pose';
 import { Icon }             from 'Assets/Common/icon.jsx';
 import { IconInfoBlue }     from 'Assets/Common/icon-info-blue.jsx';
-import { IconQuestion }     from 'Assets/Common/icon-question.jsx';
-import { IconRedDot }       from 'Assets/Common/icon-red-dot.jsx';
 
-const FadeIn = posed.div({
+const FadeIn = posed.span({
     enter: {
         opacity   : 1,
         transition: {
-            duration: 300,
+            duration: 150,
         },
     },
     exit: {
         opacity   : 0,
         transition: {
-            duration: 300,
+            duration: 150,
         },
     },
 });
 
 class PopoverBubble extends React.PureComponent {
+    calculatePosition = () => {
+        const { alignment, target_rectangle, margin = 0 } = this.props;
 
-    getHorizontalCenter = rectangle => rectangle.left + (rectangle.width / 2);
-
-    getVerticalCenter = rectangle => rectangle.top + (rectangle.height / 2);
-
-    getBubblePositionStyle = (alignment, popover_trigger_rectangle) => {
         switch (alignment) {
             case 'top': return {
-                left     : this.getHorizontalCenter(popover_trigger_rectangle),
+                left     : (target_rectangle.width / 2) + target_rectangle.left,
+                bottom   : (window.innerHeight - target_rectangle.top) + margin,
                 transform: 'translateX(-50%)',
-                bottom   : `calc(100% - ${popover_trigger_rectangle.top}px)`,
-            };
-            case 'right': return {
-                left     : popover_trigger_rectangle.x + popover_trigger_rectangle.width,
-                top      : this.getVerticalCenter(popover_trigger_rectangle),
-                transform: 'translateY(-50%)',
             };
             case 'bottom': return {
-                left     : this.getHorizontalCenter(popover_trigger_rectangle),
+                left     : (target_rectangle.width / 2) + target_rectangle.left,
+                top      : target_rectangle.bottom + margin,
                 transform: 'translateX(-50%)',
-                top      : popover_trigger_rectangle.y + popover_trigger_rectangle.height,
             };
             case 'left': return {
-                right    : `calc(100% - ${popover_trigger_rectangle.left}px)`,
-                top      : this.getVerticalCenter(popover_trigger_rectangle),
+                right    : (window.innerWidth - target_rectangle.left) + margin,
+                top      : (target_rectangle.height / 2) + target_rectangle.top,
+                transform: 'translateY(-50%)',
+            };
+            case 'right': return {
+                left     : target_rectangle.right + margin,
+                top      : (target_rectangle.height / 2) + target_rectangle.top,
                 transform: 'translateY(-50%)',
             };
             default: return {
-                left: popover_trigger_rectangle.x,
-                top : popover_trigger_rectangle.y,
+                left: target_rectangle.left,
+                top : target_rectangle.top,
             };
         }
     }
@@ -61,50 +56,60 @@ class PopoverBubble extends React.PureComponent {
     render() {
         const {
             alignment,
+            className,
+            has_error,
             icon,
+            is_open,
             message,
-            popover_trigger_rectangle,
+            target_rectangle,
         } = this.props;
-        
-        return ReactDOM.createPortal(
+
+        const popover_bubble = (
             <PoseGroup>
-                <FadeIn key='fade_in' initialPose='exit'>
+                { is_open &&
+                <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
                     <span
-                        style={this.getBubblePositionStyle(
-                            alignment,
-                            popover_trigger_rectangle,
-                        )}
+                        style={ target_rectangle ? this.calculatePosition() : {}}
+                        data-popover-pos={alignment}
                         className={classNames(
+                            className,
                             'popover__bubble',
-                            alignment ? `popover__bubble--${alignment}` : '',
+                            { 'popover__bubble--error': has_error },
                         )}
                     >
-                        <span className={classNames(
-                            'popover__bubble__arrow',
-                            alignment ? `popover__bubble__arrow--${alignment}` : '',
-                        )}
-                        />
-                        { icon &&
-                            <span className='popover__bubble__icon'>
-                                {(icon === 'info')     && <Icon icon={IconInfoBlue} />}
-                                {(icon === 'question') && <Icon icon={IconQuestion} />}
-                                {(icon === 'dot')      && <Icon icon={IconRedDot} />}
-                            </span>
+                        { icon === 'info' &&
+                            <i className='popover__bubble__icon'>
+                                <Icon icon={IconInfoBlue} />
+                            </i>
                         }
-                        { message }
+
+                        <span className='popover__bubble__text'>
+                            { message }
+                        </span>
+                        <span className='popover__bubble__arrow' />
                     </span>
                 </FadeIn>
-            </PoseGroup>,
+                }
+            </PoseGroup>
+        );
+        
+        return ReactDOM.createPortal(
+            popover_bubble,
             document.getElementById('binary_app')
         );
     }
 }
 
 PopoverBubble.propTypes = {
-    alignment                : PropTypes.string,
-    children                 : PropTypes.node,
-    message                  : PropTypes.string,
-    tooltip_trigger_rectangle: PropTypes.object,
+    alignment       : PropTypes.string,
+    children        : PropTypes.node,
+    className       : PropTypes.string,
+    has_error       : PropTypes.bool,
+    icon            : PropTypes.string,
+    is_open         : PropTypes.bool,
+    margin          : PropTypes.number,
+    message         : PropTypes.string.isRequired,
+    target_rectangle: PropTypes.object,
 };
 
 export default PopoverBubble;

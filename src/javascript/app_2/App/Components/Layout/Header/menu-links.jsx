@@ -5,7 +5,7 @@ import { BinaryLink } from '../../Routes';
 
 const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>
-        <div className='header__navbar-icons header__navbar-icons--binary-logo'>
+        <div className='header__navbar-icons header__navbar-icons--deriv-logo'>
             <Symbol width='30px' height='30px' />
         </div>
         {!!items.length &&

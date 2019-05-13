@@ -4,6 +4,7 @@ import React          from 'react';
 import { withRouter } from 'react-router';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
 import { connect }    from 'Stores/connect';
+import routes         from 'Constants/routes';
 import InstallPWA     from './install-pwa.jsx';
 import Loading        from '../../../../../templates/app_2/components/loading.jsx';
 
@@ -18,6 +19,7 @@ const AppContents = ({
     is_logged_in,
     is_positions_drawer_on,
     loading_status,
+    location,
     setPWAPromptEvent,
 }) => {
     if (is_logged_in) {
@@ -37,7 +39,7 @@ const AppContents = ({
 
     return (
         <React.Fragment>
-            { is_loading && <Loading status={loading_status} theme={is_dark_mode ? 'dark' : 'light'} /> }
+            { is_loading && location.pathname === routes.trade && <Loading status={loading_status} theme={is_dark_mode ? 'dark' : 'light'} /> }
             <div
                 id='app_contents'
                 className={classNames('app-contents', {

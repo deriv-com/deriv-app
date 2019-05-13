@@ -1,8 +1,8 @@
-const Pushwoosh              = require('web-push-notifications').Pushwoosh;
-const getLanguage            = require('../language').get;
-const urlForCurrentDomain    = require('../url').urlForCurrentDomain;
-const Client                 = require('../../app/base/client');
-const getCurrentBinaryDomain = require('../../config').getCurrentBinaryDomain;
+const Pushwoosh           = require('web-push-notifications').Pushwoosh;
+const Client              = require('../base/client_base');
+const getLanguage         = require('../language').get;
+const urlForCurrentDomain = require('../url').urlForCurrentDomain;
+const isProduction        = require('../../config').isProduction;
 
 const BinaryPushwoosh = (() => {
     const pw = new Pushwoosh();
@@ -10,14 +10,14 @@ const BinaryPushwoosh = (() => {
     let initialised = false;
 
     const init = () => {
-        if (!getCurrentBinaryDomain()) return;
+        if (!isProduction()) return;
 
         if (!initialised) {
             pw.push(['init', {
                 logLevel                : 'error', // or info or debug
                 applicationCode         : 'D04E6-FA474',
                 safariWebsitePushID     : 'web.com.binary',
-                defaultNotificationTitle: 'Binary.com',
+                defaultNotificationTitle: 'DTrader',
                 defaultNotificationImage: urlForCurrentDomain('https://style.binary.com/images/logo/logomark.png'),
             }]);
             initialised = true;

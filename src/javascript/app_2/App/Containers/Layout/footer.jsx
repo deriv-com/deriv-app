@@ -2,6 +2,7 @@ import classNames     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import routes         from 'Constants/routes';
 import { connect }    from 'Stores/connect';
 import ServerTime     from '../server-time.jsx';
 import {
@@ -26,7 +27,7 @@ const Footer = ({
 }) => (
     <footer className={classNames('footer', {
         'footer--is-blurred': is_fully_blurred,
-        'footer--show'      : !is_loading,
+        'footer--show'      : !is_loading || location.pathname !== routes.trade,
     })}
     >
         <div className='footer__links footer__links--left'>

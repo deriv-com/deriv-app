@@ -1,0 +1,31 @@
+.pl-card {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &__item {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__header {
+            @include themify($themes) {
+                @include typeface(--small-center-normal-black);
+                color: themed('label_default_background');
+            }
+        }
+        &__body {
+            @include themify($themes) {
+                @include typeface(--paragraph-center-bold-black);
+                color: themed('text_color');
+            }
+        }
+        &__body--loss {
+            color: $COLOR_RED !important;
+        }
+        &__body--profit {
+            color: $COLOR_GREEN_1 !important;
+        }
+    }
+}

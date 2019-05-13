@@ -5,7 +5,7 @@ import ServerTime   from '../../../_common/base/server_time';
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed
 moment.createFromInputFallback = function (config) {
-    config._d = new Date(NaN);
+    config._d = new Date(NaN); // eslint-disable-line no-underscore-dangle
 };
 
 /**

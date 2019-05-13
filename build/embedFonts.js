@@ -1,10 +1,10 @@
 module.exports = function () {
-    const app_2_file = `${global.dist}/css/app_2.css`;
+    const app_file = `${global.dist}/css/app.css`;
 
     const config = {
-        app_2: {
+        app: {
             files: {
-                [app_2_file]: [app_2_file],
+                [app_file]: [app_file],
             },
         },
     };

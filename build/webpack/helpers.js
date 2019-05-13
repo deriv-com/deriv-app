@@ -9,15 +9,15 @@ const getDirsSync = (path_to_dir) => (
         ))
 );
 
-const getApp2Aliases = () => {
-    const app_2_path = path.resolve(PATHS.SRC, 'javascript/app_2');
+const getAppAliases = () => {
+    const app_path = path.resolve(PATHS.SRC, 'javascript/app');
 
-    return getDirsSync(app_2_path)
+    return getDirsSync(app_path)
         .filter(d => !/documents/i.test(d))
         .reduce(
             (aliases, folder_name) => ({
                 ...aliases,
-                [folder_name]: path.resolve(app_2_path, folder_name),
+                [folder_name]: path.resolve(app_path, folder_name),
             }),
             {}
         );
@@ -41,7 +41,7 @@ const publicPathFactory = (grunt) => () => (
 );
 
 module.exports = {
-    getApp2Aliases,
+    getAppAliases,
     makeCacheGroup,
     publicPathFactory,
 };

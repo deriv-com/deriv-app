@@ -13,13 +13,13 @@
                 ],
                 "alias": {
                     "_common"  : "./src/javascript/_common",
-                    "App"      : "./src/javascript/app_2/App",
-                    "Assets"   : "./src/javascript/app_2/Assets",
-                    "Constants": "./src/javascript/app_2/Constants",
-                    "Modules"  : "./src/javascript/app_2/Modules",
-                    "Services" : "./src/javascript/app_2/Services",
-                    "Stores"   : "./src/javascript/app_2/Stores",
-                    "Utils"    : "./src/javascript/app_2/Utils",
+                    "App"      : "./src/javascript/app/App",
+                    "Assets"   : "./src/javascript/app/Assets",
+                    "Constants": "./src/javascript/app/Constants",
+                    "Modules"  : "./src/javascript/app/Modules",
+                    "Services" : "./src/javascript/app/Services",
+                    "Stores"   : "./src/javascript/app/Stores",
+                    "Utils"    : "./src/javascript/app/Utils",
                     "Images"   : "./src/images/"
                 }
             }

@@ -18,7 +18,7 @@ module.exports = function () {
     });
 
     const config = {
-        app_2: generateConfig(['app_2.scss'], `${global.dist}/css`),
+        app: generateConfig(['app.scss'], `${global.dist}/css`),
     };
 
     return { [global.section]: config[global.section] };

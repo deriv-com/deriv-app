@@ -5,9 +5,9 @@ import {
 import PropTypes                 from 'prop-types';
 import React                     from 'react';
 import { isCryptocurrency }      from '_common/base/currency_base';
+import Tooltip                   from 'App/Components/Elements/tooltip.jsx';
 import IncrementButtons          from './increment-buttons.jsx';
 import Input                     from './input.jsx';
-import Tooltip                   from '../../Elements/tooltip.jsx';
 
 class InputField extends React.Component {
     render () {

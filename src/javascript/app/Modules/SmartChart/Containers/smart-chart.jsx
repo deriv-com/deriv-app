@@ -86,7 +86,6 @@ Chart.propTypes = {
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
-    is_digit_contract           : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,

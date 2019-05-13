@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from '_common/localize';
-import Tooltip      from 'App/Components/Elements/tooltip.jsx';
+import { Popover }  from 'App/Components/Elements/Popover';
 import Button       from 'App/Components/Form/button.jsx';
 
 const SellButton = ({
@@ -17,7 +17,7 @@ const SellButton = ({
 
     return (
         <React.Fragment>
-            <Tooltip alignment='left' icon='question' message={sell_message} />
+            <Popover alignment='left' icon='question' message={sell_message} />
             <Button
                 className='btn--secondary btn--secondary--green'
                 is_disabled={!is_valid_to_sell || is_sell_requested}

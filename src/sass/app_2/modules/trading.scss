@@ -183,31 +183,6 @@
                 position: relative;
             }
         }
-        &-tooltip {
-            &-i {
-                @extend %inline-icon.secondary;
-            }
-            &--disabled {
-                pointer-events: none;
-            }
-            &[data-tooltip] {
-                text-decoration: none;
-
-                &:before, &:after {
-                    right: 230px !important;
-                }
-                &:before {
-                    padding-left: 3em;
-                    white-space: normal;
-                    width: 265px;
-                }
-            }
-            &:hover {
-                .trade-container__price-tooltip-i {
-                    @extend %inline-icon.white;
-                }
-            }
-        }
     }
     &__barriers {
         display: flex;
@@ -308,6 +283,9 @@
         width: calc(100% + 2px);
         height: calc(100% + 2px);
         left: -2px;
+    }
+    &__popover-bubble {
+        width: 220px;
     }
     //&__lock {
     //    position: absolute;

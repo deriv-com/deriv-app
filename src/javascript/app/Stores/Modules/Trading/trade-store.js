@@ -392,7 +392,9 @@ export default class TradeStore extends BaseStore {
                 this.validateAllProperties();
             }
 
-            this.debouncedProposal();
+            if (!this.smart_chart.is_contract_mode) {
+                this.debouncedProposal();
+            }
         }
     }
 

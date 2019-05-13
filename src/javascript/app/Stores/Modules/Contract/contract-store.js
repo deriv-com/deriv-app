@@ -40,6 +40,7 @@ export default class ContractStore extends BaseStore {
     @observable has_error         = false;
     @observable error_message     = '';
     @observable is_sell_requested = false;
+    @observable is_digit_contract = false;
 
     // ---- Normal properties ---
     forget_id;
@@ -166,10 +167,10 @@ export default class ContractStore extends BaseStore {
     @action.bound
     handleDigits() {
         if (isDigitContract(this.contract_info.contract_type)) {
-            this.root_store.modules.trade.is_digit_contract = true;
+            this.is_digit_contract = true;
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         } else {
-            this.root_store.modules.trade.is_digit_contract = false;
+            this.is_digit_contract = false;
         }
     }
 

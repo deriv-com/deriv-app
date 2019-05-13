@@ -72,14 +72,14 @@
                 padding: 0.8em 2em;
                 border-left: 1px solid $COLOR_LIGHT_BLACK_4;
 
-                .drawer__img:before {
-                    display: block;
-                    content: ' ';
-                    background-image: url('../images/header/binary_logo_light.svg');
-                    background-size: 138px 32px;
-                    height: 3.2em;
-                    width: 13.8em;
-                }
+                //.drawer__img:before {
+                //    display: block;
+                //    content: ' ';
+                //    background-image: url('../images/header/binary_logo_light.svg');
+                //    background-size: 138px 32px;
+                //    height: 3.2em;
+                //    width: 13.8em;
+                //}
             }
         }
         .drawer__footer {

@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     const config = {
-        app_2: {},
+        app: {},
     };
 
     return {

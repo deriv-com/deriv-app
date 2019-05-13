@@ -45,7 +45,7 @@ const node_modules_paths = {
 
 const config = {
     branch_prefix: 'br_',
-    section      : 'app_2',
+    section      : 'app',
 };
 
 module.exports = {

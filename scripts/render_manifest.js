@@ -1,6 +1,6 @@
 const path      = require('path');
 const writeFile = require('./common').writeFile;
-const MANIFEST_TEMPLATE = require('../src/templates/app_2/manifest.json');
+const MANIFEST_TEMPLATE = require('../src/templates/app/manifest.json');
 
 const compileManifests = async (dist_path, language, branch) => {
     const manifest = { ... MANIFEST_TEMPLATE };

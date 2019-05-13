@@ -46,7 +46,7 @@
 
         var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
         var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-        var regex = new RegExp('^(?<prefix>\\/[A-Za-z0-9-_]+){0,2}(?<lang>\\/('+ all_languages.join('|') +'))(?<modules>(\\/[A-Za-z0-9-_]+)+)', 'i');
+        var regex = new RegExp('^(?<prefix>(\\/[A-Za-z0-9-_]+){0,2})(?<lang>\\/('+ all_languages.join('|') +'))(?<modules>(\\/[A-Za-z0-9-_]+)+)', 'i');
         var result = regex.exec(pathname);
         var prefix = result.groups.prefix || '';
         var default_lang = result.groups.lang.replace(/\//, '').toLowerCase() || 'en';

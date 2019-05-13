@@ -41,8 +41,8 @@ class Chart extends React.Component {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={(!this.props.is_digit_contract || this.props.should_show_last_digit_stats) ?
-                    null : this.bottomWidgets }
+                bottomWidgets={this.props.should_show_bottom_widgets ?
+                    this.bottomWidgets : null}
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.range.end_epoch}

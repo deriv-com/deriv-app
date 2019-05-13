@@ -65,7 +65,6 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
-
         } else if (!this.is_left_epoch_set) {
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
             if (contract_info.tick_count) {
@@ -161,15 +160,16 @@ export default class ContractStore extends BaseStore {
             this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
         }
 
-        this.root_store.modules.trade.is_digit_contract = isDigitContract(this.contract_info.contract_type);
-
         this.drawChart(this.smart_chart, this.contract_info);
     }
 
     @action.bound
     handleDigits() {
         if (isDigitContract(this.contract_info.contract_type)) {
+            this.root_store.modules.trade.is_digit_contract = true;
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
+        } else {
+            this.root_store.modules.trade.is_digit_contract = false;
         }
     }
 

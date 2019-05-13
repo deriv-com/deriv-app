@@ -7,6 +7,7 @@ const BinarySocket     = require('./socket_base');
 const getElementById   = require('../common_functions').getElementById;
 const isVisible        = require('../common_functions').isVisible;
 const getLanguage      = require('../language').get;
+const LocalStore       = require('../storage').LocalStore;
 const State            = require('../storage').State;
 const getPropertyValue = require('../utility').getPropertyValue;
 const getAppId         = require('../../config').getAppId;
@@ -23,6 +24,9 @@ const GTM = (() => {
         ...ClientBase.isLoggedIn() && {
             visitorId: ClientBase.get('loginid'),
             bom_email: ClientBase.get('email'),
+        },
+        ...('is_dark_mode_on' in LocalStore.getObject('ui_store')) && {
+            theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light'
         },
     });
 

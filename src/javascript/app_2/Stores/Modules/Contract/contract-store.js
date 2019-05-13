@@ -43,9 +43,10 @@ export default class ContractStore extends BaseStore {
 
     // ---- Normal properties ---
     forget_id;
-    chart_type         = 'mountain';
-    is_granularity_set = false;
-    is_left_epoch_set  = false;
+    chart_type            = 'mountain';
+    is_granularity_set    = false;
+    is_left_epoch_set     = false;
+    is_on_going_contract  = false;
 
     // -------------------
     // ----- Actions -----
@@ -55,8 +56,12 @@ export default class ContractStore extends BaseStore {
         this.forget_id = contract_info.id;
         const end_time = getEndTime(contract_info);
         const should_update_chart_type = !contract_info.tick_count && !this.is_granularity_set;
+        
+        if(!end_time) this.is_on_going_contract = true;
 
         if (end_time) {
+            SmartChartStore.is_static_chart = !this.is_on_going_contract;
+
             SmartChartStore.setRange(contract_info.date_start, end_time);
 
             if (should_update_chart_type) {
@@ -125,7 +130,7 @@ export default class ContractStore extends BaseStore {
         this.is_sell_requested  = false;
         this.is_left_epoch_set  = false;
         this.sell_info          = {};
-
+        this.is_on_going_contract = false;
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
     }

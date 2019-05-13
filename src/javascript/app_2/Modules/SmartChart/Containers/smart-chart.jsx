@@ -57,6 +57,7 @@ class Chart extends React.Component {
                 startEpoch={this.props.range.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
                 scrollToEpochOffset={this.props.scroll_to_offset}
+                isStaticChart={this.props.is_static_chart}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
@@ -89,6 +90,7 @@ Chart.propTypes = {
     is_digit_contract           : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
+    is_static_chart             : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
@@ -118,6 +120,7 @@ export default connect(
         barriers_array      : modules.smart_chart.barriers_array,
         chart_type          : modules.smart_chart.chart_type,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
+        is_static_chart     : modules.smart_chart.is_static_chart,
         exportLayout        : modules.smart_chart.exportLayout,
         granularity         : modules.smart_chart.granularity,
         is_title_enabled    : modules.smart_chart.is_title_enabled,

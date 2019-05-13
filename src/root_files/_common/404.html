@@ -46,13 +46,12 @@
 
         var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
         var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-        var regex = new RegExp('^(?<prefix>(\\/[A-Za-z0-9-_]+){0,2})(?<lang>\\/('+ all_languages.join('|') +'))(?<modules>(\\/[A-Za-z0-9-_]+)+)', 'i');
+        var regex = new RegExp('^((\/[A-Za-z0-9-_]+){0,2})(\/('+ all_languages.join('|') +'))((\/[A-Za-z0-9-_]+)+)', 'i');
         var result = regex.exec(pathname);
-        var prefix = result.groups.prefix || '';
-        var default_lang = result.groups.lang.replace(/\//, '').toLowerCase() || 'en';
-        var routes = result.groups.modules ? result.groups.modules.substr(1).replace('/', '::') : '';
+        var prefix = result[1] || '';
+        var default_lang = result[4].toLowerCase() || 'en';
+        var routes = result[5] ? result[5].substr(1).replace('/', '::') : '';
 
-        // var default_lang = all_languages.includes(lang.toLowerCase()) ? lang.toLowerCase() : 'EN';
         var default_lang = 'EN'; // TODO remove this when i18n is ready.
         location.replace(
             base

@@ -18,16 +18,10 @@ exports.pages = require('./config/pages.js').map(p => ({
 
 // ---------- Sections ----------
 exports.sections_config = {
-    '': { // '' is the default section when no 'section' specified in pages.js (to avoid adding 'app' as section for all)
-        path     : '',
-        js_files : ['vendor', 'binary'],
-        css_files: ['common.min', 'app.min', 'static.min'],
-        has_pjax : true,
-    },
-    app_2: {
+    app: {
         path     : '',
         js_files : ['vendor', 'react_mobx', 'binary_common', 'binary'],
-        css_files: ['app_2.min', 'smartcharts'],
+        css_files: ['app.min', 'smartcharts'],
         has_pjax : false,
     },
 };

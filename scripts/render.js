@@ -101,7 +101,7 @@ const createDirectories = (section = '', idx) => {
         if (common.sections_config[section].has_pjax) {
             mkdir(Path.join(base_path, `${language}/pjax`));
         }
-        if (section === 'app_2') {
+        if (section === 'app') {
             compileManifests(config.dist_path, language, config.branch);
         }
     });
@@ -134,7 +134,7 @@ const createTranslator = lang => {
 
 const createUrlFinder = (default_lang, section_path, root_url = getConfig().root_url) => (
     (url, lang = default_lang.toLowerCase(), section) => { // use section to create url for a different section. If missing, uses the current pages's section as default
-        const section_final_path = typeof section !== 'undefined' ? common.sections_config[section === 'app' ? '' : section].path : section_path;
+        const section_final_path = typeof section !== 'undefined' ? common.sections_config[section].path : section_path;
 
         let new_url = url;
         if (new_url === '' || new_url === '/') {

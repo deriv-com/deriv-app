@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                     appName: {
                         app: 'Google\ Chrome'
                     },
-                    target : 'https://localhost',
+                    target : 'https://localhost.binary.sx',
                 },
                 middleware: (connect, options) => {
                     const middlewares = [

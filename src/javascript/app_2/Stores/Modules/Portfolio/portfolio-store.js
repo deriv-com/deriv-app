@@ -2,6 +2,7 @@ import {
     action,
     computed,
     observable }                   from 'mobx';
+import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import {
@@ -20,6 +21,7 @@ export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
     @observable is_loading = false;
     @observable error      = '';
+    getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     @action.bound
     initializePortfolio = () => {
@@ -191,7 +193,6 @@ export default class PortfolioStore extends BaseStore {
         // check if position to be removed is out of range from the maximum amount rendered in drawer
         if (this.positions.length > 4) i += 1;
         this.positions.splice(i, 1);
-
         // check if contract is in view in contract_mode before removing contract details from chart
         if (is_contract_mode && (this.root_store.modules.contract.contract_id === contract_id)) {
             this.root_store.modules.contract.onCloseContract();
@@ -256,6 +257,11 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get all_positions() {
         return this.positions;
+    }
+
+    @computed
+    get is_active_empty() {
+        return !this.is_loading && this.active_positions.length === 0;
     }
 
     @computed

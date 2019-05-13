@@ -6,39 +6,50 @@ import { isDigitContract }     from 'Stores/Modules/Contract/Helpers/digits';
 import { isEnded }             from 'Stores/Modules/Contract/Helpers/logic';
 import { LastDigitPrediction } from '../Components/LastDigitPrediction';
 
-const Digits = ({
-    contract_info,
-    digits_info,
-    display_status,
-    is_trade_page,
-    last_digit,
-}) => {
-    const { barrier, contract_type } = contract_info;
-    const is_digit = isDigitContract(contract_type);
-    const is_ended = isEnded(contract_info);
+class Digits extends React.Component {
+    state = {
+        mounted: false,
+    }
 
-    return (
-        <CSSTransition
-            in={is_digit}
-            timeout={250}
-            classNames={{
-                enter    : 'digits--enter',
-                enterDone: 'digits--enter-done',
-                exit     : 'digits--exit',
-            }}
-            unmountOnExit
-        >
-            <LastDigitPrediction
-                barrier={+barrier || +last_digit} // fallback to last_digit if barrier from contract_info is null
-                contract_type={contract_type}
-                digits_info={digits_info}
-                is_ended={is_ended}
-                is_trade_page={is_trade_page}
-                status={display_status}
-            />
-        </CSSTransition>
-    );
-};
+    componentDidMount() {
+        this.setState({ mounted: true });
+    }
+
+    render() {
+        const {
+            contract_info,
+            digits_info,
+            display_status,
+            is_trade_page,
+            last_digit,
+        } = this.props;
+        const { barrier, contract_type } = contract_info;
+        const is_digit = isDigitContract(contract_type);
+        const is_ended = isEnded(contract_info);
+
+        return (
+            <CSSTransition
+                in={is_digit && this.state.mounted}
+                timeout={250}
+                classNames={{
+                    enter    : 'digits--enter',
+                    enterDone: 'digits--enter-done',
+                    exit     : 'digits--exit',
+                }}
+                unmountOnExit
+            >
+                <LastDigitPrediction
+                    barrier={+barrier || +last_digit} // fallback to last_digit if barrier from contract_info is null
+                    contract_type={contract_type}
+                    digits_info={digits_info}
+                    is_ended={is_ended}
+                    is_trade_page={is_trade_page}
+                    status={display_status}
+                />
+            </CSSTransition>
+        );
+    }
+}
 
 Digits.propTypes = {
     contract_info : PropTypes.object,

@@ -421,6 +421,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
+            this.is_digit_contract = isDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
@@ -455,7 +456,6 @@ export default class TradeStore extends BaseStore {
         }
 
         this.is_purchase_enabled = true;
-        this.is_digit_contract = isDigitContract(contract_type);
     }
 
     @action.bound

@@ -26,6 +26,8 @@ class Trade extends React.Component {
     render() {
         const contract_id = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+        const should_show_bottom_widgets   = this.props.is_digit_contract && this.props.is_contract_mode;
+        const should_show_last_digit_stats = this.props.is_digit_contract && !this.props.is_contract_mode;
 
         return (
             <div id='trade_container' className='trade-container'>
@@ -37,11 +39,11 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 Digits={<Digits is_trade_page />}
                                 InfoBox={<InfoBox is_trade_page />}
-                                is_digit_contract={this.props.is_digit_contract}
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
-                                should_show_last_digit_stats={(this.props.is_digit_contract && !this.props.is_contract_mode)}
+                                should_show_bottom_widgets={should_show_bottom_widgets}
+                                should_show_last_digit_stats={should_show_last_digit_stats}
                                 symbol={this.props.symbol}
                             />
                         </React.Suspense>

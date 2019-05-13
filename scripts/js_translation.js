@@ -5,17 +5,13 @@ const common  = require('./common');
 const GetText = require('./gettext');
 const extract = require('./extract_js_texts');
 
-const static_app   = require('./js_texts/static_strings_app');
-// const static_app_2 = require('./js_texts/static_strings_app_2'); // TODO: uncomment when decided to push app_2 texts to Crowdin
+// const static_app = require('./js_texts/static_strings_app'); // TODO: uncomment when decided to push app texts to Crowdin
 
 const all_languages = [...common.languages, 'ach'].map(l => l.toLowerCase());
 const map = {
     app: {
-        static: static_app,
+        // static: static_app,
     },
-    // app_2: {
-    //     static: static_app_2,
-    // },
 };
 
 const build = () => {
@@ -53,7 +49,7 @@ const generate = () => {
         process.stdout.write(` ${lang}.js ${'.'.repeat(15 - lang.length)}`);
 
         Object.keys(map).forEach(app => {
-            const js_path = path.join(common.root_path, `${target_path}${app !== 'app' ? `${app}/` : ''}${lang}.js`);
+            const js_path = path.join(common.root_path, `${target_path}${`${app}/`}${lang}.js`);
             const content = `const texts_json = {};\ntexts_json['${lang.toUpperCase()}'] = ${JSON.stringify(map[app][lang])};`;
             fs.writeFileSync(js_path, content, 'utf8');
         });

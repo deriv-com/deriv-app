@@ -1,12 +1,12 @@
-const webpackMerge   = require('webpack-merge');
-const app2Config     = require('./webpack/config_app_2');
-const commonConfig   = require('./webpack/config_common');
+const webpackMerge = require('webpack-merge');
+const appConfig    = require('./webpack/config_app');
+const commonConfig = require('./webpack/config_common');
 
 module.exports = function (grunt) {
     const common_config = commonConfig(grunt);
 
     const config = {
-        app_2: [webpackMerge.smart(common_config, app2Config(grunt))],
+        app: [webpackMerge.smart(common_config, appConfig(grunt))],
     };
 
     const section = config[global.section];

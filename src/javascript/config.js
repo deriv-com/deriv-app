@@ -41,7 +41,7 @@ const getAppId = () => {
         window.localStorage.setItem('config.default_app_id', user_app_id); // it's being used in endpoint chrome extension - please do not remove
         app_id = user_app_id;
     } else if (/localhost/i.test(window.location.hostname)) {
-        app_id = 1159;
+        app_id = 17044;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();

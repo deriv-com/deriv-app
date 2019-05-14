@@ -84,8 +84,7 @@ export const createMarkerSpotEntry = (contract_info) => {
 };
 
 export const createMarkerSpotExit = (contract_info, tick, idx) => {
-    if (!contract_info.exit_tick_time) return false;
-    const is_user_sold = isUserSold(contract_info);
+    if (!contract_info.exit_tick_time || isUserSold(contract_info)) return false;
 
     let spot_count, align_label;
     if (tick) {
@@ -94,17 +93,16 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
     }
 
     return createMarkerConfig(
-        !is_user_sold ? MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type,
+        MARKER_TYPES_CONFIG.SPOT_EXIT.type,
         +contract_info.exit_tick_time,
         +contract_info.exit_tick,
-        !is_user_sold ?
-            {
-                spot_value: `${contract_info.exit_tick}`,
-                spot_epoch: `${contract_info.exit_tick_time}`,
-                status    : `${+contract_info.profit > 0 ? 'won' : 'lost' }`,
-                align_label,
-                spot_count,
-            } : {},
+        {
+            spot_value: `${contract_info.exit_tick}`,
+            spot_epoch: `${contract_info.exit_tick_time}`,
+            status    : `${+contract_info.profit > 0 ? 'won' : 'lost' }`,
+            align_label,
+            spot_count,
+        },
     );
 };
 

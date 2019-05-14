@@ -112,7 +112,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onCloseContract() {
+    onCloseContract(is_not_trade_page) {
         this.forgetProposalOpenContract();
         this.chart_type         = 'mountain';
         this.contract_id        = null;
@@ -127,13 +127,15 @@ export default class ContractStore extends BaseStore {
         this.sell_info          = {};
 
         this.smart_chart.cleanupContractChartView();
-        this.smart_chart.applySavedTradeChartLayout();
+        if (!is_not_trade_page) {
+            this.smart_chart.applySavedTradeChartLayout();
+        }
     }
 
     @action.bound
-    onUnmount() {
+    onUnmount(is_not_trade_page) {
         this.disposeSwitchAccount();
-        this.onCloseContract();
+        this.onCloseContract(is_not_trade_page);
     }
 
     @action.bound

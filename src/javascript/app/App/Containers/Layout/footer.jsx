@@ -32,7 +32,7 @@ const Footer = ({
     >
         <div className='footer__links footer__links--left'>
             {
-                is_logged_in &&
+                (is_logged_in && (routes.trade.split('/').pop() === location.pathname.split('/').pop())) &&
                 <TogglePositions
                     is_positions_drawer_on={is_positions_drawer_on}
                     togglePositionsDrawer={togglePositionsDrawer}

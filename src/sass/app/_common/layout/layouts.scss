@@ -62,7 +62,7 @@
     }
 }
 
-/** @define trade-container */
+/** @define trade-container; weak */
 .trade-container {
     position: relative;
     padding: 0.8em 1.2em 0;
@@ -72,6 +72,34 @@
     will-change: transform;
     overflow: hidden;
 
+    &__replay {
+        display: flex;
+        flex-direction: row;
+
+        .replay-chart__container {
+            width: 100%;
+            padding: 0 16px;
+
+            .smartcharts {
+                margin-left: 230px;
+                width: calc(100vw - 258px);
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    height: 100%;
+                    width: 30px;
+                    top: 0;
+                    left: -2px;
+                    pointer-events: none;
+                    z-index: 2;
+                    @include themify($themes) {
+                        background-image: themed('chart_gradient_color');
+                    }
+                }
+            }
+        }
+    }
     @media (max-width: 768px) {
         flex-direction: column;
     }

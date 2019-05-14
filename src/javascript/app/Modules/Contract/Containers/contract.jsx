@@ -16,7 +16,7 @@ const Contract = ({
                 <ErrorComponent message={error_message} />
                 :
                 <div className='trade-container'>
-                    <div>
+                    <div className='trade-container__replay'>
                         <CSSTransition
                             in={!has_error}
                             timeout={400}
@@ -27,7 +27,10 @@ const Contract = ({
                             }}
                             unmountOnExit
                         >
-                            <ContractReplay contract_id={match.params.contract_id} key={match.params.contract_id} />
+                            <ContractReplay
+                                contract_id={match.params.contract_id}
+                                key={match.params.contract_id}
+                            />
                         </CSSTransition>
                     </div>
                 </div>

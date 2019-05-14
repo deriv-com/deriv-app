@@ -31,6 +31,7 @@ export default class SmartChartStore extends BaseStore {
     @observable scroll_to_left_epoch_offset = 0;
 
     @observable chart_id             = 'trade';
+    @observable replay_id            = 'replay';
     @observable should_import_layout = false;
     @observable should_export_layout = false;
     @observable should_clear_chart   = false;

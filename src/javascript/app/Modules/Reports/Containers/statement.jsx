@@ -72,8 +72,7 @@ class Statement extends React.Component {
                         data_source={data}
                         columns={columns}
                         onScroll={handleScroll}
-                        // getRowAction={this.getRowAction} // TODO uncomment when chart layout is ready for statements
-                        getRowAction={undefined}
+                        getRowAction={this.getRowAction}
                         is_empty={is_empty}
                     >
                         <PlaceholderComponent

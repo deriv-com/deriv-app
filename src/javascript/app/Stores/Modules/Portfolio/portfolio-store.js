@@ -13,8 +13,8 @@ import {
     getDurationUnitText }          from './Helpers/details';
 import {
     getDisplayStatus,
-    getEndSpot,
-    getEndSpotTime,
+    getEndTime,
+    isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
 
@@ -158,12 +158,12 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         this.positions[i].contract_info    = contract_response;
-        this.positions[i].exit_spot        = getEndSpot(contract_response) || contract_response.current_spot; // workaround if no exit_spot in proposal_open_contract, use latest spot
+        this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].duration         = getDurationTime(contract_response);
         this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
         this.positions[i].result           = getDisplayStatus(contract_response);
-        this.positions[i].sell_time        = getEndSpotTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
+        this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
         this.positions[i].status           = 'complete';
 
         // fix for missing barrier and entry_spot
@@ -172,8 +172,11 @@ export default class PortfolioStore extends BaseStore {
             this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
 
+        // remove exit_spot for manually sold contracts
+        if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
+
         this.positions[i].is_loading = false;
-    };
+    }
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -187,8 +190,8 @@ export default class PortfolioStore extends BaseStore {
         // check if position to be removed is out of range from the maximum amount rendered in drawer
         if (this.positions.length > 4) i += 1;
         this.positions.splice(i, 1);
-        // check if chart is in contract_mode before removing contract details from chart
-        if (is_contract_mode) {
+        // check if contract is in view in contract_mode before removing contract details from chart
+        if (is_contract_mode && (this.root_store.modules.contract.contract_id === contract_id)) {
             this.root_store.modules.contract.onCloseContract();
             this.root_store.modules.trade.requestProposal();
         }

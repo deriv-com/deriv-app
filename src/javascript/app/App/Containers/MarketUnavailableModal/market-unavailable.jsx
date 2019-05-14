@@ -9,13 +9,13 @@ import { connect }    from 'Stores/connect';
 const MarketUnavailableModal = ({ is_visible, setHasOnlyForwardingContracts }) => (
     <FullPageModal
         cancel_button_text={localize('Go to SmartTrader')}
-        confirm_button_text={localize('No, stay on BinaryNex')}
+        confirm_button_text={localize('No, stay on DTrader')}
         is_visible={is_visible}
         onCancel={() => window.open(websiteUrl()) && setHasOnlyForwardingContracts(false)}
         onConfirm={() => setHasOnlyForwardingContracts(false)}
         title={localize('Market is unavailable')}
     >
-        <Localize str='Sorry, but this market is not supported yet on BinaryNex. Do you want to trade this market on SmartTrader?' />
+        <Localize str='Sorry, but this market is not supported yet on DTrader. Do you want to trade this market on SmartTrader?' />
     </FullPageModal>
 );
 

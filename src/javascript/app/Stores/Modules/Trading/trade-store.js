@@ -390,7 +390,9 @@ export default class TradeStore extends BaseStore {
                 this.validateAllProperties();
             }
 
-            this.debouncedProposal();
+            if (!this.smart_chart.is_contract_mode) {
+                this.debouncedProposal();
+            }
         }
     }
 
@@ -419,6 +421,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
+            this.root_store.modules.contract.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);

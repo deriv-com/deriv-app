@@ -26,7 +26,9 @@ class Trade extends React.Component {
     render() {
         const contract_id = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_digit_contract = ['match_diff', 'even_odd', 'over_under'].includes(this.props.contract_type);
+        const should_show_bottom_widgets   = this.props.is_digit_contract && this.props.is_contract_mode;
+        const should_show_last_digit_stats = this.props.is_digit_contract && !this.props.is_contract_mode;
+
         return (
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
@@ -37,11 +39,11 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 Digits={<Digits is_trade_page />}
                                 InfoBox={<InfoBox is_trade_page />}
-                                is_digit_contract={is_digit_contract}
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
-                                should_show_last_digit_stats={(is_digit_contract && !this.props.is_contract_mode)}
+                                should_show_bottom_widgets={should_show_bottom_widgets}
+                                should_show_last_digit_stats={should_show_last_digit_stats}
                                 symbol={this.props.symbol}
                             />
                         </React.Suspense>
@@ -69,25 +71,27 @@ class Trade extends React.Component {
 }
 
 Trade.propTypes = {
-    chart_id        : PropTypes.string,
-    chart_zoom      : PropTypes.number,
-    contract_type   : PropTypes.string,
-    is_contract_mode: PropTypes.bool,
-    is_mobile       : PropTypes.bool,
-    is_trade_enabled: PropTypes.bool,
-    onClickNewTrade : PropTypes.func,
-    onCloseContract : PropTypes.func,
-    onMount         : PropTypes.func,
-    onSymbolChange  : PropTypes.func,
-    onUnmount       : PropTypes.func,
-    purchase_info   : PropTypes.object,
-    scroll_to_epoch : PropTypes.number,
-    scroll_to_offset: PropTypes.number,
-    symbol          : PropTypes.string,
+    chart_id         : PropTypes.string,
+    chart_zoom       : PropTypes.number,
+    contract_type    : PropTypes.string,
+    is_contract_mode : PropTypes.bool,
+    is_digit_contract: PropTypes.bool,
+    is_mobile        : PropTypes.bool,
+    is_trade_enabled : PropTypes.bool,
+    onClickNewTrade  : PropTypes.func,
+    onCloseContract  : PropTypes.func,
+    onMount          : PropTypes.func,
+    onSymbolChange   : PropTypes.func,
+    onUnmount        : PropTypes.func,
+    purchase_info    : PropTypes.object,
+    scroll_to_epoch  : PropTypes.number,
+    scroll_to_offset : PropTypes.number,
+    symbol           : PropTypes.string,
 };
 
 export default connect(
     ({ modules, ui }) => ({
+        is_digit_contract                  : modules.contract.is_digit_contract,
         onCloseContract                    : modules.contract.onCloseContract,
         chart_id                           : modules.smart_chart.chart_id,
         scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,

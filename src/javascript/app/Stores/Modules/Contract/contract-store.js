@@ -51,19 +51,21 @@ export default class ContractStore extends BaseStore {
     @action.bound
     drawChart(SmartChartStore, contract_info) {
         this.forget_id = contract_info.id;
-        const end_time = getEndTime(contract_info);
-        const should_update_chart_type = !contract_info.tick_count && !this.is_granularity_set;
 
+        const { date_start }           = contract_info;
+        const end_time                 = getEndTime(contract_info);
+        const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
+
+        SmartChartStore.setContractStart(date_start);
         if (end_time) {
-            SmartChartStore.setRange(contract_info.date_start, end_time);
+            SmartChartStore.setContractEnd(end_time);
 
             if (should_update_chart_type) {
-                this.handleChartType(SmartChartStore, contract_info.date_start, end_time);
+                this.handleChartType(SmartChartStore, date_start, end_time);
             } else {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
-
         } else if (!this.is_left_epoch_set) {
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
             if (contract_info.tick_count) {
@@ -73,17 +75,15 @@ export default class ContractStore extends BaseStore {
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
         } else if (should_update_chart_type) {
-            this.handleChartType(SmartChartStore, contract_info.date_start, null);
+            this.handleChartType(SmartChartStore, date_start, null);
         } else if (this.is_granularity_set) {
-            if (getChartType(contract_info.date_start, null) !== this.chart_type) {
+            if (getChartType(date_start, null) !== this.chart_type) {
                 this.is_granularity_set = false;
             }
         }
 
         createChartBarrier(SmartChartStore, contract_info);
         createChartMarkers(SmartChartStore, contract_info);
-
-        this.handleDigits();
     }
 
     @action.bound
@@ -162,11 +162,13 @@ export default class ContractStore extends BaseStore {
         }
 
         this.drawChart(this.smart_chart, this.contract_info);
+
+        this.handleDigits();
     }
 
     @action.bound
     handleDigits() {
-        if (isDigitContract(this.contract_info.contract_type)) {
+        if (this.is_digit_contract) {
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
     }
@@ -223,6 +225,10 @@ export default class ContractStore extends BaseStore {
         delete this.sell_info.error_message;
     }
 
+    @action.bound
+    setIsDigitContract(contract_type) {
+        this.contract_info.contract_type = contract_type;
+    }
     // ---------------------------
     // ----- Computed values -----
     // ---------------------------
@@ -287,5 +293,10 @@ export default class ContractStore extends BaseStore {
     @computed
     get is_valid_to_sell() {
         return isValidToSell(this.contract_info);
+    }
+
+    @computed
+    get is_digit_contract() {
+        return isDigitContract(this.contract_info.contract_type);
     }
 }

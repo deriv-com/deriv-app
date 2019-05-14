@@ -19,14 +19,14 @@ const getPlugins = (app, grunt) => ([
 
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale/, /ja/),
 
-    ...(app === 'app_2'
+    ...(app === 'app'
         ? [
             new ManifestPlugin({
                 fileName: 'asset-manifest.json',
             }),
 
             ...(languages.map(lang => new SWPrecachedWebpackPlugin({
-                cachedId                     : 'app_2',
+                cachedId                     : 'app',
                 dontCacheBustUrlsMatching    : /\.\w{8}\./,
                 minify                       : false,
                 navigateFallback             : '',

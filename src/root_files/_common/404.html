@@ -24,6 +24,7 @@
         'zh_cn': 'cn',
     };
     var all_languages = ['en'].concat(Object.keys(langs));
+
     function getLanguage(country) {
         var conLang = 'en';
         if (country) {
@@ -45,15 +46,22 @@
 
         var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
         var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-        var path_name_split = pathname.split('/');
+        var regex = new RegExp('^((\/[A-Za-z0-9-_]+){0,2})(\/('+ all_languages.join('|') +'))((\/[A-Za-z0-9-_]+)+)', 'i');
+        var result = regex.exec(pathname);
+        var prefix = result[1] || '';
+        var default_lang = result[4].toLowerCase() || 'en';
+        var routes = result[5] ? result[5].substr(1).replace('/', '::') : '';
 
+        var default_lang = 'EN'; // TODO remove this when i18n is ready.
         location.replace(
-            base + '/'                                                          // https://deriv.app/
-            + lang.toLowerCase() + '?from_404=true&p=' +                        // en?p=
-            path_name_split.slice(2).join('/').replace(/&/g, '~and~') +         // statement
-            (location.search ?
-                '&q=' + location.search.slice(1).replace(/&/g, '~and~') : '')
-            + location.hash
+            base
+            + prefix                                                        // /br_branch_name
+            + '/'                                                           // https://deriv.app/
+            + default_lang.toLowerCase() + '?from_404=true&p='              // en?p=
+            + routes                                                        // statement
+            + (
+                location.search ? '&q=' + location.search.slice(1).replace(/&/g, '~and~') : ''
+            ) + location.hash
         );
     }
 

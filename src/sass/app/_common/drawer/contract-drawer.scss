@@ -95,4 +95,13 @@ $header-height: 4em;
         justify-content: center;
         align-items: center;
     }
+    .result-details {
+        &__toggle {
+            margin: 0;
+            width: 100%;
+        }
+        &__value {
+            font-size: 1em;
+        }
+    }
 }

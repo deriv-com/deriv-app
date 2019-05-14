@@ -3,7 +3,7 @@ import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import Localize              from 'App/Components/Elements/localize.jsx';
-import ResultDetails         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
+import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
 import { Icon, IconBack }    from 'Assets/Common';
 import routes                from 'Constants/routes';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
@@ -13,15 +13,23 @@ import ContractCardFooter    from './contract-card-footer.jsx';
 import ContractCardHeader    from './contract-card-header.jsx';
 import ContractCard          from './contract-card.jsx';
 import {
+    getDurationPeriod,
     getDurationTime,
     getDurationUnitText }    from '../../../../Stores/Modules/Portfolio/Helpers/details';
 import {
     getEndTime,
     isUserSold }             from '../../../../Stores/Modules/Contract/Helpers/logic';
-import ContractAudit         from '../ContractAudit/contract-audit.jsx';
 import Money                 from '../money.jsx';
 
 class ContractDrawer extends Component {
+    state = {
+        is_shade_on: false,
+    }
+
+    handleShade = (shade) => {
+        this.setState({ is_shade_on: shade });
+    }
+
     getBodyContent () {
         const {
             buy_price,
@@ -59,16 +67,15 @@ class ContractDrawer extends Component {
                             />
                         </span>
                     </div>
-                    <ResultDetails
+                    <ContractAudit
                         contract_info={contract_info}
                         contract_end_time={getEndTime(contract_info)}
-                        is_shade_visible={false}
+                        is_shade_visible={this.handleShade}
                         duration={getDurationTime(contract_info)}
-                        duration_unit={getDurationUnitText(contract_info)}
+                        duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                         exit_spot={exit_spot}
                         has_result={!!(status)}
                     />
-                    <ContractAudit contract={contract_info} />
                 </ContractCardFooter>
             </ContractCard>
         );

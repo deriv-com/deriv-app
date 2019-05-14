@@ -55,7 +55,7 @@ export default class ContractStore extends BaseStore {
         const end_time = getEndTime(contract_info);
         const should_update_chart_type = !contract_info.tick_count && !this.is_granularity_set;
         
-        if(!end_time) this.is_on_going_contract = true;
+        if (!end_time) this.is_on_going_contract = true;
 
         if (end_time) {
             SmartChartStore.is_static_chart = !this.is_on_going_contract;

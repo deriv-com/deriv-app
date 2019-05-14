@@ -37,7 +37,6 @@ const common         = require('./common');
 const js_translation = require('./js_translation');
 const Gettext        = require('./gettext');
 const compileManifests     = require('./render_manifest').compileManifests;
-const build_config   = require('../build/config/constants').config;
 
 program
     .version('0.2.2')

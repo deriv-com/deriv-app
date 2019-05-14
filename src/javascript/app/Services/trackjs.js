@@ -15,11 +15,11 @@ export const ApiCallProxyHandler = {
                             let return_value;
                             result.then(response => {
                                 if (response.error) {
-                                    window.__response_error = response; // eslint-disable-line
+                                    window.__response_error = response; // eslint-disable-line no-underscore-dangle
                                 }
                                 return_value = response;
                             }).catch(error => {
-                                window.__response_error = error; // eslint-disable-line
+                                window.__response_error = error; // eslint-disable-line no-underscore-dangle
                             }).finally(() => {
                                 resolve(return_value);
                             });
@@ -30,7 +30,7 @@ export const ApiCallProxyHandler = {
             }
             return target_value;
         } catch (error) {
-            window.__response_error = error; // eslint-disable-line
+            window.__response_error = error; // eslint-disable-line no-underscore-dangle
             throw new Error(error.getMessage());
         }
     },

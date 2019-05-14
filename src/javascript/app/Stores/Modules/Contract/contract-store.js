@@ -66,7 +66,6 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
-
         } else if (!this.is_left_epoch_set) {
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
             if (contract_info.tick_count) {
@@ -85,8 +84,6 @@ export default class ContractStore extends BaseStore {
 
         createChartBarrier(SmartChartStore, contract_info);
         createChartMarkers(SmartChartStore, contract_info);
-
-        this.handleDigits();
     }
 
     @action.bound
@@ -163,11 +160,13 @@ export default class ContractStore extends BaseStore {
         }
 
         this.drawChart(this.smart_chart, this.contract_info);
+
+        this.handleDigits();
     }
 
     @action.bound
     handleDigits() {
-        if (isDigitContract(this.contract_info.contract_type)) {
+        if (this.is_digit_contract) {
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
     }
@@ -224,6 +223,10 @@ export default class ContractStore extends BaseStore {
         delete this.sell_info.error_message;
     }
 
+    @action.bound
+    setIsDigitContract(contract_type) {
+        this.contract_info.contract_type = contract_type;
+    }
     // ---------------------------
     // ----- Computed values -----
     // ---------------------------
@@ -288,5 +291,10 @@ export default class ContractStore extends BaseStore {
     @computed
     get is_valid_to_sell() {
         return isValidToSell(this.contract_info);
+    }
+
+    @computed
+    get is_digit_contract() {
+        return isDigitContract(this.contract_info.contract_type);
     }
 }

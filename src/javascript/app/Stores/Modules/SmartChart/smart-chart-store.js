@@ -153,15 +153,17 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    saveAndClearTradeChartLayout() {
+    saveAndClearTradeChartLayout(chart_id) {
         this.should_export_layout = true;
         this.should_import_layout = false;
         this.trade_chart_symbol   = this.root_store.modules.trade.symbol;
-        this.chart_id             = 'contract';
+        this.chart_id             = chart_id;
     }
 
     @action.bound
     applySavedTradeChartLayout() {
+        if (!this.trade_chart_layout) return;
+
         this.should_export_layout = false;
         this.should_import_layout = true;
         this.should_clear_chart   = false;

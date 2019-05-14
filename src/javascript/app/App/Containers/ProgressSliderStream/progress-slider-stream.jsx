@@ -30,12 +30,9 @@ const ProgressSliderStream = ({
 
 ProgressSliderStream.propTypes = {
     getPositionById: PropTypes.func,
-    id             : PropTypes.oneOfType(
-        PropTypes.number,
-        PropTypes.string
-    ),
-    is_loading : PropTypes.bool,
-    server_time: PropTypes.object,
+    id             : PropTypes.number,
+    is_loading     : PropTypes.bool,
+    server_time    : PropTypes.object,
 };
 
 export default connect(({ modules, common }) => ({

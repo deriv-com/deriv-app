@@ -3,6 +3,7 @@ import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import Localize              from 'App/Components/Elements/localize.jsx';
+import ResultDetails         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
 import { Icon, IconBack }    from 'Assets/Common';
 import routes                from 'Constants/routes';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
@@ -11,6 +12,12 @@ import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
 import ContractCardHeader    from './contract-card-header.jsx';
 import ContractCard          from './contract-card.jsx';
+import {
+    getDurationTime,
+    getDurationUnitText }    from '../../../../Stores/Modules/Portfolio/Helpers/details';
+import {
+    getEndTime,
+    isUserSold }             from '../../../../Stores/Modules/Contract/Helpers/logic';
 import ContractAudit         from '../ContractAudit/contract-audit.jsx';
 import Money                 from '../money.jsx';
 
@@ -19,16 +26,20 @@ class ContractDrawer extends Component {
         const {
             buy_price,
             currency,
+            exit_tick,
             payout,
             profit,
+            status,
         } = this.props.contract_info;
+        const { contract_info } = this.props;
+        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
 
         return (
-            <ContractCard contract_info={this.props.contract_info}>
+            <ContractCard contract_info={contract_info}>
                 <ContractCardHeader>
                     <MarketSymbolIconRow
                         show_description={true}
-                        payload={this.props.contract_info}
+                        payload={contract_info}
                     />
                 </ContractCardHeader>
                 <ContractCardBody>
@@ -48,7 +59,16 @@ class ContractDrawer extends Component {
                             />
                         </span>
                     </div>
-                    <ContractAudit contract={this.props.contract_info} />
+                    <ResultDetails
+                        contract_info={contract_info}
+                        contract_end_time={getEndTime(contract_info)}
+                        is_shade_visible={false}
+                        duration={getDurationTime(contract_info)}
+                        duration_unit={getDurationUnitText(contract_info)}
+                        exit_spot={exit_spot}
+                        has_result={!!(status)}
+                    />
+                    <ContractAudit contract={contract_info} />
                 </ContractCardFooter>
             </ContractCard>
         );

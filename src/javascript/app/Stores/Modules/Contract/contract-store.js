@@ -87,7 +87,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id) {
+    onMount(contract_id, is_replay) {
         if (contract_id === +this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
@@ -96,8 +96,10 @@ export default class ContractStore extends BaseStore {
         this.contract_id       = contract_id;
         this.smart_chart       = this.root_store.modules.smart_chart;
 
+        const chart_id = is_replay ? 'contract-replay' : 'contract';
+
         if (contract_id) {
-            this.smart_chart.saveAndClearTradeChartLayout();
+            this.smart_chart.saveAndClearTradeChartLayout(chart_id);
             this.smart_chart.setContractMode(true);
             WS.subscribeProposalOpenContract(this.contract_id, this.updateProposal, false);
         }
@@ -110,7 +112,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onCloseContract(is_not_trade_page) {
+    onCloseContract() {
         this.forgetProposalOpenContract();
         this.chart_type         = 'mountain';
         this.contract_id        = null;
@@ -125,15 +127,13 @@ export default class ContractStore extends BaseStore {
         this.sell_info          = {};
 
         this.smart_chart.cleanupContractChartView();
-        if (!is_not_trade_page) {
-            this.smart_chart.applySavedTradeChartLayout();
-        }
+        this.smart_chart.applySavedTradeChartLayout();
     }
 
     @action.bound
-    onUnmount(is_not_trade_page) {
+    onUnmount() {
         this.disposeSwitchAccount();
-        this.onCloseContract(is_not_trade_page);
+        this.onCloseContract();
     }
 
     @action.bound

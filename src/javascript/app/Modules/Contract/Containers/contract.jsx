@@ -15,24 +15,22 @@ const Contract = ({
             has_error ?
                 <ErrorComponent message={error_message} />
                 :
-                <div className='trade-container'>
-                    <div className='trade-container__replay'>
-                        <CSSTransition
-                            in={!has_error}
-                            timeout={400}
-                            classNames={{
-                                enter    : 'contract--enter',
-                                enterDone: 'contract--enter-done',
-                                exit     : 'contract--exit',
-                            }}
-                            unmountOnExit
-                        >
-                            <ContractReplay
-                                contract_id={match.params.contract_id}
-                                key={match.params.contract_id}
-                            />
-                        </CSSTransition>
-                    </div>
+                <div className='trade-container__replay'>
+                    <CSSTransition
+                        in={!has_error}
+                        timeout={400}
+                        classNames={{
+                            enter    : 'contract--enter',
+                            enterDone: 'contract--enter-done',
+                            exit     : 'contract--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <ContractReplay
+                            contract_id={match.params.contract_id}
+                            key={match.params.contract_id}
+                        />
+                    </CSSTransition>
                 </div>
         }
     </React.Fragment>

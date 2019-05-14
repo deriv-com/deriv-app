@@ -35,7 +35,6 @@ import {
     getProposalInfo,
     getProposalParametersName }          from './Helpers/proposal';
 import { pickDefaultSymbol }             from './Helpers/symbol';
-import { isDigitContract }               from '../Contract/Helpers/digits';
 import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
 import BaseStore                         from '../../base-store';
 
@@ -422,8 +421,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
-            this.root_store.modules.contract.is_digit_contract =
-                isDigitContract(Object.keys(this.proposal_requests)[0]);
+            this.root_store.modules.contract.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);

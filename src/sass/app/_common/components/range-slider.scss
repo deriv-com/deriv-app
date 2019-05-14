@@ -110,16 +110,16 @@
             }
         }
         &[type=range]::-ms-fill-upper {
+            height: 2px;
             @include themify($themes) {
                 background: themed('container_color');
             }
-            height: 2px;
         }
         &[type=range]::-ms-fill-lower {
+            height: 2px;
             @include themify($themes) {
                 background: themed('container_color');
             }
-            height: 2px;
         }
     }
     &__ticks {

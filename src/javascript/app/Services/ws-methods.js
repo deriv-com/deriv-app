@@ -1,6 +1,7 @@
-import BinarySocket        from '_common/base/socket_base';
-import SubscriptionManager from '_common/base/subscription_manager';
-import { isEmptyObject }   from '_common/utility';
+import BinarySocket              from '_common/base/socket_base';
+import SubscriptionManager       from '_common/base/subscription_manager';
+import { isEmptyObject }         from '_common/utility';
+import { trackJSNetworkMonitor } from './trackjs';
 
 const WS = (() => {
     const activeSymbols = () =>
@@ -146,4 +147,4 @@ const WS = (() => {
     };
 })();
 
-export default WS;
+export default trackJSNetworkMonitor(WS);

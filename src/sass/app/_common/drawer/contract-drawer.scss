@@ -96,6 +96,9 @@ $header-height: 4em;
         align-items: center;
     }
     .result-details {
+        &__wrapper--is-open {
+            margin-top: 0.4em;
+        }
         &__toggle {
             margin: 0;
             width: 100%;

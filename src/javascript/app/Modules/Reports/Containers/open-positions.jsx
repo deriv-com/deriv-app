@@ -4,7 +4,7 @@ import React                               from 'react';
 import { withRouter }                      from 'react-router-dom';
 import { localize }                        from '_common/localize';
 import DataTable                           from 'App/Components/Elements/DataTable';
-import { getContractPath }                 from 'App/Components/Routes/helpers';
+// import { getContractPath }                 from 'App/Components/Routes/helpers';
 import EmptyTradeHistoryMessage            from 'Modules/Reports/Components/empty-trade-history-message.jsx';
 import { ReportsMeta }                     from 'Modules/Reports/Components/reports-meta.jsx';
 import { getOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
@@ -56,7 +56,7 @@ class OpenPositions extends React.Component {
                         columns={getOpenPositionsColumnsTemplate(currency)}
                         footer={totals}
                         data_source={active_positions}
-                        getRowAction={(row_obj) => getContractPath(row_obj.id)}
+                        // getRowAction={(row_obj) => getContractPath(row_obj.id)}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

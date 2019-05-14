@@ -35,9 +35,9 @@ class ContractDrawer extends Component {
             buy_price,
             currency,
             exit_tick,
+            is_sold,
             payout,
             profit,
-            status,
         } = this.props.contract_info;
         const { contract_info } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
@@ -74,7 +74,7 @@ class ContractDrawer extends Component {
                         duration={getDurationTime(contract_info)}
                         duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                         exit_spot={exit_spot}
-                        has_result={!!(status)}
+                        has_result={!!(is_sold)}
                     />
                 </ContractCardFooter>
             </ContractCard>
@@ -87,7 +87,7 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.push(routes.reports)}
+                    onClick={() => this.props.history.push(routes.statement)}
                 >
                     <Icon icon={IconBack} />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>

@@ -2,7 +2,6 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
 import { connect }             from 'Stores/connect';
-import { isDigitContract }     from 'Stores/Modules/Contract/Helpers/digits';
 import { isEnded }             from 'Stores/Modules/Contract/Helpers/logic';
 import { LastDigitPrediction } from '../Components/LastDigitPrediction';
 
@@ -20,16 +19,16 @@ class Digits extends React.Component {
             contract_info,
             digits_info,
             display_status,
+            is_digit_contract,
             is_trade_page,
             last_digit,
         } = this.props;
         const { barrier, contract_type } = contract_info;
-        const is_digit = isDigitContract(contract_type);
         const is_ended = isEnded(contract_info);
 
         return (
             <CSSTransition
-                in={is_digit && this.state.mounted}
+                in={is_digit_contract && this.state.mounted}
                 timeout={250}
                 classNames={{
                     enter    : 'digits--enter',
@@ -52,11 +51,12 @@ class Digits extends React.Component {
 }
 
 Digits.propTypes = {
-    contract_info : PropTypes.object,
-    digits_info   : PropTypes.object,
-    display_status: PropTypes.string,
-    is_trade_page : PropTypes.bool,
-    last_digit    : PropTypes.oneOfType([
+    contract_info    : PropTypes.object,
+    digits_info      : PropTypes.object,
+    display_status   : PropTypes.string,
+    is_digit_contract: PropTypes.bool,
+    is_trade_page    : PropTypes.bool,
+    last_digit       : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
@@ -64,9 +64,10 @@ Digits.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        contract_info : modules.contract.contract_info,
-        digits_info   : modules.contract.digits_info,
-        display_status: modules.contract.display_status,
-        last_digit    : modules.trade.last_digit,
+        contract_info    : modules.contract.contract_info,
+        digits_info      : modules.contract.digits_info,
+        display_status   : modules.contract.display_status,
+        is_digit_contract: modules.contract.is_digit_contract,
+        last_digit       : modules.trade.last_digit,
     })
 )(Digits);

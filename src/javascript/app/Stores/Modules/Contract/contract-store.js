@@ -51,14 +51,17 @@ export default class ContractStore extends BaseStore {
     @action.bound
     drawChart(SmartChartStore, contract_info) {
         this.forget_id = contract_info.id;
-        const end_time = getEndTime(contract_info);
-        const should_update_chart_type = !contract_info.tick_count && !this.is_granularity_set;
 
+        const { date_start }           = contract_info;
+        const end_time                 = getEndTime(contract_info);
+        const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
+
+        SmartChartStore.setContractStart(date_start);
         if (end_time) {
-            SmartChartStore.setRange(contract_info.date_start, end_time);
+            SmartChartStore.setContractEnd(end_time);
 
             if (should_update_chart_type) {
-                this.handleChartType(SmartChartStore, contract_info.date_start, end_time);
+                this.handleChartType(SmartChartStore, date_start, end_time);
             } else {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
@@ -73,9 +76,9 @@ export default class ContractStore extends BaseStore {
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
         } else if (should_update_chart_type) {
-            this.handleChartType(SmartChartStore, contract_info.date_start, null);
+            this.handleChartType(SmartChartStore, date_start, null);
         } else if (this.is_granularity_set) {
-            if (getChartType(contract_info.date_start, null) !== this.chart_type) {
+            if (getChartType(date_start, null) !== this.chart_type) {
                 this.is_granularity_set = false;
             }
         }

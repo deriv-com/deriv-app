@@ -74,58 +74,6 @@ describe('logic', () => {
         });
     });
 
-    describe('getEndSpot', () => {
-        it('should return contract\'s exit spot if contract is path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": true,
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick if contract is not path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": false,
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick if is_path_dependent is undefined', () => {
-            const contract_info = {
-                "sell_spot": 123456,
-                "exit_tick": 987654321,
-            };
-            expect(Logic.getEndSpot(contract_info)).to.eql(987654321);
-        });
-    });
-
-    describe('getEndSpotTime', () => {
-        it('should return contract\'s exit tick time if it is path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": true,
-                "sell_spot_time": 123456,
-                "exit_tick_time": 987654321,
-            };
-            expect(Logic.getEndSpotTime(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick time if it is not path dependent', () => {
-            const contract_info = {
-                "is_path_dependent": false,
-                "sell_spot_time": 123456,
-                "exit_tick_time": 987654321,
-            };
-            expect(Logic.getEndSpotTime(contract_info)).to.eql(987654321);
-        });
-        it('should return contract\'s exit tick time if is_path_dependent is undefined', () => {
-            const contract_info = {
-                "sell_spot_time": 123456,
-                "exit_tick_time": 987654321,
-            };
-            expect(Logic.getEndSpotTime(contract_info)).to.eql(987654321);
-        });
-    });
-
     describe('getFinalPrice', () => {
         it('should return sell_price as final price when it\'s available', () => {
             const contract_info = {
@@ -342,7 +290,27 @@ describe('logic', () => {
             };
             expect(Logic.getEndTime(contract_info)).to.eql(9999999);
         });
-        it('Should return undefined if not sold for non-tick contracts', () => {
+        it('Should return date_expiry time for user sold contracts if sell_time is after date_expiry', () => {
+            const contract_info = {
+                date_expiry: 8888888,
+                exit_tick_time: 8888887,
+                is_sold: 1,
+                sell_time: 8888889,
+                status: 'sold',
+            };
+            expect(Logic.getEndTime(contract_info)).to.eql(8888888);
+        });
+        it('Should return sell_time time for user sold contracts if sell_time is before date_expiry', () => {
+            const contract_info = {
+                date_expiry: 8888889,
+                exit_tick_time: 8888887,
+                is_sold: 1,
+                sell_time: 8888888,
+                status: 'sold',
+            };
+            expect(Logic.getEndTime(contract_info)).to.eql(8888888);
+        });
+        it('Should return undefined if not sold for all contracts', () => {
             const contract_info = {
                 exit_tick_time: 9999999,
                 sell_time: 1000000,

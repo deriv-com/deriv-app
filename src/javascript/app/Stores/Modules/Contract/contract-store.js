@@ -18,8 +18,6 @@ import {
     getChartGranularity,
     getChartType,
     getDisplayStatus,
-    getEndSpot,
-    getEndSpotTime,
     getEndTime,
     getFinalPrice,
     getIndicativePrice,
@@ -248,12 +246,13 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get end_spot() {
-        return getEndSpot(this.contract_info);
+        return this.contract_info.exit_tick;
     }
 
     @computed
     get end_spot_time() {
-        return getEndSpotTime(this.contract_info);
+        const { exit_tick_time, sell_time } = this.contract_info;
+        return isUserSold(this.contract_info) ? sell_time : exit_tick_time;
     }
 
     @computed

@@ -30,6 +30,11 @@ const MARKER_CONTENT_TYPES = {
         xPositioner     : MARKER_X_POSITIONER.EPOCH,
         yPositioner     : MARKER_Y_POSITIONER.VALUE,
     },
+    SPOT_SELL: {
+        ContentComponent: MarkerSpot,
+        xPositioner     : MARKER_X_POSITIONER.EPOCH,
+        yPositioner     : MARKER_Y_POSITIONER.VALUE,
+    },
 };
 
 export const MARKER_TYPES_CONFIG = {
@@ -52,6 +57,11 @@ export const MARKER_TYPES_CONFIG = {
         type          : 'SPOT_ENTRY',
         marker_config : MARKER_CONTENT_TYPES.SPOT_ENTRY,
         content_config: { className: 'chart-spot__entry' },
+    },
+    SPOT_SELL: {
+        type          : 'SPOT_SELL',
+        marker_config : MARKER_CONTENT_TYPES.SPOT_SELL,
+        content_config: { className: 'chart-spot__spot' },
     },
     SPOT_EXIT: {
         type          : 'SPOT_EXIT',

@@ -1,7 +1,6 @@
 const expect     = require('chai').expect;
 const moment     = require('moment');
 const StringUtil = require('../string_util');
-global.$         = require('jquery');
 
 describe('StringUtil', () => {
     describe('.toTitleCase()', () => {
@@ -16,29 +15,6 @@ describe('StringUtil', () => {
 
     const readable_date = '22 Jun, 2017';
     const iso_date      = '2017-06-22';
-    describe('.toISOFormat()', () => {
-        it('works as expected', () => {
-            expect(StringUtil.toISOFormat(moment.utc(iso_date))).to.eq(iso_date);
-        });
-        it('doesn\'t break with non-moment date', () => {
-            expect(StringUtil.toISOFormat(iso_date)).to.eq('');
-            expect(StringUtil.toISOFormat(undefined)).to.eq('');
-        });
-    });
-
-    describe('.toReadableFormat()', () => {
-        it('works as expected when width more than 770', () => {
-            expect(StringUtil.toReadableFormat(moment.utc(iso_date))).to.eq(readable_date);
-        });
-        window.innerWidth = 600;
-        it('works as expected when width less than 770 since mocha doesn\'t have datepicker', () => {
-            expect(StringUtil.toReadableFormat(moment.utc(iso_date))).to.eq(readable_date);
-        });
-        it('doesn\'t break with non-moment date', () => {
-            expect(StringUtil.toReadableFormat(iso_date)).to.eq('');
-            expect(StringUtil.toReadableFormat(undefined)).to.eq('');
-        });
-    });
 
     describe('.padLeft()', () => {
         it('puts 0 in front of single digit when length is 2', () => {

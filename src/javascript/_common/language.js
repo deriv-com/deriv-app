@@ -1,9 +1,5 @@
-const Cookies            = require('js-cookie');
-const elementTextContent = require('./common_functions').elementTextContent;
-const getElementById     = require('./common_functions').getElementById;
-const CookieStorage      = require('./storage').CookieStorage;
-const LocalStore         = require('./storage').LocalStore;
-const applyToAllElements = require('./utility').applyToAllElements;
+const Cookies       = require('js-cookie');
+const CookieStorage = require('./storage').CookieStorage;
 
 const Language = (() => {
     const all_languages = {
@@ -65,25 +61,10 @@ const Language = (() => {
     const urlForLanguage = (lang, url = window.location.href) =>
         url.replace(new RegExp(`/${getLanguage()}/`, 'i'), `/${(lang || default_language).trim().toLowerCase()}/`);
 
-    const onChangeLanguage = () => {
-        applyToAllElements('li', (el) => {
-            el.addEventListener('click', (e) => {
-                if (e.target.nodeName !== 'LI') return;
-                const lang = e.target.getAttribute('class');
-                if (getLanguage() === lang) return;
-                elementTextContent(getElementById('display_language').getElementsByClassName('language'), e.target.textContent);
-                LocalStore.remove('ws_cache');
-                setCookieLanguage(lang);
-                document.location = urlForLanguage(lang);
-            });
-        }, '', getElementById('select_language'));
-    };
-
     return {
         getAll   : () => all_languages,
         setCookie: setCookieLanguage,
         get      : getLanguage,
-        onChange : onChangeLanguage,
         urlFor   : urlForLanguage,
         urlLang  : languageFromUrl,
         reset    : () => { url_lang = null; current_lang = null; },

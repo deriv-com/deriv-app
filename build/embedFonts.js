@@ -1,19 +1,12 @@
-module.exports = function (grunt) {
-    const app_2_file = `${global.dist}/app/css/app_2.css`;
+module.exports = function () {
+    const app_file = `${global.dist}/css/app.css`;
 
     const config = {
-        app: {},
-        app_2: {
+        app: {
             files: {
-                [app_2_file]: [app_2_file],
+                [app_file]: [app_file],
             },
         },
-        get all() {
-            return {
-                ...this.app,
-                ...this.app_2,
-            };
-        }
     };
 
     return { [global.section]: config[global.section] };

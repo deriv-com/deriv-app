@@ -9,15 +9,15 @@ const getDirsSync = (path_to_dir) => (
         ))
 );
 
-const getApp2Aliases = () => {
-    const app_2_path = path.resolve(PATHS.SRC, 'javascript/app_2');
+const getAppAliases = () => {
+    const app_path = path.resolve(PATHS.SRC, 'javascript/app');
 
-    return getDirsSync(app_2_path)
+    return getDirsSync(app_path)
         .filter(d => !/documents/i.test(d))
         .reduce(
             (aliases, folder_name) => ({
                 ...aliases,
-                [folder_name]: path.resolve(app_2_path, folder_name),
+                [folder_name]: path.resolve(app_path, folder_name),
             }),
             {}
         );
@@ -34,17 +34,14 @@ const makeCacheGroup = (name, priority, ...matches) => ({
     },
 });
 
-const publicPathFactory = (grunt, section) => () => {
-    const section_final_path = section === 'app_2' ? '/app/js/' : '/js/';
-    return (
-        (global.is_release || grunt.file.exists(PATHS.ROOT, 'scripts/CNAME') ? '' : '/binary-static') +
-        (global.branch ? `/${global.branch_prefix}${global.branch}` : '') +
-        section_final_path
-    );
-};
+const publicPathFactory = (grunt) => () => (
+    (global.is_release || grunt.file.exists(PATHS.ROOT, 'scripts/CNAME') ? '' : '/deriv-app') +
+    (global.branch ? `/${global.branch_prefix}${global.branch}` : '') +
+    '/js/'
+);
 
 module.exports = {
-    getApp2Aliases,
+    getAppAliases,
     makeCacheGroup,
     publicPathFactory,
 };

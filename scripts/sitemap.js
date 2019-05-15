@@ -15,34 +15,16 @@ program
 
 const config = [
     {
-        url_prefix : 'https://www.binary.com/',
-        filename   : 'sitemap.xml',
-        lang_filter: '^(?!id$)',
-        section    : 'app',
-    },
-    {
-        url_prefix : 'https://www.binary.me/',
-        filename   : 'sitemap.id.xml',
-        lang_filter: '^id$',
-        section    : 'app',
-    },
-    {
-        url_prefix: 'https://www.deriv.com/',
-        filename  : 'sitemap.app_2.xml',
-        section   : 'app_2',
+        url_prefix: 'https://deriv.app/',
+        filename  : 'sitemap.xml',
+        section   : 'app',
     },
 ];
 let excluded;
 
 const getApplicableLanguages = (lang_filter) => common.languages.filter(lang => new RegExp(lang_filter, 'i').test(lang));
 
-const urlFor = (section, lang, path) => {
-    if (section === 'app') {
-        return `${lang}/${path}.html`;
-    }
-    // else: app_2
-    return `app/${lang}/${path}`;
-};
+const urlFor = (section, lang, path) => `${lang}/${path}`;
 
 const createSitemap = (conf) => {
     excluded = 0;

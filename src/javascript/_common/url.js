@@ -1,19 +1,11 @@
-const urlForLanguage         = require('./language').urlFor;
-const urlLang                = require('./language').urlLang;
-const createElement          = require('./utility').createElement;
-const isEmptyObject          = require('./utility').isEmptyObject;
-const getCurrentBinaryDomain = require('../config').getCurrentBinaryDomain;
+const urlForLanguage             = require('./language').urlFor;
+const urlLang                    = require('./language').urlLang;
+const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
 const Url = (() => {
     let location_url,
         static_host;
-
-    const init = (url) => {
-        location_url = url ? getLocation(url) : window.location;
-    };
-
-    const getLocation = url => createElement('a', { href: decodeURIComponent(url) });
 
     const reset = () => {
         location_url = window ? window.location : location_url;
@@ -42,8 +34,6 @@ const Url = (() => {
         return param_hash;
     };
 
-    const paramsHashToString = pars => (isEmptyObject(pars) ? '' : Object.keys(pars).map(key => `${key}=${pars[key] || ''}`).join('&'));
-
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
@@ -53,7 +43,7 @@ const Url = (() => {
         const url = window.location.href;
         let domain = url.substring(0, url.indexOf(`/${url_lang}/`) + url_lang.length + 2);
         if (should_change_to_legacy) {
-            domain = domain.replace(/\/app/,'');
+            domain = domain.replace(/deriv\.app/, 'binary\.com');
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
         // replace old lang with new lang
@@ -70,7 +60,7 @@ const Url = (() => {
     };
 
     const urlForCurrentDomain = (href) => {
-        const current_domain = getCurrentBinaryDomain();
+        const current_domain = getCurrentProductionDomain();
 
         if (!current_domain) {
             return href; // don't change when domain is not supported
@@ -106,50 +96,17 @@ const Url = (() => {
         return static_host + path.replace(/(^\/)/g, '');
     };
 
-    /**
-     * @param {Object} new_params - Object with param-value pairs. To delete param, set value to null.
-     * @param {boolean} should_preserve_old - Should existing query parameters be preserved.
-     */
-    const updateParamsWithoutReload = (new_params, should_preserve_old) => {
-        const updated_params = should_preserve_old
-            ? Object.assign(paramsHash(), new_params)
-            : new_params;
-        Object.keys(new_params).forEach(key => {
-            if (new_params[key] === null) {
-                delete updated_params[key];
-            }
-        });
-        const url = new URL(window.location);
-        url.search = paramsHashToString(updated_params);
-        window.history.replaceState({ url: url.href }, '', url.href);
-    };
-
-    const getSection = (url = window.location.href) => (url.match(new RegExp(`/${urlLang()}/(.*)/`, 'i')) || [])[1];
-
-    const getHashValue = (name) => {
-        const hash  = (location_url || window.location).hash;
-        const value = hash.split('=');
-        return new RegExp(name).test(hash) && value.length > 1 ? value[1] : '';
-    };
-
     return {
-        init,
         reset,
         paramsHash,
-        getLocation,
-        paramsHashToString,
         urlFor,
         urlForCurrentDomain,
         urlForStatic,
-        getSection,
-        getHashValue,
-        updateParamsWithoutReload,
 
-        param           : name => paramsHash()[name],
-        websiteUrl      : () => `${location.protocol}//${location.hostname}/`,
-        getDefaultDomain: () => default_domain,
-        getHostMap      : () => host_map,
-        resetStaticHost : () => { static_host = undefined; },
+        param          : name => paramsHash()[name],
+        websiteUrl     : () => `${location.protocol}//${location.hostname}/`,
+        getHostMap     : () => host_map,
+        resetStaticHost: () => { static_host = undefined; },
     };
 })();
 

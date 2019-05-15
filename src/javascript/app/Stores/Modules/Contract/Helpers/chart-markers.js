@@ -68,7 +68,10 @@ const addTickMarker = (SmartChartStore, contract_info) => {
         let marker_config;
         if (is_entry_spot) marker_config = createMarkerSpotEntry(contract_info);
         if (is_middle_spot) marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
-        if (is_exit_spot) marker_config = createMarkerSpotExit(contract_info, tick, idx);
+        if (is_exit_spot) {
+            tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
+            marker_config = createMarkerSpotExit(contract_info, tick, idx);
+        }
 
         if (marker_config) {
             if (marker_config.type in SmartChartStore.markers) return;

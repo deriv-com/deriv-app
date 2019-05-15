@@ -44,7 +44,7 @@ export default class ContractStore extends BaseStore {
     chart_type          = 'mountain';
     is_granularity_set  = false;
     is_left_epoch_set   = false;
-    is_ongoing_contract = true;
+    is_ongoing_contract = false;
     is_from_positions   = false;
 
     // -------------------
@@ -58,7 +58,7 @@ export default class ContractStore extends BaseStore {
         const end_time                 = getEndTime(contract_info);
         const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
 
-        if (end_time) this.is_ongoing_contract = false;
+        if (end_time) this.is_ongoing_contract = true;
 
         if (end_time) {
             SmartChartStore.setStaticChart(this.is_on_going_contract);
@@ -135,7 +135,7 @@ export default class ContractStore extends BaseStore {
         this.is_sell_requested   = false;
         this.is_left_epoch_set   = false;
         this.is_from_positions   = false;
-        this.is_ongoing_contract = true;
+        this.is_ongoing_contract = false;
         this.sell_info           = {};
 
         this.smart_chart.cleanupContractChartView();

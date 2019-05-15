@@ -6,6 +6,9 @@ import { getRiskAssessment,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
 import { localize }     from '_common/localize';
+import {
+    LocalStore,
+    State }             from '_common/storage';
 import { urlFor }       from '_common/url';
 import Localize         from '../../App/Components/Elements/localize.jsx';
 
@@ -146,7 +149,7 @@ const client_notifications = {
     },
 };
 
-const hasMissingRequiredField = (response, State, client) => {
+const hasMissingRequiredField = (response, client) => {
     if (!response.get_settings) return false;
 
     const { landing_company_shortcode } = client;
@@ -188,8 +191,9 @@ const hasMissingRequiredField = (response, State, client) => {
     }
 };
 
-const checkAccountStatus = (response, client, UIStore) => {
+const checkAccountStatus = (response, client, addNotification, loginid) => {
     if (!response.get_account_status) return;
+    if (loginid !== LocalStore.get('active_loginid')) return;
 
     const { prompt_client_to_authenticate, status } = response.get_account_status;
 
@@ -205,21 +209,21 @@ const checkAccountStatus = (response, client, UIStore) => {
     } = getStatusValidations(status);
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
 
-    if (document_under_review) UIStore.addNotification(client_notifications.document_review);
-    if (cashier_locked)        UIStore.addNotification(client_notifications.cashier_locked);
-    if (withdrawal_locked)     UIStore.addNotification(client_notifications.withdrawal_locked);
-    if (mt5_withdrawal_locked) UIStore.addNotification(client_notifications.mt5_withdrawal_locked);
-    if (document_needs_action) UIStore.addNotification(client_notifications.document_needs_action);
-    if (unwelcome)             UIStore.addNotification(client_notifications.unwelcome);
-    if (is_mf_retail)          UIStore.addNotification(client_notifications.mf_retail);
+    if (document_under_review) addNotification(client_notifications.document_review);
+    if (cashier_locked)        addNotification(client_notifications.cashier_locked);
+    if (withdrawal_locked)     addNotification(client_notifications.withdrawal_locked);
+    if (mt5_withdrawal_locked) addNotification(client_notifications.mt5_withdrawal_locked);
+    if (document_needs_action) addNotification(client_notifications.document_needs_action);
+    if (unwelcome)             addNotification(client_notifications.unwelcome);
+    if (is_mf_retail)          addNotification(client_notifications.mf_retail);
     if (ukrts_max_turnover_limit_not_set) {
-        UIStore.addNotification(client_notifications.financial_limit);
+        addNotification(client_notifications.financial_limit);
     }
-    if (getRiskAssessment()) UIStore.addNotification(client_notifications.risk);
-    if (shouldCompleteTax()) UIStore.addNotification(client_notifications.tax);
+    if (getRiskAssessment()) addNotification(client_notifications.risk);
+    if (shouldCompleteTax()) addNotification(client_notifications.tax);
 
     if (prompt_client_to_authenticate && !(document_under_review || document_needs_action)) {
-        UIStore.addNotification(client_notifications.authenticate);
+        addNotification(client_notifications.authenticate);
     }
 
     function getStatusValidations(status_arr) {
@@ -230,17 +234,19 @@ const checkAccountStatus = (response, client, UIStore) => {
     }
 };
 
-export const handleClientNotifications = (State, client, UIStore) => {
+export const handleClientNotifications = (client, addNotification, loginid) => {
     const { currency, excluded_until } = client;
-    if (!currency)         UIStore.addNotification(client_notifications.currency);
-    if (excluded_until)    UIStore.addNotification(client_notifications.self_exclusion(excluded_until));
-    if (shouldAcceptTnc()) UIStore.addNotification(client_notifications.tnc);
+    if (!currency)         addNotification(client_notifications.currency);
+    if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
+    if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
 
-    WS.getAccountStatus().then((response) => checkAccountStatus(response, client, UIStore));
+    WS.getAccountStatus().then((response) => checkAccountStatus(response, client, addNotification, loginid));
 
     WS.sendRequest({ get_settings: 1 }, { forced: true }).then((response) => {
-        if (hasMissingRequiredField(response, State, client)) {
-            UIStore.addNotification(client_notifications.required_fields);
+        if (loginid !== LocalStore.get('active_loginid')) return;
+
+        if (hasMissingRequiredField(response, client)) {
+            addNotification(client_notifications.required_fields);
         }
     });
 };

@@ -4,7 +4,6 @@ import {
     observable,
     reaction,
     runInAction }                        from 'mobx';
-import { redirectToLogin }               from '_common/base/login';
 import BinarySocket                      from '_common/base/socket_base';
 import { localize }                      from '_common/localize';
 import {
@@ -23,6 +22,9 @@ import {
     allowed_query_string_variables,
     getNonProposalQueryStringVariables } from './Constants/query-string';
 import getValidationRules                from './Constants/validation-rules';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError }       from './Helpers/active-symbols';
 import { isRiseFallEqual }               from './Helpers/allow-equals';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
@@ -35,7 +37,6 @@ import {
     getProposalErrorField,
     getProposalInfo,
     getProposalParametersName }          from './Helpers/proposal';
-import { pickDefaultSymbol }             from './Helpers/symbol';
 import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
 import BaseStore                         from '../../base-store';
 
@@ -173,22 +174,8 @@ export default class TradeStore extends BaseStore {
         const active_symbols    = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
-        } else if (!active_symbols.active_symbols || active_symbols.active_symbols.length === 0) {
-            const website_status = await BinarySocket.wait('website_status');
-            const residence_list = await WS.residenceList();
-
-            const clients_country_code = website_status.website_status.clients_country;
-            const clients_country_text =
-                (residence_list.residence_list.find(obj_country =>
-                    obj_country.value === clients_country_code) || {}).text;
-
-            this.root_store.common.showError(
-                localize('If you have an account, log in to continue.'),
-                (clients_country_text ? localize('Sorry, this app is unavailable in [_1].', clients_country_text) : localize('Sorry, this app is unavailable in your current location.')),
-                localize('Log in'),
-                redirectToLogin,
-                false,
-            );
+        } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
+            showUnavailableLocationError(this.root_store);
         }
 
         // Checks for finding out that the current account has access to the defined symbol in quersy string or not.

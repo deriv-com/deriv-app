@@ -13,10 +13,12 @@ import Digits         from './digits.jsx';
 
 class ContractReplay extends React.Component {
     componentDidMount() {
+        this.props.showBlur();
         this.props.onMount(this.props.contract_id, true);
     }
 
     componentWillUnmount() {
+        this.props.hideBlur();
         this.props.onUnmount();
     }
 
@@ -75,18 +77,23 @@ ContractReplay.propTypes = {
     chart_id     : PropTypes.string,
     contract_id  : PropTypes.string,
     contract_info: PropTypes.object,
+    hideBlur     : PropTypes.func,
     history      : PropTypes.object,
     location     : PropTypes.object,
     onMount      : PropTypes.func,
     onUnmount    : PropTypes.func,
     routes       : PropTypes.arrayOf(PropTypes.object),
+    showBlur     : PropTypes.func,
 };
 
 export default withRouter(connect(
-    ({ modules }) => ({
+    ({ modules, ui }) => ({
         chart_id     : modules.smart_chart.replay_id,
         contract_info: modules.contract.contract_info,
         onMount      : modules.contract.onMount,
         onUnmount    : modules.contract.onCloseContract,
+        hideBlur     : ui.hideRouteBlur,
+        showBlur     : ui.showRouteBlur,
+
     })
 )(ContractReplay));

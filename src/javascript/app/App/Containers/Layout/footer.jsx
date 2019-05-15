@@ -20,6 +20,7 @@ const Footer = ({
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
+    is_route_blurred,
     is_settings_dialog_on,
     showFullBlur,
     show_positions_toggle,
@@ -27,7 +28,7 @@ const Footer = ({
     toggleSettingsDialog,
 }) => (
     <footer className={classNames('footer', {
-        'footer--is-blurred': is_fully_blurred,
+        'footer--is-blurred': (is_fully_blurred || is_route_blurred),
         'footer--show'      : !is_loading || location.pathname !== routes.trade,
     })}
     >
@@ -64,6 +65,7 @@ Footer.propTypes = {
     is_language_dialog_visible: PropTypes.bool,
     is_logged_in              : PropTypes.bool,
     is_positions_drawer_on    : PropTypes.bool,
+    is_route_blurred          : PropTypes.bool,
     is_settings_dialog_on     : PropTypes.bool,
     show_positions_toggle     : PropTypes.bool,
     togglePositionsDrawer     : PropTypes.func,
@@ -76,6 +78,7 @@ export default connect(
         hideFullBlur              : ui.hideFullBlur,
         is_fully_blurred          : ui.is_fully_blurred,
         is_dark_mode              : ui.is_dark_mode_on,
+        is_route_blurred          : ui.is_route_blurred,
         is_logged_in              : client.is_logged_in,
         is_language_dialog_visible: ui.is_language_dialog_on,
         is_loading                : ui.is_loading,

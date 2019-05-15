@@ -93,24 +93,11 @@
             margin-left: 252px;
 
             .smartcharts {
-                left: 0;
+                left: 2px;
                 width: calc(100vw - 300px);
                 height: calc(100% - 66px);
                 top: 66px;
 
-                &:before {
-                    content: '';
-                    position: absolute;
-                    height: 100%;
-                    width: 30px;
-                    top: 0;
-                    left: -2px;
-                    pointer-events: none;
-                    z-index: 2;
-                    @include themify($themes) {
-                        background-image: themed('chart_gradient_color');
-                    }
-                }
                 .ciq-chart {
                     .cq-top-ui-widgets, & .info-box {
                         transition: transform 0.25s ease;
@@ -125,6 +112,7 @@
                         .info-box-container {
                             transform: none;
                             opacity: 1;
+                            left: 1px;
 
                             .chart-close-btn {
                                 display: none;

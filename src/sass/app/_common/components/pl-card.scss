@@ -10,14 +10,15 @@
         align-items: center;
 
         &__header {
+            margin-bottom: 0.2em;
             @include themify($themes) {
-                @include typeface(--small-center-normal-black);
-                color: themed('label_default_background');
+                @include typeface(--xsmall-center-normal-black);
+                color: themed('text_color');
             }
         }
         &__body {
             @include themify($themes) {
-                @include typeface(--paragraph-center-bold-black);
+                @include typeface(--small-center-bold-black);
                 color: themed('text_color');
             }
         }

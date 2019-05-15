@@ -2,12 +2,13 @@ import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
-import Localize              from 'App/Components/Elements/localize.jsx';
-import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
 import { Icon, IconBack }    from 'Assets/Common';
 import routes                from 'Constants/routes';
+import Localize              from 'App/Components/Elements/localize.jsx';
+import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
+import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
+import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
-import MarketSymbolIconRow   from 'Modules/Reports/Components/market-symbol-icon-row.jsx';
 import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
 import ContractCardHeader    from './contract-card-header.jsx';
@@ -45,10 +46,21 @@ class ContractDrawer extends Component {
         return (
             <ContractCard contract_info={contract_info}>
                 <ContractCardHeader>
-                    <MarketSymbolIconRow
-                        show_description={true}
-                        payload={contract_info}
-                    />
+                    <div className={classNames(
+                        'contract-card__grid',
+                        'contract-card__grid-underlying-trade'
+                    )}
+                    >
+                        <div className='contract-card__underlying-name'>
+                            <UnderlyingIcon market={contract_info.underlying} />
+                            <span className='contract-card__symbol'>
+                                {contract_info.display_name}
+                            </span>
+                        </div>
+                        <div className='contract-card__type'>
+                            <ContractTypeCell type={contract_info.contract_type} />
+                        </div>
+                    </div>
                 </ContractCardHeader>
                 <ContractCardBody>
                     <ProfitLossCardContent

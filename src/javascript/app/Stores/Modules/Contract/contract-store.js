@@ -41,9 +41,11 @@ export default class ContractStore extends BaseStore {
 
     // ---- Normal properties ---
     forget_id;
-    chart_type         = 'mountain';
-    is_granularity_set = false;
-    is_left_epoch_set  = false;
+    chart_type          = 'mountain';
+    is_granularity_set  = false;
+    is_left_epoch_set   = false;
+    is_ongoing_contract = false;
+    is_from_positions   = false;
 
     // -------------------
     // ----- Actions -----
@@ -56,8 +58,10 @@ export default class ContractStore extends BaseStore {
         const end_time                 = getEndTime(contract_info);
         const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
 
-        SmartChartStore.setContractStart(date_start);
+        if (!end_time) this.is_ongoing_contract = true;
+
         if (end_time) {
+            SmartChartStore.setStaticChart(!this.is_on_going_contract);
             SmartChartStore.setContractEnd(end_time);
 
             if (should_update_chart_type) {
@@ -67,6 +71,9 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateChartType('mountain');
             }
         } else if (!this.is_left_epoch_set) {
+            if (this.is_from_positions) {
+                SmartChartStore.setContractStart(date_start);
+            }
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
             if (contract_info.tick_count) {
                 SmartChartStore.updateGranularity(0);
@@ -74,9 +81,11 @@ export default class ContractStore extends BaseStore {
             }
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
-        } else if (should_update_chart_type) {
+        }
+        if (should_update_chart_type && !contract_info.tick_count) {
             this.handleChartType(SmartChartStore, date_start, null);
-        } else if (this.is_granularity_set) {
+        }
+        if (this.is_granularity_set) {
             if (getChartType(date_start, null) !== this.chart_type) {
                 this.is_granularity_set = false;
             }
@@ -87,7 +96,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id) {
+    onMount(contract_id, is_from_positions) {
         if (contract_id === +this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
@@ -95,6 +104,7 @@ export default class ContractStore extends BaseStore {
         this.error_message     = '';
         this.contract_id       = contract_id;
         this.smart_chart       = this.root_store.modules.smart_chart;
+        this.is_from_positions = is_from_positions;
 
         if (contract_id) {
             this.smart_chart.saveAndClearTradeChartLayout();
@@ -122,6 +132,7 @@ export default class ContractStore extends BaseStore {
         this.is_granularity_set = false;
         this.is_sell_requested  = false;
         this.is_left_epoch_set  = false;
+        this.is_from_positions  = false;
         this.sell_info          = {};
 
         this.smart_chart.cleanupContractChartView();

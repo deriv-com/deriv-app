@@ -99,7 +99,7 @@ export default class ContractStore extends BaseStore {
         if (contract_id) {
             this.smart_chart.saveAndClearTradeChartLayout();
             this.smart_chart.setContractMode(true);
-            WS.subscribeProposalOpenContract(this.contract_id, this.updateProposal, false);
+            WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
         }
     }
 

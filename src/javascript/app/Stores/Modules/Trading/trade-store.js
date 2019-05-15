@@ -174,8 +174,10 @@ export default class TradeStore extends BaseStore {
         const active_symbols    = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            return;
         } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
+            return;
         }
 
         // Checks for finding out that the current account has access to the defined symbol in quersy string or not.

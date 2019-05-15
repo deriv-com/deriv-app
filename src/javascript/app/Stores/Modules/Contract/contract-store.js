@@ -71,6 +71,7 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateChartType('mountain');
             }
         } else if (!this.is_left_epoch_set) {
+            // When buying a contract (i.e. not from positions) we don't want to remove the chart lines before the start time
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }

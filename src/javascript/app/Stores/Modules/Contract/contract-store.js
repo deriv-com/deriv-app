@@ -44,7 +44,7 @@ export default class ContractStore extends BaseStore {
     chart_type          = 'mountain';
     is_granularity_set  = false;
     is_left_epoch_set   = false;
-    is_ongoing_contract = false;
+    is_ongoing_contract = true;
     is_from_positions   = false;
 
     // -------------------
@@ -58,10 +58,11 @@ export default class ContractStore extends BaseStore {
         const end_time                 = getEndTime(contract_info);
         const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
 
-        if (!end_time) this.is_ongoing_contract = true;
+        if (end_time) this.is_ongoing_contract = false;
 
         if (end_time) {
-            SmartChartStore.setStaticChart(!this.is_on_going_contract);
+            SmartChartStore.setStaticChart(this.is_on_going_contract);
+            SmartChartStore.setContractStart(date_start);
             SmartChartStore.setContractEnd(end_time);
 
             if (should_update_chart_type) {
@@ -123,18 +124,19 @@ export default class ContractStore extends BaseStore {
     @action.bound
     onCloseContract() {
         this.forgetProposalOpenContract();
-        this.chart_type         = 'mountain';
-        this.contract_id        = null;
-        this.contract_info      = {};
-        this.digits_info        = {};
-        this.error_message      = '';
-        this.forget_id          = null;
-        this.has_error          = false;
-        this.is_granularity_set = false;
-        this.is_sell_requested  = false;
-        this.is_left_epoch_set  = false;
-        this.is_from_positions  = false;
-        this.sell_info          = {};
+        this.chart_type          = 'mountain';
+        this.contract_id         = null;
+        this.contract_info       = {};
+        this.digits_info         = {};
+        this.error_message       = '';
+        this.forget_id           = null;
+        this.has_error           = false;
+        this.is_granularity_set  = false;
+        this.is_sell_requested   = false;
+        this.is_left_epoch_set   = false;
+        this.is_from_positions   = false;
+        this.is_ongoing_contract = true;
+        this.sell_info           = {};
 
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();

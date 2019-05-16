@@ -46,7 +46,7 @@ export default class TradeStore extends BaseStore {
     @observable is_purchase_enabled        = false;
     @observable is_trade_enabled           = false;
     @observable is_equal                   = 0;
-    @observable is_first_loading           = false;
+    @observable is_first_loading           = false; // to avoid multiple loading on chart symbol change
 
     // Underlying
     @observable symbol;

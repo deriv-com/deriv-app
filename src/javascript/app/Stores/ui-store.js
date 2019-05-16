@@ -52,8 +52,9 @@ export default class UIStore extends BaseStore {
     @observable duration_h             = 1;
     @observable duration_d             = 1;
 
-    @observable is_fully_blurred = false;
-    @observable is_app_blurred   = false;
+    @observable is_fully_blurred      = false;
+    @observable is_app_blurred        = false;
+    @observable show_positions_toggle = true;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -175,6 +176,16 @@ export default class UIStore extends BaseStore {
     toggleDarkMode() {
         this.is_dark_mode_on = !this.is_dark_mode_on;
         return this.is_dark_mode_on;
+    }
+
+    @action.bound
+    showPositionsFooterToggle() {
+        this.show_positions_toggle = true;
+    }
+
+    @action.bound
+    hidePositionsFooterToggle() {
+        this.show_positions_toggle = false;
     }
 
     @action.bound

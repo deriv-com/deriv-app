@@ -16,4 +16,4 @@ IconExclamation.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconExclamation };
+export default IconExclamation;

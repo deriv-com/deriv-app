@@ -12,4 +12,4 @@ IconMinimize.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconMinimize };
+export default IconMinimize;

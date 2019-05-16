@@ -3,12 +3,9 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
-import {
-    Icon,
-    IconArrowBold }        from 'Assets/Common';
+import Icon                from 'Assets/Common';
 
 // todo fix absolute path
-
 const AccountInfo = ({
     balance,
     currency,
@@ -42,7 +39,7 @@ const AccountInfo = ({
                     {balance}
                 </p>
             }
-            <Icon icon={IconArrowBold} className='acc-info__select-arrow' />
+            <Icon icon='IconArrowBold' className='acc-info__select-arrow' />
         </div>
         <CSSTransition
             in={is_dialog_on}

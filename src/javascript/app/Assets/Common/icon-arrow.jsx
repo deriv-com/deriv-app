@@ -18,4 +18,4 @@ IconArrow.propTypes = {
     classNamePath: PropTypes.string,
 };
 
-export { IconArrow };
+export default IconArrow;

@@ -18,4 +18,4 @@ IconLogout.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconLogout };
+export default IconLogout;

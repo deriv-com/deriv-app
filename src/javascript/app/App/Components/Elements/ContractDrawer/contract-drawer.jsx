@@ -3,7 +3,7 @@ import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import Localize              from 'App/Components/Elements/localize.jsx';
-import { Icon, IconBack }    from 'Assets/Common';
+import Icon                  from 'Assets/Common';
 import routes                from 'Constants/routes';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import MarketSymbolIconRow   from 'Modules/Reports/Components/market-symbol-icon-row.jsx';
@@ -62,7 +62,7 @@ class ContractDrawer extends Component {
                     className='contract-drawer__heading'
                     onClick={() => this.props.history.push(routes.reports)}
                 >
-                    <Icon icon={IconBack} />
+                    <Icon icon='IconBack' />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>

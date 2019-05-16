@@ -12,4 +12,4 @@ const IconError = (/* { type } */) => ( // TODO: add icon for different types of
     </svg>
 );
 
-export { IconError };
+export default IconError;

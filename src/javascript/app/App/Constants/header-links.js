@@ -1,8 +1,7 @@
-import React           from 'react';
-import { localize }    from '_common/localize';
-import { Icon }        from 'Assets/Common';
-import { IconReports } from 'Assets/Header/NavBar/index';
-import { routes }      from 'Constants/index';
+import React        from 'react';
+import { localize } from '_common/localize';
+import Icon         from 'Assets/Common';
+import { routes }   from 'Constants/index';
 
 const header_links = [
     {
@@ -11,7 +10,7 @@ const header_links = [
         link_to: routes.trade,
     },
     {
-        icon      : <Icon icon={IconReports} className='header__icon' />,
+        icon      : <Icon icon='IconReports' className='header__icon' />,
         text      : localize('Reports'),
         link_to   : routes.reports,
         login_only: true,

@@ -14,4 +14,4 @@ IconTrade.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconTrade };
+export default IconTrade;

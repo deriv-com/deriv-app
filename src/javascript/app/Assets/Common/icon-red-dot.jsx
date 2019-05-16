@@ -11,4 +11,4 @@ IconRedDot.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconRedDot };
+export default IconRedDot;

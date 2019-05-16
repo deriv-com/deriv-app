@@ -29,4 +29,4 @@ IconClock.propTypes = {
     width    : PropTypes.string,
 };
 
-export { IconClock };
+export default IconClock;

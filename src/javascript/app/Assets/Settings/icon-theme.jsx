@@ -24,4 +24,4 @@ IconTheme.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconTheme };
+export default IconTheme;

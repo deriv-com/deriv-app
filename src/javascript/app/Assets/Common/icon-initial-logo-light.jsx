@@ -25,4 +25,4 @@ IconInitialLogoLight.propTypes = {
     classNameRect: PropTypes.string,
 };
 
-export { IconInitialLogoLight };
+export default IconInitialLogoLight;

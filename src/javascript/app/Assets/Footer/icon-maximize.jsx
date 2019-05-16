@@ -12,4 +12,4 @@ IconMaximize.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconMaximize };
+export default IconMaximize;

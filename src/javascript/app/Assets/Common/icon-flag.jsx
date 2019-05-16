@@ -15,4 +15,4 @@ IconFlag.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconFlag };
+export default IconFlag;

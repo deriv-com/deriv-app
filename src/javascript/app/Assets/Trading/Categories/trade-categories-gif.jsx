@@ -79,4 +79,4 @@ TradeCategoriesGIF.propTypes = {
     is_dark  : PropTypes.bool,
 };
 
-export { TradeCategoriesGIF };
+export default TradeCategoriesGIF;

@@ -12,4 +12,4 @@ IconBack.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconBack };
+export default IconBack;

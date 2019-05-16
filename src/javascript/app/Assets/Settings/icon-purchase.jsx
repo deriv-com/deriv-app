@@ -24,4 +24,4 @@ IconPurchase.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconPurchase };
+export default IconPurchase;

@@ -1,9 +1,6 @@
-import React               from 'react';
-import PropTypes           from 'prop-types';
-import {
-    Icon,
-    IconInitialLogoDark,
-    IconInitialLogoLight } from '../../../javascript/app/Assets/Common';
+import React     from 'react';
+import PropTypes from 'prop-types';
+import Icon      from '../../../javascript/app/Assets/Common';
 
 class Loading extends React.Component {
 
@@ -28,7 +25,7 @@ class Loading extends React.Component {
                     <React.Fragment>
                         { this.props.theme === 'dark' &&
                             <Icon
-                                icon={IconInitialLogoDark}
+                                icon='IconInitialLogoDark'
                                 className='initial-loader__image'
                                 classNamePath='initial-loader__mask'
                                 classNameRect='initial-loader__fill'
@@ -36,7 +33,7 @@ class Loading extends React.Component {
                         }
                         { this.props.theme === 'light' &&
                             <Icon
-                                icon={IconInitialLogoLight}
+                                icon='IconInitialLogoLight'
                                 className='initial-loader__image'
                                 classNamePath='initial-loader__mask'
                                 classNameRect='initial-loader__fill'

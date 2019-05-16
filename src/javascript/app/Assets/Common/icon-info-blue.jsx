@@ -17,4 +17,4 @@ IconInfoBlue.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconInfoBlue };
+export default IconInfoBlue;

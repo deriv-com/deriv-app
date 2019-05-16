@@ -24,4 +24,4 @@ IconLanguage.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconLanguage };
+export default IconLanguage;

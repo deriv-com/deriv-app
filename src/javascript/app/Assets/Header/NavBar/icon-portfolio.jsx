@@ -12,4 +12,4 @@ IconPortfolio.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconPortfolio };
+export default IconPortfolio;

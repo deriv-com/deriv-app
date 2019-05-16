@@ -1,17 +1,12 @@
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import classNames       from 'classnames';
-import {
-    Icon,
-    IconError }         from 'Assets/Common';
-import { IconInfoBlue } from 'Assets/Common/icon-info-blue.jsx';
-import { IconWarning }  from 'Assets/Common/icon-warning.jsx';
-import { IconSuccess }  from 'Assets/Common/icon-success.jsx';
-import CloseButton      from './close-button.jsx';
+import PropTypes   from 'prop-types';
+import React       from 'react';
+import classNames  from 'classnames';
+import Icon        from 'Assets/Common';
+import CloseButton from './close-button.jsx';
 import {
     DEFAULT_DELAY,
     POSITIONS,
-    TYPES }             from './constants';
+    TYPES }        from './constants';
 
 const Toast = ({
     data,
@@ -37,10 +32,10 @@ const Toast = ({
             onClick={onClick}
         >
             <div className='toast__body__icon'>
-                { data.type === 'ERROR'   && <Icon icon={IconError} className='toast__icon-type' /> }
-                { data.type === 'INFO'    && <Icon icon={IconInfoBlue} className='toast__icon-type' /> }
-                { data.type === 'SUCCESS' && <Icon icon={IconSuccess} className='toast__icon-type' /> }
-                { data.type === 'WARNING' && <Icon icon={IconWarning} className='toast__icon-type' /> }
+                { data.type === 'ERROR'   && <Icon icon='IconError'    className='toast__icon-type' /> }
+                { data.type === 'INFO'    && <Icon icon='IconInfoBlue' className='toast__icon-type' /> }
+                { data.type === 'SUCCESS' && <Icon icon='IconSuccess'  className='toast__icon-type' /> }
+                { data.type === 'WARNING' && <Icon icon='IconWarning'  className='toast__icon-type' /> }
             </div>
             <div className='toast__message'>
                 {data.message}

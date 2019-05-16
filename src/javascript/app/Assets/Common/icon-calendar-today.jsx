@@ -19,4 +19,4 @@ IconCalendarToday.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconCalendarToday };
+export default IconCalendarToday;

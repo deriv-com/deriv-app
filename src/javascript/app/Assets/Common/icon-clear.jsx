@@ -19,4 +19,4 @@ IconClear.propTypes = {
     onClick  : PropTypes.func,
 };
 
-export { IconClear };
+export default IconClear;

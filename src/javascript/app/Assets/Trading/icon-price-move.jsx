@@ -41,4 +41,4 @@ IconPriceMove.propTypes = {
     type     : PropTypes.string,
 };
 
-export { IconPriceMove };
+export default IconPriceMove;

@@ -12,4 +12,4 @@ IconHamburger.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconHamburger };
+export default IconHamburger;

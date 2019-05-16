@@ -17,4 +17,4 @@ IconWarning.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconWarning };
+export default IconWarning;

@@ -21,4 +21,4 @@ IconPositions.propTypes = {
     type     : PropTypes.string,
 };
 
-export { IconPositions };
+export default IconPositions;

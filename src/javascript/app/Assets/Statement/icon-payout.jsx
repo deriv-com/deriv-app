@@ -14,4 +14,4 @@ IconPayout.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconPayout };
+export default IconPayout;

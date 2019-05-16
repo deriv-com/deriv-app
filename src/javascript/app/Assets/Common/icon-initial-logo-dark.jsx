@@ -31,4 +31,4 @@ IconInitialLogoDark.propTypes = {
     classNameRect: PropTypes.string,
 };
 
-export { IconInitialLogoDark };
+export default IconInitialLogoDark;

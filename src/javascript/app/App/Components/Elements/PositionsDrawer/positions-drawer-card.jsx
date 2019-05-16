@@ -4,7 +4,7 @@ import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
 import ContractLink          from 'Modules/Contract/Containers/contract-link.jsx';
 import { localize }          from '_common/localize';
-import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
+import Icon                  from 'Assets/Common';
 import ContractTypeCell      from './contract-type-cell.jsx';
 import ProgressSlider        from './ProgressSlider';
 import ResultDetails         from './result-details.jsx';
@@ -130,7 +130,8 @@ class PositionsDrawerCard extends React.PureComponent {
                                     },
                                 )}
                                 >
-                                    <IconPriceMove
+                                    <Icon
+                                        icon='IconPriceMove'
                                         type={(status !== 'complete') ? status : null}
                                     />
                                 </div>
@@ -143,7 +144,8 @@ class PositionsDrawerCard extends React.PureComponent {
                                     },
                                 )}
                                 >
-                                    <IconPriceMove
+                                    <Icon
+                                        icon='IconPriceMove'
                                         type={(status !== 'complete') ? status : null}
                                     />
                                 </div>

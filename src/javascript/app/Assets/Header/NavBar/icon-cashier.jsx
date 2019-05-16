@@ -28,4 +28,4 @@ IconCashier.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconCashier };
+export default IconCashier;

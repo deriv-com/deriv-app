@@ -12,4 +12,4 @@ IconOpenPositions.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconOpenPositions };
+export default IconOpenPositions;

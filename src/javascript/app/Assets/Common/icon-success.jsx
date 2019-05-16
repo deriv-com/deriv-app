@@ -14,4 +14,4 @@ IconSuccess.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconSuccess };
+export default IconSuccess;

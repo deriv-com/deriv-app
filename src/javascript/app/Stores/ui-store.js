@@ -21,6 +21,7 @@ export default class UIStore extends BaseStore {
     @observable is_language_dialog_on   = false;
     @observable is_settings_dialog_on   = false;
     @observable is_accounts_switcher_on = false;
+    @observable is_loading              = true;
 
     @observable has_only_forward_starting_contracts = false;
 
@@ -139,6 +140,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    }
+
+    @action.bound
+    setAppLoading(is_visible) {
+        this.is_loading = is_visible;
     }
 
     @action.bound

@@ -23,7 +23,7 @@ const Header = ({
     currency,
     is_acc_switcher_on,
     is_fully_blurred,
-    is_chart_ready,
+    is_loading,
     is_logged_in,
     is_mobile,
     is_virtual,
@@ -34,7 +34,7 @@ const Header = ({
 }) => (
     <header className={classNames('header', {
         'header--is-blurred': is_fully_blurred,
-        'header--show'      : is_chart_ready || location.pathname !== routes.trade,
+        'header--show'      : !is_loading || location.pathname !== routes.trade,
     })}
     >
         <div className='header__menu-items'>
@@ -89,13 +89,12 @@ Header.propTypes = {
     can_upgrade_to      : PropTypes.string,
     currency            : PropTypes.string,
     is_acc_switcher_on  : PropTypes.bool,
-    is_chart_ready      : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_fully_blurred    : PropTypes.bool,
+    is_loading          : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
     is_virtual          : PropTypes.bool,
-    location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
@@ -104,12 +103,12 @@ Header.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <MenuLinks /> from being blocked
 export default withRouter(connect(
-    ({ client, ui, modules }) => ({
+    ({ client, ui }) => ({
         balance             : client.balance,
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
         currency            : client.currency,
-        is_chart_ready      : modules.smart_chart.is_chart_ready,
+        is_loading          : ui.is_loading,
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,

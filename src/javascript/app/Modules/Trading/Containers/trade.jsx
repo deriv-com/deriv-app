@@ -39,7 +39,7 @@ class Trade extends React.Component {
                 <div className='chart-container'>
                     { this.props.symbol &&
                         <React.Suspense fallback={<UILoader />} >
-                            {is_chart_visible && <ChartLoader />}
+                            <ChartLoader is_visible={is_chart_visible} />
                             <SmartChart
                                 chart_id={this.props.chart_id}
                                 Digits={<Digits is_trade_page />}

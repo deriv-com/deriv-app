@@ -172,6 +172,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     applySavedTradeChartLayout() {
+        this.setIsChartLoading(true);
         this.should_export_layout = false;
         this.should_import_layout = true;
         this.should_clear_chart   = false;
@@ -184,6 +185,11 @@ export default class SmartChartStore extends BaseStore {
             // Reset back to symbol before loading contract if trade_symbol and contract_symbol don't match
             if (this.trade_chart_symbol !== this.root_store.modules.trade.symbol) {
                 this.root_store.modules.trade.updateSymbol(this.trade_chart_symbol);
+            }
+
+            // Clear chart loading status once ChartListener returns ready
+            if (this.is_chart_ready) {
+                this.setIsChartLoading(false);
             }
         });
     }

@@ -41,10 +41,10 @@ export default class ContractStore extends BaseStore {
 
     // ---- Normal properties ---
     forget_id;
-    chart_type           = 'mountain';
-    is_granularity_set   = false;
-    is_left_epoch_set    = false;
-    is_from_positions    = false;
+    chart_type         = 'mountain';
+    is_granularity_set = false;
+    is_left_epoch_set  = false;
+    is_from_positions  = false;
 
     // -------------------
     // ----- Actions -----
@@ -60,6 +60,10 @@ export default class ContractStore extends BaseStore {
         if (end_time) {
             if (this.is_from_positions) {
                 SmartChartStore.setStaticChart(true);
+                // Clear chart loading status once ChartListener returns ready
+                if (SmartChartStore.is_chart_ready) {
+                    SmartChartStore.setIsChartLoading(false);
+                }
             }
             SmartChartStore.setContractStart(date_start);
             SmartChartStore.setContractEnd(end_time);
@@ -82,11 +86,6 @@ export default class ContractStore extends BaseStore {
             }
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
-
-            // Clear chart loading status once ChartListener returns ready
-            if (SmartChartStore.is_chart_ready) {
-                SmartChartStore.setIsChartLoading(false);
-            }
         }
         if (should_update_chart_type && !contract_info.tick_count) {
             this.handleChartType(SmartChartStore, date_start, null);
@@ -113,6 +112,9 @@ export default class ContractStore extends BaseStore {
         this.is_from_positions = is_from_positions;
 
         if (contract_id) {
+            if (this.is_from_positions) {
+                this.smart_chart.setIsChartLoading(true);
+            }
             this.smart_chart.saveAndClearTradeChartLayout();
             this.smart_chart.setContractMode(true);
             WS.subscribeProposalOpenContract(this.contract_id, this.updateProposal, false);

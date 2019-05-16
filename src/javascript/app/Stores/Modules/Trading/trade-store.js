@@ -103,9 +103,6 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
-    // Loading
-    @observable loading_status = '';
-
     // Query string
     query = '';
 
@@ -472,11 +469,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onAllowEqualsChange() {
         this.processNewValuesAsync({ contract_type: parseInt(this.is_equal) ? 'rise_fall_equal' : 'rise_fall' }, true);
-    }
-
-    @action.bound
-    updateLoadingStatus(status) {
-        this.loading_status = status;
     }
 
     @action.bound

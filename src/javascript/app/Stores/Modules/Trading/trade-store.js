@@ -550,7 +550,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onLoadingMount() {
-        BinarySocket.wait('trading_times').then(() => {
+        BinarySocket.wait('history').then(() => {
             this.root_store.ui.setAppLoading(false);
         });
     }

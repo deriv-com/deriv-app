@@ -19,8 +19,9 @@ export default class SmartChartStore extends BaseStore {
     @observable barriers = observable.object({});
     @observable markers  = observable.object({});
 
-    @observable is_contract_mode = false;
-    @observable is_title_enabled = true;
+    @observable is_contract_mode    = false;
+    @observable is_title_enabled    = true;
+    @observable is_chart_ready      = false;
 
     @observable start_epoch;
     @observable end_epoch;
@@ -63,6 +64,11 @@ export default class SmartChartStore extends BaseStore {
         this.setContractMode(false);
         this.setContractStart(null);
         this.setContractEnd(null);
+    }
+
+    @action.bound
+    chartStatusListener(is_chart_ready) {
+        this.is_chart_ready = is_chart_ready;
     }
 
     @action.bound

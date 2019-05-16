@@ -6,9 +6,9 @@
     white-space: nowrap;
 
     &__rect {
-        margin: 0.2em;
+        margin: 0.4em;
         border-radius: 20px;
-        height: 100%;
+        height: 60%;
         width: 0.6em;
         display: inline-block;
         -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
@@ -42,50 +42,6 @@
     }
 }
 
-@keyframes fill-up {
-    0% {
-        height: 0px;
-    }
-    100% {
-        height: 90px;
-    }
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    100% {
-        transform: translateY(0px);
-        opacity: 1;
-    }
-}
-
-@keyframes shrink {
-    0% {
-        height: 90px;
-        width: 90px;
-        opacity: 1;
-    }
-    100% {
-        height: 0px;
-        width: 0px;
-        opacity: 0;
-    }
-}
-
-@keyframes fade-out {
-    0% {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-}
-
 @keyframes sk-stretchdelay {
     0%, 40%, 100% {
         transform: scaleY(1);
@@ -107,31 +63,11 @@
         background-color: themed('initial_loader_background');
     }
 
-    &__wrapper {
-        @include toEm(margin-top, 56px, 12px);
-    }
-    &__status {
-        font-size: 14px;
-        margin-top: 8px;
-        opacity: 0;
-        will-change: opacity, transform;
-        animation: fade-in 0.75s, fade-out 0.25s ease-out 0.5s;
-        @include themify($themes) {
-            color: themed('text_color');
+    &__barspinner {
+        &--rect {
+            @include themify($themes) {
+                background-color: themed('deriv_color');
+            }
         }
-    }
-    &__mask {
-        fill: transparent;
-    }
-    &__fill {
-        animation: fill-up 3s;
-        will-change: height;
-        @include themify($themes) {
-            fill: themed('icon_color');
-        }
-    }
-    &__image {
-        will-change: height, width, opacity;
-        animation: shrink 0.5s ease-out 2.75s;
     }
 }

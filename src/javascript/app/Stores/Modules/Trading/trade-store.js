@@ -101,9 +101,6 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
-    // Loading
-    @observable loading_status = '';
-
     // Query string
     query = '';
 
@@ -547,25 +544,6 @@ export default class TradeStore extends BaseStore {
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
-        this.onLoadingMount();
-    }
-
-    @action.bound
-    onLoadingMount() {
-        setTimeout(() => {
-            this.updateLoadingStatus(localize('Retrieving market symbols...'));
-        });
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving trading times...'));
-        }, 1000);
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving chart data...'));
-        }, 2000);
-        setTimeout(() => {
-            this.root_store.ui.setAppLoading(false);
-        }, 3250);
     }
 
     @action.bound

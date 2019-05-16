@@ -3,7 +3,7 @@ import { localize }   from '_common/localize';
 import { websiteUrl } from '_common/url';
 import Localize       from 'App/Components/Elements/localize.jsx';
 import Button         from 'App/Components/Form/button.jsx';
-import IconWip        from 'Assets/Common';
+import Icon           from 'Assets/Common';
 import { connect }    from 'Stores/connect';
 
 const onClick = () => {

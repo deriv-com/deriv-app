@@ -24,6 +24,7 @@ const Footer = ({
     is_settings_dialog_on,
     location,
     showFullBlur,
+    show_positions_toggle,
     togglePositionsDrawer,
     toggleSettingsDialog,
 }) => (
@@ -34,7 +35,7 @@ const Footer = ({
     >
         <div className='footer__links footer__links--left'>
             {
-                is_logged_in &&
+                (is_logged_in && show_positions_toggle) &&
                 <TogglePositions
                     is_positions_drawer_on={is_positions_drawer_on}
                     togglePositionsDrawer={togglePositionsDrawer}
@@ -67,6 +68,7 @@ Footer.propTypes = {
     is_positions_drawer_on    : PropTypes.bool,
     is_settings_dialog_on     : PropTypes.bool,
     location                  : PropTypes.object,
+    show_positions_toggle     : PropTypes.bool,
     togglePositionsDrawer     : PropTypes.func,
     toggleSettingsDialog      : PropTypes.func,
 };
@@ -83,6 +85,7 @@ export default withRouter(connect(
         is_positions_drawer_on    : ui.is_positions_drawer_on,
         is_settings_dialog_on     : ui.is_settings_dialog_on,
         showFullBlur              : ui.showFullBlur,
+        show_positions_toggle     : ui.show_positions_toggle,
         togglePositionsDrawer     : ui.togglePositionsDrawer,
         toggleSettingsDialog      : ui.toggleSettingsDialog,
     })

@@ -20,6 +20,7 @@ export default class SmartChartStore extends BaseStore {
     @observable markers  = observable.object({});
 
     @observable is_contract_mode = false;
+    @observable is_static_chart  = false;
     @observable is_title_enabled = true;
 
     @observable start_epoch;
@@ -63,6 +64,7 @@ export default class SmartChartStore extends BaseStore {
         this.setContractMode(false);
         this.setContractStart(null);
         this.setContractEnd(null);
+        this.setStaticChart(false);
     }
 
     @action.bound
@@ -178,6 +180,11 @@ export default class SmartChartStore extends BaseStore {
     exportLayout(layout) {
         this.trade_chart_layout = layout;
         this.should_clear_chart = true;
+    }
+
+    @action.bound
+    setStaticChart(bool) {
+        this.is_static_chart = bool;
     }
 
     @computed

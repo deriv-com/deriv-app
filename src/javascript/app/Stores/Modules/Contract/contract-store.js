@@ -76,7 +76,7 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
-            // Clear chart loading status once ChartListener returns ready
+            // Clear chart loading status once ChartListener returns ready for completed contract
             if (SmartChartStore.is_chart_ready) {
                 SmartChartStore.setIsChartLoading(false);
             }
@@ -94,6 +94,11 @@ export default class ContractStore extends BaseStore {
             }
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
+
+            // Clear chart loading status once ChartListener returns ready for ongoing contract
+            if (SmartChartStore.is_chart_ready) {
+                SmartChartStore.setIsChartLoading(false);
+            }
         }
         if (should_update_chart_type && !contract_info.tick_count) {
             this.handleChartType(SmartChartStore, date_start, null);

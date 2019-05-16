@@ -22,6 +22,9 @@ import {
     allowed_query_string_variables,
     getNonProposalQueryStringVariables } from './Constants/query-string';
 import getValidationRules                from './Constants/validation-rules';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError }       from './Helpers/active-symbols';
 import { isRiseFallEqual }               from './Helpers/allow-equals';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
@@ -34,7 +37,6 @@ import {
     getProposalErrorField,
     getProposalInfo,
     getProposalParametersName }          from './Helpers/proposal';
-import { pickDefaultSymbol }             from './Helpers/symbol';
 import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
 import BaseStore                         from '../../base-store';
 
@@ -170,8 +172,12 @@ export default class TradeStore extends BaseStore {
         this.smart_chart        = this.root_store.modules.smart_chart;
         this.currency           = this.root_store.client.currency;
         const active_symbols    = await WS.activeSymbols();
-        if (!active_symbols.active_symbols || active_symbols.active_symbols.length === 0) {
+        if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            return;
+        } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
+            showUnavailableLocationError(this.root_store.common.showError);
+            return;
         }
 
         // Checks for finding out that the current account has access to the defined symbol in quersy string or not.

@@ -70,11 +70,11 @@ export default class PortfolioStore extends BaseStore {
                 this.pushNewPosition(new_pos);
             });
             // subscribe to new contract:
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler, false);
+            WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
+            WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
         }
     }
 

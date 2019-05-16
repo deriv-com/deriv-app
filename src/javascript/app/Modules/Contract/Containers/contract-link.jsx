@@ -11,7 +11,7 @@ const ContractLink = ({
     <a
         className={className}
         href='javascript:;'
-        onClick={() => openContract(contract_id, false, true)}
+        onClick={() => openContract(contract_id, true)}
     >
         {children}
     </a>

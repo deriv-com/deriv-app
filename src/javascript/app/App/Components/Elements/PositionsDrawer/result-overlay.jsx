@@ -40,7 +40,7 @@ const ResultOverlay = ({
                         'result__caption--lost': (result === 'lost'),
                     }
                     )}
-                    onClick={() => onClick(contract_id, false, true)}
+                    onClick={() => onClick(contract_id, true)}
                 >
                     {
                         (result === 'won') ?

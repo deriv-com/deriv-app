@@ -90,30 +90,29 @@
         vertical-align: middle;
         width: 16px;
         height: 16px;
-        border-radius: 1px;
-        border-width: 0.5px;
+        border-radius: 0;
         padding: 0;
         @include themify($themes) {
             background-color: themed('background_container_color');
-            border-color: themed('text_secondary_color');
+            border: 1px solid themed('text_secondary_color');
         }
 
         &:active {
             @include themify($themes) {
                 border-color: $COLOR_ORANGE;
-                border-radius: 1px;
+                border-radius: 0;
                 box-shadow: none;
             }
         }
         &:hover {
             @include themify($themes) {
                 border-color: themed('text_color');
-                border-radius: 1px;
+                border-radius: 0;
                 box-shadow: none;
             }
         }
         &:focus {
-            border-radius: 1px;
+            border-radius: 0;
             box-shadow: none;
         }
         &:checked {

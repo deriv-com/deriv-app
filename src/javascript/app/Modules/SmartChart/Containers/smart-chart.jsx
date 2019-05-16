@@ -63,6 +63,7 @@ class Chart extends React.Component {
                 clearChart={this.props.should_clear_chart}
                 importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
                 onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
+                isStaticChart={this.props.is_static_chart}
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
@@ -88,6 +89,7 @@ Chart.propTypes = {
     is_contract_mode            : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
+    is_static_chart             : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
@@ -120,6 +122,7 @@ export default connect(
         granularity         : modules.smart_chart.granularity,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
+        is_static_chart     : modules.smart_chart.is_static_chart,
         markers_array       : modules.smart_chart.markers_array,
         onMount             : modules.smart_chart.onMount,
         onUnmount           : modules.smart_chart.onUnmount,

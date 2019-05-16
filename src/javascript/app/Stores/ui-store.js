@@ -55,7 +55,6 @@ export default class UIStore extends BaseStore {
     @observable is_fully_blurred = false;
     @observable is_app_blurred   = false;
     @observable is_route_blurred = false;
-
     @observable show_positions_toggle = true;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];

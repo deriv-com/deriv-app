@@ -16,8 +16,6 @@ import { IconExclamation }        from 'Assets/Common/icon-exclamation.jsx';
 import { IconFlag }               from 'Assets/Common/icon-flag.jsx';
 import { IconInfoBlue }           from 'Assets/Common/icon-info-blue.jsx';
 import { IconInfoOutline }        from 'Assets/Common/icon-info-outline.jsx';
-import { IconInitialLogoDark }    from 'Assets/Common/icon-initial-logo-dark.jsx';
-import { IconInitialLogoLight }   from 'Assets/Common/icon-initial-logo-light.jsx';
 import { IconMinimize }           from 'Assets/Common/icon-minimize.jsx';
 import { IconMinus }              from 'Assets/Common/icon-minus.jsx';
 import { IconPlus }               from 'Assets/Common/icon-plus.jsx';
@@ -79,8 +77,6 @@ const ICONS = {
         FLAG                : IconFlag,
         INFO_BLUE           : IconInfoBlue,
         INFO_OUTLINE        : IconInfoOutline,
-        INITIAL_LOGO_DARK   : IconInitialLogoDark,
-        INITIAL_LOGO_LIGHT  : IconInitialLogoLight,
         MINIMIZE            : IconMinimize,
         MINUS               : IconMinus,
         PLUS                : IconPlus,

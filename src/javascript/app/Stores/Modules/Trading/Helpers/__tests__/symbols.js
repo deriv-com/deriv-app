@@ -1,6 +1,6 @@
 import { expect }              from 'chai';
 import React                   from 'react';
-import { pickDefaultSymbol }   from '../symbol';
+import { pickDefaultSymbol }   from '../active-symbols';
 
 describe('pickDefaultSymbol', () => {
     it('It Returns the default symbol if active symbols has value', () => {

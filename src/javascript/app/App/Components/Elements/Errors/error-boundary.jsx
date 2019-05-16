@@ -9,7 +9,7 @@ export default class ErrorBoundary extends React.Component {
 
     componentDidCatch = (error, info) => {
         // eslint-disable-next-line no-underscore-dangle
-        window.__response_error = JSON.parse(JSON.stringify(this.props.root_store));
+        window.__response_error = this.props.root_store;
         this.setState({
             hasError: true,
             error,

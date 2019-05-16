@@ -46,6 +46,7 @@ export default class TradeStore extends BaseStore {
     @observable is_purchase_enabled        = false;
     @observable is_trade_enabled           = false;
     @observable is_equal                   = 0;
+    @observable is_first_loading           = false;
 
     // Underlying
     @observable symbol;
@@ -498,6 +499,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    updateFirstLoading(is_first_loading) {
+        this.is_first_loading = is_first_loading;
+    }
+
+    @action.bound
     changeDurationValidationRules() {
         if (this.expiry_type === 'endtime') {
             this.validation_errors.duration = [];
@@ -541,6 +547,7 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
+            this.updateFirstLoading(true);
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);

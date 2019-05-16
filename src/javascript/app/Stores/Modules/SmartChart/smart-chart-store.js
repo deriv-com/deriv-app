@@ -68,7 +68,11 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     chartStatusListener(is_chart_ready) {
-        this.is_chart_ready = is_chart_ready;
+        if (is_chart_ready) {
+            this.is_chart_ready = is_chart_ready;
+        } else {
+            this.is_chart_ready = this.root_store.modules.trade.is_first_loading ? true : is_chart_ready;
+        }
     }
 
     @action.bound

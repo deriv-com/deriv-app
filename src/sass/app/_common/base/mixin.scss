@@ -214,13 +214,24 @@
     }
 }
 
-@mixin createBarspinnerRects($count) {
+/*
+ * Bar Spinner Animation
+ * @param $count    - typeface variable
+ * @param $duration - text-transform property
+ * @param $phase    - text-align property
+ * Usage example:
+   @include createBarspinnerAnimation(5, 1.2s, 0,1);
+ */
+@mixin createBarspinnerAnimation($count, $duration, $phase) {
+    animation: sk-stretchdelay $duration infinite ease-in-out;
+
     @for $i from 1 through $count {
         &--#{$i} {
-            animation-delay: -1.2s + (($i - 1) * 0.1);
+            animation-delay: -$duration + (($i - 1) * $phase);
         }
     }
 }
+
 /*
  * Implementation of themes
  * generate sets of themes keys object property (dark / light)

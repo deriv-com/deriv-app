@@ -11,8 +11,7 @@
         height: 60%;
         width: 0.6em;
         display: inline-block;
-        animation: sk-stretchdelay 1.2s infinite ease-in-out;
-        @include createBarspinnerRects(5);
+        @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
     &--dark .barspinner__rect {
         @include themify($themes) {

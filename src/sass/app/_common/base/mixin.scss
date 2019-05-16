@@ -216,9 +216,9 @@
 
 /*
  * Bar Spinner Animation
- * @param $count    - typeface variable
- * @param $duration - text-transform property
- * @param $phase    - text-align property
+ * @param $count    - number of bars
+ * @param $duration - duration of animation
+ * @param $phase    - each bar phase change delay
  * Usage example:
    @include createBarspinnerAnimation(5, 1.2s, 0,1);
  */

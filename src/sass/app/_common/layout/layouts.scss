@@ -112,6 +112,10 @@
         & + .smartcharts {
             visibility: hidden;
             pointer-events: none;
+
+            .cq-symbols-display {
+                display: none;
+            }
         }
         @include themify($themes) {
             background-color: themed('container_color');

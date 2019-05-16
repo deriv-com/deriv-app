@@ -67,6 +67,9 @@ const WS = (() => {
     const sell = (contract_id, price) =>
         BinarySocket.send({ sell: contract_id, price });
 
+    const residenceList = () =>
+        BinarySocket.send({ residence_list: 1 });
+
     const sellExpired = () =>
         BinarySocket.send({ sell_expired: 1 });
 
@@ -128,6 +131,7 @@ const WS = (() => {
         payoutCurrencies,
         profitTable,
         proposalOpenContract,
+        residenceList,
         sell,
         sellExpired,
         sendRequest,

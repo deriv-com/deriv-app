@@ -76,10 +76,6 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
-            // Clear chart loading status once ChartListener returns ready for completed contract
-            if (SmartChartStore.is_chart_ready) {
-                SmartChartStore.setIsChartLoading(false);
-            }
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
@@ -94,11 +90,6 @@ export default class ContractStore extends BaseStore {
             }
             this.is_left_epoch_set = true;
             SmartChartStore.setChartView(contract_info.purchase_time);
-
-            // Clear chart loading status once ChartListener returns ready for ongoing contract
-            if (SmartChartStore.is_chart_ready) {
-                SmartChartStore.setIsChartLoading(false);
-            }
         }
         if (should_update_chart_type && !contract_info.tick_count) {
             this.handleChartType(SmartChartStore, date_start, null);
@@ -173,6 +164,7 @@ export default class ContractStore extends BaseStore {
             this.has_error     = true;
             this.error_message = response.error.message;
             this.contract_info = {};
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
@@ -181,9 +173,18 @@ export default class ContractStore extends BaseStore {
             this.contract_info = {};
             this.contract_id   = null;
             this.smart_chart.setContractMode(false);
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
+
+        // Clear chart loading status once ChartListener returns ready for completed contract
+        if (this.smart_chart.is_chart_ready) {
+            // TODO: Remove timeout once issue with moving chart line is fixed when loading completed contract
+            setTimeout(() => {
+                this.smart_chart.setIsChartLoading(false);
+            }, 1500);
+        }
 
         this.contract_info = response.proposal_open_contract;
 

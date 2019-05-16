@@ -180,10 +180,7 @@ export default class ContractStore extends BaseStore {
 
         // Clear chart loading status once ChartListener returns ready for completed contract
         if (this.smart_chart.is_chart_ready) {
-            // TODO: Remove timeout once issue with moving chart line is fixed when loading completed contract
-            setTimeout(() => {
-                this.smart_chart.setIsChartLoading(false);
-            }, 1500);
+            this.smart_chart.setIsChartLoading(false);
         }
 
         this.contract_info = response.proposal_open_contract;

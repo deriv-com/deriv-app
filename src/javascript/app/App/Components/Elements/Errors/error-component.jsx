@@ -5,7 +5,13 @@ import PageError     from 'Modules/PageError';
 import { routes }    from 'Constants/index';
 import Localize      from '../localize.jsx';
 
-const ErrorComponent = ({ message }) => {
+const ErrorComponent = ({
+    header,
+    message,
+    redirect_label,
+    redirectOnClick,
+    should_show_refresh = true,
+}) => {
     let msg = '';
     if (typeof message === 'object') {
         msg = <Localize
@@ -15,10 +21,10 @@ const ErrorComponent = ({ message }) => {
     } else {
         msg = message;
     }
-    const refresh_message = localize('Please refresh this page to continue.');
+    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
     return (
         <PageError
-            header={localize('Oops, something went wrong.')}
+            header={header || localize('Oops, something went wrong.')}
             messages={
                 msg
                     ? [
@@ -30,8 +36,8 @@ const ErrorComponent = ({ message }) => {
                         refresh_message,
                     ]}
             redirect_url={routes.trade}
-            redirect_label={localize('Refresh')}
-            buttonOnClick={() => location.reload()}
+            redirect_label={redirect_label || localize('Refresh')}
+            buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
 };

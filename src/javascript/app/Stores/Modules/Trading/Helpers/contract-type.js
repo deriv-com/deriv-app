@@ -28,8 +28,9 @@ const ContractType = (() => {
     let has_only_forward_starting_contracts = false;
 
     const buildContractTypesConfig = (symbol) => WS.contractsFor(symbol).then(r => {
-        has_only_forward_starting_contracts = !r.contracts_for.available.find((contract) => contract.start_type !== 'forward');
-        if (has_only_forward_starting_contracts) return;
+        const has_contracts = getPropertyValue(r, ['contracts_for']);
+        has_only_forward_starting_contracts = has_contracts && !r.contracts_for.available.find((contract) => contract.start_type !== 'forward');
+        if (!has_contracts || has_only_forward_starting_contracts) return;
         const contract_categories = getContractCategoriesConfig();
         contract_types = getContractTypesConfig();
 

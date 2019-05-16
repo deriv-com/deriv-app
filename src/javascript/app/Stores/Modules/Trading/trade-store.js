@@ -48,7 +48,6 @@ export default class TradeStore extends BaseStore {
     @observable is_purchase_enabled        = false;
     @observable is_trade_enabled           = false;
     @observable is_equal                   = 0;
-    @observable is_first_loading           = false; // to avoid multiple loading on chart symbol change
 
     // Underlying
     @observable symbol;
@@ -103,6 +102,9 @@ export default class TradeStore extends BaseStore {
     // Purchase
     @observable proposal_info = {};
     @observable purchase_info = {};
+
+    // Loading
+    @observable loading_status = '';
 
     // Query string
     query = '';
@@ -505,11 +507,6 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    updateFirstLoading(is_first_loading) {
-        this.is_first_loading = is_first_loading;
-    }
-
-    @action.bound
     changeDurationValidationRules() {
         if (this.expiry_type === 'endtime') {
             this.validation_errors.duration = [];
@@ -553,10 +550,28 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
-            this.updateFirstLoading(true);
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.onLoadingMount();
+    }
+
+    @action.bound
+    onLoadingMount() {
+        setTimeout(() => {
+            this.updateLoadingStatus(localize('Retrieving market symbols...'));
+        });
+        setTimeout(() => {
+            this.updateLoadingStatus('');
+            this.updateLoadingStatus(localize('Retrieving trading times...'));
+        }, 1000);
+        setTimeout(() => {
+            this.updateLoadingStatus('');
+            this.updateLoadingStatus(localize('Retrieving chart data...'));
+        }, 2000);
+        setTimeout(() => {
+            this.root_store.ui.setAppLoading(false);
+        }, 3250);
     }
 
     @action.bound

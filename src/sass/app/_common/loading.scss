@@ -6,17 +6,83 @@
     white-space: nowrap;
 
     &__rect {
-        margin: 0.4em;
+        margin: 0.2em;
         border-radius: 20px;
-        height: 60%;
+        height: 100%;
         width: 0.6em;
         display: inline-block;
-        @include createBarspinnerAnimation(5, 1.2s, 0.1);
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+
+        &--1 {
+            -webkit-animation-delay: -1.2s;
+            animation-delay: -1.2s;
+        }
+        &--2 {
+            -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s;
+        }
+        &--3 {
+            -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+        }
+        &--4 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+        &--5 {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
     }
     &--dark .barspinner__rect {
         @include themify($themes) {
             background-color: themed('spinner_background_color');
         }
+    }
+}
+
+@keyframes fill-up {
+    0% {
+        height: 0px;
+    }
+    100% {
+        height: 90px;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes shrink {
+    0% {
+        height: 90px;
+        width: 90px;
+        opacity: 1;
+    }
+    100% {
+        height: 0px;
+        width: 0px;
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
     }
 }
 
@@ -41,11 +107,31 @@
         background-color: themed('initial_loader_background');
     }
 
-    &__barspinner {
-        &--rect {
-            @include themify($themes) {
-                background-color: themed('deriv_color');
-            }
+    &__wrapper {
+        @include toEm(margin-top, 56px, 12px);
+    }
+    &__status {
+        font-size: 14px;
+        margin-top: 8px;
+        opacity: 0;
+        will-change: opacity, transform;
+        animation: fade-in 0.75s, fade-out 0.25s ease-out 0.5s;
+        @include themify($themes) {
+            color: themed('text_color');
         }
+    }
+    &__mask {
+        fill: transparent;
+    }
+    &__fill {
+        animation: fill-up 3s;
+        will-change: height;
+        @include themify($themes) {
+            fill: themed('icon_color');
+        }
+    }
+    &__image {
+        will-change: height, width, opacity;
+        animation: shrink 0.5s ease-out 2.75s;
     }
 }

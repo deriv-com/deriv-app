@@ -222,7 +222,7 @@
  * Usage example:
    @include createBarspinnerAnimation(5, 1.2s, 0,1);
  */
- @mixin createBarspinnerAnimation($count, $duration, $phase) {
+@mixin createBarspinnerAnimation($count, $duration, $phase) {
     animation: sk-stretchdelay $duration infinite ease-in-out;
 
     @for $i from 1 through $count {

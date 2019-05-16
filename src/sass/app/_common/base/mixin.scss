@@ -214,6 +214,13 @@
     }
 }
 
+@mixin createBarspinnerRects($count) {
+    @for $i from 1 through $count {
+        &--#{$i} {
+            animation-delay: -1.2s + (($i - 1) * 0.1);
+        }
+    }
+}
 /*
  * Implementation of themes
  * generate sets of themes keys object property (dark / light)

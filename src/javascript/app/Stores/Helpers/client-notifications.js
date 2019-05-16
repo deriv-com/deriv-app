@@ -74,8 +74,13 @@ const client_notifications = {
     },
     document_needs_action: {
         header : localize('Authentication Failed'),
-        message: localize('Your Proof of Identity or Proof of Address did not meet our requirements. Please check your email for further instructions.'),
-        type   : 'warning',
+        message: (
+            <Localize
+                str='[_1]Your Proof of Identity or Proof of Address[_2] did not meet our requirements. Please check your email for further instructions.'
+                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> }}
+            />
+        ),
+        type: 'warning',
     },
     unwelcome: {
         header : localize('Trading and Deposits Disabled'),

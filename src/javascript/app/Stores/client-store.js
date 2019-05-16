@@ -250,7 +250,7 @@ export default class ClientStore extends BaseStore {
 
         const client = this.accounts[this.loginid];
         if (client && !client.is_virtual) {
-            BinarySocket.wait('landing_company', 'website_status', 'get_settings').then(() => {
+            BinarySocket.wait('landing_company', 'website_status').then(() => {
                 handleClientNotifications(client, this.root_store.ui.addNotification, this.loginid);
             });
         }
@@ -388,6 +388,7 @@ export default class ClientStore extends BaseStore {
         this.accounts = [];
         this.currencies_list  = {};
         this.selected_currency = '';
+        this.root_store.ui.removeAllNotifications();
     }
 
 }

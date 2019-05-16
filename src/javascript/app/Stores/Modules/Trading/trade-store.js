@@ -547,7 +547,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async onMount() {
         await this.prepareTradeStore();
-        this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });

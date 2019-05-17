@@ -108,7 +108,6 @@ export default class TradeStore extends BaseStore {
 
     // Query string
     query = '';
-
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
     @action.bound
@@ -547,6 +546,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async onMount() {
         await this.prepareTradeStore();
+        this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
@@ -574,9 +574,9 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async onUnmount() {
+    onUnmount() {
         this.disposeSwitchAccount();
-        await WS.forgetAll('proposal');
+        WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
     }
 }

@@ -348,7 +348,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get is_ended() {
-        return isEnded(this.contract_info || this.replay_info);
+        return isEnded(this.contract_info);
     }
 
     @computed

@@ -171,9 +171,11 @@ export default class TradeStore extends BaseStore {
         const active_symbols    = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            this.root_store.ui.setAppLoading(false);
             return;
         } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
+            this.root_store.ui.setAppLoading(false);
             return;
         }
 

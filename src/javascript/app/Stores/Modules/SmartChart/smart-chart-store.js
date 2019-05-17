@@ -31,11 +31,18 @@ export default class SmartChartStore extends BaseStore {
 
     @observable chart_id             = 'trade';
     @observable replay_id            = 'contract-replay';
+    @observable is_chart_loading     = false;
+    @observable is_chart_ready       = false;
     @observable should_import_layout = false;
     @observable should_export_layout = false;
     @observable should_clear_chart   = false;
     @observable trade_chart_layout   = null;
     trade_chart_symbol               = null;
+
+    @action.bound
+    getChartStatus(status) {
+        this.is_chart_ready = status;
+    }
 
     @action.bound
     updateChartType(type) {
@@ -111,6 +118,11 @@ export default class SmartChartStore extends BaseStore {
         this.end_epoch = end;
     }
 
+    @action.bound
+    setIsChartLoading(bool) {
+        this.is_chart_loading = bool;
+    }
+
     // ---------- Barriers ----------
     @action.bound
     createBarriers = (contract_type, high_barrier, low_barrier, onChartBarrierChange, barrier_config) => {
@@ -164,6 +176,7 @@ export default class SmartChartStore extends BaseStore {
     applySavedTradeChartLayout() {
         if (!this.trade_chart_layout) return;
 
+        this.setIsChartLoading(true);
         this.should_export_layout = false;
         this.should_import_layout = true;
         this.should_clear_chart   = false;
@@ -176,6 +189,11 @@ export default class SmartChartStore extends BaseStore {
             // Reset back to symbol before loading contract if trade_symbol and contract_symbol don't match
             if (this.trade_chart_symbol !== this.root_store.modules.trade.symbol) {
                 this.root_store.modules.trade.updateSymbol(this.trade_chart_symbol);
+            }
+
+            // Clear chart loading status once ChartListener returns ready
+            if (this.is_chart_ready) {
+                this.setIsChartLoading(false);
             }
         });
     }

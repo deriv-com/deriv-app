@@ -94,6 +94,7 @@ class ContractDrawer extends Component {
     }
 
     render() {
+        if (!this.props.contract_info) return null;
         const body_content = this.getBodyContent();
         return (
             <div className={classNames('contract-drawer', {})}>

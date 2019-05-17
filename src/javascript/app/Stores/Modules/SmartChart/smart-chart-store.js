@@ -82,6 +82,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onMount = () => {
+        // remove any barriers and markers before chart is ready
         if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
             this.applySavedTradeChartLayout();
         }
@@ -90,8 +91,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     onUnmount = () => {
         this.symbol = null;
-        this.removeBarriers();
-        this.removeMarkers();
     };
 
     // --------- Set Contract Scroll to Left ---------
@@ -217,7 +216,7 @@ export default class SmartChartStore extends BaseStore {
 
     // ---------- Chart Settings ----------
     @computed
-    get settings() { // TODO: consider moving chart settings from ui_store to chart_store
+    get settings() {
         return (({ common, ui } = this.root_store) => ({
             assetInformation: ui.is_chart_asset_info_visible,
             countdown       : ui.is_chart_countdown_visible,

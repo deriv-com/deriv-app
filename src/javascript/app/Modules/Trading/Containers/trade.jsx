@@ -39,11 +39,16 @@ class Trade extends React.Component {
                         <React.Suspense fallback={<UILoader />} >
                             <SmartChart
                                 chart_id={this.props.chart_id}
+                                chart_type={this.props.chart_type}
                                 Digits={<Digits is_trade_page />}
                                 InfoBox={<InfoBox is_trade_page />}
+                                end_epoch={this.props.end_epoch}
+                                granularity={this.props.granularity}
+                                is_trade_page
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
+                                start_epoch={this.props.start_epoch}
                                 should_show_bottom_widgets={should_show_bottom_widgets}
                                 should_show_last_digit_stats={should_show_last_digit_stats}
                                 symbol={this.props.symbol}
@@ -74,8 +79,10 @@ class Trade extends React.Component {
 
 Trade.propTypes = {
     chart_id         : PropTypes.string,
-    chart_zoom       : PropTypes.number,
+    chart_type       : PropTypes.string,
     contract_type    : PropTypes.string,
+    end_epoch        : PropTypes.number,
+    granularity      : PropTypes.number,
     hidePositions    : PropTypes.func,
     is_contract_mode : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
@@ -90,6 +97,7 @@ Trade.propTypes = {
     scroll_to_epoch  : PropTypes.number,
     scroll_to_offset : PropTypes.number,
     showPositions    : PropTypes.func,
+    start_epoch      : PropTypes.number,
     symbol           : PropTypes.string,
 };
 
@@ -98,9 +106,13 @@ export default connect(
         is_digit_contract                  : modules.contract.is_digit_contract,
         onCloseContract                    : modules.contract.onCloseContract,
         chart_id                           : modules.smart_chart.chart_id,
+        chart_type                         : modules.smart_chart.chart_type,
         scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,
         scroll_to_offset                   : modules.smart_chart.scroll_to_left_epoch_offset,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
+        granularity                        : modules.smart_chart.granularity,
+        end_epoch                          : modules.smart_chart.end_epoch,
+        start_epoch                        : modules.smart_chart.start_epoch,
         contract_type                      : modules.trade.contract_type,
         is_trade_enabled                   : modules.trade.is_trade_enabled,
         onClickNewTrade                    : modules.trade.onClickNewTrade,

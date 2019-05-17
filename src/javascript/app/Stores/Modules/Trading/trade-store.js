@@ -185,7 +185,7 @@ export default class TradeStore extends BaseStore {
 
         // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
         if (is_invalid_symbol) {
-            this.root_store.ui.addToastMessage({
+            this.root_store.ui.addNotification({
                 message: localize('Certain trade parameters have been changed due to your account settings.'),
                 type   : 'info',
             });

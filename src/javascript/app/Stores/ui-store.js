@@ -2,12 +2,13 @@ import {
     action,
     autorun,
     computed,
-    observable }       from 'mobx';
+    observable }             from 'mobx';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH } from 'Constants/ui';
-import { unique }      from '_common/utility';
-import BaseStore       from './base-store';
+    MAX_TABLET_WIDTH }       from 'Constants/ui';
+import { unique }            from '_common/utility';
+import BaseStore             from './base-store';
+import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -39,8 +40,8 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
 
+    @observable notification_messages = [];
     @observable push_notifications = [];
-    @observable toast_messages = [];
 
     @observable is_advanced_duration   = false;
     @observable advanced_duration_unit = 't';
@@ -246,21 +247,21 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    addToastMessage(toast_message) {
-        this.toast_messages.push(toast_message);
+    addNotification(notification) {
+        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
     }
 
     @action.bound
-    removeToastMessage(toast_message) {
-        const index = this.toast_messages.indexOf(toast_message);
+    removeNotification(notification) {
+        const index = this.notification_messages.indexOf(notification);
         if (index > -1) {
-            this.toast_messages.splice(index, 1);
+            this.notification_messages.splice(index, 1);
         }
     }
 
     @action.bound
-    removeAllToastMessages() {
-        this.toast_messages = [];
+    removeAllNotifications() {
+        this.notification_messages = [];
     }
 
     @action.bound

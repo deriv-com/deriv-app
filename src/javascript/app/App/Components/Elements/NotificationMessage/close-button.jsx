@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React     from 'react';
 
-const CloseButton = ({ onClick }) => (
+const CloseButton = ({ onClick, className }) => (
     <button
-        className='toast__close-button'
+        className={className}
         type='button'
         onClick={onClick}
     />
 );
 
 CloseButton.propTypes = {
-    onClick: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    onClick  : PropTypes.func.isRequired,
 };
 
 export default CloseButton;

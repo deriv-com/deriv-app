@@ -172,6 +172,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     applySavedTradeChartLayout() {
+        if (!this.trade_chart_layout) return;
         this.setIsChartLoading(true);
         this.should_export_layout = false;
         this.should_import_layout = true;

@@ -3,7 +3,6 @@ import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import { Icon, IconBack }    from 'Assets/Common';
-import routes                from 'Constants/routes';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
@@ -100,7 +99,7 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.push(routes.statement)}
+                    onClick={() => this.props.history.goBack()}
                 >
                     <Icon icon={IconBack} />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>

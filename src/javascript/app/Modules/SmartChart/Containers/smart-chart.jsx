@@ -44,6 +44,7 @@ class Chart extends React.Component {
                 bottomWidgets={this.props.should_show_bottom_widgets ?
                     this.bottomWidgets : null}
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
+                chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
                 id={this.props.chart_id}
@@ -84,6 +85,7 @@ Chart.propTypes = {
     chart_type                  : PropTypes.string,
     end_epoch                   : PropTypes.number,
     exportLayout                : PropTypes.func,
+    getChartStatus              : PropTypes.func,
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
@@ -119,6 +121,7 @@ export default connect(
         chart_type          : modules.smart_chart.chart_type,
         end_epoch           : modules.smart_chart.end_epoch,
         exportLayout        : modules.smart_chart.exportLayout,
+        getChartStatus      : modules.smart_chart.getChartStatus,
         granularity         : modules.smart_chart.granularity,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,

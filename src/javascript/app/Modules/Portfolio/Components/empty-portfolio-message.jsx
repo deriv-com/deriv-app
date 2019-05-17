@@ -1,6 +1,6 @@
 import React        from 'react';
 import { localize } from '_common/localize';
-import Icon         from 'Assets/Footer';
+import Icon         from 'Assets/Common';
 
 const EmptyPortfolioMessage = () => (
     // TODO: combine with statement component, once design is final

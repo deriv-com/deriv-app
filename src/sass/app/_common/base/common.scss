@@ -40,6 +40,9 @@
     &:hover {
         text-decoration: underline;
     }
+    &--white {
+        color: $COLOR_WHITE;
+    }
 }
 
 /** @define icon */

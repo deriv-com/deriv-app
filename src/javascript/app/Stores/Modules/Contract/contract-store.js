@@ -353,7 +353,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get display_status() {
-        return getDisplayStatus(this.contract_info);
+        return getDisplayStatus(this.contract_info.status ? this.contract_info : this.replay_info);
     }
 
     @computed
@@ -379,7 +379,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get is_ended() {
-        return isEnded(this.contract_info);
+        return isEnded(this.contract_info.is_expired ? this.contract_info : this.replay_info);
     }
 
     @computed

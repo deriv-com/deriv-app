@@ -3,7 +3,7 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from '_common/localize';
 import Money        from 'App/Components/Elements/money.jsx';
-import Icon         from 'Assets/Common/icon.jsx';
+import Icon         from 'Assets/Common';
 import SellInfo     from '../Sell/sell-info.jsx';
 
 const InfoBoxExpired = ({

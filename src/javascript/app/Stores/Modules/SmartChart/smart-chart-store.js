@@ -20,12 +20,11 @@ export default class SmartChartStore extends BaseStore {
     @observable markers  = observable.object({});
 
     @observable is_contract_mode = false;
+    @observable is_static_chart  = false;
     @observable is_title_enabled = true;
 
-    @observable range = observable.object({
-        start_epoch: null,
-        end_epoch  : null,
-    });
+    @observable start_epoch;
+    @observable end_epoch;
 
     @observable scroll_to_left_epoch        = null;
     @observable scroll_to_left_epoch_offset = 0;
@@ -61,9 +60,11 @@ export default class SmartChartStore extends BaseStore {
     cleanupContractChartView() {
         this.removeBarriers();
         this.removeMarkers();
-        this.removeRange();
         this.resetScrollToLeft();
         this.setContractMode(false);
+        this.setContractStart(null);
+        this.setContractEnd(null);
+        this.setStaticChart(false);
     }
 
     @action.bound
@@ -101,15 +102,13 @@ export default class SmartChartStore extends BaseStore {
 
     // --------- All Contracts ---------
     @action.bound
-    setRange(start, end) {
-        this.range.start_epoch = start;
-        this.range.end_epoch   = end;
+    setContractStart(start) {
+        this.start_epoch = start;
     }
 
     @action.bound
-    removeRange() {
-        this.range.start_epoch = null;
-        this.range.end_epoch   = null;
+    setContractEnd(end) {
+        this.end_epoch = end;
     }
 
     // ---------- Barriers ----------
@@ -181,6 +180,11 @@ export default class SmartChartStore extends BaseStore {
     exportLayout(layout) {
         this.trade_chart_layout = layout;
         this.should_clear_chart = true;
+    }
+
+    @action.bound
+    setStaticChart(bool) {
+        this.is_static_chart = bool;
     }
 
     @computed

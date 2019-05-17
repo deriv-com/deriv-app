@@ -41,11 +41,11 @@ class Chart extends React.Component {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={(!this.props.is_digit_contract || this.props.should_show_last_digit_stats) ?
-                    null : this.bottomWidgets }
+                bottomWidgets={this.props.should_show_bottom_widgets ?
+                    this.bottomWidgets : null}
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
                 chartType={this.props.chart_type}
-                endEpoch={this.props.range.end_epoch}
+                endEpoch={this.props.end_epoch}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}
@@ -54,7 +54,7 @@ class Chart extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 showLastDigitStats={this.props.should_show_last_digit_stats}
-                startEpoch={this.props.range.start_epoch}
+                startEpoch={this.props.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
                 scrollToEpochOffset={this.props.scroll_to_offset}
                 symbol={this.props.symbol}
@@ -63,6 +63,7 @@ class Chart extends React.Component {
                 clearChart={this.props.should_clear_chart}
                 importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
                 onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
+                isStaticChart={this.props.is_static_chart}
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
@@ -86,15 +87,14 @@ Chart.propTypes = {
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
-    is_digit_contract           : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
+    is_static_chart             : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
     onSymbolChange              : PropTypes.func,
     onUnmount                   : PropTypes.func,
-    range                       : PropTypes.object,
     scroll_to_epoch             : PropTypes.number,
     scroll_to_epoch_offset      : PropTypes.number,
     settings                    : PropTypes.object,
@@ -117,18 +117,20 @@ export default connect(
         is_socket_opened    : common.is_socket_opened,
         barriers_array      : modules.smart_chart.barriers_array,
         chart_type          : modules.smart_chart.chart_type,
-        is_contract_mode    : modules.smart_chart.is_contract_mode,
+        end_epoch           : modules.smart_chart.end_epoch,
         exportLayout        : modules.smart_chart.exportLayout,
         granularity         : modules.smart_chart.granularity,
+        is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
+        is_static_chart     : modules.smart_chart.is_static_chart,
         markers_array       : modules.smart_chart.markers_array,
         onMount             : modules.smart_chart.onMount,
         onUnmount           : modules.smart_chart.onUnmount,
-        range               : modules.smart_chart.range,
         settings            : modules.smart_chart.settings,
         should_clear_chart  : modules.smart_chart.should_clear_chart,
         should_export_layout: modules.smart_chart.should_export_layout,
         should_import_layout: modules.smart_chart.should_import_layout,
+        start_epoch         : modules.smart_chart.start_epoch,
         trade_chart_layout  : modules.smart_chart.trade_chart_layout,
         updateChartType     : modules.smart_chart.updateChartType,
         updateGranularity   : modules.smart_chart.updateGranularity,

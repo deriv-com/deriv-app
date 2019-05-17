@@ -1,6 +1,7 @@
-import BinarySocket        from '_common/base/socket_base';
-import SubscriptionManager from '_common/base/subscription_manager';
-import { isEmptyObject }   from '_common/utility';
+import BinarySocket              from '_common/base/socket_base';
+import SubscriptionManager       from '_common/base/subscription_manager';
+import { isEmptyObject }         from '_common/utility';
+import { trackJSNetworkMonitor } from './trackjs';
 
 const WS = (() => {
     const activeSymbols = () =>
@@ -66,6 +67,9 @@ const WS = (() => {
     const sell = (contract_id, price) =>
         BinarySocket.send({ sell: contract_id, price });
 
+    const residenceList = () =>
+        BinarySocket.send({ residence_list: 1 });
+
     const sellExpired = () =>
         BinarySocket.send({ sell_expired: 1 });
 
@@ -127,6 +131,7 @@ const WS = (() => {
         payoutCurrencies,
         profitTable,
         proposalOpenContract,
+        residenceList,
         sell,
         sellExpired,
         sendRequest,
@@ -146,4 +151,4 @@ const WS = (() => {
     };
 })();
 
-export default WS;
+export default trackJSNetworkMonitor(WS);

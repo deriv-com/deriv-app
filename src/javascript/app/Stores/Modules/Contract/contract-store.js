@@ -76,6 +76,11 @@ export default class ContractStore extends BaseStore {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
             }
+            // Clear chart loading status once ChartListener returns ready for completed contract
+            if (!this.is_ongoing_contract) {
+                this.waitForChartListener(SmartChartStore);
+            }
+
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
             // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
@@ -102,6 +107,10 @@ export default class ContractStore extends BaseStore {
 
         createChartBarrier(SmartChartStore, contract_info);
         createChartMarkers(SmartChartStore, contract_info);
+
+        if (this.smart_chart.is_chart_ready) {
+            this.smart_chart.setIsChartLoading(false);
+        }
     }
 
     @action.bound
@@ -116,6 +125,9 @@ export default class ContractStore extends BaseStore {
         this.is_from_positions = is_from_positions;
 
         if (contract_id) {
+            if (this.is_from_positions) {
+                this.smart_chart.setIsChartLoading(true);
+            }
             this.smart_chart.saveAndClearTradeChartLayout();
             this.smart_chart.setContractMode(true);
             WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
@@ -161,6 +173,7 @@ export default class ContractStore extends BaseStore {
             this.has_error     = true;
             this.error_message = response.error.message;
             this.contract_info = {};
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
@@ -169,6 +182,7 @@ export default class ContractStore extends BaseStore {
             this.contract_info = {};
             this.contract_id   = null;
             this.smart_chart.setContractMode(false);
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
@@ -238,6 +252,23 @@ export default class ContractStore extends BaseStore {
     forgetProposalOpenContract() {
         WS.forget('proposal_open_contract', this.updateProposal, { id: this.forget_id });
     }
+
+    waitForChartListener = (SmartChartStore) => {
+        // TODO: Refactor, timeout interval is required for completed contracts.
+        // There is an issue when we receive the proposal_open_contract response
+        // for a completed contract and chartListener returns false for that single instance / single response.
+        // Hence, we need to set an interval to keep checking the chartListener until it returns true
+
+        let timer;
+        if (!SmartChartStore.is_chart_ready) {
+            // console.log('waiting for listener');
+            timer = setTimeout(() => this.waitForChartListener(SmartChartStore), 500);
+        } else {
+            // console.log('cleared listener');
+            SmartChartStore.setIsChartLoading(false);
+            clearTimeout(timer);
+        }
+    };
 
     @action.bound
     removeSellError() {

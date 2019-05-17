@@ -14,7 +14,6 @@ import Digits         from './digits.jsx';
 
 class ContractReplay extends React.Component {
     componentDidMount() {
-        WS.forgetAll('ticks_history');
         this.props.showBlur();
         const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
@@ -23,6 +22,8 @@ class ContractReplay extends React.Component {
     componentWillUnmount() {
         this.props.hideBlur();
         this.props.onUnmount();
+        // TODO: Remove below once smartcharts version that properly forgets ticks history is released.
+        // This is to prevent console log spamming when switching between contract-replay and statement routes.
         WS.forgetAll('ticks_history');
     }
 

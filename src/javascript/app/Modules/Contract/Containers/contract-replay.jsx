@@ -13,10 +13,15 @@ import InfoBox        from './info-box.jsx';
 import Digits         from './digits.jsx';
 
 class ContractReplay extends React.Component {
+    setWrapperRef = (node) => {
+        this.wrapper_ref = node;
+    };
+
     componentDidMount() {
         this.props.showBlur();
         const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillUnmount() {
@@ -25,21 +30,28 @@ class ContractReplay extends React.Component {
         // TODO: Remove below once smartcharts version that properly forgets ticks history is released.
         // This is to prevent console log spamming when switching between contract-replay and statement routes.
         WS.forgetAll('ticks_history');
+        document.removeEventListener('mousedown', this.handleClickOutside);
     }
+
+    handleClickOutside = (event) => {
+        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
+            this.props.history.push(AppRoutes.trade);
+        }
+    };
 
     render() {
         const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
         const action_bar_items = [
             {
-                onClick: () => { this.props.history.push(AppRoutes.trade); },
+                onClick: () => this.props.history.push(AppRoutes.trade),
                 icon   : IconClose,
                 title  : localize('Close'),
             },
         ];
 
         return (
-            <React.Fragment>
+            <div className='trade-container__replay'  ref={this.setWrapperRef}>
                 { !!(this.props.contract_info.status) &&
                 <ContractDrawer
                     contract_info={this.props.contract_info}
@@ -70,7 +82,7 @@ class ContractReplay extends React.Component {
                         />
                     </div>
                 </React.Suspense>
-            </React.Fragment>
+            </div>
         );
     }
 }

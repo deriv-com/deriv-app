@@ -8,12 +8,24 @@ import AppRoutes      from 'Constants/routes';
 import { localize }   from '_common/localize';
 
 class Reports extends React.Component {
+    setWrapperRef = (node) => {
+        this.wrapper_ref = node;
+    };
+
+    handleClickOutside = (event) => {
+        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
+            this.props.history.push(AppRoutes.trade);
+        }
+    };
+
     componentDidMount() {
         this.props.showBlur();
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillUnmount() {
         this.props.hideBlur();
+        document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
     render () {
@@ -35,13 +47,13 @@ class Reports extends React.Component {
 
         const action_bar_items = [
             {
-                onClick: () => { this.props.history.push(AppRoutes.trade); },
+                onClick: () => this.props.history.push(AppRoutes.trade),
                 icon   : IconClose,
                 title  : localize('Close'),
             },
         ];
         return (
-            <div className='reports'>
+            <div className='reports' ref={this.setWrapperRef}>
                 <VerticalTab
                     header_title={localize('Reports')}
                     action_bar={action_bar_items}

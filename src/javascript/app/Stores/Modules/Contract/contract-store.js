@@ -200,13 +200,15 @@ export default class ContractStore extends BaseStore {
         if ('error' in response) {
             this.has_error     = true;
             this.contract_config = {};
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error       = true;
             this.error_message   = localize('Contract does not exist or does not belong to this client.');
             this.contract_config = {};
-            // this.smart_chart.setContractMode(false);
+            this.smart_chart.setContractMode(false);
+            this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (+response.proposal_open_contract.contract_id !== +this.replay_contract_id) return;
@@ -217,6 +219,9 @@ export default class ContractStore extends BaseStore {
         createChartBarrier(this.smart_chart, this.replay_info);
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
+
+        this.waitForChartListener(this.smart_chart);
+
     }
 
     @action.bound

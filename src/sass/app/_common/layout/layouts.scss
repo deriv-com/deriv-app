@@ -122,6 +122,12 @@
                     .ciq-asset-information {
                         top: 75px;
                     }
+                    .stx_jump_today.home > svg {
+                        top: 6px;
+                        left: 8px;
+                        padding: 0;
+                        position: absolute;
+                    }
                 }
             }
         }
@@ -197,6 +203,9 @@
                 left: 8px;
                 padding: 0;
                 position: absolute;
+            }
+            div.stx-marker {
+                z-index: 2;
             }
         }
         div.cq-chart-control-left {

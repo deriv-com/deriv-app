@@ -1,13 +1,28 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import { withRouter } from 'react-router-dom';
+import posed,
+{ PoseGroup }         from 'react-pose';
 import { connect }    from 'Stores/connect';
 import VerticalTab    from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import { IconClose }  from 'Assets/Settings';
 import AppRoutes      from 'Constants/routes';
 import { localize }   from '_common/localize';
 
+const PageWrapper = posed.div({
+    enter: {
+        opacity   : 1,
+        transition: { duration: 250 },
+    },
+    exit: {
+        opacity   : 0,
+        transition: { duration: 250 },
+    },
+});
+
 class Reports extends React.Component {
+    state = { is_visible: false };
+
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -21,9 +36,11 @@ class Reports extends React.Component {
     componentDidMount() {
         this.props.showBlur();
         document.addEventListener('mousedown', this.handleClickOutside);
+        this.setState({ is_visible: true });
     }
 
     componentWillUnmount() {
+        this.setState({ is_visible: false });
         this.props.hideBlur();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
@@ -47,24 +64,33 @@ class Reports extends React.Component {
 
         const action_bar_items = [
             {
-                onClick: () => this.props.history.push(AppRoutes.trade),
-                icon   : IconClose,
-                title  : localize('Close'),
+                onClick: () => {
+                    this.props.history.push(AppRoutes.trade);
+                    this.setState({ is_visible: false });
+                },
+                icon : IconClose,
+                title: localize('Close'),
             },
         ];
         return (
-            <div className='reports' ref={this.setWrapperRef}>
-                <VerticalTab
-                    header_title={localize('Reports')}
-                    action_bar={action_bar_items}
-                    alignment='center'
-                    classNameHeader='reports__tab-header'
-                    current_path={this.props.location.pathname}
-                    is_routed={true}
-                    is_full_width={true}
-                    list={menu_options()}
-                />
-            </div>
+            <PoseGroup>
+                {this.state.is_visible &&
+                <PageWrapper key='reports-page-wrapper'>
+                    <div className='reports' ref={this.setWrapperRef}>
+                        <VerticalTab
+                            header_title={localize('Reports')}
+                            action_bar={action_bar_items}
+                            alignment='center'
+                            classNameHeader='reports__tab-header'
+                            current_path={this.props.location.pathname}
+                            is_routed={true}
+                            is_full_width={true}
+                            list={menu_options()}
+                        />
+                    </div>
+                </PageWrapper>
+                }
+            </PoseGroup>
         );
     }
 }

@@ -1,24 +1,12 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { withRouter } from 'react-router-dom';
-import posed,
-{ PoseGroup }         from 'react-pose';
-import { connect }    from 'Stores/connect';
-import VerticalTab    from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import { IconClose }  from 'Assets/Settings';
-import AppRoutes      from 'Constants/routes';
-import { localize }   from '_common/localize';
-
-const PageWrapper = posed.div({
-    enter: {
-        opacity   : 1,
-        transition: { duration: 250 },
-    },
-    exit: {
-        opacity   : 0,
-        transition: { duration: 250 },
-    },
-});
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { withRouter }  from 'react-router-dom';
+import { connect }     from 'Stores/connect';
+import { FadeWrapper } from 'App/Components/Animations';
+import VerticalTab     from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import { IconClose }   from 'Assets/Settings';
+import AppRoutes       from 'Constants/routes';
+import { localize }    from '_common/localize';
 
 class Reports extends React.Component {
     state = { is_visible: false };
@@ -73,24 +61,24 @@ class Reports extends React.Component {
             },
         ];
         return (
-            <PoseGroup>
-                {this.state.is_visible &&
-                <PageWrapper key='reports-page-wrapper'>
-                    <div className='reports' ref={this.setWrapperRef}>
-                        <VerticalTab
-                            header_title={localize('Reports')}
-                            action_bar={action_bar_items}
-                            alignment='center'
-                            classNameHeader='reports__tab-header'
-                            current_path={this.props.location.pathname}
-                            is_routed={true}
-                            is_full_width={true}
-                            list={menu_options()}
-                        />
-                    </div>
-                </PageWrapper>
-                }
-            </PoseGroup>
+            <FadeWrapper
+                is_visible={this.state.is_visible}
+                className='reports-page-wrapper'
+                keyname='reports-page-wrapper'
+            >
+                <div className='reports' ref={this.setWrapperRef}>
+                    <VerticalTab
+                        header_title={localize('Reports')}
+                        action_bar={action_bar_items}
+                        alignment='center'
+                        classNameHeader='reports__tab-header'
+                        current_path={this.props.location.pathname}
+                        is_routed={true}
+                        is_full_width={true}
+                        list={menu_options()}
+                    />
+                </div>
+            </FadeWrapper>
         );
     }
 }

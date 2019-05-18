@@ -1,31 +1,16 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { withRouter } from 'react-router';
-import posed,
-{ PoseGroup }         from 'react-pose';
-import ChartLoader    from 'App/Components/Elements/chart-loader.jsx';
-import ContractDrawer from 'App/Components/Elements/ContractDrawer';
-import { connect }    from 'Stores/connect';
-import { Icon }       from 'Assets/Common';
-import { IconClose }  from 'Assets/Settings';
-import AppRoutes      from 'Constants/routes';
-import { localize }   from '_common/localize';
-import InfoBox        from './info-box.jsx';
-import Digits         from './digits.jsx';
-
-const ContractWrapper = posed.div({
-    enter: {
-        opacity   : 1,
-        delay     : 300,
-        transition: {
-            default: { duration: 250 },
-        },
-    },
-    exit: {
-        opacity   : 0,
-        transition: { duration: 250 },
-    },
-});
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { withRouter }  from 'react-router';
+import { FadeWrapper } from 'App/Components/Animations';
+import ChartLoader     from 'App/Components/Elements/chart-loader.jsx';
+import ContractDrawer  from 'App/Components/Elements/ContractDrawer';
+import { connect }     from 'Stores/connect';
+import { Icon }        from 'Assets/Common';
+import { IconClose }   from 'Assets/Settings';
+import AppRoutes       from 'Constants/routes';
+import { localize }    from '_common/localize';
+import InfoBox         from './info-box.jsx';
+import Digits          from './digits.jsx';
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -72,16 +57,16 @@ class ContractReplay extends React.Component {
 
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
-                <PoseGroup>
-                    { !!(contract_info.status) &&
-                        <ContractWrapper key='contract-drawer-wrapper'>
-                            <ContractDrawer
-                                contract_info={contract_info}
-                                heading='Reports'
-                            />
-                        </ContractWrapper>
-                    }
-                </PoseGroup>
+                <FadeWrapper
+                    className='contract-drawer-wrapper'
+                    is_visible={!!(contract_info.status)}
+                    keyname='contract-drawer-wrapper'
+                >
+                    <ContractDrawer
+                        contract_info={contract_info}
+                        heading='Reports'
+                    />
+                </FadeWrapper>
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>

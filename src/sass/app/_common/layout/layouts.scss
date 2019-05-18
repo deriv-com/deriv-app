@@ -86,6 +86,10 @@
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 4));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
+
+            &-wrapper {
+                z-index: 4;
+            }
         }
         .replay-chart__container {
             width: 100%;

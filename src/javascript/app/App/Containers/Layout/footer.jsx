@@ -1,10 +1,11 @@
-import classNames     from 'classnames';
+import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import routes         from 'Constants/routes';
-import { connect }    from 'Stores/connect';
-import ServerTime     from '../server-time.jsx';
+import { withRouter }                 from 'react-router';
+import PropTypes                      from 'prop-types';
+import React                          from 'react';
+import routes                         from 'Constants/routes';
+import { connect }                    from 'Stores/connect';
+import ServerTime                     from '../server-time.jsx';
 import {
     NetworkStatus,
     ToggleFullScreen,
@@ -21,6 +22,7 @@ const Footer = ({
     is_logged_in,
     is_positions_drawer_on,
     is_settings_dialog_on,
+    location,
     showFullBlur,
     show_positions_toggle,
     togglePositionsDrawer,
@@ -65,12 +67,13 @@ Footer.propTypes = {
     is_logged_in              : PropTypes.bool,
     is_positions_drawer_on    : PropTypes.bool,
     is_settings_dialog_on     : PropTypes.bool,
+    location                  : PropTypes.object,
     show_positions_toggle     : PropTypes.bool,
     togglePositionsDrawer     : PropTypes.func,
     toggleSettingsDialog      : PropTypes.func,
 };
 
-export default connect(
+export default withRouter(connect(
     ({ client, modules, ui }) => ({
         active_positions          : modules.portfolio.active_positions,
         hideFullBlur              : ui.hideFullBlur,
@@ -86,4 +89,4 @@ export default connect(
         togglePositionsDrawer     : ui.togglePositionsDrawer,
         toggleSettingsDialog      : ui.toggleSettingsDialog,
     })
-)(Footer);
+)(Footer));

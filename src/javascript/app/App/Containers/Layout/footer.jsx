@@ -1,11 +1,11 @@
-import classNames     from 'classnames';
+import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { withRouter }  from 'react-router';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import routes         from 'Constants/routes';
-import { connect }    from 'Stores/connect';
-import ServerTime     from '../server-time.jsx';
+import { withRouter }                 from 'react-router';
+import PropTypes                      from 'prop-types';
+import React                          from 'react';
+import routes                         from 'Constants/routes';
+import { connect }                    from 'Stores/connect';
+import ServerTime                     from '../server-time.jsx';
 import {
     NetworkStatus,
     ToggleFullScreen,

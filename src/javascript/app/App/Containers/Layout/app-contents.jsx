@@ -24,9 +24,11 @@ const AppContents = ({
 }) => {
     if (is_logged_in) {
         window.addEventListener('beforeinstallprompt', e => {
-            console.log('Going to show the installation prompt'); // eslint-disable-line no-console
-
             e.preventDefault();
+
+            if (location.pathname !== routes.trade) return;
+
+            console.log('Going to show the installation prompt'); // eslint-disable-line no-console
 
             setPWAPromptEvent(e);
             addNotificationBar({

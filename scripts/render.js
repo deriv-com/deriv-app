@@ -204,7 +204,7 @@ const createContextBuilder = async (sections) => {
         ],
         css_files  : css_files_list[section],
         languages  : config.languages,
-        broker_name: 'DTrader',
+        broker_name: 'Deriv',
         static_hash: static_hash[section],
     });
 
@@ -240,7 +240,7 @@ async function compile(page) {
 
     const tasks = languages.map(async lang => {
         const model = {
-            website_name   : 'DTrader',
+            website_name   : 'Deriv',
             title          : page.title,
             layout         : page.layout,
             language       : lang.toUpperCase(),

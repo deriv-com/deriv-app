@@ -1,11 +1,11 @@
 Deriv App
 =============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [DTrader](http://deriv.app) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://deriv.app) website.
 
 ## Installation
 
-In order to work on your own version of the DTrader Javascript and CSS, please **fork this project**.
+In order to work on your own version of the Deriv Javascript and CSS, please **fork this project**.
 
 You will also need to install the following on your development machine:
 

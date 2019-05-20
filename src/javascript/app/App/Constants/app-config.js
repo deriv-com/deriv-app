@@ -1,2 +1,2 @@
-export const website_name  = 'DTrader';
+export const website_name  = 'Deriv';
 export const default_title = website_name;

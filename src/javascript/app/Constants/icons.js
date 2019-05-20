@@ -11,13 +11,12 @@ import { IconClear }              from 'Assets/Common/icon-clear.jsx';
 import { IconClock }              from 'Assets/Common/icon-clock.jsx';
 import { IconClose }              from 'Assets/Common/icon-close.jsx';
 import { IconCountryFlag }        from 'Assets/Common/icon-country-flag.jsx';
-import { IconError }              from 'Assets/Common/icon-error.jsx';
+import { IconDanger }             from 'Assets/Common/icon-danger.jsx';
 import { IconExclamation }        from 'Assets/Common/icon-exclamation.jsx';
 import { IconFlag }               from 'Assets/Common/icon-flag.jsx';
 import { IconInfoBlue }           from 'Assets/Common/icon-info-blue.jsx';
 import { IconInfoOutline }        from 'Assets/Common/icon-info-outline.jsx';
-import { IconInitialLogoDark }    from 'Assets/Common/icon-initial-logo-dark.jsx';
-import { IconInitialLogoLight }   from 'Assets/Common/icon-initial-logo-light.jsx';
+import { IconInformation }        from 'Assets/Common/icon-information.jsx';
 import { IconMinimize }           from 'Assets/Common/icon-minimize.jsx';
 import { IconMinus }              from 'Assets/Common/icon-minus.jsx';
 import { IconPlus }               from 'Assets/Common/icon-plus.jsx';
@@ -74,13 +73,12 @@ const ICONS = {
         CLOCK               : IconClock,
         CLOSE               : IconClose,
         COUNTRY_FLAG        : IconCountryFlag,
-        ERROR               : IconError,
+        DANGER              : IconDanger,
         EXCLAMATION         : IconExclamation,
         FLAG                : IconFlag,
+        INFORMATION         : IconInformation,
         INFO_BLUE           : IconInfoBlue,
         INFO_OUTLINE        : IconInfoOutline,
-        INITIAL_LOGO_DARK   : IconInitialLogoDark,
-        INITIAL_LOGO_LIGHT  : IconInitialLogoLight,
         MINIMIZE            : IconMinimize,
         MINUS               : IconMinus,
         PLUS                : IconPlus,

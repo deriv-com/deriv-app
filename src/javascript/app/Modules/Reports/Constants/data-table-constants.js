@@ -129,7 +129,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         col_index: 'reference',
     }, {
         title            : localize('Buy price'),
-        col_index        : 'buy_price',
+        col_index        : 'purchase',
         renderCellContent: ({ cell_value }) => (
             <Money amount={cell_value} currency={currency} />
         ),

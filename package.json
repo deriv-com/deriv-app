@@ -1,7 +1,7 @@
 {
   "name": "deriv-app",
   "version": "3.8.0",
-  "description": "DTrader content",
+  "description": "Deriv content",
   "scripts": {
     "test": "grunt test",
     "livereload": "sudo -p 'enter password for sudo:' grunt livereload",
@@ -15,7 +15,7 @@
   "keywords": [
     "deriv"
   ],
-  "author": "DTrader",
+  "author": "Deriv",
   "license": "Apache License 2.0",
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
@@ -83,7 +83,7 @@
     "grunt-webpack": "3.1.3",
     "jsdom": "9.12.0",
     "jsdom-global": "2.1.1",
-    "load-grunt-config": "1.0.1",
+    "load-grunt-config": "1.0.2",
     "load-grunt-tasks": "3.5.2",
     "mocha": "5.2.0",
     "mock-local-storage": "1.1.7",
@@ -91,7 +91,7 @@
     "node-sass": "4.11.0",
     "postcss-scss": "0.4.1",
     "react-render-html": "0.6.0",
-    "react-svg-loader": "^2.1.0",
+    "react-svg-loader": "3.0.1",
     "sitemap": "1.13.0",
     "stylelint": "10.0.0",
     "stylelint-formatter-pretty": "1.0.3",
@@ -101,7 +101,7 @@
     "time-grunt": "1.4.0",
     "uglifyjs-webpack-plugin": "1.3.0",
     "webpack": "4.17.2",
-    "webpack-bundle-analyzer": "3.0.2",
+    "webpack-bundle-analyzer": "3.3.2",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
     "webpack-merge": "4.1.4",
@@ -126,7 +126,7 @@
     "react-router-dom": "5.0.0",
     "react-transition-group": "2.4.0",
     "sinon": "7.2.2",
-    "smartcharts-beta": "0.4.26",
+    "smartcharts-beta": "0.4.27",
     "tt-react-custom-scrollbars": "4.2.1-tt2",
     "url-polyfill": "1.0.9",
     "web-push-notifications": "3.2.15"

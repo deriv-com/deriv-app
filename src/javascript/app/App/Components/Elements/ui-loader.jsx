@@ -3,8 +3,8 @@ import PropTypes  from 'prop-types';
 import React      from 'react';
 
 const UILoader = ({ className, classNameBlock }) => {
-    const loading_class = classNames('block-ui__loading', className);
     const block_class   = classNames(classNameBlock, 'block-ui');
+    const loading_class = classNames('block-ui__loading', className);
     return (
         <div className={block_class}>
             <div className={loading_class}>

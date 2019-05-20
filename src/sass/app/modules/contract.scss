@@ -157,6 +157,17 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 @include typeface(--paragraph-left-normal-black, unset);
                 max-width: 360px;
             }
+            &:before {
+                position: absolute;
+                content: '';
+                background: rgba(42, 48, 82, 0.02);
+                filter: blur(2px);
+                z-index: 0;
+                top: -2px;
+                left: -2px;
+                width: calc(100% + 4px);
+                height: calc(100% + 4px);
+            }
         }
         .expired {
             display: flex;
@@ -264,7 +275,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         top: 0;
     }
 }
-
+// TODO: THEMIFY
 // Dark Theme
 .theme--dark {
     .contract-container {
@@ -300,6 +311,9 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             background: rgba(16, 19, 32, 0.6); // this is color dark blue 2 with 0.6 opacity
 
             &-longcode {
+                &:before {
+                    background: rgba(16, 19, 32, 0.25);
+                }
                 &-text {
                     color: $COLOR_WHITE;
                 }

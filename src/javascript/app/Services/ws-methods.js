@@ -73,8 +73,8 @@ const WS = (() => {
     const sellExpired = () =>
         BinarySocket.send({ sell_expired: 1 });
 
-    const sendRequest = (request_object) =>
-        Promise.resolve(!isEmptyObject(request_object) ? BinarySocket.send(request_object) : {});
+    const sendRequest = (request_object, force_request) =>
+        Promise.resolve(!isEmptyObject(request_object) ? BinarySocket.send(request_object, force_request) : {});
 
     const statement = (limit, offset, date_boundaries) =>
         BinarySocket.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });

@@ -7,7 +7,7 @@ jsx Rules
 - Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
 - Use `it.L('...')` for translations.
 - Use `it.url_for('...')` to build URLs.
-- Use `it.website_name` instead of `DTrader`.
+- Use `it.website_name` instead of `Deriv`.
 - Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
 - Components with less than four arguments should stay list all in one line, for example:
 

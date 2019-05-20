@@ -44,6 +44,7 @@ class Chart extends React.Component {
                 bottomWidgets={this.props.should_show_bottom_widgets ?
                     this.bottomWidgets : null}
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
+                chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
                 id={this.props.chart_id}
@@ -84,6 +85,7 @@ Chart.propTypes = {
     chart_type                  : PropTypes.string,
     end_epoch                   : PropTypes.number,
     exportLayout                : PropTypes.func,
+    getChartStatus              : PropTypes.func,
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
@@ -91,10 +93,12 @@ Chart.propTypes = {
     is_socket_opened            : PropTypes.bool,
     is_static_chart             : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
+    is_trade_page               : PropTypes.bool,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
     onSymbolChange              : PropTypes.func,
     onUnmount                   : PropTypes.func,
+    replay_controls             : PropTypes.object,
     scroll_to_epoch             : PropTypes.number,
     scroll_to_epoch_offset      : PropTypes.number,
     settings                    : PropTypes.object,
@@ -116,10 +120,8 @@ export default connect(
     ({ modules, ui, common }) => ({
         is_socket_opened    : common.is_socket_opened,
         barriers_array      : modules.smart_chart.barriers_array,
-        chart_type          : modules.smart_chart.chart_type,
-        end_epoch           : modules.smart_chart.end_epoch,
         exportLayout        : modules.smart_chart.exportLayout,
-        granularity         : modules.smart_chart.granularity,
+        getChartStatus      : modules.smart_chart.getChartStatus,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
         is_static_chart     : modules.smart_chart.is_static_chart,
@@ -130,7 +132,6 @@ export default connect(
         should_clear_chart  : modules.smart_chart.should_clear_chart,
         should_export_layout: modules.smart_chart.should_export_layout,
         should_import_layout: modules.smart_chart.should_import_layout,
-        start_epoch         : modules.smart_chart.start_epoch,
         trade_chart_layout  : modules.smart_chart.trade_chart_layout,
         updateChartType     : modules.smart_chart.updateChartType,
         updateGranularity   : modules.smart_chart.updateGranularity,

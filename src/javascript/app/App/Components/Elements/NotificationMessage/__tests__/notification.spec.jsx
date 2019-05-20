@@ -2,13 +2,13 @@ import React                  from 'react';
 import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import Toast                  from '../toast.jsx';
+import Notification           from '../notification.jsx';
 
 configure({ adapter: new Adapter() });
 
-describe('Toast', () => {
-    it('should render one <Toast /> component', () => {
-        const wrapper = shallow(<Toast />);
+describe('Notification', () => {
+    it('should render one <Notification /> component', () => {
+        const wrapper = shallow(<Notification />);
         expect(wrapper).to.have.length(1);
     });
 });

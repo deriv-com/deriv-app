@@ -95,6 +95,7 @@ Header.propTypes = {
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
     is_virtual          : PropTypes.bool,
+    location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,

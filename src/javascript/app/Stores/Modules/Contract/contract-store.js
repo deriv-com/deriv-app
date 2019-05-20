@@ -83,8 +83,6 @@ export default class ContractStore extends BaseStore {
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
-            // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
-            // TODO: Fix issue with setting start_epoch and loading ongoing contract from positions
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }

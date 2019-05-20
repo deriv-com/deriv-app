@@ -44,7 +44,7 @@
     &__barspinner {
         &--rect {
             @include themify($themes) {
-                background-color: themed('deriv_color');
+                background-color: themed('deriv_green_color');
             }
         }
     }

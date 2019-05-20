@@ -180,6 +180,9 @@
             .cq-symbols-display {
                 display: none;
             }
+            .cq-chart-controls {
+                display: none;
+            }
         }
         @include themify($themes) {
             background-color: themed('container_color');

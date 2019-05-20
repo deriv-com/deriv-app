@@ -1,11 +1,10 @@
 import React              from 'react';
 import { Switch }         from 'react-router-dom';
 import getRoutesConfig    from 'App/Constants/routes-config';
-import UILoader           from 'App/Components/Elements/ui-loader.jsx';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = (props) => (
-    <React.Suspense fallback={<UILoader />}>
+    <React.Suspense fallback={<div />}>
         <Switch>
             {
                 getRoutesConfig().map((route, idx) => (

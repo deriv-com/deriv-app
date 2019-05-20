@@ -42,6 +42,17 @@
         height: 24px;
         border-radius: 50%;
     }
+    &__sell {
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        margin-left: -2px;
+        margin-bottom: -1px;
+        @include themify($themes) {
+            background-color: themed('tick_step_marked');
+            border: 2px solid themed('tick_step_marked');
+        }
+    }
 }
 
 /** @define chart-spot-label */

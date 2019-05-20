@@ -81,7 +81,7 @@ class PositionsDrawer extends React.Component {
                 })}
             >
                 <div className='positions-drawer__header'>
-                    <span className='positions-drawer__title'>{localize('Positions')}</span>
+                    <span className='positions-drawer__title'>{localize('Open Positions')}</span>
                     <div
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}

@@ -53,8 +53,9 @@ export default class UIStore extends BaseStore {
     @observable duration_h             = 1;
     @observable duration_d             = 1;
 
-    @observable is_fully_blurred      = false;
-    @observable is_app_blurred        = false;
+    @observable is_fully_blurred = false;
+    @observable is_app_blurred   = false;
+    @observable is_route_blurred = false;
     @observable show_positions_toggle = true;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
@@ -116,6 +117,16 @@ export default class UIStore extends BaseStore {
     @computed
     get is_tablet() {
         return this.screen_width <= MAX_TABLET_WIDTH;
+    }
+
+    @action.bound
+    showRouteBlur() {
+        this.is_route_blurred = true;
+    }
+
+    @action.bound
+    hideRouteBlur() {
+        this.is_route_blurred = false;
     }
 
     @action.bound

@@ -26,6 +26,7 @@ const Header = ({
     is_loading,
     is_logged_in,
     is_mobile,
+    is_route_blurred,
     is_virtual,
     location,
     loginid,
@@ -33,7 +34,7 @@ const Header = ({
     toggleAccountsDialog,
 }) => (
     <header className={classNames('header', {
-        'header--is-blurred': is_fully_blurred,
+        'header--is-blurred': (is_fully_blurred || is_route_blurred),
         'header--show'      : !is_loading || location.pathname !== routes.trade,
     })}
     >
@@ -94,6 +95,7 @@ Header.propTypes = {
     is_loading          : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
+    is_route_blurred    : PropTypes.bool,
     is_virtual          : PropTypes.bool,
     location            : PropTypes.object,
     loginid             : PropTypes.string,
@@ -116,6 +118,7 @@ export default withRouter(connect(
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         is_dark_mode        : ui.is_dark_mode_on,
         is_fully_blurred    : ui.is_fully_blurred,
+        is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
         toggleAccountsDialog: ui.toggleAccountsDialog,
     })

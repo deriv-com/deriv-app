@@ -371,7 +371,7 @@ export default class TradeStore extends BaseStore {
                 proposal_info      : {},
             });
 
-            if (!this.smart_chart.is_contract_mode) {
+            if (!this.root_store.modules.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
                 if (is_barrier_changed) {
                     this.smart_chart.updateBarriers(this.barrier_1, this.barrier_2);
@@ -445,7 +445,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        if (!this.smart_chart.is_contract_mode) {
+        if (!this.root_store.modules.smart_chart.is_contract_mode) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             const barrier_config = { color };
             setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);

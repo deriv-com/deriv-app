@@ -97,6 +97,7 @@ Header.propTypes = {
     is_mobile           : PropTypes.bool,
     is_route_blurred    : PropTypes.bool,
     is_virtual          : PropTypes.bool,
+    location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,

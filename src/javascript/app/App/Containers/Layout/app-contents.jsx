@@ -18,7 +18,6 @@ const AppContents = ({
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
-    loading_status,
     location,
     setPWAPromptEvent,
 }) => {
@@ -41,7 +40,7 @@ const AppContents = ({
 
     return (
         <React.Fragment>
-            { is_loading && location.pathname === routes.trade && <Loading status={loading_status} theme={is_dark_mode ? 'dark' : 'light'} /> }
+            { is_loading && location.pathname === routes.trade && <Loading theme={is_dark_mode ? 'dark' : 'light'} /> }
             <div
                 id='app_contents'
                 className={classNames('app-contents', {

@@ -91,11 +91,6 @@ export default class ContractStore extends BaseStore {
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }
-            // For tick contracts, it is necessary to set the chartType and granularity after saving and clearing trade layout
-            // TODO: Fix issue with setting start_epoch and loading ongoing contract from positions
-            // if (this.is_from_positions) {
-            //     SmartChartStore.setContractStart(date_start);
-            // }
 
             if (contract_info.tick_count) {
                 SmartChartStore.updateGranularity(0);

@@ -66,7 +66,7 @@ const generateSources = () => {
 
         map[app].source = new Set([
             ...extracted_strings,
-            ...map[app].static,
+            // ...map[app].static,
         ]);
 
         writeExtractedStrings(app, extracted_strings);

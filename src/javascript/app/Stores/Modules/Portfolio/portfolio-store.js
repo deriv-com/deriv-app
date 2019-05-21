@@ -164,6 +164,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
         this.positions[i].result           = getDisplayStatus(contract_response);
         this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
+        this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';
 
         // fix for missing barrier and entry_spot
@@ -176,7 +177,7 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
-    }
+    };
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -235,6 +236,24 @@ export default class PortfolioStore extends BaseStore {
         let purchase   = 0;
 
         this.positions.forEach((portfolio_pos) => {
+            indicative += (+portfolio_pos.indicative);
+            payout     += (+portfolio_pos.payout);
+            purchase   += (+portfolio_pos.purchase);
+        });
+        return {
+            indicative,
+            payout,
+            purchase,
+        };
+    }
+
+    @computed
+    get active_positions_totals() {
+        let indicative = 0;
+        let payout     = 0;
+        let purchase   = 0;
+
+        this.active_positions.forEach((portfolio_pos) => {
             indicative += (+portfolio_pos.indicative);
             payout     += (+portfolio_pos.payout);
             purchase   += (+portfolio_pos.purchase);

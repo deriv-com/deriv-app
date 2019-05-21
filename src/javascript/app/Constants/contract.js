@@ -1,6 +1,38 @@
 import { localize } from '_common/localize';
 
-const getContractConfig = is_high_low => ({
+const getUnsupportedContracts = () => ({
+    EXPIRYMISS: {
+        name    : localize('Ends Outside'),
+        position: 'top',
+    },
+    EXPIRYRANGE: {
+        name    : localize('Ends Between'),
+        position: 'bottom',
+    },
+    RANGE: {
+        name    : localize('Stays Between'),
+        position: 'top',
+    },
+    UPORDOWN: {
+        name    : localize('Goes Outside'),
+        position: 'bottom',
+    },
+    RESETCALL: {
+        name    : localize('Reset Call'),
+        position: 'top',
+    },
+    RESETPUT: {
+        name    : localize('Reset Put'),
+        position: 'bottom',
+    },
+    TICKHIGH: {
+        name    : localize('High Tick'),
+        position: 'top',
+    },
+    TICKLOW: {
+        name    : localize('Low Tick'),
+        position: 'bottom',
+    },
     ASIANU: {
         name    : localize('Asian Up'),
         position: 'top',
@@ -9,6 +41,37 @@ const getContractConfig = is_high_low => ({
         name    : localize('Asian Down'),
         position: 'bottom',
     },
+    LBFLOATCALL: {
+        name    : localize('Close-Low'),
+        position: 'top',
+    },
+    LBFLOATPUT: {
+        name    : localize('High-Close'),
+        position: 'top',
+    },
+    LBHIGHLOW: {
+        name    : localize('High-Low'),
+        position: 'top',
+    },
+    CALLSPREAD: {
+        name    : localize('Call Spread'),
+        position: 'top',
+    },
+    PUTSPREAD: {
+        name    : localize('Put Spread'),
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name    : localize('Only Ups'),
+        position: 'top',
+    },
+    RUNLOW: {
+        name    : localize('Only Downs'),
+        position: 'bottom',
+    },
+});
+
+const getContractConfig = is_high_low => ({
     CALL: {
         name    : is_high_low ?  localize('Higher') : localize('Rise'),
         position: 'top',
@@ -49,38 +112,6 @@ const getContractConfig = is_high_low => ({
         name    : localize('Under'),
         position: 'bottom',
     },
-    EXPIRYMISS: {
-        name    : localize('Ends Outside'),
-        position: 'top',
-    },
-    EXPIRYRANGE: {
-        name    : localize('Ends Between'),
-        position: 'bottom',
-    },
-    EXPIRYRANGEE: {
-        name    : localize('Ends Between'),
-        position: 'top',
-    },
-    LBFLOATCALL: {
-        name    : localize('Close-Low'),
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name    : localize('High-Close'),
-        position: 'bottom',
-    },
-    LBHIGHLOW: {
-        name    : localize('High-Low'),
-        position: 'top',
-    },
-    RANGE: {
-        name    : localize('Stays Between'),
-        position: 'top',
-    },
-    UPORDOWN: {
-        name    : localize('Goes Outside'),
-        position: 'bottom',
-    },
     ONETOUCH: {
         name    : localize('Touch'),
         position: 'top',
@@ -89,7 +120,8 @@ const getContractConfig = is_high_low => ({
         name    : localize('No Touch'),
         position: 'bottom',
     },
+    ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type].name);
-export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type].position);
+export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].name : '');
+export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].position : 'top');

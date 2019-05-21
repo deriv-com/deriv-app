@@ -43,6 +43,7 @@ class PositionsDrawerCard extends React.PureComponent {
             onClickRemove,
             openContract,
             result,
+            sell_price,
             sell_time,
             server_time,
             status,
@@ -136,7 +137,7 @@ class PositionsDrawerCard extends React.PureComponent {
                                 </div>
                             </div>
                             <div className='positions-drawer-card__indicative'>
-                                <Money amount={indicative} currency={currency} />
+                                <Money amount={sell_price || indicative} currency={currency} />
                                 <div className={classNames(
                                     'positions-drawer-card__indicative--movement', {
                                         'positions-drawer-card__indicative--movement-complete': !!result,

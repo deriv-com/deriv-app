@@ -1,7 +1,7 @@
 {
-  "name": "DTrader",
-  "short_name": "DTrader",
-  "description":"DTrader gives everyone an easy way to participate in the financial markets.",
+  "name": "Deriv",
+  "short_name": "Deriv",
+  "description":"Deriv gives everyone an easy way to participate in the financial markets.",
   "start_url": "{start_url_base}/?utm_source=pwa",
   "display": "standalone",
   "orientation": "portrait",

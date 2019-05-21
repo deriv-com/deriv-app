@@ -1,5 +1,24 @@
-import moment     from 'moment';
-import ServerTime from '_common/base/server_time';
+import moment            from 'moment';
+import { isEmptyObject } from '_common/utility';
+import ServerTime        from '_common/base/server_time';
+
+export const getChartConfig = (contract_info, is_digit_contract) => {
+    if (isEmptyObject(contract_info)) return null;
+    const start = contract_info.date_start;
+    const end   = getEndTime(contract_info);
+    const granularity = getChartGranularity(start, end);
+    const chart_type  = getChartType(start, end);
+
+    return {
+        granularity,
+        start_epoch               : start,
+        end_epoch                 : end,
+        chart_type,
+        symbol                    : contract_info.underlying,
+        scroll_to_epoch           : contract_info.purchase_time,
+        should_show_bottom_widgets: is_digit_contract,
+    };
+};
 
 const hour_to_granularity_map = [
     [1      , 0],

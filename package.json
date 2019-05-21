@@ -1,7 +1,7 @@
 {
   "name": "deriv-app",
   "version": "3.8.0",
-  "description": "DTrader content",
+  "description": "Deriv content",
   "scripts": {
     "test": "grunt test",
     "livereload": "sudo -p 'enter password for sudo:' grunt livereload",
@@ -15,7 +15,7 @@
   "keywords": [
     "deriv"
   ],
-  "author": "DTrader",
+  "author": "Deriv",
   "license": "Apache License 2.0",
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
@@ -126,7 +126,7 @@
     "react-router-dom": "5.0.0",
     "react-transition-group": "2.4.0",
     "sinon": "7.2.2",
-    "smartcharts-beta": "0.4.26",
+    "smartcharts-beta": "0.4.28",
     "tt-react-custom-scrollbars": "4.2.1-tt2",
     "url-polyfill": "1.0.9",
     "web-push-notifications": "3.2.15"

@@ -62,7 +62,7 @@
     }
 }
 
-/** @define trade-container */
+/** @define trade-container; weak */
 .trade-container {
     position: relative;
     padding: 0.8em 1.2em 0;
@@ -72,6 +72,70 @@
     will-change: transform;
     overflow: hidden;
 
+    &__replay {
+        display: flex;
+        flex-direction: row;
+        margin: 16px;
+        height: calc(100vh - 115px);
+        border-radius: $BORDER_RADIUS;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+
+        .contract-drawer {
+            top: -16px;
+            left: 16px;
+            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 4));
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+
+            &-wrapper {
+                z-index: 4;
+            }
+        }
+        .replay-chart__container {
+            width: 100%;
+            position: relative;
+            margin-left: 252px;
+
+            .smartcharts {
+                left: 2px;
+                width: calc(100vw - 300px);
+                height: calc(100% - 66px);
+                top: 66px;
+
+                .ciq-chart {
+                    .cq-top-ui-widgets, & .info-box {
+                        transition: transform 0.25s ease;
+
+                        .cq-symbols-display {
+                            z-index: 1;
+
+                            &.ciq-disabled {
+                                display: none;
+                            }
+                        }
+                        .info-box-container {
+                            transform: none;
+                            opacity: 1;
+                            left: 1px;
+
+                            .chart-close-btn {
+                                display: none;
+                            }
+                        }
+                    }
+                    .ciq-asset-information {
+                        top: 75px;
+                    }
+                    .stx_jump_today.home > svg {
+                        top: 6px;
+                        left: 8px;
+                        padding: 0;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
     @media (max-width: 768px) {
         flex-direction: column;
     }
@@ -116,6 +180,9 @@
             .cq-symbols-display {
                 display: none;
             }
+            .cq-chart-controls {
+                display: none;
+            }
         }
         @include themify($themes) {
             background-color: themed('container_color');
@@ -143,6 +210,9 @@
                 left: 8px;
                 padding: 0;
                 position: absolute;
+            }
+            div.stx-marker {
+                z-index: 2;
             }
         }
         div.cq-chart-control-left {

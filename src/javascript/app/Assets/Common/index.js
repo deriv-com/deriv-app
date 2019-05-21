@@ -16,8 +16,6 @@ export * from './icon-exclamation.jsx';
 export * from './icon-info-blue.jsx';
 export * from './icon-info-outline.jsx';
 export * from './icon-information.jsx';
-export * from './icon-initial-logo-dark.jsx';
-export * from './icon-initial-logo-light.jsx';
 export * from './icon-flag.jsx';
 export * from './icon-minimize.jsx';
 export * from './icon-minus.jsx';

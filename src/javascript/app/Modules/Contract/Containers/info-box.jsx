@@ -1,29 +1,24 @@
-import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { connect }         from 'Stores/connect';
-import { isEnded }         from 'Stores/Modules/Contract/Helpers/logic';
 import ContractError       from '../Components/contract-error.jsx';
 import { InfoBoxLongcode } from '../Components/InfoBox';
 import ChartCloseBtn       from '../../SmartChart/Components/chart-close-btn.jsx';
 
 const InfoBox = ({
-    is_contract_mode,
     contract_info,
+    is_contract_mode,
+    is_trade_page,
     onClickNewTrade,
     onClose,
+    error_message,
     removeError,
-    sell_info,
+    replay_info,
 }) => {
-    const is_ended = isEnded(contract_info);
-    const box_class = classNames('info-box', {
-        'ended': is_ended,
-    });
-
     const Contents = InfoBoxLongcode;
+    const info     = is_trade_page ? contract_info : replay_info;
     return (
-        // TODO: Resolve issue with undefined contract_info showing upon unmounting transition
         <CSSTransition
             in={is_contract_mode}
             timeout={250}
@@ -36,17 +31,15 @@ const InfoBox = ({
         >
             <React.Fragment>
                 <div className='info-box-container'>
-                    { contract_info.contract_type &&
-                        <div className={box_class}>
+                    { info.contract_type &&
+                        <div className='info-box'>
                             <Contents
-                                contract_info={contract_info}
-                                is_ended={is_ended}
-                                sell_info={sell_info}
+                                contract_info={info}
                             />
                         </div>
                     }
                     <ContractError
-                        message={sell_info.error_message}
+                        message={error_message}
                         onClickClose={removeError}
                     />
                     <ChartCloseBtn
@@ -64,19 +57,21 @@ const InfoBox = ({
 
 InfoBox.propTypes = {
     contract_info   : PropTypes.object,
+    error_message   : PropTypes.string,
     is_contract_mode: PropTypes.bool,
     is_trade_page   : PropTypes.bool,
     onClickNewTrade : PropTypes.func,
     onClose         : PropTypes.func,
     removeError     : PropTypes.func,
-    sell_info       : PropTypes.object,
+    replay_info     : PropTypes.object,
 };
 
 export default connect(
     ({ modules }) => ({
         contract_info   : modules.contract.contract_info,
-        removeError     : modules.contract.removeSellError,
-        sell_info       : modules.contract.sell_info,
+        error_message   : modules.contract.error_message,
+        replay_info     : modules.contract.replay_info,
+        removeError     : modules.contract.removeErrorMessage,
         onClickNewTrade : modules.trade.onClickNewTrade,
         onClose         : modules.contract.onCloseContract,
         is_contract_mode: modules.smart_chart.is_contract_mode,

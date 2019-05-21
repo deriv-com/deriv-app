@@ -4,6 +4,7 @@ import React                             from 'react';
 import { withRouter }                    from 'react-router';
 import { localize }                      from '_common/localize';
 import DataTable                         from 'App/Components/Elements/DataTable';
+import { getContractPath }               from 'App/Components/Routes/helpers';
 import { connect }                       from 'Stores/connect';
 import EmptyTradeHistoryMessage          from '../Components/empty-trade-history-message.jsx';
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
@@ -59,6 +60,7 @@ class ProfitTable extends React.Component {
                         onScroll={handleScroll}
                         footer={totals}
                         is_empty={is_empty}
+                        getRowAction={(row_obj) => getContractPath(row_obj.contract_id)}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}
@@ -97,4 +99,3 @@ export default connect(
         totals           : modules.profit_table.totals,
     })
 )(withRouter(ProfitTable));
-

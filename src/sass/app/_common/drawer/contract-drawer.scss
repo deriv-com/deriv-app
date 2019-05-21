@@ -46,6 +46,8 @@ $header-height: 4em;
         justify-content: flex-start;
         align-items: center;
         height: 56px;
+        cursor: pointer;
+
         @include typeface(--title-left-bold-black);
         @include themify($themes) {
             color: themed('text_primary_color');
@@ -61,19 +63,64 @@ $header-height: 4em;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
     text-decoration: none;
     position: relative;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
-    @include themify($themes) {
-        background-color: themed('background_cover');
-        color: themed('text_color');
-    }
 
+    &__grid {
+        display: grid;
+        grid-template-rows: 1fr auto;
+
+        &-underlying-trade, &-profit-payout {
+            grid-template-columns: 1fr 1fr;
+        }
+        &-profit-payout {
+            padding: 8px 0;
+            border-radius: $BORDER_RADIUS;
+            margin-left: -4px;
+            margin-right: -4px;
+            @include themify($themes) {
+                background: themed('hover_color');
+            }
+        }
+    }
+    .purchase-price {
+        font-weight: bold;
+        font-size: 1em;
+    }
+    &__underlying-name {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    &__type {
+        font-size: 1.2em;
+        display: flex;
+        justify-content: flex-start;
+        font-weight: bold;
+
+        /* postcss-bem-linter: ignore */
+        .category-type {
+            .color1-fill {
+                @include themify($themes) {
+                    fill: themed('icon_color');
+                }
+            }
+        }
+    }
+    &__symbol {
+        margin-left: 0.5rem;
+        font-size: 1em;
+        line-height: 1.5;
+        max-width: 60px;
+    }
     &__header {
         display: flex;
         justify-content: space-evenly;
+        margin: 0.5em 0.2em 1em;
     }
     &__body {
         border-radius: $BORDER_RADIUS;
@@ -94,5 +141,26 @@ $header-height: 4em;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    .result-details {
+        &__wrapper--is-open {
+            margin-top: 0.4em;
+        }
+        &__toggle {
+            margin: 0;
+            width: 100%;
+        }
+        &__label {
+            font-size: 0.8em;
+            text-align: left;
+        }
+        &__value {
+            font-size: 1em;
+            text-align: left;
+        }
+    }
+    @include themify($themes) {
+        background-color: themed('container_color');
+        color: themed('text_color');
     }
 }

@@ -1,7 +1,7 @@
 import React          from 'react';
 import PropTypes      from 'prop-types';
 import { localize }   from '_common/localize';
-import { websiteUrl } from '_common/url';
+import { urlFor }     from '_common/url';
 import FullPageModal  from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize       from 'App/Components/Elements/localize.jsx';
 import { connect }    from 'Stores/connect';
@@ -11,7 +11,7 @@ const MarketUnavailableModal = ({ is_visible, setHasOnlyForwardingContracts }) =
         cancel_button_text={localize('Go to SmartTrader')}
         confirm_button_text={localize('No, stay on Deriv')}
         is_visible={is_visible}
-        onCancel={() => window.open(websiteUrl()) && setHasOnlyForwardingContracts(false)}
+        onCancel={() => window.open(urlFor('trading', undefined, undefined, true)) && setHasOnlyForwardingContracts(false)}
         onConfirm={() => setHasOnlyForwardingContracts(false)}
         title={localize('Market is unavailable')}
     >

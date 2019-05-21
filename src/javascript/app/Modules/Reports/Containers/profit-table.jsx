@@ -3,15 +3,18 @@ import { PropTypes as MobxPropTypes }    from 'mobx-react';
 import React                             from 'react';
 import { withRouter }                    from 'react-router';
 import { localize }                      from '_common/localize';
+import { urlFor }                        from '_common/url';
 import DataTable                         from 'App/Components/Elements/DataTable';
+import Localize                          from 'App/Components/Elements/localize.jsx';
 import { getContractPath }               from 'App/Components/Routes/helpers';
 import { connect }                       from 'Stores/connect';
 import EmptyTradeHistoryMessage          from '../Components/empty-trade-history-message.jsx';
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                   from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
+import { getMarketInformation }          from '../Helpers/market-underyling';
+import { getUnsupportedContracts }       from '../../../Constants';
 
-// TODO Add proper messages before the PR
 class ProfitTable extends React.Component {
     componentDidMount() {
         this.props.onMount();
@@ -20,6 +23,21 @@ class ProfitTable extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    getRowAction = (row_obj) => (
+        getUnsupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+            {
+                component: (
+                    <Localize
+                        str='This trade type is currently not supported on Deriv.app. Please go to [_1]Binary.com[_2] for details.'
+                        replacers={{
+                            '1_2': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
+                        }}
+                    />
+                ),
+            }
+            : getContractPath(row_obj.contract_id)
+    );
 
     render () {
         const {
@@ -60,7 +78,7 @@ class ProfitTable extends React.Component {
                         onScroll={handleScroll}
                         footer={totals}
                         is_empty={is_empty}
-                        getRowAction={(row_obj) => getContractPath(row_obj.contract_id)}
+                        getRowAction={this.getRowAction}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

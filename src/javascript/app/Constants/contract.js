@@ -1,6 +1,6 @@
 import { localize } from '_common/localize';
 
-const getUnsupportedContracts = () => ({
+export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
         name    : localize('Ends Outside'),
         position: 'top',

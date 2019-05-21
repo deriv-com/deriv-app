@@ -60,12 +60,13 @@ class FullPageModal extends React.Component {
             children,
             confirm_button_text,
             onCancel,
+            is_loading,
             is_visible,
             title,
         } = this.props;
         return (
             <PoseGroup>
-                {is_visible && [
+                {(is_visible && !is_loading) && [
                     <ModalBackground
                         className='full-page-modal__background'
                         key='full-page-modal__background'
@@ -120,6 +121,7 @@ FullPageModal.propTypes = {
     hideAppBlur         : PropTypes.func,
     is_closed_on_cancel : PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
+    is_loading          : PropTypes.bool,
     is_visible          : PropTypes.bool,
     onCancel            : PropTypes.func,
     onConfirm           : PropTypes.func,
@@ -130,6 +132,7 @@ FullPageModal.propTypes = {
 const full_page_modal = connect(
     ({ ui }) => ({
         hideAppBlur: ui.hideAppBlur,
+        is_loading : ui.is_loading,
         showAppBlur: ui.showAppBlur,
     }),
 )(FullPageModal);

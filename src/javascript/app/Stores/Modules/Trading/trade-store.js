@@ -180,51 +180,54 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        let query_string_values = this.updateQueryString();
-        this.smart_chart        = this.root_store.modules.smart_chart;
-        this.currency           = this.root_store.client.currency;
+        runInAction(async() => {
+            let query_string_values = this.updateQueryString();
+            this.smart_chart        = this.root_store.modules.smart_chart;
+            this.currency           = this.root_store.client.currency;
 
-        // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
-        const is_invalid_symbol = !!query_string_values.symbol &&
-            !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
+            // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
+            const is_invalid_symbol = !!query_string_values.symbol &&
+                !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
 
-        // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
-        if (is_invalid_symbol) {
-            this.root_store.ui.addNotification({
-                message: localize('Certain trade parameters have been changed due to your account settings.'),
-                type   : 'info',
-            });
-            URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
-            query_string_values = this.updateQueryString();
-        }
+            // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
+            if (is_invalid_symbol) {
+                this.root_store.ui.addNotification({
+                    message: localize('Certain trade parameters have been changed due to your account settings.'),
+                    type   : 'info',
+                });
+                URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
+                query_string_values = this.updateQueryString();
+            }
 
-        // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
-        const { contract_type, is_equal } = query_string_values;
-        if (isRiseFallEqual(contract_type)) {
-            URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
-            query_string_values = this.updateQueryString();
-        }
+            // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
+            const { contract_type, is_equal } = query_string_values;
+            if (isRiseFallEqual(contract_type)) {
+                URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
+                query_string_values = this.updateQueryString();
+            }
 
-        if (!this.symbol) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(active_symbols.active_symbols),
-                ...query_string_values,
-            });
-        }
-
-        if (this.symbol) {
-            ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol).then(action(async () => {
+            if (!this.symbol) {
                 await this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
+                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
                     ...query_string_values,
                 });
-            }));
-        }
+            }
 
-        await this.processNewValuesAsync({
-            active_symbols  : active_symbols.active_symbols,
-            is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            if (this.symbol) {
+                ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol)
+                    .then(action(async () => {
+                        await this.processNewValuesAsync({
+                            ...ContractType.getContractValues(this),
+                            ...ContractType.getContractCategories(),
+                            ...query_string_values,
+                        });
+                    }));
+            }
+
+            await this.processNewValuesAsync({
+                active_symbols  : active_symbols.active_symbols,
+                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            });
         });
     }
 
@@ -560,8 +563,8 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
-            this.onLoadingMount();
         });
+        this.onLoadingMount();
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
     }

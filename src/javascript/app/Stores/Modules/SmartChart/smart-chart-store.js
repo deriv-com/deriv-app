@@ -229,6 +229,7 @@ export default class SmartChartStore extends BaseStore {
 
     @computed
     get markers_array() {
+        console.log(...this.markers)
         return barriersObjectToArray(this.markers);
     }
 

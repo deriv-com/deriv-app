@@ -22,6 +22,19 @@
     }
 }
 
+.app-contents {
+    &--contract-mode, &--is-blurred {
+        .trade-container {
+            .popover {
+                display: none;
+            }
+            .tooltip:before, .tooltip:after {
+                display: none;
+            }
+        }
+    }
+}
+
 /** @define trade-container */
 .trade-container {
     @include themify($themes) {

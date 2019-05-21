@@ -46,8 +46,11 @@ const SocketCache = (() => {
 
         // prevent unwanted page behaviour
         // if a cached version already exists but it gives an error after being called for updating the cache
-        const cashed_response = get(response.echo_req);
-        if ((response.error || !response[msg_type]) && cashed_response && !cashed_response.error) {
+        const cached_response = get(response.echo_req);
+        const new_response    = response[msg_type];
+
+        if ((response.error || !new_response || isEmptyValue(new_response) || isEmptyValue(cached_response))
+            && cached_response && !cached_response.error) {
             clear();
             window.location.reload();
             return;
@@ -62,6 +65,20 @@ const SocketCache = (() => {
 
         data_obj[key] = { value: response, expires };
         LocalStore.setObject(storage_key, data_obj);
+    };
+
+    const isEmptyValue = (data) => {
+        let is_empty_data = false;
+        if (Array.isArray(data)) {
+            if (!data.length) {
+                is_empty_data = true;
+            }
+        } else if (typeof response_data === 'object') {
+            if (!Object.keys(data).length) {
+                is_empty_data = true;
+            }
+        }
+        return is_empty_data;
     };
 
     const get = (request, msg_type) => {

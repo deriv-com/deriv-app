@@ -169,10 +169,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        let query_string_values = this.updateQueryString();
-        this.smart_chart        = this.root_store.modules.smart_chart;
-        this.currency           = this.root_store.client.currency;
-        const active_symbols    = await WS.activeSymbols();
+        const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             this.root_store.ui.setAppLoading(false);
@@ -182,6 +179,10 @@ export default class TradeStore extends BaseStore {
             this.root_store.ui.setAppLoading(false);
             return;
         }
+
+        let query_string_values = this.updateQueryString();
+        this.smart_chart        = this.root_store.modules.smart_chart;
+        this.currency           = this.root_store.client.currency;
 
         // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
         const is_invalid_symbol = !!query_string_values.symbol &&

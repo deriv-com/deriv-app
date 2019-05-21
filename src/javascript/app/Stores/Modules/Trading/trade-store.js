@@ -544,17 +544,10 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
+            this.root_store.ui.setAppLoading(false);
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
-        this.onLoadingMount();
-    }
-
-    @action.bound
-    onLoadingMount() {
-        BinarySocket.wait('history').then(() => {
-            this.root_store.ui.setAppLoading(false);
-        });
     }
 
     @action.bound

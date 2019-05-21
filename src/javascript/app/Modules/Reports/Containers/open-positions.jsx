@@ -93,6 +93,6 @@ export default connect(
         is_loading      : modules.portfolio.is_loading,
         onMount         : modules.portfolio.onMount,
         onUnmount       : modules.portfolio.onUnmount,
-        totals          : modules.portfolio.totals,
+        totals          : modules.portfolio.active_positions_totals,
     })
 )(withRouter(OpenPositions));

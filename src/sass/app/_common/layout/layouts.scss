@@ -202,11 +202,12 @@
             div.cq-chart-controls {
                 box-shadow: none;
             }
-            div.ciq-asset-information {
-                z-index: 0;
-                top: 0;
-                left: 0;
-            }
+            // TODO: enable asset information
+            // div.ciq-asset-information {
+            //     z-index: 0;
+            //     top: 0;
+            //     left: 0;
+            // }
             div.stx_jump_today.home > svg {
                 top: 6px;
                 left: 8px;

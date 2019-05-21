@@ -31,7 +31,8 @@ export default class UIStore extends BaseStore {
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
-    @observable is_chart_asset_info_visible = true;
+    // TODO: enable asset information
+    // @observable is_chart_asset_info_visible = true;
     @observable is_chart_countdown_visible  = false;
     @observable is_chart_layout_default     = true;
 
@@ -164,10 +165,11 @@ export default class UIStore extends BaseStore {
         this.is_chart_layout_default = !this.is_chart_layout_default;
     }
 
-    @action.bound
-    toggleChartAssetInfo() {
-        this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
-    }
+    // TODO: enable asset information
+    // @action.bound
+    // toggleChartAssetInfo() {
+    //     this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
+    // }
 
     @action.bound
     toggleChartCountdown() {

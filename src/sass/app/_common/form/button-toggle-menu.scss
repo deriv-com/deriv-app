@@ -21,7 +21,7 @@
             background-color: themed('container_color');
 
             &:hover:not(.button-menu__button--active) {
-                background-color: themed('tab_hover_color');
+                background-color: rgba(themed('tab_hover_color'), 0.08);
             }
         }
 

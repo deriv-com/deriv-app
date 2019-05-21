@@ -156,6 +156,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 6;
 
         .barspinner {
             display: flex;
@@ -200,6 +201,9 @@
 
             div.cq-chart-controls {
                 box-shadow: none;
+            }
+            div.ciq-asset-information {
+                z-index: 0;
             }
             div.stx_jump_today.home > svg {
                 top: 6px;

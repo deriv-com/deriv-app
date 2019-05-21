@@ -29,7 +29,7 @@ export class ChartBarrierStore {
         onChartBarrierChange = null,
         { color, line_style, not_draggable } = {}
     ) {
-        this.color     = color; // dark mode is the default mode
+        this.color     = color;
         this.lineStyle = line_style || BARRIER_LINE_STYLES.SOLID;
         this.onChange  = this.onBarrierChange;
 

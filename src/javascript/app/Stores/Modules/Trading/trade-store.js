@@ -560,7 +560,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        WS.forgetAll('proposal', 'ticks_history');
+        WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
     }
 }

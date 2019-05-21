@@ -1,13 +1,9 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import Symbol         from 'Images/app/header/symbol.svg';
 import { BinaryLink } from '../../Routes';
 
 const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>
-        <div className='header__navbar-icons header__navbar-icons--deriv-logo'>
-            <Symbol width='30px' height='30px' />
-        </div>
         {!!items.length &&
         <div className='header__menu-links'>
             {
@@ -16,7 +12,12 @@ const MenuLinks = ({ is_logged_in, items }) => (
                         null
                         :
                         <BinaryLink key={idx} to={item.link_to} className='header__menu-link' active_class='header__menu-link--active'>
-                            <span title={item.text} className='header__menu-link-text'>{item.icon}{item.text}{item.logo}</span>
+                            {item.text &&
+                                <span title={item.text} className='header__menu-link-text'>{item.icon}{item.text}{item.logo}</span>
+                            }
+                            {item.image &&
+                                <span className='header__menu-link-text'>{item.image}{item.logo}</span>
+                            }
                         </BinaryLink>
                 ))
             }

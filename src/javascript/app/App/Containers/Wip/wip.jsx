@@ -1,13 +1,13 @@
 import React          from 'react';
 import { localize }   from '_common/localize';
-import { websiteUrl } from '_common/url';
+import { urlFor }     from '_common/url';
 import Localize       from 'App/Components/Elements/localize.jsx';
 import Button         from 'App/Components/Form/button.jsx';
 import { IconWip }    from 'Assets/Common/icon-wip.jsx';
 import { connect }    from 'Stores/connect';
 
 const onClick = () => {
-    window.location.href = websiteUrl();
+    window.location.href = window.open(urlFor('trading', undefined, undefined, true));
 };
 
 const Wip = (ui) => (

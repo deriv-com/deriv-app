@@ -36,12 +36,11 @@ class ContractDrawer extends Component {
             currency,
             exit_tick,
             is_sold,
-            payout,
             profit,
+            sell_price,
         } = this.props.contract_info;
         const { contract_info } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
-
         return (
             <ContractCard contract_info={contract_info}>
                 <ContractCardHeader>
@@ -64,7 +63,7 @@ class ContractDrawer extends Component {
                 <ContractCardBody>
                     <ProfitLossCardContent
                         pl_value={+profit}
-                        payout={+payout}
+                        payout={+sell_price}
                         currency={currency}
                     />
                 </ContractCardBody>

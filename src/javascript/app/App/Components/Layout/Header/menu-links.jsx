@@ -12,12 +12,14 @@ const MenuLinks = ({ is_logged_in, items }) => (
                         null
                         :
                         <BinaryLink key={idx} to={item.link_to} className='header__menu-link' active_class='header__menu-link--active'>
-                            {item.text &&
-                                <span title={item.text} className='header__menu-link-text'>{item.icon}{item.text}{item.logo}</span>
-                            }
-                            {item.image &&
-                                <span className='header__menu-link-text'>{item.image}{item.logo}</span>
-                            }
+                            <React.Fragment>
+                                {item.text &&
+                                    <span title={item.text} className='header__menu-link-text'>{item.icon}{item.text}{item.logo}</span>
+                                }
+                                {item.image &&
+                                    <span className='header__menu-link-text'>{item.image}{item.logo}</span>
+                                }
+                            </React.Fragment>
                         </BinaryLink>
                 ))
             }

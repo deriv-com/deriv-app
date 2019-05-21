@@ -552,10 +552,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onLoadingMount() {
-        // TODO: find better way to stop loading
+        // TODO: find better way to remove initial loader
         setTimeout(() => {
             this.root_store.ui.setAppLoading(false);
-        }, 2200);
+        }, 1000);
     }
 
     @action.bound

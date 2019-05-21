@@ -45,12 +45,20 @@ $header-height: 4em;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        height: 56px;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        border-radius: 4px;
         cursor: pointer;
 
         @include typeface(--title-left-bold-black);
         @include themify($themes) {
             color: themed('text_primary_color');
+        }
+
+        &:hover {
+            @include themify($themes) {
+                background: themed('tab_hover_color');
+            }
         }
     }
     &__icon {

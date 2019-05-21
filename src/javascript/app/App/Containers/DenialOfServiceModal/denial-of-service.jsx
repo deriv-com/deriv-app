@@ -24,7 +24,7 @@ const DenialOfServiceModal = ({ client, is_visible }) => (
         is_closed_on_cancel={false}
         is_visible={is_visible}
     >
-        <Localize str='You cannot use your real money account with DTrader at this time.' />
+        <Localize str='You cannot use your real money account with Deriv at this time.' />
     </FullPageModal>
 );
 

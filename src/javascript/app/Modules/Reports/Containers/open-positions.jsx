@@ -56,8 +56,7 @@ class OpenPositions extends React.Component {
                         columns={getOpenPositionsColumnsTemplate(currency)}
                         footer={totals}
                         data_source={active_positions}
-                        getRowAction={undefined}
-                        // getRowAction={(row_obj) => getContractPath(row_obj.id)} TODO uncomment once smart-chart component is fixed.
+                        // getRowAction={(row_obj) => getContractPath(row_obj.id)}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}
@@ -94,6 +93,6 @@ export default connect(
         is_loading      : modules.portfolio.is_loading,
         onMount         : modules.portfolio.onMount,
         onUnmount       : modules.portfolio.onUnmount,
-        totals          : modules.portfolio.totals,
+        totals          : modules.portfolio.active_positions_totals,
     })
 )(withRouter(OpenPositions));

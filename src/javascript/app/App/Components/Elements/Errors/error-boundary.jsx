@@ -1,15 +1,17 @@
-import PropTypes from 'prop-types';
-import React     from 'react';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { connect }    from 'Stores/connect';
+import ErrorComponent from './index';
 
-export default class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
         this.state = { hasError: false };
     }
 
     componentDidCatch = (error, info) => {
-        // eslint-disable-next-line no-underscore-dangle
-        window.__response_error = this.props.root_store;
+        if (window.TrackJS) window.TrackJS.console.log(this.props.root_store);
+
         this.setState({
             hasError: true,
             error,
@@ -18,12 +20,16 @@ export default class ErrorBoundary extends React.Component {
     };
 
     render = () => this.state.hasError ? (
-        <div className='error-box'>
-            {this.state.error.message}
-        </div>
+        <ErrorComponent message={this.state.error.message} should_show_refresh={true} />
     ) : this.props.children;
 }
 
 ErrorBoundary.propTypes = {
     root_store: PropTypes.object,
 };
+
+export default connect((store) => (
+    {
+        root_store: store,
+    }
+))(ErrorBoundary);

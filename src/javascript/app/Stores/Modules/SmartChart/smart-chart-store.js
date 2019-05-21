@@ -30,6 +30,7 @@ export default class SmartChartStore extends BaseStore {
     @observable scroll_to_left_epoch_offset = 0;
 
     @observable chart_id             = 'trade';
+    @observable replay_id            = 'contract-replay';
     @observable is_chart_loading     = false;
     @observable is_chart_ready       = false;
     @observable should_import_layout = false;
@@ -88,6 +89,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onMount = () => {
+        // remove any barriers and markers before chart is ready
         if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
             this.applySavedTradeChartLayout();
         }
@@ -96,8 +98,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     onUnmount = () => {
         this.symbol = null;
-        this.removeBarriers();
-        this.removeMarkers();
     };
 
     // --------- Set Contract Scroll to Left ---------
@@ -154,7 +154,9 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     updateBarrierColor(is_dark_mode) {
-        this.barriers.main.updateBarrierColor(is_dark_mode);
+        if (!isEmptyObject(this.barriers.main)) {
+            this.barriers.main.updateBarrierColor(is_dark_mode);
+        }
     }
 
     @action.bound
@@ -163,16 +165,17 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    saveAndClearTradeChartLayout() {
+    saveAndClearTradeChartLayout(chart_id) {
         this.should_export_layout = true;
         this.should_import_layout = false;
         this.trade_chart_symbol   = this.root_store.modules.trade.symbol;
-        this.chart_id             = 'contract';
+        this.chart_id             = chart_id;
     }
 
     @action.bound
     applySavedTradeChartLayout() {
         if (!this.trade_chart_layout) return;
+
         this.setIsChartLoading(true);
         this.should_export_layout = false;
         this.should_import_layout = true;
@@ -231,7 +234,7 @@ export default class SmartChartStore extends BaseStore {
 
     // ---------- Chart Settings ----------
     @computed
-    get settings() { // TODO: consider moving chart settings from ui_store to chart_store
+    get settings() {
         return (({ common, ui } = this.root_store) => ({
             assetInformation: ui.is_chart_asset_info_visible,
             countdown       : ui.is_chart_countdown_visible,

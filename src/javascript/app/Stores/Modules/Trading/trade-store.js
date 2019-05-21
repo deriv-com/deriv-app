@@ -107,9 +107,6 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
-    // Loading
-    @observable loading_status = '';
-
     // Query string
     query = '';
 
@@ -178,9 +175,11 @@ export default class TradeStore extends BaseStore {
         const active_symbols    = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            this.root_store.ui.setAppLoading(false);
             return;
         } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
+            this.root_store.ui.setAppLoading(false);
             return;
         }
 
@@ -382,7 +381,7 @@ export default class TradeStore extends BaseStore {
                 proposal_info      : {},
             });
 
-            if (!this.smart_chart.is_contract_mode) {
+            if (!this.root_store.modules.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
                 if (is_barrier_changed) {
                     this.smart_chart.updateBarriers(this.barrier_1, this.barrier_2);
@@ -461,7 +460,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        if (!this.smart_chart.is_contract_mode) {
+        if (!this.root_store.modules.smart_chart.is_contract_mode) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             const barrier_config = { color };
             setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);
@@ -487,11 +486,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onAllowEqualsChange() {
         this.processNewValuesAsync({ contract_type: parseInt(this.is_equal) ? 'rise_fall_equal' : 'rise_fall' }, true);
-    }
-
-    @action.bound
-    updateLoadingStatus(status) {
-        this.loading_status = status;
     }
 
     @action.bound
@@ -565,34 +559,23 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
+            this.onLoadingMount();
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
-        this.onLoadingMount();
     }
 
     @action.bound
     onLoadingMount() {
-        setTimeout(() => {
-            this.updateLoadingStatus(localize('Retrieving market symbols...'));
-        });
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving trading times...'));
-        }, 1000);
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving chart data...'));
-        }, 2000);
-        setTimeout(() => {
+        BinarySocket.wait('history').then(() => {
             this.root_store.ui.setAppLoading(false);
-        }, 3250);
+        });
     }
 
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        WS.forgetAll('proposal', 'ticks_history');
+        WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
     }
 }

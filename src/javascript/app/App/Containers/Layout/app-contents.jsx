@@ -5,11 +5,11 @@ import { withRouter } from 'react-router';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
 import { connect }    from 'Stores/connect';
 import routes         from 'Constants/routes';
-import InstallPWA     from './install-pwa.jsx';
+// import InstallPWA     from './install-pwa.jsx';
 import Loading        from '../../../../../templates/app/components/loading.jsx';
 
 const AppContents = ({
-    addNotificationBar,
+    // addNotificationBar,
     children,
     is_app_blurred,
     is_contract_mode,
@@ -18,28 +18,28 @@ const AppContents = ({
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
-    loading_status,
     location,
-    setPWAPromptEvent,
+    // setPWAPromptEvent,
 }) => {
     if (is_logged_in) {
-        window.addEventListener('beforeinstallprompt', e => {
-            console.log('Going to show the installation prompt'); // eslint-disable-line no-console
-
-            e.preventDefault();
-
-            setPWAPromptEvent(e);
-            addNotificationBar({
-                content : <InstallPWA />,
-                autoShow: 10000, // show after 10 secs
-                msg_type: 'pwa',
-            });
-        });
+        // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
+        // window.addEventListener('beforeinstallprompt', e => {
+        //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console
+        //
+        //     e.preventDefault();
+        //
+        //     setPWAPromptEvent(e);
+        //     addNotificationBar({
+        //         content : <InstallPWA />,
+        //         autoShow: 10000, // show after 10 secs
+        //         msg_type: 'pwa',
+        //     });
+        // });
     }
 
     return (
         <React.Fragment>
-            { is_loading && location.pathname === routes.trade && <Loading status={loading_status} theme={is_dark_mode ? 'dark' : 'light'} /> }
+            { is_loading && location.pathname === routes.trade && <Loading theme={is_dark_mode ? 'dark' : 'light'} /> }
             <div
                 id='app_contents'
                 className={classNames('app-contents', {
@@ -77,7 +77,7 @@ AppContents.propTypes = {
 
 export default withRouter(connect(
     ({ client, modules, ui }) => ({
-        addNotificationBar    : ui.addNotificationBar,
+        // addNotificationBar    : ui.addNotificationBar,
         is_app_blurred        : ui.is_app_blurred,
         is_contract_mode      : modules.smart_chart.is_contract_mode,
         is_dark_mode          : ui.is_dark_mode_on,
@@ -87,6 +87,6 @@ export default withRouter(connect(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         loading_status        : modules.trade.loading_status,
         pwa_prompt_event      : ui.pwa_prompt_event,
-        setPWAPromptEvent     : ui.setPWAPromptEvent,
+        // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })
 )(AppContents));

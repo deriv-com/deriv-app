@@ -176,7 +176,7 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
-    }
+    };
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -235,6 +235,24 @@ export default class PortfolioStore extends BaseStore {
         let purchase   = 0;
 
         this.positions.forEach((portfolio_pos) => {
+            indicative += (+portfolio_pos.indicative);
+            payout     += (+portfolio_pos.payout);
+            purchase   += (+portfolio_pos.purchase);
+        });
+        return {
+            indicative,
+            payout,
+            purchase,
+        };
+    }
+
+    @computed
+    get active_positions_totals() {
+        let indicative = 0;
+        let payout     = 0;
+        let purchase   = 0;
+
+        this.active_positions.forEach((portfolio_pos) => {
             indicative += (+portfolio_pos.indicative);
             payout     += (+portfolio_pos.payout);
             purchase   += (+portfolio_pos.purchase);

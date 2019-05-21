@@ -31,11 +31,8 @@ const BinaryLink = ({ active_class, to, children, ...props }) => {
 
 BinaryLink.propTypes = {
     active_class: PropTypes.string,
-    children    : PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array,
-    ]),
-    to: PropTypes.string,
+    children    : PropTypes.object,
+    to          : PropTypes.string,
 };
 
 export default BinaryLink;

@@ -18,9 +18,10 @@ const InfoBox = ({
 }) => {
     const Contents = InfoBoxLongcode;
     const info     = is_trade_page ? contract_info : replay_info;
+    const is_ready = is_contract_mode && !!(info.longcode);
     return (
         <CSSTransition
-            in={is_contract_mode}
+            in={is_ready}
             timeout={250}
             classNames={{
                 enter    : 'info-box-container--enter',

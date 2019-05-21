@@ -3,7 +3,7 @@ import PropTypes           from 'prop-types';
 
 const Loading = ({ theme, id }) => (
     <div className='initial-loader'>
-        <div id={id} className={`initial-loader__barspinner barspinner barspinner-${ theme || 'dark'}`}>
+        <div id={id} className={`initial-loader__barspinner barspinner barspinner-${ theme || 'light'}`}>
             { Array.from(new Array(5)).map((x, inx) => (
                 <div key={inx} className={`initial-loader__barspinner--rect barspinner__rect barspinner__rect--${inx + 1} rect${inx + 1}`} />
             ))}

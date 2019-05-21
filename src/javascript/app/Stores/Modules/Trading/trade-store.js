@@ -553,9 +553,12 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onLoadingMount() {
         // TODO: find better way to remove initial loader
-        setTimeout(() => {
-            this.root_store.ui.setAppLoading(false);
-        }, 1000);
+        const loading_interval = setInterval(() => {
+            if (this.smart_chart.is_chart_ready) {
+                this.root_store.ui.setAppLoading(false);
+                clearInterval(loading_interval);
+            }
+        }, 500);
     }
 
     @action.bound

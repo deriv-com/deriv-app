@@ -64,17 +64,8 @@ class DurationWrapper extends React.Component {
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
     componentWillReact() {
-        const simple_is_missing_duration_unit = (!this.props.is_advanced_duration && this.props.simple_duration_unit === 'd' && this.props.duration_units_list.length === 4);
-        const current_duration_unit           = (this.props.is_advanced_duration ?
-            this.props.advanced_duration_unit : this.props.simple_duration_unit);
         const current_duration                = this.props.getDurationFromUnit(this.props.duration_unit);
-        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit);
         const simple_is_not_type_duration     = (!this.props.is_advanced_duration && this.props.expiry_type !== 'duration');
-
-        if (has_missing_duration_unit || simple_is_missing_duration_unit) {
-            this.setDurationUnit();
-            return;
-        }
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {
@@ -91,6 +82,15 @@ class DurationWrapper extends React.Component {
     }
 
     render() {
+        const current_duration_unit           = (this.props.is_advanced_duration ?
+            this.props.advanced_duration_unit : this.props.simple_duration_unit);
+        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit);
+        const simple_is_missing_duration_unit = (!this.props.is_advanced_duration && this.props.simple_duration_unit === 'd' && this.props.duration_units_list.length === 4);
+
+        if (has_missing_duration_unit || simple_is_missing_duration_unit) {
+            this.setDurationUnit();
+        }
+
         return (
             <Duration
                 hasDurationUnit={this.hasDurationUnit}

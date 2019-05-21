@@ -36,13 +36,6 @@
         align-self: center;
         height: 100%;
 
-        &--deriv-logo {
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-right: 0.8em;
-        }
         &--notify-toggle {
             order: 2;
             order: 2;
@@ -88,10 +81,10 @@
 
         &-text {
             @include typeface(--title-left-normal-black);
-            padding: 0.5em 0.5em 0.5em 0;
+            padding: 0.5em 0;
             position: relative;
             @include themify($themes) {
-                @include colorIcon(themed('text_primary_color'), none);
+                @include colorIcon(themed('text_primary_color'), none, themed('text_primary_color'));
                 color: themed('text_primary_color');
             }
 
@@ -139,11 +132,11 @@
         font-weight: normal;
         height: 20px;
         line-height: 1.43;
-        margin-left: 0.8rem;
         text-align: center;
         width: 50px;
     }
     &__icon {
-        margin-right: 0.8em;
+        margin-right: 0.8rem;
+        vertical-align: middle;
     }
 }

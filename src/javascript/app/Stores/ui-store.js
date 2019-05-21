@@ -17,7 +17,7 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_drawer_on = false;
     @observable is_positions_drawer_on     = false;
 
-    @observable is_dark_mode_on         = true;
+    @observable is_dark_mode_on         = false;
     @observable is_language_dialog_on   = false;
     @observable is_settings_dialog_on   = false;
     @observable is_accounts_switcher_on = false;

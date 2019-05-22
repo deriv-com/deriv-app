@@ -310,7 +310,7 @@
     }
 }
 
-/** @define sidebar */
+/** @define sidebar; weak; */
 .sidebar {
     &__container {
         position: relative;
@@ -318,6 +318,10 @@
         width: $SIDEBAR_WIDTH;
         margin-top: 8px;
         z-index: 1;
+
+        &--is-blurred {
+            filter: blur(3px);
+        }
     }
     &__items {
         opacity: 1;
@@ -331,6 +335,13 @@
         &--blur {
             filter: blur(3px);
             pointer-events: none;
+
+            & .tooltip--with-label {
+                display: none;
+            }
+            & .tooltip--with-label:before, .tooltip--with-label:after {
+                display: none;
+            }
         }
     }
 }

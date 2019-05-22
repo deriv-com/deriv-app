@@ -123,7 +123,9 @@
             if (document.referrer) {
                 localStorage.setItem('index_referrer', document.referrer);
             }
-            lang = getCookieItem('language');
+            // TODO: uncomment this when languages are available
+            // lang = getCookieItem('language');
+            lang = 'en';
             // Parse url for loginids, tokens, and currencies returned by OAuth
             var obj_params = {};
             var search     = window.location.search;

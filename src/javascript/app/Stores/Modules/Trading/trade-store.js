@@ -567,9 +567,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onLoadingMount() {
-        BinarySocket.wait('history').then(() => {
+        // TODO: find better way to remove initial loader
+        setTimeout(() => {
             this.root_store.ui.setAppLoading(false);
-        });
+        }, 2200);
     }
 
     @action.bound

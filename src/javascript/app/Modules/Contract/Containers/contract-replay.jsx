@@ -81,7 +81,8 @@ class ContractReplay extends React.Component {
                                 ))
                             }
                         </div>
-                        <ChartLoader is_visible={is_chart_loading} />
+                        <ChartLoader is_visible={is_chart_loading && !!(config)} />
+                        {(config && config.symbol) &&
                         <SmartChart
                             chart_id={chart_id}
                             chartControlsWidgets={null}
@@ -90,6 +91,7 @@ class ContractReplay extends React.Component {
                             should_show_last_digit_stats={false}
                             {...config}
                         />
+                        }
                     </div>
                 </React.Suspense>
             </div>

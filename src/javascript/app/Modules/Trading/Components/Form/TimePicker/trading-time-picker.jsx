@@ -22,7 +22,7 @@ const TradingTimePicker = ({
     const market_close_datetime = setTime(moment_expiry_date.clone(), market_close_times.slice(-1)[0]);
     const expiry_datetime = setTime(moment_expiry_date.clone(), expiry_time);
     const server_datetime = toMoment(server_time);
-    
+
     const boundaries = getBoundaries(
         server_datetime.clone(),
         market_open_datetime.clone(),

@@ -36,11 +36,11 @@ export const getDurationUnitText = (obj_duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     if (duration_ms) {
         if (duration_ms >= 86400000) {
-            return (duration_ms === 8640000) ? unit_map.d.name_singular : unit_map.d.name_plural;
+            return (duration_ms >= 8640000) ? unit_map.d.name_singular : unit_map.d.name_plural;
         } else if (duration_ms >= 3600000 && duration_ms < 86400000) {
-            return (duration_ms === 360000) ? unit_map.h.name_singular : unit_map.h.name_plural;
+            return (duration_ms >= 360000) ? unit_map.h.name_singular : unit_map.h.name_plural;
         } else if (duration_ms >= 60000 && duration_ms < 3600000) {
-            return (duration_ms === 60000) ? unit_map.m.name_singular : unit_map.m.name_plural;
+            return (duration_ms >= 60000) ? unit_map.m.name_singular : unit_map.m.name_plural;
         } else if (duration_ms >= 1000 && duration_ms < 60000) {
             return unit_map.s.name;
         }

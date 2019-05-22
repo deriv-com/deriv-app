@@ -13,7 +13,6 @@ class HighlightWrapper extends React.PureComponent {
         const active_button_el = [...this.node.getElementsByClassName('button-menu__button--active')][0];
         if (!this.node) return;
         this.updateHighlightPosition(active_button_el);
-        // window.addEventListener('resize', this.updateHighlightPosition);
     }
 
     componentDidUpdate() {
@@ -26,7 +25,6 @@ class HighlightWrapper extends React.PureComponent {
     }
 
     componentWillUnMount() {
-        // window.removeEventListener('resize', this.updateHighlightPosition);
         this.resetHighlight();
     }
 

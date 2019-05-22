@@ -310,7 +310,7 @@
     }
 }
 
-/** @define sidebar */
+/** @define sidebar; weak; */
 .sidebar {
     &__container {
         position: relative;
@@ -335,6 +335,13 @@
         &--blur {
             filter: blur(3px);
             pointer-events: none;
+
+            & .tooltip--with-label {
+                display: none;
+            }
+            & .tooltip--with-label:before, .tooltip--with-label:after {
+                display: none;
+            }
         }
     }
 }

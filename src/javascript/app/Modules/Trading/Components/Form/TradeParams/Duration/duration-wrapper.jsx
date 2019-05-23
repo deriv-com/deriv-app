@@ -6,6 +6,11 @@ import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/durat
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
+    state = {
+        min_value: 0,
+        max_value: 0,
+    }
+
     hasDurationUnit = (duration_unit) => {
         let duration_list = [...this.props.duration_units_list];
 
@@ -59,8 +64,7 @@ class DurationWrapper extends React.Component {
             simple_duration_unit,
         } = this.props;
 
-        const current_unit = is_advanced_duration ?
-            advanced_duration_unit : simple_duration_unit;
+        const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
         const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, current_unit);
         const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, current_unit);
@@ -82,11 +86,15 @@ class DurationWrapper extends React.Component {
         if (current_duration < min_value) {
             onChangeUiStore({ name: `duration_${current_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
-        }
-        if (current_duration > max_value) {
+        } else if (current_duration > max_value) {
             onChangeUiStore({ name: `duration_${current_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }
+
+        this.setState({
+            min_value,
+            max_value,
+        });
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
@@ -121,6 +129,7 @@ class DurationWrapper extends React.Component {
         return (
             <Duration
                 hasDurationUnit={this.hasDurationUnit}
+                {...this.state}
                 {...this.props}
             />
         );

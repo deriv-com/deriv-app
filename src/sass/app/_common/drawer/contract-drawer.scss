@@ -45,12 +45,20 @@ $header-height: 4em;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        height: 56px;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        border-radius: 4px;
         cursor: pointer;
 
         @include typeface(--title-left-bold-black);
         @include themify($themes) {
             color: themed('text_primary_color');
+        }
+
+        &:hover {
+            @include themify($themes) {
+                background: themed('tab_hover_color');
+            }
         }
     }
     &__icon {
@@ -84,6 +92,9 @@ $header-height: 4em;
                 background: themed('hover_color');
             }
         }
+        &-underlying-trade {
+            width: 100%;
+        }
     }
     .purchase-price {
         font-weight: bold;
@@ -109,6 +120,12 @@ $header-height: 4em;
                     fill: themed('icon_color');
                 }
             }
+            .color2-fill {
+                fill: $COLOR_ORANGE !important;
+            }
+        }
+        .contract-type {
+            margin-left: 0.5em;
         }
     }
     &__symbol {
@@ -116,6 +133,7 @@ $header-height: 4em;
         font-size: 1em;
         line-height: 1.5;
         max-width: 60px;
+        word-break: break-word;
     }
     &__header {
         display: flex;

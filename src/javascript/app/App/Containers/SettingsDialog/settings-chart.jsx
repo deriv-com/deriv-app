@@ -10,11 +10,14 @@ import MediaItem, {
 }                                        from 'App/Components/Elements/Media';
 import Checkbox                          from 'App/Components/Form/Checkbox';
 import RadioGroup                        from 'App/Components/Form/Radio';
-import OHLCDisabledLightIcon             from 'Images/app/settings/OHLC-disabled.svg';
-import OHLCEnabledLightIcon              from 'Images/app/settings/OHLC-enabled.svg';
 import ChartPositionEnabledLightIcon     from 'Images/app/settings/bottom.svg';
-import OHLCDisabledDarkIcon              from 'Images/app/settings/dark/OHLC-disabled.svg';
-import OHLCEnabledDarkIcon               from 'Images/app/settings/dark/OHLC-enabled.svg';
+
+// TODO: enable asset information
+// import OHLCDisabledLightIcon             from 'Images/app/settings/OHLC-disabled.svg';
+// import OHLCEnabledLightIcon              from 'Images/app/settings/OHLC-enabled.svg';
+// import OHLCDisabledDarkIcon              from 'Images/app/settings/dark/OHLC-disabled.svg';
+// import OHLCEnabledDarkIcon               from 'Images/app/settings/dark/OHLC-enabled.svg';
+
 import ChartPositionEnabledDarkIcon      from 'Images/app/settings/dark/bottom.svg';
 import IntervalDurationDisabledDarkIcon  from 'Images/app/settings/dark/interval-disabled.svg';
 import IntervalDurationEnabledDarkIcon   from 'Images/app/settings/dark/interval-enabled.svg';
@@ -24,11 +27,12 @@ import IntervalDurationEnabledLightIcon  from 'Images/app/settings/interval-enab
 import ChartPositionDisabledLightIcon    from 'Images/app/settings/left.svg';
 
 const ChartSettings = ({
-    is_asset_visible,
+    // TODO: enable asset information
+    // is_asset_visible,
+    // toggleAsset,
     is_countdown_visible,
     is_dark_mode,
     is_layout_default,
-    toggleAsset,
     toggleCountdown,
     toggleLayout,
 }) => (
@@ -62,7 +66,8 @@ const ChartSettings = ({
                 </div>
             </MediaDescription>
         </MediaItem>
-        <MediaItem>
+        {/* TODO: enable asset information
+            <MediaItem>
             <MediaHeading>
                 <Localize
                     str='Open-high-low-close [_1](OHLC) information[_2]'
@@ -83,7 +88,7 @@ const ChartSettings = ({
                     />
                 </div>
             </MediaDescription>
-        </MediaItem>
+        </MediaItem> */}
         <MediaItem>
             <MediaHeading>
                 <Localize str='Interval duration' />

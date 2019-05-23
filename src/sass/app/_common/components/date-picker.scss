@@ -83,13 +83,13 @@
         position: absolute;
         top: 7px;
         z-index: 2;
-        transform-origin: left;
-        transform: scale(1, 0) translate3d(20px, 0, 0);
+        transform: translate3d(-275px, 0, 0);
+        opacity: 0;
         transition: transform 0.25s ease, opacity 0.25s linear;
 
         &--left {
             &-enter, &-exit {
-                transform: scale(1, 1) translate3d(-275px, 0, 0);
+                transform: translate3d(-275px, 0, 0);
                 opacity: 0;
             }
             &-enter-done {

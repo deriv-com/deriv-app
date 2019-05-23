@@ -18,6 +18,7 @@ class ContractReplay extends React.Component {
     };
 
     componentDidMount() {
+        this.props.hidePositions();
         this.props.setChartLoader(true);
         this.props.showBlur();
         const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
@@ -81,7 +82,8 @@ class ContractReplay extends React.Component {
                                 ))
                             }
                         </div>
-                        <ChartLoader is_visible={is_chart_loading} />
+                        <ChartLoader is_visible={is_chart_loading && !!(config)} />
+                        {(config && config.symbol) &&
                         <SmartChart
                             chart_id={chart_id}
                             chartControlsWidgets={null}
@@ -90,6 +92,7 @@ class ContractReplay extends React.Component {
                             should_show_last_digit_stats={false}
                             {...config}
                         />
+                        }
                     </div>
                 </React.Suspense>
             </div>
@@ -103,6 +106,7 @@ ContractReplay.propTypes = {
     contract_id     : PropTypes.string,
     contract_info   : PropTypes.object,
     hideBlur        : PropTypes.func,
+    hidePositions   : PropTypes.func,
     history         : PropTypes.object,
     is_chart_loading: PropTypes.bool,
     location        : PropTypes.object,
@@ -122,6 +126,7 @@ export default withRouter(connect(
         contract_info   : modules.contract.replay_info,
         setChartLoader  : modules.smart_chart.setIsChartLoading,
         is_chart_loading: modules.smart_chart.is_chart_loading,
+        hidePositions   : ui.hidePositionsFooterToggle,
         hideBlur        : ui.hideRouteBlur,
         showBlur        : ui.showRouteBlur,
 

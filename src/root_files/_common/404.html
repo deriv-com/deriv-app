@@ -48,9 +48,15 @@
         var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
         var regex = new RegExp('^((\/[A-Za-z0-9-_]+){0,2})(\/('+ all_languages.join('|') +'))((\/[A-Za-z0-9-_]+)+)', 'i');
         var result = regex.exec(pathname);
-        var prefix = result[1] || '';
-        var default_lang = result[4].toLowerCase() || 'en';
-        var routes = result[5] ? result[5].substr(1).replace('/', '::') : '';
+        // Sensible defaults
+        var prefix = '';
+        var default_lang = 'en';
+        var routes = '';
+        if (result && result.length) {
+            prefix = result[1] || '';
+            default_lang = result[4].toLowerCase() || 'en';
+            routes = result[5] ? result[5].substr(1).replace('/', '::') : '';
+        }
 
         var default_lang = 'EN'; // TODO remove this when i18n is ready.
         location.replace(
@@ -66,7 +72,7 @@
     }
 
     function openWSAndGetLanguage(cb) {
-        var ws = new WebSocket('wss://frontend.binaryws.com/websockets/v3?app_id=1');
+        var ws = new WebSocket('wss://frontend.binaryws.com/websockets/v3?app_id=16929');
 
         ws.onopen = function() {
             ws.send(JSON.stringify({ website_status: 1 }));

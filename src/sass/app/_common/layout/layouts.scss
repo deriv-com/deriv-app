@@ -177,10 +177,7 @@
             visibility: hidden;
             pointer-events: none;
 
-            .cq-symbols-display {
-                display: none;
-            }
-            .cq-chart-controls {
+            .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets {
                 display: none;
             }
         }
@@ -198,6 +195,10 @@
             height: calc(100% - 5em);
             box-shadow: none;
 
+            div.cq-last-digits {
+                bottom: 15px;
+                left: calc(45% - 150px);
+            }
             div.cq-chart-controls {
                 box-shadow: none;
             }

@@ -26,6 +26,7 @@ const Purchase = ({
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info.has_error && !info.id;
     };
+
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const info              = proposal_info[type] || {};

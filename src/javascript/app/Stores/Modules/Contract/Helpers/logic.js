@@ -29,7 +29,7 @@ const hour_to_granularity_map = [
     [30 * 24, 14400],
 ];
 
-const getExpiryTime = (time) =>  time || ServerTime.get().unix();
+const getExpiryTime = (time) => time || ServerTime.get().unix();
 
 export const getChartType = (start_time, expiry_time) => {
     const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();

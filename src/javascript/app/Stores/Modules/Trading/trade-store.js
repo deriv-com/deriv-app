@@ -24,7 +24,9 @@ import {
 import getValidationRules                from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
-    showUnavailableLocationError }       from './Helpers/active-symbols';
+    showUnavailableLocationError,
+    isMarketClosed,
+}                                        from './Helpers/active-symbols';
 import { isRiseFallEqual }               from './Helpers/allow-equals';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
@@ -51,6 +53,8 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
+    @observable is_market_closed = true;
+    @observable active_symbols = [];
 
     // Contract Type
     @observable contract_expiry_type = '';
@@ -216,6 +220,11 @@ export default class TradeStore extends BaseStore {
                 });
             }));
         }
+
+        await this.processNewValuesAsync({
+            active_symbols  : active_symbols.active_symbols,
+            is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+        });
     }
 
     @action.bound
@@ -357,6 +366,7 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
+            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
@@ -432,6 +442,11 @@ export default class TradeStore extends BaseStore {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
+    }
+
+    @action.bound
+    setMarketStatus(status) {
+        this.is_market_closed = status;
     }
 
     @action.bound

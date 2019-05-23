@@ -1,9 +1,0 @@
-import './sma';
-import './smaa';
-import './ema';
-import './emaa';
-import './bb';
-import './bba';
-import './rsi';
-import './rsia';
-import './macda';

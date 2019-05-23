@@ -26,7 +26,7 @@ const Purchase = ({
     const isLoading = info => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
 
-        return !has_validation_error && !info.has_error && !info.id
+        return !has_validation_error && !info.has_error && !info.id;
     };
 
     const components = [];

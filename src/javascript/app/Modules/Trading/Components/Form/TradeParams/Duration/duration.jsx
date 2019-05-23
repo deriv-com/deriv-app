@@ -5,7 +5,6 @@ import React, { Fragment }            from 'react';
 import { localize }                   from '_common/localize';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import RangeSlider                    from 'App/Components/Form/RangeSlider';
-import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/duration';
 import { toMoment }                   from 'Utils/Date';
 import DurationToggle                 from './duration-toggle.jsx';
 import AdvancedDuration               from './advanced-duration.jsx';
@@ -14,11 +13,9 @@ import SimpleDuration                 from './simple-duration.jsx';
 const Duration = ({
     advanced_duration_unit,
     advanced_expiry_type,
-    contract_expiry_type,
     duration,
     duration_unit,
     duration_units_list,
-    duration_min_max,
     duration_t,
     expiry_date,
     expiry_time,
@@ -27,13 +24,14 @@ const Duration = ({
     hasDurationUnit,
     is_advanced_duration,
     is_minimized,
+    min_value,
+    max_value,
     onChange,
     onChangeUiStore,
     onChangeMultiple,
     simple_duration_unit,
     server_time,
     start_date,
-    validation_errors,
     market_open_times,
 }) => {
     const expiry_list = [
@@ -110,12 +108,6 @@ const Duration = ({
         onChangeMultiple({ ...new_trade_store_values });
     };
 
-    let max_value, min_value;
-    if (duration_min_max[contract_expiry_type]) {
-        max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
-        min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
-    }
-
     const props = {
         shared_input: {
             max_value,
@@ -125,7 +117,6 @@ const Duration = ({
         number_input: {
             type            : 'number',
             is_incrementable: true,
-            error_messages  : validation_errors.duration || [],
         },
     };
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
@@ -188,13 +179,11 @@ const Duration = ({
 Duration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
-    contract_expiry_type  : PropTypes.string,
     duration              : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    duration_min_max: PropTypes.object,
-    duration_t      : PropTypes.oneOfType([
+    duration_t: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
@@ -211,6 +200,8 @@ Duration.propTypes = {
     is_advanced_duration: PropTypes.bool,
     is_minimized        : PropTypes.bool,
     market_open_times   : PropTypes.array,
+    max_value           : PropTypes.number,
+    min_value           : PropTypes.number,
     onChange            : PropTypes.func,
     onChangeUiStore     : PropTypes.func,
     server_time         : PropTypes.object,

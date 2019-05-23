@@ -29,5 +29,8 @@ export const showUnavailableLocationError = flow(function* (showError) {
 
 export const isMarketClosed = (active_symbols = [], symbol) => {
     if (!active_symbols.length) return true;
-    return !active_symbols.filter(symbol_info => symbol_info.symbol === symbol)[0].exchange_is_open;
+    return (active_symbols.filter(x => x.symbol === symbol)[0]) ?
+        !active_symbols.filter(symbol_info => symbol_info.symbol === symbol)[0].exchange_is_open
+        :
+        false;
 };

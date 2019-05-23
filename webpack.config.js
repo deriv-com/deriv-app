@@ -7,8 +7,11 @@ module.exports = {
         path    : path.resolve(__dirname, 'dist'),
         filename: 'bot.js',
     },
+    devServer: {
+        publicPath: '/dist/',
+    },
     devtool: 'source-map',
-    target: 'node',
+    target: 'web',
     module: {
         rules: [
             {
@@ -21,14 +24,8 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use    : 'babel-loader',
+                loader : 'babel-loader',
             },
         ],
-    },
-    plugins: [
-        new webpack.BannerPlugin({
-            banner: '#!/usr/bin/env node',
-            raw   : true,
-        }),
-    ],
+    }
 };

@@ -38,6 +38,15 @@ class Chart extends React.Component {
     );
 
     render() {
+        const granularity = this.props.granularity;
+        const duration    = this.props.end_epoch - this.props.start_epoch;
+
+        const margin = granularity === 0 ? (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity;
+
+        // load more ticks so we can draw one tick before and one tick after contract
+        const start_margin = ((this.props.start_epoch) - margin).toFixed(0);
+        const end_margin   = (this.props.end_epoch + margin).toFixed(0);
+
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
@@ -47,6 +56,7 @@ class Chart extends React.Component {
                 chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
+                endEpochMargin={end_margin}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}
@@ -56,6 +66,7 @@ class Chart extends React.Component {
                 settings={this.props.settings}
                 showLastDigitStats={this.props.should_show_last_digit_stats}
                 startEpoch={this.props.start_epoch}
+                startEpochMargin={start_margin}
                 scrollToEpoch={this.props.scroll_to_epoch}
                 scrollToEpochOffset={this.props.scroll_to_offset}
                 symbol={this.props.symbol}

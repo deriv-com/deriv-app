@@ -21,7 +21,7 @@
             background-color: themed('container_color');
 
             &:hover:not(.button-menu__button--active) {
-                background-color: rgba(themed('tab_hover_color'), 0.08);
+                background-color: themed('tab_hover_color');
             }
         }
 
@@ -55,6 +55,7 @@
 
         .button-menu {
             &__button, &__button--active {
+                background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;
             }
             &__button:nth-last-child(2) {

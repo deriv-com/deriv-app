@@ -177,9 +177,8 @@ DurationWrapper.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    start_time       : PropTypes.string,
-    symbol           : PropTypes.string,
-    validation_errors: PropTypes.object,
+    start_time: PropTypes.string,
+    symbol    : PropTypes.string,
 };
 
 export default connect(({ modules, ui }) => ({
@@ -201,6 +200,5 @@ export default connect(({ modules, ui }) => ({
     onChangeMultiple      : modules.trade.onChangeMultiple,
     simple_duration_unit  : ui.simple_duration_unit,
     start_date            : modules.trade.start_date,
-    validation_errors     : modules.trade.validation_errors,
     market_open_times     : modules.trade.market_open_times,
 }))(DurationWrapper);

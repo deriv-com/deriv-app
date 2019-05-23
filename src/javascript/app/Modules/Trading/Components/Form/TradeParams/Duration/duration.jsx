@@ -33,7 +33,6 @@ const Duration = ({
     simple_duration_unit,
     server_time,
     start_date,
-    validation_errors,
     market_open_times,
 }) => {
     const expiry_list = [
@@ -125,7 +124,6 @@ const Duration = ({
         number_input: {
             type            : 'number',
             is_incrementable: true,
-            error_messages  : validation_errors.duration || [],
         },
     };
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple

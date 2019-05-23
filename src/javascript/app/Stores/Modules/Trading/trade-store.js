@@ -53,7 +53,8 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
-    @observable is_market_closed = true;
+    @observable is_market_closed = false;
+    @observable previous_symbol = '';
     @observable active_symbols = [];
 
     // Contract Type
@@ -255,6 +256,20 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setPreviousSymbol(symbol) {
+        if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
+    }
+
+    @action.bound
+    async resetPreviousSymbol() {
+        this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+        await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        runInAction(() => {
+            this.previous_symbol = ''; // reset the symbol to default
+        });
+    }
+
+    @action.bound
     onHoverPurchase(is_over, contract_type) {
         if (this.is_purchase_enabled) {
             this.smart_chart.updateBarrierShade(is_over, contract_type);
@@ -362,11 +377,12 @@ export default class TradeStore extends BaseStore {
 
         let has_only_forward_starting_contracts;
 
-        if (/symbol/.test(Object.keys(obj_new_values))) {
+        if (Object.keys(obj_new_values).includes('symbol')) {
+            this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
+            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
-            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented

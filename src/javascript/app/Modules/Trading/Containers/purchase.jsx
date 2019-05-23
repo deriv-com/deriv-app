@@ -22,15 +22,18 @@ const Purchase = ({
     validation_errors,
 }) => {
     const is_high_low = /high_low/.test(contract_type.toLowerCase());
-    const has_validation_error = Object.values(validation_errors).some(e => e.length);
 
-    const isLoading = info => !has_validation_error && !info.has_error && !info.id;
+    const isLoading = info => {
+        const has_validation_error = Object.values(validation_errors).some(e => e.length);
+
+        return !has_validation_error && !info.has_error && !info.id
+    };
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const info              = proposal_info[type] || {};
         const is_disabled       = !is_purchase_enabled || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
-        const is_proposal_error = has_validation_error || (info.has_error && !info.has_error_details);
+        const is_proposal_error = info.has_error && !info.has_error_details;
 
         const purchase_fieldset = (
             <PurchaseFieldset

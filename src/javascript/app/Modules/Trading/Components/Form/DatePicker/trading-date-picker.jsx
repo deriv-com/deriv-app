@@ -10,6 +10,7 @@ import {
     toMoment }                        from 'Utils/Date';
 
 const TradingDatePicker = ({
+    duration_d,
     duration_min_max,
     duration_units_list,
     expiry_date,
@@ -33,7 +34,9 @@ const TradingDatePicker = ({
     const moment_contract_start_date_time =
         setTime(toMoment(min_duration), (isTimeValid(start_time) ? start_time : server_time.format('HH:mm:ss')));
 
-    const max_daily_duration = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
+    const max_daily_duration   = duration_min_max.daily ? duration_min_max.daily.max : 365 * 24 * 3600;
+    const is_duration_contract = expiry_type === 'duration';
+
     if (is_24_hours_contract) {
         min_date_expiry   = moment_contract_start_date_time.clone().startOf('day');
         max_date_duration = moment_contract_start_date_time.clone().add(
@@ -42,7 +45,7 @@ const TradingDatePicker = ({
         min_date_expiry   = moment_contract_start_date_time.clone().startOf('day');
         max_date_duration = moment_contract_start_date_time.clone().add(max_daily_duration, 'second');
     }
-    if (expiry_type === 'duration') {
+    if (is_duration_contract) {
         if (has_intraday_unit) {
             min_date_expiry.add(1, 'day');
         }
@@ -53,7 +56,8 @@ const TradingDatePicker = ({
         is_read_only = true;
     }
 
-    const error_messages = expiry_type === 'duration' ? validation_errors.duration : validation_errors.expiry_date;
+    const error_messages = is_duration_contract ? validation_errors.duration : validation_errors.expiry_date;
+    const date_value = is_duration_contract ? (duration_d || '').toString() : expiry_date;
 
     return (
         <DatePicker
@@ -73,7 +77,7 @@ const TradingDatePicker = ({
             max_date={max_date_duration}
             start_date={start_date}
             underlying={symbol}
-            value={expiry_date}
+            value={date_value}
         />
     );
 };
@@ -105,7 +109,7 @@ TradingDatePicker.propTypes = {
 };
 
 export default connect(
-    ({ modules, common }) => ({
+    ({ modules, common, ui }) => ({
         duration_min_max   : modules.trade.duration_min_max,
         duration_units_list: modules.trade.duration_units_list,
         expiry_date        : modules.trade.expiry_date,
@@ -116,5 +120,6 @@ export default connect(
         start_time         : modules.trade.start_time,
         symbol             : modules.trade.symbol,
         validation_errors  : modules.trade.validation_errors,
+        duration_d         : ui.duration_d,
     })
 )(TradingDatePicker);

@@ -33,7 +33,7 @@ class DatePicker extends React.Component {
     componentDidMount() {
         document.addEventListener('click', this.onClickOutside, true);
         const { mode, value } = this.props;
-        const initial_value = mode === 'duration' ? formatDate(addDays(toMoment(), 1), 'DD MMM YYYY') : formatDate(value, 'DD MMM YYYY');
+        const initial_value = mode === 'duration' ? formatDate(addDays(toMoment(), value || 1), 'DD MMM YYYY') : formatDate(value, 'DD MMM YYYY');
 
         this.updateDatePickerValue(initial_value);
 

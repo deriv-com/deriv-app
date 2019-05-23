@@ -557,7 +557,7 @@ export default class TradeStore extends BaseStore {
                 this.root_store.ui.setAppLoading(false);
                 clearInterval(loading_interval);
             }
-        }, 500);
+        }, 300);
     }
 
     @action.bound

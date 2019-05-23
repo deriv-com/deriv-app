@@ -29,7 +29,7 @@ class DurationWrapper extends React.Component {
         && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1);
 
     handleEndTime = () => {
-        const symbol_has_endtime = this.props.duration_units_list.length > 1;
+        const symbol_has_endtime = this.props.duration_units_list.length > 1  || this.props.is_advanced_duration;
 
         if (symbol_has_endtime) {
             // simple duration does not have endtime

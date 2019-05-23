@@ -368,6 +368,17 @@ export default class TradeStore extends BaseStore {
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
         }
+
+        if (Object.keys(obj_new_values).includes('duration_unit')) {
+            this.root_store.ui.onChangeUiStore({
+                name : 'advanced_duration_unit',
+                value: obj_new_values.duration_unit,
+            });
+            this.root_store.ui.onChangeUiStore({
+                name : 'simple_duration_unit',
+                value: obj_new_values.duration_unit,
+            });
+        }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);

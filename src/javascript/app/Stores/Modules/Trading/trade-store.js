@@ -555,11 +555,11 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async onMount() {
+        this.onLoadingMount();
         await this.prepareTradeStore();
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
-            this.onLoadingMount();
         });
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -567,12 +567,18 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onLoadingMount() {
+        let time_counter = 0;
         const loading_interval = setInterval(() => {
-            if (this.smart_chart.is_chart_ready) {
+            if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
                 this.root_store.ui.setAppLoading(false);
                 clearInterval(loading_interval);
             }
-        }, 300);
+            if (time_counter === 20) { // 20 iterations = 400 * 20 = 8 seconds
+                this.root_store.ui.setAppLoading(false);
+                this.root_store.common.setError(true);
+            }
+            time_counter++;
+        }, 400);
     }
 
     @action.bound

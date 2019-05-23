@@ -46,11 +46,16 @@ const SocketCache = (() => {
 
         // prevent unwanted page behaviour
         // if a cached version already exists but it gives an error after being called for updating the cache
-        const cached_response = get(response.echo_req);
-        const new_response    = response[msg_type];
+        const cached_response = get(response.echo_req) || {};
+        const cached_message  = cached_response[msg_type];
+        const new_message     = response[msg_type];
 
-        if ((response.error || !new_response || isEmptyValue(new_response) || isEmptyValue(cached_response))
-            && cached_response && !cached_response.error) {
+        const has_error_or_missing = response.error || !(msg_type in response);
+        const has_new_value        = cached_message && isEmptyValue(cached_message) && !isEmptyValue(new_message);
+        const has_old_cache        = cached_message && isEmptyValue(new_message) && !isEmptyValue(cached_message);
+        const has_valid_cache      = !isEmptyValue(cached_response) && !cached_response.error;
+
+        if ((has_error_or_missing || has_new_value || has_old_cache) && has_valid_cache) {
             clear();
             window.location.reload();
             return;

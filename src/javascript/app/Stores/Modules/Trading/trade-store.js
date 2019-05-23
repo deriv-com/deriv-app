@@ -53,7 +53,7 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
-    @observable is_market_closed = true;
+    @observable is_market_closed = false;
     @observable active_symbols = [];
 
     // Contract Type

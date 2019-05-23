@@ -144,7 +144,7 @@
                 redirect();
             } else {
                 var server_url = localStorage.getItem('config.server_url');
-                var ws = new WebSocket('wss://' + (server_url || 'frontend.binaryws.com') + '/websockets/v3?app_id=1');
+                var ws = new WebSocket('wss://' + (server_url || 'frontend.binaryws.com') + '/websockets/v3?app_id=16929');
                 var requests = [];
                 var responses = [];
                 ws.onopen = function(e) {

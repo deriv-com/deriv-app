@@ -62,6 +62,8 @@ class DurationWrapper extends React.Component {
         const current_unit = is_advanced_duration ?
             advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
+        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, current_unit);
+        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, current_unit);
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
@@ -77,10 +79,13 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (duration_min_max[contract_expiry_type]) {
-            const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+        if (current_duration < min_value) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
+        }
+        if (current_duration > max_value) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
         }
     }
 

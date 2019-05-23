@@ -57,12 +57,18 @@
 
                 account_list.forEach(function(account) {
                     Object.keys(account).forEach(function(param) {
+                        if (param === 'loginid') {
+                            if (!active_loginid && !account.is_disabled) {
+                                active_loginid = account[param];
+                            }
+                        } else {
                             const param_to_set = map_names[param] || param;
                             const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
                             if (!(account.loginid in client_object)) {
                                 client_object[account.loginid] = {};
                             }
                             client_object[account.loginid][param_to_set] = value_to_set;
+                        }
                     });
                 });
 

@@ -11,6 +11,7 @@ import Test                 from './test.jsx';
 import FormLayout           from '../Components/Form/form-layout.jsx';
 import Digits               from '../../Contract/Containers/digits.jsx';
 import InfoBox              from '../../Contract/Containers/info-box.jsx';
+import { isDigitTradeType } from '../Helpers/digits';
 
 const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -32,7 +33,7 @@ class Trade extends React.Component {
         const contract_id                  = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class           = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const should_show_bottom_widgets   = this.props.is_digit_contract && this.props.is_contract_mode;
-        const should_show_last_digit_stats = this.props.is_digit_contract && !this.props.is_contract_mode;
+        const should_show_last_digit_stats = isDigitTradeType(this.props.contract_type) && !this.props.is_contract_mode;
         const is_chart_visible             = (this.props.is_chart_loading || !this.props.is_chart_ready);
 
         return (

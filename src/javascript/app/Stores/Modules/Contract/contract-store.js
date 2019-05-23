@@ -111,6 +111,8 @@ export default class ContractStore extends BaseStore {
         createChartBarrier(SmartChartStore, contract_info);
         createChartMarkers(SmartChartStore, contract_info);
 
+        SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
+
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
         }
@@ -214,6 +216,9 @@ export default class ContractStore extends BaseStore {
         createChartBarrier(this.smart_chart, this.replay_info);
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
+
+        this.smart_chart.updateMargin(
+            (getEndTime(this.replay_info) || this.replay_info.date_expiry) - this.replay_info.date_start);
 
         this.waitForChartListener(this.smart_chart);
 

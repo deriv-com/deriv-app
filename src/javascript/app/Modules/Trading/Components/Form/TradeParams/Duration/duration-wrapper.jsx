@@ -2,6 +2,7 @@ import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { connect }                    from 'Stores/connect';
+import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/duration';
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
@@ -43,22 +44,43 @@ class DurationWrapper extends React.Component {
     }
 
     componentDidMount() {
-        const current_unit = this.props.is_advanced_duration ?
-            this.props.advanced_duration_unit : this.props.simple_duration_unit;
-        const current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
+        const {
+            advanced_duration_unit,
+            advanced_expiry_type,
+            contract_expiry_type,
+            duration,
+            duration_min_max,
+            duration_unit,
+            expiry_type,
+            getDurationFromUnit,
+            is_advanced_duration,
+            onChange,
+            onChangeUiStore,
+            simple_duration_unit,
+        } = this.props;
 
-        if (this.props.duration_unit !== current_unit) {
-            this.props.onChangeUiStore({ name: `${this.props.is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: this.props.duration_unit });
+        const current_unit = is_advanced_duration ?
+            advanced_duration_unit : simple_duration_unit;
+        const current_duration = getDurationFromUnit(current_unit);
+
+        if (duration_unit !== current_unit) {
+            onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
 
-        if (this.props.duration !== current_duration) {
-            this.props.onChangeUiStore({ name: `duration_${current_unit}`, value: this.props.duration });
+        if (duration !== current_duration) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: duration });
         }
 
-        if (this.props.expiry_type === 'endtime') this.handleEndTime();
+        if (expiry_type === 'endtime') this.handleEndTime();
 
         if (this.advancedHasWrongExpiry()) {
-            this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
+        }
+
+        if (duration_min_max[contract_expiry_type]) {
+            const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
         }
     }
 

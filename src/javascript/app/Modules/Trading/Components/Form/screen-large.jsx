@@ -7,9 +7,9 @@ import ContractType from '../../Containers/contract-type.jsx';
 import Purchase     from '../../Containers/purchase.jsx';
 import TradeParams  from '../../Containers/trade-params.jsx';
 
-const ScreenLarge = ({ is_contract_visible, is_trade_enabled }) => (
+const ScreenLarge = ({ is_contract_visible, is_trade_enabled, is_blurred }) => (
     <div className={classNames('sidebar__items', {
-        'sidebar__items--blur': is_contract_visible,
+        'sidebar__items--blur': is_contract_visible || is_blurred,
     })}
     >
         {!is_trade_enabled && !is_contract_visible ?
@@ -29,6 +29,7 @@ const ScreenLarge = ({ is_contract_visible, is_trade_enabled }) => (
 );
 
 ScreenLarge.propTypes = {
+    is_blurred         : PropTypes.bool,
     is_contract_visible: PropTypes.bool,
     is_trade_enabled   : PropTypes.bool,
 };

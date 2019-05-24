@@ -2,9 +2,15 @@ import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { connect }                    from 'Stores/connect';
+import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/duration';
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
+    state = {
+        min_value: 0,
+        max_value: 0,
+    }
+
     hasDurationUnit = (duration_unit) => {
         let duration_list = [...this.props.duration_units_list];
 
@@ -43,23 +49,52 @@ class DurationWrapper extends React.Component {
     }
 
     componentDidMount() {
-        const current_unit = this.props.is_advanced_duration ?
-            this.props.advanced_duration_unit : this.props.simple_duration_unit;
-        const current_duration = this.props.getDurationFromUnit(this.props.duration_unit);
+        const {
+            advanced_duration_unit,
+            advanced_expiry_type,
+            contract_expiry_type,
+            duration,
+            duration_min_max,
+            duration_unit,
+            expiry_type,
+            getDurationFromUnit,
+            is_advanced_duration,
+            onChange,
+            onChangeUiStore,
+            simple_duration_unit,
+        } = this.props;
 
-        if (this.props.duration_unit !== current_unit) {
-            this.props.onChangeUiStore({ name: `${this.props.is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: this.props.duration_unit });
+        const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
+        const current_duration = getDurationFromUnit(current_unit);
+        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, current_unit);
+        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, current_unit);
+
+        if (duration_unit !== current_unit) {
+            onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
 
-        if (this.props.duration !== current_duration) {
-            this.props.onChangeUiStore({ name: `duration_${current_unit}`, value: this.props.duration });
+        if (duration !== current_duration) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: duration });
         }
 
-        if (this.props.expiry_type === 'endtime') this.handleEndTime();
+        if (expiry_type === 'endtime') this.handleEndTime();
 
         if (this.advancedHasWrongExpiry()) {
-            this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
+
+        if (current_duration < min_value) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
+        } else if (current_duration > max_value) {
+            onChangeUiStore({ name: `duration_${current_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
+        }
+
+        this.setState({
+            min_value,
+            max_value,
+        });
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
@@ -94,6 +129,7 @@ class DurationWrapper extends React.Component {
         return (
             <Duration
                 hasDurationUnit={this.hasDurationUnit}
+                {...this.state}
                 {...this.props}
             />
         );
@@ -150,9 +186,8 @@ DurationWrapper.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    start_time       : PropTypes.string,
-    symbol           : PropTypes.string,
-    validation_errors: PropTypes.object,
+    start_time: PropTypes.string,
+    symbol    : PropTypes.string,
 };
 
 export default connect(({ modules, ui }) => ({
@@ -174,6 +209,5 @@ export default connect(({ modules, ui }) => ({
     onChangeMultiple      : modules.trade.onChangeMultiple,
     simple_duration_unit  : ui.simple_duration_unit,
     start_date            : modules.trade.start_date,
-    validation_errors     : modules.trade.validation_errors,
     market_open_times     : modules.trade.market_open_times,
 }))(DurationWrapper);

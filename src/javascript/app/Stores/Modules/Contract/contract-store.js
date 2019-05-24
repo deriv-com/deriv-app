@@ -128,6 +128,7 @@ export default class ContractStore extends BaseStore {
         this.is_from_positions = is_from_positions;
 
         if (contract_id) {
+            this.replay_info = {};
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
             }
@@ -140,6 +141,7 @@ export default class ContractStore extends BaseStore {
     @action.bound
     onMountReplay(contract_id) {
         if (contract_id) {
+            this.contract_info = {};
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.replay_contract_id = contract_id;
@@ -152,6 +154,7 @@ export default class ContractStore extends BaseStore {
         this.forgetProposalOpenContract();
         this.forget_id          = null;
         this.replay_contract_id = null;
+        this.digits_info        = {};
         this.replay_info        = {};
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();

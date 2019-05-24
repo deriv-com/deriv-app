@@ -20,7 +20,9 @@ import * as Symbol                       from './Actions/symbol';
 import getValidationRules                from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
-    showUnavailableLocationError }       from './Helpers/active-symbols';
+    showUnavailableLocationError,
+    isMarketClosed,
+}                                        from './Helpers/active-symbols';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
 import {
@@ -45,6 +47,9 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
+    @observable is_market_closed = false;
+    @observable previous_symbol = '';
+    @observable active_symbols = [];
 
     // Contract Type
     @observable contract_expiry_type = '';
@@ -166,10 +171,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        this.smart_chart        = this.root_store.modules.smart_chart;
-        this.currency           = this.root_store.client.currency;
-        this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
-        const active_symbols    = await WS.activeSymbols();
+        const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             this.root_store.ui.setAppLoading(false);
@@ -180,20 +182,32 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!this.symbol) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(active_symbols.active_symbols),
-            });
-        }
+        runInAction(async() => {
+            this.smart_chart        = this.root_store.modules.smart_chart;
+            this.currency           = this.root_store.client.currency;
+            this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-        if (this.symbol) {
-            ContractType.buildContractTypesConfig(this.symbol).then(action(async () => {
+            if (!this.symbol) {
                 await this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
+                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });
-            }));
-        }
+            }
+
+            if (this.symbol) {
+                ContractType.buildContractTypesConfig(this.symbol)
+                    .then(action(async () => {
+                        await this.processNewValuesAsync({
+                            ...ContractType.getContractValues(this),
+                            ...ContractType.getContractCategories(),
+                        });
+                    }));
+            }
+
+            await this.processNewValuesAsync({
+                active_symbols  : active_symbols.active_symbols,
+                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            });
+        });
     }
 
     @action.bound
@@ -221,6 +235,20 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
         this.processNewValuesAsync({ [name]: value }, true);
+    }
+
+    @action.bound
+    setPreviousSymbol(symbol) {
+        if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
+    }
+
+    @action.bound
+    async resetPreviousSymbol() {
+        this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+        await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        runInAction(() => {
+            this.previous_symbol = ''; // reset the symbol to default
+        });
     }
 
     @action.bound
@@ -323,8 +351,10 @@ export default class TradeStore extends BaseStore {
 
         let has_only_forward_starting_contracts;
 
-        if (/symbol/.test(Object.keys(obj_new_values))) {
+        if (Object.keys(obj_new_values).includes('symbol')) {
+            this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
+            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
@@ -390,6 +420,11 @@ export default class TradeStore extends BaseStore {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
+    }
+
+    @action.bound
+    setMarketStatus(status) {
+        this.is_market_closed = status;
     }
 
     @action.bound
@@ -486,8 +521,8 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
-            this.onLoadingMount();
         });
+        this.onLoadingMount();
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 

@@ -80,6 +80,7 @@ class ContractDrawer extends Component {
                     <ContractAudit
                         contract_info={contract_info}
                         contract_end_time={getEndTime(contract_info)}
+                        is_open={true}
                         is_shade_visible={this.handleShade}
                         duration={getDurationTime(contract_info)}
                         duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}

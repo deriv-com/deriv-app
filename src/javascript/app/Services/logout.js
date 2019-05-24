@@ -4,9 +4,8 @@ import { removeCookies } from '_common/storage';
 import WS                from './ws-methods';
 import GTM               from '../Utils/gtm';
 
-export const requestLogout = () => {
+export const requestLogout = () =>
     WS.logout().then(doLogout);
-};
 
 const doLogout = (response) => {
     if (response.logout !== 1) return;

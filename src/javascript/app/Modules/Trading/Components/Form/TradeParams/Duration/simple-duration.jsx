@@ -4,6 +4,7 @@ import React, { Fragment }            from 'react';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
 import InputField                     from 'App/Components/Form/InputField';
 import RangeSlider                    from 'App/Components/Form/RangeSlider';
+import { connect }                    from 'Stores/connect';
 import TradingDatePicker              from '../../DatePicker';
 
 const SimpleDuration = ({
@@ -14,6 +15,7 @@ const SimpleDuration = ({
     number_input_props,
     shared_input_props,
     simple_duration_unit,
+    validation_errors,
 }) => {
     const filterMinutesAndTicks = (arr) => {
         const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
@@ -52,6 +54,7 @@ const SimpleDuration = ({
             { (simple_duration_unit !== 't' && simple_duration_unit !== 'd') &&
                 <InputField
                     classNameInput='trade-container__input'
+                    error_messages={validation_errors.duration}
                     name='duration'
                     label={has_label ? duration_units_list[0].text : null}
                     value={getDurationFromUnit(simple_duration_unit)}
@@ -74,6 +77,11 @@ SimpleDuration.propTypes = {
     number_input_props  : PropTypes.object,
     shared_input_props  : PropTypes.object,
     simple_duration_unit: PropTypes.string,
+    validation_errors   : PropTypes.object,
 };
 
-export default SimpleDuration;
+export default connect(
+    ({ modules }) => ({
+        validation_errors: modules.trade.validation_errors,
+    })
+)(SimpleDuration);

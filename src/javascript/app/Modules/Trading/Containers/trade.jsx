@@ -5,11 +5,13 @@ import { getPropertyValue } from '_common/utility';
 import UILoader             from 'App/Components/Elements/ui-loader.jsx';
 import { connect }          from 'Stores/connect';
 import PositionsDrawer      from 'App/Components/Elements/PositionsDrawer';
+import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import Test                 from './test.jsx';
 import FormLayout           from '../Components/Form/form-layout.jsx';
 import Digits               from '../../Contract/Containers/digits.jsx';
 import InfoBox              from '../../Contract/Containers/info-box.jsx';
+import { isDigitTradeType } from '../Helpers/digits';
 
 const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -31,7 +33,7 @@ class Trade extends React.Component {
         const contract_id                  = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class           = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const should_show_bottom_widgets   = this.props.is_digit_contract && this.props.is_contract_mode;
-        const should_show_last_digit_stats = this.props.is_digit_contract && !this.props.is_contract_mode;
+        const should_show_last_digit_stats = isDigitTradeType(this.props.contract_type) && !this.props.is_contract_mode;
         const is_chart_visible             = (this.props.is_chart_loading || !this.props.is_chart_ready);
 
         return (
@@ -71,10 +73,12 @@ class Trade extends React.Component {
                     } : null}
                     style={{ cursor: this.props.is_contract_mode ? 'pointer' : 'initial' }}
                 >
+                    { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
                         is_mobile={this.props.is_mobile}
                         is_contract_visible={!!contract_id || this.props.is_contract_mode}
                         is_trade_enabled={this.props.is_trade_enabled}
+                        is_blurred={this.props.is_market_closed}
                     />
                 </div>
             </div>
@@ -93,6 +97,7 @@ Trade.propTypes = {
     is_chart_ready   : PropTypes.bool,
     is_contract_mode : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
+    is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
     onClickNewTrade  : PropTypes.func,
@@ -123,6 +128,7 @@ export default connect(
         is_chart_ready                     : modules.smart_chart.is_chart_ready,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
         contract_type                      : modules.trade.contract_type,
+        is_market_closed                   : modules.trade.is_market_closed,
         is_trade_enabled                   : modules.trade.is_trade_enabled,
         onClickNewTrade                    : modules.trade.onClickNewTrade,
         onMount                            : modules.trade.onMount,

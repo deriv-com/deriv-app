@@ -243,12 +243,13 @@ export const handleClientNotifications = (client, addNotification, loginid) => {
     const { currency, excluded_until } = client;
     if (!currency)         addNotification(client_notifications.currency);
     if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
-    if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
 
     WS.getAccountStatus().then((response) => checkAccountStatus(response, client, addNotification, loginid));
 
     WS.sendRequest({ get_settings: 1 }, { forced: true }).then((response) => {
         if (loginid !== LocalStore.get('active_loginid')) return;
+
+        if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
 
         if (hasMissingRequiredField(response, client)) {
             addNotification(client_notifications.required_fields);

@@ -86,7 +86,7 @@ export const getProfitTableColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} currency={currency} />
+            return <Money amount={cell_value} currency={currency} />;
         },
     }, {
         title    : localize('Sell time'),
@@ -97,14 +97,14 @@ export const getProfitTableColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} currency={currency} />
+            return <Money amount={cell_value} currency={currency} />;
         },
     }, {
         title            : localize('Profit/Loss'),
         col_index        : 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>
-                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
+                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />;
             </ProfitLossCell>
         ),
     },

@@ -54,8 +54,8 @@ export default class ContractStore extends BaseStore {
     is_ongoing_contract = false;
 
     // Replay Contract Indicative Movement
-    prev_indicative   = 0;
-    replay_indicative = 0;
+    replay_prev_indicative   = 0;
+    replay_indicative        = 0;
 
     // -------------------
     // ----- Actions -----

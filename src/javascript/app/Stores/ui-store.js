@@ -21,7 +21,10 @@ export default class UIStore extends BaseStore {
     @observable is_language_dialog_on   = false;
     @observable is_settings_dialog_on   = false;
     @observable is_accounts_switcher_on = false;
+
     @observable is_loading              = true;
+    @observable is_slow_loading         = false;
+    @observable slow_loading_status     = '';
 
     @observable has_only_forward_starting_contracts = false;
 
@@ -280,6 +283,12 @@ export default class UIStore extends BaseStore {
     @action.bound
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
+    }
+
+    @action.bound
+    setSlowLoading(status, message) {
+        this.is_slow_loading     = status;
+        this.slow_loading_status = message;
     }
 
     @action.bound

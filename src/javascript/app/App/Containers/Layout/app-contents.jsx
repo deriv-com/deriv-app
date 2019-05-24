@@ -90,9 +90,9 @@ export default withRouter(connect(
         is_loading            : ui.is_loading,
         is_logged_in          : client.is_logged_in,
         is_positions_drawer_on: ui.is_positions_drawer_on,
-        is_slow_loading       : modules.trade.is_slow_loading,
+        is_slow_loading       : ui.is_slow_loading,
         pwa_prompt_event      : ui.pwa_prompt_event,
-        slow_loading_status   : modules.trade.slow_loading_status,
+        slow_loading_status   : ui.slow_loading_status,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })
 )(AppContents));

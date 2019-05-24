@@ -108,10 +108,6 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
-    // Loading Status
-    @observable is_slow_loading = false;
-    @observable slow_loading_status = '';
-
     // Query string
     query = '';
 
@@ -578,12 +574,6 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    setSlowLoading(status) {
-        this.is_slow_loading     = status;
-        this.slow_loading_status = localize('This page is taking too long to load. Please check your network connection for an optimal trading experience.');
-    }
-
-    @action.bound
     async onMount() {
         this.onLoadingMount();
         await this.prepareTradeStore();
@@ -598,7 +588,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onLoadingMount() {
         const timeout = setTimeout(() => {
-            this.setSlowLoading(true);
+            const loading_message = localize('This page is taking too long to load. Please check your network connection for an optimal trading experience.');
+            this.root_store.ui.setSlowLoading(true, loading_message);
         }, 8000);
 
         const loading_interval = setInterval(() => {

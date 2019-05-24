@@ -104,7 +104,7 @@ export const getProfitTableColumnsTemplate = (currency) => [
         col_index        : 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>
-                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />;
+                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
             </ProfitLossCell>
         ),
     },

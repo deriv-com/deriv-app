@@ -110,6 +110,8 @@ export default class TradeStore extends BaseStore {
 
     // Loading Status
     @observable is_slow_loading = false;
+    @observable slow_loading_status = '';
+    @observable slow_loading_button = '';
 
     // Query string
     query = '';
@@ -578,7 +580,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     setSlowLoading(status) {
-        this.is_slow_loading = status;
+        this.is_slow_loading     = status;
+        this.slow_loading_status = localize('This page is taking too long to load. Please check your network connection for an optimal trading experience.');
+        this.slow_loading_button = localize('Refresh');
     }
 
     @action.bound
@@ -597,7 +601,7 @@ export default class TradeStore extends BaseStore {
     onLoadingMount() {
         const timeout = setTimeout(() => {
             this.setSlowLoading(true);
-        }, 10000);
+        }, 8000);
 
         const loading_interval = setInterval(() => {
             if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {

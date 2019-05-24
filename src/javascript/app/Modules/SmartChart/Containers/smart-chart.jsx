@@ -47,7 +47,7 @@ class Chart extends React.Component {
                 chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
-                margin={this.props.margin ? this.props.margin : null}
+                margin={this.props.margin || null}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}

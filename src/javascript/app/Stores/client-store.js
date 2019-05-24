@@ -389,6 +389,7 @@ export default class ClientStore extends BaseStore {
         this.currencies_list  = {};
         this.selected_currency = '';
         this.root_store.ui.removeAllNotifications();
+        this.root_store.modules.trade.onMount();
     }
 
 }

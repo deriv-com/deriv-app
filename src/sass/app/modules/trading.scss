@@ -33,6 +33,14 @@
             }
         }
     }
+    .sidebar__items--blur {
+        .popover {
+            display: none;
+        }
+        .tooltip:before, .tooltip:after {
+            display: none;
+        }
+    }
 }
 
 /** @define trade-container */

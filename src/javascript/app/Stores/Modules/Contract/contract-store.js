@@ -42,6 +42,7 @@ export default class ContractStore extends BaseStore {
 
     // ---- Replay Contract Config ----
     @observable replay_contract_id;
+    @observable replay_indicative_status;
     @observable replay_info = observable.object({});
 
     // ---- Normal properties ---
@@ -51,6 +52,10 @@ export default class ContractStore extends BaseStore {
     is_left_epoch_set   = false;
     is_from_positions   = false;
     is_ongoing_contract = false;
+
+    // Replay Contract Indicative Movement
+    prev_indicative   = 0;
+    replay_indicative = 0;
 
     // -------------------
     // ----- Actions -----
@@ -157,11 +162,14 @@ export default class ContractStore extends BaseStore {
     @action.bound
     onUnmountReplay() {
         this.forgetProposalOpenContract();
-        this.forget_id           = null;
-        this.replay_contract_id  = null;
-        this.digits_info         = {};
-        this.is_ongoing_contract = false;
-        this.replay_info         = {};
+        this.forget_id                = null;
+        this.replay_contract_id       = null;
+        this.digits_info              = {};
+        this.is_ongoing_contract      = false;
+        this.replay_info              = {};
+        this.replay_indicative_status = null;
+        this.replay_prev_indicative   = 0;
+        this.replay_indicative        = 0;
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();
     }
@@ -219,6 +227,19 @@ export default class ContractStore extends BaseStore {
 
         this.forget_id   = response.proposal_open_contract.id;
         this.replay_info = response.proposal_open_contract;
+
+        // Add indicative status for contract
+        const prev_indicative  = this.replay_prev_indicative;
+        const new_indicative   = +this.replay_info.bid_price;
+        this.replay_indicative = new_indicative;
+        if (new_indicative > prev_indicative) {
+            this.replay_indicative_status = 'profit';
+        } else if (new_indicative < prev_indicative) {
+            this.replay_indicative_status = 'loss';
+        } else {
+            this.replay_indicative_status = null;
+        }
+        this.replay_prev_indicative = this.replay_indicative;
 
         const end_time = getEndTime(this.replay_info);
         if (!end_time) this.is_ongoing_contract = true;

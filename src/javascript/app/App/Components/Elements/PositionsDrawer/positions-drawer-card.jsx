@@ -109,7 +109,7 @@ class PositionsDrawerCard extends React.PureComponent {
                                 'positions-drawer-card__profit-loss-label',
                             )}
                             >
-                                {result ? localize('P/L:') : localize('Potential P/L:')}
+                                {result ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
                             </div>
                             <div className={classNames(
                                 'positions-drawer-card__indicative',

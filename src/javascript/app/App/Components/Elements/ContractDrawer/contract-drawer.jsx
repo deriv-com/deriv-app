@@ -17,6 +17,7 @@ import {
     getDurationTime,
     getDurationUnitText }    from '../../../../Stores/Modules/Portfolio/Helpers/details';
 import {
+    getIndicativePrice,
     getEndTime,
     isUserSold }             from '../../../../Stores/Modules/Contract/Helpers/logic';
 import Money                 from '../money.jsx';
@@ -37,7 +38,6 @@ class ContractDrawer extends Component {
             exit_tick,
             is_sold,
             profit,
-            sell_price,
         } = this.props.contract_info;
         const { contract_info } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
@@ -63,8 +63,10 @@ class ContractDrawer extends Component {
                 <ContractCardBody>
                     <ProfitLossCardContent
                         pl_value={+profit}
-                        payout={+sell_price}
+                        payout={getIndicativePrice(contract_info)}
                         currency={currency}
+                        is_sold={!!(is_sold)}
+                        status={this.props.status}
                     />
                 </ContractCardBody>
                 <ContractCardFooter>
@@ -113,6 +115,7 @@ class ContractDrawer extends Component {
 ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
     heading      : PropTypes.string,
+    status       : PropTypes.string,
 };
 
 export default withRouter(ContractDrawer);

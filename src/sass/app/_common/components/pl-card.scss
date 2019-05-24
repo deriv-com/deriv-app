@@ -1,10 +1,8 @@
 .pl-card {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
     &__item {
-        width: 50%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -17,6 +15,8 @@
             }
         }
         &__body {
+            display: flex;
+
             @include themify($themes) {
                 @include typeface(--small-center-bold-black);
                 color: themed('text_color');
@@ -27,6 +27,18 @@
         }
         &__body--profit {
             color: $COLOR_GREEN_1 !important;
+        }
+    }
+    &__indicative--movement {
+        width: 16px;
+        height: 16px;
+
+        &-complete, &-complete:after {
+            display: none;
+        }
+        &:after {
+            content: '';
+            width: 16px;
         }
     }
 }

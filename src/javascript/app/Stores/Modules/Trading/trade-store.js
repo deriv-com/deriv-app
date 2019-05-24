@@ -587,16 +587,22 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onLoadingMount() {
-        const timeout = setTimeout(() => {
-            const loading_message = localize('This page is taking too long to load. Please check your network connection for an optimal trading experience.');
+        const first_timeout = setTimeout(() => {
+            const loading_message = localize('Your network connection might be slow, Please wait for the page to finish loading.');
             this.root_store.ui.setSlowLoading(true, loading_message);
         }, 8000);
+
+        const second_timeout = setTimeout(() => {
+            const loading_message = localize('This page is taking too long to load. Please wait for the page to finish loading or check your network connection.');
+            this.root_store.ui.setSlowLoading(true, loading_message);
+        }, 1000);
 
         const loading_interval = setInterval(() => {
             if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
                 this.root_store.ui.setAppLoading(false);
                 clearInterval(loading_interval);
-                clearTimeout(timeout);
+                clearTimeout(first_timeout);
+                clearTimeout(second_timeout);
             }
         }, 400);
     }

@@ -140,7 +140,7 @@
             }
         }
     }
-    &__purchase {
+    &__purchase, &__payout {
         &-price {
             font-size: 1.2em;
             padding: 8px;
@@ -157,6 +157,13 @@
             @include themify($themes) {
                 color: themed('text_primary_color');
             }
+        }
+    }
+    &__payout-price {
+        margin-left: -4px;
+        margin-right: -4px;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
         }
     }
     &__type {

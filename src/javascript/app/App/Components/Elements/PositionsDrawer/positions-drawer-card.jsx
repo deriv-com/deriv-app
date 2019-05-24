@@ -156,6 +156,12 @@ class PositionsDrawerCard extends React.PureComponent {
                             </span>
                             <Money amount={contract_info.buy_price} currency={currency} />
                         </div>
+                        <div className='positions-drawer-card__payout-price'>
+                            <span className='positions-drawer-card__payout-label'>
+                                {localize('Potential payout')}
+                            </span>
+                            <Money amount={contract_info.payout} currency={currency} />
+                        </div>
                     </React.Fragment>
                 </ContractLink>
                 <CSSTransition

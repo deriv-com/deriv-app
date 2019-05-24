@@ -41,6 +41,7 @@ class ContractDrawer extends Component {
             currency,
             exit_tick,
             is_sold,
+            payout,
             profit,
         } = this.props.contract_info;
         const { contract_info } = this.props;
@@ -105,6 +106,16 @@ class ContractDrawer extends Component {
                             <Money
                                 currency={currency}
                                 amount={buy_price}
+                            />
+                        </span>
+                    </div>
+                    <div className='contract-card__separator' />
+                    <div className='potential-payout-container'>
+                        <Localize str='Potential Payout:' />&nbsp;
+                        <span className='potential-payout-price' >
+                            <Money
+                                currency={currency}
+                                amount={payout}
                             />
                         </span>
                     </div>

@@ -119,6 +119,25 @@ $header-height: 4em;
     .purchase-price {
         font-weight: bold;
         font-size: 1em;
+
+        &-container {
+            margin-bottom: 0.5em;
+        }
+    }
+    .potential-payout {
+        &-container {
+            margin-top: 0.7em;
+        }
+        &-price {
+            font-weight: bold;
+            font-size: 1em;
+        }
+    }
+    &__separator {
+        width: 100%;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
     }
     &__underlying-name {
         display: flex;
@@ -182,6 +201,10 @@ $header-height: 4em;
         margin-bottom: 0.5em;
     }
     .result-details {
+        &__wrapper {
+            padding: 2px 0;
+            width: 100%;
+        }
         &__wrapper--is-open {
             margin-top: 0.5em;
         }

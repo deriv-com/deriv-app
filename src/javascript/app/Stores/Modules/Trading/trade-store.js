@@ -99,6 +99,10 @@ export default class TradeStore extends BaseStore {
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
+
+    initial_barriers;
+    is_initial_barrier_applied = false;
+
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
@@ -164,6 +168,7 @@ export default class TradeStore extends BaseStore {
     async prepareTradeStore() {
         this.smart_chart        = this.root_store.modules.smart_chart;
         this.currency           = this.root_store.client.currency;
+        this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         const active_symbols    = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
@@ -350,7 +355,9 @@ export default class TradeStore extends BaseStore {
 
             this.updateStore({
                 ...snapshot,
+                ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
+            this.is_initial_barrier_applied = true;
 
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();

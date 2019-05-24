@@ -53,7 +53,8 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
-    @observable is_market_closed = true;
+    @observable is_market_closed = false;
+    @observable previous_symbol = '';
     @observable active_symbols = [];
 
     // Contract Type
@@ -169,10 +170,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        let query_string_values = this.updateQueryString();
-        this.smart_chart        = this.root_store.modules.smart_chart;
-        this.currency           = this.root_store.client.currency;
-        const active_symbols    = await WS.activeSymbols();
+        const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             this.root_store.ui.setAppLoading(false);
@@ -183,47 +181,54 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
-        const is_invalid_symbol = !!query_string_values.symbol &&
-            !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
+        runInAction(async() => {
+            let query_string_values = this.updateQueryString();
+            this.smart_chart        = this.root_store.modules.smart_chart;
+            this.currency           = this.root_store.client.currency;
 
-        // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
-        if (is_invalid_symbol) {
-            this.root_store.ui.addNotification({
-                message: localize('Certain trade parameters have been changed due to your account settings.'),
-                type   : 'info',
-            });
-            URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
-            query_string_values = this.updateQueryString();
-        }
+            // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
+            const is_invalid_symbol = !!query_string_values.symbol &&
+                !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
 
-        // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
-        const { contract_type, is_equal } = query_string_values;
-        if (isRiseFallEqual(contract_type)) {
-            URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
-            query_string_values = this.updateQueryString();
-        }
+            // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
+            if (is_invalid_symbol) {
+                this.root_store.ui.addNotification({
+                    message: localize('Certain trade parameters have been changed due to your account settings.'),
+                    type   : 'info',
+                });
+                URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
+                query_string_values = this.updateQueryString();
+            }
 
-        if (!this.symbol) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(active_symbols.active_symbols),
-                ...query_string_values,
-            });
-        }
+            // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
+            const { contract_type, is_equal } = query_string_values;
+            if (isRiseFallEqual(contract_type)) {
+                URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
+                query_string_values = this.updateQueryString();
+            }
 
-        if (this.symbol) {
-            ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol).then(action(async () => {
+            if (!this.symbol) {
                 await this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
+                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
                     ...query_string_values,
                 });
-            }));
-        }
+            }
 
-        await this.processNewValuesAsync({
-            active_symbols  : active_symbols.active_symbols,
-            is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            if (this.symbol) {
+                ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol)
+                    .then(action(async () => {
+                        await this.processNewValuesAsync({
+                            ...ContractType.getContractValues(this),
+                            ...ContractType.getContractCategories(),
+                            ...query_string_values,
+                        });
+                    }));
+            }
+
+            await this.processNewValuesAsync({
+                active_symbols  : active_symbols.active_symbols,
+                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            });
         });
     }
 
@@ -252,6 +257,20 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
         this.processNewValuesAsync({ [name]: value }, true);
+    }
+
+    @action.bound
+    setPreviousSymbol(symbol) {
+        if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
+    }
+
+    @action.bound
+    async resetPreviousSymbol() {
+        this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+        await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        runInAction(() => {
+            this.previous_symbol = ''; // reset the symbol to default
+        });
     }
 
     @action.bound
@@ -362,11 +381,12 @@ export default class TradeStore extends BaseStore {
 
         let has_only_forward_starting_contracts;
 
-        if (/symbol/.test(Object.keys(obj_new_values))) {
+        if (Object.keys(obj_new_values).includes('symbol')) {
+            this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
+            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
-            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
@@ -559,8 +579,8 @@ export default class TradeStore extends BaseStore {
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
-            this.onLoadingMount();
         });
+        this.onLoadingMount();
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
     }

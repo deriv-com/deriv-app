@@ -50,7 +50,6 @@ export default class ClientStore extends BaseStore {
     get is_client_allowed_to_visit() {
         return !!(
             !this.is_logged_in || this.is_virtual
-            // TODO: [only_virtual] uncomment below line to enable app for costarica
             || this.accounts[this.loginid].landing_company_shortcode === 'costarica'
             || this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );  // TODO [->svg]

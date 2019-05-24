@@ -6,13 +6,17 @@ import FullPageModal  from 'App/Components/Elements/FullPageModal/full-page-moda
 import Localize       from 'App/Components/Elements/localize.jsx';
 import { connect }    from 'Stores/connect';
 
-const MarketUnavailableModal = ({ is_visible, setHasOnlyForwardingContracts }) => (
+const MarketUnavailableModal = ({
+    is_visible,
+    resetPreviousSymbol,
+    setHasOnlyForwardingContracts,
+}) => (
     <FullPageModal
         cancel_button_text={localize('Go to SmartTrader')}
         confirm_button_text={localize('No, stay on Deriv')}
         is_visible={is_visible}
         onCancel={() => window.open(urlFor('trading', undefined, undefined, true)) && setHasOnlyForwardingContracts(false)}
-        onConfirm={() => setHasOnlyForwardingContracts(false)}
+        onConfirm={() => { setHasOnlyForwardingContracts(false); resetPreviousSymbol(); }}
         title={localize('Market is unavailable')}
     >
         <Localize str='Sorry, but this market is not supported yet on Deriv. Do you want to trade this market on SmartTrader?' />
@@ -25,9 +29,10 @@ MarketUnavailableModal.propTypes = {
 };
 
 const market_unavailable = connect(
-    ({ ui }) => ({
+    ({ ui, modules }) => ({
         is_visible                   : ui.has_only_forward_starting_contracts,
         setHasOnlyForwardingContracts: ui.setHasOnlyForwardingContracts,
+        resetPreviousSymbol          : modules.trade.resetPreviousSymbol,
     }),
 )(MarketUnavailableModal);
 export default market_unavailable;

@@ -59,9 +59,7 @@
                     Object.keys(account).forEach(function(param) {
                         if (param === 'loginid') {
                             if (!active_loginid && !account.is_disabled) {
-                                if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging clients into virtual
-                                    active_loginid = account[param];
-                                }
+                                active_loginid = account[param];
                             }
                         } else {
                             const param_to_set = map_names[param] || param;

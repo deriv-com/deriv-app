@@ -54,6 +54,7 @@ class ContractReplay extends React.Component {
             contract_info,
             chart_id,
             is_chart_loading,
+            is_static_chart,
             server_time,
             status,
         } = this.props;
@@ -86,13 +87,14 @@ class ContractReplay extends React.Component {
                                 ))
                             }
                         </div>
-                        <ChartLoader is_visible={is_chart_loading && !contract_info.underlying} />
+                        <ChartLoader is_visible={is_chart_loading} />
                         {!!(contract_info.underlying) &&
                         <SmartChart
                             chart_id={chart_id}
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
+                            is_static_chart={is_static_chart}
                             should_show_last_digit_stats={false}
                             symbol={contract_info.underlying}
                             {...config}
@@ -114,6 +116,7 @@ ContractReplay.propTypes = {
     hidePositions   : PropTypes.func,
     history         : PropTypes.object,
     is_chart_loading: PropTypes.bool,
+    is_static_chart : PropTypes.bool,
     location        : PropTypes.object,
     onMount         : PropTypes.func,
     onUnmount       : PropTypes.func,
@@ -129,6 +132,7 @@ export default withRouter(connect(
         server_time     : common.server_time,
         chart_id        : modules.smart_chart.replay_id,
         config          : modules.contract.replay_config,
+        is_static_chart : modules.contract.is_replay_static_chart,
         onMount         : modules.contract.onMountReplay,
         onUnmount       : modules.contract.onUnmountReplay,
         contract_info   : modules.contract.replay_info,

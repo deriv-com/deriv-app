@@ -44,6 +44,7 @@ export default class ContractStore extends BaseStore {
     @observable replay_contract_id;
     @observable replay_indicative_status;
     @observable replay_info = observable.object({});
+    @observable is_replay_static_chart = false;
 
     // ---- Normal properties ---
     forget_id;
@@ -168,6 +169,7 @@ export default class ContractStore extends BaseStore {
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
+        this.is_replay_static_chart   = false;
         this.replay_info              = {};
         this.replay_indicative_status = null;
         this.replay_prev_indicative   = 0;
@@ -245,6 +247,16 @@ export default class ContractStore extends BaseStore {
 
         const end_time = getEndTime(this.replay_info);
         if (!end_time) this.is_ongoing_contract = true;
+
+        if (!end_time) this.is_ongoing_contract = true;
+        // finish contracts if end_time exists
+        if (end_time) {
+            if (!this.is_ongoing_contract) {
+                this.is_replay_static_chart = true;
+            } else {
+                this.is_replay_static_chart = false;
+            }
+        }
 
         createChartBarrier(this.smart_chart, this.replay_info);
         createChartMarkers(this.smart_chart, this.replay_info);
@@ -371,7 +383,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get replay_config() {
-        return getChartConfig(this.replay_info, this.is_digit_contract, this.is_ongoing_contract);
+        return getChartConfig(this.replay_info,this.is_digit_contract);
     }
 
     @computed

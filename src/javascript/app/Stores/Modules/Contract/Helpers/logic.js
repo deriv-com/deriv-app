@@ -2,18 +2,17 @@ import moment            from 'moment';
 import { isEmptyObject } from '_common/utility';
 import ServerTime        from '_common/base/server_time';
 
-export const getChartConfig = (contract_info, is_digit_contract, is_ongoing) => {
+export const getChartConfig = (contract_info, is_digit_contract) => {
     if (isEmptyObject(contract_info)) return null;
     const start = contract_info.date_start;
-    const end   = !is_ongoing ? getEndTime(contract_info) : null;
-    const granularity = getChartGranularity(start, !is_ongoing ? end : getExpiryTime());
-    const chart_type  = getChartType(start, !is_ongoing ? end : getExpiryTime());
+    const end   = getEndTime(contract_info);
+    const granularity = getChartGranularity(start, end ? contract_info.date_expiry : getExpiryTime());
+    const chart_type  = getChartType(start, end ? contract_info.date_expiry : getExpiryTime());
 
     return {
         chart_type,
         granularity,
         end_epoch                 : end,
-        is_static_chart           : is_ongoing,
         start_epoch               : start,
         scroll_to_epoch           : contract_info.purchase_time,
         should_show_bottom_widgets: is_digit_contract,

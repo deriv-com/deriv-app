@@ -68,9 +68,8 @@ class Trade extends React.Component {
                 </div>
                 <div
                     className={form_wrapper_class}
-                    onClick={this.props.is_contract_mode ? (e) => {
+                    onClick={this.props.is_contract_mode ? () => {
                         this.props.onCloseContract();
-                        this.props.onClickNewTrade(e);
                     } : null}
                     style={{ cursor: this.props.is_contract_mode ? 'pointer' : 'initial' }}
                 >
@@ -79,7 +78,7 @@ class Trade extends React.Component {
                         is_mobile={this.props.is_mobile}
                         is_contract_visible={!!contract_id || this.props.is_contract_mode}
                         is_trade_enabled={this.props.is_trade_enabled}
-                        is_blurred={this.props.is_market_closed}
+                        is_blurred={this.props.is_market_closed || !this.props.is_chart_ready}
                     />
                 </div>
             </div>

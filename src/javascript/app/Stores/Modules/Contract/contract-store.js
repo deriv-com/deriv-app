@@ -94,10 +94,6 @@ export default class ContractStore extends BaseStore {
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
-            // Set contract symbol if trade_symbol and contract_symbol don't match
-            if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-                this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
-            }
 
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
@@ -203,6 +199,7 @@ export default class ContractStore extends BaseStore {
 
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
+        WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
     }
 
     @action.bound
@@ -290,6 +287,11 @@ export default class ContractStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
+
+        // Set contract symbol if trade_symbol and contract_symbol don't match
+        if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
+            this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
+        }
 
         this.drawChart(this.smart_chart, this.contract_info);
 

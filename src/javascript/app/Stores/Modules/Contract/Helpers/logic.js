@@ -10,8 +10,8 @@ export const getChartConfig = (contract_info, is_digit_contract) => {
     const chart_type  = getChartType(start, end ? contract_info.date_expiry : getExpiryTime());
 
     return {
-        chart_type,
-        granularity,
+        chart_type                : contract_info.tick_count ? 'mountain' : chart_type,
+        granularity               : contract_info.tick_count ? 0 : granularity,
         end_epoch                 : end,
         start_epoch               : start,
         scroll_to_epoch           : contract_info.purchase_time,

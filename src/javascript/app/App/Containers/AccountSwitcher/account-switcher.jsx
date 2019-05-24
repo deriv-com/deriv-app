@@ -28,8 +28,7 @@ class AccountSwitcher extends React.Component {
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        requestLogout();
-        this.props.cleanUp();
+        requestLogout().then(this.props.cleanUp);
     }
 
     componentDidMount() {

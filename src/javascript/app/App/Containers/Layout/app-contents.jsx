@@ -18,6 +18,7 @@ const AppContents = ({
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
+    is_slow_loading,
     location,
     // setPWAPromptEvent,
 }) => {
@@ -39,7 +40,7 @@ const AppContents = ({
 
     return (
         <React.Fragment>
-            { is_loading && location.pathname === routes.trade && <Loading theme={is_dark_mode ? 'dark' : 'light'} /> }
+            { is_loading && location.pathname === routes.trade && <Loading is_slow_loading={is_slow_loading} theme={is_dark_mode ? 'dark' : 'light'} /> }
             <div
                 id='app_contents'
                 className={classNames('app-contents', {
@@ -70,7 +71,7 @@ AppContents.propTypes = {
     is_loading            : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
-    loading_status        : PropTypes.string,
+    is_slow_loading       : PropTypes.bool,
     pwa_prompt_event      : PropTypes.object,
     setPWAPromptEvent     : PropTypes.func,
 };
@@ -85,7 +86,7 @@ export default withRouter(connect(
         is_loading            : ui.is_loading,
         is_logged_in          : client.is_logged_in,
         is_positions_drawer_on: ui.is_positions_drawer_on,
-        loading_status        : modules.trade.loading_status,
+        is_slow_loading       : modules.trade.is_slow_loading,
         pwa_prompt_event      : ui.pwa_prompt_event,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })

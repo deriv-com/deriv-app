@@ -43,9 +43,14 @@
 
     &__barspinner {
         &--rect {
-            @include themify($themes) {
-                background-color: themed('deriv_green_color');
-            }
+            background-color: $COLOR_GREEN_3;
         }
+    }
+    &__text {
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        @include typeface(--paragraph-center-normal-black, none);
+        line-height: 44px;
     }
 }

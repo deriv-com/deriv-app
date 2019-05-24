@@ -108,8 +108,13 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
+    // Loading Status
+    @observable is_slow_loading = false;
+
     // Query string
     query = '';
+
+
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -574,6 +579,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setSlowLoading(status) {
+        this.is_slow_loading = status;
+    }
+
+    @action.bound
     async onMount() {
         this.onLoadingMount();
         await this.prepareTradeStore();
@@ -581,22 +591,22 @@ export default class TradeStore extends BaseStore {
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
-        this.onLoadingMount();
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
     @action.bound
     onLoadingMount() {
+        const timeout = setTimeout(() => {
+            this.setSlowLoading(true);
+        }, 10000);
+
         const loading_interval = setInterval(() => {
             if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
                 this.root_store.ui.setAppLoading(false);
                 clearInterval(loading_interval);
+                clearTimeout(timeout);
             }
-            setTimeout(() => {
-                this.root_store.ui.setAppLoading(false);
-                this.root_store.common.setError(true);
-            }, 8000);
         }, 400);
     }
 

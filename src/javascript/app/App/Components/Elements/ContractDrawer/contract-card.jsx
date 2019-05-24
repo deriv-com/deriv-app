@@ -7,8 +7,7 @@ const ContractCard = ({ children, profit_loss, is_sold }) => (
         'contract-card', {
             'contract-card--green': (profit_loss > 0) && !is_sold,
             'contract-card--red'  : (profit_loss < 0) && !is_sold,
-        }
-    )}
+        })}
     >
         {children}
     </div>

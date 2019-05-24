@@ -4,6 +4,7 @@ import React                             from 'react';
 import { withRouter }                    from 'react-router';
 import { localize }                      from '_common/localize';
 import { urlFor }                        from '_common/url';
+import { website_domain }                from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
 import Localize                          from 'App/Components/Elements/localize.jsx';
 import { getContractPath }               from 'App/Components/Routes/helpers';
@@ -29,9 +30,10 @@ class ProfitTable extends React.Component {
             {
                 component: (
                     <Localize
-                        str='This trade type is currently not supported on Deriv.app. Please go to [_1]Binary.com[_2] for details.'
+                        str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
                         replacers={{
-                            '1_2': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
+                            '1'  : website_domain,
+                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
                         }}
                     />
                 ),

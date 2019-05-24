@@ -21,7 +21,6 @@ const AppContents = ({
     is_slow_loading,
     location,
     slow_loading_status,
-    slow_loading_button,
     // setPWAPromptEvent,
 }) => {
     if (is_logged_in) {
@@ -42,7 +41,9 @@ const AppContents = ({
 
     return (
         <React.Fragment>
-            { is_loading && location.pathname === routes.trade && <Loading status={slow_loading_status} btn_text={slow_loading_button} is_slow_loading={is_slow_loading} theme={is_dark_mode ? 'dark' : 'light'} /> }
+            { is_loading && location.pathname === routes.trade &&
+                <Loading status={slow_loading_status} is_slow_loading={is_slow_loading} theme={is_dark_mode ? 'dark' : 'light'} />
+            }
             <div
                 id='app_contents'
                 className={classNames('app-contents', {
@@ -76,6 +77,7 @@ AppContents.propTypes = {
     is_slow_loading       : PropTypes.bool,
     pwa_prompt_event      : PropTypes.object,
     setPWAPromptEvent     : PropTypes.func,
+    slow_loading_status   : PropTypes.string,
 };
 
 export default withRouter(connect(
@@ -91,7 +93,6 @@ export default withRouter(connect(
         is_slow_loading       : modules.trade.is_slow_loading,
         pwa_prompt_event      : ui.pwa_prompt_event,
         slow_loading_status   : modules.trade.slow_loading_status,
-        slow_loading_button   : modules.trade.slow_loading_button,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })
 )(AppContents));

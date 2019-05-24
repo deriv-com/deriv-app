@@ -111,7 +111,6 @@ export default class TradeStore extends BaseStore {
     // Loading Status
     @observable is_slow_loading = false;
     @observable slow_loading_status = '';
-    @observable slow_loading_button = '';
 
     // Query string
     query = '';
@@ -582,7 +581,6 @@ export default class TradeStore extends BaseStore {
     setSlowLoading(status) {
         this.is_slow_loading     = status;
         this.slow_loading_status = localize('This page is taking too long to load. Please check your network connection for an optimal trading experience.');
-        this.slow_loading_button = localize('Refresh');
     }
 
     @action.bound

@@ -1,7 +1,7 @@
 import React      from 'react';
 import PropTypes  from 'prop-types';
 
-const Loading = ({ status, is_slow_loading, theme, id }) => (
+const Loading = ({ id, is_slow_loading, status, theme }) => (
     <div className='initial-loader'>
         <div id={id} className={`initial-loader__barspinner barspinner barspinner-${ theme || 'light'}`}>
             { Array.from(new Array(5)).map((x, inx) => (

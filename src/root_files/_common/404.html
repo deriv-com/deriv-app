@@ -72,7 +72,7 @@
     }
 
     function openWSAndGetLanguage(cb) {
-        var ws = new WebSocket('wss://frontend.binaryws.com/websockets/v3?app_id=16929');
+        var ws = new WebSocket('wss://frontend.binaryws.com/websockets/v3?app_id=1');
 
         ws.onopen = function() {
             ws.send(JSON.stringify({ website_status: 1 }));

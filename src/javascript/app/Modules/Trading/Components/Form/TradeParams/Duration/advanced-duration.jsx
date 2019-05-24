@@ -6,6 +6,7 @@ import Dropdown                       from 'App/Components/Form/DropDown';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
 import InputField                     from 'App/Components/Form/InputField';
 import RangeSlider                    from 'App/Components/Form/RangeSlider';
+import { connect }                    from 'Stores/connect';
 import { hasIntradayDurationUnit }    from 'Stores/Modules/Trading/Helpers/duration';
 import { toMoment }                   from 'Utils/Date';
 import TradingDatePicker              from '../../DatePicker';
@@ -27,6 +28,7 @@ const AdvancedDuration = ({
     server_time,
     shared_input_props,
     start_date,
+    validation_errors,
 }) => {
     let is_24_hours_contract = false;
 
@@ -88,6 +90,7 @@ const AdvancedDuration = ({
                         { (advanced_duration_unit !== 't' && advanced_duration_unit !== 'd') &&
                             <InputField
                                 classNameInput='trade-container__input'
+                                error_messages={validation_errors.duration}
                                 label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
                                 name='duration'
                                 value={getDurationFromUnit(advanced_duration_unit)}
@@ -139,6 +142,11 @@ AdvancedDuration.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
+    validation_errors: PropTypes.object,
 };
 
-export default AdvancedDuration;
+export default connect(
+    ({ modules }) => ({
+        validation_errors: modules.trade.validation_errors,
+    })
+)(AdvancedDuration);

@@ -9,9 +9,7 @@ const Loading = ({ status, is_slow_loading, theme, id }) => (
             ))}
         </div>
         { is_slow_loading &&
-            <React.Fragment>
-                <h3 className='initial-loader__text'>{status}</h3>
-            </React.Fragment>
+            <h3 className='initial-loader__text'>{status}</h3>
         }
     </div>
 );

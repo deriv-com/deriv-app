@@ -81,6 +81,21 @@ $header-height: 4em;
             margin: 4px 0;
         }
     }
+    &:before {
+        content: '';
+        position: absolute;
+        height: 52px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: $BORDER_RADIUS;
+    }
+    &--green:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
+    }
+    &--red:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+    }
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;

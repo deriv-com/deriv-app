@@ -59,7 +59,11 @@ class ContractDrawer extends Component {
         };
 
         return (
-            <ContractCard contract_info={contract_info}>
+            <ContractCard
+                contract_info={contract_info}
+                profit_loss={+profit}
+                is_sold={!!(is_sold)}
+            >
                 <ContractCardHeader>
                     <div className={classNames(
                         'contract-card__grid',

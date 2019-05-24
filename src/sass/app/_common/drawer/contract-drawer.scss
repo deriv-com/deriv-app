@@ -76,6 +76,11 @@ $header-height: 4em;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
 
+    .progress-slider {
+        &--completed {
+            margin: 4px 0;
+        }
+    }
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;
@@ -132,13 +137,13 @@ $header-height: 4em;
         margin-left: 0.5rem;
         font-size: 1em;
         line-height: 1.5;
-        max-width: 60px;
+        max-width: 70px;
         word-break: break-word;
     }
     &__header {
         display: flex;
         justify-content: space-evenly;
-        margin: 0.5em 0.2em 1em;
+        margin: 0.5em 0.2em;
     }
     &__body {
         border-radius: $BORDER_RADIUS;

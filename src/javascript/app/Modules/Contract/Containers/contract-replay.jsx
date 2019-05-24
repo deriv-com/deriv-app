@@ -54,6 +54,7 @@ class ContractReplay extends React.Component {
             contract_info,
             chart_id,
             is_chart_loading,
+            server_time,
             status,
         } = this.props;
 
@@ -68,6 +69,7 @@ class ContractReplay extends React.Component {
                         contract_info={contract_info}
                         heading='Reports'
                         status={status}
+                        server_time={server_time}
                     />
                 </FadeWrapper>
                 <React.Suspense fallback={<div />}>
@@ -116,13 +118,15 @@ ContractReplay.propTypes = {
     onMount         : PropTypes.func,
     onUnmount       : PropTypes.func,
     routes          : PropTypes.arrayOf(PropTypes.object),
+    server_time     : PropTypes.object,
     setChartLoader  : PropTypes.func,
     showBlur        : PropTypes.func,
     status          : PropTypes.string,
 };
 
 export default withRouter(connect(
-    ({ modules, ui }) => ({
+    ({ common, modules, ui }) => ({
+        server_time     : common.server_time,
         chart_id        : modules.smart_chart.replay_id,
         config          : modules.contract.replay_config,
         onMount         : modules.contract.onMountReplay,

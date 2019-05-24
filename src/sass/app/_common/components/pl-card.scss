@@ -16,6 +16,7 @@
         }
         &__body {
             display: flex;
+            align-items: center;
 
             @include themify($themes) {
                 @include typeface(--small-center-bold-black);

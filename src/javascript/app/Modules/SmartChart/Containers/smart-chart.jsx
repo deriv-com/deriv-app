@@ -47,6 +47,7 @@ class Chart extends React.Component {
                 chartStatusListener={this.props.getChartStatus}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
+                margin={this.props.margin || null}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}
@@ -94,6 +95,7 @@ Chart.propTypes = {
     is_static_chart             : PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
     is_trade_page               : PropTypes.bool,
+    margin                      : PropTypes.number,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
     onSymbolChange              : PropTypes.func,
@@ -125,6 +127,7 @@ export default connect(
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
         is_static_chart     : modules.smart_chart.is_static_chart,
+        margin              : modules.smart_chart.margin,
         markers_array       : modules.smart_chart.markers_array,
         onMount             : modules.smart_chart.onMount,
         onUnmount           : modules.smart_chart.onUnmount,

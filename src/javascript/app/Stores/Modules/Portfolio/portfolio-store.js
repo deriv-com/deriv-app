@@ -74,6 +74,9 @@ export default class PortfolioStore extends BaseStore {
             WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
+
+            if (i === -1) { return; }
+
             this.positions[i].is_loading = true;
             WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
         }

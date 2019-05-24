@@ -209,14 +209,16 @@ export default class ClientStore extends BaseStore {
     @action.bound
     updateAccountList(account_list) {
         account_list.forEach((account) => {
-            this.accounts[account.loginid].excluded_until = account.excluded_until || '';
-            Object.keys(account).forEach((param) => {
-                const param_to_set = param === 'country' ? 'residence' : param;
-                const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
-                if (param_to_set !== 'loginid') {
-                    this.accounts[account.loginid][param_to_set] = value_to_set;
-                }
-            });
+            if (this.accounts[account.loginid]) {
+                this.accounts[account.loginid].excluded_until = account.excluded_until || '';
+                Object.keys(account).forEach((param) => {
+                    const param_to_set = param === 'country' ? 'residence' : param;
+                    const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
+                    if (param_to_set !== 'loginid') {
+                        this.accounts[account.loginid][param_to_set] = value_to_set;
+                    }
+                });
+            }
         });
     }
 

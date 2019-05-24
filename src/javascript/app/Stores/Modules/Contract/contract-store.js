@@ -88,6 +88,11 @@ export default class ContractStore extends BaseStore {
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
+            // Set contract symbol if trade_symbol and contract_symbol don't match
+            if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
+                this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
+            }
+
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }
@@ -152,10 +157,11 @@ export default class ContractStore extends BaseStore {
     @action.bound
     onUnmountReplay() {
         this.forgetProposalOpenContract();
-        this.forget_id          = null;
-        this.replay_contract_id = null;
-        this.digits_info        = {};
-        this.replay_info        = {};
+        this.forget_id           = null;
+        this.replay_contract_id  = null;
+        this.digits_info         = {};
+        this.is_ongoing_contract = false;
+        this.replay_info         = {};
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();
     }
@@ -214,10 +220,14 @@ export default class ContractStore extends BaseStore {
         this.forget_id   = response.proposal_open_contract.id;
         this.replay_info = response.proposal_open_contract;
 
+        const end_time = getEndTime(this.replay_info);
+        if (!end_time) this.is_ongoing_contract = true;
+
+        // this.drawChart(this.smart_chart, this.replay_info);
+
         createChartBarrier(this.smart_chart, this.replay_info);
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
-
         this.waitForChartListener(this.smart_chart);
 
     }
@@ -243,11 +253,6 @@ export default class ContractStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
-
-        // Set contract symbol if trade_symbol and contract_symbol don't match
-        if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-            this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
-        }
 
         this.drawChart(this.smart_chart, this.contract_info);
 
@@ -341,7 +346,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get replay_config() {
-        return getChartConfig(this.replay_info, this.is_digit_contract);
+        return getChartConfig(this.replay_info, this.is_digit_contract, this.is_ongoing_contract);
     }
 
     @computed

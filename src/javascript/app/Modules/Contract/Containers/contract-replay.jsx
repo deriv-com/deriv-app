@@ -12,6 +12,8 @@ import { localize }    from '_common/localize';
 import InfoBox         from './info-box.jsx';
 import Digits          from './digits.jsx';
 
+const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
@@ -39,8 +41,6 @@ class ContractReplay extends React.Component {
     };
 
     render() {
-        const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
-
         const action_bar_items = [
             {
                 onClick: () => this.props.history.push(AppRoutes.trade),
@@ -82,14 +82,15 @@ class ContractReplay extends React.Component {
                                 ))
                             }
                         </div>
-                        <ChartLoader is_visible={is_chart_loading && !!(config)} />
-                        {(config && config.symbol) &&
+                        <ChartLoader is_visible={is_chart_loading && !contract_info.underlying} />
+                        {!!(contract_info.underlying) &&
                         <SmartChart
                             chart_id={chart_id}
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
                             should_show_last_digit_stats={false}
+                            symbol={contract_info.underlying}
                             {...config}
                         />
                         }

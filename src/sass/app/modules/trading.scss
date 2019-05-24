@@ -454,6 +454,9 @@
             .btn-purchase__box-shadow {
                 opacity: 0;
             }
+            &:hover {
+                transform: none;
+            }
         }
     }
     &--disabled {

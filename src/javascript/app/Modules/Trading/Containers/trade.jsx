@@ -52,6 +52,7 @@ class Trade extends React.Component {
                                 end_epoch={this.props.end_epoch}
                                 granularity={this.props.granularity}
                                 is_trade_page
+                                is_static_chart={this.props.is_static_chart}
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
@@ -99,6 +100,7 @@ Trade.propTypes = {
     is_digit_contract: PropTypes.bool,
     is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
+    is_static_chart  : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
     onClickNewTrade  : PropTypes.func,
     onCloseContract  : PropTypes.func,
@@ -127,6 +129,7 @@ export default connect(
         is_chart_loading                   : modules.smart_chart.is_chart_loading,
         is_chart_ready                     : modules.smart_chart.is_chart_ready,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
+        is_static_chart                    : modules.smart_chart.is_static_chart,
         contract_type                      : modules.trade.contract_type,
         is_market_closed                   : modules.trade.is_market_closed,
         is_trade_enabled                   : modules.trade.is_trade_enabled,

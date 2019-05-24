@@ -124,7 +124,6 @@ export default connect(
         getChartStatus      : modules.smart_chart.getChartStatus,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
         is_title_enabled    : modules.smart_chart.is_title_enabled,
-        is_static_chart     : modules.smart_chart.is_static_chart,
         markers_array       : modules.smart_chart.markers_array,
         onMount             : modules.smart_chart.onMount,
         onUnmount           : modules.smart_chart.onUnmount,

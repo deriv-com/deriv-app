@@ -50,9 +50,8 @@ export default class ClientStore extends BaseStore {
     get is_client_allowed_to_visit() {
         return !!(
             !this.is_logged_in || this.is_virtual
-            // TODO: [only_virtual] uncomment below line to enable app for costarica
-            // || this.accounts[this.loginid].landing_company_shortcode === 'costarica'
-            // || this.accounts[this.loginid].landing_company_shortcode === 'svg'
+            || this.accounts[this.loginid].landing_company_shortcode === 'costarica'
+            || this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );  // TODO [->svg]
     }
 
@@ -209,14 +208,16 @@ export default class ClientStore extends BaseStore {
     @action.bound
     updateAccountList(account_list) {
         account_list.forEach((account) => {
-            this.accounts[account.loginid].excluded_until = account.excluded_until || '';
-            Object.keys(account).forEach((param) => {
-                const param_to_set = param === 'country' ? 'residence' : param;
-                const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
-                if (param_to_set !== 'loginid') {
-                    this.accounts[account.loginid][param_to_set] = value_to_set;
-                }
-            });
+            if (this.accounts[account.loginid]) {
+                this.accounts[account.loginid].excluded_until = account.excluded_until || '';
+                Object.keys(account).forEach((param) => {
+                    const param_to_set = param === 'country' ? 'residence' : param;
+                    const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
+                    if (param_to_set !== 'loginid') {
+                        this.accounts[account.loginid][param_to_set] = value_to_set;
+                    }
+                });
+            }
         });
     }
 
@@ -234,8 +235,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
-        // TODO: Remove once app enables Real accounts
-        if (this.is_virtual) this.root_store.ui.is_app_blurred = false;
+        this.root_store.ui.is_app_blurred = false;
     }
 
     /**

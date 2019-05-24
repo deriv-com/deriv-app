@@ -25,6 +25,7 @@ export default class SmartChartStore extends BaseStore {
 
     @observable start_epoch;
     @observable end_epoch;
+    @observable margin;
 
     @observable scroll_to_left_epoch        = null;
     @observable scroll_to_left_epoch_offset = 0;
@@ -52,6 +53,14 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
+    }
+
+    @action.bound
+    updateMargin(duration) {
+        this.margin = Math.floor(!this.granularity ?
+            (Math.max(300, (30 * duration) / (60 * 60) || 0))
+            :
+            3 * this.granularity);
     }
 
     @action.bound

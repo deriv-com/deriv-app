@@ -243,9 +243,9 @@ export default class ContractStore extends BaseStore {
         this.replay_prev_indicative = this.replay_indicative;
 
         const end_time = getEndTime(this.replay_info);
-        if (!end_time) this.is_ongoing_contract = true;
 
         if (!end_time) this.is_ongoing_contract = true;
+
         // finish contracts if end_time exists
         if (end_time) {
             if (!this.is_ongoing_contract) {

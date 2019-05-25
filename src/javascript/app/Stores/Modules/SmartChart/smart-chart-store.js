@@ -106,6 +106,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onUnmount = () => {
+        this.cleanupContractChartView();
         this.symbol = null;
     };
 

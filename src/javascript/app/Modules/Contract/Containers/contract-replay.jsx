@@ -31,6 +31,9 @@ class ContractReplay extends React.Component {
     }
 
     componentWillUnmount() {
+        // SmartCharts keeps saving layout for ContractPlay even if layouts prop is set to null
+        // As a result, we have to remove it manually for each SmartChart instance in ContractReplay
+        localStorage.removeItem('layout-contract-replay');
         this.props.hideBlur();
         this.props.onUnmount();
         document.removeEventListener('mousedown', this.handleClickOutside);

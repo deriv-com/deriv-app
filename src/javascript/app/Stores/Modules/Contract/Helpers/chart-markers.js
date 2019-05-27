@@ -12,15 +12,15 @@ import {
 import { unique }              from '../../../../../_common/utility';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
-export const createChartMarkers = (SmartChartStore, contract_info) => {
+export const createChartMarkers = (SmartChartStore, contract_info, is_replay) => {
     if (contract_info) {
-        const end_time = getEndTime(contract_info);
+        const end_time   = getEndTime(contract_info);
         if (contract_info.tick_count) {
             addTickMarker(SmartChartStore, contract_info);
         }
         if (end_time && getChartType(contract_info.date_start, end_time) !== 'candle') {
             addMarker(marker_spots, SmartChartStore, contract_info);
-        } else if (SmartChartStore.granularity === 'mountain') {
+        } else if (!is_replay && SmartChartStore.chart_type === 'mountain') {
             addMarker(marker_spots, SmartChartStore, contract_info);
         }
         addMarker(marker_lines, SmartChartStore, contract_info);

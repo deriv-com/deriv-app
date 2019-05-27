@@ -161,7 +161,6 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onUnmountReplay() {
-        this.forgetProposalOpenContract();
         this.forget_id                = null;
         this.replay_contract_id       = null;
         this.digits_info              = {};
@@ -185,7 +184,6 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
-        this.forgetProposalOpenContract();
         this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
@@ -262,7 +260,7 @@ export default class ContractStore extends BaseStore {
         }
 
         createChartBarrier(this.smart_chart, this.replay_info);
-        createChartMarkers(this.smart_chart, this.replay_info);
+        createChartMarkers(this.smart_chart, this.replay_info, true);
         this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);

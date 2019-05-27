@@ -77,7 +77,7 @@ AppContents.propTypes = {
     is_slow_loading       : PropTypes.bool,
     pwa_prompt_event      : PropTypes.object,
     setPWAPromptEvent     : PropTypes.func,
-    slow_loading_status   : PropTypes.string,
+    slow_loading_status   : PropTypes.array,
 };
 
 export default withRouter(connect(

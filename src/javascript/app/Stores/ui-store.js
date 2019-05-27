@@ -24,7 +24,7 @@ export default class UIStore extends BaseStore {
 
     @observable is_loading              = true;
     @observable is_slow_loading         = false;
-    @observable slow_loading_status     = '';
+    @observable slow_loading_status     = [];
 
     @observable has_only_forward_starting_contracts = false;
 

@@ -8,8 +8,9 @@ const Loading = ({ id, is_slow_loading, status, theme }) => (
                 <div key={inx} className={`initial-loader__barspinner--rect barspinner__rect barspinner__rect--${inx + 1} rect${inx + 1}`} />
             ))}
         </div>
-        { is_slow_loading &&
-            <h3 className='initial-loader__text'>{status}</h3>
+        { is_slow_loading && status.map((text, inx) => (
+            <h3 className='initial-loader__text' key={inx}>{text}</h3>
+        ))
         }
     </div>
 );
@@ -19,6 +20,8 @@ Loading.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    theme: PropTypes.string,
+    is_slow_loading: PropTypes.bool,
+    status         : PropTypes.array,
+    theme          : PropTypes.string,
 };
 export default Loading;

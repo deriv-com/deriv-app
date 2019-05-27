@@ -598,11 +598,13 @@ export default class TradeStore extends BaseStore {
         }, 15000);
 
         const loading_interval = setInterval(() => {
-            if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
-                this.root_store.ui.setAppLoading(false);
-                clearInterval(loading_interval);
-                clearTimeout(first_timeout);
-                clearTimeout(second_timeout);
+            if (this.smart_chart) {
+                if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
+                    this.root_store.ui.setAppLoading(false);
+                    clearInterval(loading_interval);
+                    clearTimeout(first_timeout);
+                    clearTimeout(second_timeout);
+                }
             }
         }, 400);
     }

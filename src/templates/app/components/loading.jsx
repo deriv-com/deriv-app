@@ -1,5 +1,5 @@
-import React      from 'react';
-import PropTypes  from 'prop-types';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
 const Loading = ({ id, is_slow_loading, status, theme }) => (
     <div className='initial-loader'>

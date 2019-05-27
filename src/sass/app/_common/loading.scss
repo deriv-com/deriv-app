@@ -47,10 +47,10 @@
         }
     }
     &__text {
+        line-height: 44px;
         @include themify($themes) {
             color: themed('text_color');
         }
         @include typeface(--paragraph-center-normal-black, none);
-        line-height: 44px;
     }
 }

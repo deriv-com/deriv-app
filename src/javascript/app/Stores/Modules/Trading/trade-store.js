@@ -588,7 +588,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onLoadingMount() {
         const first_timeout = setTimeout(() => {
-            const loading_message = localize('Your network connection might be slow, Please wait for the page to finish loading.');
+            const loading_message = localize('Your network connection might be slow. Please wait for the page to finish loading.');
             this.root_store.ui.setSlowLoading(true, loading_message);
         }, 8000);
 

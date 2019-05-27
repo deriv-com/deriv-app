@@ -1,6 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { localize }      from '_common/localize';
 import ErrorComponent    from 'App/Components/Elements/Errors';
 import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
@@ -13,7 +14,7 @@ const Contract = ({
     <React.Fragment>
         {
             has_error ?
-                <ErrorComponent message={error_message} />
+                <ErrorComponent message={error_message} redirect_label={localize('Go back to trading')} />
                 :
                 <CSSTransition
                     in={!has_error}

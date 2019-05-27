@@ -25,7 +25,7 @@ Icon.propTypes = {
     classNamePath: PropTypes.string,
     classNameRect: PropTypes.string,
     icon         : PropTypes.func,
-    is_disabled  : PropTypes.bool,
+    is_disabled  : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClick      : PropTypes.func,
     type         : PropTypes.string,
 };

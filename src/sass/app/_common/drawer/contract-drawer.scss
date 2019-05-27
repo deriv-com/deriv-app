@@ -76,14 +76,36 @@ $header-height: 4em;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
 
+    .progress-slider {
+        &--completed {
+            margin: 4px 0;
+        }
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        height: 52px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: $BORDER_RADIUS;
+    }
+    &--green:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
+    }
+    &--red:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+    }
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;
 
-        &-underlying-trade, &-profit-payout {
-            grid-template-columns: 1fr 1fr;
+        &-underlying-trade {
+            grid-template-columns: 1.5fr 1fr;
+            width: 100%;
         }
         &-profit-payout {
+            grid-template-columns: 1fr 1fr;
             padding: 8px 0;
             border-radius: $BORDER_RADIUS;
             margin-left: -4px;
@@ -92,13 +114,29 @@ $header-height: 4em;
                 background: themed('hover_color');
             }
         }
-        &-underlying-trade {
-            width: 100%;
-        }
     }
     .purchase-price {
         font-weight: bold;
         font-size: 1em;
+
+        &-container {
+            margin-bottom: 0.5em;
+        }
+    }
+    .potential-payout {
+        &-container {
+            margin-top: 0.7em;
+        }
+        &-price {
+            font-weight: bold;
+            font-size: 1em;
+        }
+    }
+    &__separator {
+        width: 100%;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
     }
     &__underlying-name {
         display: flex;
@@ -124,21 +162,16 @@ $header-height: 4em;
                 fill: $COLOR_ORANGE !important;
             }
         }
-        .contract-type {
-            margin-left: 0.5em;
-        }
     }
     &__symbol {
         margin-left: 0.5rem;
         font-size: 1em;
         line-height: 1.5;
-        max-width: 60px;
-        word-break: break-word;
     }
     &__header {
         display: flex;
         justify-content: space-evenly;
-        margin: 0.5em 0.2em 1em;
+        margin: 0.5em 0.2em;
     }
     &__body {
         border-radius: $BORDER_RADIUS;
@@ -159,13 +192,38 @@ $header-height: 4em;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-bottom: 0.5em;
+    }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5em;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        .btn--sell {
+            height: 32px;
+        }
     }
     .result-details {
+        &__wrapper {
+            padding: 2px 0;
+            width: 100%;
+        }
         &__wrapper--is-open {
-            margin-top: 0.4em;
+            margin-top: 0.5em;
         }
         &__toggle {
-            margin: 0;
+            margin: 0 0 -0.5em;
             width: 100%;
         }
         &__label {

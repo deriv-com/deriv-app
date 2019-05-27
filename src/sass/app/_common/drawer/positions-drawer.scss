@@ -1,4 +1,4 @@
-$header-height: 4em;
+$header-height: 3.6em;
 
 // Trade page animation performance fix #perfmatters
 .trade-container + .positions-drawer {
@@ -8,7 +8,7 @@ $header-height: 4em;
 .positions-drawer {
     width: $POSITIONS_DRAWER_WIDTH;
     // removing 2px below for borders
-    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 3.6));
     margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
     position: absolute;
     z-index: 2;
@@ -63,9 +63,22 @@ $header-height: 4em;
         flex-direction: row;
         align-items: center;
         padding: 0 1em;
+
+        &:after {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: 39px;
+            z-index: 1;
+            @include themify($themes) {
+                box-shadow: 0 8px 2px -2px themed('background_container_color') inset;
+            }
+        }
     }
     &__body {
-        height: calc(100% - #{$header-height * 2.5});
+        height: calc(100% - #{$header-height * 2.7});
         padding: 0.8em 0 0;
         box-sizing: border-box;
         overflow: hidden;
@@ -81,6 +94,17 @@ $header-height: 4em;
         justify-content: center;
         align-items: center;
 
+        &:before {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: -6px;
+            @include themify($themes) {
+                box-shadow: 0 -8px 2px -2px themed('background_container_color') inset;
+            }
+        }
         .btn {
             width: 100%;
             margin: 8px;

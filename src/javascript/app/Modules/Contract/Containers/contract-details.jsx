@@ -49,7 +49,12 @@ class ContractDetails extends React.Component {
             );
         }
         return (
-            <ErrorComponent message={this.props.error_message} redirect_label={localize('Go back to trading')} redirectOnClick={() => this.props.history.push(routes.trade)} should_show_refresh={false} />
+            <ErrorComponent
+                message={this.props.error_message}
+                redirect_label={localize('Go back to trading')}
+                redirectOnClick={() => this.props.history.push(routes.trade)}
+                should_show_refresh={false}
+            />
         );
 
     }

@@ -595,7 +595,7 @@ export default class TradeStore extends BaseStore {
         const second_timeout = setTimeout(() => {
             const loading_message = localize('This page is taking too long to load. Please wait for the page to finish loading or check your network connection.');
             this.root_store.ui.setSlowLoading(true, loading_message);
-        }, 1000);
+        }, 15000);
 
         const loading_interval = setInterval(() => {
             if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {

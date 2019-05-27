@@ -100,10 +100,12 @@ $header-height: 4em;
         display: grid;
         grid-template-rows: 1fr auto;
 
-        &-underlying-trade, &-profit-payout {
-            grid-template-columns: 1fr 1fr;
+        &-underlying-trade {
+            grid-template-columns: 1.5fr 1fr;
+            width: 100%;
         }
         &-profit-payout {
+            grid-template-columns: 1fr 1fr;
             padding: 8px 0;
             border-radius: $BORDER_RADIUS;
             margin-left: -4px;
@@ -111,9 +113,6 @@ $header-height: 4em;
             @include themify($themes) {
                 background: themed('hover_color');
             }
-        }
-        &-underlying-trade {
-            width: 100%;
         }
     }
     .purchase-price {
@@ -171,8 +170,6 @@ $header-height: 4em;
         margin-left: 0.5rem;
         font-size: 1em;
         line-height: 1.5;
-        max-width: 70px;
-        word-break: break-word;
     }
     &__header {
         display: flex;

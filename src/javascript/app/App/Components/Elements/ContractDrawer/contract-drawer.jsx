@@ -26,7 +26,6 @@ import {
 import {
     getIndicativePrice,
     getEndTime,
-    isEnded,
     isUserSold,
     isValidToSell       }    from '../../../../Stores/Modules/Contract/Helpers/logic';
 import Money                 from '../money.jsx';
@@ -106,7 +105,7 @@ class ContractDrawer extends Component {
                 </ContractCardBody>
                 <ContractCardFooter>
                     <div className='purchase-price-container'>
-                        <Localize str='Purchase Price:' />&nbsp;
+                        <Localize str='Purchase Price' />&nbsp;
                         <span className='purchase-price' >
                             <Money
                                 currency={currency}
@@ -116,7 +115,7 @@ class ContractDrawer extends Component {
                     </div>
                     <div className='contract-card__separator' />
                     <div className='potential-payout-container'>
-                        <Localize str='Potential Payout:' />&nbsp;
+                        <Localize str='Potential Payout' />&nbsp;
                         <span className='potential-payout-price' >
                             <Money
                                 currency={currency}
@@ -135,7 +134,7 @@ class ContractDrawer extends Component {
                         has_result={!!(is_sold)}
                     />
                     <CSSTransition
-                        in={!(isEnded(contract_info))}
+                        in={!!(isValidToSell(contract_info))}
                         timeout={250}
                         classNames={{
                             enter    : 'contract-card__sell-button--enter',

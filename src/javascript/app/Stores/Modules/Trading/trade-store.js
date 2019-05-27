@@ -15,19 +15,14 @@ import {
     isCryptocurrency }                   from '_common/base/currency_base';
 import { WS }                            from 'Services';
 import GTM                               from 'Utils/gtm';
-import URLHelper                         from 'Utils/URL/url-helper';
 import { processPurchase }               from './Actions/purchase';
 import * as Symbol                       from './Actions/symbol';
-import {
-    allowed_query_string_variables,
-    getNonProposalQueryStringVariables } from './Constants/query-string';
 import getValidationRules                from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
 }                                        from './Helpers/active-symbols';
-import { isRiseFallEqual }               from './Helpers/allow-equals';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
 import {
@@ -37,8 +32,7 @@ import { processTradeParams }            from './Helpers/process';
 import {
     createProposalRequests,
     getProposalErrorField,
-    getProposalInfo,
-    getProposalParametersName }          from './Helpers/proposal';
+    getProposalInfo }                    from './Helpers/proposal';
 import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
 import BaseStore                         from '../../base-store';
 
@@ -108,11 +102,12 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
-    // Query string
-    query = '';
-
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
+
+    initial_barriers;
+    is_initial_barrier_applied = false;
+
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
@@ -120,24 +115,30 @@ export default class TradeStore extends BaseStore {
     };
 
     constructor({ root_store }) {
-        URLHelper.pruneQueryString(allowed_query_string_variables);
-
+        const local_storage_properties = [
+            'amount',
+            'barrier_1',
+            'barrier_2',
+            'basis',
+            'contract_start_type',
+            'contract_type',
+            'duration',
+            'duration_unit',
+            'expiry_date',
+            'expiry_type',
+            'is_equal',
+            'last_digit',
+            'start_date',
+            'start_time',
+            'symbol',
+        ];
         super({
             root_store,
+            local_storage_properties,
             store_name,
-            session_storage_properties: allowed_query_string_variables,
-            validation_rules          : getValidationRules(),
+            validation_rules: getValidationRules(),
         });
 
-        Object.defineProperty(
-            this,
-            'is_query_string_applied',
-            {
-                enumerable: false,
-                value     : false,
-                writable  : true,
-            },
-        );
         // Adds intercept to change min_max value of duration validation
         reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
@@ -182,45 +183,22 @@ export default class TradeStore extends BaseStore {
         }
 
         runInAction(async() => {
-            let query_string_values = this.updateQueryString();
             this.smart_chart        = this.root_store.modules.smart_chart;
             this.currency           = this.root_store.client.currency;
-
-            // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
-            const is_invalid_symbol = !!query_string_values.symbol &&
-                !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
-
-            // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
-            if (is_invalid_symbol) {
-                this.root_store.ui.addNotification({
-                    message: localize('Certain trade parameters have been changed due to your account settings.'),
-                    type   : 'info',
-                });
-                URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
-                query_string_values = this.updateQueryString();
-            }
-
-            // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
-            const { contract_type, is_equal } = query_string_values;
-            if (isRiseFallEqual(contract_type)) {
-                URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
-                query_string_values = this.updateQueryString();
-            }
+            this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
             if (!this.symbol) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
-                    ...query_string_values,
                 });
             }
 
             if (this.symbol) {
-                ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol)
+                ContractType.buildContractTypesConfig(this.symbol)
                     .then(action(async () => {
                         await this.processNewValuesAsync({
                             ...ContractType.getContractValues(this),
                             ...ContractType.getContractCategories(),
-                            ...query_string_values,
                         });
                     }));
             }
@@ -342,14 +320,6 @@ export default class TradeStore extends BaseStore {
                     new_state.start_date = parseInt(new_state.start_date);
                 }
 
-                // Add changes to queryString of the url
-                if (
-                    allowed_query_string_variables.indexOf(key) !== -1 &&
-                    this.is_trade_component_mounted
-                ) {
-                    URLHelper.setQueryParam({ [key]: new_state[key] });
-                }
-
                 this[key] = new_state[key];
 
                 // validation is done in mobx intercept (base_store.js)
@@ -411,15 +381,13 @@ export default class TradeStore extends BaseStore {
             }
 
             const snapshot            = await processTradeParams(this, new_state);
-            const query_string_values = this.updateQueryString();
             snapshot.is_trade_enabled = true;
 
             this.updateStore({
                 ...snapshot,
-                ...(this.is_query_string_applied ? {} : query_string_values), // Applies the query string values again to set barriers.
+                ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
-
-            this.is_query_string_applied = true;
+            this.is_initial_barrier_applied = true;
 
             if (/\bcontract_type\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
@@ -443,16 +411,6 @@ export default class TradeStore extends BaseStore {
         }
 
         if (!isEmptyObject(requests)) {
-            const proper_proposal_params_for_query_string = getProposalParametersName(requests);
-
-            URLHelper.pruneQueryString(
-                [
-                    ...proper_proposal_params_for_query_string,
-                    ...getNonProposalQueryStringVariables(this),
-                ],
-            );
-            this.query = URLHelper.getQueryString();
-
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
@@ -506,22 +464,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onAllowEqualsChange() {
         this.processNewValuesAsync({ contract_type: parseInt(this.is_equal) ? 'rise_fall_equal' : 'rise_fall' }, true);
-    }
-
-    @action.bound
-    updateQueryString() {
-        // Update the url's query string by default values of the store
-        const query_params = URLHelper.updateQueryString(
-            this,
-            allowed_query_string_variables,
-            this.is_trade_component_mounted,
-        );
-
-        // update state values from query string
-        const config = {};
-        [...query_params].forEach(param => config[param[0]] = param[1]);
-
-        return config;
     }
 
     @action.bound
@@ -581,8 +523,9 @@ export default class TradeStore extends BaseStore {
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
-        this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
+        // clear url query string
+        window.history.pushState(null, null, window.location.pathname);
     }
 
     onLoadingMount() {

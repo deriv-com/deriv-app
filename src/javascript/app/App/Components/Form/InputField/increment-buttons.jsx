@@ -35,8 +35,8 @@ const IncrementButtons = ({
 IncrementButtons.propTypes = {
     decrementValue : PropTypes.func,
     incrementValue : PropTypes.func,
-    max_is_disabled: PropTypes.bool,
-    min_is_disabled: PropTypes.bool,
+    max_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    min_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 };
 
 export default IncrementButtons;

@@ -2,17 +2,17 @@ import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
+import Money                 from 'App/Components/Elements/money.jsx';
 import ContractLink          from 'Modules/Contract/Containers/contract-link.jsx';
 import { localize }          from '_common/localize';
 import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
+import Button                from 'App/Components/Form/button.jsx';
+import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import ContractTypeCell      from './contract-type-cell.jsx';
 import ProgressSlider        from './ProgressSlider';
 import ResultDetails         from './result-details.jsx';
 import ResultOverlay         from './result-overlay.jsx';
 import { getTimePercentage } from './helpers';
-import Money                 from '../money.jsx';
-import { UnderlyingIcon }    from '../underlying-icon.jsx';
-import Button                from '../../Form/button.jsx';
 
 class PositionsDrawerCard extends React.PureComponent {
     state = {
@@ -109,7 +109,7 @@ class PositionsDrawerCard extends React.PureComponent {
                                 'positions-drawer-card__profit-loss-label',
                             )}
                             >
-                                {result ? localize('P/L:') : localize('Potential P/L:')}
+                                {result ? localize('Profit/Loss:') : localize('Potential Profit/Loss:')}
                             </div>
                             <div className={classNames(
                                 'positions-drawer-card__indicative',
@@ -155,6 +155,12 @@ class PositionsDrawerCard extends React.PureComponent {
                                 {localize('Purchase price')}
                             </span>
                             <Money amount={contract_info.buy_price} currency={currency} />
+                        </div>
+                        <div className='positions-drawer-card__payout-price'>
+                            <span className='positions-drawer-card__payout-label'>
+                                {localize('Potential payout')}
+                            </span>
+                            <Money amount={contract_info.payout} currency={currency} />
                         </div>
                     </React.Fragment>
                 </ContractLink>

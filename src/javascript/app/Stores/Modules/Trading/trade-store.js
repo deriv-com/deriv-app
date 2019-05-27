@@ -524,6 +524,8 @@ export default class TradeStore extends BaseStore {
         });
         this.onLoadingMount();
         this.onSwitchAccount(this.accountSwitcherListener);
+        // clear url query string
+        window.history.pushState(null, null, window.location.pathname);
     }
 
     @action.bound

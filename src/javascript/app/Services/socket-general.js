@@ -73,8 +73,6 @@ const BinarySocketGeneral = (() => {
                             //     onAccept   : () => { Client.set('accepted_bch', 1); },
                             // });
                         }
-                        // clear account query string from url
-                        window.history.pushState(null, null, window.location.pathname);
                     }
                 }
                 break;

@@ -10,7 +10,7 @@
         &__header {
             margin-bottom: 0.2em;
             @include themify($themes) {
-                @include typeface(--xsmall-center-normal-black);
+                @include typeface(--xsmall-center-normal-black, none);
                 color: themed('text_color');
             }
         }

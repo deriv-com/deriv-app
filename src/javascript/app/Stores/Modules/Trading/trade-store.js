@@ -517,23 +517,40 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async onMount() {
+        this.onLoadingMount();
         await this.prepareTradeStore();
         this.debouncedProposal();
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
-        this.onLoadingMount();
         this.onSwitchAccount(this.accountSwitcherListener);
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
     }
 
-    @action.bound
     onLoadingMount() {
-        // TODO: find better way to remove initial loader
-        setTimeout(() => {
-            this.root_store.ui.setAppLoading(false);
-        }, 2200);
+        const first_timeout = setTimeout(() => {
+            const loading_message = localize('Your network connection might be slow.');
+            const secondary_message = localize('Please wait for the page to finish loading.');
+            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
+        }, 8000);
+
+        const second_timeout = setTimeout(() => {
+            const loading_message = localize('This page is taking too long to load.');
+            const secondary_message = localize('Please wait for the page to finish loading or check your network connection.');
+            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
+        }, 15000);
+
+        const loading_interval = setInterval(() => {
+            if (this.smart_chart) {
+                if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
+                    this.root_store.ui.setAppLoading(false);
+                    clearInterval(loading_interval);
+                    clearTimeout(first_timeout);
+                    clearTimeout(second_timeout);
+                }
+            }
+        }, 400);
     }
 
     @action.bound

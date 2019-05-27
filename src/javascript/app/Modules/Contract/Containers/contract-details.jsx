@@ -48,7 +48,7 @@ class ContractDetails extends React.Component {
             );
         }
         return (
-            <ErrorComponent message={this.props.error_message} redirect_label={localize('Go back to trading')} />
+            <ErrorComponent message={this.props.error_message} redirect_label={localize('Go back to trading')} should_show_refresh={false} />
         );
 
     }

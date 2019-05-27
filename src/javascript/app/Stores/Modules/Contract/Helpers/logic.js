@@ -4,10 +4,10 @@ import ServerTime        from '_common/base/server_time';
 
 export const getChartConfig = (contract_info, is_digit_contract) => {
     if (isEmptyObject(contract_info)) return null;
-    const start = contract_info.date_start;
-    const end   = getEndTime(contract_info);
-    const granularity = getChartGranularity(start, end ? contract_info.date_expiry : null);
-    const chart_type  = getChartType(start, end ? contract_info.date_expiry : null);
+    const start       = contract_info.date_start;
+    const end         = getEndTime(contract_info);
+    const granularity = getChartGranularity(start, end || null);
+    const chart_type  = getChartType(start, end || null);
 
     return {
         chart_type                : contract_info.tick_count ? 'mountain' : chart_type,

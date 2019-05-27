@@ -13,7 +13,7 @@ export const createChartMarkers = (SmartChartStore, contract_info) => {
     if (contract_info) {
         if (contract_info.tick_count) {
             addTickMarker(SmartChartStore, contract_info);
-        } else {
+        } else if (SmartChartStore.chart_type === 'mountain') {
             addMarker(marker_spots, SmartChartStore, contract_info);
         }
         addMarker(marker_lines, SmartChartStore, contract_info);

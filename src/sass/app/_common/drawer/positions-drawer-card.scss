@@ -127,10 +127,11 @@
         display: grid;
         grid-template-rows: 1fr auto;
 
-        &-underlying-trade, &-profit-payout {
-            grid-template-columns: 1fr 1fr;
+        &-underlying-trade {
+            grid-template-columns: 1.5fr 1fr;
         }
         &-profit-payout {
+            grid-template-columns: 1fr 1fr;
             padding: 8px 0;
             border-radius: $BORDER_RADIUS;
             margin-left: -4px;

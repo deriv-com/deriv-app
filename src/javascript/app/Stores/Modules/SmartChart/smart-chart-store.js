@@ -75,6 +75,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     cleanupContractChartView() {
+        this.margin = null;
         this.removeBarriers();
         this.removeMarkers();
         this.resetScrollToLeft();
@@ -106,8 +107,11 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onUnmount = () => {
-        this.cleanupContractChartView();
         this.symbol = null;
+        this.trade_chart_layout = null;
+        this.should_import_layout = false;
+        this.setIsChartLoading(false);
+        this.cleanupContractChartView();
     };
 
     // --------- Set Contract Scroll to Left ---------

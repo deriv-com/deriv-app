@@ -200,6 +200,26 @@ $header-height: 4em;
         align-items: center;
         margin-bottom: 0.5em;
     }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5em;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        .btn--sell {
+            height: 32px;
+        }
+    }
     .result-details {
         &__wrapper {
             padding: 2px 0;

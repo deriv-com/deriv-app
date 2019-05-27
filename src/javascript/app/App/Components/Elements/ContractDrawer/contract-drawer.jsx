@@ -2,9 +2,12 @@ import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
+import { CSSTransition }     from 'react-transition-group';
+import { localize }          from '_common/localize';
 import { Icon, IconBack }    from 'Assets/Common';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
+import Button                from 'App/Components/Form/button.jsx';
 import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
 import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
@@ -23,7 +26,9 @@ import {
 import {
     getIndicativePrice,
     getEndTime,
-    isUserSold }             from '../../../../Stores/Modules/Contract/Helpers/logic';
+    isEnded,
+    isUserSold,
+    isValidToSell       }    from '../../../../Stores/Modules/Contract/Helpers/logic';
 import Money                 from '../money.jsx';
 
 class ContractDrawer extends Component {
@@ -44,7 +49,7 @@ class ContractDrawer extends Component {
             payout,
             profit,
         } = this.props.contract_info;
-        const { contract_info } = this.props;
+        const { contract_info, is_sell_requested, onClickSell } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
         const percentage = getTimePercentage(
             this.props.server_time,
@@ -129,6 +134,32 @@ class ContractDrawer extends Component {
                         exit_spot={exit_spot}
                         has_result={!!(is_sold)}
                     />
+                    <CSSTransition
+                        in={!(isEnded(contract_info))}
+                        timeout={250}
+                        classNames={{
+                            enter    : 'contract-card__sell-button--enter',
+                            enterDone: 'contract-card__sell-button--enter-done',
+                            exit     : 'contract-card__sell-button--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <div
+                            className='contract-card__sell-button'
+                        >
+                            <Button
+                                className={classNames(
+                                    'btn--primary',
+                                    'btn--primary--green',
+                                    'btn--sell', {
+                                        'btn--loading': is_sell_requested,
+                                    })}
+                                is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                text={localize('Sell contract')}
+                                onClick={() => onClickSell(contract_info.contract_id)}
+                            />
+                        </div>
+                    </CSSTransition>
                 </ContractCardFooter>
             </ContractCard>
         );
@@ -153,10 +184,12 @@ class ContractDrawer extends Component {
 }
 
 ContractDrawer.propTypes = {
-    contract_info: PropTypes.object,
-    heading      : PropTypes.string,
-    server_time  : PropTypes.object,
-    status       : PropTypes.string,
+    contract_info    : PropTypes.object,
+    heading          : PropTypes.string,
+    is_sell_requested: PropTypes.bool,
+    onClickSell      : PropTypes.func,
+    server_time      : PropTypes.object,
+    status           : PropTypes.string,
 };
 
 export default withRouter(ContractDrawer);

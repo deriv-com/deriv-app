@@ -2,18 +2,18 @@ import {
     action,
     computed,
     extendObservable,
-    observable }                  from 'mobx';
-import { isEmptyObject }          from '_common/utility';
-import { localize }               from '_common/localize';
-import { WS }                     from 'Services';
-import { createChartBarrier }     from './Helpers/chart-barriers';
-import { createChartMarkers }     from './Helpers/chart-markers';
+    observable }              from 'mobx';
+import { isEmptyObject }      from '_common/utility';
+import { localize }           from '_common/localize';
+import { WS }                 from 'Services';
+import { createChartBarrier } from './Helpers/chart-barriers';
+import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDetailsExpiry,
-    getDetailsInfo }             from './Helpers/details';
+    getDetailsInfo }          from './Helpers/details';
 import {
     getDigitInfo,
-    isDigitContract }            from './Helpers/digits';
+    isDigitContract }         from './Helpers/digits';
 import {
     getChartConfig,
     getChartGranularity,
@@ -26,8 +26,9 @@ import {
     isSoldBeforeStart,
     isStarted,
     isUserSold,
-    isValidToSell }              from './Helpers/logic';
-import BaseStore                 from '../../base-store';
+    isValidToSell }           from './Helpers/logic';
+import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
+import BaseStore              from '../../base-store';
 
 export default class ContractStore extends BaseStore {
     // --- Observable properties ---
@@ -115,10 +116,10 @@ export default class ContractStore extends BaseStore {
             }
         }
 
+        SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
+
         createChartBarrier(SmartChartStore, contract_info);
         createChartMarkers(SmartChartStore, contract_info);
-
-        SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
 
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
@@ -166,10 +167,12 @@ export default class ContractStore extends BaseStore {
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
         this.is_replay_static_chart   = false;
+        this.is_sell_requested        = false;
         this.replay_info              = {};
         this.replay_indicative_status = null;
         this.replay_prev_indicative   = 0;
         this.replay_indicative        = 0;
+        this.sell_info                = {};
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();
     }
@@ -244,6 +247,9 @@ export default class ContractStore extends BaseStore {
 
         const end_time = getEndTime(this.replay_info);
 
+        this.smart_chart.updateMargin(
+            (end_time || this.replay_info.date_expiry) - this.replay_info.date_start);
+
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
@@ -258,9 +264,6 @@ export default class ContractStore extends BaseStore {
         createChartBarrier(this.smart_chart, this.replay_info);
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
-
-        this.smart_chart.updateMargin(
-            (getEndTime(this.replay_info) || this.replay_info.date_expiry) - this.replay_info.date_start);
 
         this.waitForChartListener(this.smart_chart);
 
@@ -306,30 +309,32 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onClickSell() {
-        if (this.contract_id && !this.is_sell_requested && isEmptyObject(this.sell_info)) {
+    onClickSell(contract_id) {
+        const { bid_price } = this.replay_info;
+        if (contract_id && bid_price) {
             this.is_sell_requested = true;
-            WS.sell(this.contract_id, this.contract_info.bid_price).then(this.handleSell);
+            WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }
 
     @action.bound
     handleSell(response) {
         if (response.error) {
-            this.sell_info = {
-                error_message: response.error.message,
-            };
-
+            // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-        } else {
-            this.forgetProposalOpenContract();
-            WS.proposalOpenContract(this.contract_id).then(action((proposal_response) => {
-                this.updateProposal(proposal_response);
-                this.sell_info = {
-                    sell_price    : response.sell.sold_for,
-                    transaction_id: response.sell.transaction_id,
-                };
-            }));
+            this.root_store.common.services_error = {
+                type: response.msg_type,
+                ...response.error,
+            };
+            this.root_store.ui.toggleServicesErrorModal(true);
+        } else if (!response.error && response.sell) {
+            this.is_sell_requested = false;
+            // update contract store sell info after sell
+            this.sell_info = {
+                sell_price    : response.sell.sold_for,
+                transaction_id: response.sell.transaction_id,
+            };
+            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
         }
     }
 

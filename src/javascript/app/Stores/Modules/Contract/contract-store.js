@@ -260,7 +260,7 @@ export default class ContractStore extends BaseStore {
         }
 
         createChartBarrier(this.smart_chart, this.replay_info);
-        createChartMarkers(this.smart_chart, this.replay_info, true);
+        createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
         this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);

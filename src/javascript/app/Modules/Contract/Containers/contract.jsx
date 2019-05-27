@@ -17,7 +17,12 @@ const Contract = ({
     <React.Fragment>
         {
             has_error ?
-                <ErrorComponent message={error_message} redirect_label={localize('Go back to trading')} redirectOnClick={() => history.push(routes.trade)} should_show_refresh={false} />
+                <ErrorComponent
+                    message={error_message}
+                    redirect_label={localize('Go back to trading')}
+                    redirectOnClick={() => history.push(routes.trade)}
+                    should_show_refresh={false}
+                />
                 :
                 <CSSTransition
                     in={!has_error}

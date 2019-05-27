@@ -118,7 +118,7 @@ export default class ContractStore extends BaseStore {
 
         SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
 
-        createChartBarrier(SmartChartStore, contract_info);
+        createChartBarrier(SmartChartStore, contract_info, this.root_store.ui.is_dark_mode_on);
         createChartMarkers(SmartChartStore, contract_info);
 
         if (this.smart_chart.is_chart_ready) {
@@ -259,7 +259,7 @@ export default class ContractStore extends BaseStore {
             }
         }
 
-        createChartBarrier(this.smart_chart, this.replay_info);
+        createChartBarrier(this.smart_chart, this.replay_info, this.root_store.ui.is_dark_mode_on);
         createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
         this.handleDigits(this.replay_info);
 

@@ -585,7 +585,6 @@ export default class TradeStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    @action.bound
     onLoadingMount() {
         const first_timeout = setTimeout(() => {
             const loading_message = localize('Your network connection might be slow. Please wait for the page to finish loading.');

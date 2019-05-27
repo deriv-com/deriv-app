@@ -219,7 +219,7 @@ export default class ContractStore extends BaseStore {
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error       = true;
-            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to your account.');
+            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.contract_config = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
@@ -278,7 +278,7 @@ export default class ContractStore extends BaseStore {
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error     = true;
-            this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to your account.');
+            this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.contract_info = {};
             this.contract_id   = null;
             this.smart_chart.setContractMode(false);

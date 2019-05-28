@@ -32,10 +32,10 @@ class DurationWrapper extends React.Component {
     }
 
     advancedHasWrongExpiry = () => (this.props.is_advanced_duration
-        && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1);
+        && this.props.expiry_type !== this.props.advanced_expiry_type);
 
     handleEndTime = () => {
-        const symbol_has_endtime = this.props.duration_units_list.length > 1;
+        const symbol_has_endtime = this.props.duration_units_list.length > 1  || this.props.is_advanced_duration;
 
         if (symbol_has_endtime) {
             // simple duration does not have endtime
@@ -66,14 +66,15 @@ class DurationWrapper extends React.Component {
 
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
-        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, current_unit);
-        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, current_unit);
+
+        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
+        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
 
-        if (duration !== current_duration) {
+        if (+duration !== +current_duration) {
             onChangeUiStore({ name: `duration_${current_unit}`, value: duration });
         }
 
@@ -111,7 +112,7 @@ class DurationWrapper extends React.Component {
             this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
         }
 
-        if (this.props.duration !== current_duration) {
+        if (+this.props.duration !== +current_duration) {
             this.props.onChangeUiStore({ name: `duration_${this.props.duration_unit}`, value: this.props.duration });
         }
     }

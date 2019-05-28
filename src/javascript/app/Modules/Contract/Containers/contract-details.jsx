@@ -1,5 +1,6 @@
 import PropTypes       from 'prop-types';
 import React           from 'react';
+import { withRouter }  from 'react-router';
 import { Link }        from 'react-router-dom';
 import { localize }    from '_common/localize';
 import UILoader        from 'App/Components/Elements/ui-loader.jsx';
@@ -48,7 +49,12 @@ class ContractDetails extends React.Component {
             );
         }
         return (
-            <ErrorComponent message={this.props.error_message} />
+            <ErrorComponent
+                message={this.props.error_message}
+                redirect_label={localize('Go back to trading')}
+                redirectOnClick={() => this.props.history.push(routes.trade)}
+                should_show_refresh={false}
+            />
         );
 
     }
@@ -62,12 +68,13 @@ ContractDetails.propTypes = {
     display_status : PropTypes.string,
     error_message  : PropTypes.string,
     has_error      : PropTypes.bool,
+    history        : PropTypes.object,
     onClickNewTrade: PropTypes.func,
     onMount        : PropTypes.func,
     onUnmount      : PropTypes.func,
 };
 
-export default connect(
+export default withRouter(connect(
     ({ modules }) => ({
         contract_info : modules.contract.contract_info,
         details_info  : modules.contract.details_info,
@@ -78,4 +85,4 @@ export default connect(
         onMount       : modules.contract.onMount,
         onUnmount     : modules.contract.onUnmount,
     }),
-)(ContractDetails);
+)(ContractDetails));

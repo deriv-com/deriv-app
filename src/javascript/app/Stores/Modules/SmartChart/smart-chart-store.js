@@ -25,6 +25,7 @@ export default class SmartChartStore extends BaseStore {
 
     @observable start_epoch;
     @observable end_epoch;
+    @observable margin;
 
     @observable scroll_to_left_epoch        = null;
     @observable scroll_to_left_epoch_offset = 0;
@@ -55,6 +56,14 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
+    updateMargin(duration) {
+        this.margin = Math.floor(!this.granularity ?
+            (Math.max(300, (30 * duration) / (60 * 60) || 0))
+            :
+            3 * this.granularity);
+    }
+
+    @action.bound
     updateEpochScrollToValue(epoch) {
         this.scroll_to_left_epoch = epoch;
     }
@@ -66,6 +75,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     cleanupContractChartView() {
+        this.margin = null;
         this.removeBarriers();
         this.removeMarkers();
         this.resetScrollToLeft();
@@ -98,6 +108,10 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     onUnmount = () => {
         this.symbol = null;
+        this.trade_chart_layout = null;
+        this.should_import_layout = false;
+        this.setIsChartLoading(false);
+        this.cleanupContractChartView();
     };
 
     // --------- Set Contract Scroll to Left ---------

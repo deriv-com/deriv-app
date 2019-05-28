@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component {
     };
 
     render = () => this.state.hasError ? (
-        <ErrorComponent message={this.state.error.message} should_show_refresh={true} />
+        <ErrorComponent should_show_refresh={true} />
     ) : this.props.children;
 }
 

@@ -44,6 +44,7 @@ class ProfitTable extends React.Component {
     render () {
         const {
             component_icon,
+            currency,
             data,
             is_empty,
             is_loading,
@@ -54,7 +55,7 @@ class ProfitTable extends React.Component {
         } = this.props;
         if (error) return <p>{error}</p>;
 
-        const columns = getProfitTableColumnsTemplate();
+        const columns = getProfitTableColumnsTemplate(currency);
 
         return (
             <React.Fragment>
@@ -94,6 +95,7 @@ class ProfitTable extends React.Component {
 
 ProfitTable.propTypes = {
     component_icon   : PropTypes.func,
+    currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,
     handleScroll     : PropTypes.func,
@@ -107,7 +109,8 @@ ProfitTable.propTypes = {
 };
 
 export default connect(
-    ({ modules }) => ({
+    ({ modules, client }) => ({
+        currency         : client.currency,
         data             : modules.profit_table.data,
         error            : modules.profit_table.error,
         handleScroll     : modules.profit_table.handleScroll,

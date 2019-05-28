@@ -1,7 +1,6 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { IconArrow }     from 'Assets/Common';
 import { localize }      from '_common/localize';
 import {
     epochToMoment,
@@ -13,18 +12,6 @@ import {
 import ContractAuditItem from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
-    state = {
-        is_open: this.props.is_open || false,
-    };
-
-    toggleDetails = () => {
-        this.setState({ is_open: !this.state.is_open }, this.handleShade);
-    }
-
-    handleShade = () => {
-        this.props.is_shade_visible(this.state.is_open);
-    }
-
     render() {
         const {
             contract_end_time,
@@ -38,7 +25,7 @@ class ContractAudit extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className={classNames('contract-audit__wrapper', {
-                    'contract-audit__wrapper--is-open': this.state.is_open,
+                    'contract-audit__wrapper--is-open': !!(contract_info.is_sold),
                 })}
                 >
                     <div className='contract-audit__grid'>
@@ -84,14 +71,6 @@ class ContractAudit extends React.PureComponent {
                             value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                         />
                     </div>
-                </div>
-                <div
-                    className={classNames('contract-audit__toggle', {
-                        'contract-audit__toggle--is-open': this.state.is_open,
-                    })}
-                    onClick={this.toggleDetails}
-                >
-                    <IconArrow className='contract-audit__select-arrow' />
                 </div>
             </React.Fragment>
         );

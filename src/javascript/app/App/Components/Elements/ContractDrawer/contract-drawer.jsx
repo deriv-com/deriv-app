@@ -64,103 +64,105 @@ class ContractDrawer extends Component {
         };
 
         return (
-            <ContractCard
-                contract_info={contract_info}
-                profit_loss={+profit}
-                is_sold={!!(is_sold)}
-            >
-                <ContractCardHeader>
-                    <div className={classNames(
-                        'contract-card__grid',
-                        'contract-card__grid-underlying-trade'
-                    )}
-                    >
-                        <div className='contract-card__underlying-name'>
-                            <UnderlyingIcon market={contract_info.underlying} />
-                            <span className='contract-card__symbol'>
-                                {contract_info.display_name}
-                            </span>
+            <React.Fragment>
+                <ContractCard
+                    contract_info={contract_info}
+                    profit_loss={+profit}
+                    is_sold={!!(is_sold)}
+                >
+                    <ContractCardHeader>
+                        <div className={classNames(
+                            'contract-card__grid',
+                            'contract-card__grid-underlying-trade'
+                        )}
+                        >
+                            <div className='contract-card__underlying-name'>
+                                <UnderlyingIcon market={contract_info.underlying} />
+                                <span className='contract-card__symbol'>
+                                    {contract_info.display_name}
+                                </span>
+                            </div>
+                            <div className='contract-card__type'>
+                                <ContractTypeCell type={contract_info.contract_type} />
+                            </div>
                         </div>
-                        <div className='contract-card__type'>
-                            <ContractTypeCell type={contract_info.contract_type} />
-                        </div>
-                    </div>
-                </ContractCardHeader>
-                <ProgressSlider
-                    is_loading={false}
-                    remaining_time={contract_info.date_expiry}
-                    percentage={percentage}
-                    current_tick={getTick()}
-                    ticks_count={contract_info.tick_count}
-                    has_result={!!(is_sold)}
-                />
-                <ContractCardBody>
-                    <ProfitLossCardContent
-                        pl_value={+profit}
-                        payout={getIndicativePrice(contract_info)}
-                        currency={currency}
-                        is_sold={!!(is_sold)}
-                        status={this.props.status}
-                    />
-                </ContractCardBody>
-                <ContractCardFooter>
-                    <div className='purchase-price-container'>
-                        <Localize str='Purchase Price' />&nbsp;
-                        <span className='purchase-price' >
-                            <Money
-                                currency={currency}
-                                amount={buy_price}
-                            />
-                        </span>
-                    </div>
-                    <div className='contract-card__separator' />
-                    <div className='potential-payout-container'>
-                        <Localize str='Potential Payout' />&nbsp;
-                        <span className='potential-payout-price' >
-                            <Money
-                                currency={currency}
-                                amount={payout}
-                            />
-                        </span>
-                    </div>
-                    <ContractAudit
-                        contract_info={contract_info}
-                        contract_end_time={getEndTime(contract_info)}
-                        is_open={true}
-                        is_shade_visible={this.handleShade}
-                        duration={getDurationTime(contract_info)}
-                        duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
-                        exit_spot={exit_spot}
+                    </ContractCardHeader>
+                    <ProgressSlider
+                        is_loading={false}
+                        remaining_time={contract_info.date_expiry}
+                        percentage={percentage}
+                        current_tick={getTick()}
+                        ticks_count={contract_info.tick_count}
                         has_result={!!(is_sold)}
                     />
-                    <CSSTransition
-                        in={!!(isValidToSell(contract_info))}
-                        timeout={250}
-                        classNames={{
-                            enter    : 'contract-card__sell-button--enter',
-                            enterDone: 'contract-card__sell-button--enter-done',
-                            exit     : 'contract-card__sell-button--exit',
-                        }}
-                        unmountOnExit
-                    >
-                        <div
-                            className='contract-card__sell-button'
-                        >
-                            <Button
-                                className={classNames(
-                                    'btn--primary',
-                                    'btn--primary--green',
-                                    'btn--sell', {
-                                        'btn--loading': is_sell_requested,
-                                    })}
-                                is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
-                                text={localize('Sell contract')}
-                                onClick={() => onClickSell(contract_info.contract_id)}
-                            />
+                    <ContractCardBody>
+                        <ProfitLossCardContent
+                            pl_value={+profit}
+                            payout={getIndicativePrice(contract_info)}
+                            currency={currency}
+                            is_sold={!!(is_sold)}
+                            status={this.props.status}
+                        />
+                    </ContractCardBody>
+                    <ContractCardFooter>
+                        <div className='purchase-price-container'>
+                            <Localize str='Purchase Price' />&nbsp;
+                            <span className='purchase-price' >
+                                <Money
+                                    currency={currency}
+                                    amount={buy_price}
+                                />
+                            </span>
                         </div>
-                    </CSSTransition>
-                </ContractCardFooter>
-            </ContractCard>
+                        <div className='contract-card__separator' />
+                        <div className='potential-payout-container'>
+                            <Localize str='Potential Payout' />&nbsp;
+                            <span className='potential-payout-price' >
+                                <Money
+                                    currency={currency}
+                                    amount={payout}
+                                />
+                            </span>
+                        </div>
+                        <CSSTransition
+                            in={!!(isValidToSell(contract_info))}
+                            timeout={250}
+                            classNames={{
+                                enter    : 'contract-card__sell-button--enter',
+                                enterDone: 'contract-card__sell-button--enter-done',
+                                exit     : 'contract-card__sell-button--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <div
+                                className='contract-card__sell-button'
+                            >
+                                <Button
+                                    className={classNames(
+                                        'btn--primary',
+                                        'btn--primary--green',
+                                        'btn--sell', {
+                                            'btn--loading': is_sell_requested,
+                                        })}
+                                    is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                    text={localize('Sell contract')}
+                                    onClick={() => onClickSell(contract_info.contract_id)}
+                                />
+                            </div>
+                        </CSSTransition>
+                    </ContractCardFooter>
+                </ContractCard>
+                <ContractAudit
+                    contract_info={contract_info}
+                    contract_end_time={getEndTime(contract_info)}
+                    is_open={true}
+                    is_shade_visible={this.handleShade}
+                    duration={getDurationTime(contract_info)}
+                    duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                    exit_spot={exit_spot}
+                    has_result={!!(is_sold)}
+                />
+            </React.Fragment>
         );
     }
 

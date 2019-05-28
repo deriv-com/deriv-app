@@ -48,7 +48,7 @@ class DurationWrapper extends React.Component {
         }
     }
 
-    getSetDurationMinMax = (duration_min_max, contract_expiry_type, duration_unit) => {
+    getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
         const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
         const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
 
@@ -82,7 +82,12 @@ class DurationWrapper extends React.Component {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
 
-        const min_max_value = this.getSetDurationMinMax(duration_min_max, contract_expiry_type, duration_unit);
+        const min_max_value = this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
+        this.setState({
+            max_value: min_max_value.max_value,
+            min_value: min_max_value.min_value,
+        });
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
@@ -125,7 +130,12 @@ class DurationWrapper extends React.Component {
         const current_duration            = getDurationFromUnit(duration_unit);
         const simple_is_not_type_duration = (!is_advanced_duration && expiry_type !== 'duration');
 
-        this.getSetDurationMinMax(duration_min_max, contract_expiry_type, duration_unit);
+        const min_max_value = this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
+        this.setState({
+            max_value: min_max_value.max_value,
+            min_value: min_max_value.min_value,
+        });
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {

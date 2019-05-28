@@ -3,13 +3,17 @@ import PropTypes                           from 'prop-types';
 import React                               from 'react';
 import { withRouter }                      from 'react-router-dom';
 import { localize }                        from '_common/localize';
+import { urlFor }                          from '_common/url';
 import DataTable                           from 'App/Components/Elements/DataTable';
+import Localize                            from 'App/Components/Elements/localize.jsx';
+import { website_domain }                  from 'App/Constants/app-config';
 import { getContractPath }                 from 'App/Components/Routes/helpers';
 import EmptyTradeHistoryMessage            from 'Modules/Reports/Components/empty-trade-history-message.jsx';
 import { ReportsMeta }                     from 'Modules/Reports/Components/reports-meta.jsx';
 import { getOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
 import PlaceholderComponent                from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect }                         from 'Stores/connect';
+import { getUnsupportedContracts }         from '../../../Constants';
 
 class OpenPositions extends React.Component {
     componentDidMount() {
@@ -19,6 +23,22 @@ class OpenPositions extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    getRowAction = (row_obj) => (
+        getUnsupportedContracts()[row_obj.type] ?
+            {
+                component: (
+                    <Localize
+                        str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
+                        replacers={{
+                            '1'  : website_domain,
+                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/portfoliows', undefined, undefined, true)} />,
+                        }}
+                    />
+                ),
+            }
+            : getContractPath(row_obj.id)
+    );
 
     render() {
         const {
@@ -56,7 +76,7 @@ class OpenPositions extends React.Component {
                         columns={getOpenPositionsColumnsTemplate(currency)}
                         footer={totals}
                         data_source={active_positions}
-                        getRowAction={(row_obj) => getContractPath(row_obj.id)}
+                        getRowAction={this.getRowAction}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

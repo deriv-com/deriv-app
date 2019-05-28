@@ -33,7 +33,7 @@ class ProfitTable extends React.Component {
                         str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
                         replacers={{
                             '1'  : website_domain,
-                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
+                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
                         }}
                     />
                 ),

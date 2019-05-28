@@ -87,9 +87,16 @@ export const isValidToSell = (contract_info) => (
 );
 
 export const getEndTime = (contract_info) => {
-    const { exit_tick_time, date_expiry, sell_time, tick_count : is_tick_contract, is_sold } = contract_info;
+    const {
+        exit_tick_time,
+        date_expiry,
+        is_expired,
+        is_path_dependent,
+        sell_time,
+        tick_count: is_tick_contract,
+    } = contract_info;
 
-    if (!is_sold) return undefined;
+    if (!is_expired && !isUserSold(contract_info)) return undefined;
 
     if (isUserSold(contract_info)) {
         return (sell_time > date_expiry) ?
@@ -98,5 +105,5 @@ export const getEndTime = (contract_info) => {
         return date_expiry;
     }
 
-    return exit_tick_time;
+    return (date_expiry > exit_tick_time && !(+is_path_dependent)) ? date_expiry : exit_tick_time;
 };

@@ -52,15 +52,7 @@ class DurationWrapper extends React.Component {
         const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
         const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
 
-        this.setState({
-            min_value,
-            max_value,
-        });
-
-        return {
-            min_value,
-            max_value,
-        };
+        return [min_value, max_value];
     }
 
     componentDidMount() {
@@ -81,13 +73,10 @@ class DurationWrapper extends React.Component {
 
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
+        const [min_value, max_value] =
+            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
-        const min_max_value = this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
-
-        this.setState({
-            max_value: min_max_value.max_value,
-            min_value: min_max_value.min_value,
-        });
+        this.setState({ min_value, max_value });
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
@@ -103,12 +92,12 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (current_duration < min_max_value.min_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_max_value.min_value });
-            onChange({ target: { name: 'duration', value: min_max_value.min_value } });
-        } else if (current_duration > min_max_value.max_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_max_value.max_value });
-            onChange({ target: { name: 'duration', value: min_max_value.max_value } });
+        if (current_duration < min_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
+        } else if (current_duration > max_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
         }
     }
 
@@ -129,13 +118,10 @@ class DurationWrapper extends React.Component {
 
         const current_duration            = getDurationFromUnit(duration_unit);
         const simple_is_not_type_duration = (!is_advanced_duration && expiry_type !== 'duration');
+        const [min_value, max_value] =
+            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
-        const min_max_value = this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
-
-        this.setState({
-            max_value: min_max_value.max_value,
-            min_value: min_max_value.min_value,
-        });
+        this.setState({ min_value, max_value });
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {

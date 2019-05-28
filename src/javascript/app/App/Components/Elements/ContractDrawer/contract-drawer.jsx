@@ -8,7 +8,7 @@ import { Icon, IconBack }    from 'Assets/Common';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import Button                from 'App/Components/Form/button.jsx';
-import ContractAudit         from 'App/Components/Elements/PositionsDrawer/result-details.jsx';
+import ContractAudit         from 'App/Components/Elements/ContractAudit';
 import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';

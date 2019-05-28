@@ -48,6 +48,21 @@ class DurationWrapper extends React.Component {
         }
     }
 
+    getSetDurationMinMax = (duration_min_max, contract_expiry_type, duration_unit) => {
+        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
+        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+
+        this.setState({
+            min_value,
+            max_value,
+        });
+
+        return {
+            min_value,
+            max_value,
+        };
+    }
+
     componentDidMount() {
         const {
             advanced_duration_unit,
@@ -67,15 +82,14 @@ class DurationWrapper extends React.Component {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
 
-        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
-        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+        const min_max_value = this.getSetDurationMinMax(duration_min_max, contract_expiry_type, duration_unit);
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
 
         if (+duration !== +current_duration) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: duration });
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
 
         if (expiry_type === 'endtime') this.handleEndTime();
@@ -84,36 +98,46 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: min_value });
-            onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: max_value });
-            onChange({ target: { name: 'duration', value: max_value } });
+        if (current_duration < min_max_value.min_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_max_value.min_value });
+            onChange({ target: { name: 'duration', value: min_max_value.min_value } });
+        } else if (current_duration > min_max_value.max_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_max_value.max_value });
+            onChange({ target: { name: 'duration', value: min_max_value.max_value } });
         }
-
-        this.setState({
-            min_value,
-            max_value,
-        });
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
     componentWillReact() {
-        const current_duration                = this.props.getDurationFromUnit(this.props.duration_unit);
-        const simple_is_not_type_duration     = (!this.props.is_advanced_duration && this.props.expiry_type !== 'duration');
+        const {
+            advanced_expiry_type,
+            contract_expiry_type,
+            duration,
+            duration_min_max,
+            duration_unit,
+            expiry_type,
+            getDurationFromUnit,
+            is_advanced_duration,
+            onChange,
+            onChangeUiStore,
+        } = this.props;
+
+        const current_duration            = getDurationFromUnit(duration_unit);
+        const simple_is_not_type_duration = (!is_advanced_duration && expiry_type !== 'duration');
+
+        this.getSetDurationMinMax(duration_min_max, contract_expiry_type, duration_unit);
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {
-            this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
+            onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
 
         if (this.advancedHasWrongExpiry()) {
-            this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (+this.props.duration !== +current_duration) {
-            this.props.onChangeUiStore({ name: `duration_${this.props.duration_unit}`, value: this.props.duration });
+        if (+duration !== +current_duration) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
     }
 

@@ -267,7 +267,7 @@ describe('logic', () => {
                 tick_count: 5,
                 exit_tick_time: 9999999,
                 sell_time: 1000000,
-                is_sold: 1,
+                is_expired: 1,
                 date_expiry: 8888888,
             };
             expect(Logic.getEndTime(contract_info)).to.eql(9999999);
@@ -276,7 +276,7 @@ describe('logic', () => {
             const contract_info = {
                 exit_tick_time: 9999999,
                 sell_time: 8888888,
-                is_sold: 1,
+                is_expired: 1,
                 date_expiry: 7777777,
             };
             expect(Logic.getEndTime(contract_info)).to.eql(7777777);
@@ -285,7 +285,7 @@ describe('logic', () => {
             const contract_info = {
                 exit_tick_time: 9999999,
                 sell_time: 7777777,
-                is_sold: 1,
+                is_expired: 1,
                 date_expiry: 8888888,
             };
             expect(Logic.getEndTime(contract_info)).to.eql(9999999);
@@ -294,7 +294,6 @@ describe('logic', () => {
             const contract_info = {
                 date_expiry: 8888888,
                 exit_tick_time: 8888887,
-                is_sold: 1,
                 sell_time: 8888889,
                 status: 'sold',
             };
@@ -304,7 +303,6 @@ describe('logic', () => {
             const contract_info = {
                 date_expiry: 8888889,
                 exit_tick_time: 8888887,
-                is_sold: 1,
                 sell_time: 8888888,
                 status: 'sold',
             };
@@ -314,7 +312,17 @@ describe('logic', () => {
             const contract_info = {
                 exit_tick_time: 9999999,
                 sell_time: 1000000,
-                is_sold: 0,
+                is_expired: 0,
+                date_expiry: 888888,
+            };
+            expect(Logic.getEndTime(contract_info)).to.eql(undefined);
+        });
+        it('Should return exit_tick_time if contract is_path_dependent', () => {
+            const contract_info = {
+                exit_tick_time: 9999999,
+                sell_time: 1000000,
+                is_expired: 0,
+                is_path_dependent: '1',
                 date_expiry: 888888,
             };
             expect(Logic.getEndTime(contract_info)).to.eql(undefined);

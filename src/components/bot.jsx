@@ -8,5 +8,5 @@ const Bot = ({
 );
 
 export default connect(({ bot }) => ({
-    title:bot.title,
+    title: bot.title,
 }))(Bot);

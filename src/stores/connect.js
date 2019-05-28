@@ -56,7 +56,6 @@ function connectCustomStore(mapperFunction, CustomStore) {
     };
 }
 
-
 // if store is not defined, root store is used
 export function connect(mapperFunction, CustomStore) {
     if (CustomStore === undefined) {

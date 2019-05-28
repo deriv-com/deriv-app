@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import Icon                from 'Assets/Common/icon.jsx';
+import Icon                from 'Assets/Common';
 import PopoverBubble       from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {

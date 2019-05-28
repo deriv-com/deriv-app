@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/Trading/icon-price-move.jsx';
+import Icon       from 'Assets/Common';
 
 const LastDigitPointer = ({
     is_lost,

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/Common/icon.jsx';
+import Icon       from 'Assets/Common';
 
 class Tooltip extends React.PureComponent {
     state = {

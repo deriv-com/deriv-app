@@ -31,4 +31,10 @@
             background-color: themed('label_success_background');
         }
     }
+    &--info {
+        @include themify($themes) {
+            color: themed('label_info_color');
+            background-color: themed('label_info_background');
+        }
+    }
 }

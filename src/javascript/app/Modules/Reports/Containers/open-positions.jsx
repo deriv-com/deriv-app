@@ -6,7 +6,7 @@ import { localize }                        from '_common/localize';
 import { urlFor }                          from '_common/url';
 import DataTable                           from 'App/Components/Elements/DataTable';
 import Localize                            from 'App/Components/Elements/localize.jsx';
-import { website_domain }                  from 'App/Constants/app-config';
+import { website_name }                    from 'App/Constants/app-config';
 import { getContractPath }                 from 'App/Components/Routes/helpers';
 import EmptyTradeHistoryMessage            from 'Modules/Reports/Components/empty-trade-history-message.jsx';
 import { ReportsMeta }                     from 'Modules/Reports/Components/reports-meta.jsx';
@@ -31,7 +31,7 @@ class OpenPositions extends React.Component {
                     <Localize
                         str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
                         replacers={{
-                            '1'  : website_domain,
+                            '1'  : website_name,
                             '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/portfoliows', undefined, undefined, true)} />,
                         }}
                     />

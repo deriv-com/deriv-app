@@ -7,6 +7,7 @@ import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
 import Localize                             from 'App/Components/Elements/localize.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
+import { website_name }                     from 'App/Constants/app-config';
 import { connect }                          from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
@@ -32,9 +33,10 @@ class Statement extends React.Component {
                 {
                     component: (
                         <Localize
-                            str='This trade type is currently not supported on Deriv.app. Please go to [_1]Binary.com[_2] for details.'
+                            str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
                             replacers={{
-                                '1_2': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
+                                '1'  : website_name,
+                                '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
                             }}
                         />
                     ),

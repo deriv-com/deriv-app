@@ -14,7 +14,7 @@ import ResultDetailsItem from './result-details-item.jsx';
 
 class ResultDetails extends React.PureComponent {
     state = {
-        is_open: false,
+        is_open: this.props.is_open || false,
     };
 
     toggleDetails = () => {
@@ -108,6 +108,7 @@ ResultDetails.propTypes = {
     duration_unit: PropTypes.string,
     exit_spot    : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     has_result   : PropTypes.bool,
+    is_open      : PropTypes.bool,
 };
 
 export default ResultDetails;

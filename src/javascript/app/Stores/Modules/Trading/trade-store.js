@@ -24,7 +24,9 @@ import {
 import getValidationRules                from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
-    showUnavailableLocationError }       from './Helpers/active-symbols';
+    showUnavailableLocationError,
+    isMarketClosed,
+}                                        from './Helpers/active-symbols';
 import { isRiseFallEqual }               from './Helpers/allow-equals';
 import { setChartBarrier }               from './Helpers/chart';
 import ContractType                      from './Helpers/contract-type';
@@ -51,6 +53,9 @@ export default class TradeStore extends BaseStore {
 
     // Underlying
     @observable symbol;
+    @observable is_market_closed = false;
+    @observable previous_symbol = '';
+    @observable active_symbols = [];
 
     // Contract Type
     @observable contract_expiry_type = '';
@@ -102,9 +107,6 @@ export default class TradeStore extends BaseStore {
     // Purchase
     @observable proposal_info = {};
     @observable purchase_info = {};
-
-    // Loading
-    @observable loading_status = '';
 
     // Query string
     query = '';
@@ -168,55 +170,66 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        let query_string_values = this.updateQueryString();
-        this.smart_chart        = this.root_store.modules.smart_chart;
-        this.currency           = this.root_store.client.currency;
-        const active_symbols    = await WS.activeSymbols();
+        const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            this.root_store.ui.setAppLoading(false);
             return;
         } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
+            this.root_store.ui.setAppLoading(false);
             return;
         }
 
-        // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
-        const is_invalid_symbol = !!query_string_values.symbol &&
-            !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
+        runInAction(async() => {
+            let query_string_values = this.updateQueryString();
+            this.smart_chart        = this.root_store.modules.smart_chart;
+            this.currency           = this.root_store.client.currency;
 
-        // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
-        if (is_invalid_symbol) {
-            this.root_store.ui.addToastMessage({
-                message: localize('Certain trade parameters have been changed due to your account settings.'),
-                type   : 'info',
-            });
-            URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
-            query_string_values = this.updateQueryString();
-        }
+            // Checks for finding out that the current account has access to the defined symbol in quersy string or not.
+            const is_invalid_symbol = !!query_string_values.symbol &&
+                !active_symbols.active_symbols.find(s => s.symbol === query_string_values.symbol);
 
-        // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
-        const { contract_type, is_equal } = query_string_values;
-        if (isRiseFallEqual(contract_type)) {
-            URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
-            query_string_values = this.updateQueryString();
-        }
+            // Changes the symbol in query string to default symbol since the account doesn't have access to the defined symbol.
+            if (is_invalid_symbol) {
+                this.root_store.ui.addNotification({
+                    message: localize('Certain trade parameters have been changed due to your account settings.'),
+                    type   : 'info',
+                });
+                URLHelper.setQueryParam({ 'symbol': pickDefaultSymbol(active_symbols.active_symbols) });
+                query_string_values = this.updateQueryString();
+            }
 
-        if (!this.symbol) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(active_symbols.active_symbols),
-                ...query_string_values,
-            });
-        }
+            // Checks for is_equal in query string and update the contract_type to rise_fall or rise_fall_equal
+            const { contract_type, is_equal } = query_string_values;
+            if (isRiseFallEqual(contract_type)) {
+                URLHelper.setQueryParam({ 'contract_type': parseInt(is_equal) ? 'rise_fall_equal' : 'rise_fall' });
+                query_string_values = this.updateQueryString();
+            }
 
-        if (this.symbol) {
-            ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol).then(action(async () => {
+            if (!this.symbol) {
                 await this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
+                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
                     ...query_string_values,
                 });
-            }));
-        }
+            }
+
+            if (this.symbol) {
+                ContractType.buildContractTypesConfig(query_string_values.symbol || this.symbol)
+                    .then(action(async () => {
+                        await this.processNewValuesAsync({
+                            ...ContractType.getContractValues(this),
+                            ...ContractType.getContractCategories(),
+                            ...query_string_values,
+                        });
+                    }));
+            }
+
+            await this.processNewValuesAsync({
+                active_symbols  : active_symbols.active_symbols,
+                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+            });
+        });
     }
 
     @action.bound
@@ -244,6 +257,20 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
         this.processNewValuesAsync({ [name]: value }, true);
+    }
+
+    @action.bound
+    setPreviousSymbol(symbol) {
+        if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
+    }
+
+    @action.bound
+    async resetPreviousSymbol() {
+        this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
+        await Symbol.onChangeSymbolAsync(this.previous_symbol);
+        runInAction(() => {
+            this.previous_symbol = ''; // reset the symbol to default
+        });
     }
 
     @action.bound
@@ -354,8 +381,10 @@ export default class TradeStore extends BaseStore {
 
         let has_only_forward_starting_contracts;
 
-        if (/symbol/.test(Object.keys(obj_new_values))) {
+        if (Object.keys(obj_new_values).includes('symbol')) {
+            this.setPreviousSymbol(this.symbol);
             await Symbol.onChangeSymbolAsync(obj_new_values.symbol);
+            this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
@@ -372,7 +401,7 @@ export default class TradeStore extends BaseStore {
                 proposal_info      : {},
             });
 
-            if (!this.smart_chart.is_contract_mode) {
+            if (!this.root_store.modules.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
                 if (is_barrier_changed) {
                     this.smart_chart.updateBarriers(this.barrier_1, this.barrier_2);
@@ -436,6 +465,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setMarketStatus(status) {
+        this.is_market_closed = status;
+    }
+
+    @action.bound
     onProposalResponse(response) {
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
@@ -446,7 +480,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        if (!this.smart_chart.is_contract_mode) {
+        if (!this.root_store.modules.smart_chart.is_contract_mode) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             const barrier_config = { color };
             setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);
@@ -472,11 +506,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onAllowEqualsChange() {
         this.processNewValuesAsync({ contract_type: parseInt(this.is_equal) ? 'rise_fall_equal' : 'rise_fall' }, true);
-    }
-
-    @action.bound
-    updateLoadingStatus(status) {
-        this.loading_status = status;
     }
 
     @action.bound
@@ -551,33 +580,23 @@ export default class TradeStore extends BaseStore {
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
+        this.onLoadingMount();
         this.updateQueryString();
         this.onSwitchAccount(this.accountSwitcherListener);
-        this.onLoadingMount();
     }
 
     @action.bound
     onLoadingMount() {
-        setTimeout(() => {
-            this.updateLoadingStatus(localize('Retrieving market symbols...'));
-        });
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving trading times...'));
-        }, 1000);
-        setTimeout(() => {
-            this.updateLoadingStatus('');
-            this.updateLoadingStatus(localize('Retrieving chart data...'));
-        }, 2000);
+        // TODO: find better way to remove initial loader
         setTimeout(() => {
             this.root_store.ui.setAppLoading(false);
-        }, 3250);
+        }, 2200);
     }
 
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        WS.forgetAll('proposal', 'ticks_history');
+        WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
     }
 }

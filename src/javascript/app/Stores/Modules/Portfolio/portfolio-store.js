@@ -5,6 +5,7 @@ import {
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import { formatPortfolioPosition } from './Helpers/format-response';
+import { contractSold }            from './Helpers/portfolio-notifcations';
 import {
     getCurrentTick,
     getDurationPeriod,
@@ -70,11 +71,11 @@ export default class PortfolioStore extends BaseStore {
                 this.pushNewPosition(new_pos);
             });
             // subscribe to new contract:
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler, false);
+            WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
+            WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
         }
     }
 
@@ -130,7 +131,6 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     handleSell(response) {
-        // Toast messages are temporary UI for prompting user of sold contracts
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
@@ -148,10 +148,7 @@ export default class PortfolioStore extends BaseStore {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addToastMessage({
-                message: `Contract was sold for ${response.sell.sold_for}.`,
-                type   : 'info',
-            });
+            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
         }
     }
 
@@ -167,6 +164,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
         this.positions[i].result           = getDisplayStatus(contract_response);
         this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
+        this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';
 
         // fix for missing barrier and entry_spot
@@ -179,7 +177,7 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
-    }
+    };
 
     @action.bound
     pushNewPosition(new_pos) {
@@ -238,6 +236,24 @@ export default class PortfolioStore extends BaseStore {
         let purchase   = 0;
 
         this.positions.forEach((portfolio_pos) => {
+            indicative += (+portfolio_pos.indicative);
+            payout     += (+portfolio_pos.payout);
+            purchase   += (+portfolio_pos.purchase);
+        });
+        return {
+            indicative,
+            payout,
+            purchase,
+        };
+    }
+
+    @computed
+    get active_positions_totals() {
+        let indicative = 0;
+        let payout     = 0;
+        let purchase   = 0;
+
+        this.active_positions.forEach((portfolio_pos) => {
             indicative += (+portfolio_pos.indicative);
             payout     += (+portfolio_pos.payout);
             purchase   += (+portfolio_pos.purchase);

@@ -61,7 +61,7 @@ export const MARKER_TYPES_CONFIG = {
     SPOT_SELL: {
         type          : 'SPOT_SELL',
         marker_config : MARKER_CONTENT_TYPES.SPOT_SELL,
-        content_config: { className: 'chart-spot__spot' },
+        content_config: { className: 'chart-spot__sell' },
     },
     SPOT_EXIT: {
         type          : 'SPOT_EXIT',

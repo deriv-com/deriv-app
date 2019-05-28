@@ -2,12 +2,13 @@ import {
     action,
     autorun,
     computed,
-    observable }       from 'mobx';
+    observable }             from 'mobx';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH } from 'Constants/ui';
-import { unique }      from '_common/utility';
-import BaseStore       from './base-store';
+    MAX_TABLET_WIDTH }       from 'Constants/ui';
+import { unique }            from '_common/utility';
+import BaseStore             from './base-store';
+import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -16,7 +17,7 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_drawer_on = false;
     @observable is_positions_drawer_on     = false;
 
-    @observable is_dark_mode_on         = true;
+    @observable is_dark_mode_on         = false;
     @observable is_language_dialog_on   = false;
     @observable is_settings_dialog_on   = false;
     @observable is_accounts_switcher_on = false;
@@ -30,7 +31,8 @@ export default class UIStore extends BaseStore {
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
-    @observable is_chart_asset_info_visible = true;
+    // TODO: enable asset information
+    // @observable is_chart_asset_info_visible = true;
     @observable is_chart_countdown_visible  = false;
     @observable is_chart_layout_default     = true;
 
@@ -39,8 +41,8 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
 
+    @observable notification_messages = [];
     @observable push_notifications = [];
-    @observable toast_messages = [];
 
     @observable is_advanced_duration   = false;
     @observable advanced_duration_unit = 't';
@@ -54,6 +56,8 @@ export default class UIStore extends BaseStore {
 
     @observable is_fully_blurred = false;
     @observable is_app_blurred   = false;
+    @observable is_route_blurred = false;
+    @observable show_positions_toggle = true;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -117,6 +121,16 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    showRouteBlur() {
+        this.is_route_blurred = true;
+    }
+
+    @action.bound
+    hideRouteBlur() {
+        this.is_route_blurred = false;
+    }
+
+    @action.bound
     showAppBlur() {
         this.is_app_blurred = true;
     }
@@ -151,10 +165,11 @@ export default class UIStore extends BaseStore {
         this.is_chart_layout_default = !this.is_chart_layout_default;
     }
 
-    @action.bound
-    toggleChartAssetInfo() {
-        this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
-    }
+    // TODO: enable asset information
+    // @action.bound
+    // toggleChartAssetInfo() {
+    //     this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
+    // }
 
     @action.bound
     toggleChartCountdown() {
@@ -175,6 +190,16 @@ export default class UIStore extends BaseStore {
     toggleDarkMode() {
         this.is_dark_mode_on = !this.is_dark_mode_on;
         return this.is_dark_mode_on;
+    }
+
+    @action.bound
+    showPositionsFooterToggle() {
+        this.show_positions_toggle = true;
+    }
+
+    @action.bound
+    hidePositionsFooterToggle() {
+        this.show_positions_toggle = false;
     }
 
     @action.bound
@@ -235,21 +260,21 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    addToastMessage(toast_message) {
-        this.toast_messages.push(toast_message);
+    addNotification(notification) {
+        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
     }
 
     @action.bound
-    removeToastMessage(toast_message) {
-        const index = this.toast_messages.indexOf(toast_message);
+    removeNotification(notification) {
+        const index = this.notification_messages.indexOf(notification);
         if (index > -1) {
-            this.toast_messages.splice(index, 1);
+            this.notification_messages.splice(index, 1);
         }
     }
 
     @action.bound
-    removeAllToastMessages() {
-        this.toast_messages = [];
+    removeAllNotifications() {
+        this.notification_messages = [];
     }
 
     @action.bound

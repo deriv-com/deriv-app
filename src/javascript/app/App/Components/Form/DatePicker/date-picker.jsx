@@ -26,7 +26,11 @@ class DatePicker extends React.Component {
         weekends             : [],
     };
 
+    is_mounted = false;
+
     componentDidMount() {
+        this.is_mounted = true;
+
         document.addEventListener('click', this.onClickOutside, true);
         const { mode, value } = this.props;
         const initial_value = mode === 'duration' ? formatDate(addDays(toMoment(), 1), 'DD MMM YYYY') : formatDate(value, 'DD MMM YYYY');
@@ -39,6 +43,7 @@ class DatePicker extends React.Component {
     }
 
     componentWillUnmount() {
+        this.is_mounted = false;
         document.removeEventListener('click', this.onClickOutside, true);
     }
 
@@ -147,10 +152,12 @@ class DatePicker extends React.Component {
             });
         });
 
-        this.setState({
-            holidays,
-            weekends,
-        });
+        if (this.is_mounted) {
+            this.setState({
+                holidays,
+                weekends,
+            });
+        }
     }
 
     renderInputField = () => {

@@ -49,6 +49,7 @@ class Statement extends React.Component {
         if (error) return <p>{error}</p>;
 
         const columns = getStatementTableColumnsTemplate(currency);
+        const hasRowAction = (row) => data.filter(el => el.id === row.id).length > 1 || ['withdrawal', 'deposit'].includes(row.action_type);
 
         return (
             <React.Fragment>
@@ -72,8 +73,7 @@ class Statement extends React.Component {
                         data_source={data}
                         columns={columns}
                         onScroll={handleScroll}
-                        // getRowAction={this.getRowAction} // TODO uncomment when chart layout is ready for statements
-                        getRowAction={undefined}
+                        getRowAction={(row) => hasRowAction(row) ? this.getRowAction(row) : null}
                         is_empty={is_empty}
                     >
                         <PlaceholderComponent

@@ -8,13 +8,13 @@ import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
 import Localize                          from 'App/Components/Elements/localize.jsx';
 import { getContractPath }               from 'App/Components/Routes/helpers';
+import { getUnsupportedContracts }       from 'Constants';
 import { connect }                       from 'Stores/connect';
 import EmptyTradeHistoryMessage          from '../Components/empty-trade-history-message.jsx';
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                   from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
 import { getMarketInformation }          from '../Helpers/market-underyling';
-import { getUnsupportedContracts }       from '../../../Constants';
 
 class ProfitTable extends React.Component {
     componentDidMount() {

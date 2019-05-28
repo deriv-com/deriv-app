@@ -13,7 +13,6 @@ import { ReportsMeta }                     from 'Modules/Reports/Components/repo
 import { getOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
 import PlaceholderComponent                from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect }                         from 'Stores/connect';
-import { getUnsupportedContracts }         from '../../../Constants';
 
 class OpenPositions extends React.Component {
     componentDidMount() {
@@ -25,7 +24,7 @@ class OpenPositions extends React.Component {
     }
 
     getRowAction = (row_obj) => (
-        getUnsupportedContracts()[row_obj.type] ?
+        row_obj.is_unsupported ?
             {
                 component: (
                     <Localize

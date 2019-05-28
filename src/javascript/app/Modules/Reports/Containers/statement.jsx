@@ -8,12 +8,12 @@ import DataTable                            from 'App/Components/Elements/DataTa
 import Localize                             from 'App/Components/Elements/localize.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
 import { website_name }                     from 'App/Constants/app-config';
+import { getUnsupportedContracts }          from 'Constants';
 import { connect }                          from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                      from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage             from '../Components/empty-trade-history-message.jsx';
-import { getUnsupportedContracts }          from '../../../Constants';
 import { getMarketInformation }             from '../Helpers/market-underyling';
 
 class Statement extends React.Component {

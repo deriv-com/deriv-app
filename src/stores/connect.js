@@ -28,7 +28,7 @@ function connectCustomStore(mapperFunction, CustomStore) {
                 this.injectedComponent = inject(mapStoresAndProps)(WrappedComponent);
             }
 
-            componentWillReceiveProps(nextProps) {
+            getDerivedStateFromProps(nextProps) {
                 if (this.store.updateProps) {
                     this.store.updateProps(nextProps);
                 }

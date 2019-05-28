@@ -17,7 +17,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
-                exclude: [/node_modules/,/\\srcatch/],
+                exclude: [/node_modules/,/\\scratch/],
                 loader: "eslint-loader",
                 options: { fix: true },
             },

@@ -1,7 +1,7 @@
 import { expect }              from 'chai';
-import React                   from 'react';
-import { pickDefaultSymbol }   from '../symbol';
 import { LocalStore }          from '_common/storage';
+import { pickDefaultSymbol }   from '../active-symbols';
+import React                   from 'react';
 
 const active_symbols = [
     {
@@ -137,7 +137,7 @@ const active_symbols = [
 ];
 
 describe('pickDefaultSymbol', () => {
-    it('It Returns first open major_pair or random_index symbol if favorite list was empty', () => {
+    it('It should return the first open symbol in major_pairs or random_index if the user does not have a favorite symbol', () => {
         const cq_favorites = {"indicators":[],"chartTitle&Comparison":[]};
         LocalStore.set('cq-favorites', JSON.stringify(cq_favorites));
         expect(pickDefaultSymbol(active_symbols)).to.eql('R_25');
@@ -200,7 +200,7 @@ describe('pickDefaultSymbol', () => {
         expect(pickDefaultSymbol(active_symbols)).to.eql('frxAUDUSD');
     });
 
-    it('It Returns the default symbol if active symbols has no value', () => {
+    it('It should return empty value for the default symbol if there are no active_symbols.', () => {
         expect(pickDefaultSymbol()).to.be.empty;
     });
 });

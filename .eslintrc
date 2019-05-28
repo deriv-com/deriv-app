@@ -6,9 +6,10 @@
     }
   },
   "extends": [
-    "binary",
+    "eslint:recommended",
     "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:import/warnings",
+    "airbnb"
   ],
   "env": {
     "es6": true,
@@ -25,6 +26,11 @@
   "plugins": [
     "react"
   ],
+  "settings": {
+    "import/resolver": {
+        "webpack": { "config": "webpack.config.js" }
+    }
+  },
   "rules": {
     "react/jsx-uses-react": "error",
     "linebreak-style": 0,
@@ -83,12 +89,5 @@
         "LabeledStatement",
         "WithStatement"
     ]
-  },
-  "settings": {
-    "react": {
-      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0" // React version, default to the latest React stable release
-    }
   }
 }

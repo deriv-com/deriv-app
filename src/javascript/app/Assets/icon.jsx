@@ -19,10 +19,12 @@ class Icon extends React.PureComponent {
             IconClock             : React.lazy(() => import('./Common/icon-clock.jsx')),
             IconClose             : React.lazy(() => import('./Common/icon-close.jsx')),
             IconCountryFlag       : React.lazy(() => import('./Common/icon-country-flag.jsx')),
+            IconDanger            : React.lazy(() => import('./Common/icon-danger.jsx')),
             IconExclamation       : React.lazy(() => import('./Common/icon-exclamation.jsx')),
             IconFlag              : React.lazy(() => import('./Common/icon-flag.jsx')),
             IconInfoBlue          : React.lazy(() => import('./Common/icon-info-blue.jsx')),
             IconInfoOutline       : React.lazy(() => import('./Common/icon-info-outline.jsx')),
+            IconInformation       : React.lazy(() => import('./Common/icon-information.jsx')),
             IconMinimize          : React.lazy(() => import('./Common/icon-minimize.jsx')),
             IconMinus             : React.lazy(() => import('./Common/icon-minus.jsx')),
             IconPlus              : React.lazy(() => import('./Common/icon-plus.jsx')),
@@ -40,8 +42,9 @@ class Icon extends React.PureComponent {
             IconTickSVG      : React.lazy(() => import('./Contract/icon-tick.jsx')),
 
             // Footer
-            IconSettings: React.lazy(() => import('./Footer/icon-settings.jsx')),
-            IconMaximize: React.lazy(() => import('./Footer/icon-maximize.jsx')),
+            IconMaximize : React.lazy(() => import('./Footer/icon-maximize.jsx')),
+            IconPositions: React.lazy(() => import('./Footer/icon-positions.jsx')),
+            IconSettings : React.lazy(() => import('./Footer/icon-settings.jsx')),
 
             // Header
             IconAccountsCurrency: React.lazy(() => import('./Header/AccountsCurrency')),
@@ -55,10 +58,34 @@ class Icon extends React.PureComponent {
             IconTrade           : React.lazy(() => import('./Header/NavBar')),
 
             // Reports
-            // Settings
-            // Statement
-            // Trade
+            IconOpenPositions: React.lazy(() => import('./Reports/icon-open-positions.jsx')),
+            IconProfitTable  : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
+            IconStatement    : React.lazy(() => import('./Reports/icon-statement.jsx')),
 
+            // Settings
+            IconCharts       : React.lazy(() => import('./Settings')),
+            IconCloseSettings: React.lazy(() => import('./Settings')), // Previously IconClose, so replace IconClose that has the same import path with this.
+            IconLanguage     : React.lazy(() => import('./Settings')),
+            IconPurchase     : React.lazy(() => import('./Settings')),
+            IconTheme        : React.lazy(() => import('./Settings')),
+
+            // Statement
+            IconBuy       : React.lazy(() => import('./Statement')),
+            IconDeposit   : React.lazy(() => import('./Statement')),
+            IconPayout    : React.lazy(() => import('./Statement')),
+            IconSell      : React.lazy(() => import('./Statement')),
+            IconWallet    : React.lazy(() => import('./Statement')),
+            IconWithdrawal: React.lazy(() => import('./Statement')),
+
+            // Trading
+            IconBarrierDown   : React.lazy(() => import('./Trading/Barriers')),
+            IconBarrierUp     : React.lazy(() => import('./Trading/Barriers')),
+            IconTradeCategory : React.lazy(() => import('./Trading/Categories')),
+            TradeCategoriesGIF: React.lazy(() => import('./Trading/Categories')),
+            TradeCategories   : React.lazy(() => import('./Trading/Categories')),
+            IconTradeType     : React.lazy(() => import('./Trading/Types')),
+            IconLock          : React.lazy(() => import('./Trading/icon-lock.jsx')),
+            IconPriceMove     : React.lazy(() => import('./Trading/icon-price-move.jsx')),
         };
     }
 

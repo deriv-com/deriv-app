@@ -98,10 +98,9 @@ export default class ContractStore extends BaseStore {
             if (contract_info.tick_count) {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
+            } else {
+                this.handleChartType(SmartChartStore, date_start, null);
             }
-        }
-        if (!contract_info.tick_count) {
-            this.handleChartType(SmartChartStore, date_start, null);
         }
 
         SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
@@ -246,7 +245,7 @@ export default class ContractStore extends BaseStore {
         }
 
         createChartBarrier(this.smart_chart, this.replay_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
+        createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);
@@ -327,13 +326,11 @@ export default class ContractStore extends BaseStore {
         const granularity = getChartGranularity(start, expiry);
 
         if (chart_type === 'candle') {
-            SmartChartStore.updateChartType(chart_type);
-            // Testing here remove line below for prod
-            SmartChartStore.updateGranularity(60);
             this.chart_type = chart_type;
+            SmartChartStore.updateChartType(chart_type);
         } else {
-            SmartChartStore.updateChartType('mountain');
             this.chart_type = 'mountain';
+            SmartChartStore.updateChartType('mountain');
         }
         SmartChartStore.updateGranularity(granularity);
     }

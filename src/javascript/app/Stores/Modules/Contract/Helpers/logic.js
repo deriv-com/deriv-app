@@ -31,8 +31,7 @@ const hour_to_granularity_map = [
 const getExpiryTime = (time) => time || ServerTime.get().unix();
 
 export const getChartType = (start_time, expiry_time) => {
-    // change back to asHours for prod
-    const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asMinutes();
+    const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();
     // use line chart if duration is less than 1 hour
     return (duration < 1) ? 'mountain' : 'candle';
 };

@@ -62,8 +62,8 @@
                                 active_loginid = account[param];
                             }
                         } else {
-                            const param_to_set = map_names[param] || param;
-                            const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
+                            var param_to_set = map_names[param] || param;
+                            var value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
                             if (!(account.loginid in client_object)) {
                                 client_object[account.loginid] = {};
                             }
@@ -74,8 +74,8 @@
 
                 var i = 1;
                 while (obj_params['acct' + i]) {
-                    const loginid = obj_params['acct' + i];
-                    const token   = obj_params['token' + i];
+                    var loginid = obj_params['acct' + i];
+                    var token   = obj_params['token' + i];
                     if (loginid && token) {
                         client_object[loginid].token = token;
                     }
@@ -109,11 +109,18 @@
                 }
                 return true;
             }
-            function redirect() {
-                var search                = window.location.search ? window.location.search : '';
-                var has_external_referrer = document.referrer && !/\.deriv\.com/.test(document.referrer);
-                var has_utm_source        = /utm_source/.test(search);
-                var utm_source            = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
+            function redirect(should_clear_params) {
+                var search     = '';
+                var utm_source = '';
+                if (!should_clear_params) {
+                    search                    = window.location.search ? window.location.search : '';
+                    var has_external_referrer = document.referrer && !/\.deriv\.com/.test(document.referrer);
+                    var has_utm_source        = /utm_source/.test(search);
+                    utm_source                = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
+                    console.log('not clearing params');
+                } else {
+                    console.log('clearing params', search, utm_source);
+                }
 
                 window.location.href = (lang || 'en').toLowerCase() + '/trade' + search + utm_source;
             }
@@ -138,7 +145,8 @@
                     }
                 });
             }
-            if (lang && !obj_params.token1) { // we have language and client is not trying to log in
+            var is_client_logging_in = obj_params.token1;
+            if (lang && !is_client_logging_in) { // we have language and client is not trying to log in
                 redirect();
             } else {
                 var server_url = localStorage.getItem('config.server_url');
@@ -150,7 +158,7 @@
                         requests.push('website_status');
                         ws.send(JSON.stringify({'website_status': '1'}));
                     }
-                    if (obj_params.token1) { // client is trying to log in
+                    if (is_client_logging_in) { // client is trying to log in
                         requests.push('authorize');
                         ws.send(JSON.stringify({ authorize: obj_params.token1 }));
                     }
@@ -163,7 +171,7 @@
                         }
                     } else if (response.msg_type === 'authorize') {
                         if (!response.error && response.hasOwnProperty('authorize')) {
-                            const account_list = (response.authorize || {}).account_list;
+                            var account_list = (response.authorize || {}).account_list;
                             if (account_list) {
                                 storeClientAccounts(obj_params, account_list);
                             }
@@ -172,7 +180,7 @@
                     responses.push(response.msg_type);
                     if (isEqualArray(requests, responses)) {
                         ws.close();
-                        redirect();
+                        redirect(is_client_logging_in);
                     }
                 };
             }

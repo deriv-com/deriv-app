@@ -524,8 +524,6 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
-        // clear url query string
-        window.history.pushState(null, null, window.location.pathname);
     }
 
     onLoadingMount() {
@@ -558,5 +556,7 @@ export default class TradeStore extends BaseStore {
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
+        // clear url query string
+        window.history.pushState(null, null, window.location.pathname);
     }
 }

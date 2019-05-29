@@ -77,6 +77,7 @@ class ContractReplay extends React.Component {
                     is_visible={!!(contract_info.status)}
                     keyname='contract-drawer-wrapper'
                 >
+
                     <ContractDrawer
                         contract_info={contract_info}
                         heading='Reports'

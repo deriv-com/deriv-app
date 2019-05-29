@@ -74,9 +74,10 @@ $header-height: 4em;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
 
-    .progress-slider {
-        &--completed {
-            margin: 4px 0;
+    .progress-slider, .progress-slider--completed {
+        margin: 0;
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
         }
     }
     &:before {
@@ -114,20 +115,37 @@ $header-height: 4em;
         }
     }
     .purchase-price {
-        font-weight: bold;
-        font-size: 1em;
-
         &-container {
-            margin-bottom: 0.5em;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        &__label {
+            font-size: 1rem;
+            align-self: flex-start;
+        }
+        &__value {
+            font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
         }
     }
     .potential-payout {
         &-container {
-            margin-top: 0.7em;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
         }
-        &-price {
-            font-weight: bold;
+        &__label {
+            font-size: 1rem;
+            align-self: flex-start;
+        }
+        &-price__value {
             font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
         }
     }
     &__separator {
@@ -174,23 +192,23 @@ $header-height: 4em;
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 8px;
+        padding: 8px 8px 0;
         @include themify($themes) {
-            background-color: themed('background_container_color');
             color: themed('text_color');
         }
     }
     &__footer {
-        @include typeface(--small-center-normal-black);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-        padding: 8px 8px 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         margin-bottom: 0.5em;
+
+        &-wrapper {
+            @include typeface(--small-center-normal-black);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            padding: 4px 8px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
     }
     &__sell-button {
         display: flex;

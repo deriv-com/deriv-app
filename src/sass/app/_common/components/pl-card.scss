@@ -9,6 +9,7 @@
 
         &__header {
             margin-bottom: 0.2em;
+            align-self: flex-start;
             @include themify($themes) {
                 @include typeface(--xsmall-center-normal-black, none);
                 color: themed('text_color');
@@ -17,7 +18,7 @@
         &__body {
             display: flex;
             align-items: center;
-
+            align-self: flex-start;
             @include themify($themes) {
                 @include typeface(--small-center-bold-black);
                 color: themed('text_color');

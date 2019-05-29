@@ -105,24 +105,29 @@ class ContractDrawer extends Component {
                         />
                     </ContractCardBody>
                     <ContractCardFooter>
-                        <div className='purchase-price-container'>
-                            <Localize str='Purchase Price' />&nbsp;
-                            <span className='purchase-price' >
-                                <Money
-                                    currency={currency}
-                                    amount={buy_price}
-                                />
-                            </span>
-                        </div>
-                        <div className='contract-card__separator' />
-                        <div className='potential-payout-container'>
-                            <Localize str='Potential Payout' />&nbsp;
-                            <span className='potential-payout-price' >
-                                <Money
-                                    currency={currency}
-                                    amount={payout}
-                                />
-                            </span>
+                        <div className='contract-card__footer-wrapper'>
+                            <div className='purchase-price-container'>
+                                <span className='purchase-price__label'>
+                                    {localize('Purchase Price:')}
+                                </span>
+                                <span className='purchase-price__value' >
+                                    <Money
+                                        currency={currency}
+                                        amount={buy_price}
+                                    />
+                                </span>
+                            </div>
+                            <div className='potential-payout-container'>
+                                <span className='potential-payout__label'>
+                                    {localize('Potential Payout:')}
+                                </span>
+                                <span className='potential-payout-price__value' >
+                                    <Money
+                                        currency={currency}
+                                        amount={payout}
+                                    />
+                                </span>
+                            </div>
                         </div>
                         <CSSTransition
                             in={!!(isValidToSell(contract_info))}

@@ -231,7 +231,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeAllNotifications();
         this.switched = loginid;
 
-        if (location.pathname.includes('contract')) {
+        if (location.pathname.includes('/contract/')) {
             this.root_store.modules.contract.onUnmountReplay();
             location.reload();
         }

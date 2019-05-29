@@ -12,8 +12,8 @@ import ContractAudit         from 'App/Components/Elements/PositionsDrawer/resul
 import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
-import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import routes                from 'Constants/routes';
+import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
 import ContractCardHeader    from './contract-card-header.jsx';

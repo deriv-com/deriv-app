@@ -30,12 +30,9 @@ class ContractAudit extends React.PureComponent {
                 >
                     <div className='contract-audit__grid'>
                         <ContractAuditItem
-                            label={localize('Ref. ID (Buy)')}
-                            value={contract_info.transaction_ids.buy}
-                        />
-                        <ContractAuditItem
-                            label={localize('Ref. ID (Sell)')}
-                            value={contract_info.transaction_ids.sell}
+                            label={localize('Reference ID)')}
+                            value={localize('[_1] (Buy)', contract_info.transaction_ids.buy)}
+                            value2={localize('[_1] (Sell)', contract_info.transaction_ids.sell)}
                         />
                     </div>
                     <div className='contract-audit__grid'>
@@ -53,19 +50,25 @@ class ContractAudit extends React.PureComponent {
                     </div>
                     <div className='contract-audit__grid'>
                         <ContractAuditItem
-                            label={localize('Entry spot')}
-                            value={addCommaToNumber(contract_info.entry_spot) || ' - '}
-                        />
-                        <ContractAuditItem
-                            label={localize('Exit spot')}
-                            value={addCommaToNumber(exit_spot) || ' - '}
+                            label={localize('Start time')}
+                            value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
                         />
                     </div>
                     <div className='contract-audit__grid'>
                         <ContractAuditItem
-                            label={localize('Start time')}
-                            value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
+                            label={localize('Entry spot')}
+                            value={addCommaToNumber(contract_info.entry_spot) || ' - '}
+                            value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
                         />
+                    </div>
+                    <div className='contract-audit__grid'>
+                        <ContractAuditItem
+                            label={localize('Exit spot')}
+                            value={addCommaToNumber(exit_spot) || ' - '}
+                            value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
+                        />
+                    </div>
+                    <div className='contract-audit__grid'>
                         <ContractAuditItem
                             label={localize('End time')}
                             value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}

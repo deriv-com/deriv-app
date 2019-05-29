@@ -7,28 +7,27 @@ module.exports = {
         path    : path.resolve(__dirname, 'dist'),
         filename: 'bot.js',
     },
+    devServer: {
+        publicPath: '/dist/',
+    },
     devtool: 'source-map',
-    target: 'node',
+    target: 'web',
     module: {
         rules: [
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
-                exclude: [/node_modules/,/\\srcatch/],
+                exclude: [/node_modules/,/scratch/],
                 loader: "eslint-loader",
-                options: { fix: true },
+                options: {
+                    fix: true
+                },
             },
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use    : 'babel-loader',
+                loader : 'babel-loader',
             },
         ],
-    },
-    plugins: [
-        new webpack.BannerPlugin({
-            banner: '#!/usr/bin/env node',
-            raw   : true,
-        }),
-    ],
+    }
 };

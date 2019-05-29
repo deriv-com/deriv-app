@@ -48,6 +48,6 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({ filename: 'bot.css' }),
-        new StyleLintPlugin(),
+        new StyleLintPlugin( { fix:true }),
     ]
 };

@@ -4,11 +4,11 @@
     padding: 0em;
     width: 40px;
     height: 40px;
-    font-size: 1.500em;
+    font-size: 1.5em;
 }
 
 @mixin toolbox-button-focus {
-    outline: none;
+    outline: none; /* stylelint-disable-line */
 }
 
 @mixin toolbox-runButton-disabled {
@@ -30,30 +30,25 @@
     #runButton[disabled], #runButton[disabled]:hover {
         @include toolbox-runButton-disabled;
     }
-
     .toolbox-button {
         @include toolbox-button-base;
     }
-
     .toolbox-button:hover {
         @include toolbox-runButton-hover;
     }
-
     .toolbox-button:focus {
         @include toolbox-button-focus;
     }
-
     .box.is-dragover {
-        background-color: grey;
+        background-color: #808080;
     }
-
     .toolbox-separator {
         background-color: $brand-dark-gray;
         display: inline-block;
         height: 15px;
         margin: 0 5px;
         user-select: none;
-        width: 2px;        
+        width: 2px;
     }
 }
 
@@ -73,8 +68,10 @@
     display: table-cell;
     vertical-align: middle;
     padding-right: 20px;
-    &>a {
+
+    & > a {
         color: $black;
+
         &:hover, &:visited {
             text-decoration: none;
         }
@@ -84,15 +81,16 @@
 #toolbox-main-account {
     display: inline;
     padding-inline-start: 0;
-    &>li {
+
+    & > li {
         display: inline;
         margin: 0 2px;
     }
-    &>li:not(:first-child):not(:last-child):before {
+    & > li:not(:first-child):not(:last-child):before {
         content: '\2022';
         margin-right: 7px;
     }
-    &>.nav-caret {
+    & > .nav-caret {
         display: inline-block;
     }
 }
@@ -103,8 +101,10 @@
     margin-top: -1px;
     background: none;
     right: 20px;
+
     & li {
         height: 100%;
+
         & a {
             margin-top: 0;
         }
@@ -116,7 +116,7 @@ button {
         position: relative;
         margin: 3px auto;
         height: 13px;
-        top: initial;
-        left: initial;  
+        top: initial; /* stylelint-disable-line */
+        left: initial; /* stylelint-disable-line */
     }
 }

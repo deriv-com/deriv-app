@@ -16,14 +16,14 @@ $side-padding: 1.2em;
             &--heading {
                 @include typeface(--title-left-bold-black, none);
                 @include themify($themes) {
-                    color: themed('text_primary_color');
+                    color: themed('text_color');
                 }
                 line-height: 1.55;
             }
             &--paragraph {
                 @include typeface(--paragraph-left-normal-black, none);
                 @include themify($themes) {
-                    color: themed('text_color');
+                    color: themed('text_primary_color');
                 }
             }
         }

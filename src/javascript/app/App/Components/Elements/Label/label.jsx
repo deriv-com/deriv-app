@@ -7,6 +7,7 @@ const available_modes = [
     'success',
     'warn',
     'danger',
+    'info',
 ];
 
 const Label = ({ mode, children }) => {

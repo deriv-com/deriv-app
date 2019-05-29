@@ -69,7 +69,7 @@ export default class PortfolioStore extends BaseStore {
             const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
             if (!new_pos) return;
             this.pushNewPosition(new_pos);
-            WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
+            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
@@ -80,7 +80,7 @@ export default class PortfolioStore extends BaseStore {
             if (i === -1) return;
 
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
+            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
         }
     }
 

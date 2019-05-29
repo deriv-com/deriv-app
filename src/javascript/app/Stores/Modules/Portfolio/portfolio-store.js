@@ -74,6 +74,13 @@ export default class PortfolioStore extends BaseStore {
             WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
+
+            // Currently, if the contract has ended before the response is sent
+            // the Portfolio API returns an empty `contracts` array.
+            // This causes the contract to not be pushed to the `positions` property here.
+            // The statement below prevents accessing undefined values caused by the above explanation.
+            if (i === -1) { return; }
+
             this.positions[i].is_loading = true;
             WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
         }

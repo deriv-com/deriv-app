@@ -18,6 +18,7 @@ describe('formatPortfolioPosition', () => {
             details        :'test <br /> test <br /> test',
             id             : 1234,
             indicative     : 0,
+            is_unsupported : true,
             payout         : 3500.1,
             purchase       : 2500.5,
             reference      : +5678,

@@ -30,7 +30,8 @@ export default class UIStore extends BaseStore {
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
-    @observable is_services_error_visible = false;
+    @observable is_services_error_visible             = false;
+    @observable is_unsupported_contract_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -295,5 +296,10 @@ export default class UIStore extends BaseStore {
     addNotificationBar(message) {
         this.push_notifications.push(message);
         this.push_notifications = unique(this.push_notifications, 'msg_type');
+    }
+
+    @action.bound
+    toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
+        this.is_unsupported_contract_modal_visible = state_change;
     }
 }

@@ -28,7 +28,7 @@ $header-height: 52px;
 
         &, &:active, &:visited {
             @include themify($themes) {
-                color: themed('text_color');
+                color: themed('text_primary_color');
             }
         }
     }
@@ -40,7 +40,7 @@ $header-height: 52px;
     }
     &__head &__row {
         @include themify($themes) {
-            color: themed('text_primary_color');
+            color: themed('text_color');
         }
         height: 100%;
         border-bottom: none;

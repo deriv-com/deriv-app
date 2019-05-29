@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-const isDevelopment = process.env.NODE_ENV !== 'production' ? false : true;
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
     entry : path.join(__dirname, './src/app.js'),
@@ -48,6 +47,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'bot.css' })
+        new MiniCssExtractPlugin({ filename: 'bot.css' }),
+        new StyleLintPlugin(),
     ]
 };

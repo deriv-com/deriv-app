@@ -28,6 +28,7 @@ class InputField extends React.Component {
             is_autocomplete_disabled,
             is_disabled,
             is_float,
+            is_hj_whitelisted = false,
             is_incrementable,
             is_negative_disabled,
             is_read_only = false,
@@ -169,6 +170,7 @@ class InputField extends React.Component {
                 inline_prefix={inline_prefix}
                 is_autocomplete_disabled={is_autocomplete_disabled}
                 is_disabled={is_disabled}
+                is_hj_whitelisted={is_hj_whitelisted}
                 is_incrementable={is_increment_input}
                 is_read_only={is_read_only}
                 max_length={max_length}
@@ -250,6 +252,7 @@ InputField.propTypes = {
     is_autocomplete_disabled: PropTypes.bool,
     is_disabled             : PropTypes.string,
     is_float                : PropTypes.bool,
+    is_hj_whitelisted       : PropTypes.bool,
     is_incrementable        : PropTypes.bool,
     is_negative_disabled    : PropTypes.bool,
     is_read_only            : PropTypes.bool,

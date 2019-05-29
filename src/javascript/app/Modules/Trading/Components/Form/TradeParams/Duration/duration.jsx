@@ -110,6 +110,7 @@ const Duration = ({
 
     const props = {
         shared_input: {
+            is_hj_whitelisted: true,
             max_value,
             min_value,
             onChange: changeDurationValue,

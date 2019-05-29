@@ -112,7 +112,7 @@
             function redirect(should_clear_params) {
                 var search     = '';
                 var utm_source = '';
-                if (!should_clear_params) {
+                if (!should_clear_params) { // we should clear the params if client is logging in
                     search                    = window.location.search ? window.location.search : '';
                     var has_external_referrer = document.referrer && !/\.deriv\.com/.test(document.referrer);
                     var has_utm_source        = /utm_source/.test(search);

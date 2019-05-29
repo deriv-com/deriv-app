@@ -1,6 +1,6 @@
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
-import {info, notify } from '../utils/broadcast';
+import { info, notify } from '../utils/broadcast';
 import createError from '../../common/error';
 import { observer as globalObserver } from '../../../common/utils/observer';
 

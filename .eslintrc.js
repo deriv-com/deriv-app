@@ -4,11 +4,14 @@ module.exports = {
       es6    : true,
       browser: true,
       amd    : true,
+      jquery : true,
       mocha  : true,
   },
   globals: {
-      dataLayer : true,
-      texts_json: false,
+      Blockly: false,
+      trackJs: false,
+      jest: false,
+      dataLayer: false
   },
   rules: {
       camelcase                           : 0,
@@ -17,7 +20,7 @@ module.exports = {
       'brace-style'                       : ['error', '1tbs', { allowSingleLine: true }],
       'eol-last'                          : ['error', 'always'],
       'func-names'                        : ['error', 'never'],
-      'keyword-spacing'                   : ['error', { after: true }],
+      'keyword-spacing'                   : ['error', { after: true , before: true }],
       'lines-between-class-members'       : ['error', 'always', { exceptAfterSingleLine: true }],
       'no-extra-semi'                     : 'error',
       'no-console'                        : 'error',

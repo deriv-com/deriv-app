@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { inject } from 'mobx-react';
+import React, { Component } from 'react';
 
 function connectMainStore(mapperFunction) {
     // Combine both stores and props, with props taking precedence

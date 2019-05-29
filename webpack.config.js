@@ -1,5 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const isDevelopment = process.env.NODE_ENV !== 'production' ? false : true;
 
 module.exports = {
     entry : path.join(__dirname, './src/app.js'),
@@ -15,6 +17,21 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(s*)css$/,
+                use: [
+                    'css-hot-loader',
+                     MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { sourceMap: true },
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: { sourceMap: true },
+                    }
+               ]
+            },  
+            {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/,/scratch/],
@@ -29,5 +46,8 @@ module.exports = {
                 loader : 'babel-loader',
             },
         ],
-    }
+    },
+    plugins: [
+        new MiniCssExtractPlugin({ filename: 'bot.css' })
+    ]
 };

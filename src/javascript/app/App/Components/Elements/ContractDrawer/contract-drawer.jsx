@@ -165,6 +165,14 @@ class ContractDrawer extends Component {
         );
     }
 
+    redirectBackToReports = () => {
+        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
+        if (this.props.history.location.state) this.props.history.goBack();
+        else {
+            this.props.history.push(routes.reports);
+        }
+    };
+
     render() {
         if (!this.props.contract_info) return null;
         const body_content = this.getBodyContent();
@@ -172,7 +180,7 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.push(routes.reports)}
+                    onClick={this.redirectBackToReports}
                 >
                     <Icon icon={IconBack} />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>

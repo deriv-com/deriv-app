@@ -378,6 +378,12 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
+    clearError() {
+        this.error_message = null;
+        this.has_error = false;
+    }
+
+    @action.bound
     setIsDigitContract(contract_type) {
         this.contract_info.contract_type = contract_type;
     }

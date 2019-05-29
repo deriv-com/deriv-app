@@ -5,7 +5,7 @@ module.exports = {
       browser: true,
       amd    : true,
       jquery : true,
-      mocha  : true,
+      jest  : true,
   },
   globals: {
       Blockly: false,
@@ -37,7 +37,7 @@ module.exports = {
       'space-infix-ops'                   : 'error',
       'space-unary-ops'                   : 'error',
       'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
-
+      'prefer-const'                      : ['error', {destructuring: 'all', ignoreReadBeforeAssign: false}],
       // import rules
       'import/no-extraneous-dependencies' : [0, { extensions: ['.jsx'] }],
       'import/no-useless-path-segments'   : 'error',

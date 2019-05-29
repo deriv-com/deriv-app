@@ -13,6 +13,7 @@ import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contr
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
+import routes                from 'Constants/routes';
 import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
 import ContractCardHeader    from './contract-card-header.jsx';
@@ -171,7 +172,7 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.goBack()}
+                    onClick={() => this.props.history.push(routes.reports)}
                 >
                     <Icon icon={IconBack} />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>

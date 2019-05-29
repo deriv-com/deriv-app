@@ -63,7 +63,7 @@ class PositionsDrawerCard extends React.PureComponent {
                 <ResultOverlay
                     contract_id={id}
                     onClickRemove={onClickRemove}
-                    onClick={openContract}
+                    onClick={is_unsupported ? () => toggleUnsupportedContractModal(true) : openContract}
                     result={result}
                     is_shade_visible={this.state.is_shade_on}
                 />

@@ -1,7 +1,6 @@
 import classNames               from 'classnames';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
-import { withRouter }           from 'react-router';
 import { localize }             from '_common/localize';
 import { urlFor }               from '_common/url';
 import { isEmptyObject }        from '_common/utility';
@@ -161,7 +160,7 @@ AccountSwitcher.propTypes = {
     virtual_loginid       : PropTypes.string,
 };
 
-const account_switcher = withRouter(connect(
+const account_switcher = connect(
     ({ client, ui, modules }) => ({
         account_list          : client.account_list,
         account_loginid       : client.loginid,
@@ -177,6 +176,6 @@ const account_switcher = withRouter(connect(
         togglePositionsDrawer : ui.togglePositionsDrawer,
 
     }),
-)(AccountSwitcher));
+)(AccountSwitcher);
 
 export { account_switcher as AccountSwitcher };

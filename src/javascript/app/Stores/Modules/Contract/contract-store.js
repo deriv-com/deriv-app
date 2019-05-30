@@ -248,8 +248,11 @@ export default class ContractStore extends BaseStore {
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
-        this.waitForChartListener(this.smart_chart);
-
+        // TODO: Due to chartListener still giving incorrect bool for ready state when chart is still loading,
+        // a 2000ms offset is added here as a compromise to this issue, once the listener is fixed we can remove this timeout
+        setTimeout(() => {
+            this.waitForChartListener(this.smart_chart);
+        }, 2000);
     }
 
     @action.bound

@@ -22,6 +22,7 @@ class ResultOverlay extends React.PureComponent {
             contract_id,
             onClickRemove,
             result } = this.props;
+        const is_contract_won = (result === 'won');
         return (
             <React.Fragment>
                 <CSSTransition
@@ -35,8 +36,8 @@ class ResultOverlay extends React.PureComponent {
                     unmountOnExit
                 >
                     <div className={classNames('positions-drawer-card__result', {
-                        'positions-drawer-card__result--won' : (result === 'won'),
-                        'positions-drawer-card__result--lost': (result === 'lost'),
+                        'positions-drawer-card__result--won' : is_contract_won,
+                        'positions-drawer-card__result--lost': !is_contract_won,
                     })}
                     >
                         <span
@@ -50,8 +51,8 @@ class ResultOverlay extends React.PureComponent {
                         >
                             <span
                                 className={classNames('result__caption', {
-                                    'result__caption--won' : (result === 'won'),
-                                    'result__caption--lost': (result === 'lost'),
+                                    'result__caption--won' : is_contract_won,
+                                    'result__caption--lost': !is_contract_won,
                                 }
                                 )}
                             >

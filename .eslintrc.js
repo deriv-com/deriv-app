@@ -6,12 +6,16 @@ module.exports = {
       amd    : true,
       jquery : true,
       jest  : true,
+      jasmine: true,
   },
   globals: {
       Blockly: false,
       trackJs: false,
       jest: false,
-      dataLayer: false
+      dataLayer: false,
+      goog: false,
+      google: false,
+      gapi: false,
   },
   rules: {
       camelcase                           : 0,

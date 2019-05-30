@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
-import TicksService from '../ticksService';
-import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../common/appId';
+import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../../common/appId';
+import TicksService                                                  from '../../../../common/utils/ticksService';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
@@ -23,7 +23,6 @@ describe('Ticks Service', () => {
     describe('Monitor ticks', () => {
         const ticks = [];
         beforeAll(done => {
-            let key;
             const callback = ticksList => {
                 ticks.push(ticksList);
                 if (ticks.length === 3) {
@@ -31,15 +30,15 @@ describe('Ticks Service', () => {
                     done();
                 }
             };
-            key = ticksService.monitor({ symbol: 'R_100', callback });
+            const key = ticksService.monitor({ symbol: 'R_100', callback });
         });
         it('Ticks stream received', () => {
             expect(isTicksList(ticks[0])).toBeTruthy();
         });
     });
     describe('Get ticks', () => {
-        let ticks;
-        let candles;
+        let ticks,
+            candles;
         beforeAll(done => {
             ticksService
                 .request({ symbol: 'R_25' })

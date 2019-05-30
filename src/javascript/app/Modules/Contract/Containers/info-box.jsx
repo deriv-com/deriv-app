@@ -10,7 +10,6 @@ const InfoBox = ({
     contract_info,
     is_contract_mode,
     is_trade_page,
-    onClickNewTrade,
     onClose,
     error_message,
     removeError,
@@ -45,10 +44,7 @@ const InfoBox = ({
                     />
                     <ChartCloseBtn
                         is_contract_mode={is_contract_mode}
-                        onClose={(e) => {
-                            onClose();
-                            onClickNewTrade(e);
-                        }}
+                        onClose={onClose}
                     />
                 </div>
             </React.Fragment>
@@ -61,7 +57,6 @@ InfoBox.propTypes = {
     error_message   : PropTypes.string,
     is_contract_mode: PropTypes.bool,
     is_trade_page   : PropTypes.bool,
-    onClickNewTrade : PropTypes.func,
     onClose         : PropTypes.func,
     removeError     : PropTypes.func,
     replay_info     : PropTypes.object,
@@ -73,7 +68,6 @@ export default connect(
         error_message   : modules.contract.error_message,
         replay_info     : modules.contract.replay_info,
         removeError     : modules.contract.removeErrorMessage,
-        onClickNewTrade : modules.trade.onClickNewTrade,
         onClose         : modules.contract.onCloseContract,
         is_contract_mode: modules.smart_chart.is_contract_mode,
     })

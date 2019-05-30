@@ -74,6 +74,13 @@ export default class PortfolioStore extends BaseStore {
             WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
+
+            // Currently, if the contract has ended before the response is sent
+            // the Portfolio API returns an empty `contracts` array.
+            // This causes the contract to not be pushed to the `positions` property here.
+            // The statement below prevents accessing undefined values caused by the above explanation.
+            if (i === -1) { return; }
+
             this.positions[i].is_loading = true;
             WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
         }
@@ -163,6 +170,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
         this.positions[i].result           = getDisplayStatus(contract_response);
+        this.positions[i].profit_loss      = +contract_response.profit;
         this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
         this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';

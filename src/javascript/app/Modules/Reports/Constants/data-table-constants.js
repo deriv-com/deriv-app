@@ -10,10 +10,11 @@ import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 
 const getModeFromValue = (key) => {
     const map = {
-        deposit: 'warn',
-        sell   : 'danger',
-        buy    : 'success',
-        default: 'default',
+        deposit   : 'warn',
+        withdrawal: 'info',
+        sell      : 'danger',
+        buy       : 'success',
+        default   : 'default',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -58,7 +59,7 @@ export const getStatementTableColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value }) => <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} />,
     },
 ];
-export const getProfitTableColumnsTemplate = () => [
+export const getProfitTableColumnsTemplate = (currency) => [
     {
         key              : 'icon',
         title            : '',
@@ -86,7 +87,7 @@ export const getProfitTableColumnsTemplate = () => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} />;
+            return <Money amount={cell_value} currency={currency} />;
         },
     }, {
         title    : localize('Sell time'),
@@ -97,14 +98,14 @@ export const getProfitTableColumnsTemplate = () => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} />;
+            return <Money amount={cell_value} currency={currency} />;
         },
     }, {
         title            : localize('Profit/Loss'),
         col_index        : 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>
-                <Money amount={cell_value} />
+                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
             </ProfitLossCell>
         ),
     },
@@ -137,7 +138,8 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         title            : localize('Potential payout'),
         col_index        : 'payout',
         renderCellContent: ({ cell_value }) => (
-            <Money amount={cell_value} currency={currency} />
+            cell_value ? <Money amount={cell_value} currency={currency} />
+                : <span>-</span>
         ),
     }, {
         title            : localize('Indicative price'),

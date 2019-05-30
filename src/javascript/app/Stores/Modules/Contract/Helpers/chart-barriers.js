@@ -1,6 +1,8 @@
-import { BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
+import {
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
 
-export const createChartBarrier = (SmartChartStore, contract_info) => {
+export const createChartBarrier = (SmartChartStore, contract_info, is_dark_mode) => {
     SmartChartStore.removeBarriers();
 
     if (contract_info) {
@@ -12,7 +14,7 @@ export const createChartBarrier = (SmartChartStore, contract_info) => {
                 barrier || high_barrier,
                 low_barrier,
                 null,
-                {
+                {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                     line_style   : BARRIER_LINE_STYLES.SOLID,
                     not_draggable: true,
                 },

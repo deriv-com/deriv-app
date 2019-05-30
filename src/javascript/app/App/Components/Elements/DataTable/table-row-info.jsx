@@ -26,7 +26,11 @@ export default class TableRowInfo extends React.Component {
                 {
                     this.state.showDetails ?
                         <div>
-                            <p>{this.props.replace.message}</p>
+                            {this.props.replace.component ?
+                                this.props.replace.component
+                                :
+                                <p>{this.props.replace.message}</p>
+                            }
                         </div>
                         : this.props.cells
                 }

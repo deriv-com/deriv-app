@@ -4,17 +4,16 @@ import ServerTime        from '_common/base/server_time';
 
 export const getChartConfig = (contract_info, is_digit_contract) => {
     if (isEmptyObject(contract_info)) return null;
-    const start = contract_info.date_start;
-    const end   = getEndTime(contract_info);
-    const granularity = getChartGranularity(start, end);
-    const chart_type  = getChartType(start, end);
+    const start       = contract_info.date_start;
+    const end         = getEndTime(contract_info);
+    const granularity = getChartGranularity(start, end || null);
+    const chart_type  = getChartType(start, end || null);
 
     return {
-        granularity,
-        start_epoch               : start,
+        chart_type                : contract_info.tick_count ? 'mountain' : chart_type,
+        granularity               : contract_info.tick_count ? 0 : granularity,
         end_epoch                 : end,
-        chart_type,
-        symbol                    : contract_info.underlying,
+        start_epoch               : start,
         scroll_to_epoch           : contract_info.purchase_time,
         should_show_bottom_widgets: is_digit_contract,
     };
@@ -88,9 +87,16 @@ export const isValidToSell = (contract_info) => (
 );
 
 export const getEndTime = (contract_info) => {
-    const { exit_tick_time, date_expiry, sell_time, tick_count : is_tick_contract, is_sold } = contract_info;
+    const {
+        exit_tick_time,
+        date_expiry,
+        is_expired,
+        is_path_dependent,
+        sell_time,
+        tick_count: is_tick_contract,
+    } = contract_info;
 
-    if (!is_sold) return undefined;
+    if (!is_expired && !isUserSold(contract_info)) return undefined;
 
     if (isUserSold(contract_info)) {
         return (sell_time > date_expiry) ?
@@ -99,5 +105,5 @@ export const getEndTime = (contract_info) => {
         return date_expiry;
     }
 
-    return exit_tick_time;
+    return (date_expiry > exit_tick_time && !(+is_path_dependent)) ? date_expiry : exit_tick_time;
 };

@@ -52,6 +52,7 @@ class Trade extends React.Component {
                                 end_epoch={this.props.end_epoch}
                                 granularity={this.props.granularity}
                                 is_trade_page
+                                is_static_chart={this.props.is_static_chart}
                                 onSymbolChange={this.props.onSymbolChange}
                                 scroll_to_epoch={this.props.scroll_to_epoch}
                                 scroll_to_offset={this.props.scroll_to_offset}
@@ -67,9 +68,8 @@ class Trade extends React.Component {
                 </div>
                 <div
                     className={form_wrapper_class}
-                    onClick={this.props.is_contract_mode ? (e) => {
+                    onClick={this.props.is_contract_mode ? () => {
                         this.props.onCloseContract();
-                        this.props.onClickNewTrade(e);
                     } : null}
                     style={{ cursor: this.props.is_contract_mode ? 'pointer' : 'initial' }}
                 >
@@ -78,7 +78,7 @@ class Trade extends React.Component {
                         is_mobile={this.props.is_mobile}
                         is_contract_visible={!!contract_id || this.props.is_contract_mode}
                         is_trade_enabled={this.props.is_trade_enabled}
-                        is_blurred={this.props.is_market_closed}
+                        is_blurred={this.props.is_market_closed || !this.props.is_chart_ready}
                     />
                 </div>
             </div>
@@ -99,6 +99,7 @@ Trade.propTypes = {
     is_digit_contract: PropTypes.bool,
     is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
+    is_static_chart  : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
     onClickNewTrade  : PropTypes.func,
     onCloseContract  : PropTypes.func,
@@ -127,6 +128,7 @@ export default connect(
         is_chart_loading                   : modules.smart_chart.is_chart_loading,
         is_chart_ready                     : modules.smart_chart.is_chart_ready,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
+        is_static_chart                    : modules.smart_chart.is_static_chart,
         contract_type                      : modules.trade.contract_type,
         is_market_closed                   : modules.trade.is_market_closed,
         is_trade_enabled                   : modules.trade.is_trade_enabled,

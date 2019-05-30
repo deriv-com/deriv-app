@@ -433,7 +433,10 @@
         bottom: 0;
         display: inline-block;
     }
-    &:hover:not(&--disabled) {
+    &[disabled]:hover {
+        cursor: initial;
+    }
+    &:hover:not(&--disabled):not([disabled]) {
         transform: translate3d(0, -4px, 0);
     }
     &__shadow-wrapper {
@@ -453,6 +456,9 @@
         &--disabled {
             .btn-purchase__box-shadow {
                 opacity: 0;
+            }
+            &:hover {
+                transform: none;
             }
         }
     }

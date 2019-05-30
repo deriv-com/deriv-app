@@ -41,7 +41,7 @@ Button.propTypes = {
     className       : PropTypes.string,
     has_effect      : PropTypes.bool,
     id              : PropTypes.string,
-    is_disabled     : PropTypes.bool,
+    is_disabled     : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClick         : PropTypes.func,
     text            : PropTypes.string,
     wrapperClassName: PropTypes.string,

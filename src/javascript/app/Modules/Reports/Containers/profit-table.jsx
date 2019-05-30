@@ -3,15 +3,19 @@ import { PropTypes as MobxPropTypes }    from 'mobx-react';
 import React                             from 'react';
 import { withRouter }                    from 'react-router';
 import { localize }                      from '_common/localize';
+import { urlFor }                        from '_common/url';
+import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
+import Localize                          from 'App/Components/Elements/localize.jsx';
 import { getContractPath }               from 'App/Components/Routes/helpers';
+import { getUnsupportedContracts }       from 'Constants';
 import { connect }                       from 'Stores/connect';
 import EmptyTradeHistoryMessage          from '../Components/empty-trade-history-message.jsx';
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                   from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
+import { getMarketInformation }          from '../Helpers/market-underyling';
 
-// TODO Add proper messages before the PR
 class ProfitTable extends React.Component {
     componentDidMount() {
         this.props.onMount();
@@ -21,9 +25,26 @@ class ProfitTable extends React.Component {
         this.props.onUnmount();
     }
 
+    getRowAction = (row_obj) => (
+        getUnsupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+            {
+                component: (
+                    <Localize
+                        str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
+                        replacers={{
+                            '1'  : website_name,
+                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
+                        }}
+                    />
+                ),
+            }
+            : getContractPath(row_obj.contract_id)
+    );
+
     render () {
         const {
             component_icon,
+            currency,
             data,
             is_empty,
             is_loading,
@@ -34,7 +55,7 @@ class ProfitTable extends React.Component {
         } = this.props;
         if (error) return <p>{error}</p>;
 
-        const columns = getProfitTableColumnsTemplate();
+        const columns = getProfitTableColumnsTemplate(currency);
 
         return (
             <React.Fragment>
@@ -60,7 +81,7 @@ class ProfitTable extends React.Component {
                         onScroll={handleScroll}
                         footer={totals}
                         is_empty={is_empty}
-                        getRowAction={(row_obj) => getContractPath(row_obj.contract_id)}
+                        getRowAction={this.getRowAction}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}
@@ -74,6 +95,7 @@ class ProfitTable extends React.Component {
 
 ProfitTable.propTypes = {
     component_icon   : PropTypes.func,
+    currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,
     handleScroll     : PropTypes.func,
@@ -87,7 +109,8 @@ ProfitTable.propTypes = {
 };
 
 export default connect(
-    ({ modules }) => ({
+    ({ modules, client }) => ({
+        currency         : client.currency,
         data             : modules.profit_table.data,
         error            : modules.profit_table.error,
         handleScroll     : modules.profit_table.handleScroll,

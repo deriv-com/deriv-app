@@ -2,18 +2,18 @@ import {
     action,
     computed,
     extendObservable,
-    observable }                  from 'mobx';
-import { isEmptyObject }          from '_common/utility';
-import { localize }               from '_common/localize';
-import { WS }                     from 'Services';
-import { createChartBarrier }     from './Helpers/chart-barriers';
-import { createChartMarkers }     from './Helpers/chart-markers';
+    observable }              from 'mobx';
+import { isEmptyObject }      from '_common/utility';
+import { localize }           from '_common/localize';
+import { WS }                 from 'Services';
+import { createChartBarrier } from './Helpers/chart-barriers';
+import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDetailsExpiry,
-    getDetailsInfo }             from './Helpers/details';
+    getDetailsInfo }          from './Helpers/details';
 import {
     getDigitInfo,
-    isDigitContract }            from './Helpers/digits';
+    isDigitContract }         from './Helpers/digits';
 import {
     getChartConfig,
     getChartGranularity,
@@ -26,8 +26,9 @@ import {
     isSoldBeforeStart,
     isStarted,
     isUserSold,
-    isValidToSell }              from './Helpers/logic';
-import BaseStore                 from '../../base-store';
+    isValidToSell }           from './Helpers/logic';
+import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
+import BaseStore              from '../../base-store';
 
 export default class ContractStore extends BaseStore {
     // --- Observable properties ---
@@ -42,7 +43,9 @@ export default class ContractStore extends BaseStore {
 
     // ---- Replay Contract Config ----
     @observable replay_contract_id;
+    @observable replay_indicative_status;
     @observable replay_info = observable.object({});
+    @observable is_replay_static_chart = false;
 
     // ---- Normal properties ---
     forget_id;
@@ -51,6 +54,10 @@ export default class ContractStore extends BaseStore {
     is_left_epoch_set   = false;
     is_from_positions   = false;
     is_ongoing_contract = false;
+
+    // Replay Contract Indicative Movement
+    replay_prev_indicative   = 0;
+    replay_indicative        = 0;
 
     // -------------------
     // ----- Actions -----
@@ -88,6 +95,7 @@ export default class ContractStore extends BaseStore {
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else if (!this.is_left_epoch_set) {
+
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }
@@ -108,10 +116,10 @@ export default class ContractStore extends BaseStore {
             }
         }
 
-        createChartBarrier(SmartChartStore, contract_info);
-        createChartMarkers(SmartChartStore, contract_info);
-
         SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
+
+        createChartBarrier(SmartChartStore, contract_info, this.root_store.ui.is_dark_mode_on);
+        createChartMarkers(SmartChartStore, contract_info);
 
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
@@ -153,11 +161,17 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onUnmountReplay() {
-        this.forgetProposalOpenContract();
-        this.forget_id          = null;
-        this.replay_contract_id = null;
-        this.digits_info        = {};
-        this.replay_info        = {};
+        this.forget_id                = null;
+        this.replay_contract_id       = null;
+        this.digits_info              = {};
+        this.is_ongoing_contract      = false;
+        this.is_replay_static_chart   = false;
+        this.is_sell_requested        = false;
+        this.replay_info              = {};
+        this.replay_indicative_status = null;
+        this.replay_prev_indicative   = 0;
+        this.replay_indicative        = 0;
+        this.sell_info                = {};
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();
     }
@@ -170,7 +184,6 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
-        this.forgetProposalOpenContract();
         this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
@@ -187,6 +200,7 @@ export default class ContractStore extends BaseStore {
 
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
+        WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
     }
 
     @action.bound
@@ -205,7 +219,7 @@ export default class ContractStore extends BaseStore {
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error       = true;
-            this.error_message   = localize('Contract does not exist or does not belong to this client.');
+            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.contract_config = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
@@ -216,12 +230,38 @@ export default class ContractStore extends BaseStore {
         this.forget_id   = response.proposal_open_contract.id;
         this.replay_info = response.proposal_open_contract;
 
-        createChartBarrier(this.smart_chart, this.replay_info);
-        createChartMarkers(this.smart_chart, this.replay_info);
-        this.handleDigits(this.replay_info);
+        // Add indicative status for contract
+        const prev_indicative  = this.replay_prev_indicative;
+        const new_indicative   = +this.replay_info.bid_price;
+        this.replay_indicative = new_indicative;
+        if (new_indicative > prev_indicative) {
+            this.replay_indicative_status = 'profit';
+        } else if (new_indicative < prev_indicative) {
+            this.replay_indicative_status = 'loss';
+        } else {
+            this.replay_indicative_status = null;
+        }
+        this.replay_prev_indicative = this.replay_indicative;
+
+        const end_time = getEndTime(this.replay_info);
 
         this.smart_chart.updateMargin(
-            (getEndTime(this.replay_info) || this.replay_info.date_expiry) - this.replay_info.date_start);
+            (end_time || this.replay_info.date_expiry) - this.replay_info.date_start);
+
+        if (!end_time) this.is_ongoing_contract = true;
+
+        // finish contracts if end_time exists
+        if (end_time) {
+            if (!this.is_ongoing_contract) {
+                this.is_replay_static_chart = true;
+            } else {
+                this.is_replay_static_chart = false;
+            }
+        }
+
+        createChartBarrier(this.smart_chart, this.replay_info, this.root_store.ui.is_dark_mode_on);
+        createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
+        this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);
 
@@ -238,7 +278,7 @@ export default class ContractStore extends BaseStore {
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error     = true;
-            this.error_message = localize('Contract does not exist or does not belong to this client.');
+            this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.contract_info = {};
             this.contract_id   = null;
             this.smart_chart.setContractMode(false);
@@ -267,30 +307,32 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onClickSell() {
-        if (this.contract_id && !this.is_sell_requested && isEmptyObject(this.sell_info)) {
+    onClickSell(contract_id) {
+        const { bid_price } = this.replay_info;
+        if (contract_id && bid_price) {
             this.is_sell_requested = true;
-            WS.sell(this.contract_id, this.contract_info.bid_price).then(this.handleSell);
+            WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }
 
     @action.bound
     handleSell(response) {
         if (response.error) {
-            this.sell_info = {
-                error_message: response.error.message,
-            };
-
+            // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-        } else {
-            this.forgetProposalOpenContract();
-            WS.proposalOpenContract(this.contract_id).then(action((proposal_response) => {
-                this.updateProposal(proposal_response);
-                this.sell_info = {
-                    sell_price    : response.sell.sold_for,
-                    transaction_id: response.sell.transaction_id,
-                };
-            }));
+            this.root_store.common.services_error = {
+                type: response.msg_type,
+                ...response.error,
+            };
+            this.root_store.ui.toggleServicesErrorModal(true);
+        } else if (!response.error && response.sell) {
+            this.is_sell_requested = false;
+            // update contract store sell info after sell
+            this.sell_info = {
+                sell_price    : response.sell.sold_for,
+                transaction_id: response.sell.transaction_id,
+            };
+            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
         }
     }
 
@@ -346,7 +388,7 @@ export default class ContractStore extends BaseStore {
 
     @computed
     get replay_config() {
-        return getChartConfig(this.replay_info, this.is_digit_contract);
+        return getChartConfig(this.replay_info,this.is_digit_contract);
     }
 
     @computed

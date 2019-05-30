@@ -32,10 +32,10 @@ class DurationWrapper extends React.Component {
     }
 
     advancedHasWrongExpiry = () => (this.props.is_advanced_duration
-        && this.props.expiry_type !== this.props.advanced_expiry_type && this.props.duration_units_list.length > 1);
+        && this.props.expiry_type !== this.props.advanced_expiry_type);
 
     handleEndTime = () => {
-        const symbol_has_endtime = this.props.duration_units_list.length > 1;
+        const symbol_has_endtime = this.props.duration_units_list.length > 1  || this.props.is_advanced_duration;
 
         if (symbol_has_endtime) {
             // simple duration does not have endtime
@@ -46,6 +46,13 @@ class DurationWrapper extends React.Component {
             // If query string contains endtime but contract type does not e.g. digits (only ticks contracts)
             this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
+    }
+
+    getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
+        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
+        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+
+        return [min_value, max_value];
     }
 
     componentDidMount() {
@@ -66,15 +73,17 @@ class DurationWrapper extends React.Component {
 
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
-        const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, current_unit);
-        const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, current_unit);
+        const [min_value, max_value] =
+            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
+        this.setState({ min_value, max_value });
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
 
-        if (duration !== current_duration) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: duration });
+        if (+duration !== +current_duration) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
 
         if (expiry_type === 'endtime') this.handleEndTime();
@@ -84,35 +93,47 @@ class DurationWrapper extends React.Component {
         }
 
         if (current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: min_value });
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
         } else if (current_duration > max_value) {
-            onChangeUiStore({ name: `duration_${current_unit}`, value: max_value });
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }
-
-        this.setState({
-            min_value,
-            max_value,
-        });
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
     componentWillReact() {
-        const current_duration                = this.props.getDurationFromUnit(this.props.duration_unit);
-        const simple_is_not_type_duration     = (!this.props.is_advanced_duration && this.props.expiry_type !== 'duration');
+        const {
+            advanced_expiry_type,
+            contract_expiry_type,
+            duration,
+            duration_min_max,
+            duration_unit,
+            expiry_type,
+            getDurationFromUnit,
+            is_advanced_duration,
+            onChange,
+            onChangeUiStore,
+        } = this.props;
+
+        const current_duration            = getDurationFromUnit(duration_unit);
+        const simple_is_not_type_duration = (!is_advanced_duration && expiry_type !== 'duration');
+        const [min_value, max_value] =
+            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
+        this.setState({ min_value, max_value });
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {
-            this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
+            onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
 
         if (this.advancedHasWrongExpiry()) {
-            this.props.onChange({ target: { name: 'expiry_type', value: this.props.advanced_expiry_type } });
+            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (this.props.duration !== current_duration) {
-            this.props.onChangeUiStore({ name: `duration_${this.props.duration_unit}`, value: this.props.duration });
+        if (+duration !== +current_duration) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
     }
 

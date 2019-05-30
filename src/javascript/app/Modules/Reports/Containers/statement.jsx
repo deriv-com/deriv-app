@@ -3,13 +3,18 @@ import PropTypes                            from 'prop-types';
 import React                                from 'react';
 import { withRouter }                       from 'react-router-dom';
 import { localize }                         from '_common/localize';
+import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
+import Localize                             from 'App/Components/Elements/localize.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
+import { website_name }                     from 'App/Constants/app-config';
+import { getUnsupportedContracts }          from 'Constants';
 import { connect }                          from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                      from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage             from '../Components/empty-trade-history-message.jsx';
+import { getMarketInformation }             from '../Helpers/market-underyling';
 
 class Statement extends React.Component {
     componentDidMount() {
@@ -24,7 +29,19 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getContractPath(row_obj.id);
+            action = getUnsupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+                {
+                    component: (
+                        <Localize
+                            str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
+                            replacers={{
+                                '1'  : website_name,
+                                '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/statementws', undefined, undefined, true)} />,
+                            }}
+                        />
+                    ),
+                }
+                : getContractPath(row_obj.id);
         } else if (['deposit', 'withdrawal'].includes(row_obj.action_type)) {
             action = {
                 message: row_obj.desc,
@@ -49,7 +66,6 @@ class Statement extends React.Component {
         if (error) return <p>{error}</p>;
 
         const columns = getStatementTableColumnsTemplate(currency);
-        const hasRowAction = (row) => data.filter(el => el.id === row.id).length > 1 || ['withdrawal', 'deposit'].includes(row.action_type);
 
         return (
             <React.Fragment>
@@ -73,7 +89,7 @@ class Statement extends React.Component {
                         data_source={data}
                         columns={columns}
                         onScroll={handleScroll}
-                        getRowAction={(row) => hasRowAction(row) ? this.getRowAction(row) : null}
+                        getRowAction={(row) => this.getRowAction(row)}
                         is_empty={is_empty}
                     >
                         <PlaceholderComponent

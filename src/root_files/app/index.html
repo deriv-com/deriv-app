@@ -55,11 +55,22 @@
                 var client_object = {};
                 var active_loginid;
 
+                var is_allowed_real = true;
+                account_list.forEach(function(account) {
+                    if (!/^virtual|svg$/.test(account.landing_company_name)) {
+                        is_allowed_real = false;
+                    }
+                });
+
                 account_list.forEach(function(account) {
                     Object.keys(account).forEach(function(param) {
                         if (param === 'loginid') {
                             if (!active_loginid && !account.is_disabled) {
-                                active_loginid = account[param];
+                                if (is_allowed_real) {
+                                    active_loginid = account[param];
+                                } else if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
+                                    active_loginid = account[param];
+                                }
                             }
                         } else {
                             var param_to_set = map_names[param] || param;

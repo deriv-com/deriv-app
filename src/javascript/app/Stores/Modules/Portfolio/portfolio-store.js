@@ -57,7 +57,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    transactionHandler(response) {
+    async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
         }
@@ -65,11 +65,11 @@ export default class PortfolioStore extends BaseStore {
         const { contract_id, action: act } = response.transaction;
 
         if (act === 'buy') {
-            WS.portfolio().then((res) => {
-                const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
-                if (!new_pos) return;
-                this.pushNewPosition(new_pos);
-            });
+            const res = await WS.portfolio();
+            const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
+            if (!new_pos) return;
+            this.pushNewPosition(new_pos);
+            WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 

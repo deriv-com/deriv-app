@@ -48,7 +48,7 @@ class ContractDrawer extends Component {
             payout,
             profit,
         } = this.props.contract_info;
-        const { contract_info, is_sell_requested, onClickSell } = this.props;
+        const { contract_info, is_dark_theme, is_sell_requested, onClickSell } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
         const percentage = getTimePercentage(
             this.props.server_time,
@@ -108,7 +108,7 @@ class ContractDrawer extends Component {
                         <div className='contract-card__footer-wrapper'>
                             <div className='purchase-price-container'>
                                 <span className='purchase-price__label'>
-                                    {localize('Purchase Price:')}
+                                    {localize('Purchase price:')}
                                 </span>
                                 <span className='purchase-price__value' >
                                     <Money
@@ -119,7 +119,7 @@ class ContractDrawer extends Component {
                             </div>
                             <div className='potential-payout-container'>
                                 <span className='potential-payout__label'>
-                                    {localize('Potential Payout:')}
+                                    {localize('Potential payout:')}
                                 </span>
                                 <span className='potential-payout-price__value' >
                                     <Money
@@ -160,6 +160,7 @@ class ContractDrawer extends Component {
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={getEndTime(contract_info)}
+                    is_dark_theme={is_dark_theme}
                     is_open={true}
                     is_shade_visible={this.handleShade}
                     duration={getDurationTime(contract_info)}
@@ -192,6 +193,7 @@ class ContractDrawer extends Component {
 ContractDrawer.propTypes = {
     contract_info    : PropTypes.object,
     heading          : PropTypes.string,
+    is_dark_theme    : PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,
     server_time      : PropTypes.object,

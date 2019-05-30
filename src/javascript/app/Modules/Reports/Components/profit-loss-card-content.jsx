@@ -15,7 +15,7 @@ const ProfitLossCardContent = ({
     <div className='pl-card'>
         <div className='pl-card__item'>
             <div className='pl-card__item__header'>
-                <Localize str={is_sold ? 'Profit/Loss:' : 'Potential Profit/Loss:'} />
+                <Localize str={is_sold ? 'Profit/Loss:' : 'Potential profit/loss:'} />
             </div>
             <div className={classNames(
                 'pl-card__item__body', {
@@ -38,7 +38,7 @@ const ProfitLossCardContent = ({
         </div>
         <div className='pl-card__item'>
             <div className='pl-card__item__header'>
-                <Localize str={is_sold ? 'Payout:' : 'Indicative Price:'} />
+                <Localize str={is_sold ? 'Payout:' : 'Indicative price:'} />
             </div>
             <div className='pl-card__item__body'>
                 <Money currency={currency} amount={payout} />

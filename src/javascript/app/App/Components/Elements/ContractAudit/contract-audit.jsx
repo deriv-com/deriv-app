@@ -2,6 +2,8 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
+import IconExitWon       from 'Images/app/contract_details/ic-exittime-won.svg';
+import IconExitLoss      from 'Images/app/contract_details/ic-exittime-loss.svg';
 import { localize }      from '_common/localize';
 import {
     epochToMoment,
@@ -9,7 +11,9 @@ import {
 import {
     addCommaToNumber,
     getBarrierLabel,
-    getBarrierValue  }   from 'App/Components/Elements/PositionsDrawer/helpers';
+    getBarrierValue,
+    isDigitType }        from 'App/Components/Elements/PositionsDrawer/helpers';
+import { getThemedIcon } from './Helpers/icons';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
@@ -21,8 +25,12 @@ class ContractAudit extends React.PureComponent {
             duration_unit,
             exit_spot,
             has_result,
+            is_dark_theme,
         } = this.props;
         if (!has_result) return null;
+        const is_profit    = (contract_info.profit >= 0);
+        const is_exit_time = (contract_info.exit_tick_time === contract_end_time);
+        const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
         return (
             <React.Fragment>
                 <div className={classNames('contract-audit__wrapper', {
@@ -35,6 +43,7 @@ class ContractAudit extends React.PureComponent {
                     >
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
+                                icon={getThemedIcon('id', is_dark_theme)}
                                 label={localize('Reference ID)')}
                                 value={localize('[_1] (Buy)', contract_info.transaction_ids.buy)}
                                 value2={localize('[_1] (Sell)', contract_info.transaction_ids.sell)}
@@ -42,6 +51,7 @@ class ContractAudit extends React.PureComponent {
                         </div>
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
+                                icon={getThemedIcon('duration', is_dark_theme)}
                                 label={localize('Duration')}
                                 value={(contract_info.tick_count > 0) ?
                                     `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
@@ -51,18 +61,25 @@ class ContractAudit extends React.PureComponent {
                         </div>
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
+                                icon={
+                                    isDigitType(contract_info.contract_type)
+                                        ? getThemedIcon('target', is_dark_theme)
+                                        : getThemedIcon('barrier', is_dark_theme)
+                                }
                                 label={getBarrierLabel(contract_info)}
                                 value={getBarrierValue(contract_info) || ' - '}
                             />
                         </div>
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
+                                icon={getThemedIcon('start_time', is_dark_theme)}
                                 label={localize('Start time')}
                                 value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
                             />
                         </div>
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
+                                icon={getThemedIcon('entry_spot', is_dark_theme)}
                                 label={localize('Entry spot')}
                                 value={addCommaToNumber(contract_info.entry_spot) || ' - '}
                                 value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
@@ -72,6 +89,7 @@ class ContractAudit extends React.PureComponent {
                             !isNaN(exit_spot) &&
                             <div className='contract-audit__grid'>
                                 <ContractAuditItem
+                                    icon={getThemedIcon('exit_spot', is_dark_theme)}
                                     label={localize('Exit spot')}
                                     value={addCommaToNumber(exit_spot) || ' - '}
                                     value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
@@ -80,7 +98,8 @@ class ContractAudit extends React.PureComponent {
                         }
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
-                                label={localize('End time')}
+                                icon={IconExitTime}
+                                label={is_exit_time ? localize('Exit Time') : localize('End time')}
                                 value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                             />
                         </div>
@@ -101,6 +120,7 @@ ContractAudit.propTypes = {
     duration_unit: PropTypes.string,
     exit_spot    : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     has_result   : PropTypes.bool,
+    is_dark_theme: PropTypes.bool,
     is_open      : PropTypes.bool,
 };
 

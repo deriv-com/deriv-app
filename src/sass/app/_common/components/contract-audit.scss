@@ -31,6 +31,11 @@
             }
         }
     }
+    &__icon {
+        display: flex;
+        align-items: flex-start;
+        margin-right: 8px;
+    }
     &__item {
         display: flex;
         flex-direction: column;

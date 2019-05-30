@@ -125,6 +125,7 @@ $header-height: 4em;
             font-size: 1rem;
             align-self: flex-start;
             text-transform: none;
+            margin-bottom: 4px;
         }
         &__value {
             font-size: 1em;
@@ -206,8 +207,11 @@ $header-height: 4em;
         align-items: center;
         justify-content: center;
         width: 100%;
-        margin-top: 0.5em;
+        margin: 8px 0 -4px;
         transition: transform 0.25s ease, opacity 0.25s linear;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
 
         &--enter-done {
             opacity: 1;

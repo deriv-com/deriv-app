@@ -8,7 +8,6 @@ import { isEmptyObject }        from '_common/utility';
 import { Icon }                 from 'Assets/Common/';
 import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency';
 import { IconLogout }           from 'Assets/Header/Drawer';
-import routes                   from 'Constants/routes';
 import { requestLogout }        from 'Services/index';
 import { connect }              from 'Stores/connect';
 
@@ -46,9 +45,7 @@ class AccountSwitcher extends React.Component {
         if (this.props.account_loginid === loginid) return;
         await this.props.switchAccount(loginid);
 
-        // Redirect to trade if user changes account from the ErrorComponent
         if (this.props.has_error) {
-            this.props.history.push(routes.trade);
             this.props.clearError();
         }
     }
@@ -150,6 +147,8 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     cleanUp               : PropTypes.func,
+    clearError            : PropTypes.func,
+    has_error             : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,

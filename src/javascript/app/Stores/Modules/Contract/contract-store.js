@@ -59,6 +59,9 @@ export default class ContractStore extends BaseStore {
     replay_prev_indicative   = 0;
     replay_indicative        = 0;
 
+    // Forget old proposal_open_contract stream on account switch from ErrorComponent
+    should_forget_first = false;
+
     // -------------------
     // ----- Actions -----
     // -------------------
@@ -126,6 +129,19 @@ export default class ContractStore extends BaseStore {
         }
     }
 
+    handleSubscribeProposalOpenContract = (contract_id, cb) => {
+        const proposal_open_contract_request = [contract_id.toString(), cb, false];
+
+        if (this.should_forget_first) {
+            WS.forgetAll('proposal_open_contract').then(() => {
+                this.should_forget_first = false;
+                WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            });
+        } else {
+            WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+        }
+    }
+
     @action.bound
     onMount(contract_id, is_from_positions) {
         if (contract_id === +this.contract_id) return;
@@ -144,7 +160,7 @@ export default class ContractStore extends BaseStore {
             }
             this.smart_chart.saveAndClearTradeChartLayout('contract');
             this.smart_chart.setContractMode(true);
-            WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
+            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         }
     }
 
@@ -155,7 +171,7 @@ export default class ContractStore extends BaseStore {
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.replay_contract_id = contract_id;
-            WS.subscribeProposalOpenContract(this.replay_contract_id.toString(), this.populateConfig, false);
+            this.handleSubscribeProposalOpenContract(this.replay_contract_id, this.populateConfig);
         }
     }
 
@@ -213,6 +229,7 @@ export default class ContractStore extends BaseStore {
     populateConfig(response) {
         if ('error' in response) {
             this.has_error     = true;
+            this.should_forget_first = true;
             this.contract_config = {};
             this.smart_chart.setIsChartLoading(false);
             return;
@@ -220,6 +237,7 @@ export default class ContractStore extends BaseStore {
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error       = true;
             this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.should_forget_first = true;
             this.contract_config = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
@@ -272,6 +290,7 @@ export default class ContractStore extends BaseStore {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
+            this.should_forget_first = true;
             this.contract_info = {};
             this.smart_chart.setIsChartLoading(false);
             return;
@@ -279,6 +298,7 @@ export default class ContractStore extends BaseStore {
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error     = true;
             this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.should_forget_first = true;
             this.contract_info = {};
             this.contract_id   = null;
             this.smart_chart.setContractMode(false);

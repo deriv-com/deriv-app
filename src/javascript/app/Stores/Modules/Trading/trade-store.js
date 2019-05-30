@@ -187,7 +187,9 @@ export default class TradeStore extends BaseStore {
             this.currency           = this.root_store.client.currency;
             this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            if (!this.symbol) {
+            const is_valid_symbol = active_symbols.active_symbols.find((symbols) => symbols.symbol === this.symbol);
+
+            if (!this.symbol || !is_valid_symbol) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });

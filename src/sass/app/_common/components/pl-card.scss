@@ -8,11 +8,11 @@
         align-items: center;
 
         &__header {
-            margin-bottom: 0.2em;
+            margin-bottom: 4px;
             align-self: flex-start;
             @include themify($themes) {
                 @include typeface(--xsmall-center-normal-black, none);
-                color: themed('text_color');
+                color: themed('text_primary_color');
             }
         }
         &__body {

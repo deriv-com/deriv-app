@@ -163,7 +163,11 @@ class PositionsDrawerCard extends React.PureComponent {
                                 <span className='positions-drawer-card__payout-label'>
                                     {localize('Potential payout')}
                                 </span>
-                                <Money amount={contract_info.payout} currency={currency} />
+                                {contract_info.payout ?
+                                    <Money amount={contract_info.payout} currency={currency} />
+                                    :
+                                    <strong>-</strong>
+                                }
                             </div>
                         </React.Fragment>
                     </div>
@@ -263,7 +267,11 @@ class PositionsDrawerCard extends React.PureComponent {
                                 <span className='positions-drawer-card__payout-label'>
                                     {localize('Potential payout')}
                                 </span>
-                                <Money amount={contract_info.payout} currency={currency} />
+                                {contract_info.payout ?
+                                    <Money amount={contract_info.payout} currency={currency} />
+                                    :
+                                    <strong>-</strong>
+                                }
                             </div>
                         </React.Fragment>
                     </ContractLink>

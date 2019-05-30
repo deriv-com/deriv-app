@@ -138,7 +138,8 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         title            : localize('Potential payout'),
         col_index        : 'payout',
         renderCellContent: ({ cell_value }) => (
-            <Money amount={cell_value} currency={currency} />
+            cell_value ? <Money amount={cell_value} currency={currency} />
+                : <span>-</span>
         ),
     }, {
         title            : localize('Indicative price'),

@@ -167,8 +167,9 @@ class ContractDrawer extends Component {
 
     redirectBackToReports = () => {
         // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
-        if (this.props.history.location.state) this.props.history.goBack();
-        else {
+        if (this.props.history.location.state) {
+            this.props.history.goBack();
+        } else {
             this.props.history.push(routes.reports);
         }
     };

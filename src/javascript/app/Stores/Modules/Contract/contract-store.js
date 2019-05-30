@@ -130,6 +130,7 @@ export default class ContractStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
+        // TODO: remove .toString() when API is ready
         const proposal_open_contract_request = [contract_id.toString(), cb, false];
 
         if (this.should_forget_first) {
@@ -228,17 +229,16 @@ export default class ContractStore extends BaseStore {
     @action.bound
     populateConfig(response) {
         if ('error' in response) {
-            this.has_error     = true;
-            this.should_forget_first = true;
+            this.has_error       = true;
             this.contract_config = {};
             this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error       = true;
-            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.has_error           = true;
+            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.contract_config = {};
+            this.contract_config     = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
             return;
@@ -290,17 +290,16 @@ export default class ContractStore extends BaseStore {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
-            this.should_forget_first = true;
             this.contract_info = {};
             this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error     = true;
-            this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.has_error           = true;
+            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.contract_info = {};
-            this.contract_id   = null;
+            this.contract_info       = {};
+            this.contract_id         = null;
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
             return;

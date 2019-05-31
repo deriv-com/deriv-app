@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect }                  from 'chai';
 import _Symbol                     from '../symbolApi';
-import { generateLiveApiInstance } from '../../../../common/appId';
+import { generateLiveApiInstance } from '../appId';
 
 describe('symbol', () => {
     const api = generateLiveApiInstance();

@@ -1,7 +1,7 @@
 import _Symbol                     from './symbolApi';
-import { generateLiveApiInstance } from '../../../common/appId';
-import Observer                    from '../../../common/observer';
-import TicksService                from '../../../common/utils/ticksService';
+import { generateLiveApiInstance } from './appId';
+import TicksService                from './ticksService';
+import Observer                    from '../../utils/observer';
 
 let tmpApi = generateLiveApiInstance();
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import            '../../scratch/sass/_blockly-toolbox.scss';
+import            '../assets/sass/scratch/_blockly-toolbox.scss';
 
 const Workspace = () => (
     <React.Fragment>

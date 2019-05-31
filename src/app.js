@@ -1,7 +1,7 @@
 import React                    from 'react';
 import ReactDOM                 from 'react-dom';
 import App                      from './app.jsx';
-import { scratchWorkspaceInit } from '../scratch';
+import { scratchWorkspaceInit } from './scratch';
 
 ReactDOM.render(
     <App />,

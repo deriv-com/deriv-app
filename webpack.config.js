@@ -6,7 +6,7 @@ const StyleLintPlugin      = require('stylelint-webpack-plugin');
 module.exports = {
     entry : [
         '@babel/polyfill', 
-        path.join(__dirname, './scratch/hooks'),
+        path.join(__dirname, './src/scratch/hooks'),
         path.join(__dirname, './src/app.js'),
     ],
     output: {
@@ -55,7 +55,7 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: 'bot.css' }),
         new StyleLintPlugin( { fix: true }),
         new CopyWebpackPlugin([
-            { from: 'scratch/xml' },
+            { from: './src/scratch/xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
             { from: './node_modules/scratch-blocks/blockly_compressed_vertical.js', to: 'scratch-compressed.js' },
             { from: './node_modules/scratch-blocks/msg/messages.js', to: 'scratch-messages.js' },

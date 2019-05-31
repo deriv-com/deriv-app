@@ -1,7 +1,7 @@
 import ActiveSymbols                     from './activeSymbols';
-import config                            from '../../../../common/constants';
-import { getObjectValue }                from '../../../../common/helpers';
-import { getTokenList, removeAllTokens } from '../../../../common/storageManager';
+import config                            from '../../../constants/const';
+import { getObjectValue }                from '../../../utils/tools';
+import { getTokenList, removeAllTokens } from '../../../utils/storageManager';
 
 const noop = () => {};
 

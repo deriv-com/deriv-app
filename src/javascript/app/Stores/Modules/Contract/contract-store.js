@@ -50,8 +50,6 @@ export default class ContractStore extends BaseStore {
     // ---- Normal properties ---
     forget_id;
     chart_type          = 'mountain';
-    is_granularity_set  = false;
-    is_left_epoch_set   = false;
     is_from_positions   = false;
     is_ongoing_contract = false;
 
@@ -64,12 +62,11 @@ export default class ContractStore extends BaseStore {
     // -------------------
     @action.bound
     drawChart(SmartChartStore, contract_info) {
-        this.forget_id = contract_info.id;
+        this.forget_id       = contract_info.id;
+        const { date_start } = contract_info;
+        const end_time       = getEndTime(contract_info);
 
-        const { date_start }           = contract_info;
-        const end_time                 = getEndTime(contract_info);
-        const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
-
+        SmartChartStore.setChartView(contract_info.purchase_time);
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
@@ -82,7 +79,7 @@ export default class ContractStore extends BaseStore {
             SmartChartStore.setContractStart(date_start);
             SmartChartStore.setContractEnd(end_time);
 
-            if (should_update_chart_type) {
+            if (!contract_info.tick_count) {
                 this.handleChartType(SmartChartStore, date_start, end_time);
             } else {
                 SmartChartStore.updateGranularity(0);
@@ -94,25 +91,15 @@ export default class ContractStore extends BaseStore {
             }
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
-        } else if (!this.is_left_epoch_set) {
-
+        } else {
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }
-
             if (contract_info.tick_count) {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
-            }
-            this.is_left_epoch_set = true;
-            SmartChartStore.setChartView(contract_info.purchase_time);
-        }
-        if (should_update_chart_type && !contract_info.tick_count) {
-            this.handleChartType(SmartChartStore, date_start, null);
-        }
-        if (this.is_granularity_set) {
-            if (getChartType(date_start, null) !== this.chart_type) {
-                this.is_granularity_set = false;
+            } else {
+                this.handleChartType(SmartChartStore, date_start, null);
             }
         }
 
@@ -191,9 +178,7 @@ export default class ContractStore extends BaseStore {
         this.error_message       = '';
         this.forget_id           = null;
         this.has_error           = false;
-        this.is_granularity_set  = false;
         this.is_sell_requested   = false;
-        this.is_left_epoch_set   = false;
         this.is_from_positions   = false;
         this.is_ongoing_contract = false;
         this.sell_info           = {};
@@ -260,7 +245,7 @@ export default class ContractStore extends BaseStore {
         }
 
         createChartBarrier(this.smart_chart, this.replay_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
+        createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);
@@ -340,15 +325,14 @@ export default class ContractStore extends BaseStore {
         const chart_type  = getChartType(start, expiry);
         const granularity = getChartGranularity(start, expiry);
 
-        if (chart_type === 'candle' && granularity !== 0) {
-            SmartChartStore.updateChartType(chart_type);
+        if (chart_type === 'candle') {
             this.chart_type = chart_type;
+            SmartChartStore.updateChartType(chart_type);
         } else {
-            SmartChartStore.updateChartType('mountain');
             this.chart_type = 'mountain';
+            SmartChartStore.updateChartType('mountain');
         }
         SmartChartStore.updateGranularity(granularity);
-        this.is_granularity_set = true;
     }
 
     forgetProposalOpenContract() {

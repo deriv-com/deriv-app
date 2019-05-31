@@ -12,13 +12,13 @@ import {
     strategyHasValidTradeTypeCategory,
     cleanBeforeExport,
 }                                         from './utils';
+import { showDialog }                     from '../services/tradeEngine/utils/helpers';
+import Interpreter                        from '../services/tradeEngine/utils/interpreter';
 import GTM                                from '../utils/gtm';
 import createError                        from '../utils/error';
-import Interpreter                        from '../services/tradeEngine/utils/interpreter';
 import { translate, xml as translateXml } from '../utils/lang/i18n';
 import { getLanguage }                    from '../utils/lang/lang';
 import { observer as globalObserver }     from '../utils/observer';
-import { showDialog }                     from '../services/tradeEngine/utils/helpers';
 
 export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) => {
     try {

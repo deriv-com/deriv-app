@@ -1,7 +1,7 @@
 import RenderHTML                     from 'react-render-html';
-import { getLanguage }                from './lang/lang';
-import { translate as i18nTranslate } from './lang/i18n';
 import { observer as globalObserver } from './observer';
+import { translate as i18nTranslate } from './lang/i18n';
+import { getLanguage }                from './lang/lang';
 import AppIdMap                       from '../services/api/appIdResolver';
 
 export const parseQueryString = () => {

@@ -1,7 +1,8 @@
 import filesaver                      from 'file-saver';
 import { oppositesToDropdown }        from './utils';
-import { generateLiveApiInstance }    from '../services/api/appId';
 import config                         from '../constants/const';
+import { generateLiveApiInstance }    from '../services/api/appId';
+import { symbolApi }                  from '../services/api/shared';
 import { translate }                  from '../utils/lang/i18n';
 import { observer as globalObserver } from '../utils/observer';
 import {
@@ -10,7 +11,6 @@ import {
     getTokenList,
     removeAllTokens,
 }                                     from '../utils/storageManager';
-import { symbolApi }                  from '../services/api/shared';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 

@@ -1,6 +1,6 @@
 import { supportedLanguages, translate, init }  from './i18n';
-import { parseQueryString }                            from '../tools';
-import { set as setStorage, get as getStorage }        from '../storageManager';
+import { parseQueryString }                     from '../tools';
+import { set as setStorage, get as getStorage } from '../storageManager';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;

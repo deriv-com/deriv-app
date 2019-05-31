@@ -1,6 +1,7 @@
 import { LiveApi }                                      from 'binary-live-api';
 import AppIdMap                                         from './appIdResolver';
-import { parseQueryString, isProduction, getExtension } from '../../utils/tools';
+import Elevio                                           from '../../utils/customerSupport/elevio';
+import GTM                                              from '../../utils/gtm';
 import { getLanguage }                                  from '../../utils/lang/lang';
 import {
     addToken,
@@ -10,8 +11,7 @@ import {
     get as getStorage,
     set as setStorage,
 }                                                       from '../../utils/storageManager';
-import Elevio                                           from '../../utils/customerSupport/elevio';
-import GTM                                              from '../../utils/gtm';
+import { parseQueryString, isProduction, getExtension } from '../../utils/tools';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',

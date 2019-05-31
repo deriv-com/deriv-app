@@ -1,8 +1,8 @@
 import { getLast }                    from 'binary-utils';
 import * as constants                 from './state/constants';
+import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger }      from '../utils/sanitize';
 import { translate }                  from '../../../utils/lang/i18n';
-import { getDirection, getLastDigit } from '../utils/helpers';
 
 let tickListenerKey;
 

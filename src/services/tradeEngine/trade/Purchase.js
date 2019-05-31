@@ -1,8 +1,8 @@
 import { purchaseSuccessful }            from './state/actions';
 import { BEFORE_PURCHASE }               from './state/constants';
 import { contractStatus, info, notify }  from '../utils/broadcast';
-import { translate }                     from '../../../utils/lang/i18n';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { translate }                     from '../../../utils/lang/i18n';
 
 let delayIndex = 0;
 

@@ -1,6 +1,6 @@
 import { proposalsReady, clearProposals }              from './state/actions';
-import { translate }                                   from '../../../utils/lang/i18n';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
+import { translate }                                   from '../../../utils/lang/i18n';
 
 export default Engine =>
     class Proposal extends Engine {

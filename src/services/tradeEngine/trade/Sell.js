@@ -1,7 +1,7 @@
 import { DURING_PURCHASE }               from './state/constants';
 import { contractStatus, notify }        from '../utils/broadcast';
-import { translate }                     from '../../../utils/lang/i18n';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { translate }                     from '../../../utils/lang/i18n';
 
 let delayIndex = 0;
 

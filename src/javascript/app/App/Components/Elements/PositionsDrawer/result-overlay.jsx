@@ -57,7 +57,7 @@ class ResultOverlay extends React.PureComponent {
                                 )}
                             >
                                 {
-                                    (result === 'won') ?
+                                    (is_contract_won) ?
                                         <React.Fragment>
                                             {localize('won')}
                                             <IconCheck className='result__icon' />

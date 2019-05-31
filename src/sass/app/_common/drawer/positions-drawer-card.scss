@@ -128,11 +128,12 @@
         }
         &-profit-payout {
             grid-template-columns: 1fr 1fr;
-            padding: 8px 0;
+            padding: 8px;
             border-radius: $BORDER_RADIUS;
         }
         &-price-payout {
             grid-template-columns: 1fr 1fr;
+            padding: 0 8px;
         }
     }
     &__purchase, &__payout {

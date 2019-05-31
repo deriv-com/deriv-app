@@ -1,8 +1,7 @@
-import { fieldGeneratorMapping } from './blocks/shared';
-import { saveAs } from '../shared';
-import config from '../../common/const';
-import { translate } from '../../../common/i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { fieldGeneratorMapping, saveAs } from './shared';
+import config                            from '../constants/const';
+import { translate }                     from '../utils/lang/i18n';
+import { observer as globalObserver }    from '../utils/observer';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -215,7 +214,7 @@ export const insideMainBlocks = block => {
     return parent.type && isMainBlock(parent.type);
 };
 
-export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
+export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
@@ -254,6 +253,7 @@ class DeleteStray extends Blockly.Events.Abstract {
         super(block);
         this.run(true);
     }
+
     run(redo) {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
@@ -280,6 +280,7 @@ class Hide extends Blockly.Events.Abstract {
         this.sourceHeaderId = header.id;
         this.run(true);
     }
+    
     run() {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
@@ -308,11 +309,13 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     });
     Blockly.Events.setGroup(false);
 };
+
 export const fixArgumentAttribute = xml => {
     Array.from(xml.getElementsByTagName('arg')).forEach(o => {
         if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
     });
 };
+
 export const addDomAsBlock = blockXml => {
     if (blockXml.tagName === 'variables') {
         return Blockly.Xml.domToVariables(blockXml, Blockly.mainWorkspace);

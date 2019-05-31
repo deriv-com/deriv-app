@@ -1,10 +1,18 @@
-import { getUTCTime } from '../../common/utils/tools';
-import { translate } from '../../common/i18n';
-import { roundBalance } from '../../common/utils/tools';
-import { notify } from './broadcast';
-import config from '../constants/const';
+import { notify }     from './broadcast';
+import config         from '../../../constants/const';
+import { getUTCTime } from '../../../utils/tools';
+import { translate }  from '../../../utils/lang/i18n';
 
 export const noop = () => {};
+
+export const roundBalance = ({ currency, balance }) => {
+    const point = config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2;
+    return Number(balance).toFixed(point);
+};
+
+const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
+
+export const isVirtual = tokenInfo => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
 
 export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
@@ -201,8 +209,3 @@ export const showDialog = options =>
         $dialog.dialog(dialogOptions);
         $dialog.dialog('open');
     });
-
-    export const roundBalance = ({ currency, balance }) => {
-        const point = config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2;
-        return Number(balance).toFixed(point);
-    };

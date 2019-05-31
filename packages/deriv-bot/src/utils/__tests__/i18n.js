@@ -1,17 +1,20 @@
-import { expect } from 'chai';
-import { translate, init, xml as translateXml } from '../i18n';
+import { expect }                               from 'chai';
+import { translate, init, xml as translateXml } from '../lang/i18n';
 
 class Xml {
     constructor(el, children = {}) {
         this.el = el;
         this.children = children;
     }
+
     setAttribute(key, value) {
         this.el[key] = value;
     }
+
     getAttribute(key) {
         return this.el[key];
     }
+    
     getElementsByTagName(key) {
         return this.children[key];
     }

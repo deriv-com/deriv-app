@@ -14,12 +14,12 @@
 }
 
 .blocklyTreeIcon.blocklyTreeIconOpen {
-    background-image: url('../image/down-arrow.svg') !important;
+    // background-image: url('dist/media/image/down-arrow.svg') !important;
     background-position: -0.19em -0.38em !important;
 }
 
 .blocklyTreeIcon.blocklyTreeIconClosedLtr {
-    background-image: url('../image/down-arrow.svg') !important;
+    // background-image: url('dist/media/image/down-arrow.svg') !important;
     background-position: -0.19em -0.38em !important;
 }
 
@@ -44,10 +44,11 @@
 }
 
 .blocklyFlyoutBackground {
-    fill: $white !important;
+    fill: #fcfcfc !important;
     fill-opacity: 1 !important;
     stroke: $brand-dark-gray;
-    stroke-width: 0.06em;
+    stroke-width: 0.15em;
+    stroke-linecap: round;
 }
 
 .blocklyToolboxDiv {
@@ -70,22 +71,45 @@
     opacity: 1 !important;
 }
 
-.blocklyScrollbarVertical,
-.blocklyScrollbarHorizontal {
-    display: none;
+.blocklySelected > .blocklyPath {
+    stroke: #fc3;
+    stroke-width: 2px;
 }
 
 .blocklyTreeRow {
+    // box-shadow: inset 0 -0.06em 0 0 #dedede;
     margin-bottom: 0px !important;
     height: 1.9em !important;
     padding-top: 0.25em;
-    box-shadow: inset 0 -0.06em 0 0 #dedede; /* stylelint-disable-line */
 }
 
 .blocklySvg {
     position: absolute;
 }
 
-.blocklyMainBackground {
-    stroke: none;
+.scratchCategoryMenu {
+    width: 100%;
+    color: #575e75;
+    font-size: 1em;
+    user-select: none;
+}
+
+.scratchCategoryMenuItem {
+    padding: 0.5em 1em;
+    cursor: pointer;
+    text-align: left;
+}
+
+.scratchCategoryItemBubble {
+    display: none;
+}
+
+#scratch_area {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#scratch_div {
+    position: absolute;
 }

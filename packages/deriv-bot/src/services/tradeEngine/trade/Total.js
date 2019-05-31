@@ -1,8 +1,8 @@
-import { translate } from '../../../common/i18n';
-import { roundBalance } from '../../common/tools';
-import { info, notify } from '../utils/broadcast';
-import createError from '../../common/error';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { info, notify }               from '../utils/broadcast';
+import { roundBalance }               from '../utils/helpers';
+import createError                    from '../../../utils/error';
+import { translate }                  from '../../../utils/lang/i18n';
+import { observer as globalObserver } from '../../../utils/observer';
 
 const skeleton = {
     totalProfit: 0,
@@ -30,6 +30,7 @@ export default Engine =>
                 globalStat[accountID] = { ...skeleton };
             });
         }
+
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
@@ -75,21 +76,25 @@ export default Engine =>
                 notify('warn', `${translate('Loss amount')}: ${profit}`);
             }
         }
+
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
             const accountStat = this.getAccountStat();
 
             return ++accountStat.totalRuns;
         }
+
         /* eslint-disable class-methods-use-this */
         getTotalRuns() {
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
+
         getTotalProfit() {
             const accountStat = this.getAccountStat();
             return Number(accountStat.totalProfit);
         }
+
         /* eslint-enable */
         checkLimits(tradeOption) {
             if (!tradeOption.limitations) {
@@ -109,6 +114,7 @@ export default Engine =>
                 }
             }
         }
+
         getAccountStat() {
             const { loginid: accountID } = this.accountInfo;
 

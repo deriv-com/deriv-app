@@ -1,6 +1,6 @@
-import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../utils/storageManager';
-import { supportedLanguages, translate, init } from './i18n';
+import { supportedLanguages, translate, init }  from './i18n';
+import { parseQueryString }                     from '../tools';
+import { set as setStorage, get as getStorage } from '../storageManager';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
@@ -9,6 +9,7 @@ export const getLanguage = () => {
     return lang;
 };
 
+/* eslint-disable */
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
         const el = $(this);

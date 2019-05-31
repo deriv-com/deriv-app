@@ -1,6 +1,6 @@
-import { getAppIdFallback } from '../../binaryApi/appId';
-import AppIdMap from '../../binaryApi/appIdResolver';
-import { getTokenList } from './storageManager';
+import { getTokenList }     from './storageManager';
+import { getAppIdFallback } from '../services/api/appId';
+import AppIdMap             from '../services/api/appIdResolver';
 
 const GTM = (() => {
     const isGtmApplicable = () => Object.values(AppIdMap).includes(`${getAppIdFallback()}`);

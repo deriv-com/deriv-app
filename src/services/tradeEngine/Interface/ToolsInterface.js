@@ -1,6 +1,6 @@
-import CandleInterface from './CandleInterface';
-import MiscInterface from './MiscInterface';
+import CandleInterface     from './CandleInterface';
 import IndicatorsInterface from './IndicatorsInterface';
+import MiscInterface       from './MiscInterface';
 
 // prettier-ignore
 export default Interface => class extends IndicatorsInterface(

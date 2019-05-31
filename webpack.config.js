@@ -1,9 +1,14 @@
-const path = require('path');
+const CopyWebpackPlugin    = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const StyleLintPlugin = require('stylelint-webpack-plugin');
+const path                 = require('path');
+const StyleLintPlugin      = require('stylelint-webpack-plugin');
 
 module.exports = {
-    entry : path.join(__dirname, './src/app.js'),
+    entry : [
+        '@babel/polyfill', 
+        path.join(__dirname, './src/scratch/hooks'),
+        path.join(__dirname, './src/app.js'),
+    ],
     output: {
         path    : path.resolve(__dirname, 'dist'),
         filename: 'bot.js',
@@ -33,7 +38,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
-                exclude: [/node_modules/,/scratch/],
+                exclude: [/node_modules/],
                 loader: "eslint-loader",
                 options: {
                     fix: true
@@ -48,6 +53,15 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({ filename: 'bot.css' }),
-        new StyleLintPlugin( { fix:true }),
-    ]
+        new StyleLintPlugin( { fix: true }),
+        new CopyWebpackPlugin([
+            { from: './src/scratch/xml' },
+            { from: './node_modules/scratch-blocks/media', to: 'media' },
+            { from: './node_modules/scratch-blocks/blockly_compressed_vertical.js', to: 'scratch-compressed.js' },
+            { from: './node_modules/scratch-blocks/msg/messages.js', to: 'scratch-messages.js' },
+        ])
+    ],
+    externals: {
+        Blockly: 'Blockly',
+    }
 };

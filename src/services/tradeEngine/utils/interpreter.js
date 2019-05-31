@@ -1,7 +1,7 @@
-import JSInterpreter from 'js-interpreter';
-import { observer as globalObserver } from '../../common/utils/observer';
-import { createScope } from './CliTools';
-import Interface from './Interface';
+import JSInterpreter                  from 'js-interpreter';
+import { createScope }                from './cliTools';
+import { observer as globalObserver } from '../../../utils/observer';
+import Interface                      from '../Interface';
 
 const unrecoverableErrors = [
     'InsufficientBalance',
@@ -32,6 +32,7 @@ export default class Interpreter {
     constructor() {
         this.init();
     }
+
     init() {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
@@ -40,6 +41,7 @@ export default class Interpreter {
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
         );
     }
+
     run(code) {
         const initFunc = (interpreter, scope) => {
             const BotIf = this.bot.getInterface('Bot');
@@ -135,23 +137,27 @@ export default class Interpreter {
             this.loop();
         });
     }
+
     loop() {
         if (this.stopped || !this.interpreter.run()) {
             this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
+
     revert(state) {
         this.interpreter.restoreStateSnapshot(state);
         // eslint-disable-next-line no-underscore-dangle
         this.interpreter.paused_ = false;
         this.loop();
     }
+
     terminateSession() {
         this.$scope.api.disconnect();
         globalObserver.emit('bot.stop');
         this.stopped = true;
     }
+
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
             globalObserver.register('contract.status', contractStatus => {
@@ -164,6 +170,7 @@ export default class Interpreter {
             this.terminateSession();
         }
     }
+
     createAsync(interpreter, func) {
         return interpreter.createAsyncFunction((...args) => {
             const callback = args.pop();
@@ -176,6 +183,7 @@ export default class Interpreter {
                 .catch(e => this.$scope.observer.emit('Error', e));
         });
     }
+
     hasStarted() {
         return !this.stopped;
     }

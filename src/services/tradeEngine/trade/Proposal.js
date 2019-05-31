@@ -1,6 +1,6 @@
-import { translate } from '../../../common/i18n';
-import { tradeOptionToProposal, doUntilDone, getUUID } from '../helpers';
-import { proposalsReady, clearProposals } from './state/actions';
+import { proposalsReady, clearProposals }              from './state/actions';
+import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
+import { translate }                                   from '../../../utils/lang/i18n';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -12,6 +12,7 @@ export default Engine =>
             this.proposalTemplates = tradeOptionToProposal(tradeOption);
             this.renewProposalsOnPurchase();
         }
+
         selectProposal(contractType) {
             let toBuy;
 
@@ -38,13 +39,16 @@ export default Engine =>
                 askPrice: toBuy.ask_price,
             };
         }
+
         renewProposalsOnPurchase() {
             this.unsubscribeProposals().then(() => this.requestProposals());
         }
+
         clearProposals() {
             this.data = this.data.set('proposals', new Map());
             this.store.dispatch(clearProposals());
         }
+
         requestProposals() {
             this.proposalTemplates.map(proposal =>
                 doUntilDone(() =>
@@ -81,6 +85,7 @@ export default Engine =>
                 )
             );
         }
+
         observeProposals() {
             this.listen('proposal', r => {
                 const { proposal, passthrough } = r;
@@ -95,6 +100,7 @@ export default Engine =>
                 }
             });
         }
+
         unsubscribeProposals() {
             const proposalObj = this.data.get('proposals');
 
@@ -121,6 +127,7 @@ export default Engine =>
                 })
             );
         }
+
         checkProposalReady() {
             const proposals = this.data.get('proposals');
 
@@ -128,6 +135,7 @@ export default Engine =>
                 this.startPromise.then(() => this.store.dispatch(proposalsReady()));
             }
         }
+
         isNewTradeOption(tradeOption) {
             if (!this.tradeOption) {
                 this.tradeOption = tradeOption;

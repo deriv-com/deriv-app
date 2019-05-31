@@ -1,8 +1,7 @@
-import filesaver from 'file-saver';
-import Observer from '../common/utils/observer';
-import { generateLiveApiInstance } from '../../common/appId';
-import _Symbol from '../common/symbolApi';
-import TicksService from '../common/TicksService';
+import _Symbol                     from './symbolApi';
+import { generateLiveApiInstance } from './appId';
+import TicksService                from './ticksService';
+import Observer                    from '../../utils/observer';
 
 let tmpApi = generateLiveApiInstance();
 
@@ -46,10 +45,5 @@ export const updateRow = (prevRowIndex, trade, state) => ({
         },
     ],
 });
-
-export const saveAs = ({ data, filename, type }) => {
-    const blob = new Blob([data], { type });
-    filesaver.saveAs(blob, filename);
-};
 
 export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));

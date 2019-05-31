@@ -1,6 +1,5 @@
-import { translate } from '../../common/i18n';
-import { generateLiveApiInstance } from '../../common/appId';
-import { load as loadLang } from '../../common/lang';
+import { translate }        from '../utils/lang/i18n';
+import { load as loadLang } from '../utils/lang/lang';
 
 loadLang();
 
@@ -150,7 +149,7 @@ const config = {
             },
         ],
     },
-    barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
+    barrierTypes: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
     ohlcFields  : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
@@ -173,7 +172,7 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks        : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mainBlocks        : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
     conditionsCategory: {
         callput     : ['risefall', 'higherlower'],
         callputequal: ['risefallequals'],
@@ -237,13 +236,8 @@ const config = {
 };
 
 export async function updateConfigCurrencies() {
-    const api = generateLiveApiInstance();
-    try {
-        const response = await api.getPayoutCurrencies();
-        config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);
-    } catch (e) {
-        config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
-    }
+    // TODO: Retrieve currencies from API
+    config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
 }
 
 export default config;

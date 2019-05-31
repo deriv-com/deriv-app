@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from '../stores/connect';
-import '../assets/sass/_bot.scss';
+import React            from 'react';
+import Workspace        from './workspace.jsx';
+import { connect }      from '../stores/connect';
+import                       '../assets/sass/_bot.scss';
 
-const Bot = ({
-    title,
-}) => (
-    <div className='main'>{title}</div>
+const Bot = () => (
+    <React.Fragment>
+        <Workspace />
+    </React.Fragment>
 );
 
 export default connect(({ bot }) => ({

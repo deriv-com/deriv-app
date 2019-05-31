@@ -42,8 +42,8 @@ const getIndicatorsFromApi = () =>
     );
 
 describe('Relative Strength Index', () => {
-    let result;
-    let expected;
+    let result,
+        expected;
 
     beforeAll(done =>
         getIndicatorsFromApi().then(r => {

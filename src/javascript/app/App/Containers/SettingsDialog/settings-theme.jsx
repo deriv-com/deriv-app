@@ -11,7 +11,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
         if (!is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
-            GTM.pushDataLayer({ theme: 'dark' });
+            GTM.pushDataLayer({ event: 'switch theme' });
         }
     };
 
@@ -19,7 +19,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
         if (is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
-            GTM.pushDataLayer({ theme: 'light' });
+            GTM.pushDataLayer({ event: 'switch theme' });
         }
     };
     return (

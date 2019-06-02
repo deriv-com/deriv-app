@@ -4,6 +4,7 @@ import { UnderlyingIcon }       from 'App/Components/Elements/underlying-icon.js
 import { Icon }                 from 'Assets/Common';
 import { IconDeposit }          from 'Assets/Common/icon-deposit.jsx';
 import { IconWithdrawal }       from 'Assets/Common/icon-withdrawal.jsx';
+import { IconTransfer }         from 'Assets/Common/icon-transfer.jsx';
 import { IconTradeType }        from 'Assets/Trading/Types';
 import { getMarketInformation } from '../Helpers/market-underyling';
 
@@ -25,16 +26,12 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 </div>
             </div>
         );
-    } else if (['deposit', 'withdrawal'].includes(payload.action_type)) {
+    } else if (['deposit', 'withdrawal', 'transfer'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
-                {
-                    payload.action_type === 'deposit' ? (
-                        <Icon icon={IconDeposit} />
-                    ) : (
-                        <Icon icon={IconWithdrawal} />
-                    )
-                }
+                {payload.action_type === 'deposit' && <Icon icon={IconDeposit} />}
+                {payload.action_type === 'withdrawal' && <Icon icon={IconWithdrawal} />}
+                {payload.action_type === 'transfer' && <Icon icon={IconTransfer} />}
             </div>
         );
     }

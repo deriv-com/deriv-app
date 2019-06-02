@@ -42,7 +42,7 @@ class Statement extends React.Component {
                     ),
                 }
                 : getContractPath(row_obj.id);
-        } else if (['deposit', 'withdrawal'].includes(row_obj.action_type)) {
+        } else if (['deposit', 'withdrawal', 'transfer'].includes(row_obj.action_type)) {
             action = {
                 message: row_obj.desc,
             };

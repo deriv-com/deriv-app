@@ -28,6 +28,12 @@ $side-padding: 1.2em;
             }
         }
     }
+    &__inset_header {
+        @include themify($themes) {
+            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
+        }
+        margin-bottom: 24px;
+    }
     .unknown-icon {
         margin-left: 8px;
         fill: $COLOR_DARK_BLUE_5;

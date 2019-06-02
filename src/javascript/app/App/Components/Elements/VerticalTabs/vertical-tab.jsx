@@ -47,6 +47,7 @@ class VerticalTab extends React.PureComponent {
                 />
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
+                    action_bar_classname={this.props.action_bar_classname}
                     items={this.props.list}
                     selected={this.state.selected}
                     is_routed={this.props.is_routed}
@@ -64,11 +65,12 @@ VerticalTab.propTypes = {
             title  : PropTypes.string,
         })
     ),
-    current_path : PropTypes.string,
-    header_title : PropTypes.string,
-    is_full_width: PropTypes.bool,
-    is_routed    : PropTypes.bool,
-    list         : PropTypes.arrayOf(
+    action_bar_classname: PropTypes.string,
+    current_path        : PropTypes.string,
+    header_title        : PropTypes.string,
+    is_full_width       : PropTypes.bool,
+    is_routed           : PropTypes.bool,
+    list                : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
             icon   : PropTypes.func,

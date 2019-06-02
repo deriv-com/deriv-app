@@ -1,12 +1,13 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { withRouter }  from 'react-router-dom';
-import { connect }     from 'Stores/connect';
-import { FadeWrapper } from 'App/Components/Animations';
-import VerticalTab     from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import { IconClose }   from 'Assets/Settings';
-import AppRoutes       from 'Constants/routes';
-import { localize }    from '_common/localize';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { withRouter }    from 'react-router-dom';
+import { localize }      from '_common/localize';
+import { connect }       from 'Stores/connect';
+import { FadeWrapper }   from 'App/Components/Animations';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import { IconClose }     from 'Assets/Settings';
+import AppRoutes         from 'Constants/routes';
+import WalletInformation from './wallet-information.jsx';
 
 class Reports extends React.Component {
     state = { is_visible: false };
@@ -63,6 +64,10 @@ class Reports extends React.Component {
                 icon : IconClose,
                 title: localize('Close'),
             },
+            {
+                icon : () => <WalletInformation />,
+                title: 'Hey!',
+            },
         ];
         return (
             <FadeWrapper
@@ -74,6 +79,7 @@ class Reports extends React.Component {
                     <VerticalTab
                         header_title={localize('Reports')}
                         action_bar={action_bar_items}
+                        action_bar_classname='reports__inset_header'
                         alignment='center'
                         classNameHeader='reports__tab-header'
                         current_path={this.props.location.pathname}

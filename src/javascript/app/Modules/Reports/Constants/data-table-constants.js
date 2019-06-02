@@ -1,8 +1,10 @@
+import classNames           from 'classnames';
 import React                from 'react';
 import { localize }         from '_common/localize';
 import Label                from 'App/Components/Elements/Label';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
+import { IconPriceMove }    from 'Assets/Trading/icon-price-move.jsx';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
@@ -134,6 +136,30 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value }) => (
             <Money amount={cell_value} currency={currency} />
         ),
+    }, {
+        title            : localize('Potential profit/loss'),
+        col_index        : 'profit',
+        renderCellContent: ({ row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
+            const profit = row_obj.contract_info.profit;
+            // eslint-disable-next-line consistent-return
+            return (
+                <div className={classNames('open-positions__profit-loss', {
+                    'open-positions__profit-loss--negative': (
+                        profit < 0
+                    ),
+                    'open-positions__profit-loss--positive': (
+                        profit > 0
+                    ),
+                })}
+                >
+                    <Money amount={Math.abs(profit)} currency={currency} />
+                    <div className='open-positions__profit-loss--movement'>
+                        <IconPriceMove type={profit > 0 ? 'profit' : 'loss'} />
+                    </div>
+                </div>
+            );
+        },
     }, {
         title            : localize('Potential payout'),
         col_index        : 'payout',

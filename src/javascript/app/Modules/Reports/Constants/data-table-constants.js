@@ -7,6 +7,7 @@ import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { IconPriceMove }    from 'Assets/Trading/icon-price-move.jsx';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
+import Localize             from '../../../App/Components/Elements/localize';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 
@@ -48,8 +49,8 @@ export const getStatementTableColumnsTemplate = (currency) => [
         key              : 'mode',
         title            : localize('Transaction'),
         col_index        : 'action_type',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <Label mode={getModeFromValue(cell_value)}>{row_obj.action}</Label>
+        renderCellContent: ({ row_obj }) => (
+            <p><Localize str={row_obj.action} /></p>
         ),
     }, {
         title            : localize('Credit/Debit'),

@@ -9,6 +9,7 @@ import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency';
 import { IconLogout }           from 'Assets/Header/Drawer';
 import { requestLogout }        from 'Services/index';
 import { connect }              from 'Stores/connect';
+import GTM                      from 'Utils/gtm';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -29,7 +30,7 @@ class AccountSwitcher extends React.Component {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
         requestLogout().then(this.props.cleanUp);
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
@@ -42,6 +43,7 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
+        GTM.pushDataLayer({ event: 'account switch' });
         await this.props.switchAccount(loginid);
     }
 

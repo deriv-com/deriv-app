@@ -50,6 +50,7 @@ class Chart extends React.Component {
                 margin={this.props.margin || null}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
+                enabledNavigationWidget={!!this.props.scroll_to_epoch || !!this.props.start_epoch}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

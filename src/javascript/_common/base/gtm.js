@@ -19,7 +19,7 @@ const GTM = (() => {
         language: getLanguage(),
         ...ClientBase.isLoggedIn() && {
             visitorId: ClientBase.get('loginid'),
-            bom_email: ClientBase.get('email'),
+            currency : ClientBase.get('currency'),
         },
         ...('is_dark_mode_on' in LocalStore.getObject('ui_store')) && {
             theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light',

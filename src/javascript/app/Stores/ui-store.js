@@ -235,8 +235,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleReports() {
-        this.is_reports_visible = !this.is_reports_visible;
+    toggleReports(is_visible) {
+        this.is_reports_visible = is_visible;
     }
 
     @action.bound

@@ -34,3 +34,19 @@ export const isMarketClosed = (active_symbols = [], symbol) => {
         :
         false;
 };
+
+const countDecimalPlaces = (num) => {
+    if (!isNaN(num)) {
+        const str = num.toString();
+        if (str.indexOf('.') !== -1) {
+            return str.split('.')[1].length;
+        }
+    }
+    return 0;
+};
+
+export const getUnderlyingPipSize = async (underlying) => {
+    const active_symbols = await BinarySocket.send({ active_symbols: 'brief' });
+    const obj_symbols    = active_symbols.active_symbols.find(symbols => symbols.symbol === underlying) || {};
+    return countDecimalPlaces(obj_symbols.pip || 0.001);
+};

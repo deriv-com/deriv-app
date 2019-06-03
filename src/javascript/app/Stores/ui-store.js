@@ -16,6 +16,7 @@ export default class UIStore extends BaseStore {
     @observable is_main_drawer_on          = false;
     @observable is_notifications_drawer_on = false;
     @observable is_positions_drawer_on     = false;
+    @observable is_reports_visible         = false;
 
     @observable is_dark_mode_on         = false;
     @observable is_language_dialog_on   = false;
@@ -81,6 +82,7 @@ export default class UIStore extends BaseStore {
             'is_chart_layout_default',
             'is_dark_mode_on',
             'is_positions_drawer_on',
+            'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
         ];
@@ -230,6 +232,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
+    }
+
+    @action.bound
+    toggleReports() {
+        this.is_reports_visible = !this.is_reports_visible;
     }
 
     @action.bound

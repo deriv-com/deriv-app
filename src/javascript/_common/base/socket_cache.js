@@ -30,6 +30,7 @@ const SocketCache = (() => {
     //     function: return value of the function
     const config = {
         payout_currencies: { expire: 10 },
+        // proposal_open_contract: { expire: 10,  map_to: ['contract_id'] },
         active_symbols   : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
         contracts_for    : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
         exchange_rates   : { expire: 60, map_to: ['base_currency'] },

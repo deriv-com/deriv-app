@@ -31,7 +31,6 @@ class Reports extends React.Component {
 
     componentWillUnmount() {
         this.props.toggleReports(false);
-        this.setState({ is_visible: false });
         this.props.hideBlur();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }

@@ -8,8 +8,7 @@ import { localize }           from '_common/localize';
 import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
-import {
-    createMarkerStartTime }   from './Helpers/chart-marker-helpers';
+import { createMarkerStartTime } from './Helpers/chart-marker-helpers';
 import {
     getDetailsExpiry,
     getDetailsInfo }          from './Helpers/details';
@@ -65,7 +64,7 @@ export default class ContractStore extends BaseStore {
     @action.bound
     drawChart(SmartChartStore, contract_info) {
         this.forget_id       = contract_info.id;
-        const { date_start } = contract_info;
+        const { date_start, tick_count } = contract_info;
         const end_time       = getEndTime(contract_info);
 
         SmartChartStore.setChartView(contract_info.purchase_time);
@@ -73,7 +72,7 @@ export default class ContractStore extends BaseStore {
 
         // finish contracts if end_time exists
         if (end_time) {
-            if (!this.is_ongoing_contract) {
+            if (!this.is_ongoing_contract && !(tick_count < 2)) {
                 SmartChartStore.setStaticChart(true);
             } else {
                 SmartChartStore.setStaticChart(false);

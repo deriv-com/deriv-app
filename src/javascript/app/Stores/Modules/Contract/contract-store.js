@@ -10,6 +10,8 @@ import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
+    createMarkerStartTime }   from './Helpers/chart-marker-helpers';
+import {
     getDetailsExpiry,
     getDetailsInfo }          from './Helpers/details';
 import {

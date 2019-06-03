@@ -9,7 +9,7 @@ const DigitSpot = ({
 }) => (
     <React.Fragment>
         <span className='digits__digit-spot-value'>
-            {current_spot.toString().slice(0, -1)}
+            {current_spot.slice(0, -1)}
         </span>
         <span
             className={classNames('digits__digit-spot-last', {
@@ -17,13 +17,13 @@ const DigitSpot = ({
                 'digits__digit-spot-last--loss': is_lost,
             })}
         >
-            {current_spot.toString().slice(-1)}
+            {current_spot.slice(-1)}
         </span>
     </React.Fragment>
 );
 
 DigitSpot.propTypes = {
-    current_spot: PropTypes.number,
+    current_spot: PropTypes.string,
     is_lost     : PropTypes.bool,
     is_won      : PropTypes.bool,
 };

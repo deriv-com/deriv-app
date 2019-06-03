@@ -14,4 +14,4 @@ IconQuestion.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconQuestion };
+export default IconQuestion;

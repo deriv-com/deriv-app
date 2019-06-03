@@ -244,4 +244,4 @@ IconCountryFlag.propTypes = {
     type     : PropTypes.string,
 };
 
-export { IconCountryFlag };
+export default IconCountryFlag;

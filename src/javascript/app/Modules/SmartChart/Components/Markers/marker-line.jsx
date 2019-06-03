@@ -2,7 +2,7 @@ import classNames           from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import Icon         from 'Assets/Common';
+import Icon         from 'Assets/icon.jsx';
 
 const MarkerLine = ({
     label,

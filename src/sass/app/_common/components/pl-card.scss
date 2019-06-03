@@ -10,6 +10,8 @@
         &__header {
             margin-bottom: 4px;
             align-self: flex-start;
+            white-space: nowrap;
+            max-width: 90px;
             @include themify($themes) {
                 @include typeface(--xsmall-center-normal-black, none);
                 color: themed('text_primary_color');

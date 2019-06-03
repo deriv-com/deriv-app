@@ -43,6 +43,8 @@
     }
     &__label {
         font-size: 1em;
+        white-space: nowrap;
+        max-width: 90px;
         @include themify($themes) {
             color: themed('text_primary_color');
         }

@@ -102,7 +102,8 @@ class Icon extends React.PureComponent {
             type         : this.props.type,
         };
 
-        return this.props.icon(options);
+        const IconLazy = this.icons[this.props.icon] ? this.icons[this.props.icon] : <div />;
+        return <IconLazy {...options} />;
     }
 }
 

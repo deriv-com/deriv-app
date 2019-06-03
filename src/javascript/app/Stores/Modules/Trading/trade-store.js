@@ -281,7 +281,8 @@ export default class TradeStore extends BaseStore {
                     } = response.buy;
                     // toggle smartcharts to contract mode
                     if (contract_id) {
-                        this.root_store.modules.smart_chart.switchToContractMode(purchase_time);
+                        this.root_store.modules.smart_chart.setChartView(purchase_time);
+                        this.root_store.modules.smart_chart.switchToContractMode();
                         this.root_store.modules.contract.onMount(contract_id, false, purchase_time, longcode);
                         this.root_store.ui.openPositionsDrawer();
                     }

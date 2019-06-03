@@ -41,9 +41,8 @@ export default class SmartChartStore extends BaseStore {
     trade_chart_symbol               = null;
 
     @action.bound
-    switchToContractMode(purchase_time) {
+    switchToContractMode() {
         this.setContractMode(true);
-        this.setChartView(purchase_time);
         this.updateGranularity(0);
         this.updateChartType('mountain');
     }

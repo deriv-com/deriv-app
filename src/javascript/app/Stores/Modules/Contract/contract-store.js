@@ -9,6 +9,8 @@ import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
+    createMarkerStartTime }   from './Helpers/chart-marker-helpers';
+import {
     getDetailsExpiry,
     getDetailsInfo }          from './Helpers/details';
 import {
@@ -114,10 +116,10 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id, is_from_positions) {
+    onMount(contract_id, is_from_positions, purchase_time, longcode) {
         if (contract_id === +this.contract_id) return;
-        if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
+        if (this.is_from_positions) this.onCloseContract();
         this.has_error         = false;
         this.error_message     = '';
         this.contract_id       = contract_id;
@@ -128,6 +130,12 @@ export default class ContractStore extends BaseStore {
             this.replay_info = {};
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
+            }
+            if (!this.is_from_positions) {
+                const contract_info = { date_start: purchase_time };
+                this.contract_info.longcode = longcode;
+                createMarkerStartTime(contract_info);
+                createChartMarkers(this.smart_chart, contract_info);
             }
             this.smart_chart.saveAndClearTradeChartLayout('contract');
             this.smart_chart.setContractMode(true);

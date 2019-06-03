@@ -274,10 +274,15 @@ export default class TradeStore extends BaseStore {
                         ...this.proposal_info[type],
                         buy_price: response.buy.buy_price,
                     };
+                    const {
+                        contract_id,
+                        longcode,
+                        purchase_time,
+                    } = response.buy;
                     // toggle smartcharts to contract mode
-                    const contract_id = getPropertyValue(response, ['buy', 'contract_id']);
                     if (contract_id) {
-                        this.root_store.modules.contract.onMount(contract_id);
+                        this.root_store.modules.smart_chart.switchToContractMode(purchase_time);
+                        this.root_store.modules.contract.onMount(contract_id, false, purchase_time, longcode);
                         this.root_store.ui.openPositionsDrawer();
                     }
                     GTM.pushPurchaseData(contract_data, this.root_store);

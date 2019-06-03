@@ -87,8 +87,7 @@ const GTM = (() => {
             BinarySocket.wait('mt5_login_list').then((response) => {
                 (response.mt5_login_list || []).forEach((obj) => {
                     const acc_type = (ClientBase.getMT5AccountType(obj.group) || '')
-                        .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/costarica|svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
-                        // TODO [->svg]
+                        .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
                     if (acc_type) {
                         data[`mt5_${acc_type}_id`] = obj.login;
                     }
@@ -175,10 +174,10 @@ const GTM = (() => {
         if (!isGtmApplicable() || ClientBase.get('is_virtual')) return;
         if (!response.transaction || !response.transaction.action) return;
         if (!['deposit', 'withdrawal'].includes(response.transaction.action)) return;
- 
+
         const moment_now  = window.time || moment().utc();
         const storage_key = 'GTM_transactions';
-        
+
         // Remove values from prev days so localStorage doesn't grow to infinity
         let gtm_transactions = JSON.parse(localStorage.getItem(storage_key)) || {};
         if (Object.prototype.hasOwnProperty.call(gtm_transactions, 'timestamp')) {

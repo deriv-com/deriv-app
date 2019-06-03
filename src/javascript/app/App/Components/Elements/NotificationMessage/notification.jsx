@@ -1,15 +1,11 @@
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import classNames          from 'classnames';
-import { Icon }            from 'Assets/Common';
-import { IconDanger }      from 'Assets/Common/icon-danger.jsx';
-import { IconInformation } from 'Assets/Common/icon-information.jsx';
-import { IconWarning }     from 'Assets/Common/icon-warning.jsx';
-import { IconSuccess }     from 'Assets/Common/icon-success.jsx';
-import CloseButton         from './close-button.jsx';
+import PropTypes   from 'prop-types';
+import React       from 'react';
+import classNames  from 'classnames';
+import Icon        from 'Assets/icon.jsx';
+import CloseButton from './close-button.jsx';
 import {
     default_delay,
-    types }                from './constants';
+    types }        from './constants';
 
 const Notification = ({
     data,
@@ -36,11 +32,11 @@ const Notification = ({
             })}
         >
             <div className='notification__icon'>
-                { data.type === 'danger'  && <Icon icon={IconDanger} className='notification__icon-type' /> }
+                { data.type === 'danger'  && <Icon icon='IconDanger' className='notification__icon-type' /> }
                 { (data.type === 'info' || data.type === 'contract_sold')
-                    && <Icon icon={IconInformation} className='notification__icon-type' /> }
-                { data.type === 'success' && <Icon icon={IconSuccess} className='notification__icon-type' /> }
-                { data.type === 'warning' && <Icon icon={IconWarning} className='notification__icon-type' /> }
+                    && <Icon icon='IconInformation' className='notification__icon-type' /> }
+                { data.type === 'success' && <Icon icon='IconSuccess' className='notification__icon-type' /> }
+                { data.type === 'warning' && <Icon icon='IconWarning' className='notification__icon-type' /> }
             </div>
             <div className='notification__text-container'>
                 <h4 className='notification__header'>{data.header}</h4>

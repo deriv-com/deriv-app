@@ -6,9 +6,7 @@ import { NavLink }           from 'react-router-dom';
 import { CSSTransition }     from 'react-transition-group';
 import { Scrollbars }        from 'tt-react-custom-scrollbars';
 import { localize }          from '_common/localize';
-import {
-    Icon,
-    IconMinimize }           from 'Assets/Common';
+import Icon                  from 'Assets/icon.jsx';
 import routes                from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
 import { connect }           from 'Stores/connect';
@@ -86,7 +84,7 @@ class PositionsDrawer extends React.Component {
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >
-                        <Icon icon={IconMinimize} />
+                        <Icon icon='IconMinimize' />
                     </div>
                 </div>
                 <div className='positions-drawer__body'>

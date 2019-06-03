@@ -35,11 +35,11 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             
             // Contract
-            IconContractClose: React.lazy(() => import('./Contract/icon-contract-close.jsx')),
-            IconEndTimeSVG   : React.lazy(() => import('./Contract/icon-end-time.jsx')),
-            IconFlagSVG      : React.lazy(() => import('./Contract/icon-flag.jsx')),
-            IconStartTimeSVG : React.lazy(() => import('./Contract/icon-start-time.jsx')),
-            IconTickSVG      : React.lazy(() => import('./Contract/icon-tick.jsx')),
+            // IconContractClose: React.lazy(() => import('./Contract/icon-contract-close.jsx')),
+            // IconEndTimeSVG   : React.lazy(() => import('./Contract/icon-end-time.jsx')),
+            // IconFlagSVG      : React.lazy(() => import('./Contract/icon-flag.jsx')),
+            // IconStartTimeSVG : React.lazy(() => import('./Contract/icon-start-time.jsx')),
+            // IconTickSVG      : React.lazy(() => import('./Contract/icon-tick.jsx')),
 
             // Footer
             IconMaximize : React.lazy(() => import('./Footer/icon-maximize.jsx')),
@@ -78,14 +78,14 @@ class Icon extends React.PureComponent {
             IconWithdrawal: React.lazy(() => import('./Statement')),
 
             // Trading
-            IconBarrierDown   : React.lazy(() => import('./Trading/Barriers')),
-            IconBarrierUp     : React.lazy(() => import('./Trading/Barriers')),
-            IconTradeCategory : React.lazy(() => import('./Trading/Categories')),
-            TradeCategoriesGIF: React.lazy(() => import('./Trading/Categories')),
-            TradeCategories   : React.lazy(() => import('./Trading/Categories')),
-            IconTradeType     : React.lazy(() => import('./Trading/Types')),
-            IconLock          : React.lazy(() => import('./Trading/icon-lock.jsx')),
-            IconPriceMove     : React.lazy(() => import('./Trading/icon-price-move.jsx')),
+            IconBarrierDown: React.lazy(() => import('./Trading/Barriers')),
+            IconBarrierUp  : React.lazy(() => import('./Trading/Barriers')),
+            // IconTradeCategory : React.lazy(() => import('./Trading/Categories')),
+            // TradeCategoriesGIF: React.lazy(() => import('./Trading/Categories')),
+            // TradeCategories   : React.lazy(() => import('./Trading/Categories')),
+            IconTradeType  : React.lazy(() => import('./Trading/Types')),
+            IconLock       : React.lazy(() => import('./Trading/icon-lock.jsx')),
+            IconPriceMove  : React.lazy(() => import('./Trading/icon-price-move.jsx')),
         };
     }
 
@@ -103,7 +103,11 @@ class Icon extends React.PureComponent {
         };
 
         const IconLazy = this.icons[this.props.icon] ? this.icons[this.props.icon] : <div />;
-        return <IconLazy {...options} />;
+        return (
+            <React.Suspense fallback={<div />}>
+                <IconLazy {...options} />
+            </React.Suspense>
+        );
     }
 }
 
@@ -112,10 +116,10 @@ Icon.propTypes = {
     className    : PropTypes.string,
     classNamePath: PropTypes.string,
     classNameRect: PropTypes.string,
-    icon         : PropTypes.func,
+    icon         : PropTypes.string,
     is_disabled  : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClick      : PropTypes.func,
     type         : PropTypes.string,
 };
 
-export { Icon };
+export default Icon;

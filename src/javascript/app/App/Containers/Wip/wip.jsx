@@ -1,10 +1,10 @@
-import React          from 'react';
-import { localize }   from '_common/localize';
-import { urlFor }     from '_common/url';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import Button         from 'App/Components/Form/button.jsx';
-import { IconWip }    from 'Assets/Common/icon-wip.jsx';
-import { connect }    from 'Stores/connect';
+import React        from 'react';
+import { localize } from '_common/localize';
+import { urlFor }   from '_common/url';
+import Localize     from 'App/Components/Elements/localize.jsx';
+import Button       from 'App/Components/Form/button.jsx';
+import Icon         from 'Assets/icon.jsx';
+import { connect }  from 'Stores/connect';
 
 const onClick = () => {
     window.location.href = window.open(urlFor('trading', undefined, undefined, true));
@@ -13,7 +13,7 @@ const onClick = () => {
 const Wip = (ui) => (
     <div className='work-in-progress'>
         <div className='work-in-progress__content'>
-            <IconWip theme={ui.is_dark_mode ? 'dark' : 'light'} />
+            <Icon icon='IconWip' theme={ui.is_dark_mode ? 'dark' : 'light'} />
             <div className='work-in-progress__header'>
                 <Localize str='Work in progress!' />
             </div>

@@ -22,9 +22,9 @@ describe('TogglePositions', () => {
         const wrapper = shallow(<TogglePositions is_positions_drawer_on={false} />);
         expect(wrapper.find('.ic-positions--active').exists()).to.be.false;
     });
-    it('should contain <Icon icon={IconPositions} />', () => {
+    it('should contain <Icon icon=\'IconPositions\' />', () => {
         const wrapper = shallow(<TogglePositions />);
-        expect(wrapper.contains(<Icon icon={IconPositions} className='footer__icon ic-positions__icon' />)).to.be.true;
+        expect(wrapper.contains(<Icon icon='IconPositions' className='footer__icon ic-positions__icon' />)).to.be.true;
     });
     it('should call togglePositionsDrawer passed onClick', () => {
         const callback = fake();

@@ -1,7 +1,7 @@
 import PropTypes          from 'prop-types';
 import React              from 'react';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
-import { IconTradeType }  from 'Assets/Trading/Types';
+import Icon               from 'Assets/icon.jsx';
 
 const getMarketInformation = (payload) => {
     const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_'); // Used to get market name from shortcode
@@ -28,7 +28,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 </div>
 
                 <div className='market-symbol-icon-category'>
-                    <IconTradeType type={market_information.category} />
+                    <Icon icon='IconTradeType' type={market_information.category} />
                     {show_description && market_information.category}
                 </div>
             </div>

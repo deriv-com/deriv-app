@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Icon }     from 'Assets/Common/icon.jsx';
+import Icon         from 'Assets/icon.jsx';
 
 export const IconTickSVG = () => (
     <svg width='16' height='16' viewBox='0 0 16 16'>
@@ -13,7 +13,7 @@ export const IconTickSVG = () => (
 );
 
 const IconTick = () => (
-    <Icon icon={IconTickSVG} />
+    <Icon icon='IconTickSVG' />
 );
 
 IconTick.propTypes = {

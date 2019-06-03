@@ -7,8 +7,7 @@ import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import { connect }          from 'Stores/connect';
-import { Icon }             from 'Assets/Common';
-import { IconClose }        from 'Assets/Settings';
+import Icon                 from 'Assets/icon.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from '_common/localize';
 import InfoBox              from './info-box.jsx';
@@ -53,7 +52,7 @@ class ContractReplay extends React.Component {
         const action_bar_items = [
             {
                 onClick: () => this.props.history.push(AppRoutes.trade),
-                icon   : IconClose,
+                icon   : 'IconClose',
                 title  : localize('Close'),
             },
         ];

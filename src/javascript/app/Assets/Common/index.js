@@ -24,4 +24,3 @@ export * from './icon-question.jsx';
 export * from './icon-red-dot.jsx';
 export * from './icon-success.jsx';
 export * from './icon-warning.jsx';
-export * from './icon.jsx';

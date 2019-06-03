@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Icon } from 'Assets/Common/icon.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import Icon         from 'Assets/icon.jsx';
 
 export const IconStartTimeSVG = ({ className, classNamePath }) => (
     <svg className={className} xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
@@ -15,7 +15,7 @@ export const IconStartTimeSVG = ({ className, classNamePath }) => (
     </svg>
 );
 
-const IconStartTime = () => <Icon icon={IconStartTimeSVG} />;
+const IconStartTime = () => <Icon icon='IconStartTimeSVG' />;
 
 IconStartTime.propTypes = {
     className    : PropTypes.string,

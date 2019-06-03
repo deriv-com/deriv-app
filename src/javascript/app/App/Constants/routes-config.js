@@ -3,12 +3,12 @@ import { Redirect }    from 'react-router-dom';
 import { localize }    from '_common/localize';
 import { routes }      from 'Constants';
 
-import { IconPortfolio }     from 'Assets/Header/NavBar';
+import IconPortfolio     from 'Assets/Header/NavBar/icon-portfolio.jsx';
+import IconProfitTable   from 'Assets/Reports/icon-profit-table.jsx';
+import IconOpenPositions from 'Assets/Reports/icon-open-positions.jsx';
+import IconStatement     from 'Assets/Reports/icon-statement.jsx';
 // import Statement       from 'Modules/Statement';
-import { IconProfitTable }   from 'Assets/Reports/icon-profit-table.jsx';
-import { IconOpenPositions } from 'Assets/Reports/icon-open-positions.jsx';
-import { IconStatement }     from 'Assets/Reports/icon-statement.jsx';
-import Trade                 from 'Modules/Trading';
+import Trade             from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
 const Portfolio       = lazy(() => import(/* webpackChunkName: "portfolio" */ 'Modules/Portfolio'));

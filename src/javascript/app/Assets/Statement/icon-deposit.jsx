@@ -14,4 +14,4 @@ IconDeposit.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconDeposit };
+export default IconDeposit;

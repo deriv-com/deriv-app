@@ -16,4 +16,4 @@ IconBarrierDown.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconBarrierDown };
+export default IconBarrierDown;

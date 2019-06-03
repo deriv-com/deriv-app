@@ -4,7 +4,7 @@ import { withRouter }  from 'react-router-dom';
 import { connect }     from 'Stores/connect';
 import { FadeWrapper } from 'App/Components/Animations';
 import VerticalTab     from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import { IconClose }   from 'Assets/Settings';
+import Icon            from 'Assets/icon.jsx';
 import AppRoutes       from 'Constants/routes';
 import { localize }    from '_common/localize';
 
@@ -60,7 +60,7 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.setState({ is_visible: false });
                 },
-                icon : IconClose,
+                icon : <Icon icon='IconClose' />,
                 title: localize('Close'),
             },
         ];

@@ -265,4 +265,4 @@ IconTradeCategory.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconTradeCategory };
+export default IconTradeCategory;

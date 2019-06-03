@@ -14,4 +14,4 @@ IconWithdrawal.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconWithdrawal };
+export default IconWithdrawal;

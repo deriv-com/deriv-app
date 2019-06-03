@@ -12,4 +12,4 @@ IconSettings.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconSettings };
+export default IconSettings;

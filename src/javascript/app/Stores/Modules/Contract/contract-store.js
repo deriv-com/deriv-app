@@ -113,7 +113,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onMount(contract_id, is_from_positions) {
-        if (contract_id === +this.contract_id) return;
+        if (contract_id === this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         this.has_error         = false;
@@ -206,7 +206,7 @@ export default class ContractStore extends BaseStore {
             this.smart_chart.setIsChartLoading(false);
             return;
         }
-        if (+response.proposal_open_contract.contract_id !== +this.replay_contract_id) return;
+        if (+response.proposal_open_contract.contract_id !== this.replay_contract_id) return;
 
         this.replay_info = response.proposal_open_contract;
 
@@ -265,7 +265,7 @@ export default class ContractStore extends BaseStore {
             this.smart_chart.setIsChartLoading(false);
             return;
         }
-        if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
+        if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
 

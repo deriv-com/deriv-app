@@ -24,7 +24,7 @@ class ContractReplay extends React.Component {
         this.props.hidePositions();
         this.props.setChartLoader(true);
         this.props.showBlur();
-        const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
+        const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
         document.addEventListener('mousedown', this.handleClickOutside);
     }
@@ -123,7 +123,7 @@ class ContractReplay extends React.Component {
 ContractReplay.propTypes = {
     chart_id        : PropTypes.string,
     config          : PropTypes.object,
-    contract_id     : PropTypes.string,
+    contract_id     : PropTypes.number,
     contract_info   : PropTypes.object,
     hideBlur        : PropTypes.func,
     hidePositions   : PropTypes.func,

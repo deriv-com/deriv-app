@@ -7,10 +7,10 @@ describe('Details', () => {
     describe('getDetailsInfo', () => {
         const contract_info = {
             "buy_price":"10.00",
-            "contract_id":"36813286888",
+            "contract_id":36813286888,
             "contract_type":"CALL",
             "currency":"USD",
-            "current_spot":"8121.081",
+            "current_spot":8121.081,
             "current_spot_time":1544029136,
             "date_expiry":1544029145,
             "date_settlement":1544029145,
@@ -46,10 +46,10 @@ describe('Details', () => {
         it('Should return an object with values based on object passed to it', () => {
             const contract_info = {
                 "buy_price":"10.00",
-                "contract_id":"36813286888",
+                "contract_id":36813286888,
                 "contract_type":"CALL",
                 "currency":"USD",
-                "current_spot":"8121.081",
+                "current_spot":8121.081,
                 "current_spot_time":1544029136,
                 "date_expiry":1544029145,
                 "date_settlement":1544029145,

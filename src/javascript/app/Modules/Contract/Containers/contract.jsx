@@ -35,8 +35,8 @@ const Contract = ({
                     unmountOnExit
                 >
                     <ContractReplay
-                        contract_id={match.params.contract_id}
-                        key={match.params.contract_id}
+                        contract_id={+match.params.contract_id}
+                        key={+match.params.contract_id}
                     />
                 </CSSTransition>
         }

@@ -16,14 +16,10 @@ const GTM = (() => {
     const isGtmApplicable = () => (/^(16303|16929)$/.test(getAppId()));
 
     const getCommonVariables = () => ({
-        country_ip: State.getResponse('website_status.clients_country'),
-        language  : getLanguage(),
-        pageTitle : pageTitle(),
-        pjax      : State.get('is_loaded_by_pjax'),
-        url       : document.URL,
+        language: getLanguage(),
         ...ClientBase.isLoggedIn() && {
             visitorId: ClientBase.get('loginid'),
-            bom_email: ClientBase.get('email'),
+            currency : ClientBase.get('currency'),
         },
         ...('is_dark_mode_on' in LocalStore.getObject('ui_store')) && {
             theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light',
@@ -37,11 +33,6 @@ const GTM = (() => {
                 ...data,
             });
         }
-    };
-
-    const pageTitle = () => {
-        const t = /^.+[:-]\s*(.+)$/.exec(document.title);
-        return t && t[1] ? t[1] : document.title;
     };
 
     const eventHandler = (get_settings) => {
@@ -175,10 +166,10 @@ const GTM = (() => {
         if (!isGtmApplicable() || ClientBase.get('is_virtual')) return;
         if (!response.transaction || !response.transaction.action) return;
         if (!['deposit', 'withdrawal'].includes(response.transaction.action)) return;
- 
+
         const moment_now  = window.time || moment().utc();
         const storage_key = 'GTM_transactions';
-        
+
         // Remove values from prev days so localStorage doesn't grow to infinity
         let gtm_transactions = JSON.parse(localStorage.getItem(storage_key)) || {};
         if (Object.prototype.hasOwnProperty.call(gtm_transactions, 'timestamp')) {

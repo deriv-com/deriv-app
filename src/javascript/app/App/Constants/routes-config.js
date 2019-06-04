@@ -3,10 +3,6 @@ import { Redirect }    from 'react-router-dom';
 import { localize }    from '_common/localize';
 import { routes }      from 'Constants';
 
-import IconPortfolio     from 'Assets/Header/NavBar/icon-portfolio.jsx';
-import IconProfitTable   from 'Assets/Reports/icon-profit-table.jsx';
-import IconOpenPositions from 'Assets/Reports/icon-open-positions.jsx';
-import IconStatement     from 'Assets/Reports/icon-statement.jsx';
 // import Statement       from 'Modules/Statement';
 import Trade             from 'Modules/Trading';
 
@@ -37,7 +33,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: Redirect,        title: '',                            to: '/trade' },
-    { path: routes.portfolio, component: Portfolio,       title: localize('Portfolio'),         is_authenticated: true, icon_component: IconPortfolio },
+    { path: routes.portfolio, component: Portfolio,       title: localize('Portfolio'),         is_authenticated: true, icon_component: 'IconPortfolio' },
     { path: routes.root,      component: Redirect,        title: '',                            exact: true, to: '/trade' },
     {
         path            : routes.reports,
@@ -45,9 +41,9 @@ const initRoutesConfig = () => ([
         is_authenticated: true,
         title           : localize('Reports'),
         routes          : [
-            { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: IconOpenPositions, default: true },
-            { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: IconProfitTable },
-            { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: IconStatement },
+            { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: 'IconOpenPositions', default: true },
+            { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: 'IconProfitTable' },
+            { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: 'IconStatement' },
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),             exact: true },

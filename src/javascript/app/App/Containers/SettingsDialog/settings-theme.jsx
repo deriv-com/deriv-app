@@ -4,12 +4,14 @@ import Localize      from 'App/Components/Elements/localize.jsx';
 import DarkModeIcon  from 'Images/app/settings/img-theme-dark.svg';
 import LightModeIcon from 'Images/app/settings/img-theme-light.svg';
 import { connect }   from 'Stores/connect';
+import GTM           from 'Utils/gtm';
 
 const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor }) => {
     const darkOnClick = () => {
         if (!is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
+            GTM.pushDataLayer({ event: 'switch theme' });
         }
     };
 
@@ -17,6 +19,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
         if (is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
+            GTM.pushDataLayer({ event: 'switch theme' });
         }
     };
     return (

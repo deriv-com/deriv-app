@@ -57,7 +57,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    transactionHandler(response) {
+    async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
         }
@@ -65,12 +65,10 @@ export default class PortfolioStore extends BaseStore {
         const { contract_id, action: act } = response.transaction;
 
         if (act === 'buy') {
-            WS.portfolio().then((res) => {
-                const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
-                if (!new_pos) return;
-                this.pushNewPosition(new_pos);
-            });
-            // subscribe to new contract:
+            const res = await WS.portfolio();
+            const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
+            if (!new_pos) return;
+            this.pushNewPosition(new_pos);
             WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
@@ -194,13 +192,13 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     removePositionById(contract_id) {
-        const is_contract_mode = this.root_store.modules.smart_chart.is_contract_mode;
-        let i = this.getPositionIndexById(contract_id);
-        // check if position to be removed is out of range from the maximum amount rendered in drawer
-        if (this.positions.length > 4) i += 1;
-        this.positions.splice(i, 1);
+        const { is_contract_mode } = this.root_store.modules.smart_chart;
+        const contract_idx         = this.getPositionIndexById(contract_id);
+
+        this.positions.splice(contract_idx, 1);
+
         // check if contract is in view in contract_mode before removing contract details from chart
-        if (is_contract_mode && (this.root_store.modules.contract.contract_id === contract_id)) {
+        if (is_contract_mode && (+this.root_store.modules.contract.contract_id === +contract_id)) {
             this.root_store.modules.contract.onCloseContract();
             this.root_store.modules.trade.requestProposal();
         }

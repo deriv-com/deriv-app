@@ -2,7 +2,7 @@ import React                  from 'react';
 import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import RouteWithSubRoutes     from '../route-with-sub-routes.jsx';
+import { RouteWithSubRoutes } from '../route-with-sub-routes.jsx';
 import { Redirect }           from 'react-router-dom';
 
 configure({ adapter: new Adapter() });

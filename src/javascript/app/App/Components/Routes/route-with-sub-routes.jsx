@@ -6,7 +6,7 @@ import { redirectToLogin } from '_common/base/login';
 import BinarySocket        from '_common/base/socket_base';
 import Language            from '_common/language';
 import routes              from 'Constants/routes';
-import GTM                 from 'Utils/gtm';
+import { connect }         from 'Stores/connect';
 import LoginPrompt         from '../Elements/login-prompt.jsx';
 import { default_title }   from '../../Constants/app-config';
 
@@ -35,7 +35,7 @@ const RouteWithSubRoutes = route => {
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
         BinarySocket.wait('website_status').then(() => {
-            GTM.pushDataLayer({ event: 'page_load' });
+            route.pushDataLayer({ event: 'page_load' });
         });
         return result;
     };
@@ -47,4 +47,8 @@ const RouteWithSubRoutes = route => {
     />;
 };
 
-export default RouteWithSubRoutes;
+export { RouteWithSubRoutes }; // For tests
+
+export default connect(({ gtm }) => ({
+    pushDataLayer: gtm.pushDataLayer,
+}))(RouteWithSubRoutes);

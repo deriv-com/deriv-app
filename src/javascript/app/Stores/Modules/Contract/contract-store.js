@@ -130,11 +130,11 @@ export default class ContractStore extends BaseStore {
     onMount(contract_id, is_from_positions) {
         if (contract_id === +this.contract_id) return;
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
+        this.smart_chart       = this.root_store.modules.smart_chart;
         if (is_from_positions) this.onCloseContract();
         this.has_error         = false;
         this.error_message     = '';
         this.contract_id       = contract_id;
-        this.smart_chart       = this.root_store.modules.smart_chart;
         this.is_from_positions = is_from_positions;
 
         if (contract_id) {

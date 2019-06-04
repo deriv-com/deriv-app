@@ -1,6 +1,6 @@
-import React        from 'react';
+import React from 'react';
 
-export const IconFlagSVG = () => (
+export const IconFlag = () => (
     <svg className='chart-spot__icon' width='16' height='16' viewBox='0 0 16 16'>
         <g fill='none' fillRule='evenodd'>
             <path d='M0 0h16v16H0z' />
@@ -9,4 +9,4 @@ export const IconFlagSVG = () => (
     </svg>
 );
 
-export default IconFlagSVG;
+export default IconFlag;

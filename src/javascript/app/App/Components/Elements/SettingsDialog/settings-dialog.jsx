@@ -51,7 +51,7 @@ class SettingsDialog extends React.PureComponent {
                     <h3 className='dialog-header__sidebar'>{localize('Platform settings')}</h3>
                     <div className='dialog-header__main'>
                         <div className='dialog-header__close' onClick={this.props.toggleDialog}>
-                            <Icon icon='IconCloseSettings' />
+                            <Icon icon='SettingsIconClose' />
                         </div>
                     </div>
                 </div>

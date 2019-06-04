@@ -35,9 +35,9 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             
             // Contract
-            IconContractClose: React.lazy(() => import('./Contract/icon-contract-close.jsx')),
+            ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
             IconEndTime      : React.lazy(() => import('./Contract/icon-end-time.jsx')),
-            IconFlagSVG      : React.lazy(() => import('./Contract/icon-flag.jsx')),
+            ContractIconFlag : React.lazy(() => import('./Contract/icon-flag.jsx')),
             IconStartTime    : React.lazy(() => import('./Contract/icon-start-time.jsx')),
             IconTick         : React.lazy(() => import('./Contract/icon-tick.jsx')),
 
@@ -64,7 +64,7 @@ class Icon extends React.PureComponent {
 
             // Settings
             IconCharts       : React.lazy(() => import('./Settings/icon-charts.jsx')),
-            IconCloseSettings: React.lazy(() => import('./Settings/icon-close.jsx')), // Previously IconClose, so replace IconClose that has the same import path with this.
+            SettingsIconClose: React.lazy(() => import('./Settings/icon-close.jsx')), // Previously IconClose, so replace IconClose that has the same import path with this.
             IconLanguage     : React.lazy(() => import('./Settings/icon-language.jsx')),
             IconPurchase     : React.lazy(() => import('./Settings/icon-purchase.jsx')),
             IconTheme        : React.lazy(() => import('./Settings/icon-theme.jsx')),

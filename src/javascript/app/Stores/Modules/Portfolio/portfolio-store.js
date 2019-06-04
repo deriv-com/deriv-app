@@ -193,9 +193,9 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     removePositionById(contract_id) {
         const { is_contract_mode } = this.root_store.modules.smart_chart;
-        const i                    = this.getPositionIndexById(contract_id);
+        const contract_idx         = this.getPositionIndexById(contract_id);
 
-        this.positions.splice(i, 1);
+        this.positions.splice(contract_idx, 1);
 
         // check if contract is in view in contract_mode before removing contract details from chart
         if (is_contract_mode && (+this.root_store.modules.contract.contract_id === +contract_id)) {

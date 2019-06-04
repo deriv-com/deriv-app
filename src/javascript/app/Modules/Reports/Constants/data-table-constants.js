@@ -10,10 +10,11 @@ import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 
 const getModeFromValue = (key) => {
     const map = {
-        deposit: 'warn',
-        sell   : 'danger',
-        buy    : 'success',
-        default: 'default',
+        deposit   : 'warn',
+        withdrawal: 'info',
+        sell      : 'danger',
+        buy       : 'success',
+        default   : 'default',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -137,7 +138,8 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         title            : localize('Potential payout'),
         col_index        : 'payout',
         renderCellContent: ({ cell_value }) => (
-            <Money amount={cell_value} currency={currency} />
+            cell_value ? <Money amount={cell_value} currency={currency} />
+                : <span>-</span>
         ),
     }, {
         title            : localize('Indicative price'),

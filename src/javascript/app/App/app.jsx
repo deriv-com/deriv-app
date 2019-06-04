@@ -12,6 +12,7 @@ import Routes                      from './Containers/Routes/routes.jsx';
 import DenialOfServiceModal        from './Containers/DenialOfServiceModal';
 import MarketUnavailableModal      from './Containers/MarketUnavailableModal';
 import ServicesErrorModal          from './Containers/ServicesErrorModal';
+import UnsupportedContractModal    from './Containers/UnsupportedContractModal';
 import Wip                         from './Containers/Wip';
 
 // Check if device is touch capable
@@ -30,6 +31,7 @@ const App = ({ root_store }) => (
                                 <Routes />
                                 <PushNotification />
                             </AppContents>
+                            <UnsupportedContractModal />
                             <DenialOfServiceModal />
                             <MarketUnavailableModal />
                             <ServicesErrorModal />

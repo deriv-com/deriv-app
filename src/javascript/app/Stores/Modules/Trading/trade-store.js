@@ -187,7 +187,9 @@ export default class TradeStore extends BaseStore {
             this.currency           = this.root_store.client.currency;
             this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            if (!this.symbol) {
+            const is_valid_symbol = active_symbols.active_symbols.find((symbols) => symbols.symbol === this.symbol);
+
+            if (!this.symbol || !is_valid_symbol) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });
@@ -524,8 +526,6 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
-        // clear url query string
-        window.history.pushState(null, null, window.location.pathname);
     }
 
     onLoadingMount() {
@@ -558,5 +558,7 @@ export default class TradeStore extends BaseStore {
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
+        // clear url query string
+        window.history.pushState(null, null, window.location.pathname);
     }
 }

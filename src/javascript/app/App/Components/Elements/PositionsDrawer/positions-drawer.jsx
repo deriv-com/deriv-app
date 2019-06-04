@@ -34,6 +34,7 @@ class PositionsDrawer extends React.Component {
             onClickRemove,
             openContract,
             toggleDrawer,
+            toggleUnsupportedContractModal,
             server_time,
         } = this.props;
 
@@ -65,6 +66,7 @@ class PositionsDrawer extends React.Component {
                         server_time={server_time}
                         key={portfolio_position.id}
                         currency={currency}
+                        toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                         {...portfolio_position}
                     />
                 </CSSTransition>
@@ -128,20 +130,21 @@ PositionsDrawer.propTypes = {
 
 export default connect(
     ({ common, modules, client, ui }) => ({
-        server_time           : common.server_time,
-        currency              : client.currency,
-        active_contract_id    : modules.contract.contract_id,
-        all_positions         : modules.portfolio.all_positions,
-        error                 : modules.portfolio.error,
-        is_contract_mode      : modules.smart_chart.is_contract_mode,
-        is_empty              : modules.portfolio.is_empty,
-        is_loading            : modules.portfolio.is_loading,
-        onClickSell           : modules.portfolio.onClickSell,
-        onClickRemove         : modules.portfolio.removePositionById,
-        openContract          : modules.contract.onMount,
-        onMount               : modules.portfolio.onMount,
-        onUnmount             : modules.portfolio.onUnmount,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
-        toggleDrawer          : ui.togglePositionsDrawer,
+        server_time                   : common.server_time,
+        currency                      : client.currency,
+        active_contract_id            : modules.contract.contract_id,
+        all_positions                 : modules.portfolio.all_positions,
+        error                         : modules.portfolio.error,
+        is_contract_mode              : modules.smart_chart.is_contract_mode,
+        is_empty                      : modules.portfolio.is_empty,
+        is_loading                    : modules.portfolio.is_loading,
+        onClickSell                   : modules.portfolio.onClickSell,
+        onClickRemove                 : modules.portfolio.removePositionById,
+        openContract                  : modules.contract.onMount,
+        onMount                       : modules.portfolio.onMount,
+        onUnmount                     : modules.portfolio.onUnmount,
+        is_positions_drawer_on        : ui.is_positions_drawer_on,
+        toggleDrawer                  : ui.togglePositionsDrawer,
+        toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
     })
 )(PositionsDrawer);

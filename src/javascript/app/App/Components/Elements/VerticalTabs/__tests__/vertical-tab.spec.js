@@ -6,12 +6,12 @@ import VerticalTab from '../vertical-tab.jsx';
 describe('<VerticalTab />', () => {
     const valid_tab_items = [
         {
-            icon: () => <svg />,
+            icon: '',
             label: 'Label 1',
             value: () => <svg />
         },
         {
-            icon: () => <svg />,
+            icon: '',
             label: 'Label 2',
             value: () => <svg />
         }

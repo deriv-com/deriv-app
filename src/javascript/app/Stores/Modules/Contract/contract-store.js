@@ -70,14 +70,19 @@ export default class ContractStore extends BaseStore {
 
         const end_time = getEndTime(this.contract_info);
 
+        // Set chart granularity and chart_type
+        this.handleChartType(date_start, end_time || null);
+
+        // Set chart view to purchase_time
         this.smart_chart.setChartView(purchase_time);
+
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
         if (end_time) {
             const is_one_tick_contract = (tick_count < 2);
             if (!this.is_ongoing_contract && !is_one_tick_contract) {
-                // set to static chart for non one tick contract
+                // set to static chart to true for non one tick contract
                 // to avoid chart from reloading
                 this.smart_chart.setStaticChart(true);
             } else {
@@ -86,28 +91,14 @@ export default class ContractStore extends BaseStore {
             this.smart_chart.setContractStart(date_start);
             this.smart_chart.setContractEnd(end_time);
 
-            if (!tick_count) {
-                this.handleChartType(date_start, end_time);
-            } else {
-                this.smart_chart.updateGranularity(0);
-                this.smart_chart.updateChartType('mountain');
-            }
             // Clear chart loading status once ChartListener returns ready for completed contract
             if (!this.is_ongoing_contract) {
                 this.waitForChartListener();
             }
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
-        } else {
-            if (this.is_from_positions) {
-                this.smart_chart.setContractStart(date_start);
-            }
-            if (tick_count) {
-                this.smart_chart.updateGranularity(0);
-                this.smart_chart.updateChartType('mountain');
-            } else {
-                this.handleChartType(date_start, null);
-            }
+        } else if (this.is_from_positions) {
+            this.smart_chart.setContractStart(date_start);
         }
 
         this.smart_chart.updateMargin((end_time || date_expiry) - date_start);
@@ -328,7 +319,6 @@ export default class ContractStore extends BaseStore {
         }
     }
 
-    @action.bound
     handleChartType(start, expiry) {
         const chart_type  = getChartType(start, expiry);
         const granularity = getChartGranularity(start, expiry);

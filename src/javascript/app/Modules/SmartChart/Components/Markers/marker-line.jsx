@@ -16,7 +16,7 @@ const MarkerLine = ({
         <div className={classNames('chart-marker-line__wrapper', `chart-marker-line--${line_style}`)}>
             { label === marker_config.LINE_END.content_config.label &&
                 <Icon
-                    icon='IconEndTimeSVG'
+                    icon='IconEndTime'
                     className={classNames('chart-marker-line__icon', {
                         'chart-marker-line__icon--won' : status === 'won',
                         'chart-marker-line__icon--lost': status === 'lost',
@@ -25,7 +25,7 @@ const MarkerLine = ({
             }
             { label === marker_config.LINE_START.content_config.label &&
                 <Icon
-                    icon='IconStartTimeSVG'
+                    icon='IconStartTime'
                     className={classNames(
                         'chart-marker-line__icon',
                         'chart-marker-line__icon--time',

@@ -1,7 +1,4 @@
-import { observer } from 'mobx-react';
-import PropTypes    from 'prop-types';
 import React        from 'react';
-import Icon         from 'Assets/icon.jsx';
 
 export const IconFlagSVG = () => (
     <svg className='chart-spot__icon' width='16' height='16' viewBox='0 0 16 16'>
@@ -12,12 +9,4 @@ export const IconFlagSVG = () => (
     </svg>
 );
 
-const IconFlag = () => (
-    <Icon icon='IconFlagSVG' />
-);
-
-IconFlag.propTypes = {
-    color: PropTypes.string,
-};
-
-export default observer(IconFlag);
+export default IconFlagSVG;

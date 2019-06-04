@@ -35,7 +35,6 @@ const SocketCache = (() => {
         active_symbols        : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
         contracts_for         : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
         exchange_rates        : { expire: 60, map_to: ['base_currency'] },
-        trading_times         : { expire: 60, map_to: ['trading_times'] },
         profit_table          : { expire: 10, map_to: ['date_from', 'limit', 'offset'] },
         history               : { expire: 10, map_to: ['ticks_history', 'start', 'end', 'style'] },
     };

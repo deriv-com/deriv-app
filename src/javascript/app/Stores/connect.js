@@ -36,6 +36,7 @@ export class MobxProvider extends Provider {
         mobxStores: PropTypes.object,
         client    : PropTypes.object,
         common    : PropTypes.object,
+        gtm       : PropTypes.object,
         modules   : PropTypes.object,
         ui        : PropTypes.object,
     };

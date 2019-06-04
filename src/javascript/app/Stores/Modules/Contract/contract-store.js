@@ -8,7 +8,6 @@ import { localize }           from '_common/localize';
 import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
-import { createMarkerStartTime } from './Helpers/chart-marker-helpers';
 import {
     getDetailsExpiry,
     getDetailsInfo }          from './Helpers/details';
@@ -62,52 +61,61 @@ export default class ContractStore extends BaseStore {
     // ----- Actions -----
     // -------------------
     @action.bound
-    drawChart(SmartChartStore, contract_info) {
-        this.forget_id       = contract_info.id;
-        const { date_start, tick_count } = contract_info;
-        const end_time       = getEndTime(contract_info);
+    drawChart() {
+        const {
+            date_expiry,
+            date_start,
+            id,
+            purchase_time,
+            tick_count,
+        } = this.contract_info;
 
-        SmartChartStore.setChartView(contract_info.purchase_time);
+        this.forget_id = id;
+        const end_time = getEndTime(this.contract_info);
+
+        this.smart_chart.setChartView(purchase_time);
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
         if (end_time) {
             if (!this.is_ongoing_contract && !(tick_count < 2)) {
-                SmartChartStore.setStaticChart(true);
+                // set to static chart for contracts with 1 tick_count
+                // to avoid chart from reloading
+                this.smart_chart.setStaticChart(true);
             } else {
-                SmartChartStore.setStaticChart(false);
+                this.smart_chart.setStaticChart(false);
             }
-            SmartChartStore.setContractStart(date_start);
-            SmartChartStore.setContractEnd(end_time);
+            this.smart_chart.setContractStart(date_start);
+            this.smart_chart.setContractEnd(end_time);
 
-            if (!contract_info.tick_count) {
-                this.handleChartType(SmartChartStore, date_start, end_time);
+            if (!tick_count) {
+                this.handleChartType(date_start, end_time);
             } else {
-                SmartChartStore.updateGranularity(0);
-                SmartChartStore.updateChartType('mountain');
+                this.smart_chart.updateGranularity(0);
+                this.smart_chart.updateChartType('mountain');
             }
             // Clear chart loading status once ChartListener returns ready for completed contract
             if (!this.is_ongoing_contract) {
-                this.waitForChartListener(SmartChartStore);
+                this.waitForChartListener();
             }
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
         } else {
             if (this.is_from_positions) {
-                SmartChartStore.setContractStart(date_start);
+                this.smart_chart.setContractStart(date_start);
             }
-            if (contract_info.tick_count) {
-                SmartChartStore.updateGranularity(0);
-                SmartChartStore.updateChartType('mountain');
+            if (tick_count) {
+                this.smart_chart.updateGranularity(0);
+                this.smart_chart.updateChartType('mountain');
             } else {
-                this.handleChartType(SmartChartStore, date_start, null);
+                this.handleChartType(date_start, null);
             }
         }
 
-        SmartChartStore.updateMargin((end_time || contract_info.date_expiry) - date_start);
+        this.smart_chart.updateMargin((end_time || date_expiry) - date_start);
 
-        createChartBarrier(SmartChartStore, contract_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(SmartChartStore, contract_info);
+        createChartBarrier(this.smart_chart, this.contract_info, this.root_store.ui.is_dark_mode_on);
+        createChartMarkers(this.smart_chart, this.contract_info);
 
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
@@ -115,7 +123,13 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id, is_from_positions, purchase_time, longcode) {
+    drawContractStartTime(date_start, longcode) {
+        this.contract_info.longcode = longcode;
+        createChartMarkers(this.root_store.modules.smart_chart, { date_start });
+    }
+
+    @action.bound
+    onMount(contract_id, is_from_positions) {
         if (contract_id === +this.contract_id) return;
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         if (is_from_positions) this.onCloseContract();
@@ -129,15 +143,8 @@ export default class ContractStore extends BaseStore {
             this.replay_info = {};
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
+                this.smart_chart.switchToContractMode();
             }
-            if (!this.is_from_positions) {
-                const contract_info = { date_start: purchase_time };
-                this.contract_info.longcode = longcode;
-                createMarkerStartTime(contract_info);
-                createChartMarkers(this.smart_chart, contract_info);
-            }
-            this.smart_chart.saveAndClearTradeChartLayout('contract');
-            this.smart_chart.setContractMode(true);
             WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
         }
     }
@@ -178,7 +185,6 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
-        this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
         this.digits_info         = {};
@@ -190,6 +196,7 @@ export default class ContractStore extends BaseStore {
         this.is_ongoing_contract = false;
         this.sell_info           = {};
 
+        this.smart_chart.updateChartType('mountain');
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
         WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
@@ -255,8 +262,7 @@ export default class ContractStore extends BaseStore {
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
-        this.waitForChartListener(this.smart_chart);
-
+        this.waitForChartListener();
     }
 
     @action.bound
@@ -286,7 +292,7 @@ export default class ContractStore extends BaseStore {
             this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
         }
 
-        this.drawChart(this.smart_chart, this.contract_info);
+        this.drawChart(this.contract_info);
 
         this.handleDigits(this.contract_info);
     }
@@ -328,37 +334,32 @@ export default class ContractStore extends BaseStore {
         }
     }
 
-    handleChartType(SmartChartStore, start, expiry) {
+    @action.bound
+    handleChartType(start, expiry) {
         const chart_type  = getChartType(start, expiry);
         const granularity = getChartGranularity(start, expiry);
 
-        if (chart_type === 'candle') {
-            this.chart_type = chart_type;
-            SmartChartStore.updateChartType(chart_type);
-        } else {
-            this.chart_type = 'mountain';
-            SmartChartStore.updateChartType('mountain');
-        }
-        SmartChartStore.updateGranularity(granularity);
+        this.smart_chart.updateChartType(chart_type);
+        this.smart_chart.updateGranularity(granularity);
     }
 
     forgetProposalOpenContract() {
         WS.forget('proposal_open_contract', this.updateProposal, { id: this.forget_id });
     }
 
-    waitForChartListener = (SmartChartStore) => {
+    waitForChartListener = () => {
         // TODO: Refactor, timeout interval is required for completed contracts.
         // There is an issue when we receive the proposal_open_contract response
         // for a completed contract and chartListener returns false for that single instance / single response.
         // Hence, we need to set an interval to keep checking the chartListener until it returns true
 
         let timer;
-        if (!SmartChartStore.is_chart_ready) {
+        if (!this.smart_chart.is_chart_ready) {
             // console.log('waiting for listener');
-            timer = setTimeout(() => this.waitForChartListener(SmartChartStore), 500);
+            timer = setTimeout(() => this.waitForChartListener(), 500);
         } else {
             // console.log('cleared listener');
-            SmartChartStore.setIsChartLoading(false);
+            this.smart_chart.setIsChartLoading(false);
             clearTimeout(timer);
         }
     };

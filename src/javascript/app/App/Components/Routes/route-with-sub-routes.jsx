@@ -47,7 +47,7 @@ const RouteWithSubRoutes = route => {
     />;
 };
 
-export { RouteWithSubRoutes }; // For tests
+export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
 export default connect(({ gtm }) => ({
     pushDataLayer: gtm.pushDataLayer,

@@ -80,7 +80,7 @@ export default class ContractStore extends BaseStore {
         if (end_time) {
             const is_one_tick_contract = (tick_count < 2);
             if (!this.is_ongoing_contract && !is_one_tick_contract) {
-                // set to static chart for contracts with 1 tick_count
+                // set to static chart for non one tick contract
                 // to avoid chart from reloading
                 this.smart_chart.setStaticChart(true);
             } else {

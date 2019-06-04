@@ -60,7 +60,7 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.setState({ is_visible: false });
                 },
-                icon : <Icon icon='IconClose' />,
+                icon : <Icon icon='IconCloseSettings' />,
                 title: localize('Close'),
             },
         ];

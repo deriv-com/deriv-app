@@ -26,7 +26,7 @@ const InfoBoxExpired = ({
                 <SellInfo contract_info={contract_info} sell_info={sell_info} />
             }
             { has_flag &&
-                <Icon icon='IconFlag' />
+                <Icon icon='IconFlagSVG' />
             }
             <div>
                 <div>{localize('Profit/Loss')}:</div>

@@ -4,6 +4,6 @@ import Icon         from 'Assets/icon.jsx';
 
 export const getHeaderConfig = () => ({
     purchased: { title: localize('Contract Purchased'), icon: <Icon icon='IconTick' /> },
-    won      : { title: localize('Contract Won'),       icon: <Icon icon='IconFlag' /> },
-    lost     : { title: localize('Contract Lost'),      icon: <Icon icon='IconFlag' /> },
+    won      : { title: localize('Contract Won'),       icon: <Icon icon='IconFlagSVG' /> },
+    lost     : { title: localize('Contract Lost'),      icon: <Icon icon='IconFlagSVG' /> },
 });

@@ -4,8 +4,7 @@ import { fake }               from 'sinon';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { TogglePositions }    from '../toggle-positions.jsx';
-import { Icon }               from 'Assets/Common/icon.jsx';
-import { IconPositions }      from 'Assets/Footer';
+import { Icon }               from 'Assets/icon.jsx';
 
 configure({ adapter: new Adapter() });
 
@@ -26,7 +25,7 @@ describe('TogglePositions', () => {
         const wrapper = shallow(<TogglePositions />);
         expect(wrapper.contains(<Icon icon='IconPositions' className='footer__icon ic-positions__icon' />)).to.be.true;
     });
-    it('should call togglePositionsDrawer passed onClick', () => {
+    it('should call twDrawer passed onClick', () => {
         const callback = fake();
         const wrapper = shallow(<TogglePositions togglePositionsDrawer={callback} />);
         wrapper.prop('onClick')();

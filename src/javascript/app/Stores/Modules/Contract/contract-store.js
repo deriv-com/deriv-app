@@ -48,7 +48,6 @@ export default class ContractStore extends BaseStore {
     @observable is_replay_static_chart = false;
 
     // ---- Normal properties ---
-    forget_id;
     chart_type          = 'mountain';
     is_from_positions   = false;
     is_ongoing_contract = false;
@@ -62,7 +61,6 @@ export default class ContractStore extends BaseStore {
     // -------------------
     @action.bound
     drawChart(SmartChartStore, contract_info) {
-        this.forget_id       = contract_info.id;
         const { date_start } = contract_info;
         const end_time       = getEndTime(contract_info);
 
@@ -148,7 +146,6 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onUnmountReplay() {
-        this.forget_id                = null;
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
@@ -171,12 +168,12 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
+        this.forgetProposalOpenContract(this.contract_id);
         this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
         this.digits_info         = {};
         this.error_message       = '';
-        this.forget_id           = null;
         this.has_error           = false;
         this.is_sell_requested   = false;
         this.is_from_positions   = false;
@@ -212,7 +209,6 @@ export default class ContractStore extends BaseStore {
         }
         if (+response.proposal_open_contract.contract_id !== +this.replay_contract_id) return;
 
-        this.forget_id   = response.proposal_open_contract.id;
         this.replay_info = response.proposal_open_contract;
 
         // Add indicative status for contract
@@ -335,8 +331,8 @@ export default class ContractStore extends BaseStore {
         SmartChartStore.updateGranularity(granularity);
     }
 
-    forgetProposalOpenContract() {
-        WS.forget('proposal_open_contract', this.updateProposal, { id: this.forget_id });
+    forgetProposalOpenContract(contract_id) {
+        WS.forget('proposal_open_contract', this.updateProposal, { contract_id });
     }
 
     waitForChartListener = (SmartChartStore) => {

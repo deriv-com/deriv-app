@@ -29,11 +29,15 @@ const SocketCache = (() => {
     //     string  : the property value from echo_req
     //     function: return value of the function
     const config = {
-        payout_currencies: { expire: 10 },
-        // proposal_open_contract: { expire: 10,  map_to: ['contract_id'] },
-        active_symbols   : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
-        contracts_for    : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
-        exchange_rates   : { expire: 60, map_to: ['base_currency'] },
+        payout_currencies     : { expire: 120 },
+        proposal_open_contract: { expire: 10, map_to: ['contract_id'] },
+        statement             : { expire: 10, map_to: ['limit', 'offset'] },
+        active_symbols        : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
+        contracts_for         : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
+        exchange_rates        : { expire: 60, map_to: ['base_currency'] },
+        trading_times         : { expire: 60, map_to: ['trading_times'] },
+        profit_table          : { expire: 10, map_to: ['date_from', 'limit', 'offset'] },
+        history               : { expire: 10, map_to: ['ticks_history', 'start', 'end', 'style'] },
     };
 
     const storage_key = 'ws_cache';

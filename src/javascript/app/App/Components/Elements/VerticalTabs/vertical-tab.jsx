@@ -11,9 +11,9 @@ class VerticalTab extends React.PureComponent {
             const applicable_routes = props.list.filter(item => (
                 item.path === props.current_path || item.default
             ));
-            const selected = applicable_routes.length > 1 ?
-                applicable_routes[applicable_routes.length - 1]
-                : applicable_routes.length === 1 ? applicable_routes[0] : undefined;
+            const selected = applicable_routes.length > 1
+                ? applicable_routes[applicable_routes.length - 1]
+                : applicable_routes[0];
 
             this.state = {
                 selected,

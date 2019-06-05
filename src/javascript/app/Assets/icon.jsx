@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 class Icon extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.icons = { /* When adding a new icon, arrange it by following the ascending file system arrangement */
+        /* When adding a new icon, arrange it by following the ascending file system arrangement */
+        this.icons = {
             // Common
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),
             IconArrow             : React.lazy(() => import('./Common/icon-arrow.jsx')),
@@ -64,7 +65,7 @@ class Icon extends React.PureComponent {
 
             // Settings
             IconCharts       : React.lazy(() => import('./Settings/icon-charts.jsx')),
-            SettingsIconClose: React.lazy(() => import('./Settings/icon-close.jsx')), // Previously IconClose, so replace IconClose that has the same import path with this.
+            SettingsIconClose: React.lazy(() => import('./Settings/icon-close.jsx')),
             IconLanguage     : React.lazy(() => import('./Settings/icon-language.jsx')),
             IconPurchase     : React.lazy(() => import('./Settings/icon-purchase.jsx')),
             IconTheme        : React.lazy(() => import('./Settings/icon-theme.jsx')),

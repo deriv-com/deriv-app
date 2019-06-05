@@ -4,18 +4,7 @@
     align-items: center;
     position: relative;
     margin: 0 2.5em 0 1em;
-    transform: translate3d(0, calc(100% + 2em), 0);
-    transition: transform 0.4s ease, opacity 0.4s linear;
-    opacity: 0;
 
-    &--enter-done {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
-    &--enter, &--exit {
-        transform: translate3d(0, calc(100% + 2em), 0);
-        opacity: 0;
-    }
     &__digit {
         margin: 0 0.4em;
         text-align: center;

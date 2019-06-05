@@ -1,6 +1,6 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-import { CSSTransition }       from 'react-transition-group';
+import { SlideIn }             from 'App/Components/Animations';
 import { connect }             from 'Stores/connect';
 import { LastDigitPrediction } from '../Components/LastDigitPrediction';
 
@@ -28,15 +28,11 @@ class Digits extends React.Component {
         const contract_type = contract_info.contract_type || replay_info.contract_type;
 
         return (
-            <CSSTransition
-                in={is_digit_contract && this.state.mounted}
-                timeout={250}
-                classNames={{
-                    enter    : 'digits--enter',
-                    enterDone: 'digits--enter-done',
-                    exit     : 'digits--exit',
-                }}
-                unmountOnExit
+            <SlideIn
+                is_visible={is_digit_contract && this.state.mounted}
+                className='digits'
+                keyname='digits'
+                type='bottom'
             >
                 <LastDigitPrediction
                     barrier={+barrier || +last_digit} // fallback to last_digit if barrier from contract_info is null
@@ -46,7 +42,7 @@ class Digits extends React.Component {
                     is_trade_page={is_trade_page}
                     status={display_status}
                 />
-            </CSSTransition>
+            </SlideIn>
         );
     }
 }

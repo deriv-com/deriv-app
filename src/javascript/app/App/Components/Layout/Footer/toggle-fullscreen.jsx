@@ -1,6 +1,6 @@
-import classNames       from 'classnames';
-import React            from 'react';
-import Icon             from 'Assets/icon.jsx';
+import classNames from 'classnames';
+import React      from 'react';
+import Icon       from 'Assets/icon.jsx';
 
 class ToggleFullScreen extends React.Component {
     constructor(props) {

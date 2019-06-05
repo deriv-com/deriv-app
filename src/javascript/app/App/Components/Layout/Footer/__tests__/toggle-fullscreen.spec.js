@@ -15,7 +15,7 @@ describe('ToggleFullScreen', () => {
         expect(wrapper).to.have.length(1);
     });
     it('should call componentWillMount', () => {
-        mount(<ToggleFullScreen  />);
+        shallow(<ToggleFullScreen  />);
         expect(ToggleFullScreen.prototype.componentDidMount).to.have.property('called', true);
     });
     it('should have .ic-fullscreen', () => {
@@ -40,13 +40,13 @@ describe('ToggleFullScreen', () => {
         expect(wrapper.prop('onClick')).to.be.an.instanceof(Function);
     });
     it('should set is_full_screen equal to false in state, after onclick, when is_full_screen is false and there is no browser', () => {
-        const wrapper = mount(<ToggleFullScreen />);
+        const wrapper = shallow(<ToggleFullScreen />);
         wrapper.setState({ is_full_screen: false });
         wrapper.find('a').prop('onClick')({stopPropagation: () => {}});
         expect(wrapper.state().is_full_screen).to.be.false;
     });
     it('should set is_full_screen equal to false in state, after onclick, when is_full_screen is true and there is no browser', () => {
-        const wrapper = mount(<ToggleFullScreen />);
+        const wrapper = shallow(<ToggleFullScreen />);
         wrapper.setState({ is_full_screen: true });
         wrapper.find('a').prop('onClick')({stopPropagation: () => {}});
         expect(wrapper.state().is_full_screen).to.be.false;

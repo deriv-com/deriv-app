@@ -7,7 +7,6 @@ import { isEmptyObject } from '_common/utility';
 import Icon              from 'Assets/icon.jsx';
 import { requestLogout } from 'Services/index';
 import { connect }       from 'Stores/connect';
-import GTM               from 'Utils/gtm';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -41,7 +40,6 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
-        GTM.pushDataLayer({ event: 'account switch' });
         await this.props.switchAccount(loginid);
     }
 

@@ -14,7 +14,6 @@ import {
     getMinPayout,
     isCryptocurrency }                   from '_common/base/currency_base';
 import { WS }                            from 'Services';
-import GTM                               from 'Utils/gtm';
 import { processPurchase }               from './Actions/purchase';
 import * as Symbol                       from './Actions/symbol';
 import getValidationRules                from './Constants/validation-rules';
@@ -291,7 +290,7 @@ export default class TradeStore extends BaseStore {
                         this.root_store.modules.contract.onMount(contract_id, false);
                         this.root_store.ui.openPositionsDrawer();
                     }
-                    GTM.pushPurchaseData(contract_data, this.root_store);
+                    this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
                     this.root_store.common.services_error = {
                         type: response.msg_type,

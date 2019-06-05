@@ -4,8 +4,6 @@ const ClientBase       = require('./client_base');
 const Login            = require('./login');
 const ServerTime       = require('./server_time');
 const BinarySocket     = require('./socket_base');
-const getElementById   = require('../common_functions').getElementById;
-const isVisible        = require('../common_functions').isVisible;
 const getLanguage      = require('../language').get;
 const LocalStore       = require('../storage').LocalStore;
 const State            = require('../storage').State;
@@ -99,47 +97,6 @@ const GTM = (() => {
         });
     };
 
-    const pushPurchaseData = (response) => {
-        if (!isGtmApplicable() || ClientBase.get('is_virtual')) return;
-        const buy = response.buy;
-        if (!buy) return;
-        const req  = response.echo_req.passthrough;
-        const data = {
-            event             : 'buy_contract',
-            bom_ui            : 'legacy',
-            bom_symbol        : req.symbol,
-            bom_market        : getElementById('contract_markets').value,
-            bom_currency      : req.currency,
-            bom_contract_type : req.contract_type,
-            bom_contract_id   : buy.contract_id,
-            bom_transaction_id: buy.transaction_id,
-            bom_buy_price     : buy.buy_price,
-            bom_payout        : buy.payout,
-        };
-        Object.assign(data, {
-            bom_amount     : req.amount,
-            bom_basis      : req.basis,
-            bom_expiry_type: getElementById('expiry_type').value,
-        });
-        if (data.bom_expiry_type === 'duration') {
-            Object.assign(data, {
-                bom_duration     : req.duration,
-                bom_duration_unit: req.duration_unit,
-            });
-        }
-        if (isVisible(getElementById('barrier'))) {
-            data.bom_barrier = req.barrier;
-        } else if (isVisible(getElementById('barrier_high'))) {
-            data.bom_barrier_high = req.barrier;
-            data.bom_barrier_low  = req.barrier2;
-        }
-        if (isVisible(getElementById('prediction'))) {
-            data.bom_prediction = req.barrier;
-        }
-
-        pushDataLayer(data);
-    };
-
     const mt5NewAccount = (response) => {
         const acc_type = response.mt5_new_account.mt5_account_type ?
             `${response.mt5_new_account.account_type}_${response.mt5_new_account.mt5_account_type}` : // financial_cent, demo_cent, ...
@@ -206,10 +163,8 @@ const GTM = (() => {
     return {
         pushDataLayer,
         eventHandler,
-        pushPurchaseData,
         pushTransactionData,
         mt5NewAccount,
-        setLoginFlag: (event_name) => { if (isGtmApplicable()) localStorage.setItem('GTM_login', event_name); },
     };
 })();
 

@@ -9,8 +9,6 @@ import AppRoutes       from 'Constants/routes';
 import { localize }    from '_common/localize';
 
 class Reports extends React.Component {
-    state = { is_visible: false };
-
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -28,11 +26,11 @@ class Reports extends React.Component {
         localStorage.removeItem('layout-contract-replay');
         this.props.showBlur();
         document.addEventListener('mousedown', this.handleClickOutside);
-        this.setState({ is_visible: true });
+        this.props.toggleReports(true);
     }
 
     componentWillUnmount() {
-        this.setState({ is_visible: false });
+        this.props.toggleReports(false);
         this.props.hideBlur();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
@@ -58,7 +56,7 @@ class Reports extends React.Component {
             {
                 onClick: () => {
                     this.props.history.push(AppRoutes.trade);
-                    this.setState({ is_visible: false });
+                    this.props.toggleReports(false);
                 },
                 icon : IconClose,
                 title: localize('Close'),
@@ -66,7 +64,7 @@ class Reports extends React.Component {
         ];
         return (
             <FadeWrapper
-                is_visible={this.state.is_visible}
+                is_visible={this.props.is_visible}
                 className='reports-page-wrapper'
                 keyname='reports-page-wrapper'
             >
@@ -88,16 +86,20 @@ class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-    hideBlur: PropTypes.func,
-    history : PropTypes.object,
-    location: PropTypes.object,
-    routes  : PropTypes.arrayOf(PropTypes.object),
-    showBlur: PropTypes.func,
+    hideBlur     : PropTypes.func,
+    history      : PropTypes.object,
+    is_visible   : PropTypes.bool,
+    location     : PropTypes.object,
+    routes       : PropTypes.arrayOf(PropTypes.object),
+    showBlur     : PropTypes.func,
+    toggleReports: PropTypes.func,
 };
 
 export default connect(
     ({ ui }) => ({
-        hideBlur: ui.hideRouteBlur,
-        showBlur: ui.showRouteBlur,
+        hideBlur     : ui.hideRouteBlur,
+        is_visible   : ui.is_reports_visible,
+        showBlur     : ui.showRouteBlur,
+        toggleReports: ui.toggleReports,
     })
 )(withRouter(Reports));

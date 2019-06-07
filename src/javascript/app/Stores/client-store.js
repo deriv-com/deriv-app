@@ -8,7 +8,6 @@ import {
     requestLogout,
     WS }                             from 'Services';
 import { getAccountTitle }           from '_common/base/client_base';
-import GTM                           from '_common/base/gtm';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
 import { localize }                  from '_common/localize';
@@ -341,7 +340,7 @@ export default class ClientStore extends BaseStore {
         }
         sessionStorage.setItem('active_tab', '1');
         // set local storage
-        GTM.setLoginFlag();
+        this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
         await BinarySocket.send({ 'authorize': this.getToken() }, { forced: true });
@@ -380,6 +379,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
+        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid = null;
         this.upgrade_info = undefined;
         this.accounts = [];

@@ -4,8 +4,6 @@ const ClientBase       = require('./client_base');
 const Login            = require('./login');
 const ServerTime       = require('./server_time');
 const BinarySocket     = require('./socket_base');
-const getElementById   = require('../common_functions').getElementById;
-const isVisible        = require('../common_functions').isVisible;
 const getLanguage      = require('../language').get;
 const LocalStore       = require('../storage').LocalStore;
 const State            = require('../storage').State;
@@ -16,14 +14,10 @@ const GTM = (() => {
     const isGtmApplicable = () => (/^(16303|16929)$/.test(getAppId()));
 
     const getCommonVariables = () => ({
-        country_ip: State.getResponse('website_status.clients_country'),
-        language  : getLanguage(),
-        pageTitle : pageTitle(),
-        pjax      : State.get('is_loaded_by_pjax'),
-        url       : document.URL,
+        language: getLanguage(),
         ...ClientBase.isLoggedIn() && {
             visitorId: ClientBase.get('loginid'),
-            bom_email: ClientBase.get('email'),
+            currency : ClientBase.get('currency'),
         },
         ...('is_dark_mode_on' in LocalStore.getObject('ui_store')) && {
             theme: LocalStore.getObject('ui_store').is_dark_mode_on ? 'dark' : 'light',
@@ -37,11 +31,6 @@ const GTM = (() => {
                 ...data,
             });
         }
-    };
-
-    const pageTitle = () => {
-        const t = /^.+[:-]\s*(.+)$/.exec(document.title);
-        return t && t[1] ? t[1] : document.title;
     };
 
     const eventHandler = (get_settings) => {
@@ -105,47 +94,6 @@ const GTM = (() => {
                 bom_transaction_in_last_30d: !!last_transaction_timestamp && moment(last_transaction_timestamp * 1000).isAfter(ServerTime.get().subtract(30, 'days')),
             });
         });
-    };
-
-    const pushPurchaseData = (response) => {
-        if (!isGtmApplicable() || ClientBase.get('is_virtual')) return;
-        const buy = response.buy;
-        if (!buy) return;
-        const req  = response.echo_req.passthrough;
-        const data = {
-            event             : 'buy_contract',
-            bom_ui            : 'legacy',
-            bom_symbol        : req.symbol,
-            bom_market        : getElementById('contract_markets').value,
-            bom_currency      : req.currency,
-            bom_contract_type : req.contract_type,
-            bom_contract_id   : buy.contract_id,
-            bom_transaction_id: buy.transaction_id,
-            bom_buy_price     : buy.buy_price,
-            bom_payout        : buy.payout,
-        };
-        Object.assign(data, {
-            bom_amount     : req.amount,
-            bom_basis      : req.basis,
-            bom_expiry_type: getElementById('expiry_type').value,
-        });
-        if (data.bom_expiry_type === 'duration') {
-            Object.assign(data, {
-                bom_duration     : req.duration,
-                bom_duration_unit: req.duration_unit,
-            });
-        }
-        if (isVisible(getElementById('barrier'))) {
-            data.bom_barrier = req.barrier;
-        } else if (isVisible(getElementById('barrier_high'))) {
-            data.bom_barrier_high = req.barrier;
-            data.bom_barrier_low  = req.barrier2;
-        }
-        if (isVisible(getElementById('prediction'))) {
-            data.bom_prediction = req.barrier;
-        }
-
-        pushDataLayer(data);
     };
 
     const mt5NewAccount = (response) => {
@@ -214,10 +162,8 @@ const GTM = (() => {
     return {
         pushDataLayer,
         eventHandler,
-        pushPurchaseData,
         pushTransactionData,
         mt5NewAccount,
-        setLoginFlag: (event_name) => { if (isGtmApplicable()) localStorage.setItem('GTM_login', event_name); },
     };
 })();
 

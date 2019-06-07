@@ -1,3 +1,4 @@
+import { str as crc32 } from 'crc-32';
 import * as messages from '../../../../translations/messages.json';
 
 export const i18n_config = {
@@ -6,6 +7,11 @@ export const i18n_config = {
             translation: {
                 ...messages,
             },
+        },
+    },
+    react: {
+        hashTransKey(defaultValue) {
+            return crc32(defaultValue);
         },
     },
     lng: window.location.search ?

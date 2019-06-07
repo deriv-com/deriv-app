@@ -1,11 +1,19 @@
 import React from 'react';
-import { LogoIcon,TradeActive } from '../Icons.jsx';
+import Accounts from './accounts.jsx';
+import { LogoIcon } from '../Icons.jsx';
+import '../../assets/sass/header/_header.scss';
 
 const Header = () => (
-    <div className='header-items'>
-        <LogoIcon />
-        <TradeActive />
-    </div>
+    <header className='header'>
+        <div className='header__header-items'>
+            <div className='header__items--left'>
+                <LogoIcon />
+            </div>
+            <div className='header__items--right'>
+                <Accounts />
+            </div>
+        </div>
+    </header>
 );
 
 export default Header;

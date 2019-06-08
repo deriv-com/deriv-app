@@ -30,11 +30,13 @@ class ProfitTable extends React.Component {
             {
                 component: (
                     <Localize
-                        str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
-                        replacers={{
-                            '1'  : website_name,
-                            '2_3': <a className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
+                        i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                        values={{
+                            website_name,
                         }}
+                        components={[
+                            <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
+                        ]}
                     />
                 ),
             }

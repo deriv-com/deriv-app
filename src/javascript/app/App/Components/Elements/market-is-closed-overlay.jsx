@@ -78,8 +78,8 @@ const onClick = () => {
 
 const MarketIsClosedOverlay = () => (
     <div className='market-is-closed-overlay'>
-        <p><Localize str='Market is closed.' /></p>
-        <p><Localize str='Try Volatility Indices which simulate real-world market volatility and are open 24/7.' /></p>
+        <p><Localize i18n_default_text='Market is closed.' /></p>
+        <p><Localize i18n_default_text='Try Volatility Indices which simulate real-world market volatility and are open 24/7.' /></p>
         <Button
             className='market-is-closed-overlay__button'
             classNameSpan='market-is-closed-overlay__button--span'

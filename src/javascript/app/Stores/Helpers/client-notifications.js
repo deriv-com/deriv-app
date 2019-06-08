@@ -19,8 +19,8 @@ const client_notifications = {
         header : localize('Set Currency'),
         message: (
             <Localize
-                str='Please set the [_1]currency[_2] of your account to enable trading.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/set-currency', undefined, undefined, true)} /> }}
+                i18n_default_text='Please set the <0>currency</0> of your account to enable trading.'
+                components={[<a key={0} className='link link--white' target='_blank' href={urlFor('user/set-currency', undefined, undefined, true)} />]}
             />
         ),
         type: 'danger',
@@ -29,10 +29,9 @@ const client_notifications = {
         header : localize('Self-exclusion Detected'),
         message: (
             <Localize
-                str='You have opted to be excluded from Binary.com until [_1]. Please [_2]contact us[_3] for assistance.'
-                replacers={{
-                    '1'  : formatDate(excluded_until, 'DD/MM/YYYY'),
-                    '2_3': <a className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> }}
+                i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY') }}
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',
@@ -41,8 +40,8 @@ const client_notifications = {
         header : localize('Account Authentication'),
         message: (
             <Localize
-                str='[_1]Authenticate your account[_2] now to take full advantage of all payment methods available.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> }}
+                i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'info',
@@ -51,8 +50,8 @@ const client_notifications = {
         header : localize('Documents in review'),
         message: (
             <Localize
-                str='We are reviewing your documents. For more details [_1]contact us[_2].'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> }}
+                i18n_default_text='We are reviewing your documents. For more details <0>contact us</0>.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'info',
@@ -76,8 +75,8 @@ const client_notifications = {
         header : localize('Authentication Failed'),
         message: (
             <Localize
-                str='[_1]Your Proof of Identity or Proof of Address[_2] did not meet our requirements. Please check your email for further instructions.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> }}
+                i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'warning',
@@ -86,8 +85,8 @@ const client_notifications = {
         header : localize('Trading and Deposits Disabled'),
         message: (
             <Localize
-                str='Trading and deposits have been disabled on your account. Kindly contact [_1]customer support[_2] for assistance.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> }}
+                i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',
@@ -96,8 +95,8 @@ const client_notifications = {
         header : localize('Binary Options Trading Disabled'),
         message: (
             <Localize
-                str='Binary Options Trading has been disabled on your account. Kindly contact [_1]customer support[_2] for assistance.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> }}
+                i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',
@@ -106,8 +105,8 @@ const client_notifications = {
         header : localize('Remove Deposit Limits'),
         message: (
             <Localize
-                str='Please set your [_1]30-day turnover limit[_2] to remove deposit limits.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> }}
+                i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'warning',
@@ -116,8 +115,8 @@ const client_notifications = {
         header : localize('Withdrawal and Trading Limits'),
         message: (
             <Localize
-                str='Please complete the [_1]Financial Assessment form[_2] to lift your withdrawal and trading limits.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> }}
+                i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'info',
@@ -126,8 +125,8 @@ const client_notifications = {
         header : localize('Complete your personal details'),
         message: (
             <Localize
-                str='Please complete your [_1]Personal Details[_2] before you proceed.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> }}
+                i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',
@@ -136,8 +135,8 @@ const client_notifications = {
         header : localize('Terms & Conditions Updated'),
         message: (
             <Localize
-                str='Please [_1]accept the updated Terms and Conditions[_2] to enable deposit and trading.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> }}
+                i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',
@@ -146,8 +145,8 @@ const client_notifications = {
         header : localize('Complete your personal details'),
         message: (
             <Localize
-                str='Please complete your [_1]Personal Details[_2] before you proceed.'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> }}
+                i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
             />
         ),
         type: 'danger',

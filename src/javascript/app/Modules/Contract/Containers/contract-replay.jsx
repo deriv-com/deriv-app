@@ -9,6 +9,7 @@ import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import { connect }          from 'Stores/connect';
 import { Icon }             from 'Assets/Common';
 import { IconClose }        from 'Assets/Settings';
+import Localize             from 'App/Components/Elements/localize.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from '_common/localize';
 import InfoBox              from './info-box.jsx';
@@ -79,7 +80,7 @@ class ContractReplay extends React.Component {
                 >
                     <ContractDrawer
                         contract_info={contract_info}
-                        heading='Reports'
+                        heading={ <Localize i18n_default_text='Reports' /> }
                         is_sell_requested={is_sell_requested}
                         onClickSell={onClickSell}
                         status={status}

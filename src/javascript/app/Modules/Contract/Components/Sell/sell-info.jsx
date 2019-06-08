@@ -12,14 +12,14 @@ const SellInfo = ({
     <div className='sell-info'>
         <div>
             <Localize
-                str='You have sold this contract at [_1]'
-                replacers={{
-                    '1': <Money
+                i18n_default_text='You have sold this contract at <0 />'
+                components={[
+                    <Money
                         key={sell_info.transaction_id}
                         currency={contract_info.currency}
                         amount={sell_info.sell_price}
                     />,
-                }}
+                ]}
             />
         </div>
         <div>{localize('Your transaction reference number is [_1]', [sell_info.transaction_id])}</div>

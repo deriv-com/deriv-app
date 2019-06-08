@@ -25,7 +25,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
         <React.Fragment>
             <div className='theme-select-settings'>
                 <h4 className='theme-select-settings__title'>
-                    <Localize str='Select theme' />
+                    <Localize i18n_default_text='Select theme' />
                 </h4>
                 <div className='theme-select-settings__content'>
                     <div className='theme-select-settings__option'>
@@ -39,7 +39,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                             'theme-select-settings__option__title--selected': is_dark_mode,
                         })}
                         >
-                            <Localize str='Dark' />
+                            <Localize i18n_default_text='Dark' />
                         </p>
                     </div>
                     <div className='theme-select-settings__option'>
@@ -53,7 +53,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                             'theme-select-settings__option__title--selected': !is_dark_mode,
                         })}
                         >
-                            <Localize str='Light' />
+                            <Localize i18n_default_text='Light' />
                         </p>
                     </div>
                 </div>

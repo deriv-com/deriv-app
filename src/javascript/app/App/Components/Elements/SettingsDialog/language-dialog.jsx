@@ -45,7 +45,7 @@ const LanguageDialog = ({ hide, is_visible, is_settings_on }) => {
         <div className={language_dialog_class}>
             <div className='settings-dialog__language-header' onClick={hide}>
                 <span>
-                    <Localize str='Select language' />
+                    <Localize i18n_default_text='Select language' />
                 </span>
             </div>
             <div className='settings-dialog__language-container'>

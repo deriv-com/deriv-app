@@ -7,8 +7,8 @@ export const contractSold = (currency, sold_for) => ({
     header : localize('Contract sold'),
     message: (
         <Localize
-            str='Contract was sold for [_1].'
-            replacers={{ '1': <Money key={sold_for} amount={sold_for} currency={currency} /> }}
+            i18n_default_text='Contract was sold for <0 />.'
+            components={[ <Money key={sold_for} amount={sold_for} currency={currency} /> ]}
         />
     ),
     type                 : 'contract_sold',

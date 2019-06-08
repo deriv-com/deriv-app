@@ -21,10 +21,10 @@ const Wip = ({ is_dark_mode, pushDataLayer }) => {
             <div className='work-in-progress__content'>
                 <IconWip theme={is_dark_mode ? 'dark' : 'light'} />
                 <div className='work-in-progress__header'>
-                    <Localize str='Work in progress!' />
+                    <Localize i18n_default_text='Work in progress!' />
                 </div>
                 <div className='work-in-progress__text'>
-                    <Localize str='This is currently unavailable for mobile devices.' />
+                    <Localize i18n_default_text='This is currently unavailable for mobile devices.' />
                 </div>
                 <Button
                     className='work-in-progress__btn'

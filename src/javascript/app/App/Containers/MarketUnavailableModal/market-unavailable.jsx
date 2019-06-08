@@ -19,7 +19,7 @@ const MarketUnavailableModal = ({
         onConfirm={() => { setHasOnlyForwardingContracts(false); resetPreviousSymbol(); }}
         title={localize('Market is unavailable')}
     >
-        <Localize str='Sorry, but this market is not supported yet on Deriv. Do you want to trade this market on SmartTrader?' />
+        <Localize i18n_default_text='Sorry, but this market is not supported yet on Deriv. Do you want to trade this market on SmartTrader?' />
     </FullPageModal>
 );
 

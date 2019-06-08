@@ -1,21 +1,10 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { localize }     from '_common/localize';
-import { fillTemplate } from 'Utils/Language/fill-template';
+import { Trans }        from 'react-i18next';
 
-const Localize = ({ str, replacers }) => {
-    const localized = localize(str /* localize-ignore */); // should be localized on the caller side
-
-    if (!/\[_\d+\]/.test(localized)) {
-        return <React.Fragment>{localized}</React.Fragment>;
-    }
-
-    return (
-        <React.Fragment>
-            {fillTemplate(localized, replacers)}
-        </React.Fragment>
-    );
-};
+const Localize = ({ i18n_default_text, values, components }) => (
+    <Trans defaults={i18n_default_text} values={values} components={components} />
+);
 
 Localize.propTypes = {
     replacers: PropTypes.object,

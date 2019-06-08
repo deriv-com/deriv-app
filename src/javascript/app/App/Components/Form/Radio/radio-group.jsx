@@ -15,7 +15,7 @@ class RadioGroup extends React.PureComponent {
                         selected={selected === item.value}
                         onClick={this.props.onToggle}
                     >
-                        {item.label && <Localize str={item.label} />}
+                        {item.label && <Localize str={item.label} /> /* TODO: i18n_issue */}
                     </Radio>
                 ))}
             </div>

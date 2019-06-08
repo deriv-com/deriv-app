@@ -27,8 +27,8 @@ const UnsupportedContractModal = ({ is_visible, ui }) => (
         is_visible={is_visible}
     >
         <Localize
-            str='This trade type is currently not supported on [_1]. Please go to Binary.com for details.'
-            replacers={{ '1': website_name }}
+            i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
+            values={{ website_name }}
         />
     </FullPageModal>
 );

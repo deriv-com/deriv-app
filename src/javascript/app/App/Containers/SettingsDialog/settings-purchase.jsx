@@ -28,7 +28,7 @@
 //     <div className='settings-dialog__purchase'>
 //         <MediaItem>
 //             <MediaHeading>
-//                 <Localize str='Purchase confirmation' />
+//                 <Localize i18n_default_text='Purchase confirmation' />
 //             </MediaHeading>
 //             <MediaDescription>
 //                 <MediaIcon
@@ -47,7 +47,7 @@
 //         </MediaItem>
 //         <MediaItem>
 //             <MediaHeading>
-//                 <Localize str='Purchase lock' />
+//                 <Localize i18n_default_text='Purchase lock' />
 //             </MediaHeading>
 //             <MediaDescription>
 //                 <MediaIcon

@@ -39,7 +39,7 @@ const ChartSettings = ({
     <div className='settings-chart'>
         <MediaItem>
             <MediaHeading>
-                <Localize str='Toolbar position' />
+                <Localize i18n_default_text='Toolbar position' />
             </MediaHeading>
             <MediaDescription>
                 <MediaIcon
@@ -48,7 +48,7 @@ const ChartSettings = ({
                     is_enabled={is_layout_default}
                 />
                 <div className='media__form'>
-                    <p><Localize str='Change the position of the toolbar' /></p>
+                    <p><Localize i18n_default_text='Change the position of the toolbar' /></p>
                     <RadioGroup
                         items={[
                             {
@@ -70,8 +70,8 @@ const ChartSettings = ({
             <MediaItem>
             <MediaHeading>
                 <Localize
-                    str='Open-high-low-close [_1](OHLC) information[_2]'
-                    replacers={{ '1_2': <div /> }}
+                    i18n_default_text='Open-high-low-close <0>(OHLC) information</0>'
+                    components={[ <div key={0} /> ]}
                 />
             </MediaHeading>
             <MediaDescription>
@@ -91,7 +91,7 @@ const ChartSettings = ({
         </MediaItem> */}
         <MediaItem>
             <MediaHeading>
-                <Localize str='Interval duration' />
+                <Localize i18n_default_text='Interval duration' />
             </MediaHeading>
             <MediaDescription>
                 <MediaIcon

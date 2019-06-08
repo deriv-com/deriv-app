@@ -33,11 +33,11 @@ import Money                 from '../money.jsx';
 class ContractDrawer extends Component {
     state = {
         is_shade_on: false,
-    }
+    };
 
     handleShade = (shade) => {
         this.setState({ is_shade_on: shade });
-    }
+    };
 
     getBodyContent () {
         const {
@@ -105,7 +105,7 @@ class ContractDrawer extends Component {
                 </ContractCardBody>
                 <ContractCardFooter>
                     <div className='purchase-price-container'>
-                        <Localize str='Purchase Price' />&nbsp;
+                        <Localize i18n_default_text='Purchase Price' />&nbsp;
                         <span className='purchase-price' >
                             <Money
                                 currency={currency}
@@ -115,7 +115,7 @@ class ContractDrawer extends Component {
                     </div>
                     <div className='contract-card__separator' />
                     <div className='potential-payout-container'>
-                        <Localize str='Potential Payout' />&nbsp;
+                        <Localize i18n_default_text='Potential Payout' />&nbsp;
                         <span className='potential-payout-price' >
                             <Money
                                 currency={currency}
@@ -174,7 +174,7 @@ class ContractDrawer extends Component {
                     onClick={() => this.props.history.goBack()}
                 >
                     <Icon icon={IconBack} />
-                    <h2><Localize str={this.props.heading || 'Contract'} /></h2>
+                    <h2>{this.props.heading || <Localize i18n_default_text='Contract' />}</h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
@@ -184,7 +184,7 @@ class ContractDrawer extends Component {
 
 ContractDrawer.propTypes = {
     contract_info    : PropTypes.object,
-    heading          : PropTypes.string,
+    heading          : PropTypes.oneOfType([ PropTypes.node, PropTypes.string ]),
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,
     server_time      : PropTypes.object,

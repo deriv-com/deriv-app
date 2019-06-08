@@ -12,21 +12,19 @@ const LoginPrompt = ({
     <PageError
         header={
             <Localize
-                str='[_1] page is only[_2]available for existing clients.'
-                replacers={{
-                    '1': page_title || 'This',
-                    '2': <br key={0} />,
-                }}
+                i18n_default_text='{{page_title}} page is only<0 />available for existing clients.'
+                values={{ page_title: page_title || 'This' }}
+                components={[ <br key={0} /> ]}
             />
         }
         messages={[
             <Localize
                 key={0}
-                str='If you have an active account, please [_1]Log in[_2] for full access. Otherwise, please [_3]Sign up[_4] to start trading.'
-                replacers={{
-                    '1_2': <a className='link' href='javascript:;' onClick={onLogin} />,
-                    '3_4': <a className='link' href='javascript:;' onClick={onSignup} />,
-                }}
+                i18n_default_text='If you have an active account, please <0>Log in</0> for full access. Otherwise, please <1>Sign up</1> to start trading.'
+                components={[
+                    <a key={0} className='link' href='javascript:;' onClick={onLogin} />,
+                    <a key={1} className='link' href='javascript:;' onClick={onSignup} />,
+                ]}
             />,
         ]}
     />

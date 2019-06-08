@@ -14,6 +14,7 @@ const ErrorComponent = ({
 }) => {
     let msg = '';
     if (typeof message === 'object') {
+        // TODO: i18n_issue
         msg = <Localize
             str={message.str}
             replacers={message.replacers}

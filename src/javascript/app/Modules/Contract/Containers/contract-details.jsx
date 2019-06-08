@@ -2,13 +2,13 @@ import PropTypes       from 'prop-types';
 import React           from 'react';
 import { withRouter }  from 'react-router';
 import { Link }        from 'react-router-dom';
-import { localize }    from '_common/localize';
+import ErrorComponent  from 'App/Components/Elements/Errors';
+import Localize        from 'App/Components/Elements/localize.jsx';
 import UILoader        from 'App/Components/Elements/ui-loader.jsx';
 import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
 import DetailsContents from '../Components/Details/details-contents.jsx';
 import DetailsHeader   from '../Components/Details/details-header.jsx';
-import ErrorComponent  from '../../../App/Components/Elements/Errors';
 
 class ContractDetails extends React.Component {
     componentDidMount() { this.props.onMount(this.props.contract_id); }
@@ -38,7 +38,7 @@ class ContractDetails extends React.Component {
                             to={routes.trade}
                             onClick={this.props.onClickNewTrade}
                         >
-                            <span className='btn__text'>{localize('Start a new trade')}</span>
+                            <span className='btn__text'>{<Localize i18n_default_text='Start a new trade' />}</span>
                         </Link>
                     </div>
                 </React.Fragment>
@@ -51,7 +51,7 @@ class ContractDetails extends React.Component {
         return (
             <ErrorComponent
                 message={this.props.error_message}
-                redirect_label={localize('Go back to trading')}
+                redirect_label={<Localize i18n_default_text='Go back to trading' />}
                 redirectOnClick={() => this.props.history.push(routes.trade)}
                 should_show_refresh={false}
             />

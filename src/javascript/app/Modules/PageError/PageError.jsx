@@ -1,7 +1,7 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { localize }   from '_common/localize';
-import ButtonLink     from 'App/Components/Routes/button-link.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import ButtonLink   from 'App/Components/Routes/button-link.jsx';
+import Localize     from 'App/Components/Elements/localize.jsx';
 
 const PageError = ({
     buttonOnClick,
@@ -24,7 +24,7 @@ const PageError = ({
                     { error_code &&
                     <React.Fragment>
                         <br />
-                        <p className='page-error__code'>{localize('Error Code: [_1]', error_code)}</p>
+                        <p className='page-error__code'><Localize i18n_default_text={'Error Code: {{error_code}}'} values={{ error_code }} /></p>
                     </React.Fragment>
                     }
                 </span>
@@ -49,7 +49,7 @@ PageError.propTypes = {
     error_code    : PropTypes.number,
     header        : PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     messages      : PropTypes.array,
-    redirect_label: PropTypes.string,
+    redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     redirect_url  : PropTypes.string,
 };
 

@@ -1,7 +1,9 @@
-import { str as crc32 } from 'crc-32';
-import * as messages from '../../../../translations/messages.json';
+import { str as crc32 }     from 'crc-32';
+import i18n                 from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import * as messages        from '../../../translations/messages.json';
 
-export const i18n_config = {
+const i18n_config = {
     resources: {
         EN: {
             translation: {
@@ -23,3 +25,11 @@ export const i18n_config = {
         : undefined,
     fallbackLng: 'en',
 };
+
+i18n
+    .use(initReactI18next) // passes i18n down to react-i18next
+    .init(i18n_config);
+
+export const i18nDefaultText = (string) => i18n.t(crc32(string));
+
+export default i18n;

@@ -1,12 +1,9 @@
-import i18n                        from 'i18next';
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import { initReactI18next }        from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
 import getBaseName                 from 'Utils/URL/base-name';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import { i18n_config }             from './Constants/i18n';
 import PushNotification            from './Containers/push-notification.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
@@ -17,13 +14,9 @@ import MarketUnavailableModal      from './Containers/MarketUnavailableModal';
 import ServicesErrorModal          from './Containers/ServicesErrorModal';
 import UnsupportedContractModal    from './Containers/UnsupportedContractModal';
 import Wip                         from './Containers/Wip';
-
+import './i18n';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
-
-i18n
-    .use(initReactI18next) // passes i18n down to react-i18next
-    .init(i18n_config);
 
 const App = ({ root_store }) => (
     <Router basename={getBaseName()}>

@@ -2,9 +2,9 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import { localize }      from '_common/localize';
 import routes            from 'Constants/routes';
 import ErrorComponent    from 'App/Components/Elements/Errors';
+import Localize          from 'App/Components/Elements/localize.jsx';
 import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
@@ -19,7 +19,7 @@ const Contract = ({
             has_error ?
                 <ErrorComponent
                     message={error_message}
-                    redirect_label={localize('Go back to trading')}
+                    redirect_label={<Localize i18n_default_text='Go back to trading' />}
                     redirectOnClick={() => history.push(routes.trade)}
                     should_show_refresh={false}
                 />

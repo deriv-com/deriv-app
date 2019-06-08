@@ -1,6 +1,5 @@
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from '_common/localize';
 import PageError     from 'Modules/PageError';
 import { routes }    from 'Constants/index';
 import Localize      from '../localize.jsx';
@@ -12,32 +11,23 @@ const ErrorComponent = ({
     redirectOnClick,
     should_show_refresh = true,
 }) => {
-    let msg = '';
-    if (typeof message === 'object') {
-        // TODO: i18n_issue
-        msg = <Localize
-            str={message.str}
-            replacers={message.replacers}
-        />;
-    } else {
-        msg = message;
-    }
-    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
+    const refresh_message = should_show_refresh ? <Localize i18n_default_text='Please refresh this page to continue.' /> : '';
+
     return (
         <PageError
-            header={header || localize('Oops, something went wrong.')}
+            header={header || <Localize i18n_default_text='Oops, something went wrong.' />}
             messages={
-                msg
+                message
                     ? [
-                        msg,
+                        message,
                         refresh_message,
                     ]
                     : [
-                        localize('Sorry, an error occured while processing your request.'),
+                        <Localize key={0} i18n_default_text='Sorry, an error occured while processing your request.' />,
                         refresh_message,
                     ]}
             redirect_url={routes.trade}
-            redirect_label={redirect_label || localize('Refresh')}
+            redirect_label={redirect_label || <Localize i18n_default_text='Refresh' />}
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
@@ -45,10 +35,7 @@ const ErrorComponent = ({
 
 ErrorComponent.propTypes = {
     message: PropTypes.oneOfType([
-        PropTypes.shape({
-            replacers: PropTypes.object,
-            str      : PropTypes.string,
-        }),
+        PropTypes.node,
         PropTypes.string,
     ]),
     type: PropTypes.string,

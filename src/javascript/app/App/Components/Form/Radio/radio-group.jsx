@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React     from 'react';
-import Localize  from 'App/Components/Elements/localize.jsx';
 import { Radio } from './radio.jsx';
 
 class RadioGroup extends React.PureComponent {
@@ -15,7 +14,7 @@ class RadioGroup extends React.PureComponent {
                         selected={selected === item.value}
                         onClick={this.props.onToggle}
                     >
-                        {item.label && <Localize str={item.label} /> /* TODO: i18n_issue */}
+                        {item.label}
                     </Radio>
                 ))}
             </div>
@@ -26,7 +25,7 @@ class RadioGroup extends React.PureComponent {
 RadioGroup.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            label: PropTypes.string.isRequired,
+            label: PropTypes.node.isRequired,
             value: PropTypes.bool.isRequired,
         })
     ),

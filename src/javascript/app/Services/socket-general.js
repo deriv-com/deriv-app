@@ -6,6 +6,7 @@ import ServerTime           from '_common/base/server_time';
 import BinarySocket         from '_common/base/socket_base';
 import { State }            from '_common/storage';
 import { getPropertyValue } from '_common/utility';
+import { i18nDefaultText }  from 'App/i18n';
 import { requestLogout }    from './logout';
 import WS                   from './ws-methods';
 
@@ -128,7 +129,7 @@ const BinarySocketGeneral = (() => {
             }
             case 'RateLimit':
                 if (msg_type !== 'cashier_password') {
-                    common_store.setError(true, { message: 'You have reached the rate limit of requests per second. Please try later.' });
+                    common_store.setError(true, { message: i18nDefaultText('You have reached the rate limit of requests per second. Please try later.') });
                 }
                 break;
             case 'InvalidAppID':

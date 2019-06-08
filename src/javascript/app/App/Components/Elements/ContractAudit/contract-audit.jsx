@@ -8,7 +8,7 @@ import { Icon, IconArrowBold } from 'Assets/Common';
 const Pair = ({ value, label }) => (
     <div className='pair'>
         <div className='pair__label'>
-            <Localize str={label} />
+            { label }
         </div>
         <div className='pair__value'>
             {value}
@@ -80,23 +80,23 @@ class ContractAudit extends Component {
                 >
                     <div className='border' />
                     <div className='pairs'>
-                        <Pair label='Ref. ID (Buy)' value={transaction_ids.buy} />
-                        <Pair label='Ref. ID (Sell)' value={transaction_ids.sell} />
+                        <Pair label={<Localize i18n_default_text={'Ref. ID (Buy)'} />} value={transaction_ids.buy} />
+                        <Pair label={<Localize i18n_default_text={'Ref. ID (Sell)'} />} value={transaction_ids.sell} />
                     </div>
                     <div className='border' />
                     <div className='pairs'>
-                        <Pair label='Duration' value={this.getDuration()} />
-                        <Pair label='Barrier' value={barrier} />
+                        <Pair label={<Localize i18n_default_text={'Duration'} />} value={this.getDuration()} />
+                        <Pair label={<Localize i18n_default_text={'Barrier'} />} value={barrier} />
                     </div>
                     <div className='border' />
                     <div className='pairs'>
-                        <Pair label='Entry Spot' value={entry_tick} />
-                        <Pair label='Exit Spot' value={exit_tick} />
+                        <Pair label={<Localize i18n_default_text={'Entry Spot'} />} value={entry_tick} />
+                        <Pair label={<Localize i18n_default_text={'Exit Spot'} />} value={exit_tick} />
                     </div>
                     <div className='border' />
                     <div className='pairs'>
-                        <Pair label='Start Time' value={entry_tick_time} />
-                        <Pair label='End Time' value={exit_tick_time} />
+                        <Pair label={<Localize i18n_default_text={'Start Time'} />} value={entry_tick_time} />
+                        <Pair label={<Localize i18n_default_text={'End Time'} />} value={exit_tick_time} />
                     </div>
                 </div>
             </div>

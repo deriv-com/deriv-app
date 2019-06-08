@@ -44,7 +44,7 @@ const getKeyHash = (string) => crc32(string);
 
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text={?['|"](.*?)['|"]}?/g);
+        const i18n_marker = new RegExp(/i18n_default_text={?(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])}?|i18nDefaultText\((?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\)/g);
         const messages_json = {};
 
         // Find all file types listed in `globs`
@@ -59,7 +59,8 @@ const getKeyHash = (string) => crc32(string);
                 const file = fs.readFileSync(file_paths[i], 'utf8');
                 let result = i18n_marker.exec(file);
                 while (result != null) {
-                    messages.push(result[1]);
+                    const extracted = result[1] || result[2];
+                    messages.push(extracted.replace(/\\/g, ''));
                     result = i18n_marker.exec(file);
                 }
             } catch (e) {

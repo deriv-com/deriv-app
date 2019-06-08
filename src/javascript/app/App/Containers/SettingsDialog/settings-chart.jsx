@@ -52,11 +52,11 @@ const ChartSettings = ({
                     <RadioGroup
                         items={[
                             {
-                                label: 'Bottom',  // localization will be handled in RadioGroup
+                                label: <Localize i18n_default_text='Bottom' />,
                                 value: true,
                             },
                             {
-                                label: 'Left',
+                                label: <Localize i18n_default_text='Left' />,
                                 value: false,
                             },
                         ]}

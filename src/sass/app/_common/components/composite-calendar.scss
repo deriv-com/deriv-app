@@ -1,0 +1,6 @@
+/* @define .composite-calendar; weak; */
+.composite-calendar {
+    display: grid;
+    grid-template-columns: minmax(min-content, 128px) minmax(min-content, 280px) minmax(min-content, 280px);
+    height: 280px;
+}

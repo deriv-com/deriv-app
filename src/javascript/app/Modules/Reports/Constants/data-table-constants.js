@@ -1,31 +1,15 @@
 import classNames           from 'classnames';
 import React                from 'react';
 import { localize }         from '_common/localize';
-import Label                from 'App/Components/Elements/Label';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { IconPriceMove }    from 'Assets/Trading/icon-price-move.jsx';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
-import Localize             from '../../../App/Components/Elements/localize';
+import Localize             from 'App/Components/Elements/localize.jsx';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 
-const getModeFromValue = (key) => {
-    const map = {
-        deposit   : 'warn',
-        withdrawal: 'info',
-        sell      : 'danger',
-        buy       : 'success',
-        default   : 'default',
-    };
-
-    if (Object.keys(map).find(x => x === key)) {
-        return map[key];
-    }
-
-    return map.default;
-};
 /* eslint-disable react/display-name, react/prop-types */
 export const getStatementTableColumnsTemplate = (currency) => [
     {

@@ -16,6 +16,7 @@ module.exports = {
     },
     devServer: {
         publicPath: '/dist/',
+        disableHostCheck: true,
     },
     devtool: 'source-map',
     target: 'web',

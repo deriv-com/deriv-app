@@ -37,13 +37,14 @@ const marker_lines = {
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
 };
 
-const addMarker = (marker_obj, SmartChartStore, contract_info) => {
+const addMarker = async (marker_obj, SmartChartStore, contract_info) => {
     Object.keys(marker_obj).forEach(createMarker);
+    const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
 
     function createMarker(marker_type) {
         if (marker_type in SmartChartStore.markers) return;
 
-        const marker_config = marker_obj[marker_type](contract_info);
+        const marker_config = marker_obj[marker_type](contract_info, decimal_places);
         if (marker_config) {
             SmartChartStore.createMarker(marker_config);
         }

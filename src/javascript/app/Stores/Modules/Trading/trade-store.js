@@ -276,17 +276,17 @@ export default class TradeStore extends BaseStore {
                     const {
                         contract_id,
                         longcode,
-                        purchase_time,
+                        start_time,
                     } = response.buy;
                     // toggle smartcharts to contract mode
                     if (contract_id) {
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
-                        // and then set the chart view to the purchase_time
+                        // and then set the chart view to the start_time
                         this.root_store.modules.smart_chart.switchToContractMode();
-                        this.root_store.modules.smart_chart.setChartView(purchase_time);
+                        this.root_store.modules.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode before mounting contract
-                        this.root_store.modules.contract.drawContractStartTime(purchase_time, longcode);
+                        this.root_store.modules.contract.drawContractStartTime(start_time, longcode);
                         this.root_store.modules.contract.onMount(contract_id, false);
                         this.root_store.ui.openPositionsDrawer();
                     }

@@ -64,7 +64,6 @@ export default class ContractStore extends BaseStore {
         const {
             date_expiry,
             date_start,
-            purchase_time,
             tick_count,
         } = this.contract_info;
 
@@ -73,8 +72,8 @@ export default class ContractStore extends BaseStore {
         // Set chart granularity and chart_type
         this.handleChartType(date_start, end_time || null);
 
-        // Set chart view to purchase_time
-        this.smart_chart.setChartView(purchase_time);
+        // Set chart view to date_start
+        this.smart_chart.setChartView(date_start);
 
         if (!end_time) this.is_ongoing_contract = true;
 

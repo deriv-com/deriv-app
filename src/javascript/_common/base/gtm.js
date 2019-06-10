@@ -76,8 +76,7 @@ const GTM = (() => {
             BinarySocket.wait('mt5_login_list').then((response) => {
                 (response.mt5_login_list || []).forEach((obj) => {
                     const acc_type = (ClientBase.getMT5AccountType(obj.group) || '')
-                        .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/costarica|svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
-                        // TODO [->svg]
+                        .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
                     if (acc_type) {
                         data[`mt5_${acc_type}_id`] = obj.login;
                     }

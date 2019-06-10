@@ -8,7 +8,7 @@ import DataTable                            from 'App/Components/Elements/DataTa
 import Localize                             from 'App/Components/Elements/localize.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
 import { website_name }                     from 'App/Constants/app-config';
-import { getUnsupportedContracts }          from 'Constants';
+import { getSupportedContracts }            from 'Constants';
 import { connect }                          from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
@@ -29,8 +29,9 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getUnsupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
-                {
+            action = getSupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+                getContractPath(row_obj.id)
+                : {
                     component: (
                         <Localize
                             str='This trade type is currently not supported on [_1]. Please go to [_2]Binary.com[_3] for details.'
@@ -40,8 +41,7 @@ class Statement extends React.Component {
                             }}
                         />
                     ),
-                }
-                : getContractPath(row_obj.id);
+                };
         } else if (['deposit', 'withdrawal'].includes(row_obj.action_type)) {
             action = {
                 message: row_obj.desc,

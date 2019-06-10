@@ -51,7 +51,7 @@ class PositionsDrawerCard extends React.PureComponent {
             toggleUnsupportedContractModal,
             type,
         } = this.props;
-        const percentage = getTimePercentage(server_time, contract_info.purchase_time, contract_info.date_expiry);
+        const percentage = getTimePercentage(server_time, contract_info.date_start, contract_info.date_expiry);
         return (
 
             <div className={classNames(

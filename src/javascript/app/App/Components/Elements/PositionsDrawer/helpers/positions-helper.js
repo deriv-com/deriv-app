@@ -10,8 +10,8 @@ export const addCommaToNumber = num => {
     );
 };
 
-export const getTimePercentage = (current_time, purchase_time, expiry_time) => {
-    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(purchase_time)));
+export const getTimePercentage = (current_time, date_start, expiry_time) => {
+    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(date_start)));
     const duration_from_now = moment.duration(moment.unix(expiry_time).diff(current_time));
     let percentage = (duration_from_now.asMilliseconds() / duration_from_purchase.asMilliseconds()) * 100;
 

@@ -52,7 +52,7 @@ class ContractDrawer extends Component {
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
         const percentage = getTimePercentage(
             this.props.server_time,
-            contract_info.purchase_time,
+            contract_info.date_start,
             contract_info.date_expiry,
         );
         const getTick = () => {

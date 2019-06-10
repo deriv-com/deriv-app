@@ -146,6 +146,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onUnmountReplay() {
+        this.forgetProposalOpenContract(this.replay_contract_id);
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;

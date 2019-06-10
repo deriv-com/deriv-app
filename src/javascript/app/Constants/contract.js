@@ -71,58 +71,6 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-const getContractConfig = is_high_low => ({
-    CALL: {
-        name    : is_high_low ?  localize('Higher') : localize('Rise'),
-        position: 'top',
-    },
-    PUT: {
-        name    : is_high_low ? localize('Lower') : localize('Fall'),
-        position: 'bottom',
-    },
-    CALLE: {
-        name    : localize('Rise'),
-        position: 'top',
-    },
-    PUTE: {
-        name    : localize('Fall'),
-        position: 'bottom',
-    },
-    DIGITMATCH: {
-        name    : localize('Matches'),
-        position: 'top',
-    },
-    DIGITDIFF: {
-        name    : localize('Differs'),
-        position: 'bottom',
-    },
-    DIGITEVEN: {
-        name    : localize('Even'),
-        position: 'top',
-    },
-    DIGITODD: {
-        name    : localize('Odd'),
-        position: 'bottom',
-    },
-    DIGITOVER: {
-        name    : localize('Over'),
-        position: 'top',
-    },
-    DIGITUNDER: {
-        name    : localize('Under'),
-        position: 'bottom',
-    },
-    ONETOUCH: {
-        name    : localize('Touch'),
-        position: 'top',
-    },
-    NOTOUCH: {
-        name    : localize('No Touch'),
-        position: 'bottom',
-    },
-    ...getUnsupportedContracts(),
-});
-
 export const getSupportedContracts = is_high_low => ({
     CALL: {
         name    : is_high_low ?  localize('Higher') : localize('Rise'),
@@ -172,6 +120,11 @@ export const getSupportedContracts = is_high_low => ({
         name    : localize('No Touch'),
         position: 'bottom',
     },
+});
+
+const getContractConfig = is_high_low => ({
+    ...getSupportedContracts(is_high_low),
+    ...getUnsupportedContracts(),
 });
 
 export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].name : '');

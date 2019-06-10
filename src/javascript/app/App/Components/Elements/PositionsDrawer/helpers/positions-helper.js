@@ -1,5 +1,5 @@
 import moment       from 'moment';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 
 export const addCommaToNumber = num => {
     const n = String(num);
@@ -39,12 +39,12 @@ export const getBarrierValue = (contract_info) => {
 };
 
 const digitTypeMap = (contract_info) => ({
-    DIGITDIFF : localize('Not [_1]', contract_info.barrier),
+    DIGITDIFF : localize('Not {{barrier}}', { barrier: contract_info.barrier }),
     DIGITEVEN : localize('Even'),
-    DIGITMATCH: localize('Equals [_1]', contract_info.barrier),
+    DIGITMATCH: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
     DIGITODD  : localize('Odd'),
-    DIGITOVER : localize('Over [_1]', contract_info.barrier),
-    DIGITUNDER: localize('Under [_1]', contract_info.barrier),
+    DIGITOVER : localize('Over {{barrier}}', { barrier: contract_info.barrier }),
+    DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
 
 const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));

@@ -1,7 +1,7 @@
 import classNames       from 'classnames';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { localize }     from '_common/localize';
+import { localize }     from 'App/i18n';
 import { padLeft }      from '_common/string_util';
 import { Popover }      from 'App/Components/Elements/Popover';
 import {

@@ -11,7 +11,7 @@ import { Icon }             from 'Assets/Common';
 import { IconClose }        from 'Assets/Settings';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import AppRoutes            from 'Constants/routes';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 import InfoBox              from './info-box.jsx';
 import Digits               from './digits.jsx';
 

@@ -10,13 +10,14 @@ require('babel-register')({
     cache     : true,
 });
 
-const color   = require('cli-color');
-const Spinner = require('cli-spinner').Spinner;
-const program = require('commander');
-const crc32   = require('crc-32').str;
-const fs      = require('fs');
-const glob    = require('glob');
-const common  = require('./common');
+const color          = require('cli-color');
+const Spinner        = require('cli-spinner').Spinner;
+const program        = require('commander');
+const crc32          = require('crc-32').str;
+const fs             = require('fs');
+const glob           = require('glob');
+const common         = require('./common');
+const static_strings = require('./js_texts/static_strings_app');
 
 program
     .version('0.1.0')
@@ -44,12 +45,13 @@ const getKeyHash = (string) => crc32(string);
 
         const file_paths = [];
         const messages = [];
-        const i18n_marker = new RegExp(/i18n_default_text={?(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])}?|i18nDefaultText\((?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\)/g);
+        const i18n_marker = new RegExp(/i18n_default_text={?(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])}?|localize\((?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\)?/g);
         const messages_json = {};
 
         // Find all file types listed in `globs`
         for (let i = 0; i < globs.length; i++) {
-            const filesFound = glob.sync(`src/${globs[i]}`);
+            let filesFound = glob.sync(`src/${globs[i]}`);
+            filesFound = filesFound.filter(path => path.indexOf('__tests__') === -1);
             file_paths.push(...filesFound);
         }
 
@@ -59,7 +61,7 @@ const getKeyHash = (string) => crc32(string);
                 const file = fs.readFileSync(file_paths[i], 'utf8');
                 let result = i18n_marker.exec(file);
                 while (result != null) {
-                    const extracted = result[1] || result[2];
+                    const extracted = result[1] || result[2]; // If it's index `1`, then it's the first capturing group, otherwise it's the 2nd, referring to `localize()` call
                     messages.push(extracted.replace(/\\/g, ''));
                     result = i18n_marker.exec(file);
                 }
@@ -67,6 +69,9 @@ const getKeyHash = (string) => crc32(string);
                 console.log(e);
             }
         }
+
+        // Push static strings to list of messages to be added to JSON
+        messages.push(...static_strings);
 
         // Hash the messages and set the key-value pair for json
         for (let i = 0; i < messages.length; i++) {

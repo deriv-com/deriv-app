@@ -1,6 +1,6 @@
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
-import { localize }                      from '_common/localize';
+import { localize }                      from 'App/i18n';
 import { connect }                       from 'Stores/connect';
 import Localize                          from 'App/Components/Elements/localize.jsx';
 import MediaItem, {

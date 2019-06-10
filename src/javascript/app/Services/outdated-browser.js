@@ -26,7 +26,7 @@ const OutdatedBrowser = (() => {
     };
 
     const updateStore = action('showError', () => {
-        if (common_store) {
+        if (common_store) { // TODO: i18n_issue
             common_store.showError({
                 str      : 'Your web browser is out of date and may affect your trading experience. Please [_1]update your browser[_2].',
                 replacers: {

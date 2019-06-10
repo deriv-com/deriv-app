@@ -4,8 +4,7 @@ import {
     extendObservable,
     observable }              from 'mobx';
 import { isEmptyObject }      from '_common/utility';
-import { localize }           from '_common/localize';
-import { i18nDefaultText }    from 'App/i18n';
+import { localize }           from 'App/i18n';
 import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
@@ -201,7 +200,7 @@ export default class ContractStore extends BaseStore {
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error       = true;
-            this.error_message   = i18nDefaultText('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.contract_config = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);

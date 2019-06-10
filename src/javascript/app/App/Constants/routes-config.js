@@ -1,6 +1,6 @@
 import { lazy }        from 'react';
 import { Redirect }    from 'react-router-dom';
-import { localize }    from '_common/localize';
+import { localize }    from 'App/i18n';
 import { routes }      from 'Constants';
 
 import { IconPortfolio }     from 'Assets/Header/NavBar';

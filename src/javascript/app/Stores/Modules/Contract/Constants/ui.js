@@ -1,5 +1,5 @@
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import IconFlag     from 'Assets/Contract/icon-flag.jsx';
 import IconTick     from 'Assets/Contract/icon-tick.jsx';
 

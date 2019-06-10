@@ -1,4 +1,4 @@
-import { localize }           from '_common/localize';
+import { localize }           from 'App/i18n';
 import PersonalSvg            from 'Images/app/settings/ic-personal-details.svg';
 import FinancialSvg           from 'Images/app/settings/ic-financial-assesment.svg';
 import AccountSvg             from 'Images/app/settings/ic-account-password.svg';

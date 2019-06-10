@@ -5,7 +5,7 @@ import {
     reaction,
     runInAction }                        from 'mobx';
 import BinarySocket                      from '_common/base/socket_base';
-import { localize }                      from '_common/localize';
+import { localize }                      from 'App/i18n';
 import {
     cloneObject,
     isEmptyObject,

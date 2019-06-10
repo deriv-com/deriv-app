@@ -10,7 +10,7 @@ import { IconChevronRight } from 'Assets/Common/icon-chevron-right.jsx';
 import { TradeCategories,
     TradeCategoriesGIF }    from 'Assets/Trading/Categories';
 import Button               from 'App/Components/Form/button.jsx';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,

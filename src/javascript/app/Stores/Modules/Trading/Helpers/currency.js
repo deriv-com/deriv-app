@@ -1,5 +1,5 @@
 import { isCryptocurrency } from '_common/base/currency_base';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 
 export const buildCurrenciesList = (payout_currencies) => {
     const fiat   = [];

@@ -16,7 +16,7 @@ import {
     getStartOfMonth,
     isDateValid,
     toMoment }              from 'Utils/Date';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 import { getTradingEvents } from './helpers';
 import Calendar             from '../../Elements/Calendar';
 
@@ -53,7 +53,7 @@ class DatePicker extends React.Component {
 
     handleVisibility = () => {
         this.setState(state => ({ is_datepicker_visible: !state.is_datepicker_visible }));
-    }
+    };
 
     onClickOutside = (e) => {
         if (/purchase_/ig.test(e.target.id)) {
@@ -65,17 +65,17 @@ class DatePicker extends React.Component {
                 this.updateDatePickerValue(formatDate(this.state.value, 'DD MMM YYYY'));
             }
         }
-    }
+    };
 
     onMouseEnter = () => {
         if (this.state.value && (('is_clearable' in this.props) || this.props.is_clearable)) {
             this.setState({ is_clear_btn_visible: true });
         }
-    }
+    };
 
     onMouseLeave = () => {
         this.setState({ is_clear_btn_visible: false });
-    }
+    };
 
     onSelectCalendar = (selected_date, is_datepicker_visible = true) => {
         let value = selected_date;
@@ -87,14 +87,14 @@ class DatePicker extends React.Component {
             this.updateDatePickerValue(formatDate(value, 'DD MMM YYYY'));
         }
         this.setState({ is_datepicker_visible });
-    }
+    };
 
     onChangeInput = (e) => {
         const value = e.target.value;
         const formatted_value = formatDate(addDays(toMoment(), value), 'DD MMM YYYY');
         this.updateDatePickerValue(formatted_value);
         this.props.onChange(e);
-    }
+    };
 
     clearDatePickerInput = () => {
         this.setState({ value: null }, this.updateStore);
@@ -130,7 +130,7 @@ class DatePicker extends React.Component {
                 });
             }
         }
-    }
+    };
 
     // update MobX store
     updateStore = () => {

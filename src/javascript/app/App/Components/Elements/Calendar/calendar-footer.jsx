@@ -3,7 +3,7 @@ import React                 from 'react';
 import {
     Icon,
     IconCalendarToday }      from 'Assets/Common';
-import { localize }          from '_common/localize';
+import { localize }          from 'App/i18n';
 
 const CalendarFooter = ({
     footer,

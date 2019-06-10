@@ -1,4 +1,4 @@
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 
 export const getLocalizedBasis = () => ({
     payout    : localize('Payout'),

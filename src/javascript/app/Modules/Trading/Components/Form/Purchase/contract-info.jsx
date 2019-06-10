@@ -2,7 +2,7 @@ import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import { localize }          from '_common/localize';
+import { localize }          from 'App/i18n';
 import Money                 from 'App/Components/Elements/money.jsx';
 import { Popover }           from 'App/Components/Elements/Popover';
 import { IconPriceMove }     from 'Assets/Trading/icon-price-move.jsx';
@@ -42,7 +42,7 @@ const ContractInfo = ({
                 <div className='trade-container__price-info-basis'>
                     {has_error_or_not_loaded
                         ? stakeOrPayout()
-                        : localize('[_1]', proposal_info.obj_contract_basis.text)
+                        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text })
                     }
                 </div>
                 <div className='trade-container__price-info-value'>

@@ -3,7 +3,7 @@ import {
     addComma,
     getDecimalPlaces }           from '_common/base/currency_base';
 import { getElementById }        from '_common/common_functions';
-import { localize }              from '_common/localize';
+import { localize }              from 'App/i18n';
 import { compareBigUnsignedInt } from '_common/string_util';
 import { cloneObject }           from '_common/utility';
 
@@ -59,19 +59,25 @@ const validNumber = (value, opts) => {
     } else if (options.type === 'float' && options.decimals &&
         !(new RegExp(`^\\d+(\\.\\d{0,${options.decimals}})?$`).test(value))) {
         is_ok   = false;
-        message = localize('Up to [_1] decimal places are allowed.', [options.decimals]);
+        message = localize('Up to {{decimal_count}} decimal places are allowed.', { decimal_count: options.decimals });
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok   = false;
-        message = localize('Should be [_1]', [addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined)]);
+        message = localize('Should be {{value}}', { value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
         is_ok   = false;
-        message = localize('Should be between [_1] and [_2]', [addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined), addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined)]);
+        message = localize(
+            'Should be between {{min_value}} and {{max_value}}',
+            {
+                min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
+                max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
+            }
+        );
     } else if ('min' in options && +value < +options.min) {
         is_ok   = false;
-        message = localize('Should be more than [_1]', [addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined)]);
+        message = localize('Should be more than {{min_value}}', { min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('max' in options && isMoreThanMax(value, options)) {
         is_ok   = false;
-        message = localize('Should be less than [_1]', [addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined)]);
+        message = localize('Should be less than {{max_value}}', { max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
     }
 
     getPreBuildDVRs().number.message = message;
@@ -82,8 +88,8 @@ const isMoreThanMax = (value, options) =>
     (options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1);
 
 const initPreBuildDVRs = () => ({
-    address      : { func: validAddress,      message: localize('Only letters, numbers, space, and these special characters are allowed: [_1]', ['- . \' # ; : ( ) , @ /']) },
-    barrier      : { func: validBarrier,      message: localize('Only numbers and these special characters are allowed: [_1]', ['+ - .']) },
+    address      : { func: validAddress,      message: localize('Only letters, numbers, space, and these special characters are allowed: {{permitted_characters}}', { permitted_characters: '- . \' # ; : ( ) , @ /' }) },
+    barrier      : { func: validBarrier,      message: localize('Only numbers and these special characters are allowed: {{permitted_characters}}', { permitted_characters: '+ - .' }) },
     compare      : { func: validCompare,      message: localize('The two passwords that you entered do not match.') },
     email        : { func: validEmail,        message: localize('Invalid email address.') },
     general      : { func: validGeneral,      message: localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.') },
@@ -91,7 +97,7 @@ const initPreBuildDVRs = () => ({
     letter_symbol: { func: validLetterSymbol, message: localize('Only letters, space, hyphen, period, and apostrophe are allowed.') },
     min          : { func: validMin,          message: localize('Minimum of [_1] characters required.', ['[_1]']) },
     not_equal    : { func: validNotEqual,     message: localize('[_1] and [_2] cannot be the same.', ['[_1]', '[_2]']) },
-    number       : { func: validNumber,       message: '' },
+    number       : { func: validNumber,       message: '' }, // TODO: i18n_issue
     password     : { func: validPassword,     message: localize('Password should have lower and uppercase letters with numbers.') },
     phone        : { func: validPhone,        message: localize('Only numbers and spaces are allowed.') },
     postcode     : { func: validPostCode,     message: localize('Only letters, numbers, space, and hyphen are allowed.') },

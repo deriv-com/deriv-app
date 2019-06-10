@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import { Popover }  from 'App/Components/Elements/Popover';
 import Button       from 'App/Components/Form/button.jsx';
 

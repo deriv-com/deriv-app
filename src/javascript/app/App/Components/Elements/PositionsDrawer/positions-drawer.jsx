@@ -5,7 +5,7 @@ import React                          from 'react';
 import { NavLink }           from 'react-router-dom';
 import { CSSTransition }     from 'react-transition-group';
 import { Scrollbars }        from 'tt-react-custom-scrollbars';
-import { localize }          from '_common/localize';
+import { localize }          from 'App/i18n';
 import {
     Icon,
     IconMinimize }           from 'Assets/Common';

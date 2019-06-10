@@ -2,7 +2,7 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { IconArrow }     from 'Assets/Common';
-import { localize }      from '_common/localize';
+import { localize }      from 'App/i18n';
 import {
     epochToMoment,
     toGMTFormat }        from 'Utils/Date';
@@ -19,11 +19,11 @@ class ResultDetails extends React.PureComponent {
 
     toggleDetails = () => {
         this.setState({ is_open: !this.state.is_open }, this.handleShade);
-    }
+    };
 
     handleShade = () => {
         this.props.is_shade_visible(this.state.is_open);
-    }
+    };
 
     render() {
         const {

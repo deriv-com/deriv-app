@@ -6,7 +6,7 @@ import { FadeWrapper } from 'App/Components/Animations';
 import VerticalTab     from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import { IconClose }   from 'Assets/Settings';
 import AppRoutes       from 'Constants/routes';
-import { localize }    from '_common/localize';
+import { localize }    from 'App/i18n';
 
 class Reports extends React.Component {
     setWrapperRef = (node) => {

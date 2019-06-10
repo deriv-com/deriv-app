@@ -1,5 +1,5 @@
 import { formatMoney } from '_common/base/currency_base';
-import { localize }    from '_common/localize';
+import { localize }    from 'App/i18n';
 import { toTitleCase } from '_common/string_util';
 import { toMoment }    from 'Utils/Date';
 

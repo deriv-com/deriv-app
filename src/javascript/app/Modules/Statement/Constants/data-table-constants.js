@@ -1,5 +1,5 @@
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import AmountCell   from '../Components/amount-cell.jsx';
 
 /* eslint-disable react/display-name, react/prop-types */

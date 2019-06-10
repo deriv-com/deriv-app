@@ -1,4 +1,4 @@
-import { localize }        from '_common/localize';
+import { localize }        from 'App/i18n';
 import { unique }          from '_common/utility';
 import {
     epochToMoment,

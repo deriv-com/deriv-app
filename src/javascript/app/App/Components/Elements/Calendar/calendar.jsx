@@ -3,7 +3,7 @@ import React          from 'react';
 import {
     getStartOfMonth,
     toMoment }        from 'Utils/Date';
-import { localize }   from '_common/localize';
+import { localize }   from 'App/i18n';
 import CalendarBody   from './calendar-body.jsx';
 import CalendarFooter from './calendar-footer.jsx';
 import CalendarHeader from './calendar-header.jsx';

@@ -1,6 +1,6 @@
 import React                    from 'react';
 import PropTypes                from 'prop-types';
-import { localize }             from '_common/localize';
+import { localize }             from 'App/i18n';
 import { Popover }              from 'App/Components/Elements/Popover';
 import InputField               from 'App/Components/Form/InputField';
 import {

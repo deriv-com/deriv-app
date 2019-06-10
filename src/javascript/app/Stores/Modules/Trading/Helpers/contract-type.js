@@ -1,5 +1,5 @@
 import ServerTime               from '_common/base/server_time';
-import { localize }             from '_common/localize';
+import { localize }             from 'App/i18n';
 import {
     cloneObject,
     getPropertyValue }          from '_common/utility';

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import Money        from 'App/Components/Elements/money.jsx';
 import Icon         from 'Assets/Common/icon.jsx';
 import IconFlag     from 'Assets/Contract/icon-flag.jsx';

@@ -2,7 +2,7 @@ import classNames   from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import { connect }  from 'Stores/connect';
 import TickSteps    from './tick-steps.jsx';
 
@@ -71,8 +71,8 @@ const RangeSlider = ({
                 {
                     !!value &&
                     <span className='range-slider__caption-title'>
-                        {+value === 1 && localize('[_1] Tick', value)}
-                        {+value > 1 && localize('[_1] Ticks', value)}
+                        {+value === 1 && localize('{{value}} Tick', { value })}
+                        {+value > 1 && localize('{{value}} Ticks', { value })}
                     </span>
                 }
                 <span className='range-slider__caption--last'>

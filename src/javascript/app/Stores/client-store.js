@@ -10,7 +10,7 @@ import {
 import { getAccountTitle }           from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from '_common/localize';
+import { localize }                  from 'App/i18n';
 import {
     LocalStore,
     State }                          from '_common/storage';

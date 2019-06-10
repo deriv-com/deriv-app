@@ -1,6 +1,6 @@
 import PropTypes       from 'prop-types';
 import React           from 'react';
-import { localize }    from '_common/localize';
+import { localize }    from 'App/i18n';
 import { Icon }        from 'Assets/Common';
 import { IconReports } from 'Assets/Header/NavBar';
 import { routes }      from 'Constants/index';

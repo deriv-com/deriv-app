@@ -1,7 +1,7 @@
 import classNames     from 'classnames';
 import React          from 'react';
 import PropTypes      from 'prop-types';
-// import { localize }   from '_common/localize';
+// import { localize }   from 'App/i18n';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
 import { Popover }    from 'App/Components/Elements/Popover';
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
@@ -10,7 +10,7 @@ import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-in
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 
 class PurchaseFieldset extends React.PureComponent {
-    state = { should_fade: false }
+    state = { should_fade: false };
 
     componentDidMount() {
         this.setState({ should_fade: true });
@@ -48,7 +48,7 @@ class PurchaseFieldset extends React.PureComponent {
                 type={type}
             />
         );
-        
+
         return (
             <Fieldset
                 className='trade-container__fieldset purchase-container__option'

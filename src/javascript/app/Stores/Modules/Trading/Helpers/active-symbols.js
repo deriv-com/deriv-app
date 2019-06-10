@@ -1,6 +1,6 @@
 import { flow }            from 'mobx';
 import { WS }              from 'Services';
-import { localize }        from '_common/localize';
+import { localize }        from 'App/i18n';
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket        from '_common/base/socket_base';
 
@@ -20,7 +20,7 @@ export const showUnavailableLocationError = flow(function* (showError) {
 
     showError(
         localize('If you have an account, log in to continue.'),
-        (clients_country_text ? localize('Sorry, this app is unavailable in [_1].', clients_country_text) : localize('Sorry, this app is unavailable in your current location.')),
+        (clients_country_text ? localize('Sorry, this app is unavailable in {{clients_country}}.', { clients_country: clients_country_text }) : localize('Sorry, this app is unavailable in your current location.')),
         localize('Log in'),
         redirectToLogin,
         false,

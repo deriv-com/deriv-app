@@ -1,6 +1,6 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
-import { localize }  from '_common/localize';
+import { localize }  from 'App/i18n';
 import { urlFor }    from '_common/url';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize      from 'App/Components/Elements/localize.jsx';

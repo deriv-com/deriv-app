@@ -18,7 +18,7 @@ const Head = () => (
         <AntiClickjack />
         <URLHandler />
         <meta httpEquiv='Content-Type' content='text/html;charset=UTF-8' />
-        <meta httpEquiv='Content-Language' content={it.language} />
+        <meta httpEquiv='Content-Language' content={it.language} /> {/* TODO: i18n_issue */}
         <meta name='description' content={` ${it.L('[_1] gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities.', it.broker_name)}`} />
         <meta name='keywords' content={` ${it.L('binary options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, binary options strategy, binary broker, binary bet, binary options trading platform, binary strategy, finance, stocks, investment, trading')}`} />
         <meta name='author' content={it.broker_name} />

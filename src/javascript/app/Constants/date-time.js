@@ -1,4 +1,4 @@
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 
 export const month_headers = {
     Jan: localize('Jan'),

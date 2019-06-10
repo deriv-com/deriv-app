@@ -5,7 +5,7 @@ import { getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
-import { localize }     from '_common/localize';
+import { localize }     from 'App/i18n';
 import {
     LocalStore,
     State }             from '_common/storage';

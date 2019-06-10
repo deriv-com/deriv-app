@@ -2,7 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { redirectToLogin } from '_common/base/login';
-import { localize }        from '_common/localize';
+import { localize }        from 'App/i18n';
 import Button              from '../../Form/button.jsx';
 
 const LoginButton = ({ className }) => (

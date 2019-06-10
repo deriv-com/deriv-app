@@ -3,7 +3,7 @@ import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import { CSSTransition }     from 'react-transition-group';
-import { localize }          from '_common/localize';
+import { localize }          from 'App/i18n';
 import { Icon, IconBack }    from 'Assets/Common';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';

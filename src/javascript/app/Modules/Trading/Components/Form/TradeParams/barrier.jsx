@@ -8,7 +8,7 @@ import {
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
 import InputField     from 'App/Components/Form/InputField';
 import { connect }    from 'Stores/connect';
-import { localize }   from '_common/localize';
+import { localize }   from 'App/i18n';
 
 const Barrier = ({
     barrier_1,

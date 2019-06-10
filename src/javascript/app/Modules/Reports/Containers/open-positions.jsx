@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes }      from 'mobx-react';
 import PropTypes                           from 'prop-types';
 import React                               from 'react';
 import { withRouter }                      from 'react-router-dom';
-import { localize }                        from '_common/localize';
+import { localize }                        from 'App/i18n';
 import { urlFor }                          from '_common/url';
 import DataTable                           from 'App/Components/Elements/DataTable';
 import Localize                            from 'App/Components/Elements/localize.jsx';

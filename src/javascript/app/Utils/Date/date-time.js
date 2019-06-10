@@ -1,5 +1,5 @@
 import moment       from 'moment';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import ServerTime   from '../../../_common/base/server_time';
 
 // Disables moment's fallback to native Date object

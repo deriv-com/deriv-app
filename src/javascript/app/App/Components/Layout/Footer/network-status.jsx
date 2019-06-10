@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from '_common/localize';
+import { localize } from 'App/i18n';
 import { connect }  from 'Stores/connect';
 import { Popover }  from 'App/Components/Elements/Popover';
 
@@ -10,7 +10,7 @@ const NetworkStatus = ({ status }) => (
         <Popover
             classNameBubble='network-status__tooltip'
             alignment='top'
-            message={localize('Network status: [_1]', [(status.tooltip || localize('Connecting to server'))])}
+            message={localize('Network status: {{status}}', { status: (status.tooltip || localize('Connecting to server')) })}
         >
             <div className={classNames(
                 'network-status__circle', {

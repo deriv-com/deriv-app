@@ -4,7 +4,7 @@ import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import IconCheck         from 'Images/app/portfolio/ic-check.svg';
 import IconCross         from 'Images/app/portfolio/ic-cross.svg';
-import { localize }      from '_common/localize';
+import { localize }      from 'App/i18n';
 
 const ResultOverlay = ({
     contract_id,

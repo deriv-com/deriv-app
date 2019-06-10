@@ -2,7 +2,7 @@ import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
 import ReactDOM           from 'react-dom';
-import { localize }       from '_common/localize';
+import { localize }       from 'App/i18n';
 import VerticalTab        from 'App/Components/Elements/VerticalTabs';
 import {
     ChartSettings,

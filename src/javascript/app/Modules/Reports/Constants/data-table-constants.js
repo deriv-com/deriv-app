@@ -1,5 +1,5 @@
 import React                from 'react';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 import Label                from 'App/Components/Elements/Label';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';

@@ -1,6 +1,6 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from '_common/localize';
+import { localize }      from 'App/i18n';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 

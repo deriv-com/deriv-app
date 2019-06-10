@@ -1,6 +1,6 @@
 // import React           from 'react';
 // import PropTypes       from 'prop-types';
-// import { localize }    from '_common/localize';
+// import { localize }    from 'App/i18n';
 // import Button          from 'App/Components/Form/button.jsx';
 // import { Icon }        from 'Assets/Common/icon.jsx';
 // import { IconLock }    from 'Assets/Trading/icon-lock.jsx';

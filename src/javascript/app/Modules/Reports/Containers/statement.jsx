@@ -103,7 +103,7 @@ class Statement extends React.Component {
 }
 
 Statement.propTypes = {
-    component_icon   : PropTypes.func,
+    component_icon   : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,
     handleScroll     : PropTypes.func,

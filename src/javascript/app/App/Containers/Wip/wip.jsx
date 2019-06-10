@@ -4,7 +4,7 @@ import { localize } from '_common/localize';
 import { urlFor }   from '_common/url';
 import Localize     from 'App/Components/Elements/localize.jsx';
 import Button       from 'App/Components/Form/button.jsx';
-import { IconWip }  from 'Assets/Common/icon-wip.jsx';
+import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';
 
 const onClick = () => {
@@ -19,7 +19,7 @@ const Wip = ({ is_dark_mode, pushDataLayer }) => {
     return (
         <div className='work-in-progress'>
             <div className='work-in-progress__content'>
-                <IconWip theme={is_dark_mode ? 'dark' : 'light'} />
+                <Icon icon='IconWip' theme={is_dark_mode ? 'dark' : 'light'} />
                 <div className='work-in-progress__header'>
                     <Localize str='Work in progress!' />
                 </div>

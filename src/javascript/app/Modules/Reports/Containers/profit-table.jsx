@@ -94,7 +94,7 @@ class ProfitTable extends React.Component {
 }
 
 ProfitTable.propTypes = {
-    component_icon   : PropTypes.func,
+    component_icon   : PropTypes.string,
     currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,

@@ -1,11 +1,11 @@
 import classNames   from 'classnames';
-import { observer }  from 'mobx-react';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { addComma }  from '_common/base/currency_base';
-import { toMoment }  from 'Utils/Date';
-import { IconClock } from 'Assets/Common/icon-clock.jsx';
-import MarkerSpot    from './marker-spot.jsx';
+import { observer } from 'mobx-react';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { addComma } from '_common/base/currency_base';
+import { toMoment } from 'Utils/Date';
+import Icon         from 'Assets/icon.jsx';
+import MarkerSpot   from './marker-spot.jsx';
 
 class MarkerSpotLabel extends React.Component {
     constructor(props) {
@@ -39,7 +39,7 @@ class MarkerSpotLabel extends React.Component {
                     <div className='chart-spot-label__info-container'>
                         <div className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${this.props.align_label}`}>
                             <div className='chart-spot-label__time-container'>
-                                <IconClock height='10' width='10' className='chart-spot-label__time-icon' />
+                                <Icon icon='IconClock' height='10' width='10' className='chart-spot-label__time-icon' />
                                 <p className='chart-spot-label__time'>{toMoment(+this.props.spot_epoch).format('HH:mm:ss')}</p>
                             </div>
                             <div

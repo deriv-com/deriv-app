@@ -64,7 +64,7 @@ export const createMarkerSpotEntry = (contract_info, decimal_places) => {
     let marker_type      = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
     let component_props  = {};
 
-    const entry_tick = contract_info.entry_tick.toFixed(decimal_places);
+    const entry_tick = decimal_places ? (+contract_info.entry_tick).toFixed(decimal_places) : contract_info.entry_tick;
 
     const spot_has_label = isDigitContract(contract_info.contract_type);
     if (spot_has_label) {
@@ -95,7 +95,7 @@ export const createMarkerSpotExit = (contract_info, tick, decimal_places, idx) =
         align_label = tick.align_label;
     }
 
-    const exit_tick = contract_info.exit_tick.toFixed(decimal_places);
+    const exit_tick = decimal_places ? (+contract_info.exit_tick).toFixed(decimal_places) : contract_info.exit_tick;
 
     return createMarkerConfig(
         !is_user_sold ? MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type,
@@ -114,7 +114,7 @@ export const createMarkerSpotExit = (contract_info, tick, decimal_places, idx) =
 
 export const createMarkerSpotMiddle = (contract_info, tick, decimal_places, idx) => {
     const spot_count = getSpotCount(contract_info, idx);
-    const spot       = tick.tick.toFixed(decimal_places);
+    const spot       = decimal_places ? (+tick.tick).toFixed(decimal_places) : tick.tick;
 
     const marker_config = createMarkerConfig(
         MARKER_TYPES_CONFIG.SPOT_MIDDLE.type,

@@ -38,8 +38,8 @@ const marker_lines = {
 };
 
 const addMarker = async (marker_obj, SmartChartStore, contract_info) => {
-    Object.keys(marker_obj).forEach(createMarker);
     const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
+    Object.keys(marker_obj).forEach(createMarker);
 
     function createMarker(marker_type) {
         if (marker_type in SmartChartStore.markers) return;

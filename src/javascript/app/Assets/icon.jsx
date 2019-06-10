@@ -21,6 +21,7 @@ class Icon extends React.PureComponent {
             IconClose             : React.lazy(() => import('./Common/icon-close.jsx')),
             IconCountryFlag       : React.lazy(() => import('./Common/icon-country-flag.jsx')),
             IconDanger            : React.lazy(() => import('./Common/icon-danger.jsx')),
+            IconDeposit           : React.lazy(() => import('./Common/icon-deposit.jsx')),
             IconExclamation       : React.lazy(() => import('./Common/icon-exclamation.jsx')),
             IconFlag              : React.lazy(() => import('./Common/icon-flag.jsx')),
             IconInfoBlue          : React.lazy(() => import('./Common/icon-info-blue.jsx')),
@@ -34,6 +35,7 @@ class Icon extends React.PureComponent {
             IconSuccess           : React.lazy(() => import('./Common/icon-success.jsx')),
             IconWarning           : React.lazy(() => import('./Common/icon-warning.jsx')),
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
+            IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')),
             
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
@@ -71,12 +73,10 @@ class Icon extends React.PureComponent {
             IconTheme        : React.lazy(() => import('./Settings/icon-theme.jsx')),
 
             // Statement
-            IconBuy       : React.lazy(() => import('./Statement/icon-buy.jsx')),
-            IconDeposit   : React.lazy(() => import('./Statement/icon-deposit.jsx')),
-            IconPayout    : React.lazy(() => import('./Statement/icon-payout.jsx')),
-            IconSell      : React.lazy(() => import('./Statement/icon-sell.jsx')),
-            IconWallet    : React.lazy(() => import('./Statement/icon-wallet.jsx')),
-            IconWithdrawal: React.lazy(() => import('./Statement/icon-withdrawal.jsx')),
+            IconBuy   : React.lazy(() => import('./Statement/icon-buy.jsx')),
+            IconPayout: React.lazy(() => import('./Statement/icon-payout.jsx')),
+            IconSell  : React.lazy(() => import('./Statement/icon-sell.jsx')),
+            IconWallet: React.lazy(() => import('./Statement/icon-wallet.jsx')),
 
             // Trading
             IconBarrierDown   : React.lazy(() => import('./Trading/Barriers/icon-barrier-down.jsx')),

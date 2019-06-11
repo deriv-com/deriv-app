@@ -3,7 +3,7 @@ import ReactDOM                 from 'react-dom';
 import App                      from './app.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import { oauthLogin }           from './services/api/appId';
-import { getTokenList }         from './utils/storageManager';
+import { getTokenList }         from './utils/tokenHelper';
 
 ReactDOM.render(
     <App />,

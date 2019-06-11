@@ -1,11 +1,10 @@
 import { supportedLanguages, translate, init }  from './i18n';
 import { parseQueryString }                     from '../urlHelper';
-import { set as setStorage, get as getStorage } from '../storageManager';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
-    const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
-    setStorage('lang', lang);
+    const lang = queryLang in supportedLanguages ? queryLang : localStorage.getItem('lang') || 'en';
+    localStorage.setItem('lang', lang);
     return lang;
 };
 

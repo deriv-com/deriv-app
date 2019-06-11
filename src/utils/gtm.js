@@ -1,4 +1,4 @@
-import { getTokenList }     from './storageManager';
+import { getTokenList }     from './tokenHelper';
 import { getAppIdFallback } from '../services/api/appId';
 import AppIds             from '../services/api/appIdResolver';
 

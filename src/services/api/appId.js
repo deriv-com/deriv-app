@@ -8,9 +8,7 @@ import {
     removeToken,
     getTokenList,
     removeAllTokens,
-    get as getStorage,
-    set as setStorage,
-}                                                       from '../../utils/storageManager';
+}                                                       from '../../utils/tokenHelper';
 import { parseQueryString, isProduction, getExtension } from '../../utils/urlHelper';
 
 export const AppConstants = Object.freeze({
@@ -48,7 +46,7 @@ export const oauthLogin = (done = () => 0) => {
         addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
-                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+                localStorage.setItem(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
             }
             document.location = 'index.html';
         });
@@ -58,13 +56,13 @@ export const oauthLogin = (done = () => 0) => {
 };
 
 export const getCustomEndpoint = () => ({
-    url  : getStorage('config.server_url'),
-    appId: getStorage('config.app_id'),
+    url  : localStorage.getItem('config.server_url'),
+    appId: localStorage.getItem('config.app_id'),
 });
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(getStorage('tokenList') || '{}');
-    const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    const accountList = JSON.parse(localStorage.getItem('tokenList') || '{}');
+    const activeToken = localStorage.getItem(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
     let activeAccount = null;
     let isReal = false;
     try {
@@ -78,7 +76,7 @@ const getDomainAppId = () => AppIds[hostName.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: getStorage('config.default_app_id') || getDomainAppId() || 16014,
+    appId: localStorage.getItem('config.default_app_id') || getDomainAppId() || 16014,
 });
 
 const generateOAuthDomain = () => {
@@ -100,6 +98,7 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websoc
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
+    // return the url to login page
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
@@ -113,6 +112,7 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
 
 export async function addTokenIfValid(token, tokenObjectList) {
+    // Create a new instance of api, send autorize req,
     const api = generateLiveApiInstance();
     try {
         const { authorize } = await api.authorize(token);

@@ -4,6 +4,7 @@ import {
     extendObservable,
     observable,
     runInAction }               from 'mobx';
+import BinarySocket             from '_common/base/socket_base';
 import { isEmptyObject }        from '_common/utility';
 import { localize }             from '_common/localize';
 import { WS }                   from 'Services';
@@ -131,7 +132,9 @@ export default class ContractStore extends BaseStore {
             }
             this.smart_chart.saveAndClearTradeChartLayout('contract');
             this.smart_chart.setContractMode(true);
-            WS.subscribeProposalOpenContract(this.contract_id, this.updateProposal, false);
+            BinarySocket.wait('authorize').then(() => {
+                WS.subscribeProposalOpenContract(this.contract_id, this.updateProposal, false);
+            });
         }
     }
 
@@ -142,7 +145,9 @@ export default class ContractStore extends BaseStore {
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.replay_contract_id = contract_id;
-            WS.subscribeProposalOpenContract(this.replay_contract_id, this.populateConfig, false);
+            BinarySocket.wait('authorize').then(() => {
+                WS.subscribeProposalOpenContract(this.replay_contract_id, this.populateConfig, false);
+            });
         }
     }
 

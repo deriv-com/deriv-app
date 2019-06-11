@@ -46,7 +46,8 @@ const countDecimalPlaces = (num) => {
 };
 
 export const getUnderlyingPipSize = async (underlying) => {
-    const active_symbols = await BinarySocket.send({ active_symbols: 'brief' });
+    // we frequently call this and update cache in trade page, so no need to update it here
+    const active_symbols = await BinarySocket.send({ active_symbols: 'brief' }, { skip_cache_update: true, msg_type: 'active_symbols' });
     const obj_symbols    = active_symbols.active_symbols.find(symbols => symbols.symbol === underlying) || {};
     return countDecimalPlaces(obj_symbols.pip || 0.001);
 };

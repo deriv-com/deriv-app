@@ -131,7 +131,7 @@ export default class ContractStore extends BaseStore {
             this.replay_info = {};
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode();
+                this.smart_chart.switchToContractMode(this.is_from_positions);
             }
             WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
         }

@@ -2,21 +2,19 @@ import {
     action,
     computed,
     extendObservable,
-    observable,
-    runInAction }               from 'mobx';
-import BinarySocket             from '_common/base/socket_base';
-import { isEmptyObject }        from '_common/utility';
-import { localize }             from '_common/localize';
-import { WS }                   from 'Services';
-import { getUnderlyingPipSize } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { createChartBarrier }   from './Helpers/chart-barriers';
-import { createChartMarkers }   from './Helpers/chart-markers';
+    observable }              from 'mobx';
+import BinarySocket           from '_common/base/socket_base';
+import { isEmptyObject }      from '_common/utility';
+import { localize }           from '_common/localize';
+import { WS }                 from 'Services';
+import { createChartBarrier } from './Helpers/chart-barriers';
+import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDetailsExpiry,
-    getDetailsInfo }            from './Helpers/details';
+    getDetailsInfo }          from './Helpers/details';
 import {
     getDigitInfo,
-    isDigitContract }           from './Helpers/digits';
+    isDigitContract }         from './Helpers/digits';
 import {
     getChartConfig,
     getChartGranularity,
@@ -29,9 +27,9 @@ import {
     isSoldBeforeStart,
     isStarted,
     isUserSold,
-    isValidToSell }             from './Helpers/logic';
-import { contractSold }         from '../Portfolio/Helpers/portfolio-notifcations';
-import BaseStore                from '../../base-store';
+    isValidToSell }           from './Helpers/logic';
+import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
+import BaseStore              from '../../base-store';
 
 export default class ContractStore extends BaseStore {
     // --- Observable properties ---
@@ -115,7 +113,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    async onMount(contract_id, is_from_positions) {
+    onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
@@ -139,7 +137,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    async onMountReplay(contract_id) {
+    onMountReplay(contract_id) {
         if (contract_id) {
             this.contract_info = {};
             this.smart_chart = this.root_store.modules.smart_chart;
@@ -198,7 +196,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    async populateConfig(response) {
+    populateConfig(response) {
         if ('error' in response) {
             this.has_error     = true;
             this.contract_config = {};
@@ -216,16 +214,6 @@ export default class ContractStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.replay_contract_id) return;
 
         this.replay_info = response.proposal_open_contract;
-
-        runInAction(async() => {
-            const decimal_places = await getUnderlyingPipSize(this.replay_info.underlying);
-            if (decimal_places) {
-                this.replay_info.entry_spot = this.replay_info.entry_spot.toFixed(decimal_places);
-                this.replay_info.exit_tick = this.replay_info.exit_tick.toFixed(decimal_places);
-                this.replay_info.current_spot = this.replay_info.current_spot.toFixed(decimal_places);
-            }
-
-        });
 
         // Add indicative status for contract
         const prev_indicative  = this.replay_prev_indicative;
@@ -264,7 +252,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    async updateProposal(response) {
+    updateProposal(response) {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
@@ -284,15 +272,6 @@ export default class ContractStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
-
-        runInAction(async() => {
-            const decimal_places = await getUnderlyingPipSize(this.contract_info.underlying);
-            if (decimal_places) {
-                this.contract_info.entry_spot = (+this.contract_info.entry_spot).toFixed(decimal_places);
-                this.contract_info.exit_tick = (+this.contract_info.exit_tick).toFixed(decimal_places);
-                this.contract_info.current_spot = (+this.contract_info.current_spot).toFixed(decimal_places);
-            }
-        });
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {

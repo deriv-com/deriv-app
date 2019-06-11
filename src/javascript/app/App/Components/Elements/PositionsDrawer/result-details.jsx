@@ -1,16 +1,17 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Icon              from 'Assets/icon.jsx';
-import { localize }      from '_common/localize';
+import classNames               from 'classnames';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { localize }             from '_common/localize';
+import Icon                     from 'Assets/icon.jsx';
+import { getUnderlyingPipSize } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import {
     epochToMoment,
-    toGMTFormat }        from 'Utils/Date';
+    toGMTFormat }               from 'Utils/Date';
 import {
     addCommaToNumber,
     getBarrierLabel,
-    getBarrierValue  }   from './helpers';
-import ResultDetailsItem from './result-details-item.jsx';
+    getBarrierValue  }          from './helpers';
+import ResultDetailsItem        from './result-details-item.jsx';
 
 class ResultDetails extends React.PureComponent {
     state = {
@@ -23,6 +24,11 @@ class ResultDetails extends React.PureComponent {
 
     handleShade = () => {
         this.props.is_shade_visible(this.state.is_open);
+    }
+
+    componentDidMount = async () => {
+        const decimal_places = await getUnderlyingPipSize(this.props.contract_info.underlying);
+        this.setState({ decimal_places });
     }
 
     render() {
@@ -67,11 +73,11 @@ class ResultDetails extends React.PureComponent {
                     <div className='result-details__grid'>
                         <ResultDetailsItem
                             label={localize('Entry spot')}
-                            value={addCommaToNumber(contract_info.entry_spot) || ' - '}
+                            value={addCommaToNumber(contract_info.entry_spot, this.state.decimal_places) || ' - '}
                         />
                         <ResultDetailsItem
                             label={localize('Exit spot')}
-                            value={addCommaToNumber(exit_spot) || ' - '}
+                            value={addCommaToNumber(exit_spot, this.state.decimal_places) || ' - '}
                         />
                     </div>
                     <div className='result-details__grid'>

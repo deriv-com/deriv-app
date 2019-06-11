@@ -10,7 +10,7 @@ export const getDigitInfo = async (digits_info, contract_info) => {
     if (!tick || !epoch) return {}; // filter out empty responses
 
     const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
-    const spot           = tick.toFixed(decimal_places);
+    const spot           = decimal_places ? tick.toFixed(decimal_places) : tick;
 
     const current = (epoch in digits_info) ? {} : // filter out duplicated responses
         createDigitInfo(spot, epoch);

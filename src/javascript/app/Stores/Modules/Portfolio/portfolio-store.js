@@ -1,9 +1,11 @@
 import {
     action,
     computed,
-    observable }                   from 'mobx';
+    observable,
+    runInAction }                  from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
+import { getUnderlyingPipSize }    from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifcations';
 import {
@@ -159,7 +161,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    populateResultDetails = (response) => {
+    populateResultDetails = async(response) => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
@@ -174,10 +176,25 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';
 
-        // fix for missing barrier and entry_spot
-        if (!this.positions[i].contract_info.barrier || !this.positions[i].contract_info.entry_spot) {
-            this.positions[i].contract_info.barrier    = this.positions[i].barrier;
-            this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
+        runInAction(async() => {
+            const decimal_places = await getUnderlyingPipSize(this.positions[i].contract_info.underlying);
+
+            // workaround if no exit_tick in proposal_open_contract, use latest spot
+            this.positions[i].exit_spot =
+                (+(contract_response.exit_tick || contract_response.current_spot)).toFixed(decimal_places);
+
+            // fix for missing entry_spot
+            if (!this.positions[i].contract_info.entry_spot) {
+                this.positions[i].contract_info.entry_spot = decimal_places ?
+                    (+this.positions[i].entry_spot).toFixed(decimal_places)
+                    :
+                    this.positions[i].entry_spot;
+            }
+        });
+
+        // fix for missing barrier
+        if (!this.positions[i].contract_info.barrier) {
+            this.positions[i].contract_info.barrier = this.positions[i].barrier;
         }
 
         // remove exit_spot for manually sold contracts

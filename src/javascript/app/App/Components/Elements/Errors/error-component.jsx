@@ -37,6 +37,7 @@ ErrorComponent.propTypes = {
     message: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.string,
+        PropTypes.object,
     ]),
     type: PropTypes.string,
 };

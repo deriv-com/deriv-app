@@ -93,10 +93,10 @@ const initPreBuildDVRs = () => ({
     compare      : { func: validCompare,      message: localize('The two passwords that you entered do not match.') },
     email        : { func: validEmail,        message: localize('Invalid email address.') },
     general      : { func: validGeneral,      message: localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.') },
-    length       : { func: validLength,       message: localize('You should enter [_1] characters.', ['[_1]']) },
+    length       : { func: validLength,       message: localize('You should enter {{value}} characters.', { value: '{{value}}' }) },
     letter_symbol: { func: validLetterSymbol, message: localize('Only letters, space, hyphen, period, and apostrophe are allowed.') },
-    min          : { func: validMin,          message: localize('Minimum of [_1] characters required.', ['[_1]']) },
-    not_equal    : { func: validNotEqual,     message: localize('[_1] and [_2] cannot be the same.', ['[_1]', '[_2]']) },
+    min          : { func: validMin,          message: localize('Minimum of {{value}} characters required.', { value: '{{value}}' }) },
+    not_equal    : { func: validNotEqual,     message: localize('{{value_one}} and {{value_two}} cannot be the same.', { value_one: '{{value_one}}', value_two: '{{value_two}}' }) },
     number       : { func: validNumber,       message: '' }, // TODO: i18n_issue
     password     : { func: validPassword,     message: localize('Password should have lower and uppercase letters with numbers.') },
     phone        : { func: validPhone,        message: localize('Only numbers and spaces are allowed.') },

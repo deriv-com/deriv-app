@@ -1,4 +1,5 @@
-import { action } from 'mobx';
+import { action }   from 'mobx';
+import { localize } from 'App/i18n';
 
 let common_store;
 
@@ -28,15 +29,12 @@ const OutdatedBrowser = (() => {
     const updateStore = action('showError', () => {
         if (common_store) { // TODO: i18n_issue
             common_store.showError({
-                str      : 'Your web browser is out of date and may affect your trading experience. Please [_1]update your browser[_2].',
-                replacers: {
-                    '1_2': {
-                        tagName: 'A',
-                        href   : 'http://outdatedbrowser.com',
-                        rel    : 'noopener noreferrer',
-                        target : '_blank',
-                    },
-                },
+                message: localize('Your web browser is out of date and may affect your trading experience. Please {{opening_tag}}update your browser{{closing_tag}}.', {
+                    opening_tag  : '<a href="http://outdatedbrowser.com" rel="noopener noreferrer" target="_blank" class="link">',
+                    closing_tag  : '</a>',
+                    interpolation: { escapeValue: false },
+                }),
+                has_html: true,
             });
         }
     });

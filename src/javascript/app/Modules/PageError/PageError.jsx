@@ -19,7 +19,10 @@ const PageError = ({
             <div className='page-error__message-wrapper'>
                 <span className='page-error__message'>
                     { messages.map((message, index) => (
-                        <p key={index}>{message}</p>
+                        message.has_html ?
+                            <p key={index} dangerouslySetInnerHTML={{ __html: message.message }} />
+                            :
+                            <p key={index}>{ message }</p>
                     ))}
                     { error_code &&
                     <React.Fragment>

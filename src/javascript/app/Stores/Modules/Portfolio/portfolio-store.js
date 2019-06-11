@@ -88,7 +88,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    proposalOpenContractHandler(response) {
+    async proposalOpenContractHandler(response) {
         if ('error' in response) return;
 
         const proposal = response.proposal_open_contract;
@@ -100,9 +100,20 @@ export default class PortfolioStore extends BaseStore {
         const new_indicative  = +proposal.bid_price;
         const profit_loss     = +proposal.profit;
 
-        // fix for missing barrier and entry_spot in proposal_open_contract API response, only re-assign if valid
-        if (proposal.barrier) portfolio_position.barrier = +proposal.barrier;
-        if (proposal.entry_spot) portfolio_position.entry_spot = +proposal.entry_spot;
+        // fix for missing entry_spot in proposal_open_contract API response, only re-assign if valid
+        if (proposal.entry_spot && !portfolio_position.entry_spot) {
+            runInAction(async() => {
+                const decimal_places = await getUnderlyingPipSize(proposal.underlying);
+
+                portfolio_position.entry_spot = decimal_places ?
+                    (+proposal.entry_spot).toFixed(decimal_places)
+                    :
+                    +proposal.entry_spot;
+            });
+        }
+
+        // fix for missing barrier in proposal_open_contract API response, only re-assign if valid
+        if (proposal.barrier && !portfolio_position.barrier) portfolio_position.barrier = +proposal.barrier;
 
         // store contract proposal details that require modifiers
         portfolio_position.indicative       = new_indicative;

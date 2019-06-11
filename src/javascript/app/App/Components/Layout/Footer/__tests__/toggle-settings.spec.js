@@ -3,8 +3,7 @@ import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { ToggleSettings }     from '../toggle-settings.jsx';
-import { Icon }               from 'Assets/Common/icon.jsx';
-import { IconSettings }       from 'Assets/Footer';
+import Icon                   from 'Assets/icon.jsx';
 import { SettingsDialog }     from '../../../Elements/SettingsDialog/settings-dialog.jsx';
 import { CSSTransition }      from 'react-transition-group';
 
@@ -20,9 +19,9 @@ describe('ToggleSettings', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={false} />);
         expect(wrapper.find('.ic-settings--active').exists()).to.be.false;
     });
-    it('should contain <Icon icon={IconSettings} />', () => {
+    it('should contain <Icon icon=\'IconSettings\' />', () => {
         const wrapper = shallow(<ToggleSettings />);
-        expect(wrapper.contains(<Icon icon={IconSettings} className='footer__icon ic-settings__icon' />)).to.be.true;
+        expect(wrapper.contains(<Icon icon='IconSettings' className='footer__icon ic-settings__icon' />)).to.be.true;
     });
     it('should have CSSTransition', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);

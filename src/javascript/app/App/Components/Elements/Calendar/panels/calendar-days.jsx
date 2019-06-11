@@ -123,7 +123,7 @@ const getDays = ({
                         message={message}
                     />
                 }
-                {moment_date.date()}
+                <span className='calendar__cell-date'>{moment_date.date()}</span>
             </span>
         );
     });

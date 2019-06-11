@@ -112,4 +112,4 @@ TradeCategories.propTypes = {
     category: PropTypes.string,
 };
 
-export { TradeCategories };
+export default TradeCategories;

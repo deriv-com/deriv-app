@@ -1,14 +1,12 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { localize }             from '_common/localize';
-import { urlFor }               from '_common/url';
-import { isEmptyObject }        from '_common/utility';
-import { Icon }                 from 'Assets/Common/';
-import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency';
-import { IconLogout }           from 'Assets/Header/Drawer';
-import { requestLogout }        from 'Services/index';
-import { connect }              from 'Stores/connect';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { localize }      from '_common/localize';
+import { urlFor }        from '_common/url';
+import { isEmptyObject } from '_common/utility';
+import Icon              from 'Assets/icon.jsx';
+import { requestLogout } from 'Services/index';
+import { connect }       from 'Stores/connect';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -88,7 +86,7 @@ class AccountSwitcher extends React.Component {
                                     >
                                         <span className={'acc-switcher__id'}>
                                             <Icon
-                                                icon={IconAccountsCurrency}
+                                                icon='IconAccountsCurrency'
                                                 className={`acc-switcher__id-icon acc-switcher__id-icon--${account.icon}`}
                                                 type={account.icon}
                                             />
@@ -131,7 +129,7 @@ class AccountSwitcher extends React.Component {
                 }
                 <div className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
-                    <Icon icon={IconLogout} className='acc-switcher__logout-icon drawer__icon' />
+                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
                 </div>
             </div>
         );

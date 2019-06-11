@@ -19,7 +19,7 @@ const PlaceholderComponent = (props) => {
 };
 
 PlaceholderComponent.propTypes = {
-    component_icon         : PropTypes.func,
+    component_icon         : PropTypes.string,
     empty_message_component: PropTypes.func,
     has_selected_date      : PropTypes.bool,
     localized_message      : PropTypes.string,

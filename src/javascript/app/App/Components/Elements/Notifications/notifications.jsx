@@ -20,7 +20,7 @@ const Notifications = ({ list }) => (
 );
 
 Notifications.propTypes = {
-    list: PropTypes.object,
+    list: PropTypes.array,
 };
 
 export { Notifications };

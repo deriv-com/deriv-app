@@ -1,11 +1,9 @@
 import {
     action,
     computed,
-    observable,
-    runInAction }                  from 'mobx';
+    observable }                   from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
-import { getUnderlyingPipSize }    from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifcations';
 import {
@@ -88,7 +86,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    async proposalOpenContractHandler(response) {
+    proposalOpenContractHandler(response) {
         if ('error' in response) return;
 
         const proposal = response.proposal_open_contract;
@@ -100,20 +98,9 @@ export default class PortfolioStore extends BaseStore {
         const new_indicative  = +proposal.bid_price;
         const profit_loss     = +proposal.profit;
 
-        // fix for missing entry_spot in proposal_open_contract API response, only re-assign if valid
-        if (proposal.entry_spot && !portfolio_position.entry_spot) {
-            runInAction(async() => {
-                const decimal_places = await getUnderlyingPipSize(proposal.underlying);
-
-                portfolio_position.entry_spot = decimal_places ?
-                    (+proposal.entry_spot).toFixed(decimal_places)
-                    :
-                    +proposal.entry_spot;
-            });
-        }
-
-        // fix for missing barrier in proposal_open_contract API response, only re-assign if valid
-        if (proposal.barrier && !portfolio_position.barrier) portfolio_position.barrier = +proposal.barrier;
+        // fix for missing barrier and entry_spot in proposal_open_contract API response, only re-assign if valid
+        if (proposal.barrier) portfolio_position.barrier = +proposal.barrier;
+        if (proposal.entry_spot) portfolio_position.entry_spot = +proposal.entry_spot;
 
         // store contract proposal details that require modifiers
         portfolio_position.indicative       = new_indicative;
@@ -172,7 +159,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    populateResultDetails = async(response) => {
+    populateResultDetails = (response) => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
@@ -187,25 +174,10 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';
 
-        runInAction(async() => {
-            const decimal_places = await getUnderlyingPipSize(this.positions[i].contract_info.underlying);
-
-            // workaround if no exit_tick in proposal_open_contract, use latest spot
-            this.positions[i].exit_spot =
-                (+(contract_response.exit_tick || contract_response.current_spot)).toFixed(decimal_places);
-
-            // fix for missing entry_spot
-            if (!this.positions[i].contract_info.entry_spot) {
-                this.positions[i].contract_info.entry_spot = decimal_places ?
-                    (+this.positions[i].entry_spot).toFixed(decimal_places)
-                    :
-                    this.positions[i].entry_spot;
-            }
-        });
-
-        // fix for missing barrier
-        if (!this.positions[i].contract_info.barrier) {
-            this.positions[i].contract_info.barrier = this.positions[i].barrier;
+        // fix for missing barrier and entry_spot
+        if (!this.positions[i].contract_info.barrier || !this.positions[i].contract_info.entry_spot) {
+            this.positions[i].contract_info.barrier    = this.positions[i].barrier;
+            this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
 
         // remove exit_spot for manually sold contracts

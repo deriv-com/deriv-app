@@ -5,7 +5,6 @@ const SWPrecachedWebpackPlugin = require('sw-precache-webpack-plugin');
 const webpack                  = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const PATHS                    = require('./paths');
-const languages                = require('../../scripts/common').languages;
 
 const getPlugins = (app, grunt) => ([
     new CircularDependencyPlugin({
@@ -25,12 +24,12 @@ const getPlugins = (app, grunt) => ([
                 fileName: 'asset-manifest.json',
             }),
 
-            ...(languages.map(lang => new SWPrecachedWebpackPlugin({
+            new SWPrecachedWebpackPlugin({
                 cachedId                     : 'app',
                 dontCacheBustUrlsMatching    : /\.\w{8}\./,
                 minify                       : false,
                 navigateFallback             : '',
-                filepath                     : path.resolve(PATHS.DIST, `${lang.toLowerCase()}/service-worker.js`),
+                filepath                     : path.resolve(PATHS.DIST, 'service-worker.js'),
                 // TODO Uncomment below lines when changing the release process order to execute `js` task after `render`
                 // staticFileGlobs          : [
                 //     path.resolve(PATHS.DIST, `${lang.toLowerCase()}/index.html`),
@@ -46,7 +45,7 @@ const getPlugins = (app, grunt) => ([
                     // eslint-disable-next-line no-console
                     console.log(message);
                 },
-            }))),
+            }),
         ]
         : []
     ),

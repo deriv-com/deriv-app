@@ -22,7 +22,6 @@ exports.sections_config = {
         path     : '',
         js_files : ['vendor', 'react_mobx', 'binary_common', 'binary'],
         css_files: ['app.min', 'smartcharts'],
-        has_pjax : false,
     },
 };
 

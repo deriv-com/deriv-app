@@ -37,7 +37,7 @@ const ProfitLossCardContent = ({
                 </div>
             </div>
         </div>
-        <div className='pl-card__item'>
+        <div className='pl-card__item-payout'>
             <div className='pl-card__item__header'>
                 <Localize str={is_sold ? 'Payout:' : 'Indicative price:'} />
             </div>

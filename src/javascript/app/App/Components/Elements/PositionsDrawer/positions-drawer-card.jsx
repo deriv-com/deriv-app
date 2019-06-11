@@ -5,6 +5,7 @@ import { CSSTransition }     from 'react-transition-group';
 import Money                 from 'App/Components/Elements/money.jsx';
 import ContractLink          from 'Modules/Contract/Containers/contract-link.jsx';
 import { localize }          from '_common/localize';
+import { isCryptocurrency }  from '_common/base/currency_base';
 import Icon                  from 'Assets/icon.jsx';
 import Button                from 'App/Components/Form/button.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
@@ -36,6 +37,114 @@ const PositionsDrawerCard = ({
     type,
 }) => {
     const percentage = getTimePercentage(server_time, contract_info.purchase_time, contract_info.date_expiry);
+    const contract_el = (
+        <React.Fragment>
+            <div className={classNames(
+                'positions-drawer-card__grid',
+                'positions-drawer-card__grid-underlying-trade'
+            )}
+            >
+                <div className='positions-drawer-card__underlying-name'>
+                    <UnderlyingIcon market={contract_info.underlying} />
+                    <span className='positions-drawer-card__symbol'>
+                        {contract_info.display_name}
+                    </span>
+                </div>
+                <div className='positions-drawer-card__type'>
+                    <ContractTypeCell type={type} />
+                </div>
+            </div>
+            <ProgressSlider
+                is_loading={is_loading}
+                remaining_time={contract_info.date_expiry}
+                percentage={percentage}
+                current_tick={current_tick}
+                ticks_count={contract_info.tick_count}
+                has_result={!!(result)}
+            />
+            <div className={classNames(
+                'positions-drawer-card__grid',
+                'positions-drawer-card__grid-profit-payout'
+            )}
+            >
+                <div className={classNames(
+                    'positions-drawer-card__profit-loss',
+                    'positions-drawer-card__profit-loss-label',
+                )}
+                >
+                    {result ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
+                </div>
+                <div className={classNames(
+                    'positions-drawer-card__indicative',
+                    'positions-drawer-card__indicative-label',
+                )}
+                >
+                    {!result ? localize('Indicative price:') : localize('Payout:')}
+                </div>
+                <div className={classNames(
+                    'positions-drawer-card__profit-loss', {
+                        'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                        'positions-drawer-card__profit-loss--negative' : (profit_loss < 0),
+                        'positions-drawer-card__profit-loss--positive' : (profit_loss > 0),
+                    })}
+                >
+                    <Money amount={Math.abs(profit_loss)} currency={currency} />
+                    <div className={classNames(
+                        'positions-drawer-card__indicative--movement', {
+                            'positions-drawer-card__indicative--movement-complete': !!result,
+                        },
+                    )}
+                    >
+                        <Icon
+                            icon='IconPriceMove'
+                            type={(status !== 'complete') ? status : null}
+                        />
+                    </div>
+                </div>
+                <div className='positions-drawer-card__indicative'>
+                    <Money amount={sell_price || indicative} currency={currency} />
+                    <div className={classNames(
+                        'positions-drawer-card__indicative--movement', {
+                            'positions-drawer-card__indicative--movement-complete': !!result,
+                        },
+                    )}
+                    >
+                        <Icon
+                            icon='IconPriceMove'
+                            type={(status !== 'complete') ? status : null}
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className={classNames(
+                'positions-drawer-card__grid',
+                'positions-drawer-card__grid-price-payout',
+            )}
+            >
+                <div className='positions-drawer-card__purchase-price'>
+                    <span className='positions-drawer-card__purchase-label'>
+                        {localize('Purchase price:')}
+                    </span>
+                    <span className='positions-drawer-card__purchase-value'>
+                        <Money amount={contract_info.buy_price} currency={currency} />
+                    </span>
+                </div>
+                <div className='positions-drawer-card__payout-price'>
+                    <span className='positions-drawer-card__payout-label'>
+                        {localize('Potential payout:')}
+                    </span>
+                    <span className='positions-drawer-card__payout-value'>
+                        {contract_info.payout ?
+                            <Money amount={contract_info.payout} currency={currency} />
+                            :
+                            <strong>-</strong>
+                        }
+                    </span>
+                </div>
+            </div>
+        </React.Fragment>
+    );
+
     return (
         <div className={classNames(
             'positions-drawer-card__wrapper', {
@@ -46,6 +155,7 @@ const PositionsDrawerCard = ({
             <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
+                has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={result}
@@ -61,100 +171,7 @@ const PositionsDrawerCard = ({
                     )}
                     onClick={() => toggleUnsupportedContractModal(true)}
                 >
-                    <React.Fragment>
-                        <div className={classNames(
-                            'positions-drawer-card__grid',
-                            'positions-drawer-card__grid-underlying-trade'
-                        )}
-                        >
-                            <div className='positions-drawer-card__underlying-name'>
-                                <UnderlyingIcon market={contract_info.underlying} />
-                                <span className='positions-drawer-card__symbol'>
-                                    {contract_info.display_name}
-                                </span>
-                            </div>
-                            <div className='positions-drawer-card__type'>
-                                <ContractTypeCell type={type} />
-                            </div>
-                        </div>
-                        <ProgressSlider
-                            is_loading={is_loading}
-                            remaining_time={contract_info.date_expiry}
-                            percentage={percentage}
-                            current_tick={current_tick}
-                            ticks_count={contract_info.tick_count}
-                            has_result={!!(result)}
-                        />
-                        <div className={classNames(
-                            'positions-drawer-card__grid',
-                            'positions-drawer-card__grid-profit-payout'
-                        )}
-                        >
-                            <div className={classNames(
-                                'positions-drawer-card__profit-loss',
-                                'positions-drawer-card__profit-loss-label',
-                            )}
-                            >
-                                {result ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
-                            </div>
-                            <div className={classNames(
-                                'positions-drawer-card__indicative',
-                                'positions-drawer-card__indicative-label',
-                            )}
-                            >
-                                {!result ? localize('Indicative price:') : localize('Payout:')}
-                            </div>
-                            <div className={classNames(
-                                'positions-drawer-card__profit-loss', {
-                                    'positions-drawer-card__profit-loss--negative': (profit_loss < 0),
-                                    'positions-drawer-card__profit-loss--positive': (profit_loss > 0),
-                                })}
-                            >
-                                <Money amount={Math.abs(profit_loss)} currency={currency} />
-                                <div className={classNames(
-                                    'positions-drawer-card__indicative--movement', {
-                                        'positions-drawer-card__indicative--movement-complete': !!result,
-                                    },
-                                )}
-                                >
-                                    <Icon
-                                        icon='IconPriceMove'
-                                        type={(status !== 'complete') ? status : null}
-                                    />
-                                </div>
-                            </div>
-                            <div className='positions-drawer-card__indicative'>
-                                <Money amount={sell_price || indicative} currency={currency} />
-                                <div className={classNames(
-                                    'positions-drawer-card__indicative--movement', {
-                                        'positions-drawer-card__indicative--movement-complete': !!result,
-                                    },
-                                )}
-                                >
-                                    <Icon
-                                        icon='IconPriceMove'
-                                        type={(status !== 'complete') ? status : null}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='positions-drawer-card__purchase-price'>
-                            <span className='positions-drawer-card__purchase-label'>
-                                {localize('Purchase price')}
-                            </span>
-                            <Money amount={contract_info.buy_price} currency={currency} />
-                        </div>
-                        <div className='positions-drawer-card__payout-price'>
-                            <span className='positions-drawer-card__payout-label'>
-                                {localize('Potential payout')}
-                            </span>
-                            {contract_info.payout ?
-                                <Money amount={contract_info.payout} currency={currency} />
-                                :
-                                <strong>-</strong>
-                            }
-                        </div>
-                    </React.Fragment>
+                    {contract_el}
                 </div>
                 :
                 <ContractLink
@@ -167,110 +184,7 @@ const PositionsDrawerCard = ({
                     )}
                     contract_id={id}
                 >
-                    <React.Fragment>
-                        <div className={classNames(
-                            'positions-drawer-card__grid',
-                            'positions-drawer-card__grid-underlying-trade'
-                        )}
-                        >
-                            <div className='positions-drawer-card__underlying-name'>
-                                <UnderlyingIcon market={contract_info.underlying} />
-                                <span className='positions-drawer-card__symbol'>
-                                    {contract_info.display_name}
-                                </span>
-                            </div>
-                            <div className='positions-drawer-card__type'>
-                                <ContractTypeCell type={type} />
-                            </div>
-                        </div>
-                        <ProgressSlider
-                            is_loading={is_loading}
-                            remaining_time={contract_info.date_expiry}
-                            percentage={percentage}
-                            current_tick={current_tick}
-                            ticks_count={contract_info.tick_count}
-                            has_result={!!(result)}
-                        />
-                        <div className={classNames(
-                            'positions-drawer-card__grid',
-                            'positions-drawer-card__grid-profit-payout'
-                        )}
-                        >
-                            <div className={classNames(
-                                'positions-drawer-card__profit-loss',
-                                'positions-drawer-card__profit-loss-label',
-                            )}
-                            >
-                                {result ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
-                            </div>
-                            <div className={classNames(
-                                'positions-drawer-card__indicative',
-                                'positions-drawer-card__indicative-label',
-                            )}
-                            >
-                                {!result ? localize('Indicative price:') : localize('Payout:')}
-                            </div>
-                            <div className={classNames(
-                                'positions-drawer-card__profit-loss', {
-                                    'positions-drawer-card__profit-loss--negative': (profit_loss < 0),
-                                    'positions-drawer-card__profit-loss--positive': (profit_loss > 0),
-                                })}
-                            >
-                                <Money amount={Math.abs(profit_loss)} currency={currency} />
-                                <div className={classNames(
-                                    'positions-drawer-card__indicative--movement', {
-                                        'positions-drawer-card__indicative--movement-complete': !!result,
-                                    },
-                                )}
-                                >
-                                    <Icon
-                                        icon='IconPriceMove'
-                                        type={(status !== 'complete') ? status : null}
-                                    />
-                                </div>
-                            </div>
-                            <div className='positions-drawer-card__indicative'>
-                                <Money amount={sell_price || indicative} currency={currency} />
-                                <div className={classNames(
-                                    'positions-drawer-card__indicative--movement', {
-                                        'positions-drawer-card__indicative--movement-complete': !!result,
-                                    },
-                                )}
-                                >
-                                    <Icon
-                                        icon='IconPriceMove'
-                                        type={(status !== 'complete') ? status : null}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classNames(
-                            'positions-drawer-card__grid',
-                            'positions-drawer-card__grid-price-payout',
-                        )}
-                        >
-                            <div className='positions-drawer-card__purchase-price'>
-                                <span className='positions-drawer-card__purchase-label'>
-                                    {localize('Purchase price:')}
-                                </span>
-                                <span className='positions-drawer-card__purchase-value'>
-                                    <Money amount={contract_info.buy_price} currency={currency} />
-                                </span>
-                            </div>
-                            <div className='positions-drawer-card__payout-price'>
-                                <span className='positions-drawer-card__payout-label'>
-                                    {localize('Potential payout:')}
-                                </span>
-                                <span className='positions-drawer-card__payout-value'>
-                                    {contract_info.payout ?
-                                        <Money amount={contract_info.payout} currency={currency} />
-                                        :
-                                        <strong>-</strong>
-                                    }
-                                </span>
-                            </div>
-                        </div>
-                    </React.Fragment>
+                    {contract_el}
                 </ContractLink>
             }
             <CSSTransition

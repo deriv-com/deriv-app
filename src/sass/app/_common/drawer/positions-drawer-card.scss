@@ -62,6 +62,7 @@
     &__wrapper {
         padding: 0.8em;
         margin: 0 1em;
+        max-width: 218px;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -241,6 +242,9 @@
             @include themify($themes) {
                 color: themed('text_primary_color');
             }
+        }
+        &--is-crypto {
+            margin-left: -6px;
         }
         &--negative {
             color: $COLOR_RED;

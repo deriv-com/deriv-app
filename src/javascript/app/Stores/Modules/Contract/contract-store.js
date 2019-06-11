@@ -85,7 +85,7 @@ export default class ContractStore extends BaseStore {
             }
             // Clear chart loading status once ChartListener returns ready for completed contract
             if (!this.is_ongoing_contract) {
-                this.waitForChartListener(SmartChartStore);
+                SmartChartStore.setIsChartLoading(false);
             }
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
@@ -243,11 +243,7 @@ export default class ContractStore extends BaseStore {
         createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
-        // TODO: Due to chartListener still giving incorrect bool for ready state when chart is still loading,
-        // a 2000ms offset is added here as a compromise to this issue, once the listener is fixed we can remove this timeout
-        setTimeout(() => {
-            this.waitForChartListener(this.smart_chart);
-        }, 2000);
+        this.smart_chart.setIsChartLoading(false);
     }
 
     @action.bound
@@ -332,23 +328,6 @@ export default class ContractStore extends BaseStore {
         }
         SmartChartStore.updateGranularity(granularity);
     }
-
-    waitForChartListener = (SmartChartStore) => {
-        // TODO: Refactor, timeout interval is required for completed contracts.
-        // There is an issue when we receive the proposal_open_contract response
-        // for a completed contract and chartListener returns false for that single instance / single response.
-        // Hence, we need to set an interval to keep checking the chartListener until it returns true
-
-        let timer;
-        if (!SmartChartStore.is_chart_ready) {
-            // console.log('waiting for listener');
-            timer = setTimeout(() => this.waitForChartListener(SmartChartStore), 500);
-        } else {
-            // console.log('cleared listener');
-            SmartChartStore.setIsChartLoading(false);
-            clearTimeout(timer);
-        }
-    };
 
     @action.bound
     removeErrorMessage() {

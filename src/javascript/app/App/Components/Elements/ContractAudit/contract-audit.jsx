@@ -77,6 +77,7 @@ class ContractAudit extends React.PureComponent {
                                 value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
                             />
                         </div>
+                        {!isDigitType(contract_info.contract_type) &&
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('entry_spot', is_dark_theme)}
@@ -85,6 +86,7 @@ class ContractAudit extends React.PureComponent {
                                 value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
                             />
                         </div>
+                        }
                         {
                             !isNaN(exit_spot) &&
                             <div className='contract-audit__grid'>

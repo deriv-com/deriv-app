@@ -140,6 +140,9 @@ $header-height: 4em;
         }
     }
     .potential-payout {
+        &-container {
+            padding-left: 4px;
+        }
         &-price__value {
             font-size: 1em;
             font-weight: bold;

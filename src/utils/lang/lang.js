@@ -1,5 +1,5 @@
 import { supportedLanguages, translate, init }  from './i18n';
-import { parseQueryString }                     from '../tools';
+import { parseQueryString }                     from '../urlHelper';
 import { set as setStorage, get as getStorage } from '../storageManager';
 
 export const getLanguage = () => {

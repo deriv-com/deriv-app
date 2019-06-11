@@ -1,9 +1,9 @@
 import { getTokenList }     from './storageManager';
 import { getAppIdFallback } from '../services/api/appId';
-import AppIdMap             from '../services/api/appIdResolver';
+import AppIds             from '../services/api/appIdResolver';
 
 const GTM = (() => {
-    const isGtmApplicable = () => Object.values(AppIdMap).includes(`${getAppIdFallback()}`);
+    const isGtmApplicable = () => Object.values(AppIds).includes(`${getAppIdFallback()}`);
 
     const init = () => {
         if (isGtmApplicable()) {

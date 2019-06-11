@@ -1,5 +1,5 @@
 import { LiveApi }                                      from 'binary-live-api';
-import AppIdMap                                         from './appIdResolver';
+import AppIds                                           from './appIdResolver';
 import Elevio                                           from '../../utils/customerSupport/elevio';
 import GTM                                              from '../../utils/gtm';
 import { getLanguage }                                  from '../../utils/lang/lang';
@@ -11,7 +11,7 @@ import {
     get as getStorage,
     set as setStorage,
 }                                                       from '../../utils/storageManager';
-import { parseQueryString, isProduction, getExtension } from '../../utils/tools';
+import { parseQueryString, isProduction, getExtension } from '../../utils/urlHelper';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -20,6 +20,7 @@ export const AppConstants = Object.freeze({
 const hostName = document.location.hostname;
 
 const queryToObjectArray = queryStr => {
+    // Parse and return token from querystring
     const tokens = [];
     Object.keys(queryStr).forEach(o => {
         if (!/\d$/.test(o)) return;
@@ -37,18 +38,19 @@ const queryToObjectArray = queryStr => {
 };
 
 export const oauthLogin = (done = () => 0) => {
+    // Get token from QueryString and save it into localstorage
     const queryStr = parseQueryString();
 
     const tokenObjectList = queryToObjectArray(queryStr);
 
     if (tokenObjectList.length) {
-        $('#main').hide();
+        // TODO hide loader
         addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
                 setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
             }
-            document.location = 'bot.html';
+            document.location = 'index.html';
         });
     } else {
         done();
@@ -72,7 +74,7 @@ const isRealAccount = () => {
     return isReal;
 };
 
-const getDomainAppId = () => AppIdMap[hostName.replace(/^www./, '')];
+const getDomainAppId = () => AppIds[hostName.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',

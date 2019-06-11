@@ -115,7 +115,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id, is_from_positions) {
+    async onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
@@ -264,7 +264,7 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    updateProposal(response) {
+    async updateProposal(response) {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
@@ -284,6 +284,15 @@ export default class ContractStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
+
+        runInAction(async() => {
+            const decimal_places = await getUnderlyingPipSize(this.contract_info.underlying);
+            if (decimal_places) {
+                this.contract_info.entry_spot = (+this.contract_info.entry_spot).toFixed(decimal_places);
+                this.contract_info.exit_tick = (+this.contract_info.exit_tick).toFixed(decimal_places);
+                this.contract_info.current_spot = (+this.contract_info.current_spot).toFixed(decimal_places);
+            }
+        });
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {

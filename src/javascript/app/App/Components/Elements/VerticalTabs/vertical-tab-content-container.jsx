@@ -24,9 +24,12 @@ class VerticalTabContentContainer extends React.PureComponent {
                     })}
                     >
                         {
-                            action_bar.map(({ icon, onClick, title }) => (
-                                <Icon className='vertical-tab__action-bar--icon' key={title} icon={icon} onClick={onClick} />
-                            ))
+                            action_bar.map(({ component, icon, onClick, title }) => {
+                                const Component = component;
+                                return (
+                                    component ? <Component key={title} /> : <Icon className='vertical-tab__action-bar--icon' key={title} icon={icon} onClick={onClick} />
+                                );
+                            })
                         }
                     </div>
                 }

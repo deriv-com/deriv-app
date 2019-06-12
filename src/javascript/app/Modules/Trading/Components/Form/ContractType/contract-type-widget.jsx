@@ -1,12 +1,11 @@
-import classNames            from 'classnames';
-import PropTypes             from 'prop-types';
-import React                 from 'react';
-import { IconArrow }         from 'Assets/Common';
-import { IconTradeCategory } from 'Assets/Trading/Categories';
-import ContractTypeDialog    from './contract-type-dialog.jsx';
-import ContractTypeList      from './contract-type-list.jsx';
-import TradeTypeInfoDialog   from '../TradeTypeInfo/trade-type-info-dialog.jsx';
-import TradeTypeInfoItem     from '../TradeTypeInfo/trade-type-info-item.jsx';
+import classNames          from 'classnames';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import Icon                from 'Assets/icon.jsx';
+import ContractTypeDialog  from './contract-type-dialog.jsx';
+import ContractTypeList    from './contract-type-list.jsx';
+import TradeTypeInfoDialog from '../TradeTypeInfo/trade-type-info-dialog.jsx';
+import TradeTypeInfoItem   from '../TradeTypeInfo/trade-type-info-item.jsx';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
@@ -148,14 +147,17 @@ class ContractTypeWidget extends React.PureComponent {
                     })}
                     onClick={this.onWidgetClick}
                 >
-                    <IconTradeCategory
+                    <Icon
+                        icon='IconTradeCategory'
                         category={value}
                         className='contract-type-widget__icon-wrapper'
                     />
                     <span name={name} value={value}>
                         {this.getDisplayText()}
                     </span>
-                    <IconArrow className={classNames(
+                    <Icon
+                        icon='IconArrow'
+                        className={classNames(
                           'contract-type-widget__select-arrow',
                           'contract-type-widget__select-arrow--left')}
                     />

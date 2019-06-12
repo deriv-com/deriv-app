@@ -14,7 +14,6 @@ import {
     getMinPayout,
     isCryptocurrency }                   from '_common/base/currency_base';
 import { WS }                            from 'Services';
-import GTM                               from 'Utils/gtm';
 import { processPurchase }               from './Actions/purchase';
 import * as Symbol                       from './Actions/symbol';
 import getValidationRules                from './Constants/validation-rules';
@@ -187,7 +186,9 @@ export default class TradeStore extends BaseStore {
             this.currency           = this.root_store.client.currency;
             this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            if (!this.symbol) {
+            const is_valid_symbol = active_symbols.active_symbols.find((symbols) => symbols.symbol === this.symbol);
+
+            if (!this.symbol || !is_valid_symbol) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });
@@ -278,7 +279,7 @@ export default class TradeStore extends BaseStore {
                         this.root_store.modules.contract.onMount(contract_id);
                         this.root_store.ui.openPositionsDrawer();
                     }
-                    GTM.pushPurchaseData(contract_data, this.root_store);
+                    this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
                     this.root_store.common.services_error = {
                         type: response.msg_type,

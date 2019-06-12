@@ -26,7 +26,6 @@ describe('NetworkStatus', () => {
     });
     it('should contain Tooltip message passed in status', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
-        console.log(wrapper);
         expect(wrapper.contains(
             <Popover classNameBubble='network-status__tooltip' alignment='top' message='Network status: Online'>
                 <div className='network-status__circle network-status__circle--online' />
@@ -36,7 +35,6 @@ describe('NetworkStatus', () => {
     it('should contain Popover with default message and div with only default class if status does not contain them', () => {
         status = {};
         const wrapper = shallow(<NetworkStatus status={status} />);
-        console.log(wrapper);
         expect(wrapper.contains(
             <Popover classNameBubble='network-status__tooltip' alignment='top' message='Network status: Connecting to server'>
                 <div className='network-status__circle' />

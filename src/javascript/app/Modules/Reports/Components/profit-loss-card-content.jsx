@@ -1,9 +1,9 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Localize          from 'App/Components/Elements/localize.jsx';
-import Money             from 'App/Components/Elements/money.jsx';
-import { IconPriceMove } from 'Assets/Trading/icon-price-move.jsx';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import Localize   from 'App/Components/Elements/localize.jsx';
+import Money      from 'App/Components/Elements/money.jsx';
+import Icon       from 'Assets/icon.jsx';
 
 const ProfitLossCardContent = ({
     currency,
@@ -30,7 +30,8 @@ const ProfitLossCardContent = ({
                     },
                 )}
                 >
-                    <IconPriceMove
+                    <Icon
+                        icon='IconPriceMove'
                         type={(!is_sold) ? status : null}
                     />
                 </div>
@@ -48,7 +49,8 @@ const ProfitLossCardContent = ({
                     },
                 )}
                 >
-                    <IconPriceMove
+                    <Icon
+                        icon='IconPriceMove'
                         type={(!is_sold) ? status : null}
                     />
                 </div>

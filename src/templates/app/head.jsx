@@ -26,7 +26,7 @@ const Head = () => (
         <meta name='theme-color' content='#2a3052' />
         <meta name='dcterms.rightsHolder' content={it.broker_name} />
         <meta name='dcterms.rights' content={it.broker_name} />
-        <meta name='google-site-verification' content='roReCEK-wNa1EMA6ZM9a4zCOQOMqxfJjvfsZMC9qh_k' />
+        <meta name='google-site-verification' content='g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw' />
         <meta property='og:title' content={it.broker_name} />
         <meta property='og:type' content='website' />
         <meta property='og:image' content={it.url_for('images/common/og_image.gif')} />

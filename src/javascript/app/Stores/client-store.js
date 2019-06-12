@@ -8,7 +8,6 @@ import {
     requestLogout,
     WS }                             from 'Services';
 import { getAccountTitle }           from '_common/base/client_base';
-import GTM                           from '_common/base/gtm';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
 import { localize }                  from '_common/localize';
@@ -49,10 +48,8 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_client_allowed_to_visit() {
         return !!(
-            !this.is_logged_in || this.is_virtual
-            || this.accounts[this.loginid].landing_company_shortcode === 'costarica'
-            || this.accounts[this.loginid].landing_company_shortcode === 'svg'
-        );  // TODO [->svg]
+            !this.is_logged_in || this.is_virtual || this.accounts[this.loginid].landing_company_shortcode === 'svg'
+        );
     }
 
     @computed
@@ -172,8 +169,7 @@ export default class ClientStore extends BaseStore {
                 landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                 upgradeable_landing_companies.indexOf(landing_company) !== -1
             ));
-            // TODO [->svg]
-            can_upgrade_to   = canUpgrade('costarica', 'svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to   = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
@@ -344,7 +340,7 @@ export default class ClientStore extends BaseStore {
         }
         sessionStorage.setItem('active_tab', '1');
         // set local storage
-        GTM.setLoginFlag();
+        this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
         await BinarySocket.send({ 'authorize': this.getToken() }, { forced: true });
@@ -383,6 +379,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
+        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid = null;
         this.upgrade_info = undefined;
         this.accounts = [];

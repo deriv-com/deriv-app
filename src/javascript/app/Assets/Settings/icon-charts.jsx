@@ -19,4 +19,4 @@ IconCharts.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconCharts };
+export default IconCharts;

@@ -1,23 +1,18 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import {
-    Icon,
-    IconChevronDoubleLeft,
-    IconChevronDoubleRight,
-    IconChevronLeft,
-    IconChevronRight }      from 'Assets/Common';
-import { month_headers }    from 'Constants/date-time';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import Icon              from 'Assets/icon.jsx';
+import { month_headers } from 'Constants/date-time';
 import {
     addMonths,
     addYears,
     subMonths,
     subYears,
-    toMoment }              from 'Utils/Date';
-import CalendarButton       from './calendar-button.jsx';
+    toMoment }           from 'Utils/Date';
+import CalendarButton    from './calendar-button.jsx';
 import {
     getCentury,
-    getDecade }             from './helper';
+    getDecade }          from './helper';
 
 const CalendarHeader = ({
     calendar_date,
@@ -56,7 +51,7 @@ const CalendarHeader = ({
                 })}
                 onClick={is_prev_year_disabled ? undefined : () => navigateTo(subYears(calendar_date, num_of_years))}
             >
-                <Icon icon={IconChevronDoubleLeft} className='calendar__icon' />
+                <Icon icon='IconChevronDoubleLeft' className='calendar__icon' />
             </CalendarButton>
             <CalendarButton
                 className={classNames('calendar__nav calendar__nav--prev-month', {
@@ -65,7 +60,7 @@ const CalendarHeader = ({
                 is_hidden={!is_date_view}
                 onClick={is_prev_month_disabled ? undefined : () => navigateTo(subMonths(calendar_date, 1))}
             >
-                <Icon icon={IconChevronLeft} className='calendar__icon' />
+                <Icon icon='IconChevronLeft' className='calendar__icon' />
             </CalendarButton>
 
             <React.Fragment>
@@ -106,7 +101,7 @@ const CalendarHeader = ({
                 is_hidden={!is_date_view}
                 onClick={is_next_month_disabled ? undefined : () => navigateTo(addMonths(calendar_date, 1))}
             >
-                <Icon icon={IconChevronRight} className='calendar__icon' />
+                <Icon icon='IconChevronRight' className='calendar__icon' />
             </CalendarButton>
             <CalendarButton
                 className={classNames('calendar__nav calendar__nav--next-year', {
@@ -114,7 +109,7 @@ const CalendarHeader = ({
                 })}
                 onClick={is_next_year_disabled ? undefined : () => navigateTo(addYears(calendar_date, num_of_years))}
             >
-                <Icon icon={IconChevronDoubleRight} className='calendar__icon' />
+                <Icon icon='IconChevronDoubleRight' className='calendar__icon' />
             </CalendarButton>
         </div>
     );

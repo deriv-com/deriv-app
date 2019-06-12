@@ -1,8 +1,8 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
+import Icon              from 'Assets/icon.jsx';
 import { localize }      from '_common/localize';
 import Money             from 'App/Components/Elements/money.jsx';
-import { IconPriceMove } from 'Assets/Trading/icon-price-move.jsx';
 
 class IndicativeCell extends React.PureComponent {
     constructor(props) {
@@ -27,7 +27,7 @@ class IndicativeCell extends React.PureComponent {
             <div className='open-positions__indicative' >
                 <Money amount={Math.abs(amount)} currency={currency} />
                 <div className='open-positions__indicative--movement'>
-                    <IconPriceMove type={movement} />
+                    <Icon icon='IconPriceMove' type={movement} />
                 </div>
                 {status === 'no-resale' &&
                 <div className='indicative__no-resale-msg'>

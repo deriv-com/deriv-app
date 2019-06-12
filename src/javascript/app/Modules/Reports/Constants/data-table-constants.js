@@ -1,10 +1,10 @@
 import classNames           from 'classnames';
 import React                from 'react';
+import Icon                 from 'Assets/icon.jsx';
 import { localize }         from '_common/localize';
 import Label                from 'App/Components/Elements/Label/label.jsx';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
-import IconPriceMove        from 'Assets/Trading/icon-price-move.jsx';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
@@ -156,7 +156,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div className='open-positions__profit-loss--movement'>
-                        <IconPriceMove type={profit > 0 ? 'profit' : 'loss'} />
+                        <Icon icon='IconPriceMove' type={profit > 0 ? 'profit' : 'loss'} />
                     </div>
                 </div>
             );

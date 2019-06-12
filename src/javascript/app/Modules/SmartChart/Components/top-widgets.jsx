@@ -11,7 +11,7 @@ const TopWidgets = ({
 }) => (
     <React.Fragment>
         {InfoBox}
-        <ChartTitle enabled={is_title_enabled} onChange={onSymbolChange} />
+        <ChartTitle enabled={is_title_enabled} onChange={onSymbolChange} searchInputClassName='data-hj-whitelist' />
         <AssetInformation />
     </React.Fragment>
 );

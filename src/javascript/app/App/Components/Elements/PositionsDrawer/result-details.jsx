@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { IconArrow }     from 'Assets/Common';
+import Icon              from 'Assets/icon.jsx';
 import { localize }      from '_common/localize';
 import {
     epochToMoment,
@@ -91,7 +91,7 @@ class ResultDetails extends React.PureComponent {
                     })}
                     onClick={this.toggleDetails}
                 >
-                    <IconArrow className='result-details__select-arrow' />
+                    <Icon icon='IconArrow' className='result-details__select-arrow' />
                 </div>
             </React.Fragment>
         );

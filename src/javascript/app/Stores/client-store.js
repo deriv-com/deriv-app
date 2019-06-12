@@ -199,6 +199,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
+        this.user_id      = response.authorize.user_id;
     }
 
     @action.bound

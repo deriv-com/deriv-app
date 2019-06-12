@@ -13,4 +13,4 @@ IconChevronDoubleRight.propTypes = {
     classNamePath: PropTypes.string,
 };
 
-export { IconChevronDoubleRight };
+export default IconChevronDoubleRight;

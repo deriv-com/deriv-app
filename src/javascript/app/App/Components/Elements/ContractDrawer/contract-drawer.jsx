@@ -5,6 +5,7 @@ import { withRouter }        from 'react-router';
 import { CSSTransition }     from 'react-transition-group';
 import { localize }          from '_common/localize';
 import Icon                  from 'Assets/icon.jsx';
+import routes                from 'Constants/routes';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import Button                from 'App/Components/Form/button.jsx';
@@ -38,6 +39,15 @@ class ContractDrawer extends Component {
     handleShade = (shade) => {
         this.setState({ is_shade_on: shade });
     }
+
+    redirectBackToReports = () => {
+        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
+        if (this.props.history.location.state) {
+            this.props.history.goBack();
+        } else {
+            this.props.history.push(routes.reports);
+        }
+    };
 
     getBodyContent () {
         const {
@@ -179,7 +189,7 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.goBack()}
+                    onClick={this.redirectBackToReports}
                 >
                     <Icon icon='IconBack' />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>

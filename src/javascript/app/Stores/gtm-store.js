@@ -2,9 +2,10 @@ import {
     action,
     computed,
     observable }              from 'mobx';
+import BinarySocket           from '_common/base/socket_base';
+import { isLoginPages }       from '_common/base/login';
+import { get as getLanguage } from '_common/language';
 import BaseStore              from './base-store';
-import { isLoginPages }       from '../../_common/base/login';
-import { get as getLanguage } from '../../_common/language';
 import { getAppId }           from '../../config';
 
 export default class GTMStore extends BaseStore {
@@ -38,6 +39,7 @@ export default class GTMStore extends BaseStore {
             ...this.root_store.client.is_logged_in && {
                 visitorId: this.visitorId,
                 currency : this.currency,
+                userId   : this.root_store.client.user_id,
             },
             ...this.root_store.ui.is_dark_mode_on && {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
@@ -56,11 +58,13 @@ export default class GTMStore extends BaseStore {
      * @param {object} data
      */
     @action.bound
-    pushDataLayer(data) {
+    async pushDataLayer(data) {
         if (this.is_gtm_applicable && !isLoginPages()) {
-            dataLayer.push({
-                ...this.common_variables,
-                ...data,
+            BinarySocket.wait('authorize').then(() => {
+                dataLayer.push({
+                    ...this.common_variables,
+                    ...data,
+                });
             });
         }
     }

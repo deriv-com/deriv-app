@@ -2,7 +2,7 @@ import classNames           from 'classnames';
 import React                from 'react';
 import Icon                 from 'Assets/icon.jsx';
 import { localize }         from '_common/localize';
-import Label                from 'App/Components/Elements/Label';
+import Label                from 'App/Components/Elements/Label/label.jsx';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
@@ -25,6 +25,7 @@ const getModeFromValue = (key) => {
 
     return map.default;
 };
+
 /* eslint-disable react/display-name, react/prop-types */
 export const getStatementTableColumnsTemplate = (currency) => [
     {

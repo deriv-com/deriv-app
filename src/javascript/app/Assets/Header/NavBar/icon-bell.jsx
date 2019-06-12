@@ -15,4 +15,4 @@ IconBell.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconBell };
+export default IconBell;

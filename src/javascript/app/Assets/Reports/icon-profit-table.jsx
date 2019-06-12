@@ -12,4 +12,4 @@ IconProfitTable.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconProfitTable };
+export default IconProfitTable;

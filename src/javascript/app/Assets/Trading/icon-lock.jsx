@@ -16,4 +16,4 @@ IconLock.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconLock };
+export default IconLock;

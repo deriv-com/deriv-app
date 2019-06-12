@@ -1,10 +1,7 @@
 import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { UnderlyingIcon }       from 'App/Components/Elements/underlying-icon.jsx';
-import { Icon }                 from 'Assets/Common';
-import { IconDeposit }          from 'Assets/Common/icon-deposit.jsx';
-import { IconWithdrawal }       from 'Assets/Common/icon-withdrawal.jsx';
-import { IconTradeType }        from 'Assets/Trading/Types';
+import Icon                     from 'Assets/icon.jsx';
 import { getMarketInformation } from '../Helpers/market-underyling';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
@@ -20,7 +17,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 </div>
 
                 <div className='market-symbol-icon-category'>
-                    <IconTradeType type={market_information.category} />
+                    <Icon icon='IconTradeType' type={market_information.category} />
                     {show_description && market_information.category}
                 </div>
             </div>
@@ -30,9 +27,9 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
             <div className='market-symbol-icon'>
                 {
                     payload.action_type === 'deposit' ? (
-                        <Icon icon={IconDeposit} />
+                        <Icon icon='IconDeposit' />
                     ) : (
-                        <Icon icon={IconWithdrawal} />
+                        <Icon icon='IconWithdrawal' />
                     )
                 }
             </div>

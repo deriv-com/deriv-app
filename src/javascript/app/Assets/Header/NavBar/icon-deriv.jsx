@@ -17,4 +17,4 @@ IconDeriv.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconDeriv };
+export default IconDeriv;

@@ -1,7 +1,7 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { IconPriceMove } from 'Assets/Trading/icon-price-move.jsx';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import Icon       from 'Assets/icon.jsx';
 
 const LastDigitPointer = ({
     is_lost,
@@ -12,7 +12,8 @@ const LastDigitPointer = ({
         className='digits__pointer'
         style={{ marginLeft: position }}
     >
-        <IconPriceMove
+        <Icon
+            icon='IconPriceMove'
             className={classNames('digits__icon', {
                 'digits__icon--win' : is_won,
                 'digits__icon--loss': is_lost,

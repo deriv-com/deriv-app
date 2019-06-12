@@ -1,9 +1,9 @@
-import classNames              from 'classnames';
-import moment                  from 'moment';
-import PropTypes               from 'prop-types';
-import React, { Component }    from 'react';
-import Localize                from 'App/Components/Elements/localize.jsx';
-import { Icon, IconArrowBold } from 'Assets/Common';
+import classNames           from 'classnames';
+import moment               from 'moment';
+import PropTypes            from 'prop-types';
+import React, { Component } from 'react';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import Icon                 from 'Assets/icon.jsx';
 
 const Pair = ({ value, label }) => (
     <div className='pair'>
@@ -66,7 +66,7 @@ class ContractAudit extends Component {
                     onClick={this.toggleVisibility.bind(this)}
                 >
                     <Icon
-                        icon={IconArrowBold}
+                        icon='IconArrowBold'
                         className={classNames('contract-audit__arrow', {
                             'contract-audit__arrow--is-open': this.state.is_visible,
                         })}

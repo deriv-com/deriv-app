@@ -2,8 +2,7 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import IconCheck         from 'Images/app/portfolio/ic-check.svg';
-import IconCross         from 'Images/app/portfolio/ic-cross.svg';
+import Icon              from 'Assets/icon.jsx';
 import { localize }      from '_common/localize';
 
 const ResultOverlay = ({
@@ -46,12 +45,12 @@ const ResultOverlay = ({
                         (result === 'won') ?
                             <React.Fragment>
                                 {localize('won')}
-                                <IconCheck className='result__icon' />
+                                <Icon icon='IconCheck' className='result__icon' />
                             </React.Fragment>
                             :
                             <React.Fragment>
                                 {localize('lost')}
-                                <IconCross className='result__icon' />
+                                <Icon icon='IconCross' className='result__icon' />
                             </React.Fragment>
                     }
                 </span>

@@ -31,11 +31,11 @@ const SocketCache = (() => {
     const config = {
         payout_currencies     : { expire: 120 },
         proposal_open_contract: { expire: 10, map_to: ['contract_id'] },
-        statement             : { expire: 10, map_to: ['limit', 'offset'] },
+        // statement             : { expire: 1, map_to: ['limit', 'offset'] },
         active_symbols        : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
         contracts_for         : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
         exchange_rates        : { expire: 60, map_to: ['base_currency'] },
-        profit_table          : { expire: 10, map_to: ['date_from', 'limit', 'offset'] },
+        // profit_table          : { expire: 1, map_to: ['date_from', 'limit', 'offset'] },
         history               : { expire: 10, map_to: ['ticks_history', 'start', 'end', 'style'] },
     };
 

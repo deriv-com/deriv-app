@@ -13,4 +13,4 @@ IconMinus.propTypes = {
     is_disabled: PropTypes.bool,
 };
 
-export { IconMinus };
+export default IconMinus;

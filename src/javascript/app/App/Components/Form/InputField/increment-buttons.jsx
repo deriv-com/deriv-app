@@ -1,10 +1,7 @@
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import {
-    Icon,
-    IconMinus,
-    IconPlus }                   from 'Assets/Common';
-import Button                    from '../button.jsx';
+import PropTypes from 'prop-types';
+import React     from 'react';
+import Icon      from 'Assets/icon.jsx';
+import Button    from '../button.jsx';
 
 const IncrementButtons = ({
     decrementValue,
@@ -19,7 +16,7 @@ const IncrementButtons = ({
             onClick={incrementValue}
             tabIndex='-1'
         >
-            <Icon icon={IconPlus} className={'input-wrapper__icon input-wrapper__icon--plus' } is_disabled={max_is_disabled} />
+            <Icon icon='IconPlus' className={'input-wrapper__icon input-wrapper__icon--plus' } is_disabled={max_is_disabled} />
         </Button>
         <Button
             className={'input-wrapper__button input-wrapper__button--decrement'}
@@ -27,7 +24,7 @@ const IncrementButtons = ({
             onClick={decrementValue}
             tabIndex='-1'
         >
-            <Icon icon={IconMinus} className={'input-wrapper__icon input-wrapper__icon--minus'} is_disabled={min_is_disabled} />
+            <Icon icon='IconMinus' className={'input-wrapper__icon input-wrapper__icon--minus'} is_disabled={min_is_disabled} />
         </Button>
     </React.Fragment>
 );

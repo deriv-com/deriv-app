@@ -71,7 +71,7 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-const getContractConfig = is_high_low => ({
+export const getSupportedContracts = is_high_low => ({
     CALL: {
         name    : is_high_low ?  localize('Higher') : localize('Rise'),
         position: 'top',
@@ -120,6 +120,10 @@ const getContractConfig = is_high_low => ({
         name    : localize('No Touch'),
         position: 'bottom',
     },
+});
+
+const getContractConfig = is_high_low => ({
+    ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 

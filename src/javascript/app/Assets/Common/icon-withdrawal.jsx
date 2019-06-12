@@ -12,4 +12,4 @@ const IconWithdrawal = ({ className }) => (
     </svg>
 );
 
-export { IconWithdrawal };
+export default IconWithdrawal;

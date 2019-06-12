@@ -2,14 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { NavLink }         from 'react-router-dom';
-import { Icon }            from 'Assets/Common';
-import {
-    IconBuy,
-    IconDeposit,
-    IconSell,
-    IconPayout,
-    IconWallet,
-    IconWithdrawal }       from 'Assets/Statement';
+import Icon                from 'Assets/icon.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 
 const StatementCard = ({
@@ -37,22 +30,22 @@ const StatementCard = ({
                 <div className='statement-card__desc'>{desc}</div>
                 <div className='statement-card__row'>
                     <div className={`statement-card__cell statement-card__amount statement-card__amount--${action.toLowerCase()}`}>
-                        {icon === 'sell'        && <Icon icon={IconSell} className='statement-card__icon' />}
-                        {icon === 'buy'         && <Icon icon={IconBuy} className='statement-card__icon' />}
-                        {icon === 'deposit'     && <Icon icon={IconDeposit} className='statement-card__icon' />}
-                        {icon === 'withdrawal'  && <Icon icon={IconWithdrawal} className='statement-card__icon' />}
+                        {icon === 'sell'        && <Icon icon='IconSell'       className='statement-card__icon' />}
+                        {icon === 'buy'         && <Icon icon='IconBuy'        className='statement-card__icon' />}
+                        {icon === 'deposit'     && <Icon icon='IconDeposit'    className='statement-card__icon' />}
+                        {icon === 'withdrawal'  && <Icon icon='IconWithdrawal' className='statement-card__icon' />}
                         <span className='statement-card__cell-text'>
                             {amount}
                         </span>
                     </div>
                     <div className='statement-card__cell statement-card__payout'>
-                        <Icon icon={IconPayout} className='statement-card__icon' />
+                        <Icon icon='IconPayout' className='statement-card__icon' />
                         <span className='statement-card__cell-text'>
                             {payout}
                         </span>
                     </div>
                     <div className='statement-card__cell statement-card__balance'>
-                        <Icon icon={IconWallet} className='statement-card__icon' />
+                        <Icon icon='IconWallet' className='statement-card__icon' />
                         <span className='statement-card__cell-text'>
                             {balance}
                         </span>

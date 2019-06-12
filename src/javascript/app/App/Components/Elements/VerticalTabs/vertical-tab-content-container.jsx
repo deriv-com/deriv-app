@@ -1,7 +1,7 @@
 import classNames                  from 'classnames';
 import React                       from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Icon }                    from 'Assets/Common';
+import Icon                        from 'Assets/icon.jsx';
 import routes                      from 'Constants/routes';
 
 class VerticalTabContentContainer extends React.PureComponent {

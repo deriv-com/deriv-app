@@ -1,11 +1,8 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { Icon }            from 'Assets/Common/icon.jsx';
-import { IconInfoOutline } from 'Assets/Common/icon-info-outline.jsx';
-import { IconQuestion }    from 'Assets/Common/icon-question.jsx';
-import { IconRedDot }      from 'Assets/Common/icon-red-dot.jsx';
-import PopoverBubble       from './popover-bubble.jsx';
+import classNames    from 'classnames';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import Icon          from 'Assets/icon.jsx';
+import PopoverBubble from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {
     constructor(props) {
@@ -53,9 +50,9 @@ class Popover extends React.PureComponent {
             >
                 <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
                     <i className={message ? 'popover__target__icon' : 'popover__target__icon--disabled'}>
-                        {(icon === 'info')     && <Icon icon={IconInfoOutline} className={icon_class_name} /> }
-                        {(icon === 'question') && <Icon icon={IconQuestion}    className={icon_class_name} />}
-                        {(icon === 'dot')      && <Icon icon={IconRedDot}      className={icon_class_name} />}
+                        {(icon === 'info')     && <Icon icon='IconInfoOutline' className={icon_class_name} /> }
+                        {(icon === 'question') && <Icon icon='IconQuestion'    className={icon_class_name} />}
+                        {(icon === 'dot')      && <Icon icon='IconRedDot'      className={icon_class_name} />}
                     </i>
 
                     { children }

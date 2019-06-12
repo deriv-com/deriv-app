@@ -13,6 +13,6 @@ describe('ContractTypeItem', () => {
             { value:'high_low', text:'Higher/Lower' },
         ];
         const wrapper = shallow(<ContractTypeItem contracts={contracts} />);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).to.have.length(2);
     });
 });

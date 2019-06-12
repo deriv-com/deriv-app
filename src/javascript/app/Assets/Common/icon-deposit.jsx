@@ -12,4 +12,4 @@ const IconDeposit = ({ className }) => (
     </svg>
 );
 
-export { IconDeposit };
+export default IconDeposit;

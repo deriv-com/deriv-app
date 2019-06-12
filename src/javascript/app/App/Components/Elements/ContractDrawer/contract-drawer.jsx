@@ -4,7 +4,7 @@ import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import { CSSTransition }     from 'react-transition-group';
 import { localize }          from '_common/localize';
-import { Icon, IconBack }    from 'Assets/Common';
+import Icon                  from 'Assets/icon.jsx';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import Button                from 'App/Components/Form/button.jsx';
@@ -173,7 +173,7 @@ class ContractDrawer extends Component {
                     className='contract-drawer__heading'
                     onClick={() => this.props.history.goBack()}
                 >
-                    <Icon icon={IconBack} />
+                    <Icon icon='IconBack' />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>

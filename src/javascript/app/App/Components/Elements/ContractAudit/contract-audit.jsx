@@ -29,7 +29,6 @@ class ContractAudit extends React.PureComponent {
         } = this.props;
         if (!has_result) return null;
         const is_profit    = (contract_info.profit >= 0);
-        const is_exit_time = (contract_info.exit_tick_time === contract_end_time);
         const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
         return (
             <React.Fragment>
@@ -44,7 +43,7 @@ class ContractAudit extends React.PureComponent {
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('id', is_dark_theme)}
-                                label={localize('Reference ID)')}
+                                label={localize('Reference ID')}
                                 value={localize('[_1] (Buy)', contract_info.transaction_ids.buy)}
                                 value2={localize('[_1] (Sell)', contract_info.transaction_ids.sell)}
                             />
@@ -101,7 +100,7 @@ class ContractAudit extends React.PureComponent {
                         <div className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={IconExitTime}
-                                label={is_exit_time ? localize('Exit Time') : localize('End time')}
+                                label={localize('Exit Time')}
                                 value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                             />
                         </div>

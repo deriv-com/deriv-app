@@ -1,13 +1,12 @@
 import classNames           from 'classnames';
 import React                from 'react';
+import Icon                 from 'Assets/icon.jsx';
 import { localize }         from '_common/localize';
 import Label                from 'App/Components/Elements/Label';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
-import { IconPriceMove }    from 'Assets/Trading/icon-price-move.jsx';
 import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
-import Localize             from '../../../App/Components/Elements/localize';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 
@@ -49,8 +48,8 @@ export const getStatementTableColumnsTemplate = (currency) => [
         key              : 'mode',
         title            : localize('Transaction'),
         col_index        : 'action_type',
-        renderCellContent: ({ row_obj }) => (
-            <p><Localize str={row_obj.action} /></p>
+        renderCellContent: ({ cell_value, row_obj }) => (
+            <Label mode={getModeFromValue(cell_value)}>{row_obj.action}</Label>
         ),
     }, {
         title            : localize('Credit/Debit'),
@@ -156,7 +155,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div className='open-positions__profit-loss--movement'>
-                        <IconPriceMove type={profit > 0 ? 'profit' : 'loss'} />
+                        <Icon icon='IconPriceMove' type={profit > 0 ? 'profit' : 'loss'} />
                     </div>
                 </div>
             );

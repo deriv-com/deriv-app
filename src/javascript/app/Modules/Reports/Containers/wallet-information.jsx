@@ -1,10 +1,10 @@
-import React                    from 'react';
-import Label                    from 'App/Components/Elements/Label/label.jsx';
-import Localize                 from 'App/Components/Elements/localize.jsx';
-import Money                    from 'App/Components/Elements/money.jsx';
-import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency';
-import { IconDemo }             from 'Assets/Reports/icon-demo.jsx';
-import { connect }              from 'Stores/connect';
+import React        from 'react';
+import Icon         from 'Assets/icon.jsx';
+import Label        from 'App/Components/Elements/Label/label.jsx';
+import Localize     from 'App/Components/Elements/localize.jsx';
+import Money        from 'App/Components/Elements/money.jsx';
+import { IconDemo } from 'Assets/Reports/icon-demo.jsx';
+import { connect }  from 'Stores/connect';
 
 const WalletInformation = ({
     currency,
@@ -13,7 +13,7 @@ const WalletInformation = ({
     loginid,
 }) => (
     <div className='account-wallet'>
-        {!is_virtual && <IconAccountsCurrency type={currency.toLowerCase()} />}
+        {!is_virtual && <Icon icon='IconAccountsCurrency' type={currency.toLowerCase()} />}
         {is_virtual && <IconDemo />}
         <span className='description'>
             <Localize str={`${is_virtual ? 'Practice' : currency.toUpperCase()} wallet`} />

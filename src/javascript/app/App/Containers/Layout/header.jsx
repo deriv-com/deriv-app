@@ -33,55 +33,58 @@ const Header = ({
     onClickUpgrade,
     toggleAccountsDialog,
 }) => (
-    <header className={classNames('header', {
-        'header--is-blurred': (is_fully_blurred || is_route_blurred),
-        'header--show'      : !is_loading || location.pathname !== routes.trade,
-    })}
-    >
-        <div className='header__menu-items'>
-            <div className='header__menu-left'>
-                {is_mobile && <ToggleMenuDrawer />}
-                <MenuLinks
-                    is_logged_in={is_logged_in}
-                    items={header_links}
-                />
-            </div>
-            <div className='header__menu-right'>
-                <div className='acc-info__container'>
-                    { is_logged_in ?
-                        <React.Fragment>
-                            <AccountInfo
-                                balance={formatMoney(currency, balance, true)}
-                                is_upgrade_enabled={can_upgrade}
-                                is_virtual={is_virtual}
-                                onClickUpgrade={onClickUpgrade}
-                                currency={currency}
-                                loginid={loginid}
-                                is_dialog_on={is_acc_switcher_on}
-                                toggleDialog={toggleAccountsDialog}
-                            />
-                            { !!(can_upgrade_to && is_virtual) &&
-                            <UpgradeButton
-                                className='acc-info__button'
-                                onClick={() => {
-                                    window.open(urlFor('user/accounts', undefined, undefined, true));
-                                }}
-                            />
+    <React.Fragment>
+        {(!is_loading || location.pathname !== routes.trade) &&
+            <header className={classNames('header', {
+                'header--is-blurred': (is_fully_blurred || is_route_blurred),
+            })}
+            >
+                <div className='header__menu-items'>
+                    <div className='header__menu-left'>
+                        {is_mobile && <ToggleMenuDrawer />}
+                        <MenuLinks
+                            is_logged_in={is_logged_in}
+                            items={header_links}
+                        />
+                    </div>
+                    <div className='header__menu-right'>
+                        <div className='acc-info__container'>
+                            { is_logged_in ?
+                                <React.Fragment>
+                                    <AccountInfo
+                                        balance={formatMoney(currency, balance, true)}
+                                        is_upgrade_enabled={can_upgrade}
+                                        is_virtual={is_virtual}
+                                        onClickUpgrade={onClickUpgrade}
+                                        currency={currency}
+                                        loginid={loginid}
+                                        is_dialog_on={is_acc_switcher_on}
+                                        toggleDialog={toggleAccountsDialog}
+                                    />
+                                    { !!(can_upgrade_to && is_virtual) &&
+                                    <UpgradeButton
+                                        className='acc-info__button'
+                                        onClick={() => {
+                                            window.open(urlFor('user/accounts', undefined, undefined, true));
+                                        }}
+                                    />
+                                    }
+                                    { !(is_virtual) &&
+                                    <DepositButton className='acc-info__button' />
+                                    }
+                                </React.Fragment>
+                                :
+                                <React.Fragment>
+                                    <LoginButton className='acc-info__button' />
+                                    <SignupButton className='acc-info__button' />
+                                </React.Fragment>
                             }
-                            { !(is_virtual) &&
-                            <DepositButton className='acc-info__button' />
-                            }
-                        </React.Fragment>
-                        :
-                        <React.Fragment>
-                            <LoginButton className='acc-info__button' />
-                            <SignupButton className='acc-info__button' />
-                        </React.Fragment>
-                    }
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </header>
+            </header>
+        }
+    </React.Fragment>
 );
 
 Header.propTypes = {

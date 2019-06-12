@@ -48,10 +48,7 @@ export default class ContractStore extends BaseStore {
     @observable is_replay_static_chart = false;
 
     // ---- Normal properties ---
-    forget_id;
     chart_type          = 'mountain';
-    is_granularity_set  = false;
-    is_left_epoch_set   = false;
     is_from_positions   = false;
     is_ongoing_contract = false;
 
@@ -59,17 +56,18 @@ export default class ContractStore extends BaseStore {
     replay_prev_indicative   = 0;
     replay_indicative        = 0;
 
+    // Forget old proposal_open_contract stream on account switch from ErrorComponent
+    should_forget_first = false;
+
     // -------------------
     // ----- Actions -----
     // -------------------
     @action.bound
     drawChart(SmartChartStore, contract_info) {
-        this.forget_id = contract_info.id;
+        const { date_start } = contract_info;
+        const end_time       = getEndTime(contract_info);
 
-        const { date_start }           = contract_info;
-        const end_time                 = getEndTime(contract_info);
-        const should_update_chart_type = (!contract_info.tick_count && !this.is_granularity_set);
-
+        SmartChartStore.setChartView(contract_info.purchase_time);
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
@@ -82,7 +80,7 @@ export default class ContractStore extends BaseStore {
             SmartChartStore.setContractStart(date_start);
             SmartChartStore.setContractEnd(end_time);
 
-            if (should_update_chart_type) {
+            if (!contract_info.tick_count) {
                 this.handleChartType(SmartChartStore, date_start, end_time);
             } else {
                 SmartChartStore.updateGranularity(0);
@@ -94,25 +92,15 @@ export default class ContractStore extends BaseStore {
             }
 
         // setters for ongoing contracts, will only init once onMount after left_epoch is set
-        } else if (!this.is_left_epoch_set) {
-
+        } else {
             if (this.is_from_positions) {
                 SmartChartStore.setContractStart(date_start);
             }
-
             if (contract_info.tick_count) {
                 SmartChartStore.updateGranularity(0);
                 SmartChartStore.updateChartType('mountain');
-            }
-            this.is_left_epoch_set = true;
-            SmartChartStore.setChartView(contract_info.purchase_time);
-        }
-        if (should_update_chart_type && !contract_info.tick_count) {
-            this.handleChartType(SmartChartStore, date_start, null);
-        }
-        if (this.is_granularity_set) {
-            if (getChartType(date_start, null) !== this.chart_type) {
-                this.is_granularity_set = false;
+            } else {
+                this.handleChartType(SmartChartStore, date_start, null);
             }
         }
 
@@ -123,6 +111,20 @@ export default class ContractStore extends BaseStore {
 
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
+        }
+    }
+
+    handleSubscribeProposalOpenContract = (contract_id, cb) => {
+        // TODO: remove .toString() when API is ready
+        const proposal_open_contract_request = [contract_id.toString(), cb, false];
+
+        if (this.should_forget_first) {
+            WS.forgetAll('proposal_open_contract').then(() => {
+                this.should_forget_first = false;
+                WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            });
+        } else {
+            WS.subscribeProposalOpenContract(...proposal_open_contract_request);
         }
     }
 
@@ -144,7 +146,7 @@ export default class ContractStore extends BaseStore {
             }
             this.smart_chart.saveAndClearTradeChartLayout('contract');
             this.smart_chart.setContractMode(true);
-            WS.subscribeProposalOpenContract(this.contract_id.toString(), this.updateProposal, false);
+            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         }
     }
 
@@ -155,13 +157,12 @@ export default class ContractStore extends BaseStore {
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.replay_contract_id = contract_id;
-            WS.subscribeProposalOpenContract(this.replay_contract_id.toString(), this.populateConfig, false);
+            this.handleSubscribeProposalOpenContract(this.replay_contract_id, this.populateConfig);
         }
     }
 
     @action.bound
     onUnmountReplay() {
-        this.forget_id                = null;
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
@@ -189,11 +190,8 @@ export default class ContractStore extends BaseStore {
         this.contract_info       = {};
         this.digits_info         = {};
         this.error_message       = '';
-        this.forget_id           = null;
         this.has_error           = false;
-        this.is_granularity_set  = false;
         this.is_sell_requested   = false;
-        this.is_left_epoch_set   = false;
         this.is_from_positions   = false;
         this.is_ongoing_contract = false;
         this.sell_info           = {};
@@ -212,22 +210,22 @@ export default class ContractStore extends BaseStore {
     @action.bound
     populateConfig(response) {
         if ('error' in response) {
-            this.has_error     = true;
+            this.has_error       = true;
             this.contract_config = {};
             this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error       = true;
-            this.error_message   = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
-            this.contract_config = {};
+            this.has_error           = true;
+            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.should_forget_first = true;
+            this.contract_config     = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
             return;
         }
         if (+response.proposal_open_contract.contract_id !== +this.replay_contract_id) return;
 
-        this.forget_id   = response.proposal_open_contract.id;
         this.replay_info = response.proposal_open_contract;
 
         // Add indicative status for contract
@@ -260,7 +258,7 @@ export default class ContractStore extends BaseStore {
         }
 
         createChartBarrier(this.smart_chart, this.replay_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.replay_info, this.replay_config);
+        createChartMarkers(this.smart_chart, this.replay_info);
         this.handleDigits(this.replay_info);
 
         this.waitForChartListener(this.smart_chart);
@@ -277,10 +275,11 @@ export default class ContractStore extends BaseStore {
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error     = true;
-            this.error_message = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
-            this.contract_info = {};
-            this.contract_id   = null;
+            this.has_error           = true;
+            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.should_forget_first = true;
+            this.contract_info       = {};
+            this.contract_id         = null;
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
             return;
@@ -340,19 +339,14 @@ export default class ContractStore extends BaseStore {
         const chart_type  = getChartType(start, expiry);
         const granularity = getChartGranularity(start, expiry);
 
-        if (chart_type === 'candle' && granularity !== 0) {
-            SmartChartStore.updateChartType(chart_type);
+        if (chart_type === 'candle') {
             this.chart_type = chart_type;
+            SmartChartStore.updateChartType(chart_type);
         } else {
-            SmartChartStore.updateChartType('mountain');
             this.chart_type = 'mountain';
+            SmartChartStore.updateChartType('mountain');
         }
         SmartChartStore.updateGranularity(granularity);
-        this.is_granularity_set = true;
-    }
-
-    forgetProposalOpenContract() {
-        WS.forget('proposal_open_contract', this.updateProposal, { id: this.forget_id });
     }
 
     waitForChartListener = (SmartChartStore) => {
@@ -375,6 +369,12 @@ export default class ContractStore extends BaseStore {
     @action.bound
     removeErrorMessage() {
         delete this.error_message;
+    }
+
+    @action.bound
+    clearError() {
+        this.error_message = null;
+        this.has_error = false;
     }
 
     @action.bound

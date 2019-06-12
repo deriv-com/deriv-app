@@ -5,11 +5,12 @@ import DarkModeIcon  from 'Images/app/settings/img-theme-dark.svg';
 import LightModeIcon from 'Images/app/settings/img-theme-light.svg';
 import { connect }   from 'Stores/connect';
 
-const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor }) => {
+const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor, pushDataLayer }) => {
     const darkOnClick = () => {
         if (!is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
+            pushDataLayer({ event: 'switch theme' });
         }
     };
 
@@ -17,6 +18,7 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
         if (is_dark_mode) {
             const new_dark_mode = toggleDarkMode();
             updateBarrierColor(new_dark_mode);
+            pushDataLayer({ event: 'switch theme' });
         }
     };
     return (
@@ -60,10 +62,11 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor 
     );
 };
 
-export default connect(({ ui, modules }) => (
+export default connect(({ ui, modules, gtm }) => (
     {
         is_dark_mode      : ui.is_dark_mode_on,
         toggleDarkMode    : ui.toggleDarkMode,
         updateBarrierColor: modules.smart_chart.updateBarrierColor,
+        pushDataLayer     : gtm.pushDataLayer,
     }
 ))(ThemeSelectSettings);

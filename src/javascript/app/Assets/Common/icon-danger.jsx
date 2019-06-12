@@ -9,4 +9,4 @@ const IconDanger = ({ className }) => (
     </svg>
 );
 
-export { IconDanger };
+export default IconDanger;

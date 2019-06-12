@@ -5,7 +5,7 @@ const UnderlyingIcon = ({ market }) => (
     <div
         className={classNames(
             'icons-underlying',
-            `icons-underlying__ic-${market.toUpperCase() || 'unknown'}`
+            `icons-underlying__ic-${market ? market.toUpperCase() : 'unknown'}`
         )}
     />
 );

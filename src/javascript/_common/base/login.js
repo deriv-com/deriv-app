@@ -24,12 +24,14 @@ const Login = (() => {
         const marketing_queries  = `&signup_device=${signup_device}${date_first_contact ? `&date_first_contact=${date_first_contact}` : ''}`;
         const default_binary_url = `https://oauth.binary.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}`;
 
-        return ((server_url && /qa/.test(server_url)) ?
-            `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}` :
-            getAppId() === domain_app_ids['deriv.app'] ?
-                default_binary_url
-                : urlForCurrentDomain(default_binary_url)
-        );
+        if (server_url && /qa/.test(server_url)) {
+            return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}`;
+        }
+        if (getAppId === domain_app_ids['deriv.app']) {
+            return default_binary_url;
+        }
+
+        return urlForCurrentDomain(default_binary_url);
     };
 
     // TODO: update this to handle logging into /app/ url

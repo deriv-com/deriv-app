@@ -4,7 +4,7 @@ import React, { Component }  from 'react';
 import { withRouter }        from 'react-router';
 import { CSSTransition }     from 'react-transition-group';
 import { localize }          from '_common/localize';
-import { Icon, IconBack }    from 'Assets/Common';
+import Icon                  from 'Assets/icon.jsx';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import Button                from 'App/Components/Form/button.jsx';
@@ -12,6 +12,7 @@ import ContractAudit         from 'App/Components/Elements/PositionsDrawer/resul
 import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
+import routes                from 'Constants/routes';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
@@ -164,6 +165,15 @@ class ContractDrawer extends Component {
         );
     }
 
+    redirectBackToReports = () => {
+        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
+        if (this.props.history.location.state) {
+            this.props.history.goBack();
+        } else {
+            this.props.history.push(routes.reports);
+        }
+    };
+
     render() {
         if (!this.props.contract_info) return null;
         const body_content = this.getBodyContent();
@@ -171,9 +181,9 @@ class ContractDrawer extends Component {
             <div className={classNames('contract-drawer', {})}>
                 <div
                     className='contract-drawer__heading'
-                    onClick={() => this.props.history.goBack()}
+                    onClick={this.redirectBackToReports}
                 >
-                    <Icon icon={IconBack} />
+                    <Icon icon='IconBack' />
                     <h2><Localize str={this.props.heading || 'Contract'} /></h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>

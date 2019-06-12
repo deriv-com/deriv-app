@@ -14,4 +14,4 @@ IconSell.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconSell };
+export default IconSell;

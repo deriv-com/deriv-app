@@ -177,6 +177,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
+        await BinarySocket.wait('authorize');
         const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
@@ -189,10 +190,10 @@ export default class TradeStore extends BaseStore {
         }
 
         runInAction(async() => {
-            this.active_symbols     = active_symbols;
-            this.smart_chart        = this.root_store.modules.smart_chart;
-            this.currency           = this.root_store.client.currency;
-            this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
+            this.active_symbols   = active_symbols;
+            this.smart_chart      = this.root_store.modules.smart_chart;
+            this.currency         = this.root_store.client.currency;
+            this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
             if (this.shouldSetDefaultSymbol()) {
                 await this.processNewValuesAsync({

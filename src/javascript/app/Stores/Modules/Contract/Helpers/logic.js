@@ -32,8 +32,8 @@ const getExpiryTime = (time) => time || ServerTime.get().unix();
 
 export const getChartType = (start_time, expiry_time) => {
     const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();
-    // use line chart if duration is less than 1 hour
-    return (duration < 1) ? 'mountain' : 'candle';
+    // use line chart if duration is equal or less than 1 hour
+    return (duration <= 1) ? 'mountain' : 'candle';
 };
 
 export const getChartGranularity = (start_time, expiry_time) =>

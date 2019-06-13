@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Icon }     from 'Assets/Common/icon.jsx';
 
-export const IconTickSVG = () => (
+export const IconTick = () => (
     <svg width='16' height='16' viewBox='0 0 16 16'>
         <g fill='none' fillRule='evenodd'>
             <circle cx='8' cy='8' r='8' fill='#4caf50' />
@@ -12,13 +10,9 @@ export const IconTickSVG = () => (
     </svg>
 );
 
-const IconTick = () => (
-    <Icon icon={IconTickSVG} />
-);
-
 IconTick.propTypes = {
     circle_color: PropTypes.string,
     tick_color  : PropTypes.string,
 };
 
-export default observer(IconTick);
+export default IconTick;

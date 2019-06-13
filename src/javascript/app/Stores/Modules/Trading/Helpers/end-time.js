@@ -8,14 +8,14 @@ export const getSelectedTime = (
     selected_time,
     market_open_time,
 ) => {
-    let value = selected_time.isBefore(market_open_time)
-        ? market_open_time.isBefore(server_time)
-            ? server_time
-            : market_open_time
-        : selected_time;
+    if (selected_time.isAfter(market_open_time)) {
+        return getClosestTime(selected_time, 5).format('HH:mm');
+    }
+    if (market_open_time.isAfter(server_time)) {
+        return getClosestTime(market_open_time, 5).format('HH:mm');
+    }
 
-    value = getClosestTime(value, 5);
-    return value.format('HH:mm');
+    return getClosestTime(server_time, 5).format('HH:mm');
 };
 
 export const getBoundaries = (

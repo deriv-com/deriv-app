@@ -12,4 +12,4 @@ IconClose.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconClose };
+export default IconClose;

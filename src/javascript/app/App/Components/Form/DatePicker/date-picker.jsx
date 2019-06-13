@@ -3,11 +3,7 @@ import { observer }         from 'mobx-react';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
-import {
-    Icon,
-    IconArrow,
-    IconCalendar,
-    IconClear }             from 'Assets/Common';
+import Icon                 from 'Assets/icon.jsx';
 import InputField           from 'App/Components/Form/InputField';
 import {
     addDays,
@@ -189,6 +185,7 @@ class DatePicker extends React.Component {
                 data-value={this.state.value}
                 error_messages={error_messages}
                 is_autocomplete_disabled={true}
+                is_hj_whitelisted
                 label={label}
                 is_read_only={is_read_only}
                 name={name}
@@ -225,7 +222,7 @@ class DatePicker extends React.Component {
                     />
                     <label className='datepicker__native-overlay' htmlFor={this.props.name}>
                         {this.state.value || this.props.placeholder}
-                        <Icon icon={IconArrow} className='datepicker__arrowhead' />
+                        <Icon icon='IconArrow' className='datepicker__arrowhead' />
                     </label>
                 </div>
             );
@@ -241,7 +238,7 @@ class DatePicker extends React.Component {
             >
                 { this.renderInputField() }
                 <Icon
-                    icon={IconCalendar}
+                    icon='IconCalendar'
                     className={classNames('datepicker__icon datepicker__icon--calendar', {
                         'datepicker__icon--is-hidden' : this.state.is_clear_btn_visible,
                         'datepicker__icon--with-label': this.props.label,
@@ -250,7 +247,7 @@ class DatePicker extends React.Component {
                 />
                 {this.props.is_clearable &&
                     <Icon
-                        icon={IconClear}
+                        icon='IconClear'
                         className={classNames('datepicker__icon datepicker__icon--clear', {
                             'datepicker__icon--is-hidden': !this.state.is_clear_btn_visible,
                         })}

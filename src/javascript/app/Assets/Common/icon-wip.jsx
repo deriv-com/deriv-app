@@ -45,4 +45,4 @@ IconWip.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconWip };
+export default IconWip;

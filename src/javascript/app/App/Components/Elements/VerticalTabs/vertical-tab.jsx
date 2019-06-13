@@ -11,9 +11,9 @@ class VerticalTab extends React.PureComponent {
             const applicable_routes = props.list.filter(item => (
                 item.path === props.current_path || item.default
             ));
-            const selected = applicable_routes.length > 1 ?
-                applicable_routes[applicable_routes.length - 1]
-                : applicable_routes.length === 1 ? applicable_routes[0] : undefined;
+            const selected = applicable_routes.length > 1
+                ? applicable_routes[applicable_routes.length - 1]
+                : applicable_routes[0];
 
             this.state = {
                 selected,
@@ -59,7 +59,7 @@ class VerticalTab extends React.PureComponent {
 VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
-            icon   : PropTypes.func,
+            icon   : PropTypes.string,
             onClick: PropTypes.func,
             title  : PropTypes.string,
         })
@@ -71,7 +71,7 @@ VerticalTab.propTypes = {
     list         : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
-            icon   : PropTypes.func,
+            icon   : PropTypes.string,
             label  : PropTypes.string,
             path   : PropTypes.string,
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),

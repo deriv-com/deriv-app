@@ -140,4 +140,4 @@ IconAccountsCurrency.propTypes = {
     type     : PropTypes.string,
 };
 
-export { IconAccountsCurrency };
+export default IconAccountsCurrency;

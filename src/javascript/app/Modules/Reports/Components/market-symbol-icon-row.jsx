@@ -17,7 +17,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                     <Popover
                         classNameBubble='market-symbol-icon__tooltip'
                         alignment='top'
-                        message={market_information.underlying}
+                        message={payload.display_name}
                         disable_target_icon
                     >
                         <UnderlyingIcon market={market_information.underlying} />

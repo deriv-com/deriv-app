@@ -90,18 +90,18 @@ const createDirectories = (section = '', idx) => {
     const mkdir = path => fs.existsSync(path) || fs.mkdirSync(path);
     mkdir(config.dist_path);
     mkdir(base_path);
-
-    let language;
-    config.languages.forEach(lang => {
-        language = lang.toLowerCase();
-        mkdir(Path.join(base_path, language));
-        if (common.sections_config[section].has_pjax) {
-            mkdir(Path.join(base_path, `${language}/pjax`));
-        }
-        if (section === 'app') {
-            compileManifests(config.dist_path, language, config.branch);
-        }
-    });
+    console.log('dist_path: ', config.dist_path);
+    console.log('base_path: ', base_path);
+    // TODO: compileManifests(config.dist_path, language, config.branch);
+    // let language;
+    // config.languages.forEach(lang => {
+    //     language = lang.toLowerCase();
+    //     // mkdir(Path.join(base_path, language));
+    //     console.log(Path.join(base_path, language));
+    //     if (section === 'app') {
+    //         compileManifests(config.dist_path, language, config.branch);
+    //     }
+    // });
 };
 
 const fileHash = (path) => (
@@ -196,7 +196,6 @@ const createContextBuilder = async (sections) => {
 
     // prepare css files list for all applicable sections
     const css_files_list = generateCSSFilesList(config, sections, static_hash);
-
     const extra = section => ({
         js_files: [
             Path.join(config.root_url, common.sections_config[section].path, 'js', 'texts', `{PLACEHOLDER_FOR_LANG}.js?${static_hash[section]}`),
@@ -207,6 +206,7 @@ const createContextBuilder = async (sections) => {
         broker_name: 'Deriv',
         static_hash: static_hash[section],
     });
+    console.log('extra =======', js_files_list);
 
     return {
         buildFor: (model) => {
@@ -232,23 +232,23 @@ const getFilePath = (save_path_template, language, is_pjax) => (
  */
 let context_builder;
 async function compile(page) {
+    console.log('compile: ', page);
     const config              = getConfig();
     const languages           = config.languages.filter(lang => !common.isExcluded(page.excludes, lang));
     const CONTENT_PLACEHOLDER = 'CONTENT_PLACEHOLDER'; // used in layout.jsx
     const section_path        = common.sections_config[page.section].path;
-    const save_path_template  = Path.join(config.dist_path, section_path, 'LANG_PLACEHOLDER', `${page.save_as}.html`);
-
+    const save_path_template  = Path.join(config.dist_path, section_path, `${page.save_as}.html`);
+    console.log('languages: ', languages);
     const tasks = languages.map(async lang => {
         const model = {
-            website_name   : 'Deriv',
-            title          : page.title,
-            layout         : page.layout,
-            language       : lang.toUpperCase(),
-            root_url       : config.root_url,
-            section        : page.section,
-            current_path   : page.save_as,
-            current_route  : page.current_route,
-            is_pjax_request: false,
+            website_name : 'Deriv',
+            title        : page.title,
+            layout       : page.layout,
+            language     : lang.toUpperCase(),
+            root_url     : config.root_url,
+            section      : page.section,
+            current_path : page.save_as,
+            current_route: page.current_route,
         };
 
         const context     = context_builder.buildFor(model);
@@ -259,7 +259,6 @@ async function compile(page) {
         if (page.layout) {
             const layout_normal     = `<!DOCTYPE html>\n${renderComponent(context, layout_path)}`;
             context.is_pjax_request = true;
-            const layout_pjax       = renderComponent(context, layout_path);
 
             if (is_translation) return; // Skip saving files when it's a translation update
 
@@ -269,19 +268,12 @@ async function compile(page) {
                 layout_normal.replace(CONTENT_PLACEHOLDER, page_html),
                 'utf8'
             );
-
-            // pjax layout
-            if (common.sections_config[page.section].has_pjax) {
-                await common.writeFile(
-                    getFilePath(save_path_template, language, true),
-                    layout_pjax.replace(CONTENT_PLACEHOLDER, page_html),
-                    'utf8'
-                );
-            }
         } else {
             if (is_translation) return; // Skip saving files when it's a translation update
+            console.log('writeFile: ', save_path_template);
+            // console.log('page_html ', page_html);
             await common.writeFile(
-                getFilePath(save_path_template, language, false),
+                save_path_template,
                 /^\s*<html>/.test(page_html) ? `<!DOCTYPE html>\n${page_html}` : page_html,
                 'utf8'
             );
@@ -305,6 +297,7 @@ const getFilteredPages = () => {
         }
 
         const pages_filtered = getFilteredPages();
+        console.log('\n PAGES FILTERED: ', pages_filtered);
         const pages_count    = pages_filtered.length;
         if (!pages_count) {
             console.error(color.red('No page matched your request.'));
@@ -312,6 +305,7 @@ const getFilteredPages = () => {
         }
 
         const sections = Array.from(new Set(pages_filtered.map(page => page.section)));
+        console.log('createDirectories', sections);
         sections.forEach(createDirectories);
 
         Gettext.getInstance(); // initialize before starting the compilation
@@ -332,7 +326,6 @@ const getFilteredPages = () => {
         }
 
         context_builder = await createContextBuilder(sections);
-
         await Promise.all(
             pages_filtered.map(compile)
         );

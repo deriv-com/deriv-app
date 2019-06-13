@@ -29,35 +29,38 @@ const Footer = ({
     togglePositionsDrawer,
     toggleSettingsDialog,
 }) => (
-    <footer className={classNames('footer', {
-        'footer--is-blurred': (is_fully_blurred || is_route_blurred),
-        'footer--show'      : !is_loading || location.pathname !== routes.trade,
-    })}
-    >
-        <div className='footer__links footer__links--left'>
-            {
-                (is_logged_in && show_positions_toggle) &&
-                <TogglePositions
-                    is_positions_drawer_on={is_positions_drawer_on}
-                    togglePositionsDrawer={togglePositionsDrawer}
-                    positions_count={active_positions.length || 0}
-                />
-            }
-        </div>
-        <NetworkStatus />
-        <ServerTime />
-        <div className='footer__links'>
-            <ToggleSettings
-                is_dark_mode={is_dark_mode}
-                is_language_visible={is_language_dialog_visible}
-                is_settings_visible={is_settings_dialog_on}
-                toggleSettings={toggleSettingsDialog}
-                showFullBlur={showFullBlur}
-                hideFullBlur={hideFullBlur}
-            />
-            <ToggleFullScreen />
-        </div>
-    </footer>
+    <React.Fragment>
+        { (!is_loading || location.pathname !== routes.trade) &&
+            <footer className={classNames('footer', {
+                'footer--is-blurred': (is_fully_blurred || is_route_blurred),
+            })}
+            >
+                <div className='footer__links footer__links--left'>
+                    {
+                        (is_logged_in && show_positions_toggle) &&
+                        <TogglePositions
+                            is_positions_drawer_on={is_positions_drawer_on}
+                            togglePositionsDrawer={togglePositionsDrawer}
+                            positions_count={active_positions.length || 0}
+                        />
+                    }
+                </div>
+                <NetworkStatus />
+                <ServerTime />
+                <div className='footer__links'>
+                    <ToggleSettings
+                        is_dark_mode={is_dark_mode}
+                        is_language_visible={is_language_dialog_visible}
+                        is_settings_visible={is_settings_dialog_on}
+                        toggleSettings={toggleSettingsDialog}
+                        showFullBlur={showFullBlur}
+                        hideFullBlur={hideFullBlur}
+                    />
+                    <ToggleFullScreen />
+                </div>
+            </footer>
+        }
+    </React.Fragment>
 );
 
 Footer.propTypes = {

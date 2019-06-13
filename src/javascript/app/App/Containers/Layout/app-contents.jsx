@@ -1,6 +1,7 @@
 import classNames     from 'classnames';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import Cookies          from 'js-cookie';
 import { withRouter } from 'react-router';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
 import { connect }    from 'Stores/connect';
@@ -23,7 +24,7 @@ const AppContents = ({
     slow_loading_status,
     setPWAPromptEvent,
 }) => {
-    if (is_logged_in) {
+    if (is_logged_in && !Cookies.get('PwaConsent')) {
         window.addEventListener('beforeinstallprompt', e => {
             console.log('Going to show the installation prompt'); // eslint-disable-line no-console
         

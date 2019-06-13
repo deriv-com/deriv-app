@@ -1,12 +1,13 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
+import Cookies          from 'js-cookie';
 import { website_name } from 'App/Constants/app-config';
 import { connect }      from 'Stores/connect';
 import { localize }     from '_common/localize';
 import Button           from '../../Components/Form/button.jsx';
 import Checkbox         from '../../Components/Form/Checkbox';
 
-class InstallPWA extends Component {
+class InstallPWA extends React.Component {
     state = {
         is_ask_checked: false,
     }
@@ -14,6 +15,7 @@ class InstallPWA extends Component {
     showPrompt() {
         const { pwa_prompt_event, removePWAPromptEvent } = this.props;
         if (pwa_prompt_event) {
+            Cookies.set('PwaConsent', 1);
             pwa_prompt_event.prompt();
             pwa_prompt_event.userChoice
                 .then(choice_result => {

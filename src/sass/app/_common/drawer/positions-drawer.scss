@@ -35,10 +35,9 @@ $header-height: 3.6em;
             content: '';
             position: absolute;
             top: 38px;
-            left: -3px;
-            width: calc(100% + 6px);
-            height: calc(100% - 32px);
-            filter: blur(3px);
+            left: 0;
+            width: 100%;
+            height: calc(100% - 38px);
         }
         .positions-drawer-card__wrapper:not(.positions-drawer-card__wrapper--active) {
             filter: blur(3px);
@@ -47,10 +46,6 @@ $header-height: 3.6em;
             &:hover {
                 filter: blur(0);
             }
-        }
-        .btn--alternate {
-            filter: blur(3px);
-            pointer-events: none;
         }
     }
     &--open {

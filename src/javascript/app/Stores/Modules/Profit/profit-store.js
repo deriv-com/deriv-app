@@ -63,6 +63,7 @@ export default class ProfitTableStore extends BaseStore {
             .map(transaction => formatProfitTableTransactions(
                 transaction,
                 this.root_store.client.currency,
+                this.root_store.modules.trade.active_symbols,
             ));
 
         this.data           = [...this.data, ...formatted_transactions];

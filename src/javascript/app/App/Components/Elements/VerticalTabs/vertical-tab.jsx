@@ -60,9 +60,10 @@ class VerticalTab extends React.PureComponent {
 VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
-            icon   : PropTypes.string,
-            onClick: PropTypes.func,
-            title  : PropTypes.string,
+            component: PropTypes.func,
+            icon     : PropTypes.string,
+            onClick  : PropTypes.func,
+            title    : PropTypes.string,
         })
     ),
     action_bar_classname: PropTypes.string,

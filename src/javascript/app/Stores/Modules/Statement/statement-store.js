@@ -67,6 +67,7 @@ export default class StatementStore extends BaseStore {
         const formatted_transactions = response.statement.transactions
             .map(transaction => formatStatementTransaction(transaction,
                 this.root_store.client.currency,
+                this.root_store.modules.trade.active_symbols,
             ));
 
         this.data           = [...this.data, ...formatted_transactions];

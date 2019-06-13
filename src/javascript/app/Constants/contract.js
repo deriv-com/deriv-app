@@ -127,5 +127,5 @@ const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].name : '');
-export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].position : 'top');
+export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type.toUpperCase()] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '');
+export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type.toUpperCase()] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top');

@@ -14,4 +14,4 @@ IconDemo.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconDemo };
+export default IconDemo;

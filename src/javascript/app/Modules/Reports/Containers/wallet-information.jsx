@@ -3,7 +3,6 @@ import Icon         from 'Assets/icon.jsx';
 import Label        from 'App/Components/Elements/Label/label.jsx';
 import Localize     from 'App/Components/Elements/localize.jsx';
 import Money        from 'App/Components/Elements/money.jsx';
-import { IconDemo } from 'Assets/Reports/icon-demo.jsx';
 import { connect }  from 'Stores/connect';
 
 const WalletInformation = ({
@@ -14,7 +13,7 @@ const WalletInformation = ({
 }) => (
     <div className='account-wallet'>
         {!is_virtual && <Icon icon='IconAccountsCurrency' type={currency.toLowerCase()} />}
-        {is_virtual && <IconDemo />}
+        {is_virtual && <Icon icon='IconDemo' />}
         <span className='description'>
             <Localize str={`${is_virtual ? 'Practice' : currency.toUpperCase()} wallet`} />
         </span>

@@ -62,8 +62,8 @@ class Reports extends React.Component {
                 title: localize('Close'),
             },
             {
-                icon : () => <WalletInformation />,
-                title: 'Hey!',
+                component: () => <WalletInformation />,
+                title    : 'Hey!',
             },
         ];
         return (

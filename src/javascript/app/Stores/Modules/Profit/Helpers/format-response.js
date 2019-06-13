@@ -1,6 +1,6 @@
 import { formatMoney }          from '_common/base/currency_base';
 import { toMoment }             from 'Utils/Date';
-import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underyling';
+import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatProfitTableTransactions = (transaction, currency, active_symbols = []) => {

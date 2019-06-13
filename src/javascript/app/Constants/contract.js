@@ -1,5 +1,67 @@
 import { localize } from '_common/localize';
 
+export const getMarketNamesMap = () => ({
+    FRXAUDCAD : localize('Rise'),
+    FRXAUDCHF : localize('Fall'),
+    FRXAUDJPY : localize('Touch'),
+    FRXAUDNZD : localize('No Touch'),
+    FRXAUDPLN : localize('Matches'),
+    FRXAUDUSD : localize('Differs'),
+    FRXBROUSD : localize('Even'),
+    FRXEURAUD : localize('Odd'),
+    FRXEURCAD : localize('Over'),
+    FRXEURCHF : localize('Under'),
+    FRXEURGBP : localize('Under'),
+    FRXEURJPY : localize('Under'),
+    FRXEURNZD : localize('Under'),
+    FRXEURUSD : localize('Under'),
+    FRXGBPAUD : localize('Under'),
+    FRXGBPCAD : localize('Under'),
+    FRXGBPCHF : localize('Under'),
+    FRXGBPJPY : localize('Under'),
+    FRXGBPNOK : localize('Under'),
+    FRXGBPPLN : localize('Under'),
+    FRXGBPUSD : localize('Under'),
+    FRXGBPZD  : localize('Under'),
+    FRXNZDJPY : localize('Under'),
+    FRXNZDUSD : localize('Under'),
+    FRXUSDCAD : localize('Under'),
+    FRXUSDCHF : localize('Under'),
+    FRXUSDJPY : localize('Under'),
+    FRXUSDMSX : localize('Under'),
+    FRXUSDNOK : localize('Under'),
+    FRXUSDPLN : localize('Under'),
+    FRXUSDSEK : localize('Under'),
+    FRXXAGUSD : localize('Under'),
+    FRXXAUUSD : localize('Under'),
+    FRXXPDUSD : localize('Under'),
+    FRXXPTUSD : localize('Under'),
+    OTC_AEX   : localize('Under'),
+    OTC_AS51  : localize('Under'),
+    OTC_DJI   : localize('Under'),
+    OTC_FCHI  : localize('Under'),
+    OTC_FTSE  : localize('Under'),
+    OTC_GDAXI : localize('Under'),
+    OTC_HSI   : localize('Under'),
+    OTC_IBEX35: localize('Under'),
+    OTC_N225  : localize('Under'),
+    OTC_NDX   : localize('Under'),
+    OTC_SPC   : localize('Under'),
+    OTC_SSMI  : localize('Under'),
+    OTC_SX5E  : localize('Under'),
+    R_10      : localize('Under'),
+    R_25      : localize('Under'),
+    R_50      : localize('Under'),
+    R_75      : localize('Under'),
+    R_100     : localize('Under'),
+    RDBEAR    : localize('Under'),
+    RDBULL    : localize('Under'),
+    WLDAUD    : localize('Under'),
+    WLDEUR    : localize('Under'),
+    WLDGBP    : localize('Under'),
+    WLDUSD    : localize('Under'),
+});
+
 export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
         name    : localize('Ends Outside'),
@@ -127,5 +189,5 @@ const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type.toUpperCase()] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '');
-export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type.toUpperCase()] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top');
+export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].name : '');
+export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].position : 'top');

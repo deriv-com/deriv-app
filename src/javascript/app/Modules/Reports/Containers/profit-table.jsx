@@ -14,7 +14,7 @@ import EmptyTradeHistoryMessage          from '../Components/empty-trade-history
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                   from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
-import { getMarketInformation }          from '../Helpers/market-underyling';
+import { getMarketInformation }          from '../Helpers/market-underlying';
 
 class ProfitTable extends React.Component {
     componentDidMount() {

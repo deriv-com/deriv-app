@@ -4,7 +4,7 @@ import { UnderlyingIcon }         from 'App/Components/Elements/underlying-icon.
 import { Popover }                from 'App/Components/Elements/Popover';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants';
-import { getMarketInformation }   from '../Helpers/market-underyling';
+import { getMarketInformation }   from '../Helpers/market-underlying';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';

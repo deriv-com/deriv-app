@@ -1,3 +1,5 @@
+import { getMarketNamesMap } from 'Constants';
+
 export const getMarketInformation = (payload) => {
     const market_info = {
         category  : '',
@@ -5,7 +7,7 @@ export const getMarketInformation = (payload) => {
     };
 
     const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_'); // Used to get market name from shortcode
-    const extracted = pattern.exec(typeof payload === 'string' ? payload : payload.shortcode);
+    const extracted = pattern.exec(payload.shortcode);
     if (extracted !== null) {
         market_info.category   = extracted[1].toLowerCase();
         market_info.underlying = extracted[2];
@@ -13,3 +15,5 @@ export const getMarketInformation = (payload) => {
 
     return market_info;
 };
+
+export const getMarketName = (underlying) => underlying ? getMarketNamesMap[underlying.toUpperCase()] : null;

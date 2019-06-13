@@ -1,4 +1,4 @@
-import { getMarketNamesMap } from 'Constants';
+import { getMarketNamesMap, getContractConfig } from 'Constants';
 
 export const getMarketInformation = (payload) => {
     const market_info = {
@@ -16,4 +16,6 @@ export const getMarketInformation = (payload) => {
     return market_info;
 };
 
-export const getMarketName = (underlying) => underlying ? getMarketNamesMap[underlying.toUpperCase()] : null;
+export const getMarketName = (underlying) => underlying ? getMarketNamesMap()[underlying.toUpperCase()] : null;
+
+export const getTradeTypeName = (category) => category ? getContractConfig()[category.toUpperCase()].name : null;

@@ -3,8 +3,9 @@ import React                      from 'react';
 import { UnderlyingIcon }         from 'App/Components/Elements/underlying-icon.jsx';
 import { Popover }                from 'App/Components/Elements/Popover';
 import Icon                       from 'Assets/icon.jsx';
-import { getContractTypeDisplay } from 'Constants';
-import { getMarketInformation }   from '../Helpers/market-underlying';
+import {  getMarketName,
+    getTradeTypeName,
+    getMarketInformation }        from '../Helpers/market-underlying';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
@@ -15,9 +16,10 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
                     <Popover
-                        classNameBubble='market-symbol-icon__tooltip'
+                        classNameTarget='market-symbol-icon__popover'
+                        classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
-                        message={payload.display_name}
+                        message={getMarketName(market_information.underlying)}
                         disable_target_icon
                     >
                         <UnderlyingIcon market={market_information.underlying} />
@@ -27,9 +29,10 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
 
                 <div className='market-symbol-icon-category'>
                     <Popover
-                        classNameBubble='market-symbol-icon__tooltip'
+                        classNameTarget='category-type-icon__popover'
+                        classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={getContractTypeDisplay(market_information.category)}
+                        message={getTradeTypeName(market_information.category)}
                         disable_target_icon
                     >
                         <Icon icon='IconTradeType' type={market_information.category} />

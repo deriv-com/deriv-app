@@ -462,7 +462,7 @@
             }
         }
     }
-    &--disabled {
+    &--disabled, &[disabled] {
         cursor: default;
 
         @include themify($themes) {

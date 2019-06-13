@@ -38,6 +38,8 @@ export const getBarrierValue = (contract_info) => {
     return addCommaToNumber(contract_info.barrier);
 };
 
+export const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));
+
 const digitTypeMap = (contract_info) => ({
     DIGITDIFF : localize('Not [_1]', contract_info.barrier),
     DIGITEVEN : localize('Even'),
@@ -46,5 +48,3 @@ const digitTypeMap = (contract_info) => ({
     DIGITOVER : localize('Over [_1]', contract_info.barrier),
     DIGITUNDER: localize('Under [_1]', contract_info.barrier),
 });
-
-const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));

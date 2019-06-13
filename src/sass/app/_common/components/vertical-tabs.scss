@@ -23,6 +23,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         width: 100%;
         display: flex;
         flex-flow: row-reverse nowrap;
+        justify-content: space-between;
         padding: 16px;
 
         &--icon {

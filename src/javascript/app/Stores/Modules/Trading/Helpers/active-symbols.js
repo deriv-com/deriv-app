@@ -31,6 +31,11 @@ export const isMarketClosed = (active_symbols = [], symbol) => {
         false;
 };
 
+export const getSymbolDisplayName = (active_symbols = [], symbol) => (
+    (active_symbols.find(symbol_info => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || { display_name: '' })
+        .display_name
+);
+
 export const pickDefaultSymbol = (active_symbols = []) => {
     if (!active_symbols.length) return '';
     return getFavoriteOpenSymbol(active_symbols) || getFirstOpenSymbol(active_symbols);

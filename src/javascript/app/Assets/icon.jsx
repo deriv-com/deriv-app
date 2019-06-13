@@ -36,7 +36,7 @@ class Icon extends React.PureComponent {
             IconWarning           : React.lazy(() => import('./Common/icon-warning.jsx')),
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')),
-            
+
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
             IconEndTime      : React.lazy(() => import('./Contract/icon-end-time.jsx')),
@@ -61,6 +61,7 @@ class Icon extends React.PureComponent {
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
 
             // Reports
+            IconDemo         : React.lazy(() => import('./Reports/icon-demo.jsx')),
             IconOpenPositions: React.lazy(() => import('./Reports/icon-open-positions.jsx')),
             IconProfitTable  : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
             IconStatement    : React.lazy(() => import('./Reports/icon-statement.jsx')),
@@ -105,7 +106,7 @@ class Icon extends React.PureComponent {
 
         const IconLazy = this.icons[this.props.icon];
         if (!IconLazy) return <div />;
-        
+
         return (
             <React.Suspense fallback={<div />}>
                 <IconLazy {...options} />

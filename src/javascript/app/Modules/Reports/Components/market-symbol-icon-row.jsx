@@ -1,8 +1,10 @@
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { UnderlyingIcon }       from 'App/Components/Elements/underlying-icon.jsx';
-import Icon                     from 'Assets/icon.jsx';
-import { getMarketInformation } from '../Helpers/market-underyling';
+import PropTypes                  from 'prop-types';
+import React                      from 'react';
+import { UnderlyingIcon }         from 'App/Components/Elements/underlying-icon.jsx';
+import { Popover }                from 'App/Components/Elements/Popover';
+import Icon                       from 'Assets/icon.jsx';
+import { getContractTypeDisplay } from 'Constants';
+import { getMarketInformation }   from '../Helpers/market-underyling';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
@@ -12,12 +14,26 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
         return (
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
-                    <UnderlyingIcon market={market_information.underlying} />
+                    <Popover
+                        classNameBubble='market-symbol-icon__tooltip'
+                        alignment='top'
+                        message={payload.display_name}
+                        disable_target_icon
+                    >
+                        <UnderlyingIcon market={market_information.underlying} />
+                    </Popover>
                     {show_description && payload.display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
-                    <Icon icon='IconTradeType' type={market_information.category} />
+                    <Popover
+                        classNameBubble='market-symbol-icon__tooltip'
+                        alignment='top'
+                        message={getContractTypeDisplay(market_information.category)}
+                        disable_target_icon
+                    >
+                        <Icon icon='IconTradeType' type={market_information.category} />
+                    </Popover>
                     {show_description && market_information.category}
                 </div>
             </div>

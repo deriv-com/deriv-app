@@ -6,6 +6,7 @@ import { localize }                         from '_common/localize';
 import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
 import Localize                             from 'App/Components/Elements/localize.jsx';
+import CompositeCalendar                    from 'App/Components/Form/CompositeCalendar/date-picker.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
 import { website_name }                     from 'App/Constants/app-config';
 import { getSupportedContracts }            from 'Constants';
@@ -66,12 +67,13 @@ class Statement extends React.Component {
         if (error) return <p>{error}</p>;
 
         const columns = getStatementTableColumnsTemplate(currency);
-
+        const filter_component = <CompositeCalendar />;
         return (
             <React.Fragment>
                 <ReportsMeta
                     i18n_heading={localize('Statement')}
                     i18n_message={localize('View all transactions on your account, including trades, deposits, and withdrawals.')}
+                    filter_component={filter_component}
                 />
                 { (is_loading && data.length === 0) || is_empty ?
                     <PlaceholderComponent

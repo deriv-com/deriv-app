@@ -8,14 +8,23 @@ const available_modes = [
     'warn',
     'danger',
     'info',
+    'success-invert',
+    'warn-invert',
 ];
 
-const Label = ({ mode, children }) => {
+const available_sizes = [
+    'regular',
+    'large',
+];
+
+const Label = ({ mode, children, size = 'regular' }) => {
     const type = available_modes.some(m => m === mode) ? mode : 'default';
+    const scale = available_sizes.some(s => s === size) ? size : 'regular';
 
     return (
         <span className={classNames('label', {
-            [`label--${type}`]: type,
+            [`label--${scale}`]: scale,
+            [`label--${type}`] : type,
         })}
         >{children}
         </span>

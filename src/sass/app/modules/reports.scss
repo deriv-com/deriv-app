@@ -28,6 +28,12 @@ $side-padding: 1.2em;
             }
         }
     }
+    &__inset_header {
+        @include themify($themes) {
+            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
+        }
+        margin-bottom: 24px;
+    }
     .unknown-icon {
         margin-left: 8px;
         fill: $COLOR_DARK_BLUE_5;
@@ -209,6 +215,45 @@ $side-padding: 1.2em;
         width: 100%;
         max-height: 100%;
     }
+    &__indicative {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__profit-loss {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--movement {
+            width: 16px;
+            height: 16px;
+
+            &-complete, &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+        &--negative {
+            color: $COLOR_RED;
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: $COLOR_GREEN_2;
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
     /*
         TABLE STYLES
     */
@@ -217,10 +262,10 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(7, 1fr);
         width: 100%;
     }
-    .buy_price, .payout, .indicative {
+    .buy_price, .payout, .indicative, .profit {
         justify-content: flex-end;
     }
     .progress-slider {

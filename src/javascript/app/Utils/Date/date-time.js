@@ -26,7 +26,11 @@ export const toMoment = value => {
     if (value instanceof moment && value.isValid() && value.isUTC()) return value; // returns if already a moment object
     if (typeof value === 'number') return epochToMoment(value); // returns epochToMoment() if not a date
 
-    return (/invalid/i.test(moment(value))) ? moment.utc(value, 'DD MMM YYYY') : moment.utc(value);
+    if (/invalid/i.test(moment(value))) {
+        const today_moment = moment();
+        return value > today_moment.utc().daysInMonth() ? moment.utc(today_moment.add(value, 'd'), 'DD MMM YYYY') : moment.utc(value, 'DD MMM YYYY'); // returns target date
+    }
+    return moment.utc(value);
 };
 
 /**

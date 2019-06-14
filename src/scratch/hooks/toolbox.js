@@ -1,4 +1,5 @@
 /* eslint-disable func-names, no-underscore-dangle */
+
 /**
  * Fill the toolbox with categories and blocks.
  * @param {!Node} newTree DOM tree of blocks.
@@ -23,24 +24,8 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
 
     allContents = allContents.concat(category.getContents());
 
-    // TEMP: For testing only, generate labels for each block for QA
-    let newAllContents = [];
-    if (Array.isArray(allContents) && allContents.length > 1) {
-        allContents.forEach(node => {
-            if (node.nodeName === 'block') {
-                const type = node.getAttribute('type');
-                const labelString = `<xml><label text="[type: ${type}]" web-class="description"></label></xml>`;
-
-                const labelXml = Blockly.Xml.textToDom(labelString);
-                newAllContents.push(...[labelXml.firstChild, node]);
-            }
-        });
-    } else {
-        newAllContents = allContents;
-    }
-
     this.flyout_.autoClose = true;
-    this.flyout_.show(newAllContents);
+    this.flyout_.show(allContents);
 };
 
 /**
@@ -73,7 +58,6 @@ Blockly.Toolbox.prototype.setSelectedItem = function(item) {
  * which does the actual refreshing.
  */
 Blockly.Toolbox.prototype.refreshSelection = function() {
-    // this.showAll_();
 };
 
 /**

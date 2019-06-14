@@ -1,3 +1,5 @@
+import './blocks';
+import './hooks';
 import {
     isMainBlock,
     save,
@@ -25,16 +27,18 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         const toolbox_xml = await fetch('dist/toolbox.xml').then(response => response.text());
         const main_xml = await fetch('dist/main.xml').then(response => response.text());
         const workspace = Blockly.inject(scratch_div_name, {
-            media   : 'dist/media/',
-            toolbox : toolbox_xml,
+            media  : 'dist/media/',
+            toolbox: toolbox_xml,
+            grid   : {
+                spacing: 40,
+                length : 11,
+                colour : '#ebebeb',
+            },
             trashcan: true,
             zoom    : {
                 wheel: true,
             },
         });
-
-        // TODO: Add GTM workspace listener for `Block Event`
-        // workspace.addChangeListener(() => {});
         
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
 
@@ -66,6 +70,7 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         onWorkspaceResize();
     } catch (error) {
         // TODO: Handle error.
+        throw error;
     }
 };
 

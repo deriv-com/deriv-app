@@ -10,6 +10,7 @@ import {
     Views }           from 'smartcharts-beta';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import { Popover }    from 'App/Components/Elements/Popover';
 
 const ControlWidgets = ({
     updateChartType,
@@ -18,7 +19,10 @@ const ControlWidgets = ({
     <React.Fragment>
         <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
-        <StudyLegend searchInputClassName='data-hj-whitelist' />
+        <StudyLegend searchInputClassName='data-hj-whitelist'
+                     ItemWrapper={Popover}
+                     itemWrapperProps={{ message: 'sdsddsds', alignment: 'right' }}
+        />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
         <Views searchInputClassName='data-hj-whitelist' />

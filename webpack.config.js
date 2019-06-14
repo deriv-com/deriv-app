@@ -1,13 +1,12 @@
-const CopyWebpackPlugin    = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const path                 = require('path');
-const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const CopyWebpackPlugin         = require('copy-webpack-plugin');
+const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
+const path                      = require('path');
+const StyleLintPlugin           = require('stylelint-webpack-plugin');
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 module.exports = {
     entry : [
-        '@babel/polyfill', 
-        path.join(__dirname, './src/scratch/hooks'),
-        path.join(__dirname, './src/app.js'),
+        path.join(__dirname, 'src', 'app.js') 
     ],
     output: {
         path    : path.resolve(__dirname, 'dist'),
@@ -56,12 +55,17 @@ module.exports = {
         new StyleLintPlugin( { fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml' },
+            { from: './src/scratch/images', to: 'media' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
-            { from: './node_modules/scratch-blocks/blockly_compressed_vertical.js', to: 'scratch-compressed.js' },
-            { from: './node_modules/scratch-blocks/msg/messages.js', to: 'scratch-messages.js' },
-        ])
-    ],
-    externals: {
-        Blockly: 'Blockly',
-    }
+        ]),
+        new MergeIntoSingleFilePlugin({
+            files: {
+                'scratch.js': [
+                    './node_modules/scratch-blocks/blockly_compressed_vertical.js',
+                    './node_modules/scratch-blocks/msg/messages.js',
+                    './node_modules/blockly/generators/javascript.js',
+                ]
+            }
+        }),
+    ]
 };

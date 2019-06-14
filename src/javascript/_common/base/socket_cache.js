@@ -30,21 +30,29 @@ const SocketCache = (() => {
     //     function: return value of the function
     const config = {
         payout_currencies     : { expire: 120 },
-        proposal_open_contract: { expire: 10, map_to: ['contract_id'] },
-        // statement             : { expire: 1, map_to: ['limit', 'offset'] },
-        active_symbols        : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
-        contracts_for         : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
-        exchange_rates        : { expire: 60, map_to: ['base_currency'] },
-        // profit_table          : { expire: 1, map_to: ['date_from', 'limit', 'offset'] },
-        history               : { expire: 10, map_to: ['ticks_history', 'start', 'end', 'style'] },
+        proposal_open_contract: { expire: 10,  map_to: ['contract_id'] },
+        active_symbols        : { expire: 10,  map_to: ['product_type', 'landing_company', getLanguage] },
+        contracts_for         : { expire: 10,  map_to: ['contracts_for', 'product_type', 'currency'] },
+        exchange_rates        : { expire: 60,  map_to: ['base_currency'] },
+        ticks_history         : { expire: 10,  map_to: ['ticks_history', 'granularity', 'start', 'end', 'style'] },
+        trading_times         : { expire: 120, map_to: ['trading_times'] },
+        // TODO: Enable statement and profit table caching once we have UI design for handling
+        // transitions between cached table and newly added data to table
+        // statement             : { expire: 1,   map_to: ['limit', 'offset'] },
+        // profit_table          : { expire: 1,   map_to: ['date_from', 'limit', 'offset'] },
     };
 
     const storage_key = 'ws_cache';
 
     let data_obj = {};
 
+    const msg_type_mapping = {
+        history: 'ticks_history',
+        candles: 'ticks_history',
+    };
+
     const set = (response) => {
-        const msg_type = response.msg_type;
+        const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
         if (!config[msg_type]) return;
 
@@ -54,7 +62,7 @@ const SocketCache = (() => {
         const cached_message  = cached_response[msg_type];
         const new_message     = response[msg_type];
 
-        const has_error_or_missing = response.error || !(msg_type in response);
+        const has_error_or_missing = response.error; // || !(msg_type in response);
         const has_new_value        = cached_message && isEmptyValue(cached_message) && !isEmptyValue(new_message);
         const has_old_cache        = cached_message && isEmptyValue(new_message) && !isEmptyValue(cached_message);
         const has_valid_cache      = !isEmptyValue(cached_response) && !cached_response.error;

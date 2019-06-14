@@ -52,7 +52,6 @@
 }
 
 .blocklyToolboxDiv {
-    background-color: $brand-gray !important;
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 0.06em solid;
@@ -84,6 +83,7 @@
 }
 
 .blocklySvg {
+    background-color: $white !important;
     position: absolute;
 }
 

@@ -30,7 +30,7 @@ class Trade extends React.Component {
     }
 
     render() {
-        const contract_id                  = getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
+        const contract_id                  = +getPropertyValue(this.props.purchase_info, ['buy', 'contract_id']);
         const form_wrapper_class           = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const should_show_bottom_widgets   = this.props.is_digit_contract && this.props.is_contract_mode;
         const should_show_last_digit_stats = isDigitTradeType(this.props.contract_type) && !this.props.is_contract_mode;

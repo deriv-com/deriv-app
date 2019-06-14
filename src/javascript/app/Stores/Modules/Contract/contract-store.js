@@ -116,8 +116,7 @@ export default class ContractStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        // TODO: remove .toString() when API is ready
-        const proposal_open_contract_request = [contract_id.toString(), cb, false];
+        const proposal_open_contract_request = [contract_id, cb, false];
 
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {

@@ -6,7 +6,7 @@ import { localize }                         from '_common/localize';
 import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
 import Localize                             from 'App/Components/Elements/localize.jsx';
-import CompositeCalendar                    from 'App/Components/Form/CompositeCalendar/date-picker.jsx';
+import CompositeCalendar                    from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
 import { website_name }                     from 'App/Constants/app-config';
 import { getSupportedContracts }            from 'Constants';
@@ -24,6 +24,14 @@ class Statement extends React.Component {
 
     componentWillUnmount() {
         this.props.onUnmount();
+    }
+
+    setToDate (e) { //eslint-disable-line
+        console.log('Setting to date to %o', e); // eslint-disable-line no-console
+    }
+
+    setFromDate (e) { //eslint-disable-line
+        console.log('Setting from date to %o', e); // eslint-disable-line no-console
     }
 
     getRowAction = (row_obj) => {
@@ -67,7 +75,11 @@ class Statement extends React.Component {
         if (error) return <p>{error}</p>;
 
         const columns = getStatementTableColumnsTemplate(currency);
-        const filter_component = <CompositeCalendar />;
+        const filter_component = (
+            <React.Fragment>
+                <CompositeCalendar onChange={this.setToDate.bind(this)} from={null} to={null} />
+            </React.Fragment>
+        );
         return (
             <React.Fragment>
                 <ReportsMeta

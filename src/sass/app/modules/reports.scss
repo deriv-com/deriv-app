@@ -27,6 +27,10 @@ $side-padding: 1.2em;
                 }
             }
         }
+        &-filter {
+            position: relative;
+            display: flex;
+        }
     }
     &__inset_header {
         @include themify($themes) {

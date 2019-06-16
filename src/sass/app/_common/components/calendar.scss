@@ -86,6 +86,9 @@
         &:hover:not(.calendar__nav--disabled) {
             cursor: pointer;
         }
+        &--is-hidden {
+            display: none;
+        }
         &--prev-year {
             left: 7%;
         }
@@ -176,6 +179,10 @@
                 color: themed('disabled_color');
             }
             transition: none;
+        }
+        &--is-hidden {
+            opacity: 0;
+            cursor: initial;
         }
         &--today {
             font-weight: 400;

@@ -1,1 +1,1 @@
-export default from './date-picker.jsx';
+export default from './composite-calendar.jsx';

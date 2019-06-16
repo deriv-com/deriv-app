@@ -172,6 +172,13 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
+    shouldSetDefaultSymbol = () => {
+        if (!this.symbol) return true;
+        return !this.active_symbols.active_symbols
+            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    }
+
+    @action.bound
     async prepareTradeStore() {
         const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
@@ -185,13 +192,12 @@ export default class TradeStore extends BaseStore {
         }
 
         runInAction(async() => {
+            this.active_symbols     = active_symbols;
             this.smart_chart        = this.root_store.modules.smart_chart;
             this.currency           = this.root_store.client.currency;
             this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            const is_valid_symbol = active_symbols.active_symbols.find((symbols) => symbols.symbol === this.symbol);
-
-            if (!this.symbol || !is_valid_symbol) {
+            if (this.shouldSetDefaultSymbol()) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });

@@ -262,6 +262,7 @@
             cursor: default;
             height: 0;
             top: 0;
+            left: 0;
             justify-content: center;
             width: 100%;
 
@@ -269,10 +270,6 @@
                 margin-top: 0.1em;
                 display: inherit;
             }
-        }
-        &-date {
-            width: 100%;
-            text-align: center;
         }
     }
 }

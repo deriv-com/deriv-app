@@ -34,7 +34,15 @@ const TableRow = ({
 
     return (
         to ?
-            <NavLink className={row_class_name} to={to}>
+            <NavLink
+                className={row_class_name}
+                to={{
+                    pathname: to,
+                    state   : {
+                        from_table_row: true,
+                    },
+                }}
+            >
                 {cells}
             </NavLink>
             :

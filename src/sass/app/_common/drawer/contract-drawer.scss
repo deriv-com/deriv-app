@@ -26,6 +26,9 @@ $header-height: 4em;
     }
     h2 {
         margin-left: 8px;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
     }
     &--contract-mode {
         &:before {
@@ -45,20 +48,18 @@ $header-height: 4em;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        margin-bottom: 1em;
         padding: 0.5em;
         border-radius: 4px;
         cursor: pointer;
-
-        @include typeface(--title-left-bold-black);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
 
         &:hover {
             @include themify($themes) {
                 background: themed('tab_hover_color');
             }
+        }
+        @include typeface(--title-left-bold-black);
+        @include themify($themes) {
+            color: themed('text_primary_color');
         }
     }
     &__icon {
@@ -76,9 +77,10 @@ $header-height: 4em;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
 
-    .progress-slider {
-        &--completed {
-            margin: 4px 0;
+    .progress-slider, .progress-slider--completed {
+        margin: 0;
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
         }
     }
     &:before {
@@ -115,21 +117,36 @@ $header-height: 4em;
             }
         }
     }
-    .purchase-price {
-        font-weight: bold;
-        font-size: 1em;
-
+    .purchase-price, .potential-payout {
         &-container {
-            margin-bottom: 0.5em;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        &__label {
+            font-size: 1rem;
+            align-self: flex-start;
+            text-transform: none;
+            margin-bottom: 4px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &__value {
+            font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
         }
     }
     .potential-payout {
         &-container {
-            margin-top: 0.7em;
+            padding-left: 4px;
         }
-        &-price {
-            font-weight: bold;
+        &-price__value {
             font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
         }
     }
     &__separator {
@@ -144,6 +161,7 @@ $header-height: 4em;
         align-items: center;
         font-weight: bold;
         font-size: 1.2em;
+        max-width: 120px;
     }
     &__type {
         font-size: 1.2em;
@@ -176,31 +194,35 @@ $header-height: 4em;
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 8px;
+        padding: 8px 12px 0;
         @include themify($themes) {
-            background-color: themed('background_container_color');
             color: themed('text_color');
         }
     }
     &__footer {
-        @include typeface(--small-center-normal-black);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-        padding: 8px 8px 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         margin-bottom: 0.5em;
+        padding: 0 4px;
+
+        &-wrapper {
+            @include typeface(--small-center-normal-black);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            padding: 8px 8px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
     }
     &__sell-button {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
-        margin-top: 0.5em;
+        margin: 8px 0 -4px;
         transition: transform 0.25s ease, opacity 0.25s linear;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
 
         &--enter-done {
             opacity: 1;
@@ -214,7 +236,7 @@ $header-height: 4em;
             height: 32px;
         }
     }
-    .result-details {
+    .contract-audit {
         &__wrapper {
             padding: 2px 0;
             width: 100%;

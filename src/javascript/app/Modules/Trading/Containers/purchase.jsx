@@ -30,7 +30,8 @@ const Purchase = ({
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const info              = proposal_info[type] || {};
-        const is_disabled       = !is_purchase_enabled || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
+        const is_disabled       = is_contract_mode || !is_purchase_enabled
+            || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
         const is_proposal_error = info.has_error && !info.has_error_details;
 
         const purchase_fieldset = (

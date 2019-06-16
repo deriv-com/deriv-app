@@ -61,7 +61,7 @@ describe('Money', () => {
     });
     it('should return correct text based on props when number is < 0 and has_sign is false', () => {
         const wrapper = shallow(<Money has_sign={false} amount={-10.50} />);
-        expect(wrapper.text()).to.be.equal('-10.50');
+        expect(wrapper.text()).to.be.equal('10.50');
     });
     it('should return correct text based on props when number is 0 and has_sign is false', () => {
         const wrapper = shallow(<Money has_sign={false} amount={0} />);
@@ -73,7 +73,7 @@ describe('Money', () => {
     });
     it('should return correct text based on props when number is < 0 and has_sign and is_formatted are false', () => {
         const wrapper = shallow(<Money has_sign={false} is_formatted={false} amount={-10} />);
-        expect(wrapper.text()).to.be.equal('-10');
+        expect(wrapper.text()).to.be.equal('10');
     });
     it('should return correct text based on props when number is 0 and has_sign and is_formatted are false', () => {
         const wrapper = shallow(<Money has_sign={false} is_formatted={false} amount={0} />);

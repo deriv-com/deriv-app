@@ -1,3 +1,4 @@
+import { getUnderlyingPipSize } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,
@@ -5,12 +6,12 @@ import {
     createMarkerSpotExit,
     createMarkerStartTime,
     createMarkerSpotMiddle,
-    getSpotCount }             from './chart-marker-helpers';
+    getSpotCount }              from './chart-marker-helpers';
 import {
     getChartType,
-    getEndTime }               from './logic';
-import { unique }              from '../../../../../_common/utility';
-import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
+    getEndTime }                from './logic';
+import { unique }               from '../../../../../_common/utility';
+import { MARKER_TYPES_CONFIG }  from '../../SmartChart/Constants/markers';
 
 export const createChartMarkers = (SmartChartStore, contract_info) => {
     if (contract_info) {
@@ -36,13 +37,14 @@ const marker_lines = {
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
 };
 
-const addMarker = (marker_obj, SmartChartStore, contract_info) => {
+const addMarker = async (marker_obj, SmartChartStore, contract_info) => {
+    const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
     Object.keys(marker_obj).forEach(createMarker);
 
     function createMarker(marker_type) {
         if (marker_type in SmartChartStore.markers) return;
 
-        const marker_config = marker_obj[marker_type](contract_info);
+        const marker_config = marker_obj[marker_type](contract_info, decimal_places);
         if (marker_config) {
             SmartChartStore.createMarker(marker_config);
         }
@@ -61,8 +63,9 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const addTickMarker = (SmartChartStore, contract_info) => {
+const addTickMarker = async (SmartChartStore, contract_info) => {
     const tick_stream = unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
+    const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
 
     tick_stream.forEach((tick, idx) => {
         const is_entry_spot  = idx === 0 && +tick.epoch !== contract_info.exit_tick_time;
@@ -71,11 +74,13 @@ const addTickMarker = (SmartChartStore, contract_info) => {
             getSpotCount(contract_info, idx) === contract_info.tick_count;
 
         let marker_config;
-        if (is_entry_spot) marker_config = createMarkerSpotEntry(contract_info);
-        if (is_middle_spot) marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
-        if (is_exit_spot) {
+        if (is_entry_spot) {
+            marker_config = createMarkerSpotEntry(contract_info, decimal_places);
+        } else if (is_middle_spot) {
+            marker_config = createMarkerSpotMiddle(contract_info, tick, decimal_places, idx);
+        } else if (is_exit_spot) {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
-            marker_config = createMarkerSpotExit(contract_info, tick, idx);
+            marker_config = createMarkerSpotExit(contract_info, tick, decimal_places, idx);
         }
 
         if (marker_config) {

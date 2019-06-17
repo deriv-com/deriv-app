@@ -69,7 +69,7 @@ export default class PortfolioStore extends BaseStore {
             const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
             if (!new_pos) return;
             this.pushNewPosition(new_pos);
-            WS.subscribeProposalOpenContract(contract_id.toString(), this.proposalOpenContractHandler, false);
+            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler, false);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
@@ -80,7 +80,7 @@ export default class PortfolioStore extends BaseStore {
             if (i === -1) return;
 
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id.toString(), this.populateResultDetails, false);
+            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
         }
     }
 
@@ -163,9 +163,9 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         this.positions[i].contract_info    = contract_response;
-        this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].duration         = getDurationTime(contract_response);
         this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
+        this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
         this.positions[i].result           = getDisplayStatus(contract_response);
         this.positions[i].profit_loss      = +contract_response.profit;

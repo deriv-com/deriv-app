@@ -20,11 +20,8 @@ const ContractLink = ({
 ContractLink.propTypes = {
     children   : PropTypes.node,
     className  : PropTypes.string,
-    contract_id: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    onMount: PropTypes.func,
+    contract_id: PropTypes.number,
+    onMount    : PropTypes.func,
 };
 
 export default connect(

@@ -53,6 +53,7 @@ const SocketCache = (() => {
 
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
+        const path = /[^/]*$/.exec(window.location.pathname)[0];
 
         // check if response has subscription, since only want to cache non-streamed responses
         if (response.subscription) return;

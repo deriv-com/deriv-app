@@ -367,7 +367,6 @@ export default class ContractStore extends BaseStore {
     forgetProposalOpenContract = (contract_id, cb) => {
         WS.forget('proposal_open_contract', cb, { contract_id });
     }
-    /* eslint-enable */
 
     @action.bound
     removeErrorMessage() {

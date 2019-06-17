@@ -10,8 +10,8 @@ import {
     Views }           from 'smartcharts-beta';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { localize }   from '_common/localize';
 import { Popover }    from 'App/Components/Elements/Popover';
+import { localize }   from '_common/localize';
 
 const ControlWidgets = ({
     hasReachedLimitListener,
@@ -23,7 +23,7 @@ const ControlWidgets = ({
         <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
         <StudyLegend
-            searchInputClassName='data-hj-whitelist'
+            hasReachedLimitListener={hasReachedLimitListener}
             ItemWrapper={Popover}
             itemWrapperProps={{
                 message        : localize('You can\'t have more than 5 open Indicators.'),
@@ -31,7 +31,7 @@ const ControlWidgets = ({
                 classNameTarget: 'popover__study',
                 is_hidden      : !is_study_limit_error_visible,
             }}
-            hasReachedLimitListener={hasReachedLimitListener}
+            searchInputClassName='data-hj-whitelist'
         />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />

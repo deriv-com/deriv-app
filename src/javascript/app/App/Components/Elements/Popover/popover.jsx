@@ -37,9 +37,9 @@ class Popover extends React.PureComponent {
             classNameTargetIcon,
             has_error,
             icon,
+            is_hidden,
             margin,
             message,
-            is_hidden,
         } = this.props;
 
         const icon_class_name = classNames(classNameTargetIcon, icon);

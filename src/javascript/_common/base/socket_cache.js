@@ -53,10 +53,10 @@ const SocketCache = (() => {
 
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
-        const path = /[^/]*$/.exec(window.location.pathname)[0];
 
         // check if response if for ticks_history on trade page, we don't want to cache ongoing trade chart
         // since the start_time in the request is constantly changing
+        const path = /[^/]*$/.exec(window.location.pathname)[0];
         if (msg_type_mapping[response.msg_type] && (path === 'trade')) return;
         if (!config[msg_type]) return;
 
@@ -73,7 +73,7 @@ const SocketCache = (() => {
 
         if ((has_error_or_missing || has_new_value || has_old_cache) && has_valid_cache) {
             clear();
-            window.location.reload();
+            // window.location.reload();
             return;
         }
 

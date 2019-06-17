@@ -280,7 +280,7 @@ export default class TradeStore extends BaseStore {
                         buy_price: response.buy.buy_price,
                     };
                     // toggle smartcharts to contract mode
-                    const contract_id = getPropertyValue(response, ['buy', 'contract_id']);
+                    const contract_id = +getPropertyValue(response, ['buy', 'contract_id']);
                     if (contract_id) {
                         this.root_store.modules.contract.onMount(contract_id);
                         this.root_store.ui.openPositionsDrawer();

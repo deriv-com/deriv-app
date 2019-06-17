@@ -1,8 +1,11 @@
 import moment       from 'moment';
 import { localize } from '_common/localize';
 
-export const addCommaToNumber = num => {
-    const n = String(num);
+export const addCommaToNumber = (num, decimal_places) => {
+    if (!num || isNaN(num)) {
+        return num;
+    }
+    const n = String(decimal_places ? (+num).toFixed(decimal_places) : num);
     const p = n.indexOf('.');
     return n.replace(
         /\d(?=(?:\d{3})+(?:\.|$))/g,

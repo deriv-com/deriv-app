@@ -355,12 +355,9 @@ export default class ContractStore extends BaseStore {
         SmartChartStore.updateGranularity(granularity);
     }
 
-    // TODO: Remove disabling eslint below for class-methods-use-this once contract-store is refactored
-    /* eslint-disable */
-    forgetProposalOpenContract(contract_id, cb) {
+    forgetProposalOpenContract = (contract_id, cb) => {
         WS.forget('proposal_open_contract', cb, { contract_id });
     }
-    /* eslint-enable */
 
     @action.bound
     removeErrorMessage() {

@@ -56,7 +56,7 @@ describe('Helpers', () => {
 
     describe('getPath', () => {
         it('should return param values in params as a part of path', () => {
-            expect(Helpers.getPath('/contract/:contract_id', { contract_id: '37511105068' })).to.equal('/contract/37511105068');
+            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal('/contract/37511105068');
             expect(Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', { something_made_up_param1: '789', something_made_up_param2: '123456' })).to.equal('/something_made_up/789/123456');
         });
         it('should return path as before if there is no params', () => {
@@ -66,7 +66,7 @@ describe('Helpers', () => {
 
     describe('getContractPath', () => {
         it('should return the path of contract with contract_id passed', () => {
-            expect(Helpers.getContractPath('1234')).to.equal('/contract/1234');
+            expect(Helpers.getContractPath(1234)).to.equal('/contract/1234');
         });
     });
 });

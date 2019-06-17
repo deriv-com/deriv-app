@@ -22,15 +22,16 @@ const ControlWidgets = ({
     <React.Fragment>
         <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
-        <StudyLegend searchInputClassName='data-hj-whitelist'
-                     ItemWrapper={Popover}
-                     itemWrapperProps={{
-                         message: localize('You can\'t have more than 5 open Indicators.'),
-                         alignment: 'right',
-                         classNameTarget: 'popover__study',
-                         is_hidden: !is_study_limit_error_visible,
-                     }}
-                     hasReachedLimitListener={hasReachedLimitListener}
+        <StudyLegend
+            searchInputClassName='data-hj-whitelist'
+            ItemWrapper={Popover}
+            itemWrapperProps={{
+                message        : localize('You can\'t have more than 5 open Indicators.'),
+                alignment      : 'right',
+                classNameTarget: 'popover__study',
+                is_hidden      : !is_study_limit_error_visible,
+            }}
+            hasReachedLimitListener={hasReachedLimitListener}
         />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />

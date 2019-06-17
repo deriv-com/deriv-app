@@ -92,7 +92,7 @@ class OpenPositions extends React.Component {
 
 OpenPositions.propTypes = {
     active_positions: MobxPropTypes.arrayOrObservableArray,
-    component_icon  : PropTypes.func,
+    component_icon  : PropTypes.string,
     currency        : PropTypes.string,
     error           : PropTypes.string,
     history         : PropTypes.object,

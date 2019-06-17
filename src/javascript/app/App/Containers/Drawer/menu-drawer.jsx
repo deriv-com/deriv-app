@@ -4,12 +4,7 @@ import { localize }      from 'App/i18n';
 import {
     DrawerItem,
     DrawerToggle }       from 'App/Components/Elements/Drawer';
-import { Icon }          from 'Assets/Common';
-import { IconLogout }    from 'Assets/Header/Drawer';
-import {
-    IconTrade,
-    IconPortfolio,
-    IconReports }        from 'Assets/Header/NavBar';
+import Icon              from 'Assets/icon.jsx';
 import routes            from 'Constants/routes';
 import { requestLogout } from 'Services';
 import { connect }       from 'Stores/connect';
@@ -32,17 +27,17 @@ const MenuDrawer = ({
             <React.Fragment>
                 <DrawerItem
                     text={localize('Trade')}
-                    icon={<Icon icon={IconTrade} className='drawer__icon' />}
+                    icon={<Icon icon='IconTrade' className='drawer__icon' />}
                     link_to={routes.trade}
                 />
                 <DrawerItem
                     text={localize('Portfolio')}
-                    icon={<Icon icon={IconPortfolio} className='drawer__icon' />}
+                    icon={<Icon icon='IconPortfolio' className='drawer__icon' />}
                     link_to={routes.portfolio}
                 />
                 <DrawerItem
                     text={localize('Statement')}
-                    icon={<Icon icon={IconReports} className='drawer__icon' />}
+                    icon={<Icon icon='IconReports' className='drawer__icon' />}
                     link_to={routes.statement}
                 />
                 <hr className='hr' />
@@ -68,7 +63,7 @@ const MenuDrawer = ({
         {!!(is_logged_in && is_mobile) &&
         <div className='drawer__footer'>
             <DrawerItem
-                icon={<Icon icon={IconLogout} className='drawer__icon' />}
+                icon={<Icon icon='IconLogout' className='drawer__icon' />}
                 text={localize('Logout')}
                 custom_action={() => {
                     if (is_positions_drawer_on) {

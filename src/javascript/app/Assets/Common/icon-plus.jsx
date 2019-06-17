@@ -14,4 +14,4 @@ IconPlus.propTypes = {
     is_disabled: PropTypes.bool,
 };
 
-export { IconPlus };
+export default IconPlus;

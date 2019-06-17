@@ -14,4 +14,4 @@ IconWallet.propTypes = {
     onClick      : PropTypes.func,
 };
 
-export { IconWallet };
+export default IconWallet;

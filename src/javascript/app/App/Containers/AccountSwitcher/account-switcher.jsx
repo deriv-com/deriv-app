@@ -1,14 +1,12 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { localize }             from 'App/i18n';
-import { urlFor }               from '_common/url';
-import { isEmptyObject }        from '_common/utility';
-import { Icon }                 from 'Assets/Common/';
-import { IconAccountsCurrency } from 'Assets/Header/AccountsCurrency';
-import { IconLogout }           from 'Assets/Header/Drawer';
-import { requestLogout }        from 'Services/index';
-import { connect }              from 'Stores/connect';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { localize }      from 'App/i18n';
+import { urlFor }        from '_common/url';
+import { isEmptyObject } from '_common/utility';
+import Icon              from 'Assets/icon.jsx';
+import { requestLogout } from 'Services/index';
+import { connect }       from 'Stores/connect';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -43,6 +41,10 @@ class AccountSwitcher extends React.Component {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
         await this.props.switchAccount(loginid);
+
+        if (this.props.has_error) {
+            this.props.clearError();
+        }
     }
 
     render() {
@@ -88,7 +90,7 @@ class AccountSwitcher extends React.Component {
                                     >
                                         <span className={'acc-switcher__id'}>
                                             <Icon
-                                                icon={IconAccountsCurrency}
+                                                icon='IconAccountsCurrency'
                                                 className={`acc-switcher__id-icon acc-switcher__id-icon--${account.icon}`}
                                                 type={account.icon}
                                             />
@@ -131,7 +133,7 @@ class AccountSwitcher extends React.Component {
                 }
                 <div className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
-                    <Icon icon={IconLogout} className='acc-switcher__logout-icon drawer__icon' />
+                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
                 </div>
             </div>
         );
@@ -142,6 +144,8 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     cleanUp               : PropTypes.func,
+    clearError            : PropTypes.func,
+    has_error             : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
@@ -155,7 +159,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = connect(
-    ({ client, ui }) => ({
+    ({ client, ui, modules }) => ({
         account_list          : client.account_list,
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
@@ -164,6 +168,8 @@ const account_switcher = connect(
         upgrade_info          : client.upgrade_info,
         cleanUp               : client.cleanUp,
         virtual_loginid       : client.virtual_account_loginid,
+        clearError            : modules.contract.clearError,
+        has_error             : modules.contract.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         togglePositionsDrawer : ui.togglePositionsDrawer,
 

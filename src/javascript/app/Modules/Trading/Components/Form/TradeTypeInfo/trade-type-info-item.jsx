@@ -1,16 +1,10 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
-import {
-    Icon,
-    IconBack }              from 'Assets/Common';
-import { IconChevronLeft }  from 'Assets/Common/icon-chevron-left.jsx';
-import { IconChevronRight } from 'Assets/Common/icon-chevron-right.jsx';
-import { TradeCategories,
-    TradeCategoriesGIF }    from 'Assets/Trading/Categories';
-import Button               from 'App/Components/Form/button.jsx';
-import { localize }         from 'App/i18n';
+import classNames         from 'classnames';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { Scrollbars }     from 'tt-react-custom-scrollbars';
+import Icon               from 'Assets/icon.jsx';
+import Button             from 'App/Components/Form/button.jsx';
+import { localize }       from 'App/i18n';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,
@@ -28,7 +22,7 @@ const TradeTypeInfoItem = ({
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
             <span onClick={() => onBackButtonClick()}>
-                <Icon icon={IconBack} />
+                <Icon icon='IconBack' />
             </span>
             <span className='title'>{item.text}</span>
         </div>
@@ -43,7 +37,8 @@ const TradeTypeInfoItem = ({
                     itemList.map((type, idx) => (
                         <div className='trade-type-info-dialog__card' key={idx}>
                             <div className='trade-type-info-dialog__gif'>
-                                <TradeCategoriesGIF
+                                <Icon
+                                    icon='TradeCategoriesGIF'
                                     category={type.value}
                                     className='trade-type-info-dialog__gif-image'
                                     is_dark={is_dark_theme}
@@ -54,7 +49,7 @@ const TradeTypeInfoItem = ({
                                     autoHide
                                     style={{ height: '100%' }}
                                 >
-                                    <TradeCategories category={type.value} />
+                                    <Icon icon='TradeCategories' category={type.value} />
                                 </Scrollbars>
                             </div>
                             <div>
@@ -71,7 +66,7 @@ const TradeTypeInfoItem = ({
         </div>
         <div className='trade-type-info-navigation'>
             <div className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
-                <Icon icon={IconChevronLeft} />
+                <Icon icon='IconChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
                 <i
@@ -92,7 +87,7 @@ const TradeTypeInfoItem = ({
                 }
             </div>
             <div className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
-                <Icon icon={IconChevronRight} />
+                <Icon icon='IconChevronRight' />
             </div>
         </div>
     </React.Fragment>

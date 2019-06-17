@@ -18,6 +18,6 @@ describe('ContractTypeList', () => {
     };
     it('should render one <ContractTypeList /> component', () => {
         const wrapper = shallow(<ContractTypeList list={list} />);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).to.have.length(2);
     });
 });

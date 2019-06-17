@@ -3,9 +3,7 @@ import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {
-    Icon,
-    IconClock }          from 'Assets/Common';
+import Icon              from 'Assets/icon.jsx';
 import Dialog            from './dialog.jsx';
 import InputField        from '../InputField';
 
@@ -83,6 +81,7 @@ class TimePicker extends React.Component {
                                 <InputField
                                     error_messages={validation_errors}
                                     type='text'
+                                    is_hj_whitelisted
                                     is_read_only
                                     id={`${prefix_class}-input`}
                                     className={classNames(`${prefix_class}-input`)}
@@ -91,7 +90,7 @@ class TimePicker extends React.Component {
                                     name={name}
                                     placeholder={placeholder}
                                 />
-                                <Icon icon={IconClock} className={`${prefix_class}__icon`} />
+                                <Icon icon='IconClock' className={`${prefix_class}__icon`} />
                                 <CSSTransition
                                     in={ this.state.is_open }
                                     classNames={{

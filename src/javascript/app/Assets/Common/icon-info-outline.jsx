@@ -20,4 +20,4 @@ IconInfoOutline.propTypes = {
     className: PropTypes.string,
 };
 
-export { IconInfoOutline };
+export default IconInfoOutline;

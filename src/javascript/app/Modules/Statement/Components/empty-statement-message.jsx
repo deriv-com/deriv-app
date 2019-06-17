@@ -1,15 +1,14 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { localize }    from 'App/i18n';
-import { Icon }        from 'Assets/Common';
-import { IconReports } from 'Assets/Header/NavBar';
-import { routes }      from 'Constants/index';
-import { ButtonLink }  from 'App/Components/Routes';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { localize }   from 'App/i18n';
+import Icon           from 'Assets/icon.jsx';
+import { routes }     from 'Constants/index';
+import { ButtonLink } from 'App/Components/Routes';
 
 const EmptyStatementMessage = ({ has_selected_date }) => (
     <React.Fragment>
         <div className='statement-empty'>
-            <Icon icon={IconReports} className='statement-empty__icon' />
+            <Icon icon='IconReports' className='statement-empty__icon' />
             <span className='statement-empty__text'>
                 {
                     !has_selected_date ?

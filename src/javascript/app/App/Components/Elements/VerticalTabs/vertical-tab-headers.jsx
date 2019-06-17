@@ -1,7 +1,7 @@
 import classNames  from 'classnames';
 import React       from 'react';
 import { NavLink } from 'react-router-dom';
-import { Icon }    from 'Assets/Common';
+import Icon        from 'Assets/icon.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
     render() {

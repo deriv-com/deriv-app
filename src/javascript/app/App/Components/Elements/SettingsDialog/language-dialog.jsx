@@ -1,13 +1,13 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import Localize            from 'App/Components/Elements/localize.jsx';
-import { IconCountryFlag } from 'Assets/Common';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import Localize          from 'App/Components/Elements/localize.jsx';
+import Icon              from 'Assets/icon.jsx';
 import {
     getAllowedLanguages,
     getURL,
     currentLanguage,
-}                          from 'Utils/Language';
+}                        from 'Utils/Language';
 
 const isCurrentLanguage = (lang) => lang === currentLanguage;
 
@@ -22,7 +22,8 @@ const NonClickableLink = ({ children, lang }) => (
 
 const LanguageLink = ({ lang }) => (
     <React.Fragment>
-        <IconCountryFlag
+        <Icon
+            icon='IconCountryFlag'
             className={'settings-dialog__language-link-flag settings-dialog__language-flag'}
             type={lang.replace(/(\s|_)/, '-').toLowerCase()}
         />

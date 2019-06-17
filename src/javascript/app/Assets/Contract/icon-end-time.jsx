@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Icon } from 'Assets/Common/icon.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
 
-export const IconEndTimeSVG = ({ className, classNamePath }) => (
+export const IconEndTime = ({ className, classNamePath }) => (
     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' className={className}>
         <g fill='none' fillRule='evenodd'>
             <circle className={classNamePath} cx='12' cy='12' r='12' />
@@ -16,12 +14,9 @@ export const IconEndTimeSVG = ({ className, classNamePath }) => (
     </svg>
 );
 
-const IconEndTime = () => <Icon icon={IconEndTimeSVG} />;
-
 IconEndTime.propTypes = {
     className    : PropTypes.string,
     classNamePath: PropTypes.string,
-    color        : PropTypes.string,
 };
 
-export default observer(IconEndTime);
+export default IconEndTime;

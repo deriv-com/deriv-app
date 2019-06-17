@@ -53,7 +53,9 @@ const SocketCache = (() => {
 
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
+        const path = /[^/]*$/.exec(window.location.pathname)[0];
 
+        if (msg_type_mapping[response.msg_type] && (path === 'trade')) return;
         if (!config[msg_type]) return;
 
         // prevent unwanted page behaviour

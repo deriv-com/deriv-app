@@ -2,7 +2,6 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { withRouter }       from 'react-router';
 import { isEmptyObject }    from '_common/utility';
-import { FadeWrapper }      from 'App/Components/Animations';
 import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
@@ -72,12 +71,7 @@ class ContractReplay extends React.Component {
 
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
-                <FadeWrapper
-                    className='contract-drawer-wrapper'
-                    is_visible={!!(contract_info.status)}
-                    keyname='contract-drawer-wrapper'
-                >
-
+                {!!(contract_info.status) &&
                     <ContractDrawer
                         contract_info={contract_info}
                         heading='Reports'
@@ -87,7 +81,7 @@ class ContractReplay extends React.Component {
                         status={status}
                         server_time={server_time}
                     />
-                </FadeWrapper>
+                }
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>

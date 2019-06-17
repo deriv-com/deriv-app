@@ -38,8 +38,8 @@ const SocketCache = (() => {
         trading_times         : { expire: 120, map_to: ['trading_times'] },
         // TODO: Enable statement and profit table caching once we have UI design for handling
         // transitions between cached table and newly added data to table
-        // statement             : { expire: 1,   map_to: ['limit', 'offset'] },
-        // profit_table          : { expire: 1,   map_to: ['date_from', 'limit', 'offset'] },
+        // statement             : { expire: 10,   map_to: ['limit', 'offset'] },
+        // profit_table          : { expire: 10,   map_to: ['date_from', 'limit', 'offset'] },
     };
 
     const storage_key = 'ws_cache';
@@ -51,9 +51,16 @@ const SocketCache = (() => {
         candles: 'ticks_history',
     };
 
+    const isContractEnded = (contract_info) => (contract_info.is_expired || contract_info.status === 'sold');
+
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
+        // check if msg_type is proposal_open_contract and check if contract is ended before setting in cache.
+        if (response.msg_type === 'proposal_open_contract') {
+            const { proposal_open_contract } = response;
+            if (!isContractEnded(proposal_open_contract)) return;
+        }
         // check if response if for ticks_history on trade page, we don't want to cache ongoing trade chart
         // since the start_time in the request is constantly changing
         const path = /[^/]*$/.exec(window.location.pathname)[0];

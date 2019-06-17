@@ -137,7 +137,7 @@ const BinarySocketBase = (() => {
             const response = SocketCache.get(data, msg_type);
             if (response) {
                 State.set(['response', msg_type], cloneObject(response));
-                if (isReady() && is_available  && !options.skip_cache_update && !has_callback) { // make the request to keep the cache updated
+                if (isReady() && is_available && !options.skip_cache_update && !has_callback) { // make the request to keep the cache updated
                     binary_socket.send(JSON.stringify(data), { forced: true });
                 } else if (+data.time !== 1) { // Do not buffer all time requests
                     buffered_sends.push({

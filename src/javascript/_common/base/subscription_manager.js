@@ -172,6 +172,7 @@ const SubscriptionManager = (() => {
         // find corresponding id(s)
         const sub_ids = Object.keys(subscriptions).filter(id => (
             subscriptions[id].msg_type === msg_type &&
+            (!match_values || hasValues(subscriptions[id].request, match_values)) &&
             hasCallbackFunction(id, fncCallback)
         ));
 

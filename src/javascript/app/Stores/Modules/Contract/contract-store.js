@@ -372,6 +372,10 @@ export default class ContractStore extends BaseStore {
         WS.forget('proposal_open_contract', cb, { contract_id });
     }
 
+    forgetProposalOpenContract = (contract_id, fncCallback) => {
+        WS.forget('proposal_open_contract', fncCallback, { contract_id });
+    }
+
     @action.bound
     removeErrorMessage() {
         delete this.error_message;

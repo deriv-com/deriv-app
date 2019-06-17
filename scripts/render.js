@@ -36,7 +36,7 @@ const Url            = require('url');
 const common         = require('./common');
 const js_translation = require('./js_translation');
 const Gettext        = require('./gettext');
-const compileManifests     = require('./render_manifest').compileManifests;
+// const compileManifests     = require('./render_manifest').compileManifests;
 
 program
     .version('0.2.2')
@@ -77,32 +77,32 @@ const getConfig = () => (
     }
 );
 
-const createDirectories = (section = '', idx) => {
-    if (is_translation) return;
-
-    const config = getConfig();
-    const base_path = Path.join(config.dist_path, common.sections_config[section].path);
-
-    if (idx === 0) { // display once only
-        console.log(color.cyan('Target:'), color.yellow(config.dist_path));
-    }
-
-    const mkdir = path => fs.existsSync(path) || fs.mkdirSync(path);
-    mkdir(config.dist_path);
-    mkdir(base_path);
-
-    let language;
-    config.languages.forEach(lang => {
-        language = lang.toLowerCase();
-        mkdir(Path.join(base_path, language));
-        if (common.sections_config[section].has_pjax) {
-            mkdir(Path.join(base_path, `${language}/pjax`));
-        }
-        if (section === 'app') {
-            compileManifests(config.dist_path, language, config.branch);
-        }
-    });
-};
+// const createDirectories = (section = '', idx) => {
+//     if (is_translation) return;
+//
+//     const config = getConfig();
+//     const base_path = Path.join(config.dist_path, common.sections_config[section].path);
+//
+//     if (idx === 0) { // display once only
+//         console.log(color.cyan('Target:'), color.yellow(config.dist_path));
+//     }
+//
+//     const mkdir = path => fs.existsSync(path) || fs.mkdirSync(path);
+//     mkdir(config.dist_path);
+//     mkdir(base_path);
+//
+//     let language;
+//     config.languages.forEach(lang => {
+//         language = lang.toLowerCase();
+//         mkdir(Path.join(base_path, language));
+//         if (common.sections_config[section].has_pjax) {
+//             mkdir(Path.join(base_path, `${language}/pjax`));
+//         }
+//         if (section === 'app') {
+//             compileManifests(config.dist_path, language, config.branch);
+//         }
+//     });
+// };
 
 const fileHash = (path) => (
     new Promise((resolve) => {
@@ -236,7 +236,7 @@ async function compile(page) {
     const languages           = config.languages.filter(lang => !common.isExcluded(page.excludes, lang));
     const CONTENT_PLACEHOLDER = 'CONTENT_PLACEHOLDER'; // used in layout.jsx
     const section_path        = common.sections_config[page.section].path;
-    const save_path_template  = Path.join(config.dist_path, section_path, 'LANG_PLACEHOLDER', `${page.save_as}.html`);
+    const save_path_template  = Path.join(config.dist_path, section_path, `${page.save_as}.html`);
 
     const tasks = languages.map(async lang => {
         const model = {
@@ -281,7 +281,8 @@ async function compile(page) {
         } else {
             if (is_translation) return; // Skip saving files when it's a translation update
             await common.writeFile(
-                getFilePath(save_path_template, language, false),
+                // getFilePath(save_path_template, language, false),
+                save_path_template,
                 /^\s*<html>/.test(page_html) ? `<!DOCTYPE html>\n${page_html}` : page_html,
                 'utf8'
             );
@@ -312,7 +313,7 @@ const getFilteredPages = () => {
         }
 
         const sections = Array.from(new Set(pages_filtered.map(page => page.section)));
-        sections.forEach(createDirectories);
+        // sections.forEach(createDirectories);
 
         Gettext.getInstance(); // initialize before starting the compilation
 

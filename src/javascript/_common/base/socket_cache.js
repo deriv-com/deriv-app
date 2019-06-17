@@ -55,6 +55,8 @@ const SocketCache = (() => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
         const path = /[^/]*$/.exec(window.location.pathname)[0];
 
+        // check if response if for ticks_history on trade page, we don't want to cache ongoing trade chart
+        // since the start_time in the request is constantly changing
         if (msg_type_mapping[response.msg_type] && (path === 'trade')) return;
         if (!config[msg_type]) return;
 

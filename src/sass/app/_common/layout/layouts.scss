@@ -475,10 +475,9 @@
     }
 }
 
-.ciq-studies {
-    .popover {
-        &__target {
-            height: 100%;
-        }
+/** @define popover */
+.popover {
+    &__study {
+        height: 100% !important;
     }
 }

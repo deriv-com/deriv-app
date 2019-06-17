@@ -10,9 +10,12 @@ import {
     Views }           from 'smartcharts-beta';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import { localize }   from '_common/localize';
 import { Popover }    from 'App/Components/Elements/Popover';
 
 const ControlWidgets = ({
+    hasReachedLimitListener,
+    is_study_limit_error_visible,
     updateChartType,
     updateGranularity,
 }) => (
@@ -21,7 +24,13 @@ const ControlWidgets = ({
         <ChartTypes onChange={updateChartType} />
         <StudyLegend searchInputClassName='data-hj-whitelist'
                      ItemWrapper={Popover}
-                     itemWrapperProps={{ message: 'sdsddsds', alignment: 'right' }}
+                     itemWrapperProps={{
+                         message: localize('You can\'t have more than 5 open Indicators.'),
+                         alignment: 'right',
+                         classNameTarget: 'popover__study',
+                         is_hidden: !is_study_limit_error_visible,
+                     }}
+                     hasReachedLimitListener={hasReachedLimitListener}
         />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
@@ -33,8 +42,10 @@ const ControlWidgets = ({
 );
 
 ControlWidgets.propTypes = {
-    updateChartType  : PropTypes.func,
-    updateGranularity: PropTypes.func,
+    hasReachedLimitListener     : PropTypes.func,
+    is_study_limit_error_visible: PropTypes.bool,
+    updateChartType             : PropTypes.func,
+    updateGranularity           : PropTypes.func,
 };
 
 export default ControlWidgets;

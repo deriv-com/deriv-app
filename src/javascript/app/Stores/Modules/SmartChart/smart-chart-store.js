@@ -22,6 +22,7 @@ export default class SmartChartStore extends BaseStore {
     @observable is_contract_mode = false;
     @observable is_static_chart  = false;
     @observable is_title_enabled = true;
+    @observable is_study_limit_error_visible = false;
 
     @observable start_epoch;
     @observable end_epoch;
@@ -83,6 +84,11 @@ export default class SmartChartStore extends BaseStore {
         this.setContractStart(null);
         this.setContractEnd(null);
         this.setStaticChart(false);
+    }
+
+    @action.bound
+    hasReachedLimitListener(hasReached) {
+        this.is_study_limit_error_visible = hasReached;
     }
 
     @action.bound

@@ -24,13 +24,13 @@ class ContractReplay extends React.Component {
         this.props.hidePositions();
         this.props.setChartLoader(true);
         this.props.showBlur();
-        const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
+        const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillUnmount() {
-        // SmartCharts keeps saving layout for ContractPlay even if layouts prop is set to null
+        // SmartCharts keeps saving layout for ContractReplay even if layouts prop is set to null
         // As a result, we have to remove it manually for each SmartChart instance in ContractReplay
         localStorage.removeItem('layout-contract-replay');
         this.props.hideBlur();
@@ -62,6 +62,7 @@ class ContractReplay extends React.Component {
             contract_info,
             chart_id,
             is_chart_loading,
+            is_dark_theme,
             is_sell_requested,
             is_static_chart,
             onClickSell,
@@ -76,9 +77,11 @@ class ContractReplay extends React.Component {
                     is_visible={!!(contract_info.status)}
                     keyname='contract-drawer-wrapper'
                 >
+
                     <ContractDrawer
                         contract_info={contract_info}
                         heading='Reports'
+                        is_dark_theme={is_dark_theme}
                         is_sell_requested={is_sell_requested}
                         onClickSell={onClickSell}
                         status={status}
@@ -123,12 +126,13 @@ class ContractReplay extends React.Component {
 ContractReplay.propTypes = {
     chart_id        : PropTypes.string,
     config          : PropTypes.object,
-    contract_id     : PropTypes.string,
+    contract_id     : PropTypes.number,
     contract_info   : PropTypes.object,
     hideBlur        : PropTypes.func,
     hidePositions   : PropTypes.func,
     history         : PropTypes.object,
     is_chart_loading: PropTypes.bool,
+    is_dark_theme   : PropTypes.bool,
     is_static_chart : PropTypes.bool,
     location        : PropTypes.object,
     onMount         : PropTypes.func,
@@ -156,6 +160,7 @@ export default withRouter(connect(
         setChartLoader   : modules.smart_chart.setIsChartLoading,
         hidePositions    : ui.hidePositionsFooterToggle,
         hideBlur         : ui.hideRouteBlur,
+        is_dark_theme    : ui.is_dark_mode_on,
         showBlur         : ui.showRouteBlur,
 
     })

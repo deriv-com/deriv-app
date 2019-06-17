@@ -15,6 +15,7 @@ const Input = ({
     inline_prefix,
     is_autocomplete_disabled,
     is_disabled,
+    is_hj_whitelisted,
     is_incrementable,
     is_read_only,
     max_length,
@@ -54,6 +55,7 @@ const Input = ({
                 checked={checked}
                 className={classNames(className)}
                 data-for={`error_tooltip_${name}`}
+                data-hj-whitelist={is_hj_whitelisted}
                 data-tip={data_tip}
                 data-value={data_value}
                 disabled={is_disabled}
@@ -95,6 +97,7 @@ Input.propTypes = {
     inline_prefix           : PropTypes.string,
     is_autocomplete_disabled: PropTypes.bool,
     is_disabled             : PropTypes.string,
+    is_hj_whitelisted       : PropTypes.bool,
     is_incrementable        : PropTypes.bool,
     is_read_only            : PropTypes.bool,
     max_length              : PropTypes.number,

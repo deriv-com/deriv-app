@@ -1,8 +1,11 @@
 import moment       from 'moment';
 import { localize } from '_common/localize';
 
-export const addCommaToNumber = num => {
-    const n = String(num);
+export const addCommaToNumber = (num, decimal_places) => {
+    if (!num || isNaN(num)) {
+        return num;
+    }
+    const n = String(decimal_places ? (+num).toFixed(decimal_places) : num);
     const p = n.indexOf('.');
     return n.replace(
         /\d(?=(?:\d{3})+(?:\.|$))/g,
@@ -38,6 +41,8 @@ export const getBarrierValue = (contract_info) => {
     return addCommaToNumber(contract_info.barrier);
 };
 
+export const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));
+
 const digitTypeMap = (contract_info) => ({
     DIGITDIFF : localize('Not [_1]', contract_info.barrier),
     DIGITEVEN : localize('Even'),
@@ -46,5 +51,3 @@ const digitTypeMap = (contract_info) => ({
     DIGITOVER : localize('Over [_1]', contract_info.barrier),
     DIGITUNDER: localize('Under [_1]', contract_info.barrier),
 });
-
-const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));

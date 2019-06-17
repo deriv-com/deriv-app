@@ -134,7 +134,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
             });
         }
     } catch (e) {
-        removeToken(tokenObjectList[0].token);
+        if (tokenObjectList && tokenObjectList.length !== 0) {
+            removeToken(tokenObjectList[0].token);
+        }
         Elevio.logoutUser();
         GTM.setVisitorId();
         throw e;

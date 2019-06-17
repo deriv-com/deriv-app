@@ -48,3 +48,8 @@ export const removeToken = token => {
 export const removeAllTokens = () => {
     localStorage.removeItem('tokenList');
 };
+
+export const isLoggedIn = () => {
+    const tokens = getTokenList();
+    return Object.keys(tokens).length > 0;
+};

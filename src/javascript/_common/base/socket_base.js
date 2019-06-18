@@ -126,6 +126,7 @@ const BinarySocketBase = (() => {
      */
     const send = function (data, options = {}) {
         const promise_obj = options.promise || new PromiseClass();
+        const has_callback = typeof options.callback === 'function';
 
         if (!data || isEmptyObject(data)) return promise_obj.promise;
 
@@ -136,7 +137,7 @@ const BinarySocketBase = (() => {
             const response = SocketCache.get(data, msg_type);
             if (response) {
                 State.set(['response', msg_type], cloneObject(response));
-                if (isReady() && is_available  && !options.skip_cache_update) { // make the request to keep the cache updated
+                if (isReady() && is_available && !options.skip_cache_update && !has_callback) { // make the request to keep the cache updated
                     binary_socket.send(JSON.stringify(data), { forced: true });
                 } else if (+data.time !== 1) { // Do not buffer all time requests
                     buffered_sends.push({
@@ -145,7 +146,11 @@ const BinarySocketBase = (() => {
                     });
                 }
                 promise_obj.resolve(response);
-                return promise_obj.promise;
+                if (has_callback) {
+                    options.callback(response);
+                } else {
+                    return promise_obj.promise;
+                }
             }
         }
 
@@ -168,7 +173,7 @@ const BinarySocketBase = (() => {
         }
         promises[data.req_id] = {
             callback: (response) => {
-                if (typeof options.callback === 'function') {
+                if (has_callback) {
                     options.callback(response);
                 } else {
                     promise_obj.resolve(response);

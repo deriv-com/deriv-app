@@ -70,16 +70,14 @@ class ContractReplay extends React.Component {
 
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
-                {!!(contract_info.status) &&
-                    <ContractDrawer
-                        contract_info={contract_info}
-                        heading='Reports'
-                        is_dark_theme={is_dark_theme}
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        status={status}
-                    />
-                }
+                <ContractDrawer
+                    contract_info={contract_info}
+                    heading='Reports'
+                    is_dark_theme={is_dark_theme}
+                    is_sell_requested={is_sell_requested}
+                    onClickSell={onClickSell}
+                    status={status}
+                />
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>

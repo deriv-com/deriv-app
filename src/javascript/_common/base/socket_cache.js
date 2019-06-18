@@ -86,13 +86,6 @@ const SocketCache = (() => {
         LocalStore.setObject(storage_key, data_obj);
     };
 
-    const isContractEnded = (contract_info) => {
-        if (!isEmptyObject(contract_info)) {
-            return (contract_info.is_expired || contract_info.status === 'sold');
-        }
-        return false;
-    };
-
     const isEmptyValue = (data) => {
         let is_empty_data = false;
         if (Array.isArray(data)) {

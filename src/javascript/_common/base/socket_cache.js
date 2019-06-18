@@ -54,17 +54,10 @@ const SocketCache = (() => {
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
-        // check if msg_type is proposal_open_contract and check if contract is ended before setting in cache.
-        if (response.msg_type === 'proposal_open_contract') {
-            const { proposal_open_contract } = response;
-            if (!isContractEnded(proposal_open_contract)) return;
-        }
-        // check if response if for ticks_history on trade page, we don't want to cache ongoing trade chart
-        // since the start_time in the request is constantly changing
-        const path = /[^/]*$/.exec(window.location.pathname)[0];
-        if (msg_type_mapping[response.msg_type] && (path === 'trade')) return;
-        if (!config[msg_type]) return;
+        // check if response has subscription, since only want to cache non-streamed responses
+        if (response.subscription) return;
 
+        if (!config[msg_type]) return;
         // prevent unwanted page behaviour
         // if a cached version already exists but it gives an error after being called for updating the cache
         const cached_response = get(response.echo_req) || {};
@@ -91,13 +84,6 @@ const SocketCache = (() => {
 
         data_obj[key] = { value: response, expires };
         LocalStore.setObject(storage_key, data_obj);
-    };
-
-    const isContractEnded = (contract_info) => {
-        if (!isEmptyObject(contract_info)) {
-            return (contract_info.is_expired || contract_info.status === 'sold');
-        }
-        return false;
     };
 
     const isEmptyValue = (data) => {

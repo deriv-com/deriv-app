@@ -128,9 +128,19 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    drawContractStartTime(date_start, longcode) {
+    drawContractStartTime(date_start, longcode, contract_id) {
         this.contract_info.longcode = longcode;
         createChartMarkers(this.root_store.modules.smart_chart, { date_start });
+        this.onMountBuy(contract_id);
+    }
+
+    @action.bound
+    onMountBuy(contract_id) {
+        if (contract_id === this.contract_id) return;
+        this.contract_id = contract_id;
+        BinarySocket.wait('authorize').then(() => {
+            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
+        });
     }
 
     @action.bound
@@ -148,8 +158,8 @@ export default class ContractStore extends BaseStore {
             this.replay_info = {};
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
+                this.smart_chart.switchToContractMode(true);
             }
-            this.smart_chart.switchToContractMode(this.is_from_positions);
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
             });
@@ -343,6 +353,10 @@ export default class ContractStore extends BaseStore {
     }
 
     handleChartType(start, expiry) {
+        if (!this.smart_chart) {
+            this.smart_chart = this.root_store.modules.smart_chart;
+        }
+
         const chart_type  = getChartType(start, expiry);
         const granularity = getChartGranularity(start, expiry);
 

@@ -65,7 +65,6 @@ class ContractReplay extends React.Component {
             is_sell_requested,
             is_static_chart,
             onClickSell,
-            server_time,
             status,
         } = this.props;
 
@@ -79,7 +78,6 @@ class ContractReplay extends React.Component {
                         is_sell_requested={is_sell_requested}
                         onClickSell={onClickSell}
                         status={status}
-                        server_time={server_time}
                     />
                 }
                 <React.Suspense fallback={<div />}>
@@ -139,8 +137,7 @@ ContractReplay.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ common, modules, ui }) => ({
-        server_time      : common.server_time,
+    ({ modules, ui }) => ({
         chart_id         : modules.smart_chart.replay_id,
         config           : modules.contract.replay_config,
         is_sell_requested: modules.contract.is_sell_requested,

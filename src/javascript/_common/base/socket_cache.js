@@ -51,8 +51,6 @@ const SocketCache = (() => {
         candles: 'ticks_history',
     };
 
-    const isContractEnded = (contract_info) => (contract_info.is_expired || contract_info.status === 'sold');
-
     const set = (response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
@@ -93,6 +91,13 @@ const SocketCache = (() => {
 
         data_obj[key] = { value: response, expires };
         LocalStore.setObject(storage_key, data_obj);
+    };
+
+    const isContractEnded = (contract_info) => {
+        if (!isEmptyObject(contract_info)) {
+            return (contract_info.is_expired || contract_info.status === 'sold');
+        }
+        return false;
     };
 
     const isEmptyValue = (data) => {

@@ -1,19 +1,21 @@
 import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
+import { connect }           from 'Stores/connect';
 import ProgressTicks         from './positions-progress-ticks.jsx';
+import { getTimePercentage } from '../helpers';
 import RemainingTime         from '../../../../Containers/remaining-time.jsx';
 
 const ProgressSlider = ({
     className,
     current_tick,
-    has_result,
     is_loading,
-    percentage,
-    remaining_time,
+    start_time,
+    expiry_time,
+    server_time,
     ticks_count,
 }) => {
-    if (!percentage && !ticks_count || has_result || !remaining_time) return <div className='progress-slider--completed' />;
+    const percentage = getTimePercentage(server_time, start_time, expiry_time);
     return (
         <div className={classNames('progress-slider', className)}>
             {(ticks_count) ?
@@ -24,7 +26,7 @@ const ProgressSlider = ({
                 :
                 <React.Fragment>
                     <span className='positions-drawer-card__remaining-time'>
-                        <RemainingTime end_time={remaining_time} />
+                        <RemainingTime end_time={expiry_time} />
                     </span>
                     {(is_loading || (percentage < 1)) ?
                         <div className='progress-slider__infinite-loader'>
@@ -51,16 +53,21 @@ const ProgressSlider = ({
 // Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
 
 ProgressSlider.propTypes = {
-    className     : PropTypes.string,
-    current_tick  : PropTypes.number,
-    has_result    : PropTypes.bool,
-    is_loading    : PropTypes.bool,
-    percentage    : PropTypes.number,
-    remaining_time: PropTypes.oneOfType([
+    className   : PropTypes.string,
+    current_tick: PropTypes.number,
+    expiry_time : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
+    is_loading : PropTypes.bool,
+    server_time: PropTypes.object,
+    start_time : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
     ticks_count: PropTypes.number,
 };
 
-export default ProgressSlider;
+export default connect(({ common }) => ({
+    server_time: common.server_time,
+}))(ProgressSlider);

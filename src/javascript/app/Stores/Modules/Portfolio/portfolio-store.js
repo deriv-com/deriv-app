@@ -125,7 +125,7 @@ export default class PortfolioStore extends BaseStore {
         }
 
         if (isEnded(proposal)) {
-            WS.forget('proposal_open_contract', this.proposalOpenContractHandler, proposal.contract_id);
+            WS.forget('proposal_open_contract', this.proposalOpenContractHandler, { contract_id: proposal.contract_id });
         }
     }
 
@@ -190,7 +190,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_loading = false;
 
         if (isEnded(contract_response)) {
-            WS.forget('proposal_open_contract', this.populateResultDetails, contract_response.contract_id);
+            WS.forget('proposal_open_contract', this.populateResultDetails, { contract_id: contract_response.contract_id });
         }
     };
 
@@ -233,12 +233,10 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        WS.forgetAll('proposal_open_contract');
-
         // keep data and connections for portfolio drawer on desktop
         if (this.root_store.ui.is_mobile) {
             this.clearTable();
-            WS.forgetAll('transaction');
+            WS.forgetAll('proposal_open_contract', 'transaction');
         }
     }
 

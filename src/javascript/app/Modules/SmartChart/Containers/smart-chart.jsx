@@ -3,7 +3,6 @@ import {
     setSmartChartsPublicPath } from 'smartcharts-beta';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-import { urlForStatic }        from '_common/url';
 import { connect }             from 'Stores/connect';
 import BottomWidgets           from '../Components/bottom-widgets.jsx';
 import ControlWidgets          from '../Components/control-widgets.jsx';
@@ -11,7 +10,7 @@ import ChartMarker             from '../Components/Markers/marker.jsx';
 import TopWidgets              from '../Components/top-widgets.jsx';
 import { symbolChange }        from '../Helpers/symbol';
 
-setSmartChartsPublicPath(urlForStatic('js/smartcharts/'));
+setSmartChartsPublicPath('/smartcharts/');
 
 class Chart extends React.Component {
     componentDidMount() { this.props.onMount(); }

@@ -9,7 +9,7 @@ class DurationWrapper extends React.Component {
     state = {
         min_value: 0,
         max_value: 0,
-    }
+    };
 
     hasDurationUnit = (duration_unit) => {
         let duration_list = [...this.props.duration_units_list];
@@ -46,14 +46,14 @@ class DurationWrapper extends React.Component {
             // If query string contains endtime but contract type does not e.g. digits (only ticks contracts)
             this.props.onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
-    }
+    };
 
     getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
         const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
         const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
 
         return [min_value, max_value];
-    }
+    };
 
     componentDidMount() {
         const {

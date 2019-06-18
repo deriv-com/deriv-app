@@ -370,6 +370,7 @@ const ContractType = (() => {
                 }
             }
         }
+
         return { expiry_time: end_time };
     };
 

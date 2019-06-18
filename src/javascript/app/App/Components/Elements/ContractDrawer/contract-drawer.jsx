@@ -197,7 +197,7 @@ class ContractDrawer extends Component {
                     className='contract-drawer__heading'
                     onClick={this.redirectBackToReports}
                 >
-                    <Icon icon={IconBack} />
+                    <Icon icon='IconBack' />
                     <h2>{this.props.heading || <Localize i18n_default_text='Contract' />}</h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>

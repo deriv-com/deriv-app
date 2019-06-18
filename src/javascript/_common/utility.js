@@ -87,7 +87,7 @@ const createElement = (tag_name, attributes = {}) => {
 
 let static_hash;
 const getStaticHash = () => {
-    static_hash = static_hash || (document.querySelector('script[src*="binary"]').getAttribute('src') || '').split('?')[1];
+    static_hash = static_hash || (document.querySelector('script[src*="main"]').getAttribute('src') || '').split('.')[1];
     return static_hash;
 };
 

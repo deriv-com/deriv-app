@@ -50,7 +50,7 @@ class PopoverBubble extends React.PureComponent {
                 top : target_rectangle.top,
             };
         }
-    }
+    };
 
     render() {
         const {
@@ -91,10 +91,10 @@ class PopoverBubble extends React.PureComponent {
                 }
             </PoseGroup>
         );
-        
+
         return ReactDOM.createPortal(
             popover_bubble,
-            document.getElementById('binary_app')
+            document.getElementById('app_contents')
         );
     }
 }

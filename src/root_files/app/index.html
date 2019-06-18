@@ -130,7 +130,7 @@
                     utm_source                = has_external_referrer && !has_utm_source ? ((search ? '&' : '?') + 'utm_source=' + new URL(document.referrer).hostname) : '';
                 }
 
-                window.location.href = (lang || 'en').toLowerCase() + '/trade' + search + utm_source;
+                window.location.href = '/trade' + search + utm_source;
             }
 
             if (document.referrer) {
@@ -194,4 +194,25 @@
             }
         </script>
     </head>
+    <body class="body theme">
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
+                height="0" width="0" style="display: none; visibility: hidden;"></iframe>
+    </noscript>
+
+    <div id="binary_app" class="binary-app">
+        <div class="initial-loader">
+<!--            TODO: Add theme -->
+            <div class="initial-loader__barspinner barspinner barspinner-light">
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+                </div>
+        </div>
+    </div>
+    </div>
+    <div id="modal_root" class="modal-root"></div>
+    </body>
 </html>

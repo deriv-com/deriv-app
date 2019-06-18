@@ -45,14 +45,14 @@ class FullPageModal extends React.Component {
             this.props.hideFullBlur();
         }
         this.props.onCancel();
-    }
+    };
 
     handleConfirm = () => {
         if (this.props.is_closed_on_confirm) {
             this.props.hideFullBlur();
         }
         this.props.onConfirm();
-    }
+    };
 
     render() {
         const {

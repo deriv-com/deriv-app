@@ -25,7 +25,7 @@ class ContractAudit extends React.PureComponent {
     componentDidMount = async () => {
         const decimal_places = await getUnderlyingPipSize(this.props.contract_info.underlying);
         this.setState({ decimal_places });
-    }
+    };
 
     render() {
         const {

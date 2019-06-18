@@ -7,6 +7,7 @@ import { urlFor }                        from '_common/url';
 import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
 import Localize                          from 'App/Components/Elements/localize.jsx';
+import CompositeCalendar                 from 'App/Components/Form/CompositeCalendar';
 import { getContractPath }               from 'App/Components/Routes/helpers';
 import { getSupportedContracts }         from 'Constants';
 import { connect }                       from 'Stores/connect';
@@ -49,12 +50,22 @@ class ProfitTable extends React.Component {
             is_empty,
             is_loading,
             error,
+            handleDateChange,
             handleScroll,
             has_selected_date,
             totals,
         } = this.props;
         if (error) return <p>{error}</p>;
 
+        const filter_component = (
+            <React.Fragment>
+                <CompositeCalendar
+                    onChange={handleDateChange}
+                    from={null}
+                    to={null}
+                />
+            </React.Fragment>
+        );
         const columns = getProfitTableColumnsTemplate(currency);
 
         return (
@@ -62,6 +73,7 @@ class ProfitTable extends React.Component {
                 <ReportsMeta
                     i18n_heading={localize('Profit table')}
                     i18n_message={localize('View all trades purchased on your account, and a summary of your total profit/loss.')}
+                    filter_component={filter_component}
                 />
                 { (is_loading && data.length === 0) || is_empty ?
                     <PlaceholderComponent
@@ -98,6 +110,7 @@ ProfitTable.propTypes = {
     currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,
+    handleDateChange : PropTypes.func,
     handleScroll     : PropTypes.func,
     has_selected_date: PropTypes.bool,
     history          : PropTypes.object,
@@ -114,6 +127,7 @@ export default connect(
         data             : modules.profit_table.data,
         error            : modules.profit_table.error,
         handleScroll     : modules.profit_table.handleScroll,
+        handleDateChange : modules.profit_table.handleDateChange,
         has_selected_date: modules.profit_table.has_selected_date,
         is_empty         : modules.profit_table.is_empty,
         is_loading       : modules.profit_table.is_loading,

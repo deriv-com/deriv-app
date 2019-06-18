@@ -3,8 +3,8 @@ import {
     computed,
     observable,
 }                                        from 'mobx';
-import moment                            from 'moment';
 import { WS }                            from 'Services';
+import { epochToMoment }                 from 'Utils/Date';
 import { formatProfitTableTransactions } from './Helpers/format-response';
 import BaseStore                         from '../../base-store';
 
@@ -12,8 +12,8 @@ const batch_size = 50;
 
 export default class ProfitTableStore extends BaseStore {
     @observable data           = [];
-    @observable date_from      = '';
-    @observable date_to        = '';
+    @observable date_from      = 0;
+    @observable date_to        = 0;
     @observable error          = '';
     @observable has_loaded_all = false;
     @observable is_loading     = false;
@@ -46,8 +46,8 @@ export default class ProfitTableStore extends BaseStore {
 
         const response = await WS.profitTable({
             offset: this.data.length,
-            ...this.date_from && { date_from: moment(this.date_from).unix() },
-            ...this.date_to && { date_to: moment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
+            ...this.date_from && { date_from: this.date_from },
+            ...this.date_to && { date_to: epochToMoment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
         });
         this.profitTableResponseHandler(response);
     }
@@ -128,7 +128,18 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     clearDateFilter() {
-        this.date_from = '';
-        this.date_to   = '';
+        this.date_from = 0;
+        this.date_to   = 0;
+    }
+
+    @action.bound
+    handleDateChange(date_values) {
+        Object.keys(date_values).forEach(key => {
+            if (date_values[key]) {
+                this[`date_${key}`] = date_values[key];
+            }
+        });
+        this.clearTable();
+        this.fetchNextBatch();
     }
 }

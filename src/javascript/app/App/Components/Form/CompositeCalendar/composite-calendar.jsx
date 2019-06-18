@@ -67,7 +67,7 @@ class CompositeCalendar extends React.PureComponent {
 
     get from_date_label() {
         const date = epochToMoment(this.state.selected_from_date);
-        return !this.state.selected_from_date ? '' : date.format('MMM, DD YYYY');
+        return this.state.selected_from_date ? date.format('MMM, DD YYYY') : '';
     }
 
     hideCalendar () {

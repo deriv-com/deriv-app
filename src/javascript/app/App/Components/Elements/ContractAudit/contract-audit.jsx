@@ -1,22 +1,32 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import IconExitWon       from 'Images/app/contract_details/ic-exittime-won.svg';
-import IconExitLoss      from 'Images/app/contract_details/ic-exittime-loss.svg';
-import { localize }      from '_common/localize';
+import classNames               from 'classnames';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { Scrollbars }           from 'tt-react-custom-scrollbars';
+import IconExitWon              from 'Images/app/contract_details/ic-exittime-won.svg';
+import IconExitLoss             from 'Images/app/contract_details/ic-exittime-loss.svg';
+import { localize }             from '_common/localize';
 import {
     epochToMoment,
-    toGMTFormat }        from 'Utils/Date';
+    toGMTFormat }               from 'Utils/Date';
 import {
     addCommaToNumber,
     getBarrierLabel,
     getBarrierValue,
-    isDigitType }        from 'App/Components/Elements/PositionsDrawer/helpers';
-import { getThemedIcon } from './Helpers/icons';
-import ContractAuditItem from './contract-audit-item.jsx';
+    isDigitType }               from 'App/Components/Elements/PositionsDrawer/helpers';
+import { getUnderlyingPipSize } from 'Stores/Modules/Trading/Helpers/active-symbols';
+import { getThemedIcon }        from './Helpers/icons';
+import ContractAuditItem        from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
+    state = {
+        decimal_places: null,
+    };
+
+    componentDidMount = async () => {
+        const decimal_places = await getUnderlyingPipSize(this.props.contract_info.underlying);
+        this.setState({ decimal_places });
+    }
+
     render() {
         const {
             contract_end_time,
@@ -81,7 +91,7 @@ class ContractAudit extends React.PureComponent {
                             <ContractAuditItem
                                 icon={getThemedIcon('entry_spot', is_dark_theme)}
                                 label={localize('Entry spot')}
-                                value={addCommaToNumber(contract_info.entry_spot) || ' - '}
+                                value={addCommaToNumber(contract_info.entry_spot, this.state.decimal_places) || ' - '}
                                 value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
                             />
                         </div>
@@ -92,7 +102,7 @@ class ContractAudit extends React.PureComponent {
                                 <ContractAuditItem
                                     icon={getThemedIcon('exit_spot', is_dark_theme)}
                                     label={localize('Exit spot')}
-                                    value={addCommaToNumber(exit_spot) || ' - '}
+                                    value={addCommaToNumber(exit_spot, this.state.decimal_places) || ' - '}
                                     value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
                                 />
                             </div>

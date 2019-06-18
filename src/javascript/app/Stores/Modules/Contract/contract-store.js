@@ -3,6 +3,7 @@ import {
     computed,
     extendObservable,
     observable }              from 'mobx';
+import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { localize }           from '_common/localize';
 import { WS }                 from 'Services';
@@ -115,8 +116,7 @@ export default class ContractStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        // TODO: remove .toString() when API is ready
-        const proposal_open_contract_request = [contract_id.toString(), cb, false];
+        const proposal_open_contract_request = [contract_id, cb, false];
 
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {
@@ -130,7 +130,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onMount(contract_id, is_from_positions) {
-        if (contract_id === +this.contract_id) return;
+        if (contract_id === this.contract_id) return;
         if (this.root_store.modules.smart_chart.is_contract_mode) this.onCloseContract();
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         this.has_error         = false;
@@ -146,7 +146,9 @@ export default class ContractStore extends BaseStore {
             }
             this.smart_chart.saveAndClearTradeChartLayout('contract');
             this.smart_chart.setContractMode(true);
-            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
+            BinarySocket.wait('authorize').then(() => {
+                this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
+            });
         }
     }
 
@@ -157,12 +159,15 @@ export default class ContractStore extends BaseStore {
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.replay_contract_id = contract_id;
-            this.handleSubscribeProposalOpenContract(this.replay_contract_id, this.populateConfig);
+            BinarySocket.wait('authorize').then(() => {
+                this.handleSubscribeProposalOpenContract(this.replay_contract_id, this.populateConfig);
+            });
         }
     }
 
     @action.bound
     onUnmountReplay() {
+        this.forgetProposalOpenContract(this.replay_contract_id, this.populateConfig);
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
@@ -185,6 +190,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
+        this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
         this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
@@ -224,7 +230,7 @@ export default class ContractStore extends BaseStore {
             this.smart_chart.setIsChartLoading(false);
             return;
         }
-        if (+response.proposal_open_contract.contract_id !== +this.replay_contract_id) return;
+        if (+response.proposal_open_contract.contract_id !== this.replay_contract_id) return;
 
         this.replay_info = response.proposal_open_contract;
 
@@ -283,7 +289,7 @@ export default class ContractStore extends BaseStore {
             this.smart_chart.setIsChartLoading(false);
             return;
         }
-        if (+response.proposal_open_contract.contract_id !== +this.contract_id) return;
+        if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
 
@@ -298,9 +304,10 @@ export default class ContractStore extends BaseStore {
     }
 
     @action.bound
-    handleDigits(contract_info) {
+    async handleDigits(contract_info) {
         if (this.is_digit_contract) {
-            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
+            const digit_info = await getDigitInfo(this.digits_info, contract_info);
+            extendObservable(this.digits_info, digit_info);
         }
     }
 
@@ -346,6 +353,10 @@ export default class ContractStore extends BaseStore {
             SmartChartStore.updateChartType('mountain');
         }
         SmartChartStore.updateGranularity(granularity);
+    }
+
+    forgetProposalOpenContract = (contract_id, cb) => {
+        WS.forget('proposal_open_contract', cb, { contract_id });
     }
 
     @action.bound

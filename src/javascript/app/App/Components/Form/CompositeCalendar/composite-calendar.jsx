@@ -148,8 +148,8 @@ class CompositeCalendar extends React.PureComponent {
         return (
             // eslint-disable-next-line react/no-children-prop
             <React.Fragment>
-                <InputField icon={IconCalendar} onClick={this.showCalendar.bind(this, 'from')} value={this.from_date_label} />
-                <InputField icon={IconCalendar} onClick={this.showCalendar.bind(this, 'to')} value={this.to_date_label} />
+                <InputField placeholder={localize('Date from')} icon={IconCalendar} onClick={this.showCalendar.bind(this, 'from')} value={this.from_date_label} />
+                <InputField placeholder={localize('Date to')} icon={IconCalendar} onClick={this.showCalendar.bind(this, 'to')} value={this.to_date_label} />
                 {show_to &&
                 <div className='composite-calendar' ref={this.setWrapperRef}>
                     <SideList items={list} />

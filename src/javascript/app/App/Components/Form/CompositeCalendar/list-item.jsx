@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import PropTypes  from 'prop-types';
 import classNames from 'classnames';
-import React from 'react';
+import React      from 'react';
 
 const ListItem = ({ onClick, is_active, children }) => (
     <li

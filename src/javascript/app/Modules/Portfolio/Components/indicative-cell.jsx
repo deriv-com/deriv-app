@@ -1,8 +1,8 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Icon              from 'Assets/icon.jsx';
-import { localize }      from '_common/localize';
-import Money             from 'App/Components/Elements/money.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { localize } from '_common/localize';
+import Money        from 'App/Components/Elements/money.jsx';
+import Icon         from 'Assets/icon.jsx';
 
 class IndicativeCell extends React.PureComponent {
     constructor(props) {

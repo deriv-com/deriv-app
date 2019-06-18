@@ -1,5 +1,5 @@
 import PropTypes            from 'prop-types';
-import React, { PureComponent } from 'react';
+import React                from 'react';
 import { localize }         from '_common/localize';
 import InputField           from 'App/Components/Form/InputField/input-field.jsx';
 import IconCalendar         from 'Assets/Reports/icon-calendar.jsx';
@@ -11,7 +11,7 @@ import {
 import SideList             from './side-list.jsx';
 import TwoMonthPicker       from './two-month-picker.jsx';
 
-class CompositeCalendar extends PureComponent {
+class CompositeCalendar extends React.PureComponent {
     constructor(props) {
         super(props);
         const date = toMoment(props.to);

@@ -9,7 +9,7 @@ import {  getMarketName,
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
-    const market_information = getMarketInformation(payload);
+    const market_information = getMarketInformation(payload.shortcode);
 
     if (should_show_category_icon && market_information) {
         return (

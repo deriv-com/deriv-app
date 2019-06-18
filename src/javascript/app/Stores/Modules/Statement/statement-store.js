@@ -2,9 +2,8 @@ import {
     action,
     computed,
     observable }                      from 'mobx';
-import moment                         from 'moment';
 import { WS }                         from 'Services';
-import { epochToMoment }              from '../../../Utils/Date';
+import { epochToMoment }              from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
 import BaseStore                      from '../../base-store';
 

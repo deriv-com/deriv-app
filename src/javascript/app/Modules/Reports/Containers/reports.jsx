@@ -63,7 +63,7 @@ class Reports extends React.Component {
             },
             {
                 component: () => <WalletInformation />,
-                title    : 'Hey!',
+                title    : '',
             },
         ];
         return (

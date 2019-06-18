@@ -1,11 +1,12 @@
 import {
     action,
     computed,
-    observable }                        from 'mobx';
-import moment                           from 'moment';
-import { WS }                           from 'Services';
-import { formatStatementTransaction }   from './Helpers/format-response';
-import BaseStore                        from '../../base-store';
+    observable }                      from 'mobx';
+import moment                         from 'moment';
+import { WS }                         from 'Services';
+import { epochToMoment }              from '../../../Utils/Date';
+import { formatStatementTransaction } from './Helpers/format-response';
+import BaseStore                      from '../../base-store';
 
 const batch_size = 100; // request response limit
 
@@ -13,8 +14,8 @@ export default class StatementStore extends BaseStore {
     @observable data           = [];
     @observable is_loading     = false;
     @observable has_loaded_all = false;
-    @observable date_from      = '';
-    @observable date_to        = '';
+    @observable date_from      = 0;
+    @observable date_to        = 0;
     @observable error          = '';
 
     @computed
@@ -50,8 +51,8 @@ export default class StatementStore extends BaseStore {
             batch_size,
             this.data.length,
             {
-                ...this.date_from && { date_from: moment(this.date_from).unix() },
-                ...this.date_to && { date_to: moment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
+                ...this.date_from && { date_from: this.date_from },
+                ...this.date_to && { date_to: epochToMoment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
             },
         );
         this.statementHandler(response);
@@ -76,12 +77,14 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
-    handleDateChange(e) {
-        if (e.target.value !== this[e.target.name]) {
-            this[e.target.name] = e.target.value;
-            this.clearTable();
-            this.fetchNextBatch();
-        }
+    handleDateChange(date_values) {
+        Object.keys(date_values).forEach(key => {
+            if (date_values[key]) {
+                this[`date_${key}`] = date_values[key];
+            }
+        });
+        this.clearTable();
+        this.fetchNextBatch();
     }
 
     @action.bound

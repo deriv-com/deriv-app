@@ -48,7 +48,7 @@ class InputField extends React.Component {
             unit,
             value,
         } = this.props;
-
+        const Icon = this.props.icon;
         const has_error       = error_messages && !!error_messages.length;
         let has_valid_length  = true;
         const max_is_disabled = max_value && +value >= +max_value;
@@ -223,6 +223,9 @@ class InputField extends React.Component {
                 <div
                     className={classNames('input-field', className)}
                 >
+                    {this.props.icon &&
+                    <Icon onClick={onClick} />
+                    }
                     {input_tooltip}
                 </div>
             </React.Fragment>
@@ -239,14 +242,18 @@ InputField.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    className               : PropTypes.string,
-    classNameInlinePrefix   : PropTypes.string,
-    classNameInput          : PropTypes.string,
-    classNamePrefix         : PropTypes.string,
-    currency                : PropTypes.string,
-    error_messages          : MobxPropTypes.arrayOrObservableArray,
-    fractional_digits       : PropTypes.number,
-    helper                  : PropTypes.string,
+    className            : PropTypes.string,
+    classNameInlinePrefix: PropTypes.string,
+    classNameInput       : PropTypes.string,
+    classNamePrefix      : PropTypes.string,
+    currency             : PropTypes.string,
+    error_messages       : MobxPropTypes.arrayOrObservableArray,
+    fractional_digits    : PropTypes.number,
+    helper               : PropTypes.string,
+    icon                 : PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.node,
+    ]),
     id                      : PropTypes.string,
     inline_prefix           : PropTypes.string,
     is_autocomplete_disabled: PropTypes.bool,

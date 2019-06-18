@@ -4,20 +4,13 @@ import React, { Component } from 'react';
 import CalendarBody         from 'App/Components/Elements/Calendar/calendar-body.jsx';
 import CalendarHeader       from 'App/Components/Elements/Calendar/calendar-header.jsx';
 import {
-    addMonths,
-    diffInMonths,
-    subMonths,
-    toMoment,
+    addMonths, diffInMonths, epochToMoment, subMonths, toMoment,
 } from 'Utils/Date';
 
 class TwoMonthPicker extends Component {
     constructor(props) {
         super(props);
-        this.state = TwoMonthPicker.getDerivedStateFromProps(props);
-    }
-
-    static getDerivedStateFromProps(props) {
-        return {
+        this.state = {
             left_pane_date : subMonths(props.value, 1).unix(),
             right_pane_date: props.value,
         };
@@ -25,8 +18,8 @@ class TwoMonthPicker extends Component {
 
     navigateFrom (e) {
         this.setState({
-            left_pane_date : e,
-            right_pane_date: addMonths(e, 1),
+            left_pane_date : e.unix(),
+            right_pane_date: addMonths(e, 1).unix(),
         });
     }
 
@@ -38,9 +31,14 @@ class TwoMonthPicker extends Component {
      * @returns {boolean}
      */
     validateFromArrows(date, range) {
-        return (
-            range === 'year' || diffInMonths(this.state.left_pane_date, date) !== -1
-        );
+        return (range === 'year' || diffInMonths(epochToMoment(this.state.left_pane_date), date) !== -1);
+    }
+
+    /**
+     * Validate values to be date_from < date_to
+     */
+    shouldDisableDate(date) {
+        return date.unix() >= this.props.max_value;
     }
 
     /**
@@ -53,7 +51,7 @@ class TwoMonthPicker extends Component {
      */
     validateToArrows(date, range) {
         if (range === 'year') return true;
-        const r_date = toMoment(this.state.right_pane_date);
+        const r_date = epochToMoment(this.state.right_pane_date);
         if (diffInMonths(toMoment(), r_date) === 0) return true;
         return diffInMonths(r_date, date) !== 1;
     }
@@ -84,13 +82,14 @@ class TwoMonthPicker extends Component {
                         navigateTo={this.navigateFrom.bind(this)}
                         isPeriodDisabled={this.validateFromArrows.bind(this)}
                         hide_disabled_periods={true}
+                        switchView={() => ({})}
                     />
                     <CalendarBody
                         calendar_view='date'
                         calendar_date={left_pane_date}
                         selected_date={this.props.value}
                         date_format='YYYY-MM-DD'
-                        isPeriodDisabled={() => false}
+                        isPeriodDisabled={this.shouldDisableDate.bind(this)}
                         hide_others={true}
                         updateSelected={this.updateSelectedDate.bind(this)}
                     />
@@ -102,13 +101,14 @@ class TwoMonthPicker extends Component {
                         isPeriodDisabled={this.validateToArrows.bind(this)}
                         navigateTo={this.navigateTo.bind(this)}
                         hide_disabled_periods={true}
+                        switchView={() => ({})}
                     />
                     <CalendarBody
                         calendar_view='date'
                         calendar_date={right_pane_date}
                         selected_date={this.props.value}
                         date_format='YYYY-MM-DD'
-                        isPeriodDisabled={() => (false)}
+                        isPeriodDisabled={this.shouldDisableDate.bind(this)}
                         hide_others={true}
                         updateSelected={this.updateSelectedDate.bind(this)}
                     />
@@ -119,7 +119,8 @@ class TwoMonthPicker extends Component {
 }
 
 TwoMonthPicker.propTypes = {
-    onChange: PropTypes.func,
-    value   : PropTypes.number,
+    max_value: PropTypes.number,
+    onChange : PropTypes.func,
+    value    : PropTypes.number,
 };
 export default TwoMonthPicker;

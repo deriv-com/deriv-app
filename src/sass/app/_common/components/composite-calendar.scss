@@ -9,7 +9,7 @@
     border-radius: $BORDER_RADIUS;
     @include themify($themes) {
         background-color: themed(container_secondary_color);
-        box-shadow: 0 2px 8px 0 themed('border_outline_color');
+        box-shadow: 0 2px 16px 8px themed(border_color);
     }
 
     .composite-wrapper {
@@ -27,22 +27,26 @@
         }
     }
     &__prepopulated-list {
-        padding-top: 53px;
+        padding-top: 50px;
         @include typeface(--paragraph-center-normal-black);
         @include themify($themes) {
             color: themed(text_color);
             background-color: themed(tab_background_color);
         }
 
-        & > ul li {
+        &--is-active {
+            @include themify($themes) {
+                color: themed(text_color);
+                background-color: themed(tab_hover_color);
+                font-weight: bold;
+            }
+        }
+        & li {
             cursor: pointer;
             padding: 6px 6px 6px 16px;
             height: 32px;
             display: flex;
             align-items: center;
-        }
-        & > ul li:first-child {
-            padding: 0px 6px 6px 16px;
         }
     }
 }

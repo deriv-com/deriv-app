@@ -26,14 +26,6 @@ class Statement extends React.Component {
         this.props.onUnmount();
     }
 
-    setToDate (e) { //eslint-disable-line
-        console.log('Setting to date to %o', e); // eslint-disable-line no-console
-    }
-
-    setFromDate (e) { //eslint-disable-line
-        console.log('Setting from date to %o', e); // eslint-disable-line no-console
-    }
-
     getRowAction = (row_obj) => {
         let action;
 
@@ -69,6 +61,7 @@ class Statement extends React.Component {
             is_loading,
             error,
             handleScroll,
+            handleDateChange,
             has_selected_date,
         } = this.props;
 
@@ -77,7 +70,11 @@ class Statement extends React.Component {
         const columns = getStatementTableColumnsTemplate(currency);
         const filter_component = (
             <React.Fragment>
-                <CompositeCalendar onChange={this.setToDate.bind(this)} from={null} to={null} />
+                <CompositeCalendar
+                    onChange={handleDateChange}
+                    from={null}
+                    to={null}
+                />
             </React.Fragment>
         );
         return (
@@ -135,6 +132,7 @@ export default connect(
         data             : modules.statement.data,
         error            : modules.statement.error,
         handleScroll     : modules.statement.handleScroll,
+        handleDateChange : modules.statement.handleDateChange,
         has_selected_date: modules.statement.has_selected_date,
         is_empty         : modules.statement.is_empty,
         is_loading       : modules.statement.is_loading,

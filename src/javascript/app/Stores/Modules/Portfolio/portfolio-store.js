@@ -14,6 +14,7 @@ import {
 import {
     getDisplayStatus,
     getEndTime,
+    isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
@@ -122,6 +123,10 @@ export default class PortfolioStore extends BaseStore {
         } else {
             portfolio_position.status = null;
         }
+
+        if (isEnded(proposal)) {
+            WS.forget('proposal_open_contract', this.proposalOpenContractHandler, proposal.contract_id);
+        }
     }
 
     @action.bound
@@ -183,6 +188,10 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        if (isEnded(contract_response)) {
+            WS.forget('proposal_open_contract', this.populateResultDetails, contract_response.contract_id);
+        }
     };
 
     @action.bound
@@ -224,10 +233,12 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
+        WS.forgetAll('proposal_open_contract');
+
         // keep data and connections for portfolio drawer on desktop
         if (this.root_store.ui.is_mobile) {
             this.clearTable();
-            WS.forgetAll('proposal_open_contract', 'transaction');
+            WS.forgetAll('transaction');
         }
     }
 

@@ -328,6 +328,7 @@ export default class ClientStore extends BaseStore {
                 return;
             }
 
+            this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
             this.root_store.ui.addNotification({
                 message: localize('Switching to default account.'),

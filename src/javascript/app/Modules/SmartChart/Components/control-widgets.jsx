@@ -10,8 +10,8 @@ import {
     Views }           from 'smartcharts-beta';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { Popover }    from 'App/Components/Elements/Popover';
 import { localize }   from '_common/localize';
+import { Popover }    from 'App/Components/Elements/Popover';
 
 const ControlWidgets = ({
     hasReachedLimitListener,

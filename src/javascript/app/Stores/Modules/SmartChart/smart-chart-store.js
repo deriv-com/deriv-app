@@ -19,10 +19,10 @@ export default class SmartChartStore extends BaseStore {
     @observable barriers = observable.object({});
     @observable markers  = observable.object({});
 
-    @observable is_contract_mode = false;
-    @observable is_static_chart  = false;
-    @observable is_title_enabled = true;
+    @observable is_contract_mode             = false;
+    @observable is_static_chart              = false;
     @observable is_study_limit_error_visible = false;
+    @observable is_title_enabled             = true;
 
     @observable start_epoch;
     @observable end_epoch;
@@ -87,8 +87,8 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    hasReachedLimitListener(hasReached) {
-        this.is_study_limit_error_visible = hasReached;
+    hasReachedLimitListener(has_reached) {
+        this.is_study_limit_error_visible = has_reached;
     }
 
     @action.bound

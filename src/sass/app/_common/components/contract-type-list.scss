@@ -1,0 +1,156 @@
+/** @define contract-type-list; */
+.contract-type-list {
+    padding: 1.6em 1.6em 0em;
+
+    &__label {
+        @include typeface(--paragraph-left-bold-black);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        margin-bottom: 0.6em;
+    }
+    &:last-child {
+        padding-bottom: 1.6em;
+    }
+    &__contracts-wrapper {
+        &:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom: none;
+        }
+        &:last-child {
+            border-top: none;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        &:only-child {
+            border-radius: 4px;
+        }
+        &:hover:not(.selected) {
+            @include themify($themes) {
+                background: themed('tab_hover_color');
+            }
+        }
+    }
+}
+
+/** @define contract-type-item */
+.contract-type-item {
+    width: 100%;
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.8em;
+    box-sizing: border-box;
+    margin-bottom: 0.1em;
+    transition: transform 0.3s opacity 0.3s;
+    @include themify($themes) {
+        background-color: themed('container_color');
+        color: themed('text_primary_color');
+    }
+
+    &:hover {
+        @include themify($themes) {
+            background-color: themed('tab_hover_color');
+        }
+
+        .contract-type-item__icon {
+            display: block;
+        }
+    }
+    &__title {
+        @include typeface(--paragraph-left-normal-black);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        padding-left: 0.4em;
+    }
+    &__icon {
+        display: none;
+        height: 16px;
+        width: 16px;
+        margin-left: auto;
+
+        /* postcss-bem-linter: ignore */
+        svg {
+            pointer-events: none;
+            @extend %inline-icon.secondary;
+        }
+        &:hover {
+            /* postcss-bem-linter: ignore */
+            svg {
+                pointer-events: none;
+                @extend %inline-icon.white;
+            }
+        }
+    }
+    &--invisible {
+        display: none;
+    }
+    &--selected {
+        @include themify($themes) {
+            color: themed('text_active_color');
+            background: themed('active_color') !important;
+        }
+        /* postcss-bem-linter: ignore */
+        span {
+            font-weight: bold;
+            @include themify($themes) {
+                color: themed('text_active_color');
+            }
+        }
+        .contract-type-item__icon {
+            /* postcss-bem-linter: ignore */
+            svg {
+                pointer-events: none;
+
+                .color1-fill {
+                    @include themify($themes) {
+                        fill: themed('icon_active_color');
+                    }
+                }
+            }
+            &:hover {
+                /* postcss-bem-linter: ignore */
+                svg {
+                    pointer-events: none;
+
+                    .color1-fill {
+                        @include themify($themes) {
+                            fill: themed('text_active_color') !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &__icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.7em;
+
+        /* postcss-bem-linter: ignore */
+        .category-wrapper {
+            margin: 0 0.2em;
+            @include themify($themes) {
+                /* postcss-bem-linter: ignore */
+                path, rect {
+                    /* postcss-bem-linter: ignore */
+                    &:not(.important) {
+                        fill: themed('icon_color');
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &.transparent {
+                        fill: themed('background_icon_color');
+                    }
+                }
+                /* postcss-bem-linter: ignore */
+                .stroke-active {
+                    stroke: themed('icon_color');
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,162 @@
+/** @define trade-type-info-dialog; */
+.trade-type-info-dialog {
+    right: 0.4em;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+    transition: transform 0.25s ease, opacity 0.25s;
+    transform: translateX(50%);
+    user-select: none;
+    opacity: 0;
+    height: 0;
+    z-index: 999;
+
+    &__body {
+        overflow: hidden;
+    }
+    &__card {
+        width: 258px;
+        flex: none;
+        margin: 0 16px 0 0;
+
+        &-wrapper {
+            display: flex;
+            flex-direction: row;
+            transition: transform 0.3s linear;
+        }
+    }
+    &__info-wrapper {
+        position: absolute;
+        width: 290px;
+        height: 544px;
+        right: calc(100% + 10px);
+        top: -66px;
+        z-index: 2;
+        border-radius: 4px;
+        padding: 1.6em 1.6em 1em;
+        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+        display: flex;
+        flex-direction: column;
+        @include themify($themes) {
+            background: themed('background_container_color');
+        }
+    }
+    &__choose-button {
+        background: $COLOR_ORANGE;
+        margin: 1.6em 0;
+        width: 100%;
+
+        span {
+            @include typeface(--paragraph-center-bold-active);
+        }
+    }
+    &__content {
+        margin-top: 1.5em;
+        height: 260px;
+        overflow: hidden;
+
+        p {
+            @include typeface(--paragraph-left-normal-black, none);
+            @include toEm(margin-bottom, 8px, 1.4em);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+    }
+    &__gif {
+        width: 100%;
+        height: 140px;
+        background-color: $COLOR_WHITE;
+        border-radius: 4px;
+        @include themify($themes) {
+            background-color: themed('container_color');
+            color: themed('disabled_color');
+        }
+
+        &-image {
+            width: 270px;
+            height: 142px;
+
+            &--dark {
+                margin-left: -6px;
+                margin-top: -2px;
+            }
+        }
+    }
+    &__header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8em;
+
+        /* postcss-bem-linter: ignore */
+        .title {
+            @include typeface(--paragraph-left-bold-black);
+            @include toEm(margin-left, 8px, 1.4em);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            cursor: default;
+        }
+
+        /* postcss-bem-linter: ignore */
+        span {
+            cursor: pointer;
+        }
+        /* postcss-bem-linter: ignore */
+        svg {
+            @extend %inline-icon;
+        }
+    }
+    &--enter, &--exit {
+        transform: translateX(50%);
+        pointer-events: none;
+        opacity: 0;
+        height: 0;
+    }
+    &--enterDone {
+        transform: translateX(0);
+        max-height: 100%;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/** @define trade-type-info-navigation; */
+.trade-type-info-navigation {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    &__list {
+        display: inline-block;
+        text-align: center;
+        margin: 0 auto;
+        position: relative;
+    }
+    &__circle-button {
+        width: 0.8em;
+        height: 0.8em;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 0.4em;
+        cursor: pointer;
+        @include themify($themes) {
+            background-color: themed('slider_background_color');
+        }
+
+        &--active {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: initial;
+            transition: transform 0.3s linear;
+            @include themify($themes) {
+                background-color: themed('trade_carousel_indicator');
+            }
+        }
+    }
+    &__icon {
+        @extend %inline-icon;
+        cursor: pointer;
+    }
+}

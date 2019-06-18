@@ -11,6 +11,3 @@ App.propTypes = {
 };
 
 export default App;
-
-const wrapper = document.getElementById('app');
-wrapper ? ReactDOM.render(<App />, wrapper) : false;

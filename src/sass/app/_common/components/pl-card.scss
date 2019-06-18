@@ -1,0 +1,64 @@
+.pl-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &-payout {
+            padding-left: 4px;
+        }
+        &__header {
+            margin-bottom: 4px;
+            align-self: flex-start;
+            white-space: nowrap;
+            max-width: 90px;
+            @include themify($themes) {
+                @include typeface(--xsmall-left-normal-black, none);
+                color: themed('text_primary_color');
+            }
+        }
+        &__body {
+            display: flex;
+            align-items: center;
+            align-self: flex-start;
+
+            &--is-crypto {
+                margin-left: -6px;
+            }
+            @include themify($themes) {
+                @include typeface(--small-left-bold-black);
+                color: themed('text_color');
+            }
+        }
+        &__body--loss {
+            color: $COLOR_RED !important;
+
+            &:before {
+                content: '-';
+            }
+        }
+        &__body--profit {
+            color: $COLOR_GREEN_1 !important;
+
+            &:before {
+                content: '+';
+            }
+        }
+    }
+    &__indicative--movement {
+        margin-left: 2px;
+        width: 16px;
+        height: 16px;
+
+        &-complete, &-complete:after {
+            display: none;
+        }
+        &:after {
+            content: '';
+            width: 16px;
+        }
+    }
+}

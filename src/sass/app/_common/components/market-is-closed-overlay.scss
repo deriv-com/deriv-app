@@ -1,0 +1,38 @@
+/** @define .market-is-closed-overlay */
+.market-is-closed-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    flex-direction: column;
+    padding: 0 32px;
+    @include themify($themes) {
+        background-color: themed('market_overlay_background');
+    }
+
+    p {
+        @include typeface(--paragraph-center-normal-black);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        text-transform: none;
+    }
+    &__button {
+        @include themify($themes) {
+            background-color: themed('btn_close_market_bg');
+        }
+        @include toEm('height', 40px);
+
+        &--span {
+            @include typeface(--paragraph-center-bold-black);
+            @include themify($themes) {
+                color: themed('btn_close_market_color');
+            }
+        }
+    }
+}

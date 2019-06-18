@@ -291,9 +291,8 @@ export default class TradeStore extends BaseStore {
                         // and then set the chart view to the start_time
                         this.smart_chart.switchToContractMode();
                         this.smart_chart.setChartView(start_time);
-                        // draw the start time line and show longcode before mounting contract
+                        // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
-                        // this.root_store.modules.contract.onMount(contract_id, false);
                         this.root_store.ui.openPositionsDrawer();
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);

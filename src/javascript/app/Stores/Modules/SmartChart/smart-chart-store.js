@@ -21,10 +21,9 @@ export default class SmartChartStore extends BaseStore {
     barriers_empty_array = [];
     markers_empty_array = [];
 
-    @observable is_contract_mode             = false;
-    @observable is_static_chart              = false;
-    @observable is_study_limit_error_visible = false;
-    @observable is_title_enabled             = true;
+    @observable is_contract_mode = false;
+    @observable is_static_chart  = false;
+    @observable is_title_enabled = true;
 
     @observable start_epoch;
     @observable end_epoch;

@@ -181,6 +181,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onUnmountReplay() {
+        this.forgetProposalOpenContract(this.replay_contract_id, this.populateConfig);
         this.replay_contract_id       = null;
         this.digits_info              = {};
         this.is_ongoing_contract      = false;
@@ -203,6 +204,8 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     onCloseContract() {
+        this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
+        this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
         this.digits_info         = {};
@@ -362,6 +365,10 @@ export default class ContractStore extends BaseStore {
 
         this.smart_chart.updateChartType(chart_type);
         this.smart_chart.updateGranularity(granularity);
+    }
+
+    forgetProposalOpenContract = (contract_id, cb) => {
+        WS.forget('proposal_open_contract', cb, { contract_id });
     }
 
     @action.bound

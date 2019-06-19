@@ -26,7 +26,7 @@ describe('Barriers', () => {
             expect(Barriers.barriersToString(true, +11, +15)).to.deep.eql(['+11','+15']);
         });
     });
-    
+
     describe('barriersObjectToArray', () => {
         const main = {
             color: "green",
@@ -36,7 +36,7 @@ describe('Barriers', () => {
             const barriers = {
                 main,
             };
-            expect(Barriers.barriersObjectToArray(barriers)).to.deep.eql([{
+            expect(Barriers.barriersObjectToArray(barriers, [])).to.deep.eql([{
                 color: "green",
                 draggable: false
             }]);
@@ -46,7 +46,7 @@ describe('Barriers', () => {
                 main,
                 somethingEmpty: {},
             };
-            expect(Barriers.barriersObjectToArray(barriers)).to.deep.eql([{
+            expect(Barriers.barriersObjectToArray(barriers, [])).to.deep.eql([{
                 color: "green",
                 draggable: false
             }]);

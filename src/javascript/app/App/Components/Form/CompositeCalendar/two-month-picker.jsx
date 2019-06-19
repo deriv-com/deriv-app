@@ -38,7 +38,7 @@ class TwoMonthPicker extends Component {
      * Validate values to be date_from < date_to
      */
     shouldDisableDate(date) {
-        return date.unix() >= this.props.max_value;
+        return this.props.isPeriodDisabled(date.unix());
     }
 
     /**
@@ -119,8 +119,8 @@ class TwoMonthPicker extends Component {
 }
 
 TwoMonthPicker.propTypes = {
-    max_value: PropTypes.number,
-    onChange : PropTypes.func,
-    value    : PropTypes.number,
+    isPeriodDisabled: PropTypes.func,
+    onChange        : PropTypes.func,
+    value           : PropTypes.number,
 };
 export default TwoMonthPicker;

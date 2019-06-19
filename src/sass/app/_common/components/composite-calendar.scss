@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 128px minmax(min-content, 280px) minmax(min-content, 280px);
     position: absolute;
-    top: 51px;
+    top: 36px;
     right: 0;
     z-index: 99;
     border-radius: $BORDER_RADIUS;
@@ -34,9 +34,16 @@
             & .input {
                 height: 32px;
                 @include themify($themes) {
-                    background-color: themed(background_container_color);
+                    background-color: themed(border_color);
+                }
+
+                &::placeholder {
+                    @include themify($themes) {
+                        color: themed(text_primary_color);
+                    }
                 }
             }
+
         }
         & > .input-field:not(:first-child) {
             margin-left: 8px;

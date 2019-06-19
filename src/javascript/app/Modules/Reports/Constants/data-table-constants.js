@@ -62,13 +62,13 @@ export const getStatementTableColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value }) => <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} />,
     },
 ];
-export const getProfitTableColumnsTemplate = (currency) => [
+export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         key              : 'icon',
         title            : '',
         col_index        : 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
-            if (is_footer) return localize('Total profit/loss');
+            if (is_footer) return localize('Profit/loss on the last [_1] contracts', items_count);
 
             return (
                 <MarketSymbolIconRow

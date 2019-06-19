@@ -7,12 +7,14 @@ const path = require('path');
 const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = {
+    mode: devMode,
     resolve: {
         alias: {
             _common: path.resolve(__dirname, 'src/javascript/_common'),
             App: path.resolve(__dirname, 'src/javascript/app/App'),
             Assets: path.resolve(__dirname, 'src/javascript/app/Assets'),
             Constants: path.resolve(__dirname, 'src/javascript/app/Constants'),
+            Download: path.resolve(__dirname, 'src/download'),
             Images: path.resolve(__dirname, 'src/images'),
             Modules: path.resolve(__dirname, 'src/javascript/app/Modules'),
             Services: path.resolve(__dirname, 'src/javascript/app/Services'),
@@ -39,6 +41,17 @@ module.exports = {
                 ]
             },
             {
+                test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
+                        }
+                    },
+                ]
+            },
+            {
                 test: /\.svg$/,
                 use : [
                     'babel-loader',
@@ -56,26 +69,27 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(scss|sass|css)$/,
+                test: /\.(sc|sa|c)ss$/,
                 exclude: /node_modules/,
-                loaders: [
+                use: [
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
                             sourceMap: true,
-                            importLoaders: 1,
-                            localIdentName: '[local]___[hash:base64:5]',
                         }
                     },
-                    'sass-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true,
+                        }
+                    },
                 ]
-            },
+            }
         ]
     },
     devServer: {
-        hot: true,
         open: 'Google Chrome',
         host: 'localhost.binary.sx',
         https: true,
@@ -87,19 +101,18 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebPackPlugin({
-            template: './src/index.html',
-            filename: './index.html'
+            template: 'index.html',
+            filename: 'index.html'
         }),
-        new MiniCssExtractPlugin({
-            filename: devMode ? '[name].css' : '[name].[hash].css',
-            chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-        }),
+        new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: '[id].css' }),
         new CopyPlugin([
-            { from: './node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'smartcharts/', flatten: true },
-            { from: './node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'smartcharts/', flatten: true },
+            { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
+            { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
         ]),
     ],
     output: {
         filename: '[name].[hash].js'
-    }
+    },
+    entry: './index.js',
+    context: path.resolve(__dirname, 'src'),
 };

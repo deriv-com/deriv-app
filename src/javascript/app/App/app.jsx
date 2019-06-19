@@ -16,6 +16,7 @@ import Wip                         from './Containers/Wip';
 import './i18n';
 import ReactDOM                    from "react-dom";
 import initStore                   from "./app.js";
+import '../../../sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
@@ -51,7 +52,6 @@ App.propTypes = {
 export default App;
 
 const root_store = initStore();
-console.log(root_store);
 
 const wrapper = document.getElementById('app');
 wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

@@ -22,16 +22,20 @@
     &__input-fields {
         display: flex;
         @include themify($themes) {
-            background-color: themed(background_container_color);
-            padding: 8px;
             border-radius: $BORDER_RADIUS;
         }
 
         & > .input-field {
             margin: 0;
+            @include themify($themes) {
+                @include colorIcon(themed(text_primary_color));
+            }
 
             & .input {
-                height: 36px;
+                height: 32px;
+                @include themify($themes) {
+                    background-color: themed(background_container_color);
+                }
             }
         }
         & > .input-field:not(:first-child) {

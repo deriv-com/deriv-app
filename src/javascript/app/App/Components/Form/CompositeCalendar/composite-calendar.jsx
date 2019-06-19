@@ -137,11 +137,11 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     isPeriodDisabledTo (date) {
-        return date <= this.state.selected_from_date || date > toMoment().endOf('day').unix();
+        return date + 1 <= this.state.selected_from_date || date > toMoment().endOf('day').unix();
     }
 
     isPeriodDisabledFrom (date) {
-        return date >= this.state.selected_to_date;
+        return date - 1 >= this.state.selected_to_date;
     }
 
     render() {

@@ -36,8 +36,8 @@ export default class StatementStore extends BaseStore {
 
     @action.bound
     clearDateFilter() {
-        this.date_from = '';
-        this.date_to   = '';
+        this.date_from = 0;
+        this.date_to   = 0;
     }
 
     @action.bound
@@ -114,8 +114,6 @@ export default class StatementStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.clearTable();
-        this.clearDateFilter();
         WS.forgetAll('proposal');
     }
 }

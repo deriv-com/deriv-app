@@ -47,6 +47,8 @@ class ProfitTable extends React.Component {
             component_icon,
             currency,
             data,
+            date_from,
+            date_to,
             is_empty,
             is_loading,
             error,
@@ -61,8 +63,8 @@ class ProfitTable extends React.Component {
             <React.Fragment>
                 <CompositeCalendar
                     onChange={handleDateChange}
-                    from={null}
-                    to={null}
+                    from={date_from}
+                    to={date_to}
                 />
             </React.Fragment>
         );
@@ -109,6 +111,8 @@ ProfitTable.propTypes = {
     component_icon   : PropTypes.string,
     currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
+    date_from        : PropTypes.number,
+    date_to          : PropTypes.number,
     error            : PropTypes.string,
     handleDateChange : PropTypes.func,
     handleScroll     : PropTypes.func,
@@ -125,6 +129,8 @@ export default connect(
     ({ modules, client }) => ({
         currency         : client.currency,
         data             : modules.profit_table.data,
+        date_from        : modules.profit_table.date_from,
+        date_to          : modules.profit_table.date_to,
         error            : modules.profit_table.error,
         handleScroll     : modules.profit_table.handleScroll,
         handleDateChange : modules.profit_table.handleDateChange,

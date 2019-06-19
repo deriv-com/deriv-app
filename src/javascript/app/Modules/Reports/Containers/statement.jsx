@@ -57,6 +57,8 @@ class Statement extends React.Component {
             component_icon,
             currency,
             data,
+            date_from,
+            date_to,
             is_empty,
             is_loading,
             error,
@@ -72,8 +74,8 @@ class Statement extends React.Component {
             <React.Fragment>
                 <CompositeCalendar
                     onChange={handleDateChange}
-                    from={null}
-                    to={null}
+                    from={date_from}
+                    to={date_to}
                 />
             </React.Fragment>
         );
@@ -116,6 +118,8 @@ class Statement extends React.Component {
 Statement.propTypes = {
     component_icon   : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
+    date_from        : PropTypes.number,
+    date_to          : PropTypes.number,
     error            : PropTypes.string,
     handleScroll     : PropTypes.func,
     has_selected_date: PropTypes.bool,
@@ -129,6 +133,8 @@ Statement.propTypes = {
 export default connect(
     ({ modules, client }) => ({
         currency         : client.currency,
+        date_from        : modules.statement.date_from,
+        date_to          : modules.statement.date_to,
         data             : modules.statement.data,
         error            : modules.statement.error,
         handleScroll     : modules.statement.handleScroll,

@@ -19,8 +19,8 @@ class CompositeCalendar extends React.PureComponent {
         this.state = {
             show_to           : false,
             show_from         : false,
-            selected_to_date  : date.unix(),
-            selected_from_date: props.from ? toMoment(props.from) : null,
+            selected_to_date  : props.to ? props.to : date.unix(),
+            selected_from_date: props.from ? props.from : null,
             list              : [
                 { children: localize('All time'),     onClick: () => this.selectDateRange(0),  duration: 0, is_active: true },
                 { children: localize('Last 7 days'),  onClick: () => this.selectDateRange(7),  duration: 7, is_active: false },

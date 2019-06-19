@@ -140,7 +140,7 @@
     margin-bottom: 0.8em;
     z-index: 0 !important;
     bottom: -100%;
-    transition: bottom 0.3s ease-in;
+    transition: bottom 0.4s linear;
 
     &__wrapper {
         border-left-width: 2px;

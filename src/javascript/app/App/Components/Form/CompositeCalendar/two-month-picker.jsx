@@ -50,16 +50,16 @@ class TwoMonthPicker extends Component {
      * @returns {boolean}
      */
     validateToArrows(date, range) {
-        if (range === 'year') return true;
-        const r_date = epochToMoment(this.state.right_pane_date);
-        if (diffInMonths(toMoment(), r_date) === 0) return true;
+        if (range === 'year') return true; // disallow year arrows
+        const r_date = epochToMoment(this.state.right_pane_date).startOf('month');
+        if (diffInMonths(toMoment().startOf('month'), r_date) === 0) return true; // future months are disallowed
         return diffInMonths(r_date, date) !== 1;
     }
 
     navigateTo(e) {
         this.setState({
-            left_pane_date : subMonths(e, 1),
-            right_pane_date: e,
+            left_pane_date : subMonths(e, 1).unix(),
+            right_pane_date: toMoment(e).unix(),
         });
     }
 

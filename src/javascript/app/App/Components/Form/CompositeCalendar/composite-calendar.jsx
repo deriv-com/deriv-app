@@ -141,7 +141,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     isPeriodDisabledFrom (date) {
-        return date >= selected_to_date;
+        return date >= this.state.selected_to_date;
     }
 
     render() {
@@ -166,7 +166,7 @@ class CompositeCalendar extends React.PureComponent {
                     <TwoMonthPicker
                         value={selected_to_date}
                         onChange={this.setToDate.bind(this)}
-                        isPeriodDisabledTo={this.isPeriodDisabledTo}
+                        isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
                     />
                 </div>}
                 {show_from &&
@@ -175,7 +175,7 @@ class CompositeCalendar extends React.PureComponent {
                     <TwoMonthPicker
                         value={selected_from_date}
                         onChange={this.setFromDate.bind(this)}
-                        isPeriodDisabledFrom={this.isPeriodDisabledFrom}
+                        isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}
                     />
                 </div>}
             </React.Fragment>

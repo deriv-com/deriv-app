@@ -10,7 +10,7 @@ import ChartMarker             from '../Components/Markers/marker.jsx';
 import TopWidgets              from '../Components/top-widgets.jsx';
 import { symbolChange }        from '../Helpers/symbol';
 
-setSmartChartsPublicPath('/smartcharts/');
+setSmartChartsPublicPath('/js/smartcharts/');
 
 class Chart extends React.Component {
     componentDidMount() { this.props.onMount(); }

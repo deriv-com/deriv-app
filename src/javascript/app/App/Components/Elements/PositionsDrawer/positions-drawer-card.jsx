@@ -56,7 +56,7 @@ const PositionsDrawerCard = ({
                 :
                 <ProgressSlider
                     is_loading={is_loading}
-                    start_time={contract_info.purchase_time}
+                    start_time={contract_info.date_start}
                     expiry_time={contract_info.date_expiry}
                     current_tick={current_tick}
                     ticks_count={contract_info.tick_count}

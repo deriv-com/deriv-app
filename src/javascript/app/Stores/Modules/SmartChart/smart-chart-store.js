@@ -89,11 +89,6 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    hasReachedLimitListener(has_reached) {
-        this.is_study_limit_error_visible = has_reached;
-    }
-
-    @action.bound
     resetScrollToLeft() {
         this.scroll_to_left_epoch = null;
         this.scroll_to_left_epoch_offset = null;

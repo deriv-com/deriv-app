@@ -20,8 +20,6 @@ class Chart extends React.Component {
 
     chartControlsWidgets = () => (
         <ControlWidgets
-            hasReachedLimitListener={this.props.hasReachedLimitListener}
-            is_study_limit_error_visible={this.props.is_study_limit_error_visible}
             updateChartType={this.props.updateChartType}
             updateGranularity={this.props.updateGranularity}
         />
@@ -90,13 +88,11 @@ Chart.propTypes = {
     exportLayout                : PropTypes.func,
     getChartStatus              : PropTypes.func,
     granularity                 : PropTypes.number,
-    hasReachedLimitListener     : PropTypes.func,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
     is_static_chart             : PropTypes.bool,
-    is_study_limit_error_visible: PropTypes.bool,
     is_title_enabled            : PropTypes.bool,
     is_trade_page               : PropTypes.bool,
     margin                      : PropTypes.number,
@@ -128,9 +124,7 @@ export default connect(
         barriers_array              : modules.smart_chart.barriers_array,
         exportLayout                : modules.smart_chart.exportLayout,
         getChartStatus              : modules.smart_chart.getChartStatus,
-        hasReachedLimitListener     : modules.smart_chart.hasReachedLimitListener,
         is_contract_mode            : modules.smart_chart.is_contract_mode,
-        is_study_limit_error_visible: modules.smart_chart.is_study_limit_error_visible,
         is_title_enabled            : modules.smart_chart.is_title_enabled,
         margin                      : modules.smart_chart.margin,
         markers_array               : modules.smart_chart.markers_array,

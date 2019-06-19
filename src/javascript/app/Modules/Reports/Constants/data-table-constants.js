@@ -138,6 +138,13 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
             <Money amount={cell_value} currency={currency} />
         ),
     }, {
+        title            : localize('Potential payout'),
+        col_index        : 'payout',
+        renderCellContent: ({ cell_value }) => (
+            cell_value ? <Money amount={cell_value} currency={currency} />
+                : <span>-</span>
+        ),
+    }, {
         title            : localize('Potential profit/loss'),
         col_index        : 'profit',
         renderCellContent: ({ row_obj }) => {
@@ -161,13 +168,6 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 </div>
             );
         },
-    }, {
-        title            : localize('Potential payout'),
-        col_index        : 'payout',
-        renderCellContent: ({ cell_value }) => (
-            cell_value ? <Money amount={cell_value} currency={currency} />
-                : <span>-</span>
-        ),
     }, {
         title            : localize('Indicative price'),
         col_index        : 'indicative',

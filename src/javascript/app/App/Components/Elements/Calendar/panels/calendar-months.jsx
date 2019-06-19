@@ -2,7 +2,7 @@ import classNames        from 'classnames';
 import React             from 'react';
 import { month_headers } from 'Constants/date-time';
 import { toMoment }      from 'Utils/Date';
-import CommonPropTypes   from './types';
+import { CommonPropTypes }   from './types';
 
 export const CalendarMonths = ({
     calendar_date,

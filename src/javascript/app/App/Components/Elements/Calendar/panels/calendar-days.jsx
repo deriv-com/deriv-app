@@ -14,7 +14,7 @@ import {
     subDays,
     subMonths,
     toMoment }          from 'Utils/Date';
-import CommonPropTypes  from './types';
+import { CommonPropTypes }  from './types';
 
 const getDays = ({
     calendar_date,

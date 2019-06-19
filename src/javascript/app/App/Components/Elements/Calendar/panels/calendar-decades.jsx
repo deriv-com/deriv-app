@@ -1,7 +1,7 @@
 import classNames      from 'classnames';
 import React           from 'react';
 import { toMoment }    from 'Utils/Date';
-import CommonPropTypes from './types';
+import { CommonPropTypes } from './types';
 import {
     getCentury,
     getDecade }        from '../helper';

@@ -45,7 +45,7 @@ const Footer = ({
                         />
                     }
                 </div>
-                <NetworkStatus />
+                {/*<NetworkStatus />*/}
                 <ServerTime />
                 <div className='footer__links'>
                     <ToggleSettings

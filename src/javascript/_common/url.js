@@ -97,8 +97,8 @@ const Url = (() => {
             }
         }
 
-        return static_host + path.replace(/(^\/)/g, '');
-    };
+    return static_host + path.replace(/(^\/)/g, '');
+};
 
     return {
         reset,

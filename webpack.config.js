@@ -2,7 +2,7 @@ const CopyWebpackPlugin    = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path                 = require('path');
 const StyleLintPlugin      = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 
 module.exports = {
     entry : [

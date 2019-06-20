@@ -11,5 +11,5 @@ window.check_new_release = checkNewRelease;
 import 'event-source-polyfill';
 import '_common/lib/plugins';
 
-registerServiceWorker();
+// registerServiceWorker();
 import App from 'App/App.jsx';

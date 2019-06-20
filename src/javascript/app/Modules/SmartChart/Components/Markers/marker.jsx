@@ -5,10 +5,19 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 
 const ChartMarker = ({
+    is_contract_replay,
     marker_config,
     marker_content_props,
 }) => {
     const { ContentComponent, ...marker_props } = marker_config;
+
+    // Remove CSS transition on chart-marker-line when
+    // viewing expired contract because it appears sluggish over time
+    // -> charts seems to be doing heavy js scripting when rendering static charts
+    // TODO: remove this once smartcharts is more optimized
+    if (is_contract_replay && marker_props.yPositioner === 'none') {
+        marker_props.className += ' chart-marker-line__no-transition';
+    }
 
     return (
         <Marker {...toJS(marker_props)}>

@@ -109,7 +109,8 @@
     "vinyl-paths": "^2.1.0",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1"
+    "webpack-dev-server": "^3.4.1",
+    "webpack-merge-and-include-globally": "^2.1.16"
   },
   "dependencies": {
     "@binary-com/smartcharts": "^0.3.9",

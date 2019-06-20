@@ -47,7 +47,8 @@ module.exports = {
       'import/no-useless-path-segments'   : 'error',
       'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
       'import/prefer-default-export'      : 0,
-
+    //   'sort-imports'                      : ['error'],
+      
       // react rules
       'jsx-quotes'                        : ['error', 'prefer-single'],
       'react/jsx-closing-bracket-location': ['error', { selfClosing: 'line-aligned', nonEmpty: 'line-aligned' }],

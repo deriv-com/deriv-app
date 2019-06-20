@@ -1,7 +1,7 @@
 import ActiveSymbols                     from './activeSymbols';
 import config                            from '../../../constants/const';
 import { getObjectValue }                from '../../../utils/tools';
-import { getTokenList, removeAllTokens } from '../../../utils/storageManager';
+import { getTokenList, removeAllTokens } from '../../../utils/tokenHelper';
 
 const noop = () => {};
 

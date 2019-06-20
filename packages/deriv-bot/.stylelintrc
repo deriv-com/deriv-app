@@ -8,7 +8,6 @@
     "at-rule-semicolon-newline-after"                  : "always",
     "block-closing-brace-newline-after"                : "always",
     "block-closing-brace-newline-before"               : "always",
-    "block-no-empty"                                   : true,
     "block-opening-brace-newline-after"                : "always",
     "block-opening-brace-space-before"                 : "always",
     "color-hex-case"                                   : "lower",
@@ -52,7 +51,7 @@
     "property-case"                                    : "lower",
     "plugin/no-unsupported-browser-features"           : [true, {
       "severity": "error",
-      "ignore": ["calc", "user-select-none", "multicolumn", "css-appearance"]
+      "ignore": ["calc", "user-select-none", "multicolumn", "css-appearance","pointer"]
     }],
     "rule-empty-line-before"                           : ["always", { "ignore": ["after-comment"], "except": ["inside-block-and-after-rule", "first-nested"] }],
     "selector-attribute-brackets-space-inside"         : "never",

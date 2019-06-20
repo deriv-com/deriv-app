@@ -1,6 +1,8 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
@@ -43,7 +45,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+                test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -61,12 +63,6 @@ module.exports = {
                         loader : 'react-svg-loader',
                         options: {
                             jsx: true,
-                            svgo: {
-                                plugins: [
-                                    { removeTitle: false },
-                                ],
-                                floatPrecision: 2,
-                            },
                         },
                     },
                 ],
@@ -75,9 +71,20 @@ module.exports = {
                 test: /\.(sc|sa|c)ss$/,
                 exclude: /node_modules/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            sourceMap: true,
+                        }
+                    },
                     {
                         loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
                         options: {
                             sourceMap: true,
                         }
@@ -90,6 +97,19 @@ module.exports = {
                     },
                 ]
             }
+        ]
+    },
+    optimization: {
+        namedChunks: true,
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                test     : /\.js/,
+                exclude  : /(vendors~|smartcharts)/,
+                parallel : true,
+                sourceMap: true,
+            }),
+            new OptimizeCssAssetsPlugin(),
         ]
     },
     devServer: {

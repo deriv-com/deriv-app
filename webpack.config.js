@@ -10,16 +10,18 @@ module.exports = {
     mode: devMode,
     resolve: {
         alias: {
-            _common: path.resolve(__dirname, 'src/javascript/_common'),
-            App: path.resolve(__dirname, 'src/javascript/app/App'),
-            Assets: path.resolve(__dirname, 'src/javascript/app/Assets'),
-            Constants: path.resolve(__dirname, 'src/javascript/app/Constants'),
-            Download: path.resolve(__dirname, 'src/download'),
-            Images: path.resolve(__dirname, 'src/images'),
-            Modules: path.resolve(__dirname, 'src/javascript/app/Modules'),
-            Services: path.resolve(__dirname, 'src/javascript/app/Services'),
-            Stores: path.resolve(__dirname, 'src/javascript/app/Stores'),
-            Utils: path.resolve(__dirname, 'src/javascript/app/Utils'),
+            _common: path.resolve(__dirname, 'src/_common'),
+            App: path.resolve(__dirname, 'src/App'),
+            Assets: path.resolve(__dirname, 'src/Assets'),
+            Constants: path.resolve(__dirname, 'src/Constants'),
+            Fonts: path.resolve(__dirname, 'src/public/fonts'),
+            Images: path.resolve(__dirname, 'src/public/images'),
+            Modules: path.resolve(__dirname, 'src/Modules'),
+            Sass: path.resolve(__dirname, 'src/sass'),
+            Services: path.resolve(__dirname, 'src/Services'),
+            Stores: path.resolve(__dirname, 'src/Stores'),
+            Translations: path.resolve(__dirname, 'src/public/translations'),
+            Utils: path.resolve(__dirname, 'src/Utils'),
         },
         extensions: [ '.js', '.jsx' ]
     },
@@ -58,6 +60,7 @@ module.exports = {
                     {
                         loader : 'react-svg-loader',
                         options: {
+                            jsx: true,
                             svgo: {
                                 plugins: [
                                     { removeTitle: false },
@@ -104,14 +107,15 @@ module.exports = {
             template: 'index.html',
             filename: 'index.html'
         }),
-        new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: '[id].css' }),
+        new MiniCssExtractPlugin({ filename: 'app.css', chunkFilename: '[id].css' }),
         new CopyPlugin([
             { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
             { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
         ]),
     ],
     output: {
-        filename: '[name].[hash].js'
+        filename: 'js/[name].[hash].js',
+        publicPath: '/'
     },
     entry: './index.js',
     context: path.resolve(__dirname, 'src'),

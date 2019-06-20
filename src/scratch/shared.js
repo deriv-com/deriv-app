@@ -85,12 +85,15 @@ const getActiveMarket = markets =>
         {}
     );
 
+/* eslint-disable no-unreachable */
 fieldGeneratorMapping.MARKET_LIST = () => {
+    return [['', '']];
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     return Object.keys(markets).map(e => [markets[e].name, e]);
 };
 
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
+    return [['', '']];
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const marketName = block.getFieldValue('MARKET_LIST');
     if (!marketName || marketName === 'Invalid') {
@@ -106,6 +109,7 @@ fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
 };
 
 fieldGeneratorMapping.SYMBOL_LIST = block => () => {
+    return [['', '']];
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
     if (!submarketName || submarketName === 'Invalid') {
@@ -121,6 +125,7 @@ fieldGeneratorMapping.SYMBOL_LIST = block => () => {
             .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbol[1]))
     );
 };
+/* eslint-enable */
 
 fieldGeneratorMapping.TRADETYPECAT_LIST = block => () => {
     const symbol = block.getFieldValue('SYMBOL_LIST');

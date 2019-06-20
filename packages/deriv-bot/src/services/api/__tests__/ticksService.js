@@ -62,12 +62,12 @@ describe('Ticks Service', () => {
 
 describe('Account', () => {
     describe('Login', () => {
-        it('Login should be successful', () => {
+        it.skip('Login should be successful', () => {
             expect(addTokenIfValid('Xkq6oGFEHh6hJH8')).resolves;
         });
     });
     describe('Login on invalid token', () => {
-        it('Login should be unsuccessful', async () => {
+        it.skip('Login should be unsuccessful', async () => {
             try {
                 await addTokenIfValid('someinvalidtoken123xyz');
             } catch (e) {
@@ -76,7 +76,7 @@ describe('Account', () => {
         });
     });
     describe('logout', () => {
-        it('Logout should be successful', () => {
+        it.skip('Logout should be successful', () => {
             expect(logoutAllTokens).not.toThrow();
         });
     });

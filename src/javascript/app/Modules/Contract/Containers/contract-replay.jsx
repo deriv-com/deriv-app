@@ -100,6 +100,7 @@ class ContractReplay extends React.Component {
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
+                            is_contract_replay
                             is_static_chart={is_static_chart}
                             should_show_last_digit_stats={false}
                             symbol={contract_info.underlying}

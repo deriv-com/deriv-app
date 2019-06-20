@@ -39,7 +39,7 @@
 
                 &::placeholder {
                     @include themify($themes) {
-                        color: themed(text_primary_color);
+                        color: themed(text_secondary_color);
                     }
                 }
             }

@@ -78,7 +78,6 @@ module.exports = {
         new StyleLintPlugin( { fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml' },
-            { from: './src/scratch/images', to: 'media' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
         ]),
         new MergeIntoSingleFilePlugin({

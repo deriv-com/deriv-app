@@ -53,5 +53,5 @@ export default App;
 
 const root_store = initStore();
 
-const wrapper = document.getElementById('app');
+const wrapper = document.getElementById('deriv_app');
 wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

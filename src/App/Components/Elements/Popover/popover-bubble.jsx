@@ -63,6 +63,8 @@ class PopoverBubble extends React.PureComponent {
             target_rectangle,
         } = this.props;
 
+        if (!target_rectangle) return null;
+
         const popover_bubble = (
             <PoseGroup>
                 { is_open &&
@@ -94,7 +96,7 @@ class PopoverBubble extends React.PureComponent {
 
         return ReactDOM.createPortal(
             popover_bubble,
-            document.getElementById('app_contents')
+            document.getElementById('deriv_app')
         );
     }
 }

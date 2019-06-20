@@ -2,6 +2,7 @@ const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
     },
     devServer: {
         publicPath: '/dist/',
+        disableHostCheck: true,
     },
     devtool: 'source-map',
     target: 'web',
@@ -34,6 +36,27 @@ module.exports = {
                     }
                ]
             },  
+            {  
+                test: /\.svg$/,
+                use: [
+                    {
+                        loader: 'svg-sprite-loader',
+                        options: {
+                            extract: true,
+                            spriteFilename: 'bot-sprite.svg',
+                        },
+                    },
+                    {
+                        loader: 'svgo-loader',
+                        options: {
+                            plugins: [
+                                { removeUselessStrokeAndFill: false },
+                                { removeUnknownsAndDefaults: false },
+                            ],
+                        },
+                    },
+                ],
+            },
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
@@ -67,5 +90,6 @@ module.exports = {
                 ]
             }
         }),
-    ]
+        new SpriteLoaderPlugin(),
+    ],
 };

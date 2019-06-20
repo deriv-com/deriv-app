@@ -1,16 +1,11 @@
-import filesaver                      from 'file-saver';
-import { oppositesToDropdown }        from './utils';
-import config                         from '../constants/const';
-import { generateLiveApiInstance }    from '../services/api/appId';
-import { symbolApi }                  from '../services/api/shared';
-import { translate }                  from '../utils/lang/i18n';
-import { observer as globalObserver } from '../utils/observer';
-import {
-    get as getStorage,
-    set as setStorage,
-    getTokenList,
-    removeAllTokens,
-}                                     from '../utils/storageManager';
+import filesaver                         from 'file-saver';
+import { oppositesToDropdown }           from './utils';
+import config                            from '../constants/const';
+import { generateLiveApiInstance }       from '../services/api/appId';
+import { symbolApi }                     from '../services/api/shared';
+import { translate }                     from '../utils/lang/i18n';
+import { observer as globalObserver }    from '../utils/observer';
+import { getTokenList, removeAllTokens } from '../utils/tokenHelper';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -160,7 +155,7 @@ export const dependentFieldMapping = {
     TRADETYPECAT_LIST: 'TRADETYPE_LIST',
 };
 
-const contractsForStore = JSON.parse(getStorage('contractsForStore') || '[]');
+const contractsForStore = JSON.parse(localStorage.getItem('contractsForStore') || '[]');
 
 const getContractCategory = input =>
     Object.keys(config.conditionsCategory).find(c => c === input || config.conditionsCategory[c].includes(input));
@@ -305,7 +300,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
                     contractsForStore.splice(contractsForStore.findIndex(c => c.symbol === underlyingSymbol), 1)
                 );
             contractsForStore.push(contractsForSymbol);
-            setStorage('contractsForStore', JSON.stringify(contractsForStore));
+            localStorage.setItem('contractsForStore', JSON.stringify(contractsForStore));
             globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
     } catch (e) {

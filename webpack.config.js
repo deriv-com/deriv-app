@@ -2,6 +2,7 @@ const CopyWebpackPlugin    = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path                 = require('path');
 const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 
 module.exports = {
     entry : [
@@ -15,6 +16,7 @@ module.exports = {
     },
     devServer: {
         publicPath: '/dist/',
+        disableHostCheck: true,
     },
     devtool: 'source-map',
     target: 'web',
@@ -35,6 +37,27 @@ module.exports = {
                     }
                ]
             },  
+            {  
+                test: /\.svg$/,
+                use: [
+                    {
+                        loader: 'svg-sprite-loader',
+                        options: {
+                            extract: true,
+                            spriteFilename: 'bot-sprite.svg',
+                        },
+                    },
+                    {
+                        loader: 'svgo-loader',
+                        options: {
+                            plugins: [
+                                { removeUselessStrokeAndFill: false },
+                                { removeUnknownsAndDefaults: false },
+                            ],
+                        },
+                    },
+                ],
+            },
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
@@ -59,7 +82,8 @@ module.exports = {
             { from: './node_modules/scratch-blocks/media', to: 'media' },
             { from: './node_modules/scratch-blocks/blockly_compressed_vertical.js', to: 'scratch-compressed.js' },
             { from: './node_modules/scratch-blocks/msg/messages.js', to: 'scratch-messages.js' },
-        ])
+        ]),
+        new SpriteLoaderPlugin(),
     ],
     externals: {
         Blockly: 'Blockly',

@@ -5,12 +5,15 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = {
     mode: devMode ? 'development' : 'production',
+    target: 'node',
     devtool: devMode ? 'cheap-module-eval-source-map' : 'source-map',
+    externals: [nodeExternals()],
     resolve: {
         alias: {
             _common: path.resolve(__dirname, 'src/_common'),

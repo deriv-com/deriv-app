@@ -23,10 +23,10 @@ describe('ContractTypeDialog', () => {
     });
     it('should render FullScreenDialog component when is_mobile is true', () => {
         const wrapper = shallow(<ContractTypeDialog is_mobile={true} />);
-        expect(wrapper.find('FullScreenDialog').exists()).to.be.true;
+        expect(wrapper.find(FullScreenDialog).exists()).to.be.true;
     });
     it('should not render FullScreenDialog component when is_mobile is false', () => {
         const wrapper = shallow(<ContractTypeDialog is_mobile={false} />);
-        expect(wrapper.find('FullScreenDialog').exists()).to.be.false;
+        expect(wrapper.find(FullScreenDialog).exists()).to.be.false;
     });
 });

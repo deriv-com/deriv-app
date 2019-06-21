@@ -140,8 +140,11 @@
     margin-bottom: 0.8em;
     z-index: 0 !important;
     bottom: -100%;
-    transition: bottom 0.4s linear;
+    transition: bottom 0.2s linear;
 
+    &__no-transition {
+        transition: none;
+    }
     &__wrapper {
         border-left-width: 2px;
         padding-left: 0.5em;

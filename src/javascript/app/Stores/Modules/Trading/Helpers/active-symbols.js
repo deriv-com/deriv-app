@@ -63,3 +63,20 @@ const getFirstOpenSymbol = (active_symbols) => {
 const isSymbolOpen = (symbol) => (
     symbol.exchange_is_open === 1
 );
+
+const countDecimalPlaces = (num) => {
+    if (!isNaN(num)) {
+        const str = num.toString();
+        if (str.indexOf('.') !== -1) {
+            return str.split('.')[1].length;
+        }
+    }
+    return 0;
+};
+
+export const getUnderlyingPipSize = async (underlying) => {
+    // we frequently call this and update cache in trade page, so no need to update it here
+    const active_symbols = await BinarySocket.send({ active_symbols: 'brief' }, { skip_cache_update: true, msg_type: 'active_symbols' });
+    const obj_symbols    = active_symbols.active_symbols.find(symbols => symbols.symbol === underlying) || {};
+    return countDecimalPlaces(obj_symbols.pip || 0.001);
+};

@@ -12,7 +12,6 @@ import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
 import ContractTypeCell      from './contract-type-cell.jsx';
 import ProgressSlider        from './ProgressSlider';
 import ResultOverlay         from './result-overlay.jsx';
-import { getTimePercentage } from './helpers';
 
 const PositionsDrawerCard = ({
     active_position,
@@ -31,12 +30,10 @@ const PositionsDrawerCard = ({
     onClickRemove,
     result,
     sell_price,
-    server_time,
     status,
     toggleUnsupportedContractModal,
     type,
 }) => {
-    const percentage = getTimePercentage(server_time, contract_info.purchase_time, contract_info.date_expiry);
     const contract_el = (
         <React.Fragment>
             <div className={classNames(
@@ -54,14 +51,17 @@ const PositionsDrawerCard = ({
                     <ContractTypeCell type={type} />
                 </div>
             </div>
-            <ProgressSlider
-                is_loading={is_loading}
-                remaining_time={contract_info.date_expiry}
-                percentage={percentage}
-                current_tick={current_tick}
-                ticks_count={contract_info.tick_count}
-                has_result={!!(result)}
-            />
+            {result ?
+                <div className='progress-slider--completed' />
+                :
+                <ProgressSlider
+                    is_loading={is_loading}
+                    start_time={contract_info.date_start}
+                    expiry_time={contract_info.date_expiry}
+                    current_tick={current_tick}
+                    ticks_count={contract_info.tick_count}
+                />
+            }
             <div className={classNames(
                 'positions-drawer-card__grid',
                 'positions-drawer-card__grid-profit-payout'
@@ -238,7 +238,6 @@ PositionsDrawerCard.propTypes = {
     profit_loss                   : PropTypes.number,
     result                        : PropTypes.string,
     sell_time                     : PropTypes.number,
-    server_time                   : PropTypes.object,
     status                        : PropTypes.string,
     toggleUnsupportedContractModal: PropTypes.func,
     type                          : PropTypes.string,

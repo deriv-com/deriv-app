@@ -1,13 +1,13 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
 
 const DigitSpot = ({
     current_spot,
     is_lost,
     is_won,
 }) => (
-    <div className='digits__digit-spot'>
+    <React.Fragment>
         <span className='digits__digit-spot-value'>
             {current_spot.slice(0, -1)}
         </span>
@@ -19,7 +19,7 @@ const DigitSpot = ({
         >
             {current_spot.slice(-1)}
         </span>
-    </div>
+    </React.Fragment>
 );
 
 DigitSpot.propTypes = {

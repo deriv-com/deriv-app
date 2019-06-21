@@ -12,7 +12,6 @@ import Button                from 'App/Components/Form/button.jsx';
 import ContractAudit         from 'App/Components/Elements/ContractAudit';
 import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
-import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import ContractCardBody      from './contract-card-body.jsx';
 import ContractCardFooter    from './contract-card-footer.jsx';
@@ -60,11 +59,6 @@ class ContractDrawer extends Component {
         } = this.props.contract_info;
         const { contract_info, is_dark_theme, is_sell_requested, onClickSell } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
-        const percentage = getTimePercentage(
-            this.props.server_time,
-            contract_info.purchase_time,
-            contract_info.date_expiry,
-        );
         const getTick = () => {
             if (!contract_info.tick_count) return null;
             let current_tick = getCurrentTick(contract_info);
@@ -97,14 +91,17 @@ class ContractDrawer extends Component {
                             </div>
                         </div>
                     </ContractCardHeader>
-                    <ProgressSlider
-                        is_loading={false}
-                        remaining_time={contract_info.date_expiry}
-                        percentage={percentage}
-                        current_tick={getTick()}
-                        ticks_count={contract_info.tick_count}
-                        has_result={!!(is_sold)}
-                    />
+                    {is_sold ?
+                        <div className='progress-slider--completed' />
+                        :
+                        <ProgressSlider
+                            is_loading={false}
+                            start_time={contract_info.purchase_time}
+                            expiry_time={contract_info.date_expiry}
+                            current_tick={getTick()}
+                            ticks_count={contract_info.tick_count}
+                        />
+                    }
                     <ContractCardBody>
                         <ProfitLossCardContent
                             pl_value={+profit}
@@ -193,7 +190,7 @@ class ContractDrawer extends Component {
 
     render() {
         if (!this.props.contract_info) return null;
-        const body_content = this.getBodyContent();
+        const body_content = (this.props.contract_info.status) ? this.getBodyContent() : null;
         return (
             <div className={classNames('contract-drawer', {})}>
                 <div
@@ -215,7 +212,6 @@ ContractDrawer.propTypes = {
     is_dark_theme    : PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,
-    server_time      : PropTypes.object,
     status           : PropTypes.string,
 };
 

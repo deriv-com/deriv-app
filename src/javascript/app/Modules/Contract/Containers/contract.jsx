@@ -36,8 +36,8 @@ class Contract extends React.Component {
                             unmountOnExit
                         >
                             <ContractReplay
-                                contract_id={this.props.match.params.contract_id}
-                                key={this.props.match.params.contract_id}
+                                contract_id={+this.props.match.params.contract_id}
+                                key={+this.props.match.params.contract_id}
                             />
                         </CSSTransition>
                 }

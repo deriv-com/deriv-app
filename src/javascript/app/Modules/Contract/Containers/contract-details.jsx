@@ -61,7 +61,7 @@ class ContractDetails extends React.Component {
 }
 
 ContractDetails.propTypes = {
-    contract_id    : PropTypes.string,
+    contract_id    : PropTypes.number,
     contract_info  : PropTypes.object,
     details_expiry : PropTypes.object,
     details_info   : PropTypes.object,

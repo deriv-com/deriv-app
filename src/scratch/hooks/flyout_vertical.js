@@ -4,28 +4,31 @@ Blockly.BlockSvg.TAB_WIDTH = 8;
 
 /**
  * Move the flyout to the edge of the workspace.
+ * deriv-bot: Custom dimensions for flyout & support dynamic widths.
  */
 Blockly.VerticalFlyout.prototype.position = function() {
     if (!this.isVisible()) {
         return;
     }
+
     const targetWorkspaceMetrics = this.targetWorkspace_.getMetrics();
     if (!targetWorkspaceMetrics) {
         // Hidden components will return null.
         return;
     }
+
     // Record the height for Blockly.Flyout.getMetrics_
-    // deriv-bot: -20 so it's unattached to bottom.
-    this.height_ = targetWorkspaceMetrics.viewHeight - 30;
+    // deriv-bot: Set to workspace height
+    this.height_ = targetWorkspaceMetrics.viewHeight - 40;
 
     const edgeWidth = this.width_ - this.CORNER_RADIUS;
-    // deriv-bot: use this.height_ instead of targetWorkspaceMetrics.veiwHeight
+    // deriv-bot: use this.height_ instead of targetWorkspaceMetrics.viewHeight
     const edgeHeight = this.height_ - 2 * this.CORNER_RADIUS;
+    
     this.setBackgroundPath_(edgeWidth, edgeHeight);
 
-    // Y is always 0 since this is a vertical flyout.
-    // deriv-bot: We want some spacing between top and toolbox.
-    const y = 10;
+    // deriv-bot: Ensure flyout is rendered at same y-point as parent toolbox.
+    const y = this.parentToolbox_.HtmlDiv.offsetTop;
     let x;
 
     // If this flyout is the toolbox flyout.
@@ -33,7 +36,8 @@ Blockly.VerticalFlyout.prototype.position = function() {
         // If there is a category toolbox.
         if (targetWorkspaceMetrics.toolboxWidth) {
             if (this.toolboxPosition_ === Blockly.TOOLBOX_AT_LEFT) {
-                x = this.parentToolbox_.HtmlDiv.clientWidth + Blockly.BlockSvg.TAB_WIDTH; // deriv-bot: Allow for dynamic toolbox width.
+                // deriv-bot: Allow for dynamic toolbox width.
+                x = this.parentToolbox_.HtmlDiv.clientWidth + Blockly.BlockSvg.TAB_WIDTH;
             } else {
                 x = targetWorkspaceMetrics.viewWidth - this.width_;
             }
@@ -51,13 +55,14 @@ Blockly.VerticalFlyout.prototype.position = function() {
         // of the flyout.
         x = targetWorkspaceMetrics.viewWidth + targetWorkspaceMetrics.absoluteLeft - this.width_;
     }
+
     this.positionAt_(this.width_, this.height_, x, y);
 };
 
 /**
  * Compute width of flyout.  Position mat under each block.
  * For RTL: Lay out the blocks and buttons to be right-aligned.
- * deriv-bot: Imported from Blockly to allow for dynamic width flyout.
+ * deriv-bot: Allow for dynamic width flyout.
  * @private
  */
 Blockly.VerticalFlyout.prototype.reflowInternal_ = function() {
@@ -87,6 +92,7 @@ Blockly.VerticalFlyout.prototype.reflowInternal_ = function() {
                 // With the flyoutWidth known, right-align the blocks.
                 const oldX = block.getRelativeToSurfaceXY().x;
                 const newX = flyoutWidth / this.workspace_.scale - this.MARGIN - Blockly.BlockSvg.TAB_WIDTH;
+
                 block.moveBy(newX - oldX, 0);
             }
         });
@@ -96,9 +102,11 @@ Blockly.VerticalFlyout.prototype.reflowInternal_ = function() {
             this.buttons_.forEach(button => {
                 const { y } = button.getPosition();
                 const x = flyoutWidth / this.workspace_.scale - button.width - this.MARGIN - Blockly.BlockSvg.TAB_WIDTH;
+
                 button.moveTo(x, y);
             });
         }
+        
         // Record the width for .getMetrics_ and .position.
         this.width_ = flyoutWidth;
         this.position();

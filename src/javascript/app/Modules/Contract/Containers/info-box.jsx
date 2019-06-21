@@ -1,6 +1,6 @@
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import { CSSTransition }   from 'react-transition-group';
+import { SlideIn }         from 'App/Components/Animations';
 import { connect }         from 'Stores/connect';
 import ContractError       from '../Components/contract-error.jsx';
 import { InfoBoxLongcode } from '../Components/InfoBox';
@@ -19,36 +19,27 @@ const InfoBox = ({
     const info     = is_trade_page ? contract_info : replay_info;
     const is_ready = is_contract_mode && !!(info.longcode);
     return (
-        <CSSTransition
-            in={is_ready}
-            timeout={250}
-            classNames={{
-                enter    : 'info-box-container--enter',
-                enterDone: 'info-box-container--enter-done',
-                exit     : 'info-box-containert--exit',
-            }}
-            unmountOnExit
+        <SlideIn
+            is_visible={is_ready}
+            className='info-box-container'
+            keyname='info-box-container'
         >
-            <React.Fragment>
-                <div className='info-box-container'>
-                    { info.contract_type &&
-                        <div className='info-box'>
-                            <Contents
-                                contract_info={info}
-                            />
-                        </div>
-                    }
-                    <ContractError
-                        message={error_message}
-                        onClickClose={removeError}
-                    />
-                    <ChartCloseBtn
-                        is_contract_mode={is_contract_mode}
-                        onClose={onClose}
+            { info.contract_type &&
+                <div className='info-box'>
+                    <Contents
+                        contract_info={info}
                     />
                 </div>
-            </React.Fragment>
-        </CSSTransition>
+            }
+            <ContractError
+                message={error_message}
+                onClickClose={removeError}
+            />
+            <ChartCloseBtn
+                is_contract_mode={is_contract_mode}
+                onClose={onClose}
+            />
+        </SlideIn>
     );
 };
 

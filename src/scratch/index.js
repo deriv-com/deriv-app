@@ -44,9 +44,8 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
 
         const onWorkspaceResize = () => {
             let el_scratch_area = document.getElementById(scratch_area_name);
-        
             const scratch_area = el_scratch_area;
-            const scratch_div = document.getElementById(scratch_div_name);
+            const el_scratch_div = document.getElementById(scratch_div_name);
         
             let x = 0;
             let y = 0;
@@ -58,13 +57,16 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             } while (el_scratch_area);
         
             // Position scratch_div over scratch_area.
-            scratch_div.style.left   = `${x}px`;
-            scratch_div.style.top    = `${y}px`;
-            scratch_div.style.width  = `${scratch_area.offsetWidth}px`;
-            scratch_div.style.height = `${scratch_area.offsetHeight}px`;
+            el_scratch_div.style.left   = `${x}px`;
+            el_scratch_div.style.top    = `${y}px`;
+            el_scratch_div.style.width  = `${scratch_area.offsetWidth}px`;
+            el_scratch_div.style.height = `${scratch_area.offsetHeight}px`;
         
             Blockly.svgResize(workspace);
         };
+
+        // Resize workspace on workspace event, workaround for jumping workspace.
+        workspace.addChangeListener(() => Blockly.svgResize(workspace));
 
         window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();

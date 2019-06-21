@@ -1,122 +1,115 @@
-@mixin toolbox-button-base {
-    background-color: $brand-gray;
-    color: $black;
-    padding: 0em;
-    width: 40px;
-    height: 40px;
-    font-size: 1.5em;
-}
+$category-colours: (
+    trade-definition: #303f9f,
+    before-purchase : #00897b,
+    during-purchase : #78909c,
+    after-purchase  : #d81b60,
+    mathematical    : #689f38,
+    logic           : #8e24aa,
+    text            : #fb8c00,
+    variables       : #5d4037,
+    functions       : #1976d2,
+    loop            : #e53935,
+    list            : #00acc1,
+    indicators      : #616161,
+    time            : #afb42b,
+    tick-analysis   : #2e7d32,
+    candle          : #5e35b1,
+    miscellaneous   : #ffb300,
+);
 
-@mixin toolbox-button-focus {
-    outline: none; /* stylelint-disable-line */
-}
+.toolbox {
+    $toolbox  : &;
+    $white    : #fff;
+    $lightgrey: #ebebeb;
+    $grey     : #f4f4f6;
 
-@mixin toolbox-runButton-disabled {
-    background-color: $brand-gray;
-    color: $brand-dark-gray;
-}
-
-@mixin toolbox-runButton-hover {
-    background-color: $toolbox-btn-active;
-}
-
-#toolbox {
-    background-color: $brand-gray;
-    border-bottom: 1px solid $brand-dark-gray;
-    padding: 2px 3px;
-    z-index: 0;
-    overflow: auto;
-
-    #runButton[disabled], #runButton[disabled]:hover {
-        @include toolbox-runButton-disabled;
-    }
-    .toolbox-button {
-        @include toolbox-button-base;
-    }
-    .toolbox-button:hover {
-        @include toolbox-runButton-hover;
-    }
-    .toolbox-button:focus {
-        @include toolbox-button-focus;
-    }
-    .box.is-dragover {
-        background-color: #808080;
-    }
-    .toolbox-separator {
-        background-color: $brand-dark-gray;
-        display: inline-block;
-        height: 15px;
-        margin: 0 5px;
-        user-select: none;
-        width: 2px;
-    }
-}
-
-#toolbox-login {
-    margin-top: 1px;
-    margin-right: 20px;
-}
-
-#toolbox-account {
-    display: table;
-    height: 40px;
-}
-
-#toolbox-account-list {
-    position: relative;
+    background-color: $white;
+    border: 1px solid $lightgrey;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    max-height: calc(100% - 40px) !important;
+    overflow: hidden;
+    position: absolute;
     user-select: none;
-    display: table-cell;
-    vertical-align: middle;
-    padding-right: 20px;
+    z-index: 99 !important;
 
-    & > a {
-        color: $black;
-
-        &:hover, &:visited {
-            text-decoration: none;
-        }
+    &__header {
+        font-weight: bold;
+        background-color: $grey;
     }
-}
-
-#toolbox-main-account {
-    display: inline;
-    padding-inline-start: 0;
-
-    & > li {
-        display: inline;
-        margin: 0 2px;
+    &__category-menu {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        overflow: auto;
     }
-    & > li:not(:first-child):not(:last-child):before {
-        content: '\2022';
-        margin-right: 7px;
+    &__row {
+        cursor: pointer;
+        border-top: 1px solid $lightgrey;
     }
-    & > .nav-caret {
-        display: inline-block;
+    &__header, &__label {
+        font-size: 1em;
+        padding: 0.6em 1em;
     }
-}
-
-#toolbox-all-accounts {
-    border: 0;
-    z-index: 100;
-    margin-top: -1px;
-    background: none;
-    right: 20px;
-
-    & li {
-        height: 100%;
-
-        & a {
-            margin-top: 0;
-        }
+    &__title {
+        margin-right: 0.6em;
     }
-}
-
-button {
-    & > .barspinner.white {
+    &__arrow {
+        cursor: pointer;
+        position: absolute;
+        top: 0.6em;
+        right: 0.6em;
+        transform: rotate(90deg);
+        transition: transform 0.25s ease;
+    }
+    &__item {
         position: relative;
-        margin: 3px auto;
-        height: 13px;
-        top: initial; /* stylelint-disable-line */
-        left: initial; /* stylelint-disable-line */
+    }
+    &__color {
+        position: absolute;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+    &--collapsed {
+        #{$toolbox}__header, #{$toolbox}__item {
+            padding: 0.6em;
+        }
+        #{$toolbox}__color {
+            position: relative;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+        }
+        #{$toolbox}__title, #{$toolbox}__label {
+            display: none;
+        }
+        #{$toolbox}__arrow {
+            position: relative;
+            transform: rotate(270deg);
+            margin-top: -2px;
+            top: 0;
+            right: -2px;
+        }
+        #{$toolbox}__row {
+            border-top: 1px solid $white;
+        }
+    }
+    @each $category, $category-colour in $category-colours {
+        &__category--#{$category}#{&}__category--selected {
+            background-color: transparentize($category-colour, 0.9);
+        }
+        &__category--#{$category} {
+            &:hover {
+                background-color: transparentize($category-colour, 0.95);
+            }
+            & > #{$toolbox}__color {
+                background-color: $category-colour;
+            }
+        }
     }
 }

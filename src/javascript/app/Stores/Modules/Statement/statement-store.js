@@ -1,7 +1,9 @@
 import {
     action,
     computed,
-    observable }                      from 'mobx';
+    observable,
+    runInAction,
+} from 'mobx';
 import { WS }                         from 'Services';
 import { epochToMoment }              from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
@@ -16,6 +18,10 @@ export default class StatementStore extends BaseStore {
     @observable date_from      = 0;
     @observable date_to        = 0;
     @observable error          = '';
+
+    // `client_currency` is only used to detect if this is in sync with the client-store, don't rely on
+    // this for calculations. Use the client.currency instead.
+    @observable client_currency = '';
 
     @computed
     get is_empty() {
@@ -106,9 +112,23 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    assertHasValidCache() {
+        // account was changed when this was unmounted.
+        if (this.currency !== this.client_currency) {
+            WS.forgetAll('proposal');
+            this.clearTable();
+            this.clearDateFilter();
+        }
+    }
+
+    @action.bound
     async onMount() {
+        this.assertHasValidCache();
         this.onSwitchAccount(this.accountSwitcherListener);
         await this.fetchNextBatch();
+        runInAction(() => {
+            this.client_currency = this.root_store.client.currency;
+        });
     }
 
     @action.bound

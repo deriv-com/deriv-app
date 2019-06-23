@@ -2,6 +2,7 @@ import classNames   from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import { Bounce }   from 'App/Components/Animations';
 import Digit        from './digit.jsx';
 import DigitSpot    from './digit-spot.jsx';
 
@@ -24,13 +25,18 @@ const DigitDisplay = ({
                 'digits__digit--loss': is_lost && is_latest,
             })}
         >
-            { is_latest && spot &&
+            <Bounce
+                is_visible={!!(is_latest && spot)}
+                className='digits__digit-spot'
+                keyname='digits__digit-spot'
+            >
                 <DigitSpot
                     current_spot={spot}
                     is_lost={is_lost}
+                    is_visible={!!(is_latest && spot)}
                     is_won={is_won}
                 />
-            }
+            </Bounce>
             <Digit
                 is_latest={is_latest}
                 is_lost={is_lost}

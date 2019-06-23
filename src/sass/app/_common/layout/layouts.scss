@@ -216,6 +216,10 @@
             }
             div.stx-marker {
                 z-index: 2;
+
+                &:not(.chart-marker-line) {
+                    animation: fadeIn 0.2s;
+                }
             }
         }
         div.cq-chart-control-left {
@@ -472,5 +476,14 @@
         @include themify($themes) {
             color: themed('text_primary_color');
         }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

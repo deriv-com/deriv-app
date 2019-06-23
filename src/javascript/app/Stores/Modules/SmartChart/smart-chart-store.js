@@ -43,6 +43,16 @@ export default class SmartChartStore extends BaseStore {
     trade_chart_symbol               = null;
 
     @action.bound
+    switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
+        this.saveAndClearTradeChartLayout('contract');
+        this.setContractMode(true);
+        if (!is_from_positions) {
+            this.updateGranularity(granularity);
+            this.updateChartType(chart_type);
+        }
+    }
+
+    @action.bound
     getChartStatus(status) {
         this.is_chart_ready = status;
     }

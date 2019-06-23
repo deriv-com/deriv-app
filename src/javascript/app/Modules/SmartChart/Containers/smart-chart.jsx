@@ -70,6 +70,7 @@ class Chart extends React.Component {
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
+                        is_contract_replay={this.props.is_contract_replay}
                         key={idx}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
@@ -91,6 +92,7 @@ Chart.propTypes = {
     granularity                 : PropTypes.number,
     InfoBox                     : PropTypes.node,
     is_contract_mode            : PropTypes.bool,
+    is_contract_replay          : PropTypes.bool,
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
     is_static_chart             : PropTypes.bool,

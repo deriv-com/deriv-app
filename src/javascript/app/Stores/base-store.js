@@ -315,4 +315,13 @@ export default class BaseStore {
     onUnmount() {
         this.disposeSwitchAccount();
     }
+
+    @action.bound
+    assertHasValidCache(currency, ...reactions) {
+        // account was changed when this was unmounted.
+        if (this.root_store.client.currency !== currency) {
+            reactions.forEach(act => act());
+            this.partial_fetch_time = false;
+        }
+    }
 }

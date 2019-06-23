@@ -1,15 +1,18 @@
+import debounce                       from 'lodash.debounce';
 import {
     action,
     computed,
     observable,
     runInAction,
-} from 'mobx';
+}                                     from 'mobx';
 import { WS }                         from 'Services';
-import { epochToMoment }              from 'Utils/Date';
+import { toMoment }                   from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
+import getDateBoundaries              from '../Profit/Helpers/format-request';
 import BaseStore                      from '../../base-store';
 
 const batch_size = 100; // request response limit
+const delay_on_scroll_time = 150; // fetch debounce delay on scroll
 
 export default class StatementStore extends BaseStore {
     @observable data           = [];
@@ -22,6 +25,7 @@ export default class StatementStore extends BaseStore {
     // `client_currency` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
     @observable client_currency = '';
+    @observable partial_fetch_time = 0;
 
     @computed
     get is_empty() {
@@ -35,9 +39,10 @@ export default class StatementStore extends BaseStore {
 
     @action.bound
     clearTable() {
-        this.data           = [];
-        this.has_loaded_all = false;
-        this.is_loading     = false;
+        this.data               = [];
+        this.has_loaded_all     = false;
+        this.is_loading         = false;
+        this.partial_fetch_time = false;
     }
 
     @action.bound
@@ -47,24 +52,20 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
-    async fetchNextBatch() {
+    async fetchNextBatch(should_load_partially = false) {
         if (this.has_loaded_all || this.is_loading) return;
-
         this.is_loading = true;
 
         const response = await WS.statement(
             batch_size,
-            this.data.length,
-            {
-                ...this.date_from && { date_from: this.date_from },
-                ...this.date_to && { date_to: epochToMoment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
-            },
+            !should_load_partially ? this.data.length : undefined,
+            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially),
         );
-        this.statementHandler(response);
+        this.statementHandler(response, should_load_partially);
     }
 
     @action.bound
-    statementHandler(response) {
+    statementHandler(response, should_load_partially) {
         if ('error' in response) {
             this.error = response.error.message;
             return;
@@ -76,9 +77,18 @@ export default class StatementStore extends BaseStore {
                 this.root_store.modules.trade.active_symbols,
             ));
 
-        this.data           = [...this.data, ...formatted_transactions];
-        this.has_loaded_all = formatted_transactions.length < batch_size;
+        if (should_load_partially) {
+            this.data = [...formatted_transactions, ...this.data];
+        } else {
+            this.data = [...this.data, ...formatted_transactions];
+        }
+        this.has_loaded_all = !should_load_partially && formatted_transactions.length < batch_size;
         this.is_loading     = false;
+        if (this.data.length > 0 && !this.has_loaded_all) {
+            this.partial_fetch_time = toMoment().unix();
+        } else if (this.has_loaded_all) {
+            this.partial_fetch_time = 0;
+        }
     }
 
     @action.bound
@@ -92,14 +102,18 @@ export default class StatementStore extends BaseStore {
         this.fetchNextBatch();
     }
 
+    fetchOnScroll = debounce((left) => {
+        if (left < 2000) {
+            this.fetchNextBatch();
+        }
+    }, delay_on_scroll_time);
+
     @action.bound
     handleScroll(event) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
-        const left_to_scroll                            = scrollHeight - (scrollTop + clientHeight);
+        const left_to_scroll  = scrollHeight - (scrollTop + clientHeight);
 
-        if (left_to_scroll < 2000) {
-            this.fetchNextBatch();
-        }
+        this.fetchOnScroll(left_to_scroll);
     }
 
     @action.bound
@@ -112,20 +126,16 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
-    assertHasValidCache() {
-        // account was changed when this was unmounted.
-        if (this.currency !== this.client_currency) {
-            WS.forgetAll('proposal');
-            this.clearTable();
-            this.clearDateFilter();
-        }
-    }
-
-    @action.bound
     async onMount() {
-        this.assertHasValidCache();
+        this.assertHasValidCache(
+            this.client_currency,
+            this.clearDateFilter,
+            this.clearTable,
+            WS.forgetAll.bind(null, 'proposal')
+        );
+
         this.onSwitchAccount(this.accountSwitcherListener);
-        await this.fetchNextBatch();
+        await this.fetchNextBatch(true);
         runInAction(() => {
             this.client_currency = this.root_store.client.currency;
         });

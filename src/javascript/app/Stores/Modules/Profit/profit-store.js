@@ -1,14 +1,18 @@
+import debounce                          from 'lodash.debounce';
 import {
     action,
     computed,
     observable,
+    runInAction,
 }                                        from 'mobx';
 import { WS }                            from 'Services';
-import { epochToMoment }                 from 'Utils/Date';
+import { toMoment }                      from 'Utils/Date';
+import getDateBoundaries                 from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
 import BaseStore                         from '../../base-store';
 
 const batch_size = 50;
+const delay_on_scroll_time = 150;
 
 export default class ProfitTableStore extends BaseStore {
     @observable data           = [];
@@ -17,6 +21,8 @@ export default class ProfitTableStore extends BaseStore {
     @observable error          = '';
     @observable has_loaded_all = false;
     @observable is_loading     = false;
+
+    @observable partial_fetch_time = 0;
 
     @computed
     get total_profit () {
@@ -39,21 +45,21 @@ export default class ProfitTableStore extends BaseStore {
     }
 
     @action.bound
-    async fetchNextBatch() {
+    async fetchNextBatch(should_load_partially = false) {
         if (this.has_loaded_all || this.is_loading) return;
-
         this.is_loading = true;
 
-        const response = await WS.profitTable({
-            offset: this.data.length,
-            ...this.date_from && { date_from: this.date_from },
-            ...this.date_to && { date_to: epochToMoment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
-        });
-        this.profitTableResponseHandler(response);
+        const response = await WS.profitTable(
+            batch_size,
+            !should_load_partially ? this.data.length : undefined,
+            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially)
+        );
+
+        this.profitTableResponseHandler(response, should_load_partially);
     }
 
     @action.bound
-    profitTableResponseHandler(response) {
+    profitTableResponseHandler(response, should_load_partially = false) {
         if ('error' in response) {
             this.error = response.error.message;
             return;
@@ -66,24 +72,44 @@ export default class ProfitTableStore extends BaseStore {
                 this.root_store.modules.trade.active_symbols,
             ));
 
-        this.data           = [...this.data, ...formatted_transactions];
-        this.has_loaded_all = formatted_transactions.length < batch_size;
-        this.is_loading     = false;
+        if (should_load_partially) {
+            this.data = [...formatted_transactions, ...this.data];
+        } else {
+            this.data = [...this.data, ...formatted_transactions];
+        }
+        this.has_loaded_all      = !should_load_partially && formatted_transactions.length < batch_size;
+        this.is_loading          = false;
+        if (this.data.length > 0) {
+            this.partial_fetch_time = toMoment().unix();
+        }
     }
+
+    fetchOnScroll = debounce((left) => {
+        if (left < 2000) {
+            this.fetchNextBatch();
+        }
+    }, delay_on_scroll_time);
 
     @action.bound
     handleScroll(event) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll                            = scrollHeight - (scrollTop + clientHeight);
-        if (left_to_scroll < 2000) {
-            this.fetchNextBatch();
-        }
+        this.fetchOnScroll(left_to_scroll);
     }
 
     @action.bound
     async onMount() {
+        this.assertHasValidCache(
+            this.client_currency,
+            this.clearDateFilter,
+            this.clearTable,
+            WS.forgetAll.bind(null, 'proposal')
+        );
         this.onSwitchAccount(this.accountSwitcherListener);
-        await this.fetchNextBatch();
+        await this.fetchNextBatch(true);
+        runInAction(() => {
+            this.client_currency = this.root_store.client.currency;
+        });
     }
 
     @action.bound
@@ -128,6 +154,7 @@ export default class ProfitTableStore extends BaseStore {
     clearDateFilter() {
         this.date_from = 0;
         this.date_to   = 0;
+        this.partial_fetch_time = false;
     }
 
     @action.bound

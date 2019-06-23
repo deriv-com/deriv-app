@@ -69,6 +69,7 @@
     &__icon {
         @extend .absolute-center-v;
         @extend %inline-icon;
+        cursor: pointer;
         right: 5%;
 
         &--today:hover {

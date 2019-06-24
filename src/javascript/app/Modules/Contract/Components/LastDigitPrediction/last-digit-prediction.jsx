@@ -45,8 +45,7 @@ class LastDigitPrediction extends React.Component {
         // but we only need is_lost condition only once we have the 'won' or 'lost' status
         const is_lost = is_ended && status === 'lost';
 
-        // const digit = this.props.digits_info[Object.keys(this.props.digits_info)[0]].digit;
-        const position =  !isNaN(latest_digit.digit) ? (latest_digit.digit * 48) + 4 : 4;
+        const position = this.state[latest_digit.digit];
 
         return (
             <div

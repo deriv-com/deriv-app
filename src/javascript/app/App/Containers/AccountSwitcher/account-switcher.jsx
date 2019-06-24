@@ -41,6 +41,10 @@ class AccountSwitcher extends React.Component {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
         await this.props.switchAccount(loginid);
+
+        if (this.props.has_error) {
+            this.props.clearError();
+        }
     }
 
     render() {
@@ -140,6 +144,8 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     cleanUp               : PropTypes.func,
+    clearError            : PropTypes.func,
+    has_error             : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
@@ -153,7 +159,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = connect(
-    ({ client, ui }) => ({
+    ({ client, ui, modules }) => ({
         account_list          : client.account_list,
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
@@ -162,6 +168,8 @@ const account_switcher = connect(
         upgrade_info          : client.upgrade_info,
         cleanUp               : client.cleanUp,
         virtual_loginid       : client.virtual_account_loginid,
+        clearError            : modules.contract.clearError,
+        has_error             : modules.contract.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         togglePositionsDrawer : ui.togglePositionsDrawer,
 

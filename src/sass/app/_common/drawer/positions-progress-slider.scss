@@ -2,12 +2,20 @@
 // Progress Slider
 .progress-slider {
     position: relative;
-    margin-top: 8px;
-    margin-bottom: 8px;
     width: 100%;
     padding: 0 4px;
     box-sizing: border-box;
+    margin: 8px 0 0;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('background_container_color');
+    }
 
+    &--completed {
+        margin: 8px 0 0;
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
+        }
+    }
     &__track {
         @include themify($themes) {
             background: themed('hover_color');
@@ -102,9 +110,6 @@
         &--red {
             background: $COLOR_RED !important;
         }
-    }
-    &--completed {
-        margin: 8px 0;
     }
     &__infinite-loader {
         position: relative;

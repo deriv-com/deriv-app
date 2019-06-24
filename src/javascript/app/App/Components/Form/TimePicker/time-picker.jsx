@@ -81,6 +81,7 @@ class TimePicker extends React.Component {
                                 <InputField
                                     error_messages={validation_errors}
                                     type='text'
+                                    is_hj_whitelisted
                                     is_read_only
                                     id={`${prefix_class}-input`}
                                     className={classNames(`${prefix_class}-input`)}

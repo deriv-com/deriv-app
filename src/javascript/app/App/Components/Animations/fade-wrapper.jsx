@@ -50,8 +50,8 @@ const FadeInOnlyDiv = posed.div({
 const FadeWrapper = ({
     children,
     className,
-    keyname,
     is_visible,
+    keyname,
     type,
 }) => {
     if (type === 'top') {

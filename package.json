@@ -126,7 +126,7 @@
     "react-router-dom": "5.0.0",
     "react-transition-group": "2.4.0",
     "sinon": "7.2.2",
-    "smartcharts-beta": "0.4.34",
+    "smartcharts-beta": "0.4.36",
     "tt-react-custom-scrollbars": "4.2.1-tt2",
     "url-polyfill": "1.0.9",
     "web-push-notifications": "3.2.15"

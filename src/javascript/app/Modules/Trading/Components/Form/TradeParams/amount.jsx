@@ -53,6 +53,7 @@ const Amount = ({
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
+            is_hj_whitelisted
             is_incrementable
             is_nativepicker={is_nativepicker}
             is_negative_disabled

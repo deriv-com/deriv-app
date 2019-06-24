@@ -132,6 +132,7 @@ module.exports = {
         new CopyPlugin([
             { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
             { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
+            { from: '../scripts/CNAME', to: 'CNAME', toType: 'file' },
         ]),
     ],
     output: {

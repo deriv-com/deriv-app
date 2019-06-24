@@ -4,7 +4,7 @@
 * Please make sure you have done `npm install`.
 * Install `Homebrew` by `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 * Install `Crowdin CLI` by `brew install crowdin` or follow the instructions here: [https://support.crowdin.com/cli-tool/#installation](https://support.crowdin.com/cli-tool/#installation)
-* Get [Crowdin API Key](https://crowdin.com/project/binary-static/settings#api) and add this line to your _.bash_profile_: `export CROWDIN_API_KEY='put API Key here'`<br/>
+* Get [Crowdin API Key](https://crowdin.com/project/deriv-app/settings#api) and add this line to your _.bash_profile_: `export CROWDIN_API_KEY='put API Key here'`<br/>
 **IMPORTANT!** This key gives full access to all your Crowdin project data. Treat this just like a password and never push it to any public repo.
 
 ### To update the translations:

@@ -16,7 +16,7 @@ You will also need to install the following on your development machine:
 - Grunt (`sudo npm install -g grunt-cli`)
 
 ### Use a custom domain
-In order to use your custom domain, please put it in a file named `CNAME` inside `scripts` folder of your local clone of binary-static.
+In order to use your custom domain, please put it in a file named `CNAME` inside `scripts` folder of your local clone of deriv-app.
 
 
 How to work with this project

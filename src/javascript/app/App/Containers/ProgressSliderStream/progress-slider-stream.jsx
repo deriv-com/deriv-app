@@ -12,7 +12,6 @@ const ProgressSliderStream = ({
     if (!position) {
         return <div />;
     }
-
     const { contract_info } = position;
 
     return <ProgressSlider
@@ -21,7 +20,7 @@ const ProgressSliderStream = ({
         has_result={false}
         current_tick={position.current_tick}
         start_time={contract_info.purchase_time}
-        ticks_count={contract_info.ticks_count}
+        ticks_count={contract_info.tick_count}
     />;
 };
 

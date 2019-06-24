@@ -273,12 +273,22 @@ $side-padding: 1.2em;
         justify-content: flex-end;
     }
     .progress-slider {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+        border: none;
+        margin: 0;
 
-        .progress-slider__track {
-            margin: 2px 0 2px 8px;
+        &__ticks {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &-wrapper {
+                margin-top: 6px;
+            }
+            &-caption {
+                padding: 0;
+                margin-right: 8px;
+                white-space: nowrap;
+            }
         }
     }
 }

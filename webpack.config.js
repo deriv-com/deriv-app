@@ -69,12 +69,19 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
+                exclude: /public\//,
                 use : [
                     'babel-loader',
                     {
                         loader : 'react-svg-loader',
                         options: {
                             jsx: true,
+                            svgo: {
+                                plugins: [
+                                    { removeTitle: false }
+                                ],
+                                floatPrecision: 2
+                            }
                         },
                     },
                 ],
@@ -99,6 +106,13 @@ module.exports = {
                         loader: 'postcss-loader',
                         options: {
                             sourceMap: true,
+                        }
+                    },
+                    {
+                        loader: 'resolve-url-loader',
+                        options: {
+                            sourceMap: true,
+                            keepQuery: true
                         }
                     },
                     {
@@ -139,7 +153,7 @@ module.exports = {
             template: 'index.html',
             filename: 'index.html'
         }),
-        new MiniCssExtractPlugin({ filename: 'app.css', chunkFilename: '[id].css' }),
+        new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: 'css/[id].css' }),
         new CopyPlugin([
             { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
             { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },

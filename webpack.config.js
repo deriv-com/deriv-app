@@ -58,6 +58,17 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
+                        }
+                    },
+                ]
+            },
+            {
+                test: /\.svg$/,
                 use : [
                     'babel-loader',
                     {

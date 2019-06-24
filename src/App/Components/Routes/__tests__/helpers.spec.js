@@ -1,6 +1,7 @@
-import React from 'react';
+import React           from 'react';
 import { expect }      from 'chai';
 import * as Helpers    from '../helpers';
+import routes          from '../../../../Constants/routes';
 import getRoutesConfig from '../../../Constants/routes-config';
 import Trade           from 'Modules/Trading';
 
@@ -22,8 +23,8 @@ describe('Helpers', () => {
             expect(Helpers.findRouteByPath('invalidRoute', getRoutesConfig())).to.be.undefined;
         });
         it('should return route_info when path is in routes_config and is not nested', () => {
-            expect(Helpers.findRouteByPath('/trade', getRoutesConfig())).to.eql({
-                path: '/trade',
+            expect(Helpers.findRouteByPath(routes.trade, getRoutesConfig())).to.eql({
+                path: routes.trade,
                 component: Trade,
                 title: 'Trade',
                 exact: true

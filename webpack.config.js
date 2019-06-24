@@ -32,7 +32,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
+                exclude: /node_modules|__tests__/,
                 use: {
                     loader: 'babel-loader'
                 }
@@ -143,6 +143,7 @@ module.exports = {
         host: 'localhost.binary.sx',
         https: true,
         port: 443,
+        historyApiFallback: true,
         stats: {
             colors: true,
         }
@@ -158,6 +159,7 @@ module.exports = {
             { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
             { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
             { from: '../scripts/CNAME', to: 'CNAME', toType: 'file' },
+            { from: 'root_files/404.html', to: '404.html', toType: 'file' },
         ]),
     ],
     output: {

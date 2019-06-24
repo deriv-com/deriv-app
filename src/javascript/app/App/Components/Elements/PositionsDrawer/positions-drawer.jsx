@@ -41,7 +41,7 @@ class PositionsDrawer extends React.Component {
         const body_content = all_positions.slice(0, 5).map((portfolio_position) => (
             <CSSTransition
                 key={portfolio_position.id}
-                in={!!(portfolio_position.contract_info.underlying)}
+                in={!!(portfolio_position.id)}
                 timeout={150}
                 classNames={{
                     enter    : 'positions-drawer-card__wrapper--enter',

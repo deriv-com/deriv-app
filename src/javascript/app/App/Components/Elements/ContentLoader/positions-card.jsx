@@ -2,13 +2,13 @@ import ContentLoader from 'react-content-loader';
 import React         from 'react';
 import PropTypes     from 'prop-types';
 
-const PositionsCardLoader = ({ is_dark, speed }) => (
+const PositionsCardLoader = ({ is_dark_theme, speed }) => (
     <ContentLoader
         height={173}
         width={218}
         speed={speed}
-        primaryColor={is_dark ? 'rgba(127, 131, 151, 0.16)' : 'rgba(127, 131, 151, 0.16)'}
-        secondaryColor={is_dark ? 'rgba(127, 131, 151, 0)' : 'rgba(127, 131, 151, 0)'}
+        primaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.16)' : 'rgba(0, 0, 0, 0.16)'}
+        secondaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0)' : '#f4f4f6'}
     >
         <rect x='43'  y='19'  rx='0' ry='0' width='56'  height='8' />
         <rect x='147' y='19'  rx='0' ry='0' width='56'  height='8' />
@@ -29,8 +29,8 @@ const PositionsCardLoader = ({ is_dark, speed }) => (
 );
 
 PositionsCardLoader.propTypes = {
-    is_dark: PropTypes.bool,
-    speed  : PropTypes.number,
+    is_dark_theme: PropTypes.bool,
+    speed        : PropTypes.number,
 };
 
 export default PositionsCardLoader;

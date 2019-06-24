@@ -22,12 +22,12 @@ import {
     getCurrentTick,
     getDurationPeriod,
     getDurationTime,
-    getDurationUnitText }    from '../../../../Stores/Modules/Portfolio/Helpers/details';
+    getDurationUnitText }    from 'Stores/Modules/Portfolio/Helpers/details';
 import {
     getIndicativePrice,
     getEndTime,
     isUserSold,
-    isValidToSell       }    from '../../../../Stores/Modules/Contract/Helpers/logic';
+    isValidToSell       }    from 'Stores/Modules/Contract/Helpers/logic';
 import Money                 from '../money.jsx';
 
 class ContractDrawer extends Component {

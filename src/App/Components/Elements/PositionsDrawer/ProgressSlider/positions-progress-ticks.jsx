@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from 'App/i18n';
+import Localize     from 'App/Components/Elements/localize.jsx';
 
 const ProgressTicks = ({
     current_tick,
@@ -11,7 +11,7 @@ const ProgressTicks = ({
     return (
         <div className='progress-slider__ticks'>
             <span className='progress-slider__ticks-caption'>
-                {localize('Tick {{current_tick}}', { current_tick: current_tick.toString() }) }
+                <Localize i18n_default_text='Tick {{current_tick}}' values={{ current_tick: current_tick.toString() }} />
             </span>
             <div className='progress-slider__ticks-wrapper'>
                 {arr_ticks.map(idx =>

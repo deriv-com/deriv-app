@@ -18,7 +18,7 @@ const routes = {
     settings        : '/settings',
     statement       : '/reports/statement',
     token           : '/settings/token',
-    trade           : '/trade',
+    trade           : '/',
 };
 
 export default routes;

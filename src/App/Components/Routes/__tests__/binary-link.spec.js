@@ -3,6 +3,7 @@ import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { NavLink }            from 'react-router-dom';
+import routes                 from 'Constants/routes';
 import { BinaryLink }         from '../index';
 
 configure({ adapter: new Adapter() });
@@ -23,7 +24,7 @@ describe('<BinaryLink />', () => {
     });
     it('should render one <Navlink /> when property \'to\' is passed', () => {
         const wrapper = shallow(
-            <BinaryLink to='/trade' />
+            <BinaryLink to='/' />
         );
         expect(wrapper.find(NavLink)).to.have.length(1);
     });
@@ -41,7 +42,7 @@ describe('<BinaryLink />', () => {
     });
     it('should not render <a> when property \'to\' is passed', () => {
         const wrapper = shallow(
-            <BinaryLink to='/trade' />
+            <BinaryLink to={routes.trade} />
         );
         expect(wrapper.contains(<a href='javascript:;'></a>)).to.equal(false);
     });

@@ -32,9 +32,8 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
-    { path: routes.index,     component: Redirect,        title: '',                            to: '/trade' },
+    { path: routes.index,     component: Redirect,        title: '',                            to: routes.trade },
     { path: routes.portfolio, component: Portfolio,       title: localize('Portfolio'),         is_authenticated: true, icon_component: 'IconPortfolio' },
-    { path: routes.root,      component: Redirect,        title: '',                            exact: true, to: '/trade' },
     {
         path            : routes.reports,
         component       : Reports,

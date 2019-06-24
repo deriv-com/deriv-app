@@ -256,17 +256,14 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get active_positions_totals() {
         let indicative = 0;
-        let payout     = 0;
         let purchase   = 0;
 
         this.active_positions.forEach((portfolio_pos) => {
             indicative += (+portfolio_pos.indicative);
-            payout     += (+portfolio_pos.payout);
             purchase   += (+portfolio_pos.purchase);
         });
         return {
             indicative,
-            payout,
             purchase,
         };
     }

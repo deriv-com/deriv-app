@@ -229,7 +229,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchAccount(loginid) {
         this.root_store.ui.removeAllNotifications();
-        this.switched = loginid;
+        this.setSwitched(loginid);
     }
 
     @action.bound
@@ -504,7 +504,7 @@ export default class ClientStore extends BaseStore {
             this.is_populating_account_list = false;
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
-                if (account_list) {
+                if (account_list && !this.accounts) {
                     this.storeClientAccounts(obj_params, account_list)
                 }
             });

@@ -145,7 +145,7 @@ module.exports = {
     optimization: {
         namedChunks: true,
         minimize: !devMode,
-        minimizer: [
+        minimizer: devMode ? [] : [
             new TerserPlugin({
                 test     : /\.js/,
                 exclude  : /(vendors~|smartcharts)/,
@@ -159,7 +159,7 @@ module.exports = {
         open: 'Google Chrome',
         host: 'localhost.binary.sx',
         https: true,
-        hot: true,
+        hotOnly: true,
         port: 443,
         historyApiFallback: true,
         stats: {

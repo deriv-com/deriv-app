@@ -2,7 +2,6 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { withRouter }       from 'react-router';
 import { isEmptyObject }    from '_common/utility';
-import { FadeWrapper }      from 'App/Components/Animations';
 import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
@@ -66,28 +65,19 @@ class ContractReplay extends React.Component {
             is_sell_requested,
             is_static_chart,
             onClickSell,
-            server_time,
             status,
         } = this.props;
 
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
-                <FadeWrapper
-                    className='contract-drawer-wrapper'
-                    is_visible={!!(contract_info.status)}
-                    keyname='contract-drawer-wrapper'
-                >
-
-                    <ContractDrawer
-                        contract_info={contract_info}
-                        heading='Reports'
-                        is_dark_theme={is_dark_theme}
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        status={status}
-                        server_time={server_time}
-                    />
-                </FadeWrapper>
+                <ContractDrawer
+                    contract_info={contract_info}
+                    heading='Reports'
+                    is_dark_theme={is_dark_theme}
+                    is_sell_requested={is_sell_requested}
+                    onClickSell={onClickSell}
+                    status={status}
+                />
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
@@ -110,6 +100,7 @@ class ContractReplay extends React.Component {
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
+                            is_contract_replay
                             is_static_chart={is_static_chart}
                             should_show_last_digit_stats={false}
                             symbol={contract_info.underlying}
@@ -145,8 +136,7 @@ ContractReplay.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ common, modules, ui }) => ({
-        server_time      : common.server_time,
+    ({ modules, ui }) => ({
         chart_id         : modules.smart_chart.replay_id,
         config           : modules.contract.replay_config,
         is_sell_requested: modules.contract.is_sell_requested,

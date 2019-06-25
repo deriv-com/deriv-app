@@ -116,9 +116,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     z-index: 10;
     top: 1em;
     right: 1em;
-    opacity: 0;
-    transform: translate3d(0, calc(-100% - 2em), 0);
-    transition: transform 0.4s ease, opacity 0.4s linear;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -129,14 +126,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     &-icon {
         width: 32px;
         height: 32px;
-    }
-    &--enter-done {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
-    &--enter, &--exit {
-        transform: translate3d(0, calc(-100% - 2em), 0);
-        opacity: 0;
     }
     .info-box {
         position: relative;

@@ -61,6 +61,7 @@ module.exports = {
             {
                 test: /\.svg$/,
                 exclude: /node_modules/,
+                include: /public\//,
                 use: [
                     {
                         loader: 'file-loader',
@@ -91,7 +92,6 @@ module.exports = {
             },
             {
                 test: /\.(sc|sa|c)ss$/,
-                exclude: /node_modules/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,

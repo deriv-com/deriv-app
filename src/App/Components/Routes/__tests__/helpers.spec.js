@@ -31,12 +31,12 @@ describe('Helpers', () => {
             });
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-            const settings_routes_length = getRoutesConfig().find(r => r.path === '/settings').routes.length;
-            expect(Helpers.findRouteByPath('/settings/personal', getRoutesConfig())).to.have.all.keys('path', 'component', 'is_authenticated', 'routes');
-            expect(Helpers.findRouteByPath('/settings/personal', getRoutesConfig()).routes).to.be.instanceof(Array);
-            expect(Helpers.findRouteByPath('/settings/personal', getRoutesConfig()).routes).to.have.length(settings_routes_length);
-            expect(Helpers.findRouteByPath('/settings/personal', getRoutesConfig()).is_authenticated).to.be.equal(true);
-            expect(Helpers.findRouteByPath('/settings/personal', getRoutesConfig()).path).to.be.equal('/settings');
+            const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys('path', 'component', 'is_authenticated', 'routes', 'title');
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.be.instanceof(Array);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(reports_routes_length);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).is_authenticated).to.be.equal(true);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).path).to.be.equal(routes.reports);
         });
     });
 

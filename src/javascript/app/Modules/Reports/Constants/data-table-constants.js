@@ -172,7 +172,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
         title            : localize('Indicative price'),
         col_index        : 'indicative',
         renderCellContent: ({ cell_value, row_obj }) => (
-            <IndicativeCell amount={+cell_value} currency={currency} status={!row_obj.is_valid_to_sell ? 'no-resale' : ''} />
+            <IndicativeCell amount={+cell_value} currency={currency} status={row_obj.contract_info && !row_obj.is_valid_to_sell ? 'no-resale' : ''} />
         ),
     }, {
         title            : localize('Remaining time'),

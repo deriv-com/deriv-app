@@ -209,6 +209,9 @@ $side-padding: 1.2em;
     .buy_price, .sell_price, .profit_loss {
         justify-content: flex-end;
     }
+    .sell_time, .purchase_time {
+        text-align: left;
+    }
 }
 
 /** @define open-positions; weak */

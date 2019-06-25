@@ -196,10 +196,12 @@ class ContractDrawer extends Component {
                 {(this.props.contract_info.status) ?
                     this.getBodyContent()
                     :
-                    <PositionsCardLoader
-                        is_dark_theme={this.props.is_dark_theme}
-                        speed={2}
-                    />
+                    <div className='contract-card'>
+                        <PositionsCardLoader
+                            is_dark_theme={this.props.is_dark_theme}
+                            speed={2}
+                        />
+                    </div>
                 }
             </React.Fragment>
         );

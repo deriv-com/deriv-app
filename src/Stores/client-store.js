@@ -499,6 +499,8 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = obj_params.token1;
 
         if (is_client_logging_in) {
+            window.history.replaceState({}, document.title, '/');
+
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.send({ authorize: obj_params.token1 });
             this.is_populating_account_list = false;

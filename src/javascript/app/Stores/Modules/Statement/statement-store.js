@@ -22,10 +22,9 @@ export default class StatementStore extends BaseStore {
     @observable date_to        = 0;
     @observable error          = '';
 
-    // `client_currency` is only used to detect if this is in sync with the client-store, don't rely on
+    // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
-    @observable client_currency = '';
-    @observable partial_fetch_time = 0;
+    @observable client_loginid = '';
 
     @computed
     get is_empty() {
@@ -128,7 +127,7 @@ export default class StatementStore extends BaseStore {
     @action.bound
     async onMount() {
         this.assertHasValidCache(
-            this.client_currency,
+            this.client_loginid,
             this.clearDateFilter,
             this.clearTable,
             WS.forgetAll.bind(null, 'proposal')
@@ -137,7 +136,7 @@ export default class StatementStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
         await this.fetchNextBatch(true);
         runInAction(() => {
-            this.client_currency = this.root_store.client.currency;
+            this.client_loginid = this.root_store.client.loginid;
         });
     }
 

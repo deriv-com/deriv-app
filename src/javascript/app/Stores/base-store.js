@@ -33,6 +33,8 @@ export default class BaseStore {
     switchAccountDisposer = null;
     switch_account_listener = null;
 
+    @observable partial_fetch_time = 0;
+
     /**
      * Constructor of the base class that gets properties' name of child which should be saved in storages
      *
@@ -317,9 +319,9 @@ export default class BaseStore {
     }
 
     @action.bound
-    assertHasValidCache(currency, ...reactions) {
+    assertHasValidCache(loginid, ...reactions) {
         // account was changed when this was unmounted.
-        if (this.root_store.client.currency !== currency) {
+        if (this.root_store.client.loginid !== loginid) {
             reactions.forEach(act => act());
             this.partial_fetch_time = false;
         }

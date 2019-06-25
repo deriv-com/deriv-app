@@ -7,8 +7,6 @@ import { routes }      from 'Constants';
 import Trade             from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
-const Portfolio       = lazy(() => import(/* webpackChunkName: "portfolio" */ 'Modules/Portfolio'));
-const Settings        = lazy(() => import(/* webpackChunkName: "settings" */  'Modules/settings/settings.jsx'));
 
 // Reports Routes
 const Reports       = lazy(() => import(/* webpackChunkName: "reports" */        'Modules/Reports'));
@@ -16,24 +14,12 @@ const OpenPositions = lazy(() => import(/* webpackChunkName: "open_positions" */
 const ProfitTable   = lazy(() => import(/* webpackChunkName: "profit_table" */   'Modules/Reports/Containers/profit-table.jsx'));
 const Statement     = lazy(() => import(/* webpackChunkName: "statement" */      'Modules/Reports/Containers/statement.jsx'));
 
-// Settings Routes
-const AccountPassword        = lazy(() => import(/* webpackChunkName: "account_password" */       'Modules/settings/sections/account-password.jsx'));
-const ApiToken               = lazy(() => import(/* webpackChunkName: "api_token" */              'Modules/settings/sections/api-token.jsx'));
-const AuthorizedApplications = lazy(() => import(/* webpackChunkName: "authorized_application" */ 'Modules/settings/sections/authorized-applications.jsx'));
-const CashierPassword        = lazy(() => import(/* webpackChunkName: "cashier_password" */       'Modules/settings/sections/cashier-password.jsx'));
-const FinancialAssessment    = lazy(() => import(/* webpackChunkName: "financial_assessment" */   'Modules/settings/sections/financial-assessment.jsx'));
-const Limits                 = lazy(() => import(/* webpackChunkName: "limits" */                 'Modules/settings/sections/limits.jsx'));
-const LoginHistory           = lazy(() => import(/* webpackChunkName: "login_history" */          'Modules/settings/sections/login-history.jsx'));
-const PersonalDetails        = lazy(() => import(/* webpackChunkName: "personal_details" */       'Modules/settings/sections/personal-details.jsx'));
-const SelfExclusion          = lazy(() => import(/* webpackChunkName: "self_exclusion" */         'Modules/settings/sections/self-exclusion.jsx'));
-
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: Redirect,        title: '',                            to: routes.trade },
-    { path: routes.portfolio, component: Portfolio,       title: localize('Portfolio'),         is_authenticated: true, icon_component: 'IconPortfolio' },
     {
         path            : routes.reports,
         component       : Reports,
@@ -46,22 +32,6 @@ const initRoutesConfig = () => ([
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),             exact: true },
-    {
-        path            : routes.settings,
-        component       : Settings,
-        is_authenticated: true,
-        routes          : [
-            { path: routes.personal,         component: PersonalDetails,        title: localize('Personal Details') },
-            { path: routes.financial,        component: FinancialAssessment,    title: localize('Financial Assessment') },
-            { path: routes.account_password, component: AccountPassword,        title: localize('Account Password') },
-            { path: routes.cashier_password, component: CashierPassword,        title: localize('Cashier Password') },
-            { path: routes.exclusion,        component: SelfExclusion,          title: localize('Self Exclusion') },
-            { path: routes.limits,           component: Limits,                 title: localize('Account Limits') },
-            { path: routes.history,          component: LoginHistory,           title: localize('Login History') },
-            { path: routes.token,            component: ApiToken,               title: localize('API Token') },
-            { path: routes.apps,             component: AuthorizedApplications, title: localize('Authorized Applications') },
-        ],
-    },
     { path: routes.error404, component: Page404, title: localize('Error 404') },
 ]);
 

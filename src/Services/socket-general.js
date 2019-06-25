@@ -47,33 +47,10 @@ const BinarySocketGeneral = (() => {
                     }
                     requestLogout();
                 } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
-                    if (response.authorize.loginid !== client_store.loginid) {
+                    if (response.authorize.loginid !== client_store.loginid && !client_store.is_populating_account_list) {
                         requestLogout();
-                    } else {
-                        client_store.responseAuthorize(response);
-                        WS.subscribeBalance(ResponseHandlers.balance, true);
-                        WS.sendRequest({ get_settings: 1 }, { forced: true });
-                        WS.getAccountStatus();
-                        WS.payoutCurrencies();
-                        WS.mt5LoginList();
-                        setResidence(
-                            response.authorize.country ||
-                            client_store.accounts[client_store.loginid].residence
-                        );
-                        if (!client_store.is_virtual) {
-                            WS.getSelfExclusion();
-                        }
-                        BinarySocket.sendBuffered();
-                        if (/bch/i.test(response.authorize.currency) && !client_store.accounts[client_store.loginid].accepted_bch) {
-                            // showPopup({
-                            //     url        : urlFor('user/warning'),
-                            //     popup_id   : 'warning_popup',
-                            //     form_id    : '#frm_warning',
-                            //     content_id : '#warning_content',
-                            //     validations: [{ selector: '#chk_accept', validations: [['req', { hide_asterisk: true }]] }],
-                            //     onAccept   : () => { Client.set('accepted_bch', 1); },
-                            // });
-                        }
+                    } else if (response.authorize.loginid === client_store.loginid) {
+                        authorizeAccount(response);
                     }
                 }
                 break;
@@ -153,9 +130,37 @@ const BinarySocketGeneral = (() => {
         };
     };
 
+    const authorizeAccount = (response) => {
+        client_store.responseAuthorize(response);
+        WS.subscribeBalance(ResponseHandlers.balance, true);
+        WS.sendRequest({ get_settings: 1 }, { forced: true });
+        WS.getAccountStatus();
+        WS.payoutCurrencies();
+        WS.mt5LoginList();
+        setResidence(
+            response.authorize.country ||
+            client_store.accounts[client_store.loginid].residence
+        );
+        if (!client_store.is_virtual) {
+            WS.getSelfExclusion();
+        }
+        BinarySocket.sendBuffered();
+        if (/bch/i.test(response.authorize.currency) && !client_store.accounts[client_store.loginid].accepted_bch) {
+            // showPopup({
+            //     url        : urlFor('user/warning'),
+            //     popup_id   : 'warning_popup',
+            //     form_id    : '#frm_warning',
+            //     content_id : '#warning_content',
+            //     validations: [{ selector: '#chk_accept', validations: [['req', { hide_asterisk: true }]] }],
+            //     onAccept   : () => { Client.set('accepted_bch', 1); },
+            // });
+        }
+    };
+
     return {
         init,
         setBalance,
+        authorizeAccount
     };
 })();
 

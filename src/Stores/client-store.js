@@ -2,6 +2,7 @@ import {
     action,
     computed,
     observable,
+    runInAction,
     when }                           from 'mobx';
 import moment                        from 'moment';
 import {
@@ -17,6 +18,7 @@ import {
 import BaseStore                     from './base-store';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { handleClientNotifications } from './Helpers/client-notifications';
+import BinarySocketGeneral           from 'Services/socket-general';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -27,6 +29,7 @@ export default class ClientStore extends BaseStore {
     @observable switch_broadcast = false;
     @observable currencies_list  = {};
     @observable selected_currency = '';
+    @observable is_populating_account_list = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -117,7 +120,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+        return this.accounts && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
@@ -241,11 +244,20 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init() {
-        this.loginid  = LocalStore.get('active_loginid');
-        this.accounts = LocalStore.getObject(storage_key);
-        this.switched = '';
-
+        const authorize_response = await this.setUserLogin();
+        this.setLoginId(LocalStore.get('active_loginid'));
+        this.setAccounts(LocalStore.getObject(storage_key));
+        this.setSwitched('');
         const client = this.accounts[this.loginid];
+
+        if (authorize_response) {
+            if (this.loginid === authorize_response.authorize.loginid) {
+                BinarySocketGeneral.authorizeAccount(authorize_response);
+            } else {
+                await BinarySocket.send({ authorize: client.token });
+            }
+        }
+
         if (client && !client.is_virtual) {
             BinarySocket.wait('landing_company', 'website_status').then(() => {
                 handleClientNotifications(client, this.root_store.ui.addNotification, this.loginid);
@@ -257,6 +269,21 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.payoutCurrencies());
 
         this.registerReactions();
+    }
+
+    @action.bound
+    setLoginId(loginid) {
+        this.loginid = loginid;
+    }
+
+    @action.bound
+    setAccounts(accounts) {
+        this.accounts = accounts;
+    }
+
+    @action.bound
+    setSwitched(switched) {
+        this.switched = switched;
     }
 
     /**
@@ -391,4 +418,97 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.onMount();
     }
 
+    @action.bound
+    storeClientAccounts(obj_params, account_list) {
+        // store consistent names with other API calls
+        // API_V4: send consistent names
+        const map_names = {
+            country             : 'residence',
+            landing_company_name: 'landing_company_shortcode',
+        };
+        const client_object = {};
+        let active_loginid;
+
+        let is_allowed_real = true;
+        account_list.forEach(function(account) {
+            if (!/^virtual|svg$/.test(account.landing_company_name)) {
+                is_allowed_real = false;
+            }
+        });
+
+        account_list.forEach(function(account) {
+            Object.keys(account).forEach(function(param) {
+                if (param === 'loginid') {
+                    if (!active_loginid && !account.is_disabled) {
+                        if (is_allowed_real && !account.is_virtual) {
+                            active_loginid = account[param];
+                        } else if (account.is_virtual) { // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
+                            active_loginid = account[param];
+                        }
+                    }
+                } else {
+                    const param_to_set = map_names[param] || param;
+                    const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
+                    if (!(account.loginid in client_object)) {
+                        client_object[account.loginid] = {};
+                    }
+                    client_object[account.loginid][param_to_set] = value_to_set;
+                }
+            });
+        });
+
+        let i = 1;
+        while (obj_params['acct' + i]) {
+            const loginid = obj_params['acct' + i];
+            const token   = obj_params['token' + i];
+            if (loginid && token) {
+                client_object[loginid].token = token;
+            }
+            i++;
+        }
+
+        // if didn't find any login ID that matched the above condition
+        // or the selected one doesn't have a token, set the first one
+        if (!active_loginid || !client_object[active_loginid].token) {
+            active_loginid = obj_params.acct1;
+        }
+
+        // TODO: send login flag to GTM if needed
+
+        if (active_loginid && Object.keys(client_object).length) {
+            localStorage.setItem('active_loginid', active_loginid);
+            localStorage.setItem('client.accounts', JSON.stringify(client_object));
+        }
+    }
+
+    @action.bound
+    async setUserLogin() {
+        const obj_params = {};
+        const search     = window.location.search;
+        if (search) {
+            var arr_params = window.location.search.substr(1).split('&');
+            arr_params.forEach(function(param) {
+                if (param) {
+                    var param_value = param.split('=');
+                    if (param_value) {
+                        obj_params[param_value[0]] = param_value[1];
+                    }
+                }
+            });
+        }
+        const is_client_logging_in = obj_params.token1;
+
+        if (is_client_logging_in) {
+            this.is_populating_account_list = true;
+            const authorize_response = await BinarySocket.send({ authorize: obj_params.token1 });
+            this.is_populating_account_list = false;
+            runInAction(() => {
+                const account_list = (authorize_response.authorize || {}).account_list;
+                if (account_list) {
+                    this.storeClientAccounts(obj_params, account_list)
+                }
+            });
+            return authorize_response;
+        }
+    }
 }

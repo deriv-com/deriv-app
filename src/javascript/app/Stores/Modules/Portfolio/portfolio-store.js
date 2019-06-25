@@ -124,7 +124,7 @@ export default class PortfolioStore extends BaseStore {
             portfolio_position.status = null;
         }
 
-        if (isEnded(proposal)) {
+        if (isEnded(proposal) && !isUserSold(proposal)) { // if sold, forget will happen after handling sell
             WS.forget('proposal_open_contract', this.proposalOpenContractHandler, { contract_id: proposal.contract_id });
         }
     }
@@ -190,7 +190,10 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].is_loading = false;
 
         if (isEnded(contract_response)) {
-            WS.forget('proposal_open_contract', this.populateResultDetails, { contract_id: contract_response.contract_id });
+            // also forget for buy
+            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
+                WS.forget('proposal_open_contract', cb, { contract_id: contract_response.contract_id });
+            });
         }
     };
 

@@ -8,14 +8,14 @@
 // }                                    from 'App/Components/Elements/Media';
 // import Localize                      from 'App/Components/Elements/localize.jsx';
 // import Checkbox                      from 'App/Components/Form/Checkbox';
-// import ConfirmationDisabledLightIcon from 'Images/app/settings/confirmation-disabled.svg';
-// import ConfirmationEnabledLightIcon  from 'Images/app/settings/confirmation-enabled.svg';
-// import ConfirmationDisabledDarkIcon  from 'Images/app/settings/dark/confirmation-disabled.svg';
-// import ConfirmationEnabledDarkIcon   from 'Images/app/settings/dark/confirmation-enabled.svg';
-// import LockDisabledDarkIcon          from 'Images/app/settings/dark/lock-disabled.svg';
-// import LockEnabledDarkIcon           from 'Images/app/settings/dark/lock-enabled.svg';
-// import LockDisabledLightIcon         from 'Images/app/settings/lock-disabled.svg';
-// import LockEnabledLightIcon          from 'Images/app/settings/lock-enabled.svg';
+// import ConfirmationDisabledLightIcon from 'Assets/SvgComponents/settings/confirmation-disabled.svg';
+// import ConfirmationEnabledLightIcon  from 'Assets/SvgComponents/settings/confirmation-enabled.svg';
+// import ConfirmationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/confirmation-disabled.svg';
+// import ConfirmationEnabledDarkIcon   from 'Assets/SvgComponents/settings/dark/confirmation-enabled.svg';
+// import LockDisabledDarkIcon          from 'Assets/SvgComponents/settings/dark/lock-disabled.svg';
+// import LockEnabledDarkIcon           from 'Assets/SvgComponents/settings/dark/lock-enabled.svg';
+// import LockDisabledLightIcon         from 'Assets/SvgComponents/settings/lock-disabled.svg';
+// import LockEnabledLightIcon          from 'Assets/SvgComponents/settings/lock-enabled.svg';
 // import { connect }                   from 'Stores/connect';
 //
 // const PurchaseSettings = ({

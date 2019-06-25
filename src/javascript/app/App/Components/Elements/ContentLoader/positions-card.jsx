@@ -33,4 +33,4 @@ PositionsCardLoader.propTypes = {
     speed        : PropTypes.number,
 };
 
-export default PositionsCardLoader;
+export { PositionsCardLoader };

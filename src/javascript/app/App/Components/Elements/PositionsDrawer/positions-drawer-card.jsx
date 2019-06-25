@@ -1,18 +1,18 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import Money                from 'App/Components/Elements/money.jsx';
-import ContractLink         from 'Modules/Contract/Containers/contract-link.jsx';
-import { isCryptocurrency } from '_common/base/currency_base';
-import { localize }         from '_common/localize';
-import Icon                 from 'Assets/icon.jsx';
-import Button               from 'App/Components/Form/button.jsx';
-import { UnderlyingIcon }   from 'App/Components/Elements/underlying-icon.jsx';
-import PositionCardLoader   from 'App/Components/Elements/ContentLoader/positions-card.jsx';
-import ContractTypeCell     from './contract-type-cell.jsx';
-import ProgressSlider       from './ProgressSlider';
-import ResultOverlay        from './result-overlay.jsx';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { CSSTransition }       from 'react-transition-group';
+import Money                   from 'App/Components/Elements/money.jsx';
+import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
+import { isCryptocurrency }    from '_common/base/currency_base';
+import { localize }            from '_common/localize';
+import Icon                    from 'Assets/icon.jsx';
+import Button                  from 'App/Components/Form/button.jsx';
+import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
+import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import ContractTypeCell        from './contract-type-cell.jsx';
+import ProgressSlider          from './ProgressSlider';
+import ResultOverlay           from './result-overlay.jsx';
 
 const PositionsDrawerCard = ({
     active_position,
@@ -38,7 +38,7 @@ const PositionsDrawerCard = ({
 }) => {
     const loader_el = (
         <div className='positions-drawer-card__content-loader'>
-            <PositionCardLoader
+            <PositionsCardLoader
                 is_dark_theme={is_dark_theme}
                 speed={2}
             />

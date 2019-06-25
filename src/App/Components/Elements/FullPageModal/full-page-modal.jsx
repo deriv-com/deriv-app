@@ -30,26 +30,26 @@ const ModalBackground = posed.div({
 class FullPageModal extends React.Component {
     componentDidMount() {
         if (this.props.is_visible) {
-            this.props.showAppBlur();
+            this.props.showFullBlur();
         }
     }
 
     componentDidUpdate() {
         if (this.props.is_visible) {
-            this.props.showAppBlur();
+            this.props.showFullBlur();
         }
     }
 
     handleCancel = () => {
         if (this.props.is_closed_on_cancel) {
-            this.props.hideAppBlur();
+            this.props.hideFullBlur();
         }
         this.props.onCancel();
     }
 
     handleConfirm = () => {
         if (this.props.is_closed_on_confirm) {
-            this.props.hideAppBlur();
+            this.props.hideFullBlur();
         }
         this.props.onConfirm();
     }
@@ -118,22 +118,22 @@ FullPageModal.defaultProps = {
 FullPageModal.propTypes = {
     cancel_button_text  : PropTypes.string,
     confirm_button_text : PropTypes.string,
-    hideAppBlur         : PropTypes.func,
+    hideFullBlur        : PropTypes.func,
     is_closed_on_cancel : PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
     is_loading          : PropTypes.bool,
     is_visible          : PropTypes.bool,
     onCancel            : PropTypes.func,
     onConfirm           : PropTypes.func,
-    showAppBlur         : PropTypes.func,
+    showFullBlur        : PropTypes.func,
     title               : PropTypes.string,
 };
 
 const full_page_modal = connect(
     ({ ui }) => ({
-        hideAppBlur: ui.hideAppBlur,
-        is_loading : ui.is_loading,
-        showAppBlur: ui.showAppBlur,
+        hideFullBlur: ui.hideFullBlur,
+        is_loading  : ui.is_loading,
+        showFullBlur: ui.showFullBlur,
     }),
 )(FullPageModal);
 export default full_page_modal;

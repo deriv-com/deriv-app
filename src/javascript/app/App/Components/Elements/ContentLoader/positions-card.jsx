@@ -7,8 +7,8 @@ const PositionsCardLoader = ({ is_dark_theme, speed }) => (
         height={173}
         width={218}
         speed={speed}
-        primaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.16)' : 'rgba(0, 0, 0, 0.16)'}
-        secondaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0)' : '#f4f4f6'}
+        primaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.16)' : '#f4f4f6'}
+        secondaryColor={is_dark_theme ? '#303342' : '#eaeaec'}
     >
         <rect x='43'  y='19'  rx='0' ry='0' width='56'  height='8' />
         <rect x='147' y='19'  rx='0' ry='0' width='56'  height='8' />

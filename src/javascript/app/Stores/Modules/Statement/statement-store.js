@@ -132,12 +132,9 @@ export default class StatementStore extends BaseStore {
             this.clearTable,
             WS.forgetAll.bind(null, 'proposal')
         );
-
+        this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
-        await this.fetchNextBatch(true);
-        runInAction(() => {
-            this.client_loginid = this.root_store.client.loginid;
-        });
+        this.fetchNextBatch(true);
     }
 
     @action.bound

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run test && webpack-dev-server --mode development",
+    "server": "webpack-dev-server --mode development",
     "build": "npm run test && webpack --mode production",
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config webpack.config-test.js \"src/**/__tests__/*.js\"",
     "deploy": "npm run build && gh-pages -d dist",

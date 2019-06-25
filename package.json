@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run test && webpack-dev-server --mode development",
-    "server": "webpack-dev-server --mode development",
+    "serve": "webpack-dev-server --mode development",
     "build": "npm run test && webpack --mode production",
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config webpack.config-test.js \"src/**/__tests__/*.js\"",
     "deploy": "npm run build && gh-pages -d dist",
@@ -30,6 +30,7 @@
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",

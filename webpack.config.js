@@ -34,7 +34,21 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules|__tests__/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react'
+                        ],
+                        plugins: [
+                            [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+                            [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+                            '@babel/plugin-proposal-export-default-from',
+                            '@babel/plugin-proposal-object-rest-spread',
+                            '@babel/plugin-proposal-export-namespace-from',
+                            '@babel/plugin-syntax-dynamic-import',
+                        ],
+                    }
                 }
             },
             {
@@ -156,7 +170,13 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebPackPlugin({
             template: 'index.html',
-            filename: 'index.html'
+            filename: 'index.html',
+            minify: devMode ? false : {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true
+            }
         }),
         new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: 'css/[id].css' }),
         new CopyPlugin([

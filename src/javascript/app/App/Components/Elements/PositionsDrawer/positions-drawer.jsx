@@ -2,15 +2,16 @@ import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { NavLink }           from 'react-router-dom';
-import { CSSTransition }     from 'react-transition-group';
-import { Scrollbars }        from 'tt-react-custom-scrollbars';
-import { localize }          from '_common/localize';
-import Icon                  from 'Assets/icon.jsx';
-import routes                from 'Constants/routes';
-import EmptyPortfolioMessage from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
-import { connect }           from 'Stores/connect';
-import PositionsDrawerCard   from './positions-drawer-card.jsx';
+import { NavLink }                    from 'react-router-dom';
+import { TransitionGroup,
+    CSSTransition }                   from 'react-transition-group';
+import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { localize }                   from '_common/localize';
+import Icon                           from 'Assets/icon.jsx';
+import routes                         from 'Constants/routes';
+import EmptyPortfolioMessage          from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
+import { connect }                    from 'Stores/connect';
+import PositionsDrawerCard            from './positions-drawer-card.jsx';
 
 class PositionsDrawer extends React.Component {
     componentDidMount()    {
@@ -39,31 +40,37 @@ class PositionsDrawer extends React.Component {
         } = this.props;
 
         // Show only 5 most recent open contracts
-        const body_content = all_positions.slice(0, 5).map((portfolio_position) => (
-            <CSSTransition
-                key={portfolio_position.id}
-                in={!!(portfolio_position.id)}
-                timeout={150}
-                classNames={{
-                    enter    : 'positions-drawer-card__wrapper--enter',
-                    enterDone: 'positions-drawer-card__wrapper--enter-done',
-                    exit     : 'positions-drawer-card__wrapper--exit',
-                }}
-                unmountOnExit
-            >
-                <PositionsDrawerCard
-                    active_position={active_contract_id}
-                    is_dark_theme={is_dark_theme}
-                    onClickSell={onClickSell}
-                    onClickRemove={onClickRemove}
-                    openContract={openContract}
-                    key={portfolio_position.id}
-                    currency={currency}
-                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-                    {...portfolio_position}
-                />
-            </CSSTransition>
-        ));
+        const body_content = (
+            <React.Fragment>
+                <TransitionGroup component='div'>
+                    {all_positions.slice(0, 5).map((portfolio_position) => (
+                        <CSSTransition
+                            key={portfolio_position.id}
+                            in={true}
+                            timeout={150}
+                            classNames={{
+                                enter    : 'positions-drawer-card__wrapper--enter',
+                                enterDone: 'positions-drawer-card__wrapper--enter-done',
+                                exit     : 'positions-drawer-card__wrapper--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <PositionsDrawerCard
+                                active_position={active_contract_id}
+                                is_dark_theme={is_dark_theme}
+                                onClickSell={onClickSell}
+                                onClickRemove={onClickRemove}
+                                openContract={openContract}
+                                key={portfolio_position.id}
+                                currency={currency}
+                                toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+                                {...portfolio_position}
+                            />
+                        </CSSTransition>
+                    ))}
+                </TransitionGroup>
+            </React.Fragment>
+        );
 
         return (
             <div className={classNames(

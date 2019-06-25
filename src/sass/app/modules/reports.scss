@@ -222,9 +222,12 @@ $side-padding: 1.2em;
     &__indicative {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-end;
         flex-direction: column;
 
+        &--movement {
+            display: inline-block;
+        }
         &-no-resale-msg {
             clear: both;
         }

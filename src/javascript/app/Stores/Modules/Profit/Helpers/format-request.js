@@ -15,15 +15,14 @@ const getDateTo = (partial_fetch_time, date_to) => {
     return toMoment().endOf('day').unix();
 };
 
+const getDateFrom = (should_load_partially, partial_fetch_time, date_from) =>
+    should_load_partially && partial_fetch_time ? partial_fetch_time : date_from;
+
 const getDateBoundaries = (date_from, date_to, partial_fetch_time, should_load_partially = false) => (
     {
-        ...(
-            date_from || should_load_partially
-        ) && { date_from: partial_fetch_time || date_from }, ...(
-            date_to || should_load_partially
-        ) && {
-            date_to: getDateTo(partial_fetch_time, date_to),
-        },
+        // eslint-disable-next-line max-len
+        ...(date_from || should_load_partially) && { date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from) },
+        ...(date_to || should_load_partially) && { date_to: getDateTo(partial_fetch_time, date_to) },
     }
 );
 

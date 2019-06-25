@@ -281,6 +281,11 @@ $side-padding: 1.2em;
             align-items: center;
             justify-content: space-between;
 
+            &-step {
+                @include themify($themes) {
+                    background: themed('reports_tick_step');
+                }
+            }
             &-wrapper {
                 margin-top: 6px;
             }

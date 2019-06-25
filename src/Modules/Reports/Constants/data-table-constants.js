@@ -3,8 +3,8 @@ import { localize }         from 'App/i18n';
 import Label                from 'App/Components/Elements/Label';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
-import IndicativeCell       from 'Modules/Portfolio/Components/indicative-cell.jsx';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
+import IndicativeCell       from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
 

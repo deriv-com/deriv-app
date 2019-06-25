@@ -10,21 +10,21 @@ import MediaItem, {
 }                                        from 'App/Components/Elements/Media';
 import Checkbox                          from 'App/Components/Form/Checkbox';
 import RadioGroup                        from 'App/Components/Form/Radio';
-import ChartPositionEnabledLightIcon     from 'Images/app/settings/bottom.svg';
+import ChartPositionEnabledLightIcon     from 'Assets/SvgComponents/settings/bottom.svg';
 
 // TODO: enable asset information
-// import OHLCDisabledLightIcon             from 'Images/app/settings/OHLC-disabled.svg';
-// import OHLCEnabledLightIcon              from 'Images/app/settings/OHLC-enabled.svg';
-// import OHLCDisabledDarkIcon              from 'Images/app/settings/dark/OHLC-disabled.svg';
-// import OHLCEnabledDarkIcon               from 'Images/app/settings/dark/OHLC-enabled.svg';
+// import OHLCDisabledLightIcon             from 'Assets/SvgComponents/settings/OHLC-disabled.svg';
+// import OHLCEnabledLightIcon              from 'Assets/SvgComponents/settings/OHLC-enabled.svg';
+// import OHLCDisabledDarkIcon              from 'Assets/SvgComponents/settings/dark/OHLC-disabled.svg';
+// import OHLCEnabledDarkIcon               from 'Assets/SvgComponents/settings/dark/OHLC-enabled.svg';
 
-import ChartPositionEnabledDarkIcon      from 'Images/app/settings/dark/bottom.svg';
-import IntervalDurationDisabledDarkIcon  from 'Images/app/settings/dark/interval-disabled.svg';
-import IntervalDurationEnabledDarkIcon   from 'Images/app/settings/dark/interval-enabled.svg';
-import ChartPositionDisabledDarkIcon     from 'Images/app/settings/dark/left.svg';
-import IntervalDurationDisabledLightIcon from 'Images/app/settings/interval-disabled.svg';
-import IntervalDurationEnabledLightIcon  from 'Images/app/settings/interval-enabled.svg';
-import ChartPositionDisabledLightIcon    from 'Images/app/settings/left.svg';
+import ChartPositionEnabledDarkIcon      from 'Assets/SvgComponents/settings/dark/bottom.svg';
+import IntervalDurationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/interval-disabled.svg';
+import IntervalDurationEnabledDarkIcon   from 'Assets/SvgComponents/settings/dark/interval-enabled.svg';
+import ChartPositionDisabledDarkIcon     from 'Assets/SvgComponents/settings/dark/left.svg';
+import IntervalDurationDisabledLightIcon from 'Assets/SvgComponents/settings/interval-disabled.svg';
+import IntervalDurationEnabledLightIcon  from 'Assets/SvgComponents/settings/interval-enabled.svg';
+import ChartPositionDisabledLightIcon    from 'Assets/SvgComponents/settings/left.svg';
 
 const ChartSettings = ({
     // TODO: enable asset information

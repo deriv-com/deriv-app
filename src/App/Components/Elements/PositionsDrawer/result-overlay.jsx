@@ -4,8 +4,8 @@ import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { NavLink }         from 'react-router-dom';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import IconCheck           from 'Images/app/portfolio/ic-check.svg';
-import IconCross           from 'Images/app/portfolio/ic-cross.svg';
+import IconCheck           from 'Assets/SvgComponents/portfolio/ic-check.svg';
+import IconCross           from 'Assets/SvgComponents/portfolio/ic-cross.svg';
 import { localize }        from 'App/i18n';
 
 class ResultOverlay extends React.PureComponent {

@@ -3,8 +3,8 @@ import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { Scrollbars }           from 'tt-react-custom-scrollbars';
 import { localize }             from 'App/i18n';
-import IconExitWon              from 'Images/app/contract_details/ic-exittime-won.svg';
-import IconExitLoss             from 'Images/app/contract_details/ic-exittime-loss.svg';
+import IconExitWon              from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
+import IconExitLoss             from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
 import {
     epochToMoment,
     toGMTFormat }               from 'Utils/Date';

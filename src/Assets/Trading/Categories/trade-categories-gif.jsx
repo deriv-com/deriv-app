@@ -1,18 +1,18 @@
 import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
-import ImageEvenOddDark      from 'Images/app/trade_explanations/img-even-odd-dark.svg';
-import ImageEvenOddLight     from 'Images/app/trade_explanations/img-even-odd-light.svg';
-import ImageHigherLowerDark  from 'Images/app/trade_explanations/img-higher-lower-dark.svg';
-import ImageHigherLowerLight from 'Images/app/trade_explanations/img-higher-lower-light.svg';
-import ImageMatchesDark      from 'Images/app/trade_explanations/img-matches-differs-dark.svg';
-import ImageMatchesLight     from 'Images/app/trade_explanations/img-matches-differs-light.svg';
-import ImageOverUnderDark    from 'Images/app/trade_explanations/img-over-under-dark.svg';
-import ImageOverUnderLight   from 'Images/app/trade_explanations/img-over-under-light.svg';
-import ImageRiseFallDark     from 'Images/app/trade_explanations/img-rise-fall-dark.svg';
-import ImageRiseFallLight    from 'Images/app/trade_explanations/img-rise-fall-light.svg';
-import ImageTouchDark        from 'Images/app/trade_explanations/img-touch-no-touch-dark.svg';
-import ImageTouchLight       from 'Images/app/trade_explanations/img-touch-no-touch-light.svg';
+import ImageEvenOddDark      from 'Assets/SvgComponents/trade_explanations/img-even-odd-dark.svg';
+import ImageEvenOddLight     from 'Assets/SvgComponents/trade_explanations/img-even-odd-light.svg';
+import ImageHigherLowerDark  from 'Assets/SvgComponents/trade_explanations/img-higher-lower-dark.svg';
+import ImageHigherLowerLight from 'Assets/SvgComponents/trade_explanations/img-higher-lower-light.svg';
+import ImageMatchesDark      from 'Assets/SvgComponents/trade_explanations/img-matches-differs-dark.svg';
+import ImageMatchesLight     from 'Assets/SvgComponents/trade_explanations/img-matches-differs-light.svg';
+import ImageOverUnderDark    from 'Assets/SvgComponents/trade_explanations/img-over-under-dark.svg';
+import ImageOverUnderLight   from 'Assets/SvgComponents/trade_explanations/img-over-under-light.svg';
+import ImageRiseFallDark     from 'Assets/SvgComponents/trade_explanations/img-rise-fall-dark.svg';
+import ImageRiseFallLight    from 'Assets/SvgComponents/trade_explanations/img-rise-fall-light.svg';
+import ImageTouchDark        from 'Assets/SvgComponents/trade_explanations/img-touch-no-touch-dark.svg';
+import ImageTouchLight       from 'Assets/SvgComponents/trade_explanations/img-touch-no-touch-light.svg';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({ category, className, is_dark }) => {

@@ -39,6 +39,7 @@ module.exports = {
             },
             {
                 test: /\.html$/,
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'html-loader'
@@ -47,6 +48,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -58,6 +60,7 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -69,7 +72,7 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                exclude: /public\//,
+                exclude: /node_modules|public\//,
                 use : [
                     'babel-loader',
                     {
@@ -127,7 +130,7 @@ module.exports = {
     },
     optimization: {
         namedChunks: true,
-        minimize: true,
+        minimize: !devMode,
         minimizer: [
             new TerserPlugin({
                 test     : /\.js/,
@@ -142,6 +145,7 @@ module.exports = {
         open: 'Google Chrome',
         host: 'localhost.binary.sx',
         https: true,
+        hot: true,
         port: 443,
         historyApiFallback: true,
         stats: {

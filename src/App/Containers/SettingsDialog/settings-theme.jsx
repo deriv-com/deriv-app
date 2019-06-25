@@ -1,8 +1,8 @@
 import classNames    from 'classnames';
 import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
-import DarkModeIcon  from 'Images/app/settings/img-theme-dark.svg';
-import LightModeIcon from 'Images/app/settings/img-theme-light.svg';
+import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
+import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
 import { connect }   from 'Stores/connect';
 
 const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor, pushDataLayer }) => {

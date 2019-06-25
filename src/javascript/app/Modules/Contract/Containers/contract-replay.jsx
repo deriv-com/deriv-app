@@ -29,9 +29,6 @@ class ContractReplay extends React.Component {
     }
 
     componentWillUnmount() {
-        // SmartCharts keeps saving layout for ContractReplay even if layouts prop is set to null
-        // As a result, we have to remove it manually for each SmartChart instance in ContractReplay
-        localStorage.removeItem('layout-contract-replay');
         this.props.hideBlur();
         this.props.onUnmount();
         document.removeEventListener('mousedown', this.handleClickOutside);
@@ -59,7 +56,6 @@ class ContractReplay extends React.Component {
         const {
             config,
             contract_info,
-            chart_id,
             is_chart_loading,
             is_dark_theme,
             is_sell_requested,
@@ -96,7 +92,6 @@ class ContractReplay extends React.Component {
                         <ChartLoader is_visible={is_chart_loading} />
                         {(!!(contract_info.underlying) && !isEmptyObject(config)) &&
                         <SmartChart
-                            chart_id={chart_id}
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
@@ -115,7 +110,6 @@ class ContractReplay extends React.Component {
 }
 
 ContractReplay.propTypes = {
-    chart_id        : PropTypes.string,
     config          : PropTypes.object,
     contract_id     : PropTypes.number,
     contract_info   : PropTypes.object,
@@ -137,7 +131,6 @@ ContractReplay.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        chart_id         : modules.smart_chart.replay_id,
         config           : modules.contract.replay_config,
         is_sell_requested: modules.contract.is_sell_requested,
         is_static_chart  : modules.contract.is_replay_static_chart,

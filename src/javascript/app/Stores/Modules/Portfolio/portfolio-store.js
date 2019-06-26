@@ -123,10 +123,6 @@ export default class PortfolioStore extends BaseStore {
         } else {
             portfolio_position.status = null;
         }
-
-        if (isEnded(proposal) && !isUserSold(proposal)) { // if sold, forget will happen after handling sell
-            WS.forget('proposal_open_contract', this.proposalOpenContractHandler, { contract_id: proposal.contract_id });
-        }
     }
 
     @action.bound

@@ -216,6 +216,7 @@ export default class ContractStore extends BaseStore {
         this.is_ongoing_contract = false;
         this.sell_info           = {};
 
+        if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
         WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());

@@ -25,7 +25,7 @@ describe('formatStatementTransaction', () => {
     let expected_result = {
         action      : toTitleCase(constant.action_type),
         action_type : constant.action_type,
-        date        : '29 Nov 1973 - 21:33:09',
+        date        : '29 Nov 1973 21:33:09',
         display_name: '',
         refid       : constant.id,
         payout      : '1,000.00',

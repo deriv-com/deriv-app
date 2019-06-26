@@ -34,23 +34,26 @@ module.exports = function(env, argv) {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules|__tests__/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                '@babel/preset-env',
-                                '@babel/preset-react'
-                            ],
-                            plugins: [
-                                [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
-                                [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
-                                '@babel/plugin-proposal-export-default-from',
-                                '@babel/plugin-proposal-object-rest-spread',
-                                '@babel/plugin-proposal-export-namespace-from',
-                                '@babel/plugin-syntax-dynamic-import',
-                            ],
-                        }
-                    }
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: [
+                                    '@babel/preset-env',
+                                    '@babel/preset-react'
+                                ],
+                                plugins: [
+                                    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+                                    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+                                    '@babel/plugin-proposal-export-default-from',
+                                    '@babel/plugin-proposal-object-rest-spread',
+                                    '@babel/plugin-proposal-export-namespace-from',
+                                    '@babel/plugin-syntax-dynamic-import',
+                                ],
+                            }
+                        },
+                        path.resolve('./extract-translation-strings')
+                    ]
                 },
                 {
                     test: /\.html$/,
@@ -174,7 +177,7 @@ module.exports = function(env, argv) {
             new HtmlWebPackPlugin({
                 template: 'index.html',
                 filename: 'index.html',
-                base: env.base ? '/' + env.base + '/' : '/',
+                base: env.base && env.base != true ? '/' + env.base + '/' : '/',
                 minify: devMode ? false : {
                     collapseWhitespace: true,
                     removeComments: true,
@@ -192,7 +195,7 @@ module.exports = function(env, argv) {
         ],
         output: {
             filename: 'js/[name].[hash].js',
-            publicPath: env.base ? '/' + env.base + '/' : '/'
+            publicPath: env.base && env.base != true ? '/' + env.base + '/' : '/'
         },
         entry: './index.js',
         context: path.resolve(__dirname, 'src'),

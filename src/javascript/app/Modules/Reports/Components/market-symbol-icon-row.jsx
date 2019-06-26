@@ -2,7 +2,7 @@ import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { UnderlyingIcon }       from 'App/Components/Elements/underlying-icon.jsx';
 import Icon                     from 'Assets/icon.jsx';
-import { getMarketInformation } from '../Helpers/market-underyling';
+import { getMarketInformation } from '../Helpers/market-underlying';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';

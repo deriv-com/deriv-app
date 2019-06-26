@@ -14,7 +14,7 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                      from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage             from '../Components/empty-trade-history-message.jsx';
-import { getMarketInformation }             from '../Helpers/market-underyling';
+import { getMarketInformation }             from '../Helpers/market-underlying';
 
 class Statement extends React.Component {
     componentDidMount() {

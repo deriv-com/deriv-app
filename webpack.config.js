@@ -9,6 +9,8 @@ const path = require('path');
 const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = function(env, argv) {
+    const base = env.base && env.base != true ? '/' + env.base + '/' : '/';
+
     return {
         mode: devMode ? 'development' : 'production',
         devtool: devMode ? 'cheap-module-eval-source-map' : 'source-map',
@@ -177,7 +179,6 @@ module.exports = function(env, argv) {
             new HtmlWebPackPlugin({
                 template: 'index.html',
                 filename: 'index.html',
-                base: env.base && env.base != true ? '/' + env.base + '/' : '/',
                 minify: devMode ? false : {
                     collapseWhitespace: true,
                     removeComments: true,
@@ -195,7 +196,7 @@ module.exports = function(env, argv) {
         ],
         output: {
             filename: 'js/[name].[hash].js',
-            publicPath: env.base && env.base != true ? '/' + env.base + '/' : '/'
+            publicPath: base
         },
         entry: './index.js',
         context: path.resolve(__dirname, 'src'),

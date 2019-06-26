@@ -2,15 +2,15 @@ import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { NavLink }           from 'react-router-dom';
-import { CSSTransition }     from 'react-transition-group';
-import { Scrollbars }        from 'tt-react-custom-scrollbars';
-import { localize }          from '_common/localize';
-import Icon                  from 'Assets/icon.jsx';
-import routes                from 'Constants/routes';
-import EmptyPortfolioMessage from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
-import { connect }           from 'Stores/connect';
-import PositionsDrawerCard   from './positions-drawer-card.jsx';
+import { NavLink }                    from 'react-router-dom';
+import { CSSTransition }              from 'react-transition-group';
+import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { localize }                   from '_common/localize';
+import Icon                           from 'Assets/icon.jsx';
+import routes                         from 'Constants/routes';
+import EmptyPortfolioMessage          from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
+import { connect }                    from 'Stores/connect';
+import PositionsDrawerCard            from './positions-drawer-card.jsx';
 
 class PositionsDrawer extends React.Component {
     componentDidMount()    {
@@ -26,6 +26,7 @@ class PositionsDrawer extends React.Component {
             all_positions,
             active_contract_id,
             error,
+            contract_type,
             currency,
             is_contract_mode,
             is_empty,
@@ -56,6 +57,7 @@ class PositionsDrawer extends React.Component {
                     onClickRemove={onClickRemove}
                     openContract={openContract}
                     key={portfolio_position.id}
+                    contract_type={contract_type}
                     currency={currency}
                     toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                     {...portfolio_position}
@@ -103,6 +105,7 @@ PositionsDrawer.propTypes = {
     active_contract_id    : PropTypes.number,
     all_positions         : MobxPropTypes.arrayOrObservableArray,
     children              : PropTypes.any,
+    contract_type         : PropTypes.string,
     currency              : PropTypes.string,
     error                 : PropTypes.string,
     is_contract_mode      : PropTypes.bool,
@@ -119,6 +122,7 @@ PositionsDrawer.propTypes = {
 
 export default connect(
     ({ modules, client, ui }) => ({
+        contract_type                 : modules.trade.contract_type,
         currency                      : client.currency,
         active_contract_id            : modules.contract.contract_id,
         all_positions                 : modules.portfolio.all_positions,

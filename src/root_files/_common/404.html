@@ -42,29 +42,27 @@
     function redirectToReactRoute(lang) {
         // Converts the path and query strings into just query strings and
         // then redirects the browser to the new url with query strings and hash fragment.
-        // https://deriv.app/en/statement -> https://deriv.app/en?p=/statement
-
+        // https://deriv.app/reports/positions -> https://deriv.app/?p=reports::positions
         var pathname = location.pathname.toLowerCase().replace(/\/index(\.html)?/, '');
-        var base = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-        var regex = new RegExp('^((\/[A-Za-z0-9-_]+){0,2})(\/('+ all_languages.join('|') +'))((\/[A-Za-z0-9-_]+)+)', 'i');
-        var result = regex.exec(pathname);
-        // Sensible defaults
-        var prefix = '';
-        var default_lang = 'en';
-        var routes = '';
-        if (result && result.length) {
-            prefix = result[1] || '';
-            default_lang = result[4].toLowerCase() || 'en';
-            routes = result[5] ? result[5].substr(1).replace('/', '::') : '';
+        var base     = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+        var br_regex = new RegExp('\/br_[A-Za-z0-9-_]+\/')
+        var result   = br_regex.exec(pathname);
+        var pathname_has_br_path = result && result.length;
+        var br_branch_name         = '';
+        var routes;
+        if (pathname_has_br_path) {
+            br_branch_name = result[0].substring(0, result[0].length - 1);
+            routes         = pathname.substring(br_branch_name.length);
+        } else {
+            routes = pathname;
         }
-
-        var default_lang = 'EN'; // TODO remove this when i18n is ready.
         location.replace(
             base
-            + prefix                                                        // /br_branch_name
+            + br_branch_name                                                // /br_branch_name
             + '/'                                                           // https://deriv.app/
-            + default_lang.toLowerCase() + '?from_404=true&p='              // en?p=
-            + routes                                                        // statement
+            // + default_lang.toLowerCase()                                 TODO: add language to querystring instead
+            + '?from_404=true&p='                                           // en?p= 
+            + routes.substr(1).replace('/', '::')                           // statement
             + (
                 location.search ? '&q=' + location.search.slice(1).replace(/&/g, '~and~') : ''
             ) + location.hash

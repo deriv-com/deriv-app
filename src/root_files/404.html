@@ -4,8 +4,9 @@
     <title>Deriv</title>
     <meta charset="utf-8"/>
     <script type="text/javascript">
-        var segmentCount = 0;
         var l = window.location;
+        var segmentCount = /^\/br_/.test(l.pathname) ? 1 : 0;
+
         l.replace(
             l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
             l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +

@@ -1,5 +1,5 @@
 const urlForLanguage             = require('./language').urlFor;
-const urlLang                    = require('./language').urlLang;
+const getLanguage                = require('./language').get;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
@@ -37,14 +37,11 @@ const Url = (() => {
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
-        const lang = (language || urlLang()).toLowerCase();
-        // url language might differ from passed language, so we will always replace using the url language
-        const url_lang = (language ? urlLang().toLowerCase() : lang);
-        const url = window.location.href;
-        let domain = url.substring(0, url.indexOf(`/${url_lang}/`) + url_lang.length + 2);
+        const lang = (language || getLanguage()).toLowerCase();
+        let domain = 'https://' + window.location.hostname + '/';
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {
-                domain = `https://binary.com/${url_lang}/`;
+                domain = `https://binary.com/${lang || 'en'}/`;
             } else {
                 domain = domain.replace(/deriv\.app/, 'binary.com');
             }

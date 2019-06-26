@@ -47,7 +47,7 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     async fetchNextBatch(should_load_partially = false) {
-        if (this.has_loaded_all || this.is_loading) return;
+        if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return;
         this.is_loading = true;
 
         const response = await WS.profitTable(

@@ -96,7 +96,9 @@ module.exports = {
                             jsx: true,
                             svgo: {
                                 plugins: [
-                                    { removeTitle: false }
+                                    { removeTitle: false },
+                                    { removeUselessStrokeAndFill: false },
+                                    { removeUknownsAndDefaults: false }
                                 ],
                                 floatPrecision: 2
                             }

@@ -1,6 +1,7 @@
 import debounce                          from 'lodash.debounce';
 import {
     action,
+    computed,
     observable,
     reaction,
     runInAction }                        from 'mobx';
@@ -163,57 +164,75 @@ export default class TradeStore extends BaseStore {
         );
     }
 
+    @computed
+    get is_symbol_in_active_symbols() {
+        return this.active_symbols
+            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    }
+
     @action.bound
     refresh = () => {
         WS.forgetAll('proposal');
     };
 
     @action.bound
-    shouldSetDefaultSymbol = () => {
-        if (!this.symbol) return true;
-        return !this.active_symbols.active_symbols
-            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    setDefaultSymbol() {
+        if (!this.is_symbol_in_active_symbols) {
+            this.processNewValuesAsync({
+                symbol: pickDefaultSymbol(this.active_symbols),
+            });
+        }
     }
 
     @action.bound
-    async prepareTradeStore() {
-        await BinarySocket.wait('authorize');
-        const active_symbols = await WS.activeSymbols();
-        if (active_symbols.error) {
+    async setActiveSymbols() {
+        const { active_symbols, error } = this.smart_chart.should_refresh_active_symbols ?
+            // if SmartCharts has requested active_symbols, we wait for the response
+            await BinarySocket.wait('active_symbols')
+            : // else requests new active_symbols
+            await WS.activeSymbols({ forced: true });
+
+        if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             this.root_store.ui.setAppLoading(false);
             return;
-        } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
+        } else if (!active_symbols || !active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
             this.root_store.ui.setAppLoading(false);
             return;
         }
 
-        runInAction(async() => {
-            this.active_symbols   = active_symbols;
-            this.smart_chart      = this.root_store.modules.smart_chart;
-            this.currency         = this.root_store.client.currency;
-            this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
+        this.processNewValuesAsync({ active_symbols });
+    }
 
-            if (this.shouldSetDefaultSymbol()) {
-                await this.processNewValuesAsync({
-                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
+    @action.bound
+    async setContractTypes() {
+        if (this.symbol && this.is_symbol_in_active_symbols) {
+            await Symbol.onChangeSymbolAsync(this.symbol);
+            runInAction(() => {
+                this.processNewValuesAsync({
+                    ...ContractType.getContractValues(this),
+                    ...ContractType.getContractCategories(),
                 });
-            }
+            });
+        }
+    }
 
-            if (this.symbol) {
-                ContractType.buildContractTypesConfig(this.symbol)
-                    .then(action(async () => {
-                        await this.processNewValuesAsync({
-                            ...ContractType.getContractValues(this),
-                            ...ContractType.getContractCategories(),
-                        });
-                    }));
-            }
+    @action.bound
+    async prepareTradeStore() {
+        this.smart_chart      = this.root_store.modules.smart_chart;
+        this.currency         = this.root_store.client.currency;
+        this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            await this.processNewValuesAsync({
-                active_symbols  : active_symbols.active_symbols,
-                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+        await BinarySocket.wait('authorize');
+        await this.setActiveSymbols();
+        runInAction(async() => {
+            this.setDefaultSymbol();
+            await this.setContractTypes();
+            runInAction(() => {
+                this.processNewValuesAsync({
+                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+                });
             });
         });
     }

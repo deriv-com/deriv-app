@@ -13,6 +13,7 @@ const Login = (() => {
         if (!Client.isLoggedIn() && !isLoginPages() && isStorageSupported(sessionStorage)) {
             sessionStorage.setItem('redirect_url', window.location.href);
             window.location.href = loginUrl();
+
         }
     };
 

@@ -20,30 +20,34 @@ import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
-const App = ({ root_store }) => (
-    <Router>
-        <MobxProvider store={root_store}>
-            {
-                root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
-                    <Wip /> :
-                    <React.Fragment>
-                        <Header />
-                        <ErrorBoundary>
-                            <AppContents>
-                                <Routes />
-                                <PushNotification />
-                            </AppContents>
-                            <UnsupportedContractModal />
-                            <DenialOfServiceModal />
-                            <MarketUnavailableModal />
-                            <ServicesErrorModal />
-                        </ErrorBoundary>
-                        <Footer />
-                    </React.Fragment>
-            }
-        </MobxProvider>
-    </Router>
-);
+const App = ({ root_store }) => {
+    const l = window.location;
+    const base = l.pathname.split('/')[1];
+    return (
+        <Router basename={/^\/br_/.test(l.pathname) ? `/${base}` : null}>
+            <MobxProvider store={root_store}>
+                {
+                    root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
+                        <Wip /> :
+                        <React.Fragment>
+                            <Header />
+                            <ErrorBoundary>
+                                <AppContents>
+                                    <Routes />
+                                    <PushNotification />
+                                </AppContents>
+                                <UnsupportedContractModal />
+                                <DenialOfServiceModal />
+                                <MarketUnavailableModal />
+                                <ServicesErrorModal />
+                            </ErrorBoundary>
+                            <Footer />
+                        </React.Fragment>
+                }
+            </MobxProvider>
+        </Router>
+    )
+};
 
 App.propTypes = {
     root_store: PropTypes.object,

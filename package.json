@@ -6,10 +6,11 @@
   "scripts": {
     "start": "npm run test && webpack-dev-server --mode development",
     "serve": "webpack-dev-server --mode development",
-    "build": "npm run test && webpack --mode production",
+    "build": "f () { npm run test && webpack --mode production --env.base $1;}; f",
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config webpack.config-test.js \"src/**/__tests__/*.js\"",
+    "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
     "deploy:clean": "npm run build && gh-pages -d dist",
-    "deploy:folder": "npm run build && gh-pages -d dist -e"
+    "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f"
   },
   "repository": {
     "type": "git",

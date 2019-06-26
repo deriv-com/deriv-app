@@ -105,6 +105,7 @@ export default class StatementStore extends BaseStore {
     @action.bound
     async onMount() {
         this.onSwitchAccount(this.accountSwitcherListener);
+        await this.waitFor('authorize');
         await this.fetchNextBatch();
     }
 

@@ -25,10 +25,10 @@ export default class PortfolioStore extends BaseStore {
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     @action.bound
-    initializePortfolio = () => {
+    initializePortfolio = async () => {
         if (!this.root_store.client.is_logged_in) return;
         this.is_loading = true;
-
+        await this.waitFor('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler, false);
         WS.subscribeTransaction(this.transactionHandler, false);

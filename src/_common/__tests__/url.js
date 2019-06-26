@@ -16,12 +16,11 @@ describe('Url', () => {
 function runTests(url) {
     setURL(url);
     const website_url  = Url.websiteUrl();
-    const language     = 'en';
     const query_string = 'market=forex&duration_amount=5&no_value=';
     const params_obj   = { market: 'forex', duration_amount: '5', no_value: '' };
-    const url_no_qs    = `${website_url}${language}/trading.html`;
+    const url_no_qs    = `${website_url}trading.html`;
     const url_with_qs  = `${url_no_qs}?${query_string}`;
-    const home_url     = `${website_url}${language}/home.html`;
+    const home_url     = `${website_url}home.html`;
 
     describe('.paramsHash()', () => {
         it('returns correct object', () => {
@@ -49,14 +48,14 @@ function runTests(url) {
             expect(Url.urlFor('trading', query_string)).to.eq(url_with_qs);
         });
         it('returns the correct language', () => {
-            expect(Url.urlFor('home', undefined, 'es')).to.eq(`${website_url}es/home.html`);
+            expect(Url.urlFor('home', undefined, 'es')).to.eq(`${website_url}home.html`);
         });
         it('ignores invalid characters', () => {
             expect(Url.urlFor('`~!@#$%^&*)(=+\[}{\]\\\"\';:\?><,|')).to.eq(home_url);
         });
         it('handles all valid characters', () => {
             expect(Url.urlFor('metatrader/comparison-4_vs_5'))
-                .to.eq(`${website_url}${language}/metatrader/comparison-4_vs_5.html`);
+                .to.eq(`${website_url}metatrader/comparison-4_vs_5.html`);
         });
     });
 

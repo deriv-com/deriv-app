@@ -8,6 +8,22 @@ const messages_json = {};
 
 const getKeyHash = (string) => crc32(string);
 
+const updateMessagesFile = () => {
+    // Hash the messages and set the key-value pair for json
+    messages.sort();
+    for (let i = 0; i < messages.length; i++) {
+        messages_json[getKeyHash(messages[i])] = messages[i];
+    }
+
+    // Add to messages.json
+    fs.writeFileSync(
+        'src/public/i18n/messages.json',
+        JSON.stringify(messages_json),
+        'utf8',
+        (err) => console.log(err)
+    );
+};
+
 module.exports = function(content, map, meta) {
     const i18n_marker = new RegExp(/i18n_default_text={?(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])}?|localize\((?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\)?/g);
 
@@ -23,18 +39,6 @@ module.exports = function(content, map, meta) {
         console.log(e);
     }
 
-    // Hash the messages and set the key-value pair for json
-    for (let i = 0; i < messages.length; i++) {
-        messages_json[getKeyHash(messages[i])] = messages[i];
-    }
-
-    // Add to messages.json
-    fs.writeFileSync(
-        'src/public/i18n/messages.json',
-        JSON.stringify(messages_json),
-        'utf8',
-        (err) => console.log(err)
-    );
-
+    updateMessagesFile();
     return content;
 };

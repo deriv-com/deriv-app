@@ -4,7 +4,7 @@ import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatProfitTableTransactions = (transaction, currency, active_symbols = []) => {
-    const format_string           = 'DD MMM YYYY - HH:mm:ss';
+    const format_string           = 'DD MMM YYYY HH:mm:ss';
     const purchase_time           = `${toMoment(+transaction.purchase_time).format(format_string)}`;
     const sell_time               = `${toMoment(+transaction.sell_time).format(format_string)}`;
     const payout                  = parseFloat(transaction.payout);

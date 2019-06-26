@@ -6,7 +6,7 @@ import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 import { getMarketInformation } from '../../../../Modules/Reports/Helpers/market-underlying';
 
 export const formatStatementTransaction = (transaction, currency, active_symbols = []) => {
-    const format_string           = 'DD MMM YYYY - HH:mm:ss';
+    const format_string           = 'DD MMM YYYY HH:mm:ss';
     const transaction_time        = toMoment(transaction.transaction_time).format(format_string);
     const payout                  = parseFloat(transaction.payout);
     const amount                  = parseFloat(transaction.amount);

@@ -25,13 +25,9 @@ class IndicativeCell extends React.PureComponent {
         const { movement } = this.state;
         return (
             <div className='open-positions__indicative' >
-                <div>
+                <div className='open-positions__indicative--amount'>
                     <Money amount={Math.abs(amount)} currency={currency} />
-                    {status !== 'no-resale' &&
-                    <div className='open-positions__indicative--movement'>
-                        {amount !== 0 && <Icon icon='IconPriceMove' type={movement} />}
-                    </div>
-                    }
+                    {status !== 'no-resale' && amount !== 0 && <Icon icon='IconPriceMove' type={movement} />}
                 </div>
 
                 {status === 'no-resale' &&

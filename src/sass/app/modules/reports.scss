@@ -61,7 +61,8 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: 1fr 1.2fr 1fr 1fr 1fr 1fr;
+        /*                     icon   refId tr_time  transaction cred/debt  balance */
+        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
 
         &--detail {
             display: flex;
@@ -70,6 +71,9 @@ $side-padding: 1.2em;
             @include themify($themes) {
                 background-color: themed('cell_hover_color');
             }
+        }
+        .date {
+            text-align: left;
         }
     }
     .amount, .balance {
@@ -204,7 +208,8 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: repeat(7, 1fr);
+        /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
+        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
     }
     .buy_price, .sell_price, .profit_loss {
         justify-content: flex-end;
@@ -228,11 +233,15 @@ $side-padding: 1.2em;
         align-items: flex-end;
         flex-direction: column;
 
-        &--movement {
-            display: inline-block;
+        &--amount {
+            display: flex;
+            align-items: center;
+            line-height: 16px;
         }
         &-no-resale-msg {
             clear: both;
+            text-align: right;
+            font-size: smaller;
         }
     }
     &__profit-loss {
@@ -277,11 +286,15 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: repeat(7, 1fr);
+        /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
+        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
         width: 100%;
     }
     .buy_price, .payout, .indicative, .profit {
         justify-content: flex-end;
+    }
+    .type {
+        padding-right: 0;
     }
     .progress-slider {
         border: none;

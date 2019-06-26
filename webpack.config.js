@@ -9,7 +9,7 @@ const path = require('path');
 const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = function(env, argv) {
-    const base = env.base && env.base != true ? '/' + env.base + '/' : '/';
+    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
         mode: devMode ? 'development' : 'production',

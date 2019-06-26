@@ -52,6 +52,7 @@
 }
 
 .blocklyToolboxDiv {
+    height: initial !important;
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 0.06em solid;
@@ -112,4 +113,30 @@
 
 #scratch_div {
     position: absolute;
+}
+
+.scratchCategoryMenuRow {
+    margin: 10px;
+    border: 1px solid #ebebeb;
+    color: #000;
+}
+
+.nested__category--collapsed {
+    display: none;
+}
+
+.category--back {
+    background-color: transparentize(red, 0.7);
+}
+
+.category--subcategories {
+    background-color: transparentize(green, 0.7);
+}
+
+.toolbox__label {
+    font-weight: bold;
+}
+
+.toolbox__description {
+    font-size: 0.9em;
 }

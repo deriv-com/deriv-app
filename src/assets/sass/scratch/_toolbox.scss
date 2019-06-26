@@ -113,3 +113,23 @@ $category-colours: (
         }
     }
 }
+
+.nested__category--collapsed {
+    display: none;
+}
+
+.category--back {
+    background-color: #ebebeb;
+
+    &:before {
+        content: '<';
+    }
+}
+
+.category--subcategories {
+    background-color: green;
+
+    &:after {
+        content: '>';
+    }
+}

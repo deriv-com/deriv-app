@@ -191,12 +191,79 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
     }
+
     this.selectedItem_ = item;
+
     if (this.selectedItem_ != null) {
-        this.selectedItem_.setSelected(true);
-        // Scroll flyout to the top of the selected category
-        const categoryId = item.id_;
-        this.showCategory_(categoryId);
+        const is_return_category = this.selectedItem_.parentHtml_.classList.contains('category--back'); // TEMP
+        const getCategoryTree = (parent_name, parent_id, children) => {
+            const xml_string =
+            `<xml>
+                <category name="${parent_name}" id="${parent_id}" web-class="category--back" />
+                ${Array.from(children).map(c => c.outerHTML).join()}
+            </xml>`;
+            return Blockly.Xml.textToDom(xml_string);
+        };
+        
+        if (is_return_category) {
+            const findCategory = (category_collection) => {
+                // Finds a category based on `this.selectedItem_.id_` in the given `category_collection`
+                for (let i = 0; i < category_collection.length; i++) {
+                    const el_category = category_collection[i];
+                    const id = el_category.getAttribute('id');
+                    const is_correct_child =
+                        el_category.tagName.toUpperCase() === 'CATEGORY' &&
+                        id === this.selectedItem_.id_;
+
+                    if (is_correct_child) {
+                        return el_category;
+                    }
+                    const category = findCategory(el_category.children);
+                    if (category) {
+                        return category;
+                    }
+                }
+                return null;
+            };
+
+            const { initial_toolbox_xml } = this.workspace_;
+            const toolboxDom = Blockly.Xml.textToDom(initial_toolbox_xml);
+            const selected_category = findCategory(toolboxDom.children);
+
+            if (selected_category) {
+                const el_parent = selected_category.parentElement;
+
+                if (el_parent.tagName === 'xml') {
+                    this.workspace_.updateToolbox(initial_toolbox_xml);
+                } else {
+                    const newTree = getCategoryTree(
+                        el_parent.getAttribute('name'),
+                        el_parent.getAttribute('id'),
+                        el_parent.children
+                    );
+
+                    this.workspace_.updateToolbox(newTree);
+                }
+            }
+        } else {
+            const category_children = this.selectedItem_.contents_;
+            const has_child_category = category_children.some(childNode => childNode.nodeName.toUpperCase() === 'CATEGORY');
+
+            if (has_child_category) {
+                // Only show categories in toolbox that are descendants of this.selectedItem_
+                const newTree = getCategoryTree(
+                    this.selectedItem_.name_,
+                    this.selectedItem_.id_,
+                    category_children
+                );
+
+                this.workspace_.updateToolbox(newTree);
+            } else {
+                // Show blocks that belong to this category.
+                this.selectedItem_.setSelected(true);
+                this.showCategory_(item.id_);
+            }
+        }
     } else {
         this.flyout_.hide();
     }
@@ -250,4 +317,103 @@ Blockly.Toolbox.prototype.position = function () {
     }
 
     this.flyout_.position();
+};
+
+/**
+ * Set the contents of this category from DOM.
+ * @param {Node} domTree DOM tree of blocks.
+ * @constructor
+ */
+Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
+    this.description_ = domTree.getAttribute('description');
+
+    domTree.childNodes.forEach(child => {
+        if (child.tagName) {
+            switch (child.tagName.toUpperCase()) {
+                case 'BLOCK':
+                case 'SHADOW':
+                case 'LABEL':
+                case 'BUTTON':
+                case 'SEP':
+                case 'TEXT':
+                case 'CATEGORY':
+                    this.contents_.push(child);
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+};
+
+/**
+ * Create the DOM for a category in the toolbox.
+ * deriv-bot: Custom class names + injection of description
+ */
+Blockly.Toolbox.Category.prototype.createDom = function () {
+    const toolbox = this.parent_.parent_;
+
+    const el_toolbox_row_color = goog.dom.createDom('div', { class: 'toolbox__color' });
+    this.item_ = goog.dom.createDom('div', { class: this.getMenuItemClassName_() });
+    this.label_ = goog.dom.createDom('div', { class: 'toolbox__label' }, this.name_);
+
+    this.item_.appendChild(el_toolbox_row_color);
+    this.item_.appendChild(this.label_);
+
+    if (this.description_) {
+        const desc_el = goog.dom.createDom('div', { class: 'toolbox__description' }, this.description_);
+        this.item_.appendChild(desc_el);
+    }
+    
+    this.parentHtml_.appendChild(this.item_);
+
+    Blockly.bindEvent_(this.item_, 'mouseup', toolbox, toolbox.setSelectedItemFactory(this));
+};
+
+/**
+ * Fill the toolbox with categories and blocks by creating a new
+ * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
+ * @param {Node} domTree DOM tree of blocks, or null.
+ */
+Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
+    if (!domTree) {
+        return;
+    }
+  
+    // Remove old categories
+    this.dispose();
+    this.createDom();
+
+    const categories = [];
+
+    // Find actual categories from the DOM tree.
+    domTree.childNodes.forEach(child => {
+        if (child.tagName && child.tagName.toUpperCase() === 'CATEGORY') {
+            categories.push(child);
+        }
+    });
+
+    // Create a single column of categories
+    categories.forEach(child => {
+        const row = goog.dom.createDom('div', 'scratchCategoryMenuRow');
+
+        const has_child_category = Array.from(child.children).some(el_child => el_child.tagName.toUpperCase() === 'CATEGORY');
+        if (has_child_category) {
+            row.classList.add('category--subcategories');
+        }
+
+        // Convert xml `web-class` attributes to `class` attributes in row
+        const web_classes = child.getAttribute('web-class');
+        if (web_classes) {
+            web_classes.split(' ').forEach(className => row.classList.add(className));
+        }
+
+        this.table.appendChild(row);
+
+        if (child) {
+            this.categories_.push(new Blockly.Toolbox.Category(this, row, child));
+        }
+    });
+
+    this.height_ = this.table.offsetHeight;
 };

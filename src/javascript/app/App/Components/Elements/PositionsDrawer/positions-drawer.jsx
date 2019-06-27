@@ -105,7 +105,6 @@ PositionsDrawer.propTypes = {
     active_contract_id    : PropTypes.number,
     all_positions         : MobxPropTypes.arrayOrObservableArray,
     children              : PropTypes.any,
-    contract_type         : PropTypes.string,
     currency              : PropTypes.string,
     error                 : PropTypes.string,
     is_contract_mode      : PropTypes.bool,
@@ -122,7 +121,6 @@ PositionsDrawer.propTypes = {
 
 export default connect(
     ({ modules, client, ui }) => ({
-        contract_type                 : modules.trade.contract_type,
         currency                      : client.currency,
         active_contract_id            : modules.contract.contract_id,
         all_positions                 : modules.portfolio.all_positions,

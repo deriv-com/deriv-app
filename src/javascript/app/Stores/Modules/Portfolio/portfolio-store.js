@@ -14,6 +14,7 @@ import {
 import {
     getDisplayStatus,
     getEndTime,
+    isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
@@ -183,6 +184,13 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        if (isEnded(contract_response)) {
+            // also forget for buy
+            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
+                WS.forget('proposal_open_contract', cb, { contract_id: contract_response.contract_id });
+            });
+        }
     };
 
     @action.bound

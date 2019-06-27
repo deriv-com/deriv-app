@@ -19,7 +19,7 @@ class CompositeCalendar extends React.PureComponent {
         this.state = {
             show_to           : false,
             show_from         : false,
-            selected_to_date  : props.to ? props.to : date.unix(),
+            selected_to_date  : props.to ? props.to : date.clone().startOf('day').add(1, 'd').subtract(1, 's').unix(),
             selected_from_date: props.from ? props.from : null,
             list              : [
                 { children: localize('All time'),     onClick: () => this.selectDateRange(0),  duration: 0, is_active: true },
@@ -36,7 +36,7 @@ class CompositeCalendar extends React.PureComponent {
 
     selectDateRange (from) {
         this.setState({
-            selected_from_date: from ? toMoment().startOf('day').subtract(from, 'day').unix() : null,
+            selected_from_date: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
             selected_to_date  : toMoment().startOf('day').unix(),
         }, () => {
             this.setActiveList();
@@ -113,7 +113,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     setToDate (date) {
-        this.updateState('selected_to_date', date);
+        this.updateState('selected_to_date', epochToMoment(date).startOf('day').add(1, 'd').subtract(1, 's').unix());
     }
 
     setFromDate(date) {

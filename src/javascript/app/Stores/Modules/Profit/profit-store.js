@@ -45,9 +45,16 @@ export default class ProfitTableStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
+    shouldFetchNextBatch(should_load_partially) {
+        if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        if (should_load_partially && this.date_to && this.date_to < today) return false;
+        return true;
+    }
+
     @action.bound
     async fetchNextBatch(should_load_partially = false) {
-        if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return;
+        if (!this.shouldFetchNextBatch(should_load_partially)) return;
         this.is_loading = true;
 
         const response = await WS.profitTable(
@@ -159,9 +166,7 @@ export default class ProfitTableStore extends BaseStore {
     @action.bound
     handleDateChange(date_values) {
         Object.keys(date_values).forEach(key => {
-            if (date_values[key]) {
-                this[`date_${key}`] = date_values[key];
-            }
+            this[`date_${key}`] = date_values[key];
         });
         this.clearTable();
         this.fetchNextBatch();

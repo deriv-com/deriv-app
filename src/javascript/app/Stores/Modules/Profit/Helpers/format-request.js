@@ -4,7 +4,13 @@ import {
 } from 'Utils/Date';
 
 const getDateTo = (partial_fetch_time, date_to) => {
-    if (partial_fetch_time) {
+    const today = toMoment().startOf('day').unix();
+    if (date_to && today > date_to) {
+        return epochToMoment(date_to)
+            .add(1, 'd')
+            .subtract(1, 's')
+            .unix();
+    } else if (partial_fetch_time) {
         return toMoment().endOf('day').unix();
     } else if (date_to) {
         return epochToMoment(date_to)
@@ -15,13 +21,18 @@ const getDateTo = (partial_fetch_time, date_to) => {
     return toMoment().endOf('day').unix();
 };
 
-const getDateFrom = (should_load_partially, partial_fetch_time, date_from) =>
-    should_load_partially && partial_fetch_time ? partial_fetch_time : date_from;
+const getDateFrom = (should_load_partially, partial_fetch_time, date_from, date_to) => {
+    const today = toMoment().startOf('day').unix();
+    if (today > date_to) {
+        return date_from;
+    }
+    return should_load_partially && partial_fetch_time ? partial_fetch_time : date_from;
+};
 
 const getDateBoundaries = (date_from, date_to, partial_fetch_time, should_load_partially = false) => (
     {
         // eslint-disable-next-line max-len
-        ...(date_from || should_load_partially) && { date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from) },
+        ...(date_from || should_load_partially) && { date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from, date_to) },
         ...(date_to || should_load_partially) && { date_to: getDateTo(partial_fetch_time, date_to) },
     }
 );

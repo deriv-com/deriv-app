@@ -6,19 +6,11 @@ import {
 const getDateTo = (partial_fetch_time, date_to) => {
     const today = toMoment().startOf('day').unix();
     if (date_to && today > date_to) {
-        return epochToMoment(date_to)
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        return date_to;
     } else if (partial_fetch_time) {
-        return toMoment().endOf('day').unix();
-    } else if (date_to) {
-        return epochToMoment(date_to)
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        return epochToMoment(today).add(1, 'd').subtract(1, 's').unix();
     }
-    return toMoment().endOf('day').unix();
+    return epochToMoment(today).add(1, 'd').subtract(1, 's').unix();
 };
 
 const getDateFrom = (should_load_partially, partial_fetch_time, date_from, date_to) => {

@@ -52,7 +52,7 @@ export default class StatementStore extends BaseStore {
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
         const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-        if (should_load_partially && this.date_to && this.date_to < today) return false;
+        if (this.date_to && this.date_to < today) return !should_load_partially;
         return true;
     }
 

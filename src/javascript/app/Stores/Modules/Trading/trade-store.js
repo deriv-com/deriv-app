@@ -279,7 +279,6 @@ export default class TradeStore extends BaseStore {
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
-                    console.log('buy');
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],

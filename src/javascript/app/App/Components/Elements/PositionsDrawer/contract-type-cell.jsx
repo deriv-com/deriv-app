@@ -8,7 +8,7 @@ const ContractTypeCell = ({ type, is_high_low }) => (
         <div className='contract-type__type-wrapper'>
             <Icon
                 icon='IconTradeType'
-                type={is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}
+                type={(is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}
                 className='category-type'
             />
         </div>

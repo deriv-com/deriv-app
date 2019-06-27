@@ -49,7 +49,7 @@ const PositionsDrawerCard = ({
                     </span>
                 </div>
                 <div className='positions-drawer-card__type'>
-                    <ContractTypeCell type={type} is_high_low={!/^S[\d.\d]+P$/.test(getMarketInformation(contract_info).atm)} />
+                    <ContractTypeCell type={type} is_high_low={/CALL|PUT/.test(type) && !/^S[\d.\d]+P$/.test(getMarketInformation(contract_info).atm)} />
                 </div>
             </div>
             {result ?

@@ -71,14 +71,15 @@
     "ws": "^7.0.1"
   },
   "dependencies": {
-    "acorn": "^6.1.1",
     "@babel/polyfill": "^7.0.0",
+    "acorn": "^6.1.1",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "crc-32": "^1.2.0",
     "event-source-polyfill": "^1.0.5",
     "i18next": "^17.0.3",
     "js-cookie": "^2.2.0",
+    "lodash.debounce": "^4.0.8",
     "mobx": "5.0.3",
     "mobx-react": "^5.4.2",
     "mobx-utils": "^5.4.0",

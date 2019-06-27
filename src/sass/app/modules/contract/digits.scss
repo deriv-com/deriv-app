@@ -4,18 +4,7 @@
     align-items: center;
     position: relative;
     margin: 0 2.5em 0 1em;
-    transform: translate3d(0, calc(100% + 2em), 0);
-    transition: transform 0.4s ease, opacity 0.4s linear;
-    opacity: 0;
 
-    &--enter-done {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
-    &--enter, &--exit {
-        transform: translate3d(0, calc(100% + 2em), 0);
-        opacity: 0;
-    }
     &__digit {
         margin: 0 0.4em;
         text-align: center;
@@ -34,7 +23,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.2s ease-in;
+            transition: background-color 0.2s ease-out, transform 0.1s ease-out;
 
             &--selected {
                 @include themify($themes) {
@@ -44,7 +33,6 @@
             }
             &--latest {
                 transform: translateY(-8px);
-                transition: transform 0.2s ease-out;
             }
             &--win {
                 @include themify($themes) {
@@ -74,10 +62,6 @@
             left: -50%;
             right: -50%;
             width: auto;
-            transform: translateX(50%);
-            animation: bounce 0.8s forwards ease;
-            opacity: 1;
-            transition: opacity 0.3s;
 
             &-value {
                 @include typeface(--paragraph-center-bold-black);
@@ -107,7 +91,7 @@
     &__pointer {
         position: absolute;
         bottom: -12px;
-        padding: 0 1.2em;
+        padding: 0 12px;
         transition: margin-left 0.25s ease;
     }
     &__particles {
@@ -170,24 +154,6 @@
         &--loss .digits__icon-color {
             fill: $COLOR_RED;
         }
-    }
-}
-
-@keyframes bounce {
-    0% {
-        transform: translateY(35px);
-    }
-    30% {
-        transform: translateY(-15px);
-    }
-    50% {
-        transform: translateY(5px);
-    }
-    70% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(0);
     }
 }
 

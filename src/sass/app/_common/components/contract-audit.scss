@@ -1,53 +1,63 @@
+/** @define contract-audit; */
 .contract-audit {
-    width: 100%;
+    &__wrapper {
+        margin-top: 1em;
+        transition: max-height 0.2s ease, opacity 0.2s linear;
+        will-change: max-height, opacity;
+        border-radius: $BORDER_RADIUS;
+        padding: 2px 4px;
+        height: 100%;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        @include themify($themes) {
+            background-color: themed('container_color');
+            color: themed('text_color');
+        }
 
-    &__toggle {
-        width: 100%;
-        padding: 8px;
+        &--is-open {
+            opacity: 1;
+            height: calc(100vh - 32em);
+            max-height: calc(100vh - 32em);
+        }
     }
-    &__details {
-        display: grid;
-        grid-row-gap: 8px;
-        grid-template-rows: minmax(1fr, 100%);
-        width: 100%;
+    &__grid {
+        display: flex;
+        padding: 8px 8px 4px;
 
-        &--is-expanded {
-            display: grid;
-        }
-        &--is-hidden {
-            display: none;
-        }
-        & > .pairs {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-column-gap: 8px;
-        }
-        & > .border {
-            height: 1px;
-            border-radius: $BORDER_RADIUS;
+        &:not(:first-child) {
             @include themify($themes) {
-                background-color: themed('background_container_color');
+                border-top: 1px solid themed('background_container_color');
             }
         }
     }
-    &__arrow {
-        transition: transform 250ms ease-out;
-
-        &--is-open {
-            transform: rotate(180deg);
-        }
+    &__icon {
+        display: flex;
+        align-items: flex-start;
+        margin-right: 8px;
     }
-}
-
-.pair {
+    &__item {
+        display: flex;
+        flex-direction: column;
+        margin: 0 4px;
+    }
     &__label {
-        @include typeface(--xsmall-left-normal-black);
+        font-size: 1em;
+        white-space: nowrap;
+        max-width: 90px;
         @include themify($themes) {
-            color: themed('label_default_background');
+            color: themed('text_primary_color');
         }
     }
-    &__value {
-        @include typeface(--xsmall-left-normal-black);
+    &__value-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    &__value, &__value2 {
+        padding-top: 2px;
+        line-height: 1.5;
+        font-size: 1.2em;
+        font-weight: bold;
         @include themify($themes) {
             color: themed('text_color');
         }

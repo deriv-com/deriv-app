@@ -18,6 +18,8 @@ export default class SmartChartStore extends BaseStore {
     @observable granularity;
     @observable barriers = observable.object({});
     @observable markers  = observable.object({});
+    barriers_empty_array = [];
+    markers_empty_array = [];
 
     @observable is_contract_mode = false;
     @observable is_static_chart  = false;
@@ -31,7 +33,6 @@ export default class SmartChartStore extends BaseStore {
     @observable scroll_to_left_epoch_offset = 0;
 
     @observable chart_id             = 'trade';
-    @observable replay_id            = 'contract-replay';
     @observable is_chart_loading     = false;
     @observable is_chart_ready       = false;
     @observable should_import_layout = false;
@@ -39,6 +40,16 @@ export default class SmartChartStore extends BaseStore {
     @observable should_clear_chart   = false;
     @observable trade_chart_layout   = null;
     trade_chart_symbol               = null;
+
+    @action.bound
+    switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
+        this.saveAndClearTradeChartLayout('contract');
+        this.setContractMode(true);
+        if (!is_from_positions) {
+            this.updateGranularity(granularity);
+            this.updateChartType(chart_type);
+        }
+    }
 
     @action.bound
     getChartStatus(status) {
@@ -103,7 +114,7 @@ export default class SmartChartStore extends BaseStore {
         if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
             this.applySavedTradeChartLayout();
         }
-    }
+    };
 
     @action.bound
     onUnmount = () => {
@@ -225,7 +236,30 @@ export default class SmartChartStore extends BaseStore {
 
     @computed
     get barriers_array() {
-        return barriersObjectToArray(this.barriers);
+        let has_differing = false;
+        const barriers_array = barriersObjectToArray(this.barriers, []);
+
+        if (this.barriers_empty_array.length !== barriers_array.length) {
+            has_differing = true;
+        } else {
+            this.barriers_empty_array.forEach(barrier => {
+                barriers_array.forEach(next_barrier => {
+                    Object.keys(barrier).forEach(key => {
+                        if (barrier[key] !== next_barrier[key]) {
+                            has_differing = true;
+                        }
+                    });
+                });
+            });
+        }
+
+        if (has_differing) {
+            this.barriers_empty_array = [];
+        } else {
+            this.barriers_empty_array.length = 0;
+        }
+
+        return barriersObjectToArray(this.barriers, this.barriers_empty_array);
     }
 
     // ---------- Markers ----------
@@ -243,7 +277,30 @@ export default class SmartChartStore extends BaseStore {
 
     @computed
     get markers_array() {
-        return barriersObjectToArray(this.markers);
+        let has_differing   = false;
+        const markers_array = barriersObjectToArray(this.markers, []);
+
+        if (this.markers_empty_array.length !== markers_array.length) {
+            has_differing = true;
+        } else {
+            this.markers_empty_array.forEach(marker => {
+                markers_array.forEach(next_marker => {
+                    Object.keys(marker).forEach(key => {
+                        if (marker[key] !== next_marker[key]) {
+                            has_differing = true;
+                        }
+                    });
+                });
+            });
+        }
+
+        if (has_differing) {
+            this.markers_empty_array = [];
+        } else {
+            this.markers_empty_array.length = 0;
+        }
+
+        return barriersObjectToArray(this.markers, this.markers_empty_array);
     }
 
     // ---------- Chart Settings ----------

@@ -2,13 +2,11 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { withRouter }       from 'react-router';
 import { isEmptyObject }    from '_common/utility';
-import { FadeWrapper }      from 'App/Components/Animations';
 import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import { connect }          from 'Stores/connect';
-import { Icon }             from 'Assets/Common';
-import { IconClose }        from 'Assets/Settings';
+import Icon                 from 'Assets/icon.jsx';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from 'App/i18n';
@@ -26,15 +24,12 @@ class ContractReplay extends React.Component {
         this.props.hidePositions();
         this.props.setChartLoader(true);
         this.props.showBlur();
-        const url_contract_id = /[^/]*$/.exec(location.pathname)[0];
+        const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillUnmount() {
-        // SmartCharts keeps saving layout for ContractPlay even if layouts prop is set to null
-        // As a result, we have to remove it manually for each SmartChart instance in ContractReplay
-        localStorage.removeItem('layout-contract-replay');
         this.props.hideBlur();
         this.props.onUnmount();
         document.removeEventListener('mousedown', this.handleClickOutside);
@@ -54,7 +49,7 @@ class ContractReplay extends React.Component {
         const action_bar_items = [
             {
                 onClick: () => this.props.history.push(AppRoutes.trade),
-                icon   : IconClose,
+                icon   : 'SettingsIconClose',
                 title  : localize('Close'),
             },
         ];
@@ -62,31 +57,24 @@ class ContractReplay extends React.Component {
         const {
             config,
             contract_info,
-            chart_id,
             is_chart_loading,
+            is_dark_theme,
             is_sell_requested,
             is_static_chart,
             onClickSell,
-            server_time,
             status,
         } = this.props;
 
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
-                <FadeWrapper
-                    className='contract-drawer-wrapper'
-                    is_visible={!!(contract_info.status)}
-                    keyname='contract-drawer-wrapper'
-                >
-                    <ContractDrawer
-                        contract_info={contract_info}
-                        heading={ <Localize i18n_default_text='Reports' /> }
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        status={status}
-                        server_time={server_time}
-                    />
-                </FadeWrapper>
+                <ContractDrawer
+                    contract_info={contract_info}
+                    heading={ <Localize i18n_default_text='Reports' /> }
+                    is_dark_theme={is_dark_theme}
+                    is_sell_requested={is_sell_requested}
+                    onClickSell={onClickSell}
+                    status={status}
+                />
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
@@ -105,10 +93,10 @@ class ContractReplay extends React.Component {
                         <ChartLoader is_visible={is_chart_loading} />
                         {(!!(contract_info.underlying) && !isEmptyObject(config)) &&
                         <SmartChart
-                            chart_id={chart_id}
                             chartControlsWidgets={null}
                             Digits={<Digits />}
                             InfoBox={<InfoBox />}
+                            is_contract_replay
                             is_static_chart={is_static_chart}
                             should_show_last_digit_stats={false}
                             symbol={contract_info.underlying}
@@ -123,14 +111,14 @@ class ContractReplay extends React.Component {
 }
 
 ContractReplay.propTypes = {
-    chart_id        : PropTypes.string,
     config          : PropTypes.object,
-    contract_id     : PropTypes.string,
+    contract_id     : PropTypes.number,
     contract_info   : PropTypes.object,
     hideBlur        : PropTypes.func,
     hidePositions   : PropTypes.func,
     history         : PropTypes.object,
     is_chart_loading: PropTypes.bool,
+    is_dark_theme   : PropTypes.bool,
     is_static_chart : PropTypes.bool,
     location        : PropTypes.object,
     onMount         : PropTypes.func,
@@ -143,9 +131,7 @@ ContractReplay.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ common, modules, ui }) => ({
-        server_time      : common.server_time,
-        chart_id         : modules.smart_chart.replay_id,
+    ({ modules, ui }) => ({
         config           : modules.contract.replay_config,
         is_sell_requested: modules.contract.is_sell_requested,
         is_static_chart  : modules.contract.is_replay_static_chart,
@@ -158,6 +144,7 @@ export default withRouter(connect(
         setChartLoader   : modules.smart_chart.setIsChartLoading,
         hidePositions    : ui.hidePositionsFooterToggle,
         hideBlur         : ui.hideRouteBlur,
+        is_dark_theme    : ui.is_dark_mode_on,
         showBlur         : ui.showRouteBlur,
 
     })

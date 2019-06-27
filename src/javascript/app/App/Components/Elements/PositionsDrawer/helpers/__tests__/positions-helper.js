@@ -9,11 +9,11 @@ describe('positions-helper', () => {
         });
     });
     describe('getTimePercentage', () => {
-        it('should work as expected with time of server, purchase and expiry being calculated leading to a percentage', () => {
+        it('should work as expected with time of server, date_start and expiry being calculated leading to a percentage', () => {
             const current_time  = 1544000005;
-            const purchase_time = 1544000000;
+            const date_start    = 1544000000;
             const expiry_time   = 1544005000;
-            expect(PositionsHelper.getTimePercentage(current_time, purchase_time, expiry_time)).to.eql(100);
+            expect(PositionsHelper.getTimePercentage(current_time, date_start, expiry_time)).to.eql(100);
         });
     });
     describe('getBarrierLabel', () => {

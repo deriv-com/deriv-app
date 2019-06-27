@@ -348,7 +348,6 @@ const ContractType = (() => {
                 const end_moment   = buildMoment(expiry_date, expiry_time);
 
                 end_time = end_moment.format('HH:mm');
-
                 // When the contract is forwarding, and the duration is endtime, users can purchase the contract within 24 hours.
                 const expiry_sessions = [{
                     open : start_moment.clone().add(5, 'minute'), // expiry time should be at least 5 minute after start_time
@@ -361,18 +360,22 @@ const ContractType = (() => {
                 if (end_moment.isSameOrBefore(start_moment) || end_moment.diff(start_moment, 'minute') < 5) {
                     const is_end_of_day     = start_moment.get('hours') === 23 && start_moment.get('minute') >= 55;
                     const is_end_of_session = sessions && !isSessionAvailable(sessions, start_moment.clone().add(5, 'minutes'));
-                    end_time = start_moment.clone().add((is_end_of_day || is_end_of_session) ? 0 : 5, 'minutes').format('HH:mm');
+                    end_time = start_moment.clone().add((is_end_of_day || is_end_of_session) ? 0 : 5, 'minutes');
+                    // Set the end_time to be multiple of 5 to be equal as the SELECTED_TIME that shown to the client.
+                    end_time = setMinuteMultipleByFive(end_time).format('HH:mm');
                 }
-
                 // Set the expiry_time to 5 minute less than start_time for forwading contracts when the expiry_time is null and the expiry_date is tomorrow.
                 if (end_time === '00:00' && start_moment.isBefore(end_moment, 'day')) {
                     end_time = start_moment.clone().subtract(5, 'minute').format('HH:mm');
                 }
             }
         }
-
         return { expiry_time: end_time };
     };
+
+    const setMinuteMultipleByFive = (moment_obj) => (
+        moment_obj.minute((Math.ceil(moment_obj.minute() / 5) * 5))
+    );
 
     const getTradeTypes = (contract_type) => ({
         trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),

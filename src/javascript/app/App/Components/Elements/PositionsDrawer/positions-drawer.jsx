@@ -6,9 +6,7 @@ import { NavLink }           from 'react-router-dom';
 import { CSSTransition }     from 'react-transition-group';
 import { Scrollbars }        from 'tt-react-custom-scrollbars';
 import { localize }          from 'App/i18n';
-import {
-    Icon,
-    IconMinimize }           from 'Assets/Common';
+import Icon                  from 'Assets/icon.jsx';
 import routes                from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Portfolio/Components/empty-portfolio-message.jsx';
 import { connect }           from 'Stores/connect';
@@ -37,43 +35,33 @@ class PositionsDrawer extends React.Component {
             openContract,
             toggleDrawer,
             toggleUnsupportedContractModal,
-            server_time,
         } = this.props;
 
-        let body_content;
-
-        if (error) {
-            body_content = <p>{error}</p>;
-        } else if (is_empty) {
-            body_content = <EmptyPortfolioMessage />;
-        } else {
-            // Show only 5 most recent open contracts
-            body_content = all_positions.slice(0, 5).map((portfolio_position) => (
-                <CSSTransition
+        // Show only 5 most recent open contracts
+        const body_content = all_positions.slice(0, 5).map((portfolio_position) => (
+            <CSSTransition
+                key={portfolio_position.id}
+                in={!!(portfolio_position.contract_info.underlying)}
+                timeout={150}
+                classNames={{
+                    enter    : 'positions-drawer-card__wrapper--enter',
+                    enterDone: 'positions-drawer-card__wrapper--enter-done',
+                    exit     : 'positions-drawer-card__wrapper--exit',
+                }}
+                unmountOnExit
+            >
+                <PositionsDrawerCard
+                    active_position={active_contract_id}
+                    onClickSell={onClickSell}
+                    onClickRemove={onClickRemove}
+                    openContract={openContract}
                     key={portfolio_position.id}
-                    in={!!(portfolio_position.contract_info.underlying)}
-                    timeout={150}
-                    classNames={{
-                        enter    : 'positions-drawer-card__wrapper--enter',
-                        enterDone: 'positions-drawer-card__wrapper--enter-done',
-                        exit     : 'positions-drawer-card__wrapper--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <PositionsDrawerCard
-                        active_position={active_contract_id}
-                        onClickSell={onClickSell}
-                        onClickRemove={onClickRemove}
-                        openContract={openContract}
-                        server_time={server_time}
-                        key={portfolio_position.id}
-                        currency={currency}
-                        toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-                        {...portfolio_position}
-                    />
-                </CSSTransition>
-            ));
-        }
+                    currency={currency}
+                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+                    {...portfolio_position}
+                />
+            </CSSTransition>
+        ));
 
         return (
             <div className={classNames(
@@ -88,7 +76,7 @@ class PositionsDrawer extends React.Component {
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >
-                        <Icon icon={IconMinimize} />
+                        <Icon icon='IconMinimize' />
                     </div>
                 </div>
                 <div className='positions-drawer__body'>
@@ -96,7 +84,7 @@ class PositionsDrawer extends React.Component {
                         style={{ width: '100%', height: '100%' }}
                         autoHide
                     >
-                        {body_content}
+                        {(is_empty || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
                     </Scrollbars>
                 </div>
                 <div className='positions-drawer__footer'>
@@ -112,7 +100,7 @@ class PositionsDrawer extends React.Component {
 }
 
 PositionsDrawer.propTypes = {
-    active_contract_id    : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    active_contract_id    : PropTypes.number,
     all_positions         : MobxPropTypes.arrayOrObservableArray,
     children              : PropTypes.any,
     currency              : PropTypes.string,
@@ -126,13 +114,11 @@ PositionsDrawer.propTypes = {
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
     openContract          : PropTypes.func,
-    server_time           : PropTypes.object,
     toggleDrawer          : PropTypes.func,
 };
 
 export default connect(
-    ({ common, modules, client, ui }) => ({
-        server_time                   : common.server_time,
+    ({ modules, client, ui }) => ({
         currency                      : client.currency,
         active_contract_id            : modules.contract.contract_id,
         all_positions                 : modules.portfolio.all_positions,

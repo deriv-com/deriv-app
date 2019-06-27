@@ -3,7 +3,7 @@ import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { localize }               from 'App/i18n';
 import Button                     from 'App/Components/Form/button.jsx';
-import { IconTradeType }          from 'Assets/Trading/Types';
+import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
 
 const PurchaseButton = ({
@@ -38,7 +38,8 @@ const PurchaseButton = ({
             <React.Fragment>
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__icon_wrapper'>
-                        <IconTradeType
+                        <Icon
+                            icon='IconTradeType'
                             className='btn-purchase__icon'
                             type={getIconType()}
                         />

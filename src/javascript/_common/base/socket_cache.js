@@ -29,35 +29,49 @@ const SocketCache = (() => {
     //     string  : the property value from echo_req
     //     function: return value of the function
     const config = {
-        payout_currencies: { expire: 10 },
-        active_symbols   : { expire: 10, map_to: ['product_type', 'landing_company', getLanguage] },
-        contracts_for    : { expire: 10, map_to: ['contracts_for', 'product_type', 'currency'] },
-        exchange_rates   : { expire: 60, map_to: ['base_currency'] },
+        payout_currencies     : { expire: 120 },
+        proposal_open_contract: { expire: 10,  map_to: ['contract_id'] },
+        active_symbols        : { expire: 10,  map_to: ['product_type', 'landing_company', getLanguage] },
+        contracts_for         : { expire: 10,  map_to: ['contracts_for', 'product_type', 'currency'] },
+        exchange_rates        : { expire: 60,  map_to: ['base_currency'] },
+        ticks_history         : { expire: 10,  map_to: ['ticks_history', 'granularity', 'start', 'end', 'style'] },
+        trading_times         : { expire: 120, map_to: ['trading_times'] },
+        // TODO: Enable statement and profit table caching once we have UI design for handling
+        // transitions between cached table and newly added data to table
+        // statement             : { expire: 10,   map_to: ['limit', 'offset'] },
+        // profit_table          : { expire: 10,   map_to: ['date_from', 'limit', 'offset'] },
     };
 
     const storage_key = 'ws_cache';
 
     let data_obj = {};
 
+    const msg_type_mapping = {
+        history: 'ticks_history',
+        candles: 'ticks_history',
+    };
+
     const set = (response) => {
-        const msg_type = response.msg_type;
+        const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
+
+        // check if response has subscription, since only want to cache non-streamed responses
+        if (response.subscription) return;
 
         if (!config[msg_type]) return;
-
         // prevent unwanted page behaviour
         // if a cached version already exists but it gives an error after being called for updating the cache
         const cached_response = get(response.echo_req) || {};
         const cached_message  = cached_response[msg_type];
         const new_message     = response[msg_type];
 
-        const has_error_or_missing = response.error || !(msg_type in response);
+        const has_error_or_missing = response.error; // || !(msg_type in response);
         const has_new_value        = cached_message && isEmptyValue(cached_message) && !isEmptyValue(new_message);
         const has_old_cache        = cached_message && isEmptyValue(new_message) && !isEmptyValue(cached_message);
         const has_valid_cache      = !isEmptyValue(cached_response) && !cached_response.error;
 
         if ((has_error_or_missing || has_new_value || has_old_cache) && has_valid_cache) {
             clear();
-            window.location.reload();
+            // window.location.reload();
             return;
         }
 

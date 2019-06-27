@@ -1,23 +1,16 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import ReactDOM           from 'react-dom';
-import { localize }       from 'App/i18n';
-import VerticalTab        from 'App/Components/Elements/VerticalTabs';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import ReactDOM          from 'react-dom';
+import { localize }      from 'App/i18n';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 import {
     ChartSettings,
     LanguageSettings,
     ThemeSelectSettings,
     // PurchaseSettings,
-}                         from 'App/Containers/SettingsDialog';
-import { Icon }           from 'Assets/Common';
-import {
-    IconCharts,
-    IconClose,
-    IconLanguage,
-    // IconPurchase,
-    IconTheme,
-}                         from 'Assets/Settings';
+}                        from 'App/Containers/SettingsDialog';
+import Icon              from 'Assets/icon.jsx';
 
 class SettingsDialog extends React.PureComponent {
     constructor(props) {
@@ -58,7 +51,7 @@ class SettingsDialog extends React.PureComponent {
                     <h3 className='dialog-header__sidebar'>{localize('Platform settings')}</h3>
                     <div className='dialog-header__main'>
                         <div className='dialog-header__close' onClick={this.props.toggleDialog}>
-                            <Icon icon={IconClose} />
+                            <Icon icon='SettingsIconClose' />
                         </div>
                     </div>
                 </div>
@@ -78,15 +71,15 @@ class SettingsDialog extends React.PureComponent {
 
     settings_content = () => [
         {
-            icon : IconTheme,
+            icon : 'IconTheme',
             label: localize('Themes'),
             value: ThemeSelectSettings,
         }, {
-            icon : IconLanguage,
+            icon : 'IconLanguage',
             label: localize('Language'),
             value: LanguageSettings,
         }, {
-            icon : IconCharts,
+            icon : 'IconCharts',
             label: localize('Charts'),
             value: ChartSettings,
         // uncomment below lines to bring back purchase lock and purchase confirmation

@@ -1,10 +1,9 @@
 import React        from 'react';
 import { localize } from 'App/i18n';
-import IconFlag     from 'Assets/Contract/icon-flag.jsx';
-import IconTick     from 'Assets/Contract/icon-tick.jsx';
+import Icon         from 'Assets/icon.jsx';
 
 export const getHeaderConfig = () => ({
-    purchased: { title: localize('Contract Purchased'), icon: <IconTick /> },
-    won      : { title: localize('Contract Won'),       icon: <IconFlag /> },
-    lost     : { title: localize('Contract Lost'),      icon: <IconFlag /> },
+    purchased: { title: localize('Contract Purchased'), icon: <Icon icon='IconTick' /> },
+    won      : { title: localize('Contract Won'),       icon: <Icon icon='ContractIconFlag' /> },
+    lost     : { title: localize('Contract Lost'),      icon: <Icon icon='ContractIconFlag' /> },
 });

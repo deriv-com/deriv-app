@@ -8,42 +8,46 @@ import Localize          from 'App/Components/Elements/localize.jsx';
 import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
-const Contract = ({
-    error_message,
-    has_error,
-    history,
-    match,
-}) => (
-    <React.Fragment>
-        {
-            has_error ?
-                <ErrorComponent
-                    message={error_message}
-                    redirect_label={<Localize i18n_default_text='Go back to trading' />}
-                    redirectOnClick={() => history.push(routes.trade)}
-                    should_show_refresh={false}
-                />
-                :
-                <CSSTransition
-                    in={!has_error}
-                    timeout={400}
-                    classNames={{
-                        enter    : 'contract--enter',
-                        enterDone: 'contract--enter-done',
-                        exit     : 'contract--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <ContractReplay
-                        contract_id={match.params.contract_id}
-                        key={match.params.contract_id}
-                    />
-                </CSSTransition>
-        }
-    </React.Fragment>
-);
+class Contract extends React.Component {
+    componentWillUnmount() {
+        if (this.props.has_error) this.props.clearError();
+    }
+
+    render () {
+        return (
+            <React.Fragment>
+                {
+                    this.props.has_error ?
+                        <ErrorComponent
+                            message={this.props.error_message}
+                            redirect_label={<Localize i18n_default_text='Go back to trading' />}
+                            redirectOnClick={() => this.props.history.push(routes.trade)}
+                            should_show_refresh={false}
+                        />
+                        :
+                        <CSSTransition
+                            in={!this.props.has_error}
+                            timeout={400}
+                            classNames={{
+                                enter    : 'contract--enter',
+                                enterDone: 'contract--enter-done',
+                                exit     : 'contract--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <ContractReplay
+                                contract_id={+this.props.match.params.contract_id}
+                                key={+this.props.match.params.contract_id}
+                            />
+                        </CSSTransition>
+                }
+            </React.Fragment>
+        );
+    }
+}
 
 Contract.propTypes = {
+    clearError   : PropTypes.func,
     error_message: PropTypes.string,
     has_error    : PropTypes.bool,
     history      : PropTypes.object,
@@ -54,6 +58,7 @@ Contract.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
+        clearError   : modules.contract.clearError,
         error_message: modules.contract.error_message,
         has_error    : modules.contract.has_error,
         is_mobile    : ui.is_mobile,

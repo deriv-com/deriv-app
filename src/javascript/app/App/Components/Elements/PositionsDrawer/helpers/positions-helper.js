@@ -1,8 +1,11 @@
 import moment       from 'moment';
 import { localize } from 'App/i18n';
 
-export const addCommaToNumber = num => {
-    const n = String(num);
+export const addCommaToNumber = (num, decimal_places) => {
+    if (!num || isNaN(num)) {
+        return num;
+    }
+    const n = String(decimal_places ? (+num).toFixed(decimal_places) : num);
     const p = n.indexOf('.');
     return n.replace(
         /\d(?=(?:\d{3})+(?:\.|$))/g,
@@ -10,9 +13,9 @@ export const addCommaToNumber = num => {
     );
 };
 
-export const getTimePercentage = (current_time, purchase_time, expiry_time) => {
-    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(purchase_time)));
-    const duration_from_now = moment.duration(moment.unix(expiry_time).diff(current_time));
+export const getTimePercentage = (server_time, start_time, expiry_time) => {
+    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(start_time)));
+    const duration_from_now = moment.duration(moment.unix(expiry_time).diff(server_time));
     let percentage = (duration_from_now.asMilliseconds() / duration_from_purchase.asMilliseconds()) * 100;
 
     if (percentage < 0.5) {
@@ -38,6 +41,8 @@ export const getBarrierValue = (contract_info) => {
     return addCommaToNumber(contract_info.barrier);
 };
 
+export const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));
+
 const digitTypeMap = (contract_info) => ({
     DIGITDIFF : localize('Not {{barrier}}', { barrier: contract_info.barrier }),
     DIGITEVEN : localize('Even'),
@@ -46,5 +51,3 @@ const digitTypeMap = (contract_info) => ({
     DIGITOVER : localize('Over {{barrier}}', { barrier: contract_info.barrier }),
     DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
-
-const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));

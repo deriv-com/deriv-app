@@ -1,12 +1,18 @@
-import React             from 'react';
-import { localize }      from 'App/i18n';
-import { IconPositions } from 'Assets/Footer';
+import React        from 'react';
+import { localize } from 'App/i18n';
+import Icon         from 'Assets/icon.jsx';
 
-const EmptyPortfolioMessage = () => (
+const EmptyPortfolioMessage = ({ error }) => (
     <div className='portfolio-empty'>
         <div className='portfolio-empty__wrapper'>
-            <IconPositions className='portfolio-empty__icon' />
-            <span className='portfolio-empty__text'>{localize('No open positions')}</span>
+            { error ?
+                <span className='portfolio-empty__text'>{error}</span>
+                :
+                <React.Fragment>
+                    <Icon icon='IconPositions' className='portfolio-empty__icon' />
+                    <span className='portfolio-empty__text'>{localize('No open positions')}</span>
+                </React.Fragment>
+            }
         </div>
     </div>
 );

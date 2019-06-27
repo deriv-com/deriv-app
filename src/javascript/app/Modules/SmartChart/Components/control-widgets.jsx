@@ -18,10 +18,10 @@ const ControlWidgets = ({
     <React.Fragment>
         <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
-        <StudyLegend />
-        <Comparison />
+        <StudyLegend searchInputClassName='data-hj-whitelist' />
+        <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
-        <Views />
+        <Views searchInputClassName='data-hj-whitelist' />
         <Share />
         <Timeperiod onChange={updateGranularity} />
         <ChartSize />

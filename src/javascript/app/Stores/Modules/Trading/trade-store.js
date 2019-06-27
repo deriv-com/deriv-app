@@ -110,7 +110,10 @@ export default class TradeStore extends BaseStore {
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
-        await BinarySocket.wait('website_status');
+        await BinarySocket.wait('authorize', 'website_status');
+        action(async() => {
+            this.active_symbols = await WS.activeSymbols().active_symbols;
+        });
     };
 
     constructor({ root_store }) {
@@ -169,6 +172,13 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
+    shouldSetDefaultSymbol = () => {
+        if (!this.symbol) return true;
+        return !this.active_symbols.active_symbols
+            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    }
+
+    @action.bound
     async prepareTradeStore() {
         const active_symbols = await WS.activeSymbols();
         if (active_symbols.error) {
@@ -182,13 +192,12 @@ export default class TradeStore extends BaseStore {
         }
 
         runInAction(async() => {
+            this.active_symbols     = active_symbols;
             this.smart_chart        = this.root_store.modules.smart_chart;
             this.currency           = this.root_store.client.currency;
             this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            const is_valid_symbol = active_symbols.active_symbols.find((symbols) => symbols.symbol === this.symbol);
-
-            if (!this.symbol || !is_valid_symbol) {
+            if (this.shouldSetDefaultSymbol()) {
                 await this.processNewValuesAsync({
                     symbol: pickDefaultSymbol(active_symbols.active_symbols),
                 });
@@ -273,10 +282,20 @@ export default class TradeStore extends BaseStore {
                         ...this.proposal_info[type],
                         buy_price: response.buy.buy_price,
                     };
+                    const {
+                        contract_id,
+                        longcode,
+                        start_time,
+                    } = response.buy;
                     // toggle smartcharts to contract mode
-                    const contract_id = getPropertyValue(response, ['buy', 'contract_id']);
                     if (contract_id) {
-                        this.root_store.modules.contract.onMount(contract_id);
+                        // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
+                        // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
+                        // and then set the chart view to the start_time
+                        this.smart_chart.switchToContractMode();
+                        this.smart_chart.setChartView(start_time);
+                        // draw the start time line and show longcode then mount contract
+                        this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
@@ -372,7 +391,7 @@ export default class TradeStore extends BaseStore {
                 proposal_info      : {},
             });
 
-            if (!this.root_store.modules.smart_chart.is_contract_mode) {
+            if (!this.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
                 if (is_barrier_changed) {
                     this.smart_chart.updateBarriers(this.barrier_1, this.barrier_2);
@@ -439,7 +458,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        if (!this.root_store.modules.smart_chart.is_contract_mode) {
+        if (!this.smart_chart.is_contract_mode) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             const barrier_config = { color };
             setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);

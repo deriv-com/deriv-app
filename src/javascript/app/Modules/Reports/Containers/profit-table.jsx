@@ -8,7 +8,7 @@ import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
 import Localize                          from 'App/Components/Elements/localize.jsx';
 import { getContractPath }               from 'App/Components/Routes/helpers';
-import { getUnsupportedContracts }       from 'Constants';
+import { getSupportedContracts }         from 'Constants';
 import { connect }                       from 'Stores/connect';
 import EmptyTradeHistoryMessage          from '../Components/empty-trade-history-message.jsx';
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
@@ -26,8 +26,9 @@ class ProfitTable extends React.Component {
     }
 
     getRowAction = (row_obj) => (
-        getUnsupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
-            {
+        getSupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+            getContractPath(row_obj.contract_id)
+            : {
                 component: (
                     <Localize
                         i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
@@ -40,7 +41,6 @@ class ProfitTable extends React.Component {
                     />
                 ),
             }
-            : getContractPath(row_obj.contract_id)
     );
 
     render () {
@@ -96,7 +96,7 @@ class ProfitTable extends React.Component {
 }
 
 ProfitTable.propTypes = {
-    component_icon   : PropTypes.func,
+    component_icon   : PropTypes.string,
     currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
     error            : PropTypes.string,

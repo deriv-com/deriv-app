@@ -11,12 +11,13 @@ const Purchase = ({
     is_contract_mode,
     is_client_allowed_to_visit,
     // is_purchase_confirm_on,
-    is_purchase_enabled,
+    is_purchased_arr,
     // is_purchase_locked,
     is_trade_enabled,
     onClickPurchase,
     onHoverPurchase,
     // togglePurchaseLock,
+    purchase_info,
     proposal_info,
     trade_types,
     validation_errors,
@@ -30,13 +31,13 @@ const Purchase = ({
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const info              = proposal_info[type] || {};
-        const is_disabled       = is_contract_mode || !is_purchase_enabled
+        const is_disabled       = is_contract_mode
             || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
         const is_proposal_error = info.has_error && !info.has_error_details;
-
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}
+                buy_info={purchase_info}
                 currency={currency}
                 info={info}
                 key={index}
@@ -47,6 +48,7 @@ const Purchase = ({
                 is_loading={isLoading(info)}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_error={is_proposal_error}
+                is_purchased_arr={is_purchased_arr}
                 // is_purchase_locked={is_purchase_locked}
                 // togglePurchaseLock={togglePurchaseLock}
                 onHoverPurchase={onHoverPurchase}
@@ -77,8 +79,8 @@ Purchase.propTypes = {
     is_client_allowed_to_visit: PropTypes.bool,
     is_contract_mode          : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
-    is_purchase_enabled       : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
+    is_purchased_arr          : PropTypes.array,
     is_trade_enabled          : PropTypes.bool,
     onClickPurchase           : PropTypes.func,
     onHoverPurchase           : PropTypes.func,
@@ -96,7 +98,7 @@ export default connect(
         is_contract_mode          : modules.smart_chart.is_contract_mode,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
-        is_purchase_enabled       : modules.trade.is_purchase_enabled,
+        is_purchased_arr          : modules.trade.is_purchase_requested,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,

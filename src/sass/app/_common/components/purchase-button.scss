@@ -9,6 +9,7 @@
     padding: 0;
     text-align: left;
     transition: transform 0.25s ease;
+    display: flex;
     z-index: 1;
 
     &__text {
@@ -26,8 +27,9 @@
     }
     &__info--left {
         background-color: $COLOR_GREEN_1;
-        width: 50%;
-        float: left;
+        width: 40%;
+        transition: transform linear 0.25s;
+        z-index: 2;
 
         .btn-purchase__text_wrapper {
             margin-left: 24px;
@@ -44,12 +46,11 @@
         }
     }
     &__info--right {
-        width: 40%;
-        padding-left: 10%;
-        padding-right: 10px;
-        float: right;
-        justify-content: right;
+        width: 45%;
+        padding-right: 1rem;
         background-color: transparent;
+        display: flex;
+        justify-content: flex-end;
 
         .btn-purchase__text {
             opacity: 1;
@@ -57,11 +58,21 @@
         }
     }
     &__effect-detail {
+        position: absolute;
+        background-color: $COLOR_GREEN_1;
+        transition: transform 0.35s ease-in-out;
+        width: 116px;
+        height: 100%;
+        z-index: 1;
+    }
+    &__effect-detail--arrow {
+        content: '';
         width: 55px;
+        transition: transform 0.35s ease-in-out;
         transform: rotate(45deg);
         height: 100%;
         background: $COLOR_GREEN_1;
-        left: 35%;
+        left: 80px;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -72,6 +83,12 @@
     }
     &:hover:not(&--disabled):not([disabled]) {
         transform: translate3d(0, -4px, 0);
+    }
+    &__type-wrapper {
+        display: flex;
+        align-items: center;
+        transition: transform 0.35s ease-in-out;
+        transform: none;
     }
     &__shadow-wrapper {
         position: relative;
@@ -96,6 +113,23 @@
             }
         }
     }
+    &:active, &:focus {
+        transform: translate3d(0, -4px, 0);
+    }
+    &--swoosh {
+        transform: translate3d(0, -4px, 0);
+
+        .btn-purchase__type-wrapper {
+            transform: translate3d(55px, 0, 0);
+        }
+        .btn-purchase__effect-detail {
+            transform: scale3d(3, 1, 1);
+
+            &--arrow {
+                transform: translate3d(120px, 0, 0) rotate(45deg);
+            }
+        }
+    }
     &--disabled, &[disabled] {
         cursor: default;
 
@@ -115,6 +149,10 @@
             }
             .btn-purchase__effect-detail {
                 background: themed('btn_purchase_disabled_accent');
+
+                &--arrow {
+                    background: themed('btn_purchase_disabled_accent');
+                }
             }
         }
     }

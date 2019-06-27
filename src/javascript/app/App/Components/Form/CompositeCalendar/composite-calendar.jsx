@@ -37,7 +37,7 @@ class CompositeCalendar extends React.PureComponent {
     selectDateRange (from) {
         this.setState({
             selected_from_date: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
-            selected_to_date  : toMoment().startOf('day').unix(),
+            selected_to_date  : toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix(),
         }, () => {
             this.setActiveList();
             this.hideCalendar();
@@ -113,7 +113,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     setToDate (date) {
-        this.updateState('selected_to_date', epochToMoment(date).startOf('day').add(1, 'd').subtract(1, 's').unix());
+        this.updateState('selected_to_date', epochToMoment(date).endOf('day').unix());
     }
 
     setFromDate(date) {

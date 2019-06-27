@@ -26,7 +26,6 @@ class PositionsDrawer extends React.Component {
             all_positions,
             active_contract_id,
             error,
-            contract_type,
             currency,
             is_contract_mode,
             is_empty,
@@ -57,7 +56,6 @@ class PositionsDrawer extends React.Component {
                     onClickRemove={onClickRemove}
                     openContract={openContract}
                     key={portfolio_position.id}
-                    contract_type={contract_type}
                     currency={currency}
                     toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                     {...portfolio_position}

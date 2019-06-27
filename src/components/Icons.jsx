@@ -1,7 +1,8 @@
-import React from 'react';
-import logo from '../assets/icons/ic-logo.svg';
-import tradeActive from '../assets/icons/ic-trade-active.svg';
-// import arrowIcon from '../assets/icons/ic-trade-active.svg';
+import React        from 'react';
+import arrow        from '../assets/icons/ic-arrow.svg';
+import logo         from '../assets/icons/ic-logo.svg';
+import tradeActive  from '../assets/icons/ic-trade-active.svg';
+
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
     const { className } = props;
@@ -16,4 +17,4 @@ export const Icon = svgItem => (props) => {
 
 export const LogoIcon = Icon(logo);
 export const TradeActive = Icon(tradeActive);
-export const ArrowIcon = Icon(tradeActive);
+export const ArrowIcon = Icon(arrow);

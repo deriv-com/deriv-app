@@ -22,14 +22,14 @@
                                         <next>
                                             <block type="trade_definition_restartbuysell" deletable="false" movable="false">
                                                 <value name="TIME_MACHINE_ENABLED">
-                                                    <shadow type="logic_boolean" id="Qn#!Wa(80$H9tihdQ}O,">
+                                                    <shadow type="logic_boolean">
                                                         <field name="BOOL">FALSE</field>
                                                     </shadow>
                                                 </value>
                                                 <next>
                                                     <block type="trade_definition_restartonerror" deletable="false" movable="false">
                                                         <value name="RESTARTONERROR">
-                                                            <shadow type="logic_boolean" id="mK,ggG4+C1`bA.!rJE4z">
+                                                            <shadow type="logic_boolean">
                                                                 <field name="BOOL">FALSE</field>
                                                             </shadow>
                                                         </value>
@@ -48,26 +48,26 @@
     </block>
     <block type="before_purchase" x="0" y="528">
         <statement name="BEFOREPURCHASE_STACK">
-            <block type="purchase" id="V_z-XW)NkGxh=6)+p,Q`">
+            <block type="purchase">
                 <field name="PURCHASE_LIST"></field>
             </block>
         </statement>
     </block>
     <block type="during_purchase" x="0" y="704">
         <statement name="DURING_PURCHASE_STACK">
-            <block type="controls_if" id="+@km_XD4ho0|Hj@IE|F6">
+            <block type="controls_if">
                 <value name="IF0">
-                    <block type="check_sell" id=";YU484HKmM(6:`K:I;P6"></block>
+                    <block type="check_sell"></block>
                 </value>
                 <statement name="DO0">
-                    <block type="sell_at_market" id="+@JwEu[!?00TIyAV2WlY"></block>
+                    <block type="sell_at_market"></block>
                 </statement>
             </block>
         </statement>
     </block>
     <block type="after_purchase" x="0" y="960">
         <statement name="AFTERPURCHASE_STACK">
-            <block type="trade_again" id="Sb:W:dYVA*nyfmMQi[3F"></block>
+            <block type="trade_again"></block>
         </statement>
     </block>
 </xml>

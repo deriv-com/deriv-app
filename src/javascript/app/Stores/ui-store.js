@@ -176,7 +176,10 @@ export default class UIStore extends BaseStore {
         // TODO: Find better solution in the future for hack below
         // Force the animation to start quicker by manually assigning class to compensate for mobx getter lag
         // Because mobx has a delay before it can receive the updated prop used to assign the animation class
-        document.getElementsByClassName('btn-purchase')[index].classList.add('btn-purchase--swoosh');
+        const purchase_buttons = document.getElementsByClassName('btn-purchase');
+        if (purchase_buttons[index]) {
+            purchase_buttons[index].classList.add('btn-purchase--swoosh');
+        }
     }
 
     @action.bound

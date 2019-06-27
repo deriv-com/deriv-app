@@ -143,6 +143,12 @@
                 svg {
                     @include colorIcon(themed('disabled_color'), themed('disabled_color'));
                 }
+                .btn-purchase__icon_wrapper {
+                    /* postcss-bem-linter: ignore */
+                    .color1-fill {
+                        fill: themed('disabled_color') !important;
+                    }
+                }
                 .btn-purchase__text {
                     color: themed('disabled_color');
                 }

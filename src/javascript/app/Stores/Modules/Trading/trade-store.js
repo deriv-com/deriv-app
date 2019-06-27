@@ -273,9 +273,14 @@ export default class TradeStore extends BaseStore {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            // In order to show the purchase animation with proper colors before disabling in contract-mode,
+            // we needed to add the timeout below to allow the cycle to finish
+            setTimeout(() => {
+                this.smart_chart.switchToContractMode();
+            }, 150);
             processPurchase(proposal_id, price).then(action((response) => {
                 if (this.proposal_info[type].id !== proposal_id) {
-                    this.root_store.ui.resetPurchaseStates();
+                    this.smart_chart.cleanupContractChartView();
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
@@ -294,7 +299,6 @@ export default class TradeStore extends BaseStore {
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
-                        this.smart_chart.switchToContractMode();
                         this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
@@ -306,6 +310,7 @@ export default class TradeStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     };
+                    this.smart_chart.cleanupContractChartView();
                     this.root_store.ui.toggleServicesErrorModal(true);
                 }
                 WS.forgetAll('proposal');

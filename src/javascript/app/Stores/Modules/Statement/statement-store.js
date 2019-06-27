@@ -18,7 +18,7 @@ export default class StatementStore extends BaseStore {
     @observable is_loading     = false;
     @observable has_loaded_all = false;
     @observable date_from      = 0;
-    @observable date_to        = 0;
+    @observable date_to        = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error          = '';
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
@@ -46,13 +46,13 @@ export default class StatementStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = 0;
-        this.date_to   = 0;
+        this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
         const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-        if (this.date_to && this.date_to < today) return !should_load_partially;
+        if (this.date_to < today) return should_load_partially;
         return true;
     }
 

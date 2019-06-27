@@ -16,7 +16,7 @@ const delay_on_scroll_time = 150;
 export default class ProfitTableStore extends BaseStore {
     @observable data           = [];
     @observable date_from      = 0;
-    @observable date_to        = 0;
+    @observable date_to        = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error          = '';
     @observable has_loaded_all = false;
     @observable is_loading     = false;
@@ -48,7 +48,7 @@ export default class ProfitTableStore extends BaseStore {
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
         const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-        if (this.date_to && this.date_to < today) return !should_load_partially;
+        if (this.date_to < today) return should_load_partially;
         return true;
     }
 
@@ -159,7 +159,7 @@ export default class ProfitTableStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = 0;
-        this.date_to   = 0;
+        this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = false;
     }
 

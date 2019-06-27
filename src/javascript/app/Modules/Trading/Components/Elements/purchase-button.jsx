@@ -14,7 +14,8 @@ const PurchaseButton = ({
     is_disabled,
     is_high_low,
     is_loading,
-    is_purchased_arr,
+    purchased_states_arr,
+    setPurchaseState,
     should_fade,
     onClickPurchase,
     type,
@@ -23,7 +24,6 @@ const PurchaseButton = ({
         if (!should_fade && is_loading) return '';
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-    const is_purchased = (is_purchased_arr.length > 0) ? !!(is_purchased_arr[index]) : false;
 
     return (
         <Button
@@ -35,10 +35,11 @@ const PurchaseButton = ({
                     'btn-purchase--disabled'       : (is_contract_mode || is_disabled) && !is_loading,
                     'btn-purchase--animated--slide': is_loading && !should_fade,
                     'btn-purchase--animated--fade' : is_loading && should_fade,
-                    'btn-purchase--swoosh'         : is_purchased,
+                    'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),
                 })}
             onClick={() => {
-                onClickPurchase(info.id, info.stake, type, index);
+                setPurchaseState(index);
+                onClickPurchase(info.id, info.stake, type);
             }}
         >
             <React.Fragment>
@@ -71,17 +72,18 @@ const PurchaseButton = ({
 };
 
 PurchaseButton.propTypes = {
-    buy_info        : PropTypes.object,
-    currency        : PropTypes.string,
-    index           : PropTypes.number,
-    info            : PropTypes.object,
-    is_contract_mode: PropTypes.bool,
-    is_disabled     : PropTypes.bool,
-    is_high_low     : PropTypes.bool,
-    is_loading      : PropTypes.bool,
-    is_purchased_arr: PropTypes.array,
-    onClickPurchase : PropTypes.func,
-    type            : PropTypes.string,
+    buy_info            : PropTypes.object,
+    currency            : PropTypes.string,
+    index               : PropTypes.number,
+    info                : PropTypes.object,
+    is_contract_mode    : PropTypes.bool,
+    is_disabled         : PropTypes.bool,
+    is_high_low         : PropTypes.bool,
+    is_loading          : PropTypes.bool,
+    onClickPurchase     : PropTypes.func,
+    purchased_states_arr: PropTypes.array,
+    setPurchaseState    : PropTypes.func,
+    type                : PropTypes.string,
 };
 
 export default PurchaseButton;

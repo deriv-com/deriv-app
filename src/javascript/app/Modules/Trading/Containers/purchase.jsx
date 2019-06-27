@@ -11,7 +11,7 @@ const Purchase = ({
     is_contract_mode,
     is_client_allowed_to_visit,
     // is_purchase_confirm_on,
-    is_purchased_arr,
+    purchased_states_arr,
     // is_purchase_locked,
     is_trade_enabled,
     onClickPurchase,
@@ -19,6 +19,7 @@ const Purchase = ({
     // togglePurchaseLock,
     purchase_info,
     proposal_info,
+    setPurchaseState,
     trade_types,
     validation_errors,
 }) => {
@@ -48,11 +49,12 @@ const Purchase = ({
                 is_loading={isLoading(info)}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_error={is_proposal_error}
-                is_purchased_arr={is_purchased_arr}
+                purchased_states_arr={purchased_states_arr}
                 // is_purchase_locked={is_purchase_locked}
                 // togglePurchaseLock={togglePurchaseLock}
                 onHoverPurchase={onHoverPurchase}
                 onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
                 type={type}
             />
         );
@@ -80,25 +82,25 @@ Purchase.propTypes = {
     is_contract_mode          : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
-    is_purchased_arr          : PropTypes.array,
     is_trade_enabled          : PropTypes.bool,
     onClickPurchase           : PropTypes.func,
     onHoverPurchase           : PropTypes.func,
     proposal_info             : PropTypes.object,
     purchase_info             : PropTypes.object,
+    purchased_states_arr      : PropTypes.array,
+    setPurchaseState          : PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
     trade_types               : PropTypes.object,
     validation_errors         : PropTypes.object,
 };
 
 export default connect(
-    ({ client, modules }) => ({
+    ({ client, modules, ui }) => ({
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         is_contract_mode          : modules.smart_chart.is_contract_mode,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
-        is_purchased_arr          : modules.trade.is_purchase_requested,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,
@@ -106,6 +108,8 @@ export default connect(
         purchase_info             : modules.trade.purchase_info,
         trade_types               : modules.trade.trade_types,
         validation_errors         : modules.trade.validation_errors,
+        purchased_states_arr      : ui.purchase_states,
+        setPurchaseState          : ui.setPurchaseState,
         // is_purchase_confirm_on    : ui.is_purchase_confirm_on,
         // is_purchase_locked        : ui.is_purchase_lock_on,
         // togglePurchaseLock        : ui.togglePurchaseLock,

@@ -287,6 +287,7 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     updateProposal(response) {
+        console.log('poc');
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;

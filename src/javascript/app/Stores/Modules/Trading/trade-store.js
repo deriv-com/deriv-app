@@ -98,9 +98,8 @@ export default class TradeStore extends BaseStore {
     @observable last_digit = 5;
 
     // Purchase
-    @observable is_purchase_requested = [ false, false ];
-    @observable proposal_info         = {};
-    @observable purchase_info         = {};
+    @observable proposal_info = {};
+    @observable purchase_info = {};
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -267,17 +266,17 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    onPurchase(proposal_id, price, type, index) {
+    onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
-        this.is_purchase_requested[index] = true;
         if (proposal_id) {
             this.is_purchase_enabled = false;
             processPurchase(proposal_id, price).then(action((response) => {
                 if (this.proposal_info[type].id !== proposal_id) {
-                    this.is_purchase_requested = [ false, false ];
+                    this.root_store.ui.resetPurchaseStates();
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
+                    console.log('buy');
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],

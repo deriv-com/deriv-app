@@ -59,6 +59,9 @@ export default class UIStore extends BaseStore {
     @observable duration_h             = 1;
     @observable duration_d             = 1;
 
+    // purchase button states
+    @observable purchase_states = [ false, false ];
+
     @observable is_fully_blurred = false;
     @observable is_app_blurred   = false;
     @observable is_route_blurred = false;
@@ -164,6 +167,21 @@ export default class UIStore extends BaseStore {
     @action.bound
     setAppLoading(is_visible) {
         this.is_loading = is_visible;
+    }
+
+    @action.bound
+    setPurchaseState(index) {
+        this.purchase_states[index] = true;
+
+        // TODO: Find better solution in the future for hack below
+        // Force the animation to start quicker by manually assigning class to compensate for mobx getter lag
+        // Because mobx has a delay before it can receive the updated prop used to assign the animation class
+        document.getElementsByClassName('btn-purchase')[index].classList.add('btn-purchase--swoosh');
+    }
+
+    @action.bound
+    resetPurchaseStates() {
+        this.purchase_states = [ false, false ];
     }
 
     @action.bound

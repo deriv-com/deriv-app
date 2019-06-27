@@ -60,7 +60,7 @@
     &__effect-detail {
         position: absolute;
         background-color: $COLOR_GREEN_1;
-        transition: transform 0.35s ease-in-out;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         width: 116px;
         height: 100%;
         z-index: 1;
@@ -68,7 +68,7 @@
     &__effect-detail--arrow {
         content: '';
         width: 55px;
-        transition: transform 0.35s ease-in-out;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         transform: rotate(45deg);
         height: 100%;
         background: $COLOR_GREEN_1;
@@ -87,7 +87,7 @@
     &__type-wrapper {
         display: flex;
         align-items: center;
-        transition: transform 0.35s ease-in-out;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         transform: none;
     }
     &__shadow-wrapper {

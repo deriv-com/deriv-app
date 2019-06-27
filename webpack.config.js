@@ -6,14 +6,14 @@ const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
-const devMode = process.env.NODE_ENV === 'development';
+const prodMode = process.env.NODE_ENV === 'production';
 
 module.exports = function(env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
-        mode: devMode ? 'development' : 'production',
-        devtool: devMode ? 'cheap-module-eval-source-map' : 'source-map',
+        mode: prodMode ? 'production' : 'development',
+        devtool: prodMode ? 'source-map' : 'cheap-module-eval-source-map',
         resolve: {
             alias: {
                 _common: path.resolve(__dirname, 'src/_common'),
@@ -152,8 +152,8 @@ module.exports = function(env, argv) {
         },
         optimization: {
             namedChunks: true,
-            minimize: !devMode,
-            minimizer: devMode ? [] : [
+            minimize: prodMode,
+            minimizer: !prodMode ? [] : [
                 new TerserPlugin({
                     test     : /\.js/,
                     exclude  : /(vendors~|smartcharts)/,
@@ -167,7 +167,7 @@ module.exports = function(env, argv) {
             open: 'Google Chrome',
             host: 'localhost.binary.sx',
             https: true,
-            hotOnly: true,
+            hot: true,
             port: 443,
             historyApiFallback: true,
             stats: {
@@ -179,7 +179,7 @@ module.exports = function(env, argv) {
             new HtmlWebPackPlugin({
                 template: 'index.html',
                 filename: 'index.html',
-                minify: devMode ? false : {
+                minify: !prodMode ? false : {
                     collapseWhitespace: true,
                     removeComments: true,
                     removeRedundantAttributes: true,

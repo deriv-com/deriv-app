@@ -216,7 +216,7 @@ const checkAccountStatus = (response, client, addNotification, loginid) => {
     if (getRiskAssessment()) addNotification(client_notifications.risk);
     if (shouldCompleteTax()) addNotification(client_notifications.tax);
 
-    if (prompt_client_to_authenticate && !(document_under_review || document_needs_action)) {
+    if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
         addNotification(client_notifications.authenticate);
     }
 

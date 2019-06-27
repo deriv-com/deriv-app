@@ -67,7 +67,6 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
 
         // Resize workspace on workspace event, workaround for jumping workspace.
         workspace.addChangeListener(() => Blockly.svgResize(workspace));
-
         window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();
     } catch (error) {

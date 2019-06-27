@@ -5,6 +5,7 @@ import {
     reaction,
     toJS,
     when }               from 'mobx';
+import BinarySocket      from '_common/base/socket_base';
 import { isEmptyObject } from '_common/utility';
 import Validator         from 'Utils/Validator';
 import { isProduction }  from '../../config';
@@ -326,4 +327,8 @@ export default class BaseStore {
             this.partial_fetch_time = false;
         }
     }
+
+    waitFor = async (...prerequisites) => {
+        await BinarySocket.wait(...prerequisites);
+    };
 }

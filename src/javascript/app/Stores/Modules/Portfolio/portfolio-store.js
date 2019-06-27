@@ -14,6 +14,7 @@ import {
 import {
     getDisplayStatus,
     getEndTime,
+    isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
@@ -25,10 +26,10 @@ export default class PortfolioStore extends BaseStore {
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     @action.bound
-    initializePortfolio = () => {
+    initializePortfolio = async () => {
         if (!this.root_store.client.is_logged_in) return;
         this.is_loading = true;
-
+        await this.waitFor('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler, false);
         WS.subscribeTransaction(this.transactionHandler, false);
@@ -183,6 +184,13 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        if (isEnded(contract_response)) {
+            // also forget for buy
+            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
+                WS.forget('proposal_open_contract', cb, { contract_id: contract_response.contract_id });
+            });
+        }
     };
 
     @action.bound

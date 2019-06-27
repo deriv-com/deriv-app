@@ -138,6 +138,7 @@ export default class StatementStore extends BaseStore {
         );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
+        await this.waitFor('authorize');
         this.fetchNextBatch(true);
     }
 

@@ -10,6 +10,25 @@ const releaseMode = process.env.NODE_ENV === 'production' || process.env.NODE_EN
 
 module.exports = function(env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+    const jsJsxLoaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                presets: [
+                    '@babel/preset-env',
+                    '@babel/preset-react'
+                ],
+                plugins: [
+                    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+                    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+                    '@babel/plugin-proposal-export-default-from',
+                    '@babel/plugin-proposal-object-rest-spread',
+                    '@babel/plugin-proposal-export-namespace-from',
+                    '@babel/plugin-syntax-dynamic-import',
+                ],
+            }
+        }
+    ];
 
     return {
         mode: releaseMode ? 'production' : 'development',
@@ -35,27 +54,11 @@ module.exports = function(env, argv) {
             rules: [
                 {
                     test: /\.(js|jsx)$/,
-                    exclude: /node_modules|__tests__/,
-                    use: [
-                        {
-                            loader: 'babel-loader',
-                            options: {
-                                presets: [
-                                    '@babel/preset-env',
-                                    '@babel/preset-react'
-                                ],
-                                plugins: [
-                                    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
-                                    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
-                                    '@babel/plugin-proposal-export-default-from',
-                                    '@babel/plugin-proposal-object-rest-spread',
-                                    '@babel/plugin-proposal-export-namespace-from',
-                                    '@babel/plugin-syntax-dynamic-import',
-                                ],
-                            }
-                        },
-                        (releaseMode && path.resolve('./extract-translation-strings'))
-                    ]
+                    exclude: /node_modules|__tests__/, // TODO: will be refactored into separate files
+                    use: releaseMode ? [
+                        ...jsJsxLoaders,
+                        path.resolve('./extract-translation-strings')
+                    ] : jsJsxLoaders
                 },
                 {
                     test: /\.html$/,
@@ -192,6 +195,12 @@ module.exports = function(env, argv) {
                 { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
                 { from: '../scripts/CNAME', to: 'CNAME', toType: 'file' },
                 { from: 'root_files/404.html', to: '404.html', toType: 'file' },
+                { from: 'root_files/robots.txt', to: 'robots.txt', toType: 'file' },
+                { from: 'root_files/sitemap.xml', to: 'sitemap.xml', toType: 'file' },
+                { from: 'templates/app/manifest.json', to: 'manifest.json', toType: 'file' },
+                { from: 'public/images/favicons/favicon.ico', to: 'favicon.ico', toType: 'file' },
+                { from: 'public/images/favicons/**' },
+                { from: '_common/lib/pushwooshSDK/**', flatten: true },
             ]),
         ],
         output: {

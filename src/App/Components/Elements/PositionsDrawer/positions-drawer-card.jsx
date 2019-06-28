@@ -1,17 +1,18 @@
-import classNames            from 'classnames';
-import PropTypes             from 'prop-types';
-import React                 from 'react';
-import { CSSTransition }     from 'react-transition-group';
-import Money                 from 'App/Components/Elements/money.jsx';
-import ContractLink          from 'Modules/Contract/Containers/contract-link.jsx';
-import { isCryptocurrency }  from '_common/base/currency_base';
-import { localize }          from 'App/i18n';
-import Icon                  from 'Assets/icon.jsx';
-import Button                from 'App/Components/Form/button.jsx';
-import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
-import ContractTypeCell      from './contract-type-cell.jsx';
-import ProgressSlider        from './ProgressSlider';
-import ResultOverlay         from './result-overlay.jsx';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { CSSTransition }       from 'react-transition-group';
+import Money                   from 'App/Components/Elements/money.jsx';
+import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
+import { isCryptocurrency }    from '_common/base/currency_base';
+import { localize }            from 'App/i18n';
+import Icon                    from 'Assets/icon.jsx';
+import Button                  from 'App/Components/Form/button.jsx';
+import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
+import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import ContractTypeCell        from './contract-type-cell.jsx';
+import ProgressSlider          from './ProgressSlider';
+import ResultOverlay           from './result-overlay.jsx';
 
 const PositionsDrawerCard = ({
     active_position,
@@ -21,6 +22,7 @@ const PositionsDrawerCard = ({
     current_tick,
     indicative,
     id,
+    is_dark_theme,
     is_loading,
     is_sell_requested,
     is_unsupported,
@@ -34,6 +36,14 @@ const PositionsDrawerCard = ({
     toggleUnsupportedContractModal,
     type,
 }) => {
+    const loader_el = (
+        <div className='positions-drawer-card__content-loader'>
+            <PositionsCardLoader
+                is_dark_theme={is_dark_theme}
+                speed={2}
+            />
+        </div>
+    );
     const contract_el = (
         <React.Fragment>
             <div className={classNames(
@@ -171,7 +181,7 @@ const PositionsDrawerCard = ({
                     )}
                     onClick={() => toggleUnsupportedContractModal(true)}
                 >
-                    {contract_el}
+                    {contract_info.underlying ? contract_el : loader_el}
                 </div>
                 :
                 <ContractLink
@@ -184,7 +194,7 @@ const PositionsDrawerCard = ({
                     )}
                     contract_id={id}
                 >
-                    {contract_el}
+                    {contract_info.underlying ? contract_el : loader_el}
                 </ContractLink>
             }
             <CSSTransition
@@ -229,6 +239,7 @@ PositionsDrawerCard.propTypes = {
     exit_spot                     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     id                            : PropTypes.number,
     indicative                    : PropTypes.number,
+    is_dark_theme                 : PropTypes.bool,
     is_loading                    : PropTypes.bool,
     is_sell_requested             : PropTypes.bool,
     is_unsupported                : PropTypes.bool,

@@ -96,6 +96,7 @@ export default class SmartChartStore extends BaseStore {
         this.setContractStart(null);
         this.setContractEnd(null);
         this.setStaticChart(false);
+        this.root_store.ui.resetPurchaseStates();
     }
 
     @action.bound

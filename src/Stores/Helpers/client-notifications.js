@@ -30,7 +30,7 @@ const client_notifications = {
         message: (
             <Localize
                 i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY') }}
+                values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'), interpolation: { escapeValue: false } }}
                 components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
             />
         ),

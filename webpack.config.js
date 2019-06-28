@@ -5,6 +5,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 const releaseMode = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -179,17 +180,6 @@ module.exports = function(env, argv) {
         },
         plugins: [
             new CleanWebpackPlugin(),
-            new HtmlWebPackPlugin({
-                template: 'index.html',
-                filename: 'index.html',
-                minify: !releaseMode ? false : {
-                    collapseWhitespace: true,
-                    removeComments: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true
-                }
-            }),
-            new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: 'css/[id].css' }),
             new CopyPlugin([
                 { from: '../node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
                 { from: '../node_modules/smartcharts-beta/dist/smartcharts.css*', to: 'css/', flatten: true },
@@ -200,8 +190,56 @@ module.exports = function(env, argv) {
                 { from: 'templates/app/manifest.json', to: 'manifest.json', toType: 'file' },
                 { from: 'public/images/favicons/favicon.ico', to: 'favicon.ico', toType: 'file' },
                 { from: 'public/images/favicons/**' },
+                { from: 'public/images/common/logos/platform_logos/**' },
                 { from: '_common/lib/pushwooshSDK/**', flatten: true },
             ]),
+            new HtmlWebPackPlugin({
+                template: 'index.html',
+                filename: 'index.html',
+                minify: !releaseMode ? false : {
+                    collapseWhitespace: true,
+                    removeComments: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true
+                }
+            }),
+            new HtmlWebpackTagsPlugin({
+                links: [
+                    'css/smartcharts.css',
+                    {
+                        path: 'manifest.json',
+                        attributes: {
+                            rel: 'manifest'
+                        }
+                    },
+                    {
+                        path: 'public/images/favicons',
+                        glob: '*',
+                        globPath: path.resolve(__dirname, 'src/public/images/favicons'),
+                        attributes: {
+                            rel: 'icon'
+                        }
+                    },
+                    {
+                        path: 'pushwoosh-web-notifications.js',
+                        attributes: {
+                            rel: 'preload',
+                            as: 'script'
+                        }
+                    },
+                ],
+                scripts: [
+                    {
+                        path: 'pushwoosh-web-notifications.js',
+                        attributes: {
+                            defer: '',
+                            type: 'text/javascript'
+                        }
+                    }
+                ],
+                append: true
+            }),
+            new MiniCssExtractPlugin({ filename: 'css/app.css', chunkFilename: 'css/[id].css' }),
         ],
         output: {
             filename: 'js/[name].[hash].js',

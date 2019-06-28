@@ -1,7 +1,8 @@
 import {
     action,
     computed,
-    observable }                   from 'mobx';
+    observable,
+    reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import { formatPortfolioPosition } from './Helpers/format-response';
@@ -27,7 +28,6 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     initializePortfolio = async () => {
-        if (!this.root_store.client.is_logged_in) return;
         this.is_loading = true;
         await this.waitFor('authorize');
         WS.portfolio().then(this.portfolioHandler);
@@ -225,7 +225,7 @@ export default class PortfolioStore extends BaseStore {
     onMount() {
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         if (this.positions.length === 0) {
-            this.initializePortfolio();
+            reaction(() => this.root_store.client.is_logged_in, () => this.initializePortfolio());
         }
     }
 

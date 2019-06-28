@@ -54,7 +54,7 @@ const PurchaseButton = ({
                         </div>
                         <div className='btn-purchase__text_wrapper'>
                             <span className='btn-purchase__text'>
-                                {(!should_fade && is_loading) ? '' : localize('[_1]', getContractTypeDisplay(type, is_high_low))}
+                                {(!should_fade && is_loading) ? '' : localize('{{value}}', { value: getContractTypeDisplay(type, is_high_low) })}
                             </span>
                         </div>
                     </div>

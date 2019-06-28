@@ -9,6 +9,10 @@ const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 const releaseMode = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
+const transformManifest = (content, path, base) => {
+    return content.toString().replace(/{root_url}|{start_url_base}/g, base);
+};
+
 module.exports = function(env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
     const jsJsxLoaders = [
@@ -187,7 +191,14 @@ module.exports = function(env, argv) {
                 { from: 'root_files/404.html', to: '404.html', toType: 'file' },
                 { from: 'root_files/robots.txt', to: 'robots.txt', toType: 'file' },
                 { from: 'root_files/sitemap.xml', to: 'sitemap.xml', toType: 'file' },
-                { from: 'templates/app/manifest.json', to: 'manifest.json', toType: 'file' },
+                {
+                    from: 'templates/app/manifest.json',
+                    to: 'manifest.json',
+                    toType: 'file',
+                    transform(content, path) {
+                        return transformManifest(content, path, base);
+                    }
+                },
                 { from: 'public/images/favicons/favicon.ico', to: 'favicon.ico', toType: 'file' },
                 { from: 'public/images/favicons/**' },
                 { from: 'public/images/common/logos/platform_logos/**' },

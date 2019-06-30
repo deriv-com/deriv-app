@@ -1,5 +1,6 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import { FixedSizeList as List }      from 'react-window';
 import { Scrollbars }                 from 'tt-react-custom-scrollbars';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
@@ -15,12 +16,14 @@ class DataTable extends React.PureComponent {
         super(props);
         this.state = {
             height: 200,
+            width : 200,
         };
     }
 
     componentDidMount() {
         this.setState({
             height: this.el_table_body.clientHeight,
+            width : this.el_table_body.clientWidth,
         });
     }
 
@@ -36,6 +39,38 @@ class DataTable extends React.PureComponent {
         this.el_table_head.style.paddingRight = `${scrollbar_offset}px`;
     }
 
+    rowRenderer ({
+        index,       // Index of row
+        style,        // Style object to be applied to row (to position it);
+    }) {
+        const {
+            data_source,
+            className,
+            getRowAction,
+            columns,
+            id } = this.props;
+        const item = data_source[index];
+        const action = getRowAction && getRowAction(item);
+
+        // If row content is complex, consider rendering a light-weight placeholder while scrolling.
+        const content = (
+            <TableRow
+                className={className}
+                row_obj={item}
+                columns={columns}
+                key={id}
+                to={typeof action === 'string' ? action : undefined}
+                replace={typeof action === 'object' ? action : undefined}
+            />
+        );
+
+        return (
+            <div style={style}>
+                {content}
+            </div>
+        );
+    }
+
     render() {
         const {
             children,
@@ -43,28 +78,22 @@ class DataTable extends React.PureComponent {
             columns,
             data_source,
             footer,
-            getRowAction,
             is_empty,
             onScroll,
         } = this.props;
 
         const TableData =
-            <React.Fragment>
-                {data_source.map((row_obj, id) => {
-                    const action = getRowAction && getRowAction(row_obj);
 
-                    return (
-                        <TableRow
-                            className={className}
-                            row_obj={row_obj}
-                            columns={columns}
-                            key={id}
-                            to={typeof action === 'string' ? action : undefined}
-                            replace={typeof action === 'object' ? action : undefined}
-                        />
-                    );
-                }
-                )}
+            <React.Fragment>
+                <List
+                    className={className}
+                    height={this.state.height}
+                    itemCount={data_source.length}
+                    itemSize={63}
+                    width={this.state.width}
+                >
+                    {this.rowRenderer.bind(this)}
+                </List>
                 {children}
             </React.Fragment>;
 

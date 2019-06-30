@@ -40,13 +40,13 @@ export default class StatementStore extends BaseStore {
         this.data               = [];
         this.has_loaded_all     = false;
         this.is_loading         = false;
-        this.partial_fetch_time = false;
     }
 
     @action.bound
     clearDateFilter() {
         this.date_from = 0;
         this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        this.partial_fetch_time = 0;
     }
 
     shouldFetchNextBatch(should_load_partially) {
@@ -89,17 +89,17 @@ export default class StatementStore extends BaseStore {
         }
         this.has_loaded_all = !should_load_partially && formatted_transactions.length < batch_size;
         this.is_loading     = false;
-        if (this.data.length > 0 && !this.has_loaded_all) {
+        if (this.data.length > 0) {
             this.partial_fetch_time = toMoment().unix();
-        } else if (this.has_loaded_all) {
-            this.partial_fetch_time = 0;
         }
     }
 
     @action.bound
     handleDateChange(date_values) {
         Object.keys(date_values).forEach(key => {
-            this[`date_${key}`] = date_values[key];
+            if (date_values[key]) {
+                this[`date_${key}`] = date_values[key];
+            }
         });
         this.clearTable();
         this.fetchNextBatch();

@@ -161,7 +161,7 @@ export default class ProfitTableStore extends BaseStore {
     clearDateFilter() {
         this.date_from = 0;
         this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-        this.partial_fetch_time = false;
+        this.partial_fetch_time = 0;
     }
 
     @action.bound

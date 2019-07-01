@@ -23,7 +23,7 @@ const {
     js_loaders,
     svg_file_loaders,
     svg_loaders
-} = require('./loaders/loaders-config');
+} = require('./loaders-config');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -47,10 +47,7 @@ const rules = (is_test_env = false) => ([
         test   : /\.(js|jsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
-        use    : IS_RELEASE ? [
-            ...js_loaders,
-            path.resolve('./loaders/extract-translation-strings')
-        ] : js_loaders
+        use    : js_loaders
     },
     {
         test   : /\.html$/,
@@ -96,7 +93,7 @@ const plugins = (base, is_test_env) => ([
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ failOnError: true }),
-    new AssetsManifestPlugin({ fileName: 'asset-manifest.json' }),
+    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json' }) ]),
     ...(is_test_env ? [] : [
         new SWPrecacheWebpackPlugin(
             {

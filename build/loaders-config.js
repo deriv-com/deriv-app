@@ -81,7 +81,7 @@ const css_loaders = [
         options: {
             sourceMap: true,
             config: {
-                path: path.resolve(__dirname, '../')
+                path: path.resolve(__dirname)
             }
         }
     },

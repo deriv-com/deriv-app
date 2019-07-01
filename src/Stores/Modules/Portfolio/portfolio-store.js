@@ -208,7 +208,6 @@ export default class PortfolioStore extends BaseStore {
         // check if contract is in view in contract_mode before removing contract details from chart
         if (is_contract_mode && (+this.root_store.modules.contract.contract_id === +contract_id)) {
             this.root_store.modules.contract.onCloseContract();
-            this.root_store.modules.trade.requestProposal();
         }
     }
 

@@ -2,12 +2,13 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
-import Money                   from 'App/Components/Elements/money.jsx';
 import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
+import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
 import Button                  from 'App/Components/Form/button.jsx';
+import Money                   from 'App/Components/Elements/money.jsx';
 import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
@@ -58,7 +59,10 @@ const PositionsDrawerCard = ({
                     </span>
                 </div>
                 <div className='positions-drawer-card__type'>
-                    <ContractTypeCell type={type} />
+                    <ContractTypeCell
+                        type={type}
+                        is_high_low={Shortcode.isHighLow(contract_info.shortcode)}
+                    />
                 </div>
             </div>
             {result ?

@@ -28,6 +28,7 @@ class PurchaseFieldset extends React.PureComponent {
             is_disabled,
             is_high_low,
             is_loading,
+            is_proposal_empty,
             is_proposal_error,
             purchased_states_arr,
             // is_purchase_confirm_on,
@@ -49,6 +50,7 @@ class PurchaseFieldset extends React.PureComponent {
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
+                is_proposal_empty={is_proposal_empty}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}
@@ -133,6 +135,7 @@ PurchaseFieldset.propTypes = {
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,
+    is_proposal_empty   : PropTypes.bool,
     is_proposal_error   : PropTypes.bool,
     onClickPurchase     : PropTypes.func,
     // is_purchase_confirm_on: PropTypes.bool,

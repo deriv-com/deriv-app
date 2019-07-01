@@ -21,8 +21,6 @@ export default Engine =>
 
                 this.setContractFlags(contract);
 
-                this.sellExpired();
-
                 this.data = this.data.set('contract', contract);
 
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
@@ -49,11 +47,6 @@ export default Engine =>
                     this.store.dispatch(openContractReceived());
                     if (!this.isExpired) {
                         this.resetSubscriptionTimeout();
-                        return;
-                    }
-                    if (!this.retriedUnsuccessfullSellExpired) {
-                        this.retriedUnsuccessfullSellExpired = true;
-                        this.resetSubscriptionTimeout(AFTER_FINISH_TIMEOUT);
                     }
                 }
             });
@@ -67,7 +60,6 @@ export default Engine =>
 
         subscribeToOpenContract(contractId = this.contractId) {
             if (this.contractId !== contractId) {
-                this.retriedUnsuccessfullSellExpired = false;
                 this.resetSubscriptionTimeout();
             }
             this.contractId = contractId;

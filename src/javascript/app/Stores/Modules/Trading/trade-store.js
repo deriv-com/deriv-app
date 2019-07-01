@@ -427,6 +427,7 @@ export default class TradeStore extends BaseStore {
                     this.barrier_count = 0;
                     this.advanced_expiry_type = 'duration';
                     this.root_store.ui.is_advanced_duration = false;
+                    this.is_initial_barrier_applied = true;
                 }
             }
 

@@ -1,14 +1,14 @@
-import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../utils/storageManager';
-import { supportedLanguages, translate, init } from './i18n';
+import { supportedLanguages, translate, init }  from './i18n';
+import { parseQueryString }                     from '../urlHelper';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
-    const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
-    setStorage('lang', lang);
+    const lang = queryLang in supportedLanguages ? queryLang : localStorage.getItem('lang') || 'en';
+    localStorage.setItem('lang', lang);
     return lang;
 };
 
+/* eslint-disable */
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
         const el = $(this);

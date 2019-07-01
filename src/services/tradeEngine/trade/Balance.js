@@ -1,5 +1,5 @@
-import { roundBalance } from '../../common/tools';
-import { info } from '../utils/broadcast';
+import { info }         from '../utils/broadcast';
+import { roundBalance } from '../utils/helpers';
 
 let balanceStr = '';
 
@@ -17,6 +17,7 @@ export default Engine =>
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
+
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
             const { scope } = this.store.getState();

@@ -1,9 +1,8 @@
-/* global google,gapi */
-import { getLanguage } from '../lang';
-import { observer as globalObserver } from '../utils/observer';
-import { translate, trackAndEmitError } from '../utils/tools';
-import { loadWorkspace, loadBlocks } from '../../botPage/view/blockly';
-import config from '../../botPage/common/const';
+import { getLanguage }                  from '../lang/lang';
+import { observer as globalObserver }   from '../observer';
+import { translate, trackAndEmitError } from '../tools';
+import config                           from '../../constants/const';
+import { loadWorkspace, loadBlocks }    from '../../scratch';
 
 class GoogleDrive {
     constructor() {

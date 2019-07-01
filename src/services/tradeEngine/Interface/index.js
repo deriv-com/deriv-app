@@ -1,7 +1,7 @@
-import TradeEngine from '../TradeEngine';
-import { noop, createDetails } from '../helpers';
-import TicksInterface from './TicksInterface';
-import ToolsInterface from './ToolsInterface';
+import TicksInterface          from './TicksInterface';
+import ToolsInterface          from './ToolsInterface';
+import TradeEngine             from '../trade';
+import { noop, createDetails } from '../utils/helpers';
 
 /**
  * Bot - Bot Module
@@ -16,6 +16,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         this.observer = $scope.observer;
         this.$scope = $scope;
     }
+
     getInterface(name = 'Global') {
         if (name === 'Bot') {
             return {
@@ -36,6 +37,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             },
         };
     }
+
     getBotInterface() {
         const getDetail = i => createDetails(this.get('contract'))[i];
 
@@ -53,6 +55,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             readDetails    : i => getDetail(i - 1),
         };
     }
+
     sleep(arg = 1) {
         return new Promise(
             r =>
@@ -63,6 +66,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             noop
         );
     }
+
     getProposal(contractType) {
         const proposals = this.get('proposals');
 
@@ -76,9 +80,11 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
 
         return proposal;
     }
+
     getSellPrice() {
         return this.tradeEngine.getSellPrice();
     }
+
     get(key) {
         return this.tradeEngine.getData().get(key);
     }

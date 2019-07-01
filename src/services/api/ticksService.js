@@ -1,7 +1,7 @@
-import { Map } from 'immutable';
-import { historyToTicks, getLast } from 'binary-utils';
-import { observer as globalObserver } from '../../common/utils/observer';
-import { doUntilDone, getUUID } from '../bot/tools';
+import { Map }                        from 'immutable';
+import { historyToTicks, getLast }    from 'binary-utils';
+import { doUntilDone, getUUID }       from '../tradeEngine/utils/helpers';
+import { observer as globalObserver } from '../../utils/observer';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -48,6 +48,7 @@ export default class TicksService {
         this.subscriptions = new Map();
         this.observe();
     }
+
     requestPipSizes() {
         if (this.pipSizes) {
             return Promise.resolve(this.pipSizes);
@@ -63,6 +64,7 @@ export default class TicksService {
             });
         });
     }
+
     request(options) {
         const { symbol, granularity } = options;
 
@@ -78,6 +80,7 @@ export default class TicksService {
 
         return this.requestStream({ ...options, style });
     }
+
     monitor(options) {
         const { symbol, granularity, callback } = options;
 
@@ -95,6 +98,7 @@ export default class TicksService {
 
         return key;
     }
+
     stopMonitor(options) {
         const { symbol, granularity, key } = options;
         const type = getType(granularity);
@@ -109,6 +113,7 @@ export default class TicksService {
 
         this.unsubscribeIfEmptyListeners(options);
     }
+
     unsubscribeIfEmptyListeners(options) {
         const { symbol, granularity } = options;
 
@@ -134,6 +139,7 @@ export default class TicksService {
             this.unsubscribeAllAndSubscribeListeners(symbol);
         }
     }
+
     unsubscribeAllAndSubscribeListeners(symbol) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
         const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
@@ -147,6 +153,7 @@ export default class TicksService {
 
         this.subscriptions = new Map();
     }
+
     updateTicksAndCallListeners(symbol, ticks) {
         if (this.ticks.get(symbol) === ticks) {
             return;
@@ -159,6 +166,7 @@ export default class TicksService {
             listeners.forEach(callback => callback(this.ticks.get(symbol)));
         }
     }
+
     updateCandlesAndCallListeners(address, candles) {
         if (this.ticks.getIn(address) === candles) {
             return;
@@ -171,6 +179,7 @@ export default class TicksService {
             listeners.forEach(callback => callback(this.candles.getIn(address)));
         }
     }
+
     observe() {
         this.api.events.on('tick', r => {
             const { tick, tick: { symbol, id } } = r;
@@ -194,9 +203,11 @@ export default class TicksService {
             }
         });
     }
+
     requestStream(options) {
         return this.requestPipSizes().then(() => this.requestTicks(options));
     }
+
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 

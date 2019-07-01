@@ -11,9 +11,9 @@ const groupBy = (arr, field) =>
         return grouped;
     }, {});
 
-let apiActiveSymbols;
-let groupedMarkets;
-let groupedSubmarkets;
+let apiActiveSymbols,
+    groupedMarkets,
+    groupedSubmarkets;
 
 const parsedMarkets = {};
 const parsedSubmarkets = {};
@@ -66,10 +66,12 @@ export default class ActiveSymbols {
         parseSubmarkets();
         parseSymbols();
     }
+
     /* eslint-disable class-methods-use-this */
     getMarkets() {
         return parsedMarkets;
     }
+
     getSymbols() {
         return parsedSymbols;
     }

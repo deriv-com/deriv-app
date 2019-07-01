@@ -1,17 +1,15 @@
-import { LiveApi } from 'binary-live-api';
+import { LiveApi }                                      from 'binary-live-api';
+import AppIds                                           from './appIdResolver';
+import Elevio                                           from '../../utils/customerSupport/elevio';
+import GTM                                              from '../../utils/gtm';
+import { getLanguage }                                  from '../../utils/lang/lang';
 import {
     addToken,
     removeToken,
     getTokenList,
     removeAllTokens,
-    get as getStorage,
-    set as setStorage,
-} from '../common/utils/storageManager';
-import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
-import { getLanguage } from '../common/lang/lang';
-import AppIdMap from './appIdResolver';
-import Elevio from './elevio';
-import GTM from '../common/utils/gtm';
+}                                                       from '../../utils/tokenHelper';
+import { parseQueryString, isProduction, getExtension } from '../../utils/urlHelper';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -20,6 +18,7 @@ export const AppConstants = Object.freeze({
 const hostName = document.location.hostname;
 
 const queryToObjectArray = queryStr => {
+    // Parse and return token from querystring
     const tokens = [];
     Object.keys(queryStr).forEach(o => {
         if (!/\d$/.test(o)) return;
@@ -37,18 +36,19 @@ const queryToObjectArray = queryStr => {
 };
 
 export const oauthLogin = (done = () => 0) => {
+    // Get token from QueryString and save it into localstorage
     const queryStr = parseQueryString();
 
     const tokenObjectList = queryToObjectArray(queryStr);
 
     if (tokenObjectList.length) {
-        $('#main').hide();
+        // TODO hide loader
         addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
-                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+                localStorage.setItem(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
             }
-            document.location = 'bot.html';
+            document.location = 'index.html';
         });
     } else {
         done();
@@ -56,13 +56,13 @@ export const oauthLogin = (done = () => 0) => {
 };
 
 export const getCustomEndpoint = () => ({
-    url  : getStorage('config.server_url'),
-    appId: getStorage('config.app_id'),
+    url  : localStorage.getItem('config.server_url'),
+    appId: localStorage.getItem('config.app_id'),
 });
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(getStorage('tokenList') || '{}');
-    const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    const accountList = JSON.parse(localStorage.getItem('tokenList') || '{}');
+    const activeToken = localStorage.getItem(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
     let activeAccount = null;
     let isReal = false;
     try {
@@ -72,11 +72,11 @@ const isRealAccount = () => {
     return isReal;
 };
 
-const getDomainAppId = () => AppIdMap[hostName.replace(/^www./, '')];
+const getDomainAppId = () => AppIds[hostName.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
+    appId: localStorage.getItem('config.default_app_id') || getDomainAppId() || 16014,
 });
 
 const generateOAuthDomain = () => {
@@ -98,6 +98,7 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websoc
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
+    // return the url to login page
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
@@ -111,6 +112,7 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
 
 export async function addTokenIfValid(token, tokenObjectList) {
+    // Create a new instance of api, send autorize req,
     const api = generateLiveApiInstance();
     try {
         const { authorize } = await api.authorize(token);
@@ -132,7 +134,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
             });
         }
     } catch (e) {
-        removeToken(tokenObjectList[0].token);
+        if (tokenObjectList && tokenObjectList.length !== 0) {
+            removeToken(tokenObjectList[0].token);
+        }
         Elevio.logoutUser();
         GTM.setVisitorId();
         throw e;

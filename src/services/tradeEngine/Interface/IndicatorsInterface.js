@@ -1,8 +1,8 @@
-import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
+import sma, { simpleMovingAverageArray as smaa }      from '@binary-com/binary-indicators/lib/simpleMovingAverage';
 import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
-import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
-import macda from '@binary-com/binary-indicators/lib/macd';
+import bb, { bollingerBandsArray as bba }             from '@binary-com/binary-indicators/lib/bollingerBands';
+import rsi, { relativeStrengthIndexArray as rsia }    from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
+import macda                                          from '@binary-com/binary-indicators/lib/macd';
 
 export default Interface =>
     class extends Interface {
@@ -19,6 +19,7 @@ export default Interface =>
                 macda: (input, config, field) => this.decorate(macda, input, config).map(r => r[field]),
             };
         }
+
         decorate(f, input, config, ...args) {
             const pipSize = this.tradeEngine.getPipSize();
 

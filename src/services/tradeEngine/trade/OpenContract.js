@@ -1,7 +1,11 @@
-import { roundBalance } from '../../common/tools';
-import { doUntilDone } from '../helpers';
-import { contractStatus, contractSettled, contract as broadcastContract } from '../utils/broadcast';
 import { sell, openContractReceived } from './state/actions';
+import {
+    contractStatus,
+    contractSettled,
+    contract as
+    broadcastContract,
+}                                     from '../utils/broadcast';
+import { doUntilDone, roundBalance }  from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
 
@@ -47,11 +51,13 @@ export default Engine =>
                 }
             });
         }
+
         waitForAfter() {
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
         }
+
         subscribeToOpenContract(contractId = this.contractId) {
             if (this.contractId !== contractId) {
                 this.resetSubscriptionTimeout();
@@ -66,6 +72,7 @@ export default Engine =>
                 } = r);
             });
         }
+
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
             this.subscriptionTimeout = setInterval(() => {
@@ -73,14 +80,17 @@ export default Engine =>
                 this.resetSubscriptionTimeout(timeout);
             }, timeout * 1000);
         }
+
         cancelSubscriptionTimeout() {
             clearTimeout(this.subscriptionTimeout);
         }
+
         unsubscribeOpenContract() {
             if (this.openContractId) {
                 doUntilDone(() => this.api.unsubscribeByID(this.openContractId));
             }
         }
+
         setContractFlags(contract) {
             const {
                 is_expired: isExpired,
@@ -97,9 +107,11 @@ export default Engine =>
 
             this.hasEntryTick = Boolean(entryTick);
         }
+
         expectedContractId(contractId) {
             return this.contractId && contractId === this.contractId;
         }
+
         getSellPrice() {
             const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
             return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));

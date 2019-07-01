@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
-import TicksService from '../ticksService';
-import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../common/appId';
-
+import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../appId';
+import TicksService                                                  from '../ticksService';
+ 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
 const ticksService = new TicksService(generateLiveApiInstance());
@@ -23,7 +23,6 @@ describe('Ticks Service', () => {
     describe('Monitor ticks', () => {
         const ticks = [];
         beforeAll(done => {
-            let key;
             const callback = ticksList => {
                 ticks.push(ticksList);
                 if (ticks.length === 3) {
@@ -31,15 +30,15 @@ describe('Ticks Service', () => {
                     done();
                 }
             };
-            key = ticksService.monitor({ symbol: 'R_100', callback });
+            const key = ticksService.monitor({ symbol: 'R_100', callback });
         });
         it('Ticks stream received', () => {
             expect(isTicksList(ticks[0])).toBeTruthy();
         });
     });
     describe('Get ticks', () => {
-        let ticks;
-        let candles;
+        let ticks,
+            candles;
         beforeAll(done => {
             ticksService
                 .request({ symbol: 'R_25' })
@@ -63,12 +62,12 @@ describe('Ticks Service', () => {
 
 describe('Account', () => {
     describe('Login', () => {
-        it('Login should be successful', () => {
+        it.skip('Login should be successful', () => {
             expect(addTokenIfValid('Xkq6oGFEHh6hJH8')).resolves;
         });
     });
     describe('Login on invalid token', () => {
-        it('Login should be unsuccessful', async () => {
+        it.skip('Login should be unsuccessful', async () => {
             try {
                 await addTokenIfValid('someinvalidtoken123xyz');
             } catch (e) {
@@ -77,7 +76,7 @@ describe('Account', () => {
         });
     });
     describe('logout', () => {
-        it('Logout should be successful', () => {
+        it.skip('Logout should be successful', () => {
             expect(logoutAllTokens).not.toThrow();
         });
     });

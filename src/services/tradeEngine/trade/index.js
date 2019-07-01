@@ -1,22 +1,22 @@
-import { Map } from 'immutable';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { durationToSecond } from '../../../common/utils/tools';
-import { translate } from '../../..//common/i18n';
-import createError from '../../common/error';
-import { doUntilDone } from '../helpers';
+import { Map }                               from 'immutable';
+import { createStore, applyMiddleware }      from 'redux';
+import thunk                                 from 'redux-thunk';
+import Balance                               from './Balance';
+import OpenContract                          from './OpenContract';
+import Proposal                              from './Proposal';
+import Purchase                              from './Purchase';
+import Sell                                  from './Sell';
+import { start }                             from './state/actions';
+import * as constants                        from './state/constants';
+import rootReducer                           from './state/reducers';
+import Ticks                                 from './Ticks';
+import Total                                 from './Total';
+import { doUntilDone }                       from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import Proposal from './Proposal';
-import Total from './Total';
-import Balance from './Balance';
-import OpenContract from './OpenContract';
-import Sell from './Sell';
-import Purchase from './Purchase';
-import Ticks from './Ticks';
-import rootReducer from './state/reducers';
-import * as constants from './state/constants';
-import { start } from './state/actions';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import createError                           from '../../../utils/error';
+import { translate }                         from '../../../utils/lang/i18n';
+import { durationToSecond }                  from '../../../utils/tools';
+import { observer as globalObserver }        from '../../../utils/observer';
 
 const watchBefore = store =>
     watchScope({
@@ -73,6 +73,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.data = new Map();
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
+
     init(...args) {
         const [token, options] = expectInitArg(args);
 
@@ -86,6 +87,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.watchTicks(symbol);
     }
+
     start(tradeOptions) {
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
@@ -103,6 +105,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.checkProposalReady();
     }
+
     loginAndGetBalance(token) {
         if (this.token === token) {
             return Promise.resolve();
@@ -121,11 +124,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             })
         );
     }
+
     getContractDuration() {
         const { duration, duration_unit: durationUnit } = this.tradeOptions;
 
         return durationToSecond(`${duration}${durationUnit}`);
     }
+
     observe() {
         this.observeOpenContract();
 
@@ -133,15 +138,18 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.observeProposals();
     }
+
     watch(watchName) {
         if (watchName === 'before') {
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
     }
+
     getData() {
         return this.data;
     }
+
     listen(n, f) {
         this.api.events.on(n, f);
     }

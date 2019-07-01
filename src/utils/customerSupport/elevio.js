@@ -1,8 +1,7 @@
-import { generateLiveApiInstance } from './appId';
-// import { getLanguage } from '../common/lang';
-import { getTokenList } from './utils/storageManager';
-import { translate } from '../common/i18n';
-import { getLanguage } from './lang';
+import { translate }               from '../lang/i18n';
+import { getLanguage }             from '../lang/lang';
+import { getTokenList }            from '../tokenHelper';
+import { generateLiveApiInstance } from '../../services/api/appId';
 
 const Elevio = (() => {
     const init = () => {

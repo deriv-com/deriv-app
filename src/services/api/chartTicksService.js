@@ -1,5 +1,5 @@
-import { doUntilDone } from '../botPage/bot/tools';
-import TicksService from '../botPage/common/TicksService';
+import TicksService    from './ticksService';
+import { doUntilDone } from '../../utils/tools';
 
 export default class ChartTicksService extends TicksService {
     observe() {

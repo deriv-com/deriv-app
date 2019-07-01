@@ -1,5 +1,5 @@
 const Shortcode = (() => {
-    let info_from_shortcode;
+    let info_from_shortcode = {};
 
     const extractInfoFromShortcode = (shortcode) => {
         const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.\\d]+)_(\\d+\\w)_(\\d+\\w)_(S[\\d.\\d]+P|(?:\\d+))_(\\d+)'); // Used to get market name from shortcode
@@ -29,6 +29,6 @@ const Shortcode = (() => {
         extractInfoFromShortcode,
         isHighLow,
     };
-});
+})();
 
-export default Shortcode;
+module.exports = Shortcode;

@@ -1,5 +1,6 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
+import { isEmptyObject }           from '_common/utility';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
@@ -28,6 +29,7 @@ const Purchase = ({
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info.has_error && !info.id;
     };
+    const is_proposal_empty = isEmptyObject(proposal_info);
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
@@ -48,6 +50,7 @@ const Purchase = ({
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
+                is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
                 purchased_states_arr={purchased_states_arr}
                 // is_purchase_locked={is_purchase_locked}

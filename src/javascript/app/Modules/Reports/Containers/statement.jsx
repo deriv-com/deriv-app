@@ -29,7 +29,7 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getSupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+            action = getSupportedContracts()[getMarketInformation(row_obj.shortcode).category.toUpperCase()] ?
                 getContractPath(row_obj.id)
                 : {
                     component: (

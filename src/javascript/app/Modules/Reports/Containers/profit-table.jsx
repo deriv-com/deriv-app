@@ -26,7 +26,7 @@ class ProfitTable extends React.Component {
     }
 
     getRowAction = (row_obj) => (
-        getSupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
+        getSupportedContracts()[getMarketInformation(row_obj.shortcode).category.toUpperCase()] ?
             getContractPath(row_obj.contract_id)
             : {
                 component: (

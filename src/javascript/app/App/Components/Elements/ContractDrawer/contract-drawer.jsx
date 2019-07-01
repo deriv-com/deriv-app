@@ -14,6 +14,7 @@ import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider          from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import ProfitLossCardContent   from 'Modules/Reports/Components/profit-loss-card-content.jsx';
+import { isHighLow }           from 'Modules/Reports/Helpers/market-underlying';
 import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
@@ -88,7 +89,10 @@ class ContractDrawer extends Component {
                                 </span>
                             </div>
                             <div className='contract-card__type'>
-                                <ContractTypeCell type={contract_info.contract_type} />
+                                <ContractTypeCell
+                                    type={contract_info.contract_type}
+                                    is_high_low={isHighLow(contract_info.shortcode)}
+                                />
                             </div>
                         </div>
                     </ContractCardHeader>

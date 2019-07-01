@@ -422,6 +422,9 @@ export default class TradeStore extends BaseStore {
             // To prevent infinite loop when changing from advanced end_time to digit type contract
             if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
                 if (isDigitTradeType(obj_new_values.contract_type)) {
+                    this.barrier_1     = '';
+                    this.barrier_2     = '';
+                    this.barrier_count = 0;
                     this.advanced_expiry_type = 'duration';
                     this.root_store.ui.is_advanced_duration = false;
                 }

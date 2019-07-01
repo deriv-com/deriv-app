@@ -92,7 +92,7 @@ const plugins = (base, is_test_env) => ([
     new HtmlWebPackPlugin(htmlOutputConfig()),
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new MiniCssExtractPlugin(cssConfig()),
-    new CircularDependencyPlugin({ failOnError: true }),
+    new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json' }) ]),
     ...(is_test_env ? [] : [
         new SWPrecacheWebpackPlugin(

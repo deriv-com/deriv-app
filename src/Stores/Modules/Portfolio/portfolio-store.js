@@ -225,7 +225,16 @@ export default class PortfolioStore extends BaseStore {
     onMount() {
         this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         if (this.positions.length === 0) {
-            reaction(() => this.root_store.client.is_logged_in, () => this.initializePortfolio());
+            // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
+            if (this.root_store.client.is_logged_in) {
+                this.initializePortfolio();
+            } else {
+                reaction(() => this.root_store.client.is_logged_in, () => {
+                    if (this.root_store.client.is_logged_in) {
+                        this.initializePortfolio();
+                    }
+                });
+            }
         }
     }
 

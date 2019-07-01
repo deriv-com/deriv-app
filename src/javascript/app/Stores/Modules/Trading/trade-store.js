@@ -1,41 +1,41 @@
-import debounce                          from 'lodash.debounce';
+import debounce                       from 'lodash.debounce';
 import {
     action,
     computed,
     observable,
     reaction,
-    runInAction }                        from 'mobx';
-import BinarySocket                      from '_common/base/socket_base';
-import { localize }                      from '_common/localize';
+    runInAction }                     from 'mobx';
+import BinarySocket                   from '_common/base/socket_base';
+import { localize }                   from '_common/localize';
 import {
     cloneObject,
     isEmptyObject,
-    getPropertyValue }                   from '_common/utility';
+    getPropertyValue }                from '_common/utility';
 import {
     getMinPayout,
-    isCryptocurrency }                   from '_common/base/currency_base';
-import { WS }                            from 'Services';
-import { isDigitTradeType }              from 'Modules/Trading/Helpers/digits';
-import { processPurchase }               from './Actions/purchase';
-import * as Symbol                       from './Actions/symbol';
-import getValidationRules                from './Constants/validation-rules';
+    isCryptocurrency }                from '_common/base/currency_base';
+import { WS }                         from 'Services';
+import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import { processPurchase }            from './Actions/purchase';
+import * as Symbol                    from './Actions/symbol';
+import getValidationRules             from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
-}                                        from './Helpers/active-symbols';
-import { setChartBarrier }               from './Helpers/chart';
-import ContractType                      from './Helpers/contract-type';
+}                                     from './Helpers/active-symbols';
+import { setChartBarrier }            from './Helpers/chart';
+import ContractType                   from './Helpers/contract-type';
 import {
     convertDurationLimit,
-    resetEndTimeOnVolatilityIndices }    from './Helpers/duration';
-import { processTradeParams }            from './Helpers/process';
+    resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+import { processTradeParams }         from './Helpers/process';
 import {
     createProposalRequests,
     getProposalErrorField,
-    getProposalInfo }                    from './Helpers/proposal';
-import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
-import BaseStore                         from '../../base-store';
+    getProposalInfo }                 from './Helpers/proposal';
+import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
 

@@ -44,8 +44,8 @@
     }
     &__select-arrow {
         pointer-events: none;
-        transition: transform 0.25s ease;
-        transform: rotate(0deg);
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        transform: rotate(0);
         transform-origin: 50% 45%;
         @extend %inline-icon;
     }
@@ -90,7 +90,7 @@
 .acc-switcher {
     &__wrapper {
         position: absolute;
-        transition: transform 0.25s ease, opacity 0.25s linear;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
         box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
         right: 0;
         top: calc(100% + 4px);
@@ -102,11 +102,11 @@
 
         &--enter-done {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
         &--enter, &--exit {
             opacity: 0;
-            transform: translateY(-2px);
+            transform: translate3d(0, -20px, 0);
         }
     }
     &__new-account {

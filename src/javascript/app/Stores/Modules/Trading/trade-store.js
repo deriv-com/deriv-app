@@ -601,6 +601,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
+        this.proposal_info = {};
+        this.purchase_info = {};
         WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
         // clear url query string

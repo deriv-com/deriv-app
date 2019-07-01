@@ -2,31 +2,28 @@ import PropTypes          from 'prop-types';
 import React              from 'react';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
 import Icon               from 'Assets/icon.jsx';
-import {
-    getMarketInformation,
-    isHighLow,
-}                         from '../Helpers/market-underlying';
+import Shortcode          from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
-    const market_information = getMarketInformation(payload.shortcode);
+    const info_from_shortcode = Shortcode.extractInfoFromShortcode(payload.shortcode);
 
-    if (should_show_category_icon && market_information) {
+    if (should_show_category_icon && info_from_shortcode) {
         return (
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
-                    <UnderlyingIcon market={market_information.underlying} />
+                    <UnderlyingIcon market={info_from_shortcode.underlying} />
                     {show_description && payload.display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
                     <Icon
                         icon='IconTradeType'
-                        type={(isHighLow(payload.shortcode))
-                            ? `${market_information.category.toLowerCase()}_barrier`
-                            : market_information.category.toLowerCase()}
+                        type={(Shortcode.isHighLow())
+                            ? `${info_from_shortcode.category.toLowerCase()}_barrier`
+                            : info_from_shortcode.category.toLowerCase()}
                     />
-                    {show_description && market_information.category}
+                    {show_description && info_from_shortcode.category}
                 </div>
             </div>
         );

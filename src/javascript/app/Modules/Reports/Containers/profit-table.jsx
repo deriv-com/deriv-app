@@ -14,7 +14,7 @@ import EmptyTradeHistoryMessage          from '../Components/empty-trade-history
 import PlaceholderComponent              from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                   from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
-import { getMarketInformation }          from '../Helpers/market-underlying';
+import Shortcode                         from '../Helpers/shortcode';
 
 class ProfitTable extends React.Component {
     componentDidMount() {
@@ -26,7 +26,7 @@ class ProfitTable extends React.Component {
     }
 
     getRowAction = (row_obj) => (
-        getSupportedContracts()[getMarketInformation(row_obj.shortcode).category.toUpperCase()] ?
+        getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] ?
             getContractPath(row_obj.contract_id)
             : {
                 component: (

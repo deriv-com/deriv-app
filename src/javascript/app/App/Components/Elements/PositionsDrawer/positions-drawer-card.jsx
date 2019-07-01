@@ -3,7 +3,7 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
 import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
-import { isHighLow }           from 'Modules/Reports/Helpers/market-underlying';
+import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from '_common/localize';
 import Icon                    from 'Assets/icon.jsx';
@@ -61,7 +61,7 @@ const PositionsDrawerCard = ({
                 <div className='positions-drawer-card__type'>
                     <ContractTypeCell
                         type={type}
-                        is_high_low={isHighLow(contract_info.shortcode)}
+                        is_high_low={Shortcode.isHighLow(contract_info.shortcode)}
                     />
                 </div>
             </div>

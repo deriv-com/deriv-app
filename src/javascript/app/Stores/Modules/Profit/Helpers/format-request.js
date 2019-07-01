@@ -24,7 +24,7 @@ const getDateFrom = (should_load_partially, partial_fetch_time, date_from, date_
 const getDateBoundaries = (date_from, date_to, partial_fetch_time, should_load_partially = false) => (
     {
         // eslint-disable-next-line max-len
-        ...(date_from || should_load_partially) && { date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from, date_to) },
+        ...date_from !== null && (date_from || should_load_partially) && { date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from, date_to) },
         ...(date_to || should_load_partially) && { date_to: getDateTo(partial_fetch_time, date_to) },
     }
 );

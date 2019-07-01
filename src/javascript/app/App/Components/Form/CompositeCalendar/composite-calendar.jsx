@@ -14,14 +14,10 @@ import TwoMonthPicker       from './two-month-picker.jsx';
 class CompositeCalendar extends React.PureComponent {
     constructor(props) {
         super(props);
-        const date = toMoment(props.to);
-
         this.state = {
-            show_to           : false,
-            show_from         : false,
-            selected_to_date  : props.to ? props.to : date.clone().startOf('day').add(1, 'd').subtract(1, 's').unix(),
-            selected_from_date: props.from ? props.from : null,
-            list              : [
+            show_to  : false,
+            show_from: false,
+            list     : [
                 { children: localize('All time'),     onClick: () => this.selectDateRange(0),  duration: 0, is_active: true },
                 { children: localize('Last 7 days'),  onClick: () => this.selectDateRange(7),  duration: 7, is_active: false },
                 { children: localize('Last 30 days'), onClick: () => this.selectDateRange(30), duration: 30, is_active: false },
@@ -35,13 +31,11 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     selectDateRange (from) {
-        this.setState({
-            selected_from_date: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
-            selected_to_date  : toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix(),
-        }, () => {
-            this.setActiveList();
-            this.hideCalendar();
-            this.apply();
+        this.setActiveList();
+        this.hideCalendar();
+        this.applyBatch({
+            from: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
+            to  : toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix(),
         });
     }
 
@@ -61,13 +55,13 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     get to_date_label() {
-        const date = epochToMoment(this.state.selected_to_date);
+        const date = epochToMoment(this.props.to);
         return daysFromTodayTo(date) === 0 ? localize('Today') : date.format('MMM, DD YYYY');
     }
 
     get from_date_label() {
-        const date = epochToMoment(this.state.selected_from_date);
-        return this.state.selected_from_date ? date.format('MMM, DD YYYY') : '';
+        const date = epochToMoment(this.props.from);
+        return this.props.from ? date.format('MMM, DD YYYY') : '';
     }
 
     hideCalendar () {
@@ -105,54 +99,55 @@ class CompositeCalendar extends React.PureComponent {
 
     isBoundToAList(duration) {
         const today = toMoment().startOf('day').unix();
-        const to_date = epochToMoment(this.state.selected_to_date).startOf('day').unix();
-        const from_date = epochToMoment(this.state.selected_from_date).startOf('day').unix();
-        const that_day = epochToMoment(this.state.selected_to_date).startOf('day').subtract(duration, 'days').unix();
+        const to_date = epochToMoment(this.props.to).startOf('day').unix();
+        const from_date = epochToMoment(this.props.from).startOf('day').unix();
+        const that_day = epochToMoment(this.props.to).startOf('day').subtract(duration, 'days').unix();
 
         return today === to_date && that_day === from_date;
     }
 
     setToDate (date) {
-        this.updateState('selected_to_date', epochToMoment(date).endOf('day').unix());
+        this.updateState('to', epochToMoment(date).endOf('day').unix());
     }
 
     setFromDate(date) {
-        this.updateState('selected_from_date', date);
+        this.updateState('from', date);
     }
 
     updateState(key, value) {
-        this.setState({
-            [key]: value,
-        }, () => {
-            this.setActiveList();
-            this.apply();
-        });
+        this.setActiveList();
+        this.apply(key, value);
     }
 
-    apply() {
-        this.props.onChange({
-            from: this.state.selected_from_date,
-            to  : this.state.selected_to_date,
+    applyBatch (values) {
+        this.props.onChange(values);
+    }
+
+    apply(key, value) {
+        this.applyBatch({
+            [key]: value,
         });
     }
 
     isPeriodDisabledTo (date) {
-        return date + 1 <= this.state.selected_from_date || date > toMoment().endOf('day').unix();
+        return date + 1 <= this.props.from || date > toMoment().endOf('day').unix();
     }
 
     isPeriodDisabledFrom (date) {
-        return date - 1 >= this.state.selected_to_date;
+        return date - 1 >= this.props.to;
     }
 
     render() {
         const {
             show_from,
             show_to,
-            selected_to_date,
-            selected_from_date,
             list,
         } = this.state;
 
+        const {
+            to,
+            from,
+        } = this.props;
         return (
             // eslint-disable-next-line react/no-children-prop
             <React.Fragment>
@@ -164,7 +159,7 @@ class CompositeCalendar extends React.PureComponent {
                 <div className='composite-calendar' ref={this.setWrapperRef}>
                     <SideList items={list} />
                     <TwoMonthPicker
-                        value={selected_to_date}
+                        value={to}
                         onChange={this.setToDate.bind(this)}
                         isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
                     />
@@ -173,7 +168,7 @@ class CompositeCalendar extends React.PureComponent {
                 <div className='composite-calendar' ref={this.setWrapperRef}>
                     <SideList items={list} />
                     <TwoMonthPicker
-                        value={selected_from_date}
+                        value={from}
                         onChange={this.setFromDate.bind(this)}
                         isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}
                     />

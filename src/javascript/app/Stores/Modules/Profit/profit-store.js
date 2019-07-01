@@ -15,7 +15,7 @@ const delay_on_scroll_time = 150;
 
 export default class ProfitTableStore extends BaseStore {
     @observable data           = [];
-    @observable date_from      = 0;
+    @observable date_from      =  null;
     @observable date_to        = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error          = '';
     @observable has_loaded_all = false;
@@ -159,7 +159,7 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     clearDateFilter() {
-        this.date_from = 0;
+        this.date_from = null;
         this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = 0;
     }

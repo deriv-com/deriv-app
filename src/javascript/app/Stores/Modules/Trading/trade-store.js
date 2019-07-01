@@ -15,6 +15,7 @@ import {
     getMinPayout,
     isCryptocurrency }                   from '_common/base/currency_base';
 import { WS }                            from 'Services';
+import { isDigitTradeType }              from 'Modules/Trading/Helpers/digits';
 import { processPurchase }               from './Actions/purchase';
 import * as Symbol                       from './Actions/symbol';
 import getValidationRules                from './Constants/validation-rules';
@@ -417,6 +418,14 @@ export default class TradeStore extends BaseStore {
                 is_purchase_enabled: false,
                 proposal_info      : {},
             });
+
+            // To prevent infinite loop when changing from advanced end_time to digit type contract
+            if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
+                if (isDigitTradeType(obj_new_values.contract_type)) {
+                    this.advanced_expiry_type = 'duration';
+                    this.root_store.ui.is_advanced_duration = false;
+                }
+            }
 
             if (!this.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;

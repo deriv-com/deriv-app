@@ -17,9 +17,8 @@ const Shortcode = (() => {
         if (shortcode) {
             info_from_shortcode = extractInfoFromShortcode(shortcode);
         }
-
         if (/CALL|PUT/i.test(info_from_shortcode.category)) {
-            return !/^S[\d.\d]+P$/.test(info_from_shortcode.atm);
+            return !/^S0P$/.test(info_from_shortcode.atm);
         }
 
         return false;

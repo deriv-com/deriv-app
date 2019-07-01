@@ -47,16 +47,6 @@ const client_notifications = {
         ),
         type: 'info',
     },
-    document_review: {
-        header : localize('Documents in review'),
-        message: (
-            <Localize
-                str='We are reviewing your documents. For more details [_1]contact us[_2].'
-                replacers={{ '1_2': <a className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> }}
-            />
-        ),
-        type: 'info',
-    },
     cashier_locked: {
         header : localize('Cashier Disabled'),
         message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
@@ -214,7 +204,6 @@ const checkAccountStatus = (response, client, addNotification, loginid) => {
     } = getStatusValidations(status);
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
 
-    if (document_under_review) addNotification(client_notifications.document_review);
     if (cashier_locked)        addNotification(client_notifications.cashier_locked);
     if (withdrawal_locked)     addNotification(client_notifications.withdrawal_locked);
     if (mt5_withdrawal_locked) addNotification(client_notifications.mt5_withdrawal_locked);
@@ -227,7 +216,7 @@ const checkAccountStatus = (response, client, addNotification, loginid) => {
     if (getRiskAssessment()) addNotification(client_notifications.risk);
     if (shouldCompleteTax()) addNotification(client_notifications.tax);
 
-    if (prompt_client_to_authenticate && !(document_under_review || document_needs_action)) {
+    if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
         addNotification(client_notifications.authenticate);
     }
 

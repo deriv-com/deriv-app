@@ -1,22 +1,23 @@
-import classNames            from 'classnames';
-import PropTypes             from 'prop-types';
-import React, { Component }  from 'react';
-import { withRouter }        from 'react-router';
-import { CSSTransition }     from 'react-transition-group';
-import { localize }          from '_common/localize';
-import Icon                  from 'Assets/icon.jsx';
-import routes                from 'Constants/routes';
-import Localize              from 'App/Components/Elements/localize.jsx';
-import { UnderlyingIcon }    from 'App/Components/Elements/underlying-icon.jsx';
-import Button                from 'App/Components/Form/button.jsx';
-import ContractAudit         from 'App/Components/Elements/ContractAudit';
-import ContractTypeCell      from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
-import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
-import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
-import ContractCardBody      from './contract-card-body.jsx';
-import ContractCardFooter    from './contract-card-footer.jsx';
-import ContractCardHeader    from './contract-card-header.jsx';
-import ContractCard          from './contract-card.jsx';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React, { Component }    from 'react';
+import { withRouter }          from 'react-router';
+import { CSSTransition }       from 'react-transition-group';
+import { localize }            from '_common/localize';
+import Icon                    from 'Assets/icon.jsx';
+import routes                  from 'Constants/routes';
+import Localize                from 'App/Components/Elements/localize.jsx';
+import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
+import Button                  from 'App/Components/Form/button.jsx';
+import ContractAudit           from 'App/Components/Elements/ContractAudit';
+import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
+import ProgressSlider          from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
+import ProfitLossCardContent   from 'Modules/Reports/Components/profit-loss-card-content.jsx';
+import ContractCardBody        from './contract-card-body.jsx';
+import ContractCardFooter      from './contract-card-footer.jsx';
+import ContractCardHeader      from './contract-card-header.jsx';
+import ContractCard            from './contract-card.jsx';
 
 import {
     getCurrentTick,
@@ -190,7 +191,20 @@ class ContractDrawer extends Component {
 
     render() {
         if (!this.props.contract_info) return null;
-        const body_content = (this.props.contract_info.status) ? this.getBodyContent() : null;
+        const body_content = (
+            <React.Fragment>
+                {(this.props.contract_info.status) ?
+                    this.getBodyContent()
+                    :
+                    <div className='contract-card'>
+                        <PositionsCardLoader
+                            is_dark_theme={this.props.is_dark_theme}
+                            speed={2}
+                        />
+                    </div>
+                }
+            </React.Fragment>
+        );
         return (
             <div className={classNames('contract-drawer', {})}>
                 <div

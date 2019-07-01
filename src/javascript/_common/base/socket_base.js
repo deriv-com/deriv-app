@@ -36,6 +36,7 @@ const BinarySocketBase = (() => {
         'landing_company',
         'payout_currencies',
         'asset_index',
+        'active_symbols',
     ];
 
     const sent_requests = {

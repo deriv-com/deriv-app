@@ -169,25 +169,20 @@ const SubscriptionManager = (() => {
             throw new Error(`Missing callback function. To forget all subscriptions of msg_type: ${msg_type}, please call forgetAll().`);
         }
 
-        // find corresponding id(s)
-        const sub_ids = Object.keys(subscriptions).filter(id => (
-            subscriptions[id].msg_type === msg_type &&
-            hasCallbackFunction(id, fncCallback)
-        ));
-
         const forgets_list = [];
-        sub_ids.forEach((id) => {
-            if (match_values && !hasValues(subscriptions[id].request, match_values)) {
-                return;
-            }
-            const stream_id = subscriptions[id].stream_id;
-            if (stream_id && subscriptions[id].subscribers.length === 1) {
-                delete subscriptions[id];
-                forgets_list.push(forgetStream(stream_id));
-            } else {
-                // there are other subscribers, or for some reason there is no stream_id:
-                // (i.e. returned an error, or forget() being called before the first response)
-                subscriptions[id].subscribers.splice(subscriptions[id].subscribers.indexOf(fncCallback), 1);
+        Object.keys(subscriptions).forEach((id) => {
+            if (subscriptions[id].msg_type === msg_type) { // it's the msg_type we are looking for
+                if (!match_values || hasValues(subscriptions[id].request, match_values)) { // the value matches as well
+                    const stream_id = subscriptions[id].stream_id;
+                    if (stream_id && subscriptions[id].subscribers.length === 1) { // there is only one subscriber, so we can forget the call
+                        delete subscriptions[id];
+                        forgets_list.push(forgetStream(stream_id));
+                    } else if (hasCallbackFunction(id, fncCallback)) {
+                        // there are other subscribers, or for some reason there is no stream_id:
+                        // (i.e. returned an error, or forget() being called before the first response)
+                        subscriptions[id].subscribers.splice(subscriptions[id].subscribers.indexOf(fncCallback), 1);
+                    }
+                }
             }
         });
         return Promise.all(forgets_list);

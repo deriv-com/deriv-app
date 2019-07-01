@@ -19,36 +19,44 @@ class PurchaseFieldset extends React.PureComponent {
     render() {
         const {
             basis,
+            buy_info,
             currency,
             // index,
             info,
+            index,
             is_contract_mode,
             is_disabled,
             is_high_low,
             is_loading,
             is_proposal_error,
+            purchased_states_arr,
             // is_purchase_confirm_on,
             // is_purchase_locked,
             onClickPurchase,
             onHoverPurchase,
             // togglePurchaseLock,
+            setPurchaseState,
             type,
         } = this.props;
 
         const purchase_button = (
             <PurchaseButton
+                buy_info={buy_info}
                 currency={currency}
                 info={info}
+                index={index}
                 is_contract_mode={is_contract_mode}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
+                purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
                 should_fade={this.state.should_fade}
                 type={type}
             />
         );
-        
+
         return (
             <Fieldset
                 className='trade-container__fieldset purchase-container__option'
@@ -116,21 +124,24 @@ class PurchaseFieldset extends React.PureComponent {
 }
 
 PurchaseFieldset.propTypes = {
-    basis            : PropTypes.string,
-    currency         : PropTypes.string,
-    // index            : PropTypes.number,
-    info             : PropTypes.object,
-    is_contract_mode : PropTypes.bool,
-    is_disabled      : PropTypes.bool,
-    is_high_low      : PropTypes.bool,
-    is_loading       : PropTypes.bool,
-    is_proposal_error: PropTypes.bool,
+    basis               : PropTypes.string,
+    buy_info            : PropTypes.object,
+    currency            : PropTypes.string,
+    index               : PropTypes.number,
+    info                : PropTypes.object,
+    is_contract_mode    : PropTypes.bool,
+    is_disabled         : PropTypes.bool,
+    is_high_low         : PropTypes.bool,
+    is_loading          : PropTypes.bool,
+    is_proposal_error   : PropTypes.bool,
+    onClickPurchase     : PropTypes.func,
     // is_purchase_confirm_on: PropTypes.bool,
     // is_purchase_locked    : PropTypes.bool,
-    onClickPurchase  : PropTypes.func,
-    onHoverPurchase  : PropTypes.func,
+    onHoverPurchase     : PropTypes.func,
+    purchased_states_arr: PropTypes.array,
     // togglePurchaseLock    : PropTypes.func,
-    type             : PropTypes.string,
+    setPurchaseState    : PropTypes.func,
+    type                : PropTypes.string,
 };
 
 export default PurchaseFieldset;

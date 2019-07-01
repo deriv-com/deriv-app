@@ -1,6 +1,6 @@
 const crc32          = require('crc-32').str;
 const fs             = require('fs');
-const static_strings = require('./app-static-strings');
+const static_strings = require('./../../scripts/app-static-strings');
 
 // Push static strings to list of messages to be added to JSON
 const messages = [...static_strings];

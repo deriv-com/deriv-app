@@ -47,10 +47,4 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
-
-        sellExpired() {
-            if (this.isSellAvailable && this.isExpired) {
-                doUntilDone(() => this.api.sellExpiredContracts());
-            }
-        }
     };

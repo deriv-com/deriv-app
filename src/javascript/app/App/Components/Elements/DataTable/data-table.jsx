@@ -1,4 +1,5 @@
 import classNames                     from 'classnames';
+import debounce                       from 'lodash.debounce';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { FixedSizeList as List }      from 'react-window';
 import { Scrollbars }                 from 'tt-react-custom-scrollbars';
@@ -15,16 +16,31 @@ class DataTable extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            height: 200,
-            width : 200,
+            height      : 200,
+            width       : 200,
+            window_width: 1024,
         };
     }
 
+    resizeDimensions = debounce(() => {
+        this.setState({
+            width       : (window.innerWidth - this.state.window_width) + this.state.width,
+            window_width: window.innerWidth,
+        });
+    }, 250);
+
     componentDidMount() {
         this.setState({
-            height: this.el_table_body.clientHeight,
-            width : this.el_table_body.clientWidth,
+            height      : this.el_table_body.clientHeight,
+            width       : this.el_table_body.clientWidth,
+            window_width: window.innerWidth,
         });
+        window.onresize = this.resizeDimensions;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    componentWillUnmount() {
+        window.onresize = null;
     }
 
     componentDidUpdate() {

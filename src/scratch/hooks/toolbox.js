@@ -22,29 +22,12 @@ Blockly.Toolbox.prototype.init = function() {
     // deriv-bot: Create Toolbox header
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
-    const el_toolbox_arrow = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__arrow');
 
     el_toolbox_title.textContent = translate('Blocks Library');
     el_toolbox_header.appendChild(el_toolbox_title);
-    el_toolbox_header.appendChild(el_toolbox_arrow);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
-    ReactDOM.render(<ArrowIcon className='arrow' />, el_toolbox_arrow);
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
-    
-    // deriv-bot: Clicking on toolbox arrow collapses it
-    Blockly.bindEventWithChecks_(el_toolbox_arrow, 'mousedown', this, () => {
-        const is_collapsed = this.HtmlDiv.classList.contains('toolbox--collapsed');
-        
-        if (is_collapsed) {
-            this.HtmlDiv.classList.remove('toolbox--collapsed');
-        } else {
-            this.HtmlDiv.classList.add('toolbox--collapsed');
-        }
-
-        // Fire an event to re-position flyout.
-        window.dispatchEvent(new Event('resize'));
-    });
   
     // Clicking on toolbox closes popups.
     Blockly.bindEventWithChecks_(this.HtmlDiv, 'mousedown', this, function(e) {
@@ -71,6 +54,7 @@ Blockly.Toolbox.prototype.init = function() {
  * Fill the toolbox with categories and blocks.
  * @param {!Node} newTree DOM tree of blocks.
  * @private
+ * deriv-bot: We don't want to `showAll` or `setSelectedItem` here (like in Scratch)
  */
 Blockly.Toolbox.prototype.populate_ = function (newTree) {
     this.categoryMenu_.populate(newTree);
@@ -95,54 +79,6 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
 };
 
 /**
- * Create the DOM for the category menu.
- * deriv-bot: Custom class names
- */
-Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
-    const className = this.parent_.horizontalLayout_ ? 'toolbox__horizontal-category-menu' : 'toolbox__category-menu';
-
-    this.table = goog.dom.createDom('div', className);
-    this.parentHtml_.appendChild(this.table);
-};
-
-/**
- * Fill the toolbox with categories and blocks by creating a new
- * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
- * deriv-bot: Port from Google Blockly
- * @param {Node} domTree DOM tree of blocks, or null.
- */
-Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
-    if (!domTree) {
-        return;
-    }
-  
-    // Remove old categories
-    this.dispose();
-    this.createDom();
-
-    const categories = [];
-    
-    // Find actual categories from the DOM tree.
-    domTree.childNodes.forEach((child) => {
-        if (child.tagName && child.tagName.toUpperCase() === 'CATEGORY') {
-            categories.push(child);
-        }
-    });
-
-    categories.forEach((child) => {
-        const row = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__row');
-
-        this.table.appendChild(row);
-
-        if (child) {
-            this.categories_.push(new Blockly.Toolbox.Category(this, row, child));
-        }
-    });
-
-    this.height_ = this.table.offsetHeight;
-};
-
-/**
  * Used to determine the css classes for the menu item for this category
  * based on its current state.
  * @private
@@ -151,34 +87,13 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
  * deriv-bot: Custom class names
  */
 Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
-    const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
+    const classNames = ['toolbox__item', `toolbox__cat--${this.id_}`];
 
     if (selected) {
-        classNames.push('toolbox__category--selected');
+        classNames.push('toolbox__cat--selected');
     }
-
+    
     return classNames.join(' ');
-};
-
-/**
- * Create the DOM for a category in the toolbox.
- * deriv-bot: Custom class names
- */
-Blockly.Toolbox.Category.prototype.createDom = function () {
-    const toolbox = this.parent_.parent_;
-
-    this.item_ = goog.dom.createDom('div', { class: this.getMenuItemClassName_() });
-    this.label_ = goog.dom.createDom('div', {
-        class: 'toolbox__label',
-    }, Blockly.utils.replaceMessageReferences(this.name_));
-
-    const el_toolbox_row_color = goog.dom.createDom('div', { class: 'toolbox__color' });
-    this.item_.appendChild(el_toolbox_row_color);
-
-    this.item_.appendChild(this.label_);
-    this.parentHtml_.appendChild(this.item_);
-
-    Blockly.bindEvent_(this.item_, 'mouseup', toolbox, toolbox.setSelectedItemFactory(this));
 };
 
 /**
@@ -190,34 +105,61 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
+
+        // Selecting the same category will close it.
+        if (
+            item &&
+            !item.is_category_return_ &&
+            !item.has_child_category_ &&
+            this.selectedItem_.id_ === item.id_
+        ) {
+            this.selectedItem_ = null;
+            this.flyout_.hide();
+            return;
+        }
     }
 
     this.selectedItem_ = item;
 
-    if (this.selectedItem_ != null) {
-        const is_return_category = this.selectedItem_.parentHtml_.classList.contains('category--back'); // TEMP
-        const getCategoryTree = (parent_name, parent_id, children) => {
-            const xml_string =
-            `<xml>
-                <category name="${parent_name}" id="${parent_id}" web-class="category--back" />
-                ${Array.from(children).map(c => c.outerHTML).join()}
-            </xml>`;
-            return Blockly.Xml.textToDom(xml_string);
+    if (item === null) {
+        this.flyout_.hide();
+    } else {
+        const getCategoryTree = (parent_name, parent_id, colour, children) => {
+            const xml_document = document.implementation.createDocument(null, null, null);
+            const el_xml = xml_document.createElement('xml');
+            const parent_category = xml_document.createElement('category');
+
+            parent_category.setAttribute('name', parent_name);
+            parent_category.setAttribute('id', parent_id);
+            parent_category.setAttribute('is_category_return', true);
+            parent_category.setAttribute('colour', colour);
+
+            const el_separator = xml_document.createElement('sep');
+            const category_nodes = [
+                parent_category,
+                el_separator,
+                ...Array.from(children),
+            ];
+
+            category_nodes.forEach(childNode => el_xml.appendChild(childNode));
+            xml_document.appendChild(el_xml);
+            return el_xml;
         };
-        
-        if (is_return_category) {
+
+        if (this.selectedItem_.is_category_return_) {
+            // Go up a level if this is a return category
             const findCategory = (category_collection) => {
                 // Finds a category based on `this.selectedItem_.id_` in the given `category_collection`
                 for (let i = 0; i < category_collection.length; i++) {
                     const el_category = category_collection[i];
-                    const id = el_category.getAttribute('id');
                     const is_correct_child =
                         el_category.tagName.toUpperCase() === 'CATEGORY' &&
-                        id === this.selectedItem_.id_;
+                        el_category.getAttribute('id') === this.selectedItem_.id_;
 
                     if (is_correct_child) {
                         return el_category;
                     }
+
                     const category = findCategory(el_category.children);
                     if (category) {
                         return category;
@@ -234,38 +176,36 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                 const el_parent = selected_category.parentElement;
 
                 if (el_parent.tagName === 'xml') {
+                    this.flyout_.hide();
                     this.workspace_.updateToolbox(initial_toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
                         el_parent.getAttribute('name'),
                         el_parent.getAttribute('id'),
-                        el_parent.children
+                        el_parent.getAttribute('colour'),
+                        el_parent.children,
                     );
 
+                    this.flyout_.hide();
                     this.workspace_.updateToolbox(newTree);
                 }
             }
+        } else if (this.selectedItem_.has_child_category_) {
+            // Show categories in toolbox that are descendants of `this.selectedItem_`
+            const newTree = getCategoryTree(
+                this.selectedItem_.name_,
+                this.selectedItem_.id_,
+                this.selectedItem_.colour_,
+                this.selectedItem_.contents_,
+            );
+
+            this.flyout_.hide();
+            this.workspace_.updateToolbox(newTree);
         } else {
-            const category_children = this.selectedItem_.contents_;
-            const has_child_category = category_children.some(childNode => childNode.nodeName.toUpperCase() === 'CATEGORY');
-
-            if (has_child_category) {
-                // Only show categories in toolbox that are descendants of this.selectedItem_
-                const newTree = getCategoryTree(
-                    this.selectedItem_.name_,
-                    this.selectedItem_.id_,
-                    category_children
-                );
-
-                this.workspace_.updateToolbox(newTree);
-            } else {
-                // Show blocks that belong to this category.
-                this.selectedItem_.setSelected(true);
-                this.showCategory_(item.id_);
-            }
+            // Show blocks that belong to this category.
+            this.selectedItem_.setSelected(true);
+            this.showCategory_(this.selectedItem_.id_);
         }
-    } else {
-        this.flyout_.hide();
     }
 };
 
@@ -273,63 +213,92 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
  * Update the flyout's contents without closing it.  Should be used in response
  * to a change in one of the dynamic categories, such as variables or
  * procedures.
- * deriv-bot: We don't want to showAll_() cause it'll populate the entire
- * flyout with all available blocks. This method is called by refreshToolboxSelection_()
- * which does the actual refreshing.
+ * deriv-bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function() {
+Blockly.Toolbox.prototype.refreshSelection = function () {
+    // Hello, I'm doing nothing. :)
 };
 
 /**
- * Move the toolbox to the edge.
- * deriv-bot: Don't set height of toolbox inline
+ * Create the DOM for a category in the toolbox.
+ * deriv-bot: Custom class names + injection of description
  */
-Blockly.Toolbox.prototype.position = function () {
-    const treeDiv = this.HtmlDiv;
+Blockly.Toolbox.Category.prototype.createDom = function () {
+    const toolbox = this.parent_.parent_;
+    const el_item = goog.dom.createDom('div', this.getMenuItemClassName_());
 
-    if (!treeDiv) {
-        // Not initialized yet.
-        return;
-    }
+    this.item_ = el_item;
 
-    const svg = this.workspace_.getParentSvg();
-    const svgSize = Blockly.svgSize(svg);
-
-    if (this.horizontalLayout_) {
-        treeDiv.style.left = '0';
-        treeDiv.style.height = 'auto';
-        treeDiv.style.width = `${svgSize.width}px`;
-        this.height = treeDiv.offsetHeight;
-
-        if (this.toolboxPosition === Blockly.TOOLBOX_AT_TOP) {
-            // Top
-            treeDiv.style.top = '0';
-        } else {
-            // Bottom
-            treeDiv.style.bottom = '0';
-        }
-    } else if (this.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
-        // Right
-        treeDiv.style.right = '0';
+    if (this.is_category_return_) {
+        const el_return_arrow = goog.dom.createDom('div', 'toolbox__cat-arrow toolbox__cat-arrow--back');
+        ReactDOM.render(<ArrowIcon className='arrow' />, el_return_arrow);
+        el_item.appendChild(el_return_arrow);
     } else {
-        // Left
-        treeDiv.style.left = '0';
+        const el_colour = goog.dom.createDom('div', 'toolbox__cat-colour');
+        el_item.appendChild(el_colour);
+    }
+    
+    const el_label = goog.dom.createDom('div', 'toolbox__label', this.name_);
+    const el_toolbox_text = goog.dom.createDom('div', 'toolbox__cat-text');
+
+    this.label_ = el_label;
+    el_toolbox_text.appendChild(el_label);
+    
+    if (this.description_) {
+        const el_description = goog.dom.createDom('div', 'toolbox__description', this.description_);
+        el_toolbox_text.appendChild(el_description);
     }
 
-    this.flyout_.position();
+    el_item.appendChild(el_toolbox_text);
+
+    if (this.has_child_category_) {
+        const el_category_arrow = goog.dom.createDom('div', 'toolbox__cat-arrow toolbox__cat-arrow--open');
+        ReactDOM.render(<ArrowIcon className='arrow' />, el_category_arrow);
+        el_item.appendChild(el_category_arrow);
+    } else if (this.iconURI_) {
+        // If category has iconURI attribute, it refers to an entry in our bot-sprite.svg
+        const el_icon = goog.dom.createDom('div', { class: 'toolbox__icon' });
+        el_icon.innerHTML = `<svg><use xlink:href="./dist/bot-sprite.svg#${this.iconURI_}"></use></svg>`;
+        el_item.appendChild(el_icon);
+    }
+
+    this.parentHtml_.appendChild(el_item);
+
+    Blockly.bindEvent_(el_item, 'mouseup', toolbox, toolbox.setSelectedItemFactory(this));
 };
 
 /**
- * Set the contents of this category from DOM.
- * @param {Node} domTree DOM tree of blocks.
- * @constructor
+ * Get the contents of this category.
+ * @return {!Array|string} xmlList List of blocks to show, or a string with the
+ * name of a custom category.
+ * deriv-bot: Use this.dynamic_ rather than this.custom_ for dynamic categories
+ * if we specify this.custom_, parseContents() is never called (see core/toolbox.js),
+ * so we don't get extra props we require. See parseContents_
  */
-Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
+Blockly.Toolbox.Category.prototype.getContents = function () {
+    return this.custom_ || this.dynamic_ || this.contents_;
+};
+
+/**
+* Set the contents of this category from DOM.
+* @param {Node} domTree DOM tree of blocks.
+* @constructor
+* deriv-bot: Set some extra properties on the Blockly.Toolbox.Category
+*/
+Blockly.Toolbox.Category.prototype.parseContents_ = function (domTree) {
     this.description_ = domTree.getAttribute('description');
+    this.dynamic_ = domTree.getAttribute('dynamic');
+    this.is_category_return_ = !!domTree.getAttribute('is_category_return');
 
     domTree.childNodes.forEach(child => {
         if (child.tagName) {
-            switch (child.tagName.toUpperCase()) {
+            const tag = child.tagName.toUpperCase();
+
+            if (tag === 'CATEGORY') {
+                this.has_child_category_ = true;
+            }
+
+            switch (tag) {
                 case 'BLOCK':
                 case 'SHADOW':
                 case 'LABEL':
@@ -347,27 +316,37 @@ Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
 };
 
 /**
- * Create the DOM for a category in the toolbox.
- * deriv-bot: Custom class names + injection of description
+ * Set the colour of the category's background from a DOM node.
+ * @param {Node} node DOM node with "colour" and "secondaryColour" attribute.
+ *     Colours are a hex string or hue on a colour wheel (0-360).
+ * deriv-bot: We don't need secondaryColour
  */
-Blockly.Toolbox.Category.prototype.createDom = function () {
-    const toolbox = this.parent_.parent_;
+Blockly.Toolbox.Category.prototype.setColour = function(node) {
+    const colour = node.getAttribute('colour');
 
-    const el_toolbox_row_color = goog.dom.createDom('div', { class: 'toolbox__color' });
-    this.item_ = goog.dom.createDom('div', { class: this.getMenuItemClassName_() });
-    this.label_ = goog.dom.createDom('div', { class: 'toolbox__label' }, this.name_);
-
-    this.item_.appendChild(el_toolbox_row_color);
-    this.item_.appendChild(this.label_);
-
-    if (this.description_) {
-        const desc_el = goog.dom.createDom('div', { class: 'toolbox__description' }, this.description_);
-        this.item_.appendChild(desc_el);
+    if (goog.isString(colour)) {
+        if (colour.match(/^#[0-9a-fA-F]{6}$/)) {
+            this.colour_ = colour;
+        } else {
+            this.colour_ = Blockly.hueToRgb(colour);
+        }
+        this.hasColours_ = true;
+    } else {
+        this.colour_ = '#000000';
     }
-    
-    this.parentHtml_.appendChild(this.item_);
+};
 
-    Blockly.bindEvent_(this.item_, 'mouseup', toolbox, toolbox.setSelectedItemFactory(this));
+/**
+ * Create the DOM for the category menu.
+ * deriv-bot: Custom class names
+ */
+Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
+    const className = this.parent_.horizontalLayout_ ?
+        'toolbox__horizontal-category-menu' :
+        'toolbox__cat-menu';
+
+    this.table = goog.dom.createDom('div', className);
+    this.parentHtml_.appendChild(this.table);
 };
 
 /**
@@ -375,43 +354,38 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
  * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
  * @param {Node} domTree DOM tree of blocks, or null.
  */
-Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
+Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree) {
     if (!domTree) {
         return;
     }
-  
+
     // Remove old categories
     this.dispose();
     this.createDom();
 
-    const categories = [];
+    domTree.childNodes.forEach(childNode => {
+        const is_category = () => childNode.tagName && childNode.tagName.toUpperCase() === 'CATEGORY';
+        const is_separator = () => childNode.tagName && childNode.tagName.toUpperCase() === 'SEP';
 
-    // Find actual categories from the DOM tree.
-    domTree.childNodes.forEach(child => {
-        if (child.tagName && child.tagName.toUpperCase() === 'CATEGORY') {
-            categories.push(child);
-        }
-    });
+        if (is_category()) {
+            const row_class = childNode.getAttribute('is_category_return') ?
+                'toolbox__cat-return' :
+                'toolbox__row';
+            const el_row = goog.dom.createDom('div', { class: row_class });
 
-    // Create a single column of categories
-    categories.forEach(child => {
-        const row = goog.dom.createDom('div', 'scratchCategoryMenuRow');
+            // Convert xml web-class attributes to class attributes in el_row
+            const web_classes = childNode.getAttribute('web-class');
+            if (web_classes) {
+                web_classes.split(' ').forEach(className => el_row.classList.add(className));
+            }
 
-        const has_child_category = Array.from(child.children).some(el_child => el_child.tagName.toUpperCase() === 'CATEGORY');
-        if (has_child_category) {
-            row.classList.add('category--subcategories');
-        }
-
-        // Convert xml `web-class` attributes to `class` attributes in row
-        const web_classes = child.getAttribute('web-class');
-        if (web_classes) {
-            web_classes.split(' ').forEach(className => row.classList.add(className));
-        }
-
-        this.table.appendChild(row);
-
-        if (child) {
-            this.categories_.push(new Blockly.Toolbox.Category(this, row, child));
+            const toolbox_category = new Blockly.Toolbox.Category(this, el_row, childNode);
+            
+            this.table.appendChild(el_row);
+            this.categories_.push(toolbox_category);
+        } else if (is_separator()) {
+            const el_separator = goog.dom.createDom('div', { class: 'toolbox__separator' });
+            this.table.appendChild(el_separator);
         }
     });
 

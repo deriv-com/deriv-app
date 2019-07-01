@@ -87,7 +87,7 @@ export default class ProfitTableStore extends BaseStore {
         }
         this.has_loaded_all      = !should_load_partially && formatted_transactions.length < batch_size;
         this.is_loading          = false;
-        if (this.data.length > 0) {
+        if (formatted_transactions.length > 0) {
             this.partial_fetch_time = toMoment().unix();
         }
     }

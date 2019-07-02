@@ -12,7 +12,7 @@ const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-    { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
+    // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
     {
         from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
         to: 'manifest.json',
@@ -51,22 +51,22 @@ const htmlInjectConfig = () => ({
                 rel: 'icon'
             }
         },
-        {
-            path: 'pushwoosh-web-notifications.js',
-            attributes: {
-                rel: 'preload',
-                as: 'script'
-            }
-        },
+        // {
+        //     path: 'pushwoosh-web-notifications.js',
+        //     attributes: {
+        //         rel: 'preload',
+        //         as: 'script'
+        //     }
+        // },
     ],
     scripts: [
-        {
-            path: 'pushwoosh-web-notifications.js',
-            attributes: {
-                defer: '',
-                type: 'text/javascript'
-            }
-        }
+        // {
+        //     path: 'pushwoosh-web-notifications.js',
+        //     attributes: {
+        //         defer: '',
+        //         type: 'text/javascript'
+        //     }
+        // }
     ],
     append: true
 });

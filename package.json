@@ -121,6 +121,7 @@
     "promise-polyfill": "6.1.0",
     "prop-types": "15.6.1",
     "react": "16.6.3",
+    "react-content-loader": "4.2.1",
     "react-dom": "16.6.3",
     "react-pose": "4.0.8",
     "react-router-dom": "5.0.0",

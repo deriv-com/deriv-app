@@ -1,39 +1,41 @@
-import debounce                          from 'lodash.debounce';
+import debounce                       from 'lodash.debounce';
 import {
     action,
+    computed,
     observable,
     reaction,
-    runInAction }                        from 'mobx';
-import BinarySocket                      from '_common/base/socket_base';
-import { localize }                      from '_common/localize';
+    runInAction }                     from 'mobx';
+import BinarySocket                   from '_common/base/socket_base';
+import { localize }                   from '_common/localize';
 import {
     cloneObject,
     isEmptyObject,
-    getPropertyValue }                   from '_common/utility';
+    getPropertyValue }                from '_common/utility';
 import {
     getMinPayout,
-    isCryptocurrency }                   from '_common/base/currency_base';
-import { WS }                            from 'Services';
-import { processPurchase }               from './Actions/purchase';
-import * as Symbol                       from './Actions/symbol';
-import getValidationRules                from './Constants/validation-rules';
+    isCryptocurrency }                from '_common/base/currency_base';
+import { WS }                         from 'Services';
+import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import { processPurchase }            from './Actions/purchase';
+import * as Symbol                    from './Actions/symbol';
+import getValidationRules             from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
-}                                        from './Helpers/active-symbols';
-import { setChartBarrier }               from './Helpers/chart';
-import ContractType                      from './Helpers/contract-type';
+}                                     from './Helpers/active-symbols';
+import { setChartBarrier }            from './Helpers/chart';
+import ContractType                   from './Helpers/contract-type';
 import {
     convertDurationLimit,
-    resetEndTimeOnVolatilityIndices }    from './Helpers/duration';
-import { processTradeParams }            from './Helpers/process';
+    resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+import { processTradeParams }         from './Helpers/process';
 import {
     createProposalRequests,
     getProposalErrorField,
-    getProposalInfo }                    from './Helpers/proposal';
-import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
-import BaseStore                         from '../../base-store';
+    getProposalInfo }                 from './Helpers/proposal';
+import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
 
@@ -166,56 +168,75 @@ export default class TradeStore extends BaseStore {
         );
     }
 
+    @computed
+    get is_symbol_in_active_symbols() {
+        return this.active_symbols
+            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    }
+
     @action.bound
     refresh = () => {
         WS.forgetAll('proposal');
     };
 
     @action.bound
-    shouldSetDefaultSymbol = () => {
-        if (!this.symbol) return true;
-        return !this.active_symbols.active_symbols
-            .some(symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1);
+    setDefaultSymbol() {
+        if (!this.is_symbol_in_active_symbols) {
+            this.processNewValuesAsync({
+                symbol: pickDefaultSymbol(this.active_symbols),
+            });
+        }
     }
 
     @action.bound
-    async prepareTradeStore() {
-        const active_symbols = await WS.activeSymbols();
-        if (active_symbols.error) {
+    async setActiveSymbols() {
+        const { active_symbols, error } = this.smart_chart.should_refresh_active_symbols ?
+            // if SmartCharts has requested active_symbols, we wait for the response
+            await BinarySocket.wait('active_symbols')
+            : // else requests new active_symbols
+            await WS.activeSymbols({ forced: true });
+
+        if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             this.root_store.ui.setAppLoading(false);
             return;
-        } else if (!active_symbols.active_symbols || !active_symbols.active_symbols.length) {
+        } else if (!active_symbols || !active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
             this.root_store.ui.setAppLoading(false);
             return;
         }
 
-        runInAction(async() => {
-            this.active_symbols     = active_symbols;
-            this.smart_chart        = this.root_store.modules.smart_chart;
-            this.currency           = this.root_store.client.currency;
-            this.initial_barriers   = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
+        this.processNewValuesAsync({ active_symbols });
+    }
 
-            if (this.shouldSetDefaultSymbol()) {
-                await this.processNewValuesAsync({
-                    symbol: pickDefaultSymbol(active_symbols.active_symbols),
+    @action.bound
+    async setContractTypes() {
+        if (this.symbol && this.is_symbol_in_active_symbols) {
+            await Symbol.onChangeSymbolAsync(this.symbol);
+            runInAction(() => {
+                this.processNewValuesAsync({
+                    ...ContractType.getContractValues(this),
+                    ...ContractType.getContractCategories(),
                 });
-            }
+            });
+        }
+    }
 
-            if (this.symbol) {
-                ContractType.buildContractTypesConfig(this.symbol)
-                    .then(action(async () => {
-                        await this.processNewValuesAsync({
-                            ...ContractType.getContractValues(this),
-                            ...ContractType.getContractCategories(),
-                        });
-                    }));
-            }
+    @action.bound
+    async prepareTradeStore() {
+        this.smart_chart      = this.root_store.modules.smart_chart;
+        this.currency         = this.root_store.client.currency;
+        this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-            await this.processNewValuesAsync({
-                active_symbols  : active_symbols.active_symbols,
-                is_market_closed: isMarketClosed(active_symbols.active_symbols, this.symbol),
+        await BinarySocket.wait('authorize');
+        await this.setActiveSymbols();
+        runInAction(async() => {
+            this.setDefaultSymbol();
+            await this.setContractTypes();
+            runInAction(() => {
+                this.processNewValuesAsync({
+                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+                });
             });
         });
     }
@@ -270,10 +291,17 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onPurchase(proposal_id, price, type) {
+        if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            // In order to show the purchase animation with proper colors before disabling in contract-mode,
+            // we needed to add the timeout below to allow the cycle to finish
+            setTimeout(() => {
+                this.smart_chart.switchToContractMode();
+            }, 150);
             processPurchase(proposal_id, price).then(action((response) => {
                 if (this.proposal_info[type].id !== proposal_id) {
+                    this.smart_chart.cleanupContractChartView();
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
@@ -292,7 +320,6 @@ export default class TradeStore extends BaseStore {
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
-                        this.smart_chart.switchToContractMode();
                         this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
@@ -304,6 +331,7 @@ export default class TradeStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     };
+                    this.smart_chart.cleanupContractChartView();
                     this.root_store.ui.toggleServicesErrorModal(true);
                 }
                 WS.forgetAll('proposal');
@@ -390,6 +418,16 @@ export default class TradeStore extends BaseStore {
                 is_purchase_enabled: false,
                 proposal_info      : {},
             });
+
+            // To prevent infinite loop when changing from advanced end_time to digit type contract
+            if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
+                if (isDigitTradeType(obj_new_values.contract_type)) {
+                    this.barrier_1     = '';
+                    this.barrier_2     = '';
+                    this.expiry_type = 'duration';
+                    this.root_store.ui.is_advanced_duration = false;
+                }
+            }
 
             if (!this.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
@@ -574,6 +612,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
+        this.proposal_info = {};
+        this.purchase_info = {};
         WS.forgetAll('proposal');
         this.is_trade_component_mounted = false;
         // clear url query string

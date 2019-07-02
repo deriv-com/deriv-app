@@ -1,18 +1,15 @@
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { UnderlyingIcon }  from 'App/Components/Elements/underlying-icon.jsx';
-import { Popover }         from 'App/Components/Elements/Popover';
-import Icon                from 'Assets/icon.jsx';
-import {  getMarketName,
-    getTradeTypeName,
-    getMarketInformation,
-}                          from '../Helpers/market-underlying';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { Popover }        from 'App/Components/Elements/Popover';
+import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
+import Icon               from 'Assets/icon.jsx';
+import Shortcode          from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
-    const market_information = getMarketInformation(payload.shortcode);
+    const info_from_shortcode = Shortcode.extractInfoFromShortcode(payload.shortcode);
 
-    if (should_show_category_icon && market_information) {
+    if (should_show_category_icon && info_from_shortcode) {
         return (
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
@@ -20,10 +17,10 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='market-symbol-icon__popover'
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
-                        message={getMarketName(market_information.underlying)}
+                        message={info_from_shortcode.underlying}
                         disable_target_icon
                     >
-                        <UnderlyingIcon market={market_information.underlying} />
+                        <UnderlyingIcon market={info_from_shortcode.underlying} />
                     </Popover>
                     {show_description && payload.display_name}
                 </div>
@@ -33,12 +30,17 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={getTradeTypeName(market_information.category)}
+                        message={info_from_shortcode.category}
                         disable_target_icon
                     >
-                        <Icon icon='IconTradeType' type={market_information.category} />
+                        <Icon
+                            icon='IconTradeType'
+                            type={(Shortcode.isHighLow())
+                                ? `${info_from_shortcode.category.toLowerCase()}_barrier`
+                                : info_from_shortcode.category.toLowerCase()}
+                        />
                     </Popover>
-                    {show_description && market_information.category}
+                    {show_description && info_from_shortcode.category}
                 </div>
             </div>
         );

@@ -2,7 +2,7 @@ const Shortcode = (() => {
     const info_from_shortcode = {
         category  : '',
         underlying: '',
-        atm       : '',
+        barrier_1 : '',
     };
 
     const extractInfoFromShortcode = (shortcode) => {
@@ -12,8 +12,8 @@ const Shortcode = (() => {
             info_from_shortcode.category   = extracted[1].toLowerCase();
             info_from_shortcode.underlying = extracted[2];
 
-            if (/CALL|PUT/i.test(info_from_shortcode.category)) {
-                info_from_shortcode.atm = shortcode.split('_').slice(-2)[0];
+            if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {
+                info_from_shortcode.barrier_1 = shortcode.split('_').slice(-2)[0];
             }
         }
 
@@ -22,8 +22,7 @@ const Shortcode = (() => {
 
     const isHighLow = (shortcode) => {
         if (shortcode) extractInfoFromShortcode(shortcode);
-        if (/CALL|PUT/i.test(info_from_shortcode.atm)) return !/^S0P$/.test(info_from_shortcode.atm);
-        return false;
+        return /^(CALL|PUT)$/i.test(info_from_shortcode.category) ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
     };
 
     return {

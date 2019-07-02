@@ -61,7 +61,7 @@ const PositionsDrawerCard = ({
                 <div className='positions-drawer-card__type'>
                     <ContractTypeCell
                         type={type}
-                        is_high_low={Shortcode.isHighLow(contract_info.shortcode)}
+                        is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
                     />
                 </div>
             </div>

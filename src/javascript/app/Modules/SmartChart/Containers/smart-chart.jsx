@@ -66,6 +66,7 @@ class Chart extends React.Component {
                 importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
                 onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
                 isStaticChart={this.props.is_static_chart}
+                shouldFetchTradingTimes={!this.props.end_epoch && !this.props.start_epoch}
                 refreshActiveSymbols={this.props.should_refresh_active_symbols}
             >
                 { this.props.markers_array.map((marker, idx) => (

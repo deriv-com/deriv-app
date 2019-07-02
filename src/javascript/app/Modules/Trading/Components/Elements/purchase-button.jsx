@@ -14,6 +14,7 @@ const PurchaseButton = ({
     is_disabled,
     is_high_low,
     is_loading,
+    is_proposal_empty,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
@@ -25,6 +26,8 @@ const PurchaseButton = ({
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
 
+    const is_button_disabled = ((is_contract_mode || is_disabled) && !is_loading) || is_proposal_empty;
+
     return (
         <Button
             is_disabled={is_contract_mode || is_disabled}
@@ -32,7 +35,7 @@ const PurchaseButton = ({
             className={classNames(
                 'btn-purchase',
                 {
-                    'btn-purchase--disabled'       : (is_contract_mode || is_disabled) && !is_loading,
+                    'btn-purchase--disabled'       : is_button_disabled,
                     'btn-purchase--animated--slide': is_loading && !should_fade,
                     'btn-purchase--animated--fade' : is_loading && should_fade,
                     'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),
@@ -80,6 +83,7 @@ PurchaseButton.propTypes = {
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,
+    is_proposal_empty   : PropTypes.bool,
     onClickPurchase     : PropTypes.func,
     purchased_states_arr: PropTypes.array,
     setPurchaseState    : PropTypes.func,

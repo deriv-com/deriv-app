@@ -47,9 +47,12 @@ const BinarySocketGeneral = (() => {
                     }
                     requestLogout();
                 } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
+                    // is_populating_account_list is a check to avoid logout on the first logged-in session
+                    // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (response.authorize.loginid !== client_store.loginid && !client_store.is_populating_account_list) {
                         requestLogout();
                     } else if (response.authorize.loginid === client_store.loginid) {
+                        // All other cases continue with the loginid and authorize the profile
                         authorizeAccount(response);
                     }
                 }

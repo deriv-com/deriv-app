@@ -250,11 +250,13 @@ export default class ClientStore extends BaseStore {
         this.setSwitched('');
         const client = this.accounts[this.loginid];
 
+        // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
+                // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-            } else {
-                await BinarySocket.send({ authorize: client.token });
+            } else { // So it will send an authorize with the accepted token, to be handled by socket-general
+                await BinarySocket.send({ authorize: client.token }, { forced: true });
             }
         }
 
@@ -431,6 +433,7 @@ export default class ClientStore extends BaseStore {
         let active_loginid;
 
         let is_allowed_real = true;
+        // Performs check to avoid login of landing companies that are currently not supported in app
         account_list.forEach(function(account) {
             if (!/^virtual|svg$/.test(account.landing_company_name)) {
                 is_allowed_real = false;
@@ -502,6 +505,7 @@ export default class ClientStore extends BaseStore {
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, '/');
 
+            // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.send({ authorize: obj_params.token1 });
             this.is_populating_account_list = false;

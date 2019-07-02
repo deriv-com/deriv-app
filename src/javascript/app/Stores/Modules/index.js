@@ -8,8 +8,8 @@ import TradeStore          from './Trading/trade-store';
 
 export default class ModulesStore {
     constructor(root_store) {
-        this.contract_trade  = new ContractTradeStore({ root_store });
         this.contract_replay = new ContractReplayStore({ root_store });
+        this.contract_trade  = new ContractTradeStore({ root_store });
         this.portfolio       = new PortfolioStore({ root_store });
         this.profit_table    = new ProfitTableStore({ root_store });
         this.smart_chart     = new SmartChartStore({ root_store });

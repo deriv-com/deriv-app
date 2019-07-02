@@ -169,7 +169,7 @@ export default withRouter(connect(
         onClickSell      : modules.contract_replay.onClickSell,
         onMount          : modules.contract_replay.onMount,
         onUnmount        : modules.contract_replay.onUnmount,
-        removeError      : modules.contract_replay.removeError,
+        removeError      : modules.contract_replay.removeErrorMessage,
         status           : modules.contract_replay.indicative_status,
         is_chart_loading : modules.smart_chart.is_chart_loading,
         setChartLoader   : modules.smart_chart.setIsChartLoading,

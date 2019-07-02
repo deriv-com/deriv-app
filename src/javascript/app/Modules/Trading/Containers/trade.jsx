@@ -143,7 +143,7 @@ export default connect(
         is_ended                           : modules.contract_trade.is_ended,
         is_digit_contract                  : modules.contract_trade.is_digit_contract,
         onCloseContract                    : modules.contract_trade.onCloseContract,
-        removeError                        : modules.contract_trade.removeError,
+        removeError                        : modules.contract_trade.removeErrorMessage,
         chart_id                           : modules.smart_chart.chart_id,
         chart_type                         : modules.smart_chart.chart_type,
         scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,

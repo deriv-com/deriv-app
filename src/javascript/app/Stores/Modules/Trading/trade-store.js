@@ -1,40 +1,41 @@
-import debounce                          from 'lodash.debounce';
+import debounce                       from 'lodash.debounce';
 import {
     action,
     computed,
     observable,
     reaction,
-    runInAction }                        from 'mobx';
-import BinarySocket                      from '_common/base/socket_base';
-import { localize }                      from '_common/localize';
+    runInAction }                     from 'mobx';
+import BinarySocket                   from '_common/base/socket_base';
+import { localize }                   from '_common/localize';
 import {
     cloneObject,
     isEmptyObject,
-    getPropertyValue }                   from '_common/utility';
+    getPropertyValue }                from '_common/utility';
 import {
     getMinPayout,
-    isCryptocurrency }                   from '_common/base/currency_base';
-import { WS }                            from 'Services';
-import { processPurchase }               from './Actions/purchase';
-import * as Symbol                       from './Actions/symbol';
-import getValidationRules                from './Constants/validation-rules';
+    isCryptocurrency }                from '_common/base/currency_base';
+import { WS }                         from 'Services';
+import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import { processPurchase }            from './Actions/purchase';
+import * as Symbol                    from './Actions/symbol';
+import getValidationRules             from './Constants/validation-rules';
 import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
-}                                        from './Helpers/active-symbols';
-import { setChartBarrier }               from './Helpers/chart';
-import ContractType                      from './Helpers/contract-type';
+}                                     from './Helpers/active-symbols';
+import { setChartBarrier }            from './Helpers/chart';
+import ContractType                   from './Helpers/contract-type';
 import {
     convertDurationLimit,
-    resetEndTimeOnVolatilityIndices }    from './Helpers/duration';
-import { processTradeParams }            from './Helpers/process';
+    resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+import { processTradeParams }         from './Helpers/process';
 import {
     createProposalRequests,
     getProposalErrorField,
-    getProposalInfo }                    from './Helpers/proposal';
-import { BARRIER_COLORS }                from '../SmartChart/Constants/barriers';
-import BaseStore                         from '../../base-store';
+    getProposalInfo }                 from './Helpers/proposal';
+import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
 
@@ -417,6 +418,16 @@ export default class TradeStore extends BaseStore {
                 is_purchase_enabled: false,
                 proposal_info      : {},
             });
+
+            // To prevent infinite loop when changing from advanced end_time to digit type contract
+            if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
+                if (isDigitTradeType(obj_new_values.contract_type)) {
+                    this.barrier_1     = '';
+                    this.barrier_2     = '';
+                    this.expiry_type = 'duration';
+                    this.root_store.ui.is_advanced_duration = false;
+                }
+            }
 
             if (!this.smart_chart.is_contract_mode) {
                 const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;

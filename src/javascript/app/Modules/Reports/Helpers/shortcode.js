@@ -22,7 +22,7 @@ const Shortcode = (() => {
 
     const isHighLow = (shortcode) => {
         if (shortcode) extractInfoFromShortcode(shortcode);
-        if (info_from_shortcode.atm) return !/^S0P$/.test(info_from_shortcode.atm);
+        if (/CALL|PUT/i.test(info_from_shortcode.atm)) return !/^S0P$/.test(info_from_shortcode.atm);
         return false;
     };
 

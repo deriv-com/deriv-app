@@ -5,6 +5,7 @@ import {
     observable }              from 'mobx';
 import { isEmptyObject }      from '_common/utility';
 import ServerTime             from '_common/base/server_time';
+import BinarySocket           from '_common/base/socket_base';
 import { WS }                 from 'Services';
 import { ChartBarrierStore }  from './chart-barrier-store';
 import { ChartMarkerStore }   from './chart-marker-store';
@@ -33,13 +34,13 @@ export default class SmartChartStore extends BaseStore {
     @observable scroll_to_left_epoch_offset = 0;
 
     @observable chart_id             = 'trade';
-    @observable replay_id            = 'contract-replay';
     @observable is_chart_loading     = false;
     @observable is_chart_ready       = false;
     @observable should_import_layout = false;
     @observable should_export_layout = false;
     @observable should_clear_chart   = false;
     @observable trade_chart_layout   = null;
+    @observable should_refresh_active_symbols = false;
     trade_chart_symbol               = null;
 
     @action.bound
@@ -95,6 +96,7 @@ export default class SmartChartStore extends BaseStore {
         this.setContractStart(null);
         this.setContractEnd(null);
         this.setStaticChart(false);
+        this.root_store.ui.resetPurchaseStates();
     }
 
     @action.bound
@@ -333,6 +335,12 @@ export default class SmartChartStore extends BaseStore {
                 msg_type: 'time',
                 time    : ServerTime.get().unix(),
             }));
+        }
+        if (request_object.active_symbols) {
+            if (this.should_refresh_active_symbols) {
+                return WS.sendRequest(request_object, { forced: true });
+            }
+            return BinarySocket.wait('active_symbols');
         }
         return WS.sendRequest(request_object);
     };

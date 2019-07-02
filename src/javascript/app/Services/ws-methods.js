@@ -4,8 +4,8 @@ import { isEmptyObject }         from '_common/utility';
 import { trackJSNetworkMonitor } from './trackjs';
 
 const WS = (() => {
-    const activeSymbols = () =>
-        BinarySocket.send({ active_symbols: 'brief' });
+    const activeSymbols = (force_request) =>
+        BinarySocket.send({ active_symbols: 'brief' }, force_request);
 
     const buy = (proposal_id, price) =>
         BinarySocket.send({ buy: proposal_id, price });

@@ -26,6 +26,6 @@ ContractLink.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        openContract: modules.contract.onMount,
+        openContract: modules.contract_trade.onMount,
     }),
 )(ContractLink);

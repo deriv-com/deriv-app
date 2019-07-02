@@ -76,13 +76,13 @@ ContractDetails.propTypes = {
 
 export default withRouter(connect(
     ({ modules }) => ({
-        contract_info : modules.contract.contract_info,
-        details_info  : modules.contract.details_info,
-        details_expiry: modules.contract.details_expiry,
-        display_status: modules.contract.display_status,
-        error_message : modules.contract.error_message,
-        has_error     : modules.contract.has_error,
-        onMount       : modules.contract.onMount,
-        onUnmount     : modules.contract.onUnmount,
+        contract_info : modules.contract_trade.contract_info,
+        details_info  : modules.contract_trade.details_info,
+        details_expiry: modules.contract_trade.details_expiry,
+        display_status: modules.contract_trade.display_status,
+        error_message : modules.contract_trade.error_message,
+        has_error     : modules.contract_trade.has_error,
+        onMount       : modules.contract_trade.onMount,
+        onUnmount     : modules.contract_trade.onUnmount,
     }),
 )(ContractDetails));

@@ -168,8 +168,8 @@ const account_switcher = connect(
         upgrade_info          : client.upgrade_info,
         cleanUp               : client.cleanUp,
         virtual_loginid       : client.virtual_account_loginid,
-        clearError            : modules.contract.clearError,
-        has_error             : modules.contract.has_error,
+        clearError            : modules.contract_trade.clearError,
+        has_error             : modules.contract_trade.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         togglePositionsDrawer : ui.togglePositionsDrawer,
 

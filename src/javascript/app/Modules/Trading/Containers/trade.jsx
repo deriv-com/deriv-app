@@ -1,16 +1,16 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
-import UILoader             from 'App/Components/Elements/ui-loader.jsx';
-import { connect }          from 'Stores/connect';
-import PositionsDrawer      from 'App/Components/Elements/PositionsDrawer';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
+import UILoader              from 'App/Components/Elements/ui-loader.jsx';
+import { connect }           from 'Stores/connect';
+import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import NotificationMessages from 'App/Containers/notification-messages.jsx';
-import Test                 from './test.jsx';
-import FormLayout           from '../Components/Form/form-layout.jsx';
-import Digits               from '../../Contract/Containers/digits.jsx';
-import InfoBox              from '../../Contract/Containers/info-box.jsx';
-import { isDigitTradeType } from '../Helpers/digits';
+import NotificationMessages  from 'App/Containers/notification-messages.jsx';
+import Digits                from 'Modules/Contract/Components/Digits';
+import InfoBox               from 'Modules/Contract/Components/InfoBox';
+import Test                  from './test.jsx';
+import FormLayout            from '../Components/Form/form-layout.jsx';
+import { isDigitTradeType }  from '../Helpers/digits';
 
 const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -45,8 +45,26 @@ class Trade extends React.Component {
                             <SmartChart
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
-                                Digits={<Digits is_trade_page />}
-                                InfoBox={<InfoBox is_trade_page />}
+                                Digits={
+                                    <Digits
+                                        is_trade_page
+                                        contract_info={this.props.contract_info}
+                                        digits_info={this.props.digits_info}
+                                        display_status={this.props.display_status}
+                                        is_digit_contract={this.props.is_digit_contract}
+                                        is_ended={this.props.is_ended}
+                                    />
+                                }
+                                InfoBox={
+                                    <InfoBox
+                                        is_trade_page
+                                        contract_info={this.props.contract_info}
+                                        error_message={this.props.error_message}
+                                        is_contract_mode={this.props.is_contract_mode}
+                                        removeError={this.props.removeError}
+                                        onClose={this.props.onCloseContract}
+                                    />
+                                }
                                 end_epoch={this.props.end_epoch}
                                 granularity={this.props.granularity}
                                 is_trade_page
@@ -87,7 +105,10 @@ class Trade extends React.Component {
 Trade.propTypes = {
     chart_id         : PropTypes.string,
     chart_type       : PropTypes.string,
+    contract_info    : PropTypes.object,
     contract_type    : PropTypes.string,
+    digits_info      : PropTypes.object,
+    display_status   : PropTypes.string,
     end_epoch        : PropTypes.number,
     granularity      : PropTypes.number,
     hidePositions    : PropTypes.func,
@@ -95,6 +116,7 @@ Trade.propTypes = {
     is_chart_ready   : PropTypes.bool,
     is_contract_mode : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
+    is_ended         : PropTypes.bool,
     is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
     is_static_chart  : PropTypes.bool,
@@ -114,8 +136,14 @@ Trade.propTypes = {
 
 export default connect(
     ({ modules, ui }) => ({
-        is_digit_contract                  : modules.contract.is_digit_contract,
-        onCloseContract                    : modules.contract.onCloseContract,
+        contract_info                      : modules.contract_trade.contract_info,
+        digits_info                        : modules.contract_trade.digits_info,
+        display_status                     : modules.contract_trade.display_status,
+        error_message                      : modules.contract_trade.error_message,
+        is_ended                           : modules.contract_trade.is_ended,
+        is_digit_contract                  : modules.contract_trade.is_digit_contract,
+        onCloseContract                    : modules.contract_trade.onCloseContract,
+        removeError                        : modules.contract_trade.removeError,
         chart_id                           : modules.smart_chart.chart_id,
         chart_type                         : modules.smart_chart.chart_type,
         scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,

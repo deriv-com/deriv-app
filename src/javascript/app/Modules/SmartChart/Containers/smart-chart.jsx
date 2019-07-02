@@ -71,7 +71,7 @@ class Chart extends React.Component {
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
-                        is_contract_replay={this.props.is_contract_replay}
+                        is_contract_replay={!this.props.is_trade_page}
                         key={idx}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}

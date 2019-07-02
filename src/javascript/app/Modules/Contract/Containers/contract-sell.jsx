@@ -28,9 +28,9 @@ ContractSell.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        contract_info    : modules.contract.contract_info,
-        is_sell_requested: modules.contract.is_sell_requested,
-        is_valid_to_sell : modules.contract.is_valid_to_sell,
-        onClickSell      : modules.contract.onClickSell,
+        contract_info    : modules.contract_trade.contract_info,
+        is_sell_requested: modules.contract_trade.is_sell_requested,
+        is_valid_to_sell : modules.contract_trade.is_valid_to_sell,
+        onClickSell      : modules.contract_trade.onClickSell,
     })
 )(ContractSell);

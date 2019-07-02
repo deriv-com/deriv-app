@@ -73,9 +73,27 @@ const htmlInjectConfig = () => ({
 
 const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });
 
+const swPrecacheConfig = (base) => ({
+    cacheId: 'app',
+    dontCacheBustUrlsMatching: /\.\w{8}\./,
+    filename: 'service-worker.js',
+    minify: IS_RELEASE,
+    navigateFallback: base,
+    staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/, /CNAME$/],
+    logger(message) {
+        if (message.indexOf('Total precache size is') === 0) {
+            // This message occurs for every build and is a bit too noisy.
+            return;
+        }
+        // eslint-disable-next-line no-console
+        console.log(message);
+    },
+});
+
 module.exports = {
     copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
     cssConfig,
+    swPrecacheConfig,
 };

@@ -14,7 +14,8 @@ const {
     copyConfig,
     cssConfig,
     htmlInjectConfig,
-    htmlOutputConfig
+    htmlOutputConfig,
+    swPrecacheConfig,
 } = require('./config');
 const {
     css_loaders,
@@ -22,7 +23,7 @@ const {
     html_loaders,
     js_loaders,
     svg_file_loaders,
-    svg_loaders
+    svg_loaders,
 } = require('./loaders-config');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
@@ -93,26 +94,9 @@ const plugins = (base, is_test_env) => ([
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json' }) ]),
+    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
     ...(is_test_env ? [] : [
-        new SWPrecacheWebpackPlugin(
-            {
-                cacheId: 'app',
-                dontCacheBustUrlsMatching: /\.\w{8}\./,
-                filename: 'service-worker.js',
-                minify: IS_RELEASE,
-                navigateFallback: base,
-                staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-                logger(message) {
-                    if (message.indexOf('Total precache size is') === 0) {
-                        // This message occurs for every build and is a bit too noisy.
-                        return;
-                    }
-                    // eslint-disable-next-line no-console
-                    console.log(message);
-                },
-            }
-        ),
+        new SWPrecacheWebpackPlugin(swPrecacheConfig(base)),
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])
 ]);

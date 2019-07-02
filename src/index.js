@@ -7,5 +7,5 @@ import registerServiceWorker from 'Utils/pwa';
 import 'event-source-polyfill';
 import '_common/lib/plugins';
 
-// registerServiceWorker();
+registerServiceWorker();
 import App from 'App/App.jsx';

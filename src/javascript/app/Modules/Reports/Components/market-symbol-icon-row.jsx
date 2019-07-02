@@ -3,6 +3,9 @@ import React              from 'react';
 import { Popover }        from 'App/Components/Elements/Popover';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
 import Icon               from 'Assets/icon.jsx';
+import {
+    getMarketName,
+    getTradeTypeName }    from '../Helpers/market-underlying';
 import Shortcode          from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
@@ -17,7 +20,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='market-symbol-icon__popover'
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
-                        message={info_from_shortcode.underlying}
+                        message={getMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
                         <UnderlyingIcon market={info_from_shortcode.underlying} />
@@ -30,7 +33,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={info_from_shortcode.category}
+                        message={getTradeTypeName(info_from_shortcode.category)}
                         disable_target_icon
                     >
                         <Icon

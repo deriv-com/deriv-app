@@ -144,7 +144,7 @@
         margin-right: 0.5em;
     }
     &__purchase:before {
-        background-image: url('../images/portfolio/ic_purchase_light.svg');
+        background-image: url('~Images/app/portfolio/ic_purchase_light.svg');
     }
     // &__payout:before {
     //     background-image: url('../images/statement/ic_payout_light.svg');
@@ -154,26 +154,26 @@
             color: $COLOR_GREEN_1;
 
             &:before {
-                background-image: url('../images/portfolio/ic_price_up.svg');
+                background-image: url('~Images/app/portfolio/ic_price_up.svg');
             }
         }
         &--price-moved-down {
             color: $COLOR_RED;
 
             &:before {
-                background-image: url('../images/portfolio/ic_price_down.svg');
+                background-image: url('~Images/app/portfolio/ic_price_down.svg');
             }
         }
         &--price-stable {
             &:before {
-                background-image: url('../images/portfolio/ic_price_stable_light.svg');
+                background-image: url('~Images/app/portfolio/ic_price_stable_light.svg');
             }
         }
         &--no-resale {
             color: $COLOR_LIGHT_BLACK_4;
 
             &:before {
-                background-image: url('../images/portfolio/ic_no_resale.svg');
+                background-image: url('~Images/app/portfolio/ic_no_resale.svg');
             }
         }
     }

@@ -141,7 +141,7 @@ To define new typefaces, add the name and value in the `$FONT_SIZES`, `$FONT_WEI
 **[Template versus Sass:](#svg-template-versus-sass)** Add `SVG`s as components if you need to add classes to modify them in different themes. Otherwise you may import them in Sass, or you may import the `SVG` directly to a `Component` from `src/images`:
 
 ```jsx
-import SomeIconSvg from 'Images/folder_name/some_icon.svg';
+import SomeIconSvg from 'Assets/SvgComponents/folder_name/some_icon.svg';
 
 <SomeIconSvg width='15px' height='15px' />
 ```

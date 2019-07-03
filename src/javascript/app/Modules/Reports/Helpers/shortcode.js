@@ -12,7 +12,7 @@ const Shortcode = (() => {
             info_from_shortcode.category   = extracted[1].toLowerCase();
             info_from_shortcode.underlying = extracted[2];
 
-            if (/^(CALL|PUT)_/i.test(info_from_shortcode.category)) {
+            if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {
                 info_from_shortcode.barrier_1 = shortcode.split('_').slice(-2)[0];
             }
         }

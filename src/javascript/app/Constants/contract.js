@@ -1,5 +1,64 @@
 import { localize } from '_common/localize';
 
+export const getMarketNamesMap = () => ({
+    FRXAUDCAD : localize('AUD/CAD'),
+    FRXAUDCHF : localize('AUD/CHF'),
+    FRXAUDJPY : localize('AUD/JPY'),
+    FRXAUDNZD : localize('AUD/NZD'),
+    FRXAUDPLN : localize('AUD/PLN'),
+    FRXAUDUSD : localize('AUD/USD'),
+    FRXBROUSD : localize('Oil/USD'),
+    FRXEURAUD : localize('EUR/AUD'),
+    FRXEURCAD : localize('EUR/CAD'),
+    FRXEURCHF : localize('EUR/CHF'),
+    FRXEURGBP : localize('EUR/GBP'),
+    FRXEURJPY : localize('EUR/JPY'),
+    FRXEURNZD : localize('EUR/NZD'),
+    FRXEURUSD : localize('EUR/USD'),
+    FRXGBPAUD : localize('GBP/AUD'),
+    FRXGBPCAD : localize('GBP/CAD'),
+    FRXGBPCHF : localize('GBP/CHF'),
+    FRXGBPJPY : localize('GBP/JPY'),
+    FRXGBPNOK : localize('GBP/NOK'),
+    FRXGBPUSD : localize('GBP/USD'),
+    FRXNZDJPY : localize('NZD/JPY'),
+    FRXNZDUSD : localize('NZD/USD'),
+    FRXUSDCAD : localize('USD/CAD'),
+    FRXUSDCHF : localize('USD/CHF'),
+    FRXUSDJPY : localize('USD/JPY'),
+    FRXUSDNOK : localize('USD/NOK'),
+    FRXUSDPLN : localize('USD/PLN'),
+    FRXUSDSEK : localize('USD/SEK'),
+    FRXXAGUSD : localize('Silver/USD'),
+    FRXXAUUSD : localize('Gold/USD'),
+    FRXXPDUSD : localize('Palladium/USD'),
+    FRXXPTUSD : localize('Platinum/USD'),
+    OTC_AEX   : localize('Dutch Index'),
+    OTC_AS51  : localize('Australian Index'),
+    OTC_DJI   : localize('Wall Street Index'),
+    OTC_FCHI  : localize('French Index'),
+    OTC_FTSE  : localize('UK Index'),
+    OTC_GDAXI : localize('German Index'),
+    OTC_HSI   : localize('Hong Kong Index'),
+    OTC_IBEX35: localize('Spanish Index'),
+    OTC_N225  : localize('Japanese Index'),
+    OTC_NDX   : localize('US Tech Index'),
+    OTC_SPC   : localize('US Index'),
+    OTC_SSMI  : localize('Swiss Index'),
+    OTC_SX5E  : localize('Euro 50 Index'),
+    R_10      : localize('Volatility 10 Index'),
+    R_25      : localize('Volatility 25 Index'),
+    R_50      : localize('Volatility 50 Index'),
+    R_75      : localize('Volatility 75 Index'),
+    R_100     : localize('Volatility 100 Index'),
+    RDBEAR    : localize('Bear Market Index'),
+    RDBULL    : localize('Bull Market Index'),
+    WLDAUD    : localize('AUD Index'),
+    WLDEUR    : localize('EUR Index'),
+    WLDGBP    : localize('GBP Index'),
+    WLDUSD    : localize('USD Index'),
+});
+
 export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
         name    : localize('Ends Outside'),
@@ -122,10 +181,19 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-const getContractConfig = is_high_low => ({
+export const getContractConfig = is_high_low => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].name : '');
-export const getContractTypePosition = (type, is_high_low = false) => (getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type].position : 'top');
+export const getContractTypeDisplay  = (
+    type,
+    is_high_low = false) => (
+    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : ''
+);
+
+export const getContractTypePosition = (
+    type,
+    is_high_low = false) => (
+    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top'
+);

@@ -1,7 +1,11 @@
 import PropTypes          from 'prop-types';
 import React              from 'react';
+import { Popover }        from 'App/Components/Elements/Popover';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
 import Icon               from 'Assets/icon.jsx';
+import {
+    getMarketName,
+    getTradeTypeName }    from '../Helpers/market-underlying';
 import Shortcode          from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
@@ -12,17 +16,33 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
         return (
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
-                    <UnderlyingIcon market={info_from_shortcode.underlying} />
+                    <Popover
+                        classNameTarget='market-symbol-icon__popover'
+                        classNameBubble='market-symbol-icon__popover-bubble'
+                        alignment='top'
+                        message={getMarketName(info_from_shortcode.underlying)}
+                        disable_target_icon
+                    >
+                        <UnderlyingIcon market={info_from_shortcode.underlying} />
+                    </Popover>
                     {show_description && payload.display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
-                    <Icon
-                        icon='IconTradeType'
-                        type={(Shortcode.isHighLow({ shortcode_info: info_from_shortcode }))
-                            ? `${info_from_shortcode.category.toLowerCase()}_barrier`
-                            : info_from_shortcode.category.toLowerCase()}
-                    />
+                    <Popover
+                        classNameTarget='category-type-icon__popover'
+                        classNameBubble='category-type-icon__popover-bubble'
+                        alignment='top'
+                        message={getTradeTypeName(info_from_shortcode.category)}
+                        disable_target_icon
+                    >
+                        <Icon
+                            icon='IconTradeType'
+                            type={(Shortcode.isHighLow({ shortcode_info: info_from_shortcode }))
+                                ? `${info_from_shortcode.category.toLowerCase()}_barrier`
+                                : info_from_shortcode.category.toLowerCase()}
+                        />
+                    </Popover>
                     {show_description && info_from_shortcode.category}
                 </div>
             </div>

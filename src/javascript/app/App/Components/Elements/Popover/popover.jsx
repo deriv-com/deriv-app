@@ -26,7 +26,7 @@ class Popover extends React.PureComponent {
             is_open         : !this.state.is_open && Boolean(this.props.message),
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
         });
-    }
+    };
 
     render() {
         const {
@@ -35,6 +35,7 @@ class Popover extends React.PureComponent {
             classNameBubble,
             classNameTarget,
             classNameTargetIcon,
+            disable_target_icon,
             has_error,
             icon,
             margin,
@@ -49,11 +50,13 @@ class Popover extends React.PureComponent {
                 onMouseLeave={this.toggleIsOpen}
             >
                 <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
-                    <i className={message ? 'popover__target__icon' : 'popover__target__icon--disabled'}>
-                        {(icon === 'info')     && <Icon icon='IconInfoOutline' className={icon_class_name} /> }
-                        {(icon === 'question') && <Icon icon='IconQuestion'    className={icon_class_name} />}
-                        {(icon === 'dot')      && <Icon icon='IconRedDot'      className={icon_class_name} />}
-                    </i>
+                    { !disable_target_icon &&
+                        <i className={message ? 'popover__target__icon' : 'popover__target__icon--disabled'}>
+                            {(icon === 'info')     && <Icon icon='IconInfoOutline' className={icon_class_name} /> }
+                            {(icon === 'question') && <Icon icon='IconQuestion'    className={icon_class_name} />}
+                            {(icon === 'dot')      && <Icon icon='IconRedDot'      className={icon_class_name} />}
+                        </i>
+                    }
 
                     { children }
                 </div>
@@ -79,6 +82,7 @@ Popover.propTypes = {
     classNameBubble    : PropTypes.string,
     classNameTarget    : PropTypes.string,
     classNameTargetIcon: PropTypes.string,
+    disable_target_icon: PropTypes.bool,
     has_error          : PropTypes.bool,
     icon               : PropTypes.string,
     margin             : PropTypes.number,

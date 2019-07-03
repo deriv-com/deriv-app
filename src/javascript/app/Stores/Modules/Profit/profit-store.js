@@ -1,22 +1,29 @@
+import debounce                          from 'lodash.debounce';
 import {
     action,
     computed,
     observable,
 }                                        from 'mobx';
-import moment                            from 'moment';
 import { WS }                            from 'Services';
+import { toMoment }                      from 'Utils/Date';
+import getDateBoundaries                 from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
 import BaseStore                         from '../../base-store';
 
 const batch_size = 50;
+const delay_on_scroll_time = 150;
 
 export default class ProfitTableStore extends BaseStore {
     @observable data           = [];
-    @observable date_from      = '';
-    @observable date_to        = '';
+    @observable date_from      =  null;
+    @observable date_to        = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error          = '';
     @observable has_loaded_all = false;
     @observable is_loading     = false;
+
+    // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
+    // this for calculations. Use the client.currency instead.
+    @observable client_loginid = '';
 
     @computed
     get total_profit () {
@@ -38,22 +45,29 @@ export default class ProfitTableStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
-    @action.bound
-    async fetchNextBatch() {
-        if (this.has_loaded_all || this.is_loading) return;
-
-        this.is_loading = true;
-
-        const response = await WS.profitTable({
-            offset: this.data.length,
-            ...this.date_from && { date_from: moment(this.date_from).unix() },
-            ...this.date_to && { date_to: moment(this.date_to).add(1, 'd').subtract(1, 's').unix() },
-        });
-        this.profitTableResponseHandler(response);
+    shouldFetchNextBatch(should_load_partially) {
+        if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        if (this.date_to < today) return (!should_load_partially && this.partial_fetch_time);
+        return true;
     }
 
     @action.bound
-    profitTableResponseHandler(response) {
+    async fetchNextBatch(should_load_partially = false) {
+        if (!this.shouldFetchNextBatch(should_load_partially)) return;
+        this.is_loading = true;
+
+        const response = await WS.profitTable(
+            batch_size,
+            !should_load_partially ? this.data.length : undefined,
+            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially)
+        );
+
+        this.profitTableResponseHandler(response, should_load_partially);
+    }
+
+    @action.bound
+    profitTableResponseHandler(response, should_load_partially = false) {
         if ('error' in response) {
             this.error = response.error.message;
             return;
@@ -63,34 +77,51 @@ export default class ProfitTableStore extends BaseStore {
             .map(transaction => formatProfitTableTransactions(
                 transaction,
                 this.root_store.client.currency,
+                this.root_store.modules.trade.active_symbols,
             ));
 
-        this.data           = [...this.data, ...formatted_transactions];
-        this.has_loaded_all = formatted_transactions.length < batch_size;
-        this.is_loading     = false;
+        if (should_load_partially) {
+            this.data = [...formatted_transactions, ...this.data];
+        } else {
+            this.data = [...this.data, ...formatted_transactions];
+        }
+        this.has_loaded_all      = !should_load_partially && formatted_transactions.length < batch_size;
+        this.is_loading          = false;
+        if (formatted_transactions.length > 0) {
+            this.partial_fetch_time = toMoment().unix();
+        }
     }
+
+    fetchOnScroll = debounce((left) => {
+        if (left < 2000) {
+            this.fetchNextBatch();
+        }
+    }, delay_on_scroll_time);
 
     @action.bound
     handleScroll(event) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll                            = scrollHeight - (scrollTop + clientHeight);
-        if (left_to_scroll < 2000) {
-            this.fetchNextBatch();
-        }
+        this.fetchOnScroll(left_to_scroll);
     }
 
     @action.bound
     async onMount() {
+        this.assertHasValidCache(
+            this.client_loginid,
+            this.clearDateFilter,
+            this.clearTable,
+            WS.forgetAll.bind(null, 'proposal')
+        );
+        this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
         await this.waitFor('authorize');
-        await this.fetchNextBatch();
+        this.fetchNextBatch(true);
     }
 
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.clearTable();
-        this.clearDateFilter();
         WS.forgetAll('proposal');
     }
 
@@ -128,7 +159,17 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     clearDateFilter() {
-        this.date_from = '';
-        this.date_to   = '';
+        this.date_from = null;
+        this.date_to   = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        this.partial_fetch_time = 0;
+    }
+
+    @action.bound
+    handleDateChange(date_values) {
+        Object.keys(date_values).forEach(key => {
+            this[`date_${key}`] = date_values[key];
+        });
+        this.clearTable();
+        this.fetchNextBatch();
     }
 }

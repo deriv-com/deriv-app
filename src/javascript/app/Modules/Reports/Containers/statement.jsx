@@ -6,6 +6,7 @@ import { localize }                         from '_common/localize';
 import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
 import Localize                             from 'App/Components/Elements/localize.jsx';
+import CompositeCalendar                    from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath }                  from 'App/Components/Routes/helpers';
 import { website_name }                     from 'App/Constants/app-config';
 import { getSupportedContracts }            from 'Constants';
@@ -58,22 +59,34 @@ class Statement extends React.Component {
             component_icon,
             currency,
             data,
+            date_from,
+            date_to,
             is_empty,
             is_loading,
             error,
             handleScroll,
+            handleDateChange,
             has_selected_date,
         } = this.props;
 
         if (error) return <p>{error}</p>;
 
         const columns = getStatementTableColumnsTemplate(currency);
-
+        const filter_component = (
+            <React.Fragment>
+                <CompositeCalendar
+                    onChange={handleDateChange}
+                    from={date_from}
+                    to={date_to}
+                />
+            </React.Fragment>
+        );
         return (
             <React.Fragment>
                 <ReportsMeta
                     i18n_heading={localize('Statement')}
                     i18n_message={localize('View all transactions on your account, including trades, deposits, and withdrawals.')}
+                    filter_component={filter_component}
                 />
                 { (is_loading && data.length === 0) || is_empty ?
                     <PlaceholderComponent
@@ -107,6 +120,8 @@ class Statement extends React.Component {
 Statement.propTypes = {
     component_icon   : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
+    date_from        : PropTypes.number,
+    date_to          : PropTypes.number,
     error            : PropTypes.string,
     handleScroll     : PropTypes.func,
     has_selected_date: PropTypes.bool,
@@ -120,9 +135,12 @@ Statement.propTypes = {
 export default connect(
     ({ modules, client }) => ({
         currency         : client.currency,
+        date_from        : modules.statement.date_from,
+        date_to          : modules.statement.date_to,
         data             : modules.statement.data,
         error            : modules.statement.error,
         handleScroll     : modules.statement.handleScroll,
+        handleDateChange : modules.statement.handleDateChange,
         has_selected_date: modules.statement.has_selected_date,
         is_empty         : modules.statement.is_empty,
         is_loading       : modules.statement.is_loading,

@@ -6,7 +6,7 @@ describe('formatStatementTransaction', () => {
     const constant = {
         id: 1234,
         action_type: 'buy',
-    }
+    };
 
     const currency = 'USD';
     let transaction = {
@@ -23,18 +23,19 @@ describe('formatStatementTransaction', () => {
     };
 
     let expected_result = {
-        action     : toTitleCase(constant.action_type),
-        action_type: constant.action_type,
-        date       : '29 Nov 1973 - 21:33:09',
-        refid      : constant.id,
-        payout     : '1,000.00',
-        amount     : '2,000.00',
-        balance    : '3,000.00',
-        desc       : 'test <br /> test <br /> test',
-        id         : constant.id,
-        app_id     : constant.id,
-        shortcode  : 'shortcode',
-    }
+        action      : toTitleCase(constant.action_type),
+        action_type : constant.action_type,
+        date        : '29 Nov 1973 21:33:09',
+        display_name: '',
+        refid       : constant.id,
+        payout      : '1,000.00',
+        amount      : '2,000.00',
+        balance     : '3,000.00',
+        desc        : 'test <br /> test <br /> test',
+        id          : constant.id,
+        app_id      : constant.id,
+        shortcode   : 'shortcode',
+    };
 
     it('should return an object with values of object passed as argument', () => {
         expect(formatStatementTransaction(transaction, currency)).to.eql(expected_result);

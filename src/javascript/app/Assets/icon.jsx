@@ -61,9 +61,11 @@ class Icon extends React.PureComponent {
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
 
             // Reports
-            IconOpenPositions: React.lazy(() => import('./Reports/icon-open-positions.jsx')),
-            IconProfitTable  : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
-            IconStatement    : React.lazy(() => import('./Reports/icon-statement.jsx')),
+            IconDemo                : React.lazy(() => import('./Reports/icon-demo.jsx')),
+            IconOpenPositions       : React.lazy(() => import('./Reports/icon-open-positions.jsx')),
+            IconProfitTable         : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
+            IconStatement           : React.lazy(() => import('./Reports/icon-statement.jsx')),
+            IconCalendarForwardToday: React.lazy(() => import('./Reports/ic-calendar-forwardtoday.jsx')),
 
             // Settings
             IconCharts       : React.lazy(() => import('./Settings/icon-charts.jsx')),

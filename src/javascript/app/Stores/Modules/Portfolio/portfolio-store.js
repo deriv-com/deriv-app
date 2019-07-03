@@ -52,7 +52,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
-                .map(pos => formatPortfolioPosition(pos))
+                .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
         }
     }
@@ -195,7 +195,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     pushNewPosition(new_pos) {
-        this.positions.unshift(formatPortfolioPosition(new_pos));
+        this.positions.unshift(formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols));
     }
 
     @action.bound
@@ -263,17 +263,14 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get active_positions_totals() {
         let indicative = 0;
-        let payout     = 0;
         let purchase   = 0;
 
         this.active_positions.forEach((portfolio_pos) => {
             indicative += (+portfolio_pos.indicative);
-            payout     += (+portfolio_pos.payout);
             purchase   += (+portfolio_pos.purchase);
         });
         return {
             indicative,
-            payout,
             purchase,
         };
     }

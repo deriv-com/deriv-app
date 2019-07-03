@@ -3,6 +3,8 @@ import React        from 'react';
 import Icon         from 'Assets/icon.jsx';
 import { localize } from '_common/localize';
 
+const FooterIcon = (use_icon) => use_icon || 'IconCalendarToday';
+
 const CalendarFooter = ({
     footer,
     has_today_btn,
@@ -10,6 +12,7 @@ const CalendarFooter = ({
     duration_date,
     is_minimum,
     onClick,
+    use_icon,
 }) => (
     <React.Fragment>
         { (has_today_btn || footer || has_range_selection) &&
@@ -18,7 +21,7 @@ const CalendarFooter = ({
                 { has_range_selection && <span className='calendar__text'>{ `${!is_minimum ? localize('Duration: ') : ''}${duration_date}` }</span> }
                 { has_today_btn &&
                     <Icon
-                        icon='IconCalendarToday'
+                        icon={FooterIcon(use_icon)}
                         className='calendar__icon'
                         onClick={onClick}
                     />
@@ -35,6 +38,7 @@ CalendarFooter.propTypes = {
     has_today_btn      : PropTypes.bool,
     is_minimum         : PropTypes.bool,
     onClick            : PropTypes.func,
+    use_icon           : PropTypes.string,
 };
 
 export default CalendarFooter;

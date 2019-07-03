@@ -24,7 +24,7 @@ RemainingTime.propTypes = {
     end_time: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
-    ]).isRequired,
+    ]),
     start_time: PropTypes.object,
 };
 

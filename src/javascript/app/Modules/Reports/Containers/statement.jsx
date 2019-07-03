@@ -14,7 +14,7 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent                 from '../Components/placeholder-component.jsx';
 import { ReportsMeta }                      from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage             from '../Components/empty-trade-history-message.jsx';
-import { getMarketInformation }             from '../Helpers/market-underyling';
+import Shortcode                            from '../Helpers/shortcode';
 
 class Statement extends React.Component {
     componentDidMount() {
@@ -29,8 +29,10 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getSupportedContracts()[getMarketInformation(row_obj).category.toUpperCase()] ?
-                getContractPath(row_obj.id)
+            action = getSupportedContracts()[
+                Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()
+            ]
+                ? getContractPath(row_obj.id)
                 : {
                     component: (
                         <Localize

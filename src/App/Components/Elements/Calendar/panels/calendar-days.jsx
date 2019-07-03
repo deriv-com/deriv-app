@@ -1,12 +1,12 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { padLeft }       from '_common/string_util';
-import { localize }      from 'App/i18n';
-import { Popover }       from 'App/Components/Elements/Popover';
+import classNames          from 'classnames';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { padLeft }         from '_common/string_util';
+import { localize }        from 'App/i18n';
+import { Popover }         from 'App/Components/Elements/Popover';
 import {
     getDaysOfTheWeek,
-    week_headers_abbr }  from 'Constants/date-time';
+    week_headers_abbr }    from 'Constants/date-time';
 import {
     addDays,
     addMonths,
@@ -14,8 +14,8 @@ import {
     epochToMoment,
     subDays,
     subMonths,
-    toMoment }           from 'Utils/Date';
-import CommonPropTypes   from './types';
+    toMoment }             from 'Utils/Date';
+import { CommonPropTypes } from './types';
 
 const getDays = ({
     calendar_date,

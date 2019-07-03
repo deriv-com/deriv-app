@@ -38,7 +38,7 @@ const Url = (() => {
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
         const lang = (language || getLanguage()).toLowerCase();
-        let domain = 'https://' + window.location.hostname + '/';
+        let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {
                 domain = `https://binary.com/${lang || 'en'}/`;
@@ -94,8 +94,8 @@ const Url = (() => {
             }
         }
 
-    return static_host + path.replace(/(^\/)/g, '');
-};
+        return static_host + path.replace(/(^\/)/g, '');
+    };
 
     return {
         reset,

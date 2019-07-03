@@ -7,9 +7,9 @@ const Localize = ({ i18n_default_text, values, components }) => (
 );
 
 Localize.propTypes = {
+    components       : PropTypes.arrayOf(PropTypes.node),
     i18n_default_text: PropTypes.string,
     values           : PropTypes.object,
-    components       : PropTypes.arrayOf(PropTypes.node),
 };
 
 export default Localize;

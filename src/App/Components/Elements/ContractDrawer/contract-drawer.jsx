@@ -15,22 +15,21 @@ import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/con
 import ProgressSlider          from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import ProfitLossCardContent   from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import ContractCardBody        from './contract-card-body.jsx';
-import ContractCardFooter      from './contract-card-footer.jsx';
-import ContractCardHeader      from './contract-card-header.jsx';
-import ContractCard            from './contract-card.jsx';
-
 import {
     getCurrentTick,
     getDurationPeriod,
     getDurationTime,
-    getDurationUnitText }    from 'Stores/Modules/Portfolio/Helpers/details';
+    getDurationUnitText }      from 'Stores/Modules/Portfolio/Helpers/details';
 import {
     getIndicativePrice,
     getEndTime,
     isUserSold,
-    isValidToSell       }    from 'Stores/Modules/Contract/Helpers/logic';
-import Money                 from '../money.jsx';
+    isValidToSell       }      from 'Stores/Modules/Contract/Helpers/logic';
+import ContractCardBody        from './contract-card-body.jsx';
+import ContractCardFooter      from './contract-card-footer.jsx';
+import ContractCardHeader      from './contract-card-header.jsx';
+import ContractCard            from './contract-card.jsx';
+import Money                   from '../money.jsx';
 
 class ContractDrawer extends Component {
     state = {

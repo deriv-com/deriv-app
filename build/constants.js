@@ -46,6 +46,20 @@ const ALIASES = {
 };
 
 const rules = (is_test_env = false) => ([
+    ...(is_test_env ? [
+        {
+            test   : /\.(js|jsx)$/,
+            exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+            include: /src/,
+            loader : 'eslint-loader',
+            enforce: 'pre',
+            options: {
+                formatter : require('eslint-formatter-pretty'),
+                configFile: path.resolve(__dirname, '../.eslintrc.js'),
+                ignorePath: path.resolve(__dirname, '../.eslintignore'),
+            }
+        }
+    ] : []),
     {
         test   : /\.(js|jsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
@@ -109,6 +123,6 @@ module.exports = {
     IS_RELEASE,
     ALIASES,
     plugins,
-    rules     : rules,
+    rules,
     MINIMIZERS,
 };

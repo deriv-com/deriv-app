@@ -19,7 +19,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 <div className='market-symbol-icon-category'>
                     <Icon
                         icon='IconTradeType'
-                        type={(Shortcode.isHighLow())
+                        type={(Shortcode.isHighLow({ shortcode_info: info_from_shortcode }))
                             ? `${info_from_shortcode.category.toLowerCase()}_barrier`
                             : info_from_shortcode.category.toLowerCase()}
                     />

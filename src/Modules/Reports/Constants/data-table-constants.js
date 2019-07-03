@@ -68,7 +68,9 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         title            : '',
         col_index        : 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
-            if (is_footer) return localize('Profit/loss on the last [_1] contracts', items_count);
+            if (is_footer) {
+                return localize('Profit/loss on the last {{item_count}} contracts', { item_count: items_count });
+            }
 
             return (
                 <MarketSymbolIconRow

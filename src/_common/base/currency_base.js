@@ -1,5 +1,5 @@
 const getLanguage      = require('../language').get;
-const localize         = require('../localize').localize;
+const localize         = require('../../App/i18n').localize;
 const getPropertyValue = require('../utility').getPropertyValue;
 
 let currencies_config = {};

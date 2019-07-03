@@ -1,6 +1,6 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { localize }         from '_common/localize';
+import { localize }         from 'App/i18n';
 import InputField           from 'App/Components/Form/InputField/input-field.jsx';
 import IconCalendar         from 'Assets/Reports/icon-calendar.jsx';
 import {

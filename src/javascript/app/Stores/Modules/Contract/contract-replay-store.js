@@ -10,16 +10,12 @@ import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
-    getDetailsExpiry,
-    getDetailsInfo }          from './Helpers/details';
-import {
     getDigitInfo,
     isDigitContract }         from './Helpers/digits';
 import {
     getChartConfig,
     getDisplayStatus,
     getEndTime,
-    getFinalPrice,
     getIndicativePrice,
     isEnded,
     isSoldBeforeStart,
@@ -222,16 +218,6 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @computed
-    get details_expiry() {
-        return getDetailsExpiry(this);
-    }
-
-    @computed
-    get details_info() {
-        return getDetailsInfo(this.contract_info);
-    }
-
-    @computed
     get display_status() {
         return getDisplayStatus(this.contract_info);
     }
@@ -245,11 +231,6 @@ export default class ContractReplayStore extends BaseStore {
     get end_spot_time() {
         const { exit_tick_time, sell_time } = this.contract_info;
         return isUserSold(this.contract_info) ? sell_time : exit_tick_time;
-    }
-
-    @computed
-    get final_price() {
-        return getFinalPrice(this.contract_info);
     }
 
     @computed

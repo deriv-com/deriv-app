@@ -10,9 +10,6 @@ import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
-    getDetailsExpiry,
-    getDetailsInfo }          from './Helpers/details';
-import {
     getDigitInfo,
     isDigitContract }         from './Helpers/digits';
 import {
@@ -23,8 +20,6 @@ import {
     getFinalPrice,
     getIndicativePrice,
     isEnded,
-    isSoldBeforeStart,
-    isStarted,
     isUserSold,
     isValidToSell }           from './Helpers/logic';
 import BaseStore              from '../../base-store';
@@ -261,16 +256,6 @@ export default class ContractTradeStore extends BaseStore {
     // TODO: currently this runs on each response, even if contract_info is deep equal previous one
 
     @computed
-    get details_expiry() {
-        return getDetailsExpiry(this);
-    }
-
-    @computed
-    get details_info() {
-        return getDetailsInfo(this.contract_info);
-    }
-
-    @computed
     get display_status() {
         return getDisplayStatus(this.contract_info);
     }
@@ -299,16 +284,6 @@ export default class ContractTradeStore extends BaseStore {
     @computed
     get is_ended() {
         return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_sold_before_start() {
-        return isSoldBeforeStart(this.contract_info);
-    }
-
-    @computed
-    get is_started() {
-        return isStarted(this.contract_info);
     }
 
     @computed

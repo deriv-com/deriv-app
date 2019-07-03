@@ -7,7 +7,6 @@ import { routes }      from 'Constants';
 import Trade             from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
-const Portfolio       = lazy(() => import(/* webpackChunkName: "portfolio" */ 'Modules/Portfolio'));
 const Settings        = lazy(() => import(/* webpackChunkName: "settings" */  'Modules/settings/settings.jsx'));
 
 // Reports Routes
@@ -33,7 +32,6 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: Redirect,        title: '',                            to: '/trade' },
-    { path: routes.portfolio, component: Portfolio,       title: localize('Portfolio'),         is_authenticated: true, icon_component: 'IconPortfolio' },
     { path: routes.root,      component: Redirect,        title: '',                            exact: true, to: '/trade' },
     {
         path            : routes.reports,

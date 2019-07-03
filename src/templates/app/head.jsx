@@ -1,17 +1,19 @@
-import React from 'react';
+import React           from 'react';
 import GoogleOptimizer from './includes/google/google_optimizer.jsx';
-import GTMScript from './includes/google/gtm_script.jsx';
-import URLHandler from './includes/url_handler.jsx';
-import Title from '../_common/components/title.jsx';
-import Favicons from '../_common/includes/favicons.jsx';
-import AntiClickjack from '../_common/includes/anti_clickjack.jsx';
+import GTMScript       from './includes/google/gtm_script.jsx';
+import URLHandler      from './includes/url_handler.jsx';
+import Title           from '../_common/components/title.jsx';
+import Favicons        from '../_common/includes/favicons.jsx';
+import AntiClickjack   from '../_common/includes/anti_clickjack.jsx';
 
 const Head = () => (
     <head>
         {
             // Prompt a message in the browser if the user has disabled JS
         }
-        <noscript>{ it.L('Your browser does not support JavaScript!') }</noscript>
+        {/* <noscript>{ localize('Your browser does not support JavaScript!') }</noscript> */}
+        {/* TODO: i18n_issue - these should be localized after the app has moved to mount on index.html */}
+        <noscript>Your browser does not support JavaScript!</noscript>
 
         <GoogleOptimizer />
         <GTMScript />
@@ -19,8 +21,14 @@ const Head = () => (
         <URLHandler />
         <meta httpEquiv='Content-Type' content='text/html;charset=UTF-8' />
         <meta httpEquiv='Content-Language' content={it.language} />
-        <meta name='description' content={` ${it.L('[_1] gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities.', it.broker_name)}`} />
-        <meta name='keywords' content={` ${it.L('binary options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, binary options strategy, binary broker, binary bet, binary options trading platform, binary strategy, finance, stocks, investment, trading')}`} />
+        {/*
+                <meta name='description' content={` ${localize('{{broker_name}} gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities.', { broker_name: it.broker_name })}`} />
+        */}
+        <meta name='description' content='Deriv gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities.' />
+        {/*
+                <meta name='keywords' content={` ${localize('binary options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, binary options strategy, binary broker, binary bet, binary options trading platform, binary strategy, finance, stocks, investment, trading')}`} />
+        */}
+        <meta name='keywords' content='binary options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, binary options strategy, binary broker, binary bet, binary options trading platform, binary strategy, finance, stocks, investment, trading' />
         <meta name='author' content={it.broker_name} />
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
         <meta name='theme-color' content='#2a3052' />

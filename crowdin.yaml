@@ -1,6 +1,6 @@
-project_identifier: 'binary-static'
-api_key_env: CROWDIN_API_KEY
+project_identifier: 'deriv-app'
+api_key_env: DERIV_CROWDIN_API_KEY
 
 files:
-  - source: /src/translations/messages.pot
-    translation: /src/translations/%locale_with_underscore%.po
+  - source: /src/public/i18n/messages.json
+    translation: /src/public/i18n/%locale_with_underscore%.json

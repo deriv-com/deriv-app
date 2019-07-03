@@ -311,11 +311,12 @@ export default class SmartChartStore extends BaseStore {
     get settings() {
         return (({ common, ui } = this.root_store) => ({
             // TODO: enable asset information
-            assetInformation: false, // ui.is_chart_asset_info_visible,
-            countdown       : ui.is_chart_countdown_visible,
-            lang            : common.current_language,
-            position        : ui.is_chart_layout_default ? 'bottom' : 'left',
-            theme           : ui.is_dark_mode_on ? 'dark' : 'light',
+            assetInformation            : false, // ui.is_chart_asset_info_visible,
+            countdown                   : ui.is_chart_countdown_visible,
+            isHighestLowestMarkerEnabled: !this.is_contract_mode,
+            lang                        : common.current_language,
+            position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
+            theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
         }))();
     }
 

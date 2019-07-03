@@ -71,7 +71,10 @@ module.exports = {
             version: '16',
         },
         'import/resolver': {
-            webpack: { config: 'build/webpack.config-test.js' }
+            node: {
+              'paths': ['src'],
+            },
+            webpack: { config: 'build/webpack.config-test.js' },
         }
     },
 };

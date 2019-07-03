@@ -64,6 +64,11 @@ const isSymbolOpen = (symbol) => (
     symbol.exchange_is_open === 1
 );
 
+export const getSymbolDisplayName = (active_symbols = [], symbol) => (
+    (active_symbols.find(symbol_info => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || { display_name: '' })
+        .display_name
+);
+
 const countDecimalPlaces = (num) => {
     if (!isNaN(num)) {
         const str = num.toString();

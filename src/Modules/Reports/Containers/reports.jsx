@@ -1,11 +1,12 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { withRouter }  from 'react-router-dom';
-import { connect }     from 'Stores/connect';
-import { FadeWrapper } from 'App/Components/Animations';
-import VerticalTab     from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import AppRoutes       from 'Constants/routes';
-import { localize }    from 'App/i18n';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { withRouter }    from 'react-router-dom';
+import { localize }      from 'App/i18n';
+import { FadeWrapper }   from 'App/Components/Animations';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import AppRoutes         from 'Constants/routes';
+import { connect }       from 'Stores/connect';
+import WalletInformation from './wallet-information.jsx';
 
 class Reports extends React.Component {
     setWrapperRef = (node) => {
@@ -60,6 +61,10 @@ class Reports extends React.Component {
                 icon : 'SettingsIconClose',
                 title: localize('Close'),
             },
+            {
+                component: () => <WalletInformation />,
+                title    : '',
+            },
         ];
         return (
             <FadeWrapper
@@ -71,6 +76,7 @@ class Reports extends React.Component {
                     <VerticalTab
                         header_title={localize('Reports')}
                         action_bar={action_bar_items}
+                        action_bar_classname='reports__inset_header'
                         alignment='center'
                         classNameHeader='reports__tab-header'
                         current_path={this.props.location.pathname}

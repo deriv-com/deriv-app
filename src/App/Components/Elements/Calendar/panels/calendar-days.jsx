@@ -1,25 +1,27 @@
-import classNames       from 'classnames';
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import { localize }     from 'App/i18n';
-import { padLeft }      from '_common/string_util';
-import { Popover }      from 'App/Components/Elements/Popover';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { padLeft }       from '_common/string_util';
+import { localize }      from 'App/i18n';
+import { Popover }       from 'App/Components/Elements/Popover';
 import {
     getDaysOfTheWeek,
-    week_headers_abbr } from 'Constants/date-time';
+    week_headers_abbr }  from 'Constants/date-time';
 import {
     addDays,
     addMonths,
     daysFromTodayTo,
+    epochToMoment,
     subDays,
     subMonths,
-    toMoment }          from 'Utils/Date';
-import { CommonPropTypes }  from './types';
+    toMoment }           from 'Utils/Date';
+import CommonPropTypes   from './types';
 
 const getDays = ({
     calendar_date,
     date_format,
     has_range_selection,
+    hide_others,
     holidays,
     hovered_date,
     isPeriodDisabled,
@@ -41,7 +43,7 @@ const getDays = ({
     const num_of_days        = moment_cur_date.daysInMonth() + 1;
     const moment_month_start = moment_cur_date.clone().startOf('month');
     const moment_month_end   = moment_cur_date.clone().endOf('month');
-    const moment_selected    = toMoment(selected_date);
+    const moment_selected    = typeof selected_date === 'number' ? epochToMoment(selected_date).startOf('day') : toMoment(selected_date).startOf('day');
 
     // populate previous months' dates
     const end_of_prev_month = subMonths(moment_cur_date, 1).endOf('month').day();
@@ -104,6 +106,7 @@ const getDays = ({
                     'calendar__cell--active-duration': is_active && has_range_selection && !is_today,
                     'calendar__cell--today-duration' : is_today && has_range_selection,
                     'calendar__cell--disabled'       : is_disabled,
+                    'calendar__cell--is-hidden'      : is_other_month && hide_others,
                     'calendar__cell--other'          : is_other_month,
                     'calendar__cell--between-hover'  : is_between_hover && has_range_selection,
                     'calendar__cell--between'        : is_between && has_range_selection,

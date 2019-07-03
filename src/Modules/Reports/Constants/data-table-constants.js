@@ -1,6 +1,8 @@
+import classNames           from 'classnames';
 import React                from 'react';
+import Icon                 from 'Assets/icon.jsx';
 import { localize }         from 'App/i18n';
-import Label                from 'App/Components/Elements/Label';
+import Label                from 'App/Components/Elements/Label/label.jsx';
 import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
@@ -23,6 +25,7 @@ const getModeFromValue = (key) => {
 
     return map.default;
 };
+
 /* eslint-disable react/display-name, react/prop-types */
 export const getStatementTableColumnsTemplate = (currency) => [
     {
@@ -59,13 +62,13 @@ export const getStatementTableColumnsTemplate = (currency) => [
         renderCellContent: ({ cell_value }) => <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} />,
     },
 ];
-export const getProfitTableColumnsTemplate = (currency) => [
+export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         key              : 'icon',
         title            : '',
         col_index        : 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
-            if (is_footer) return localize('Total profit/loss');
+            if (is_footer) return localize('Profit/loss on the last [_1] contracts', items_count);
 
             return (
                 <MarketSymbolIconRow
@@ -142,10 +145,34 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 : <span>-</span>
         ),
     }, {
+        title            : localize('Potential profit/loss'),
+        col_index        : 'profit',
+        renderCellContent: ({ row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
+            const profit = row_obj.contract_info.profit;
+            // eslint-disable-next-line consistent-return
+            return (
+                <div className={classNames('open-positions__profit-loss', {
+                    'open-positions__profit-loss--negative': (
+                        profit < 0
+                    ),
+                    'open-positions__profit-loss--positive': (
+                        profit > 0
+                    ),
+                })}
+                >
+                    <Money amount={Math.abs(profit)} currency={currency} />
+                    <div className='open-positions__profit-loss--movement'>
+                        <Icon icon='IconPriceMove' type={profit > 0 ? 'profit' : 'loss'} />
+                    </div>
+                </div>
+            );
+        },
+    }, {
         title            : localize('Indicative price'),
         col_index        : 'indicative',
         renderCellContent: ({ cell_value, row_obj }) => (
-            <IndicativeCell amount={+cell_value} currency={currency} status={row_obj.status} />
+            <IndicativeCell amount={+cell_value} currency={currency} status={row_obj.contract_info && !row_obj.is_valid_to_sell ? 'no-resale' : ''} />
         ),
     }, {
         title            : localize('Remaining time'),

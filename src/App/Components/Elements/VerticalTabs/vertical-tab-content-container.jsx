@@ -1,3 +1,4 @@
+import classNames                  from 'classnames';
 import React                       from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Icon                        from 'Assets/icon.jsx';
@@ -7,6 +8,7 @@ class VerticalTabContentContainer extends React.PureComponent {
     render() {
         const {
             action_bar,
+            action_bar_classname,
             is_routed,
             items,
             selected,
@@ -17,11 +19,17 @@ class VerticalTabContentContainer extends React.PureComponent {
         return (
             <div className='vertical-tab__content'>
                 { action_bar &&
-                    <div className='vertical-tab__action-bar'>
+                    <div className={classNames('vertical-tab__action-bar', {
+                        [action_bar_classname]: !!action_bar_classname,
+                    })}
+                    >
                         {
-                            action_bar.map(({ icon, onClick, title }) => (
-                                <Icon className='vertical-tab__action-bar--icon' key={title} icon={icon} onClick={onClick} />
-                            ))
+                            action_bar.map(({ component, icon, onClick, title }) => {
+                                const Component = component;
+                                return (
+                                    component ? <Component key={title} /> : <Icon className='vertical-tab__action-bar--icon' key={title} icon={icon} onClick={onClick} />
+                                );
+                            })
                         }
                     </div>
                 }

@@ -91,7 +91,7 @@ class ContractDrawer extends Component {
                             <div className='contract-card__type'>
                                 <ContractTypeCell
                                     type={contract_info.contract_type}
-                                    is_high_low={Shortcode.isHighLow(contract_info.shortcode)}
+                                    is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
                                 />
                             </div>
                         </div>

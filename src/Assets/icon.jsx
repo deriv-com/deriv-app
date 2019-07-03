@@ -36,7 +36,7 @@ class Icon extends React.PureComponent {
             IconWarning           : React.lazy(() => import('./Common/icon-warning.jsx')),
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')),
-            
+
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
             IconEndTime      : React.lazy(() => import('./Contract/icon-end-time.jsx')),
@@ -61,9 +61,11 @@ class Icon extends React.PureComponent {
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
 
             // Reports
-            IconOpenPositions: React.lazy(() => import('./Reports/icon-open-positions.jsx')),
-            IconProfitTable  : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
-            IconStatement    : React.lazy(() => import('./Reports/icon-statement.jsx')),
+            IconDemo                : React.lazy(() => import('./Reports/icon-demo.jsx')),
+            IconOpenPositions       : React.lazy(() => import('./Reports/icon-open-positions.jsx')),
+            IconProfitTable         : React.lazy(() => import('./Reports/icon-profit-table.jsx')),
+            IconStatement           : React.lazy(() => import('./Reports/icon-statement.jsx')),
+            IconCalendarForwardToday: React.lazy(() => import('./Reports/ic-calendar-forwardtoday.jsx')),
 
             // Settings
             IconCharts       : React.lazy(() => import('./Settings/icon-charts.jsx')),
@@ -96,6 +98,7 @@ class Icon extends React.PureComponent {
             className    : this.props.className,
             classNamePath: this.props.classNamePath,
             classNameRect: this.props.classNameRect,
+            is_dark_theme: this.props.is_dark_theme,
             is_disabled  : this.props.is_disabled,
             onClick      : this.props.onClick,
             onMouseEnter : this.props.onMouseEnter,
@@ -105,7 +108,7 @@ class Icon extends React.PureComponent {
 
         const IconLazy = this.icons[this.props.icon];
         if (!IconLazy) return <div />;
-        
+
         return (
             <React.Suspense fallback={<div />}>
                 <IconLazy {...options} />
@@ -120,6 +123,7 @@ Icon.propTypes = {
     classNamePath: PropTypes.string,
     classNameRect: PropTypes.string,
     icon         : PropTypes.string,
+    is_dark_theme: PropTypes.bool,
     is_disabled  : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClick      : PropTypes.func,
     type         : PropTypes.string,

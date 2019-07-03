@@ -7,6 +7,7 @@ import { urlFor }                        from '_common/url';
 import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
 import Localize                          from 'App/Components/Elements/localize.jsx';
+import CompositeCalendar                 from 'App/Components/Form/CompositeCalendar';
 import { getContractPath }               from 'App/Components/Routes/helpers';
 import { getSupportedContracts }         from 'Constants';
 import { connect }                       from 'Stores/connect';
@@ -48,22 +49,35 @@ class ProfitTable extends React.Component {
             component_icon,
             currency,
             data,
+            date_from,
+            date_to,
             is_empty,
             is_loading,
             error,
+            handleDateChange,
             handleScroll,
             has_selected_date,
             totals,
         } = this.props;
         if (error) return <p>{error}</p>;
 
-        const columns = getProfitTableColumnsTemplate(currency);
+        const filter_component = (
+            <React.Fragment>
+                <CompositeCalendar
+                    onChange={handleDateChange}
+                    from={date_from}
+                    to={date_to}
+                />
+            </React.Fragment>
+        );
+        const columns = getProfitTableColumnsTemplate(currency, data.length);
 
         return (
             <React.Fragment>
                 <ReportsMeta
                     i18n_heading={localize('Profit table')}
                     i18n_message={localize('View all trades purchased on your account, and a summary of your total profit/loss.')}
+                    filter_component={filter_component}
                 />
                 { (is_loading && data.length === 0) || is_empty ?
                     <PlaceholderComponent
@@ -99,7 +113,10 @@ ProfitTable.propTypes = {
     component_icon   : PropTypes.string,
     currency         : PropTypes.string,
     data             : MobxPropTypes.arrayOrObservableArray,
+    date_from        : PropTypes.number,
+    date_to          : PropTypes.number,
     error            : PropTypes.string,
+    handleDateChange : PropTypes.func,
     handleScroll     : PropTypes.func,
     has_selected_date: PropTypes.bool,
     history          : PropTypes.object,
@@ -114,8 +131,11 @@ export default connect(
     ({ modules, client }) => ({
         currency         : client.currency,
         data             : modules.profit_table.data,
+        date_from        : modules.profit_table.date_from,
+        date_to          : modules.profit_table.date_to,
         error            : modules.profit_table.error,
         handleScroll     : modules.profit_table.handleScroll,
+        handleDateChange : modules.profit_table.handleDateChange,
         has_selected_date: modules.profit_table.has_selected_date,
         is_empty         : modules.profit_table.is_empty,
         is_loading       : modules.profit_table.is_loading,

@@ -41,7 +41,7 @@ const TradeTypeInfoItem = ({
                                     icon='TradeCategoriesGIF'
                                     category={type.value}
                                     className='trade-type-info-dialog__gif-image'
-                                    is_dark={is_dark_theme}
+                                    is_dark_theme={is_dark_theme}
                                 />
                             </div>
                             <div className='trade-type-info-dialog__content'>

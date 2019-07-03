@@ -68,6 +68,10 @@ export const daysFromTodayTo = (date) => {
 };
 
 /**
+ * return the number of months between two specified dates
+ */
+export const diffInMonths = (now, then) => then.diff(now, 'month');
+/**
  * return moment duration between two dates
  * @param  {Number} epoch start time
  * @param  {Number} epoch end time

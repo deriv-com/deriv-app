@@ -15,48 +15,48 @@ import ImageTouchDark        from 'Images/app/trade_explanations/img-touch-no-to
 import ImageTouchLight       from 'Images/app/trade_explanations/img-touch-no-touch-light.svg';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
-const TradeCategoriesGIF = ({ category, className, is_dark }) => {
+const TradeCategoriesGIF = ({ category, className, is_dark_theme }) => {
     let TradeTypeGIF;
     const themed_classes = classNames(className,
         {
-            [`${className}--dark`] : is_dark,
-            [`${className}--light`]: !is_dark,
+            [`${className}--dark`] : is_dark_theme,
+            [`${className}--light`]: !is_dark_theme,
         }
     );
     if (category) {
         switch (category) {
             case ('rise_fall' || 'rise_fall_equal'):
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageRiseFallDark className={themed_classes} />)
                     :
                     (<ImageRiseFallLight className={themed_classes} />);
                 break;
             case 'high_low':
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageHigherLowerDark className={themed_classes} />)
                     :
                     (<ImageHigherLowerLight className={themed_classes} />);
                 break;
             case 'match_diff':
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageMatchesDark className={themed_classes} />)
                     :
                     (<ImageMatchesLight className={themed_classes} />);
                 break;
             case 'even_odd':
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageEvenOddDark className={themed_classes} />)
                     :
                     (<ImageEvenOddLight className={themed_classes} />);
                 break;
             case 'over_under':
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageOverUnderDark className={themed_classes} />)
                     :
                     (<ImageOverUnderLight className={themed_classes} />);
                 break;
             case 'touch':
-                TradeTypeGIF = is_dark ?
+                TradeTypeGIF = is_dark_theme ?
                     (<ImageTouchDark className={themed_classes} />)
                     :
                     (<ImageTouchLight className={themed_classes} />);
@@ -74,9 +74,9 @@ const TradeCategoriesGIF = ({ category, className, is_dark }) => {
 };
 
 TradeCategoriesGIF.propTypes = {
-    category : PropTypes.string,
-    className: PropTypes.string,
-    is_dark  : PropTypes.bool,
+    category     : PropTypes.string,
+    className    : PropTypes.string,
+    is_dark_theme: PropTypes.bool,
 };
 
 export default TradeCategoriesGIF;

@@ -9,3 +9,4 @@ scripts/CNAME
 .DS_Store
 *.swp
 npm-debug.log
+lerna-debug.log

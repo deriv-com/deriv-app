@@ -6,6 +6,7 @@ const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -16,6 +17,7 @@ const {
     htmlInjectConfig,
     htmlOutputConfig,
     swPrecacheConfig,
+    stylelintConfig,
 } = require('./config');
 const {
     css_loaders,
@@ -95,7 +97,9 @@ const plugins = (base, is_test_env) => ([
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
-    ...(is_test_env ? [] : [
+    ...(is_test_env ? [
+        new StylelintPlugin(stylelintConfig()),
+    ] : [
         new SWPrecacheWebpackPlugin(swPrecacheConfig(base)),
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])

@@ -25,7 +25,6 @@ export default class ContractTradeStore extends BaseStore {
     @observable contract_id;
     @observable contract_info = observable.object({});
     @observable digits_info   = observable.object({});
-    @observable sell_info     = observable.object({});
 
     @observable has_error     = false;
     @observable error_message = '';
@@ -160,7 +159,6 @@ export default class ContractTradeStore extends BaseStore {
         this.has_error           = false;
         this.is_from_positions   = false;
         this.is_ongoing_contract = false;
-        this.sell_info           = {};
 
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
         this.smart_chart.cleanupContractChartView();

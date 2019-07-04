@@ -5,7 +5,7 @@
 .vscode/
 dist/
 node_modules/
-scripts/CNAME
+packages/**/scripts/CNAME
 .DS_Store
 *.swp
 npm-debug.log

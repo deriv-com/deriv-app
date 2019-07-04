@@ -1,11 +1,7 @@
 {
-  "version": "0.0.0",
+  "version": "independent",
   "npmClient": "npm",
   "command": {
-    "publish": {
-      "ignoreChanges": ["ignored-file", "*.md"],
-      "message": "chore(release): publish"
-    },
     "bootstrap": {
       "ignore": "component-*",
       "npmClientArgs": ["--no-package-lock"]

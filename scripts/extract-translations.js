@@ -34,9 +34,9 @@ const getKeyHash = (string) => crc32(string);
 
         // Find all file types listed in `globs`
         for (let i = 0; i < globs.length; i++) {
-            let filesFound = glob.sync(`src/${globs[i]}`);
-            filesFound = filesFound.filter(path => path.indexOf('__tests__') === -1);
-            file_paths.push(...filesFound);
+            let files_found = glob.sync(`src/${globs[i]}`);
+            files_found = files_found.filter(file_path => file_path.indexOf('__tests__') === -1);
+            file_paths.push(...files_found);
         }
 
         // Iterate over files and extract all strings from the i18n marker

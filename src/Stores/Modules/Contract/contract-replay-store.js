@@ -16,11 +16,7 @@ import {
     getChartConfig,
     getDisplayStatus,
     getEndTime,
-    getIndicativePrice,
     isEnded,
-    isSoldBeforeStart,
-    isStarted,
-    isUserSold,
     isValidToSell }           from './Helpers/logic';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
@@ -228,34 +224,8 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @computed
-    get end_spot_time() {
-        const { exit_tick_time, sell_time } = this.contract_info;
-        return isUserSold(this.contract_info) ? sell_time : exit_tick_time;
-    }
-
-    @computed
-    get indicative_price() {
-        return getIndicativePrice(this.contract_info);
-    }
-
-    @computed
     get is_ended() {
         return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_sold_before_start() {
-        return isSoldBeforeStart(this.contract_info);
-    }
-
-    @computed
-    get is_started() {
-        return isStarted(this.contract_info);
-    }
-
-    @computed
-    get is_user_sold() {
-        return isUserSold(this.contract_info);
     }
 
     @computed

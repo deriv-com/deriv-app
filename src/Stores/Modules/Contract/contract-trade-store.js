@@ -17,10 +17,7 @@ import {
     getChartType,
     getDisplayStatus,
     getEndTime,
-    getFinalPrice,
-    getIndicativePrice,
     isEnded,
-    isUserSold,
     isValidToSell }           from './Helpers/logic';
 import BaseStore              from '../../base-store';
 
@@ -266,29 +263,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @computed
-    get end_spot_time() {
-        const { exit_tick_time, sell_time } = this.contract_info;
-        return isUserSold(this.contract_info) ? sell_time : exit_tick_time;
-    }
-
-    @computed
-    get final_price() {
-        return getFinalPrice(this.contract_info);
-    }
-
-    @computed
-    get indicative_price() {
-        return getIndicativePrice(this.contract_info);
-    }
-
-    @computed
     get is_ended() {
         return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_user_sold() {
-        return isUserSold(this.contract_info);
     }
 
     @computed

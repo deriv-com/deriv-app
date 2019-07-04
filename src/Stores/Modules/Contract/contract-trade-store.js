@@ -17,8 +17,7 @@ import {
     getChartType,
     getDisplayStatus,
     getEndTime,
-    isEnded,
-    isValidToSell }           from './Helpers/logic';
+    isEnded }                 from './Helpers/logic';
 import BaseStore              from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
@@ -258,18 +257,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @computed
-    get end_spot() {
-        return this.contract_info.exit_tick;
-    }
-
-    @computed
     get is_ended() {
         return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_valid_to_sell() {
-        return isValidToSell(this.contract_info);
     }
 
     @computed

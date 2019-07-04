@@ -63,6 +63,9 @@ npm run deploy:folder "br_my_test_folder"
     - It will watch for js/jsx/css changes and rebuild on every change you make.
 - To run all tests, run `npm run test`
 
+## Miscellaneous
+- In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
+
 ## Release [Section is WIP]
 ### Staging [Temporary]
 

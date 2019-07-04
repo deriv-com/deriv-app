@@ -22,8 +22,8 @@ import BaseStore              from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
     // --- Observable properties ---
-    @observable digits_info   = observable.object({});
-    @observable sell_info     = observable.object({});
+    @observable digits_info = observable.object({});
+    @observable sell_info   = observable.object({});
 
     @observable has_error         = false;
     @observable error_message     = '';

@@ -27,8 +27,8 @@ export default class ContractTradeStore extends BaseStore {
     @observable digits_info   = observable.object({});
     @observable sell_info     = observable.object({});
 
-    @observable has_error         = false;
-    @observable error_message     = '';
+    @observable has_error     = false;
+    @observable error_message = '';
 
     // ---- Normal properties ---
     chart_type          = 'mountain';

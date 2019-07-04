@@ -32,7 +32,7 @@ export default class ContractReplayStore extends BaseStore {
     // ---- Replay Contract Config ----
     @observable contract_id;
     @observable replay_indicative_status;
-    @observable contract_info = observable.object({});
+    @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
 
     // ---- Normal properties ---
@@ -41,8 +41,8 @@ export default class ContractReplayStore extends BaseStore {
     is_ongoing_contract = false;
 
     // Replay Contract Indicative Movement
-    prev_indicative   = 0;
-    indicative        = 0;
+    prev_indicative = 0;
+    indicative      = 0;
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;

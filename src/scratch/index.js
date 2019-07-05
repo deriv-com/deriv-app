@@ -61,8 +61,9 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             el_scratch_div.style.top    = `${y}px`;
             el_scratch_div.style.width  = `${scratch_area.offsetWidth}px`;
             el_scratch_div.style.height = `${scratch_area.offsetHeight}px`;
-        
+            
             Blockly.svgResize(workspace);
+            workspace.toolbox_.flyout_.position();
         };
 
         // Resize workspace on workspace event, workaround for jumping workspace.

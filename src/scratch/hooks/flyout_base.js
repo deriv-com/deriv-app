@@ -23,6 +23,14 @@ Blockly.Flyout.prototype.MARGIN = 30;
 Blockly.Flyout.prototype.SCROLLBAR_PADDING = 20;
 
 /**
+ * The fraction of the distance to the scroll target to move the flyout on
+ * each animation frame, when auto-scrolling. Values closer to 1.0 will make
+ * the scroll animation complete faster. Use 1.0 for no animation.
+ * @type {number}
+ */
+Blockly.Flyout.prototype.scrollAnimationFraction = 1.0;
+
+/**
  * Update the view based on coordinates calculated in position().
  * @param {number} width The computed width of the flyout's SVG group
  * @param {number} height The computed height of the flyout's SVG group.
@@ -48,7 +56,7 @@ Blockly.Flyout.prototype.positionAt_ = function(width, height, x, y) {
 
     // Update the scrollbar (if one exists).
     if (this.scrollbar_) {
-        const newX = x - Blockly.VerticalFlyout.ARROW_SIZE;
+        const newX = x - this.ARROW_SIZE;
 
         // Set the scrollbars origin to be the top left of the flyout.
         this.scrollbar_.setOrigin(newX, y);

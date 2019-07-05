@@ -146,7 +146,6 @@ export default class ContractStore extends BaseStore {
     @action.bound
     onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
-        this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         this.smart_chart       = this.root_store.modules.smart_chart;
         if (this.smart_chart.is_contract_mode) this.onCloseContract();
         this.has_error         = false;
@@ -194,12 +193,6 @@ export default class ContractStore extends BaseStore {
         this.sell_info                = {};
         this.smart_chart.setContractMode(false);
         this.smart_chart.cleanupContractChartView();
-    }
-
-    @action.bound
-    accountSwitcherListener () {
-        this.smart_chart.setContractMode(false);
-        return new Promise((resolve) => resolve(this.onCloseContract()));
     }
 
     @action.bound

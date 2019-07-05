@@ -15,10 +15,10 @@ import { localize }                  from 'App/i18n';
 import {
     LocalStore,
     State }                          from '_common/storage';
+import BinarySocketGeneral           from 'Services/socket-general';
 import BaseStore                     from './base-store';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { handleClientNotifications } from './Helpers/client-notifications';
-import BinarySocketGeneral           from 'Services/socket-general';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {

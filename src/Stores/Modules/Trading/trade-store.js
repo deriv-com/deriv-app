@@ -180,6 +180,13 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
+    clearContract = () => {
+        if (this.root_store.modules.smart_chart.is_contract_mode) {
+            this.root_store.modules.contract.onCloseContract();
+        }
+    };
+
+    @action.bound
     setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
             this.processNewValuesAsync({
@@ -294,17 +301,14 @@ export default class TradeStore extends BaseStore {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
-            // In order to show the purchase animation with proper colors before disabling in contract-mode,
-            // we needed to add the timeout below to allow the cycle to finish
-            setTimeout(() => {
-                this.smart_chart.switchToContractMode();
-            }, 150);
             processPurchase(proposal_id, price).then(action((response) => {
                 if (this.proposal_info[type].id !== proposal_id) {
                     this.smart_chart.cleanupContractChartView();
+                    this.smart_chart.applySavedTradeChartLayout();
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
+                    this.smart_chart.switchToContractMode();
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],
@@ -327,11 +331,11 @@ export default class TradeStore extends BaseStore {
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
+                    this.root_store.ui.resetPurchaseStates();
                     this.root_store.common.services_error = {
                         type: response.msg_type,
                         ...response.error,
                     };
-                    this.smart_chart.cleanupContractChartView();
                     this.root_store.ui.toggleServicesErrorModal(true);
                 }
                 WS.forgetAll('proposal');
@@ -567,6 +571,7 @@ export default class TradeStore extends BaseStore {
                 { currency: this.root_store.client.currency },
                 { currency: this.currency }
             );
+            await this.clearContract();
             await this.refresh();
             await this.prepareTradeStore();
             return resolve(this.debouncedProposal());

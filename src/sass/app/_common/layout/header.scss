@@ -3,7 +3,6 @@
     position: fixed;
     z-index: 99;
     box-sizing: border-box;
-    opacity: 0;
     height: $HEADER_HEIGHT;
     width: 100%;
     top: 0;
@@ -18,9 +17,6 @@
     &--is-blurred {
         pointer-events: none;
         filter: blur(3px);
-    }
-    &--show {
-        opacity: 1;
     }
     &__menu-items {
         display: flex;

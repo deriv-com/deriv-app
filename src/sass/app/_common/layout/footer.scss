@@ -5,7 +5,6 @@
     padding: 0 1em;
     width: 100%;
     height: $FOOTER_HEIGHT;
-    opacity: 0;
     box-sizing: border-box;
     z-index: 3;
     display: flex;
@@ -22,9 +21,6 @@
     &--is-blurred {
         pointer-events: none;
         filter: blur(3px);
-    }
-    &--show {
-        opacity: 1;
     }
     &__links {
         display: flex;

@@ -40,6 +40,7 @@ module.exports = {
         'import/no-useless-path-segments'   : 'error',
         'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
         'import/prefer-default-export'      : 0,
+        'import/extensions'                 : ['error', 'never', { 'jsx': 'always', 'json': 'always' }],
 
         // react rules
         'jsx-quotes'                        : ['error', 'prefer-single'],
@@ -69,5 +70,11 @@ module.exports = {
         react: {
             version: '16',
         },
+        'import/resolver': {
+            node: {
+              'paths': ['src'],
+            },
+            webpack: { config: 'build/webpack.config-test.js' },
+        }
     },
 };

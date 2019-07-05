@@ -162,7 +162,7 @@ Blockly.VerticalFlyout.prototype.position = function() {
         if (targetWorkspaceMetrics.toolboxWidth) {
             // deriv-bot: Allow for dynamic toolbox width, specifies where to position
             // the flyout.
-            x = this.parentToolbox_.HtmlDiv.clientWidth + Blockly.BlockSvg.TAB_WIDTH;
+            x = this.toolbox_bounds_.width + Blockly.BlockSvg.TAB_WIDTH;
         }
     } else {
         // Because the anchor point of the flyout is on the left, but we want

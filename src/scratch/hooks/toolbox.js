@@ -103,6 +103,16 @@ Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
 
     this.table = goog.dom.createDom('div', className);
     this.parentHtml_.appendChild(this.table);
+
+    // Hide flyout on scrolling the toolbox category menu in
+    // order to ensure correct positioning of flyout.
+    this.table.addEventListener('scroll', () => {
+        const toolbox = this.parent_;
+        const flyout = toolbox.flyout_;
+
+        toolbox.setSelectedItem(null);
+        flyout.hide();
+    });
 };
 
 /**

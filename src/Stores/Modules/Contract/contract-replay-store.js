@@ -37,7 +37,6 @@ export default class ContractReplayStore extends BaseStore {
 
     // ---- Normal properties ---
     chart_type          = 'mountain';
-    is_from_positions   = false;
     is_ongoing_contract = false;
 
     // Replay Contract Indicative Movement
@@ -209,7 +208,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @computed
     get contract_config() {
-        return getChartConfig(this.contract_info, this.is_digit_contract);
+        return getChartConfig(this.contract_info, this.is_digit_contract, false);
     }
 
     @computed

@@ -6,10 +6,10 @@ import { formatMoney } from '_common/base/currency_base';
 import { urlFor }      from '_common/url';
 import {
     AccountInfo,
-    DepositButton,
     LoginButton,
     MenuLinks,
     SignupButton,
+    ToggleCashier,
     ToggleMenuDrawer,
     UpgradeButton }    from 'App/Components/Layout/Header';
 import header_links    from 'App/Constants/header-links';
@@ -21,7 +21,9 @@ const Header = ({
     can_upgrade,
     can_upgrade_to,
     currency,
+    hideFullBlur,
     is_acc_switcher_on,
+    is_cashier_modal_on,
     is_fully_blurred,
     is_loading,
     is_logged_in,
@@ -31,7 +33,9 @@ const Header = ({
     location,
     loginid,
     onClickUpgrade,
+    showFullBlur,
     toggleAccountsDialog,
+    toggleCashierModal,
 }) => (
     <React.Fragment>
         {(!is_loading || location.pathname !== routes.trade) &&
@@ -70,7 +74,13 @@ const Header = ({
                                     />
                                     }
                                     { !(is_virtual) &&
-                                    <DepositButton className='acc-info__button' />
+                                    <ToggleCashier
+                                        className='acc-info__button'
+                                        toggleCashier={toggleCashierModal}
+                                        is_cashier_visible={is_cashier_modal_on}
+                                        showFullBlur={showFullBlur}
+                                        hideFullBlur={hideFullBlur}
+                                    />
                                     }
                                 </React.Fragment>
                                 :
@@ -92,7 +102,9 @@ Header.propTypes = {
     can_upgrade         : PropTypes.bool,
     can_upgrade_to      : PropTypes.string,
     currency            : PropTypes.string,
+    hideFullBlur        : PropTypes.func,
     is_acc_switcher_on  : PropTypes.bool,
+    is_cashier_modal_on : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_fully_blurred    : PropTypes.bool,
     is_loading          : PropTypes.bool,
@@ -103,7 +115,9 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
+    showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
+    toggleCashierModal  : PropTypes.func,
 };
 
 // need to wrap withRouter around connect
@@ -114,15 +128,19 @@ export default withRouter(connect(
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
         currency            : client.currency,
+        hideFullBlur        : ui.hideFullBlur,
         is_loading          : ui.is_loading,
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
+        is_cashier_modal_on : ui.is_cashier_modal_on,
         is_dark_mode        : ui.is_dark_mode_on,
         is_fully_blurred    : ui.is_fully_blurred,
         is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
+        showFullBlur        : ui.showFullBlur,
         toggleAccountsDialog: ui.toggleAccountsDialog,
+        toggleCashierModal  : ui.toggleCashierModal,
     })
 )(Header));

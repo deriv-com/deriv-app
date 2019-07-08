@@ -138,6 +138,9 @@ export default class ContractStore extends BaseStore {
     onMountBuy(contract_id) {
         if (contract_id === this.contract_id) return;
         this.contract_id = contract_id;
+        // clear proposal and purchase info once contract is mounted
+        this.root_store.modules.trade.proposal_info = {};
+        this.root_store.modules.trade.purchase_info = {};
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         });
@@ -152,6 +155,10 @@ export default class ContractStore extends BaseStore {
         this.error_message     = '';
         this.contract_id       = contract_id;
         this.is_from_positions = is_from_positions;
+
+        // clear proposal and purchase info once contract is mounted
+        this.root_store.modules.trade.proposal_info = {};
+        this.root_store.modules.trade.purchase_info = {};
 
         if (contract_id) {
             this.replay_info = {};
@@ -212,7 +219,6 @@ export default class ContractStore extends BaseStore {
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
-        WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
     }
 
     @action.bound
@@ -299,7 +305,7 @@ export default class ContractStore extends BaseStore {
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-            this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
+            this.root_store.modules.trade.symbol = this.contract_info.underlying;
         }
 
         this.drawChart(this.contract_info);

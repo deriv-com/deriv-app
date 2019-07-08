@@ -615,11 +615,26 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    restoreTradeChart() {
+        const smart_chart_store = this.root_store.modules.smart_chart;
+        if (smart_chart_store.trade_chart_symbol !== this.symbol) {
+            this.symbol = smart_chart_store.trade_chart_symbol;
+        }
+        if (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity) {
+            smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
+        }
+        if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {
+            smart_chart_store.chart_type = smart_chart_store.trade_chart_type;
+        }
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.proposal_info = {};
         this.purchase_info = {};
         WS.forgetAll('proposal');
+        this.restoreTradeChart();
         this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);

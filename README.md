@@ -68,9 +68,11 @@ npm run deploy:folder "br_my_test_folder"
 
 ## Release
 ### Staging
+_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and that you are on the `dev` branch._
 1. Navigate to root of project.
 2. Run `./scripts/release-staging.sh`
 
 ### Production
+_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and `production` pointing to the [deriv-app-production](https://github.com/binary-com/deriv-app-production) repo, and that you are on the `master` branch._
 1. Navigate to root of project.
 2. Run `./scripts/release-prod.sh`

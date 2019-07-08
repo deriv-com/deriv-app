@@ -23,7 +23,7 @@ if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
 fi
 
 if [[ ! $(git config --get remote.production.url) =~ binary-com/deriv-app-production ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"remote 'production' should be production."
+    echo ${RED}"  > ERROR: "${RESET}"remote 'production' should be pointing to binary-com/deriv-app-production."
     exit 1
 fi
 

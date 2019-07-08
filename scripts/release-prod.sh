@@ -17,7 +17,7 @@ function confirm {
 
 cd $(git rev-parse --show-toplevel) &&
 
-if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app-production ]]; then
+if [[ ! $(git config --get remote.production.url) =~ binary-com/deriv-app-production ]]; then
     echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be production."
     exit 1
 fi
@@ -49,4 +49,4 @@ fi &&
 export NODE_ENV=production &&
 
 message "Running build and deploy" &&
-npm run deploy:clean
+npm run deploy:clean -- -o=production

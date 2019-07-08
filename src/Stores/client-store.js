@@ -354,6 +354,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
+                this.root_store.modules.trade.clearContract();
                 return;
             }
 

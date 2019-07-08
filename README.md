@@ -66,13 +66,11 @@ npm run deploy:folder "br_my_test_folder"
 ## Miscellaneous
 - In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
 
-## Release [Section is WIP]
-### Staging [Temporary]
+## Release
+### Staging
+1. Navigate to root of project.
+2. Run `./scripts/release-staging.sh`
 
-1. Add `staging.deriv.app` file to `scripts/CNAME` file.
-2. Then run:
-```
-export NODE_ENV=staging
-npm ci
-npm run deploy:clean
-```
+### Production
+1. Navigate to root of project.
+2. Run `./scripts/release-prod.sh`

@@ -54,4 +54,4 @@ fi &&
 export NODE_ENV=production &&
 
 message "Running build and deploy" &&
-npm run deploy:clean -- -o=production
+npm run deploy:clean -- --remote=production

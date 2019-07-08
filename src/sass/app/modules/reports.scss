@@ -27,6 +27,16 @@ $side-padding: 1.2em;
                 }
             }
         }
+        &-filter {
+            position: relative;
+            display: flex;
+        }
+    }
+    &__inset_header {
+        @include themify($themes) {
+            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
+        }
+        margin-bottom: 24px;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -51,7 +61,8 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: 1fr 1.2fr 1fr 1fr 1fr 1fr;
+        /*                     icon   refId tr_time  transaction cred/debt  balance */
+        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
 
         &--detail {
             display: flex;
@@ -60,6 +71,9 @@ $side-padding: 1.2em;
             @include themify($themes) {
                 background-color: themed('cell_hover_color');
             }
+        }
+        .date {
+            text-align: left;
         }
     }
     .amount, .balance {
@@ -194,10 +208,14 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: repeat(7, 1fr);
+        /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
+        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
     }
     .buy_price, .sell_price, .profit_loss {
         justify-content: flex-end;
+    }
+    .sell_time, .purchase_time {
+        text-align: left;
     }
 }
 
@@ -209,6 +227,57 @@ $side-padding: 1.2em;
         width: 100%;
         max-height: 100%;
     }
+    &__indicative {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        flex-direction: column;
+
+        &--amount {
+            display: flex;
+            align-items: center;
+            line-height: 16px;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: right;
+            font-size: smaller;
+        }
+    }
+    &__profit-loss {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--movement {
+            width: 16px;
+            height: 16px;
+
+            &-complete, &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+        &--negative {
+            color: $COLOR_RED;
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: $COLOR_GREEN_2;
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
     /*
         TABLE STYLES
     */
@@ -217,19 +286,38 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        grid-template-columns: repeat(6, 1fr);
+        /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
+        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
         width: 100%;
     }
-    .buy_price, .payout, .indicative {
+    .buy_price, .payout, .indicative, .profit {
         justify-content: flex-end;
     }
+    .type {
+        padding-right: 0;
+    }
     .progress-slider {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+        border: none;
+        margin: 0;
 
-        .progress-slider__track {
-            margin: 2px 0 2px 8px;
+        &__ticks {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &-step {
+                @include themify($themes) {
+                    background: themed('reports_tick_step');
+                }
+            }
+            &-wrapper {
+                margin-top: 6px;
+            }
+            &-caption {
+                padding: 0;
+                margin-right: 8px;
+                white-space: nowrap;
+            }
         }
     }
 }

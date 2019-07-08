@@ -43,7 +43,7 @@ $COLOR_LIGHT_BLACK_1: rgba(0, 0, 0, 0.8);
 $COLOR_DARK_BLUE_1: #0b0e18;
 ```
 
-Keep all common variables in the [constants.scss](https://github.com/binary-com/binary-static/blob/master/src/sass/app/_common/base/constants.scss) file.
+Keep all common variables in the [constants.scss](https://github.com/binary-com/deriv-app/blob/master/src/sass/app/_common/base/constants.scss) file.
 
 ---
 
@@ -141,13 +141,13 @@ To define new typefaces, add the name and value in the `$FONT_SIZES`, `$FONT_WEI
 **[Template versus Sass:](#svg-template-versus-sass)** Add `SVG`s as components if you need to add classes to modify them in different themes. Otherwise you may import them in Sass, or you may import the `SVG` directly to a `Component` from `src/images`:
 
 ```jsx
-import SomeIconSvg from 'Images/folder_name/some_icon.svg';
+import SomeIconSvg from 'Assets/SvgComponents/folder_name/some_icon.svg';
 
 <SomeIconSvg width='15px' height='15px' />
 ```
 
 <a id="svg-theme"></a>
-**[Theme:](#svg-theme)** Use declared classes such as `color1-fill` to handle colouring of SVGs between different themes instead of adding extra Sass for each new image. If the existing classes don't cover what you need, create more [here](https://github.com/binary-com/binary-static/blob/master/src/sass/app/_common/inline_icons.scss#L1-L10).
+**[Theme:](#svg-theme)** Use declared classes such as `color1-fill` to handle colouring of SVGs between different themes instead of adding extra Sass for each new image. If the existing classes don't cover what you need, create more [here](https://github.com/binary-com/deriv-app/blob/master/src/sass/app/_common/inline_icons.scss#L1-L10).
 
 ---
 

@@ -1,6 +1,5 @@
 import React             from 'react';
 import Icon              from 'Assets/icon.jsx';
-import { getCurrencies } from '_common/base/currency_base';
 import Label             from 'App/Components/Elements/Label/label.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import Money             from 'App/Components/Elements/money.jsx';

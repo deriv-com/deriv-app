@@ -18,7 +18,11 @@ const WalletInformation = ({
             {!is_virtual && <Icon icon='IconAccountsCurrency' type={currency.toLowerCase()} />}
             {is_virtual && <Icon icon='IconDemo' />}
             <span className='description'>
-                <Localize str={`${is_virtual ? 'Practice' : currency.toUpperCase()} wallet`} />
+                {is_virtual ?
+                    <Localize i18n_default_text='Practice wallet' />
+                    :
+                    <Localize i18n_default_text='{{currency}} wallet' values={{ currency: currency.toUpperCase() }} />
+                }
             </span>
             <span className='current-loginid'>{loginid}</span>
             {is_website_status_ready &&

@@ -23,7 +23,7 @@ class Popover extends React.PureComponent {
 
     toggleOpen = () => {
         this.setState({
-            is_open         : true && Boolean(this.props.message),
+            is_open         : Boolean(this.props.message),
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
         });
     }

@@ -1,5 +1,7 @@
+@import '../base/mixins';
+
 .blocklyFlyout {
-    filter: drop-shadow(0 10px 5px #999);
+    @include vendor(filter, drop-shadow(0 10px 5px #999));
 }
 
 .blocklyFlyoutBackground {

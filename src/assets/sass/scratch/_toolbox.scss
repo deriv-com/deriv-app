@@ -1,3 +1,5 @@
+@import '../base/mixins';
+
 $category-colours: (
     trade-definition: #303f9f,
     before-purchase : #00897b,
@@ -63,8 +65,8 @@ $category-colours: (
         position: absolute;
         top: 0.6em;
         right: 0.6em;
-        transform: rotate(90deg);
-        transition: transform 0.25s ease;
+        @include vendor(transform, rotate(90deg));
+        @include vendor(transition, transform 0.25s ease);
     }
     &__item {
         position: relative;
@@ -90,7 +92,7 @@ $category-colours: (
         }
         #{$toolbox}__arrow {
             position: relative;
-            transform: rotate(270deg);
+            @include vendor(transform, rotate(270deg));
             margin-top: -2px;
             top: 0;
             right: -2px;

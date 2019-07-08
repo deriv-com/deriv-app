@@ -17,7 +17,7 @@
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --mode=production --optimize-minimize --progress",
     "watch": "webpack --mode=development --progress --watch",
     "start": "eslint ./src && rimraf dist &&  webpack-dev-server --mode=development --open 'Google Chrome' --hot --inline --port 80",
-    "test": "eslint ./src && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "eslint ./src && jest -w 10 --coverage",
     "gh-pages": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**,CNAME}'",
     "gh-pages:folder": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**}' --dest",
     "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",

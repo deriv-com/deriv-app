@@ -18,7 +18,7 @@ function confirm {
 cd $(git rev-parse --show-toplevel) &&
 
 if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be staging."
+    echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be pointing to binary-com/deriv-app."
     exit 1
 fi
 

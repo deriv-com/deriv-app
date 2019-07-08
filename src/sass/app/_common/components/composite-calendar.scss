@@ -1,0 +1,82 @@
+/* @define .composite-calendar; weak; */
+.composite-calendar {
+    display: grid;
+    grid-template-columns: 128px minmax(min-content, 280px) minmax(min-content, 280px);
+    position: absolute;
+    top: 36px;
+    right: 0;
+    z-index: 99;
+    border-radius: $BORDER_RADIUS;
+    @include themify($themes) {
+        background-color: themed(container_secondary_color);
+        box-shadow: 0 2px 16px 8px themed(border_color);
+    }
+
+    .composite-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $COLOR_BLACK;
+        z-index: 98;
+    }
+    &__input-fields {
+        display: flex;
+        @include themify($themes) {
+            border-radius: $BORDER_RADIUS;
+        }
+
+        & > .input-field {
+            margin: 0;
+            @include themify($themes) {
+                @include colorIcon(themed(text_primary_color));
+            }
+
+            & .input {
+                height: 32px;
+                @include themify($themes) {
+                    background-color: themed(border_color);
+                }
+
+                &::placeholder {
+                    @include themify($themes) {
+                        color: themed(text_secondary_color);
+                    }
+                }
+            }
+
+        }
+        & > .input-field:not(:first-child) {
+            margin-left: 8px;
+        }
+    }
+    & > .first-month, & > .second-month {
+        .calendar__body {
+            @include themify($themes) {
+                border-bottom: none;
+            }
+        }
+    }
+    &__prepopulated-list {
+        padding-top: 50px;
+        @include typeface(--paragraph-center-normal-black);
+        @include themify($themes) {
+            color: themed(text_color);
+            background-color: themed(tab_background_color);
+        }
+
+        &--is-active {
+            @include themify($themes) {
+                color: themed(text_color);
+                background-color: themed(tab_hover_color);
+                font-weight: bold;
+            }
+        }
+        & li {
+            cursor: pointer;
+            padding: 6px 6px 6px 16px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+    }
+}

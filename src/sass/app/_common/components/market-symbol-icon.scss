@@ -3,7 +3,6 @@
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    padding: 8px;
 
     .color1-fill {
         @include themify($themes) {

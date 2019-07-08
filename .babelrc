@@ -1,28 +1,14 @@
 {
-    "presets": ["env", "stage-1", "react"],
-    "plugins": [
-        "transform-decorators-legacy",
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        "babel-plugin-syntax-dynamic-import",
-        [
-            "module-resolver",
-            {
-                "root": [
-                    "./src/javascript"
-                ],
-                "alias": {
-                    "_common"  : "./src/javascript/_common",
-                    "App"      : "./src/javascript/app/App",
-                    "Assets"   : "./src/javascript/app/Assets",
-                    "Constants": "./src/javascript/app/Constants",
-                    "Modules"  : "./src/javascript/app/Modules",
-                    "Services" : "./src/javascript/app/Services",
-                    "Stores"   : "./src/javascript/app/Stores",
-                    "Utils"    : "./src/javascript/app/Utils",
-                    "Images"   : "./src/images/"
-                }
-            }
-        ]
-    ]
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+    [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-syntax-dynamic-import"
+  ]
 }

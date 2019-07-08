@@ -21,12 +21,14 @@ class Popover extends React.PureComponent {
         });
     }
 
-    toggleIsOpen = () => {
+    toggleOpen = () => {
         this.setState({
-            is_open         : !this.state.is_open && Boolean(this.props.message),
+            is_open         : true && Boolean(this.props.message),
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
         });
-    };
+    }
+
+    toggleClose = () => this.setState({ is_open: false });
 
     render() {
         const {
@@ -46,8 +48,8 @@ class Popover extends React.PureComponent {
         return (
             <div
                 className='popover'
-                onMouseEnter={this.toggleIsOpen}
-                onMouseLeave={this.toggleIsOpen}
+                onMouseEnter={this.toggleOpen}
+                onMouseLeave={this.toggleClose}
             >
                 <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
                     { !disable_target_icon &&

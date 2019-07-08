@@ -33,6 +33,11 @@ const Purchase = ({
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
+        const getSortedIndex = () => {
+            if (getContractTypePosition(type) === 'top') return 0;
+            if (getContractTypePosition(type) === 'bottom') return 1;
+            return index;
+        };
         const info              = proposal_info[type] || {};
         const is_disabled       = is_contract_mode
             || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
@@ -44,7 +49,7 @@ const Purchase = ({
                 currency={currency}
                 info={info}
                 key={index}
-                index={index}
+                index={getSortedIndex()}
                 is_contract_mode={is_contract_mode}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}

@@ -17,8 +17,13 @@ function confirm {
 
 cd $(git rev-parse --show-toplevel) &&
 
+if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
+    echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be deriv-app."
+    exit 1
+fi
+
 if [[ ! $(git config --get remote.production.url) =~ binary-com/deriv-app-production ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be production."
+    echo ${RED}"  > ERROR: "${RESET}"remote 'production' should be production."
     exit 1
 fi
 

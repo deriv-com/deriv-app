@@ -26,7 +26,7 @@ const shouldSendDateFrom = (date_from, should_load_partially, partial_fetch_time
     if (today > date_to) {
         return (!!date_from || should_load_partially);
     }
-    return should_load_partially &&  (partial_fetch_time || date_from);
+    return should_load_partially ? (partial_fetch_time || date_from) : !!date_from || false;
 };
 
 const getDateBoundaries = (date_from, date_to, partial_fetch_time, should_load_partially = false) => (

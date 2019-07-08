@@ -185,7 +185,7 @@ const ResponseHandlers = (() => {
                 // Footer.clearNotification();
             }
             BinarySocket.availability(is_available);
-            setCurrencies(response.website_status);
+            client_store.setWebsiteStatus(response);
         }
     };
 

@@ -78,6 +78,6 @@ then
     confirm "Open github to submit the PR?" &&
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        open "https://github.com/binary-com/binary-static"
+        open "https://github.com/binary-com/deriv-app"
     fi
 fi

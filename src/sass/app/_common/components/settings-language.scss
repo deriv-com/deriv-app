@@ -1,5 +1,5 @@
-/** @define settings-dialog */
-.settings-dialog {
+/** @define settings-language */
+.settings-language {
     &__language-header {
         font-size: 14px;
         font-weight: bold;
@@ -53,64 +53,5 @@
                 }
             }
         }
-    }
-    &__container {
-        width: 736px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
-        border-radius: $BORDER_RADIUS;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-        }
-
-        &--hide {
-            display: none;
-        }
-        &--enter, &--exit {
-            transform: translateY(50px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        &--enter-done {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-    }
-}
-/**
- * @define dialog-header
- */
-.dialog-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    box-shadow: 0 2px 8px 0 var($COLOR_LIGHT_BLACK_3);
-
-    &__sidebar {
-        @include typeface(--title-left-bold-black);
-        @include themify($themes) {
-            background-color: themed('background_cover');
-            color: themed('text_color');
-        }
-        width: 200px;
-        line-height: 24px;
-        padding: 16px;
-    }
-    &__main {
-        width: 536px;
-        font-size: 16px;
-        padding: 16px;
-        line-height: 24px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-    &__close {
-        display: block;
-        cursor: pointer;
-        @extend %inline-icon.border_hover_color;
     }
 }

@@ -21,7 +21,8 @@ class Icon extends React.PureComponent {
             IconClose             : React.lazy(() => import('./Common/icon-close.jsx')),
             IconCountryFlag       : React.lazy(() => import('./Common/icon-country-flag.jsx')),
             IconDanger            : React.lazy(() => import('./Common/icon-danger.jsx')),
-            IconDeposit           : React.lazy(() => import('./Common/icon-deposit.jsx')),
+            IconDeposit           : React.lazy(() => import('./Common/icon-deposit.jsx')), // TODO: update big when design is ready
+            IconDepositSmall      : React.lazy(() => import('./Common/icon-deposit-small.jsx')),
             IconExclamation       : React.lazy(() => import('./Common/icon-exclamation.jsx')),
             IconFlag              : React.lazy(() => import('./Common/icon-flag.jsx')),
             IconInfoBlue          : React.lazy(() => import('./Common/icon-info-blue.jsx')),
@@ -35,7 +36,8 @@ class Icon extends React.PureComponent {
             IconSuccess           : React.lazy(() => import('./Common/icon-success.jsx')),
             IconWarning           : React.lazy(() => import('./Common/icon-warning.jsx')),
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
-            IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')),
+            IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')), // TODO: update big when design is ready
+            IconWithdrawalSmall   : React.lazy(() => import('./Common/icon-withdrawal-small.jsx')),
 
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
@@ -43,6 +45,9 @@ class Icon extends React.PureComponent {
             ContractIconFlag : React.lazy(() => import('./Contract/icon-flag.jsx')),
             IconStartTime    : React.lazy(() => import('./Contract/icon-start-time.jsx')),
             IconTick         : React.lazy(() => import('./Contract/icon-tick.jsx')),
+
+            // Modal
+            ModalIconClose: React.lazy(() => import('./Modal/icon-close.jsx')),
 
             // Footer
             IconMaximize : React.lazy(() => import('./Footer/icon-maximize.jsx')),
@@ -68,11 +73,10 @@ class Icon extends React.PureComponent {
             IconCalendarForwardToday: React.lazy(() => import('./Reports/ic-calendar-forwardtoday.jsx')),
 
             // Settings
-            IconCharts       : React.lazy(() => import('./Settings/icon-charts.jsx')),
-            SettingsIconClose: React.lazy(() => import('./Settings/icon-close.jsx')),
-            IconLanguage     : React.lazy(() => import('./Settings/icon-language.jsx')),
-            IconPurchase     : React.lazy(() => import('./Settings/icon-purchase.jsx')),
-            IconTheme        : React.lazy(() => import('./Settings/icon-theme.jsx')),
+            IconCharts  : React.lazy(() => import('./Settings/icon-charts.jsx')),
+            IconLanguage: React.lazy(() => import('./Settings/icon-language.jsx')),
+            IconPurchase: React.lazy(() => import('./Settings/icon-purchase.jsx')),
+            IconTheme   : React.lazy(() => import('./Settings/icon-theme.jsx')),
 
             // Statement
             IconBuy   : React.lazy(() => import('./Statement/icon-buy.jsx')),

@@ -115,6 +115,9 @@ export default class ContractTradeStore extends BaseStore {
     onMountBuy(contract_id) {
         if (contract_id === this.contract_id) return;
         this.contract_id = contract_id;
+        // clear proposal and purchase info once contract is mounted
+        this.root_store.modules.trade.proposal_info = {};
+        this.root_store.modules.trade.purchase_info = {};
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         });
@@ -123,13 +126,16 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
-        this.onSwitchAccount(this.accountSwitcherListener.bind(null));
         this.smart_chart       = this.root_store.modules.smart_chart;
         if (this.smart_chart.is_contract_mode) this.onCloseContract();
         this.has_error         = false;
         this.error_message     = '';
         this.contract_id       = contract_id;
         this.is_from_positions = is_from_positions;
+
+        // clear proposal and purchase info once contract is mounted
+        this.root_store.modules.trade.proposal_info = {};
+        this.root_store.modules.trade.purchase_info = {};
 
         if (contract_id) {
             if (this.is_from_positions) {
@@ -140,12 +146,6 @@ export default class ContractTradeStore extends BaseStore {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
             });
         }
-    }
-
-    @action.bound
-    accountSwitcherListener () {
-        this.smart_chart.setContractMode(false);
-        return new Promise((resolve) => resolve(this.onCloseContract()));
     }
 
     @action.bound
@@ -163,7 +163,6 @@ export default class ContractTradeStore extends BaseStore {
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
         this.smart_chart.cleanupContractChartView();
         this.smart_chart.applySavedTradeChartLayout();
-        WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
     }
 
     @action.bound
@@ -197,7 +196,7 @@ export default class ContractTradeStore extends BaseStore {
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-            this.root_store.modules.trade.updateSymbol(this.contract_info.underlying);
+            this.root_store.modules.trade.symbol = this.contract_info.underlying;
         }
 
         this.drawChart(this.contract_info);

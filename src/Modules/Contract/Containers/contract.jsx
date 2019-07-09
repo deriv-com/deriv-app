@@ -58,10 +58,10 @@ Contract.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        clearError   : modules.contract_trade.clearError,
-        error_message: modules.contract_trade.error_message,
-        has_error    : modules.contract_trade.has_error,
+        clearError   : modules.contract_replay.clearError,
+        error_message: modules.contract_replay.error_message,
+        has_error    : modules.contract_replay.has_error,
         is_mobile    : ui.is_mobile,
-        symbol       : modules.contract_trade.contract_info.underlying,
+        symbol       : modules.contract_replay.contract_info.underlying,
     }),
 )(Contract));

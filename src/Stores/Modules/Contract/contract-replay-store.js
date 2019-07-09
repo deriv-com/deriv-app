@@ -95,7 +95,6 @@ export default class ContractReplayStore extends BaseStore {
     populateConfig(response) {
         if ('error' in response) {
             this.has_error       = true;
-            this.contract_config = {};
             this.smart_chart.setIsChartLoading(false);
             return;
         }
@@ -103,7 +102,6 @@ export default class ContractReplayStore extends BaseStore {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.contract_config     = {};
             this.smart_chart.setContractMode(false);
             this.smart_chart.setIsChartLoading(false);
             return;

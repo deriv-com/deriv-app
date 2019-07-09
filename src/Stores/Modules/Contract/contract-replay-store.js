@@ -31,7 +31,7 @@ export default class ContractReplayStore extends BaseStore {
 
     // ---- Replay Contract Config ----
     @observable contract_id;
-    @observable replay_indicative_status;
+    @observable indicative_status;
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
 
@@ -76,7 +76,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     onUnmount() {
-        this.forgetProposalOpenContract(this.replay_contract_id, this.populateConfig);
+        this.forgetProposalOpenContract(this.contract_id, this.populateConfig);
         this.contract_id         = null;
         this.digits_info         = {};
         this.is_ongoing_contract = false;
@@ -158,7 +158,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     onClickSell(contract_id) {
-        const { bid_price } = this.replay_info;
+        const { bid_price } = this.contract_info;
         if (contract_id && bid_price) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);

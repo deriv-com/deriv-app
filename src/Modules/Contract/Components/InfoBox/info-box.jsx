@@ -1,16 +1,16 @@
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { SlideIn }         from 'App/Components/Animations';
-import ChartCloseBtn       from 'Modules/SmartChart/Components/chart-close-btn.jsx';
-import InfoBoxLongcode     from './info-box-longcode.jsx';
-import ContractError       from '../contract-error.jsx';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { SlideIn }     from 'App/Components/Animations';
+import ChartCloseBtn   from 'Modules/SmartChart/Components/chart-close-btn.jsx';
+import InfoBoxLongcode from './info-box-longcode.jsx';
+import ContractError   from '../contract-error.jsx';
 
 const InfoBox = ({
     contract_info,
+    error_message,
     is_contract_mode,
     is_trade_page,
     onClose,
-    error_message,
     removeError,
 }) => {
     const Contents = InfoBoxLongcode;

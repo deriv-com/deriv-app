@@ -317,7 +317,7 @@ export default class SmartChartStore extends BaseStore {
         return (({ common, ui } = this.root_store) => ({
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,
-            isHighestLowestMarkerEnabled: false, // !this.is_contract_mode, // TODO: Pending UI
+            isHighestLowestMarkerEnabled: !this.is_contract_mode, // TODO: Pending UI toggle
             lang                        : common.current_language,
             position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',

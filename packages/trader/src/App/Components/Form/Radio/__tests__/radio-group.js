@@ -5,6 +5,12 @@ import sinon      from 'sinon';
 import RadioGroup from '../radio-group.jsx';
 
 describe('<RadioGroup />', () => {
+    let is_dev;
+
+    before(() => {
+        is_dev = process.env.NODE_ENV !== 'production';
+    });
+
     beforeEach(() => {
         sinon.stub(console, 'error');
     });
@@ -40,15 +46,20 @@ describe('<RadioGroup />', () => {
         expect(wrapper.find('div.radio-group__item')).to.have.length(2);
     });
 
-    it('should throw warning on bad items props', () => {
-        const wrapper = mount(<RadioGroup
-            items={invalid_items}
-            onToggle={() => (
-                {}
-            )}
-        />);
-        sinon.assert.called(console.error);
-    });
+    // TODO: Add explanation to README for tests
+    // Assertion for prop-type error should be checked in `development` mode only. Refer:
+    // https://blog.logrocket.com/validating-react-component-props-with-prop-types-ef14b29963fc/
+    if (is_dev) {
+        it('should throw warning on bad items props', () => {
+            const wrapper = mount(<RadioGroup
+                items={invalid_items}
+                onToggle={() => (
+                    {}
+                )}
+            />);
+            sinon.assert.called(console.error);
+        });
+    }
 
     it('should call onToggle with the proper value', () => {
         const mockedFunction = sinon.stub();

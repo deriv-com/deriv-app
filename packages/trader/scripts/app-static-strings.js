@@ -1,5 +1,5 @@
 /**
- * The purpose of this file is to store static strings of 'app' which are not passed in any localize() call
+ * The purpose of this file is to store static strings which are not passed in any localize() call
  * i.e. those API strings that are not translated, so we handle their translation process here
  *
  * NOTE: Doesn't need to put a string here if it is the first argument in a localize() call

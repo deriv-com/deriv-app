@@ -1,5 +1,5 @@
 export * from './account-info.jsx';
-export * from './deposit-button.jsx';
+export * from './toggle-cashier.jsx';
 export * from './login-button.jsx';
 export * from './upgrade-button.jsx';
 export * from './menu-links.jsx';

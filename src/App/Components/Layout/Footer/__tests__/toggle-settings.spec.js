@@ -4,7 +4,7 @@ import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { ToggleSettings }     from '../toggle-settings.jsx';
 import Icon                   from 'Assets/icon.jsx';
-import { SettingsDialog }     from '../../../Elements/SettingsDialog/settings-dialog.jsx';
+import { Modal }              from '../../../Elements/modal.jsx';
 import { CSSTransition }      from 'react-transition-group';
 
 configure({ adapter: new Adapter() });
@@ -33,21 +33,14 @@ describe('ToggleSettings', () => {
         wrapper.setProps({ is_settings_visible: false });
         expect(wrapper.find(CSSTransition).prop('in')).to.be.false;
     });
-    it('should have SettingsDialog', () => {
+    it('should have Modal', () => {
         const wrapper = shallow(<ToggleSettings />);
-        expect(wrapper.find(SettingsDialog).exists()).to.be.true;
+        expect(wrapper.find(Modal).exists()).to.be.true;
     });
     it('property \'is_open\' should depend on \'is_settings_visible\'', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
-        expect(wrapper.find(SettingsDialog).prop('is_open')).to.be.true;
+        expect(wrapper.find(Modal).prop('is_open')).to.be.true;
         wrapper.setProps({ is_settings_visible: false });
-        expect(wrapper.find(SettingsDialog).prop('is_open')).to.be.false;
-    });
-
-    it('property \'is_language_dialog_visible\' should depend on \'is_language_visible\'', () => {
-        const wrapper = shallow(<ToggleSettings is_language_visible={true} />);
-        expect(wrapper.find(SettingsDialog).prop('is_language_dialog_visible')).to.be.true;
-        wrapper.setProps({ is_language_visible: false });
-        expect(wrapper.find(SettingsDialog).prop('is_language_dialog_visible')).to.be.false;
+        expect(wrapper.find(Modal).prop('is_open')).to.be.false;
     });
 });

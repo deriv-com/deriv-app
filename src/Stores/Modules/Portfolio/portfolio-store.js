@@ -150,7 +150,7 @@ export default class PortfolioStore extends BaseStore {
             const i = this.getPositionIndexById(response.sell.contract_id);
             this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
-            this.root_store.modules.contract.sell_info = {
+            this.root_store.modules.contract_trade.sell_info = {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
@@ -206,8 +206,8 @@ export default class PortfolioStore extends BaseStore {
         this.positions.splice(contract_idx, 1);
 
         // check if contract is in view in contract_mode before removing contract details from chart
-        if (is_contract_mode && (+this.root_store.modules.contract.contract_id === +contract_id)) {
-            this.root_store.modules.contract.onCloseContract();
+        if (is_contract_mode && (+this.root_store.modules.contract_trade.contract_id === +contract_id)) {
+            this.root_store.modules.contract_trade.onCloseContract();
         }
     }
 

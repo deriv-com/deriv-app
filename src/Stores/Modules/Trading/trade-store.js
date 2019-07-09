@@ -182,7 +182,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clearContract = () => {
         if (this.root_store.modules.smart_chart.is_contract_mode) {
-            this.root_store.modules.contract.onCloseContract();
+            this.root_store.modules.contract_trade.onCloseContract();
         }
     };
 
@@ -326,7 +326,7 @@ export default class TradeStore extends BaseStore {
                         // and then set the chart view to the start_time
                         this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
-                        this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
+                        this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
@@ -476,7 +476,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
-            this.root_store.modules.contract.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
+            this.root_store.modules.contract_trade.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);

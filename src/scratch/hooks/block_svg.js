@@ -1,5 +1,9 @@
-/* eslint-disable func-names, no-underscore-dangle */
 import { translate } from '../../utils/lang/i18n';
+
+/* eslint-disable func-names, no-underscore-dangle */
+
+// deriv-bot: Blockly value, Scratch resets this to 0, req for correct spacing in flyout.
+Blockly.BlockSvg.TAB_WIDTH = 8;
 
 /**
  * Set whether the block is disabled or not.

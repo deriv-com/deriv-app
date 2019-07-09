@@ -3,5 +3,18 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.15.0"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap --scope",
+    "hoist": "lerna bootstrap --hoist --nohoist=jsdom* --nohoist=mochapack",
+    "start": "f () { lerna exec --scope ${1:-'*'} -- npm run start ;}; f",
+    "serve": "f () { lerna exec --scope ${1:-'*'} -- npm run serve ;}; f",
+    "build": "f () { lerna exec --scope ${1:-'*'} -- npm run build ${@:2} ;}; f",
+    "test": "f () { lerna exec --scope ${1:-'*'} -- npm run test ;}; f",
+    "deploy": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy ;}; f",
+    "deploy:clean": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:clean ;}; f",
+    "deploy:folder": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:folder ${@:2} ;}; f",
+    "deploy:staging": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:staging ;}; f",
+    "deploy:production": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:production ;}; f"
   }
 }

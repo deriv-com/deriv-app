@@ -1,5 +1,5 @@
 import filesaver                         from 'file-saver';
-import { oppositesToDropdown }           from './utils';
+import { oppositesToDropdown }           from './utils'; // eslint-disable-line import/no-cycle
 import config                            from '../constants/const';
 import { generateLiveApiInstance }       from '../services/api/appId';
 import { symbolApi }                     from '../services/api/shared';

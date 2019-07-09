@@ -1,5 +1,5 @@
 import TicksService    from './ticksService';
-import { doUntilDone } from '../../utils/tools';
+import { doUntilDone } from '../tradeEngine/utils/helpers';
 
 export default class ChartTicksService extends TicksService {
     observe() {

@@ -1,3 +1,4 @@
+import classNames  from 'classnames';
 import PropTypes   from 'prop-types';
 import React       from 'react';
 import ReactDOM    from 'react-dom';
@@ -35,7 +36,7 @@ class Modal extends React.PureComponent {
 
     render() {
         return ReactDOM.createPortal(
-            <div ref={this.setWrapperRef} className={`modal__container modal__${this.props.className}`}>
+            <div ref={this.setWrapperRef} className={classNames('modal__container', this.props.className && `modal__${this.props.className}`)}>
                 <div className='modal-header'>
                     <h3 className='modal-header__sidebar'>{this.props.title}</h3>
                     <div className='modal-header__main'>

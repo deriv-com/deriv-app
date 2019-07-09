@@ -1,7 +1,7 @@
 Deriv App
 =============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://deriv.app) website.
+This repository contains the various platforms of Deriv.
 
 ## Installation
 
@@ -45,3 +45,9 @@ npm run start trader
 ```
 
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
+
+### Clean projects
+
+If you intend to remove `node_modules` folder(s) from the projects, please run `lerna clean` and follow the intstructions.
+
+You can read more on the various lerna commands (and the `clean` command) over at the [Lerna docs](https://github.com/lerna/lerna/).

@@ -1,7 +1,7 @@
 import { LiveApi }                                      from 'binary-live-api';
 import AppIds                                           from './appIdResolver';
-import Elevio                                           from '../../utils/customerSupport/elevio';
-import GTM                                              from '../../utils/gtm';
+import Elevio                                           from '../../utils/customerSupport/elevio';// eslint-disable-line import/no-cycle
+import GTM                                              from '../../utils/gtm';// eslint-disable-line import/no-cycle
 import { getLanguage }                                  from '../../utils/lang/lang';
 import {
     addToken,

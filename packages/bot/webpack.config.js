@@ -78,14 +78,14 @@ module.exports = {
         new StyleLintPlugin( { fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml' },
-            { from: './node_modules/scratch-blocks/media', to: 'media' },
+            { from: '../../node_modules/scratch-blocks/media', to: 'media' },
         ]),
         new MergeIntoSingleFilePlugin({
             files: {
                 'scratch.js': [
-                    './node_modules/scratch-blocks/blockly_compressed_vertical.js',
-                    './node_modules/scratch-blocks/msg/messages.js',
-                    './node_modules/blockly/generators/javascript.js',
+                    '../../node_modules/scratch-blocks/blockly_compressed_vertical.js',
+                    '../../node_modules/scratch-blocks/msg/messages.js',
+                    '../../node_modules/blockly/generators/javascript.js',
                 ]
             }
         }),

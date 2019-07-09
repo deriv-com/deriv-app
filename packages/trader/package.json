@@ -89,7 +89,7 @@
     "ws": "^7.0.1"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.4.4",
     "acorn": "^6.1.1",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",

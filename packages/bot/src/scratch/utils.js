@@ -1,4 +1,4 @@
-import { fieldGeneratorMapping, saveAs } from './shared';
+import { fieldGeneratorMapping, saveAs } from './shared';  // eslint-disable-line import/no-cycle
 import config                            from '../constants/const';
 import { translate }                     from '../utils/lang/i18n';
 import { observer as globalObserver }    from '../utils/observer';

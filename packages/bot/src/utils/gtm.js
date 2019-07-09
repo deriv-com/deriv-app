@@ -1,5 +1,5 @@
 import { getTokenList }     from './tokenHelper';
-import { getAppIdFallback } from '../services/api/appId';
+import { getAppIdFallback } from '../services/api/appId'; // eslint-disable-line import/no-cycle
 import AppIds             from '../services/api/appIdResolver';
 
 const GTM = (() => {

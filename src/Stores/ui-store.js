@@ -18,9 +18,9 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on     = false;
     @observable is_reports_visible         = false;
 
+    @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
-    @observable is_language_dialog_on   = false;
-    @observable is_settings_dialog_on   = false;
+    @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
 
     @observable is_loading              = true;
@@ -230,19 +230,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleSettingsDialog() {
-        this.is_settings_dialog_on = !this.is_settings_dialog_on;
-        if (!this.is_settings_dialog_on) this.is_language_dialog_on = false;
+    toggleCashierModal() {
+        this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
     @action.bound
-    showLanguageDialog() {
-        this.is_language_dialog_on = true;
-    }
-
-    @action.bound
-    hideLanguageDialog() {
-        this.is_language_dialog_on = false;
+    toggleSettingsModal() {
+        this.is_settings_modal_on = !this.is_settings_modal_on;
     }
 
     @action.bound

@@ -25,7 +25,7 @@
 //     togglePurchaseConfirmation,
 //     togglePurchaseLock,
 // }) => (
-//     <div className='settings-dialog__purchase'>
+//     <div className='settings-modal__purchase'>
 //         <MediaItem>
 //             <MediaHeading>
 //                 <Localize i18n_default_text='Purchase confirmation' />

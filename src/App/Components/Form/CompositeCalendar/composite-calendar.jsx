@@ -18,11 +18,11 @@ class CompositeCalendar extends React.PureComponent {
             show_to  : false,
             show_from: false,
             list     : [
-                { children: localize('All time'),     onClick: () => this.selectDateRange(0),  duration: 0, is_active: true },
-                { children: localize('Last 7 days'),  onClick: () => this.selectDateRange(7),  duration: 7, is_active: false },
-                { children: localize('Last 30 days'), onClick: () => this.selectDateRange(30), duration: 30, is_active: false },
-                { children: localize('Last 60 days'), onClick: () => this.selectDateRange(60), duration: 60, is_active: false },
-                { children: localize('Last quarter'), onClick: () => this.selectDateRange(90), duration: 90, is_active: false },
+                { children: localize('All time'),     onClick: () => this.selectDateRange(0),  duration: 0 },
+                { children: localize('Last 7 days'),  onClick: () => this.selectDateRange(7),  duration: 7 },
+                { children: localize('Last 30 days'), onClick: () => this.selectDateRange(30), duration: 30 },
+                { children: localize('Last 60 days'), onClick: () => this.selectDateRange(60), duration: 60 },
+                { children: localize('Last quarter'), onClick: () => this.selectDateRange(90), duration: 90 },
             ],
         };
 
@@ -31,26 +31,10 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     selectDateRange (from) {
-        this.setActiveList();
         this.hideCalendar();
         this.applyBatch({
             from: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
-            to  : toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix(),
-        });
-    }
-
-    setActiveList () {
-        const copy = [...this.state.list];
-        copy.forEach(item => item.is_active = !!this.isBoundToAList(item.duration));
-        if (!copy.some(item => item.is_active)) {
-            copy.forEach(item => {
-                if (item.duration === 0) {
-                    item.is_active = true;
-                }
-            });
-        }
-        this.setState({
-            list: copy,
+            to  : toMoment().endOf('day').unix(),
         });
     }
 
@@ -97,15 +81,6 @@ class CompositeCalendar extends React.PureComponent {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    isBoundToAList(duration) {
-        const today = toMoment().startOf('day').unix();
-        const to_date = epochToMoment(this.props.to).startOf('day').unix();
-        const from_date = epochToMoment(this.props.from).startOf('day').unix();
-        const that_day = epochToMoment(this.props.to).startOf('day').subtract(duration, 'days').unix();
-
-        return today === to_date && that_day === from_date;
-    }
-
     setToDate (date) {
         this.updateState('to', epochToMoment(date).endOf('day').unix());
     }
@@ -115,7 +90,6 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     updateState(key, value) {
-        this.setActiveList();
         this.apply(key, value);
     }
 
@@ -157,7 +131,7 @@ class CompositeCalendar extends React.PureComponent {
                 </div>
                 {show_to &&
                 <div className='composite-calendar' ref={this.setWrapperRef}>
-                    <SideList items={list} />
+                    <SideList from={from} to={to} items={list} />
                     <TwoMonthPicker
                         value={to}
                         onChange={this.setToDate.bind(this)}
@@ -166,7 +140,7 @@ class CompositeCalendar extends React.PureComponent {
                 </div>}
                 {show_from &&
                 <div className='composite-calendar' ref={this.setWrapperRef}>
-                    <SideList items={list} />
+                    <SideList from={from} to={to} items={list} />
                     <TwoMonthPicker
                         value={from}
                         onChange={this.setFromDate.bind(this)}

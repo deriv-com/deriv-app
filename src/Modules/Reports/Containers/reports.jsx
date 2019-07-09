@@ -58,11 +58,11 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.props.toggleReports(false);
                 },
-                icon : 'SettingsIconClose',
+                icon : 'ModalIconClose',
                 title: localize('Close'),
             },
             {
-                component: () => <WalletInformation />,
+                component: () => <WalletInformation has_description has_loginid />,
                 title    : '',
             },
         ];

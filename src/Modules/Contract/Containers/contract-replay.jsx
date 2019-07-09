@@ -49,7 +49,7 @@ class ContractReplay extends React.Component {
         const action_bar_items = [
             {
                 onClick: () => this.props.history.push(AppRoutes.trade),
-                icon   : 'SettingsIconClose',
+                icon   : 'DialogIconClose',
                 title  : localize('Close'),
             },
         ];

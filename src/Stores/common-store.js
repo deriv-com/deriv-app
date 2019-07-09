@@ -21,6 +21,9 @@ export default class CommonStore extends BaseStore {
 
     @observable services_error = {};
 
+    @observable deposit_url = '';
+    @observable withdraw_url = '';
+
     @action.bound
     setIsSocketOpened(is_socket_opened) {
         this.is_socket_opened = is_socket_opened;
@@ -62,5 +65,15 @@ export default class CommonStore extends BaseStore {
             should_show_refresh,
             type: 'error',
         });
+    }
+
+    @action.bound
+    setDepositURL(deposit_url) {
+        this.deposit_url = deposit_url;
+    }
+
+    @action.bound
+    setWithdrawURL(withdraw_url) {
+        this.withdraw_url = withdraw_url;
     }
 }

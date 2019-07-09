@@ -16,18 +16,16 @@ const Footer = ({
     active_positions,
     hideFullBlur,
     is_fully_blurred,
-    is_dark_mode,
-    is_language_dialog_visible,
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
     is_route_blurred,
-    is_settings_dialog_on,
+    is_settings_modal_on,
     location,
     showFullBlur,
     show_positions_toggle,
     togglePositionsDrawer,
-    toggleSettingsDialog,
+    toggleSettingsModal,
 }) => (
     <React.Fragment>
         { (!is_loading || location.pathname !== routes.trade) &&
@@ -49,10 +47,8 @@ const Footer = ({
                 <ServerTime />
                 <div className='footer__links'>
                     <ToggleSettings
-                        is_dark_mode={is_dark_mode}
-                        is_language_visible={is_language_dialog_visible}
-                        is_settings_visible={is_settings_dialog_on}
-                        toggleSettings={toggleSettingsDialog}
+                        is_settings_visible={is_settings_modal_on}
+                        toggleSettings={toggleSettingsModal}
                         showFullBlur={showFullBlur}
                         hideFullBlur={hideFullBlur}
                     />
@@ -64,35 +60,31 @@ const Footer = ({
 );
 
 Footer.propTypes = {
-    active_positions          : MobxPropTypes.arrayOrObservableArray,
-    is_dark_mode              : PropTypes.bool,
-    is_fully_blurred          : PropTypes.bool,
-    is_language_dialog_visible: PropTypes.bool,
-    is_logged_in              : PropTypes.bool,
-    is_positions_drawer_on    : PropTypes.bool,
-    is_route_blurred          : PropTypes.bool,
-    is_settings_dialog_on     : PropTypes.bool,
-    location                  : PropTypes.object,
-    show_positions_toggle     : PropTypes.bool,
-    togglePositionsDrawer     : PropTypes.func,
-    toggleSettingsDialog      : PropTypes.func,
+    active_positions      : MobxPropTypes.arrayOrObservableArray,
+    is_fully_blurred      : PropTypes.bool,
+    is_logged_in          : PropTypes.bool,
+    is_positions_drawer_on: PropTypes.bool,
+    is_route_blurred      : PropTypes.bool,
+    is_settings_modal_on  : PropTypes.bool,
+    location              : PropTypes.object,
+    show_positions_toggle : PropTypes.bool,
+    togglePositionsDrawer : PropTypes.func,
+    toggleSettingsModal   : PropTypes.func,
 };
 
 export default withRouter(connect(
     ({ client, modules, ui }) => ({
-        active_positions          : modules.portfolio.active_positions,
-        hideFullBlur              : ui.hideFullBlur,
-        is_fully_blurred          : ui.is_fully_blurred,
-        is_dark_mode              : ui.is_dark_mode_on,
-        is_route_blurred          : ui.is_route_blurred,
-        is_logged_in              : client.is_logged_in,
-        is_language_dialog_visible: ui.is_language_dialog_on,
-        is_loading                : ui.is_loading,
-        is_positions_drawer_on    : ui.is_positions_drawer_on,
-        is_settings_dialog_on     : ui.is_settings_dialog_on,
-        showFullBlur              : ui.showFullBlur,
-        show_positions_toggle     : ui.show_positions_toggle,
-        togglePositionsDrawer     : ui.togglePositionsDrawer,
-        toggleSettingsDialog      : ui.toggleSettingsDialog,
+        active_positions      : modules.portfolio.active_positions,
+        hideFullBlur          : ui.hideFullBlur,
+        is_fully_blurred      : ui.is_fully_blurred,
+        is_route_blurred      : ui.is_route_blurred,
+        is_logged_in          : client.is_logged_in,
+        is_loading            : ui.is_loading,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        is_settings_modal_on  : ui.is_settings_modal_on,
+        showFullBlur          : ui.showFullBlur,
+        show_positions_toggle : ui.show_positions_toggle,
+        togglePositionsDrawer : ui.togglePositionsDrawer,
+        toggleSettingsModal   : ui.toggleSettingsModal,
     })
 )(Footer));

@@ -1,5 +1,11 @@
-const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
-const path = require('path');
+const path                          = require('path');
+const {
+    ALIASES,
+    IS_RELEASE,
+    MINIMIZERS,
+    plugins,
+    rules }                         = require('./constants');
+const { openChromeBasedOnPlatform } = require('./helpers');
 
 module.exports = function (env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
@@ -7,7 +13,7 @@ module.exports = function (env, argv) {
     return {
         context     : path.resolve(__dirname, '../src'),
         devServer   : {
-            open              : 'Google Chrome',
+            open              : openChromeBasedOnPlatform(),
             host              : 'localhost.binary.sx',
             https             : true,
             hot               : true,

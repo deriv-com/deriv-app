@@ -182,7 +182,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clearContract = () => {
         if (this.root_store.modules.smart_chart.is_contract_mode) {
-            this.root_store.modules.contract.onCloseContract();
+            this.root_store.modules.contract_trade.onCloseContract();
         }
     };
 

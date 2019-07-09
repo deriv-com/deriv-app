@@ -76,7 +76,7 @@ class Trade extends React.Component {
                         is_mobile={this.props.is_mobile}
                         is_contract_visible={this.props.is_contract_mode}
                         is_trade_enabled={this.props.is_trade_enabled}
-                        is_blurred={this.props.is_market_closed || !this.props.is_chart_ready}
+                        is_blurred={this.props.is_market_closed}
                     />
                 </div>
             </div>

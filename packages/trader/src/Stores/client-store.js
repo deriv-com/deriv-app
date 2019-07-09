@@ -2,7 +2,6 @@ import {
     action,
     computed,
     observable,
-    reaction,
     runInAction,
     when,
 }                                    from 'mobx';
@@ -370,6 +369,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
+                this.root_store.modules.trade.clearContract();
                 return;
             }
 
@@ -437,6 +437,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.onMount();
     }
 
+    /* eslint-disable */
     @action.bound
     storeClientAccounts(obj_params, account_list) {
         // store consistent names with other API calls
@@ -535,3 +536,4 @@ export default class ClientStore extends BaseStore {
         }
     }
 }
+/* eslint-enable */

@@ -4,15 +4,17 @@ import React           from 'react';
 import { withRouter }  from 'react-router';
 import { formatMoney } from '_common/base/currency_base';
 import { urlFor }      from '_common/url';
+import Button          from 'App/Components/Form/button.jsx';
 import {
     AccountInfo,
     LoginButton,
     MenuLinks,
     SignupButton,
-    ToggleCashier,
+    // ToggleCashier,
     ToggleMenuDrawer,
     UpgradeButton }    from 'App/Components/Layout/Header';
 import header_links    from 'App/Constants/header-links';
+import { localize }    from 'App/i18n';
 import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
 
@@ -21,9 +23,9 @@ const Header = ({
     can_upgrade,
     can_upgrade_to,
     currency,
-    hideFullBlur,
+    // hideFullBlur,
     is_acc_switcher_on,
-    is_cashier_modal_on,
+    // is_cashier_modal_on,
     is_fully_blurred,
     is_loading,
     is_logged_in,
@@ -33,9 +35,9 @@ const Header = ({
     location,
     loginid,
     onClickUpgrade,
-    showFullBlur,
+    // showFullBlur,
     toggleAccountsDialog,
-    toggleCashierModal,
+    // toggleCashierModal,
 }) => (
     <React.Fragment>
         {(!is_loading || location.pathname !== routes.trade) &&
@@ -74,13 +76,23 @@ const Header = ({
                                     />
                                     }
                                     { !(is_virtual) &&
-                                    <ToggleCashier
-                                        className='acc-info__button'
-                                        toggleCashier={toggleCashierModal}
-                                        is_cashier_visible={is_cashier_modal_on}
-                                        showFullBlur={showFullBlur}
-                                        hideFullBlur={hideFullBlur}
-                                    />
+                                        // TODO: uncomment this to open cashier popup
+                                        // <ToggleCashier
+                                        //      className='acc-info__button'
+                                        //      toggleCashier={toggleCashierModal}
+                                        //      is_cashier_visible={is_cashier_modal_on}
+                                        //      showFullBlur={showFullBlur}
+                                        //      hideFullBlur={hideFullBlur}
+                                        //  />
+                                        // TODO: remove this when cashier pop up is ready
+                                        <Button
+                                            className='btn--primary btn--primary--orange acc-info__button'
+                                            has_effect
+                                            text={localize('Deposit')}
+                                            onClick={() => {
+                                                window.open(urlFor('cashier', undefined, undefined, true), '_blank');
+                                            }}
+                                        />
                                     }
                                 </React.Fragment>
                                 :

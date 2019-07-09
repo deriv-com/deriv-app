@@ -26,6 +26,7 @@ class AccountSwitcher extends React.Component {
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
+        this.props.clearContract();
         requestLogout().then(this.props.cleanUp);
     };
 
@@ -144,6 +145,7 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     cleanUp               : PropTypes.func,
+    clearContract         : PropTypes.func,
     clearError            : PropTypes.func,
     has_error             : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
@@ -168,6 +170,7 @@ const account_switcher = connect(
         upgrade_info          : client.upgrade_info,
         cleanUp               : client.cleanUp,
         virtual_loginid       : client.virtual_account_loginid,
+        clearContract         : modules.trade.clearContract,
         clearError            : modules.contract.clearError,
         has_error             : modules.contract.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,

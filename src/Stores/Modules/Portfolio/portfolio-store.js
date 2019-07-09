@@ -213,9 +213,9 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener () {
-        return new Promise((resolve) => {
-            this.clearTable();
-            WS.forgetAll('proposal_open_contract', 'transaction');
+        return new Promise(async (resolve) => {
+            await this.clearTable();
+            await WS.forgetAll('proposal_open_contract', 'transaction');
             return resolve(this.initializePortfolio());
         });
     }

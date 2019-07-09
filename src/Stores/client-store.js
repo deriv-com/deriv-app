@@ -3,7 +3,8 @@ import {
     computed,
     observable,
     runInAction,
-    when }                           from 'mobx';
+    when,
+}                                    from 'mobx';
 import moment                        from 'moment';
 import {
     requestLogout,
@@ -15,10 +16,11 @@ import { localize }                  from 'App/i18n';
 import {
     LocalStore,
     State }                          from '_common/storage';
+import BinarySocketGeneral           from 'Services/socket-general';
+import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
-import { handleClientNotifications } from './Helpers/client-notifications';
-import BinarySocketGeneral           from 'Services/socket-general';
+import { setCurrencies }             from '../_common/base/currency_base';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -30,6 +32,7 @@ export default class ClientStore extends BaseStore {
     @observable currencies_list  = {};
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
+    @observable website_status = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -206,6 +209,18 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setWebsiteStatus(response) {
+        this.website_status = response.website_status;
+        setCurrencies(this.website_status);
+    }
+
+    @computed
+    get is_website_status_ready () {
+        return this.website_status &&
+        this.website_status.site_status === 'up';
+    }
+
+    @action.bound
     updateAccountList(account_list) {
         account_list.forEach((account) => {
             if (this.accounts[account.loginid]) {
@@ -252,7 +267,7 @@ export default class ClientStore extends BaseStore {
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
-                // If this fails, it means the landing company check failed
+            // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
@@ -354,6 +369,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
+                this.root_store.modules.trade.clearContract();
                 return;
             }
 
@@ -421,6 +437,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.onMount();
     }
 
+    /* eslint-disable */
     @action.bound
     storeClientAccounts(obj_params, account_list) {
         // store consistent names with other API calls
@@ -462,9 +479,9 @@ export default class ClientStore extends BaseStore {
         });
 
         let i = 1;
-        while (obj_params['acct' + i]) {
-            const loginid = obj_params['acct' + i];
-            const token   = obj_params['token' + i];
+        while (obj_params[`acct${  i}`]) {
+            const loginid = obj_params[`acct${  i}`];
+            const token   = obj_params[`token${  i}`];
             if (loginid && token) {
                 client_object[loginid].token = token;
             }
@@ -490,10 +507,10 @@ export default class ClientStore extends BaseStore {
         const obj_params = {};
         const search     = window.location.search;
         if (search) {
-            var arr_params = window.location.search.substr(1).split('&');
+            const arr_params = window.location.search.substr(1).split('&');
             arr_params.forEach(function(param) {
                 if (param) {
-                    var param_value = param.split('=');
+                    const param_value = param.split('=');
                     if (param_value) {
                         obj_params[param_value[0]] = param_value[1];
                     }
@@ -512,10 +529,11 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 if (account_list && !this.accounts) {
-                    this.storeClientAccounts(obj_params, account_list)
+                    this.storeClientAccounts(obj_params, account_list);
                 }
             });
             return authorize_response;
         }
     }
 }
+/* eslint-enable */

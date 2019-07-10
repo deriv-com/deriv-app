@@ -63,11 +63,13 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     updateChartType(type) {
         this.chart_type = type;
+        this.trade_chart_type = type;
     }
 
     @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
+        this.trade_chart_granularity = granularity;
     }
 
     @action.bound

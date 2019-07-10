@@ -46,14 +46,6 @@ class ContractReplay extends React.Component {
     };
 
     render() {
-        const action_bar_items = [
-            {
-                onClick: () => this.props.history.push(AppRoutes.trade),
-                icon   : 'DialogIconClose',
-                title  : localize('Close'),
-            },
-        ];
-
         const {
             config,
             contract_info,
@@ -84,16 +76,12 @@ class ContractReplay extends React.Component {
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
-                            {
-                                action_bar_items.map(({ icon, onClick, title }) => (
-                                    <Icon
-                                        className='vertical-tab__action-bar--icon'
-                                        key={title}
-                                        icon={icon}
-                                        onClick={onClick}
-                                    />
-                                ))
-                            }
+                            <Icon
+                                className='vertical-tab__action-bar--icon'
+                                key={localize('Close')}
+                                icon='ModalIconClose'
+                                onClick={() => this.props.history.push(AppRoutes.trade)}
+                            />
                         </div>
                         <NotificationMessages />
                         <ChartLoader is_visible={is_chart_loading} />

@@ -87,10 +87,10 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
  * deriv-bot: Custom class names
  */
 Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
-    const classNames = ['toolbox__item', `toolbox__cat--${this.id_}`];
+    const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
 
     if (selected) {
-        classNames.push('toolbox__cat--selected');
+        classNames.push('toolbox__category--selected');
     }
     
     return classNames.join(' ');
@@ -230,16 +230,16 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     this.item_ = el_item;
 
     if (this.is_category_return_) {
-        const el_return_arrow = goog.dom.createDom('div', 'toolbox__cat-arrow toolbox__cat-arrow--back');
+        const el_return_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--back');
         ReactDOM.render(<ArrowIcon className='arrow' />, el_return_arrow);
         el_item.appendChild(el_return_arrow);
     } else {
-        const el_colour = goog.dom.createDom('div', 'toolbox__cat-colour');
+        const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
         el_item.appendChild(el_colour);
     }
     
     const el_label = goog.dom.createDom('div', 'toolbox__label', this.name_);
-    const el_toolbox_text = goog.dom.createDom('div', 'toolbox__cat-text');
+    const el_toolbox_text = goog.dom.createDom('div', 'toolbox__category-text');
 
     this.label_ = el_label;
     el_toolbox_text.appendChild(el_label);
@@ -252,7 +252,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     el_item.appendChild(el_toolbox_text);
 
     if (this.has_child_category_) {
-        const el_category_arrow = goog.dom.createDom('div', 'toolbox__cat-arrow toolbox__cat-arrow--open');
+        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
         ReactDOM.render(<ArrowIcon className='arrow' />, el_category_arrow);
         el_item.appendChild(el_category_arrow);
     } else if (this.iconURI_) {
@@ -343,7 +343,7 @@ Blockly.Toolbox.Category.prototype.setColour = function(node) {
 Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
     const className = this.parent_.horizontalLayout_ ?
         'toolbox__horizontal-category-menu' :
-        'toolbox__cat-menu';
+        'toolbox__category-menu';
 
     this.table = goog.dom.createDom('div', className);
     this.parentHtml_.appendChild(this.table);
@@ -369,7 +369,7 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree) {
 
         if (is_category()) {
             const row_class = childNode.getAttribute('is_category_return') ?
-                'toolbox__cat-return' :
+                'toolbox__category-return' :
                 'toolbox__row';
             const el_row = goog.dom.createDom('div', { class: row_class });
 

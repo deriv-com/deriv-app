@@ -79,7 +79,7 @@ class ContractReplay extends React.Component {
                             <Icon
                                 className='vertical-tab__action-bar--icon'
                                 key={localize('Close')}
-                                icon='DialogIconClose'
+                                icon='ModalIconClose'
                                 onClick={() => this.props.history.push(AppRoutes.trade)}
                             />
                         </div>

@@ -4,17 +4,17 @@ import React           from 'react';
 import { withRouter }  from 'react-router';
 import { formatMoney } from '_common/base/currency_base';
 import { urlFor }      from '_common/url';
-import Button          from 'App/Components/Form/button.jsx';
+// import Button          from 'App/Components/Form/button.jsx';
 import {
     AccountInfo,
     LoginButton,
     MenuLinks,
     SignupButton,
-    // ToggleCashier,
+    ToggleCashier,
     ToggleMenuDrawer,
     UpgradeButton }    from 'App/Components/Layout/Header';
 import header_links    from 'App/Constants/header-links';
-import { localize }    from 'App/i18n';
+// import { localize }    from 'App/i18n';
 import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
 
@@ -23,9 +23,9 @@ const Header = ({
     can_upgrade,
     can_upgrade_to,
     currency,
-    // hideFullBlur,
+    hideFullBlur,
     is_acc_switcher_on,
-    // is_cashier_modal_on,
+    is_cashier_modal_on,
     is_fully_blurred,
     is_loading,
     is_logged_in,
@@ -35,9 +35,10 @@ const Header = ({
     location,
     loginid,
     onClickUpgrade,
-    // showFullBlur,
+    onUnmountCashier,
+    showFullBlur,
     toggleAccountsDialog,
-    // toggleCashierModal,
+    toggleCashierModal,
 }) => (
     <React.Fragment>
         {(!is_loading || location.pathname !== routes.trade) &&
@@ -77,22 +78,23 @@ const Header = ({
                                     }
                                     { !(is_virtual) &&
                                         // TODO: uncomment this to open cashier popup
-                                        // <ToggleCashier
-                                        //      className='acc-info__button'
-                                        //      toggleCashier={toggleCashierModal}
-                                        //      is_cashier_visible={is_cashier_modal_on}
-                                        //      showFullBlur={showFullBlur}
-                                        //      hideFullBlur={hideFullBlur}
-                                        //  />
-                                        // TODO: remove this when cashier pop up is ready
-                                        <Button
-                                            className='btn--primary btn--primary--orange acc-info__button'
-                                            has_effect
-                                            text={localize('Deposit')}
-                                            onClick={() => {
-                                                window.open(urlFor('cashier', undefined, undefined, true), '_blank');
-                                            }}
+                                        <ToggleCashier
+                                            className='acc-info__button'
+                                            toggleCashier={toggleCashierModal}
+                                            is_cashier_visible={is_cashier_modal_on}
+                                            showFullBlur={showFullBlur}
+                                            hideFullBlur={hideFullBlur}
+                                            onUnmount={onUnmountCashier}
                                         />
+                                        // TODO: remove this when cashier pop up is ready
+                                        // <Button
+                                        //     className='btn--primary btn--primary--orange acc-info__button'
+                                        //     has_effect
+                                        //     text={localize('Deposit')}
+                                        //     onClick={() => {
+                                        //         window.open(urlFor('cashier', undefined, undefined, true), '_blank');
+                                        //     }}
+                                        // />
                                     }
                                 </React.Fragment>
                                 :
@@ -127,6 +129,7 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
+    onUnmountCashier    : PropTypes.func,
     showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleCashierModal  : PropTypes.func,
@@ -135,7 +138,7 @@ Header.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <MenuLinks /> from being blocked
 export default withRouter(connect(
-    ({ client, ui }) => ({
+    ({ client, modules, ui }) => ({
         balance             : client.balance,
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
@@ -151,6 +154,7 @@ export default withRouter(connect(
         is_fully_blurred    : ui.is_fully_blurred,
         is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
+        onUnmountCashier    : modules.cashier.onUnmount,
         showFullBlur        : ui.showFullBlur,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleCashierModal  : ui.toggleCashierModal,

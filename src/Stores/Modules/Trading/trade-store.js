@@ -263,6 +263,11 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
+        // save trade_chart_symbol upon user change
+        if (name === 'symbol' && value) {
+            this.root_store.modules.smart_chart.trade_chart_symbol = value;
+        }
+
         if (name === 'currency') {
             this.root_store.client.selectCurrency(value);
         } else if (name === 'expiry_date') {
@@ -617,10 +622,12 @@ export default class TradeStore extends BaseStore {
     @action.bound
     restoreTradeChart() {
         const smart_chart_store = this.root_store.modules.smart_chart;
-        if (smart_chart_store.trade_chart_symbol !== this.symbol) {
+        if (smart_chart_store.trade_chart_symbol &&
+            (smart_chart_store.trade_chart_symbol !== this.symbol)) {
             this.symbol = smart_chart_store.trade_chart_symbol;
         }
-        if (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity) {
+        if (smart_chart_store.trade_chart_granularity &&
+            (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
         }
         if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {

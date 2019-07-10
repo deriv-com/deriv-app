@@ -142,7 +142,7 @@
         description="Math, text, logic, lists, etc."
         iconURI="ic-arrow"
     >
-        <category name="Math" id="math" description="Arithmetical operations" colour="#fc8b01">
+        <category name="Math" id="math" description="Arithmetical operations">
             <block type="math_number" />
             <block type="math_arithmetic">
                 <field name="OP">ADD</field>
@@ -243,7 +243,7 @@
             </block>
             <block type="math_random_float" />
         </category>
-        <category name="Text" id="text" description="Operations with text strings" colour="#5d4037">
+        <category name="Text" id="text" description="Operations with text strings">
             <block type="text">
                 <field name="TEXT">abc</field>
             </block>
@@ -360,7 +360,7 @@
                 </value>
             </block>
         </category>
-        <category name="Logic" id="logic" description="Comparison operations" colour="#1876d2">
+        <category name="Logic" id="logic" description="Comparison operations">
             <block type="controls_if"/>
             <block type="controls_if">
                 <mutation else="1"></mutation>
@@ -372,7 +372,7 @@
             <block type="logic_null" />
             <block type="logic_ternary" />
         </category>
-        <category name="Lists" id="lists" description="Handling lists of text/numeric values" colour="#e53836">
+        <category name="Lists" id="lists" description="Handling lists of text/numeric values">
             <block type="lists_create_with">
                 <field name="VARIABLE" variabletype="">list</field>
                 <statement name="STACK">
@@ -408,9 +408,9 @@
             </block>
             <block type="lists_sort"></block>
         </category>
-        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE" colour="#00acc1"></category>
-        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE" colour="#616161"></category>
-        <category name="Loops" id="loops" description="arithmetical operations" colour="#afb42b">
+        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
+        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
+        <category name="Loops" id="loops" description="arithmetical operations">
             <block type="controls_repeat_ext"></block>
             <block type="controls_repeat"></block>
             <block type="controls_whileUntil"></block>
@@ -419,35 +419,4 @@
             <block type="controls_flow_statements"></block>
         </category>
     </category>
-    <!-- Testing -->
-    <sep />
-    <category 
-        id="testing" 
-        name="Testing in progress" 
-        description="Some sources claim that tiramisu can be traced all the way back to the 17th Century. A layered dessert similar to tiramisu was created by chefs in the Italian province of Tuscany to celebrate the visit of Grand Duke Cosimo di Medici to the region." 
-        iconURI="ic-logo"
-    >
-        <block type="math_number"></block>
-    </category>
-    <!--
-    <category 
-        id="testing2" 
-        name="No description category" 
-    >
-        <block type="math_number"></block>
-    </category>
-    <category 
-        id="testing2" 
-        name="No description category with an icon" 
-        iconURI="ic-logo"
-    >
-        <block type="math_number"></block>
-    </category>
-    <category 
-        id="testing2" 
-        description="No name. Just a description! 😬" 
-    >
-        <block type="math_number"></block>
-    </category>
-    -->
 </xml>

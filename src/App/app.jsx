@@ -3,7 +3,7 @@ import React                       from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import PushNotification            from './Containers/push-notification.jsx';
+import UILoader                    from './Components/Elements/ui-loader.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
@@ -20,6 +20,8 @@ import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
+const PushNotification = React.lazy(() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx'));
+
 const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
@@ -31,10 +33,12 @@ const App = ({ root_store }) => {
                         <Wip /> :
                         <React.Fragment>
                             <Header />
+                            <React.Suspense fallback={<UILoader />} >
+                                <PushNotification />
+                            </React.Suspense>
                             <ErrorBoundary>
                                 <AppContents>
                                     <Routes />
-                                    <PushNotification />
                                 </AppContents>
                                 <UnsupportedContractModal />
                                 <DenialOfServiceModal />
@@ -46,7 +50,7 @@ const App = ({ root_store }) => {
                 }
             </MobxProvider>
         </Router>
-    )
+    );
 };
 
 App.propTypes = {
@@ -58,4 +62,4 @@ export default App;
 const root_store = initStore();
 
 const wrapper = document.getElementById('deriv_app');
-wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;
+if (wrapper) ReactDOM.render(<App root_store={root_store} />, wrapper);

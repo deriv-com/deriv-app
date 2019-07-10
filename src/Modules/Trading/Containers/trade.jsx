@@ -3,7 +3,6 @@ import React                from 'react';
 import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import UILoader             from 'App/Components/Elements/ui-loader.jsx';
 import { connect }          from 'Stores/connect';
-import PositionsDrawer      from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import Test                 from './test.jsx';
@@ -12,7 +11,8 @@ import Digits               from '../../Contract/Containers/digits.jsx';
 import InfoBox              from '../../Contract/Containers/info-box.jsx';
 import { isDigitTradeType } from '../Helpers/digits';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart       = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const PositionsDrawer  = React.lazy(() => import(/* webpackChunkName: "positions" */'App/Components/Elements/PositionsDrawer'));
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -36,7 +36,9 @@ class Trade extends React.Component {
 
         return (
             <div id='trade_container' className='trade-container'>
-                <PositionsDrawer />
+                <React.Suspense fallback={<UILoader />} >
+                    <PositionsDrawer />
+                </React.Suspense>
                 <div className='chart-container'>
                     <NotificationMessages />
                     { this.props.symbol &&

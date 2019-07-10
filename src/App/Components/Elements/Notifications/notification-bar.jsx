@@ -81,5 +81,6 @@ NotificationBar.propTypes = {
     has_content_close: PropTypes.bool,
     type             : PropTypes.string,
 };
+NotificationBar.displayName = 'NotificationBar';
 
 export default NotificationBar;

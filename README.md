@@ -30,7 +30,7 @@ Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and
    * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
 
 3. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
- 
+
 4. Run `npm run deploy:clean`
 
 ### Deploy to root of gh pages

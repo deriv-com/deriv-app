@@ -130,7 +130,7 @@ PositionsDrawer.propTypes = {
 export default connect(
     ({ modules, client, ui }) => ({
         currency                      : client.currency,
-        active_contract_id            : modules.contract.contract_id,
+        active_contract_id            : modules.contract_trade.contract_id,
         all_positions                 : modules.portfolio.all_positions,
         error                         : modules.portfolio.error,
         is_contract_mode              : modules.smart_chart.is_contract_mode,
@@ -138,7 +138,7 @@ export default connect(
         is_loading                    : modules.portfolio.is_loading,
         onClickSell                   : modules.portfolio.onClickSell,
         onClickRemove                 : modules.portfolio.removePositionById,
-        openContract                  : modules.contract.onMount,
+        openContract                  : modules.contract_trade.onMount,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
         is_dark_theme                 : ui.is_dark_mode_on,

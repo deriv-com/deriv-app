@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Icon              from 'Assets/icon.jsx';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 
-class Modal extends React.PureComponent {
+class ModalElement extends React.PureComponent {
     constructor(props) {
         super(props);
         this.el = document.createElement('div');
@@ -66,7 +66,7 @@ class Modal extends React.PureComponent {
     };
 }
 
-Modal.propTypes = {
+ModalElement.propTypes = {
     className    : PropTypes.string,
     header       : PropTypes.node,
     hideFullBlur : PropTypes.func,
@@ -77,7 +77,7 @@ Modal.propTypes = {
     toggleModal  : PropTypes.func,
 };
 
-const ModalWithTransition = ({
+const Modal = ({
     className,
     header,
     hideFullBlur,
@@ -99,7 +99,7 @@ const ModalWithTransition = ({
         }}
         unmountOnExit
     >
-        <Modal
+        <ModalElement
             className={className}
             header={header}
             hideFullBlur={hideFullBlur}
@@ -112,7 +112,7 @@ const ModalWithTransition = ({
     </CSSTransition>
 );
 
-ModalWithTransition.propTypes = {
+Modal.propTypes = {
     className    : PropTypes.string,
     header       : PropTypes.node,
     hideFullBlur : PropTypes.func,
@@ -123,4 +123,7 @@ ModalWithTransition.propTypes = {
     toggleModal  : PropTypes.func,
 };
 
-export { ModalWithTransition as Modal };
+export {
+    Modal,
+    ModalElement,
+};

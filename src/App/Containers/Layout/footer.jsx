@@ -10,7 +10,9 @@ import {
     NetworkStatus,
     ToggleFullScreen,
     TogglePositions,
-    ToggleSettings }                  from '../../Components/Layout/Footer';
+}                  from '../../Components/Layout/Footer';
+
+const ToggleSettings = React.lazy(() => import(/* webpackChunkName: "settings-toggle" */'App/Components/Layout/Footer/toggle-settings.jsx'));
 
 const Footer = ({
     active_positions,
@@ -46,12 +48,16 @@ const Footer = ({
                 <NetworkStatus />
                 <ServerTime />
                 <div className='footer__links'>
-                    <ToggleSettings
-                        is_settings_visible={is_settings_modal_on}
-                        toggleSettings={toggleSettingsModal}
-                        showFullBlur={showFullBlur}
-                        hideFullBlur={hideFullBlur}
-                    />
+                    <React.Suspense
+                        fallback={<div />}
+                    >
+                        <ToggleSettings
+                            is_settings_visible={is_settings_modal_on}
+                            toggleSettings={toggleSettingsModal}
+                            showFullBlur={showFullBlur}
+                            hideFullBlur={hideFullBlur}
+                        />
+                    </React.Suspense>
                     <ToggleFullScreen />
                 </div>
             </footer>

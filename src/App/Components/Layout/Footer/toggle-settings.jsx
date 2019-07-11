@@ -65,4 +65,4 @@ ToggleSettings.propTypes = {
     toggleSettings     : PropTypes.func,
 };
 
-export { ToggleSettings };
+export default ToggleSettings;

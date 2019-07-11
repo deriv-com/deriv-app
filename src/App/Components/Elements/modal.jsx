@@ -1,9 +1,10 @@
-import classNames  from 'classnames';
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import ReactDOM    from 'react-dom';
-import Icon        from 'Assets/icon.jsx';
-import VerticalTab from 'App/Components/Elements/VerticalTabs';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import ReactDOM          from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
+import Icon              from 'Assets/icon.jsx';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 
 class Modal extends React.PureComponent {
     constructor(props) {
@@ -76,4 +77,50 @@ Modal.propTypes = {
     toggleModal  : PropTypes.func,
 };
 
-export { Modal };
+const ModalWithTransition = ({
+    className,
+    header,
+    hideFullBlur,
+    is_open,
+    modal_content,
+    showFullBlur,
+    title,
+    toggleModal,
+}) => (
+    <CSSTransition
+        appear
+        in={is_open}
+        timeout={250}
+        classNames={{
+            appear   : 'modal__container--enter',
+            enter    : 'modal__container--enter',
+            enterDone: 'modal__container--enter-done',
+            exit     : 'modal__container--exit',
+        }}
+        unmountOnExit
+    >
+        <Modal
+            className={className}
+            header={header}
+            hideFullBlur={hideFullBlur}
+            is_open={is_open}
+            modal_content={modal_content}
+            showFullBlur={showFullBlur}
+            title={title}
+            toggleModal={toggleModal}
+        />
+    </CSSTransition>
+);
+
+ModalWithTransition.propTypes = {
+    className    : PropTypes.string,
+    header       : PropTypes.node,
+    hideFullBlur : PropTypes.func,
+    is_open      : PropTypes.bool,
+    modal_content: PropTypes.array,
+    showFullBlur : PropTypes.func,
+    title        : PropTypes.string,
+    toggleModal  : PropTypes.func,
+};
+
+export { ModalWithTransition as Modal };

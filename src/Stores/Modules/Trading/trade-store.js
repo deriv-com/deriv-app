@@ -182,7 +182,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clearContract = () => {
         if (this.root_store.modules.smart_chart.is_contract_mode) {
-            this.root_store.modules.contract.onCloseContract();
+            this.root_store.modules.contract_trade.onCloseContract();
         }
     };
 
@@ -263,6 +263,11 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
+        // save trade_chart_symbol upon user change
+        if (name === 'symbol' && value) {
+            this.root_store.modules.smart_chart.trade_chart_symbol = value;
+        }
+
         if (name === 'currency') {
             this.root_store.client.selectCurrency(value);
         } else if (name === 'expiry_date') {
@@ -326,7 +331,7 @@ export default class TradeStore extends BaseStore {
                         // and then set the chart view to the start_time
                         this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
-                        this.root_store.modules.contract.drawContractStartTime(start_time, longcode, contract_id);
+                        this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
@@ -476,7 +481,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
-            this.root_store.modules.contract.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
+            this.root_store.modules.contract_trade.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
@@ -617,10 +622,12 @@ export default class TradeStore extends BaseStore {
     @action.bound
     restoreTradeChart() {
         const smart_chart_store = this.root_store.modules.smart_chart;
-        if (smart_chart_store.trade_chart_symbol !== this.symbol) {
+        if (smart_chart_store.trade_chart_symbol &&
+            (smart_chart_store.trade_chart_symbol !== this.symbol)) {
             this.symbol = smart_chart_store.trade_chart_symbol;
         }
-        if (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity) {
+        if (smart_chart_store.trade_chart_granularity &&
+            (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
         }
         if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {

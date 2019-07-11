@@ -7,7 +7,7 @@ import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
 
 const PurchaseButton = ({
-    // buy_info,
+    buy_info,
     index,
     info,
     is_contract_mode,
@@ -25,7 +25,6 @@ const PurchaseButton = ({
         if (!should_fade && is_loading) return '';
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-
     const is_button_disabled = ((is_contract_mode || is_disabled) && !is_loading) || is_proposal_empty;
 
     return (
@@ -35,7 +34,7 @@ const PurchaseButton = ({
             className={classNames(
                 'btn-purchase',
                 {
-                    'btn-purchase--disabled'       : is_button_disabled,
+                    'btn-purchase--disabled'       : is_button_disabled || !!(buy_info.error),
                     'btn-purchase--animated--slide': is_loading && !should_fade,
                     'btn-purchase--animated--fade' : is_loading && should_fade,
                     'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),

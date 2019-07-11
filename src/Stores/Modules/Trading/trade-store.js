@@ -336,18 +336,31 @@ export default class TradeStore extends BaseStore {
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
-                    this.root_store.ui.resetPurchaseStates();
+                    // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                    this.disablePurchaseButtons();
                     this.root_store.common.services_error = {
                         type: response.msg_type,
                         ...response.error,
                     };
                     this.root_store.ui.toggleServicesErrorModal(true);
+                    this.root_store.ui.resetPurchaseStates();
                 }
                 WS.forgetAll('proposal');
                 this.purchase_info = response;
                 this.is_purchase_enabled = true;
             }));
         }
+    }
+
+    disablePurchaseButtons = () => {
+        const purchase_value    = document.getElementsByClassName('trade-container__price-info');
+        const purchase_buttons  = document.getElementsByClassName('btn-purchase');
+        [].forEach.bind(purchase_buttons, (btn) => {
+            btn.classList.add('btn-purchase--disabled');
+        })();
+        [].forEach.bind(purchase_value, (el) => {
+            el.classList.add('trade-container__price-info--fade');
+        })();
     }
 
     @action.bound

@@ -28,9 +28,9 @@ const ToggleCashier = ({
             in={is_cashier_visible}
             timeout={250}
             classNames={{
-                enter    : 'cashier-modal__container--enter',
-                enterDone: 'cashier-modal__container--enter-done',
-                exit     : 'cashier-modal__container--exit',
+                enter    : 'modal__container--enter',
+                enterDone: 'modal__container--enter-done',
+                exit     : 'modal__container--exit',
             }}
             unmountOnExit
         >

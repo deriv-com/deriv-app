@@ -32,9 +32,9 @@ const ToggleSettings = ({
                 in={is_settings_visible}
                 timeout={250}
                 classNames={{
-                    enter    : 'settings-modal__container--enter',
-                    enterDone: 'settings-modal__container--enter-done',
-                    exit     : 'settings-modal__container--exit',
+                    enter    : 'modal__container--enter',
+                    enterDone: 'modal__container--enter-done',
+                    exit     : 'modal__container--exit',
                 }}
                 unmountOnExit
             >

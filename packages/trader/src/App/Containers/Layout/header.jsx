@@ -35,7 +35,6 @@ const Header = ({
     location,
     loginid,
     onClickUpgrade,
-    onUnmountCashier,
     showFullBlur,
     toggleAccountsDialog,
     toggleCashierModal,
@@ -84,7 +83,6 @@ const Header = ({
                                             is_cashier_visible={is_cashier_modal_on}
                                             showFullBlur={showFullBlur}
                                             hideFullBlur={hideFullBlur}
-                                            onUnmount={onUnmountCashier}
                                         />
                                         // TODO: remove this when cashier pop up is ready
                                         // <Button
@@ -129,7 +127,6 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
-    onUnmountCashier    : PropTypes.func,
     showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleCashierModal  : PropTypes.func,
@@ -138,7 +135,7 @@ Header.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <MenuLinks /> from being blocked
 export default withRouter(connect(
-    ({ client, modules, ui }) => ({
+    ({ client, ui }) => ({
         balance             : client.balance,
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
@@ -154,7 +151,6 @@ export default withRouter(connect(
         is_fully_blurred    : ui.is_fully_blurred,
         is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
-        onUnmountCashier    : modules.cashier.onUnmount,
         showFullBlur        : ui.showFullBlur,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleCashierModal  : ui.toggleCashierModal,

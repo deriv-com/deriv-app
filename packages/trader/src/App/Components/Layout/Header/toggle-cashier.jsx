@@ -13,7 +13,6 @@ const ToggleCashier = ({
     className,
     hideFullBlur,
     is_cashier_visible,
-    onUnmount,
     showFullBlur,
     toggleCashier,
 }) => (
@@ -43,7 +42,6 @@ const ToggleCashier = ({
             showFullBlur={showFullBlur}
             title={localize('Cashier')}
             toggleModal={toggleCashier}
-            onUnmount={onUnmount}
         />
     </React.Fragment>
 );

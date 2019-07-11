@@ -100,4 +100,4 @@ SettingsDialog.propTypes = {
     toggleDialog              : PropTypes.func,
 };
 
-export { SettingsDialog };
+export default SettingsDialog ;

@@ -4,8 +4,8 @@ import React           from 'react';
 import { withRouter }  from 'react-router';
 import { formatMoney } from '_common/base/currency_base';
 import { urlFor }      from '_common/url';
+import UILoader        from 'App/Components/Elements/ui-loader.jsx';
 import {
-    AccountInfo,
     DepositButton,
     LoginButton,
     MenuLinks,
@@ -15,6 +15,56 @@ import {
 import header_links    from 'App/Constants/header-links';
 import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
+
+const LazyAccountInfo = ({
+    is_logged_in,
+    currency,
+    balance,
+    can_upgrade,
+    is_virtual,
+    onClickUpgrade,
+    loginid,
+    is_acc_switcher_on,
+    toggleAccountsDialog,
+    can_upgrade_to,
+}) => {
+    if (is_logged_in) {
+        const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info" */'App/Components/Layout/Header/account-info.jsx'));
+        return (
+            <React.Fragment>
+                <React.Suspense fallback={<UILoader />}>
+                    <AccountInfo
+                        balance={formatMoney(currency, balance, true)}
+                        is_upgrade_enabled={can_upgrade}
+                        is_virtual={is_virtual}
+                        onClickUpgrade={onClickUpgrade}
+                        currency={currency}
+                        loginid={loginid}
+                        is_dialog_on={is_acc_switcher_on}
+                        toggleDialog={toggleAccountsDialog}
+                    />
+                </React.Suspense>
+                {!!(
+                    can_upgrade_to && is_virtual
+                ) && <UpgradeButton
+                    className='acc-info__button'
+                    onClick={() => {
+                        window.open(urlFor('user/accounts', undefined, undefined, true));
+                    }}
+                />}
+                {!(
+                    is_virtual
+                ) && <DepositButton className='acc-info__button' />}
+            </React.Fragment>
+        );
+    }
+    return (
+        <React.Fragment>
+            <LoginButton className='acc-info__button' />
+            <SignupButton className='acc-info__button' />
+        </React.Fragment>
+    );
+};
 
 const Header = ({
     balance,
@@ -36,7 +86,9 @@ const Header = ({
     <React.Fragment>
         {(!is_loading || location.pathname !== routes.trade) &&
             <header className={classNames('header', {
-                'header--is-blurred': (is_fully_blurred || is_route_blurred),
+                'header--is-blurred': (
+                    is_fully_blurred || is_route_blurred
+                ),
             })}
             >
                 <div className='header__menu-items'>
@@ -49,36 +101,18 @@ const Header = ({
                     </div>
                     <div className='header__menu-right'>
                         <div className='acc-info__container'>
-                            { is_logged_in ?
-                                <React.Fragment>
-                                    <AccountInfo
-                                        balance={formatMoney(currency, balance, true)}
-                                        is_upgrade_enabled={can_upgrade}
-                                        is_virtual={is_virtual}
-                                        onClickUpgrade={onClickUpgrade}
-                                        currency={currency}
-                                        loginid={loginid}
-                                        is_dialog_on={is_acc_switcher_on}
-                                        toggleDialog={toggleAccountsDialog}
-                                    />
-                                    { !!(can_upgrade_to && is_virtual) &&
-                                    <UpgradeButton
-                                        className='acc-info__button'
-                                        onClick={() => {
-                                            window.open(urlFor('user/accounts', undefined, undefined, true));
-                                        }}
-                                    />
-                                    }
-                                    { !(is_virtual) &&
-                                    <DepositButton className='acc-info__button' />
-                                    }
-                                </React.Fragment>
-                                :
-                                <React.Fragment>
-                                    <LoginButton className='acc-info__button' />
-                                    <SignupButton className='acc-info__button' />
-                                </React.Fragment>
-                            }
+                            <LazyAccountInfo
+                                is_logged_in={is_logged_in}
+                                currency={currency}
+                                balance={balance}
+                                can_upgrade={can_upgrade}
+                                is_virtual={is_virtual}
+                                onClickUpgrade={onClickUpgrade}
+                                loginid={loginid}
+                                is_acc_switcher_on={is_acc_switcher_on}
+                                toggleAccountsDialog={toggleAccountsDialog}
+                                can_upgrade_to={can_upgrade_to}
+                            />
                         </div>
                     </div>
                 </div>

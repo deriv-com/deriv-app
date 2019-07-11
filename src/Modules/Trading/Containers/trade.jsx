@@ -12,7 +12,19 @@ import InfoBox              from '../../Contract/Containers/info-box.jsx';
 import { isDigitTradeType } from '../Helpers/digits';
 
 const SmartChart       = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
-const PositionsDrawer  = React.lazy(() => import(/* webpackChunkName: "positions" */'App/Components/Elements/PositionsDrawer'));
+
+const LazyPositionsDrawer = ({ should_load }) => {
+    if (should_load) {
+        const PositionsDrawer = React.lazy(() => import(/* webpackChunkName: "positions-drawer" */'App/Components/Elements/PositionsDrawer'));
+        return (
+            <React.Suspense fallback={<UILoader />}>
+                <PositionsDrawer />
+            </React.Suspense>
+        );
+    }
+
+    return null;
+};
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -36,9 +48,7 @@ class Trade extends React.Component {
 
         return (
             <div id='trade_container' className='trade-container'>
-                <React.Suspense fallback={<UILoader />} >
-                    <PositionsDrawer />
-                </React.Suspense>
+                <LazyPositionsDrawer should_load={this.props.is_logged_in} />
                 <div className='chart-container'>
                     <NotificationMessages />
                     { this.props.symbol &&
@@ -99,6 +109,7 @@ Trade.propTypes = {
     is_digit_contract: PropTypes.bool,
     is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
+    is_logged_in     : PropTypes.bool,
     is_static_chart  : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
     onClickNewTrade  : PropTypes.func,
@@ -115,7 +126,7 @@ Trade.propTypes = {
 };
 
 export default connect(
-    ({ modules, ui }) => ({
+    ({ modules, ui, client }) => ({
         is_digit_contract                  : modules.contract.is_digit_contract,
         onCloseContract                    : modules.contract.onCloseContract,
         chart_id                           : modules.smart_chart.chart_id,
@@ -128,6 +139,7 @@ export default connect(
         is_chart_loading                   : modules.smart_chart.is_chart_loading,
         is_chart_ready                     : modules.smart_chart.is_chart_ready,
         is_contract_mode                   : modules.smart_chart.is_contract_mode,
+        is_logged_in                       : client.is_logged_in,
         is_static_chart                    : modules.smart_chart.is_static_chart,
         contract_type                      : modules.trade.contract_type,
         is_market_closed                   : modules.trade.is_market_closed,

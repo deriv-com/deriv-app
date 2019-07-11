@@ -1,9 +1,11 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { CSSTransition }  from 'react-transition-group';
-import { SettingsDialog } from 'App/Components/Elements/SettingsDialog/settings-dialog.jsx';
-import Icon               from 'Assets/icon.jsx';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { CSSTransition } from 'react-transition-group';
+import UILoader          from 'App/Components/Elements/ui-loader.jsx';
+import Icon              from 'Assets/icon.jsx';
+
+const SettingsDialog = React.lazy(() => import(/* webpackChunkName: "settings-dialog" */'App/Components/Elements/SettingsDialog/settings-dialog.jsx'));
 
 const ToggleSettings = ({
     hideFullBlur,
@@ -35,14 +37,16 @@ const ToggleSettings = ({
                 }}
                 unmountOnExit
             >
-                <SettingsDialog
-                    is_open={is_settings_visible}
-                    is_language_dialog_visible={is_language_visible}
-                    toggleDialog={toggleSettings}
-                    is_dark_mode={is_dark_mode}
-                    showFullBlur={showFullBlur}
-                    hideFullBlur={hideFullBlur}
-                />
+                <React.Suspense fallback={<UILoader />}>
+                    <SettingsDialog
+                        is_open={is_settings_visible}
+                        is_language_dialog_visible={is_language_visible}
+                        toggleDialog={toggleSettings}
+                        is_dark_mode={is_dark_mode}
+                        showFullBlur={showFullBlur}
+                        hideFullBlur={hideFullBlur}
+                    />
+                </React.Suspense>
             </CSSTransition>
         </React.Fragment>
     );

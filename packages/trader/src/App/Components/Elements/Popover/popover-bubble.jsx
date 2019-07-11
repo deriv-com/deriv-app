@@ -37,12 +37,12 @@ class PopoverBubble extends React.PureComponent {
             };
             case 'left': return {
                 right    : (window.innerWidth - target_rectangle.left) + margin,
-                top      : (target_rectangle.height / 2) + target_rectangle.top,
+                top      : (target_rectangle.deposit_height / 2) + target_rectangle.top,
                 transform: 'translateY(-50%)',
             };
             case 'right': return {
                 left     : target_rectangle.right + margin,
-                top      : (target_rectangle.height / 2) + target_rectangle.top,
+                top      : (target_rectangle.deposit_height / 2) + target_rectangle.top,
                 transform: 'translateY(-50%)',
             };
             default: return {

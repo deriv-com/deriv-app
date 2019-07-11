@@ -1,7 +1,6 @@
 import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { CSSTransition }  from 'react-transition-group';
 import { localize }       from 'App/i18n';
 import { Modal }          from 'App/Components/Elements/modal.jsx';
 import {
@@ -24,37 +23,26 @@ const ToggleCashier = ({
             text={localize('Deposit')}
             onClick={toggleCashier}
         />
-        <CSSTransition
-            in={is_cashier_visible}
-            timeout={250}
-            classNames={{
-                enter    : 'cashier-modal__container--enter',
-                enterDone: 'cashier-modal__container--enter-done',
-                exit     : 'cashier-modal__container--exit',
-            }}
-            unmountOnExit
-        >
-            <Modal
-                className='cashier'
-                modal_content={[
-                    {
-                        icon : 'IconDepositSmall',
-                        label: localize('Deposit'),
-                        value: Deposit,
-                    }, {
-                        icon : 'IconWithdrawalSmall',
-                        label: localize('Withdrawal'),
-                        value: Withdraw,
-                    },
-                ]}
-                header={<WalletInformation />}
-                hideFullBlur={hideFullBlur}
-                is_open={is_cashier_visible}
-                showFullBlur={showFullBlur}
-                title={localize('Cashier')}
-                toggleModal={toggleCashier}
-            />
-        </CSSTransition>
+        <Modal
+            className='cashier'
+            modal_content={[
+                {
+                    icon : 'IconDepositSmall',
+                    label: localize('Deposit'),
+                    value: Deposit,
+                }, {
+                    icon : 'IconWithdrawalSmall',
+                    label: localize('Withdrawal'),
+                    value: Withdraw,
+                },
+            ]}
+            header={<WalletInformation />}
+            hideFullBlur={hideFullBlur}
+            is_open={is_cashier_visible}
+            showFullBlur={showFullBlur}
+            title={localize('Cashier')}
+            toggleModal={toggleCashier}
+        />
     </React.Fragment>
 );
 

@@ -4,14 +4,14 @@ import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import UILoader             from 'App/Components/Elements/ui-loader.jsx';
 import { connect }          from 'Stores/connect';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import Test                 from './test.jsx';
 import FormLayout           from '../Components/Form/form-layout.jsx';
 import Digits               from '../../Contract/Containers/digits.jsx';
 import InfoBox              from '../../Contract/Containers/info-box.jsx';
 import { isDigitTradeType } from '../Helpers/digits';
 
-const SmartChart       = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart           = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const NotificationMessages = React.lazy(() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx'));
 
 const LazyPositionsDrawer = ({ should_load }) => {
     if (should_load) {

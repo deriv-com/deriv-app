@@ -1,5 +1,4 @@
 import { action, flow }     from 'mobx';
-import { setCurrencies }    from '_common/base/currency_base';
 import GTM                  from '_common/base/gtm';
 import Login                from '_common/base/login';
 import ServerTime           from '_common/base/server_time';
@@ -185,7 +184,7 @@ const ResponseHandlers = (() => {
                 // Footer.clearNotification();
             }
             BinarySocket.availability(is_available);
-            setCurrencies(response.website_status);
+            client_store.setWebsiteStatus(response);
         }
     };
 

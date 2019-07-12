@@ -18,9 +18,9 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on     = false;
     @observable is_reports_visible         = false;
 
+    @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
-    @observable is_language_dialog_on   = false;
-    @observable is_settings_dialog_on   = false;
+    @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
 
     @observable is_loading              = true;
@@ -176,10 +176,16 @@ export default class UIStore extends BaseStore {
         // TODO: Find better solution in the future for hack below
         // Force the animation to start quicker by manually assigning class to compensate for mobx getter lag
         // Because mobx has a delay before it can receive the updated prop used to assign the animation class
-        const purchase_buttons = document.getElementsByClassName('btn-purchase');
-        if (purchase_buttons[index]) {
-            purchase_buttons[index].classList.add('btn-purchase--swoosh');
+        const el_purchase_buttons = document.getElementsByClassName('btn-purchase');
+        if (el_purchase_buttons[index]) {
+            el_purchase_buttons[index].classList.add('btn-purchase--swoosh');
         }
+        // UI/UX wants button to remain green until transition is finished and only then disable buttons
+        setTimeout(() => {
+            [].forEach.bind(el_purchase_buttons, (el) => {
+                el.classList.add('btn-purchase--disabled');
+            })();
+        }, 250);
     }
 
     @action.bound
@@ -230,19 +236,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleSettingsDialog() {
-        this.is_settings_dialog_on = !this.is_settings_dialog_on;
-        if (!this.is_settings_dialog_on) this.is_language_dialog_on = false;
+    toggleCashierModal() {
+        this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
     @action.bound
-    showLanguageDialog() {
-        this.is_language_dialog_on = true;
-    }
-
-    @action.bound
-    hideLanguageDialog() {
-        this.is_language_dialog_on = false;
+    toggleSettingsModal() {
+        this.is_settings_modal_on = !this.is_settings_modal_on;
     }
 
     @action.bound

@@ -1,14 +1,16 @@
 import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { CSSTransition }  from 'react-transition-group';
-import { SettingsDialog } from 'App/Components/Elements/SettingsDialog/settings-dialog.jsx';
+import {
+    ChartSettings,
+    LanguageSettings,
+    ThemeSelectSettings } from 'App/Containers/SettingsModal';
+import { Modal }          from 'App/Components/Elements/modal.jsx';
+import { localize }       from 'App/i18n';
 import Icon               from 'Assets/icon.jsx';
 
 const ToggleSettings = ({
     hideFullBlur,
-    is_dark_mode,
-    is_language_visible,
     is_settings_visible,
     showFullBlur,
     toggleSettings,
@@ -25,33 +27,39 @@ const ToggleSettings = ({
             >
                 <Icon icon='IconSettings' className='footer__icon ic-settings__icon' />
             </a>
-            <CSSTransition
-                in={is_settings_visible}
-                timeout={250}
-                classNames={{
-                    enter    : 'settings-dialog__container--enter',
-                    enterDone: 'settings-dialog__container--enter-done',
-                    exit     : 'settings-dialog__container--exit',
-                }}
-                unmountOnExit
-            >
-                <SettingsDialog
-                    is_open={is_settings_visible}
-                    is_language_dialog_visible={is_language_visible}
-                    toggleDialog={toggleSettings}
-                    is_dark_mode={is_dark_mode}
-                    showFullBlur={showFullBlur}
-                    hideFullBlur={hideFullBlur}
-                />
-            </CSSTransition>
+            <Modal
+                modal_content={[
+                    {
+                        icon : 'IconTheme',
+                        label: localize('Themes'),
+                        value: ThemeSelectSettings,
+                    }, {
+                        icon : 'IconLanguage',
+                        label: localize('Language'),
+                        value: LanguageSettings,
+                    }, {
+                        icon : 'IconCharts',
+                        label: localize('Charts'),
+                        value: ChartSettings,
+                        // uncomment below lines to bring back purchase lock and purchase confirmation
+                        // }, {
+                        //     icon : IconPurchase,
+                        //     label: localize('Purchase'),
+                        //     value: PurchaseSettings,
+                    },
+                ]}
+                hideFullBlur={hideFullBlur}
+                is_open={is_settings_visible}
+                showFullBlur={showFullBlur}
+                title={localize('Platform settings')}
+                toggleModal={toggleSettings}
+            />
         </React.Fragment>
     );
 };
 
 ToggleSettings.propTypes = {
     hideFullBlur       : PropTypes.func,
-    is_dark_mode       : PropTypes.bool,
-    is_language_visible: PropTypes.bool,
     is_settings_visible: PropTypes.bool,
     showFullBlur       : PropTypes.func,
     toggleSettings     : PropTypes.func,

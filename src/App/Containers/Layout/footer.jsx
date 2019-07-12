@@ -3,7 +3,6 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { withRouter }                 from 'react-router';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import routes                         from 'Constants/routes';
 import { connect }                    from 'Stores/connect';
 import ServerTime                     from '../server-time.jsx';
 import {
@@ -16,46 +15,42 @@ const Footer = ({
     active_positions,
     hideFullBlur,
     is_fully_blurred,
-    is_loading,
     is_logged_in,
     is_positions_drawer_on,
     is_route_blurred,
     is_settings_modal_on,
-    location,
     showFullBlur,
     show_positions_toggle,
     togglePositionsDrawer,
     toggleSettingsModal,
 }) => (
     <React.Fragment>
-        { (!is_loading || location.pathname !== routes.trade) &&
-            <footer className={classNames('footer', {
-                'footer--is-blurred': (is_fully_blurred || is_route_blurred),
-            })}
-            >
-                <div className='footer__links footer__links--left'>
-                    {
-                        (is_logged_in && show_positions_toggle) &&
-                        <TogglePositions
-                            is_positions_drawer_on={is_positions_drawer_on}
-                            togglePositionsDrawer={togglePositionsDrawer}
-                            positions_count={active_positions.length || 0}
-                        />
-                    }
-                </div>
-                <NetworkStatus />
-                <ServerTime />
-                <div className='footer__links'>
-                    <ToggleSettings
-                        is_settings_visible={is_settings_modal_on}
-                        toggleSettings={toggleSettingsModal}
-                        showFullBlur={showFullBlur}
-                        hideFullBlur={hideFullBlur}
+        <footer className={classNames('footer', {
+            'footer--is-blurred': (is_fully_blurred || is_route_blurred),
+        })}
+        >
+            <div className='footer__links footer__links--left'>
+                {
+                    (is_logged_in && show_positions_toggle) &&
+                    <TogglePositions
+                        is_positions_drawer_on={is_positions_drawer_on}
+                        togglePositionsDrawer={togglePositionsDrawer}
+                        positions_count={active_positions.length || 0}
                     />
-                    <ToggleFullScreen />
-                </div>
-            </footer>
-        }
+                }
+            </div>
+            <NetworkStatus />
+            <ServerTime />
+            <div className='footer__links'>
+                <ToggleSettings
+                    is_settings_visible={is_settings_modal_on}
+                    toggleSettings={toggleSettingsModal}
+                    showFullBlur={showFullBlur}
+                    hideFullBlur={hideFullBlur}
+                />
+                <ToggleFullScreen />
+            </div>
+        </footer>
     </React.Fragment>
 );
 

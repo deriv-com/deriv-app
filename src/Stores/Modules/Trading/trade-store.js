@@ -352,12 +352,12 @@ export default class TradeStore extends BaseStore {
     }
 
     disablePurchaseButtons = () => {
-        const purchase_value    = document.getElementsByClassName('trade-container__price-info');
-        const purchase_buttons  = document.getElementsByClassName('btn-purchase');
-        [].forEach.bind(purchase_buttons, (btn) => {
-            btn.classList.add('btn-purchase--disabled');
+        const el_purchase_value    = document.getElementsByClassName('trade-container__price-info');
+        const el_purchase_buttons  = document.getElementsByClassName('btn-purchase');
+        [].forEach.bind(el_purchase_buttons, (el) => {
+            el.classList.add('btn-purchase--disabled');
         })();
-        [].forEach.bind(purchase_value, (el) => {
+        [].forEach.bind(el_purchase_value, (el) => {
             el.classList.add('trade-container__price-info--fade');
         })();
     }

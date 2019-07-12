@@ -6,12 +6,29 @@ import Button            from 'App/Components/Form/button.jsx';
 import { connect }       from 'Stores/connect';
 
 class FullPageModal extends React.Component {
+    componentDidMount() {
+        if (this.props.is_visible) {
+            this.props.showFullBlur();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.is_visible) {
+            this.props.showFullBlur();
+        }
+    }
 
     handleCancel = () => {
+        if (this.props.is_closed_on_cancel) {
+            this.props.hideFullBlur();
+        }
         this.props.onCancel();
     };
 
     handleConfirm = () => {
+        if (this.props.is_closed_on_confirm) {
+            this.props.hideFullBlur();
+        }
         this.props.onConfirm();
     };
 

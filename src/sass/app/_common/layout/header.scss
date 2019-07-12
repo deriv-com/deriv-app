@@ -6,7 +6,7 @@
     height: $HEADER_HEIGHT;
     width: 100%;
     top: 0;
-    transition: opacity 0.3s, filter 0.25s linear;
+    transition: opacity 0.3s;
     backface-visibility: hidden;
     filter: blur(0);
     @include themify($themes) {

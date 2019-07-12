@@ -29,7 +29,7 @@
             opacity: 1;
         }
         @include themify($themes) {
-            background-color: rgba(themed('container_color'), 0.76);
+            background-color: rgba(themed('container_color'), 0.56);
         }
     }
     &__wrapper {

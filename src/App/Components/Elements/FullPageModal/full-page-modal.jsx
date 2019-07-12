@@ -47,7 +47,7 @@ class FullPageModal extends React.Component {
                 <CSSTransition
                     appear
                     in={(is_visible && !is_loading)}
-                    timeout={300}
+                    timeout={50}
                     classNames={{
                         appear   : 'full-page-modal__background--enter',
                         enter    : 'full-page-modal__background--enter',
@@ -61,7 +61,7 @@ class FullPageModal extends React.Component {
                 <CSSTransition
                     appear
                     in={(is_visible && !is_loading)}
-                    timeout={300}
+                    timeout={50}
                     classNames={{
                         appear   : 'full-page-modal__wrapper--enter',
                         enter    : 'full-page-modal__wrapper--enter',

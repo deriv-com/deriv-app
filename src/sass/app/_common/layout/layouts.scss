@@ -263,20 +263,6 @@
     .chartContainer {
         background: transparent;
         min-height: 100%;
-
-        &:before {
-            content: '';
-            position: absolute;
-            height: 100%;
-            width: 80px;
-            top: 0;
-            left: -2px;
-            pointer-events: none;
-            z-index: 2;
-            @include themify($themes) {
-                background-image: themed('chart_gradient_color');
-            }
-        }
     }
     @media (max-width: 768px) {
         height: 400px;

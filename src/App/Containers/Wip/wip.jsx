@@ -7,8 +7,9 @@ import Button       from 'App/Components/Form/button.jsx';
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';
 
-const onClick = () => {
-    window.location.href = window.open(urlFor('trading', undefined, undefined, true));
+const onClick = (e) => {
+    e.preventDefault();
+    window.open(urlFor('trading', undefined, undefined, true), '_blank', 'noopener, noreferrer');
 };
 
 const Wip = ({ is_dark_mode, pushDataLayer }) => {

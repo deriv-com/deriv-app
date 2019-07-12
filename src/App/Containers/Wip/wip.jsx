@@ -9,7 +9,7 @@ import { connect }  from 'Stores/connect';
 
 const onClick = (e) => {
     e.preventDefault();
-    window.open(urlFor('trading', undefined, undefined, true), '_blank');
+    window.open(urlFor('trading', undefined, undefined, true), '_blank', 'noopener, noreferrer');
 };
 
 const Wip = ({ is_dark_mode, pushDataLayer }) => {

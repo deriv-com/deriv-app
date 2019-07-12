@@ -343,7 +343,6 @@ export default class TradeStore extends BaseStore {
                         ...response.error,
                     };
                     this.root_store.ui.toggleServicesErrorModal(true);
-                    this.root_store.ui.resetPurchaseStates();
                 }
                 WS.forgetAll('proposal');
                 this.purchase_info = response;
@@ -500,6 +499,7 @@ export default class TradeStore extends BaseStore {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
+        this.root_store.ui.resetPurchaseStates();
     }
 
     @action.bound
@@ -590,10 +590,16 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency }
             );
             await this.clearContract();
+            await this.resetErrorServices();
             await this.refresh();
             await this.prepareTradeStore();
             return resolve(this.debouncedProposal());
         });
+    }
+
+    @action.bound
+    resetErrorServices() {
+        this.root_store.ui.toggleServicesErrorModal(false);
     }
 
     @action.bound
@@ -654,6 +660,7 @@ export default class TradeStore extends BaseStore {
         this.proposal_info = {};
         this.purchase_info = {};
         WS.forgetAll('proposal');
+        this.resetErrorServices();
         this.restoreTradeChart();
         this.is_trade_component_mounted = false;
         // clear url query string

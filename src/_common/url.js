@@ -38,7 +38,7 @@ const Url = (() => {
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
         const lang = (language || getLanguage()).toLowerCase();
-        let domain = `https://${window.location.hostname}/`;
+        let domain = `https://${window.location.hostname}/${lang || 'en'}/`;
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {
                 domain = `https://binary.com/${lang || 'en'}/`;

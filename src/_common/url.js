@@ -38,12 +38,12 @@ const Url = (() => {
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
         const lang = (language || getLanguage()).toLowerCase();
-        let domain = `https://${window.location.hostname}/${lang || 'en'}/`;
+        let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {
                 domain = `https://binary.com/${lang || 'en'}/`;
             } else {
-                domain = domain.replace(/deriv\.app/, 'binary.com');
+                domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
             }
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;

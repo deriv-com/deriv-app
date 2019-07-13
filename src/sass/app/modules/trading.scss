@@ -168,6 +168,11 @@
             &--fade &-value {
                 opacity: 0;
             }
+            &--fade {
+                .trade-container__price-info-movement {
+                    opacity: 0;
+                }
+            }
             &-value {
                 font-size: 1.4em;
                 font-weight: 700;

@@ -97,7 +97,16 @@ const Url = (() => {
         return static_host + path.replace(/(^\/)/g, '');
     };
 
+    const getUrlBase = (path = '') => {
+        const l = window.location;
+
+        if (!/^\/br_/.test(l.pathname)) return path;
+
+        return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+    };
+
     return {
+        getUrlBase,
         reset,
         paramsHash,
         urlFor,

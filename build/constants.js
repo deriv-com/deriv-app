@@ -1,3 +1,4 @@
+
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -9,6 +10,7 @@ const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const IgnorePlugin  = require('webpack').IgnorePlugin;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
 const {
@@ -109,6 +111,7 @@ const plugins = (base, is_test_env) => ([
     new HtmlWebPackPlugin(htmlOutputConfig()),
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new MiniCssExtractPlugin(cssConfig()),
+    new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
     ...(is_test_env ? [

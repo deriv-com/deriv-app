@@ -2,7 +2,7 @@ import React                  from 'react';
 import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import { ToggleSettings }     from '../toggle-settings.jsx';
+import ToggleSettings         from '../toggle-settings.jsx';
 import Icon                   from 'Assets/icon.jsx';
 import { Modal }              from '../../../Elements/modal.jsx';
 import { CSSTransition }      from 'react-transition-group';

@@ -11,12 +11,13 @@ import {
     MenuLinks,
     SignupButton,
     // ToggleCashier,
-    ToggleMenuDrawer,
     UpgradeButton }    from 'App/Components/Layout/Header';
 import header_links    from 'App/Constants/header-links';
 import { localize }    from 'App/i18n';
 import routes          from 'Constants/routes';
 import { connect }     from 'Stores/connect';
+
+const ToggleMenuDrawer = React.lazy(() => import(/* webpackChunkName: "toggle-menu-drawer" */ 'App/Components/Layout/Header/toggle-menu-drawer.jsx'));
 
 const LazyAccountInfo = ({
     is_logged_in,

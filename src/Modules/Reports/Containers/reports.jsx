@@ -7,6 +7,8 @@ import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import WalletInformation from './wallet-information.jsx';
+// eslint-disable-next-line import/no-unresolved
+import 'Sass/app/modules/reports.scss';
 
 class Reports extends React.Component {
     setWrapperRef = (node) => {

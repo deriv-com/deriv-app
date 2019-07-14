@@ -12,6 +12,7 @@ import Header                   from './Containers/Layout/header.jsx';
 
 import Routes                   from './Containers/Routes/routes.jsx';
 import './i18n';
+// eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;

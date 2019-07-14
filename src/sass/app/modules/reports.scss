@@ -1,3 +1,11 @@
+// Base
+@import '../../app/_common/base/reset';
+@import '../../app/_common/base/constants';
+@import '../../app/_common/base/themes';
+@import '../../app/_common/base/mixin';
+@import '../../app/_common/base/typography';
+@import '../../app/_common/base/common';
+
 $side-padding: 1.2em;
 
 /** @define reports; weak */
@@ -124,53 +132,6 @@ $side-padding: 1.2em;
             padding: 0 $side-padding;
             height: 100%;
         }
-    }
-}
-
-/** @define statement-card */
-.statement-card {
-    &__header {
-        font-size: 1em;
-        padding: 0.5em;
-        border-bottom: 1px solid $COLOR_LIGHT_BLACK_4;
-        display: flex;
-        justify-content: space-between;
-    }
-    /* postcss-bem-linter: ignore */
-    &__refid a {
-        color: $COLOR_SKY_BLUE;
-        text-decoration: none;
-    }
-    &__body {
-        padding: 0.5em;
-        font-size: 1.2em;
-    }
-    &__desc {
-        margin-bottom: 0.7em;
-    }
-    &__row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        font-weight: bold;
-    }
-    &__cell-text {
-        vertical-align: middle;
-    }
-    &__amount {
-        &--sell, &--deposit {
-            color: $COLOR_GREEN_1;
-        }
-        &--buy, &--withdrawal {
-            color: $COLOR_RED;
-        }
-    }
-    &__icon {
-        display: inline-block;
-        height: 1.6em;
-        width: 1.6em;
-        background-size: 1.6em 1.6em;
-        vertical-align: middle;
-        margin-right: 0.5em;
     }
 }
 

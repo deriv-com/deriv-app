@@ -1,31 +1,9 @@
-import classNames  from 'classnames';
-import React       from 'react';
-import PropTypes   from 'prop-types';
-import posed,
-{ PoseGroup }      from 'react-pose';
-import Button      from 'App/Components/Form/button.jsx';
-import { connect } from 'Stores/connect';
-
-const ModalWrapper = posed.div({
-    enter: {
-        y         : 0,
-        opacity   : 1,
-        delay     : 300,
-        transition: {
-            default: { duration: 250 },
-        },
-    },
-    exit: {
-        y         : 50,
-        opacity   : 0,
-        transition: { duration: 250 },
-    },
-});
-
-const ModalBackground = posed.div({
-    enter: { opacity: 1 },
-    exit : { opacity: 0 },
-});
+import classNames        from 'classnames';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
+import Button            from 'App/Components/Form/button.jsx';
+import { connect }       from 'Stores/connect';
 
 class FullPageModal extends React.Component {
     componentDidMount() {
@@ -65,16 +43,34 @@ class FullPageModal extends React.Component {
             title,
         } = this.props;
         return (
-            <PoseGroup>
-                {(is_visible && !is_loading) && [
-                    <ModalBackground
-                        className='full-page-modal__background'
-                        key='full-page-modal__background'
-                    />,
-                    <ModalWrapper
-                        className='full-page-modal__wrapper'
-                        key='full-page-modal__wrapper'
-                    >
+            <React.Fragment>
+                <CSSTransition
+                    appear
+                    in={(is_visible && !is_loading)}
+                    timeout={50}
+                    classNames={{
+                        appear   : 'full-page-modal__background--enter',
+                        enter    : 'full-page-modal__background--enter',
+                        enterDone: 'full-page-modal__background--enter-done',
+                        exit     : 'full-page-modal__background--exit',
+                    }}
+                    unmountOnExit
+                >
+                    <div className='full-page-modal__background' />
+                </CSSTransition>
+                <CSSTransition
+                    appear
+                    in={(is_visible && !is_loading)}
+                    timeout={50}
+                    classNames={{
+                        appear   : 'full-page-modal__wrapper--enter',
+                        enter    : 'full-page-modal__wrapper--enter',
+                        enterDone: 'full-page-modal__wrapper--enter-done',
+                        exit     : 'full-page-modal__wrapper--exit',
+                    }}
+                    unmountOnExit
+                >
+                    <div className='full-page-modal__wrapper'>
                         <div className='full-page-modal__dialog'>
                             <h1 className='full-page-modal__header'>{title}</h1>
                             <p className='full-page-modal__content'>{children}</p>
@@ -103,9 +99,9 @@ class FullPageModal extends React.Component {
                                 />
                             </div>
                         </div>
-                    </ModalWrapper>,
-                ]}
-            </PoseGroup>
+                    </div>
+                </CSSTransition>
+            </React.Fragment>
         );
     }
 }

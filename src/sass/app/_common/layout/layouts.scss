@@ -3,7 +3,6 @@
     margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
     overflow: hidden;
-    transition: filter 0.25s linear;
     backface-visibility: hidden;
     filter: blur(0);
     @include themify($themes) {

@@ -10,9 +10,6 @@ const Redirect = ({
 }) => {
     const url_params  = new URLSearchParams(window.location.search);
 
-    // TODO: Delete this
-    // eslint-disable-next-line no-console
-    console.log('Reached here');
     switch (url_params.get('action')) {
         case 'signup': {
             toggleAccountSignupModal(true);

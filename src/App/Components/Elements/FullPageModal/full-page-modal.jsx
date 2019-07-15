@@ -72,7 +72,9 @@ class FullPageModal extends React.Component {
                 >
                     <div className='full-page-modal__wrapper'>
                         <div className='full-page-modal__dialog'>
-                            <h1 className='full-page-modal__header'>{title}</h1>
+                            { title &&
+                                <h1 className='full-page-modal__header'>{title}</h1>
+                            }
                             { typeof children === 'string' ?
                                 <p className='full-page-modal__content'>{children}</p>
                                 :

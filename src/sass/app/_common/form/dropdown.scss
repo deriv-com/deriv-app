@@ -179,7 +179,7 @@
             padding: 6.25px 0;
             padding-left: 1.6em;
         }
-        &:hover {
+        &:hover:not(&--disabled) {
             @include themify($themes) {
                 background-color: themed('tab_hover_color');
                 color: themed('text_color');
@@ -190,6 +190,11 @@
             @include themify($themes) {
                 color: themed('text_active_color');
                 background: themed('active_color');
+            }
+        }
+        &--disabled {
+            @include themify($themes) {
+                color: themed('text_secondary_color');
             }
         }
         &-symbol {

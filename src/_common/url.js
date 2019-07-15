@@ -43,7 +43,7 @@ const Url = (() => {
             if (/localhost|binary\.sx/.test(domain)) {
                 domain = `https://binary.com/${lang || 'en'}/`;
             } else {
-                domain = domain.replace(/deriv\.app/, 'binary.com');
+                domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
             }
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;

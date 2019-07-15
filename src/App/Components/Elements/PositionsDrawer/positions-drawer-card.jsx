@@ -65,7 +65,7 @@ const PositionsDrawerCard = ({
                     />
                 </div>
             </div>
-            {result ?
+            {(result || contract_info.is_sold) ?
                 <div className='progress-slider--completed' />
                 :
                 <ProgressSlider
@@ -172,7 +172,7 @@ const PositionsDrawerCard = ({
                 has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
-                result={result}
+                result={(result || contract_info.is_sold)}
             />
             {is_unsupported ?
                 <div

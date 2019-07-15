@@ -73,7 +73,11 @@ class FullPageModal extends React.Component {
                     <div className='full-page-modal__wrapper'>
                         <div className='full-page-modal__dialog'>
                             <h1 className='full-page-modal__header'>{title}</h1>
-                            <p className='full-page-modal__content'>{children}</p>
+                            { typeof children === 'string' ?
+                                <p className='full-page-modal__content'>{children}</p>
+                                :
+                                <div className='full-page-modal__content'>{children}</div>
+                            }
                             <div className='full-page-modal__footer'>
                                 { onCancel &&
                                     <Button
@@ -87,16 +91,18 @@ class FullPageModal extends React.Component {
                                         onClick={this.handleCancel}
                                     />
                                 }
-                                <Button
-                                    className={classNames(
-                                        'full-page-modal__button',
-                                        'btn--primary',
-                                        'btn--primary--orange',
-                                    )}
-                                    has_effect
-                                    text={confirm_button_text}
-                                    onClick={this.handleConfirm}
-                                />
+                                { confirm_button_text &&
+                                    <Button
+                                        className={classNames(
+                                            'full-page-modal__button',
+                                            'btn--primary',
+                                            'btn--primary--orange',
+                                        )}
+                                        has_effect
+                                        text={confirm_button_text}
+                                        onClick={this.handleConfirm}
+                                    />
+                                }
                             </div>
                         </div>
                     </div>

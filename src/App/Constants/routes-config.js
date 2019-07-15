@@ -1,10 +1,11 @@
-import { lazy }        from 'react';
-import { Redirect }    from 'react-router-dom';
-import { localize }    from 'App/i18n';
-import { routes }      from 'Constants';
+import { lazy }                       from 'react';
+import { Redirect as RouterRedirect } from 'react-router-dom';
+import { Redirect }                   from 'App/Containers/Redirect';
+import { localize }                   from 'App/i18n';
+import { routes }                     from 'Constants';
 
 // import Statement       from 'Modules/Statement';
-import Trade             from 'Modules/Trading';
+import Trade           from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
 
@@ -19,7 +20,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
-    { path: routes.index,     component: Redirect,        title: '',                            to: routes.trade },
+    { path: routes.index,     component: RouterRedirect,        title: '',                            to: routes.trade },
     {
         path            : routes.reports,
         component       : Reports,
@@ -31,8 +32,9 @@ const initRoutesConfig = () => ([
             { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: 'IconStatement' },
         ],
     },
-    { path: routes.trade,     component: Trade,           title: localize('Trade'),             exact: true },
-    { path: routes.error404, component: Page404, title: localize('Error 404') },
+    { path: routes.trade,     component: Trade,           title: localize('Trade'),    exact: true },
+    { path: routes.error404,  component: Page404,         title: localize('Error 404') },
+    { path: routes.redirect,  component: Redirect,        title: localize('Redirect') },
 ]);
 
 let routesConfig;

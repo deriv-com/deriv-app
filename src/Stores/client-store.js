@@ -33,6 +33,7 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable website_status = {};
+    @observable verification_code = '';
 
     constructor(root_store) {
         super({ root_store });
@@ -534,6 +535,18 @@ export default class ClientStore extends BaseStore {
             });
             return authorize_response;
         }
+    }
+
+    @action.bound
+    setVerificationCode(code) {
+        this.verification_code = code;
+    }
+
+    @action.bound
+    onSignup({ password, residence }) {
+        if (!this.verification_code || !password || !residence) return;
+
+        console.log('---------- VC: ' + this.verification_code);
     }
 }
 /* eslint-enable */

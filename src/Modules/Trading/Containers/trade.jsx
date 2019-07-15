@@ -1,7 +1,6 @@
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-import UILoader              from 'App/Components/Elements/ui-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -40,7 +39,7 @@ class Trade extends React.Component {
                 <div className='chart-container'>
                     <NotificationMessages />
                     { this.props.symbol &&
-                        <React.Suspense fallback={<UILoader />} >
+                        <React.Suspense fallback={<div />} >
                             <ChartLoader is_visible={is_chart_visible} />
                             <SmartChart
                                 chart_id={this.props.chart_id}

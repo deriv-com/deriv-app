@@ -1,7 +1,7 @@
-import { FastMarker }   from 'smartcharts-beta';
-import { toJS }     from 'mobx';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import { toJS }       from 'mobx';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { FastMarker } from 'smartcharts-beta';
 
 const ChartMarker = ({
     marker_config,
@@ -19,7 +19,7 @@ const ChartMarker = ({
             if (!marker_props.y) {
                 const margin =
                     (is_bottom_widget_visible ? 115 : 0) + // digit contracts have a widget at the bottom
-                    24;                             // height of line marker icon
+                    24;                                    // height of line marker icon
 
                 ref.div.style.height =  `calc(100% - ${margin}px)`;
                 ref.div.style.zIndex = '-1';

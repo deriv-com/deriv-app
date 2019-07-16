@@ -1,4 +1,3 @@
-
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');

@@ -5,7 +5,6 @@ import { withRouter }  from 'react-router';
 import { formatMoney } from '_common/base/currency_base';
 import { urlFor }      from '_common/url';
 import Button          from 'App/Components/Form/button.jsx';
-import UILoader        from 'App/Components/Elements/ui-loader.jsx';
 import {
     LoginButton,
     MenuLinks,

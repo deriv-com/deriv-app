@@ -35,7 +35,7 @@ const AccountActions = ({
         const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info" */'App/Components/Layout/Header/account-info.jsx'));
         return (
             <React.Fragment>
-                <React.Suspense fallback={<UILoader />}>
+                <React.Suspense fallback={<div />}>
                     <AccountInfo
                         balance={formatMoney(currency, balance, true)}
                         is_upgrade_enabled={can_upgrade}

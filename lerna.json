@@ -1,0 +1,11 @@
+{
+  "version": "independent",
+  "npmClient": "npm",
+  "command": {
+    "bootstrap": {
+      "ignore": "component-*",
+      "npmClientArgs": ["--no-package-lock"]
+    }
+  },
+  "packages": ["packages/*"]
+}

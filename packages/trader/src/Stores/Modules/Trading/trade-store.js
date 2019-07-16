@@ -73,6 +73,7 @@ export default class TradeStore extends BaseStore {
     @observable duration_min_max    = {};
     @observable expiry_date         = '';
     @observable expiry_time         = '';
+    @observable expiry_time_old     = '';
     @observable expiry_type         = 'duration';
 
     // Barrier
@@ -129,6 +130,7 @@ export default class TradeStore extends BaseStore {
             'duration',
             'duration_unit',
             'expiry_date',
+            'expiry_time_old',
             'expiry_type',
             'is_equal',
             'last_digit',

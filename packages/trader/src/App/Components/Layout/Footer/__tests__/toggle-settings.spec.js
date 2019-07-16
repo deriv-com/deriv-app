@@ -23,15 +23,11 @@ describe('ToggleSettings', () => {
         const wrapper = shallow(<ToggleSettings />);
         expect(wrapper.contains(<Icon icon='IconSettings' className='footer__icon ic-settings__icon' />)).to.be.true;
     });
-    it('should have CSSTransition', () => {
-        const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
-        expect(wrapper.find(CSSTransition).exists()).to.be.true;
-    });
     it('property \'in\' should depend on \'is_settings_visible\'', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
-        expect(wrapper.find(CSSTransition).prop('in')).to.be.true;
+        expect(wrapper.find(Modal).shallow().find(CSSTransition).prop('in')).to.be.true;
         wrapper.setProps({ is_settings_visible: false });
-        expect(wrapper.find(CSSTransition).prop('in')).to.be.false;
+        expect(wrapper.find(Modal).shallow().find(CSSTransition).prop('in')).to.be.false;
     });
     it('should have Modal', () => {
         const wrapper = shallow(<ToggleSettings />);

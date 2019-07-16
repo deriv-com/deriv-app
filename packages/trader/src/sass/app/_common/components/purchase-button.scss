@@ -153,6 +153,11 @@
                     color: themed('disabled_color');
                 }
             }
+            .btn-purchase__info--right {
+                .btn-purchase__text {
+                    color: themed('disabled_color');
+                }
+            }
             .btn-purchase__effect-detail {
                 background: themed('btn_purchase_disabled_accent');
 

@@ -263,6 +263,11 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
+        // save trade_chart_symbol upon user change
+        if (name === 'symbol' && value) {
+            this.root_store.modules.smart_chart.trade_chart_symbol = value;
+        }
+
         if (name === 'currency') {
             this.root_store.client.selectCurrency(value);
         } else if (name === 'expiry_date') {
@@ -331,7 +336,8 @@ export default class TradeStore extends BaseStore {
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
-                    this.root_store.ui.resetPurchaseStates();
+                    // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                    this.disablePurchaseButtons();
                     this.root_store.common.services_error = {
                         type: response.msg_type,
                         ...response.error,
@@ -343,6 +349,17 @@ export default class TradeStore extends BaseStore {
                 this.is_purchase_enabled = true;
             }));
         }
+    }
+
+    disablePurchaseButtons = () => {
+        const el_purchase_value    = document.getElementsByClassName('trade-container__price-info');
+        const el_purchase_buttons  = document.getElementsByClassName('btn-purchase');
+        [].forEach.bind(el_purchase_buttons, (el) => {
+            el.classList.add('btn-purchase--disabled');
+        })();
+        [].forEach.bind(el_purchase_value, (el) => {
+            el.classList.add('trade-container__price-info--fade');
+        })();
     }
 
     @action.bound
@@ -482,6 +499,7 @@ export default class TradeStore extends BaseStore {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
+        this.root_store.ui.resetPurchaseStates();
     }
 
     @action.bound
@@ -572,10 +590,16 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency }
             );
             await this.clearContract();
+            await this.resetErrorServices();
             await this.refresh();
             await this.prepareTradeStore();
             return resolve(this.debouncedProposal());
         });
+    }
+
+    @action.bound
+    resetErrorServices() {
+        this.root_store.ui.toggleServicesErrorModal(false);
     }
 
     @action.bound
@@ -617,10 +641,12 @@ export default class TradeStore extends BaseStore {
     @action.bound
     restoreTradeChart() {
         const smart_chart_store = this.root_store.modules.smart_chart;
-        if (smart_chart_store.trade_chart_symbol !== this.symbol) {
+        if (smart_chart_store.trade_chart_symbol &&
+            (smart_chart_store.trade_chart_symbol !== this.symbol)) {
             this.symbol = smart_chart_store.trade_chart_symbol;
         }
-        if (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity) {
+        if (smart_chart_store.trade_chart_granularity &&
+            (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
         }
         if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {
@@ -634,6 +660,7 @@ export default class TradeStore extends BaseStore {
         this.proposal_info = {};
         this.purchase_info = {};
         WS.forgetAll('proposal');
+        this.resetErrorServices();
         this.restoreTradeChart();
         this.is_trade_component_mounted = false;
         // clear url query string

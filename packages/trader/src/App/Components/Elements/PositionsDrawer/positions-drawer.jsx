@@ -45,10 +45,12 @@ class PositionsDrawer extends React.Component {
                 <TransitionGroup component='div'>
                     {all_positions.slice(0, 5).map((portfolio_position) => (
                         <CSSTransition
+                            appear
                             key={portfolio_position.id}
                             in={true}
                             timeout={150}
                             classNames={{
+                                appear   : 'positions-drawer-card__wrapper--enter',
                                 enter    : 'positions-drawer-card__wrapper--enter',
                                 enterDone: 'positions-drawer-card__wrapper--enter-done',
                                 exit     : 'positions-drawer-card__wrapper--exit',

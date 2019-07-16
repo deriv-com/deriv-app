@@ -3,7 +3,6 @@
     margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
     overflow: hidden;
-    transition: filter 0.25s linear;
     backface-visibility: hidden;
     filter: blur(0);
     @include themify($themes) {
@@ -263,20 +262,6 @@
     .chartContainer {
         background: transparent;
         min-height: 100%;
-
-        &:before {
-            content: '';
-            position: absolute;
-            height: 100%;
-            width: 80px;
-            top: 0;
-            left: -2px;
-            pointer-events: none;
-            z-index: 2;
-            @include themify($themes) {
-                background-image: themed('chart_gradient_color');
-            }
-        }
     }
     @media (max-width: 768px) {
         height: 400px;

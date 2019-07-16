@@ -10,7 +10,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    transition: opacity 0.3s, filter 0.25s linear;
+    transition: opacity 0.3s;
     backface-visibility: hidden;
     filter: blur(0);
     @include themify($themes) {

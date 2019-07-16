@@ -43,7 +43,7 @@ const Url = (() => {
             if (/localhost|binary\.sx/.test(domain)) {
                 domain = `https://binary.com/${lang || 'en'}/`;
             } else {
-                domain = domain.replace(/deriv\.app/, 'binary.com');
+                domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
             }
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
@@ -97,7 +97,16 @@ const Url = (() => {
         return static_host + path.replace(/(^\/)/g, '');
     };
 
+    const getUrlBase = (path = '') => {
+        const l = window.location;
+
+        if (!/^\/br_/.test(l.pathname)) return path;
+
+        return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+    };
+
     return {
+        getUrlBase,
         reset,
         paramsHash,
         urlFor,

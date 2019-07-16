@@ -142,10 +142,9 @@ const SubscriptionManager = (() => {
                     )
                 ||
                 // remove when response isn't first and response has no stream_id
-                !stream_id && !sub_info.stream_id
+                !stream_id && sub_info.stream_id
             ) {
-                // TODO: Remove below once API has fixed empty string stream_id in response
-                if (sub_info.stream_id.length) delete subscriptions[sub_id];
+                delete subscriptions[sub_id];
             }
             sub_info.subscribers.forEach((fnc) => {
                 fnc(response);

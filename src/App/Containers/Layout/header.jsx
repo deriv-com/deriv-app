@@ -19,7 +19,7 @@ import { connect }     from 'Stores/connect';
 
 const ToggleMenuDrawer = React.lazy(() => import(/* webpackChunkName: "toggle-menu-drawer" */ 'App/Components/Layout/Header/toggle-menu-drawer.jsx'));
 
-const LazyAccountInfo = ({
+const AccountActions = ({
     is_logged_in,
     currency,
     balance,
@@ -122,7 +122,7 @@ const Header = ({
                     </div>
                     <div className='header__menu-right'>
                         <div className='acc-info__container'>
-                            <LazyAccountInfo
+                            <AccountActions
                                 is_logged_in={is_logged_in}
                                 currency={currency}
                                 balance={balance}

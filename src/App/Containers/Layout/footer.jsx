@@ -9,8 +9,7 @@ import ServerTime                     from '../server-time.jsx';
 import {
     NetworkStatus,
     ToggleFullScreen,
-    TogglePositions,
-}                  from '../../Components/Layout/Footer';
+    TogglePositions }                 from '../../Components/Layout/Footer';
 
 const ToggleSettings = React.lazy(() => import(/* webpackChunkName: "settings-toggle" */'App/Components/Layout/Footer/toggle-settings.jsx'));
 

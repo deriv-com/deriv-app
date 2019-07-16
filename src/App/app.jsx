@@ -2,18 +2,17 @@ import PropTypes                   from 'prop-types';
 import React                       from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDOM                    from 'react-dom';
-import { MobxProvider }         from 'Stores/connect';
-import initStore                from './app';
-import ErrorBoundary            from './Components/Elements/Errors/error-boundary.jsx';
-import UILoader                 from './Components/Elements/ui-loader.jsx';
-import AppContents              from './Containers/Layout/app-contents.jsx';
-import Footer                   from './Containers/Layout/footer.jsx';
-import Header                   from './Containers/Layout/header.jsx';
-
-import Routes                   from './Containers/Routes/routes.jsx';
+import { MobxProvider }            from 'Stores/connect';
+import initStore                   from './app';
+import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
+import UILoader                    from './Components/Elements/ui-loader.jsx';
+import AppContents                 from './Containers/Layout/app-contents.jsx';
+import Footer                      from './Containers/Layout/footer.jsx';
+import Header                      from './Containers/Layout/header.jsx';
+import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
-// eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
@@ -34,7 +33,7 @@ const App = ({ root_store }) => {
                         </React.Suspense> :
                         <React.Fragment>
                             <Header />
-                            <React.Suspense fallback={<UILoader />} >
+                            <React.Suspense fallback={<div />} >
                                 <PushNotification />
                             </React.Suspense>
                             <ErrorBoundary>

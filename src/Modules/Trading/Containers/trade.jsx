@@ -1,24 +1,24 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
-import UILoader             from 'App/Components/Elements/ui-loader.jsx';
-import { connect }          from 'Stores/connect';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import Digits               from 'Modules/Contract/Components/Digits';
-import InfoBox              from 'Modules/Contract/Components/InfoBox';
-import Test                 from './test.jsx';
-import FormLayout           from '../Components/Form/form-layout.jsx';
-import { isDigitTradeType } from '../Helpers/digits';
+import UILoader              from 'App/Components/Elements/ui-loader.jsx';
+import Digits                from 'Modules/Contract/Components/Digits';
+import InfoBox               from 'Modules/Contract/Components/InfoBox';
+import { connect }           from 'Stores/connect';
+import Test                  from './test.jsx';
+import FormLayout            from '../Components/Form/form-layout.jsx';
+import { isDigitTradeType }  from '../Helpers/digits';
 
 const SmartChart           = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 const NotificationMessages = React.lazy(() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx'));
 
-const LazyPositionsDrawer = ({ should_load }) => {
+const PositionsDrawer = ({ should_load }) => {
     if (should_load) {
-        const PositionsDrawer = React.lazy(() => import(/* webpackChunkName: "positions-drawer" */'App/Components/Elements/PositionsDrawer'));
+        const PositionsDrawerChunk = React.lazy(() => import(/* webpackChunkName: "positions-drawer" */'App/Components/Elements/PositionsDrawer'));
         return (
             <React.Suspense fallback={<UILoader />}>
-                <PositionsDrawer />
+                <PositionsDrawerChunk />
             </React.Suspense>
         );
     }
@@ -48,7 +48,7 @@ class Trade extends React.Component {
 
         return (
             <div id='trade_container' className='trade-container'>
-                <LazyPositionsDrawer should_load={this.props.is_logged_in} />
+                <PositionsDrawer should_load={this.props.is_logged_in} />
                 <div className='chart-container'>
                     <NotificationMessages />
                     { this.props.symbol &&

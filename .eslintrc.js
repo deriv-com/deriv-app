@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     parser: 'babel-eslint',
     env: {
@@ -71,10 +73,7 @@ module.exports = {
             version: '16',
         },
         'import/resolver': {
-            node: {
-              'paths': ['src'],
-            },
-            webpack: { config: 'build/webpack.config-test.js' },
+            webpack: { config: path.resolve('build/webpack.config-test.js') },
         }
     },
 };

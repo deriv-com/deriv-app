@@ -7,24 +7,12 @@ import Digits                from 'Modules/Contract/Components/Digits';
 import InfoBox               from 'Modules/Contract/Components/InfoBox';
 import { connect }           from 'Stores/connect';
 import Test                  from './test.jsx';
+import PositionsDrawer       from './positions-drawer-container.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
 
 const SmartChart           = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 const NotificationMessages = React.lazy(() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx'));
-
-const PositionsDrawer = ({ should_load }) => {
-    if (should_load) {
-        const PositionsDrawerChunk = React.lazy(() => import(/* webpackChunkName: "positions-drawer" */'App/Components/Elements/PositionsDrawer'));
-        return (
-            <React.Suspense fallback={<UILoader />}>
-                <PositionsDrawerChunk />
-            </React.Suspense>
-        );
-    }
-
-    return null;
-};
 
 class Trade extends React.Component {
     componentDidMount() {

@@ -1,10 +1,5 @@
 // Base
-@import 'app/_common/base/reset';
-@import 'app/_common/base/constants';
-@import 'app/_common/base/themes';
-@import 'app/_common/base/mixin';
-@import 'app/_common/base/typography';
-@import 'app/_common/base/common';
+@import 'app/_common/base/_index';
 
 // General
 @import 'app/_common/symbols';
@@ -19,7 +14,6 @@
 @import 'app/_common/layout/modal';
 
 // Drawer
-@import 'app/_common/drawer/drawer';
 @import 'app/_common/drawer/contract-drawer';
 @import 'app/_common/drawer/positions-drawer';
 @import 'app/_common/drawer/positions-drawer-card';

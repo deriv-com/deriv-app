@@ -70,7 +70,7 @@ const AccountActions = ({
                     has_effect
                     text={localize('Deposit')}
                     onClick={() => {
-                        window.open(urlFor('cashier', undefined, undefined, true), '_blank');
+                        window.open(urlFor('cashier', undefined, undefined, true), '_blank', 'noopener', 'noreferrer');
                     }}
                 />
                 }

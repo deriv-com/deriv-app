@@ -4,3 +4,26 @@
         width: 100%;
     }
 }
+
+/** @define withdraw */
+.withdraw {
+    width: 100%;
+    font-size: 1.6rem;
+
+    &__verify-wrapper {
+        text-align: center;
+
+    }
+    &__verify-button {
+        margin-top: 3.6rem;
+        height: 4rem;
+
+        &-text {
+            font-size: 1.4rem;
+        }
+    }
+    &__icon-authenticate {
+        margin-top: 8.1rem;
+        margin-bottom: 3.2rem;
+    }
+}

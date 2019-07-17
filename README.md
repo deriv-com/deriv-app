@@ -11,7 +11,7 @@ You will also need to install the following on your development machine:
 
 - Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
 - Lerna - run `npm i -g lerna`
-- Go to project root, then run `npm run boostrap {package name}` Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`.
+- Go to project root, then run `npm run bootstrap {package name}` Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`.
 - To install all packages with a hoisting strategy (lift all common packages to a root `node_modules` and not package specific), run `npm run hoist`
 
 How to work with this repo

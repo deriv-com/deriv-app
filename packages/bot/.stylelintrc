@@ -51,7 +51,7 @@
     "property-case"                                    : "lower",
     "plugin/no-unsupported-browser-features"           : [true, {
       "severity": "warning",
-      "ignore": ["calc", "user-select-none", "multicolumn", "css-appearance", "border-radius", "pointer"]
+      "ignore": ["calc", "user-select-none", "multicolumn", "css-appearance", "border-radius", "pointer", "css-filters"]
     }],
     "rule-empty-line-before"                           : ["always", { "ignore": ["after-comment"], "except": ["inside-block-and-after-rule", "first-nested"] }],
     "selector-attribute-brackets-space-inside"         : "never",

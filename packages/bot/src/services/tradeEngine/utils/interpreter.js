@@ -1,5 +1,5 @@
 import JSInterpreter                  from 'js-interpreter';
-import { createScope }                from './cliTools'; // eslint-disable-line import/no-cycle
+import { createScope }                from './cliTools';
 import { observer as globalObserver } from '../../../utils/observer';
 import Interface                      from '../Interface';
 

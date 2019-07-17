@@ -1,5 +1,5 @@
 import { supportedLanguages, translate, init }  from './i18n';
-import { parseQueryString }                     from '../urlHelper'; // eslint-disable-line import/no-cycle
+import { parseQueryString }                     from '../urlHelper';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;

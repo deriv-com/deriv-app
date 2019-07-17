@@ -42,6 +42,40 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
 
+        /* temperaily download & upload button */
+        const el_download_button = document.getElementById('download');
+        el_download_button.addEventListener('click', () => {
+            const download_content = Blockly.Xml.domToText(
+                Blockly.Xml.workspaceToDom(workspace)
+            );
+
+            const element = document.createElement('a');
+
+            element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(download_content)}`);
+            element.setAttribute('download', 'binary-bot.xml');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        });
+
+        const el_upload_button = document.getElementById('upload');
+        el_upload_button.addEventListener('change', e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener('load', ev => {
+                const read_xml = ev.target.result;
+                workspace.clear();
+                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(read_xml), workspace);
+            });
+
+            reader.readAsText(file);
+        });
+        /* temperaily download & upload button */
+        
         const onWorkspaceResize = () => {
             let el_scratch_area = document.getElementById(scratch_area_name);
             const scratch_area = el_scratch_area;

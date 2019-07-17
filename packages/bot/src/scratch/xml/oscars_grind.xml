@@ -1,0 +1,888 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables>
+    <variable type="" id="O!nu[t{pavCUx.Zf[n63" islocal="false" iscloud="false">oscarsGrind:resultIsWin</variable>
+    <variable type="" id="1@e2~}K[2)6@n$|llW$s" islocal="false" iscloud="false">oscarsGrind:profit</variable>
+    <variable type="" id="l6`t`DbnHr`2hOJ2RunJ" islocal="false" iscloud="false">oscarsGrind:totalProfit</variable>
+    <variable type="" id="B]-9VFrM)n:-K5Y;qoag" islocal="false" iscloud="false">oscarsGrind:tradeAgain</variable>
+    <variable type="" id="+lQ]WrF1Y3Wvit?DOdgu" islocal="false" iscloud="false">oscarsGrind:expectedProfit</variable>
+    <variable type="" id="V0OvvcA:RnlA|:N~#`d." islocal="false" iscloud="false">oscarsGrind:size</variable>
+    <variable type="" id="AsrkUSs=QxLDd%5XEYj/" islocal="false" iscloud="false">oscarsGrind:amount</variable>
+    <variable type="" id="~CU8[xGLOd;e[Y%Hr57I" islocal="false" iscloud="false">oscarsGrind:profitUnits</variable>
+    <variable type="" id="x`,%}bI1vC`O(k3uhVR_" islocal="false" iscloud="false">oscarsGrind:maximumLoss</variable>
+    <variable type="" id="1yytTC@,d]OVGl$z=-Dp" islocal="false" iscloud="false">won</variable>
+    <variable type="" id="|Su9-n.h%KH8Xc(%ZuYq" islocal="false" iscloud="false">lost</variable>
+    <variable type="" id="pm-XgQDxAND9pT6BnG%_" islocal="false" iscloud="false">total profit</variable>
+    <variable type="" id="t+fTR%OwnpJ21I`:=o2b" islocal="false" iscloud="false">max loss</variable>
+    <variable type="" id="r@wYgkvC$DPJS`1)+6B4" islocal="false" iscloud="false">expected profit</variable>
+  </variables>
+  <block type="procedures_defreturn" x="-78" y="-2674">
+    <field name="NAME">Oscar's Grind Trade Amount</field>
+    <statement name="STACK">
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_compare">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="variables_get">
+                <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="logic_null"></block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="variables_set">
+            <field name="VAR" id="O!nu[t{pavCUx.Zf[n63" variabletype="">oscarsGrind:resultIsWin</field>
+            <value name="VALUE" id="profit_value">
+              <block type="text_prompt_ext">
+                <field name="TYPE">NUMBER</field>
+                <value name="TEXT">
+                  <shadow type="text">
+                    <field name="TEXT">Expected Profit</field>
+                  </shadow>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <next>
+          <block type="controls_if">
+            <value name="IF0">
+              <block type="logic_compare">
+                <field name="OP">EQ</field>
+                <value name="A">
+                  <block type="variables_get">
+                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="logic_null"></block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set">
+                <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                <value name="VALUE" id="loss_value">
+                  <block type="text_prompt_ext">
+                    <field name="TYPE">NUMBER</field>
+                    <value name="TEXT">
+                      <shadow type="text">
+                        <field name="TEXT">Maximum Loss Amount</field>
+                      </shadow>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <next>
+              <block type="controls_if">
+                <value name="IF0">
+                  <block type="logic_compare">
+                    <field name="OP">EQ</field>
+                    <value name="A">
+                      <block type="variables_get">
+                        <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="logic_null"></block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="variables_set">
+                    <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+                    <value name="VALUE" id="stake_value">
+                      <block type="text_prompt_ext">
+                        <field name="TYPE">NUMBER</field>
+                        <value name="TEXT">
+                          <shadow type="text">
+                            <field name="TEXT">Trade Amount</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_if">
+                    <value name="IF0">
+                      <block type="logic_compare">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get">
+                            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="logic_null"></block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="variables_set">
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <value name="VALUE" id="size_value">
+                          <block type="math_number">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="controls_if">
+                        <value name="IF0">
+                          <block type="logic_compare">
+                            <field name="OP">EQ</field>
+                            <value name="A">
+                              <block type="variables_get">
+                                <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="logic_null"></block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="variables_set">
+                            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                            <value name="VALUE">
+                              <block type="math_number">
+                                <field name="NUM">0</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                        <next>
+                          <block type="controls_if">
+                            <value name="IF0">
+                              <block type="logic_compare">
+                                <field name="OP">EQ</field>
+                                <value name="A">
+                                  <block type="variables_get">
+                                    <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="logic_null"></block>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO0">
+                              <block type="variables_set">
+                                <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                <value name="VALUE">
+                                  <block type="math_number">
+                                    <field name="NUM">0</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="math_arithmetic">
+        <field name="OP">MULTIPLY</field>
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get">
+            <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+          </block>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get">
+            <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+  <block type="procedures_defnoreturn" x="-82" y="-1715">
+    <mutation>
+      <arg name="oscarsGrind:resultIsWin" varid="O!nu[t{pavCUx.Zf[n63"></arg>
+    </mutation>
+    <field name="NAME">Oscar's Grind Core Functionality</field>
+    <statement name="STACK">
+      <block type="controls_if">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="variables_get">
+            <field name="VAR" id="O!nu[t{pavCUx.Zf[n63" variabletype="">oscarsGrind:resultIsWin</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="variables_set">
+            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+            <value name="VALUE">
+              <block type="math_arithmetic">
+                <field name="OP">ADD</field>
+                <value name="A">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="variables_get">
+                    <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="variables_get">
+                    <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="controls_if">
+                <mutation else="1"></mutation>
+                <value name="IF0">
+                  <block type="logic_compare">
+                    <field name="OP">LTE</field>
+                    <value name="A">
+                      <block type="variables_get">
+                        <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="math_number">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="controls_if">
+                    <mutation else="1"></mutation>
+                    <value name="IF0">
+                      <block type="logic_compare">
+                        <field name="OP">GT</field>
+                        <value name="A">
+                          <block type="math_arithmetic">
+                            <field name="OP">ADD</field>
+                            <value name="A">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number">
+                            <field name="NUM">0</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="variables_set">
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <value name="VALUE">
+                          <block type="math_arithmetic">
+                            <field name="OP">MINUS</field>
+                            <value name="A">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="variables_set">
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <value name="VALUE">
+                          <block type="math_arithmetic">
+                            <field name="OP">ADD</field>
+                            <value name="A">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <statement name="ELSE">
+                  <block type="variables_set">
+                    <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                    <value name="VALUE">
+                      <block type="math_number">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set">
+                        <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                        <value name="VALUE">
+                          <block type="math_number">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="notify">
+                            <field name="NOTIFICATION_TYPE">success</field>
+                            <field name="NOTIFICATION_SOUND">silent</field>
+                            <value name="MESSAGE">
+                              <shadow type="text">
+                                <field name="TEXT">One Oscar's Grind session finished successfully</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="variables_set">
+            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+            <value name="VALUE">
+              <block type="math_arithmetic">
+                <field name="OP">MINUS</field>
+                <value name="A">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="variables_get">
+                    <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="variables_get">
+                    <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defreturn" x="-74" y="-814">
+    <mutation>
+      <arg name="oscarsGrind:profit" varid="1@e2~}K[2)6@n$|llW$s"></arg>
+      <arg name="oscarsGrind:resultIsWin" varid="O!nu[t{pavCUx.Zf[n63"></arg>
+    </mutation>
+    <field name="NAME">Oscar's Grind Trade Again After Purchase</field>
+    <statement name="STACK">
+      <block type="math_change">
+        <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+        <value name="DELTA">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get">
+            <field name="VAR" id="1@e2~}K[2)6@n$|llW$s" variabletype="">oscarsGrind:profit</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set">
+            <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+            <value name="VALUE">
+              <block type="math_arithmetic">
+                <field name="OP">DIVIDE</field>
+                <value name="A">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="math_round">
+                    <field name="OP">ROUND</field>
+                    <value name="NUM">
+                      <shadow type="math_number">
+                        <field name="NUM">3.1</field>
+                      </shadow>
+                      <block type="math_arithmetic">
+                        <field name="OP">MULTIPLY</field>
+                        <value name="A">
+                          <shadow type="math_number">
+                            <field name="NUM">1</field>
+                          </shadow>
+                          <block type="variables_get">
+                            <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <shadow type="math_number">
+                            <field name="NUM">100</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="B">
+                  <shadow type="math_number">
+                    <field name="NUM">100</field>
+                  </shadow>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="controls_if">
+                <mutation else="1"></mutation>
+                <value name="IF0">
+                  <block type="variables_get">
+                    <field name="VAR" id="O!nu[t{pavCUx.Zf[n63" variabletype="">oscarsGrind:resultIsWin</field>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="text_join">
+                    <field name="VARIABLE" id="1yytTC@,d]OVGl$z=-Dp" variabletype="">won</field>
+                    <statement name="STACK">
+                      <block type="text_statement" movable="false">
+                        <value name="TEXT">
+                          <shadow type="text">
+                            <field name="TEXT">Won:</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="text_statement" movable="false">
+                            <value name="TEXT">
+                              <shadow type="text">
+                                <field name="TEXT"></field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="1@e2~}K[2)6@n$|llW$s" variabletype="">oscarsGrind:profit</field>
+                              </block>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="notify">
+                        <field name="NOTIFICATION_TYPE">success</field>
+                        <field name="NOTIFICATION_SOUND">silent</field>
+                        <value name="MESSAGE">
+                          <shadow type="text">
+                            <field name="TEXT">abc</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <statement name="ELSE">
+                  <block type="text_join">
+                    <field name="VARIABLE" id="|Su9-n.h%KH8Xc(%ZuYq" variabletype="">lost</field>
+                    <statement name="STACK">
+                      <block type="text_statement" movable="false">
+                        <value name="TEXT">
+                          <shadow type="text">
+                            <field name="TEXT">Lost:</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="text_statement" movable="false">
+                            <value name="TEXT">
+                              <shadow type="text">
+                                <field name="TEXT"></field>
+                              </shadow>
+                              <block type="math_single">
+                                <field name="OP">ABS</field>
+                                <value name="NUM">
+                                  <shadow type="math_number">
+                                    <field name="NUM">9</field>
+                                  </shadow>
+                                  <block type="variables_get">
+                                    <field name="VAR" id="1@e2~}K[2)6@n$|llW$s" variabletype="">oscarsGrind:profit</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="notify">
+                        <field name="NOTIFICATION_TYPE">warn</field>
+                        <field name="NOTIFICATION_SOUND">silent</field>
+                        <value name="MESSAGE">
+                          <shadow type="text">
+                            <field name="TEXT">abc</field>
+                          </shadow>
+                          <block type="variables_get">
+                            <field name="VAR" id="|Su9-n.h%KH8Xc(%ZuYq" variabletype="">lost</field>
+                          </block>
+                        </value>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <next>
+                  <block type="procedures_callnoreturn">
+                    <mutation name="Oscar's Grind Core Functionality">
+                      <arg name="oscarsGrind:resultIsWin"></arg>
+                    </mutation>
+                    <data>k$qiKo#Ci(Y84~X^T]HP</data>
+                    <value name="ARG0">
+                      <block type="variables_get">
+                        <field name="VAR" id="O!nu[t{pavCUx.Zf[n63" variabletype="">oscarsGrind:resultIsWin</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="text_join">
+                        <field name="VARIABLE" id="pm-XgQDxAND9pT6BnG%_" variabletype="">total profit</field>
+                        <statement name="STACK">
+                          <block type="text_statement" movable="false">
+                            <value name="TEXT">
+                              <shadow type="text">
+                                <field name="TEXT">Total Profit:</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="text_statement" movable="false">
+                                <value name="TEXT">
+                                  <shadow type="text">
+                                    <field name="TEXT"></field>
+                                  </shadow>
+                                  <block type="variables_get">
+                                    <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                        <next>
+                          <block type="notify">
+                            <field name="NOTIFICATION_TYPE">info</field>
+                            <field name="NOTIFICATION_SOUND">silent</field>
+                            <value name="MESSAGE">
+                              <shadow type="text">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="pm-XgQDxAND9pT6BnG%_" variabletype="">total profit</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="variables_set">
+                                <field name="VAR" id="B]-9VFrM)n:-K5Y;qoag" variabletype="">oscarsGrind:tradeAgain</field>
+                                <value name="VALUE">
+                                  <block type="logic_boolean">
+                                    <field name="BOOL">FALSE</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="controls_if">
+                                    <mutation else="1"></mutation>
+                                    <value name="IF0">
+                                      <block type="logic_compare">
+                                        <field name="OP">LT</field>
+                                        <value name="A">
+                                          <block type="variables_get">
+                                            <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                          </block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="variables_get">
+                                            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <statement name="DO0">
+                                      <block type="controls_if">
+                                        <mutation else="1"></mutation>
+                                        <value name="IF0">
+                                          <block type="logic_compare">
+                                            <field name="OP">GT</field>
+                                            <value name="A">
+                                              <block type="variables_get">
+                                                <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="math_single">
+                                                <field name="OP">NEG</field>
+                                                <value name="NUM">
+                                                  <shadow type="math_number">
+                                                    <field name="NUM">9</field>
+                                                  </shadow>
+                                                  <block type="variables_get">
+                                                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <statement name="DO0">
+                                          <block type="variables_set">
+                                            <field name="VAR" id="B]-9VFrM)n:-K5Y;qoag" variabletype="">oscarsGrind:tradeAgain</field>
+                                            <value name="VALUE">
+                                              <block type="logic_boolean">
+                                                <field name="BOOL">TRUE</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </statement>
+                                        <statement name="ELSE">
+                                          <block type="text_join">
+                                            <field name="VARIABLE" id="t+fTR%OwnpJ21I`:=o2b" variabletype="">max loss</field>
+                                            <statement name="STACK">
+                                              <block type="text_statement" movable="false">
+                                                <value name="TEXT">
+                                                  <shadow type="text">
+                                                    <field name="TEXT">Maximum Loss Occurred! Total Loss:</field>
+                                                  </shadow>
+                                                </value>
+                                                <next>
+                                                  <block type="text_statement" movable="false">
+                                                    <value name="TEXT">
+                                                      <shadow type="text">
+                                                        <field name="TEXT"></field>
+                                                      </shadow>
+                                                      <block type="math_single">
+                                                        <field name="OP">NEG</field>
+                                                        <value name="NUM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">9</field>
+                                                          </shadow>
+                                                          <block type="variables_get">
+                                                            <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </statement>
+                                            <next>
+                                              <block type="text_print">
+                                                <value name="TEXT">
+                                                  <shadow type="text">
+                                                    <field name="TEXT">abc</field>
+                                                  </shadow>
+                                                  <block type="variables_get">
+                                                    <field name="VAR" id="t+fTR%OwnpJ21I`:=o2b" variabletype="">max loss</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </statement>
+                                      </block>
+                                    </statement>
+                                    <statement name="ELSE">
+                                      <block type="text_join">
+                                        <field name="VARIABLE" id="r@wYgkvC$DPJS`1)+6B4" variabletype="">expected profit</field>
+                                        <statement name="STACK">
+                                          <block type="text_statement" movable="false">
+                                            <value name="TEXT">
+                                              <shadow type="text">
+                                                <field name="TEXT">Expected Profit Made! Total Profit:</field>
+                                              </shadow>
+                                            </value>
+                                            <next>
+                                              <block type="text_statement" movable="false">
+                                                <value name="TEXT">
+                                                  <shadow type="text">
+                                                    <field name="TEXT"></field>
+                                                  </shadow>
+                                                  <block type="variables_get">
+                                                    <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </statement>
+                                        <next>
+                                          <block type="text_print">
+                                            <value name="TEXT">
+                                              <shadow type="text">
+                                                <field name="TEXT">abc</field>
+                                              </shadow>
+                                              <block type="variables_get">
+                                                <field name="VAR" id="r@wYgkvC$DPJS`1)+6B4" variabletype="">expected profit</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </statement>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get">
+        <field name="VAR" id="B]-9VFrM)n:-K5Y;qoag" variabletype="">oscarsGrind:tradeAgain</field>
+      </block>
+    </value>
+  </block>
+  <block type="trade_definition" x="-79" y="1130">
+    <statement name="TRADE_OPTIONS">
+      <block type="trade_definition_market" deletable="false" movable="false">
+        <field name="MARKET_LIST"></field>
+        <field name="SUBMARKET_LIST"></field>
+        <field name="SYMBOL_LIST"></field>
+        <next>
+          <block type="trade_definition_tradetype" deletable="false" movable="false">
+            <field name="TRADETYPECAT_LIST"></field>
+            <field name="TRADETYPE_LIST"></field>
+            <next>
+              <block type="trade_definition_contracttype" deletable="false" movable="false">
+                <field name="TYPE_LIST"></field>
+                <next>
+                  <block type="trade_definition_candleinterval" deletable="false" movable="false">
+                    <field name="CANDLEINTERVAL_LIST">60</field>
+                    <next>
+                      <block type="trade_definition_restartbuysell" deletable="false" movable="false">
+                        <value name="TIME_MACHINE_ENABLED">
+                          <shadow type="logic_boolean">
+                            <field name="BOOL">FALSE</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="trade_definition_restartonerror" deletable="false" movable="false">
+                            <value name="RESTARTONERROR">
+                              <shadow type="logic_boolean">
+                                <field name="BOOL">FALSE</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <statement name="SUBMARKET">
+      <block type="trade_definition_tradeoptions">
+        <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
+        <field name="DURATIONTYPE_LIST">na</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <value name="DURATION">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="procedures_callreturn">
+            <mutation name="Oscar's Grind Trade Amount"></mutation>
+            <data>{,,IB^og-yc(a+pn6Y%=</data>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" x="-77" y="1659">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="purchase">
+        <field name="PURCHASE_LIST"></field>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" x="-79" y="1828">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="procedures_callreturn">
+            <mutation name="Oscar's Grind Trade Again After Purchase">
+              <arg name="oscarsGrind:profit"></arg>
+              <arg name="oscarsGrind:resultIsWin"></arg>
+            </mutation>
+            <data>Ve;/X$bb/Au|58~8_%AW</data>
+            <value name="ARG0">
+              <block type="read_details">
+                <field name="DETAIL_INDEX">4</field>
+              </block>
+            </value>
+            <value name="ARG1">
+              <block type="contract_check_result">
+                <field name="CHECK_RESULT">win</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_again"></block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>

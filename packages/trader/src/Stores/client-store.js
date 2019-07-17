@@ -27,12 +27,14 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable accounts;
-    @observable switched         = '';
-    @observable switch_broadcast = false;
-    @observable currencies_list  = {};
-    @observable selected_currency = '';
+    @observable switched                   = '';
+    @observable switch_broadcast           = false;
+    @observable currencies_list            = {};
+    @observable residence_list             = [];
+    @observable selected_currency          = '';
     @observable is_populating_account_list = false;
-    @observable website_status = {};
+    @observable website_status             = {};
+    @observable verification_code          = '';
 
     constructor(root_store) {
         super({ root_store });
@@ -534,6 +536,30 @@ export default class ClientStore extends BaseStore {
             });
             return authorize_response;
         }
+    }
+
+    @action.bound
+    setVerificationCode(code) {
+        this.verification_code = code;
+        // TODO: add await if error handling needs to happen before AccountSignup is initialised
+        this.fetchResidenceList(); // Prefetch for use in account signup process
+    }
+
+    @action.bound
+    onSignup({ password, residence }) {
+        if (!this.verification_code || !password || !residence) return;
+
+        // Currently the code doesn't reach here and the console log is needed for debugging.
+        // TODO: remove console log when AccountSignup component and validation are ready
+        WS.newAccountVirtual(this.verification_code, password, residence).then(response => console.log(response));
+    }
+
+    fetchResidenceList() {
+        WS.residenceList().then(response => {
+            runInAction(() => {
+                this.residence_list = response.residence_list || [];
+            })
+        });
     }
 }
 /* eslint-enable */

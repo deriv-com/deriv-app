@@ -541,6 +541,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setVerificationCode(code) {
         this.verification_code = code;
+        // TODO: add await if error handling needs to happen before AccountSignup is initialised
         this.fetchResidenceList(); // Prefetch for use in account signup process
     }
 
@@ -548,7 +549,9 @@ export default class ClientStore extends BaseStore {
     onSignup({ password, residence }) {
         if (!this.verification_code || !password || !residence) return;
 
-        WS.newVirtualAccount(this.verification_code, password, residence).then(response => console.log(response));
+        // Currently the code doesn't reach here and the console log is needed for debugging.
+        // TODO: remove console log when AccountSignup component and validation are ready
+        WS.newAccountVirtual(this.verification_code, password, residence).then(response => console.log(response));
     }
 
     fetchResidenceList() {

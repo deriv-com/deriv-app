@@ -16,7 +16,9 @@ import ServicesErrorModal          from './Containers/ServicesErrorModal';
 import UnsupportedContractModal    from './Containers/UnsupportedContractModal';
 import Wip                         from './Containers/Wip';
 import './i18n';
+// eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
+// eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
@@ -37,7 +39,7 @@ const App = ({ root_store }) => {
                                     <Routes />
                                     <PushNotification />
                                 </AppContents>
-                                {/* TODO: Enable this one UI is ready */}
+                                {/* TODO: Enable AccountSignupModal once its UI component is ready */}
                                 {/* <AccountSignupModal /> */}
                                 <UnsupportedContractModal />
                                 <DenialOfServiceModal />
@@ -61,4 +63,5 @@ export default App;
 const root_store = initStore();
 
 const wrapper = document.getElementById('deriv_app');
+// eslint-disable-next-line no-unused-expressions
 wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

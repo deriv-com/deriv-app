@@ -34,7 +34,7 @@ const WS = (() => {
     const mt5LoginList = () =>
         BinarySocket.send({ mt5_login_list: 1 });
 
-    const newVirtualAccount = (verification_code, client_password, residence) =>
+    const newAccountVirtual = (verification_code, client_password, residence) =>
         BinarySocket.send({
             new_account_virtual: 1,
             verification_code,
@@ -119,7 +119,7 @@ const WS = (() => {
         landingCompany,
         logout,
         mt5LoginList,
-        newVirtualAccount,
+        newAccountVirtual,
         oauthApps,
         portfolio,
         payoutCurrencies,

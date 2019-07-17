@@ -1,9 +1,11 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import Localize      from 'App/Components/Elements/localize.jsx';
 import Button        from 'App/Components/Form/button.jsx';
 import Dropdown      from 'App/Components/Form/DropDown';
 // import InputField    from 'App/Components/Form/InputField/input-field.jsx';
+import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';
 
 // const onClose = (ui) => {
@@ -11,19 +13,22 @@ import { connect }   from 'Stores/connect';
 // };
 
 const AccountSignup = ({ onSignup, residence_list }) => {
-    const userInput = { password: null, residence: null };
-    const list      = residence_list;
+    // THIS COMPONENT IS A WIP; IT IS NOT READY FOR USE.
+    const obj_user_input = { password: null, residence: null };
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
-        userInput[name] = value;
+        obj_user_input[name] = value;
     };
-    const onSubmitSignup = () => onSignup(userInput);
+
+    const onSubmitSignup = () => onSignup(obj_user_input);
 
     return (
         <div className='account-signup'>
-            <h3>Thanks for verifying your email.</h3>
-            <input type='password' name='password' onChange={onInputChange} required placeholder='Create a password' />
+            <h3>
+                <Localize i18n_default_text='Thanks for verifying your email.' />
+            </h3>
+            <input type='password' name='password' onChange={onInputChange} required placeholder={localize('Create a password')} />
             {/* <InputField */}
             {/*    name='password' */}
             {/*    type='password' */}
@@ -34,11 +39,13 @@ const AccountSignup = ({ onSignup, residence_list }) => {
             <Dropdown
                 is_alignment_left
                 is_nativepicker={false}
-                list={list}
+                list={residence_list}
                 name='residence'
                 onChange={onInputChange}
             />
-            <Button onClick={onSubmitSignup}>Start trading</Button>
+            <Button onClick={onSubmitSignup}>
+                <Localize i18n_default_text='Start trading' />
+            </Button>
         </div>
     );
 };
@@ -52,8 +59,9 @@ const AccountSignupModal = ({ is_visible, onSignup, residence_list }) => {
 };
 
 AccountSignupModal.propTypes = {
-    is_visible: PropTypes.bool,
-    onSignup  : PropTypes.func,
+    is_visible    : PropTypes.bool,
+    onSignup      : PropTypes.func,
+    residence_list: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default connect(

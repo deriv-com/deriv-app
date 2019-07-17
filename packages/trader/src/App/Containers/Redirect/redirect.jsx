@@ -8,7 +8,7 @@ const Redirect = ({
     setVerificationCode,
     toggleAccountSignupModal,
 }) => {
-    const url_params  = new URLSearchParams(window.location.search);
+    const url_params = new URLSearchParams(window.location.search);
 
     switch (url_params.get('action')) {
         case 'signup': {
@@ -28,6 +28,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     history                 : PropTypes.object,
+    setVerificationCode     : PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
 };
 

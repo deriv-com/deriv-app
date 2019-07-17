@@ -24,6 +24,9 @@ export default class CashierStore extends BaseStore {
         withdraw: 'withdraw',
     };
 
+    @observable has_verification_token          = false;
+    @observable is_verification_button_disabled = false;
+
     @action.bound
     async onMountDeposit() {
         this.setErrorMessage('');
@@ -109,50 +112,55 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountWithdraw() {
-        // this.setErrorMessage('');
-        // this.setContainerHeight(0);
-        // this.setLoading(true);
-        //
-        // if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
-        //     this.checkIframeLoaded();
-        //     return;
-        // }
-        //
-        // this.setSessionTimeout(false, this.containers.withdraw);
-        // this.setContainerUrl('', this.containers.withdraw);
-        //
-        // const response_cashier = await WS.cashier(this.containers.withdraw);
-        //
-        // // TODO: uncomment this if cross origin access is allowed
-        // // const xhttp = new XMLHttpRequest();
-        // // const that = this;
-        // // xhttp.onreadystatechange = function() {
-        // //     if (this.readyState !== 4 || this.status !== 200) {
-        // //         return;
-        // //     }
-        // //     that.setContainerUrl(this.responseText, this.containers.withdraw);
-        // // };
-        // // xhttp.open('GET', response_cashier.cashier, true);
-        // // xhttp.send();
-        //
-        // // TODO: error handling
-        // if (response_cashier.error) {
-        //     this.setLoading(false);
-        //     this.setErrorMessage(response_cashier.error.message);
-        // } else {
-        //     await this.checkIframeLoaded();
-        //     this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
-        //
-        //     // cashier session runs out after one minute
-        //     // so we should resend the request for withdraw url on next mount
-        //     setTimeout(() => {
-        //         this.setSessionTimeout(true, this.containers.withdraw);
-        //     }, 60000);
-        // }
+        this.setErrorMessage('');
+        this.setContainerHeight(0);
+        this.setLoading(true);
+
+        if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
+            this.checkIframeLoaded();
+            return;
+        }
+
+        this.setSessionTimeout(false, this.containers.withdraw);
+        this.setContainerUrl('', this.containers.withdraw);
+
+        const response_cashier = await WS.cashier(this.containers.withdraw);
+
+        // TODO: uncomment this if cross origin access is allowed
+        // const xhttp = new XMLHttpRequest();
+        // const that = this;
+        // xhttp.onreadystatechange = function() {
+        //     if (this.readyState !== 4 || this.status !== 200) {
+        //         return;
+        //     }
+        //     that.setContainerUrl(this.responseText, this.containers.withdraw);
+        // };
+        // xhttp.open('GET', response_cashier.cashier, true);
+        // xhttp.send();
+
+        // TODO: error handling
+        if (response_cashier.error) {
+            this.setLoading(false);
+            this.setErrorMessage(response_cashier.error.message);
+        } else {
+            await this.checkIframeLoaded();
+            this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
+
+            // cashier session runs out after one minute
+            // so we should resend the request for withdraw url on next mount
+            setTimeout(() => {
+                this.setSessionTimeout(true, this.containers.withdraw);
+            }, 60000);
+        }
     }
 
     @action.bound
-    sendVerificationEmail = (email) => {
-        WS.verifyEmail(email, 'payment_withdraw');
+    sendVerificationEmail(email) {
+        if (this.is_verification_button_disabled) {
+            return;
+        }
+
+        this.is_verification_button_disabled = true;
+        // WS.verifyEmail(email, 'payment_withdraw');
     }
 }

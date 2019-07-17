@@ -24,7 +24,7 @@ How to work with this project
 1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
 Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL.
 
-    If you're using a custom domain, replace the github URLs above with your domain.
+    If you're using a custom domain, replace the github URLs above with your domain and remove the `deriv-app` base path.
 
 2. In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
    * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`

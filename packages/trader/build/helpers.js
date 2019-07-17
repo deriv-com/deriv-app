@@ -10,8 +10,8 @@ const transformContentUrlBase = (content, path, base) => {
 /**
  * @returns {string} Chrome browser string
  * */
-const openChromeBasedOnPlatform = () => {
-    switch (process.platform) {
+const openChromeBasedOnPlatform = (platform) => {
+    switch (platform) {
         case 'win32': {
             return 'chrome';
         }

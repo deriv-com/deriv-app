@@ -10,8 +10,8 @@ const WS = (() => {
     const buy = (proposal_id, price) =>
         BinarySocket.send({ buy: proposal_id, price });
 
-    const cashier = (action) =>
-        BinarySocket.send({ cashier: action });
+    const cashier = (action, verification_code) =>
+        BinarySocket.send({ cashier: action, ...(verification_code && { verification_code }) });
 
     const contractsFor = (symbol) =>
         BinarySocket.send({ contracts_for: symbol });

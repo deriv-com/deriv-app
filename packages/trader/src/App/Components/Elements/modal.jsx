@@ -26,6 +26,9 @@ class ModalElement extends React.PureComponent {
         document.removeEventListener('mousedown', this.handleClickOutside);
         this.state.modal_root.removeChild(this.el);
         this.props.hideFullBlur();
+        if (typeof this.props.onUnmount === 'function') {
+            this.props.onUnmount();
+        }
     }
 
     handleClickOutside = (event) => {
@@ -55,6 +58,7 @@ class ModalElement extends React.PureComponent {
                     alignment='center'
                     classNameHeader='modal__tab-header'
                     list={this.props.modal_content}
+                    selected_index={this.props.selected_index}
                 />
             </div>,
             this.el
@@ -67,14 +71,16 @@ class ModalElement extends React.PureComponent {
 }
 
 ModalElement.propTypes = {
-    className    : PropTypes.string,
-    header       : PropTypes.node,
-    hideFullBlur : PropTypes.func,
-    is_open      : PropTypes.bool,
-    modal_content: PropTypes.array,
-    showFullBlur : PropTypes.func,
-    title        : PropTypes.string,
-    toggleModal  : PropTypes.func,
+    className     : PropTypes.string,
+    header        : PropTypes.node,
+    hideFullBlur  : PropTypes.func,
+    is_open       : PropTypes.bool,
+    modal_content : PropTypes.array,
+    onUnmount     : PropTypes.func,
+    selected_index: PropTypes.number,
+    showFullBlur  : PropTypes.func,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 const Modal = ({
@@ -83,6 +89,8 @@ const Modal = ({
     hideFullBlur,
     is_open,
     modal_content,
+    onUnmount,
+    selected_index,
     showFullBlur,
     title,
     toggleModal,
@@ -105,6 +113,8 @@ const Modal = ({
             hideFullBlur={hideFullBlur}
             is_open={is_open}
             modal_content={modal_content}
+            onUnmount={onUnmount}
+            selected_index={selected_index}
             showFullBlur={showFullBlur}
             title={title}
             toggleModal={toggleModal}
@@ -113,14 +123,16 @@ const Modal = ({
 );
 
 Modal.propTypes = {
-    className    : PropTypes.string,
-    header       : PropTypes.node,
-    hideFullBlur : PropTypes.func,
-    is_open      : PropTypes.bool,
-    modal_content: PropTypes.array,
-    showFullBlur : PropTypes.func,
-    title        : PropTypes.string,
-    toggleModal  : PropTypes.func,
+    className     : PropTypes.string,
+    header        : PropTypes.node,
+    hideFullBlur  : PropTypes.func,
+    is_open       : PropTypes.bool,
+    modal_content : PropTypes.array,
+    onUnmount     : PropTypes.func,
+    selected_index: PropTypes.number,
+    showFullBlur  : PropTypes.func,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 export {

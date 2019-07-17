@@ -19,29 +19,34 @@ export default class CashierStore extends BaseStore {
         withdraw: false,
     };
 
+    @observable is_verification_button_clicked = false;
+    @observable is_verification_email_sent     = false;
+
     containers = {
         deposit : 'deposit',
         withdraw: 'withdraw',
     };
 
-    @observable has_verification_token          = false;
-    @observable is_verification_button_disabled = false;
+    timeout_verification_button;
 
     @action.bound
-    async onMountDeposit() {
+    async onMount(container, verification_code) {
+        if (!['deposit', 'withdraw'].includes(container)) {
+            throw new Error('Cahshier Store onMount requires deposit or cashier as a container name');
+        }
         this.setErrorMessage('');
         this.setContainerHeight(0);
         this.setLoading(true);
 
-        if (this.container_urls.deposit && !this.is_session_timeout.deposit) {
+        if (this.container_urls[container] && !this.is_session_timeout[container]) {
             this.checkIframeLoaded();
             return;
         }
 
-        this.setSessionTimeout(false, this.containers.deposit);
-        this.setContainerUrl('', this.containers.deposit);
+        this.setSessionTimeout(false, this.containers[container]);
+        this.setContainerUrl('', this.containers[container]);
 
-        const response_cashier = await WS.cashier(this.containers.deposit);
+        const response_cashier = await WS.cashier(this.containers[container], verification_code);
 
         // TODO: uncomment this if cross origin access is allowed
         // const xhttp = new XMLHttpRequest();
@@ -50,7 +55,7 @@ export default class CashierStore extends BaseStore {
         //     if (this.readyState !== 4 || this.status !== 200) {
         //         return;
         //     }
-        //     that.setContainerUrl(this.responseText, this.containers.deposit);
+        //     that.setContainerUrl(this.responseText, this.containers[container]);
         // };
         // xhttp.open('GET', response_cashier.cashier, true);
         // xhttp.send();
@@ -59,16 +64,25 @@ export default class CashierStore extends BaseStore {
         if (response_cashier.error) {
             this.setLoading(false);
             this.setErrorMessage(response_cashier.error.message);
+            if (verification_code) {
+                // clear verification code on error
+                this.clearVerification();
+            }
         } else {
             await this.checkIframeLoaded();
-            this.setContainerUrl(response_cashier.cashier, this.containers.deposit);
+            this.setContainerUrl(response_cashier.cashier, this.containers[container]);
 
             // cashier session runs out after one minute
-            // so we should resend the request for deposit url on next mount
+            // so we should resend the request for container (deposit|withdraw) url on next mount
             setTimeout(() => {
-                this.setSessionTimeout(true, this.containers.deposit);
+                this.setSessionTimeout(true, this.containers[container]);
             }, 60000);
         }
+    }
+
+    @action.bound
+    async onMountDeposit() {
+        await this.onMount('deposit');
     }
 
     @action.bound
@@ -111,56 +125,59 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountWithdraw() {
-        this.setErrorMessage('');
-        this.setContainerHeight(0);
-        this.setLoading(true);
+    setVerificationButtonClicked(is_verification_button_clicked) {
+        this.is_verification_button_clicked = is_verification_button_clicked;
+    }
 
-        if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
-            this.checkIframeLoaded();
+    @action.bound
+    setVerificationEmailSent(is_verification_email_sent) {
+        this.is_verification_email_sent = is_verification_email_sent;
+    }
+
+    // verification token expires after one hour
+    // so we should show the verification request button again after that
+    @action.bound
+    setTimeoutVerification() {
+        if (this.timeout_verification_button) {
+            clearTimeout(this.timeout_verification_button);
+        }
+        this.timeout_verification_button = setTimeout(() => {
+            this.clearVerification();
+        }, 3600000);
+    }
+
+    @action.bound
+    async onMountWithdraw(verification_code) {
+        await this.onMount('withdraw', verification_code);
+    }
+
+    @action.bound
+    async sendVerificationEmail(email) {
+        if (this.is_verification_button_clicked) {
             return;
         }
 
-        this.setSessionTimeout(false, this.containers.withdraw);
-        this.setContainerUrl('', this.containers.withdraw);
+        this.setVerificationButtonClicked(true);
+        const response_verify_email = await WS.verifyEmail(email, 'payment_withdraw');
 
-        const response_cashier = await WS.cashier(this.containers.withdraw);
-
-        // TODO: uncomment this if cross origin access is allowed
-        // const xhttp = new XMLHttpRequest();
-        // const that = this;
-        // xhttp.onreadystatechange = function() {
-        //     if (this.readyState !== 4 || this.status !== 200) {
-        //         return;
-        //     }
-        //     that.setContainerUrl(this.responseText, this.containers.withdraw);
-        // };
-        // xhttp.open('GET', response_cashier.cashier, true);
-        // xhttp.send();
-
-        // TODO: error handling
-        if (response_cashier.error) {
-            this.setLoading(false);
-            this.setErrorMessage(response_cashier.error.message);
+        if (response_verify_email.error) {
+            this.setVerificationButtonClicked(false);
+            this.error_message = response_verify_email.error.message;
         } else {
-            await this.checkIframeLoaded();
-            this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
-
-            // cashier session runs out after one minute
-            // so we should resend the request for withdraw url on next mount
-            setTimeout(() => {
-                this.setSessionTimeout(true, this.containers.withdraw);
-            }, 60000);
+            this.setVerificationEmailSent(true);
+            this.setTimeoutVerification();
         }
     }
 
     @action.bound
-    sendVerificationEmail(email) {
-        if (this.is_verification_button_disabled) {
-            return;
-        }
+    clearVerification() {
+        this.setVerificationButtonClicked(false);
+        this.setVerificationEmailSent(false);
+        this.root_store.client.setVerificationCode('');
+    }
 
-        this.is_verification_button_disabled = true;
-        // WS.verifyEmail(email, 'payment_withdraw');
+    @action.bound
+    onUnmount() {
+        this.clearVerification();
     }
 }

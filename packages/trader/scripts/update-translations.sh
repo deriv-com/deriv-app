@@ -29,7 +29,7 @@ function confirm {
     echo "${RESET}"
 }
 
-cd $(git rev-parse --show-toplevel) &&
+cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
 
 message "Updating translations branch" &&
 git checkout translations &&

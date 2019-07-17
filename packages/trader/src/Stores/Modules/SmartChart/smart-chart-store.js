@@ -340,6 +340,10 @@ export default class SmartChartStore extends BaseStore {
         WS.forget('ticks_history', callback, match_values)
     );
 
+    wsForgetStream = (stream_id) => (
+        WS.forgetStream(stream_id)
+    );
+
     wsSendRequest = (request_object) => {
         if (request_object.time) {
             return ServerTime.timePromise.then(() => ({

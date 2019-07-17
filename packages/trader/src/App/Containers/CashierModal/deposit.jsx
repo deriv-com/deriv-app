@@ -1,36 +1,24 @@
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import { connect } from 'Stores/connect';
-import Loading     from '../../../templates/_common/components/loading.jsx';
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { connect }      from 'Stores/connect';
+import CashierContainer from './cashier-container.jsx';
 
-class Deposit extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                {this.props.is_loading && <Loading />}
-                {this.props.deposit_url &&
-                <iframe
-                    className='deposit__content'
-                    height={this.props.container_height}
-                    src={this.props.deposit_url}
-                    frameBorder='0'
-                    scrolling='auto'
-                />
-                }
-                {this.props.error_message && <p>{this.props.error_message}</p>}
-                {/* TODO: uncomment this if cross origin issue is fixed */}
-                {/* <div */}
-                {/*     className='deposit__content' */}
-                {/*     dangerouslySetInnerHTML={{ __html: this.props.deposit_url }} */}
-                {/* /> */}
-            </React.Fragment>
-        );
-    }
-}
+const Deposit = ({
+    container_height,
+    deposit_url,
+    error_message,
+    is_loading,
+    onMount,
+}) => (
+    <CashierContainer
+        className='deposit'
+        container_height={container_height}
+        container_url={deposit_url}
+        error_message={error_message}
+        is_loading={is_loading}
+        onMount={onMount}
+    />
+);
 
 Deposit.propTypes = {
     container_height: PropTypes.oneOfType([

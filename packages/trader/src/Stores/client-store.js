@@ -27,6 +27,7 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable accounts;
+    @observable email;
     @observable switched                   = '';
     @observable switch_broadcast           = false;
     @observable currencies_list            = {};
@@ -424,6 +425,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setEmail(email) {
         this.accounts[this.loginid].email = email;
+        this.email = email;
     }
 
     @action.bound

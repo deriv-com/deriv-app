@@ -69,7 +69,7 @@ class Chart extends React.Component {
                 shouldFetchTradingTimes={!this.props.end_epoch}
                 refreshActiveSymbols={this.props.should_refresh_active_symbols}
             >
-                { this.props.markers_array.map((marker, idx) => (
+                {this.props.is_chart_ready && this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
                         is_contract_replay={!this.props.is_trade_page}
                         key={idx}
@@ -92,6 +92,7 @@ Chart.propTypes = {
     getChartStatus               : PropTypes.func,
     granularity                  : PropTypes.number,
     InfoBox                      : PropTypes.node,
+    is_chart_ready               : PropTypes.bool,
     is_contract_mode             : PropTypes.bool,
     is_contract_replay           : PropTypes.bool,
     is_mobile                    : PropTypes.bool,
@@ -129,6 +130,7 @@ export default connect(
         barriers_array               : modules.smart_chart.barriers_array,
         exportLayout                 : modules.smart_chart.exportLayout,
         getChartStatus               : modules.smart_chart.getChartStatus,
+        is_chart_ready               : modules.smart_chart.is_chart_ready,
         is_contract_mode             : modules.smart_chart.is_contract_mode,
         is_title_enabled             : modules.smart_chart.is_title_enabled,
         margin                       : modules.smart_chart.margin,

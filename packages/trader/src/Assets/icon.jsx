@@ -46,6 +46,9 @@ class Icon extends React.PureComponent {
             IconStartTime    : React.lazy(() => import('./Contract/icon-start-time.jsx')),
             IconTick         : React.lazy(() => import('./Contract/icon-tick.jsx')),
 
+            // Cashier
+            IconAuthenticateWithdrawals: React.lazy(() => import('./Cashier/icon-authenticate-withdrawals.jsx')),
+
             // Modal
             ModalIconClose: React.lazy(() => import('./Modal/icon-close.jsx')),
 

@@ -5,32 +5,40 @@ import BinarySocket from '_common/base/socket_base';
 import BaseStore    from '../../base-store';
 
 export default class CashierStore extends BaseStore {
-    @observable deposit_url         = '';
-    @observable error_message       = '';
-    @observable is_loading          = false;
-    @observable is_session_time_out = false;
-    @observable deposit_height      = 0;
+    @observable is_loading       = false;
+    @observable container_height = 0;
+    @observable error_message    = '';
+
+    @observable container_urls = {
+        deposit : '',
+        withdraw: '',
+    };
+
+    @observable is_session_timeout = {
+        deposit : false,
+        withdraw: false,
+    };
+
+    containers = {
+        deposit : 'deposit',
+        withdraw: 'withdraw',
+    };
 
     @action.bound
-    async onMount() {
-        // TODO: investigate: set timeout to clear deposit in case session expires after switch/idle?
-        if (this.error_message) {
-            this.removeErrorMessage();
-        }
-
-        this.setDepositHeight(0);
+    async onMountDeposit() {
+        this.setErrorMessage('');
+        this.setContainerHeight(0);
         this.setLoading(true);
 
-        if (this.deposit_url && !this.is_session_time_out) {
+        if (this.container_urls.deposit && !this.is_session_timeout.deposit) {
             this.checkIframeLoaded();
             return;
         }
 
-        this.setSessionTimeout(false);
-        this.setDepositUrl('');
-        this.setErrorMessage('');
+        this.setSessionTimeout(false, this.containers.deposit);
+        this.setContainerUrl('', this.containers.deposit);
 
-        const response_cashier = await BinarySocket.send({ cashier: 'deposit' });
+        const response_cashier = await BinarySocket.send({ cashier: this.containers.deposit });
 
         // TODO: uncomment this if cross origin access is allowed
         // const xhttp = new XMLHttpRequest();
@@ -39,7 +47,7 @@ export default class CashierStore extends BaseStore {
         //     if (this.readyState !== 4 || this.status !== 200) {
         //         return;
         //     }
-        //     that.setDepositUrl(this.responseText);
+        //     that.setContainerUrl(this.responseText, this.containers.deposit);
         // };
         // xhttp.open('GET', response_cashier.cashier, true);
         // xhttp.send();
@@ -50,12 +58,12 @@ export default class CashierStore extends BaseStore {
             this.setErrorMessage(response_cashier.error.message);
         } else {
             await this.checkIframeLoaded();
-            this.setDepositUrl(response_cashier.cashier);
+            this.setContainerUrl(response_cashier.cashier, this.containers.deposit);
 
             // cashier session runs out after one minute
             // so we should resend the request for deposit url on next mount
             setTimeout(() => {
-                this.setSessionTimeout(true);
+                this.setSessionTimeout(true, this.containers.deposit);
             }, 60000);
         }
     }
@@ -71,17 +79,17 @@ export default class CashierStore extends BaseStore {
         this.setLoading(false);
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
-        this.setDepositHeight('100%');
+        this.setContainerHeight('100%');
     }
 
     @action.bound
-    setDepositUrl(url) {
-        this.deposit_url = url;
+    setContainerUrl(url, container) {
+        this.container_urls[container] = url;
     }
 
     @action.bound
-    setDepositHeight(height) {
-        this.deposit_height = height;
+    setContainerHeight(height) {
+        this.container_height = height;
     }
 
     @action.bound
@@ -95,7 +103,51 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setSessionTimeout(is_session_time_out) {
-        this.is_session_time_out = is_session_time_out;
+    setSessionTimeout(is_session_time_out, container) {
+        this.is_session_timeout[container] = is_session_time_out;
+    }
+
+    @action.bound
+    async onMountWithdraw() {
+        this.setErrorMessage('');
+        this.setContainerHeight(0);
+        this.setLoading(true);
+
+        if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
+            this.checkIframeLoaded();
+            return;
+        }
+
+        this.setSessionTimeout(false, this.containers.withdraw);
+        this.setContainerUrl('', this.containers.withdraw);
+
+        const response_cashier = await BinarySocket.send({ cashier: this.containers.withdraw });
+
+        // TODO: uncomment this if cross origin access is allowed
+        // const xhttp = new XMLHttpRequest();
+        // const that = this;
+        // xhttp.onreadystatechange = function() {
+        //     if (this.readyState !== 4 || this.status !== 200) {
+        //         return;
+        //     }
+        //     that.setContainerUrl(this.responseText, this.containers.withdraw);
+        // };
+        // xhttp.open('GET', response_cashier.cashier, true);
+        // xhttp.send();
+
+        // TODO: error handling
+        if (response_cashier.error) {
+            this.setLoading(false);
+            this.setErrorMessage(response_cashier.error.message);
+        } else {
+            await this.checkIframeLoaded();
+            this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
+
+            // cashier session runs out after one minute
+            // so we should resend the request for withdraw url on next mount
+            setTimeout(() => {
+                this.setSessionTimeout(true, this.containers.withdraw);
+            }, 60000);
+        }
     }
 }

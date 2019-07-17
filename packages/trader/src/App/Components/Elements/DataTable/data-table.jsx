@@ -103,7 +103,7 @@ class DataTable extends React.PureComponent {
             <React.Fragment>
                 <List
                     className={className}
-                    height={this.state.deposit_height}
+                    height={this.state.height}
                     itemCount={data_source.length}
                     itemSize={63}
                     width={this.state.width}
@@ -133,7 +133,7 @@ class DataTable extends React.PureComponent {
                         :
                         <Scrollbars
                             autoHeight
-                            autoHeightMax={this.state.deposit_height}
+                            autoHeightMax={this.state.height}
                             autoHide
                         >
                             {TableData}

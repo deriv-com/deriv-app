@@ -1,7 +1,7 @@
 import {
     action,
     observable }    from 'mobx';
-import BinarySocket from '_common/base/socket_base';
+import { WS }       from 'Services';
 import BaseStore    from '../../base-store';
 
 export default class CashierStore extends BaseStore {
@@ -38,7 +38,7 @@ export default class CashierStore extends BaseStore {
         this.setSessionTimeout(false, this.containers.deposit);
         this.setContainerUrl('', this.containers.deposit);
 
-        const response_cashier = await BinarySocket.send({ cashier: this.containers.deposit });
+        const response_cashier = await WS.cashier(this.containers.deposit);
 
         // TODO: uncomment this if cross origin access is allowed
         // const xhttp = new XMLHttpRequest();
@@ -109,45 +109,50 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountWithdraw() {
-        this.setErrorMessage('');
-        this.setContainerHeight(0);
-        this.setLoading(true);
+        // this.setErrorMessage('');
+        // this.setContainerHeight(0);
+        // this.setLoading(true);
+        //
+        // if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
+        //     this.checkIframeLoaded();
+        //     return;
+        // }
+        //
+        // this.setSessionTimeout(false, this.containers.withdraw);
+        // this.setContainerUrl('', this.containers.withdraw);
+        //
+        // const response_cashier = await WS.cashier(this.containers.withdraw);
+        //
+        // // TODO: uncomment this if cross origin access is allowed
+        // // const xhttp = new XMLHttpRequest();
+        // // const that = this;
+        // // xhttp.onreadystatechange = function() {
+        // //     if (this.readyState !== 4 || this.status !== 200) {
+        // //         return;
+        // //     }
+        // //     that.setContainerUrl(this.responseText, this.containers.withdraw);
+        // // };
+        // // xhttp.open('GET', response_cashier.cashier, true);
+        // // xhttp.send();
+        //
+        // // TODO: error handling
+        // if (response_cashier.error) {
+        //     this.setLoading(false);
+        //     this.setErrorMessage(response_cashier.error.message);
+        // } else {
+        //     await this.checkIframeLoaded();
+        //     this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
+        //
+        //     // cashier session runs out after one minute
+        //     // so we should resend the request for withdraw url on next mount
+        //     setTimeout(() => {
+        //         this.setSessionTimeout(true, this.containers.withdraw);
+        //     }, 60000);
+        // }
+    }
 
-        if (this.container_urls.withdraw && !this.is_session_timeout.withdraw) {
-            this.checkIframeLoaded();
-            return;
-        }
-
-        this.setSessionTimeout(false, this.containers.withdraw);
-        this.setContainerUrl('', this.containers.withdraw);
-
-        const response_cashier = await BinarySocket.send({ cashier: this.containers.withdraw });
-
-        // TODO: uncomment this if cross origin access is allowed
-        // const xhttp = new XMLHttpRequest();
-        // const that = this;
-        // xhttp.onreadystatechange = function() {
-        //     if (this.readyState !== 4 || this.status !== 200) {
-        //         return;
-        //     }
-        //     that.setContainerUrl(this.responseText, this.containers.withdraw);
-        // };
-        // xhttp.open('GET', response_cashier.cashier, true);
-        // xhttp.send();
-
-        // TODO: error handling
-        if (response_cashier.error) {
-            this.setLoading(false);
-            this.setErrorMessage(response_cashier.error.message);
-        } else {
-            await this.checkIframeLoaded();
-            this.setContainerUrl(response_cashier.cashier, this.containers.withdraw);
-
-            // cashier session runs out after one minute
-            // so we should resend the request for withdraw url on next mount
-            setTimeout(() => {
-                this.setSessionTimeout(true, this.containers.withdraw);
-            }, 60000);
-        }
+    @action.bound
+    sendVerificationEmail = (email) => {
+        WS.verifyEmail(email, 'payment_withdraw');
     }
 }

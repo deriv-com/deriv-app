@@ -73,12 +73,9 @@ module.exports = {
           jsx: true,
       },
   },
-  settings: { 
-      react: {
-          version: '16',
-      },
+  settings: {
       'import/resolver': {
-        'webpack': { 'config': 'webpack.config.js' },
-      }
+        'webpack': { 'config': 'webpack.config.js' }
+    }
   },
 };

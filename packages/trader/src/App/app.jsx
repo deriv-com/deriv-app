@@ -9,7 +9,7 @@ import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
 import Routes                      from './Containers/Routes/routes.jsx';
-import AccountSignupModal          from './Containers/AccountSignupModal';
+// import AccountSignupModal          from './Containers/AccountSignupModal';
 import DenialOfServiceModal        from './Containers/DenialOfServiceModal';
 import MarketUnavailableModal      from './Containers/MarketUnavailableModal';
 import ServicesErrorModal          from './Containers/ServicesErrorModal';
@@ -37,7 +37,8 @@ const App = ({ root_store }) => {
                                     <Routes />
                                     <PushNotification />
                                 </AppContents>
-                                <AccountSignupModal />
+                                {/* TODO: Enable this one UI is ready */}
+                                {/* <AccountSignupModal /> */}
                                 <UnsupportedContractModal />
                                 <DenialOfServiceModal />
                                 <MarketUnavailableModal />

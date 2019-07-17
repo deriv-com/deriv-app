@@ -11,7 +11,6 @@ const Deposit = ({
     onMount,
 }) => (
     <CashierContainer
-        className='deposit'
         container_height={container_height}
         container_url={deposit_url}
         error_message={error_message}

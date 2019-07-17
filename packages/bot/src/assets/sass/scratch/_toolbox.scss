@@ -1,0 +1,115 @@
+$category-colours: (
+    trade-definition: #303f9f,
+    before-purchase : #00897b,
+    during-purchase : #78909c,
+    after-purchase  : #d81b60,
+    mathematical    : #689f38,
+    logic           : #8e24aa,
+    text            : #fb8c00,
+    variables       : #5d4037,
+    functions       : #1976d2,
+    loop            : #e53935,
+    list            : #00acc1,
+    indicators      : #616161,
+    time            : #afb42b,
+    tick-analysis   : #2e7d32,
+    candle          : #5e35b1,
+    miscellaneous   : #ffb300,
+);
+
+.toolbox {
+    $toolbox  : &;
+    $white    : #fff;
+    $lightgrey: #ebebeb;
+    $grey     : #f4f4f6;
+
+    background-color: $white;
+    border: 1px solid $lightgrey;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    max-height: calc(100% - 40px) !important;
+    overflow: hidden;
+    position: absolute;
+    user-select: none;
+    z-index: 99 !important;
+
+    &__header {
+        font-weight: bold;
+        background-color: $grey;
+    }
+    &__category-menu {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        overflow: auto;
+    }
+    &__row {
+        cursor: pointer;
+        border-top: 1px solid $lightgrey;
+    }
+    &__header, &__label {
+        font-size: 1em;
+        padding: 0.6em 1em;
+    }
+    &__title {
+        margin-right: 0.6em;
+    }
+    &__arrow {
+        cursor: pointer;
+        position: absolute;
+        top: 0.6em;
+        right: 0.6em;
+        transform: rotate(90deg);
+        transition: transform 0.25s ease;
+    }
+    &__item {
+        position: relative;
+    }
+    &__color {
+        position: absolute;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+    &--collapsed {
+        #{$toolbox}__header, #{$toolbox}__item {
+            padding: 0.6em;
+        }
+        #{$toolbox}__color {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        #{$toolbox}__title, #{$toolbox}__label {
+            display: none;
+        }
+        #{$toolbox}__arrow {
+            position: relative;
+            transform: rotate(270deg);
+            margin-top: -2px;
+            top: 0;
+            right: -2px;
+        }
+        #{$toolbox}__row {
+            border-top: none;
+        }
+    }
+    @each $category, $category-colour in $category-colours {
+        &__category--#{$category}#{&}__category--selected {
+            background-color: transparentize($category-colour, 0.9);
+        }
+        &__category--#{$category} {
+            &:hover {
+                background-color: transparentize($category-colour, 0.95);
+            }
+            & > #{$toolbox}__color {
+                background-color: $category-colour;
+            }
+        }
+    }
+}

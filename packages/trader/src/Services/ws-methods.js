@@ -71,6 +71,9 @@ const WS = (() => {
     const forgetAll = (...msg_types) =>
         SubscriptionManager.forgetAll(...msg_types);
 
+    const forgetStream = (stream_id) =>
+        SubscriptionManager.forgetStream(stream_id);
+
     const subscribeBalance = (cb, is_forced) =>
         SubscriptionManager.subscribe('balance', { balance: 1, subscribe: 1 }, cb, is_forced);
 
@@ -125,6 +128,7 @@ const WS = (() => {
         // streams
         forget,
         forgetAll,
+        forgetStream,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

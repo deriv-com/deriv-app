@@ -15,7 +15,7 @@ function confirm {
     echo "${RESET}"
 }
 
-cd $(git rev-parse --show-toplevel) &&
+cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
 
 if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
     echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be deriv-app."

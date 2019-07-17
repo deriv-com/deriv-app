@@ -5,7 +5,7 @@ import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore            from 'Stores';
 import { setStorageEvents } from 'Utils/Events/storage';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 const initStore = () => {
     Client.init();

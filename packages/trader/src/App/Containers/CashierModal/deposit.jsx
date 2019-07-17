@@ -15,7 +15,7 @@ class Deposit extends React.Component {
                 {this.props.deposit_url &&
                 <iframe
                     className='deposit__content'
-                    height={this.props.deposit_height}
+                    height={this.props.container_height}
                     src={this.props.deposit_url}
                     frameBorder='0'
                     scrolling='auto'
@@ -33,7 +33,7 @@ class Deposit extends React.Component {
 }
 
 Deposit.propTypes = {
-    deposit_height: PropTypes.oneOfType([
+    container_height: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
@@ -45,10 +45,10 @@ Deposit.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        deposit_url   : modules.cashier.deposit_url,
-        error_message : modules.cashier.error_message,
-        deposit_height: modules.cashier.deposit_height,
-        is_loading    : modules.cashier.is_loading,
-        onMount       : modules.cashier.onMount,
+        container_height: modules.cashier.container_height,
+        deposit_url     : modules.cashier.container_urls.deposit,
+        error_message   : modules.cashier.error_message,
+        is_loading      : modules.cashier.is_loading,
+        onMount         : modules.cashier.onMountDeposit,
     })
 )(Deposit);

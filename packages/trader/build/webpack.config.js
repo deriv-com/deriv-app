@@ -13,7 +13,7 @@ module.exports = function (env, argv) {
     return {
         context     : path.resolve(__dirname, '../src'),
         devServer   : {
-            open              : openChromeBasedOnPlatform(),
+            open              : openChromeBasedOnPlatform(process.platform),
             host              : 'localhost.binary.sx',
             https             : true,
             hot               : true,

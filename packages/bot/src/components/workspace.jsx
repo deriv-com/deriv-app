@@ -5,6 +5,9 @@ import            '../assets/sass/scratch/_flyout.scss';
 
 const Workspace = () => (
     <React.Fragment>
+        {/* temperaily download & upload button */}
+        <button id='download'>Download</button>
+        <input type='file' id='upload' />
         <div id='scratch_area' />
         <div id='scratch_div' />
     </React.Fragment>

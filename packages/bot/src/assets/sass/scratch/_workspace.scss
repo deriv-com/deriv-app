@@ -13,3 +13,12 @@
 .blocklyText {
     fill: #000 !important;
 }
+
+#download, #upload {
+    z-index: 100;
+    position: absolute;
+}
+
+#upload {
+    left: 150px;
+}

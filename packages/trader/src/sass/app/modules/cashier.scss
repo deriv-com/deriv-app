@@ -8,8 +8,10 @@
 /** @define withdraw */
 .withdraw {
     width: 100%;
-    font-size: 1.6rem;
 
+    &__text {
+        font-size: 1.6rem;
+    }
     &__verify-wrapper {
         text-align: center;
 

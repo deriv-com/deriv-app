@@ -78,7 +78,6 @@ const WS = (() => {
     const verifyEmail = (email, type) =>
         BinarySocket.send({ verify_email: email, type });
 
-
     // ----- Streaming calls -----
     const forget = (msg_type, cb, match_values) =>
         SubscriptionManager.forget(msg_type, cb, match_values);

@@ -4,7 +4,7 @@ import Loading   from '../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     componentDidMount() {
-        this.props.onMount();
+        this.props.onMount(this.props.verification_code);
     }
 
     render() {
@@ -13,7 +13,7 @@ class CashierContainer extends React.Component {
                 {this.props.is_loading && <Loading />}
                 {this.props.container_url &&
                 <iframe
-                    className={`${this.props.className}__content`}
+                    className='cashier__content'
                     height={this.props.container_height}
                     src={this.props.container_url}
                     frameBorder='0'
@@ -37,10 +37,11 @@ CashierContainer.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    container_url: PropTypes.string,
-    error_message: PropTypes.string,
-    is_loading   : PropTypes.bool,
-    onMount      : PropTypes.func,
+    container_url    : PropTypes.string,
+    error_message    : PropTypes.string,
+    is_loading       : PropTypes.bool,
+    onMount          : PropTypes.func,
+    verification_code: PropTypes.string,
 };
 
 export default CashierContainer;

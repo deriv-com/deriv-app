@@ -544,7 +544,7 @@ export default class ClientStore extends BaseStore {
     setVerificationCode(code) {
         this.verification_code = code;
         // TODO: add await if error handling needs to happen before AccountSignup is initialised
-        this.fetchResidenceList(); // Prefetch for use in account signup process
+        // this.fetchResidenceList(); // Prefetch for use in account signup process
     }
 
     @action.bound

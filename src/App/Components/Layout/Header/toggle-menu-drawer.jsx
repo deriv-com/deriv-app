@@ -14,4 +14,4 @@ const ToggleMenuDrawer = () => (
     </ToggleDrawer>
 );
 
-export { ToggleMenuDrawer };
+export default ToggleMenuDrawer;

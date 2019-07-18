@@ -4,11 +4,10 @@ import ReactDOM                    from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import UILoader                    from './Components/Elements/ui-loader.jsx';
-import PushNotification            from './Containers/push-notification.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
+import Lazy                        from './Containers/Lazy';
 import Routes                      from './Containers/Routes/routes.jsx';
 import Wip                         from './Containers/Wip';
 import './i18n';
@@ -18,8 +17,6 @@ import initStore                   from './app.js';
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
-
-const Modals        = React.lazy(() => import(/* webpackChunkName: "modals" */'./Containers/Modals'));
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -35,11 +32,19 @@ const App = ({ root_store }) => {
                             <ErrorBoundary>
                                 <AppContents>
                                     <Routes />
-                                    <PushNotification />
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
+                                        should_load={true}
+                                        has_progress={false}
+                                        is='PushNotification'
+                                    />
                                 </AppContents>
-                                <React.Suspense fallback={<UILoader />}>
-                                    <Modals />
-                                </React.Suspense>
+                                <Lazy
+                                    ctor={() => import(/* webpackChunkName: "modals" */'./Containers/Modals')}
+                                    is='Modals'
+                                    has_progress={true}
+                                    should_load={true}
+                                />
                             </ErrorBoundary>
                             <Footer />
                         </React.Fragment>

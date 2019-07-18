@@ -1,7 +1,7 @@
 import React       from 'react';
 import { connect } from 'Stores/connect';
 import { urlFor }  from '_common/url';
-import 'Sass/app/modals.scss';
+import 'Sass/app/modules/modals.scss';
 
 const DenialOfServiceModal     = React.lazy(() => import(/* webpackChunkName: "DenialOfServiceModal" */'../DenialOfServiceModal'));
 const MarketUnavailableModal   = React.lazy(() => import(/* webpackChunkName: "MarketUnavailableModal" */'../MarketUnavailableModal'));

@@ -2,13 +2,20 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import { withRouter }                 from 'react-router';
-import ErrorComponent                 from 'App/Components/Elements/Errors';
 import BinaryRoutes                   from 'App/Components/Routes';
+import Lazy                           from 'App/Containers/Lazy';
 import { connect }                    from 'Stores/connect';
 
 const Routes = (props) => {
     if (props.has_error) {
-        return <ErrorComponent {...props.error} />;
+        return (
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "error-component" */'App/Components/Elements/Errors')}
+                should_load={props.has_error}
+                has_progress={true}
+                {...props.error}
+            />
+        );
     }
 
     return <BinaryRoutes is_logged_in={props.is_logged_in} />;

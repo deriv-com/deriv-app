@@ -10,7 +10,8 @@ In order to work on your own version of the Deriv Javascript and CSS, please **f
 You will also need to install the following on your development machine:
 
 - Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
-- Go to project root, then run `npm run boostrap {package name}` Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`.
+- Lerna - run `npm i -g lerna`
+- Go to project root, then run `npm run bootstrap {package name}` Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`.
 - To install all packages with a hoisting strategy (lift all common packages to a root `node_modules` and not package specific), run `npm run hoist`
 
 How to work with this repo
@@ -51,3 +52,7 @@ You can find the names of packages by first navigating to the `packages` folder.
 If you intend to remove `node_modules` folder(s) from the projects, please run `lerna clean` and follow the intstructions.
 
 You can read more on the various lerna commands (and the `clean` command) over at the [Lerna docs](https://github.com/lerna/lerna/).
+
+### FAQ
+
+1. If you have to use `sudo -s` in your environment, please remove any hardcoded `sudo` from `packages/*` (eg., remove `sudo` from `start` and `serve` commands of `packages/trader`)

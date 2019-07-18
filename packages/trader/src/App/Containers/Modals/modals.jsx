@@ -1,12 +1,9 @@
-import React         from 'react';
-import { connect }   from 'Stores/connect';
-import { urlFor }    from '_common/url';
+import React       from 'react';
+import { connect } from 'Stores/connect';
+import { urlFor }  from '_common/url';
+import Lazy        from '../Lazy';
 import 'Sass/app/modules/modals.scss';
 
-const DenialOfServiceModal     = React.lazy(() => import(/* webpackChunkName: "DenialOfServiceModal" */'../DenialOfServiceModal'));
-const MarketUnavailableModal   = React.lazy(() => import(/* webpackChunkName: "MarketUnavailableModal" */'../MarketUnavailableModal'));
-const ServicesErrorModal       = React.lazy(() => import(/* webpackChunkName: "ServicesErrorModal" */'../ServicesErrorModal'));
-const UnsupportedContractModal = React.lazy(() => import(/* webpackChunkName: "UnsupportedContractModal" */'../UnsupportedContractModal'));
 // const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
 
 const Modals = ({
@@ -53,30 +50,37 @@ const Modals = ({
 
     return (
         <React.Fragment>
-            {is_unsupported_contract_modal_visible &&
-            <UnsupportedContractModal
-                is_visible={is_unsupported_contract_modal_visible}
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "UnsupportedContractModal" */'../UnsupportedContractModal')}
+                should_load={is_unsupported_contract_modal_visible}
                 onConfirm={unsupportedContractOnConfirm}
                 onClose={unsupportedContractOnClose}
+                is_visible={is_unsupported_contract_modal_visible}
+                is='UnsupportedContractModal'
             />
-            }
-            {is_denial_of_service_modal_visible &&
-            <DenialOfServiceModal
-                is_visible={is_denial_of_service_modal_visible}
-                onCancel={denialOfServiceOnCancel}
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "DenialOfServiceModal" */'../DenialOfServiceModal')}
+                should_load={is_denial_of_service_modal_visible}
                 onConfirm={denialOfServiceOnConfirm}
-            /> }
-            {is_market_unavailable_visible &&
-            <MarketUnavailableModal
-                is_visible={is_market_unavailable_visible}
-                onCancel={marketUnavailableOnCancel}
+                onCancel={denialOfServiceOnCancel}
+                is_visible={is_denial_of_service_modal_visible}
+                is='DenialOfServiceModal'
+            />
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "MarketUnavailableModal" */'../MarketUnavailableModal')}
+                should_load={is_denial_of_service_modal_visible}
                 onConfirm={marketUnavailableOnConfirm}
-            /> }
-            {is_services_error_visible && <ServicesErrorModal
-                is_visible={is_services_error_visible}
+                onCancel={marketUnavailableOnCancel}
+                is_visible={is_market_unavailable_visible}
+                is='MarketUnavailableModal'
+            />
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "ServicesErrorModal" */'../ServicesErrorModal')}
+                should_load={is_services_error_visible}
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
-            /> }
+                is='ServicesErrorModal'
+            />
             {/* TODO: Enable AccountSignupModal once its UI component is ready */}
             {/* <AccountSignupModal /> */}
         </React.Fragment>

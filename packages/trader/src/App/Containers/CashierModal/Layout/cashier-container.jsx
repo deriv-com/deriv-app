@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React     from 'react';
-import Loading   from '../../../templates/_common/components/loading.jsx';
+import Loading   from '../../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     componentDidMount() {
@@ -11,6 +11,7 @@ class CashierContainer extends React.Component {
         return (
             <React.Fragment>
                 {this.props.is_loading && <Loading />}
+                {this.props.error_message && <p>{this.props.error_message}</p>}
                 {this.props.container_url &&
                 <iframe
                     className='cashier__content'
@@ -20,7 +21,6 @@ class CashierContainer extends React.Component {
                     scrolling='auto'
                 />
                 }
-                {this.props.error_message && <p>{this.props.error_message}</p>}
                 {/* TODO: uncomment this if cross origin issue is fixed */}
                 {/* <div */}
                 {/*     className={`${this.props.className}__content`} */}

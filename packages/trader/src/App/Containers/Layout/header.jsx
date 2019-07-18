@@ -132,10 +132,10 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
+    onUnmountCashier    : PropTypes.func,
     showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleCashierModal  : PropTypes.func,
-    verification_code   : PropTypes.string,
 };
 
 // need to wrap withRouter around connect
@@ -150,7 +150,6 @@ export default withRouter(connect(
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
-        verification_code   : client.verification_code,
         onUnmountCashier    : modules.cashier.onUnmount,
         hideFullBlur        : ui.hideFullBlur,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,

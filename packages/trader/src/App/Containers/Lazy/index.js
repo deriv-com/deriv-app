@@ -1,1 +1,1 @@
-export default from './lazy.jsx'
+export default from './lazy.jsx';

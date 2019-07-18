@@ -2,7 +2,23 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_charAt = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const dropdown = this.getField('WHERE');
+        dropdown.setValidator(value => {
+            const newAt = ['FROM_START', 'FROM_END'].includes(value);
+            if (newAt !== this.isAt) {
+                this.updateAt(newAt);
+                this.setFieldValue(value, 'WHERE');
+                return null;
+            }
+            return undefined;
+        });
+
+        this.updateAt(true);
+    },
+    definition(){
+        return {
             message0: translate('in text %1 get %2'),
             args0   : [
                 {
@@ -26,20 +42,15 @@ Blockly.Blocks.text_charAt = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        const dropdown = this.getField('WHERE');
-        dropdown.setValidator(value => {
-            const newAt = ['FROM_START', 'FROM_END'].includes(value);
-            if (newAt !== this.isAt) {
-                this.updateAt(newAt);
-                this.setFieldValue(value, 'WHERE');
-                return null;
-            }
-            return undefined;
-        });
-
-        this.updateAt(true);
+            tooltip        : translate('Text Char At Tooltip'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text Char At'),
+            'description' : translate('Text Char At Description'),
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

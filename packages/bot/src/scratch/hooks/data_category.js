@@ -8,11 +8,19 @@ import { translate } from '../../utils/lang/i18n';
  */
 Blockly.DataCategory = function(workspace) {
     const variableModelList = workspace.getVariablesOfType('');
-    const xmlList = [];
-
+    let xmlList = [];
+    
     // `Create Variable`-button
     Blockly.DataCategory.addCreateButton(xmlList, workspace);
 
+    const block_types = ['variables_set', 'variables_get', 'math_change'];
+    xmlList = xmlList.concat(Blockly.DataCategory.search(variableModelList, block_types));
+
+    return xmlList;
+};
+
+Blockly.DataCategory.search = function(variableModelList, blockTypesToShow){
+    const xmlList = [];
     if (variableModelList.length > 0) {
         const generateVariableFieldXmlString = variableModel => {
             // The variable name may be user input, so it may contain characters that
@@ -23,15 +31,15 @@ Blockly.DataCategory = function(workspace) {
             return escapedText;
         };
 
-        // TEMP: Label for testing only
-        const operationsLabel = document.createElement('label');
-        operationsLabel.setAttribute('text', translate('variables_set'));
-        xmlList.push(operationsLabel);
-
         const firstVariable = variableModelList[0];
 
         // Create 'Set `var` to'-block
-        if (Blockly.Blocks.variables_set) {
+        if (blockTypesToShow.includes('variables_set') && Blockly.Blocks.variables_set) {
+            // TEMP: Label for testing only
+            const operationsLabel = document.createElement('label');
+            operationsLabel.setAttribute('text', translate('variables_set'));
+            xmlList.push(operationsLabel);
+
             const gap = Blockly.Blocks.math_change ? 8 : 24;
             const setBlockText = `<xml><block type="variables_set" gap="${gap}">${generateVariableFieldXmlString(
                 firstVariable
@@ -40,13 +48,13 @@ Blockly.DataCategory = function(workspace) {
             xmlList.push(setBlock);
         }
 
-        // TEMP: Label for testing only
-        const changeLabel = document.createElement('label');
-        changeLabel.setAttribute('text', translate('math_change'));
-        xmlList.push(changeLabel);
-
         // Create 'Change `var` by `1`'-block
-        if (Blockly.Blocks.math_change) {
+        if (blockTypesToShow.includes('math_change') && Blockly.Blocks.math_change) {
+            // TEMP: Label for testing only
+            const changeLabel = document.createElement('label');
+            changeLabel.setAttribute('text', translate('math_change'));
+            xmlList.push(changeLabel);
+
             const gap = Blockly.Blocks.variables_get ? 20 : 8;
             const changeBlockText = `<xml><block type="math_change" gap="${gap}">${generateVariableFieldXmlString(
                 firstVariable
@@ -55,13 +63,13 @@ Blockly.DataCategory = function(workspace) {
             xmlList.push(changeBlock);
         }
 
-        // TEMP: Label for testing only
-        const variablesLabel = document.createElement('label');
-        variablesLabel.setAttribute('text', translate('variable_get'));
-        xmlList.push(variablesLabel);
-
         // Create `variable_get` block for each variable
-        if (Blockly.Blocks.variables_get) {
+        if (blockTypesToShow.includes('variables_get') && Blockly.Blocks.variables_get) {
+            // TEMP: Label for testing only
+            const variablesLabel = document.createElement('label');
+            variablesLabel.setAttribute('text', translate('variable_get'));
+            xmlList.push(variablesLabel);
+
             variableModelList.sort(Blockly.VariableModel.compareByName);
 
             variableModelList.forEach(variable => {

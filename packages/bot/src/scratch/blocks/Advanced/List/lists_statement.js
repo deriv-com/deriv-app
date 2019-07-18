@@ -1,10 +1,18 @@
 import { minusIconDark } from '../../images';
+import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_statement = {
     init() {
         this.requiredParentId = '';
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Render a ➖-icon for removing self
+        const fieldImage = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
+        this.appendDummyInput('REMOVE_ICON').appendField(fieldImage);
+    },
+    definition(){
+        return {
             message0: '%1',
             args0   : [
                 {
@@ -17,11 +25,15 @@ Blockly.Blocks.lists_statement = {
             colourTertiary   : Blockly.Colours.BinaryLessGray.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        // Render a ➖-icon for removing self
-        const fieldImage = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('REMOVE_ICON').appendField(fieldImage);
+            tooltip          : translate('List Statement Tooltip'),
+            category         : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('List Statement'),
+            'description' : translate('List Statement Description'),
+        };
     },
     onIconClick() {
         if (!this.workspace || this.isInFlyout) {

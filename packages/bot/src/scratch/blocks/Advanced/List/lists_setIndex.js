@@ -29,6 +29,12 @@ Blockly.Blocks.lists_setIndex = {
 
         this.updateAt(true);
     },
+    meta(){
+        return {
+            'display_name': translate('List set Index'),
+            'description' : translate('List set Index'),
+        };
+    },
     mutationToDom() {
         const container = document.createElement('mutation');
         const isAt = this.getInput('AT').type === Blockly.INPUT_VALUE;

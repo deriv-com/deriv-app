@@ -1,3 +1,6 @@
+
+import { translate } from '../../utils/lang/i18n';
+
 /* eslint-disable func-names, no-underscore-dangle */
 
 /**
@@ -38,7 +41,7 @@ Blockly.Flyout.prototype.scrollAnimationFraction = 1.0;
  * @param {number} y The computed y origin of the flyout's SVG group.
  * @protected
  */
-Blockly.Flyout.prototype.positionAt_ = function(width, height, x, y) {
+Blockly.Flyout.prototype.positionAt_ = function (width, height, x, y) {
     this.svgGroup_.setAttribute('width', width);
     this.svgGroup_.setAttribute('height', height);
 
@@ -73,6 +76,53 @@ Blockly.Flyout.prototype.positionAt_ = function(width, height, x, y) {
  * @return {number} The width of the flyout.
  * deriv-bot: Return actual width rather than this.DEFAULT_WIDTH.
  */
-Blockly.Flyout.prototype.getWidth = function() {
+Blockly.Flyout.prototype.getWidth = function () {
     return this.width_;
+};
+
+const addSearchFlyout = (callback, xmlList, flyout) => {
+    let xml_search_list = xmlList;
+    if (xmlList.type === 'search') {
+        const blocks = xmlList.blocks;
+        const fn_blocks = xmlList.fn_blocks;
+        const var_blocks = xmlList.var_blocks;
+        const no_result = !blocks.length
+            && !Object.keys(fn_blocks).length
+            && !Object.keys(var_blocks.blocks).length;
+
+        xml_search_list = [];
+
+        if (no_result) {
+            const label = document.createElement('label');
+            label.setAttribute('text', translate('No Blocks Found'));
+
+            xml_search_list.push(label);
+        } else {
+            const label = document.createElement('label');
+            label.setAttribute('text', translate('Result(s)'));
+            
+            xml_search_list.push(label);
+        }
+
+        if (Object.keys(fn_blocks).length) {
+            const func_xml_list = Blockly.Procedures.flyoutCategory(flyout.workspace_);
+
+            xml_search_list = xml_search_list.concat(func_xml_list);
+        }
+
+        if (Object.keys(var_blocks).length) {
+            const var_xml_list = Blockly.DataCategory.search(var_blocks.blocks, var_blocks.blocks_type);
+
+            xml_search_list = xml_search_list.concat(var_xml_list);
+        }
+
+        xml_search_list = xml_search_list.concat(blocks);
+    }
+
+    callback(xml_search_list);
+};
+
+const originalFlyoutShowFn = Blockly.Flyout.prototype.show;
+Blockly.Flyout.prototype.show = function (xmlList) {
+    addSearchFlyout(originalFlyoutShowFn.bind(this), xmlList, this);
 };

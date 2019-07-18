@@ -11,3 +11,4 @@ import './icon';
 import './procedures';
 import './toolbox';
 import './variables';
+import './constant';

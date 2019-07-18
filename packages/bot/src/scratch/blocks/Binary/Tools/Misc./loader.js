@@ -8,7 +8,14 @@ Blockly.Blocks.loader = {
         this.loadedVariables = [];
         this.currentUrl = '';
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const urlField = this.getField('URL');
+        // eslint-disable-next-line no-underscore-dangle
+        urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
+    },
+    definition(){
+        return {
             message0: translate('Load block from: %1'),
             args0   : [
                 {
@@ -21,11 +28,13 @@ Blockly.Blocks.loader = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Load blocks from URL'),
-        });
-
-        const urlField = this.getField('URL');
-        // eslint-disable-next-line no-underscore-dangle
-        urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
+            category       : Blockly.Categories.Miscellaneous,
+        };
+    }, meta(){
+        return {
+            'display_name': translate('Lodear'),
+            'description' : translate('Loeder Description'),
+        };
     },
     onFinishEditingUrl(newValue) {
         if (this.currentUrl === newValue) {

@@ -3,7 +3,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.check_direction = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Direction is %1'),
             args0   : [
                 {
@@ -18,7 +21,14 @@ Blockly.Blocks.check_direction = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('True if the direction matches the selection'),
-        });
+            category       : Blockly.Categories.Tick_Analysis,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Check Direction'),
+            'description' : translate('Check Direction Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

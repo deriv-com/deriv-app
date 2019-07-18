@@ -1,7 +1,7 @@
-import React         from 'react';
-import ReactDOM      from 'react-dom';
-import { ArrowIcon } from '../../components/Icons.jsx';
-import { translate } from '../../utils/lang/i18n';
+import React            from 'react';
+import ReactDOM         from 'react-dom';
+import { ArrowIcon }    from '../../components/Icons.jsx';
+import { translate }    from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -11,7 +11,7 @@ import { translate } from '../../utils/lang/i18n';
 Blockly.Toolbox.prototype.init = function() {
     const workspace = this.workspace_;
     const svg = this.workspace_.getParentSvg();
-  
+
     /**
      * HTML container for the Toolbox menu.
      * @type {Element}
@@ -27,8 +27,18 @@ Blockly.Toolbox.prototype.init = function() {
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
+    const el_toolbox_search = goog.dom.createDom(goog.dom.TagName.INPUT, { 'id': 'search_input', 'placeholder': 'Search' });
+
+    this.HtmlDiv.appendChild(el_toolbox_search);
+
+    el_toolbox_search.addEventListener('keyup', () => {
+        const toolbox = workspace.toolbox_;
+
+        toolbox.setSelectedItem(toolbox.categoryMenu_.categories_.find(menuCategory => menuCategory.id_ === 'search'));
+    });
+
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
-  
+
     // Clicking on toolbox closes popups.
     Blockly.bindEventWithChecks_(this.HtmlDiv, 'mousedown', this, function(e) {
         // Cancel any gestures in progress.
@@ -43,7 +53,7 @@ Blockly.Toolbox.prototype.init = function() {
         }
         Blockly.Touch.clearTouchIdentifier();  // Don't block future drags.
     }, /* opt_noCaptureIdentifier */ false, /* opt_noPreventDefault */ true);
-  
+
     this.createFlyout_();
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
@@ -65,17 +75,109 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
-    let allContents = [];
+    let flyout_content;
 
-    const category = this.categoryMenu_.categories_.find(menuCategory => menuCategory.id_ === category_id);
-    if (!category) {
-        return;
+    if (category_id === 'search') {
+        let search_term = document.getElementById('search_input').value;
+        const all_variables = this.flyout_.workspace_.getVariablesOfType('');
+
+        if (search_term.length <= 1) {
+            this.flyout_.hide();
+            return;
+        }
+
+        flyout_content = {
+            type      : 'search',
+            blocks    : [],
+            fn_blocks : {},
+            var_blocks: {
+                blocks     : [],
+                blocks_type: [],
+            },
+        };
+
+        if (typeof search_term === 'string') {
+            search_term = search_term.trim().toLowerCase();
+            search_term = search_term.split(' ');
+        }
+
+        const blocks = Blockly.Blocks;
+        Object.keys(blocks).forEach(blockKey => {
+            let keywords = ` ${blockKey}`;
+            const block = blocks[blockKey];
+            const block_meta = block.meta instanceof Function && block.meta();
+            const block_definition = block.definition instanceof Function && block.definition();
+
+            if (!block_meta) {
+                return;
+            }
+
+            Object.keys(block_meta).forEach(key => {
+                const meta = block_meta[key];
+                keywords += ` ${meta}`;
+            });
+
+            Object.keys(block_definition).forEach(key => {
+                const definition = block_definition[key];
+
+                if (typeof definition === 'string') {
+                    keywords += ` ${definition}`;
+                } else if (definition instanceof Array) {
+                    definition.forEach(def => {
+                        if (def instanceof Object) {
+                            keywords += !def.type.includes('image') ? ` ${JSON.stringify(def)}` : '';
+                        } else {
+                            keywords += ` ${def}`;
+                        }
+                    });
+                }
+            });
+
+            const block_category = block_definition && block_definition.category;
+            const category =
+                this.categoryMenu_.categories_
+                    .find(menuCategory => menuCategory.id_ === block_category);
+            const contents = category && category.getContents();
+            search_term.forEach(term => {
+                if (keywords.toLowerCase().includes(term)) {
+                    if (contents === 'PROCEDURE') {
+                        flyout_content.fn_blocks[blockKey] = block;
+                    } else if (contents === 'VARIABLE') {
+                        flyout_content.var_blocks.blocks_type.push(blockKey);
+                        flyout_content.var_blocks.blocks = all_variables;
+                    } else if (contents instanceof Array) {
+                        const blockContents = contents
+                            .filter(content => content.attributes[0].nodeValue === blockKey);
+
+                        if (blockContents.length && flyout_content.blocks.indexOf(blockContents[0]) === -1) {
+                            flyout_content.blocks.push(blockContents[0]);
+                        }
+                    }
+                }
+            });
+        });
+
+        all_variables.forEach(variable => {
+            search_term.forEach(term => {
+                if (variable.name.toLowerCase().includes(term)
+                && flyout_content.var_blocks.blocks.indexOf(variable) === -1) {
+                    flyout_content.var_blocks.blocks.push(variable);
+                    flyout_content.var_blocks.blocks_type = ['variables_get', 'variables_set', 'math_change'];
+                }
+            });
+        });
+    } else {
+        const category = this.categoryMenu_.categories_.find(menuCategory => menuCategory.id_ === category_id);
+        if (!category) {
+            return;
+        }
+
+        flyout_content = [];
+        flyout_content = flyout_content.concat(category.getContents());
     }
 
-    allContents = allContents.concat(category.getContents());
-
     this.flyout_.autoClose = true;
-    this.flyout_.show(allContents);
+    this.flyout_.show(flyout_content);
 };
 
 /**

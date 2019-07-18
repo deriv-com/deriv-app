@@ -4,16 +4,12 @@ import ReactDOM                    from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
+import UILoader                    from './Components/Elements/ui-loader.jsx';
 import PushNotification            from './Containers/push-notification.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
 import Routes                      from './Containers/Routes/routes.jsx';
-// import AccountSignupModal          from './Containers/AccountSignupModal';
-import DenialOfServiceModal        from './Containers/DenialOfServiceModal';
-import MarketUnavailableModal      from './Containers/MarketUnavailableModal';
-import ServicesErrorModal          from './Containers/ServicesErrorModal';
-import UnsupportedContractModal    from './Containers/UnsupportedContractModal';
 import Wip                         from './Containers/Wip';
 import './i18n';
 // eslint-disable-next-line import/extensions
@@ -22,6 +18,8 @@ import initStore                   from './app.js';
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
+
+const Modals        = React.lazy(() => import(/* webpackChunkName: "modals" */'./Containers/Modals'));
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -39,12 +37,9 @@ const App = ({ root_store }) => {
                                     <Routes />
                                     <PushNotification />
                                 </AppContents>
-                                {/* TODO: Enable AccountSignupModal once its UI component is ready */}
-                                {/* <AccountSignupModal /> */}
-                                <UnsupportedContractModal />
-                                <DenialOfServiceModal />
-                                <MarketUnavailableModal />
-                                <ServicesErrorModal />
+                                <React.Suspense fallback={<UILoader />}>
+                                    <Modals />
+                                </React.Suspense>
                             </ErrorBoundary>
                             <Footer />
                         </React.Fragment>

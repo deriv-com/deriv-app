@@ -1,12 +1,13 @@
-import React       from 'react';
-import { connect } from 'Stores/connect';
-import { urlFor }  from '_common/url';
+import React         from 'react';
+import { connect }   from 'Stores/connect';
+import { urlFor }    from '_common/url';
 import 'Sass/app/modules/modals.scss';
 
 const DenialOfServiceModal     = React.lazy(() => import(/* webpackChunkName: "DenialOfServiceModal" */'../DenialOfServiceModal'));
 const MarketUnavailableModal   = React.lazy(() => import(/* webpackChunkName: "MarketUnavailableModal" */'../MarketUnavailableModal'));
 const ServicesErrorModal       = React.lazy(() => import(/* webpackChunkName: "ServicesErrorModal" */'../ServicesErrorModal'));
 const UnsupportedContractModal = React.lazy(() => import(/* webpackChunkName: "UnsupportedContractModal" */'../UnsupportedContractModal'));
+// const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
 
 const Modals = ({
     is_denial_of_service_modal_visible,
@@ -76,6 +77,8 @@ const Modals = ({
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
             /> }
+            {/* TODO: Enable AccountSignupModal once its UI component is ready */}
+            {/* <AccountSignupModal /> */}
         </React.Fragment>
     );
 };

@@ -11,6 +11,7 @@ import {
     subMonths,
     toMoment,
 }                               from 'Utils/Date';
+import 'Sass/app/_common/components/calendar.scss';
 
 class TwoMonthPicker extends React.PureComponent {
     constructor(props) {

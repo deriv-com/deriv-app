@@ -7,6 +7,7 @@ import { localize }   from 'App/i18n';
 import CalendarBody   from './calendar-body.jsx';
 import CalendarFooter from './calendar-footer.jsx';
 import CalendarHeader from './calendar-header.jsx';
+import 'Sass/app/_common/components/calendar.scss';
 
 class Calendar extends React.PureComponent {
     constructor(props) {
@@ -160,7 +161,7 @@ class Calendar extends React.PureComponent {
             default_message = localize('Minimum duration is 1 day');
             is_minimum = true;
         }
-        
+
         return (
             <div className='calendar' data-value={selected_date}>
                 <CalendarHeader

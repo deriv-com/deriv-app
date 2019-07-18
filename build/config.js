@@ -52,6 +52,10 @@ const htmlInjectConfig = () => ({
                 rel: 'icon'
             }
         },
+        'css/deferred.css',
+        {
+            attributes: { defer: 'true' }
+        },
         // {
         //     path: 'pushwoosh-web-notifications.js',
         //     attributes: {

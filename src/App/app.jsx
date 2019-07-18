@@ -12,7 +12,7 @@ import Header                      from './Containers/Layout/header.jsx';
 import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
 import 'Sass/app.scss';
-
+import 'Sass/deferred.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 

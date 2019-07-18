@@ -26,7 +26,12 @@ const App = ({ root_store }) => {
             <MobxProvider store={root_store}>
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
-                        <Wip /> :
+                        <Lazy
+                            ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
+                            should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
+                            has_progress={true}
+                            is='Wip'
+                        /> :
                         <React.Fragment>
                             <Header />
                             <ErrorBoundary>

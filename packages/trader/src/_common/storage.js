@@ -9,7 +9,9 @@ const getObject = function (key) {
 
 const setObject = function (key, value) {
     if (value && value instanceof Object) {
-        this.setItem(key, JSON.stringify(value));
+        try {
+            this.setItem(key, JSON.stringify(value));
+        } catch (e) { /* do nothing */ }
     }
 };
 

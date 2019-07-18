@@ -335,32 +335,6 @@
         }
     }
 }
-
-/** @define contract */
-.contract {
-    &__wrapper {
-        position: absolute;
-        width: $SIDEBAR_WIDTH;
-        min-height: 460px;
-        height: 100%;
-        z-index: 2;
-        top: 0;
-        right: 0;
-        transition: transform 0.4s ease, opacity 0.2s linear;
-        opacity: 1;
-        transform: none;
-    }
-    &--enter {
-        transform: translate3d(calc(100% + 1.6em), 0, 0);
-        opacity: 0;
-    }
-    &--exit {
-        transform: translate3d(calc(100% + 1.6em), 0, 0);
-        opacity: 0;
-        pointer-events: none;
-    }
-}
-
 /** @define advanced-simple-toggle */
 .advanced-simple-toggle {
     display: flex;
@@ -415,17 +389,6 @@
     @include contract_type_icon_wrapper;
 }
 
-/** @define type-wrapper */
-.type-wrapper {
-    @include contract_type_icon_wrapper;
-
-    .color1-fill {
-        @include themify($themes) {
-            fill: themed('text_color');
-        }
-    }
-}
-
 // Helpers
 /** @define no-scroll */
 .no-scroll {
@@ -444,23 +407,6 @@
 .mobile-only {
     @media (min-width: 769px) {
         display: none !important;
-    }
-}
-
-/** @define error */
-.error {
-    &__container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 9em); // TODO: replace with 100vh - header height - footer height
-    }
-    &__message {
-        @include interpolate(font-size, 320px, 1440px, 14px, 20px);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
     }
 }
 

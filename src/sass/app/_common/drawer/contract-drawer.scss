@@ -30,20 +30,6 @@ $header-height: 4em;
             color: themed('text_color');
         }
     }
-    &--contract-mode {
-        &:before {
-            @include themify($themes) {
-                background: themed('background_container_color');
-            }
-            content: '';
-            position: absolute;
-            top: 38px;
-            left: -3px;
-            width: calc(100% + 6px);
-            height: calc(100% - 32px);
-            filter: blur(3px);
-        }
-    }
     &__heading {
         display: flex;
         justify-content: flex-start;
@@ -61,9 +47,6 @@ $header-height: 4em;
         @include themify($themes) {
             color: themed('text_primary_color');
         }
-    }
-    &__icon {
-        margin-right: 16px;
     }
 }
 
@@ -92,12 +75,6 @@ $header-height: 4em;
         top: 0;
         border-radius: $BORDER_RADIUS;
     }
-    &--green:before {
-        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
-    }
-    &--red:before {
-        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
-    }
     &__grid {
         display: grid;
         grid-template-rows: 1fr auto;
@@ -105,16 +82,6 @@ $header-height: 4em;
         &-underlying-trade {
             grid-template-columns: 1.5fr 1fr;
             width: 100%;
-        }
-        &-profit-payout {
-            grid-template-columns: 1fr 1fr;
-            padding: 8px 0;
-            border-radius: $BORDER_RADIUS;
-            margin-left: -4px;
-            margin-right: -4px;
-            @include themify($themes) {
-                background: themed('hover_color');
-            }
         }
     }
     .purchase-price, .potential-payout {
@@ -147,12 +114,6 @@ $header-height: 4em;
             font-size: 1em;
             font-weight: bold;
             align-self: flex-start;
-        }
-    }
-    &__separator {
-        width: 100%;
-        @include themify($themes) {
-            border-top: 1px solid themed('background_container_color');
         }
     }
     &__underlying-name {

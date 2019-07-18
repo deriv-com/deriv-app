@@ -1,23 +1,25 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { connect }      from 'Stores/connect';
-import CashierContainer from './cashier-container.jsx';
+import CashierContainer from './Layout/cashier-container.jsx';
 
-const Deposit = ({
-    container_height,
-    deposit_url,
-    error_message,
-    is_loading,
-    onMount,
-}) => (
-    <CashierContainer
-        container_height={container_height}
-        container_url={deposit_url}
-        error_message={error_message}
-        is_loading={is_loading}
-        onMount={onMount}
-    />
-);
+class Deposit extends React.Component {
+    componentDidMount() {
+        this.props.setActiveTab('deposit');
+    }
+
+    render() {
+        return (
+            <CashierContainer
+                container_height={this.props.container_height}
+                container_url={this.props.deposit_url}
+                error_message={this.props.error_message}
+                is_loading={this.props.is_loading}
+                onMount={this.props.onMount}
+            />
+        );
+    }
+}
 
 Deposit.propTypes = {
     container_height: PropTypes.oneOfType([
@@ -28,6 +30,7 @@ Deposit.propTypes = {
     error_message: PropTypes.string,
     is_loading   : PropTypes.bool,
     onMount      : PropTypes.func,
+    setActiveTab : PropTypes.func,
 };
 
 export default connect(
@@ -36,6 +39,7 @@ export default connect(
         deposit_url     : modules.cashier.container_urls.deposit,
         error_message   : modules.cashier.error_message,
         is_loading      : modules.cashier.is_loading,
+        setActiveTab    : modules.cashier.setActiveTab,
         onMount         : modules.cashier.onMountDeposit,
     })
 )(Deposit);

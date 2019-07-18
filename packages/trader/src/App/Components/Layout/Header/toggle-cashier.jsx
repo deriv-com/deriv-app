@@ -5,7 +5,7 @@ import { localize }       from 'App/i18n';
 import { Modal }          from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
-    Withdraw }            from 'App/Containers/CashierModal';
+    Withdrawal }          from 'App/Containers/CashierModal';
 import WalletInformation  from 'Modules/Reports/Containers/wallet-information.jsx';
 import Button             from '../../Form/button.jsx';
 
@@ -40,7 +40,7 @@ const ToggleCashier = ({
                 }, {
                     icon : 'IconWithdrawalSmall',
                     label: localize('Withdrawal'),
-                    value: Withdraw,
+                    value: Withdrawal,
                 },
             ]}
             header={<WalletInformation />}

@@ -1,6 +1,7 @@
 import {
     action,
     observable }    from 'mobx';
+import { localize } from 'App/i18n';
 import { WS }       from 'Services';
 import BaseStore    from '../../base-store';
 
@@ -28,6 +29,11 @@ export default class CashierStore extends BaseStore {
     };
 
     timeout_verification_button;
+
+    constructor({ root_store }) {
+        super({ root_store });
+        this.onUnmount = this.onUnmount.bind(this);
+    }
 
     @action.bound
     async onMount(container, verification_code) {
@@ -63,7 +69,7 @@ export default class CashierStore extends BaseStore {
         // TODO: error handling
         if (response_cashier.error) {
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error.message);
+            this.setErrorMessage(this.getErrorMessage(response_cashier.error));
             if (verification_code) {
                 // clear verification code on error
                 this.clearVerification();
@@ -97,6 +103,55 @@ export default class CashierStore extends BaseStore {
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
         this.setContainerHeight('100%');
+    }
+
+    getDetails = (error) => {
+        let error_fields,
+            details_fields;
+        if (error.details && error.details.fields) {
+            error_fields = {
+                address_city    : localize('Town/City'),
+                address_line_1  : localize('First line of home address'),
+                address_postcode: localize('Postal Code/ZIP'),
+                address_state   : localize('State/Province'),
+                email           : localize('Email address'),
+                phone           : localize('Telephone'),
+                residence       : localize('Country of Residence'),
+            };
+            details_fields = error.details.fields.map(field => (error_fields[field] || field));
+        }
+        return details_fields ? details_fields.join(', ') : localize('details');
+    };
+
+    // TODO: add action links to error messages when pages are available
+    getErrorMessage(error) {
+        let error_message = error.message;
+        switch (error.code) {
+            case 'ASK_TNC_APPROVAL':
+                error_message = 'Please accept the updated Terms and Conditions.';
+                break;
+            case 'ASK_FIX_DETAILS':
+                error_message = localize('There was a problem validating your personal details. Please update your {{details}} here.', { details: this.getDetails(error) });
+                break;
+            // case 'ASK_UK_FUNDS_PROTECTION':
+            //     initUKGC();
+            //     break;
+            // case 'ASK_AUTHENTICATE':
+            //     showMessage('not_authenticated_message');
+            //     break;
+            // case 'ASK_FINANCIAL_RISK_APPROVAL':
+            //     showError('financial_risk_error');
+            //     break;
+            // case 'ASK_AGE_VERIFICATION':
+            //     showError('age_error');
+            //     break;
+            // case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
+            //     showError('limits_error');
+            //     break;
+            default:
+                break;
+        }
+        return error_message;
     }
 
     @action.bound
@@ -162,14 +217,13 @@ export default class CashierStore extends BaseStore {
 
         if (response_verify_email.error) {
             this.setVerificationButtonClicked(false);
-            this.error_message = response_verify_email.error.message;
+            this.setErrorMessage(response_verify_email.error.message);
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
         }
     }
 
-    @action.bound
     clearVerification() {
         this.setVerificationButtonClicked(false);
         this.setVerificationEmailSent(false);
@@ -177,6 +231,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setActiveTab(container) {
+        // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
+        this.root_store.ui.setCashierActiveTab(container);
+    }
+
     onUnmount() {
         this.clearVerification();
     }

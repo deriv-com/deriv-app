@@ -158,8 +158,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     resetLocalStorageValues(loginid) {
-        this.accounts[loginid].cashier_confirmed = 0;
-        this.accounts[loginid].accepted_bch      = 0;
+        this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.loginid = loginid;
@@ -543,6 +542,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setVerificationCode(code) {
         this.verification_code = code;
+        if (code) {
+            LocalStore.set('verification_code', code);
+        } else {
+            LocalStore.remove('verification_code');
+        }
         // TODO: add await if error handling needs to happen before AccountSignup is initialised
         // this.fetchResidenceList(); // Prefetch for use in account signup process
     }

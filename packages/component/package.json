@@ -4,8 +4,39 @@
   "description": "deriv components",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "start": "echo \"Error: no start specified\"",
+    "serve": "webpack --mode=development --progress --watch",
+    "build": "eslint ./src && rimraf dist && webpack --mode=production --optimize-minimize --progress",
+    "test": "echo \"Error: no test specified\"",
+    "deploy": "echo \"Error: no deploy specified\"",
+    "deploy:clean": "echo \"Error: no deploy:clean specified\"",
+    "deploy:folder": "echo \"Error: no deploy:folder specified\"",
+    "deploy:staging": "echo \"Error: no deploy:staging specified\"",
+    "deploy:production": "echo \"Error: no deploy:production specified\""
   },
   "author": "Deriv",
-  "license": "ISC"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.3",
+    "cross-env": "^5.2.0",
+    "css-hot-loader": "^1.4.4",
+    "eslint": "^6.0.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-react": "^7.14.2",
+    "mini-css-extract-plugin": "^0.8.0",
+    "stylelint": "^10.0.1",
+    "stylelint-webpack-plugin": "^0.10.5",
+    "stylelint-formatter-pretty": "^1.0.3",
+    "stylelint-selector-bem-pattern": "^2.1.0",
+    "svg-sprite-loader": "^4.1.6",
+    "svgo-loader": "^2.2.0",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-merge-and-include-globally": "^2.1.16"
+  },
+  "dependencies": {}
 }

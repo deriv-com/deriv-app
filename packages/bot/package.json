@@ -1,5 +1,5 @@
 {
-  "name": "bot",
+  "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
   "bin": {
     "bot": "lib/index.js"

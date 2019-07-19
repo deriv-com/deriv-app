@@ -93,11 +93,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    onIframeLoaded() {
+    onIframeLoaded(e) {
         this.setLoading(false);
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
-        this.setContainerHeight('100%');
+        this.setContainerHeight(+e.data || '550');
     }
 
     getDetails = (error) => {

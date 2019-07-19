@@ -2,6 +2,11 @@
 .cashier {
     &__content {
         width: 100%;
+
+        &-wrapper {
+            width: 100%;
+            overflow: scroll;
+        }
     }
 }
 
@@ -9,6 +14,10 @@
 .withdraw {
     &__text {
         font-size: 1.6rem;
+    }
+    &__verify-container {
+        position: fixed;
+        width: calc(72% - 4.8em);
     }
     &__verify-wrapper {
         text-align: center;

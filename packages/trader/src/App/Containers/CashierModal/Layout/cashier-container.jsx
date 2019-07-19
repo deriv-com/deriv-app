@@ -13,13 +13,15 @@ class CashierContainer extends React.Component {
                 {this.props.is_loading && <Loading />}
                 {this.props.error_message && <p>{this.props.error_message}</p>}
                 {this.props.container_url &&
-                <iframe
-                    className='cashier__content'
-                    height={this.props.container_height}
-                    src={this.props.container_url}
-                    frameBorder='0'
-                    scrolling='auto'
-                />
+                <div className='cashier__content-wrapper' height={this.props.container_height}>
+                    <iframe
+                        className='cashier__content'
+                        height={this.props.container_height}
+                        src={this.props.container_url}
+                        frameBorder='0'
+                        scrolling='auto'
+                    />
+                </div>
                 }
                 {/* TODO: uncomment this if cross origin issue is fixed */}
                 {/* <div */}

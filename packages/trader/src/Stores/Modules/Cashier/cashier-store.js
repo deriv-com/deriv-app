@@ -1,8 +1,9 @@
 import {
     action,
-    observable }    from 'mobx';
-import { WS }       from 'Services';
-import BaseStore    from '../../base-store';
+    observable }            from 'mobx';
+import { isCryptocurrency } from '_common/base/currency_base';
+import { WS }               from 'Services';
+import BaseStore            from '../../base-store';
 
 export default class CashierStore extends BaseStore {
     @observable is_loading       = false;
@@ -27,6 +28,7 @@ export default class CashierStore extends BaseStore {
         withdraw: 'withdraw',
     };
 
+    timeout_cashier_url;
     timeout_verification_button;
 
     @action.bound
@@ -71,12 +73,7 @@ export default class CashierStore extends BaseStore {
         } else {
             await this.checkIframeLoaded();
             this.setContainerUrl(response_cashier.cashier, this.containers[container]);
-
-            // cashier session runs out after one minute
-            // so we should resend the request for container (deposit|withdraw) url on next mount
-            setTimeout(() => {
-                this.setSessionTimeout(true, this.containers[container]);
-            }, 60000);
+            this.setTimeoutCashierUrl(container);
         }
     }
 
@@ -88,7 +85,15 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async checkIframeLoaded() {
         window.removeEventListener('message', this.onIframeLoaded);
-        window.addEventListener('message', this.onIframeLoaded, false);
+        if (isCryptocurrency(this.root_store.client.currency)) {
+            this.setLoading(false);
+            this.setContainerHeight('540');
+            // crypto cashier can only be accessed once and the session expires
+            this.clearTimeoutCashierUrl();
+            this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
+        } else {
+            window.addEventListener('message', this.onIframeLoaded, false);
+        }
     }
 
     @action.bound
@@ -96,7 +101,7 @@ export default class CashierStore extends BaseStore {
         this.setLoading(false);
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
-        this.setContainerHeight(+e.data || '550');
+        this.setContainerHeight(+e.data);
     }
 
     @action.bound
@@ -132,6 +137,22 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setVerificationEmailSent(is_verification_email_sent) {
         this.is_verification_email_sent = is_verification_email_sent;
+    }
+
+    clearTimeoutCashierUrl() {
+        if (this.timeout_cashier_url) {
+            clearTimeout(this.timeout_cashier_url);
+        }
+    }
+
+    // cashier session expires after one minute
+    // so we should resend the request for container (deposit|withdraw) url on next mount
+    @action.bound
+    setTimeoutCashierUrl(container) {
+        this.clearTimeoutCashierUrl();
+        this.timeout_cashier_url = setTimeout(() => {
+            this.setSessionTimeout(true, container);
+        }, 60000);
     }
 
     clearTimeoutVerification() {

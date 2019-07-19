@@ -10,13 +10,18 @@ class Deposit extends React.Component {
 
     render() {
         return (
-            <CashierContainer
-                container_height={this.props.container_height}
-                container_url={this.props.deposit_url}
-                error_message={this.props.error_message}
-                is_loading={this.props.is_loading}
-                onMount={this.props.onMount}
-            />
+            <React.Fragment>
+                {this.props.error_message ?
+                    <p className='cashier__error'>{this.props.error_message}</p>
+                    :
+                    <CashierContainer
+                        container_height={this.props.container_height}
+                        container_url={this.props.deposit_url}
+                        is_loading={this.props.is_loading}
+                        onMount={this.props.onMount}
+                    />
+                }
+            </React.Fragment>
         );
     }
 }

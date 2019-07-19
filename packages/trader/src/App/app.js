@@ -10,7 +10,6 @@ configure({ enforceActions: 'observed' });
 const initStore = () => {
     Client.init();
 
-
     const root_store = new RootStore();
 
     setStorageEvents(root_store);

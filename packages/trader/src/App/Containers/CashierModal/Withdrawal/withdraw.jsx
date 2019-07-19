@@ -4,6 +4,10 @@ import { connect }      from 'Stores/connect';
 import CashierContainer from '../Layout/cashier-container.jsx';
 
 class Withdraw extends React.Component {
+    componentDidMount() {
+        this.props.onMount(this.props.verification_code);
+    }
+
     render() {
         return (
             <CashierContainer
@@ -11,7 +15,6 @@ class Withdraw extends React.Component {
                 container_url={this.props.withdraw_url}
                 is_loading={this.props.is_loading}
                 onMount={this.props.onMount}
-                verification_code={this.props.verification_code}
             />
         );
     }

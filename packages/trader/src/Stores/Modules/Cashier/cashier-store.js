@@ -30,11 +30,6 @@ export default class CashierStore extends BaseStore {
 
     timeout_verification_button;
 
-    constructor({ root_store }) {
-        super({ root_store });
-        this.onUnmount = this.onUnmount.bind(this);
-    }
-
     @action.bound
     async onMount(container, verification_code) {
         if (!['deposit', 'withdraw'].includes(container)) {
@@ -189,13 +184,17 @@ export default class CashierStore extends BaseStore {
         this.is_verification_email_sent = is_verification_email_sent;
     }
 
+    clearTimeoutVerification() {
+        if (this.timeout_verification_button) {
+            clearTimeout(this.timeout_verification_button);
+        }
+    }
+
     // verification token expires after one hour
     // so we should show the verification request button again after that
     @action.bound
     setTimeoutVerification() {
-        if (this.timeout_verification_button) {
-            clearTimeout(this.timeout_verification_button);
-        }
+        this.clearTimeoutVerification();
         this.timeout_verification_button = setTimeout(() => {
             this.clearVerification();
         }, 3600000);
@@ -225,6 +224,7 @@ export default class CashierStore extends BaseStore {
     }
 
     clearVerification() {
+        this.clearTimeoutVerification();
         this.setVerificationButtonClicked(false);
         this.setVerificationEmailSent(false);
         this.root_store.client.setVerificationCode('');
@@ -234,9 +234,5 @@ export default class CashierStore extends BaseStore {
     setActiveTab(container) {
         // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
         this.root_store.ui.setCashierActiveTab(container);
-    }
-
-    onUnmount() {
-        this.clearVerification();
     }
 }

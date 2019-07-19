@@ -21,7 +21,6 @@ const ToggleCashier = ({
     is_cashier_visible,
     showFullBlur,
     toggleCashier,
-    onUnmount,
 }) => (
     <React.Fragment>
         <Button
@@ -50,7 +49,6 @@ const ToggleCashier = ({
             showFullBlur={showFullBlur}
             title={localize('Cashier')}
             toggleModal={toggleCashier}
-            onUnmount={onUnmount}
         />
     </React.Fragment>
 );
@@ -60,7 +58,6 @@ ToggleCashier.propTypes = {
     className   : PropTypes.string,
     hideFullBlur: PropTypes.func,
     is_open     : PropTypes.bool,
-    onUnmount   : PropTypes.func,
     showFullBlur: PropTypes.func,
     toggleModal : PropTypes.func,
 };

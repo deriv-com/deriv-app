@@ -26,9 +26,6 @@ class ModalElement extends React.PureComponent {
         document.removeEventListener('mousedown', this.handleClickOutside);
         this.state.modal_root.removeChild(this.el);
         this.props.hideFullBlur();
-        if (typeof this.props.onUnmount === 'function') {
-            this.props.onUnmount();
-        }
     }
 
     handleClickOutside = (event) => {
@@ -76,7 +73,6 @@ ModalElement.propTypes = {
     hideFullBlur  : PropTypes.func,
     is_open       : PropTypes.bool,
     modal_content : PropTypes.array,
-    onUnmount     : PropTypes.func,
     selected_index: PropTypes.number,
     showFullBlur  : PropTypes.func,
     title         : PropTypes.string,
@@ -89,7 +85,6 @@ const Modal = ({
     hideFullBlur,
     is_open,
     modal_content,
-    onUnmount,
     selected_index,
     showFullBlur,
     title,
@@ -113,7 +108,6 @@ const Modal = ({
             hideFullBlur={hideFullBlur}
             is_open={is_open}
             modal_content={modal_content}
-            onUnmount={onUnmount}
             selected_index={selected_index}
             showFullBlur={showFullBlur}
             title={title}
@@ -128,7 +122,6 @@ Modal.propTypes = {
     hideFullBlur  : PropTypes.func,
     is_open       : PropTypes.bool,
     modal_content : PropTypes.array,
-    onUnmount     : PropTypes.func,
     selected_index: PropTypes.number,
     showFullBlur  : PropTypes.func,
     title         : PropTypes.string,

@@ -1,7 +1,7 @@
 import { translate }               from '../lang/i18n';
 import { getLanguage }             from '../lang/lang';
 import { getTokenList }            from '../tokenHelper';
-import { generateLiveApiInstance } from '../../services/api/appId'; // eslint-disable-line import/no-cycle
+import { generateLiveApiInstance } from '../../services/api/appId';
 
 const Elevio = (() => {
     const init = () => {

@@ -1,5 +1,5 @@
 
-import { getLanguage }              from './lang/lang';// eslint-disable-line import/no-cycle
+import { getLanguage }              from './lang/lang';
 import AppIds                       from '../services/api/appIdResolver';
 
 export const isProduction = () =>

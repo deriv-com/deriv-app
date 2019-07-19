@@ -14,6 +14,7 @@ const routes = {
     profit          : '/reports/profit',
     reports         : '/reports',
     root            : '/',
+    redirect        : '/redirect',
     settings        : '/settings',
     statement       : '/reports/statement',
     token           : '/settings/token',

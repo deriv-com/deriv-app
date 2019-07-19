@@ -12,7 +12,7 @@ ReactDOM.render(
     () => scratchWorkspaceInit('scratch_area', 'scratch_div')
 );
 
-//Import components 
+// Import components
 console.log (Button , Label); // eslint-disable-line no-console
 
 const loginCheck = () => {

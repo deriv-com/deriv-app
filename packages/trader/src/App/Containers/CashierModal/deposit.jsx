@@ -6,6 +6,7 @@ import CashierContainer from './Layout/cashier-container.jsx';
 class Deposit extends React.Component {
     componentDidMount() {
         this.props.setActiveTab('deposit');
+        this.props.onMount();
     }
 
     render() {
@@ -18,7 +19,6 @@ class Deposit extends React.Component {
                         container_height={this.props.container_height}
                         container_url={this.props.deposit_url}
                         is_loading={this.props.is_loading}
-                        onMount={this.props.onMount}
                     />
                 }
             </React.Fragment>

@@ -2,11 +2,6 @@
 .cashier {
     &__content {
         width: 100%;
-
-        &-wrapper {
-            width: 100%;
-            overflow: scroll;
-        }
     }
     &__error {
         font-size: 1.6rem;

@@ -9,7 +9,6 @@ class Withdraw extends React.Component {
             <CashierContainer
                 container_height={this.props.container_height}
                 container_url={this.props.withdraw_url}
-                error_message={this.props.error_message}
                 is_loading={this.props.is_loading}
                 onMount={this.props.onMount}
                 verification_code={this.props.verification_code}
@@ -23,7 +22,6 @@ Withdraw.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    error_message    : PropTypes.string,
     is_loading       : PropTypes.bool,
     onMount          : PropTypes.func,
     verification_code: PropTypes.string,
@@ -33,7 +31,6 @@ Withdraw.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         container_height : modules.cashier.container_height,
-        error_message    : modules.cashier.error_message,
         is_loading       : modules.cashier.is_loading,
         onMount          : modules.cashier.onMountWithdraw,
         verification_code: client.verification_code,

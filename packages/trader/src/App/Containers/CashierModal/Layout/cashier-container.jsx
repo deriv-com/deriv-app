@@ -11,7 +11,6 @@ class CashierContainer extends React.Component {
         return (
             <React.Fragment>
                 {this.props.is_loading && <Loading />}
-                {this.props.error_message && <p>{this.props.error_message}</p>}
                 {this.props.container_url &&
                 <div className='cashier__content-wrapper' height={this.props.container_height}>
                     <iframe
@@ -40,7 +39,6 @@ CashierContainer.propTypes = {
         PropTypes.string,
     ]),
     container_url    : PropTypes.string,
-    error_message    : PropTypes.string,
     is_loading       : PropTypes.bool,
     onMount          : PropTypes.func,
     verification_code: PropTypes.string,

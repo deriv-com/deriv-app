@@ -12,7 +12,7 @@ class Withdrawal extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {(this.props.verification_code || this.props.withdraw_url || this.props.error_message) ?
+                {(this.props.verification_code || this.props.withdraw_url) ?
                     <Withdraw />
                     :
                     <SendEmail />

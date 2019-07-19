@@ -28,6 +28,7 @@ export default class CashierStore extends BaseStore {
         withdraw: 'withdraw',
     };
 
+    default_cashier_height = 1200;
     timeout_cashier_url;
     timeout_verification_button;
 
@@ -101,7 +102,7 @@ export default class CashierStore extends BaseStore {
         this.setLoading(false);
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
-        this.setContainerHeight(+e.data);
+        this.setContainerHeight(+e.data || this.default_cashier_height);
     }
 
     @action.bound

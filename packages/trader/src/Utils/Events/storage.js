@@ -8,6 +8,7 @@ export const setStorageEvents = (root_store) => {
                 break;
             case 'verification_code':
                 if (document.hidden && root_store.ui.is_cashier_modal_on && root_store.ui.active_cashier_tab === 'withdraw') {
+                    root_store.modules.cashier.clearVerification();
                     root_store.ui.toggleCashierModal();
                 }
             // no default

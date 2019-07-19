@@ -10,6 +10,7 @@ class SendEmail extends React.Component {
     render() {
         return (
             <React.Fragment>
+                {this.props.error_message && <p className='cashier__error'>{this.props.error_message}</p>}
                 <div className='withdraw__verify-container'>
                     <div className='withdraw__verify-wrapper'>
                         <Icon icon='IconAuthenticateWithdrawals' className='withdraw__icon-authenticate' />
@@ -28,9 +29,9 @@ class SendEmail extends React.Component {
                 {this.props.is_email_sent &&
                 <div className='withdraw__verify-container'>
                     <div className='withdraw__email-sent'>
-                        <Icon icon='IconEmailSent' className='withdraw__icon-authenticate' />
-                        <h1><Localize i18n_default_text="We've sent you an email." /></h1>
-                        <p><Localize i18n_default_text='Please click on the authentication link in the email to continue.' /></p>
+                        <Icon icon='IconEmailSent' className='withdraw__icon-email-sent' />
+                        <p className='withdraw__email-sent-title'><Localize i18n_default_text="We've sent you an email." /></p>
+                        <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the authentication link in the email to continue.' /></p>
                     </div>
                 </div>
                 }
@@ -41,6 +42,7 @@ class SendEmail extends React.Component {
 
 SendEmail.propTypes = {
     client_email         : PropTypes.string,
+    error_message        : PropTypes.string,
     is_email_sent        : PropTypes.bool,
     sendVerificationEmail: PropTypes.func,
 };
@@ -48,6 +50,7 @@ SendEmail.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         client_email         : client.email,
+        error_message        : modules.cashier.error_message,
         is_email_sent        : modules.cashier.is_verification_email_sent,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
     })

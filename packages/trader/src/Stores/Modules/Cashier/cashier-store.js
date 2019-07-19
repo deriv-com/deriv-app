@@ -1,7 +1,6 @@
 import {
     action,
     observable }    from 'mobx';
-import { localize } from 'App/i18n';
 import { WS }       from 'Services';
 import BaseStore    from '../../base-store';
 
@@ -61,10 +60,10 @@ export default class CashierStore extends BaseStore {
         // xhttp.open('GET', response_cashier.cashier, true);
         // xhttp.send();
 
-        // TODO: error handling
+        // TODO: error handling UI & custom messages
         if (response_cashier.error) {
             this.setLoading(false);
-            this.setErrorMessage(this.getErrorMessage(response_cashier.error));
+            this.setErrorMessage(response_cashier.error.message);
             if (verification_code) {
                 // clear verification code on error
                 this.clearVerification();
@@ -98,55 +97,6 @@ export default class CashierStore extends BaseStore {
         // set the height of the container after content loads so that the
         // loading bar stays vertically centered until the end
         this.setContainerHeight(+e.data || '550');
-    }
-
-    getDetails = (error) => {
-        let error_fields,
-            details_fields;
-        if (error.details && error.details.fields) {
-            error_fields = {
-                address_city    : localize('Town/City'),
-                address_line_1  : localize('First line of home address'),
-                address_postcode: localize('Postal Code/ZIP'),
-                address_state   : localize('State/Province'),
-                email           : localize('Email address'),
-                phone           : localize('Telephone'),
-                residence       : localize('Country of Residence'),
-            };
-            details_fields = error.details.fields.map(field => (error_fields[field] || field));
-        }
-        return details_fields ? details_fields.join(', ') : localize('details');
-    };
-
-    // TODO: add action links to error messages when pages are available
-    getErrorMessage(error) {
-        let error_message = error.message;
-        switch (error.code) {
-            case 'ASK_TNC_APPROVAL':
-                error_message = 'Please accept the updated Terms and Conditions.';
-                break;
-            case 'ASK_FIX_DETAILS':
-                error_message = localize('There was a problem validating your personal details. Please update your {{details}} here.', { details: this.getDetails(error) });
-                break;
-            // case 'ASK_UK_FUNDS_PROTECTION':
-            //     initUKGC();
-            //     break;
-            // case 'ASK_AUTHENTICATE':
-            //     showMessage('not_authenticated_message');
-            //     break;
-            // case 'ASK_FINANCIAL_RISK_APPROVAL':
-            //     showError('financial_risk_error');
-            //     break;
-            // case 'ASK_AGE_VERIFICATION':
-            //     showError('age_error');
-            //     break;
-            // case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
-            //     showError('limits_error');
-            //     break;
-            default:
-                break;
-        }
-        return error_message;
     }
 
     @action.bound

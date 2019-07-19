@@ -1,5 +1,5 @@
 Deriv App
-=============
+============
 
 This repository contains the various platforms of Deriv.
 

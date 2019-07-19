@@ -36,7 +36,6 @@ const Header = ({
     location,
     loginid,
     onClickUpgrade,
-    onUnmountCashier,
     showFullBlur,
     toggleAccountsDialog,
     toggleCashierModal,
@@ -84,7 +83,6 @@ const Header = ({
                                             className='acc-info__button'
                                             toggleCashier={toggleCashierModal}
                                             is_cashier_visible={is_cashier_modal_on}
-                                            onUnmount={onUnmountCashier}
                                             showFullBlur={showFullBlur}
                                             hideFullBlur={hideFullBlur}
                                         />
@@ -132,7 +130,6 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
-    onUnmountCashier    : PropTypes.func,
     showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleCashierModal  : PropTypes.func,
@@ -150,7 +147,6 @@ export default withRouter(connect(
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
-        onUnmountCashier    : modules.cashier.onUnmount,
         hideFullBlur        : ui.hideFullBlur,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         is_cashier_modal_on : ui.is_cashier_modal_on,

@@ -5,6 +5,7 @@ import { Modal }    from 'App/Components/Elements/modal.jsx';
 import UILoader     from 'App/Components/Elements/ui-loader.jsx';
 import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
+import 'Sass/app/modules/settings.scss';
 
 const ToggleSettings = ({
     hideFullBlur,

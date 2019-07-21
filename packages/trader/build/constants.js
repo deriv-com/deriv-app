@@ -88,7 +88,11 @@ const rules = (is_test_env = false) => ([
         exclude: /node_modules|public\//,
         use    : svg_loaders
     },
-    {
+    is_test_env ? {
+            test: /\.(sc|sa|c)ss$/,
+            loaders: 'null-loader'
+        }
+    : {
         test: /\.(sc|sa|c)ss$/,
         use : css_loaders
     }

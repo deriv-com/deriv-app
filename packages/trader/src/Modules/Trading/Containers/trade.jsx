@@ -6,8 +6,6 @@ import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Lazy                  from 'App/Containers/Lazy';
-import Digits                from 'Modules/Contract/Components/Digits';
-import InfoBox               from 'Modules/Contract/Components/InfoBox';
 // import Test                  from './test.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
@@ -51,7 +49,9 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
                                 Digits={
-                                    <Digits
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
+                                        should_load={this.props.is_digit_contract}
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         digits_info={this.props.digits_info}
@@ -61,7 +61,11 @@ class Trade extends React.Component {
                                     />
                                 }
                                 InfoBox={
-                                    <InfoBox
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
+                                        should_load={true}
+                                        has_progress={false}
+                                        is='InfoBox'
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         error_message={this.props.error_message}

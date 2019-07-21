@@ -6,6 +6,7 @@ import Localize     from 'App/Components/Elements/localize.jsx';
 import Button       from 'App/Components/Form/button.jsx';
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';
+import 'Sass/app/_common/components/wip.scss';
 
 const onClick = (e) => {
     e.preventDefault();

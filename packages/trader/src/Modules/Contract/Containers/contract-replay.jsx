@@ -6,14 +6,14 @@ import InfoBox              from 'Modules/Contract/Components/InfoBox';
 import { isEmptyObject }    from '_common/utility';
 import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
-import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import { connect }          from 'Stores/connect';
 import Icon                 from 'Assets/icon.jsx';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from 'App/i18n';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart           = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const NotificationMessages = React.lazy(() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx'));
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {

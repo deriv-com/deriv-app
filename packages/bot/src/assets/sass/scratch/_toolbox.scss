@@ -1,27 +1,27 @@
+@import '../base/mixins';
+
 $category-colours: (
-    trade-definition: #303f9f,
-    before-purchase : #00897b,
-    during-purchase : #78909c,
-    after-purchase  : #d81b60,
-    mathematical    : #689f38,
-    logic           : #8e24aa,
-    text            : #fb8c00,
-    variables       : #5d4037,
-    functions       : #1976d2,
-    loop            : #e53935,
-    list            : #00acc1,
-    indicators      : #616161,
-    time            : #afb42b,
-    tick-analysis   : #2e7d32,
-    candle          : #5e35b1,
-    miscellaneous   : #ffb300,
+    trade_parameters   : #30409f,
+    purchase_conditions: #00897b,
+    sell_conditions    : #78909c,
+    trade_results      : #d81a60,
+    technical_analysis : #689e38,
+    utility            : #8e25aa,
+    math               : #fc8b01,
+    text               : #5d4037,
+    logic              : #1876d2,
+    lists              : #e53836,
+    custom_functions   : #00acc1,
+    variables          : #616161,
+    loops              : #afb42b,
 );
 
 .toolbox {
-    $toolbox  : &;
-    $white    : #fff;
-    $lightgrey: #ebebeb;
-    $grey     : #f4f4f6;
+    $toolbox         : &;
+    $white           : #fff;
+    $lightgrey       : #ebebeb;
+    $grey            : #f4f4f6;
+    $category-text-spacing: 15px;
 
     background-color: $white;
     border: 1px solid $lightgrey;
@@ -30,16 +30,60 @@ $category-colours: (
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    max-height: calc(100% - 40px) !important;
+    max-height: calc(100vh - 100px);
     overflow: hidden;
     position: absolute;
     user-select: none;
-    z-index: 99 !important;
+    z-index: 1;
+    width: 250px;
 
     &__header {
+        padding: 0.5em;
+        position: relative;
         font-weight: bold;
+        font-size: 1.6em;
         background-color: $grey;
+        text-align: center;
     }
+    &__item {
+        display: flex;
+        flex-direction: row;
+    }
+    &__category-arrow {
+        display: flex;
+        margin: auto;
+
+        &--back {
+            margin-left: $category-text-spacing;
+            fill: $white;
+            @include vendor(transform, rotate(90deg));
+        }
+        &--open {
+            margin-right: $category-text-spacing;
+            @include vendor(transform, rotate(270deg));
+        }
+    }
+    &__category-colour {
+        width: 5px;
+        flex-shrink: 0;
+    }
+    @each $category, $colour in $category-colours {
+        &__category {
+            &--#{$category} {
+                #{$toolbox}__category-colour {
+                    background-color: $colour;
+                }
+            }
+        }
+        &__category-return {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    background-color: $colour;
+                }
+            }
+        }
+    }
+
     &__category-menu {
         display: flex;
         flex-direction: column;
@@ -47,69 +91,61 @@ $category-colours: (
         min-height: 0;
         overflow: auto;
     }
+    &__category-return {
+        cursor: pointer;
+        color: $white;
+        text-align: center;
+
+        #{$toolbox}__label {
+            margin-left: -($category-text-spacing * 2);
+        }
+    }
+    &__category-text {
+        align-self: center;
+        margin: $category-text-spacing;
+        width: 100%;
+    }
+    &__description {
+        font-size: 1.3em;
+    }
+    &__icon {
+        display: flex;
+        align-self: center;
+        margin-right: $category-text-spacing;
+
+        > svg {
+            height: 25px;
+            width: 25px;
+        }
+    }
+    &__label {
+        font-weight: bold;
+        font-size: 1.6em;
+    }
     &__row {
         cursor: pointer;
         border-top: 1px solid $lightgrey;
-    }
-    &__header, &__label {
-        font-size: 1em;
-        padding: 0.6em 1em;
-    }
-    &__title {
-        margin-right: 0.6em;
-    }
-    &__arrow {
-        cursor: pointer;
-        position: absolute;
-        top: 0.6em;
-        right: 0.6em;
-        transform: rotate(90deg);
-        transition: transform 0.25s ease;
-    }
-    &__item {
-        position: relative;
-    }
-    &__color {
-        position: absolute;
-        left: 0;
-        width: 4px;
-        height: 100%;
-    }
-    &--collapsed {
-        #{$toolbox}__header, #{$toolbox}__item {
-            padding: 0.6em;
+
+        &:last-of-type {
+            border-bottom: 1px solid $lightgrey;
         }
-        #{$toolbox}__color {
-            position: relative;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
-        #{$toolbox}__title, #{$toolbox}__label {
-            display: none;
-        }
-        #{$toolbox}__arrow {
-            position: relative;
-            transform: rotate(270deg);
-            margin-top: -2px;
-            top: 0;
-            right: -2px;
-        }
-        #{$toolbox}__row {
-            border-top: none;
-        }
-    }
-    @each $category, $category-colour in $category-colours {
-        &__category--#{$category}#{&}__category--selected {
-            background-color: transparentize($category-colour, 0.9);
-        }
-        &__category--#{$category} {
-            &:hover {
-                background-color: transparentize($category-colour, 0.95);
-            }
-            & > #{$toolbox}__color {
-                background-color: $category-colour;
+
+        @each $category, $colour in $category-colours {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    &:hover:not(#{$toolbox}__category--selected) {
+                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
+                    }
+                }
+                &--#{$category}#{$toolbox}__category--selected {
+                    background-color: transparentize($colour, 0.9);
+                    @include vendor(transition, background-color 0.25s ease);
+                }
             }
         }
+    }
+    &__separator {
+        padding: 20px 0;
+        border-top: 1px solid $lightgrey;
     }
 }

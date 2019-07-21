@@ -163,9 +163,9 @@ export default withRouter(connect(
         is_chart_loading : modules.smart_chart.is_chart_loading,
         setChartLoader   : modules.smart_chart.setIsChartLoading,
         hidePositions    : ui.hidePositionsFooterToggle,
-        hideBlur         : ui.hideRouteBlur,
+        hideBlur         : ui.disableRouteModal,
         is_dark_theme    : ui.is_dark_mode_on,
-        showBlur         : ui.showRouteBlur,
+        showBlur         : ui.setRouteModal,
 
     })
 )(ContractReplay));

@@ -17,9 +17,9 @@ const tabs = {
 const ToggleCashier = ({
     active_tab,
     className,
-    hideFullBlur,
+    enableApp,
     is_cashier_visible,
-    showFullBlur,
+    disableApp,
     toggleCashier,
 }) => (
     <React.Fragment>
@@ -43,10 +43,10 @@ const ToggleCashier = ({
                 },
             ]}
             header={<WalletInformation />}
-            hideFullBlur={hideFullBlur}
+            enableApp={enableApp}
             is_open={is_cashier_visible}
             selected_index={tabs[active_tab]}
-            showFullBlur={showFullBlur}
+            disableApp={disableApp}
             title={localize('Cashier')}
             toggleModal={toggleCashier}
         />
@@ -54,12 +54,12 @@ const ToggleCashier = ({
 );
 
 ToggleCashier.propTypes = {
-    active_tab  : PropTypes.string,
-    className   : PropTypes.string,
-    hideFullBlur: PropTypes.func,
-    is_open     : PropTypes.bool,
-    showFullBlur: PropTypes.func,
-    toggleModal : PropTypes.func,
+    active_tab : PropTypes.string,
+    className  : PropTypes.string,
+    disableApp : PropTypes.func,
+    enableApp  : PropTypes.func,
+    is_open    : PropTypes.bool,
+    toggleModal: PropTypes.func,
 };
 
 export { ToggleCashier };

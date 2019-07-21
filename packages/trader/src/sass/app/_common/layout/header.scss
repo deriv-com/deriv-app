@@ -8,15 +8,28 @@
     top: 0;
     transition: opacity 0.3s;
     backface-visibility: hidden;
-    filter: blur(0);
+
+    &:after {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(100% + 2px);
+        content: '';
+        @include themify($themes) {
+            background-color: rgba(themed('container_color'), 0.76);
+        }
+    }
     @include themify($themes) {
         background-color: themed('background_color');
         border-bottom: 1px solid themed('background_color');
     }
 
-    &--is-blurred {
-        pointer-events: none;
-        filter: blur(3px);
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
     }
     &__menu-items {
         display: flex;

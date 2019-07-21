@@ -63,9 +63,9 @@ export default class UIStore extends BaseStore {
     // purchase button states
     @observable purchase_states = [ false, false ];
 
-    @observable is_fully_blurred = false;
-    @observable is_app_blurred   = false;
-    @observable is_route_blurred = false;
+    @observable is_app_disabled = false;
+    @observable is_app_disabled   = false;
+    @observable is_route_modal_on = false;
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
@@ -133,33 +133,23 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showRouteBlur() {
-        this.is_route_blurred = true;
+    setRouteModal() {
+        this.is_route_modal_on = true;
     }
 
     @action.bound
-    hideRouteBlur() {
-        this.is_route_blurred = false;
+    disableRouteModal() {
+        this.is_route_modal_on = false;
     }
 
     @action.bound
-    showAppBlur() {
-        this.is_app_blurred = true;
+    disableApp() {
+        this.is_app_disabled = true;
     }
 
     @action.bound
-    hideAppBlur() {
-        this.is_app_blurred = false;
-    }
-
-    @action.bound
-    showFullBlur() {
-        this.is_fully_blurred = true;
-    }
-
-    @action.bound
-    hideFullBlur() {
-        this.is_fully_blurred = false;
+    enableApp() {
+        this.is_app_disabled = false;
     }
 
     @action.bound
@@ -271,6 +261,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleServicesErrorModal(is_visible) {
         this.is_services_error_visible = is_visible;
+        if (is_visible) this.is_app_disabled = true;
     }
 
     @action.bound
@@ -337,10 +328,12 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_unsupported_contract_modal_visible = state_change;
+        if (this.is_unsupported_contract_modal_visible) this.is_app_disabled = true;
     }
 
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+        if (this.is_account_signup_modal_visible) this.is_app_disabled = true;
     }
 }

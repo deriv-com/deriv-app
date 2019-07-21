@@ -91,10 +91,10 @@ class Trade extends React.Component {
                 >
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
-                        is_mobile={this.props.is_mobile}
                         is_contract_visible={this.props.is_contract_mode}
+                        is_market_closed={this.props.is_market_closed}
+                        is_mobile={this.props.is_mobile}
                         is_trade_enabled={this.props.is_trade_enabled}
-                        is_blurred={this.props.is_market_closed}
                     />
                 </div>
             </div>
@@ -121,7 +121,6 @@ Trade.propTypes = {
     is_mobile        : PropTypes.bool,
     is_static_chart  : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
-    onClickNewTrade  : PropTypes.func,
     onCloseContract  : PropTypes.func,
     onMount          : PropTypes.func,
     onSymbolChange   : PropTypes.func,
@@ -158,7 +157,6 @@ export default connect(
         contract_type                      : modules.trade.contract_type,
         is_market_closed                   : modules.trade.is_market_closed,
         is_trade_enabled                   : modules.trade.is_trade_enabled,
-        onClickNewTrade                    : modules.trade.onClickNewTrade,
         onMount                            : modules.trade.onMount,
         onSymbolChange                     : modules.trade.onChange,
         onUnmount                          : modules.trade.onUnmount,

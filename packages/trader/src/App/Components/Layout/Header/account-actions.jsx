@@ -7,6 +7,7 @@ import { localize }      from 'App/i18n';
 import { LoginButton }   from './login-button.jsx';
 import { SignupButton }  from './signup-button.jsx';
 import { UpgradeButton } from './upgrade-button.jsx';
+import 'Sass/app/_common/components/account-switcher.scss';
 
 export const AccountActions = ({
     is_logged_in,

@@ -9,7 +9,6 @@ import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
 import Lazy                        from './Containers/Lazy';
 import Routes                      from './Containers/Routes/routes.jsx';
-import Wip                         from './Containers/Wip';
 import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';

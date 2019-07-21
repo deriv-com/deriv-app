@@ -604,6 +604,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async onMount() {
+        this.root_store.ui.setAppLoading(false);
         this.onLoadingMount();
         await this.prepareTradeStore();
         this.debouncedProposal();

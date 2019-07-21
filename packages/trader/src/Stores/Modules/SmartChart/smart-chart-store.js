@@ -22,9 +22,10 @@ export default class SmartChartStore extends BaseStore {
     barriers_empty_array = [];
     markers_empty_array = [];
 
-    @observable is_contract_mode = false;
-    @observable is_static_chart  = false;
-    @observable is_title_enabled = true;
+    @observable is_contract_mode    = false;
+    @observable is_static_chart     = false;
+    @observable is_title_enabled    = true;
+    @observable is_tick_granularity = true;
 
     @observable start_epoch;
     @observable end_epoch;
@@ -47,7 +48,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
-        this.saveAndClearTradeChartLayout('contract');
+        this.saveAndClearTradeChartLayout();
         this.setContractMode(true);
         if (!is_from_positions) {
             this.updateGranularity(granularity);
@@ -100,6 +101,7 @@ export default class SmartChartStore extends BaseStore {
         this.setContractStart(null);
         this.setContractEnd(null);
         this.setStaticChart(false);
+        this.is_tick_granularity = true;
         this.root_store.ui.resetPurchaseStates();
     }
 
@@ -197,13 +199,13 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    saveAndClearTradeChartLayout(chart_id) {
+    saveAndClearTradeChartLayout() {
         this.should_export_layout    = true;
         this.should_import_layout    = false;
         this.trade_chart_symbol      = this.root_store.modules.trade.symbol;
         this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity;
         this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type;
-        this.chart_id                = chart_id;
+        this.chart_id                = null;
     }
 
     @action.bound
@@ -329,6 +331,8 @@ export default class SmartChartStore extends BaseStore {
     // ---------- WS ----------
     wsSubscribe = (request_object, callback) => {
         if (request_object.subscribe !== 1) return;
+        if (this.is_contract_mode && !this.is_tick_granularity && !request_object.granularity) return;
+        console.log(request_object);
         WS.subscribeTicksHistory({ ...request_object }, callback); // use a copy of the request_object to prevent updating the source
     };
 

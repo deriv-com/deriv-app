@@ -55,7 +55,7 @@ const SocketCache = (() => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
         // check if response has subscription, since only want to cache non-streamed responses
-        if (response.subscription) return;
+        if (response.subscription || (response.echo_req.end === 'latest')) return;
 
         if (!config[msg_type]) return;
         // prevent unwanted page behaviour

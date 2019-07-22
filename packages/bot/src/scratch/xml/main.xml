@@ -1,0 +1,73 @@
+﻿<xml
+    xmlns="http://www.w3.org/1999/xhtml">
+    <variables>
+        <variable type="" islocal="false" iscloud="false">bb</variable>
+    </variables>
+    <block type="trade_definition" x="0" y="0">
+        <statement name="TRADE_OPTIONS">
+            <block type="trade_definition_market" deletable="false" movable="false">
+                <field name="MARKET_LIST"></field>
+                <field name="SUBMARKET_LIST"></field>
+                <field name="SYMBOL_LIST"></field>
+                <next>
+                    <block type="trade_definition_tradetype" deletable="false" movable="false">
+                        <field name="TRADETYPECAT_LIST"></field>
+                        <field name="TRADETYPE_LIST"></field>
+                        <next>
+                            <block type="trade_definition_contracttype" deletable="false" movable="false">
+                                <field name="TYPE_LIST"></field>
+                                <next>
+                                    <block type="trade_definition_candleinterval" deletable="false" movable="false">
+                                        <field name="CANDLEINTERVAL_LIST">60</field>
+                                        <next>
+                                            <block type="trade_definition_restartbuysell" deletable="false" movable="false">
+                                                <value name="TIME_MACHINE_ENABLED">
+                                                    <shadow type="logic_boolean">
+                                                        <field name="BOOL">FALSE</field>
+                                                    </shadow>
+                                                </value>
+                                                <next>
+                                                    <block type="trade_definition_restartonerror" deletable="false" movable="false">
+                                                        <value name="RESTARTONERROR">
+                                                            <shadow type="logic_boolean">
+                                                                <field name="BOOL">FALSE</field>
+                                                            </shadow>
+                                                        </value>
+                                                    </block>
+                                                </next>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </next>
+            </block>
+        </statement>
+    </block>
+    <block type="before_purchase" x="0" y="528">
+        <statement name="BEFOREPURCHASE_STACK">
+            <block type="purchase">
+                <field name="PURCHASE_LIST"></field>
+            </block>
+        </statement>
+    </block>
+    <block type="during_purchase" x="0" y="704">
+        <statement name="DURING_PURCHASE_STACK">
+            <block type="controls_if">
+                <value name="IF0">
+                    <block type="check_sell"></block>
+                </value>
+                <statement name="DO0">
+                    <block type="sell_at_market"></block>
+                </statement>
+            </block>
+        </statement>
+    </block>
+    <block type="after_purchase" x="0" y="960">
+        <statement name="AFTERPURCHASE_STACK">
+            <block type="trade_again"></block>
+        </statement>
+    </block>
+</xml>

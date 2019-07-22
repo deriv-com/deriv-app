@@ -4,6 +4,9 @@
         width: 100%;
     }
     &__error {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
         font-size: 1.6rem;
         align-self: center;
     }
@@ -12,6 +15,9 @@
 /** @define withdraw */
 .withdraw {
     &__text {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
         font-size: 1.6rem;
     }
     &__verify-container {
@@ -44,15 +50,23 @@
         }
     }
     &__email-sent {
+        @include themify($themes) {
+            background-color: themed('background_modal_overlay');
+        }
         height: 100%;
-        background-color: rgba(255, 255, 255, 0.96);
 
         &-title {
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
             font-size: 1.6rem;
             font-weight: bold;
             margin-bottom: 1.2rem;
         }
         &-text {
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
             font-size: 1.4rem;
         }
     }

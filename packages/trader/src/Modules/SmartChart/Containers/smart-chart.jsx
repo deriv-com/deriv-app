@@ -53,6 +53,7 @@ class Chart extends React.Component {
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
+                requestForgetStream={this.props.wsForgetStream}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 showLastDigitStats={this.props.should_show_last_digit_stats}
@@ -117,6 +118,7 @@ Chart.propTypes = {
     updateChartType              : PropTypes.func,
     updateGranularity            : PropTypes.func,
     wsForget                     : PropTypes.func,
+    wsForgetStream               : PropTypes.func,
     wsSendRequest                : PropTypes.func,
     wsSubscribe                  : PropTypes.func,
 };
@@ -142,6 +144,7 @@ export default connect(
         updateChartType              : modules.smart_chart.updateChartType,
         updateGranularity            : modules.smart_chart.updateGranularity,
         wsForget                     : modules.smart_chart.wsForget,
+        wsForgetStream               : modules.smart_chart.wsForgetStream,
         wsSendRequest                : modules.smart_chart.wsSendRequest,
         wsSubscribe                  : modules.smart_chart.wsSubscribe,
         is_mobile                    : ui.is_mobile,

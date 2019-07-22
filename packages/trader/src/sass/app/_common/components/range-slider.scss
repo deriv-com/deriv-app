@@ -136,8 +136,7 @@
             width: 2px;
             border-radius: 50%;
             margin: 0 3px;
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
+            box-shadow: none;
             cursor: pointer;
             @include themify($themes) {
                 border: 3px solid themed('container_color');
@@ -148,6 +147,11 @@
                 @include themify($themes) {
                     background: themed('slider_icon_color');
                     border-color: themed('slider_icon_color');
+                }
+            }
+            &--marked-hover {
+                @include themify($themes) {
+                    border-color: themed('slider_hover_color');
                 }
             }
             &--active {
@@ -171,7 +175,7 @@
                 @include themify($themes) {
                     background: themed('slider_icon_color');
                     border-color: themed('slider_icon_color');
-                    box-shadow: 0 0 0 4px themed('slider_hover_color');
+                    box-shadow: 0 0 0 6px themed('slider_hover_color');
                 }
             }
             &:first-child {
@@ -188,9 +192,14 @@
         left: 0;
         height: 2px;
         pointer-events: none;
-        transition: width 0.5s;
         @include themify($themes) {
             background: themed('slider_icon_color');
+        }
+
+        &--hover {
+            @include themify($themes) {
+                background: themed('slider_hover_color');
+            }
         }
     }
     &__caption {

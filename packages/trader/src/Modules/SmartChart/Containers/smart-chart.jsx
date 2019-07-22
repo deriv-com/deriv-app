@@ -72,10 +72,10 @@ class Chart extends React.Component {
             >
                 { this.props.markers_array.map((marker, idx) => (
                     <ChartMarker
-                        is_contract_replay={!this.props.is_trade_page}
                         key={idx}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
+                        is_bottom_widget_visible={this.props.should_show_bottom_widgets}
                     />
                 ))}
             </SmartChart>
@@ -94,12 +94,10 @@ Chart.propTypes = {
     granularity                  : PropTypes.number,
     InfoBox                      : PropTypes.node,
     is_contract_mode             : PropTypes.bool,
-    is_contract_replay           : PropTypes.bool,
     is_mobile                    : PropTypes.bool,
     is_socket_opened             : PropTypes.bool,
     is_static_chart              : PropTypes.bool,
     is_title_enabled             : PropTypes.bool,
-    is_trade_page                : PropTypes.bool,
     margin                       : PropTypes.number,
     markers_array                : PropTypes.array,
     onMount                      : PropTypes.func,

@@ -101,7 +101,7 @@ const rules = (is_test_env = false) => ([
 const MINIMIZERS = !IS_RELEASE ? [] : [
     new TerserPlugin({
         test     : /\.js/,
-        exclude  : /(vendors~|smartcharts)/,
+        exclude  : /(smartcharts)/,
         parallel : true,
         sourceMap: true,
     }),

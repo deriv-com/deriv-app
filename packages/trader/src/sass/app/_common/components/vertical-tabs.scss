@@ -11,6 +11,10 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
 
     &--full-screen {
         min-height: $MIN_HEIGHT;
+
+        .vertical-tab__tab {
+            min-width: 15%;
+        }
     }
     &:not(.vertical-tab--full-screen) {
         height: 600px;

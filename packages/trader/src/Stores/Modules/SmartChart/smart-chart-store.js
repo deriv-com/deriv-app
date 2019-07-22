@@ -143,6 +143,11 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     setContractStart(start) {
         this.start_epoch = start;
+
+        // SmartChart doesn't need scrollToEpoch when startEpoch has value.
+        if (start) {
+            this.resetScrollToLeft();
+        }
     }
 
     @action.bound

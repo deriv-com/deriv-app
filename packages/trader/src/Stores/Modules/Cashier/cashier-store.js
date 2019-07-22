@@ -32,6 +32,12 @@ export default class CashierStore extends BaseStore {
     timeout_cashier_url;
     timeout_verification_button;
 
+    constructor({ root_store }) {
+        super({ root_store });
+
+        this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
     @action.bound
     async onMount(container, verification_code) {
         if (!['deposit', 'withdraw'].includes(container)) {
@@ -206,5 +212,17 @@ export default class CashierStore extends BaseStore {
     setActiveTab(container) {
         // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
         this.root_store.ui.setCashierActiveTab(container);
+    }
+
+    onUnmount() {
+        this.clearVerification();
+        this.clearTimeoutCashierUrl();
+        Object.keys(this.containers).forEach((container) => {
+            this.setSessionTimeout(true, container);
+        });
+    }
+
+    accountSwitcherListener() {
+        return new Promise(async (resolve) => resolve(this.onUnmount()));
     }
 }

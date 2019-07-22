@@ -36,7 +36,6 @@ expectReturnTrue(
       (function (){
         ${parts.tickTrade}
         ${parts.waitToPurchase}
-        while (watch('during')) {}
         return true;
       })();
   `

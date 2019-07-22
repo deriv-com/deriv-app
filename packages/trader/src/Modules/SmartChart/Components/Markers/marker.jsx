@@ -1,28 +1,42 @@
-import { Marker }   from 'smartcharts-beta';
-import { toJS }     from 'mobx';
-import { observer } from 'mobx-react';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import { toJS }       from 'mobx';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { FastMarker } from 'smartcharts-beta';
 
 const ChartMarker = ({
-    is_contract_replay,
     marker_config,
     marker_content_props,
+    is_bottom_widget_visible,
 }) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
-    // Remove CSS transition on chart-marker-line when
-    // viewing expired contract because it appears sluggish over time
-    // -> charts seems to be doing heavy js scripting when rendering static charts
-    // TODO: remove this once smartcharts is more optimized
-    if (is_contract_replay && marker_props.yPositioner === 'none') {
-        marker_props.className += ' chart-marker-line__no-transition';
-    }
+    // TODO:
+    //  - rename x to epoch
+    //  - rename y to price
+    const onRef = ref => {
+        if (ref) {
+            // NOTE: null price means vertical line.
+            if (!marker_props.y) {
+                const margin =
+                    (is_bottom_widget_visible ? 115 : 0) + // digit contracts have a widget at the bottom
+                    24;                                    // height of line marker icon
+
+                ref.div.style.height =  `calc(100% - ${margin}px)`;
+                ref.div.style.zIndex = '-1';
+            }
+            ref.setPosition({
+                epoch: +marker_props.x,
+                price: +marker_props.y,
+            });
+        }
+    };
 
     return (
-        <Marker {...toJS(marker_props)}>
+        <FastMarker
+            markerRef={onRef}
+        >
             <ContentComponent {...toJS(marker_content_props)} />
-        </Marker>
+        </FastMarker>
     );
 };
 
@@ -31,4 +45,4 @@ ChartMarker.propTypes = {
     marker_content_props: PropTypes.object,
 };
 
-export default observer(ChartMarker);
+export default ChartMarker;

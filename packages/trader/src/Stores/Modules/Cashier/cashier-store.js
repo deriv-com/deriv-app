@@ -29,7 +29,12 @@ export default class CashierStore extends BaseStore {
     };
 
     default_cashier_height = 1200;
-    timeout_cashier_url;
+
+    timeout_cashier_url = {
+        deposit : '',
+        withdraw: '',
+    };
+
     timeout_verification_button;
 
     constructor({ root_store }) {
@@ -96,7 +101,7 @@ export default class CashierStore extends BaseStore {
             this.setLoading(false);
             this.setContainerHeight('540');
             // crypto cashier can only be accessed once and the session expires
-            this.clearTimeoutCashierUrl();
+            this.clearTimeoutCashierUrl(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
         } else {
             window.addEventListener('message', this.onIframeLoaded, false);
@@ -146,9 +151,9 @@ export default class CashierStore extends BaseStore {
         this.is_verification_email_sent = is_verification_email_sent;
     }
 
-    clearTimeoutCashierUrl() {
-        if (this.timeout_cashier_url) {
-            clearTimeout(this.timeout_cashier_url);
+    clearTimeoutCashierUrl(container) {
+        if (this.timeout_cashier_url[container]) {
+            clearTimeout(this.timeout_cashier_url[container]);
         }
     }
 
@@ -156,8 +161,8 @@ export default class CashierStore extends BaseStore {
     // so we should resend the request for container (deposit|withdraw) url on next mount
     @action.bound
     setTimeoutCashierUrl(container) {
-        this.clearTimeoutCashierUrl();
-        this.timeout_cashier_url = setTimeout(() => {
+        this.clearTimeoutCashierUrl(container);
+        this.timeout_cashier_url[container] = setTimeout(() => {
             this.setSessionTimeout(true, container);
         }, 60000);
     }
@@ -216,8 +221,8 @@ export default class CashierStore extends BaseStore {
 
     onUnmount() {
         this.clearVerification();
-        this.clearTimeoutCashierUrl();
         Object.keys(this.containers).forEach((container) => {
+            this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
     }

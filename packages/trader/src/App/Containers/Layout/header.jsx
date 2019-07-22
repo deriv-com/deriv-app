@@ -43,7 +43,7 @@ const Header = ({
                     <div className='header__menu-left'>
                         <Lazy
                             has_progress={false}
-                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer" */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
+                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
                             should_load={is_mobile}
                         />
                         <MenuLinks

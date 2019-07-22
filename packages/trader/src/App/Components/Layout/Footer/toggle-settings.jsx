@@ -31,15 +31,15 @@ const ToggleSettings = ({
                         {
                             icon : 'IconTheme',
                             label: localize('Themes'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-theme" */'App/Containers/SettingsModal/settings-theme.jsx')),
+                            value: React.lazy(() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')),
                         }, {
                             icon : 'IconLanguage',
                             label: localize('Language'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-language" */'App/Containers/SettingsModal/settings-language.jsx')),
+                            value: React.lazy(() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')),
                         }, {
                             icon : 'IconCharts',
                             label: localize('Charts'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-chart" */'App/Containers/SettingsModal/settings-chart.jsx')),
+                            value: React.lazy(() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')),
                             // uncomment below lines to bring back purchase lock and purchase confirmation
                             // }, {
                             //     icon : IconPurchase,

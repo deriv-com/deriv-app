@@ -50,7 +50,7 @@ class Trade extends React.Component {
                                 chart_type={this.props.chart_type}
                                 Digits={
                                     <Lazy
-                                        ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
+                                        ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
                                         should_load={this.props.is_digit_contract}
                                         is_trade_page
                                         contract_info={this.props.contract_info}
@@ -62,7 +62,7 @@ class Trade extends React.Component {
                                 }
                                 InfoBox={
                                     <Lazy
-                                        ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
+                                        ctor={() => import(/* webpackChunkName: "info-box", webpackPrefetch: true */'Modules/Contract/Components/InfoBox')}
                                         should_load={true}
                                         has_progress={false}
                                         is='InfoBox'

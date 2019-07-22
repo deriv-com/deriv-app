@@ -26,7 +26,7 @@ export const AccountActions = ({
         return (
             <React.Fragment>
                 <Lazy
-                    ctor={() => import(/* webpackChunkName: "account-info" */'App/Components/Layout/Header/account-info.jsx')}
+                    ctor={() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx')}
                     should_load={true}
                     has_progress={true}
                     is='AccountInfo'

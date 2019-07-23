@@ -13,6 +13,7 @@ import routes         from 'Constants/routes';
 import { connect }    from 'Stores/connect';
 
 const Header = ({
+    // active_cashier_tab,
     balance,
     can_upgrade,
     can_upgrade_to,
@@ -54,16 +55,21 @@ const Header = ({
                     <div className='header__menu-right'>
                         <div className='acc-info__container'>
                             <AccountActions
-                                is_logged_in={is_logged_in}
-                                currency={currency}
+                                // active_cashier_tab={active_cashier_tab}
                                 balance={balance}
-                                can_upgrade={can_upgrade}
-                                is_virtual={is_virtual}
-                                onClickUpgrade={onClickUpgrade}
-                                loginid={loginid}
-                                is_acc_switcher_on={is_acc_switcher_on}
-                                toggleAccountsDialog={toggleAccountsDialog}
                                 can_upgrade_to={can_upgrade_to}
+                                currency={currency}
+                                can_upgrade={can_upgrade}
+                                // hideFullBlur={hideFullBlur}
+                                is_acc_switcher_on={is_acc_switcher_on}
+                                // is_cashier_modal_on={is_cashier_modal_on}
+                                is_logged_in={is_logged_in}
+                                is_virtual={is_virtual}
+                                loginid={loginid}
+                                onClickUpgrade={onClickUpgrade}
+                                toggleAccountsDialog={toggleAccountsDialog}
+                                // toggleCashierModal={toggleCashierModal}
+                                // showFullBlur={showFullBlur}
                             />
                         </div>
                     </div>
@@ -74,13 +80,14 @@ const Header = ({
 );
 
 Header.propTypes = {
+    // active_cashier_tab  : PropTypes.string,
     balance             : PropTypes.string,
     can_upgrade         : PropTypes.bool,
     can_upgrade_to      : PropTypes.string,
     currency            : PropTypes.string,
-    hideFullBlur        : PropTypes.func,
+    // hideFullBlur        : PropTypes.func,
     is_acc_switcher_on  : PropTypes.bool,
-    is_cashier_modal_on : PropTypes.bool,
+    // is_cashier_modal_on : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_fully_blurred    : PropTypes.bool,
     is_loading          : PropTypes.bool,
@@ -91,32 +98,33 @@ Header.propTypes = {
     location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
-    showFullBlur        : PropTypes.func,
+    // showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
-    toggleCashierModal  : PropTypes.func,
+    // toggleCashierModal  : PropTypes.func,
 };
 
 // need to wrap withRouter around connect
 // to prevent updates on <MenuLinks /> from being blocked
 export default withRouter(connect(
     ({ client, ui }) => ({
+        // active_cashier_tab  : ui.active_cashier_tab,
         balance             : client.balance,
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
         currency            : client.currency,
-        hideFullBlur        : ui.hideFullBlur,
+        // hideFullBlur        : ui.hideFullBlur,
         is_loading          : ui.is_loading,
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
-        is_cashier_modal_on : ui.is_cashier_modal_on,
+        // is_cashier_modal_on : ui.is_cashier_modal_on,
         is_dark_mode        : ui.is_dark_mode_on,
         is_fully_blurred    : ui.is_fully_blurred,
         is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
-        showFullBlur        : ui.showFullBlur,
+        // showFullBlur        : ui.showFullBlur,
         toggleAccountsDialog: ui.toggleAccountsDialog,
-        toggleCashierModal  : ui.toggleCashierModal,
+        // toggleCashierModal  : ui.toggleCashierModal,
     })
 )(Header));

@@ -5,15 +5,23 @@ import routes         from '../../../Constants/routes';
 
 const Redirect = ({
     history,
+    setCashierActiveTab,
     setVerificationCode,
     toggleAccountSignupModal,
+    toggleCashierModal,
 }) => {
     const url_params = new URLSearchParams(window.location.search);
+
+    setVerificationCode(url_params.get('code'));
 
     switch (url_params.get('action')) {
         case 'signup': {
             toggleAccountSignupModal(true);
-            setVerificationCode(url_params.get('code'));
+            break;
+        }
+        case 'payment_withdraw': {
+            setCashierActiveTab('withdraw');
+            toggleCashierModal(true);
             break;
         }
         default: break;
@@ -30,11 +38,14 @@ Redirect.propTypes = {
     history                 : PropTypes.object,
     setVerificationCode     : PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
+    toggleCashierModal      : PropTypes.func,
 };
 
 export default withRouter(connect(
     ({ client, ui }) => ({
+        setCashierActiveTab     : ui.setCashierActiveTab,
         setVerificationCode     : client.setVerificationCode,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
+        toggleCashierModal      : ui.toggleCashierModal,
     }),
 )(Redirect));

@@ -27,6 +27,7 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable accounts;
+    @observable email;
     @observable switched                   = '';
     @observable switch_broadcast           = false;
     @observable currencies_list            = {};
@@ -157,8 +158,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     resetLocalStorageValues(loginid) {
-        this.accounts[loginid].cashier_confirmed = 0;
-        this.accounts[loginid].accepted_bch      = 0;
+        this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.loginid = loginid;
@@ -424,6 +424,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setEmail(email) {
         this.accounts[this.loginid].email = email;
+        this.email = email;
     }
 
     @action.bound
@@ -541,8 +542,13 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setVerificationCode(code) {
         this.verification_code = code;
+        if (code) {
+            LocalStore.set('verification_code', code);
+        } else {
+            LocalStore.remove('verification_code');
+        }
         // TODO: add await if error handling needs to happen before AccountSignup is initialised
-        this.fetchResidenceList(); // Prefetch for use in account signup process
+        // this.fetchResidenceList(); // Prefetch for use in account signup process
     }
 
     @action.bound

@@ -22,10 +22,13 @@ export const getDurationUnitValue = (obj_duration) => {
         const duration = duration_ms / (1000 * 60 * 60 * 24);
         return Math.floor(duration);
     } else if (duration_ms >= 3600000 && duration_ms < 86400000) {
-        const duration = duration_ms / (1000 * 60 * 60);
-        const is_end_time = isEndTime(duration);
+        const duration      = duration_ms / (1000 * 60 * 60);
+        const is_end_time   = isEndTime(duration);
+        const has_seconds   = isEndTime(duration_ms / (1000 * 60));
+        const string_format = has_seconds ? 'HH[h] mm[m] ss[s]' : 'HH[h] mm[m]';
+
         return is_end_time ?
-            formatMiliseconds(duration_ms, 'HH[h] mm[m] ss[s]')
+            formatMiliseconds(duration_ms, string_format)
             :
             Math.floor(duration_ms / (1000 * 60 * 60));
     } else if (duration_ms >= 60000 && duration_ms < 3600000) {

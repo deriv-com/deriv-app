@@ -93,7 +93,7 @@ class RangeSlider extends React.Component {
                     {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}
                     <span
                         ref={node => this.rangeSliderTrack = node}
-                        className='range-slider__line range-slider__line--hover'
+                        className='range-slider__line range-slider__line--fill'
                         onMouseLeave={this.onMouseLeave}
                     />
                     <div className='range-slider__ticks'>

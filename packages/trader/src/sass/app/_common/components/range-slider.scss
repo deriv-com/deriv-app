@@ -196,7 +196,7 @@
             background: themed('slider_icon_color');
         }
 
-        &--hover {
+        &--fill {
             @include themify($themes) {
                 background: themed('slider_hover_color');
             }

@@ -20,7 +20,7 @@ class VerticalTab extends React.PureComponent {
             };
         } else {
             this.state = {
-                selected: props.list[0],
+                selected: props.list[props.selected_index || 0],
             };
         }
     }
@@ -80,6 +80,7 @@ VerticalTab.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
+    selected_index: PropTypes.number,
 };
 
 export default VerticalTab;

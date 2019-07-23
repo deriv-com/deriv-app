@@ -1,2 +1,2 @@
-export Deposit  from './deposit.jsx';
-export Withdraw from './withdraw.jsx';
+export Deposit    from './deposit.jsx';
+export Withdrawal from './withdrawal.jsx';

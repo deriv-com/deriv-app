@@ -1,7 +1,6 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { connect }  from 'Stores/connect';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
 
 const TickSteps = ({
     hover_value,
@@ -28,8 +27,8 @@ const TickSteps = ({
                         'range-slider__ticks-step--marked'      : isMarked(idx),
                         'range-slider__ticks-step--marked-hover': isMarkedOnHover(idx),
                     })}
-                    onClick={(e) => onClick(e, idx + min_value)}
-                    onMouseEnter={(e) => onMouseEnter(e, idx + min_value)}
+                    onClick={() => onClick(idx + min_value)}
+                    onMouseEnter={() => onMouseEnter(idx + min_value)}
                     onMouseLeave={onMouseLeave}
                 />
             )}
@@ -47,9 +46,4 @@ TickSteps.propTypes = {
     value       : PropTypes.number,
 };
 
-export default connect(
-    ({ modules }) => ({
-        max_value: modules.trade.duration_min_max.tick.max,
-        min_value: modules.trade.duration_min_max.tick.min,
-    })
-)(TickSteps);
+export default TickSteps;

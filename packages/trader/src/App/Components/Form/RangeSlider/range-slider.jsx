@@ -1,12 +1,10 @@
 import classNames   from 'classnames';
-import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'App/i18n';
-import { connect }  from 'Stores/connect';
 import TickSteps    from './tick-steps.jsx';
 
-class RangeSlider extends React.Component {
+class RangeSlider extends React.PureComponent {
     state = {
         hover_value: 0,
     }
@@ -20,14 +18,14 @@ class RangeSlider extends React.Component {
         }
     };
 
-    handleClick = (e, index) => {
+    handleClick = (index) => {
         if (index !== this.props.value) {
             this.resetOnHover();
             this.props.onChange({ target: { name: this.props.name, value: index } });
         }
     };
 
-    onMouseEnter = (e, index) => {
+    onMouseEnter = (index) => {
         if (index) {
             this.setState({ hover_value: index });
             this.rangeSliderTrack.style.width = this.getRangeSliderTrackWidth(index, true);
@@ -60,17 +58,7 @@ class RangeSlider extends React.Component {
             min_value,
             name,
             value,
-            onChange,
         } = this.props;
-
-        if (value < min_value || value > max_value) {
-            onChange({
-                target: {
-                    name,
-                    value: min_value,
-                },
-            });
-        }
 
         const display_value = this.state.hover_value || value;
         return (
@@ -99,6 +87,8 @@ class RangeSlider extends React.Component {
                     <div className='range-slider__ticks'>
                         <TickSteps
                             hover_value={this.state.hover_value}
+                            max_value={max_value}
+                            min_value={min_value}
                             onClick={this.handleClick}
                             onMouseLeave={this.onMouseLeave}
                             onMouseEnter={this.onMouseEnter}
@@ -141,9 +131,4 @@ RangeSlider.propTypes = {
     value    : PropTypes.number,
 };
 
-export default connect(
-    ({ modules }) => ({
-        max_value: modules.trade.duration_min_max.tick.max,
-        min_value: modules.trade.duration_min_max.tick.min,
-    })
-)(observer(RangeSlider));
+export default RangeSlider;

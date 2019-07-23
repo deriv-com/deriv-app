@@ -3,7 +3,7 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import { connect }  from 'Stores/connect';
 
-const TickSteps = ({ max_value, min_value, hover_value, value, onClick, onMouseEnter, onMouseLeave }) => {
+const TickSteps = ({ hover_value, max_value, min_value, value, onClick, onMouseEnter, onMouseLeave }) => {
     const arr_ticks = [...Array((max_value - min_value) + 1).keys()];
 
     const isActive = (idx) => (idx + parseInt(min_value)) === parseInt(value);

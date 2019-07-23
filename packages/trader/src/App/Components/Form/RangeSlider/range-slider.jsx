@@ -75,17 +75,17 @@ class RangeSlider extends React.PureComponent {
             <div className={classNames('range-slider', className, { 'range-slider__error': ((value < +min_value) || (value > +max_value)) })}>
                 <label className='range-slider__label' htmlFor='range'>
                     <input
-                        id='range'
                         className='input trade-container__input range-slider__track'
-                        type='range'
-                        min={min_value}
+                        id='range'
                         max={max_value}
-                        min_value={min_value}
                         max_value={max_value}
+                        min={min_value}
+                        min_value={min_value}
                         name={name}
-                        steps={max_value - min_value}
                         onChange={this.handleChange}
                         tabIndex='0'
+                        type='range'
+                        steps={max_value - min_value}
                         value={value}
                     />
                     {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}
@@ -96,11 +96,11 @@ class RangeSlider extends React.PureComponent {
                     />
                     <div className='range-slider__ticks'>
                         <TickSteps
-                            value={value}
+                            hover_value={this.state.hover_value}
                             onClick={this.handleClick}
                             onMouseLeave={this.onMouseLeave}
                             onMouseEnter={this.onMouseEnter}
-                            hover_value={this.state.hover_value}
+                            value={value}
                         />
                     </div>
                     {/* Calculate line width based on active value and size of range thumb */}

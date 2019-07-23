@@ -6,15 +6,17 @@ import { localize } from 'App/i18n';
 import { connect }  from 'Stores/connect';
 import TickSteps    from './tick-steps.jsx';
 
-class RangeSlider extends React.PureComponent {
+class RangeSlider extends React.Component {
     state = {
         hover_value: 0,
     }
 
     handleChange = (e) => {
-        if (e.target.value !== this.props.value) {
+        // e.target.value returns string, we need to convert them to number
+        const value = +e.target.value;
+        if (value !== this.props.value) {
             this.resetOnHover();
-            this.props.onChange({ target: { name: this.props.name, value: e.target.value } });
+            this.props.onChange({ target: { name: this.props.name, value } });
         }
     };
 
@@ -61,7 +63,7 @@ class RangeSlider extends React.PureComponent {
             onChange,
         } = this.props;
 
-        if (+value < +min_value || +value > +max_value) {
+        if (value < min_value || value > max_value) {
             onChange({
                 target: {
                     name,
@@ -72,7 +74,7 @@ class RangeSlider extends React.PureComponent {
 
         const display_value = this.state.hover_value || value;
         return (
-            <div className={classNames('range-slider', className, { 'range-slider__error': ((value < +min_value) || (value > +max_value)) })}>
+            <div className={classNames('range-slider', className, { 'range-slider__error': ((value < min_value) || (value > max_value)) })}>
                 <label className='range-slider__label' htmlFor='range'>
                     <input
                         className='input trade-container__input range-slider__track'
@@ -116,8 +118,8 @@ class RangeSlider extends React.PureComponent {
                     {
                         !!display_value &&
                         <span className='range-slider__caption-title'>
-                            {+display_value === 1 && localize('{{display_value}} Tick', { display_value })}
-                            {+display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
+                            {display_value === 1 && localize('{{display_value}} Tick', { display_value })}
+                            {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
                         </span>
                     }
                     <span className='range-slider__caption--last'>
@@ -131,22 +133,12 @@ class RangeSlider extends React.PureComponent {
 // Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
 
 RangeSlider.propTypes = {
-    className : PropTypes.string,
-    first_tick: PropTypes.number,
-    max_value : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    min_value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    name    : PropTypes.string,
-    onChange: PropTypes.func,
-    value   : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    className: PropTypes.string,
+    max_value: PropTypes.number,
+    min_value: PropTypes.number,
+    name     : PropTypes.string,
+    onChange : PropTypes.func,
+    value    : PropTypes.number,
 };
 
 export default connect(

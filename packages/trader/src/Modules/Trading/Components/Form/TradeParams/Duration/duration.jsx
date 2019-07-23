@@ -75,8 +75,9 @@ const Duration = ({
         const { name, value } = target;
         const duration_name   = `duration_${is_advanced_duration ? advanced_duration_unit : simple_duration_unit}`;
 
-        onChangeUiStore({ name: duration_name, value });
-        onChange({ target: { name, value } });
+        // e.target.value returns string, we need to convert them to number
+        onChangeUiStore({ name: duration_name, value: +value });
+        onChange({ target: { name, value: +value } });
     };
 
     const onToggleDurationType = ({ target }) => {
@@ -180,17 +181,11 @@ const Duration = ({
 Duration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
-    duration              : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_t: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_unit      : PropTypes.string,
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_date        : PropTypes.oneOfType([
+    duration              : PropTypes.number,
+    duration_t            : PropTypes.number,
+    duration_unit         : PropTypes.string,
+    duration_units_list   : MobxPropTypes.arrayOrObservableArray,
+    expiry_date           : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
     ]),

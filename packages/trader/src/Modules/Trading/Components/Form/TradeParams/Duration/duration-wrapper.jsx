@@ -132,7 +132,7 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (+duration !== +current_duration) {
+        if (duration !== current_duration) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
     }
@@ -161,34 +161,16 @@ DurationWrapper.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
     contract_expiry_type  : PropTypes.string,
-    duration              : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_d: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_h: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_m: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_min_max: PropTypes.object,
-    duration_s      : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_t: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_unit      : PropTypes.string,
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_date        : PropTypes.oneOfType([
+    duration              : PropTypes.number,
+    duration_d            : PropTypes.number,
+    duration_h            : PropTypes.number,
+    duration_m            : PropTypes.number,
+    duration_min_max      : PropTypes.object,
+    duration_s            : PropTypes.number,
+    duration_t            : PropTypes.number,
+    duration_unit         : PropTypes.string,
+    duration_units_list   : MobxPropTypes.arrayOrObservableArray,
+    expiry_date           : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
     ]),

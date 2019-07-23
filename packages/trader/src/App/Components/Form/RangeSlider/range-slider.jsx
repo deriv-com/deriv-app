@@ -6,7 +6,7 @@ import { localize } from 'App/i18n';
 import { connect }  from 'Stores/connect';
 import TickSteps    from './tick-steps.jsx';
 
-class RangeSlider extends React.Component {
+class RangeSlider extends React.PureComponent {
     state = {
         hover_value: 0,
     }

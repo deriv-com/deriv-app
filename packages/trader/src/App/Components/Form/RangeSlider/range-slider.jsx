@@ -61,7 +61,7 @@ class RangeSlider extends React.PureComponent {
             onChange,
         } = this.props;
 
-        if (+value < min_value || +value > max_value) {
+        if (+value < +min_value || +value > +max_value) {
             onChange({
                 target: {
                     name,

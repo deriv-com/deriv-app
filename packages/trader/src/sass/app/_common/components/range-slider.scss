@@ -209,6 +209,9 @@
         line-height: 1.5;
         font-size: 1.4em;
 
+        &-title {
+            font-weight: bold;
+        }
         /* postcss-bem-linter: ignore */
         &--first, &--last {
             font-weight: normal !important;

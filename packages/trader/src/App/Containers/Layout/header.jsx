@@ -22,6 +22,7 @@ const Header = ({
     balance,
     can_upgrade,
     can_upgrade_to,
+    // active_cashier_tab,
     currency,
     // hideFullBlur,
     is_acc_switcher_on,
@@ -78,12 +79,13 @@ const Header = ({
                                     { !(is_virtual) &&
                                         // TODO: uncomment this to open cashier popup
                                         // <ToggleCashier
-                                        //      className='acc-info__button'
-                                        //      toggleCashier={toggleCashierModal}
-                                        //      is_cashier_visible={is_cashier_modal_on}
-                                        //      showFullBlur={showFullBlur}
-                                        //      hideFullBlur={hideFullBlur}
-                                        //  />
+                                        //     active_tab={active_cashier_tab}
+                                        //     className='acc-info__button'
+                                        //     toggleCashier={toggleCashierModal}
+                                        //     is_cashier_visible={is_cashier_modal_on}
+                                        //     showFullBlur={showFullBlur}
+                                        //     hideFullBlur={hideFullBlur}
+                                        // />
                                         // TODO: remove this when cashier pop up is ready
                                         <Button
                                             className='btn--primary btn--primary--orange acc-info__button'
@@ -110,6 +112,7 @@ const Header = ({
 );
 
 Header.propTypes = {
+    active_cashier_tab  : PropTypes.string,
     balance             : PropTypes.string,
     can_upgrade         : PropTypes.bool,
     can_upgrade_to      : PropTypes.string,
@@ -136,19 +139,20 @@ Header.propTypes = {
 // to prevent updates on <MenuLinks /> from being blocked
 export default withRouter(connect(
     ({ client, ui }) => ({
+        active_cashier_tab  : ui.active_cashier_tab,
         balance             : client.balance,
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
         currency            : client.currency,
-        hideFullBlur        : ui.hideFullBlur,
-        is_loading          : ui.is_loading,
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
+        hideFullBlur        : ui.hideFullBlur,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         is_cashier_modal_on : ui.is_cashier_modal_on,
         is_dark_mode        : ui.is_dark_mode_on,
         is_fully_blurred    : ui.is_fully_blurred,
+        is_loading          : ui.is_loading,
         is_route_blurred    : ui.is_route_blurred,
         is_mobile           : ui.is_mobile,
         showFullBlur        : ui.showFullBlur,

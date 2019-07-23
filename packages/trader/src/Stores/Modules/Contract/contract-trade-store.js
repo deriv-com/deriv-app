@@ -50,9 +50,6 @@ export default class ContractTradeStore extends BaseStore {
 
         const end_time = getEndTime(this.contract_info);
 
-        // Set chart view to date_start
-        this.smart_chart.setChartView(date_start);
-
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
@@ -193,6 +190,11 @@ export default class ContractTradeStore extends BaseStore {
 
         // Set chart granularity and chart_type
         this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);
+
+        // Set chart view to date_start
+        if (this.is_from_positions && this.root_store.modules.smart_chart.is_tick_granularity) {
+            this.smart_chart.setChartView(this.contract_info.date_start);
+        }
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {

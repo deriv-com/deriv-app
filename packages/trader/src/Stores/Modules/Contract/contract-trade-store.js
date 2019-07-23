@@ -192,8 +192,10 @@ export default class ContractTradeStore extends BaseStore {
         this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);
 
         // Set chart view to date_start
-        if (this.is_from_positions && this.root_store.modules.smart_chart.is_tick_granularity) {
-            this.smart_chart.setChartView(this.contract_info.date_start);
+        if (this.is_from_positions) {
+            if (this.smart_chart.granularity !== 0) {
+                this.smart_chart.setChartView(this.contract_info.date_start);
+            }
         }
 
         // Set contract symbol if trade_symbol and contract_symbol don't match
@@ -224,7 +226,6 @@ export default class ContractTradeStore extends BaseStore {
 
         this.smart_chart.updateChartType(chart_type);
         this.smart_chart.updateGranularity(granularity);
-        if (granularity !== 0) this.smart_chart.is_tick_granularity = false;
     }
 
     forgetProposalOpenContract = (contract_id, cb) => {

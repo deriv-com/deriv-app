@@ -176,7 +176,7 @@
             visibility: hidden;
             pointer-events: none;
 
-            .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets {
+            .chart-marker-line__wrapper, .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets, .cq-inchart-subholder {
                 display: none;
             }
         }

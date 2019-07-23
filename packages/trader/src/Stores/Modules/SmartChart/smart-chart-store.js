@@ -25,14 +25,12 @@ export default class SmartChartStore extends BaseStore {
     @observable is_contract_mode    = false;
     @observable is_static_chart     = false;
     @observable is_title_enabled    = true;
-    @observable is_tick_granularity = true;
 
     @observable start_epoch;
     @observable end_epoch;
     @observable margin;
 
-    @observable scroll_to_left_epoch        = null;
-    @observable scroll_to_left_epoch_offset = 0;
+    @observable scroll_to_left_epoch = null;
 
     @observable chart_id             = 'trade';
     @observable is_chart_loading     = false;
@@ -101,7 +99,6 @@ export default class SmartChartStore extends BaseStore {
         this.setContractStart(null);
         this.setContractEnd(null);
         this.setStaticChart(false);
-        this.is_tick_granularity = true;
         this.root_store.ui.resetPurchaseStates();
     }
 
@@ -330,8 +327,6 @@ export default class SmartChartStore extends BaseStore {
     // ---------- WS ----------
     wsSubscribe = (request_object, callback) => {
         if (request_object.subscribe !== 1) return;
-        if (this.is_contract_mode && !this.is_tick_granularity && !request_object.granularity) return;
-        console.log(request_object);
         WS.subscribeTicksHistory({ ...request_object }, callback); // use a copy of the request_object to prevent updating the source
     };
 

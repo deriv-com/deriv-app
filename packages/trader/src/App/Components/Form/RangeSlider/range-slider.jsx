@@ -102,9 +102,6 @@ class RangeSlider extends React.PureComponent {
                     />
                 </label>
                 <div className='range-slider__caption'>
-                    <span className='range-slider__caption--first'>
-                        {min_value}
-                    </span>
                     {
                         !!display_value &&
                         <span className='range-slider__caption-title'>
@@ -112,9 +109,6 @@ class RangeSlider extends React.PureComponent {
                             {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
                         </span>
                     }
-                    <span className='range-slider__caption--last'>
-                        {max_value}
-                    </span>
                 </div>
             </div>
         );

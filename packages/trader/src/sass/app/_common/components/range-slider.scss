@@ -202,21 +202,13 @@
         }
     }
     &__caption {
-        display: flex;
-        padding: 8px 0 0;
-        justify-content: space-between;
+        padding-top: 8px;
         line-height: 1.5;
         font-size: 1.4em;
+        text-align: center;
 
         &-title {
             font-weight: bold;
-        }
-        /* postcss-bem-linter: ignore */
-        &--first, &--last {
-            font-weight: normal !important;
-            @include themify($themes) {
-                color: themed('text_primary_color') !important;
-            }
         }
         /* postcss-bem-linter: ignore */
         span {

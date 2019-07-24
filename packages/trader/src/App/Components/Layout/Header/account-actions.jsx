@@ -53,7 +53,6 @@ export class AccountActions extends Component {
                         ctor={() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx')}
                         should_load={true}
                         has_progress={true}
-                        is='AccountInfo'
                         balance={formatMoney(currency, balance, true)}
                         is_upgrade_enabled={can_upgrade}
                         is_virtual={is_virtual}
@@ -75,7 +74,6 @@ export class AccountActions extends Component {
                     <Lazy
                         ctor={() => import(/* webpackChunkName: "toggle-cashier", webpackPrefetch: true */'App/Components/Layout/Header/toggle-cashier.jsx')}
                         should_load={!is_virtual} // remove false when cashier is ready.
-                        is='ToggleCashier'
                         // active_tab={active_cashier_tab}
                         className='acc-info__button'
                         // toggleCashier={toggleCashierModal}

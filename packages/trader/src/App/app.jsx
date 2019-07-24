@@ -29,7 +29,6 @@ const App = ({ root_store }) => {
                             ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
                             should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
                             has_progress={true}
-                            is='Wip'
                         /> :
                         <React.Fragment>
                             <Header />
@@ -40,12 +39,10 @@ const App = ({ root_store }) => {
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
                                         should_load={true}
                                         has_progress={false}
-                                        is='PushNotification'
                                     />
                                 </AppContents>
                                 <Lazy
                                     ctor={() => import(/* webpackChunkName: "modals" */'./Containers/Modals')}
-                                    is='Modals'
                                     has_progress={true}
                                     should_load={true}
                                 />

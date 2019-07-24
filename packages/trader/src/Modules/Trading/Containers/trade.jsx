@@ -38,7 +38,6 @@ class Trade extends React.Component {
                 <div className='chart-container'>
                     <Lazy
                         ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
-                        is='notification-messages'
                         has_progress={false}
                         should_load={true}
                     />
@@ -65,7 +64,6 @@ class Trade extends React.Component {
                                         ctor={() => import(/* webpackChunkName: "info-box", webpackPrefetch: true */'Modules/Contract/Components/InfoBox')}
                                         should_load={true}
                                         has_progress={false}
-                                        is='InfoBox'
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         error_message={this.props.error_message}

@@ -11,7 +11,7 @@ import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 
-const SmartChart           = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -83,7 +83,6 @@ class ContractReplay extends React.Component {
                         </div>
                         <Lazy
                             ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
-                            is='NotificationMessages'
                             has_progress={false}
                             should_load={true}
                         />

@@ -3,7 +3,7 @@ import PropTypes        from 'prop-types';
 import { localize }     from 'App/i18n';
 import FullPageModal    from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize         from 'App/Components/Elements/localize.jsx';
-import { website_name } from '../../Constants/app-config';
+import { website_name } from '../../../../Constants/app-config';
 
 const UnsupportedContractModal = ({
     is_visible,

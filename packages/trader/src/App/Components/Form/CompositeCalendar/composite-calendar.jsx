@@ -1,15 +1,14 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { localize }   from 'App/i18n';
-import InputField     from 'App/Components/Form/InputField/input-field.jsx';
-import Lazy           from 'App/Containers/Lazy';
-import IconCalendar   from 'Assets/Reports/icon-calendar.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { localize } from 'App/i18n';
+import InputField   from 'App/Components/Form/InputField/input-field.jsx';
+import Lazy         from 'App/Containers/Lazy';
+import IconCalendar from 'Assets/Reports/icon-calendar.jsx';
 import {
     daysFromTodayTo,
     epochToMoment,
-    toMoment,
-}                     from 'Utils/Date';
-import SideList       from './side-list.jsx';
+    toMoment }      from 'Utils/Date';
+import SideList     from './side-list.jsx';
 
 class CompositeCalendar extends React.PureComponent {
     constructor(props) {
@@ -136,7 +135,6 @@ class CompositeCalendar extends React.PureComponent {
                         ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
                         should_load={true}
                         has_progress={false}
-                        is='TwoMonthPicker'
                         value={to}
                         onChange={this.setToDate.bind(this)}
                         isPeriodDisabled={this.isPeriodDisabledTo.bind(this)}
@@ -149,7 +147,6 @@ class CompositeCalendar extends React.PureComponent {
                         ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
                         should_load={true}
                         has_progress={false}
-                        is='TwoMonthPicker'
                         value={from}
                         onChange={this.setFromDate.bind(this)}
                         isPeriodDisabled={this.isPeriodDisabledFrom.bind(this)}

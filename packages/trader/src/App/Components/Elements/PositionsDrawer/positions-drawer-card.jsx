@@ -45,6 +45,7 @@ const PositionsDrawerCard = ({
             />
         </div>
     );
+    const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
     const contract_el = (
         <React.Fragment>
             <div className={classNames(
@@ -65,7 +66,7 @@ const PositionsDrawerCard = ({
                     />
                 </div>
             </div>
-            {result ?
+            {(result || !!(contract_info.is_sold)) ?
                 <div className='progress-slider--completed' />
                 :
                 <ProgressSlider
@@ -169,10 +170,11 @@ const PositionsDrawerCard = ({
             <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
+                is_visible={!!(contract_info.is_sold)}
                 has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
-                result={result}
+                result={(result || fallback_result)}
             />
             {is_unsupported ?
                 <div

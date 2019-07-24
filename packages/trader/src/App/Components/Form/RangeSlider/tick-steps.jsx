@@ -6,10 +6,10 @@ const TickSteps = ({
     hover_value,
     max_value,
     min_value,
-    value,
     onClick,
     onMouseEnter,
     onMouseLeave,
+    value,
 }) => {
     const arr_ticks = [...Array((max_value - min_value) + 1).keys()];
 

@@ -6,11 +6,6 @@ import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/durat
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
-    state = {
-        min_value: 0,
-        max_value: 0,
-    };
-
     hasDurationUnit = (duration_unit) => {
         let duration_list = [...this.props.duration_units_list];
 
@@ -76,8 +71,6 @@ class DurationWrapper extends React.Component {
         const [min_value, max_value] =
             this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
-        this.setState({ min_value, max_value });
-
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
         }
@@ -105,9 +98,7 @@ class DurationWrapper extends React.Component {
     componentWillReact() {
         const {
             advanced_expiry_type,
-            contract_expiry_type,
             duration,
-            duration_min_max,
             duration_unit,
             expiry_type,
             getDurationFromUnit,
@@ -118,10 +109,6 @@ class DurationWrapper extends React.Component {
 
         const current_duration            = getDurationFromUnit(duration_unit);
         const simple_is_not_type_duration = (!is_advanced_duration && expiry_type !== 'duration');
-        const [min_value, max_value] =
-            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
-
-        this.setState({ min_value, max_value });
 
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {
@@ -138,10 +125,22 @@ class DurationWrapper extends React.Component {
     }
 
     render() {
-        const current_duration_unit           = (this.props.is_advanced_duration ?
-            this.props.advanced_duration_unit : this.props.simple_duration_unit);
+        const {
+            advanced_duration_unit,
+            contract_expiry_type,
+            duration_min_max,
+            duration_unit,
+            duration_units_list,
+            is_advanced_duration,
+            simple_duration_unit,
+        } = this.props;
+
+        const current_duration_unit           = (is_advanced_duration ? advanced_duration_unit : simple_duration_unit);
         const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit);
-        const simple_is_missing_duration_unit = (!this.props.is_advanced_duration && this.props.simple_duration_unit === 'd' && this.props.duration_units_list.length === 4);
+        const simple_is_missing_duration_unit =
+            (!is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4);
+        const [min_value, max_value]          =
+            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
         if (has_missing_duration_unit || simple_is_missing_duration_unit) {
             this.setDurationUnit();
@@ -150,7 +149,8 @@ class DurationWrapper extends React.Component {
         return (
             <Duration
                 hasDurationUnit={this.hasDurationUnit}
-                {...this.state}
+                max_value={max_value}
+                min_value={min_value}
                 {...this.props}
             />
         );

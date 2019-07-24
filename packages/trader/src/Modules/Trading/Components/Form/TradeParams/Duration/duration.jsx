@@ -121,6 +121,7 @@ const Duration = ({
             is_incrementable: true,
         },
     };
+
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
     const has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;
 

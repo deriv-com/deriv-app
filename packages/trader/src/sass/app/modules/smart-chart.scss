@@ -30,8 +30,9 @@
         }
     }
     &__entry {
-        margin-bottom: -12px;
-        margin-left: -12px;
+        left: -12px;
+        top: -12px;
+        position: relative;
         border: 6px solid $COLOR_ORANGE;
         @include themify($themes) {
             background-color: themed('container_color');
@@ -140,11 +141,8 @@
     margin-bottom: 0.8em;
     z-index: 0 !important;
     bottom: -100%;
-    transition: bottom 0.2s linear;
+    transition: none;
 
-    &__no-transition {
-        transition: none;
-    }
     &__wrapper {
         border-left-width: 2px;
         padding-left: 0.5em;

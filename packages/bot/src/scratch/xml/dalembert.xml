@@ -324,7 +324,7 @@
             <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
             <value name="VALUE">
               <block type="math_arithmetic">
-                <field name="OP">ADD</field>
+                <field name="OP">MINUS</field>
                 <value name="A">
                   <shadow type="math_number">
                     <field name="NUM">1</field>
@@ -345,7 +345,7 @@
             </value>
             <next>
               <block type="variables_set">
-                <field name="VAR" id="/shM51Nl|.I_R[9=PPJd" variabletype="">dalembert:resultIsWin</field>
+                <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
                 <value name="VALUE">
                   <block type="math_arithmetic">
                     <field name="OP">ADD</field>

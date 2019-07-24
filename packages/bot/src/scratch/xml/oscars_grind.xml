@@ -34,7 +34,7 @@
         </value>
         <statement name="DO0">
           <block type="variables_set">
-            <field name="VAR" id="O!nu[t{pavCUx.Zf[n63" variabletype="">oscarsGrind:resultIsWin</field>
+            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
             <value name="VALUE" id="profit_value">
               <block type="text_prompt_ext">
                 <field name="TYPE">NUMBER</field>
@@ -516,6 +516,9 @@
                           <shadow type="text">
                             <field name="TEXT">abc</field>
                           </shadow>
+                          <block type="variables_get">
+                            <field name="VAR" id="1yytTC@,d]OVGl$z=-Dp" variabletype="">won</field>
+                          </block>
                         </value>
                       </block>
                     </next>

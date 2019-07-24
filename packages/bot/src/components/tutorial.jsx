@@ -2,6 +2,7 @@ import React        from 'react';
 import Modal        from 'react-modal';
 import { connect }  from '../stores/connect';
 import                   '../assets/sass/_tutorial.scss';
+import { translate } from '../utils/lang/i18n';
 
 const customStyles = {
     content: {
@@ -60,10 +61,10 @@ const Tutorial = ({
                     <option value='c4'>contract 04</option>
                 </select>
                 <br />
-                <input type='number' name='stake' value={tradeOptionValues[stake]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder='stake' />
-                <input type='number' name='size' value={tradeOptionValues[size]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder='size' />
-                <input type='number' name='loss' value={tradeOptionValues[loss]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder='loss' />
-                <input type='number' name='profit' value={tradeOptionValues[profit]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder='profit' />
+                <input type='number' name='stake' min='0' value={tradeOptionValues[stake]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder={translate('Initial Stake (USD)')} />
+                <input type='number' name='size' min='0' value={tradeOptionValues[size]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder={translate('Size')} />
+                <input type='number' name='loss' min='0' value={tradeOptionValues[loss]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder={translate('Maximum Loss')} />
+                <input type='number' name='profit' min='0' value={tradeOptionValues[profit]} onChange={e => setTradeOption(e.target.name, e.target.value)} placeholder={translate('Maximum Profit')} />
                 <br />
                 <input type='submit' value='OK' />
             </form>

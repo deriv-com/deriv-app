@@ -34,6 +34,7 @@ Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
     if (this.autoClose) {
         this.hide();
     }
+    Blockly.derivWorkspace.toolbox_.clearSelection();
     return newBlock;
 };
 

@@ -175,3 +175,10 @@ export const minDate = (date_1, date_2) => moment.min(toMoment(date_1), toMoment
  * @param {moment|string|epoch} date date
  */
 export const getStartOfMonth = (date) => toMoment(date).clone().startOf('month').format('YYYY-MM-DD');
+
+/**
+ * returns miliseconds into UTC formatted string
+ * @param {Number} miliseconds miliseconds
+ * @param {String} str_format formatting using moment e.g - YYYY-MM-DD HH:mm
+ */
+export const formatMiliseconds = (miliseconds, str_format) => moment.utc(miliseconds).format(str_format);

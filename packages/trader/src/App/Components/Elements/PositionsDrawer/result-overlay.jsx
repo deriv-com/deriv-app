@@ -20,13 +20,14 @@ class ResultOverlay extends React.PureComponent {
     render() {
         const {
             contract_id,
+            is_visible,
             onClickRemove,
             result } = this.props;
         const is_contract_won = (result === 'won');
         return (
             <React.Fragment>
                 <CSSTransition
-                    in={!!(result)}
+                    in={is_visible}
                     timeout={250}
                     classNames={{
                         enter    : 'positions-drawer-card__result--enter',
@@ -81,6 +82,7 @@ ResultOverlay.propTypes = {
     contract_id              : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     has_same_contract_mounted: PropTypes.bool,
     is_unsupported           : PropTypes.bool,
+    is_visible               : PropTypes.bool,
     onClick                  : PropTypes.func,
     onClickRemove            : PropTypes.func,
     result                   : PropTypes.string,

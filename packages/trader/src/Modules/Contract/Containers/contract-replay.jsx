@@ -9,7 +9,6 @@ import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
 import NotificationMessages from 'App/Containers/notification-messages.jsx';
 import { connect }          from 'Stores/connect';
 import Icon                 from 'Assets/icon.jsx';
-import Localize             from 'App/Components/Elements/localize.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from 'App/i18n';
 
@@ -58,17 +57,20 @@ class ContractReplay extends React.Component {
             is_ended,
             is_sell_requested,
             is_static_chart,
+            location,
             onClickSell,
             removeError,
             status,
         } = this.props;
 
+        const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
+
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
                     contract_info={contract_info}
-                    heading={ <Localize i18n_default_text='Reports' /> }
                     is_dark_theme={is_dark_theme}
+                    is_from_reports={is_from_table_row}
                     is_sell_requested={is_sell_requested}
                     onClickSell={onClickSell}
                     status={status}
@@ -76,12 +78,16 @@ class ContractReplay extends React.Component {
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
-                            <Icon
-                                className='vertical-tab__action-bar--icon'
+                            <div
+                                className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
-                                icon='ModalIconClose'
                                 onClick={() => this.props.history.push(AppRoutes.trade)}
-                            />
+                            >
+                                <Icon
+                                    className='vertical-tab__action-bar--icon'
+                                    icon='ModalIconClose'
+                                />
+                            </div>
                         </div>
                         <NotificationMessages />
                         <ChartLoader is_visible={is_chart_loading} />

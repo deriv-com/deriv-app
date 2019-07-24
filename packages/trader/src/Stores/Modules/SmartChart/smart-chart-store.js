@@ -143,6 +143,11 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     setContractStart(start) {
         this.start_epoch = start;
+
+        // SmartChart doesn't need scrollToEpoch when startEpoch has value.
+        if (start) {
+            this.resetScrollToLeft();
+        }
     }
 
     @action.bound
@@ -334,6 +339,10 @@ export default class SmartChartStore extends BaseStore {
 
     wsForget = (match_values, callback) => (
         WS.forget('ticks_history', callback, match_values)
+    );
+
+    wsForgetStream = (stream_id) => (
+        WS.forgetStream(stream_id)
     );
 
     wsSendRequest = (request_object) => {

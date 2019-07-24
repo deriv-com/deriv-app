@@ -10,6 +10,9 @@ const WS = (() => {
     const buy = (proposal_id, price) =>
         BinarySocket.send({ buy: proposal_id, price });
 
+    const cashier = (action, verification_code) =>
+        BinarySocket.send({ cashier: action, ...(verification_code && { verification_code }) });
+
     const contractsFor = (symbol) =>
         BinarySocket.send({ contracts_for: symbol });
 
@@ -72,12 +75,18 @@ const WS = (() => {
     const statement = (limit, offset, date_boundaries) =>
         BinarySocket.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
 
+    const verifyEmail = (email, type) =>
+        BinarySocket.send({ verify_email: email, type });
+
     // ----- Streaming calls -----
     const forget = (msg_type, cb, match_values) =>
         SubscriptionManager.forget(msg_type, cb, match_values);
 
     const forgetAll = (...msg_types) =>
         SubscriptionManager.forgetAll(...msg_types);
+
+    const forgetStream = (stream_id) =>
+        SubscriptionManager.forgetStream(stream_id);
 
     const subscribeBalance = (cb, is_forced) =>
         SubscriptionManager.subscribe('balance', { balance: 1, subscribe: 1 }, cb, is_forced);
@@ -111,6 +120,7 @@ const WS = (() => {
     return {
         activeSymbols,
         buy,
+        cashier,
         contractsFor,
         getAccountStatus,
         getSelfExclusion,
@@ -130,10 +140,12 @@ const WS = (() => {
         sellExpired,
         sendRequest,
         statement,
+        verifyEmail,
 
         // streams
         forget,
         forgetAll,
+        forgetStream,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

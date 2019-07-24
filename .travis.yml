@@ -9,5 +9,5 @@ notifications:
 before_install:
   - npm i -g npm@6.9.0
   - npm install -g lerna
-install: lerna bootstrap --force-local
+install: lerna run build && lerna bootstrap --force-local
 script: ls packages/bot/node_modules/deriv-component && travis_retry lerna run test

@@ -7,6 +7,7 @@
         description="Trade duration, barrier, stake"
         iconURI="ic-stage-1"
     >
+        <button text="A button" callbackKey="myFirstButtonPressed"></button>
         <block type="trade_definition">
             <statement name="TRADE_OPTIONS">
                 <block type="trade_definition_market" deletable="false" movable="false">

@@ -24,9 +24,12 @@ import { observer as globalObserver }     from '../utils/observer';
 
 export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) => {
     try {
+        const el_scratch_div = document.getElementById(scratch_div_name);
+        const el_scratch_area = document.getElementById(scratch_area_name);
         const toolbox_xml = await fetch('dist/toolbox.xml').then(response => response.text());
         const main_xml = await fetch('dist/main.xml').then(response => response.text());
-        const workspace = Blockly.inject(scratch_div_name, {
+
+        Blockly.derivWorkspace = Blockly.inject(el_scratch_div, {
             media  : 'dist/media/',
             toolbox: toolbox_xml,
             grid   : {
@@ -40,38 +43,43 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             },
         });
 
-        // Keep in memory to allow category browsing
-        workspace.initial_toolbox_xml = toolbox_xml;
-        
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
+        // Ensure flyout closes on click in workspace.
+        const el_blockly_svg = document.querySelector('.blocklySvg');
+        document.addEventListener('click', (event) => {
+            if (el_blockly_svg.contains(event.target)) {
+                Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
+            }
+        });
+
+        // Keep XML in memory to allow multilevel categories
+        Blockly.derivWorkspace.initial_toolbox_xml = toolbox_xml;
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), Blockly.derivWorkspace);
 
         const onWorkspaceResize = () => {
-            let el_scratch_area = document.getElementById(scratch_area_name);
-            const scratch_area = el_scratch_area;
-            const el_scratch_div = document.getElementById(scratch_div_name);
-        
+            let el = el_scratch_area;
             let x = 0;
             let y = 0;
         
             do {
-                x += el_scratch_area.offsetLeft;
-                y += el_scratch_area.offsetTop;
-                el_scratch_area = el_scratch_area.offsetParent;
-            } while (el_scratch_area);
+                x += el.offsetLeft;
+                y += el.offsetTop;
+                el = el.offsetParent;
+            } while (el);
         
             // Position scratch_div over scratch_area.
             el_scratch_div.style.left   = `${x}px`;
             el_scratch_div.style.top    = `${y}px`;
-            el_scratch_div.style.width  = `${scratch_area.offsetWidth}px`;
-            el_scratch_div.style.height = `${scratch_area.offsetHeight}px`;
+            el_scratch_div.style.width  = `${el_scratch_area.offsetWidth}px`;
+            el_scratch_div.style.height = `${el_scratch_area.offsetHeight}px`;
             
-            Blockly.svgResize(workspace);
-            // eslint-disable-next-line no-underscore-dangle
-            workspace.toolbox_.flyout_.position();
+            Blockly.svgResize(Blockly.derivWorkspace);
         };
 
         // Resize workspace on workspace event, workaround for jumping workspace.
-        workspace.addChangeListener(() => Blockly.svgResize(workspace));
+        Blockly.derivWorkspace.addChangeListener(() =>  {
+            Blockly.svgResize(Blockly.derivWorkspace);
+        });
+
         window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();
     } catch (error) {

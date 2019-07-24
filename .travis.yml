@@ -10,4 +10,4 @@ before_install:
   - npm i -g npm@6.9.0
   - npm install -g lerna
 install: lerna bootstrap
-script: lerna run test
+script: travis_retry ls packages/deriv-bot/node_modules/deriv-component && lerna run test

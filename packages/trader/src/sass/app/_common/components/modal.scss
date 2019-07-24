@@ -28,6 +28,8 @@
         }
     }
     &__cashier {
+        width: 915px;
+
         .modal-header__main {
             @include themify($themes) {
                 box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
@@ -49,12 +51,12 @@
                 background-color: themed('background_cover');
                 color: themed('text_color');
             }
-            width: 200px;
+            width: 28%;
             line-height: 24px;
             padding: 16px;
         }
         &__main {
-            width: 536px;
+            width: 72%;
             font-size: 16px;
             padding: 16px;
             line-height: 24px;

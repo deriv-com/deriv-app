@@ -68,6 +68,8 @@ export default class UIStore extends BaseStore {
     @observable is_route_blurred = false;
     @observable show_positions_toggle = true;
 
+    @observable active_cashier_tab = 'deposit';
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -239,6 +241,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
+    }
+
+    @action.bound
+    setCashierActiveTab(tab = 'deposit') {
+        this.active_cashier_tab = tab;
     }
 
     @action.bound

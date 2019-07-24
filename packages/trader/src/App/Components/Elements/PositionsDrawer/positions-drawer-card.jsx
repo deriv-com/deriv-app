@@ -240,7 +240,7 @@ PositionsDrawerCard.propTypes = {
     contract_info                 : PropTypes.object,
     currency                      : PropTypes.string,
     current_tick                  : PropTypes.number,
-    duration                      : PropTypes.number,
+    duration                      : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit                 : PropTypes.string,
     exit_spot                     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     id                            : PropTypes.number,

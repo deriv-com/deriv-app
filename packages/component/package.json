@@ -6,7 +6,7 @@
   "scripts": {
     "start": "echo \"Error: no start specified\"",
     "serve": "webpack --mode=development --progress --watch",
-    "build": "eslint ./src && rimraf lib && webpack --mode=production --optimize-minimize --progress",
+    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "test": "echo \"Error: no test specified\"",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",

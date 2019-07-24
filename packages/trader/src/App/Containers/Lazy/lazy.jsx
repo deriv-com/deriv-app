@@ -11,7 +11,7 @@ const Lazy = ({
     if (!should_load) {
         return null;
     }
-    const LazyLoadedComponent       = React.lazy(ctor);
+    const LazyLoadedComponent = React.lazy(ctor);
 
     return (
         <React.Suspense fallback={has_progress ? <UILoader /> : <div />}>

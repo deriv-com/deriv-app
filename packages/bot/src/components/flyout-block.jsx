@@ -1,0 +1,40 @@
+import React            from 'react';
+import { BlueInfoIcon } from './Icons.jsx';
+import { connect }      from '../stores/connect';
+import FlyoutStore      from '../stores/flyout-store';
+
+class FlyoutBlock extends React.PureComponent {
+    render() {
+        const { onInfoClick, block_node } = this.props;
+
+        return (
+            <div className='flyout__item'>
+                <div className='flyout__item-header'>
+                    <div className='flyout__item-label'>{block_node.getAttribute('type')}</div>
+                    <div className='flyout__item-buttons'>
+                        { onInfoClick &&
+                            <div className='flyout__item-info' onClick={onInfoClick}>
+                                <BlueInfoIcon className={'info'} />
+                            </div>
+                        }
+                        <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div ref={el => this.el_block_workspace = el} className='flyout__block-workspace' />
+            </div>
+        );
+    }
+
+    componentDidMount() {
+        const { initBlockWorkspace, block_node } = this.props;
+        
+        initBlockWorkspace(this.el_block_workspace, block_node);
+    }
+}
+
+export default connect(({ flyout }) => ({
+    initBlockWorkspace: flyout.initBlockWorkspace,
+}))(FlyoutBlock);
+

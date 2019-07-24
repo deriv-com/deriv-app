@@ -1,11 +1,75 @@
-@import '../base/mixins';
+.flyout {
+    $default-margin: 15px;
 
-.blocklyFlyout {
-    @include vendor(filter, drop-shadow(0 10px 5px #999));
-}
+    position: absolute;
+    background-color: #fff;
+    max-height: calc(100vh - 100px);
+    z-index: 1;
+    border-radius: 10px;
+    padding: 25px;
+    font-size: 20px;
+    margin-left: $default-margin;
+    margin-top: 20px;
+    overflow: auto;
+    box-shadow: 0px 6px 20px 0px #a2a2a2;
 
-.blocklyFlyoutBackground {
-    height: calc(100% - 60px) !important;
-    fill: #fff !important;
-    fill-opacity: 0.95 !important;
+    &--hidden {
+        display: none;
+    }
+    &__block-workspace {
+        width: 100%;
+        margin-bottom: $default-margin;
+
+        * .blocklySvg {
+            background-color: inherit !important;
+        }
+        * .blocklyMainBackground {
+            stroke: none !important;
+        }
+    }
+    &__item {
+        &-button {
+            width: 100%;
+            font-size: 100%;
+            padding: $default-margin;
+            margin-bottom: $default-margin;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 0px 3px 1px #b3b1b1;
+        }
+        &-header {
+            display: flex;
+            margin-top: $default-margin;
+            margin-bottom: 10px;
+        }
+        &-label {
+            font-weight: bold;
+        }
+        &-buttons {
+            margin-left: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+        &-add {
+            padding: 0 $default-margin;
+            border: none;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: $default-margin;
+            background-color: #ff9933;
+            cursor: pointer;
+        }
+        &-info {
+            cursor: pointer;
+            display: flex;
+
+            > .icon-info {
+                height: 20px;
+                width: 20px;
+                align-self: center;
+            }
+        }
+    }
 }

@@ -237,6 +237,7 @@ const SubscriptionManager = (() => {
         subscribe,
         forget,
         forgetAll,
+        forgetStream,
     };
 })();
 

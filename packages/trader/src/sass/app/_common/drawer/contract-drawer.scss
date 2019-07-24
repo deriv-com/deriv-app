@@ -26,6 +26,7 @@ $header-height: 4em;
     }
     h2 {
         margin-left: 8px;
+        text-transform: none;
         @include themify($themes) {
             color: themed('text_color');
         }
@@ -49,12 +50,17 @@ $header-height: 4em;
         justify-content: flex-start;
         align-items: center;
         padding: 0.5em;
-        border-radius: 4px;
-        cursor: pointer;
+        margin-left: -8px;
 
-        &:hover {
-            @include themify($themes) {
-                background: themed('tab_hover_color');
+        &-btn {
+            padding: 4px 8px 0;
+            cursor: pointer;
+            border-radius: $BORDER_RADIUS;
+
+            &:hover {
+                @include themify($themes) {
+                    background: themed('tab_hover_color');
+                }
             }
         }
         @include typeface(--title-left-bold-black);

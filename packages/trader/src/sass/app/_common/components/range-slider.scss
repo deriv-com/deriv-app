@@ -128,18 +128,17 @@
         display: flex;
         justify-content: space-between;
         left: 0;
-        top: -2px;
+        top: -3px;
         height: 0;
 
         &-step {
-            height: 2px;
-            width: 2px;
+            height: 8px;
+            width: 8px;
             border-radius: 50%;
-            margin: 0 3px;
             transition: box-shadow 0.2s;
             cursor: pointer;
             @include themify($themes) {
-                border: 3px solid themed('container_color');
+                border: 4px solid themed('container_color');
                 background: themed('container_color');
             }
 

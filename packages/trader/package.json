@@ -88,6 +88,7 @@
     "webpack-dev-server": "^3.7.1",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-node-externals": "^1.7.2",
+    "worker-loader": "^2.0.0",
     "ws": "^7.0.1"
   },
   "dependencies": {

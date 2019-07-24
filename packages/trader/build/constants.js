@@ -43,6 +43,7 @@ const ALIASES = {
     Stores      : path.resolve(__dirname, '../src/Stores'),
     Translations: path.resolve(__dirname, '../src/public/translations'),
     Utils       : path.resolve(__dirname, '../src/Utils'),
+    Workers     : path.resolve(__dirname, '../src/Workers'),
 };
 
 const rules = (is_test_env = false) => ([
@@ -61,8 +62,16 @@ const rules = (is_test_env = false) => ([
         }
     ] : []),
     {
+        test: /\.worker\.js$/,
+        use: [
+            {
+                loader: 'worker-loader'
+            }
+        ]
+    },
+    {
         test   : /\.(js|jsx)$/,
-        exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
+        exclude: is_test_env ? /node_modules|(\.worker\.js)/ : /node_modules|__tests__|(\.worker\.js)/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use    : js_loaders
     },

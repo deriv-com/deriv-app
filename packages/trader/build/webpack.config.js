@@ -40,7 +40,8 @@ module.exports = function (env, argv) {
         },
         output      : {
             filename  : 'js/[name].[hash].js',
-            publicPath: base
+            publicPath: base,
+            globalObject: 'self' // By default this is set to window, which creates a conflict inside web-workers
         },
         plugins     : plugins(base, false),
     };

@@ -4,7 +4,6 @@ import { withRouter }    from 'react-router';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
-import Localize          from 'App/Components/Elements/localize.jsx';
 import Lazy              from 'App/Containers/Lazy';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';

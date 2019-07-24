@@ -1,7 +1,7 @@
 import React                    from 'react';
 import ReactDOM                 from 'react-dom';
-import Button                   from 'deriv-component/lib/button'; // eslint-disable-line import/no-unresolved
-import Label                    from 'deriv-component/lib/label'; // eslint-disable-line import/no-unresolved
+import Button                   from 'deriv-component/lib/button';
+import Label                    from 'deriv-component/lib/label';
 import App                      from './app.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import { oauthLogin }           from './services/api/appId';

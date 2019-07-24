@@ -1,1 +1,2 @@
-export const Button = 'Button';
+const Button = 'Button';
+export default Button;

@@ -1,1 +1,2 @@
-export const Label = 'Label';
+const Label = 'Label';
+export default Label;

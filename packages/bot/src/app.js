@@ -1,6 +1,7 @@
 import React                    from 'react';
 import ReactDOM                 from 'react-dom';
-import { Button , Label }               from 'deriv-component';
+import Button                   from 'deriv-component/lib/Button'; // eslint-disable-line import/no-unresolved
+import Label                    from 'deriv-component/lib/Label'; // eslint-disable-line import/no-unresolved
 import App                      from './app.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import { oauthLogin }           from './services/api/appId';
@@ -13,7 +14,7 @@ ReactDOM.render(
 );
 
 // Import components
-console.log (Button , Label); // eslint-disable-line no-console
+console.log ('Logger: ', Button , Label); // eslint-disable-line no-console
 
 const loginCheck = () => {
     // if (endpoint()) return;

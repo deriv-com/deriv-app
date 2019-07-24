@@ -5,20 +5,29 @@ const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const path                      = require('path');
 
 module.exports = {
+    // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
-        button: path.join(__dirname, 'src/js/button', 'index.js'),
-        label: path.join(__dirname, 'src/js/label', 'index.js')
+        // index: path.join(__dirname, 'src', 'index.js'),
+        button: path.resolve(__dirname, 'src' ,'js/button/index.js'),
+        label: path.resolve(__dirname, 'src' , 'js/label/index.js'),
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: "[name]-bundle.js"
+        path: path.resolve(__dirname, 'lib'),
+        filename: "[name].js",
+        libraryExport: 'default',
+        library: ["deriv-component", "[name]"],
+        libraryTarget: 'umd',
+    },
+    optimization : {
+        minimize: true,
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     devServer: {
         publicPath: '/dist/',
-        disableHostCheck: true,
     },
     devtool: 'source-map',
-    target: 'web',
     module: {
         rules: [
             {

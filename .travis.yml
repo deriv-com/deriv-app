@@ -11,5 +11,5 @@ before_install:
   - npm install -g lerna
   - npm install -g webpack
   - npm install -g rimraf
-install: lerna run build --scope=deriv-component && lerna bootstrap --force-local
-script: ls packages/bot/node_modules/deriv-component && travis_retry lerna run test
+install: lerna bootstrap
+script: lerna run test

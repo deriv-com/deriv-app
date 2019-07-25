@@ -509,6 +509,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
+        // We do not want new proposal requests when in contract mode
+        if (this.root_store.modules.smart_chart.is_contract_mode) return;
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};

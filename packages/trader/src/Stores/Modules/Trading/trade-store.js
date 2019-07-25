@@ -6,6 +6,7 @@ import {
     reaction,
     runInAction }                     from 'mobx';
 import BinarySocket                   from '_common/base/socket_base';
+import { LocalStore }                 from '_common/storage';
 import { localize }                   from 'App/i18n';
 import {
     cloneObject,
@@ -16,11 +17,12 @@ import {
     isCryptocurrency }                from '_common/base/currency_base';
 import { WS }                         from 'Services';
 import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import workerJob                      from 'Workers/loader';
+import defaultSymbolWorker            from 'Workers/Store/Helpers/default-symbol.worker'
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
 import {
-    pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
 }                                     from './Helpers/active-symbols';
@@ -197,8 +199,9 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(this.active_symbols),
+            const chart_favorites = JSON.parse(LocalStore.get('cq-favorites'));
+            workerJob(defaultSymbolWorker, this.active_symbols, chart_favorites).then(symbol => {
+                this.processNewValuesAsync({ symbol });
             });
         }
     }

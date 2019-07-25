@@ -38,14 +38,7 @@ Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
     if (this.autoClose) {
         this.hide();
     }
-<<<<<<< HEAD
     Blockly.derivWorkspace.toolbox_.clearSelection();
-=======
-
-    Blockly.derivWorkspace.toolbox_.clearSelection();
-    newBlock.isInFlyout = false;
-
->>>>>>> 5dc7cebacbbcfce7dd0c057a963e40dbdda41e1d
     return newBlock;
 };
 

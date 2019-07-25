@@ -126,11 +126,7 @@ export default class FlyoutStore {
         const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
 
         this.listeners.push(
-<<<<<<< HEAD
             Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null, (event) => {
-=======
-            Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null,  (event) => {
->>>>>>> 5dc7cebacbbcfce7dd0c057a963e40dbdda41e1d
                 blockly_flyout.blockMouseDown_(block)(event);
             })
         );

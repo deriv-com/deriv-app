@@ -33,6 +33,7 @@ Blockly.Blocks.lists_setIndex = {
         return {
             'display_name': translate('List set Index'),
             'description' : translate('List set Index'),
+            'category'    : Blockly.Categories.List,
         };
     },
     mutationToDom() {

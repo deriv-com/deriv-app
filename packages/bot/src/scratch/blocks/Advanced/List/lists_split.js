@@ -30,6 +30,7 @@ Blockly.Blocks.lists_split = {
         return {
             'display_name': translate('List Split'),
             'description' : translate('List SPlit Description'),
+            'category'    : Blockly.Categories.List,
         };
     },
     mutationToDom() {

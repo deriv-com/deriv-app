@@ -33,6 +33,7 @@ Blockly.Blocks.lists_getSublist = {
         return {
             'display_name': translate('List get sublit'),
             'description' : translate('List get sublist description'),
+            'category'    : Blockly.Categories.List,
         };
     },
     mutationToDom() {

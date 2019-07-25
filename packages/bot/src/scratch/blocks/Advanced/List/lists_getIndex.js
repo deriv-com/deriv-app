@@ -38,6 +38,7 @@ Blockly.Blocks.lists_getIndex = {
         return {
             'display_name': translate('List Get Index'),
             'description' : translate('List Get Index Description'),
+            'category'    : Blockly.Categories.List,
         };
     },
     mutationToDom() {

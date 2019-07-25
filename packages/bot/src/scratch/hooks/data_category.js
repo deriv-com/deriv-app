@@ -1,6 +1,4 @@
 /* eslint-disable func-names, no-underscore-dangle */
-import { translate } from '../../utils/lang/i18n';
-
 /**
  * Construct the blocks required by the flyout for the variable category.
  * @param {!Blockly.Workspace} workspace The workspace containing variables.
@@ -35,11 +33,6 @@ Blockly.DataCategory.search = function(variableModelList){
 
         // Create 'Set `var` to'-block
         if (Blockly.Blocks.variables_set) {
-            // TEMP: Label for testing only
-            const operationsLabel = document.createElement('label');
-            operationsLabel.setAttribute('text', translate('variables_set'));
-            xmlList.push(operationsLabel);
-
             const gap = Blockly.Blocks.math_change ? 8 : 24;
             const setBlockText = `<xml><block type="variables_set" gap="${gap}">${generateVariableFieldXmlString(
                 firstVariable
@@ -50,11 +43,6 @@ Blockly.DataCategory.search = function(variableModelList){
 
         // Create 'Change `var` by `1`'-block
         if (Blockly.Blocks.math_change) {
-            // TEMP: Label for testing only
-            const changeLabel = document.createElement('label');
-            changeLabel.setAttribute('text', translate('math_change'));
-            xmlList.push(changeLabel);
-
             const gap = Blockly.Blocks.variables_get ? 20 : 8;
             const changeBlockText = `<xml><block type="math_change" gap="${gap}">${generateVariableFieldXmlString(
                 firstVariable
@@ -65,11 +53,6 @@ Blockly.DataCategory.search = function(variableModelList){
 
         // Create `variable_get` block for each variable
         if (Blockly.Blocks.variables_get) {
-            // TEMP: Label for testing only
-            const variablesLabel = document.createElement('label');
-            variablesLabel.setAttribute('text', translate('variable_get'));
-            xmlList.push(variablesLabel);
-
             variableModelList.sort(Blockly.VariableModel.compareByName);
 
             variableModelList.forEach(variable => {

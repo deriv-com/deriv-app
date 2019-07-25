@@ -132,7 +132,8 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
                 }
             });
 
-            const block_category = block_definition && block_definition.category;
+            const block_category = (block_definition && block_definition.category) ||
+                                    (block_meta && block_meta.category);
             const category =
                 this.categoryMenu_.categories_
                     .find(menuCategory => menuCategory.id_ === block_category);

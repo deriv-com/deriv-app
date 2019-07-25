@@ -121,12 +121,9 @@ AdvancedDuration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
     changeDurationUnit    : PropTypes.func,
-    duration_t            : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_date        : PropTypes.oneOfType([
+    duration_t            : PropTypes.number,
+    duration_units_list   : MobxPropTypes.arrayOrObservableArray,
+    expiry_date           : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
     ]),

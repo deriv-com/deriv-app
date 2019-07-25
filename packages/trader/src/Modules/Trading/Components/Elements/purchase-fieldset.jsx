@@ -16,6 +16,18 @@ class PurchaseFieldset extends React.PureComponent {
         this.setState({ should_fade: true });
     }
 
+    onHoverPurchaseEnter = () => {
+        if (this.props.is_disabled) return;
+
+        this.props.onHoverPurchase(true, this.props.type);
+    };
+
+    onHoverPurchaseExit = () => {
+        if (this.props.is_disabled) return;
+
+        this.props.onHoverPurchase(false);
+    };
+
     render() {
         const {
             basis,
@@ -34,7 +46,6 @@ class PurchaseFieldset extends React.PureComponent {
             // is_purchase_confirm_on,
             // is_purchase_locked,
             onClickPurchase,
-            onHoverPurchase,
             // togglePurchaseLock,
             setPurchaseState,
             type,
@@ -83,16 +94,8 @@ class PurchaseFieldset extends React.PureComponent {
                                 'btn-purchase__shadow-wrapper--disabled': (is_proposal_error || is_disabled),
                             },
                         )}
-                        onMouseEnter={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(true, type);
-                            }
-                        }}
-                        onMouseLeave={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(false);
-                            }
-                        }}
+                        onMouseEnter={this.onHoverPurchaseEnter}
+                        onMouseLeave={this.onHoverPurchaseExit}
                     >
                         <div className='btn-purchase__box-shadow' />
                         {(is_proposal_error) ?

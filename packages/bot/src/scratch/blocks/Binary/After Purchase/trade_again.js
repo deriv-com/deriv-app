@@ -2,17 +2,27 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_again = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Ensure one of this type per statement-stack
+        this.setNextStatement(false);
+    },
+    definition(){
+        return {
             message0         : translate('Trade Again'),
             colour           : Blockly.Colours.Binary.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             tooltip          : translate('Runs the trade block again'),
-        });
-
-        // Ensure one of this type per statement-stack
-        this.setNextStatement(false);
+            category         : Blockly.Categories.After_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Trade Again'),
+            'description' : translate('Trade Again Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

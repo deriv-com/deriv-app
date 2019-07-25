@@ -3,7 +3,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.read_details = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Contract Detail: %1'),
             args0   : [
                 {
@@ -17,7 +20,15 @@ Blockly.Blocks.read_details = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Reads a selected option from contract details list'),
-        });
+            category       : Blockly.Categories.After_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Read Detail Block'),
+            'description' : translate('Read Detail Description'),
+
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

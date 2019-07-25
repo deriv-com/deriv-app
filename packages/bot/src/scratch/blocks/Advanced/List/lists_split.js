@@ -26,6 +26,12 @@ Blockly.Blocks.lists_split = {
             Blockly.Colours.Binary.colourTertiary
         );
     },
+    meta(){
+        return {
+            'display_name': translate('List Split'),
+            'description' : translate('List SPlit Description'),
+        };
+    },
     mutationToDom() {
         const container = document.createElement('mutation');
         container.setAttribute('mode', this.getFieldValue('MODE'));

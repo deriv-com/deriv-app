@@ -3,20 +3,7 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.balance = {
     init() {
-        this.jsonInit({
-            message0: translate('Balance: %1'),
-            args0   : [
-                {
-                    type   : 'field_dropdown',
-                    name   : 'BALANCE_TYPE',
-                    options: config.lists.BALANCE_TYPE,
-                },
-            ],
-            output         : null,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+        this.jsonInit(this.definition());
 
         // Change shape based on selected type
         const balanceTypeField = this.getField('BALANCE_TYPE');
@@ -32,6 +19,30 @@ Blockly.Blocks.balance = {
             this.render(false);
             return undefined;
         });
+    },
+    definition(){
+        return {
+            message0: translate('Balance: %1'),
+            args0   : [
+                {
+                    type   : 'field_dropdown',
+                    name   : 'BALANCE_TYPE',
+                    options: config.lists.BALANCE_TYPE,
+                },
+            ],
+            output         : null,
+            colour         : Blockly.Colours.Binary.colour,
+            colourSecondary: Blockly.Colours.Binary.colourSecondary,
+            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            tooltip        : translate('Balance Tooltip'),
+            category       : Blockly.Categories.Miscellaneous,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Balance'),
+            'description' : translate('Balance Description'),
+        };
     },
 };
 

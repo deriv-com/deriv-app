@@ -3,7 +3,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.get_ohlc = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('in candle list get # from end %1'),
             message1: translate('with interval: %1'),
             args0   : [
@@ -26,7 +29,14 @@ Blockly.Blocks.get_ohlc = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Get the nth recent candle'),
-        });
+            category       : Blockly.Categories.Tick_Analysis,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Nth recent Candle'),
+            'description' : translate('Nth recent Candle Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

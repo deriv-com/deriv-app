@@ -2,6 +2,7 @@
 import React                  from 'react';
 import { observable, action } from 'mobx';
 import FlyoutBlock            from '../components/flyout-block.jsx';
+import { translate } from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_workspaces = [];
@@ -31,6 +32,45 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setContents(xmlList) {
+        let xml_search_list = xmlList;
+        
+        if (xmlList.type === 'search') {
+            const blocks = xmlList.blocks;
+            const fn_blocks = xmlList.fn_blocks;
+            const var_blocks = xmlList.var_blocks;
+            const no_result = !blocks.length
+                && !Object.keys(fn_blocks).length
+                && !Object.keys(var_blocks.blocks).length;
+    
+            xml_search_list = [];
+    
+            if (no_result) {
+                const label = document.createElement('label');
+                label.setAttribute('text', translate('No Blocks Found'));
+    
+                xml_search_list.push(label);
+            } else {
+                const label = document.createElement('label');
+                label.setAttribute('text', translate('Result(s)'));
+                
+                xml_search_list.push(label);
+            }
+    
+            /* if (Object.keys(fn_blocks).length) {
+                const func_xml_list = Blockly.Procedures.flyoutCategory(flyout.workspace_);
+    
+                xml_search_list = xml_search_list.concat(func_xml_list);
+            } */
+    
+            if (Object.keys(var_blocks).length) {
+                const var_xml_list = Blockly.DataCategory.search(var_blocks.blocks, var_blocks.blocks_type);
+    
+                xml_search_list = xml_search_list.concat(var_xml_list);
+            }
+    
+            xml_search_list = xml_search_list.concat(blocks);
+        }
+
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_workspaces = [];
         this.listeners.forEach(listener => Blockly.unbindEvent_(listener));
@@ -38,7 +78,7 @@ export default class FlyoutStore {
 
         const flyout_components = [];
 
-        xmlList.forEach((node, index) => {
+        xml_search_list.forEach((node, index) => {
             const tagName = node.tagName.toUpperCase();
 
             if (tagName === 'BLOCK') {
@@ -82,7 +122,8 @@ export default class FlyoutStore {
             }
         });
 
-        this.flyout_width = Math.max(this.flyout_min_width, this.constructor.getLongestBlockWidth(xmlList) + 60);
+        this.flyout_width = Math.max(this.flyout_min_width,
+            this.constructor.getLongestBlockWidth(xml_search_list) + 60);
         this.flyout_content.replace(flyout_components);
         this.setVisibility(true);
     }

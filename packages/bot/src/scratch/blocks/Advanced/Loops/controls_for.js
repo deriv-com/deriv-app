@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_for = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('count with %1 from %2 to %3 by %4'),
             args0   : [
                 {
@@ -38,7 +41,15 @@ Blockly.Blocks.controls_for = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Control For Tooltip'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Control For'),
+            'description' : translate('Control For Description'),
+        };
     },
 };
 

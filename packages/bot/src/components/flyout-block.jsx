@@ -1,7 +1,9 @@
 import React            from 'react';
+import { PropTypes }    from 'prop-types';
 import { BlueInfoIcon } from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import FlyoutStore      from '../stores/flyout-store';
+import { translate }    from '../utils/lang/i18n';
 
 class FlyoutBlock extends React.PureComponent {
     render() {
@@ -18,7 +20,7 @@ class FlyoutBlock extends React.PureComponent {
                             </div>
                         }
                         <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
-                            Add
+                            { translate('Add') }
                         </button>
                     </div>
                 </div>
@@ -33,6 +35,11 @@ class FlyoutBlock extends React.PureComponent {
         initBlockWorkspace(this.el_block_workspace, block_node);
     }
 }
+
+FlyoutBlock.propTypes = {
+    block_node        : PropTypes.node,
+    initBlockWorkspace: PropTypes.func,
+};
 
 export default connect(({ flyout }) => ({
     initBlockWorkspace: flyout.initBlockWorkspace,

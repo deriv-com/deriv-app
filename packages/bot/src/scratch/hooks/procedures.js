@@ -7,13 +7,9 @@ import { translate } from '../../utils/lang/i18n';
  * @return {!Array.<!Element>} Array of XML block elements.
  */
 Blockly.Procedures.flyoutCategory = function(workspace) {
-    const xmlList = [];
+    let xmlList = [];
 
     if (Blockly.Blocks.procedures_defnoreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_defnoreturn'));
-        xmlList.push(label);
-
         // <block type="procedures_defnoreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -31,11 +27,6 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     }
 
     if (Blockly.Blocks.procedures_defreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_defreturn')); // TEMP
-        label.setAttribute('web-class', 'test');
-        xmlList.push(label);
-
         // <block type="procedures_defreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -52,10 +43,6 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     }
 
     if (Blockly.Blocks.procedures_ifreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_ifreturn')); // TEMP
-        xmlList.push(label);
-
         // <block type="procedures_ifreturn" gap="16"></block>
         const block = document.createElement('block');
         block.setAttribute('type', 'procedures_ifreturn');
@@ -68,11 +55,25 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         xmlList[xmlList.length - 1].setAttribute('gap', 24);
     }
 
-    function populateProcedures(procedureList, templateName) {
+    const tuple = Blockly.Procedures.allProcedures(workspace);
+    xmlList = xmlList.concat(Blockly.Procedures.populateDynamicProcedures(tuple));
+    return xmlList;
+};
+
+Blockly.Procedures.populateDynamicProcedures = function(tuple) {
+    let xmlList = [];
+
+    const populateProcedures = (procedureList, templateName) => {
+        const xml = [];
+
+        if (!procedureList){
+            return xml;
+        }
+
         for (let i = 0; i < procedureList.length; i++) {
             const name = procedureList[i][0];
             const args = procedureList[i][1];
-
+    
             // <block type="procedures_callnoreturn" gap="16">
             //   <mutation name="do something">
             //     <arg name="x"></arg>
@@ -81,24 +82,26 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
             const block = document.createElement('block');
             block.setAttribute('type', templateName);
             block.setAttribute('gap', 16);
-
+    
             const mutation = document.createElement('mutation');
             mutation.setAttribute('name', name);
             block.appendChild(mutation);
-
+    
             args.forEach(argumentName => {
                 const arg = document.createElement('arg');
                 arg.setAttribute('name', argumentName);
                 mutation.appendChild(arg);
             });
-
-            xmlList.push(block);
+    
+            xml.push(block);
         }
-    }
 
-    const tuple = Blockly.Procedures.allProcedures(workspace);
-    populateProcedures(tuple[0], 'procedures_callnoreturn');
-    populateProcedures(tuple[1], 'procedures_callreturn');
+        return xml;
+    };
+
+    xmlList = xmlList.concat(populateProcedures(tuple[0], 'procedures_callnoreturn'));
+    xmlList = xmlList.concat(populateProcedures(tuple[1], 'procedures_callreturn'));
+
     return xmlList;
 };
 

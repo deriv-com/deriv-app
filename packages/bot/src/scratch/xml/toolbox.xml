@@ -1,6 +1,5 @@
 <xml id="toolbox"
     xmlns="http://www.w3.org/1999/xhtml">
-    <category name="Search" id="search"></category>
     <!-- Trade Parameters -->
     <category 
         id="trade_parameters" 

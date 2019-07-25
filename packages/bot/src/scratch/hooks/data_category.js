@@ -19,7 +19,7 @@ Blockly.DataCategory = function(workspace) {
     return xmlList;
 };
 
-Blockly.DataCategory.search = function(variableModelList, blockTypesToShow){
+Blockly.DataCategory.search = function(variableModelList){
     const xmlList = [];
     if (variableModelList.length > 0) {
         const generateVariableFieldXmlString = variableModel => {
@@ -34,7 +34,7 @@ Blockly.DataCategory.search = function(variableModelList, blockTypesToShow){
         const firstVariable = variableModelList[0];
 
         // Create 'Set `var` to'-block
-        if (blockTypesToShow.includes('variables_set') && Blockly.Blocks.variables_set) {
+        if (Blockly.Blocks.variables_set) {
             // TEMP: Label for testing only
             const operationsLabel = document.createElement('label');
             operationsLabel.setAttribute('text', translate('variables_set'));
@@ -49,7 +49,7 @@ Blockly.DataCategory.search = function(variableModelList, blockTypesToShow){
         }
 
         // Create 'Change `var` by `1`'-block
-        if (blockTypesToShow.includes('math_change') && Blockly.Blocks.math_change) {
+        if (Blockly.Blocks.math_change) {
             // TEMP: Label for testing only
             const changeLabel = document.createElement('label');
             changeLabel.setAttribute('text', translate('math_change'));
@@ -64,7 +64,7 @@ Blockly.DataCategory.search = function(variableModelList, blockTypesToShow){
         }
 
         // Create `variable_get` block for each variable
-        if (blockTypesToShow.includes('variables_get') && Blockly.Blocks.variables_get) {
+        if (Blockly.Blocks.variables_get) {
             // TEMP: Label for testing only
             const variablesLabel = document.createElement('label');
             variablesLabel.setAttribute('text', translate('variable_get'));

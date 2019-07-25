@@ -1,0 +1,27 @@
+{
+  "name": "deriv-base-style",
+  "version": "1.0.0",
+  "description": "Deriv base styles",
+  "author": "Deriv",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/MahboobehMohammadi/deriv-app#readme",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MahboobehMohammadi/deriv-app.git"
+  },
+  "scripts": {
+    "start": "echo \"Error: run start from root\"",
+    "serve": "echo \"Error: run serve from root\"",
+    "build": "echo \"Error: run build from root\"",
+    "test": "echo \"Error: run test from root\"",
+    "deploy": "echo \"Error: run deploy from root\"",
+    "deploy:clean": "echo \"Error: run deploy:clean from root\"",
+    "deploy:folder": "echo \"Error: run deploy:folder from root\"",
+    "deploy:staging": "echo \"Error: run deploy:staging from root\"",
+    "deploy:production": "echo \"Error: run deploy:production from root\""
+  },
+  "bugs": {
+    "url": "https://github.com/MahboobehMohammadi/deriv-app/issues"
+  }
+}

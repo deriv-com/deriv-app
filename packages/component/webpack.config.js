@@ -8,8 +8,8 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button: path.resolve(__dirname, 'src' ,'js/button/index.js'),
-        label: path.resolve(__dirname, 'src' , 'js/label/index.js'),
+        button: path.resolve(__dirname, 'src' ,'components/button/index.js'),
+        label: path.resolve(__dirname, 'src' , 'components/label/index.js'),
     },
     output: {
         path: path.resolve(__dirname, 'lib'),

@@ -29,14 +29,16 @@
     "eslint-plugin-react": "^7.14.2",
     "mini-css-extract-plugin": "^0.8.0",
     "stylelint": "^10.0.1",
-    "stylelint-webpack-plugin": "^0.10.5",
     "stylelint-formatter-pretty": "^1.0.3",
     "stylelint-selector-bem-pattern": "^2.1.0",
+    "stylelint-webpack-plugin": "^0.10.5",
     "svg-sprite-loader": "^4.1.6",
     "svgo-loader": "^2.2.0",
     "webpack": "^4.34.0",
     "webpack-cli": "^3.3.4",
     "webpack-merge-and-include-globally": "^2.1.16"
   },
-  "dependencies": {}
+  "dependencies": {
+    "deriv-base-style": "^1.0.0"
+  }
 }

@@ -10,10 +10,6 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     const xmlList = [];
 
     if (Blockly.Blocks.procedures_defnoreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_defnoreturn'));
-        xmlList.push(label);
-
         // <block type="procedures_defnoreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -31,11 +27,6 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     }
 
     if (Blockly.Blocks.procedures_defreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_defreturn')); // TEMP
-        label.setAttribute('web-class', 'test');
-        xmlList.push(label);
-
         // <block type="procedures_defreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -52,10 +43,6 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     }
 
     if (Blockly.Blocks.procedures_ifreturn) {
-        const label = document.createElement('label');
-        label.setAttribute('text', translate('procedures_ifreturn')); // TEMP
-        xmlList.push(label);
-
         // <block type="procedures_ifreturn" gap="16"></block>
         const block = document.createElement('block');
         block.setAttribute('type', 'procedures_ifreturn');

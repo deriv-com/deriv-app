@@ -37,7 +37,7 @@ class FlyoutBlock extends React.PureComponent {
 }
 
 FlyoutBlock.propTypes = {
-    block_node        : PropTypes.node,
+    block_node        : PropTypes.any,
     initBlockWorkspace: PropTypes.func,
 };
 

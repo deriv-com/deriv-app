@@ -1,5 +1,4 @@
 /* eslint-disable func-names, no-underscore-dangle */
-import { translate } from '../../utils/lang/i18n';
 
 /**
  * Construct the blocks required by the flyout for the variable category.
@@ -23,11 +22,6 @@ Blockly.DataCategory = function(workspace) {
             return escapedText;
         };
 
-        // TEMP: Label for testing only
-        const operationsLabel = document.createElement('label');
-        operationsLabel.setAttribute('text', translate('variables_set'));
-        xmlList.push(operationsLabel);
-
         const firstVariable = variableModelList[0];
 
         // Create 'Set `var` to'-block
@@ -40,11 +34,6 @@ Blockly.DataCategory = function(workspace) {
             xmlList.push(setBlock);
         }
 
-        // TEMP: Label for testing only
-        const changeLabel = document.createElement('label');
-        changeLabel.setAttribute('text', translate('math_change'));
-        xmlList.push(changeLabel);
-
         // Create 'Change `var` by `1`'-block
         if (Blockly.Blocks.math_change) {
             const gap = Blockly.Blocks.variables_get ? 20 : 8;
@@ -54,11 +43,6 @@ Blockly.DataCategory = function(workspace) {
             const changeBlock = Blockly.Xml.textToDom(changeBlockText).firstChild;
             xmlList.push(changeBlock);
         }
-
-        // TEMP: Label for testing only
-        const variablesLabel = document.createElement('label');
-        variablesLabel.setAttribute('text', translate('variable_get'));
-        xmlList.push(variablesLabel);
 
         // Create `variable_get` block for each variable
         if (Blockly.Blocks.variables_get) {

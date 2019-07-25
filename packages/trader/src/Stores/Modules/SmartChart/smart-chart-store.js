@@ -22,9 +22,9 @@ export default class SmartChartStore extends BaseStore {
     barriers_empty_array = [];
     markers_empty_array = [];
 
-    @observable is_contract_mode    = false;
-    @observable is_static_chart     = false;
-    @observable is_title_enabled    = true;
+    @observable is_contract_mode = false;
+    @observable is_static_chart  = false;
+    @observable is_title_enabled = true;
 
     @observable start_epoch;
     @observable end_epoch;
@@ -46,7 +46,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
-        this.saveAndClearTradeChartLayout();
+        this.saveAndClearTradeChartLayout(null);
         this.setContractMode(true);
         if (!is_from_positions) {
             this.updateGranularity(granularity);
@@ -85,11 +85,6 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    updateEpochScrollToOffset(offset) {
-        this.scroll_to_left_epoch_offset = offset;
-    }
-
-    @action.bound
     cleanupContractChartView() {
         this.margin = null;
         this.removeBarriers();
@@ -105,7 +100,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     resetScrollToLeft() {
         this.scroll_to_left_epoch = null;
-        this.scroll_to_left_epoch_offset = null;
     }
 
     @action.bound
@@ -195,13 +189,13 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    saveAndClearTradeChartLayout() {
+    saveAndClearTradeChartLayout(chart_id) {
         this.should_export_layout    = true;
         this.should_import_layout    = false;
         this.trade_chart_symbol      = this.root_store.modules.trade.symbol;
         this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity;
         this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type;
-        this.chart_id                = null;
+        this.chart_id                = chart_id;
     }
 
     @action.bound

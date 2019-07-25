@@ -194,8 +194,14 @@
     border-radius: 100%;
     border: 0;
     cursor: pointer;
-    transition: box-shadow 0.5s;
+    transition: box-shadow 0.2s;
     box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
+
+    &:hover {
+        @include themify($themes) {
+            box-shadow: 0 0 0 0.5em themed('slider_hover_color');
+        }
+    }
 }
 
 /*

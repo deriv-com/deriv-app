@@ -1,19 +1,15 @@
-import { getUnderlyingPipSize }      from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { getLastTickFromTickStream } from './logic';
 
 export const isDigitContract = (contract_type) => /digit/i.test(contract_type);
 
 export const getDigitInfo = async (digits_info, contract_info) => {
     const { tick_stream } = contract_info;
-    const { tick, epoch } = getLastTickFromTickStream(tick_stream);
+    const { tick_display_value, epoch } = getLastTickFromTickStream(tick_stream);
 
-    if (!tick || !epoch) return {}; // filter out empty responses
-
-    const decimal_places = await getUnderlyingPipSize(contract_info.underlying);
-    const spot           = decimal_places ? tick.toFixed(decimal_places) : tick;
+    if (!tick_display_value || !epoch) return {}; // filter out empty responses
 
     const current = (epoch in digits_info) ? {} : // filter out duplicated responses
-        createDigitInfo(spot, epoch);
+        createDigitInfo(tick_display_value, epoch);
 
     return {
         ...current,

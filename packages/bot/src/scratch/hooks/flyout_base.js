@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-underscore-dangle */
 /**
  * Create a copy of this block on the workspace.
  * @param {!Blockly.BlockSvg} originalBlock The block to copy from the flyout.
@@ -7,10 +7,14 @@
  * @package
  */
 Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
-    let newBlock = null;
     Blockly.Events.disable();
+
     const variablesBeforeCreation = this.targetWorkspace_.getAllVariables();
+
     this.targetWorkspace_.setResizesEnabled(false);
+
+    let newBlock = null;
+
     try {
         newBlock = this.placeNewBlock_(event, originalBlock);
         // Close the flyout.
@@ -19,8 +23,7 @@ Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
         Blockly.Events.enable();
     }
   
-    const newVariables = Blockly.Variables.getAddedVariables(this.targetWorkspace_,
-        variablesBeforeCreation);
+    const newVariables = Blockly.Variables.getAddedVariables(this.targetWorkspace_, variablesBeforeCreation);
   
     if (Blockly.Events.isEnabled()) {
         Blockly.Events.setGroup(true);
@@ -31,10 +34,18 @@ Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
             Blockly.Events.fire(new Blockly.Events.VarCreate(thisVariable));
         }
     }
+
     if (this.autoClose) {
         this.hide();
     }
+<<<<<<< HEAD
     Blockly.derivWorkspace.toolbox_.clearSelection();
+=======
+
+    Blockly.derivWorkspace.toolbox_.clearSelection();
+    newBlock.isInFlyout = false;
+
+>>>>>>> 5dc7cebacbbcfce7dd0c057a963e40dbdda41e1d
     return newBlock;
 };
 
@@ -47,8 +58,9 @@ Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
 Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
     const targetWorkspace = this.targetWorkspace_;
     const svgRootOld = oldBlock.getSvgRoot();
+
     if (!svgRootOld) {
-        throw 'oldBlock is not rendered.';
+        throw new Error('oldBlock is not rendered.');
     }
   
     // Create the new block by cloning the block in the flyout (via XML).
@@ -61,8 +73,9 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
     // placed at position (0, 0) in main workspace units.
     const block = Blockly.Xml.domToBlock(xml, targetWorkspace);
     const svgRootNew = block.getSvgRoot();
+
     if (!svgRootNew) {
-        throw 'block is not rendered.';
+        throw new Error('block is not rendered.');
     }
   
     // The offset in pixels between the main workspace's origin and the upper left
@@ -79,17 +92,16 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
   
     // The position of the old block in pixels relative to the upper left corner
     // of the injection div.
-    const oldBlockOffsetPixels = goog.math.Coordinate.sum(flyoutOffsetPixels,
-        oldBlockPosPixels);
+    const oldBlockOffsetPixels = goog.math.Coordinate.sum(flyoutOffsetPixels, oldBlockPosPixels);
   
     // The position of the old block in pixels relative to the origin of the
     // main workspace.
-    const finalOffsetPixels = goog.math.Coordinate.difference(oldBlockOffsetPixels,
-        mainOffsetPixels);
+    const finalOffsetPixels = goog.math.Coordinate.difference(oldBlockOffsetPixels, mainOffsetPixels);
   
     // The position of the old block in main workspace coordinates.
     const finalOffsetMainWs = finalOffsetPixels.scale(1 / targetWorkspace.scale);
   
     block.moveBy(finalOffsetMainWs.x, finalOffsetMainWs.y);
+
     return block;
 };

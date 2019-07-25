@@ -9,24 +9,13 @@ import {
     epochToMoment,
     toGMTFormat }               from 'Utils/Date';
 import {
-    addCommaToNumber,
     getBarrierLabel,
     getBarrierValue,
     isDigitType }               from 'App/Components/Elements/PositionsDrawer/helpers';
-import { getUnderlyingPipSize } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { getThemedIcon }        from './Helpers/icons';
 import ContractAuditItem        from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
-    state = {
-        decimal_places: null,
-    };
-
-    componentDidMount = async () => {
-        const decimal_places = await getUnderlyingPipSize(this.props.contract_info.underlying);
-        this.setState({ decimal_places });
-    };
-
     render() {
         const {
             contract_end_time,
@@ -91,7 +80,7 @@ class ContractAudit extends React.PureComponent {
                             <ContractAuditItem
                                 icon={getThemedIcon('entry_spot', is_dark_theme)}
                                 label={localize('Entry spot')}
-                                value={addCommaToNumber(contract_info.entry_spot, this.state.decimal_places) || ' - '}
+                                value={contract_info.entry_spot_display_value || ' - '}
                                 value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
                             />
                         </div>
@@ -102,7 +91,7 @@ class ContractAudit extends React.PureComponent {
                                 <ContractAuditItem
                                     icon={getThemedIcon('exit_spot', is_dark_theme)}
                                     label={localize('Exit spot')}
-                                    value={addCommaToNumber(exit_spot, this.state.decimal_places) || ' - '}
+                                    value={exit_spot || ' - '}
                                     value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
                                 />
                             </div>
@@ -129,7 +118,7 @@ ContractAudit.propTypes = {
     contract_info: PropTypes.object,
     duration     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
-    exit_spot    : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    exit_spot    : PropTypes.string,
     has_result   : PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_open      : PropTypes.bool,

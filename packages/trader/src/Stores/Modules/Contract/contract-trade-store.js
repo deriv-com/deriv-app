@@ -30,7 +30,6 @@ export default class ContractTradeStore extends BaseStore {
     @observable error_message = '';
 
     // ---- Normal properties ---
-    chart_type          = 'mountain';
     is_from_positions   = false;
     is_ongoing_contract = false;
 
@@ -145,7 +144,6 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     onCloseContract() {
         this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-        this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
         this.digits_info         = {};

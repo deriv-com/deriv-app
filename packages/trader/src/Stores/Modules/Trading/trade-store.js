@@ -156,7 +156,6 @@ export default class TradeStore extends BaseStore {
                 this.onAllowEqualsChange();
             },
         );
-
         reaction(
             () => this.symbol,
             () => {
@@ -164,6 +163,12 @@ export default class TradeStore extends BaseStore {
                 if (date) {
                     this.expiry_date = date;
                 }
+            }
+        );
+        reaction(
+            () => this.duration_unit,
+            () => {
+                this.contract_expiry_type = this.duration_unit === 't' ? 'tick' : 'intraday';
             }
         );
     }

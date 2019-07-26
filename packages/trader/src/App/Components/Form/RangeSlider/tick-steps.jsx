@@ -1,20 +1,35 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { connect }  from 'Stores/connect';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
 
-const TickSteps = ({ max_value, min_value, value, onClick }) => {
+const TickSteps = ({
+    hover_value,
+    max_value,
+    min_value,
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    value,
+}) => {
     const arr_ticks = [...Array((max_value - min_value) + 1).keys()];
+
+    const isActive = (idx) => (idx + min_value) === value;
+    const isMarked = (idx) => (idx + min_value) < value;
+    const isMarkedOnHover = (idx) => (isMarked(idx)) ? false : (idx + min_value) <= hover_value;
+
     return (
         <React.Fragment>
             {arr_ticks.map(idx =>
                 <span
                     key={idx}
                     className={classNames('range-slider__ticks-step', {
-                        'range-slider__ticks-step--active': (idx + parseInt(min_value)) === parseInt(value),
-                        'range-slider__ticks-step--marked': (idx + parseInt(min_value)) < parseInt(value),
+                        'range-slider__ticks-step--active'      : isActive(idx),
+                        'range-slider__ticks-step--marked'      : isMarked(idx),
+                        'range-slider__ticks-step--marked-hover': isMarkedOnHover(idx),
                     })}
-                    onClick={(e) => onClick(e, idx + parseInt(min_value))}
+                    onClick={() => onClick(idx + min_value)}
+                    onMouseEnter={() => onMouseEnter(idx + min_value)}
+                    onMouseLeave={onMouseLeave}
                 />
             )}
         </React.Fragment>
@@ -22,22 +37,13 @@ const TickSteps = ({ max_value, min_value, value, onClick }) => {
 };
 
 TickSteps.propTypes = {
-    max_value: PropTypes.string,
-    min_value: PropTypes.string,
-    onClick  : PropTypes.func,
-    ticks    : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    hover_value : PropTypes.number,
+    max_value   : PropTypes.number,
+    min_value   : PropTypes.number,
+    onClick     : PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    value       : PropTypes.number,
 };
 
-export default connect(
-    ({ modules }) => ({
-        max_value: modules.trade.duration_min_max.tick.max,
-        min_value: modules.trade.duration_min_max.tick.min,
-    })
-)(TickSteps);
+export default TickSteps;

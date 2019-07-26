@@ -12,7 +12,7 @@ Includes:
 ## Usage
 
 ```js
-const baseStyle = require('base-style');
+@import 'deriv-base-style/style'
 ```
 
 ### Examples

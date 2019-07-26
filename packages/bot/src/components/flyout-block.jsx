@@ -1,47 +1,45 @@
-import React            from 'react';
-import { PropTypes }    from 'prop-types';
-import { BlueInfoIcon } from './Icons.jsx';
-import { connect }      from '../stores/connect';
-import FlyoutStore      from '../stores/flyout-store';
-import { translate }    from '../utils/lang/i18n';
+import React                from 'react';
+import { PropTypes }        from 'prop-types';
+import { BlueInfoIcon }     from './Icons.jsx';
+import FlyoutBlockWorkspace from '../scratch/blocks-help/flyout-block-workspace.jsx';
+import FlyoutStore          from '../stores/flyout-store';
+import { translate }        from '../utils/lang/i18n';
 
-class FlyoutBlock extends React.PureComponent {
-    render() {
-        const { onInfoClick, block_node } = this.props;
+const FlyoutBlock = (props) => {
+    const {
+        onInfoClick,
+        block_node,
+        should_hide_label,
+        should_center_block,
+    } = props;
 
-        return (
-            <div className='flyout__item'>
-                <div className='flyout__item-header'>
+    return (
+        <div className='flyout__item'>
+            <div className='flyout__item-header'>
+                { !should_hide_label &&
                     <div className='flyout__item-label'>{block_node.getAttribute('type')}</div>
-                    <div className='flyout__item-buttons'>
-                        { onInfoClick &&
-                            <div className='flyout__item-info' onClick={onInfoClick}>
-                                <BlueInfoIcon className={'info'} />
-                            </div>
-                        }
-                        <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
-                            { translate('Add') }
-                        </button>
-                    </div>
+                }
+                <div className='flyout__item-buttons'>
+                    { onInfoClick &&
+                        <div className='flyout__item-info' onClick={onInfoClick}>
+                            <BlueInfoIcon className={'info'} />
+                        </div>
+                    }
+                    <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
+                        { translate('Add') }
+                    </button>
                 </div>
-                <div ref={el => this.el_block_workspace = el} className='flyout__block-workspace' />
             </div>
-        );
-    }
-
-    componentDidMount() {
-        const { initBlockWorkspace, block_node } = this.props;
-        
-        initBlockWorkspace(this.el_block_workspace, block_node);
-    }
-}
-
-FlyoutBlock.propTypes = {
-    block_node        : PropTypes.any,
-    initBlockWorkspace: PropTypes.func,
+            <FlyoutBlockWorkspace
+                should_center_block={ should_center_block }
+                block_node={ block_node }
+            />
+        </div>
+    );
 };
 
-export default connect(({ flyout }) => ({
-    initBlockWorkspace: flyout.initBlockWorkspace,
-}))(FlyoutBlock);
+FlyoutBlock.propTypes = {
+    block_node: PropTypes.any,
+};
 
+export default FlyoutBlock;

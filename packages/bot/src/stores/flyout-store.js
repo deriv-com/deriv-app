@@ -31,13 +31,18 @@ export default class FlyoutStore {
             const tagName = node.tagName.toUpperCase();
 
             if (tagName === 'BLOCK') {
-                const key = node.getAttribute('type') + index;
+                const block_type = node.getAttribute('type');
+                const key = block_type + index;
 
                 flyout_components.push(
                     <FlyoutBlock
                         key={key}
                         id={`flyout__item-workspace--${index}`}
                         block_node={node}
+                        onInfoClick={
+                            Blockly.Blocks[block_type].helpContent
+                            && (() => this.showHelpContent(node))
+                        }
                     />
                 );
             } else if (tagName === 'LABEL') {
@@ -101,7 +106,7 @@ export default class FlyoutStore {
         const workspace = Blockly.inject(el_block_workspace, {
             css   : false,
             media : 'dist/media/',
-            move  : { scrollbars: false, drag: true, wheel: false },
+            move  : { scrollbars: true, drag: true, wheel: true },
             sounds: false,
         });
 
@@ -175,6 +180,19 @@ export default class FlyoutStore {
 
         workspace.dispose();
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
+    }
+
+    @action.bound showHelpContent(block_node) {
+        const HelpComponent = Blockly.Blocks[block_node.getAttribute('type')].helpContent();
+
+        const test = (
+            <React.Suspense fallback={<div>Loading...</div>}>
+                <HelpComponent block_node={block_node} />
+            </React.Suspense>
+        );
+
+        this.flyout_width = 600;
+        this.flyout_content = [test];
     }
 
     /**

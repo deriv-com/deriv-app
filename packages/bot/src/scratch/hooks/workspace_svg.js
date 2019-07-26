@@ -5,8 +5,8 @@
  * @param {?string} id ID of block center on.
  * @public
  */
-Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
-    if (!this.scrollbar) {
+Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true, ignoreScroll = false) {
+    if (!ignoreScroll && !this.scrollbar) {
       console.warn('Tried to scroll a non-scrollable workspace.');
       return;
     }
@@ -55,5 +55,7 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
         Blockly.hideChaff();
     }
     
-    this.scrollbar.set(scrollToCenterX, scrollToCenterY);
+    if (!ignoreScroll) {
+        this.scrollbar.set(scrollToCenterX, scrollToCenterY);
+    }
   };

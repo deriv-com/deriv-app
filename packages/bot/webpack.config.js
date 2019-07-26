@@ -12,6 +12,8 @@ module.exports = {
     output: {
         path    : path.resolve(__dirname, 'dist'),
         filename: 'bot.js',
+        chunkFilename: 'chunk-[name].[contenthash].js',
+        publicPath: '/dist/'
     },
     devServer: {
         publicPath: '/dist/',

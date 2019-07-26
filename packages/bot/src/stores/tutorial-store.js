@@ -5,12 +5,20 @@ export default class TutorialStore {
     @observable modal_is_open = true;
     @observable strategy = 'martingale';
     @observable trade_options = {
-        market  : 'm1',
-        contract: 'c1',
-        stake   : 0,
-        size    : 0,
-        loss    : 0,
-        profit  : 0,
+        market       : 'market1',
+        submarket    : 'submarket1',
+        symbol       : 'symbol1',
+        tradeCategory: 'tradeCategory1',
+        tradeType    : 'tradeType1',
+        contract     : 'contract1',
+        durationType : 'durationType1',
+        duration     : 0,
+        stakeType    : 'stakeType1',
+        purchase     : 'purchase1',
+        stake        : 0,
+        size         : 0,
+        loss         : 0,
+        profit       : 0,
     };
 
     constructor() {
@@ -24,26 +32,40 @@ export default class TutorialStore {
         const strategy_xml = await fetch(`dist/${this.strategy}.xml`).then(response => response.text());
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml);
 
-        const modifiedValue = type => {
-            const value_block = strategy_dom.querySelector(`value[id="${type}_value"]`);
+        const modifiedValue = (key, value) => {
+            const value_block = strategy_dom.querySelector(`value[id="${key}_value"]`);
 
-            value_block.innerHTML = `<block type="math_number"><field name="NUM">${this.trade_options[type]}</field></block>`;
+            if (value_block){
+                value_block.innerHTML = `<block type="math_number"><field name="NUM">${value}</field></block>`;
+            }
         };
 
-        const modifiedDropdownValue = (name, type) => {
-            const block = strategy_dom.querySelector(`field[name="${name}"]`);
+        const modifiedDropdownValue = (name, value) => {
+            const block = strategy_dom.querySelector(`field[name="${`${name.toUpperCase()  }_LIST`}"]`);
 
-            block.innerHTML = this.trade_options[type];
+            if (block){
+                block.innerHTML = value;
+            }
         };
 
-        const dropdowns = {
+        Object.keys(this.trade_options).forEach(key => {
+            const value = this.trade_options[key];
+
+            if (!isNaN(value)){
+                modifiedValue(key, value);
+            } else if (typeof value === 'string'){
+                modifiedDropdownValue(key, value);
+            }
+        });
+
+        /* const dropdowns = {
             MARKET_LIST: 'market',
             TYPE_LIST  : 'contract',
         };
         const fields = ['stake', 'size', 'loss', 'profit'];
 
         Object.keys(dropdowns).forEach(key => modifiedDropdownValue(key, dropdowns[key]));
-        fields.forEach(field => modifiedValue(field));
+        fields.forEach(field => modifiedValue(field)); */
 
         workspace.clear();
         Blockly.Xml.domToWorkspace(strategy_dom, workspace);

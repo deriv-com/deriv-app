@@ -2,12 +2,10 @@
 > Responsible for the basic style setup for all packages.
 
 Includes:
-* Animations
-* Devices - media query breakpoints
-* Mixins
-* Reset
 * Colors - all color variables
+* Devices - media query breakpoints
 * Fonts - font variables and setup
+* Reset
 
 ## Usage
 
@@ -51,24 +49,3 @@ p {
 ```
 
 To define new typefaces, add the name and value in the `$FONT_SIZES`, `$FONT_WEIGHTS` or `$COLORS` maps accordingly in `fonts.scss` file.
-
-#### Mixins
-```scss
-// mixins.scss
-@mixin link {
-    color: $COLOR_WHITE;
-
-    &:hover, &:active {
-        text-decoration: none;
-    }
-}
-// package
-.sidebar {
-    background: $COLOR_LIGHT_GRAY;
-
-    a {
-        @include link;
-        display: block;
-    }
-}
-```

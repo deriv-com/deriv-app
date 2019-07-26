@@ -4,26 +4,26 @@ import { observable, action } from 'mobx';
 import FlyoutBlock            from '../components/flyout-block.jsx';
 
 export default class FlyoutStore {
+    block_listeners            = [];
+    block_workspaces           = [];
+    flyout_min_width           = 400;
+
     @observable flyout_content = [];
     @observable flyout_width   = this.flyout_min_width;
     @observable is_visible     = false;
-    
-    block_workspaces           = [];
-    flyout_min_width           = 400;
-    listeners                  = [];
 
     /**
      * Parses XML contents passed by Blockly.Toolbox. Supports all default
      * Blockly.Flyout elements i.e. <block>, <label>, <button> in their
      * original format, e.g. <label text="Hello World" />
-     * @param {*} xmlList
+     * @param {Element[]} xmlList list of XML nodes
      * @memberof FlyoutStore
      */
     @action.bound setContents(xmlList) {
+        this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
-        this.listeners.forEach(listener => Blockly.unbindEvent_(listener));
+        this.block_listeners = [];
         this.block_workspaces = [];
-        this.listeners = [];
 
         const flyout_components = [];
 
@@ -58,11 +58,13 @@ export default class FlyoutStore {
                         key={key}
                         className='flyout__button'
                         onClick={(button) => {
-                            const b = button;
+                            const flyout_button = button;
+
                             // Workaround for not having a flyout workspace.
-                            b.targetWorkspace_ = Blockly.derivWorkspace;
-                            b.getTargetWorkspace = () => b.targetWorkspace_;
-                            callback(b);
+                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                            flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
+
+                            callback(flyout_button);
                         }}
                     >
                         { node.getAttribute('text') }
@@ -71,14 +73,14 @@ export default class FlyoutStore {
             }
         });
 
-        this.flyout_width = Math.max(this.flyout_min_width, this.constructor.getLongestBlockWidth(xmlList) + 60);
         this.flyout_content = flyout_components;
         this.setVisibility(true);
+        this.setFlyoutWidth(xmlList);
     }
 
     /**
      * Sets whether the flyout is visible or not.
-     * @param {*} is_visible
+     * @param {boolean} is_visible
      * @memberof FlyoutStore
      */
     @action.bound setVisibility(is_visible) {
@@ -91,15 +93,16 @@ export default class FlyoutStore {
 
     /**
      * Intialises a workspace unique to the passed block_node
-     * @param {*} el_block_workspace Containing element for the Blockly.Workspace
-     * @param {*} block_node XML DOM of a Blockly.Block
+     * @param {Element} el_block_workspace Element where Blockly.Workspace will be mounted on
+     * @param {Element} block_node DOM of a Blockly.Block
      * @memberof FlyoutStore
      */
     @action.bound initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, {
-            media: 'dist/media/',
-            css  : false,
-            move : { scrollbars: false, drag: true, wheel: false },
+            css   : false,
+            media : 'dist/media/',
+            move  : { scrollbars: false, drag: true, wheel: false },
+            sounds: false,
         });
 
         workspace.isFlyout = true;
@@ -113,19 +116,20 @@ export default class FlyoutStore {
         const extra_spacing = (block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
         const block_workspace_height = Number.parseInt(block_node.getAttribute('height')) + extra_spacing + 10;
 
-        // Update flyout and block-workspaces width to accommodate block widths.
+        // Update block workspace widths to accommodate block widths.
         el_block_workspace.style.height = `${block_workspace_height}px`;
         el_block_workspace.style.width = `${this.flyout_width - 55}px`;
 
         // Move block away from side so it's displayed completely.
         const dx = 1;
         const dy = 5 + extra_spacing;
+
         block.moveBy(dx, dy);
 
         // Use original Blockly flyout functionality to create block on drag.
         const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
 
-        this.listeners.push(
+        this.block_listeners.push(
             Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null, (event) => {
                 blockly_flyout.blockMouseDown_(block)(event);
             })
@@ -136,9 +140,48 @@ export default class FlyoutStore {
     }
 
     /**
-     * Creates a copy of the block on the main workspace and positions it
+     * Walks through xmlList and finds width of the longest block while setting
+     * height and width (in workspace pixels) attributes on each of the block nodes.
+     * @param {Element[]} xmlList
+     * @memberof FlyoutStore
+     */
+    @action.bound setFlyoutWidth(xmlList) {
+        const options = new Blockly.Options({ media: '/dist/media/' });
+        const fragment = document.createDocumentFragment();
+        const el_injection_div = document.createElement('div');
+
+        fragment.appendChild(el_injection_div);
+
+        // Create a headless workspace to calculate xmlList block dimensions
+        const svg = Blockly.createDom_(el_injection_div, options);
+        const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+
+        let longest_block_width = 0;
+
+        xmlList.forEach((node) => {
+            
+            const tagName = node.tagName.toUpperCase();
+            
+            if (tagName === 'BLOCK') {
+                const block = Blockly.Xml.domToBlock(node, workspace);
+                const block_hw = block.getHeightWidth();
+
+                node.setAttribute('width', block_hw.width);
+                node.setAttribute('height', block_hw.height);
+                
+                longest_block_width = Math.max(longest_block_width, block_hw.width);
+            }
+        });
+
+        workspace.dispose();
+        this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
+    }
+
+    /**
+     * Creates a copy of passed block_node on main workspace and positions it
      * below the lowest block.
-     * @param {*} block_node
+     * @static
+     * @param {Element} block_node
      * @memberof FlyoutStore
      */
     static onAddClick(block_node) {
@@ -155,48 +198,5 @@ export default class FlyoutStore {
         }
 
         Blockly.derivWorkspace.centerOnBlock(block.id, false);
-    }
-
-    /**
-     * Walks through xmlList and finds width of the longest block while setting
-     * height and width attributes on each of the block nodes.
-     * @static
-     * @param {*} xmlList
-     * @returns
-     * @memberof FlyoutStore
-     */
-    static getLongestBlockWidth(xmlList) {
-        const options = new Blockly.Options({ media: '/dist/media/' });
-        const fragment = document.createDocumentFragment();
-        const el_injection_div = document.createElement('div');
-
-        fragment.appendChild(el_injection_div);
-
-        const svg = Blockly.createDom_(el_injection_div, options);
-        const block_drag_surface = new Blockly.BlockDragSurfaceSvg(el_injection_div);
-        const workspace_drag_surface = new Blockly.WorkspaceDragSurfaceSvg(el_injection_div);
-        const workspace = Blockly.createMainWorkspace_(svg, options, block_drag_surface, workspace_drag_surface);
-
-        Blockly.init_(workspace);
-
-        let longest_block_width = 0;
-
-        xmlList.forEach((node) => {
-            const tagName = node.tagName.toUpperCase();
-            
-            if (tagName === 'BLOCK') {
-                const block = Blockly.Xml.domToBlock(node, workspace);
-                const block_hw = block.getHeightWidth();
-
-                node.setAttribute('width', block_hw.width);
-                node.setAttribute('height', block_hw.height);
-
-                longest_block_width = Math.max(longest_block_width, block_hw.width);
-            }
-        });
-
-        workspace.dispose();
-
-        return longest_block_width;
     }
 }

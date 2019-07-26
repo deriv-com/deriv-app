@@ -60,10 +60,10 @@ const SocketCache = (() => {
     };
 
     const set = (response) => {
-        const msg_type  = msg_type_mapping[response.msg_type] || response.msg_type;
+        const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
         // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
-        const ws_cache  = JSON.parse(localStorage.getItem('ws_cache'));
+        const ws_cache = JSON.parse(localStorage.getItem('ws_cache'));
         // TODO: Update method of getting language from cookies once we have it in ui_store localStorage
         const curr_lang = document.cookie.replace(/(?:(?:^|.*;\s*)language\s*=\s*([^;]*).*$)|^.*$/, '$1');
 

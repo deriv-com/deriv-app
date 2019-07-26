@@ -51,10 +51,35 @@ const SocketCache = (() => {
         candles: 'ticks_history',
     };
 
-    const set = (response) => {
-        const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
+    const isMarketClosed = (active_symbols = [], symbol) => {
+        if (!active_symbols.length) return false;
+        return (active_symbols.filter(x => x.symbol === symbol)[0]) ?
+            !active_symbols.filter(symbol_info => symbol_info.symbol === symbol)[0].exchange_is_open
+            :
+            false;
+    };
 
-        // check if response has subscription, since only want to cache non-streamed responses
+    const set = (response) => {
+        const msg_type  = msg_type_mapping[response.msg_type] || response.msg_type;
+
+        // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
+        const ws_cache  = JSON.parse(localStorage.getItem('ws_cache'));
+        // TODO: Update method of getting language from cookies once we have it in ui_store localStorage
+        const curr_lang = document.cookie.replace(/(?:(?:^|.*;\s*)language\s*=\s*([^;]*).*$)|^.*$/, '$1');
+
+        const active_symbols_obj = curr_lang ? `active_symbols___${curr_lang}` : null;
+
+        if (!isEmptyObject(ws_cache)) {
+            if (msg_type === 'ticks_history' && !isEmptyObject(ws_cache[active_symbols_obj])) {
+                const active_symbols = ws_cache[active_symbols_obj].value.active_symbols;
+                const curr_symbol    = response.echo_req.ticks_history;
+                if (isMarketClosed(active_symbols, curr_symbol)) {
+                    return;
+                }
+            }
+        }
+
+        // check if response has subscription, since we only want to cache non-streaming responses
         if (response.subscription || (response.echo_req.end === 'latest')) return;
 
         if (!config[msg_type]) return;

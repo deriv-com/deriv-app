@@ -81,7 +81,7 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
   
     // The position of the old block in pixels relative to the flyout
     // workspace's origin.
-    const oldBlockPosPixels = new goog.math.Coordinate(event.clientX, event.clientY);
+    const oldBlockPosPixels = new goog.math.Coordinate(event.clientX - 50, event.clientY - 10);
   
     // The position of the old block in pixels relative to the upper left corner
     // of the injection div.

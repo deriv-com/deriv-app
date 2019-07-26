@@ -12,3 +12,4 @@ import './variables';
 import './gesture';
 import './workspace_audio';
 import './workspace_svg';
+import './constant';

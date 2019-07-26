@@ -32,12 +32,14 @@ Blockly.Toolbox.prototype.init = function () {
 
     this.HtmlDiv.appendChild(el_toolbox_search);
 
-    el_toolbox_search.addEventListener('keyup', () => {
-        const toolbox = workspace.toolbox_;
-
-        flyout.setVisibility(false);
-
-        toolbox.setSelectedItem('search');
+    ['keyup', 'click'].forEach(e => {
+        el_toolbox_search.addEventListener(e, () => {
+            const toolbox = workspace.toolbox_;
+    
+            flyout.setVisibility(false);
+    
+            toolbox.setSelectedItem('search');
+        });
     });
 
     svg.parentNode.insertBefore(this.HtmlDiv, svg);

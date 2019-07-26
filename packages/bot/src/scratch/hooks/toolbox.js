@@ -236,6 +236,10 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
 Blockly.Toolbox.prototype.setSelectedItem = function (item) {
 
     if (item === 'search'){
+        if (this.selectedItem_) {
+            this.selectedItem_.setSelected(false);
+        }
+        this.selectedItem_ = null;
         this.showCategory_('search');
         return;
     }

@@ -130,7 +130,7 @@ Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
  * @package
  */
 Blockly.WorkspaceDragger.prototype.drag = function(currentDragDeltaXY) {
-    if (this.workspace_.isFlyout){
+    if (this.workspace_.isFlyout) {
         return;
     }
 
@@ -140,10 +140,9 @@ Blockly.WorkspaceDragger.prototype.drag = function(currentDragDeltaXY) {
     // Bound the new XY based on workspace bounds.
     let x = Math.min(newXY.x, -metrics.contentLeft);
     let y = Math.min(newXY.y, -metrics.contentTop);
-    x = Math.max(x, metrics.viewWidth - metrics.contentLeft -
-                 metrics.contentWidth);
-    y = Math.max(y, metrics.viewHeight - metrics.contentTop -
-                 metrics.contentHeight);
+
+    x = Math.max(x, metrics.viewWidth - metrics.contentLeft - metrics.contentWidth);
+    y = Math.max(y, metrics.viewHeight - metrics.contentTop - metrics.contentHeight);
 
     x = -x - metrics.contentLeft;
     y = -y - metrics.contentTop;

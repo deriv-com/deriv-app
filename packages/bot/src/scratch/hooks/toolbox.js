@@ -1,8 +1,8 @@
 import React         from 'react';
 import ReactDOM      from 'react-dom';
 import { ArrowIcon } from '../../components/Icons.jsx';
+import { flyout }    from '../../stores';
 import { translate } from '../../utils/lang/i18n';
-import { flyout } from '../../stores';
 
 /* eslint-disable func-names, no-underscore-dangle */
 

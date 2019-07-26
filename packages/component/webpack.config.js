@@ -1,4 +1,3 @@
-
 const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');

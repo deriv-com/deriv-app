@@ -1,6 +1,11 @@
 /*#region colors*/
-$BGCOLOR : #ff0000;
+$BGCOLOR : #39b19d;
 /*#endregion colors*/
 /*#region font-sizes*/
 /*#endregion font-sizes*/
 
+.body {
+    font: 'outline';
+    font-size: 5em;
+    color: $BGCOLOR;
+}

@@ -52,7 +52,7 @@ export class AccountActions extends Component {
                     <Lazy
                         ctor={() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx')}
                         should_load={true}
-                        has_progress={true}
+                        has_progress={false}
                         balance={formatMoney(currency, balance, true)}
                         is_upgrade_enabled={can_upgrade}
                         is_virtual={is_virtual}

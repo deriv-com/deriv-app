@@ -7,6 +7,7 @@ import 'Sass/app/modules/modals.scss';
 // const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
 
 const Modals = ({
+    is_initial_idle,
     is_denial_of_service_modal_visible,
     is_unsupported_contract_modal_visible,
     is_market_unavailable_visible,
@@ -54,28 +55,28 @@ const Modals = ({
         <React.Fragment>
             <Lazy
                 ctor={() => import(/* webpackChunkName: "UnsupportedContractModal" */'App/Components/Elements/Modals/UnsupportedContractModal')}
-                should_load={is_unsupported_contract_modal_visible}
+                should_load={is_initial_idle && is_unsupported_contract_modal_visible}
                 onConfirm={unsupportedContractOnConfirm}
                 onClose={unsupportedContractOnClose}
                 is_visible={is_unsupported_contract_modal_visible}
             />
             <Lazy
                 ctor={() => import(/* webpackChunkName: "DenialOfServiceModal" */'App/Components/Elements/Modals/DenialOfServiceModal')}
-                should_load={is_denial_of_service_modal_visible}
+                should_load={is_initial_idle && is_denial_of_service_modal_visible}
                 onConfirm={denialOfServiceOnConfirm}
                 onCancel={denialOfServiceOnCancel}
                 is_visible={is_denial_of_service_modal_visible}
             />
             <Lazy
                 ctor={() => import(/* webpackChunkName: "MarketUnavailableModal" */'App/Components/Elements/Modals/MarketUnavailableModal')}
-                should_load={is_denial_of_service_modal_visible}
+                should_load={is_initial_idle && is_denial_of_service_modal_visible}
                 onConfirm={marketUnavailableOnConfirm}
                 onCancel={marketUnavailableOnCancel}
                 is_visible={is_market_unavailable_visible}
             />
             <Lazy
                 ctor={() => import(/* webpackChunkName: "ServicesErrorModal" */'App/Components/Elements/Modals/ServicesErrorModal')}
-                should_load={is_services_error_visible}
+                should_load={is_initial_idle && is_services_error_visible}
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
             />
@@ -86,6 +87,7 @@ const Modals = ({
 };
 
 export default connect(({ ui, client, modules, common }) => ({
+    is_initial_idle                      : !ui.is_loading,
     is_denial_of_service_modal_visible   : !client.is_client_allowed_to_visit,
     is_market_unavailable_visible        : ui.has_only_forward_starting_contracts,
     is_services_error_visible            : ui.is_services_error_visible,

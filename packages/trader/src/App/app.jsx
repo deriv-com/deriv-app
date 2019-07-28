@@ -37,14 +37,14 @@ const App = ({ root_store }) => {
                                     <Routes />
                                     <Lazy
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
-                                        should_load={true}
+                                        should_load={!root_store.ui.is_loading}
                                         has_progress={false}
                                     />
                                 </AppContents>
                                 <Lazy
                                     ctor={() => import(/* webpackChunkName: "modals" */'./Containers/Modals')}
                                     has_progress={true}
-                                    should_load={true}
+                                    should_load={!root_store.ui.is_loading}
                                 />
                             </ErrorBoundary>
                             <Footer />

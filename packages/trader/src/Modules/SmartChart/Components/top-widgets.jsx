@@ -5,7 +5,7 @@ import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 
 class TopWidgets extends Component {
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
         return nextProps.is_title_enabled !== this.props.is_title_enabled;
     }
 

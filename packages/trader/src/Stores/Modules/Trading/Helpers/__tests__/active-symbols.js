@@ -1,7 +1,7 @@
-import { expect }              from 'chai';
-import { LocalStore }          from '_common/storage';
-import { pickDefaultSymbol }   from '../active-symbols';
-import React                   from 'react';
+import { expect }            from 'chai';
+import { LocalStore }        from '_common/storage';
+import React                 from 'react';
+import { pickDefaultSymbol } from '../default-symbol';
 
 const active_symbols = [
     {
@@ -139,20 +139,17 @@ const active_symbols = [
 describe('pickDefaultSymbol', () => {
     it('It should return the first open symbol in major_pairs or random_index if the user does not have a favorite symbol', () => {
         const cq_favorites = {"indicators":[],"chartTitle&Comparison":[]};
-        LocalStore.set('cq-favorites', JSON.stringify(cq_favorites));
-        expect(pickDefaultSymbol(active_symbols)).to.eql('R_25');
+        expect(pickDefaultSymbol(active_symbols, cq_favorites)).to.eql('R_25');
     });
 
     it('It Returns first open major_pair or random_index symbol if all symbols were close in favorite list', () => {
         const cq_favorites = {"indicators":[],"chartTitle&Comparison":["OTC_N225","OTC_HSI"]};
-        LocalStore.set('cq-favorites', JSON.stringify(cq_favorites));
-        expect(pickDefaultSymbol(active_symbols)).to.eql('R_25');
+        expect(pickDefaultSymbol(active_symbols, cq_favorites)).to.eql('R_25');
     });
 
     it('It Returns the first open symbol in favorite list if an open symbol exist in the favorite list', () => {
         const cq_favorites = {"indicators":[],"chartTitle&Comparison":["OTC_HSI","R_50"]};
-        LocalStore.set('cq-favorites', JSON.stringify(cq_favorites));
-        expect(pickDefaultSymbol(active_symbols)).to.eql('R_50');
+        expect(pickDefaultSymbol(active_symbols, cq_favorites)).to.eql('R_50');
     });
 
     it('It Returns a major_pairs symbol if all active symbols were close', ()=> {

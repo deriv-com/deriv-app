@@ -128,19 +128,17 @@
         display: flex;
         justify-content: space-between;
         left: 0;
-        top: -2px;
+        top: -3px;
         height: 0;
 
         &-step {
-            height: 2px;
-            width: 2px;
+            height: 8px;
+            width: 8px;
             border-radius: 50%;
-            margin: 0 3px;
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
+            transition: box-shadow 0.2s;
             cursor: pointer;
             @include themify($themes) {
-                border: 3px solid themed('container_color');
+                border: 4px solid themed('container_color');
                 background: themed('container_color');
             }
 
@@ -148,6 +146,11 @@
                 @include themify($themes) {
                     background: themed('slider_icon_color');
                     border-color: themed('slider_icon_color');
+                }
+            }
+            &--marked-hover {
+                @include themify($themes) {
+                    border-color: themed('slider_hover_color');
                 }
             }
             &--active {
@@ -171,7 +174,7 @@
                 @include themify($themes) {
                     background: themed('slider_icon_color');
                     border-color: themed('slider_icon_color');
-                    box-shadow: 0 0 0 4px themed('slider_hover_color');
+                    box-shadow: 0 0 0 6px themed('slider_hover_color');
                 }
             }
             &:first-child {
@@ -188,24 +191,24 @@
         left: 0;
         height: 2px;
         pointer-events: none;
-        transition: width 0.5s;
         @include themify($themes) {
             background: themed('slider_icon_color');
         }
+
+        &--fill {
+            @include themify($themes) {
+                background: themed('slider_hover_color');
+            }
+        }
     }
     &__caption {
-        display: flex;
-        padding: 8px 0 0;
-        justify-content: space-between;
+        padding-top: 8px;
         line-height: 1.5;
         font-size: 1.4em;
+        text-align: center;
 
-        /* postcss-bem-linter: ignore */
-        &--first, &--last {
-            font-weight: normal !important;
-            @include themify($themes) {
-                color: themed('text_primary_color') !important;
-            }
+        &-title {
+            font-weight: bold;
         }
         /* postcss-bem-linter: ignore */
         span {

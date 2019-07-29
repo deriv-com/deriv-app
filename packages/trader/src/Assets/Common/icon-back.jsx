@@ -4,7 +4,10 @@ import React      from 'react';
 
 const IconBack = ({ className }) => (
     <svg className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <path className='color1-fill' fill='rgba(0, 0, 0, 0.8)' fillRule='evenodd' d='M3.613 8.5l3.26 3.668a.5.5 0 1 1-.747.664l-4-4.5a.5.5 0 0 1 0-.664l4-4.5a.5.5 0 0 1 .748.664L3.614 7.5H13.5a.5.5 0 1 1 0 1H3.613z' />
+        <g fill='none' fillRule='evenodd'>
+            <path className='color1-stroke' stroke='#979797' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M8 1L1 8l7 7M1 8h14' />
+            <path className='color1-fill' fill='#7F8397' fillRule='nonzero' d='M3.414 7H15a1 1 0 0 1 0 2H3.414l5.293 5.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 1 1 1.414 1.414L3.414 7z' />
+        </g>
     </svg>
 );
 

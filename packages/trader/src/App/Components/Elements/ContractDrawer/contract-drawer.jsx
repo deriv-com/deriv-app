@@ -40,26 +40,24 @@ class ContractDrawer extends Component {
         this.setState({ is_shade_on: shade });
     };
 
-    redirectBackToReports = () => {
-        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
-        if (this.props.history.location.state) {
-            this.props.history.goBack();
-        } else {
-            this.props.history.push(routes.reports);
-        }
-    };
+    redirectBackToReports = () => this.props.history.push(routes.reports);
 
     getBodyContent () {
         const {
             buy_price,
             currency,
-            exit_tick,
+            exit_tick_display_value,
             is_sold,
             payout,
             profit,
         } = this.props.contract_info;
-        const { contract_info, is_dark_theme, is_sell_requested, onClickSell } = this.props;
-        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
+        const {
+            contract_info,
+            is_dark_theme,
+            is_sell_requested,
+            onClickSell,
+        } = this.props;
+        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
         const getTick = () => {
             if (!contract_info.tick_count) return null;
             let current_tick = getCurrentTick(contract_info);
@@ -210,12 +208,19 @@ class ContractDrawer extends Component {
         );
         return (
             <div className={classNames('contract-drawer', {})}>
-                <div
-                    className='contract-drawer__heading'
-                    onClick={this.redirectBackToReports}
-                >
-                    <Icon icon='IconBack' />
-                    <h2>{this.props.heading || <Localize i18n_default_text='Contract' />}</h2>
+                <div className='contract-drawer__heading'>
+                    {
+                        this.props.is_from_reports &&
+                        <div
+                            className='contract-drawer__heading-btn'
+                            onClick={this.redirectBackToReports}
+                        >
+                            <Icon
+                                icon='IconBack'
+                            />
+                        </div>
+                    }
+                    <h2><Localize i18n_default_text='Contract details' /></h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
@@ -225,8 +230,8 @@ class ContractDrawer extends Component {
 
 ContractDrawer.propTypes = {
     contract_info    : PropTypes.object,
-    heading          : PropTypes.oneOfType([ PropTypes.node, PropTypes.string ]),
     is_dark_theme    : PropTypes.bool,
+    is_from_reports  : PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,
     status           : PropTypes.string,

@@ -6,36 +6,38 @@ import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading       = false;
-    @observable container_height = 0;
-    @observable error_message    = '';
+    @observable is_loading = false;
 
-    @observable container_urls = {
-        deposit : '',
-        withdraw: '',
+    containers = [
+        this.config.deposit.container,
+        this.config.withdraw.container,
+    ];
+
+    @observable config = {
+        deposit: {
+            container         : 'deposit',
+            error_message     : '',
+            iframe_height     : 0,
+            iframe_url        : '',
+            is_session_timeout: true,
+            onIframeLoaded    : '',
+            timeout_session   : '',
+        },
+        verification: {
+            is_button_clicked: false,
+            is_email_sent    : false,
+            timeout_button   : '',
+        },
+        withdraw: {
+            container         : 'withdraw',
+            error_message     : '',
+            iframe_height     : 0,
+            iframe_url        : '',
+            is_session_timeout: true,
+            onIframeLoaded    : '',
+            timeout_session   : '',
+        },
     };
-
-    @observable is_session_timeout = {
-        deposit : false,
-        withdraw: false,
-    };
-
-    @observable is_verification_button_clicked = false;
-    @observable is_verification_email_sent     = false;
-
-    containers = {
-        deposit : 'deposit',
-        withdraw: 'withdraw',
-    };
-
-    default_cashier_height = 1200;
-
-    timeout_cashier_url = {
-        deposit : '',
-        withdraw: '',
-    };
-
-    timeout_verification_button;
 
     constructor({ root_store }) {
         super({ root_store });
@@ -44,48 +46,36 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMount(container, verification_code) {
-        if (!['deposit', 'withdraw'].includes(container)) {
-            throw new Error('Cahshier Store onMount requires deposit or cashier as a container name');
+    async onMount(current_action, verification_code) {
+        if (this.containers.indexOf(current_action) === -1) {
+            throw new Error('Cashier Store onMount requires a valid container name.');
         }
-        this.setErrorMessage('');
-        this.setContainerHeight(0);
+        this.setErrorMessage('', current_action);
+        this.setContainerHeight(0, current_action);
         this.setLoading(true);
 
-        if (this.container_urls[container] && !this.is_session_timeout[container]) {
-            this.checkIframeLoaded();
+        if (!this.config[current_action].is_session_timeout) {
+            this.checkIframeLoaded(current_action);
             return;
         }
 
-        this.setSessionTimeout(false, this.containers[container]);
-        this.setContainerUrl('', this.containers[container]);
-
-        const response_cashier = await WS.cashier(this.containers[container], verification_code);
-
-        // TODO: uncomment this if cross origin access is allowed
-        // const xhttp = new XMLHttpRequest();
-        // const that = this;
-        // xhttp.onreadystatechange = function() {
-        //     if (this.readyState !== 4 || this.status !== 200) {
-        //         return;
-        //     }
-        //     that.setContainerUrl(this.responseText, this.containers[container]);
-        // };
-        // xhttp.open('GET', response_cashier.cashier, true);
-        // xhttp.send();
+        const response_cashier = await WS.cashier(current_action, verification_code);
 
         // TODO: error handling UI & custom messages
         if (response_cashier.error) {
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error.message);
+            this.setErrorMessage(response_cashier.error.message, current_action);
+            this.setIframeUrl('', current_action);
+            this.setSessionTimeout(true, current_action);
             if (verification_code) {
                 // clear verification code on error
                 this.clearVerification();
             }
         } else {
-            await this.checkIframeLoaded();
-            this.setContainerUrl(response_cashier.cashier, this.containers[container]);
-            this.setTimeoutCashierUrl(container);
+            await this.checkIframeLoaded(current_action);
+            this.setIframeUrl(response_cashier.cashier, current_action);
+            this.setSessionTimeout(false, current_action);
+            this.setTimeoutCashierUrl(current_action);
         }
     }
 
@@ -95,40 +85,38 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async checkIframeLoaded() {
-        window.removeEventListener('message', this.onIframeLoaded);
+    async checkIframeLoaded(container) {
         if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('540');
+            this.setContainerHeight('540', container);
             // crypto cashier can only be accessed once and the session expires
-            this.clearTimeoutCashierUrl(this.root_store.ui.active_cashier_tab);
+            this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
         } else {
-            window.addEventListener('message', this.onIframeLoaded, false);
+            this.config[container].onIframeLoaded = (function (e) {
+                this.setLoading(false);
+                // set the height of the container after content loads so that the
+                // loading bar stays vertically centered until the end
+                this.setContainerHeight(+e.data || '1200', container);
+                window.removeEventListener('message', this.config[container].onIframeLoaded, false);
+            }).bind(this);
+            window.addEventListener('message', this.config[container].onIframeLoaded, false);
         }
     }
 
     @action.bound
-    onIframeLoaded(e) {
-        this.setLoading(false);
-        // set the height of the container after content loads so that the
-        // loading bar stays vertically centered until the end
-        this.setContainerHeight(+e.data || this.default_cashier_height);
+    setIframeUrl(url, container) {
+        this.config[container].iframe_url = url;
     }
 
     @action.bound
-    setContainerUrl(url, container) {
-        this.container_urls[container] = url;
+    setContainerHeight(height, container) {
+        this.config[container].iframe_height = height;
     }
 
     @action.bound
-    setContainerHeight(height) {
-        this.container_height = height;
-    }
-
-    @action.bound
-    setErrorMessage(message) {
-        this.error_message = message;
+    setErrorMessage(message, container) {
+        this.config[container].error_message = message;
     }
 
     @action.bound
@@ -138,22 +126,22 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setSessionTimeout(is_session_time_out, container) {
-        this.is_session_timeout[container] = is_session_time_out;
+        this.config[container].is_session_timeout = is_session_time_out;
     }
 
     @action.bound
-    setVerificationButtonClicked(is_verification_button_clicked) {
-        this.is_verification_button_clicked = is_verification_button_clicked;
+    setVerificationButtonClicked(is_button_clicked) {
+        this.config.verification.is_button_clicked = is_button_clicked;
     }
 
     @action.bound
-    setVerificationEmailSent(is_verification_email_sent) {
-        this.is_verification_email_sent = is_verification_email_sent;
+    setVerificationEmailSent(is_email_sent) {
+        this.config.verification.is_email_sent = is_email_sent;
     }
 
-    clearTimeoutCashierUrl(container) {
-        if (this.timeout_cashier_url[container]) {
-            clearTimeout(this.timeout_cashier_url[container]);
+    clearSessionTimeout(container) {
+        if (this.config[container].timeout_session) {
+            clearTimeout(this.config[container].timeout_session);
         }
     }
 
@@ -161,15 +149,15 @@ export default class CashierStore extends BaseStore {
     // so we should resend the request for container (deposit|withdraw) url on next mount
     @action.bound
     setTimeoutCashierUrl(container) {
-        this.clearTimeoutCashierUrl(container);
-        this.timeout_cashier_url[container] = setTimeout(() => {
+        this.clearSessionTimeout(container);
+        this.config[container].timeout_session = setTimeout(() => {
             this.setSessionTimeout(true, container);
         }, 60000);
     }
 
     clearTimeoutVerification() {
-        if (this.timeout_verification_button) {
-            clearTimeout(this.timeout_verification_button);
+        if (this.config.verification.timeout_button) {
+            clearTimeout(this.config.verification.timeout_button);
         }
     }
 
@@ -178,7 +166,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setTimeoutVerification() {
         this.clearTimeoutVerification();
-        this.timeout_verification_button = setTimeout(() => {
+        this.config.verification.timeout_button = setTimeout(() => {
             this.clearVerification();
         }, 3600000);
     }
@@ -190,7 +178,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail(email) {
-        if (this.is_verification_button_clicked) {
+        if (this.config.verification.is_button_clicked) {
             return;
         }
 
@@ -199,7 +187,7 @@ export default class CashierStore extends BaseStore {
 
         if (response_verify_email.error) {
             this.setVerificationButtonClicked(false);
-            this.setErrorMessage(response_verify_email.error.message);
+            this.setErrorMessage(response_verify_email.error.message, this.config.withdraw.container);
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -221,8 +209,8 @@ export default class CashierStore extends BaseStore {
 
     onUnmount() {
         this.clearVerification();
-        Object.keys(this.containers).forEach((container) => {
-            this.clearTimeoutCashierUrl(container);
+        [this.config.deposit.container, this.config.withdraw.container].forEach((container) => {
+            this.clearSessionTimeout(container);
             this.setSessionTimeout(true, container);
         });
     }

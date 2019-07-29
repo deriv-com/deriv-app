@@ -10,7 +10,6 @@ class SendEmail extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.error_message && <p className='cashier__error'>{this.props.error_message}</p>}
                 <div className='withdraw__verify-container'>
                     <div className='withdraw__verify-wrapper'>
                         <Icon icon='IconAuthenticateWithdrawals' className='withdraw__icon-authenticate' />
@@ -42,7 +41,6 @@ class SendEmail extends React.Component {
 
 SendEmail.propTypes = {
     client_email         : PropTypes.string,
-    error_message        : PropTypes.string,
     is_email_sent        : PropTypes.bool,
     sendVerificationEmail: PropTypes.func,
 };
@@ -50,8 +48,7 @@ SendEmail.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         client_email         : client.email,
-        error_message        : modules.cashier.error_message,
-        is_email_sent        : modules.cashier.is_verification_email_sent,
+        is_email_sent        : modules.cashier.config.verification.is_email_sent,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
     })
 )(SendEmail);

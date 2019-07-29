@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "husky": "^3.0.1",
     "lerna": "^3.15.0"
   },
   "scripts": {
@@ -19,5 +20,11 @@
     "deploy:folder": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:folder ${@:2} ;}; f",
     "deploy:staging": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:staging ;}; f",
     "deploy:production": "f () { lerna exec --scope ${1:-'*'} -- npm run deploy:production ;}; f"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "sh ./hooks/pre-commit.sh",
+      "pre-push": "npm run test"
+    }
   }
 }

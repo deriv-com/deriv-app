@@ -45,8 +45,8 @@ const ALIASES = {
     Utils       : path.resolve(__dirname, '../src/Utils'),
 };
 
-const rules = (is_test_env = false) => ([
-    ...(is_test_env ? [
+const rules = (is_test_env = false, is_mocha_only = false) => ([
+    ...(is_test_env && !is_mocha_only ? [
         {
             test   : /\.(js|jsx)$/,
             exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
@@ -103,7 +103,7 @@ const MINIMIZERS = !IS_RELEASE ? [] : [
     new OptimizeCssAssetsPlugin(),
 ];
 
-const plugins = (base, is_test_env) => ([
+const plugins = (base, is_test_env, is_mocha_only) => ([
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),
     new HtmlWebPackPlugin(htmlOutputConfig()),
@@ -111,7 +111,7 @@ const plugins = (base, is_test_env) => ([
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
-    ...(is_test_env ? [
+    ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [
         new SWPrecacheWebpackPlugin(swPrecacheConfig(base)),

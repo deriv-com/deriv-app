@@ -10,6 +10,7 @@
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\"",
     "test:eslint": "eslint \"./src/**/*.(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",
+    "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env mocha_only",
     "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
     "deploy:clean": "npm run build && gh-pages -d dist",
     "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f",

@@ -1,0 +1,36 @@
+// /*
+//  * Devices breakpoints - TODO: define proper breakpoints
+//  */
+// @mixin breakpoints($val) {
+//     $big-desktop: '(max-width: 1800px)';
+//     $tab-land   : '(max-width: 1200px)';
+//     $tab-port   : '(max-width: 900px)';
+//     $phone-xl   : '(max-width: 599px)';
+//     $phone-lg   : '(max-width: 480px)';
+
+//     @if $val == big-desktop {
+//         @media #{$big-desktop} {
+//             @content;
+//         }
+//     }
+//     @else if $val == tab-land {
+//         @media #{$tab-land} {
+//             @content;
+//         }
+//     }
+//     @else if $val == tab-port {
+//         @media #{$tab-port} {
+//             @content;
+//         }
+//     }
+//     @else if $val == phone-xl {
+//         @media #{$phone-xl} {
+//             @content;
+//         }
+//     }
+//     @else if $val == phone-lg {
+//         @media #{$phone-lg} {
+//             @content;
+//         }
+//     }
+// }

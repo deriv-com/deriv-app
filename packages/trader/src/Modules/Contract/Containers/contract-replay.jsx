@@ -20,7 +20,6 @@ class ContractReplay extends React.Component {
     };
 
     componentDidMount() {
-        this.props.hidePositions();
         this.props.setChartLoader(true);
         this.props.showBlur();
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
@@ -132,7 +131,6 @@ ContractReplay.propTypes = {
     display_status   : PropTypes.string,
     error_message    : PropTypes.string,
     hideBlur         : PropTypes.func,
-    hidePositions    : PropTypes.func,
     history          : PropTypes.object,
     is_chart_loading : PropTypes.bool,
     is_dark_theme    : PropTypes.bool,
@@ -168,7 +166,6 @@ export default withRouter(connect(
         status           : modules.contract_replay.indicative_status,
         is_chart_loading : modules.smart_chart.is_chart_loading,
         setChartLoader   : modules.smart_chart.setIsChartLoading,
-        hidePositions    : ui.hidePositionsFooterToggle,
         hideBlur         : ui.hideRouteBlur,
         is_dark_theme    : ui.is_dark_mode_on,
         showBlur         : ui.showRouteBlur,

@@ -18,5 +18,7 @@ export default class ModulesStore {
         this.statement       = new StatementStore({ root_store });
         this.trade           = new TradeStore({ root_store });
 
+        window.root = this;
+
     }
 }

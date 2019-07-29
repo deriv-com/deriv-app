@@ -229,16 +229,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showPositionsFooterToggle() {
-        this.show_positions_toggle = true;
-    }
-
-    @action.bound
-    hidePositionsFooterToggle() {
-        this.show_positions_toggle = false;
-    }
-
-    @action.bound
     toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }

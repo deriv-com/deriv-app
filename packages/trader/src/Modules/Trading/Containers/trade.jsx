@@ -16,12 +16,10 @@ const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */
 
 class Trade extends React.Component {
     componentDidMount() {
-        this.props.showPositions();
         this.props.onMount();
     }
 
     componentWillUnmount() {
-        this.props.hidePositions();
         if (this.props.is_contract_mode) {
             this.props.onCloseContract();
         }
@@ -111,7 +109,6 @@ Trade.propTypes = {
     display_status   : PropTypes.string,
     end_epoch        : PropTypes.number,
     granularity      : PropTypes.number,
-    hidePositions    : PropTypes.func,
     is_chart_loading : PropTypes.bool,
     is_chart_ready   : PropTypes.bool,
     is_contract_mode : PropTypes.bool,
@@ -129,7 +126,6 @@ Trade.propTypes = {
     purchase_info    : PropTypes.object,
     scroll_to_epoch  : PropTypes.number,
     scroll_to_offset : PropTypes.number,
-    showPositions    : PropTypes.func,
     start_epoch      : PropTypes.number,
     symbol           : PropTypes.string,
 };
@@ -164,8 +160,6 @@ export default connect(
         onUnmount                          : modules.trade.onUnmount,
         purchase_info                      : modules.trade.purchase_info,
         symbol                             : modules.trade.symbol,
-        hidePositions                      : ui.hidePositionsFooterToggle,
-        showPositions                      : ui.showPositionsFooterToggle,
         has_only_forward_starting_contracts: ui.has_only_forward_starting_contracts,
         is_mobile                          : ui.is_mobile,
         setHasOnlyForwardingContracts      : ui.setHasOnlyForwardingContracts,

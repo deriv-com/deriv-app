@@ -14,4 +14,4 @@ ChartLoader.propTypes = {
     is_visible: PropTypes.bool,
 };
 
-export default ChartLoader;
+export default React.memo(ChartLoader);

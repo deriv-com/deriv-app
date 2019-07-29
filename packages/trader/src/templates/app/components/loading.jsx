@@ -24,4 +24,4 @@ Loading.propTypes = {
     status         : PropTypes.array,
     theme          : PropTypes.string,
 };
-export default Loading;
+export default React.memo(Loading);

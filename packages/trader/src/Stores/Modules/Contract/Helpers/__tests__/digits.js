@@ -28,15 +28,16 @@ describe('Digits', () => {
                 barrier: 9,
                 tick_stream: [
                     {
-                        "tick" : 123.456,
-                        "epoch": 1544707344,
+                        "tick"              : 123.456,
+                        "tick_display_value": "123.456",
+                        "epoch"             : 1544707344,
                     }
                 ],
             };
             const digits_info = {
                 1544707344: {
                     digit: 6,
-                    spot: 123.456,
+                    spot: "123.456",
                 },
             };
             expect(getDigitInfo(digits_info, contract_info)).to.deep.eql({});
@@ -45,19 +46,21 @@ describe('Digits', () => {
             const contract_info = {
                 tick_stream: [
                     {
-                        "tick" : 123.456,
-                        "epoch": 1544707344,
+                        "tick"              : 123.456,
+                        "tick_display_value": "123.456",
+                        "epoch"             : 1544707344,
                     },
                     {
-                        "tick" : 456.993,
-                        "epoch": 1544707346,
+                        "tick"              : 456.993,
+                        "tick_display_value": "456.993",
+                        "epoch"             : 1544707346,
                     }
                 ],
             };
             const digits_info = {
                 1544707346: {
                     digit: 3,
-                    spot : 456.993,
+                    spot : "456.993",
                 },
             };
             expect(getDigitInfo({}, contract_info)).to.deep.eql(digits_info);

@@ -14,6 +14,12 @@ import { symbolChange }        from '../Helpers/symbol';
 setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
 class Chart extends React.Component {
+    constructor () {
+        super();
+        this.topWidgets.bind(this);
+        this.bottomWidgets.bind(this);
+    }
+
     componentDidMount() { this.props.onMount(); }
 
     componentWillUnmount() { this.props.onUnmount(); }

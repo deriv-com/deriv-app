@@ -15,9 +15,7 @@ describe('Digits', () => {
     describe('getDigitInfo', () => {
         it('should return an empty object when tick_stream is not in contract_info', () => {
             const contract_info = {};
-            getDigitInfo({}, contract_info).then((digit_info) => {
-                expect(digit_info).to.deep.eql({});
-            });
+            expect(getDigitInfo({}, contract_info)).to.deep.eql({});
         });
         it('should return an empty object if tick_stream data is already in digits_info', () => {
             const contract_info = {
@@ -41,9 +39,7 @@ describe('Digits', () => {
                     spot: 123.456,
                 },
             };
-            getDigitInfo(digits_info, contract_info).then((digit_info) => {
-                expect(digit_info).to.deep.eql({});
-            });
+            expect(getDigitInfo(digits_info, contract_info)).to.deep.eql({});
         });
         it('should return a digits_info object with the latest tick_stream array data', () => {
             const contract_info = {
@@ -64,9 +60,7 @@ describe('Digits', () => {
                     spot : 456.993,
                 },
             };
-            getDigitInfo({}, contract_info).then((digit_info) => {
-                expect(digit_info).to.deep.eql(digits_info);
-            });
+            expect(getDigitInfo({}, contract_info)).to.deep.eql(digits_info);
         });
     });
 });

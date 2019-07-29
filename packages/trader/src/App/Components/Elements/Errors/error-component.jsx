@@ -28,7 +28,7 @@ const ErrorComponent = ({
                     ]}
             redirect_url={routes.trade}
             redirect_label={redirect_label || <Localize i18n_default_text='Refresh' />}
-            buttonOnClick={redirectOnClick || (() => location.reload())}
+            buttonOnClick={redirectOnClick}
         />
     );
 };

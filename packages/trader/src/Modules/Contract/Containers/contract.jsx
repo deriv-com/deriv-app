@@ -9,9 +9,19 @@ import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
+    constructor () {
+        super();
+        this.redirectOnClick.bind(this);
+    }
+
     componentWillUnmount() {
         if (this.props.has_error) this.props.clearError();
     }
+
+    redirectOnClick = () => {
+        this.props.history.push(routes.trade);
+        window.location.reload();
+    };
 
     render () {
         return (
@@ -21,7 +31,7 @@ class Contract extends React.Component {
                         <ErrorComponent
                             message={this.props.error_message}
                             redirect_label={<Localize i18n_default_text='Go back to trading' />}
-                            redirectOnClick={() => this.props.history.push(routes.trade)}
+                            redirectOnClick={this.redirectOnClick}
                             should_show_refresh={false}
                         />
                         :

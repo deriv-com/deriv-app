@@ -23,4 +23,4 @@ UILoader.propTypes = {
     classNameBlock: PropTypes.string,
 };
 
-export default UILoader;
+export default React.memo(UILoader);

@@ -34,4 +34,4 @@ ScreenLarge.propTypes = {
     is_trade_enabled   : PropTypes.bool,
 };
 
-export default ScreenLarge;
+export default React.memo(ScreenLarge);

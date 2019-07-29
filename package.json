@@ -24,7 +24,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "sh ./hooks/pre-commit.sh",
-      "pre-push": "npm run test"
+      "pre-push": "sh ./hooks/pre-push.sh"
     }
   }
 }

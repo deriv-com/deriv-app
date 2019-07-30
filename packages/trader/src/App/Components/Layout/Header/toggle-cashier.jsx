@@ -5,11 +5,17 @@ import { localize }       from 'App/i18n';
 import { Modal }          from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
-    Withdraw }            from 'App/Containers/CashierModal';
+    Withdrawal }          from 'App/Containers/CashierModal';
 import WalletInformation  from 'Modules/Reports/Containers/wallet-information.jsx';
 import Button             from '../../Form/button.jsx';
 
+const tabs = {
+    deposit : 0,
+    withdraw: 1,
+};
+
 const ToggleCashier = ({
+    active_tab,
     className,
     hideFullBlur,
     is_cashier_visible,
@@ -33,12 +39,13 @@ const ToggleCashier = ({
                 }, {
                     icon : 'IconWithdrawalSmall',
                     label: localize('Withdrawal'),
-                    value: Withdraw,
+                    value: Withdrawal,
                 },
             ]}
             header={<WalletInformation />}
             hideFullBlur={hideFullBlur}
             is_open={is_cashier_visible}
+            selected_index={tabs[active_tab]}
             showFullBlur={showFullBlur}
             title={localize('Cashier')}
             toggleModal={toggleCashier}
@@ -47,6 +54,7 @@ const ToggleCashier = ({
 );
 
 ToggleCashier.propTypes = {
+    active_tab  : PropTypes.string,
     className   : PropTypes.string,
     hideFullBlur: PropTypes.func,
     is_open     : PropTypes.bool,

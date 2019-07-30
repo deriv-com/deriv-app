@@ -30,7 +30,6 @@ export default class ContractTradeStore extends BaseStore {
     @observable error_message = '';
 
     // ---- Normal properties ---
-    chart_type          = 'mountain';
     is_from_positions   = false;
     is_ongoing_contract = false;
 
@@ -151,7 +150,6 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     onCloseContract() {
         this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-        this.chart_type          = 'mountain';
         this.contract_id         = null;
         this.contract_info       = {};
         this.digits_info         = {};
@@ -205,10 +203,9 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    async handleDigits(contract_info) {
+    handleDigits(contract_info) {
         if (this.is_digit_contract) {
-            const digit_info = await getDigitInfo(this.digits_info, contract_info);
-            extendObservable(this.digits_info, digit_info);
+            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
         }
     }
 

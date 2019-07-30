@@ -207,10 +207,9 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    async handleDigits(contract_info) {
+    handleDigits(contract_info) {
         if (this.is_digit_contract) {
-            const digit_info = await getDigitInfo(this.digits_info, contract_info);
-            extendObservable(this.digits_info, digit_info);
+            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
         }
     }
 

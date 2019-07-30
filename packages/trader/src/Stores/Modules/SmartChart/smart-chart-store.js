@@ -53,10 +53,7 @@ export default class SmartChartStore extends BaseStore {
         granularity = 0,
     ) {
 
-        if (!is_from_other_position) {
-            console.log('save layout');
-            this.saveAndClearTradeChartLayout(null);
-        }
+        if (!is_from_other_position) this.saveAndClearTradeChartLayout(null);
         this.setContractMode(true);
         if (!is_from_positions) {
             this.updateGranularity(granularity);

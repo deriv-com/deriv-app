@@ -7,6 +7,26 @@ import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
 import 'Sass/app/modules/settings.scss';
 
+const modal_content = [
+    {
+        icon : 'IconTheme',
+        label: localize('Themes'),
+        value: React.lazy(() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')),
+    }, {
+        icon : 'IconLanguage',
+        label: localize('Language'),
+        value: React.lazy(() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')),
+    }, {
+        icon : 'IconCharts',
+        label: localize('Charts'),
+        value: React.lazy(() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')), // uncomment below lines to bring back purchase lock and purchase confirmation
+        // }, {
+        //     icon : IconPurchase,
+        //     label: localize('Purchase'),
+        //     value: PurchaseSettings,
+    },
+];
+
 const ToggleSettings = ({
     hideFullBlur,
     is_settings_visible,
@@ -27,26 +47,7 @@ const ToggleSettings = ({
             </a>
             <React.Suspense fallback={<UILoader />}>
                 <Modal
-                    modal_content={[
-                        {
-                            icon : 'IconTheme',
-                            label: localize('Themes'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')),
-                        }, {
-                            icon : 'IconLanguage',
-                            label: localize('Language'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')),
-                        }, {
-                            icon : 'IconCharts',
-                            label: localize('Charts'),
-                            value: React.lazy(() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')),
-                            // uncomment below lines to bring back purchase lock and purchase confirmation
-                            // }, {
-                            //     icon : IconPurchase,
-                            //     label: localize('Purchase'),
-                            //     value: PurchaseSettings,
-                        },
-                    ]}
+                    modal_content={modal_content}
                     hideFullBlur={hideFullBlur}
                     is_open={is_settings_visible}
                     showFullBlur={showFullBlur}

@@ -8,6 +8,7 @@ import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
 import Lazy                        from './Containers/Lazy';
+import Modals                      from './Containers/Modals';
 import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
 // eslint-disable-next-line import/extensions
@@ -41,13 +42,9 @@ const App = ({ root_store }) => {
                                         has_progress={false}
                                     />
                                 </AppContents>
-                                <Lazy
-                                    ctor={() => import(/* webpackChunkName: "modals" */'./Containers/Modals')}
-                                    has_progress={true}
-                                    should_load={!root_store.ui.is_loading}
-                                />
                             </ErrorBoundary>
                             <Footer />
+                            <Modals />
                         </React.Fragment>
                 }
             </MobxProvider>

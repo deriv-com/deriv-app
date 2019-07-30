@@ -18,13 +18,15 @@ const Modals = ({
     toggleServicesErrorModal,
     resetPurchase,
     services_error,
+    switchAccount,
+    virtual_account_loginid,
 }) => {
     const denialOfServiceOnCancel = () => {
         window.open(urlFor('trading', undefined, undefined, true));
     };
 
-    const denialOfServiceOnConfirm = async (client) => {
-        await client.switchAccount(client.virtual_account_loginid);
+    const denialOfServiceOnConfirm = async () => {
+        await switchAccount(virtual_account_loginid);
     };
 
     const marketUnavailableOnConfirm = () => {
@@ -69,7 +71,7 @@ const Modals = ({
             />
             <Lazy
                 ctor={() => import(/* webpackChunkName: "MarketUnavailableModal" */'App/Components/Elements/Modals/MarketUnavailableModal')}
-                should_load={is_initial_idle && is_denial_of_service_modal_visible}
+                should_load={is_initial_idle && is_market_unavailable_visible}
                 onConfirm={marketUnavailableOnConfirm}
                 onCancel={marketUnavailableOnCancel}
                 is_visible={is_market_unavailable_visible}
@@ -79,6 +81,7 @@ const Modals = ({
                 should_load={is_initial_idle && is_services_error_visible}
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
+                is_visible={is_services_error_visible}
             />
             {/* TODO: Enable AccountSignupModal once its UI component is ready */}
             {/* <AccountSignupModal /> */}
@@ -95,6 +98,8 @@ export default connect(({ ui, client, modules, common }) => ({
     resetPreviousSymbol                  : modules.trade.resetPreviousSymbol,
     resetPurchase                        : modules.trade.requestProposal,
     services_error                       : common.services_error,
+    switchAccount                        : client.switchAccount,
     setHasOnlyForwardingContracts        : ui.setHasOnlyForwardingContracts,
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
+    virtual_account_loginid              : client.virtual_account_loginid,
 }))(Modals);

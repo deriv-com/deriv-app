@@ -32,21 +32,31 @@ export default class SmartChartStore extends BaseStore {
 
     @observable scroll_to_left_epoch = null;
 
-    @observable chart_id             = 'trade';
-    @observable is_chart_loading     = false;
-    @observable is_chart_ready       = false;
-    @observable should_import_layout = false;
-    @observable should_export_layout = false;
-    @observable should_clear_chart   = false;
-    @observable trade_chart_layout   = null;
+    @observable chart_id                      = 'trade';
+    @observable is_chart_loading              = false;
+    @observable is_chart_ready                = false;
+    @observable should_import_layout          = false;
+    @observable should_export_layout          = false;
+    @observable should_clear_chart            = false;
+    @observable trade_chart_layout            = null;
     @observable should_refresh_active_symbols = false;
+
     trade_chart_symbol               = null;
     trade_chart_granularity          = null;
     trade_chart_type                 = null;
 
     @action.bound
-    switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
-        this.saveAndClearTradeChartLayout(null);
+    switchToContractMode(
+        is_from_positions = false,
+        is_from_other_position = false,
+        chart_type = 'mountain',
+        granularity = 0,
+    ) {
+
+        if (!is_from_other_position) {
+            console.log('save layout');
+            this.saveAndClearTradeChartLayout(null);
+        }
         this.setContractMode(true);
         if (!is_from_positions) {
             this.updateGranularity(granularity);

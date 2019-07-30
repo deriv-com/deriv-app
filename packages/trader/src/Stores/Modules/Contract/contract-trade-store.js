@@ -120,7 +120,8 @@ export default class ContractTradeStore extends BaseStore {
     onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
         this.smart_chart       = this.root_store.modules.smart_chart;
-        if (this.smart_chart.is_contract_mode) this.onCloseContract();
+        const has_existing_id  = this.smart_chart.is_contract_mode && !!(this.contract_id);
+        if (has_existing_id) this.resetValues(this.smart_chart);
         this.has_error         = false;
         this.error_message     = '';
         this.contract_id       = contract_id;
@@ -133,7 +134,7 @@ export default class ContractTradeStore extends BaseStore {
         if (contract_id) {
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode(true);
+                this.smart_chart.switchToContractMode(true, has_existing_id);
             }
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
@@ -142,7 +143,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    onCloseContract() {
+    resetValues(SmartChartStore) {
         this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
         this.contract_id         = null;
         this.contract_info       = {};
@@ -151,9 +152,13 @@ export default class ContractTradeStore extends BaseStore {
         this.has_error           = false;
         this.is_from_positions   = false;
         this.is_ongoing_contract = false;
+        SmartChartStore.cleanupContractChartView();
+    }
 
+    @action.bound
+    onCloseContract() {
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
-        this.smart_chart.cleanupContractChartView();
+        this.resetValues(this.smart_chart);
         this.smart_chart.applySavedTradeChartLayout();
     }
 

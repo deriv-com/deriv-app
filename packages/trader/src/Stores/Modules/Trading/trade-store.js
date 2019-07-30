@@ -401,10 +401,15 @@ export default class TradeStore extends BaseStore {
         return new_state;
     }
 
-    async processNewValuesAsync(obj_new_values = {}, is_changed_by_user = false, obj_old_values = {}) {
+    async processNewValuesAsync(
+        obj_new_values = {},
+        is_changed_by_user = false,
+        obj_old_values = {},
+        should_forget_first = true,
+    ) {
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
-        WS.forgetAll('proposal');
+        if (should_forget_first) WS.forgetAll('proposal');
         if (is_changed_by_user &&
             /\bcurrency\b/.test(Object.keys(obj_new_values))
         ) {
@@ -587,12 +592,13 @@ export default class TradeStore extends BaseStore {
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
-                { currency: this.currency }
+                true,
+                { currency: this.currency },
+                false,
             );
             await this.clearContract();
             await this.resetErrorServices();
             await this.refresh();
-            await this.prepareTradeStore();
             return resolve(this.debouncedProposal());
         });
     }

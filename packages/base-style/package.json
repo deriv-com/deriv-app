@@ -22,7 +22,7 @@
     "deploy:production": "echo \"Error: run deploy:production from root\""
   },
   "bugs": {
-    "url": "https://github.com/MahboobehMohammadi/deriv-app/issues"
+    "url": "https://github.com/binary-com/deriv-app/issues"
   },
   "devDependencies": {
     "css-hot-loader": "^1.4.4",

@@ -33,12 +33,12 @@ const getAppId = () => {
     } else if (/desktop-app/i.test(window.location.href) || window.localStorage.getItem('config.is_desktop_app')) {
         window.localStorage.removeItem('config.default_app_id');
         window.localStorage.setItem('config.is_desktop_app', 1);
+    } else if (user_app_id.length) {
+        window.localStorage.setItem('config.default_app_id', user_app_id)
         app_id = binary_desktop_app_id;
     } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = 16303;
-    } else if (user_app_id.length) {
-        window.localStorage.setItem('config.default_app_id', user_app_id); // it's being used in endpoint chrome extension - please do not remove
+        app_id = 16303;; // it's being used in endpoint chrome extension - please do not remove
         app_id = user_app_id;
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;

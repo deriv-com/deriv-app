@@ -3,6 +3,7 @@ import React                    from 'react';
 import { connect }              from 'Stores/connect';
 import Notification, {
     max_display_notifications } from '../Components/Elements/NotificationMessage';
+import 'Sass/app/_common/components/notification-message.scss';
 
 const NotificationMessages = ({
     notification_messages,

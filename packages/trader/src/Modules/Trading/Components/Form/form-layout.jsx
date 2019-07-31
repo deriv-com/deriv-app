@@ -1,7 +1,7 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import ScreenLarge  from './screen-large.jsx';
-import ScreenSmall  from './screen-small.jsx';
+import PropTypes   from 'prop-types';
+import React       from 'react';
+import Lazy        from 'App/Containers/Lazy';
+import ScreenLarge from './screen-large.jsx';
 
 const FormLayout = ({
     is_contract_visible,
@@ -10,7 +10,9 @@ const FormLayout = ({
     is_trade_enabled,
 }) => (
     is_mobile ?
-        <ScreenSmall
+        <Lazy
+            ctor={() => import(/* webpackChunkName: "screen-small" */'./screen-small.jsx')}
+            should_load={is_mobile}
             is_trade_enabled={is_trade_enabled}
         />
         :

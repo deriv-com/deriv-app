@@ -245,7 +245,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     setCashierActiveTab(tab = 'deposit') {
-        this.active_cashier_tab = tab;
+        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
     }
 
     @action.bound

@@ -46,7 +46,7 @@ class ContractDrawer extends Component {
         const {
             buy_price,
             currency,
-            exit_tick,
+            exit_tick_display_value,
             is_sold,
             payout,
             profit,
@@ -57,7 +57,7 @@ class ContractDrawer extends Component {
             is_sell_requested,
             onClickSell,
         } = this.props;
-        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick;
+        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
         const getTick = () => {
             if (!contract_info.tick_count) return null;
             let current_tick = getCurrentTick(contract_info);

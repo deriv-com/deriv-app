@@ -76,4 +76,4 @@ AccountInfo.propTypes = {
     toggleDialog      : PropTypes.func,
 };
 
-export { AccountInfo };
+export default AccountInfo;

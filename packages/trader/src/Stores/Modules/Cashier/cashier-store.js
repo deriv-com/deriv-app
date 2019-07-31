@@ -58,8 +58,8 @@ export default class CashierStore extends BaseStore {
         }
 
         this.setSessionTimeout(false, this.containers[container]);
-        this.setContainerUrl('', this.containers[container]);
 
+        this.setContainerUrl('', this.containers[container]);
         const response_cashier = await WS.cashier(this.containers[container], verification_code);
 
         // TODO: uncomment this if cross origin access is allowed
@@ -118,7 +118,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setContainerUrl(url, container) {
-        this.container_urls[container] = url;
+        if (this.container_urls[container] !== url) {
+            this.container_urls[container] = url;
+        }
     }
 
     @action.bound

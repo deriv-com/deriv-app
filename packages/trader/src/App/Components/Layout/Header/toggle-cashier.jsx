@@ -27,7 +27,7 @@ const ToggleCashier = ({
             className={classNames(className, 'btn--primary btn--primary--orange')}
             has_effect
             text={localize('Deposit')}
-            onClick={toggleCashier}
+            onClick={() => { toggleCashier('deposit'); }}
         />
         <Modal
             className='cashier'

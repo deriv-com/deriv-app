@@ -239,7 +239,10 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleCashierModal() {
+    toggleCashierModal(active_tab) {
+        if (/^(deposit|withdraw)$/.test(active_tab)) {
+            this.setCashierActiveTab(active_tab);
+        }
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 

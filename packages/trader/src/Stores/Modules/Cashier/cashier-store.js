@@ -26,6 +26,8 @@ export default class CashierStore extends BaseStore {
         verification: {
             is_button_clicked: false,
             is_email_sent    : false,
+            is_resend_clicked: false,
+            resend_timeout   : 60,
             timeout_button   : '',
         },
         withdraw: {
@@ -139,6 +141,16 @@ export default class CashierStore extends BaseStore {
         this.config.verification.is_email_sent = is_email_sent;
     }
 
+    @action.bound
+    setVerificationResendClicked(is_resend_clicked) {
+        this.config.verification.is_resend_clicked = is_resend_clicked;
+    }
+
+    @action.bound
+    setVerificationResendTimeout(resend_timeout) {
+        this.config.verification.resend_timeout = resend_timeout;
+    }
+
     clearSessionTimeout(container) {
         if (this.config[container].timeout_session) {
             clearTimeout(this.config[container].timeout_session);
@@ -177,16 +189,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async sendVerificationEmail(email) {
+    async sendVerificationEmail() {
         if (this.config.verification.is_button_clicked) {
             return;
         }
 
         this.setVerificationButtonClicked(true);
-        const response_verify_email = await WS.verifyEmail(email, 'payment_withdraw');
+        const response_verify_email = await WS.verifyEmail(this.root_store.client.email, 'payment_withdraw');
 
         if (response_verify_email.error) {
-            this.setVerificationButtonClicked(false);
+            this.clearVerification();
             this.setErrorMessage(response_verify_email.error.message, this.config.withdraw.container);
         } else {
             this.setVerificationEmailSent(true);
@@ -194,10 +206,35 @@ export default class CashierStore extends BaseStore {
         }
     }
 
+    @action.bound
+    resendVerificationEmail() {
+        // don't allow clicking while ongoing timeout
+        if (this.config.verification.resend_timeout < 60) {
+            return;
+        }
+        this.setVerificationButtonClicked(false);
+        this.setCountDownResendVerification();
+        this.sendVerificationEmail();
+    }
+
+    setCountDownResendVerification() {
+        this.setVerificationResendTimeout(this.config.verification.resend_timeout - 1);
+        const resend_interval = setInterval(() => {
+            if (this.config.verification.resend_timeout === 1) {
+                this.setVerificationResendTimeout(60);
+                clearInterval(resend_interval);
+            } else {
+                this.setVerificationResendTimeout(this.config.verification.resend_timeout - 1);
+            }
+        }, 1000);
+    }
+
     clearVerification() {
         this.clearTimeoutVerification();
         this.setVerificationButtonClicked(false);
         this.setVerificationEmailSent(false);
+        this.setVerificationResendClicked(false);
+        this.setVerificationResendTimeout(60);
         this.root_store.client.setVerificationCode('');
     }
 

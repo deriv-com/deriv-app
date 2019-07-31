@@ -1,28 +1,21 @@
 import React            from 'react';
 import PropTypes        from 'prop-types';
 import { localize }     from 'App/i18n';
-import { urlFor }       from '_common/url';
 import FullPageModal    from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize         from 'App/Components/Elements/localize.jsx';
-import { connect }      from 'Stores/connect';
-import { website_name } from '../../Constants/app-config';
+import { website_name } from '../../../../Constants/app-config';
 
-const onClose = (ui) => {
-    ui.toggleUnsupportedContractModal(false);
-};
-
-const onConfirm = (ui) => {
-    window.open(urlFor('user/portfoliows', undefined, undefined, true), '_blank');
-    onClose(ui);
-};
-
-const UnsupportedContractModal = ({ is_visible, ui }) => (
+const UnsupportedContractModal = ({
+    is_visible,
+    onConfirm,
+    onClose,
+}) => (
     <FullPageModal
         title={localize('Whoops!')}
         confirm_button_text={localize('Continue to Binary.com')}
         cancel_button_text={localize('Back to trade page')}
-        onConfirm={() => onConfirm(ui)}
-        onCancel={() => onClose(ui)}
+        onConfirm={onConfirm}
+        onCancel={onClose}
         is_closed_on_cancel
         is_visible={is_visible}
     >
@@ -34,13 +27,9 @@ const UnsupportedContractModal = ({ is_visible, ui }) => (
 );
 
 UnsupportedContractModal.propTypes = {
-    client    : PropTypes.object,
     is_visible: PropTypes.bool,
+    onClose   : PropTypes.func,
+    onConfirm : PropTypes.func,
 };
 
-export default connect(
-    ({ ui }) => ({
-        is_visible: ui.is_unsupported_contract_modal_visible,
-        ui,
-    }),
-)(UnsupportedContractModal);
+export default UnsupportedContractModal;

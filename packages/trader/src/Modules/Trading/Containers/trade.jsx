@@ -5,10 +5,8 @@ import UILoader              from 'App/Components/Elements/ui-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import NotificationMessages  from 'App/Containers/notification-messages.jsx';
-import Digits                from 'Modules/Contract/Components/Digits';
-import InfoBox               from 'Modules/Contract/Components/InfoBox';
-import Test                  from './test.jsx';
+import Lazy                  from 'App/Containers/Lazy';
+// import Test                  from './test.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
 
@@ -38,7 +36,11 @@ class Trade extends React.Component {
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
                 <div className='chart-container'>
-                    <NotificationMessages />
+                    <Lazy
+                        ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                        has_progress={false}
+                        should_load={true}
+                    />
                     { this.props.symbol &&
                         <React.Suspense fallback={<UILoader />} >
                             <ChartLoader is_visible={is_chart_visible} />
@@ -46,7 +48,9 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
                                 Digits={
-                                    <Digits
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
+                                        should_load={this.props.is_digit_contract}
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         digits_info={this.props.digits_info}
@@ -56,7 +60,10 @@ class Trade extends React.Component {
                                     />
                                 }
                                 InfoBox={
-                                    <InfoBox
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "info-box", webpackPrefetch: true */'Modules/Contract/Components/InfoBox')}
+                                        should_load={true}
+                                        has_progress={false}
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         error_message={this.props.error_message}
@@ -80,7 +87,7 @@ class Trade extends React.Component {
                         </React.Suspense>
                     }
                     {/* Remove Test component for debugging below for production release */}
-                    <Test />
+                    {/* <Test /> */}
                 </div>
                 <div
                     className={form_wrapper_class}

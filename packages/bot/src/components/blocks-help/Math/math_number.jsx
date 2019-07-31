@@ -1,7 +1,7 @@
 import React                from 'react';
 import HelpBase             from '../help_base.jsx';
 import FlyoutVideo          from '../flyout-video.jsx';
-import FlyoutBlock          from '../../../components/flyout-block.jsx';
+import FlyoutBlock          from '../../flyout-block.jsx';
 
 const MathNumber = (props) => (
     <HelpBase>

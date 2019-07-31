@@ -1,5 +1,4 @@
 import classNames           from 'classnames';
-import { observer }         from 'mobx-react';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
@@ -304,4 +303,4 @@ DatePicker.propTypes = {
     label         : PropTypes.string,
 };
 
-export default observer(DatePicker);
+export default DatePicker;

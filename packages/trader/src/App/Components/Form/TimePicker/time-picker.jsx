@@ -1,5 +1,4 @@
 import classNames        from 'classnames';
-import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -138,4 +137,4 @@ TimePicker.propTypes = {
     ]),
 };
 
-export default observer(TimePicker);
+export default TimePicker;

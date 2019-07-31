@@ -6,14 +6,24 @@ import { Modal }          from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
     Withdrawal }          from 'App/Containers/CashierModal';
-import WalletInformation  from 'Modules/Reports/Containers/wallet-information.jsx';
 import Button             from '../../Form/button.jsx';
 
+const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 const tabs = {
     deposit : 0,
     withdraw: 1,
 };
-
+const modal_content = [
+    {
+        icon : 'IconDepositSmall',
+        label: localize('Deposit'),
+        value: Deposit,
+    }, {
+        icon : 'IconWithdrawalSmall',
+        label: localize('Withdrawal'),
+        value: Withdrawal,
+    },
+];
 const ToggleCashier = ({
     active_tab,
     className,
@@ -31,17 +41,7 @@ const ToggleCashier = ({
         />
         <Modal
             className='cashier'
-            modal_content={[
-                {
-                    icon : 'IconDepositSmall',
-                    label: localize('Deposit'),
-                    value: Deposit,
-                }, {
-                    icon : 'IconWithdrawalSmall',
-                    label: localize('Withdrawal'),
-                    value: Withdrawal,
-                },
-            ]}
+            modal_content={modal_content}
             header={<WalletInformation />}
             hideFullBlur={hideFullBlur}
             is_open={is_cashier_visible}
@@ -62,4 +62,4 @@ ToggleCashier.propTypes = {
     toggleModal : PropTypes.func,
 };
 
-export { ToggleCashier };
+export default ToggleCashier;

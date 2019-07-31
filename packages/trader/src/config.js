@@ -39,7 +39,6 @@ const getAppId = () => {
     } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = 16303; // it's being used in endpoint chrome extension - please do not remove
-        app_id = user_app_id;
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {

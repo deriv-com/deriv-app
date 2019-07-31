@@ -367,12 +367,6 @@ export default class TradeStore extends BaseStore {
         })();
     }
 
-    @action.bound
-    onClickNewTrade(e) {
-        e.preventDefault();
-        WS.forgetAll('proposal').then(this.requestProposal());
-    }
-
     /**
      * Updates the store with new values
      * @param  {Object} new_state - new values to update the store with
@@ -486,6 +480,13 @@ export default class TradeStore extends BaseStore {
                 this.debouncedProposal();
             }
         }
+    }
+
+    @action.bound
+    clearPurchaseInfo() {
+        this.purchase_info = {};
+        this.proposal_requests = {};
+        this.proposal_info = {};
     }
 
     @action.bound

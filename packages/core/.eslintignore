@@ -1,0 +1,3 @@
+build/*.js
+src/**/__tests__/*.js
+src/_common/lib/**/*.js

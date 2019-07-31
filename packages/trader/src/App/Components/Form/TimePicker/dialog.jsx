@@ -12,14 +12,9 @@ const Dialog = ({
     onChange,
     className,
 }) => {
-    const start_time_moment     = start_time
-        ? toMoment(start_time)
-        : toMoment();
-    const end_time_moment       = end_time
-        ? toMoment(end_time)
-        : toMoment().hour('23').minute('59').seconds('59').milliseconds('999');
-    const to_compare_moment     = toMoment();
-    const [ hour, minute ]      = selected_time.split(':');
+    const to_compare_moment = toMoment();
+    const [ hour, minute ]  = selected_time.split(':');
+
     const hours    = [...Array(24).keys()].map((a)=>`0${a}`.slice(-2));
     const minutes  = [...Array(12).keys()].map((a)=>`0${a * 5}`.slice(-2));
 
@@ -40,13 +35,13 @@ const Dialog = ({
                     <div>
                         {hours.map((h, key) => {
                             to_compare_moment.hour(h);
-                            const start_time_reset_minute = start_time_moment.clone().minute(0);
+                            const start_time_reset_minute = start_time.clone().minute(0);
                             const is_hour_enabled = to_compare_moment.isBetween(
                                 start_time_reset_minute,
-                                end_time_moment);
+                                end_time);
                             const is_minute_enabled = to_compare_moment.isBetween(
-                                start_time_moment,
-                                end_time_moment,
+                                start_time,
+                                end_time,
                                 'minute');
                             // The minute number after which the last block/interval of `Minutes` selection will be disabled
                             const last_interval_of_hour = 52;
@@ -72,7 +67,7 @@ const Dialog = ({
                     <div>
                         {minutes.map((mm, key) => {
                             to_compare_moment.hour(hour).minute(mm);
-                            const is_enabled = to_compare_moment.isBetween(start_time_moment, end_time_moment, 'minute');
+                            const is_enabled = to_compare_moment.isBetween(start_time, end_time, 'minute');
                             return (
                                 <div
                                     className={classNames(`${preClass}__selector-list-item`,
@@ -93,24 +88,12 @@ const Dialog = ({
 };
 
 Dialog.propTypes = {
-    className: PropTypes.string,
-    end_time : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    className    : PropTypes.string,
+    end_time     : PropTypes.object, // moment object
     onChange     : PropTypes.func,
     preClass     : PropTypes.string,
-    selected_time: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.object,
-    ]),
-    start_time: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    selected_time: PropTypes.string,
+    start_time   : PropTypes.object, // moment object
 };
 
 export default Dialog;

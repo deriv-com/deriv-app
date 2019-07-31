@@ -55,17 +55,11 @@ const ProgressSlider = ({
 ProgressSlider.propTypes = {
     className   : PropTypes.string,
     current_tick: PropTypes.number,
-    expiry_time : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    is_loading : PropTypes.bool,
-    server_time: PropTypes.object,
-    start_time : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    ticks_count: PropTypes.number,
+    expiry_time : PropTypes.number,
+    is_loading  : PropTypes.bool,
+    server_time : PropTypes.object,
+    start_time  : PropTypes.number,
+    ticks_count : PropTypes.number,
 };
 
 export default connect(({ common }) => ({

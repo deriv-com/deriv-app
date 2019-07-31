@@ -67,7 +67,7 @@ StartDate.propTypes = {
     sessions         : MobxPropTypes.arrayOrObservableArray,
     start_date       : PropTypes.number,
     start_dates_list : MobxPropTypes.arrayOrObservableArray,
-    start_time       : PropTypes.string,
+    start_time       : PropTypes.number,
     validation_errors: PropTypes.object,
 };
 

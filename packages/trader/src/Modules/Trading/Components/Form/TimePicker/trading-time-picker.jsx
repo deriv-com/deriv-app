@@ -48,7 +48,7 @@ TradingTimePicker.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    expiry_time       : PropTypes.string,
+    expiry_time       : PropTypes.number,
     market_close_times: PropTypes.array,
     name              : PropTypes.string,
     onChange          : PropTypes.func,

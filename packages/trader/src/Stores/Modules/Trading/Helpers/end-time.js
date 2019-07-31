@@ -9,13 +9,13 @@ export const getSelectedTime = (
     market_open_time,
 ) => {
     if (selected_time.isAfter(market_open_time)) {
-        return getClosestTime(selected_time, 5).format('HH:mm');
+        return getClosestTime(selected_time, 5).unix();
     }
     if (market_open_time.isAfter(server_time)) {
-        return getClosestTime(market_open_time, 5).format('HH:mm');
+        return getClosestTime(market_open_time, 5).unix();
     }
 
-    return getClosestTime(server_time, 5).format('HH:mm');
+    return getClosestTime(server_time, 5).unix();
 };
 
 export const getBoundaries = (

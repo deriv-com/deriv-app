@@ -3,6 +3,10 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Icon              from 'Assets/icon.jsx';
+import {
+    epochToMoment,
+    setTime,
+    toMoment }           from 'Utils/Date';
 import Dialog            from './dialog.jsx';
 import InputField        from '../InputField';
 
@@ -23,7 +27,10 @@ class TimePicker extends React.PureComponent {
 
     handleChange = (arg) => {
         // To handle nativepicker;
-        const value = typeof arg === 'object' ? arg.target.selected_time : arg;
+        const value = typeof arg === 'object' ?
+            arg.target.selected_time
+            :
+            setTime(toMoment(), arg).unix();
 
         if (value !== this.props.selected_time) {
             this.props.onChange({ target: { name: this.props.name, value } });
@@ -49,15 +56,21 @@ class TimePicker extends React.PureComponent {
 
     render() {
         const prefix_class = 'time-picker';
+
         const {
-            selected_time,
-            name,
-            is_nativepicker,
-            placeholder,
             end_time,
+            is_nativepicker,
+            name,
+            placeholder,
+            selected_time,
             start_time,
             validation_errors,
         } = this.props;
+
+        const max = end_time.format('HH:mm');
+        const min = start_time.format('HH:mm');
+        const value = epochToMoment(selected_time).format('HH:mm');
+
         return (
             <div
                 ref={this.saveRef}
@@ -66,30 +79,34 @@ class TimePicker extends React.PureComponent {
             >
                 {
                     is_nativepicker
-                        ? <input
-                            type='time'
+                        ?
+                        <input
                             id={`${prefix_class}-input`}
-                            value={selected_time}
-                            onChange={this.handleChange}
+                            max={max} /** max should be in String */
+                            min={min} /** min should be in String */
                             name={name}
-                            min={start_time}
-                            max={end_time}
+                            onChange={this.handleChange}
+                            type='time'
+                            value={value} /** value should be in String */
                         />
                         : (
                             <React.Fragment>
                                 <InputField
+                                    className={classNames(`${prefix_class}-input`)}
                                     error_messages={validation_errors}
-                                    type='text'
+                                    id={`${prefix_class}-input`}
                                     is_hj_whitelisted
                                     is_read_only
-                                    id={`${prefix_class}-input`}
-                                    className={classNames(`${prefix_class}-input`)}
-                                    value={`${selected_time} GMT`}
-                                    onClick={this.toggleDropDown}
                                     name={name}
+                                    onClick={this.toggleDropDown}
                                     placeholder={placeholder}
+                                    type='text'
+                                    value={`${value} GMT`}
                                 />
-                                <Icon icon='IconClock' className={`${prefix_class}__icon`} />
+                                <Icon
+                                    className={`${prefix_class}__icon`}
+                                    icon='IconClock'
+                                />
                                 <CSSTransition
                                     in={ this.state.is_open }
                                     classNames={{
@@ -101,12 +118,12 @@ class TimePicker extends React.PureComponent {
                                     unmountOnExit
                                 >
                                     <Dialog
+                                        className='from-left'
                                         end_time={end_time}
-                                        start_time={start_time}
-                                        className={'from-left'}
                                         onChange={this.handleChange}
                                         preClass={prefix_class}
-                                        selected_time={selected_time}
+                                        selected_time={value}
+                                        start_time={start_time}
                                     />
                                 </CSSTransition>
                             </React.Fragment>
@@ -118,23 +135,15 @@ class TimePicker extends React.PureComponent {
 }
 
 TimePicker.propTypes = {
-    end_time: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    end_time       : PropTypes.object, // moment object
     is_clearable   : PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     name           : PropTypes.string,
     onChange       : PropTypes.func,
     padding        : PropTypes.string,
     placeholder    : PropTypes.string,
-    selected_time  : PropTypes.string,
-    start_time     : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    selected_time  : PropTypes.number, // epoch
+    start_time     : PropTypes.object, // moment object
 };
 
 export default TimePicker;

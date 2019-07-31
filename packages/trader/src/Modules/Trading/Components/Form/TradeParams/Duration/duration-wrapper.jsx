@@ -174,7 +174,6 @@ DurationWrapper.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    expiry_time         : PropTypes.string,
     expiry_type         : PropTypes.string,
     getDurationFromUnit : PropTypes.func,
     is_advanced_duration: PropTypes.bool,
@@ -189,7 +188,6 @@ DurationWrapper.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    start_time: PropTypes.string,
     symbol    : PropTypes.string,
 };
 
@@ -203,7 +201,6 @@ export default connect(({ modules, ui }) => ({
     duration_min_max      : modules.trade.duration_min_max,
     duration_t            : ui.duration_t,
     expiry_date           : modules.trade.expiry_date,
-    expiry_time           : modules.trade.expiry_time,
     expiry_type           : modules.trade.expiry_type,
     getDurationFromUnit   : ui.getDurationFromUnit,
     is_advanced_duration  : ui.is_advanced_duration,

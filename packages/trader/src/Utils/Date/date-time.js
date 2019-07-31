@@ -40,7 +40,8 @@ export const toMoment = value => {
  * @return {moment} a new moment object of result
  */
 export const setTime = (moment_obj, time) => {
-    const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
+    const time_str = (typeof time === 'number') ? epochToMoment(time).format('HH:mm:ss') : time;
+    const [hour, minute, second] = time_str ? time_str.split(':') : [0, 0, 0];
     moment_obj.hour(hour).minute(minute || 0).second(second || 0);
     return moment_obj;
 };

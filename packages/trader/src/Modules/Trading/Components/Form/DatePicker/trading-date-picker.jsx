@@ -103,7 +103,7 @@ TradingDatePicker.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    start_time       : PropTypes.string,
+    start_time       : PropTypes.number,
     symbol           : PropTypes.string,
     validation_errors: PropTypes.object,
 };

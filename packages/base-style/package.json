@@ -8,7 +8,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MahboobehMohammadi/deriv-app.git"
+    "url": "git+https://github.com/binary-com/deriv-app.git"
   },
   "scripts": {
     "start": "echo \"Error: run start from root\"",

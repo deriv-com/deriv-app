@@ -58,13 +58,13 @@ export const createMarkerStartTime = (contract_info) => {
 };
 
 // -------------------- Spots --------------------
-export const createMarkerSpotEntry = (contract_info, decimal_places) => {
+export const createMarkerSpotEntry = (contract_info) => {
     if (!contract_info.entry_tick_time) return false;
 
     let marker_type      = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
     let component_props  = {};
 
-    const entry_tick = decimal_places ? (+contract_info.entry_tick).toFixed(decimal_places) : contract_info.entry_tick;
+    const entry_tick = contract_info.entry_tick_display_value;
 
     const spot_has_label = isDigitContract(contract_info.contract_type);
     if (spot_has_label) {
@@ -85,7 +85,7 @@ export const createMarkerSpotEntry = (contract_info, decimal_places) => {
     );
 };
 
-export const createMarkerSpotExit = (contract_info, tick, decimal_places, idx) => {
+export const createMarkerSpotExit = (contract_info, tick, idx) => {
     if (!contract_info.exit_tick_time) return false;
     const is_user_sold = isUserSold(contract_info);
 
@@ -95,7 +95,7 @@ export const createMarkerSpotExit = (contract_info, tick, decimal_places, idx) =
         align_label = tick.align_label;
     }
 
-    const exit_tick = decimal_places ? (+contract_info.exit_tick).toFixed(decimal_places) : contract_info.exit_tick;
+    const exit_tick = contract_info.exit_tick_display_value;
 
     return createMarkerConfig(
         !is_user_sold ? MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type,
@@ -112,9 +112,9 @@ export const createMarkerSpotExit = (contract_info, tick, decimal_places, idx) =
     );
 };
 
-export const createMarkerSpotMiddle = (contract_info, tick, decimal_places, idx) => {
+export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     const spot_count = getSpotCount(contract_info, idx);
-    const spot       = decimal_places ? (+tick.tick).toFixed(decimal_places) : tick.tick;
+    const spot       = tick.tick_display_value;
 
     const marker_config = createMarkerConfig(
         MARKER_TYPES_CONFIG.SPOT_MIDDLE.type,

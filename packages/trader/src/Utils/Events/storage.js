@@ -2,7 +2,7 @@ export const setStorageEvents = (root_store) => {
     window.addEventListener('storage', (evt) => {
         switch (evt.key) {
             case 'active_loginid':
-                if (document.hidden && (evt.newValue === '' || !window.is_logging_in)) {
+                if (document.hidden) {
                     window.location.reload();
                 }
                 break;

@@ -1,4 +1,5 @@
 import {
+    toJS,
     action,
     computed,
     extendObservable,
@@ -10,7 +11,6 @@ import BinarySocket           from '_common/base/socket_base';
 import ServerTime             from '_common/base/server_time';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
-import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDigitInfo,
@@ -23,7 +23,13 @@ import {
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
 
+import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
+import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
+import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+
 setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+
+
 
 export default class ContractReplayStore extends BaseStore {
     // --- Observable properties ---
@@ -32,6 +38,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @observable has_error         = false;
     @observable error_message     = '';
+    @observable is_chart_loading  = true;
     @observable is_sell_requested = false;
 
     // ---- Replay Contract Config ----
@@ -43,6 +50,7 @@ export default class ContractReplayStore extends BaseStore {
 
     // ---- chart props
     @observable margin;
+    @observable barriers_array = [];
 
     // ---- Normal properties ---
     chart_type          = 'mountain';
@@ -92,6 +100,7 @@ export default class ContractReplayStore extends BaseStore {
         this.is_ongoing_contract = false;
         this.is_static_chart     = false;
         this.is_sell_requested   = false;
+        this.is_chart_loading    = true;
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
@@ -104,16 +113,17 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     populateConfig(response) {
         if ('error' in response) {
-            this.has_error       = true;
-            this.smart_chart.setIsChartLoading(false);
+            this.has_error        = true;
+            this.is_chart_loading = false;
             return;
         }
+        console.warn(response);
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
             this.smart_chart.setContractMode(false);
-            this.smart_chart.setIsChartLoading(false);
+            this.is_chart_loading = false;
             return;
         }
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
@@ -150,11 +160,11 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        createChartBarrier(this.smart_chart, this.contract_info, this.root_store.ui.is_dark_mode_on);
+        this.buildBarriersArray(this.contract_info, this.root_store.ui.is_dark_mode_on);
         createChartMarkers(this.smart_chart, this.contract_info);
         this.handleDigits(this.contract_info);
 
-        this.smart_chart.setIsChartLoading(false);
+        this.is_chart_loading = false;
     }
 
     @action.bound
@@ -264,4 +274,30 @@ export default class ContractReplayStore extends BaseStore {
         }
         return WS.sendRequest(request_object);
     };
+
+    buildBarriersArray(contract_info, is_dark_mode) {
+        let result = [];
+        if (contract_info) {
+            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+
+            if (barrier || high_barrier) { // create barrier only when it's available in response
+                const main_barrier = new ChartBarrierStore(
+                    barrier || high_barrier,
+                    low_barrier,
+                    null,
+                    {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        line_style   : BARRIER_LINE_STYLES.SOLID,
+                        not_draggable: true,
+                    },
+                );
+
+                main_barrier.updateBarrierShade(true, contract_type);
+                result = [toJS(main_barrier)];
+            }
+        }
+        // TODO: don't update the array if not changed
+        this.barriers_array = result;
+    }
 }
+
+

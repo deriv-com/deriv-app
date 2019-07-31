@@ -20,7 +20,6 @@ class ContractReplay extends React.Component {
     };
 
     componentDidMount() {
-        this.props.setChartLoader(true);
         this.props.showBlur();
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
@@ -135,7 +134,6 @@ ContractReplay.propTypes = {
     removeError      : PropTypes.func,
     routes           : PropTypes.arrayOf(PropTypes.object),
     server_time      : PropTypes.object,
-    setChartLoader   : PropTypes.func,
     showBlur         : PropTypes.func,
     status           : PropTypes.string,
 };
@@ -154,8 +152,7 @@ export default withRouter(connect(
         onUnmount        : modules.contract_replay.onUnmount,
         removeError      : modules.contract_replay.removeErrorMessage,
         status           : modules.contract_replay.indicative_status,
-        is_chart_loading : modules.smart_chart.is_chart_loading,
-        setChartLoader   : modules.smart_chart.setIsChartLoading,
+        is_chart_loading : modules.contract_replay.is_chart_loading,
         hideBlur         : ui.hideRouteBlur,
         is_dark_theme    : ui.is_dark_mode_on,
         showBlur         : ui.showRouteBlur,
@@ -282,11 +279,11 @@ const ReplayChart = connect(
             wsSendRequest  : contract_replay.wsSendRequest,
             wsForgetStream : contract_replay.wsForgetStream,
             is_static_chart: contract_replay.is_static_chart,
+            barriers_array : contract_replay.barriers_array,
 
-            onMount       : modules.smart_chart.onMount,
-            onUnmount     : modules.smart_chart.onUnmount,
-            barriers_array: modules.smart_chart.barriers_array,
-            markers_array : modules.smart_chart.markers_array,
+            onMount      : modules.smart_chart.onMount,
+            onUnmount    : modules.smart_chart.onUnmount,
+            markers_array: modules.smart_chart.markers_array,
         });
     }
 )(Chart);

@@ -36,7 +36,7 @@ const marker_lines = {
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
 };
 
-const addMarker = async (marker_obj, SmartChartStore, contract_info) => {
+const addMarker = (marker_obj, SmartChartStore, contract_info) => {
     Object.keys(marker_obj).forEach(createMarker);
 
     function createMarker(marker_type) {
@@ -61,7 +61,7 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const addTickMarker = async (SmartChartStore, contract_info) => {
+const addTickMarker = (SmartChartStore, contract_info) => {
     const tick_stream = unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
 
     tick_stream.forEach((tick, idx) => {

@@ -199,7 +199,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            const chart_favorites = JSON.parse(LocalStore.get('cq-favorites'));
+            const chart_favorites = LocalStore.get('cq-favorites') ? JSON.parse(LocalStore.get('cq-favorites')) : null;
             workerJob(defaultSymbolWorker, this.active_symbols, chart_favorites).then(symbol => {
                 this.processNewValuesAsync({ symbol });
             });

@@ -7,6 +7,7 @@ import 'Sass/app/modules/modals.scss';
 // const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
 
 const Modals = ({
+    clearPurchaseInfo,
     is_initial_idle,
     is_denial_of_service_modal_visible,
     is_unsupported_contract_modal_visible,
@@ -40,6 +41,7 @@ const Modals = ({
     const servicesErrorModalOnConfirm = () => {
         toggleServicesErrorModal(false);
         if (services_error.type === 'buy') {
+            clearPurchaseInfo();
             resetPurchase();
         }
     };
@@ -95,7 +97,10 @@ export default connect(({ ui, client, modules, common }) => ({
     is_market_unavailable_visible        : ui.has_only_forward_starting_contracts,
     is_services_error_visible            : ui.is_services_error_visible,
     is_unsupported_contract_modal_visible: ui.is_unsupported_contract_modal_visible,
+    proposal_info                        : modules.trade.proposal_info,
+    purchase_info                        : modules.trade.purchase_info,
     resetPreviousSymbol                  : modules.trade.resetPreviousSymbol,
+    clearPurchaseInfo                    : modules.trade.clearPurchaseInfo,
     resetPurchase                        : modules.trade.requestProposal,
     services_error                       : common.services_error,
     switchAccount                        : client.switchAccount,

@@ -83,7 +83,12 @@ export default class ContractTradeStore extends BaseStore {
         this.smart_chart.updateMargin((end_time || date_expiry) - date_start);
 
         createChartBarrier(this.smart_chart, this.contract_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.contract_info);
+        const markers = createChartMarkers(this.contract_info);
+        markers.forEach(marker => {
+            if (!(marker.type in this.smart_chart.markers)) {
+                this.smart_chart.createMarker(marker);
+            }
+        });
 
         if (this.smart_chart.is_chart_ready) {
             this.smart_chart.setIsChartLoading(false);
@@ -106,7 +111,13 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     drawContractStartTime(date_start, longcode, contract_id) {
         this.contract_info.longcode = longcode;
-        createChartMarkers(this.root_store.modules.smart_chart, { date_start });
+        const smart_chart = this.root_store.modules.smart_chart;
+        const markers = createChartMarkers({ date_start });
+        markers.forEach(marker => {
+            if (!(marker.type in smart_chart.markers)) {
+                smart_chart.createMarker(marker);
+            }
+        });
         this.onMountBuy(contract_id);
     }
 

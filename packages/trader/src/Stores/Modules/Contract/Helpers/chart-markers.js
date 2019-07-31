@@ -12,17 +12,31 @@ import {
     getEndTime }               from './logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
-export const createChartMarkers = (SmartChartStore, contract_info) => {
+export const createChartMarkers = (contract_info) => {
+    let markers = [];
     if (contract_info) {
         const end_time = getEndTime(contract_info);
         const chart_type = getChartType(contract_info.date_start, end_time);
+
         if (contract_info.tick_count) {
-            addTickMarker(SmartChartStore, contract_info);
+            const tick_markers = createTickMarkers(contract_info);
+            markers.push(...tick_markers);
         } else if (chart_type !== 'candle') {
-            addMarker(marker_spots, SmartChartStore, contract_info);
+
+            const spot_markers = Object.keys(marker_spots).map(
+                type => marker_spots[type](contract_info)
+            );
+            markers.push(...spot_markers);
         }
-        addMarker(marker_lines, SmartChartStore, contract_info);
+        const line_markers = Object.keys(marker_lines).map(
+            type => marker_lines[type](contract_info)
+        );
+        markers.push(...line_markers);
+
+        markers = markers.filter(m => !!m);
     }
+
+    return markers;
 };
 
 const marker_spots = {
@@ -34,19 +48,6 @@ const marker_lines = {
     [MARKER_TYPES_CONFIG.LINE_START.type]   : createMarkerStartTime,
     [MARKER_TYPES_CONFIG.LINE_END.type]     : createMarkerEndTime,
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
-};
-
-const addMarker = (marker_obj, SmartChartStore, contract_info) => {
-    Object.keys(marker_obj).forEach(createMarker);
-
-    function createMarker(marker_type) {
-        if (marker_type in SmartChartStore.markers) return;
-
-        const marker_config = marker_obj[marker_type](contract_info);
-        if (marker_config) {
-            SmartChartStore.createMarker(marker_config);
-        }
-    }
 };
 
 const addLabelAlignment = (tick, idx, arr) => {
@@ -61,8 +62,9 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const addTickMarker = (SmartChartStore, contract_info) => {
+const createTickMarkers = (contract_info) => {
     const tick_stream = unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
+    const result = [];
 
     tick_stream.forEach((tick, idx) => {
         const is_entry_spot  = idx === 0 && +tick.epoch !== contract_info.exit_tick_time;
@@ -81,9 +83,8 @@ const addTickMarker = (SmartChartStore, contract_info) => {
         }
 
         if (marker_config) {
-            if (marker_config.type in SmartChartStore.markers) return;
-
-            SmartChartStore.createMarker(marker_config);
+            result.push(marker_config);
         }
     });
+    return result;
 };

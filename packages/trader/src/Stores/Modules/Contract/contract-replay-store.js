@@ -51,9 +51,9 @@ export default class ContractReplayStore extends BaseStore {
     // ---- chart props
     @observable margin;
     @observable barriers_array = [];
+    @observable markers_array = [];
 
     // ---- Normal properties ---
-    chart_type          = 'mountain';
     is_ongoing_contract = false;
 
     // Replay Contract Indicative Movement
@@ -117,7 +117,6 @@ export default class ContractReplayStore extends BaseStore {
             this.is_chart_loading = false;
             return;
         }
-        console.warn(response);
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
@@ -160,8 +159,10 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        this.buildBarriersArray(this.contract_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.contract_info);
+        // TODO: don't update the barriers & markers if they are not changed
+        this.barriers_array = this.createBarriersArray(this.contract_info, this.root_store.ui.is_dark_mode_on);
+        this.markers_array = createChartMarkers(this.contract_info);
+
         this.handleDigits(this.contract_info);
 
         this.is_chart_loading = false;
@@ -274,12 +275,13 @@ export default class ContractReplayStore extends BaseStore {
         return WS.sendRequest(request_object);
     };
 
-    buildBarriersArray(contract_info, is_dark_mode) {
+    createBarriersArray = (contract_info, is_dark_mode) => {
         let result = [];
         if (contract_info) {
             const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
 
-            if (barrier || high_barrier) { // create barrier only when it's available in response
+            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+                // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(
                     barrier || high_barrier,
                     low_barrier,
@@ -294,8 +296,7 @@ export default class ContractReplayStore extends BaseStore {
                 result = [toJS(main_barrier)];
             }
         }
-        // TODO: don't update the array if not changed
-        this.barriers_array = result;
+        return result;
     }
 }
 

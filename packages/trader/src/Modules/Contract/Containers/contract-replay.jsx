@@ -1,6 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
+import { SmartChart } from 'smartcharts-beta';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
@@ -9,6 +10,11 @@ import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
+// --------------------------
+import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
+import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
+import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
+import { symbolChange }        from '../../SmartChart/Helpers/symbol';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -168,13 +174,6 @@ export default withRouter(connect(
     })
 )(ContractReplay));
 
-// --------------------------
-import { SmartChart } from 'smartcharts-beta';
-import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
-import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
-import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
-import { symbolChange }        from '../../SmartChart/Helpers/symbol';
-
 class Chart extends React.Component {
     componentDidMount() { this.props.onMount(); }
 
@@ -288,10 +287,10 @@ const ReplayChart = connect(
             wsForgetStream : contract_replay.wsForgetStream,
             is_static_chart: contract_replay.is_static_chart,
             barriers_array : contract_replay.barriers_array,
+            markers_array  : contract_replay.markers_array,
 
-            onMount      : modules.smart_chart.onMount,
-            onUnmount    : modules.smart_chart.onUnmount,
-            markers_array: modules.smart_chart.markers_array,
+            onMount  : modules.smart_chart.onMount,
+            onUnmount: modules.smart_chart.onUnmount,
         });
     }
 )(Chart);

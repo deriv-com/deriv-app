@@ -1,11 +1,12 @@
 import React        from 'react';
 import BinarySocket from '_common/base/socket_base';
-import { localize } from 'App/i18n';
 import { urlFor }   from '_common/url';
 import Localize     from 'App/Components/Elements/localize.jsx';
 import Button       from 'App/Components/Form/button.jsx';
+import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';
+import 'Sass/app/_common/components/wip.scss';
 
 const onClick = (e) => {
     e.preventDefault();

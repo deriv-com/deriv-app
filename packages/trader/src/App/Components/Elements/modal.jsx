@@ -15,18 +15,18 @@ class ModalElement extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.el.classList.add('modal');
         this.props.showFullBlur();
         this.state.modal_root.appendChild(this.el);
-    }
+    };
 
-    componentWillUnmount() {
+    componentWillUnmount = () => {
         document.removeEventListener('mousedown', this.handleClickOutside);
         this.state.modal_root.removeChild(this.el);
         this.props.hideFullBlur();
-    }
+    };
 
     handleClickOutside = (event) => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "echo \"Error: no start specified\"",
     "serve": "webpack --mode=development --progress --watch",
-    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
+    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress  --watch",
     "test": "echo \"Error: no test specified\"",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",
@@ -17,6 +17,15 @@
   "author": "Deriv",
   "license": "Apache-2.0",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.0.3",
@@ -39,6 +48,8 @@
     "webpack-merge-and-include-globally": "^2.1.16"
   },
   "dependencies": {
-    "deriv-base-style": "^1.0.0"
+    "deriv-base-style": "^1.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }

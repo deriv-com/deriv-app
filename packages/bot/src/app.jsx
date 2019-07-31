@@ -1,7 +1,8 @@
 
 import { Provider } from 'mobx-react';
 import React        from 'react';
-import Bot          from './components/bot.jsx';
+import Button       from 'deriv-components/lib/button'; // eslint-disable-line import/no-unresolved
+// import Bot          from './components/bot.jsx';
 import RootStore    from './stores';
 
 class App extends React.Component {
@@ -10,7 +11,8 @@ class App extends React.Component {
     render() {
         return (
             <Provider {...this.rootStore}>
-                <Bot>{this.rootStore.bot.title}</Bot>
+                {/* <Bot>{this.rootStore.bot.title}</Bot> */}
+                <Button text='test button' className='button-primary' />
             </Provider>
         );
     }

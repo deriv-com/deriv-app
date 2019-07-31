@@ -6,7 +6,7 @@ import Icon              from 'Assets/icon.jsx';
 import Dialog            from './dialog.jsx';
 import InputField        from '../InputField';
 
-class TimePicker extends React.Component {
+class TimePicker extends React.PureComponent {
     state = { is_open: false };
 
     componentDidMount() {

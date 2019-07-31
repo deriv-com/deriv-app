@@ -15,7 +15,7 @@ import { localize }         from 'App/i18n';
 import { getTradingEvents } from './helpers';
 import Calendar             from '../../Elements/Calendar';
 
-class DatePicker extends React.Component {
+class DatePicker extends React.PureComponent {
     state = {
         date_value           : '',
         holidays             : [],

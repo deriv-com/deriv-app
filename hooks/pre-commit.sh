@@ -5,7 +5,7 @@
 
 for file in `git diff --name-only`:
 do
-    if [[ $file =~ \.sh|s(c|a)ss ]]; then
+    if [[ $file =~ \.css|s(c|a)ss ]]; then
         npm run test:stylelint
     fi
 

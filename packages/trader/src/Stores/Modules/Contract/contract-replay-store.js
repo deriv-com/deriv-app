@@ -3,8 +3,11 @@ import {
     computed,
     extendObservable,
     observable }              from 'mobx';
+import { setSmartChartsPublicPath } from 'smartcharts-beta';
+import { getUrlBase }          from '_common/url';
 import { localize }           from 'App/i18n';
 import BinarySocket           from '_common/base/socket_base';
+import ServerTime             from '_common/base/server_time';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
@@ -20,6 +23,8 @@ import {
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
 
+setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+
 export default class ContractReplayStore extends BaseStore {
     // --- Observable properties ---
     @observable digits_info = observable.object({});
@@ -34,6 +39,10 @@ export default class ContractReplayStore extends BaseStore {
     @observable indicative_status;
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
+
+
+    // ---- chart props
+    @observable margin;
 
     // ---- Normal properties ---
     chart_type          = 'mountain';
@@ -126,8 +135,9 @@ export default class ContractReplayStore extends BaseStore {
 
         const end_time = getEndTime(this.contract_info);
 
-        this.smart_chart.updateMargin(
-            (end_time || this.contract_info.date_expiry) - this.contract_info.date_start);
+        this.updateMargin(
+            (end_time || this.contract_info.date_expiry) - this.contract_info.date_start
+        );
 
         if (!end_time) this.is_ongoing_contract = true;
 
@@ -145,6 +155,15 @@ export default class ContractReplayStore extends BaseStore {
         this.handleDigits(this.contract_info);
 
         this.smart_chart.setIsChartLoading(false);
+    }
+
+    @action.bound
+    updateMargin(duration) {
+        const granularity = this.contract_config.granularity;
+
+        this.margin = Math.floor(
+            !granularity ?  (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity
+        );
     }
 
     @action.bound
@@ -207,7 +226,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @computed
     get contract_config() {
-        return getChartConfig(this.contract_info, this.is_digit_contract, false);
+        return getChartConfig(this.contract_info);
     }
 
     @computed
@@ -224,4 +243,25 @@ export default class ContractReplayStore extends BaseStore {
     get is_digit_contract() {
         return isDigitContract(this.contract_info.contract_type);
     }
+
+    // TODO: these can be shared between contract-replay-store.js & contract-trade-store.js
+    // ---------- WS ----------
+    wsSubscribe = (request_object, callback) => {
+        if (request_object.subscribe === 1) {
+            WS.subscribeTicksHistory({ ...request_object }, callback);
+        }
+    };
+
+    wsForget = (match_values, callback) => WS.forget('ticks_history', callback, match_values);
+    wsForgetStream = (stream_id) => WS.forgetStream(stream_id);
+
+    wsSendRequest = (request_object) => {
+        if (request_object.time) {
+            return ServerTime.timePromise.then(() => ({
+                msg_type: 'time',
+                time    : ServerTime.get().unix(),
+            }));
+        }
+        return WS.sendRequest(request_object);
+    };
 }

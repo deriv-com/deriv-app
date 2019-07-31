@@ -12,7 +12,7 @@ import Icon                 from 'Assets/icon.jsx';
 import AppRoutes            from 'Constants/routes';
 import { localize }         from 'App/i18n';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+// const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -45,7 +45,6 @@ class ContractReplay extends React.Component {
 
     render() {
         const {
-            config,
             contract_info,
             digits_info,
             display_status,
@@ -55,7 +54,6 @@ class ContractReplay extends React.Component {
             is_digit_contract,
             is_ended,
             is_sell_requested,
-            is_static_chart,
             location,
             onClickSell,
             removeError,
@@ -90,9 +88,8 @@ class ContractReplay extends React.Component {
                         </div>
                         <NotificationMessages />
                         <ChartLoader is_visible={is_chart_loading} />
-                        {(!!(contract_info.underlying) && !isEmptyObject(config)) &&
-                        <SmartChart
-                            chartControlsWidgets={null}
+                        { contract_info.underlying  &&
+                        <ReplayChart
                             Digits={
                                 <Digits
                                     contract_info={contract_info}
@@ -110,10 +107,7 @@ class ContractReplay extends React.Component {
                                     removeError={removeError}
                                 />
                             }
-                            is_static_chart={is_static_chart}
-                            should_show_last_digit_stats={false}
                             symbol={contract_info.underlying}
-                            {...config}
                         />
                         }
                     </div>
@@ -124,7 +118,6 @@ class ContractReplay extends React.Component {
 }
 
 ContractReplay.propTypes = {
-    config           : PropTypes.object,
     contract_id      : PropTypes.number,
     contract_info    : PropTypes.object,
     digits_info      : PropTypes.object,
@@ -136,7 +129,6 @@ ContractReplay.propTypes = {
     is_dark_theme    : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_ended         : PropTypes.bool,
-    is_static_chart  : PropTypes.bool,
     location         : PropTypes.object,
     onMount          : PropTypes.func,
     onUnmount        : PropTypes.func,
@@ -150,7 +142,6 @@ ContractReplay.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        config           : modules.contract_replay.contract_config,
         contract_info    : modules.contract_replay.contract_info,
         digits_info      : modules.contract_replay.digits_info,
         display_status   : modules.contract_replay.display_status,
@@ -158,7 +149,6 @@ export default withRouter(connect(
         is_digit_contract: modules.contract_replay.is_digit_contract,
         is_ended         : modules.contract_replay.is_ended,
         is_sell_requested: modules.contract_replay.is_sell_requested,
-        is_static_chart  : modules.contract_replay.is_static_chart,
         onClickSell      : modules.contract_replay.onClickSell,
         onMount          : modules.contract_replay.onMount,
         onUnmount        : modules.contract_replay.onUnmount,
@@ -172,3 +162,131 @@ export default withRouter(connect(
 
     })
 )(ContractReplay));
+
+// --------------------------
+import { SmartChart } from 'smartcharts-beta';
+import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
+import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
+import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
+import { symbolChange }        from '../../SmartChart/Helpers/symbol';
+
+class Chart extends React.Component {
+    componentDidMount() { this.props.onMount(); }
+
+    componentWillUnmount() { this.props.onUnmount(); }
+
+    topWidgets = () => (
+        <TopWidgets
+            InfoBox={this.props.InfoBox}
+            is_title_enabled={false}
+            onSymbolChange={symbolChange(this.props.onSymbolChange)}
+        />
+    );
+
+    bottomWidgets = () => (
+        <BottomWidgets Digits={this.props.Digits} />
+    );
+
+    render() {
+        console.warn(this.props);
+        return (
+            <SmartChart
+                barriers={this.props.barriers_array}
+                bottomWidgets={this.props.is_digit_contract ?  this.bottomWidgets : null}
+                chartControlsWidgets={null}
+                chartType={this.props.chart_type}
+                endEpoch={this.props.end_epoch}
+                margin={this.props.margin || null}
+                isMobile={this.props.is_mobile}
+                granularity={this.props.granularity}
+                requestAPI={this.props.wsSendRequest}
+                requestForget={this.props.wsForget}
+                requestForgetStream={this.props.wsForgetStream}
+                requestSubscribe={this.props.wsSubscribe}
+                settings={this.props.settings}
+                startEpoch={this.props.start_epoch}
+                scrollToEpoch={this.props.scroll_to_epoch}
+                scrollToEpochOffset={this.props.scroll_to_offset}
+                symbol={this.props.symbol}
+                topWidgets={this.topWidgets}
+                isConnectionOpened={this.props.is_socket_opened}
+                isStaticChart={this.props.is_static_chart}
+                shouldFetchTradingTimes={!this.props.end_epoch}
+            >
+                { this.props.markers_array.map((marker, idx) => (
+                    <ChartMarker
+                        key={idx}
+                        marker_config={marker.marker_config}
+                        marker_content_props={marker.content_config}
+                        is_bottom_widget_visible={this.props.is_digit_contract}
+                    />
+                ))}
+            </SmartChart>
+        );
+    }
+}
+
+Chart.propTypes = {
+    barriers_array  : PropTypes.array,
+    BottomWidgets   : PropTypes.node,
+    chart_type      : PropTypes.string,
+    end_epoch       : PropTypes.number,
+    granularity     : PropTypes.number,
+    InfoBox         : PropTypes.node,
+    is_mobile       : PropTypes.bool,
+    is_socket_opened: PropTypes.bool,
+    is_static_chart : PropTypes.bool,
+    margin          : PropTypes.number,
+    markers_array   : PropTypes.array,
+    onMount         : PropTypes.func,
+    onSymbolChange  : PropTypes.func,
+    onUnmount       : PropTypes.func,
+    replay_controls : PropTypes.object,
+    scroll_to_epoch : PropTypes.number,
+    settings        : PropTypes.object,
+    start_epoch     : PropTypes.number,
+    symbol          : PropTypes.string,
+    wsForget        : PropTypes.func,
+    wsForgetStream  : PropTypes.func,
+    wsSendRequest   : PropTypes.func,
+    wsSubscribe     : PropTypes.func,
+};
+
+const ReplayChart = connect(
+    ({ modules, ui, common }) => {
+        const contract_replay = modules.contract_replay;
+        const contract_config = modules.contract_replay.contract_config;
+        const settings = {
+            lang                        : common.current_language,
+            theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
+            position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
+            countdown                   : ui.is_chart_countdown_visible,
+            assetInformation            : false, // ui.is_chart_asset_info_visible,
+            isHighestLowestMarkerEnabled: false, // !this.is_contract_mode, // TODO: Pending UI
+        };
+        return ({
+            end_epoch      : contract_config.end_epoch,
+            chart_type     : contract_config.chart_type,
+            start_epoch    : contract_config.start_epoch,
+            granularity    : contract_config.granularity,
+            scroll_to_epoch: contract_config.scroll_to_epoch,
+
+            settings,
+            is_mobile        : ui.is_mobile,
+            is_socket_opened : common.is_socket_opened,
+            is_digit_contract: modules.contract_replay.is_digit_contract,
+
+            margin         : contract_replay.margin,
+            wsForget       : contract_replay.wsForget,
+            wsSubscribe    : contract_replay.wsSubscribe,
+            wsSendRequest  : contract_replay.wsSendRequest,
+            wsForgetStream : contract_replay.wsForgetStream,
+            is_static_chart: contract_replay.is_static_chart,
+
+            onMount       : modules.smart_chart.onMount,
+            onUnmount     : modules.smart_chart.onUnmount,
+            barriers_array: modules.smart_chart.barriers_array,
+            markers_array : modules.smart_chart.markers_array,
+        });
+    }
+)(Chart);

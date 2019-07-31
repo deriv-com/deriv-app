@@ -202,11 +202,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        const { active_symbols, error } = this.smart_chart.should_refresh_active_symbols ?
-            // if SmartCharts has requested active_symbols, we wait for the response
-            await BinarySocket.wait('active_symbols')
-            : // else requests new active_symbols
-            await WS.activeSymbols({ forced: true });
+        // TODO: deosn't need to be forced? ¯\_(ツ)_/¯
+        const { active_symbols, error } = await WS.activeSymbols({ forced: true });
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
@@ -631,6 +628,7 @@ export default class TradeStore extends BaseStore {
             this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
         }, 15000);
 
+        // TODO: write a `clearTimeouts()` funciton and call it when those flags are set.
         const loading_interval = setInterval(() => {
             if (this.smart_chart) {
                 if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {

@@ -207,6 +207,7 @@ class Dropdown extends React.Component {
                             >
                                 {isArrayLike(this.props.list) ?
                                     <Items
+                                        index={this.state.curr_index}
                                         handleSelect={this.handleSelect}
                                         has_symbol={this.props.has_symbol}
                                         items={this.props.list}
@@ -217,6 +218,7 @@ class Dropdown extends React.Component {
                                         <React.Fragment key={key}>
                                             <div className='list__label'>{key}</div>
                                             <Items
+                                                index={this.state.curr_index}
                                                 handleSelect={this.handleSelect}
                                                 has_symbol={this.props.has_symbol}
                                                 items={this.props.list[key]}

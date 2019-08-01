@@ -437,6 +437,7 @@ export default class ClientStore extends BaseStore {
         this.selected_currency = '';
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
         this.root_store.ui.removeAllNotifications();
+        this.root_store.modules.trade.refresh();
         this.root_store.modules.trade.onMount();
     }
 

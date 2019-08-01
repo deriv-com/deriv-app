@@ -1,6 +1,5 @@
 import classNames        from 'classnames';
 import { isArrayLike }   from 'mobx';
-import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -15,7 +14,7 @@ import {
     getPrevIndex,
     getNextIndex }       from './helpers';
 
-class Dropdown extends React.Component {
+class Dropdown extends React.PureComponent {
     list_ref = React.createRef();
     state = {
         curr_index     : getItemFromValue(this.props.list, this.props.value).number,
@@ -255,4 +254,4 @@ Dropdown.propTypes = {
     ]),
 };
 
-export default observer(Dropdown);
+export default Dropdown;

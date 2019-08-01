@@ -1,0 +1,220 @@
+// Range Slider
+/** @define range-slider */
+.range-slider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+    box-sizing: border-box;
+
+    &__label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+        margin-bottom: 4px;
+    }
+    /* overriding firefox shadow pseudo element */
+    &__track[type=range]::-moz-focus-outer {
+        border: 0;
+    }
+    // TODO: remove once we have proper styling for input slider validation error
+    &__error {
+        .range-slider {
+            &__track[type=range] {
+                // Range Handle Thumb - Chrome / Webkit based browsers
+                &::-webkit-slider-thumb {
+                    background: $COLOR_RED;
+                }
+                // Range Handle Thumb - Firefox / Gecko based browsers
+                &::-moz-range-thumb {
+                    background: $COLOR_RED;
+                }
+            }
+            &__line {
+                background: $COLOR_RED !important;
+            }
+            &__ticks-step--marked {
+                background: $COLOR_RED !important;
+                border-color: $COLOR_RED !important;
+            }
+        }
+    }
+    &__track[type=range] {
+        position: relative;
+        // removal of !important is pending refactor in main trading sass file that overrides rules for input els
+        appearance: none !important;
+        width: 100% !important;
+        height: 2px;  // !important had to be removed to fix disappearing thumb on MS Edge
+        border-radius: 5px;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        @include themify($themes) {
+            background: themed('container_color');
+            border: none;
+        }
+
+        // Handles Track - MS Edge and IE
+        @supports (-ms-ime-align:auto) {
+            height: 14px;
+            position: relative;
+            top: -6px;
+        }
+        // Range Handle Thumb - Chrome / Webkit based browsers
+        &::-webkit-slider-thumb {
+            @include thumbStyle();
+            @include themify($themes) {
+                background: themed('slider_icon_color');
+            }
+        }
+        // Range Handle Thumb - Firefox / Gecko based browsers
+        &::-moz-range-thumb {
+            @include thumbStyle();
+            @include themify($themes) {
+                background: themed('slider_icon_color');
+            }
+        }
+        // Range Handle Thumb - Microsoft Edge
+        &::-ms-thumb {
+            @include thumbStyle();
+            @include themify($themes) {
+                background: themed('slider_icon_color');
+            }
+        }
+        &:hover, &:focus, &:active {
+            border: 0;
+            outline: none;
+        }
+        &:active, &:focus {
+            box-shadow: none !important;
+        }
+        &::-moz-range-track {
+            @include themify($themes) {
+                background: themed('container_color');
+            }
+        }
+        &::-ms-tooltip {
+            display: none;
+        }
+        &[type=range]::-ms-track {
+            /*example */
+            width: 100%;
+            height: 2px;
+            border-width: 6px 0;
+            @include themify($themes) {
+                background: themed('container_color');
+                border-color: themed('background_container_color');
+                color: themed('background_container_color');
+            }
+        }
+        &[type=range]::-ms-fill-upper {
+            height: 2px;
+            @include themify($themes) {
+                background: themed('container_color');
+            }
+        }
+        &[type=range]::-ms-fill-lower {
+            height: 2px;
+            @include themify($themes) {
+                background: themed('container_color');
+            }
+        }
+    }
+    &__ticks {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        left: 0;
+        top: -3px;
+        height: 0;
+
+        &-step {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+            @include themify($themes) {
+                border: 4px solid themed('container_color');
+                background: themed('container_color');
+            }
+
+            &--active, &--marked {
+                @include themify($themes) {
+                    background: themed('slider_icon_color');
+                    border-color: themed('slider_icon_color');
+                }
+            }
+            &--marked-hover {
+                @include themify($themes) {
+                    border-color: themed('slider_hover_color');
+                }
+            }
+            &--active {
+                visibility: hidden;
+                pointer-events: none;
+
+                &:after {
+                    content: '';
+                    width: 1em;
+                    height: 1em;
+                    position: absolute;
+                    display: block;
+                    top: 0;
+                    border-radius: 50%;
+                    @include themify($themes) {
+                        background: themed('slider_icon_color');
+                    }
+                }
+            }
+            &:hover:not(&--active) {
+                @include themify($themes) {
+                    background: themed('slider_icon_color');
+                    border-color: themed('slider_icon_color');
+                    box-shadow: 0 0 0 6px themed('slider_hover_color');
+                }
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    &__line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        pointer-events: none;
+        @include themify($themes) {
+            background: themed('slider_icon_color');
+        }
+
+        &--fill {
+            @include themify($themes) {
+                background: themed('slider_hover_color');
+            }
+        }
+    }
+    &__caption {
+        padding-top: 8px;
+        line-height: 1.5;
+        font-size: 1.4em;
+        text-align: center;
+
+        &-title {
+            font-weight: bold;
+        }
+        /* postcss-bem-linter: ignore */
+        span {
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+defaults
+not op_mini all
+not OperaMobile < 46
+not ie <= 11
+not IE_Mob <= 11
+not Samsung <= 4

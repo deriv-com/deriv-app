@@ -1,0 +1,187 @@
+/** @define chart-spot */
+.chart-spot {
+    display: flex;
+    flex-direction: column;
+
+    &__spot {
+        position: absolute;
+        bottom: -11px;
+        margin-left: -11.5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        @include themify($themes) {
+            color: themed('text_color');
+            background-color: themed('container_color');
+            border: 2px solid $COLOR_LIGHT_GRAY_1;
+        }
+
+        &--lost {
+            border-color: $COLOR_RED;
+            background: $COLOR_RED;
+        }
+        &--won {
+            background-color: $COLOR_GREEN_1;
+            border: 2px solid $COLOR_GREEN_1;
+        }
+        &--won, &--lost {
+            color: $COLOR_WHITE;
+        }
+    }
+    &__entry {
+        left: -12px;
+        top: -12px;
+        position: relative;
+        border: 6px solid $COLOR_ORANGE;
+        @include themify($themes) {
+            background-color: themed('container_color');
+        }
+    }
+    &__spot, &__entry {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+    }
+    &__sell {
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        margin-left: -2px;
+        margin-bottom: -1px;
+        @include themify($themes) {
+            background-color: themed('tick_step_marked');
+            border: 2px solid themed('tick_step_marked');
+        }
+    }
+}
+
+/** @define chart-spot-label */
+.chart-spot-label {
+    &__info-container {
+        width: 100%;
+        position: relative;
+    }
+    &__time-value-container {
+        position: absolute;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+
+        &--top {
+            bottom: 21px;
+
+            .chart-spot-label__time-container {
+                margin-bottom: 2px;
+            }
+        }
+        &--bottom {
+            top: 18px;
+            flex-direction: column-reverse;
+
+            .chart-spot-label__time-container {
+                margin-top: 2px;
+            }
+        }
+    }
+    &__time-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 8px;
+
+        /* postcss-bem-linter: ignore */
+        svg {
+            /* postcss-bem-linter: ignore */
+            g {
+                @include themify($themes) {
+                    stroke: themed('text_color');
+                }
+            }
+        }
+    }
+    &__time {
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        font-size: 10px;
+    }
+    &__time-icon {
+        margin-right: 2px;
+    }
+    &__value-container {
+        @include themify($themes) {
+            background: themed('active_color');
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 11px;
+
+            /* postcss-bem-linter: ignore */
+            p {
+                font-weight: bold;
+                color: $COLOR_WHITE;
+                margin-top: 2px;
+            }
+            &--lost {
+                background-color: $COLOR_RED;
+            }
+            &--won {
+                background-color: $COLOR_GREEN_1;
+            }
+            &--won, &--lost {
+                color: $COLOR_WHITE;
+            }
+        }
+    }
+}
+
+/** @define chart-marker-line */
+.chart-marker-line {
+    height: 94.5%;
+    margin-bottom: 0.8em;
+    z-index: 0 !important;
+    bottom: -100%;
+    transition: none;
+
+    &__wrapper {
+        border-left-width: 2px;
+        padding-left: 0.5em;
+        height: 100%;
+        @include themify($themes) {
+            border-color: themed('chart_line_color');
+        }
+    }
+    &__icon {
+        position: absolute;
+        bottom: -23px;
+        left: -11px;
+        white-space: nowrap;
+
+        &--time {
+            /* postcss-bem-linter: ignore */
+            path {
+                @include themify($themes) {
+                    fill: themed('icon_start_time');
+                }
+            }
+        }
+        &--won {
+            /* postcss-bem-linter: ignore */
+            circle {
+                fill: $COLOR_GREEN_1;
+            }
+        }
+        &--lost {
+            /* postcss-bem-linter: ignore */
+            circle {
+                fill: $COLOR_RED;
+            }
+        }
+    }
+    &--solid {
+        border-left-style: solid;
+    }
+    &--dash {
+        border-left-style: dashed;
+    }
+}

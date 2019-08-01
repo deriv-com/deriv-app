@@ -57,7 +57,7 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### PR Guidelines
 
-1. Use the `[project 1|project 2] developer 1|developer 2/task_name` fornat for PR titles. (e.g.: `[trader] dev1/fixed-emoji-issue`)
+1. Use the `[project 1|project 2] developer 1|developer 2/task_name` format for PR titles. (e.g.: `[trader] dev1/fixed_emoji_issue`)
 2. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 
 ### Clean projects
@@ -77,6 +77,6 @@ You can read more on the various lerna commands (and the `clean` command) over a
 3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
 
     A. You have two options:
-    
+
     1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
     2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`

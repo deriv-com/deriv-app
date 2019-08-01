@@ -1,24 +1,32 @@
-const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
-const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
-const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+const path                      = require('path');
 
 module.exports = {
-    entry : [
-        path.join(__dirname, 'src', 'app.js') 
-    ],
+    // entry: path.join(__dirname, 'src', 'index.js'),
+    entry: {
+        // index: path.join(__dirname, 'src', 'index.js'),
+        button: path.resolve(__dirname, 'src' ,'components/button/index.js'),
+        label: path.resolve(__dirname, 'src' , 'components/label/index.js'),
+    },
     output: {
-        path    : path.resolve(__dirname, 'dist'),
-        filename: 'bot.js',
+        path: path.resolve(__dirname, 'lib'),
+        filename: "[name].js",
+        libraryExport: 'default',
+        library: ["deriv-component", "[name]"],
+        libraryTarget: 'umd',
+    },
+    optimization : {
+        minimize: true,
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     devServer: {
         publicPath: '/dist/',
-        disableHostCheck: true,
     },
     devtool: 'source-map',
-    target: 'web',
     module: {
         rules: [
             {
@@ -60,7 +68,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
-                exclude: [/node_modules/, /lib/],
+                exclude: [/node_modules/],
                 loader: "eslint-loader",
                 options: {
                     fix: true
@@ -74,21 +82,8 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'bot.css' }),
+        // new MiniCssExtractPlugin({ filename: 'component.css' }),
         new StyleLintPlugin( { fix: true }),
-        new CopyWebpackPlugin([
-            { from: './src/scratch/xml' },
-            { from: './node_modules/scratch-blocks/media', to: 'media' },
-        ]),
-        new MergeIntoSingleFilePlugin({
-            files: {
-                'scratch.js': [
-                    './node_modules/scratch-blocks/blockly_compressed_vertical.js',
-                    './node_modules/scratch-blocks/msg/messages.js',
-                    './node_modules/blockly/generators/javascript.js',
-                ]
-            }
-        }),
         new SpriteLoaderPlugin(),
     ],
 };

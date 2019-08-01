@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "deriv-core",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Deriv Core",
   "main": "index.js",

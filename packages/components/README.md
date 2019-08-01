@@ -2,6 +2,10 @@
 > Reusable UI components for Deriv.
 
 ##Commands:
+setup :
+  ```sh 
+  lerna bootstrap
+  ```
 build : 
   ```sh 
   npm run build

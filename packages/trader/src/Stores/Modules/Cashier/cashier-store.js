@@ -5,24 +5,26 @@ import { isCryptocurrency } from '_common/base/currency_base';
 import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
+class Config {
+    container          = '';
+    is_session_timeout = true;
+    onIframeLoaded     = '';
+    timeout_session    = '';
+
+    @observable error_message = '';
+    @observable iframe_height = 0;
+    @observable iframe_url    = '';
+
+    constructor({ container }) {
+        this.container = container;
+    }
+}
+
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
-    containers = [
-        this.config.deposit.container,
-        this.config.withdraw.container,
-    ];
-
     @observable config = {
-        deposit: {
-            container         : 'deposit',
-            error_message     : '',
-            iframe_height     : 0,
-            iframe_url        : '',
-            is_session_timeout: true,
-            onIframeLoaded    : '',
-            timeout_session   : '',
-        },
+        deposit     : new Config({ container: 'deposit' }),
         verification: {
             is_button_clicked: false,
             is_email_sent    : false,
@@ -30,16 +32,13 @@ export default class CashierStore extends BaseStore {
             resend_timeout   : 60,
             timeout_button   : '',
         },
-        withdraw: {
-            container         : 'withdraw',
-            error_message     : '',
-            iframe_height     : 0,
-            iframe_url        : '',
-            is_session_timeout: true,
-            onIframeLoaded    : '',
-            timeout_session   : '',
-        },
+        withdraw: new Config({ container: 'withdraw' }),
     };
+
+    containers = [
+        this.config.deposit.container,
+        this.config.withdraw.container,
+    ];
 
     constructor({ root_store }) {
         super({ root_store });

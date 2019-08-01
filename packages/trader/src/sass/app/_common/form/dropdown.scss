@@ -192,6 +192,12 @@
                 background: themed('active_color');
             }
         }
+        &--highlighted:not(&--disabled) {
+            @include themify($themes) {
+                background-color: themed('tab_hover_color');
+                color: themed('text_color');
+            }
+        }
         &--disabled {
             @include themify($themes) {
                 color: themed('text_secondary_color');

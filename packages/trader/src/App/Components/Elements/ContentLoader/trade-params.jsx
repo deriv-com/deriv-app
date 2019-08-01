@@ -7,8 +7,8 @@ const TradeParamsLoader = ({ is_dark_theme, speed }) => (
         height={548}
         width={240}
         speed={speed}
-        primaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.16)' : '#f4f4f6'}
-        secondaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.24)' : '#eaeaec'}
+        primaryColor={is_dark_theme ? '#191c31' : '#f4f4f6'}
+        secondaryColor={is_dark_theme ? '#202641' : '#eaeaec'}
     >
         <rect x='0' y='0' rx='4' ry='4' width='240' height='76' />
         <rect x='0' y='84' rx='4' ry='4' width='240' height='132' />

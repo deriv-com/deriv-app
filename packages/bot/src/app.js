@@ -1,26 +1,9 @@
-import React                    from 'react';
-import ReactDOM                 from 'react-dom';
-import App                      from './app.jsx';
-import { scratchWorkspaceInit } from './scratch';
-import { oauthLogin }           from './services/api/appId';
-import { getTokenList }         from './utils/tokenHelper';
+import Bot from './app.jsx';
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('root'),
-    () => scratchWorkspaceInit('scratch_area', 'scratch_div')
-);
+export function setBotPublicPath(path) {
+    __webpack_public_path__ = path; // eslint-disable-line
+}
 
-const loginCheck = () => {
-    // if (endpoint()) return;
-    if (getTokenList().length) {
-        // window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}`;
-    } else {
-        // loadLang();
-        oauthLogin(() => {
-            // show loader
-        });
-    }
-};
+setBotPublicPath('/js/bot/');
 
-loginCheck();
+export default Bot;

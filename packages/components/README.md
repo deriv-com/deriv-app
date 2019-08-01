@@ -6,6 +6,10 @@ setup :
   ```sh 
   lerna bootstrap
   ```
+serve : 
+  ```sh 
+  npm run serve
+  ```
 build : 
   ```sh 
   npm run build

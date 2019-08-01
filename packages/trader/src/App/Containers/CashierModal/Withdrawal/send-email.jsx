@@ -8,19 +8,21 @@ import Icon           from 'Assets/icon.jsx';
 import { connect }    from 'Stores/connect';
 
 class SendEmail extends React.Component {
+    onClickVerification = () => { this.props.setVerificationResendClicked(true); };
+
     render() {
         return (
             <div className='withdraw__wrapper'>
                 {this.props.is_email_sent ?
                     <div className='withdraw__email-sent'>
                         <Icon icon='IconEmailSent' className='withdraw__icon' />
-                        <p className='withdraw__email-sent-title'><Localize i18n_default_text="We've sent you an email." /></p>
+                        <p className='withdraw__email-sent-title'><Localize i18n_default_text={'We\'ve sent you an email.'} /></p>
                         <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the authentication link in the email to access withdrawal.' /></p>
                         <div className='withdraw__email-resend'>
                             {this.props.is_resend_clicked ?
                                 <React.Fragment>
-                                    <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text="Didn't receive our email?" /></p>
-                                    <p className='withdraw__email-sent-text'><Localize i18n_default_text="Please check your spam folder. If it's not there, try resending the email." /></p>
+                                    <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text={'Didn\'t receive our email?'} /></p>
+                                    <p className='withdraw__email-sent-text'><Localize i18n_default_text={'Please check your spam folder. If it\'s not there, try resending the email.'} /></p>
                                     <Button
                                         className='btn--secondary btn--secondary--orange withdraw__resend-button'
                                         classNameSpan='withdraw__resend-button-text'
@@ -31,8 +33,8 @@ class SendEmail extends React.Component {
                                     />
                                 </React.Fragment>
                                 :
-                                <BinaryLink className='withdraw__email-resend-text' onClick={() => { this.props.setVerificationResendClicked(true); }}>
-                                    <Localize i18n_default_text="Didn't receive our email?" />
+                                <BinaryLink className='withdraw__email-resend-text' onClick={this.onClickVerification}>
+                                    <Localize i18n_default_text={'Didn\'t receive our email?'} />
                                 </BinaryLink>
                             }
                         </div>

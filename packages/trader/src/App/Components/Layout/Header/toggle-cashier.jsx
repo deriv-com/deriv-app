@@ -1,12 +1,12 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { localize }       from 'App/i18n';
-import { Modal }          from 'App/Components/Elements/modal.jsx';
+import classNames   from 'classnames';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { localize } from 'App/i18n';
+import { Modal }    from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
-    Withdrawal }          from 'App/Containers/CashierModal';
-import Button             from '../../Form/button.jsx';
+    Withdrawal }    from 'App/Containers/CashierModal';
+import Button       from '../../Form/button.jsx';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 const tabs = {
@@ -24,34 +24,43 @@ const modal_content = [
         value: Withdrawal,
     },
 ];
-const ToggleCashier = ({
-    active_tab,
-    className,
-    hideFullBlur,
-    is_cashier_visible,
-    showFullBlur,
-    toggleCashier,
-}) => (
-    <React.Fragment>
-        <Button
-            className={classNames(className, 'btn--primary btn--primary--orange')}
-            has_effect
-            text={localize('Deposit')}
-            onClick={() => { toggleCashier('deposit'); }}
-        />
-        <Modal
-            className='cashier'
-            modal_content={modal_content}
-            header={<WalletInformation />}
-            hideFullBlur={hideFullBlur}
-            is_open={is_cashier_visible}
-            selected_index={tabs[active_tab]}
-            showFullBlur={showFullBlur}
-            title={localize('Cashier')}
-            toggleModal={toggleCashier}
-        />
-    </React.Fragment>
-);
+
+class ToggleCashier extends React.PureComponent {
+    onClickDeposit = () => { this.props.toggleCashier('deposit'); };
+
+    render() {
+        const {
+            active_tab,
+            className,
+            hideFullBlur,
+            is_cashier_visible,
+            showFullBlur,
+            toggleCashier,
+        } = this.props;
+
+        return (
+            <React.Fragment>
+                <Button
+                    className={classNames(className, 'btn--primary btn--primary--orange')}
+                    has_effect
+                    text={localize('Deposit')}
+                    onClick={this.onClickDeposit}
+                />
+                <Modal
+                    className='cashier'
+                    modal_content={modal_content}
+                    header={<WalletInformation />}
+                    hideFullBlur={hideFullBlur}
+                    is_open={is_cashier_visible}
+                    selected_index={tabs[active_tab]}
+                    showFullBlur={showFullBlur}
+                    title={localize('Cashier')}
+                    toggleModal={toggleCashier}
+                />
+            </React.Fragment>
+        );
+    }
+}
 
 ToggleCashier.propTypes = {
     active_tab  : PropTypes.string,

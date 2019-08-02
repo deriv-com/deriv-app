@@ -1,25 +1,15 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import { localize }  from 'App/i18n';
-import { urlFor }    from '_common/url';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize      from 'App/Components/Elements/localize.jsx';
-import { connect }   from 'Stores/connect';
 
-const onConfirm = async (client) => {
-    await client.switchAccount(client.virtual_account_loginid);
-};
-
-const onCancel = () => {
-    window.open(urlFor('trading', undefined, undefined, true));
-};
-
-const DenialOfServiceModal = ({ client, is_visible }) => (
+const DenialOfServiceModal = ({ is_visible, onCancel, onConfirm }) => (
     <FullPageModal
         title={localize('Whoops!')}
         confirm_button_text={localize('Continue with Virtual Account')}
         cancel_button_text={localize('Back to main website')}
-        onConfirm={() => onConfirm(client)}
+        onConfirm={onConfirm}
         onCancel={onCancel}
         is_closed_on_cancel={false}
         is_visible={is_visible}
@@ -29,14 +19,9 @@ const DenialOfServiceModal = ({ client, is_visible }) => (
 );
 
 DenialOfServiceModal.propTypes = {
-    client    : PropTypes.object,
     is_visible: PropTypes.bool,
+    onCancel  : PropTypes.func,
+    onConfirm : PropTypes.func,
 };
 
-const denial_of_service = connect(
-    ({ client }) => ({
-        is_visible: !client.is_client_allowed_to_visit,
-        client,
-    }),
-)(DenialOfServiceModal);
-export default denial_of_service;
+export default DenialOfServiceModal;

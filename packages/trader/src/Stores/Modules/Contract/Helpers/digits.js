@@ -2,7 +2,7 @@ import { getLastTickFromTickStream } from './logic';
 
 export const isDigitContract = (contract_type) => /digit/i.test(contract_type);
 
-export const getDigitInfo = async (digits_info, contract_info) => {
+export const getDigitInfo = (digits_info, contract_info) => {
     const { tick_stream } = contract_info;
     const { tick_display_value, epoch } = getLastTickFromTickStream(tick_stream);
 

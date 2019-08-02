@@ -1,5 +1,5 @@
 {
-  "name": "trader",
+  "name": "deriv-trader",
   "version": "3.8.0",
   "description": "Deriv content",
   "main": "index.js",
@@ -104,6 +104,7 @@
     "mobx-react": "^5.4.2",
     "mobx-utils": "^5.4.0",
     "moment": "^2.24.0",
+    "null-loader": "^3.0.0",
     "promise-polyfill": "^8.1.3",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

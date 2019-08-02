@@ -8,7 +8,7 @@
     "serve": "echo \"Serving...\" && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
     "build": "f () { npm run test && webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\"",
-    "test:eslint": "eslint \"./src/**/*.(js|jsx)\"",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",
     "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env mocha_only",
     "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",

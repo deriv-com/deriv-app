@@ -1,30 +1,25 @@
 #!/bin/sh
 
-## Main Routine
 SHOULD_RUN_STYLELINT=false
 SHOULD_RUN_ESLINT=false
 MODIFIED_PACKAGES=()
 
-# Checks if we should run eslint or stylelint.
 files=`git diff --name-only`
 for file in $files;
 do
-    # checks for stylelint
+    # Checks if we should run eslint or stylelint.
     if [[ $file =~ \.css|s(c|a)ss ]]; then
         SHOULD_RUN_STYLELINT=true
     fi
-
-    # checks for eslint
     if [[ $file =~ \.js|jsx ]]; then
         SHOULD_RUN_ESLINT=true
     fi
 
-    # get which packages are affected
+    # Get which project we should run the linters for.
     package_to_test=('trader' 'bot')
     for package in ${package_to_test[@]};
     do
         if [[ $package =~ ${package} ]]; then
-            echo $package
             MODIFIED_PACKAGES+=($package)
         fi
     done

@@ -12,7 +12,7 @@
     ]
   },
   "scripts": {
-    "start": "rimraf lib && webpack --mode=production --progress --watch",
+    "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
     "serve": "rimraf lib && webpack --mode=development --progress --watch",
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "test": "jest --all",

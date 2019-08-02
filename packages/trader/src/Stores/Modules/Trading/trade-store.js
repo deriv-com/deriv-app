@@ -598,13 +598,12 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        const should_forget_first = !isEmptyObject(this.proposal_info);
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
                 true,
                 { currency: this.currency },
-                should_forget_first,
+                false,
             );
             await this.clearContract();
             await this.resetErrorServices();

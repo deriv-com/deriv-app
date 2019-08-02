@@ -57,6 +57,7 @@ module.exports = {
     },
     extends: [
         'airbnb-base',
+        "binary",
         'plugin:react/recommended',
     ],
     parserOptions: {
@@ -70,10 +71,7 @@ module.exports = {
             version: '16',
         },
         'import/resolver': {
-            node: {
-              'paths': ['src'],
-            },
-            webpack: { config: 'webpack.config.js' },
+            webpack: { config: 'webpack.config.js' }
         }
     },
 };

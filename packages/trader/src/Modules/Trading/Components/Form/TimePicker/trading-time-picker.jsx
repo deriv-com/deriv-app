@@ -44,10 +44,7 @@ const TradingTimePicker = ({
 };
 
 TradingTimePicker.propTypes = {
-    expiry_date: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
+    expiry_date       : PropTypes.number,
     expiry_time       : PropTypes.number,
     market_close_times: PropTypes.array,
     name              : PropTypes.string,

@@ -71,7 +71,7 @@ export default class TradeStore extends BaseStore {
     @observable duration_unit       = '';
     @observable duration_units_list = [];
     @observable duration_min_max    = {};
-    @observable expiry_date         = '';
+    @observable expiry_date         = null
     @observable expiry_time         = null;
     @observable expiry_type         = 'duration';
 

@@ -78,8 +78,7 @@ class TimePicker extends React.PureComponent {
                     { [`${prefix_class}--padding`]: this.props.padding })}
             >
                 {
-                    is_nativepicker
-                        ?
+                    is_nativepicker ?
                         <input
                             id={`${prefix_class}-input`}
                             max={max} /** max should be in String */

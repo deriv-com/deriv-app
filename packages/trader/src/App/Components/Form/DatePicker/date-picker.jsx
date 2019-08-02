@@ -17,10 +17,10 @@ import Calendar             from '../../Elements/Calendar';
 
 class DatePicker extends React.PureComponent {
     state = {
-        date_value           : '',
+        display_value        : '',
         holidays             : [],
-        is_datepicker_visible: false,
         is_clear_btn_visible : false,
+        is_datepicker_visible: false,
         value                : this.props.value,
         weekends             : [],
     };
@@ -29,13 +29,7 @@ class DatePicker extends React.PureComponent {
 
     componentDidMount() {
         this.is_mounted = true;
-
-        document.addEventListener('click', this.onClickOutside, true);
-        const { mode, value } = this.props;
-        const initial_value = mode === 'duration' ? formatDate(addDays(toMoment(), value || 1), 'DD MMM YYYY') : formatDate(value, 'DD MMM YYYY');
-
-        this.updateDatePickerValue(initial_value);
-
+        document.addEventListener('click', this.onClickOutside);
         if (this.props.disable_trading_events) {
             this.onChangeCalendarMonth(getStartOfMonth(this.state.value));
         }
@@ -43,7 +37,7 @@ class DatePicker extends React.PureComponent {
 
     componentWillUnmount() {
         this.is_mounted = false;
-        document.removeEventListener('click', this.onClickOutside, true);
+        document.removeEventListener('click', this.onClickOutside);
     }
 
     handleVisibility = () => {
@@ -56,9 +50,6 @@ class DatePicker extends React.PureComponent {
         }
         if (!this.mainNode.contains(e.target) && this.state.is_datepicker_visible) {
             this.setState({ is_datepicker_visible: false });
-            if (!!this.state.value && this.props.mode !== 'duration') {
-                this.updateDatePickerValue(formatDate(this.state.value, 'DD MMM YYYY'));
-            }
         }
     };
 
@@ -72,23 +63,15 @@ class DatePicker extends React.PureComponent {
         this.setState({ is_clear_btn_visible: false });
     };
 
-    onSelectCalendar = (selected_date, is_datepicker_visible = true) => {
-        let value = selected_date;
-        if (!isDateValid(value)) { value = ''; }
-
-        if (this.props.mode === 'duration') {
-            this.updateDatePickerValue(value);
-        } else {
-            this.updateDatePickerValue(formatDate(value, 'DD MMM YYYY'));
-        }
-        this.setState({ is_datepicker_visible });
+    onSelectCalendar = (selected_date) => {
+        if (!isDateValid(selected_date)) return;
+        this.updateDatePickerValue(selected_date);
     };
 
     onChangeInput = (e) => {
         const value = e.target.value;
-        const formatted_value = formatDate(addDays(toMoment(), value), 'DD MMM YYYY');
+        const formatted_value = addDays(toMoment(), value);
         this.updateDatePickerValue(formatted_value);
-        this.props.onChange(e);
     };
 
     clearDatePickerInput = () => {
@@ -99,31 +82,16 @@ class DatePicker extends React.PureComponent {
     };
 
     // TODO: handle cases where user inputs date before min_date and date after max_date
-    updateDatePickerValue = (value) => {
-        const { date_format, mode, start_date } = this.props;
-        this.setState({ value }, this.updateStore);
+    updateDatePickerValue = (selected_date) => {
+        this.setState({
+            value: this.props.mode === 'duration' ? daysFromTodayTo(selected_date) : selected_date.unix(),
+        }, this.updateStore);
 
-        if (mode === 'duration') {
-            const new_value      = daysFromTodayTo(value);
-            const new_date_value = formatDate(value, 'DD MMM YYYY');
-            this.setState({ value: new_value, date_value: new_date_value }, this.updateStore);
-        }
-
-        // update Calendar
-        const new_date = (mode === 'duration') ? formatDate(value, 'DD MMM YYYY') : value;
-        if (this.calendar && (isDateValid(new_date) || !new_date)) {
-            if (!new_date) {
-                const current_date = formatDate(start_date, date_format);
-                this.calendar.setState({
-                    calendar_date: current_date,
-                    selected_date: current_date,
-                });
-            } else {
-                this.calendar.setState({
-                    calendar_date: formatDate(new_date),
-                    selected_date: formatDate(new_date),
-                });
-            }
+        if (this.calendar) {
+            this.calendar.setState({
+                calendar_date: selected_date,
+                selected_date: selected_date.unix(),
+            });
         }
     };
 
@@ -160,91 +128,54 @@ class DatePicker extends React.PureComponent {
     }
 
     renderInputField = () => {
-        const { is_read_only, mode, name, label, error_messages } = this.props;
+        const {
+            is_clearable,
+            is_read_only,
+            mode,
+            name,
+            label,
+            error_messages,
+        } = this.props;
+
         let { placeholder } = this.props;
-        let value, type, onChange;
+        let display_value, onChange;
 
-        switch (mode) {
-            case 'duration':
-                onChange = this.onChangeInput;
-                type = 'text';
-                value = this.state.value;
-                break;
-            default:
-                placeholder = placeholder || localize('Select a date');
-                type = 'text';
-                value = formatDate(this.props.value, 'DD MMM YYYY');
+        if (mode === 'duration') {
+            onChange = this.onChangeInput;
+            display_value = this.state.value; // daysFromTodayTo(this.state.value);
+        } else {
+            placeholder = placeholder || localize('Select a date');
+            display_value = formatDate(this.state.value, 'DD MMM YYYY');
         }
 
         return (
-            <InputField
-                className='datepicker__input-field'
-                classNameInput='datepicker__input trade-container__input'
-                data-tip={false}
-                data-value={this.state.value}
-                error_messages={error_messages}
-                is_autocomplete_disabled={true}
-                is_hj_whitelisted
-                label={label}
-                is_read_only={is_read_only}
-                name={name}
-                onChange={onChange}
-                onClick={this.handleVisibility}
-                placeholder={placeholder}
-                type={type}
-                value={value}
-            />
-        );
-    };
-
-    render() {
-        if (this.props.is_nativepicker) {
-            return (
-                <div ref={node => { this.mainNode = node; }} className='datepicker'>
-                    <input
-                        id={this.props.name}
-                        name={this.props.name}
-                        className='input trade-container__input datepicker__input'
-                        type='date'
-                        value={this.state.value}
-                        min={this.props.min_date}
-                        max={this.props.max_date}
-                        onChange={(e) => {
-                            // fix for ios issue: clear button doesn't work
-                            // https://github.com/facebook/react/issues/8938
-                            const target = e.nativeEvent.target;
-                            function iosClearDefault() { target.defaultValue = ''; }
-                            window.setTimeout(iosClearDefault, 0);
-
-                            this.onSelectCalendar(e.target.value);
-                        }}
-                    />
-                    <label className='datepicker__native-overlay' htmlFor={this.props.name}>
-                        {this.state.value || this.props.placeholder}
-                        <Icon icon='IconArrow' className='datepicker__arrowhead' />
-                    </label>
-                </div>
-            );
-        }
-
-        return (
-            <div
-                id={this.props.id}
-                ref={node => { this.mainNode = node; }}
-                className='datepicker'
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-            >
-                { this.renderInputField() }
+            <React.Fragment>
+                <InputField
+                    className='datepicker__input-field'
+                    classNameInput='datepicker__input trade-container__input'
+                    data-tip={false}
+                    data-value={display_value}
+                    error_messages={error_messages}
+                    is_autocomplete_disabled={true}
+                    is_hj_whitelisted
+                    is_read_only={is_read_only}
+                    label={label}
+                    name={name}
+                    onChange={onChange}
+                    onClick={this.handleVisibility}
+                    placeholder={placeholder}
+                    type='text'
+                    value={display_value}
+                />
                 <Icon
                     icon='IconCalendar'
                     className={classNames('datepicker__icon datepicker__icon--calendar', {
                         'datepicker__icon--is-hidden' : this.state.is_clear_btn_visible,
-                        'datepicker__icon--with-label': this.props.label,
+                        'datepicker__icon--with-label': label,
                     })}
                     onClick={this.handleVisibility}
                 />
-                {this.props.is_clearable &&
+                { is_clearable &&
                     <Icon
                         icon='IconClear'
                         className={classNames('datepicker__icon datepicker__icon--clear', {
@@ -253,37 +184,116 @@ class DatePicker extends React.PureComponent {
                         onClick={this.state.is_clear_btn_visible ? this.clearDatePickerInput : undefined}
                     />
                 }
+            </React.Fragment>
+        );
+    };
+
+    render() {
+        const {
+            alignment,
+            date_format,
+            disable_trading_events,
+            footer,
+            has_range_selection,
+            has_today_btn,
+            id,
+            is_nativepicker,
+            max_date,
+            min_date,
+            mode,
+            name,
+            placeholder,
+            start_date,
+        } = this.props;
+
+        const {
+            holidays,
+            is_datepicker_visible,
+            value,
+            weekends,
+        } = this.state;
+
+        const onChangeCalendarMonth = (
+            disable_trading_events ?
+                this.onChangeCalendarMonth.bind(this)
+                :
+                undefined
+        );
+
+        if (is_nativepicker) {
+            return (
+                <div
+                    ref={node => { this.mainNode = node; }}
+                    className='datepicker'
+                >
+                    <input
+                        className='input trade-container__input datepicker__input'
+                        id={name}
+                        max={max_date} /** max should be in String */
+                        min={min_date} /** min should be in String */
+                        name={name}
+                        onChange={(e) => {
+                            // fix for ios issue: clear button doesn't work
+                            // https://github.com/facebook/react/issues/8938
+                            const target = e.nativeEvent.target;
+                            function iosClearDefault() { target.defaultValue = ''; }
+                            window.setTimeout(iosClearDefault, 0);
+                            this.onSelectCalendar(e.target.value);
+                        }}
+                        type='date'
+                        value={value} /** value should be in String */
+                    />
+                    <label
+                        className='datepicker__native-overlay'
+                        htmlFor={name}
+                    >
+                        {value || placeholder}
+                        <Icon icon='IconArrow' className='datepicker__arrowhead' />
+                    </label>
+                </div>
+            );
+        }
+
+        return (
+            <div
+                ref={node => { this.mainNode = node; }}
+                className='datepicker'
+                id={id}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+            >
+                { this.renderInputField() }
                 <CSSTransition
-                    in={this.state.is_datepicker_visible}
-                    timeout={100}
                     classNames={{
-                        enter    : `datepicker__picker--enter datepicker__picker--${this.props.alignment}-enter`,
-                        enterDone: `datepicker__picker--enter-done datepicker__picker--${this.props.alignment}-enter-done`,
-                        exit     : `datepicker__picker--exit datepicker__picker--${this.props.alignment}-exit`,
+                        enter    : `datepicker__picker--enter datepicker__picker--${alignment}-enter`,
+                        enterDone: `datepicker__picker--enter-done datepicker__picker--${alignment}-enter-done`,
+                        exit     : `datepicker__picker--exit datepicker__picker--${alignment}-exit`,
                     }}
+                    in={is_datepicker_visible}
+                    timeout={100}
                     unmountOnExit
                 >
                     <div
                         className={classNames('datepicker__picker', {
-                            'datepicker__picker--left': this.props.alignment === 'left',
+                            'datepicker__picker--left': alignment === 'left',
                         })}
                     >
                         <Calendar
                             ref={node => { this.calendar = node; }}
+                            date_format={date_format}
+                            duration={addDays(toMoment(), value || 1)}
+                            footer={footer}
+                            has_range_selection={has_range_selection}
+                            has_today_btn={has_today_btn}
+                            holidays={holidays}
+                            max_date={max_date}
+                            min_date={min_date}
+                            mode={mode}
+                            onChangeCalendarMonth={onChangeCalendarMonth}
                             onSelect={this.onSelectCalendar}
-                            onChangeCalendarMonth={this.props.disable_trading_events ?
-                                this.onChangeCalendarMonth.bind(this) : undefined}
-                            holidays={this.state.holidays}
-                            weekends={this.state.weekends}
-                            duration_date={this.state.value}
-                            date_format={this.props.date_format}
-                            has_today_btn={this.props.has_today_btn}
-                            has_range_selection={this.props.has_range_selection}
-                            footer={this.props.footer}
-                            max_date={this.props.max_date}
-                            min_date={this.props.min_date}
-                            start_date={this.props.start_date}
-                            value={this.props.mode === 'duration' ? this.state.date_value : this.props.value}
+                            start_date={start_date}
+                            value={value}
+                            weekends={weekends}
                         />
                     </div>
                 </CSSTransition>

@@ -5,6 +5,7 @@ import {
     getPropertyValue }          from '_common/utility';
 import { WS }                   from 'Services';
 import {
+    epochToMoment,
     isTimeValid,
     minDate,
     setTime,
@@ -260,8 +261,10 @@ const ContractType = (() => {
             return [];
         }
 
-        if (!(date in trading_times)) {
-            const trading_times_response = await WS.getTradingTimes(date);
+        const date_str = epochToMoment(date).format('YYYY-MM-DD');
+
+        if (!(date_str in trading_times)) {
+            const trading_times_response = await WS.getTradingTimes(date_str);
 
             if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {
@@ -287,7 +290,7 @@ const ContractType = (() => {
             }
         }
 
-        return underlying ? trading_times[date][underlying] : trading_times[date];
+        return underlying ? trading_times[date_str][underlying] : trading_times[date_str];
     };
 
     const getExpiryType = (duration_units_list, expiry_type) => {
@@ -307,12 +310,12 @@ const ContractType = (() => {
 
             if (!hasIntradayDurationUnit(duration_units_list)) {
                 const is_invalid = moment_expiry.isSameOrBefore(moment_start, 'day');
-                proper_expiry_date = (is_invalid ? moment_start.clone().add(1, 'day') : moment_expiry).format('YYYY-MM-DD');
+                proper_expiry_date = (is_invalid ? moment_start.clone().add(1, 'day') : moment_expiry).unix();
             } else {
                 // forward starting contracts should only show today and tomorrow as expiry date
-                const is_invalid =
-                    moment_expiry.isBefore(moment_start, 'day') || (start_date && moment_expiry.isAfter(moment_start.clone().add(1, 'day')));
-                proper_expiry_date = (is_invalid ? moment_start : moment_expiry).format('YYYY-MM-DD');
+                const is_invalid = moment_expiry.isBefore(moment_start, 'day')
+                    || (start_date && moment_expiry.isAfter(moment_start.clone().add(1, 'day')));
+                proper_expiry_date = (is_invalid ? moment_start : moment_expiry).unix();
             }
         }
 

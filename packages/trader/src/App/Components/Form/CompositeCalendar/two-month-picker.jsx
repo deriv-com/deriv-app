@@ -1,16 +1,15 @@
-import PropTypes                from 'prop-types';
-import moment                   from 'moment';
-import React                    from 'react';
-import CalendarBody            from 'App/Components/Elements/Calendar/calendar-body.jsx';
-import CalendarHeader           from 'App/Components/Elements/Calendar/calendar-header.jsx';
-import CalendarFooter           from 'App/Components/Elements/Calendar/calendar-footer.jsx';
+import PropTypes      from 'prop-types';
+import moment         from 'moment';
+import React          from 'react';
+import CalendarBody   from 'App/Components/Elements/Calendar/calendar-body.jsx';
+import CalendarHeader from 'App/Components/Elements/Calendar/calendar-header.jsx';
+import CalendarFooter from 'App/Components/Elements/Calendar/calendar-footer.jsx';
 import {
     addMonths,
     diffInMonths,
     epochToMoment,
     subMonths,
-    toMoment,
-}                               from 'Utils/Date';
+    toMoment }         from 'Utils/Date';
 
 class TwoMonthPicker extends React.PureComponent {
     constructor(props) {

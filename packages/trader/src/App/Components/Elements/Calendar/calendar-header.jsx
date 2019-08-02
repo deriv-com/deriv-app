@@ -141,11 +141,6 @@ const CalendarHeader = ({
 };
 
 CalendarHeader.propTypes = {
-    calendar_date: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-        PropTypes.number,
-    ]),
     calendar_view         : PropTypes.string,
     disable_month_selector: PropTypes.bool,
     disable_year_selector : PropTypes.bool,

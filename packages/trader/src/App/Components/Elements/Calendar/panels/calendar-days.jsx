@@ -2,7 +2,6 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { padLeft }         from '_common/string_util';
-import { localize }        from 'App/i18n';
 import { Popover }         from 'App/Components/Elements/Popover';
 import {
     getDaysOfTheWeek,
@@ -43,7 +42,10 @@ const getDays = ({
     const num_of_days        = moment_cur_date.daysInMonth() + 1;
     const moment_month_start = moment_cur_date.clone().startOf('month');
     const moment_month_end   = moment_cur_date.clone().endOf('month');
-    const moment_selected    = typeof selected_date === 'number' ? epochToMoment(selected_date).startOf('day') : toMoment(selected_date).startOf('day');
+    const moment_selected    = typeof selected_date === 'number' ?
+        epochToMoment(selected_date).startOf('day')
+        :
+        toMoment(selected_date).startOf('day');
 
     // populate previous months' dates
     const end_of_prev_month = subMonths(moment_cur_date, 1).endOf('month').day();
@@ -113,7 +115,7 @@ const getDays = ({
                 })}
                 onClick={is_disabled ? undefined : (e) => updateSelected(e, 'day')}
                 data-date={date}
-                data-duration={`${duration_from_today} ${ duration_from_today === 1 ? localize('Day') : localize('Days') }`}
+                data-duration={duration_from_today}
                 onMouseOver={onMouseOver}
                 onMouseLeave={onMouseLeave}
             >
@@ -164,7 +166,7 @@ CalendarDays.propTypes = {
             descrip: PropTypes.string,
         }),
     ),
-    hovered_date: PropTypes.string,
+    hovered_date: PropTypes.number,
     onMouseLeave: PropTypes.func,
     onMouseOver : PropTypes.func,
     start_date  : PropTypes.oneOfType([

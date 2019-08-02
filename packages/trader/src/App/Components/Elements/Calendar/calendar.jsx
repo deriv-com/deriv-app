@@ -3,32 +3,23 @@ import React          from 'react';
 import {
     getStartOfMonth,
     toMoment }        from 'Utils/Date';
-import { localize }   from 'App/i18n';
 import CalendarBody   from './calendar-body.jsx';
 import CalendarFooter from './calendar-footer.jsx';
 import CalendarHeader from './calendar-header.jsx';
 
 class Calendar extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        const { date_format, start_date, value } = props;
-        const current_date = toMoment(value || start_date).format(date_format);
-        this.state = {
-            calendar_date: current_date, // calendar date reference
-            selected_date: value,        // selected date
-            calendar_view: 'date',
-            hovered_date : '',
-            duration_date: '',
-        };
-    }
-
-    switchView = (view) => {
-        this.setState({ calendar_view: view });
+    state = {
+        calendar_date: toMoment(),          // calendar date reference
+        selected_date: this.props.duration ? this.props.duration.unix() : toMoment(this.props.value).unix(), // selected date
+        calendar_view: 'date',
+        hovered_date : null,
     };
+
+    switchView = (view) => this.setState({ calendar_view: view });
 
     navigateTo = (new_date) => {
         this.setState({
-            calendar_date: toMoment(new_date).format(this.props.date_format),
+            calendar_date: toMoment(new_date), // .format(this.props.date_format),
         }, () => {
             if (this.props.onChangeCalendarMonth) {
                 const start_of_month = getStartOfMonth(new_date);
@@ -43,8 +34,7 @@ class Calendar extends React.PureComponent {
         if (!target.classList.contains('calendar__cell--disabled') && !target.classList.contains('calendar__cell--hover')) {
             target.className += ' calendar__cell--hover';
             this.setState({
-                hovered_date : target.getAttribute('data-date'),
-                duration_date: target.getAttribute('data-duration'),
+                hovered_date: toMoment(target.getAttribute('data-date')).unix(),
             });
         }
     };
@@ -55,15 +45,12 @@ class Calendar extends React.PureComponent {
         if (target.classList.contains('calendar__cell--hover')) {
             target.classList.remove('calendar__cell--hover');
 
-            this.setState({
-                hovered_date : null,
-                duration_date: null,
-            });
+            this.setState({ hovered_date: null });
         }
     };
 
     updateSelectedDate = (e) => {
-        const { date_format, max_date, min_date, onSelect } = this.props;
+        const { max_date, min_date, onSelect } = this.props;
 
         const moment_date = toMoment(e.target.dataset.date).startOf('day');
         const is_before   = moment_date.isBefore(toMoment(min_date));
@@ -73,14 +60,13 @@ class Calendar extends React.PureComponent {
             return;
         }
 
-        const formatted_date = moment_date.format(date_format);
         this.setState({
-            calendar_date: formatted_date,
-            selected_date: formatted_date,
+            calendar_date: moment_date,
+            selected_date: moment_date.unix(),
         });
 
         if (onSelect) {
-            onSelect(formatted_date);
+            onSelect(moment_date);
         }
     };
 
@@ -97,7 +83,7 @@ class Calendar extends React.PureComponent {
             year  : 'month',
             decade: 'year',
         };
-        const date = toMoment(this.state.calendar_date)[type === 'decade' ? 'year' : type](e.target.dataset[type].split('-')[0]).format(this.props.date_format);
+        const date = toMoment(this.state.calendar_date)[type === 'decade' ? 'year' : type](e.target.dataset[type].split('-')[0]);
 
         if (this.isPeriodDisabled(date, type)) return;
 
@@ -113,28 +99,26 @@ class Calendar extends React.PureComponent {
     };
 
     resetCalendar = () => {
-        const { date_format, start_date } = this.props;
+        const default_date = toMoment(this.props.start_date);
 
-        const default_date = toMoment(start_date).format(date_format);
         this.setState({
             calendar_date: default_date,
-            selected_date: '',
+            selected_date: default_date.unix(),
             calendar_view: 'date',
         });
     };
 
     setToday = () => {
-        const { date_format, onSelect } = this.props;
+        const now = toMoment();
 
-        const now = toMoment().format(date_format);
         this.setState({
             calendar_date: now,
-            selected_date: now,
+            selected_date: now.unix(),
             calendar_view: 'date',
         });
 
-        if (onSelect) {
-            onSelect(now, true);
+        if (this.props.onSelect) {
+            this.props.onSelect(now, true);
         }
     };
 
@@ -143,26 +127,30 @@ class Calendar extends React.PureComponent {
 
         const start_of_period = toMoment(date).clone().startOf(unit);
         const end_of_period   = toMoment(date).clone().endOf(unit);
+
         return end_of_period.isBefore(toMoment(min_date))
             || start_of_period.isAfter(toMoment(max_date));
     };
 
     render() {
-        const { date_format, duration_date, footer, has_today_btn, has_range_selection,
-            holidays, start_date, weekends } = this.props;
-        const { calendar_date, calendar_view, selected_date  } = this.state;
-        let default_message, is_minimum;
+        const {
+            date_format,
+            footer,
+            has_today_btn,
+            has_range_selection,
+            holidays,
+            start_date,
+            weekends,
+        } = this.props;
 
-        if (duration_date) {
-            default_message = `${duration_date} ${duration_date === 1 ? localize('Day') : localize('Days')}`;
-            is_minimum = false;
-        } else {
-            default_message = localize('Minimum duration is 1 day');
-            is_minimum = true;
-        }
-        
+        const {
+            calendar_date,
+            calendar_view,
+            selected_date,
+        } = this.state;
+
         return (
-            <div className='calendar' data-value={selected_date}>
+            <div className='calendar'>
                 <CalendarHeader
                     calendar_date={calendar_date}
                     calendar_view={calendar_view}
@@ -175,23 +163,22 @@ class Calendar extends React.PureComponent {
                     calendar_view={calendar_view}
                     date_format={date_format}
                     isPeriodDisabled={this.isPeriodDisabled}
-                    start_date={start_date}
-                    selected_date={selected_date}
-                    updateSelected={this.updateSelected}
-                    holidays={holidays}
                     has_range_selection={has_range_selection}
+                    holidays={holidays}
                     hovered_date={this.state.hovered_date}
-                    weekends={weekends}
                     onMouseOver={this.onMouseOver}
                     onMouseLeave={this.onMouseLeave}
+                    selected_date={selected_date}
+                    start_date={start_date}
+                    updateSelected={this.updateSelected}
+                    weekends={weekends}
                 />
                 <CalendarFooter
                     footer={footer}
-                    duration_date={this.state.duration_date || default_message}
-                    is_minimum={is_minimum}
-                    has_today_btn={has_today_btn}
                     has_range_selection={has_range_selection}
+                    has_today_btn={has_today_btn}
                     onClick={this.setToday}
+                    value={this.state.hovered_date || this.state.selected_date}
                 />
             </div>
         );
@@ -200,16 +187,12 @@ class Calendar extends React.PureComponent {
 
 Calendar.defaultProps = {
     date_format: 'YYYY-MM-DD',
-    min_date   : toMoment(0).format('YYYY-MM-DD'),               // by default, min_date is set to Unix Epoch (January 1st 1970)
-    max_date   : toMoment().add(120, 'y').format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
+    min_date   : toMoment(0),              // by default, min_date is set to Unix Epoch (January 1st 1970)
+    max_date   : toMoment().add(120, 'y'), // by default, max_date is set to 120 years after today
 };
 
 Calendar.propTypes = {
-    date_format  : PropTypes.string,
-    duration_date: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    date_format        : PropTypes.string,
     footer             : PropTypes.string,
     has_range_selection: PropTypes.bool,
     has_today_btn      : PropTypes.bool,
@@ -219,21 +202,15 @@ Calendar.propTypes = {
             descrip: PropTypes.string,
         }),
     ),
-    max_date: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.string,
-    ]),
-    min_date: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.string,
-    ]),
+    max_date             : PropTypes.object,
+    min_date             : PropTypes.object,
     onChangeCalendarMonth: PropTypes.func,
     onSelect             : PropTypes.func,
-    start_date           : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
+    start_date           : PropTypes.number,
+    value                : PropTypes.oneOfType([
+        PropTypes.number, // num. of days
+        PropTypes.object, // moment object
     ]),
-    value   : PropTypes.string,
     weekends: PropTypes.arrayOf(PropTypes.number),
 };
 

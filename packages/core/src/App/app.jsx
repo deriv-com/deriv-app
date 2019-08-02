@@ -2,6 +2,7 @@ import PropTypes                   from 'prop-types';
 import React                       from 'react';
 import ReactDOM                    from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import WS                          from 'Services/ws-methods';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
@@ -35,7 +36,7 @@ const App = ({ root_store }) => {
                             <Header />
                             <ErrorBoundary>
                                 <AppContents>
-                                    <Routes />
+                                    <Routes passthrough={{ root_store, WS }} />
                                     <Lazy
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
                                         should_load={!root_store.ui.is_loading}

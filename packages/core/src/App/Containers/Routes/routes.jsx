@@ -18,7 +18,7 @@ const Routes = (props) => {
         );
     }
 
-    return <BinaryRoutes is_logged_in={props.is_logged_in} />;
+    return <BinaryRoutes is_logged_in={props.is_logged_in} passthrough={props.passthrough} />;
 };
 
 Routes.propTypes = {

@@ -10,3 +10,5 @@ packages/**/scripts/CNAME
 *.swp
 npm-debug.log
 lerna-debug.log
+lib/
+coverage

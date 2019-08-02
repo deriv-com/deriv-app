@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "deriv-core",
   "version": "1.0.0",
   "description": "deriv core classes",
   "main": "index.js",

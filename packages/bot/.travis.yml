@@ -8,6 +8,5 @@ notifications:
     email: false
 before_install:
     - npm i -g npm@6.9.0
-    - npm install -g grunt-cli
 install: npm ci
 script: travis_retry npm test

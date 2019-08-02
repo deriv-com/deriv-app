@@ -4,9 +4,6 @@ import React        from 'react';
 import { localize } from 'App/i18n';
 import Lazy         from 'App/Containers/Lazy';
 import { Modal }    from 'App/Components/Elements/modal.jsx';
-import {
-    Deposit,
-    Withdrawal }    from 'App/Containers/CashierModal';
 import Button       from '../../Form/button.jsx';
 import UILoader     from '../../Elements/ui-loader.jsx';
 

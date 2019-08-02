@@ -7,6 +7,7 @@ import Lazy                 from 'App/Containers/Lazy';
 // import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
+import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
@@ -68,9 +69,7 @@ export class AccountActions extends Component {
                             window.open(urlFor('user/accounts', undefined, undefined, true));
                         }}
                     />}
-                    <Lazy
-                        ctor={() => import(/* webpackChunkName: "toggle-cashier", webpackPrefetch: true */'App/Components/Layout/Header/toggle-cashier.jsx')}
-                        should_load={!is_virtual}
+                    <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
                         toggleCashier={toggleCashierModal}

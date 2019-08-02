@@ -94,14 +94,24 @@ export default class CashierStore extends BaseStore {
             this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
         } else {
+            this.removeOnIframeLoaded(container);
             this.config[container].onIframeLoaded = (function (e) {
-                this.setLoading(false);
-                // set the height of the container after content loads so that the
-                // loading bar stays vertically centered until the end
-                this.setContainerHeight(+e.data || '1200', container);
-                window.removeEventListener('message', this.config[container].onIframeLoaded, false);
+                if (/cashier/.test(e.origin)) {
+                    this.setLoading(false);
+                    // set the height of the container after content loads so that the
+                    // loading bar stays vertically centered until the end
+                    this.setContainerHeight(+e.data || '1200', container);
+                    this.removeOnIframeLoaded(container);
+                }
             }).bind(this);
             window.addEventListener('message', this.config[container].onIframeLoaded, false);
+        }
+    }
+
+    removeOnIframeLoaded(container) {
+        if (this.config[container].onIframeLoaded) {
+            window.removeEventListener('message', this.config[container].onIframeLoaded, false);
+            this.config[container].onIframeLoaded = '';
         }
     }
 

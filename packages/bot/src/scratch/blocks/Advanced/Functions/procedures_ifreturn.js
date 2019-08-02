@@ -1,3 +1,4 @@
+import { lazy }              from 'react';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
@@ -111,6 +112,7 @@ Blockly.Blocks.procedures_ifreturn = {
      * Blockly.Blocks['procedures_ifreturn'].FUNCTION_TYPES.push('custom_func');
      */
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
+    helpContent   : () => lazy(() => import('../../../help-components/Advanced/Functions/procedures_ifreturn.jsx')),
 };
 
 Blockly.JavaScript.procedures_ifreturn = block => {

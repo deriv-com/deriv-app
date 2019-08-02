@@ -56,7 +56,7 @@
             display: flex;
             justify-content: flex-end;
         }
-        &-add {
+        &-add, &-next, &-previous, &-back {
             padding: 5px 20px;
             border: none;
             font-size: 16px;
@@ -76,6 +76,12 @@
                 width: 20px;
                 align-self: center;
             }
+        }
+    }
+    &__help {
+        &-header {
+            display: -webkit-inline-box;
+            width: 100%;
         }
     }
 }

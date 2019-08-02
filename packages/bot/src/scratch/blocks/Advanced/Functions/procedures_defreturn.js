@@ -1,3 +1,4 @@
+import { lazy }         from 'react';
 import { plusIconDark } from '../../images';
 import { translate }    from '../../../../utils/lang/i18n';
 
@@ -74,6 +75,7 @@ Blockly.Blocks.procedures_defreturn = {
     customContextMenu        : Blockly.Blocks.procedures_defnoreturn.customContextMenu,
     callType                 : 'procedures_callreturn',
     registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
+    helpContent              : () => lazy(() => import('../../../help-components/Advanced/Functions/procedures_defreturn.jsx')),
 };
 
 Blockly.JavaScript.procedures_defreturn = Blockly.JavaScript.procedures_defnoreturn;

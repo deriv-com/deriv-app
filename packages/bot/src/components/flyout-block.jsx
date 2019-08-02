@@ -1,7 +1,7 @@
 import React                from 'react';
 import { PropTypes }        from 'prop-types';
 import { BlueInfoIcon }     from './Icons.jsx';
-import FlyoutBlockWorkspace from './blocks-help/flyout-block-workspace.jsx';
+import FlyoutBlockWorkspace from '../scratch/help-components/flyout-block-workspace.jsx';
 import FlyoutStore          from '../stores/flyout-store';
 import { translate }        from '../utils/lang/i18n';
 

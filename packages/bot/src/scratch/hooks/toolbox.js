@@ -100,8 +100,9 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
  * Opens the selected category
  * deriv-bot: Category-specific flyouts + removed opt_shouldScroll
  * @param {Blockly.Toolbox.Category} item The category to select.
+ * @param {boolean} closeOnSameCat Close when select the same category
  */
-Blockly.Toolbox.prototype.setSelectedItem = function (item) {
+Blockly.Toolbox.prototype.setSelectedItem = function (item, closeOnSame = true) {
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
@@ -111,7 +112,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
             item &&
             !item.is_category_return_ &&
             !item.has_child_category_ &&
-            this.selectedItem_.id_ === item.id_
+            this.selectedItem_.id_ === item.id_ &&
+            closeOnSame
         ) {
             this.selectedItem_ = null;
             if (flyout.is_visible) {

@@ -1,4 +1,5 @@
-import { translate } from '../../../utils/lang/i18n';
+import { lazy }         from 'react';
+import { translate }    from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_change = {
     init() {
@@ -23,6 +24,7 @@ Blockly.Blocks.math_change = {
             nextStatement    : null,
         });
     },
+    helpContent: () => lazy(() => import('../../help-components/Math/math_change.jsx')),
 };
 
 Blockly.JavaScript.math_change = block => {

@@ -1,3 +1,4 @@
+import { lazy }              from 'react';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
@@ -320,7 +321,8 @@ Blockly.Blocks.procedures_callnoreturn = {
 
         options.push(option);
     },
-    defType: 'procedures_defnoreturn',
+    defType    : 'procedures_defnoreturn',
+    helpContent: () => lazy(() => import('../../../help-components/Advanced/Functions/procedures_callnoreturn.jsx')),
 };
 
 Blockly.JavaScript.procedures_callnoreturn = block => {

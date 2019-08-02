@@ -1,3 +1,4 @@
+import { lazy }      from 'react';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.variables_set = {
@@ -24,6 +25,7 @@ Blockly.Blocks.variables_set = {
             tooltip          : '',
         });
     },
+    helpContent: () => lazy(() => import('../../../help-components/Advanced/Variable/variables_set.jsx')),
 };
 
 Blockly.JavaScript.variables_set = block => {

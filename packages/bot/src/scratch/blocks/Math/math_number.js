@@ -27,7 +27,7 @@ Blockly.Blocks.math_number = {
         }
         return null;
     },
-    helpContent: () => lazy(() => import('../../../components/blocks-help/Math/math_number.jsx')),
+    helpContent: () => lazy(() => import('../../help-components/Math/math_number.jsx')),
 };
 
 Blockly.JavaScript.math_number = block => {

@@ -84,3 +84,22 @@ Blockly.Block.prototype.getTopParent = function() {
     }
     return null;
 };
+
+Blockly.Block.getDimensions = function(block_node) {
+    const options = new Blockly.Options({ media: '/dist/media/' });
+    const fragment = document.createDocumentFragment();
+    const el_injection_div = document.createElement('div');
+
+    fragment.appendChild(el_injection_div);
+
+    // Create a headless workspace to calculate xmlList block dimensions
+    const svg = Blockly.createDom_(el_injection_div, options);
+    const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+
+    const block = Blockly.Xml.domToBlock(block_node, workspace);
+    const block_hw = block.getHeightWidth();
+
+    workspace.dispose();
+
+    return block_hw;
+};

@@ -1,7 +1,7 @@
 import React             from 'react';
 import Icon              from 'Assets/icon.jsx';
-import { ToggleDrawer }  from 'App/Components/Elements/Drawer';
-import MenuDrawer        from 'App/Containers/Drawer/menu-drawer.jsx';
+import { ToggleDrawer }  from '../../Elements/Drawer';
+import MenuDrawer        from '../../../Containers/Drawer/menu-drawer.jsx';
 
 const ToggleMenuDrawer = () => (
     <ToggleDrawer
@@ -13,4 +13,4 @@ const ToggleMenuDrawer = () => (
     </ToggleDrawer>
 );
 
-export { ToggleMenuDrawer };
+export default ToggleMenuDrawer;

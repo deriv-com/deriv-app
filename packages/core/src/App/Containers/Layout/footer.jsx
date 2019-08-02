@@ -36,12 +36,12 @@ const Footer = ({
             <div className='footer__links footer__links--left'>
                 {
                     (is_logged_in && show_positions_toggle) &&
-                        <TogglePositions
-                            is_positions_drawer_on={is_positions_drawer_on}
-                            togglePositionsDrawer={togglePositionsDrawer}
-                            positions_count={0}
-                            // positions_count={active_positions.length || 0}
-                        />
+                    <TogglePositions
+                        is_positions_drawer_on={is_positions_drawer_on}
+                        togglePositionsDrawer={togglePositionsDrawer}
+                        positions_count={0}
+                        // positions_count={active_positions.length || 0}
+                    />
                 }
             </div>
             <NetworkStatus />

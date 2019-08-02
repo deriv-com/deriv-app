@@ -2,14 +2,14 @@ const path                        = require('path');
 const stylelintFormatter          = require('stylelint-formatter-pretty');
 const { IS_RELEASE }              = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
-const test = require('webpack').IgnorePlugin;
 
 const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/bot/bot.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/bot/media/**'), to: 'js/bot/media', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/bot/*.*'), to: 'js/bot/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/bot.css*'), to: 'css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/media/**'), to: 'js/bot/media', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/xml/**'), to: 'js/bot/xml', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/*.*'), to: 'js/bot/', flatten: true },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },

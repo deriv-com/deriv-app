@@ -15,18 +15,18 @@ class ModalElement extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.el.classList.add('modal');
         this.props.showFullBlur();
         this.state.modal_root.appendChild(this.el);
-    }
+    };
 
-    componentWillUnmount() {
+    componentWillUnmount = () => {
         document.removeEventListener('mousedown', this.handleClickOutside);
         this.state.modal_root.removeChild(this.el);
         this.props.hideFullBlur();
-    }
+    };
 
     handleClickOutside = (event) => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
@@ -55,6 +55,7 @@ class ModalElement extends React.PureComponent {
                     alignment='center'
                     classNameHeader='modal__tab-header'
                     list={this.props.modal_content}
+                    selected_index={this.props.selected_index}
                 />
             </div>,
             this.el
@@ -67,14 +68,15 @@ class ModalElement extends React.PureComponent {
 }
 
 ModalElement.propTypes = {
-    className    : PropTypes.string,
-    header       : PropTypes.node,
-    hideFullBlur : PropTypes.func,
-    is_open      : PropTypes.bool,
-    modal_content: PropTypes.array,
-    showFullBlur : PropTypes.func,
-    title        : PropTypes.string,
-    toggleModal  : PropTypes.func,
+    className     : PropTypes.string,
+    header        : PropTypes.node,
+    hideFullBlur  : PropTypes.func,
+    is_open       : PropTypes.bool,
+    modal_content : PropTypes.array,
+    selected_index: PropTypes.number,
+    showFullBlur  : PropTypes.func,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 const Modal = ({
@@ -83,6 +85,7 @@ const Modal = ({
     hideFullBlur,
     is_open,
     modal_content,
+    selected_index,
     showFullBlur,
     title,
     toggleModal,
@@ -105,6 +108,7 @@ const Modal = ({
             hideFullBlur={hideFullBlur}
             is_open={is_open}
             modal_content={modal_content}
+            selected_index={selected_index}
             showFullBlur={showFullBlur}
             title={title}
             toggleModal={toggleModal}
@@ -113,14 +117,15 @@ const Modal = ({
 );
 
 Modal.propTypes = {
-    className    : PropTypes.string,
-    header       : PropTypes.node,
-    hideFullBlur : PropTypes.func,
-    is_open      : PropTypes.bool,
-    modal_content: PropTypes.array,
-    showFullBlur : PropTypes.func,
-    title        : PropTypes.string,
-    toggleModal  : PropTypes.func,
+    className     : PropTypes.string,
+    header        : PropTypes.node,
+    hideFullBlur  : PropTypes.func,
+    is_open       : PropTypes.bool,
+    modal_content : PropTypes.array,
+    selected_index: PropTypes.number,
+    showFullBlur  : PropTypes.func,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 export {

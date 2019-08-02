@@ -7,11 +7,11 @@ import { routes }                     from 'Constants';
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Bot = lazy(() => import(/* webpackChunkName: "bot" */ 'bot'));
+const Bot = lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
 
 const initRoutesConfig = () => ([
-    { path: routes.index,     component: RouterRedirect,  title: '',                            to: routes.root },
-    { path: routes.root,      component: Bot,    title: localize('Trade'),    exact: true },
+    { path: routes.index,     component: RouterRedirect,  title: '',                   to: routes.root },
+    { path: routes.root,      component: Bot,             title: localize('Trade'),    exact: true },
     { path: routes.error404,  component: Page404,         title: localize('Error 404') },
     { path: routes.redirect,  component: Redirect,        title: localize('Redirect') },
 ]);

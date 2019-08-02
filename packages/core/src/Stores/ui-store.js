@@ -8,7 +8,7 @@ import {
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import { unique }            from '_common/utility';
 import BaseStore             from './base-store';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -67,6 +67,8 @@ export default class UIStore extends BaseStore {
     @observable is_app_blurred   = false;
     @observable is_route_blurred = false;
     @observable show_positions_toggle = true;
+
+    @observable active_cashier_tab = 'deposit';
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -239,6 +241,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
+    }
+
+    @action.bound
+    setCashierActiveTab(tab = 'deposit') {
+        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
     }
 
     @action.bound

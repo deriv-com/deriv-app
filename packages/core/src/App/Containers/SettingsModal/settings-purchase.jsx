@@ -5,8 +5,8 @@
 //     MediaDescription,
 //     MediaHeading,
 //     MediaIcon,
-// }                                    from 'App/Components/Components/Media';
-// import Localize                      from 'App/Components/Components/localize.jsx';
+// }                                    from 'App/Components/Elements/Media';
+// import Localize                      from 'App/Components/Elements/localize.jsx';
 // import Checkbox                      from 'App/Components/Form/Checkbox';
 // import ConfirmationDisabledLightIcon from 'Assets/SvgComponents/settings/confirmation-disabled.svg';
 // import ConfirmationEnabledLightIcon  from 'Assets/SvgComponents/settings/confirmation-enabled.svg';

@@ -3,6 +3,7 @@
         font-family: 'BinarySymbols';
         font-style: normal;
         font-weight: normal;
+        font-display: fallback;
         src: url('~Fonts/binary_symbols.woff') format('woff'); // relative path to node_modules won't resolve when deploying to a branch
     }
 }

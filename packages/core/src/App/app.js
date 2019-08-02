@@ -10,9 +10,9 @@ configure({ enforceActions: 'observed' });
 const initStore = () => {
     Client.init();
 
-    setStorageEvents();
-
     const root_store = new RootStore();
+
+    setStorageEvents(root_store);
 
     NetworkMonitor.init(root_store);
     OutdatedBrowser.init(root_store);

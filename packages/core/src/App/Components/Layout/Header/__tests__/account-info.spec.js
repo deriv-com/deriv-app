@@ -2,7 +2,7 @@ import React                  from 'react';
 import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import { AccountInfo }        from '../account-info.jsx';
+import AccountInfo            from '../account-info.jsx';
 import Icon                   from 'Assets/icon.jsx';
 import { AccountSwitcher }    from '../../../../Containers/AccountSwitcher';
 import { CSSTransition }      from 'react-transition-group';

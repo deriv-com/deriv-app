@@ -9,12 +9,12 @@ const header_links = [
         image  : <Icon icon='IconDeriv' className='header__icon' />,
         link_to: routes.trade,
     },
-    {
-        icon      : <Icon icon='IconReports' className='header__icon' />,
-        text      : localize('Reports'),
-        link_to   : routes.reports,
-        login_only: true,
-    },
+    // {
+    //     icon      : <Icon icon='IconReports' className='header__icon' />,
+    //     text      : localize('Reports'),
+    //     link_to   : routes.reports,
+    //     login_only: true,
+    // },
 ];
 
 export default header_links;

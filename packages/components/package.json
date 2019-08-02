@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
-    "serve": "rimraf lib && webpack --mode=development --progress --watch",
+    "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "test": "jest --all",
     "deploy": "echo \"Error: no deploy specified\"",

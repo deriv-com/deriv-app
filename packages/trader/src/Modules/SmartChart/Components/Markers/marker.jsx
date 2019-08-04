@@ -45,4 +45,4 @@ ChartMarker.propTypes = {
     marker_content_props: PropTypes.object,
 };
 
-export default ChartMarker;
+export default React.memo(ChartMarker);

@@ -32,4 +32,4 @@ ProgressTicks.propTypes = {
     ticks_count : PropTypes.number,
 };
 
-export default ProgressTicks;
+export default React.memo(ProgressTicks);

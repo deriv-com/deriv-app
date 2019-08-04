@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React      from 'react';
 
-const UnderlyingIcon = ({ market }) => (
+const UnderlyingIconComponent = ({ market }) => (
     <div
         className={classNames(
             'icons-underlying',
@@ -9,5 +9,4 @@ const UnderlyingIcon = ({ market }) => (
         )}
     />
 );
-
-export { UnderlyingIcon };
+export const UnderlyingIcon = React.memo(UnderlyingIconComponent);

@@ -14,7 +14,6 @@ import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';
 import ResultOverlay           from './result-overlay.jsx';
-import { connect } from '../../../../Stores/connect';
 
 const PositionsDrawerCard = ({
     active_position,
@@ -265,8 +264,4 @@ PositionsDrawerCard.propTypes = {
     toggleUnsupportedContractModal: PropTypes.func,
     type                          : PropTypes.string,
 };
-export default connect(
-    ({ modules }) => ({
-        openContract: modules.contract_trade.onMount,
-    }),
-)(React.memo(PositionsDrawerCard));
+export default React.memo(PositionsDrawerCard);

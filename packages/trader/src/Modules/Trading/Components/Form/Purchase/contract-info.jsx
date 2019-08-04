@@ -81,4 +81,4 @@ ContractInfo.propTypes = {
     type         : PropTypes.string,
 };
 
-export default ContractInfo;
+export default React.memo(ContractInfo);

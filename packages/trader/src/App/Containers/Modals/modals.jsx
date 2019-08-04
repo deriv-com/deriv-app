@@ -103,4 +103,4 @@ export default connect(({ ui, client, modules, common }) => ({
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
     toggleUnsupportedContractModal       : ui.toggleUnsupportedContractModal,
     virtual_account_loginid              : client.virtual_account_loginid,
-}))(Modals);
+}))(React.memo(Modals));

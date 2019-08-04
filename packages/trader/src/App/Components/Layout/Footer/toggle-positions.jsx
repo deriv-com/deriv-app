@@ -3,7 +3,7 @@ import PropTypes  from 'prop-types';
 import React      from 'react';
 import Icon       from 'Assets/icon.jsx';
 
-const TogglePositions = ({
+const TogglePositionsComponent = ({
     positions_count,
     is_positions_drawer_on,
     togglePositionsDrawer,
@@ -27,10 +27,10 @@ const TogglePositions = ({
     );
 };
 
-TogglePositions.propTypes = {
+TogglePositionsComponent.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     positions_count       : PropTypes.number,
     togglePositionsDrawer : PropTypes.func,
 };
 
-export { TogglePositions };
+export const TogglePositions = React.memo(TogglePositionsComponent);

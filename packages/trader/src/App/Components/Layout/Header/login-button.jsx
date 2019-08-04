@@ -5,7 +5,7 @@ import { Button }          from 'deriv-components';
 import { redirectToLogin } from '_common/base/login';
 import { localize }        from 'App/i18n';
 
-const LoginButton = ({ className }) => (
+const LoginButtonComponent = ({ className }) => (
     <Button
         id='dt_login_button'
         className={classNames(className, 'btn--secondary btn--secondary--orange')}
@@ -15,8 +15,8 @@ const LoginButton = ({ className }) => (
     />
 );
 
-LoginButton.propTypes = {
+LoginButtonComponent.propTypes = {
     className: PropTypes.string,
 };
 
-export { LoginButton };
+export const LoginButton = React.memo(LoginButtonComponent);

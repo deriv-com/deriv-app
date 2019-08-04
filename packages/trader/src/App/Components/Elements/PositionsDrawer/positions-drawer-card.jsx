@@ -14,6 +14,7 @@ import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';
 import ResultOverlay           from './result-overlay.jsx';
+import { connect } from '../../../../Stores/connect';
 
 const PositionsDrawerCard = ({
     active_position,
@@ -31,6 +32,7 @@ const PositionsDrawerCard = ({
     profit_loss,
     onClickSell,
     onClickRemove,
+    openContract,
     result,
     sell_price,
     status,
@@ -160,6 +162,9 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
+    const openContractOnClick = () => openContract(id);
+    const sellOnClick = () => onClickSell(id);
+
     return (
         <div className={classNames(
             'positions-drawer-card__wrapper', {
@@ -173,7 +178,7 @@ const PositionsDrawerCard = ({
                 is_visible={!!(contract_info.is_sold)}
                 has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
-                onClick={() => toggleUnsupportedContractModal(true)}
+                onClick={toggleUnsupportedContractModal}
                 result={(result || fallback_result)}
             />
             {is_unsupported ?
@@ -185,7 +190,7 @@ const PositionsDrawerCard = ({
                             'positions-drawer-card--red'   : (profit_loss < 0) && !result,
                         }
                     )}
-                    onClick={() => toggleUnsupportedContractModal(true)}
+                    onClick={toggleUnsupportedContractModal}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
@@ -198,7 +203,7 @@ const PositionsDrawerCard = ({
                             'positions-drawer-card--red'   : (profit_loss < 0) && !result,
                         }
                     )}
-                    contract_id={id}
+                    onClick={openContractOnClick}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </ContractLink>
@@ -223,7 +228,7 @@ const PositionsDrawerCard = ({
                             })}
                         is_disabled={!is_valid_to_sell || is_sell_requested}
                         text={localize('Sell contract')}
-                        onClick={() => onClickSell(id)}
+                        onClick={sellOnClick}
                     />
                 </div>
             </CSSTransition>
@@ -252,6 +257,7 @@ PositionsDrawerCard.propTypes = {
     is_valid_to_sell              : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClickRemove                 : PropTypes.func,
     onClickSell                   : PropTypes.func,
+    openContract                  : PropTypes.func,
     profit_loss                   : PropTypes.number,
     result                        : PropTypes.string,
     sell_time                     : PropTypes.number,
@@ -259,5 +265,8 @@ PositionsDrawerCard.propTypes = {
     toggleUnsupportedContractModal: PropTypes.func,
     type                          : PropTypes.string,
 };
-
-export default PositionsDrawerCard;
+export default connect(
+    ({ modules }) => ({
+        openContract: modules.contract_trade.onMount,
+    }),
+)(React.memo(PositionsDrawerCard));

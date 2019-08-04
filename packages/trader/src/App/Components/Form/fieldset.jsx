@@ -40,4 +40,4 @@ Fieldset.propTypes = {
     onMouseLeave: PropTypes.func,
 };
 
-export default Fieldset;
+export default React.memo(Fieldset);

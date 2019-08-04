@@ -87,4 +87,4 @@ export default withRouter(connect(
         togglePositionsDrawer : ui.togglePositionsDrawer,
         toggleSettingsModal   : ui.toggleSettingsModal,
     })
-)(Footer));
+)(React.memo(Footer)));

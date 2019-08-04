@@ -76,4 +76,4 @@ ContractInfo.propTypes = {
     proposal_info: PropTypes.object,
 };
 
-export default ContractInfo;
+export default React.memo(ContractInfo);

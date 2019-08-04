@@ -5,7 +5,7 @@ import { localize }        from 'App/i18n';
 import { urlFor }          from '_common/url';
 import Button              from '../../Form/button.jsx';
 
-const SignupButton = ({ className }) => (
+const SignupButtonComponent = ({ className }) => (
     <Button
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
@@ -14,8 +14,8 @@ const SignupButton = ({ className }) => (
     />
 );
 
-SignupButton.propTypes = {
+SignupButtonComponent.propTypes = {
     className: PropTypes.string,
 };
 
-export { SignupButton };
+export const SignupButton = React.memo(SignupButtonComponent)

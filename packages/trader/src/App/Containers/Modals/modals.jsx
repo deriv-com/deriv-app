@@ -107,4 +107,4 @@ export default connect(({ ui, client, modules, common }) => ({
     setHasOnlyForwardingContracts        : ui.setHasOnlyForwardingContracts,
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
     virtual_account_loginid              : client.virtual_account_loginid,
-}))(Modals);
+}))(React.memo(Modals));

@@ -27,7 +27,7 @@ const modal_content = [
     },
 ];
 
-const ToggleSettings = ({
+const ToggleSettingsComponent = ({
     hideFullBlur,
     is_settings_visible,
     showFullBlur,
@@ -59,11 +59,12 @@ const ToggleSettings = ({
     );
 };
 
-ToggleSettings.propTypes = {
+ToggleSettingsComponent.propTypes = {
     hideFullBlur       : PropTypes.func,
     is_settings_visible: PropTypes.bool,
     showFullBlur       : PropTypes.func,
     toggleSettings     : PropTypes.func,
 };
 
-export { ToggleSettings };
+export const ToggleSettings = React.memo(ToggleSettingsComponent);
+

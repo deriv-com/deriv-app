@@ -2,7 +2,7 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import { BinaryLink } from '../../Routes';
 
-const MenuLinks = ({ is_logged_in, items }) => (
+const MenuLinksComponent = ({ is_logged_in, items }) => (
     <React.Fragment>
         {!!items.length &&
         <div className='header__menu-links'>
@@ -28,7 +28,7 @@ const MenuLinks = ({ is_logged_in, items }) => (
     </React.Fragment>
 );
 
-MenuLinks.propTypes = {
+MenuLinksComponent.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
         icon: PropTypes.shape({
             className: PropTypes.string,
@@ -39,4 +39,4 @@ MenuLinks.propTypes = {
     })),
 };
 
-export { MenuLinks };
+export const MenuLinks = React.memo(MenuLinksComponent);

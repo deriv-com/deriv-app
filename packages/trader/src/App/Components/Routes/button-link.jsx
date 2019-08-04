@@ -20,4 +20,4 @@ ButtonLink.propTypes = {
     to       : PropTypes.string,
 };
 
-export default ButtonLink;
+export default React.memo(ButtonLink);

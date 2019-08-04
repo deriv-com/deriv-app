@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React      from 'react';
 import Icon       from 'Assets/icon.jsx';
 
-class ToggleFullScreen extends React.Component {
+class ToggleFullScreen extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {

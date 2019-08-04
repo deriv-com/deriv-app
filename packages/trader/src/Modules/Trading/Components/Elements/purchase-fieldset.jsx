@@ -1,16 +1,21 @@
-import classNames     from 'classnames';
-import React          from 'react';
-import PropTypes      from 'prop-types';
+import classNames        from 'classnames';
+import React             from 'react';
+import PropTypes         from 'prop-types';
 // import { localize }   from 'App/i18n';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
-import { Popover }    from 'App/Components/Elements/Popover';
-import Fieldset       from 'App/Components/Form/fieldset.jsx';
-import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import { Popover }       from 'App/Components/Elements/Popover';
+import Fieldset          from 'App/Components/Form/fieldset.jsx';
+import ContractInfo      from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 // import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
-import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
+import PurchaseButton    from 'Modules/Trading/Components/Elements/purchase-button.jsx';
+import { deeperCompare } from 'Utils/React/deeper-compare';
 
-class PurchaseFieldset extends React.PureComponent {
+class PurchaseFieldset extends React.Component {
     state = { should_fade: false };
+
+    shouldComponentUpdate(next_props, next_state) {
+        return deeperCompare(next_props, next_state, this.props, this.state);
+    }
 
     componentDidMount() {
         this.setState({ should_fade: true });

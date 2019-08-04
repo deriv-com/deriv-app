@@ -22,4 +22,4 @@ ContractTypeCell.propTypes = {
     type: PropTypes.string,
 };
 
-export default ContractTypeCell;
+export default React.memo(ContractTypeCell);

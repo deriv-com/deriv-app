@@ -42,4 +42,4 @@ MarkerLine.propTypes = {
     marker_config: PropTypes.object,
     status       : PropTypes.oneOf(['won', 'lost']),
 };
-export default observer(MarkerLine);
+export default React.memo(observer(MarkerLine));

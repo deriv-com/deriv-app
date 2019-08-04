@@ -122,4 +122,4 @@ export default connect(
         // is_purchase_locked        : ui.is_purchase_lock_on,
         // togglePurchaseLock        : ui.togglePurchaseLock,
     }),
-)(Purchase);
+)(React.memo(Purchase));

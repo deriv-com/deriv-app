@@ -17,4 +17,4 @@ const EmptyPortfolioMessage = ({ error }) => (
     </div>
 );
 
-export default EmptyPortfolioMessage;
+export default React.memo(EmptyPortfolioMessage);

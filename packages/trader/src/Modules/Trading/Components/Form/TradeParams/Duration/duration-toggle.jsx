@@ -30,4 +30,4 @@ DurationToggle.propTypes = {
     value   : PropTypes.bool,
 };
 
-export default DurationToggle;
+export default React.memo(DurationToggle);

@@ -13,11 +13,10 @@ const MenuDrawer = ({
     is_dark_mode,
     is_logged_in,
     is_mobile,
-    is_positions_drawer_on,
     // is_purchase_confirmed,
     // is_purchase_locked,
     toggleDarkMode,
-    togglePositionsDrawer,
+    customAction,
     // togglePurchaseLock,
     // togglePurchaseConfirmation,
 }) => (
@@ -65,12 +64,7 @@ const MenuDrawer = ({
             <DrawerItem
                 icon={<Icon icon='IconLogout' className='drawer__icon' />}
                 text={localize('Logout')}
-                custom_action={() => {
-                    if (is_positions_drawer_on) {
-                        togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-                    }
-                    requestLogout();
-                }}
+                custom_action={customAction}
             />
         </div>
         }
@@ -78,14 +72,13 @@ const MenuDrawer = ({
 );
 
 MenuDrawer.propTypes = {
-    is_dark_mode          : PropTypes.bool,
-    is_logged_in          : PropTypes.bool,
-    is_mobile             : PropTypes.bool,
-    is_positions_drawer_on: PropTypes.bool,
+    customAction  : PropTypes.func,
+    is_dark_mode  : PropTypes.bool,
+    is_logged_in  : PropTypes.bool,
+    is_mobile     : PropTypes.bool,
     // is_purchase_confirmed     : PropTypes.bool,
     // is_purchase_locked        : PropTypes.bool,
-    toggleDarkMode        : PropTypes.func,
-    togglePositionsDrawer : PropTypes.func,
+    toggleDarkMode: PropTypes.func,
     // togglePurchaseConfirmation: PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
 };
@@ -100,6 +93,12 @@ export default connect(
         // is_purchase_locked        : ui.is_purchase_lock_on,
         toggleDarkMode        : ui.toggleDarkMode,
         togglePositionsDrawer : ui.togglePositionsDrawer,
+        customAction          : () => {
+            if (ui.is_positions_drawer_on) {
+                ui.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+            }
+            requestLogout();
+        },
         // togglePurchaseConfirmation: ui.togglePurchaseConfirmation,
         // togglePurchaseLock        : ui.togglePurchaseLock,
     }),

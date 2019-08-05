@@ -8,7 +8,7 @@ import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
 import Localize                from 'App/Components/Elements/localize.jsx';
 import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
-import Button                  from 'App/Components/Form/button.jsx';
+import Button                  from 'deriv-components/lib/button';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';

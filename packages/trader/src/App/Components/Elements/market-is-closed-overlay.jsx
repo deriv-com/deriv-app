@@ -1,7 +1,7 @@
 import React        from 'react';
 import { localize } from 'App/i18n';
+import Button       from 'deriv-components/lib/button';
 import Localize     from './localize.jsx';
-import Button       from '../Form/button.jsx';
 
 const toggleFade = ({ node, opacity, direction, color }) => {
     const sub_or_add = direction === -1 && opacity > 0.1 ? -1 : 1;

@@ -6,7 +6,7 @@ import { Modal }          from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
     Withdrawal }          from 'App/Containers/CashierModal';
-import Button             from '../../Form/button.jsx';
+import Button             from 'deriv-components/lib/button';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 const tabs = {

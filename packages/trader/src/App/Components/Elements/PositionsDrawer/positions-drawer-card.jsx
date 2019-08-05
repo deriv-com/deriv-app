@@ -7,7 +7,7 @@ import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
-import Button                  from 'App/Components/Form/button.jsx';
+import Button                  from 'deriv-components/lib/button';
 import Money                   from 'App/Components/Elements/money.jsx';
 import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';

@@ -41,6 +41,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
+    "css-loader": "^3.1.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -53,9 +54,11 @@
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
     "prettier": "1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "sass-loader": "^7.1.0",
     "stylelint": "^10.0.1",
     "stylelint-formatter-pretty": "^1.0.3",
     "stylelint-selector-bem-pattern": "^2.1.0",
@@ -71,6 +74,14 @@
     "deriv-base-style": "^1.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-transition-group": "^4.2.1"
+  },
+  "peerDependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.1.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   }
 }

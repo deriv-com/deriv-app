@@ -2,7 +2,7 @@ import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'App/i18n';
-import Button       from 'App/Components/Form/button.jsx';
+import Button       from 'deriv-components/lib/button';
 
 const UpgradeButton = ({ className, onClick }) => (
     <Button

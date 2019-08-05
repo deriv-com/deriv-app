@@ -21,9 +21,6 @@ module.exports = {
     },
     optimization : {
         minimize: true,
-        splitChunks: {
-            chunks: 'all'
-        }
     },
     devServer: {
         publicPath: '/dist/',
@@ -88,4 +85,24 @@ module.exports = {
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],
+    externals: {
+        mobx: 'mobx',
+        react: {
+            root: 'React',
+            commonjs: 'react',
+            commonjs2: 'react',
+        },
+        'react-dom': {
+            commonjs: 'react-dom',
+            commonjs2: 'react-dom',
+            root: 'ReactDOM',
+        },
+        'mobx-react': {
+            commonjs: 'mobx-react',
+            commonjs2: 'mobx-react',
+            root: 'mobxReact',
+        },
+        'babel-polyfill': 'babel-polyfill',
+       
+    },
 }

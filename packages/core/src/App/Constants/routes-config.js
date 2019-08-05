@@ -9,6 +9,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 
 const Bot = lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
 
+// TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => ([
     { path: routes.index,     component: RouterRedirect,  title: '',                   to: routes.root },
     { path: routes.root,      component: Bot,             title: localize('Trade'),    exact: true },

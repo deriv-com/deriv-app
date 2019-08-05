@@ -67,15 +67,21 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
     const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
+    const xml_list = Blockly.Toolbox.getContent(selected_category, this.workspace_);
+
+    flyout.setContents(xml_list);
+};
+
+Blockly.Toolbox.getContent = function(selected_category, workspace) {
     let xml_list = selected_category.getContents();
 
     // Dynamic categories
     if (typeof xml_list === 'string') {
-        const fnToApply = this.workspace_.getToolboxCategoryCallback(xml_list);
-        xml_list = fnToApply(this.workspace_);
+        const fnToApply = workspace.getToolboxCategoryCallback(xml_list);
+        xml_list = fnToApply(workspace);
     }
 
-    flyout.setContents(xml_list);
+    return xml_list;
 };
 
 /**

@@ -71,7 +71,6 @@ export default class FlyoutStore {
 
         this.block_workspaces.push(workspace);
         this.block_workspaces.forEach(Blockly.svgResize);
-        this.block_workspaces = [];
     }
 
     /**
@@ -100,16 +99,19 @@ export default class FlyoutStore {
     }
 
     @action.bound showHelpContent(block_node) {
-        const block_type = Blockly.Blocks[block_node.getAttribute('type')];
+        Object.keys(block_node).forEach(key => {
+            const node = block_node[key];
+            const block_hw = Blockly.Block.getDimensions(node);
+    
+            node.setAttribute('width', block_hw.width);
+            node.setAttribute('height', block_hw.height);
+        });
+
+        const block_type = Blockly.Blocks[block_node[0].getAttribute('type')];
 
         if (typeof block_type.helpContent === 'undefined') {
             return;
         }
-
-        const block_hw = Blockly.Block.getDimensions(block_node);
-
-        block_node.setAttribute('width', block_hw.width);
-        block_node.setAttribute('height', block_hw.height);
 
         const HelpComponent = block_type.helpContent();
 
@@ -126,13 +128,7 @@ export default class FlyoutStore {
 
     @action.bound onSequenceClick(block_name, type) {
         const selected_category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
-        let xml_list = selected_category.getContents();
-
-        // Dynamic categories
-        if (typeof xml_list === 'string') {
-            const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(xml_list);
-            xml_list = fnToApply(Blockly.derivWorkspace);
-        }
+        const xml_list = Blockly.Toolbox.getContent(selected_category, Blockly.derivWorkspace);
 
         const current_block = xml_list.find(xml => xml.getAttribute('type') === block_name);
         const last_position = xml_list.length - 1;
@@ -178,7 +174,18 @@ export default class FlyoutStore {
         }
 
         const target_block = xml_list[current_block_position];
-        this.showHelpContent(target_block);
+        const xml_list_group = this.groupBy(xml_list);
+
+        let target_blocks = [];
+        // eslint-disable-next-line
+        Object.keys(xml_list_group).forEach(key => {
+            const blocks = xml_list_group[key];
+
+            if (blocks.indexOf(target_block) > -1){
+                target_blocks = blocks;
+            }
+        });
+        this.showHelpContent(target_blocks);
     }
 
     static onBackClick() {
@@ -198,59 +205,67 @@ export default class FlyoutStore {
     @action.bound setContents(xmlList) {
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
-        this.block_listeners = [];
-        this.block_workspaces = [];
 
         const flyout_components = [];
 
-        xmlList.forEach((node, index) => {
-            const tagName = node.tagName.toUpperCase();
+        const xml_list_group = this.groupBy(xmlList);
+
+        Object.keys(xml_list_group).forEach((key, index) => {
+            const nodes = xml_list_group[key];
+            const first_block = nodes[0];
+            const tagName = first_block.tagName.toUpperCase();
 
             if (tagName === 'BLOCK') {
-                const block_type = node.getAttribute('type');
-                const key = block_type + index;
+                const block_type = first_block.getAttribute('type');
+                const unique_key = block_type + Math.random();
 
                 flyout_components.push(
                     <FlyoutBlock
-                        key={key}
+                        key={unique_key}
                         id={`flyout__item-workspace--${index}`}
-                        block_node={node}
+                        block_node={nodes}
                         onInfoClick={
                             Blockly.Blocks[block_type].helpContent
-                            && (() => this.showHelpContent(node))
+                            && (() => this.showHelpContent(nodes))
                         }
                     />
                 );
             } else if (tagName === 'LABEL') {
-                const key = node.getAttribute('text') + index;
+                Object.keys(nodes).forEach(node_key => {
+                    const node = nodes[node_key];
+                    const unique_key = node.getAttribute('text') + index;
 
-                flyout_components.push(
-                    <div key={key} className='flyout__item-label'>
-                        {node.getAttribute('text')}
-                    </div>
-                );
+                    flyout_components.push(
+                        <div key={unique_key} className='flyout__item-label'>
+                            {node.getAttribute('text')}
+                        </div>
+                    );
+                });
             } else if (tagName === 'BUTTON') {
-                const callbackKey = node.getAttribute('callbackKey');
-                const callback = Blockly.derivWorkspace.getButtonCallback(callbackKey) || (() => { });
-                const key = callbackKey + index;
+                Object.keys(nodes).forEach(node_key => {
+                    const node = nodes[node_key];
+                    const callbackKey = node.getAttribute('callbackKey');
+                    const callback = Blockly.derivWorkspace.getButtonCallback(callbackKey) || (() => { });
+                    const unique_key = callbackKey + index;
 
-                flyout_components.push(
-                    <button
-                        key={key}
-                        className='flyout__button'
-                        onClick={(button) => {
-                            const flyout_button = button;
+                    flyout_components.push(
+                        <button
+                            key={unique_key}
+                            className='flyout__button'
+                            onClick={(button) => {
+                                const flyout_button = button;
 
-                            // Workaround for not having a flyout workspace.
-                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                            flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
+                                // Workaround for not having a flyout workspace.
+                                flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
 
-                            callback(flyout_button);
-                        }}
-                    >
-                        {node.getAttribute('text')}
-                    </button>
-                );
+                                callback(flyout_button);
+                            }}
+                        >
+                            {node.getAttribute('text')}
+                        </button>
+                    );
+                });
             }
         });
 
@@ -258,6 +273,13 @@ export default class FlyoutStore {
         this.setVisibility(true);
         this.setFlyoutWidth(xmlList);
     }
+
+    groupBy = function(nodes) {
+        return nodes.reduce(function (groupKey, node) {
+            (groupKey[node.getAttribute('type')] = groupKey[node.getAttribute('type')] || []).push(node);
+            return groupKey;
+        }, {});
+    };
 
     /**
  * Creates a copy of passed block_node on main workspace and positions it

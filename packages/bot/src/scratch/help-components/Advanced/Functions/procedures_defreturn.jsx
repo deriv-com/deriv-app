@@ -3,7 +3,7 @@ import HelpBase, { FlyoutVideo }             from '../../flyout-help-base.jsx';
 import FlyoutBlock                           from '../../../../components/flyout-block.jsx';
 
 const ProceduresDefreturn = (props) => (
-    <HelpBase title={props.block_node.getAttribute('type')}>
+    <HelpBase title={props.block_node[0].getAttribute('type')}>
         <p>Lorem ipsum dolor sit amet, consectetur
             adipiscing elit. Ut porta id felis id efficitur. Sed mattis lorem ligula,
             ac fringilla eros tempor sed. Nullam commodo vehicula erat, a rutrum libero mattis non.

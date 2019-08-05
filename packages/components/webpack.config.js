@@ -3,7 +3,7 @@ const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const path                      = require('path');
 
-module.exports = {
+module.exports = (env, argv) => ({
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
@@ -65,17 +65,17 @@ module.exports = {
                     },
                 ],
             },
+           (argv.mode === 'production' ? {
+                    enforce: "pre",
+                    test: /\.(js|jsx)$/,
+                    exclude: [/node_modules/],
+                    loader: "eslint-loader",
+                    options: {
+                        fix: true
+                    },
+                  } :{}),                
             {
-                enforce: "pre",
-                test: /\.(js|jsx)$/,
-                exclude: [/node_modules/],
-                loader: "eslint-loader",
-                options: {
-                    fix: true
-                },
-            },
-            {
-                test   : /\.(js|jsx)$/,
+                  test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 loader : 'babel-loader',
             },
@@ -86,4 +86,4 @@ module.exports = {
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],
-};
+});

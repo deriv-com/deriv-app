@@ -60,8 +60,10 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        // if session has timed out clear the url and set it again
+        // if session has timed out reset everything
         this.setIframeUrl('', current_action);
+        this.setSessionTimeout(true, current_action);
+        this.clearTimeoutCashierUrl(current_action);
 
         const response_cashier = await WS.cashier(current_action, verification_code);
 
@@ -69,11 +71,16 @@ export default class CashierStore extends BaseStore {
         if (response_cashier.error) {
             this.setLoading(false);
             this.setErrorMessage(response_cashier.error.message, current_action);
-            this.setSessionTimeout(true, current_action);
             if (verification_code) {
                 // clear verification code on error
                 this.clearVerification();
             }
+        } else if (isCryptocurrency(this.root_store.client.currency)) {
+            this.setLoading(false);
+            this.setContainerHeight('700', current_action);
+            this.setIframeUrl(response_cashier.cashier, current_action);
+            // crypto cashier can only be accessed once and the session expires
+            // so no need to set timeouts to keep the session alive
         } else {
             await this.checkIframeLoaded(current_action);
             this.setIframeUrl(response_cashier.cashier, current_action);
@@ -89,26 +96,18 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async checkIframeLoaded(container) {
-        if (isCryptocurrency(this.root_store.client.currency)) {
-            this.setLoading(false);
-            this.setContainerHeight('700', container);
-            // crypto cashier can only be accessed once and the session expires
-            this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
-            this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
-        } else {
-            this.removeOnIframeLoaded(container);
-            this.config[container].onIframeLoaded = (function (e) {
-                if (/cashier|doughflow/.test(e.origin)) {
-                    this.setLoading(false);
-                    // set the height of the container after content loads so that the
-                    // loading bar stays vertically centered until the end
-                    this.setContainerHeight(+e.data || '1200', container);
-                    // do not remove the listener
-                    // on every iframe screen change we need to update the height to more/less to match the new content
-                }
-            }).bind(this);
-            window.addEventListener('message', this.config[container].onIframeLoaded, false);
-        }
+        this.removeOnIframeLoaded(container);
+        this.config[container].onIframeLoaded = (function (e) {
+            if (/cashier|doughflow/.test(e.origin)) {
+                this.setLoading(false);
+                // set the height of the container after content loads so that the
+                // loading bar stays vertically centered until the end
+                this.setContainerHeight(+e.data || '1200', container);
+                // do not remove the listener
+                // on every iframe screen change we need to update the height to more/less to match the new content
+            }
+        }).bind(this);
+        window.addEventListener('message', this.config[container].onIframeLoaded, false);
     }
 
     removeOnIframeLoaded(container) {
@@ -166,7 +165,7 @@ export default class CashierStore extends BaseStore {
         this.config.verification.resend_timeout = resend_timeout;
     }
 
-    clearSessionTimeout(container) {
+    clearTimeoutCashierUrl(container) {
         if (this.config[container].timeout_session) {
             clearTimeout(this.config[container].timeout_session);
         }
@@ -176,7 +175,7 @@ export default class CashierStore extends BaseStore {
     // so we should resend the request for container (deposit|withdraw) url on next mount
     @action.bound
     setTimeoutCashierUrl(container) {
-        this.clearSessionTimeout(container);
+        this.clearTimeoutCashierUrl(container);
         this.config[container].timeout_session = setTimeout(() => {
             this.setSessionTimeout(true, container);
         }, 60000);
@@ -263,7 +262,7 @@ export default class CashierStore extends BaseStore {
         this.clearVerification();
         [this.config.deposit.container, this.config.withdraw.container].forEach((container) => {
             this.setIframeUrl('', container);
-            this.clearSessionTimeout(container);
+            this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
     }

@@ -101,5 +101,6 @@ export default connect(({ ui, client, modules, common }) => ({
     switchAccount                        : client.switchAccount,
     setHasOnlyForwardingContracts        : ui.setHasOnlyForwardingContracts,
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
+    toggleUnsupportedContractModal       : ui.toggleUnsupportedContractModal,
     virtual_account_loginid              : client.virtual_account_loginid,
 }))(Modals);

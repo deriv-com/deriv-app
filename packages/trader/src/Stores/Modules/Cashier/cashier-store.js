@@ -60,13 +60,15 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
+        // if session has timed out clear the url and set it again
+        this.setIframeUrl('', current_action);
+
         const response_cashier = await WS.cashier(current_action, verification_code);
 
         // TODO: error handling UI & custom messages
         if (response_cashier.error) {
             this.setLoading(false);
             this.setErrorMessage(response_cashier.error.message, current_action);
-            this.setIframeUrl('', current_action);
             this.setSessionTimeout(true, current_action);
             if (verification_code) {
                 // clear verification code on error
@@ -91,7 +93,6 @@ export default class CashierStore extends BaseStore {
             this.setLoading(false);
             this.setContainerHeight('700', container);
             // crypto cashier can only be accessed once and the session expires
-            this.setIframeUrl('', container);
             this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
         } else {
@@ -140,6 +141,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setSessionTimeout(is_session_time_out, container) {
         this.config[container].is_session_timeout = is_session_time_out;
+        if (is_session_time_out) {
+            this.removeOnIframeLoaded(container);
+        }
     }
 
     @action.bound

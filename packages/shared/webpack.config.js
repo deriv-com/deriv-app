@@ -47,6 +47,6 @@ module.exports = {
   ],
   externals: {
     'babel-polyfill': 'babel-polyfill',
-    'moment'        :'moment',
+    'moment'        : 'moment',
   }
 }

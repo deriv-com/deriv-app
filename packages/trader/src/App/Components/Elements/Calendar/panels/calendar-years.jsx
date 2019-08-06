@@ -1,7 +1,7 @@
 import classNames      from 'classnames';
 import React           from 'react';
+import PropTypes       from 'prop-types';
 import { toMoment }    from 'Utils/Date';
-import { CommonPropTypes } from './types';
 import { getDecade }   from '../helper';
 
 export const CalendarYears = ({
@@ -43,4 +43,9 @@ export const CalendarYears = ({
     );
 };
 
-CalendarYears.propTypes = { ...CommonPropTypes };
+CalendarYears.propTypes = {
+    calendar_date   : PropTypes.object,
+    isPeriodDisabled: PropTypes.func,
+    selected_date   : PropTypes.number,
+    updateSelected  : PropTypes.func,
+};

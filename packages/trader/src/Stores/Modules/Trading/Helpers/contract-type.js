@@ -6,6 +6,7 @@ import {
 import { WS }                   from 'Services';
 import {
     epochToMoment,
+    isDateValid,
     isTimeValid,
     minDate,
     setTime,
@@ -26,6 +27,7 @@ const ContractType = (() => {
     let available_contract_types = {};
     let available_categories     = {};
     let contract_types;
+    const trading_events         = {};
     const trading_times          = {};
     let has_only_forward_starting_contracts = false;
 
@@ -256,14 +258,15 @@ const ContractType = (() => {
         start_time: start_date ? getValidTime(sessions, buildMoment(start_date, start_time)) : null,
     });
 
-    const getTradingTimes = async (date, underlying = null) => {
-        if (!date) {
+    const getTradingTimesOrEvents = async (date, underlying = null, is_trading_events = false) => {
+        if (!isDateValid(date)) {
             return [];
         }
 
-        const date_str = epochToMoment(date).format('YYYY-MM-DD');
+        const obj = is_trading_events ? trading_events : trading_times;
 
-        if (!(date_str in trading_times)) {
+        const date_str = epochToMoment(date).format('YYYY-MM-DD');
+        if (!(date_str in obj)) {
             const trading_times_response = await WS.getTradingTimes(date_str);
 
             if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
@@ -275,13 +278,18 @@ const ContractType = (() => {
                             if (symbols) {
                                 for (let k = 0; k < symbols.length; k++) {
                                     const symbol = symbols[k];
-                                    if (!trading_times[trading_times_response.echo_req.trading_times]) {
-                                        trading_times[trading_times_response.echo_req.trading_times] = {};
+                                    if (!obj[trading_times_response.echo_req.trading_times]) {
+                                        obj[trading_times_response.echo_req.trading_times] = {};
                                     }
-                                    trading_times[trading_times_response.echo_req.trading_times][symbol.symbol] = {
-                                        'open' : symbol.times.open,
-                                        'close': symbol.times.close,
-                                    };
+                                    if (is_trading_events) {
+                                        obj[trading_times_response.echo_req.trading_times][symbol.symbol] =
+                                            symbol.events;
+                                    } else {
+                                        obj[trading_times_response.echo_req.trading_times][symbol.symbol] = {
+                                            'open' : symbol.times.open,
+                                            'close': symbol.times.close,
+                                        };
+                                    }
                                 }
                             }
                         }
@@ -290,7 +298,7 @@ const ContractType = (() => {
             }
         }
 
-        return underlying ? trading_times[date_str][underlying] : trading_times[date_str];
+        return underlying ? obj[date_str][underlying] : obj[date_str];
     };
 
     const getExpiryType = (duration_units_list, expiry_type) => {
@@ -425,7 +433,8 @@ const ContractType = (() => {
         getSessions,
         getStartTime,
         getStartType,
-        getTradingTimes,
+        getTradingEvents     : (date, underlying) => getTradingTimesOrEvents(date, underlying, true),
+        getTradingTimes      : (date, underlying) => getTradingTimesOrEvents(date, underlying, false),
         getContractCategories: () => ({
             contract_types_list: available_categories,
             has_only_forward_starting_contracts,

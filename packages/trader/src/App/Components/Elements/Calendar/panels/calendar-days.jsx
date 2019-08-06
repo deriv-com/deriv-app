@@ -14,20 +14,19 @@ import {
     subDays,
     subMonths,
     toMoment }             from 'Utils/Date';
-import { CommonPropTypes } from './types';
 
 const getDays = ({
     calendar_date,
     date_format,
+    disabled_date,
+    disabled_day,
     has_range_selection,
     hide_others,
-    holidays,
     hovered_date,
     isPeriodDisabled,
     start_date,
     selected_date,
     updateSelected,
-    weekends,
     onMouseOver,
     onMouseLeave,
 }) => {
@@ -76,12 +75,13 @@ const getDays = ({
         const is_active      = selected_date && moment_date.isSame(moment_selected);
         const is_today       = moment_date.isSame(moment_today, 'day');
 
-        const events          = holidays.filter(event =>
+        const events = disabled_date.filter(event =>
             // filter by date or day of the week
             event.dates.find(d => d === date || getDaysOfTheWeek(d) === toMoment(date).day()));
+
         const has_events           = !!events.length;
-        const is_closes_early      = events.map(event => !!event.descrip.match(/Closes early|Opens late/))[0];
-        const message              = events.map(event => event.descrip)[0] || '';
+        const is_closes_early      = events.map(event => !!event.description.match(/Closes early|Opens late/))[0];
+        const message              = events.map(event => event.description)[0] || '';
         const duration_from_today  = daysFromTodayTo(date);
         const is_between           = moment_date.isBetween(moment_today, moment_selected);
         const is_between_hover     = moment_date.isBetween(moment_today, moment_hovered);
@@ -92,7 +92,7 @@ const getDays = ({
             // for forward starting accounts, only show same day as start date and the day after
             || ((start_date && (moment_date.isBefore(moment_start_date))))
             // check if weekends are disabled
-            || weekends.some(day => toMoment(date).day() === day)
+            || disabled_day.some(day => toMoment(date).day() === day)
             // check if date falls on holidays, and doesn't close early or opens late
             || has_events && !is_closes_early;
 
@@ -136,42 +136,41 @@ const getDays = ({
     return days;
 };
 
-export const CalendarDays = (props) => {
-    const days = getDays(props).map(day => day);
+export class CalendarDays extends React.PureComponent {
+    // use PureComponent to prevent unnecessary re-rendering
+    render() {
+        const days = getDays(this.props).map(day => day);
 
-    return (
-        <div className='calendar__body calendar__body--date'>
-            { Object.keys(week_headers_abbr)
-                .map((item, idx) => (
-                    <span key={idx} className='calendar__text calendar__text--bold'>{week_headers_abbr[item]}</span>
-                ))
-            }
-            { days }
-        </div>
-    );
-};
-
-CalendarDays.defaultProps = {
-    holidays: [],
-    weekends: [],
-};
+        return (
+            <div className='calendar__body calendar__body--date'>
+                { Object.keys(week_headers_abbr)
+                    .map((item, idx) => (
+                        <span key={idx} className='calendar__text calendar__text--bold'>{week_headers_abbr[item]}</span>
+                    ))
+                }
+                { days }
+            </div>
+        );
+    }
+}
 
 CalendarDays.propTypes = {
-    ...CommonPropTypes,
-    date_format        : PropTypes.string,
-    has_range_selection: PropTypes.bool,
-    holidays           : PropTypes.arrayOf(
+    calendar_date: PropTypes.object,
+    calendar_view: PropTypes.string,
+    date_format  : PropTypes.string,
+    disabled_date: PropTypes.arrayOf(
         PropTypes.shape({
             dates  : PropTypes.array,
             descrip: PropTypes.string,
         }),
     ),
-    hovered_date: PropTypes.number,
-    onMouseLeave: PropTypes.func,
-    onMouseOver : PropTypes.func,
-    start_date  : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    weekends: PropTypes.arrayOf(PropTypes.number),
+    disabled_day       : PropTypes.arrayOf(PropTypes.number),
+    has_range_selection: PropTypes.bool,
+    hovered_date       : PropTypes.number,
+    isPeriodDisabled   : PropTypes.func,
+    onMouseLeave       : PropTypes.func,
+    onMouseOver        : PropTypes.func,
+    selected_date      : PropTypes.number,
+    start_date         : PropTypes.number,
+    updateSelected     : PropTypes.func,
 };

@@ -1,7 +1,7 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import {
-    getStartOfMonth,
+    addDays,
     toMoment }        from 'Utils/Date';
 import CalendarBody   from './calendar-body.jsx';
 import CalendarFooter from './calendar-footer.jsx';
@@ -9,8 +9,12 @@ import CalendarHeader from './calendar-header.jsx';
 
 class Calendar extends React.PureComponent {
     state = {
-        calendar_date: toMoment(),          // calendar date reference
-        selected_date: this.props.duration ? this.props.duration.unix() : toMoment(this.props.value).unix(), // selected date
+        calendar_date: toMoment(),
+        selected_date: this.props.mode === 'duration' ?
+            // if mode is 'duration', convert the duration value to epoch
+            addDays(toMoment(), this.props.value || 1).unix()
+            :
+            toMoment(this.props.value).unix(),
         calendar_view: 'date',
         hovered_date : null,
     };
@@ -19,11 +23,10 @@ class Calendar extends React.PureComponent {
 
     navigateTo = (new_date) => {
         this.setState({
-            calendar_date: toMoment(new_date), // .format(this.props.date_format),
+            calendar_date: toMoment(new_date),
         }, () => {
             if (this.props.onChangeCalendarMonth) {
-                const start_of_month = getStartOfMonth(new_date);
-                this.props.onChangeCalendarMonth(start_of_month);
+                this.props.onChangeCalendarMonth(this.state.calendar_date);
             }
         });
     };
@@ -31,7 +34,8 @@ class Calendar extends React.PureComponent {
     onMouseOver = (event) => {
         const target = event.currentTarget;
 
-        if (!target.classList.contains('calendar__cell--disabled') && !target.classList.contains('calendar__cell--hover')) {
+        if (!target.classList.contains('calendar__cell--disabled')
+            && !target.classList.contains('calendar__cell--hover')) {
             target.className += ' calendar__cell--hover';
             this.setState({
                 hovered_date: toMoment(target.getAttribute('data-date')).unix(),
@@ -44,7 +48,6 @@ class Calendar extends React.PureComponent {
 
         if (target.classList.contains('calendar__cell--hover')) {
             target.classList.remove('calendar__cell--hover');
-
             this.setState({ hovered_date: null });
         }
     };
@@ -92,8 +95,7 @@ class Calendar extends React.PureComponent {
             calendar_view: view_map[type],
         }, () => {
             if (this.props.onChangeCalendarMonth) {
-                const start_of_month = getStartOfMonth(date);
-                this.props.onChangeCalendarMonth(start_of_month);
+                this.props.onChangeCalendarMonth(this.state.calendar_date);
             }
         });
     };
@@ -118,7 +120,7 @@ class Calendar extends React.PureComponent {
         });
 
         if (this.props.onSelect) {
-            this.props.onSelect(now, true);
+            this.props.onSelect(now);
         }
     };
 
@@ -135,12 +137,12 @@ class Calendar extends React.PureComponent {
     render() {
         const {
             date_format,
+            disabled_date,
+            disabled_day,
             footer,
             has_today_btn,
             has_range_selection,
-            holidays,
             start_date,
-            weekends,
         } = this.props;
 
         const {
@@ -162,16 +164,16 @@ class Calendar extends React.PureComponent {
                     calendar_date={calendar_date}
                     calendar_view={calendar_view}
                     date_format={date_format}
+                    disabled_date={disabled_date}
+                    disabled_day={disabled_day}
                     isPeriodDisabled={this.isPeriodDisabled}
                     has_range_selection={has_range_selection}
-                    holidays={holidays}
                     hovered_date={this.state.hovered_date}
                     onMouseOver={this.onMouseOver}
                     onMouseLeave={this.onMouseLeave}
                     selected_date={selected_date}
                     start_date={start_date}
                     updateSelected={this.updateSelected}
-                    weekends={weekends}
                 />
                 <CalendarFooter
                     footer={footer}
@@ -192,18 +194,20 @@ Calendar.defaultProps = {
 };
 
 Calendar.propTypes = {
-    date_format        : PropTypes.string,
-    footer             : PropTypes.string,
-    has_range_selection: PropTypes.bool,
-    has_today_btn      : PropTypes.bool,
-    holidays           : PropTypes.arrayOf(
+    date_format  : PropTypes.string,
+    disabled_date: PropTypes.arrayOf(
         PropTypes.shape({
             dates  : PropTypes.array,
             descrip: PropTypes.string,
         }),
     ),
+    disabled_day         : PropTypes.arrayOf(PropTypes.number),
+    footer               : PropTypes.string,
+    has_range_selection  : PropTypes.bool,
+    has_today_btn        : PropTypes.bool,
     max_date             : PropTypes.object,
     min_date             : PropTypes.object,
+    mode                 : PropTypes.string,
     onChangeCalendarMonth: PropTypes.func,
     onSelect             : PropTypes.func,
     start_date           : PropTypes.number,
@@ -211,7 +215,6 @@ Calendar.propTypes = {
         PropTypes.number, // num. of days
         PropTypes.object, // moment object
     ]),
-    weekends: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Calendar;

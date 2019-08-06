@@ -3,6 +3,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React                          from 'react';
 import DatePicker                     from 'App/Components/Form/DatePicker';
 import { connect }                    from 'Stores/connect';
+import ContractType                   from 'Stores/Modules/Trading/Helpers/contract-type';
 import { hasIntradayDurationUnit }    from 'Stores/Modules/Trading/Helpers/duration';
 import {
     isTimeValid,
@@ -67,10 +68,33 @@ const TradingDatePicker = ({
 
     const label = duration_units_list.length === 1 ? duration_units_list[0].text : null;
 
+    const onChangeCalendarMonth = async(calendar_date) => {
+        const disabled_date = [];
+        const disabled_day  = [];
+
+        const trading_events = await ContractType.getTradingEvents(calendar_date, symbol);
+        trading_events.forEach(events => {
+            const dates = events.dates.split(', '); // convert dates str into array
+            const idx = dates.indexOf('Fridays');
+            if (idx !== -1) {
+                // disable weekends
+                disabled_day.push(6, 0); // Sat, Sun
+            }
+            disabled_date.push({
+                dates,
+                description: events.descrip,
+            });
+        });
+
+        return {
+            disabled_date,
+            disabled_day,
+        };
+    };
+
     return (
         <DatePicker
             alignment='left'
-            disable_trading_events
             disable_year_selector
             error_messages={error_messages || []}
             has_today_btn={has_today_btn}
@@ -83,8 +107,8 @@ const TradingDatePicker = ({
             mode={mode}
             name={name}
             onChange={onChange}
+            onChangeCalendarMonth={onChangeCalendarMonth}
             start_date={start_date}
-            underlying={symbol}
             value={value}
         />
     );

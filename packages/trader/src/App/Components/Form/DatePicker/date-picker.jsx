@@ -1,43 +1,41 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import Icon                 from 'Assets/icon.jsx';
-import InputField           from 'App/Components/Form/InputField';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { CSSTransition } from 'react-transition-group';
+import Icon              from 'Assets/icon.jsx';
+import InputField        from 'App/Components/Form/InputField';
 import {
     addDays,
     daysFromTodayTo,
     formatDate,
-    getStartOfMonth,
     isDateValid,
-    toMoment }              from 'Utils/Date';
-import { localize }         from 'App/i18n';
-import { getTradingEvents } from './helpers';
-import Calendar             from '../../Elements/Calendar';
+    toMoment }           from 'Utils/Date';
+import { localize }      from 'App/i18n';
+import Calendar          from '../../Elements/Calendar';
 
 class DatePicker extends React.PureComponent {
     state = {
+        disabled_date        : [],
+        disabled_day         : [],
         display_value        : '',
-        holidays             : [],
         is_clear_btn_visible : false,
         is_datepicker_visible: false,
         value                : this.props.value,
-        weekends             : [],
     };
 
     is_mounted = false;
 
     componentDidMount() {
         this.is_mounted = true;
-        document.addEventListener('click', this.onClickOutside);
-        if (this.props.disable_trading_events) {
-            this.onChangeCalendarMonth(getStartOfMonth(this.state.value));
+        document.addEventListener('click', this.onClickOutside, true); // useCapture
+        if (this.props.onChangeCalendarMonth) {
+            this.onChangeCalendarMonth(this.state.value);
         }
     }
 
     componentWillUnmount() {
         this.is_mounted = false;
-        document.removeEventListener('click', this.onClickOutside);
+        document.removeEventListener('click', this.onClickOutside, true); // useCapture
     }
 
     handleVisibility = () => {
@@ -84,15 +82,11 @@ class DatePicker extends React.PureComponent {
     // TODO: handle cases where user inputs date before min_date and date after max_date
     updateDatePickerValue = (selected_date) => {
         this.setState({
-            value: this.props.mode === 'duration' ? daysFromTodayTo(selected_date) : selected_date.unix(),
+            value: this.props.mode === 'duration' ?
+                daysFromTodayTo(selected_date)
+                :
+                selected_date.unix(),
         }, this.updateStore);
-
-        if (this.calendar) {
-            this.calendar.setState({
-                calendar_date: selected_date,
-                selected_date: selected_date.unix(),
-            });
-        }
     };
 
     // update MobX store
@@ -103,29 +97,17 @@ class DatePicker extends React.PureComponent {
         }
     };
 
-    async onChangeCalendarMonth(calendar_date) {
-        const trading_events = await getTradingEvents(calendar_date, this.props.underlying);
-        const holidays = [];
-        let weekends   = [];
-        trading_events.forEach(events => {
-            const dates = events.dates.split(', '); // convert dates str into array
-            const idx = dates.indexOf('Fridays');
-            if (idx !== -1) {
-                weekends = [6, 0]; // Sat, Sun
-            }
-            holidays.push({
-                dates,
-                descrip: events.descrip,
-            });
-        });
+    onChangeCalendarMonth = async (epoch) => {
+        const {
+            disabled_date,
+            disabled_day,
+        } = await this.props.onChangeCalendarMonth(toMoment(epoch).startOf('month').unix());
 
-        if (this.is_mounted) {
-            this.setState({
-                holidays,
-                weekends,
-            });
-        }
-    }
+        this.setState({
+            disabled_date,
+            disabled_day,
+        });
+    };
 
     renderInputField = () => {
         const {
@@ -142,7 +124,7 @@ class DatePicker extends React.PureComponent {
 
         if (mode === 'duration') {
             onChange = this.onChangeInput;
-            display_value = this.state.value; // daysFromTodayTo(this.state.value);
+            display_value = this.props.value;
         } else {
             placeholder = placeholder || localize('Select a date');
             display_value = formatDate(this.state.value, 'DD MMM YYYY');
@@ -192,7 +174,6 @@ class DatePicker extends React.PureComponent {
         const {
             alignment,
             date_format,
-            disable_trading_events,
             footer,
             has_range_selection,
             has_today_btn,
@@ -207,20 +188,19 @@ class DatePicker extends React.PureComponent {
         } = this.props;
 
         const {
-            holidays,
+            disabled_date,
+            disabled_day,
             is_datepicker_visible,
             value,
-            weekends,
         } = this.state;
 
-        const onChangeCalendarMonth = (
-            disable_trading_events ?
-                this.onChangeCalendarMonth.bind(this)
-                :
-                undefined
-        );
+        const onChangeCalendarMonth = this.props.onChangeCalendarMonth ?
+            this.onChangeCalendarMonth
+            :
+            undefined;
 
         if (is_nativepicker) {
+            // TODO: handle nativepicker
             return (
                 <div
                     ref={node => { this.mainNode = node; }}
@@ -229,8 +209,8 @@ class DatePicker extends React.PureComponent {
                     <input
                         className='input trade-container__input datepicker__input'
                         id={name}
-                        max={max_date} /** max should be in String */
-                        min={min_date} /** min should be in String */
+                        max={max_date.format('YYYY-MM-DD')} /** max should be in String */
+                        min={min_date.format('YYYY-MM-DD')} /** min should be in String */
                         name={name}
                         onChange={(e) => {
                             // fix for ios issue: clear button doesn't work
@@ -281,11 +261,11 @@ class DatePicker extends React.PureComponent {
                         <Calendar
                             ref={node => { this.calendar = node; }}
                             date_format={date_format}
-                            duration={addDays(toMoment(), value || 1)}
+                            disabled_date={disabled_date}
+                            disabled_day={disabled_day}
                             footer={footer}
                             has_range_selection={has_range_selection}
                             has_today_btn={has_today_btn}
-                            holidays={holidays}
                             max_date={max_date}
                             min_date={min_date}
                             mode={mode}
@@ -293,7 +273,6 @@ class DatePicker extends React.PureComponent {
                             onSelect={this.onSelectCalendar}
                             start_date={start_date}
                             value={value}
-                            weekends={weekends}
                         />
                     </div>
                 </CSSTransition>

@@ -1,8 +1,8 @@
 import classNames        from 'classnames';
 import React             from 'react';
+import PropTypes         from 'prop-types';
 import { month_headers } from 'Constants/date-time';
 import { toMoment }      from 'Utils/Date';
-import { CommonPropTypes }   from './types';
 
 export const CalendarMonths = ({
     calendar_date,
@@ -37,4 +37,9 @@ export const CalendarMonths = ({
     );
 };
 
-CalendarMonths.propTypes = { ...CommonPropTypes };
+CalendarMonths.propTypes = {
+    calendar_date   : PropTypes.object,
+    isPeriodDisabled: PropTypes.func,
+    selected_date   : PropTypes.number,
+    updateSelected  : PropTypes.func,
+};

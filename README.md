@@ -27,7 +27,10 @@ All packages must contain the following scripts to perform the stated actions:
 | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | `serve`             | Runs build suite and starts the dev server.                                                   |
 | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| `test`              | Runs the test suite.                                                                          |
+| `test`              | Runs the test suite with eslint, and stylelint.                                               |
+| `test:eslint`       | Runs only eslint.                                                                             |
+| `test:stylelint`    | Runs only stylelint.                                                                          |
+| `test:mocha`        | Runs only the test suite.                                                                     |
 | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
 | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
 | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |

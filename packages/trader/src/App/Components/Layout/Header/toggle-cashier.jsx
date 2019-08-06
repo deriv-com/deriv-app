@@ -1,18 +1,29 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { localize }       from 'App/i18n';
-import { Modal }          from 'App/Components/Elements/modal.jsx';
+import classNames   from 'classnames';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { localize } from 'App/i18n';
+import { Modal }    from 'App/Components/Elements/modal.jsx';
 import {
     Deposit,
-    Withdrawal }          from 'App/Containers/CashierModal';
-import WalletInformation  from 'Modules/Reports/Containers/wallet-information.jsx';
-import Button             from '../../Form/button.jsx';
+    Withdrawal }    from 'App/Containers/CashierModal';
+import Button       from '../../Form/button.jsx';
 
+const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 const tabs = {
     deposit : 0,
     withdraw: 1,
 };
+const modal_content = [
+    {
+        icon : 'IconDepositSmall',
+        label: localize('Deposit'),
+        value: Deposit,
+    }, {
+        icon : 'IconWithdrawalSmall',
+        label: localize('Withdrawal'),
+        value: Withdrawal,
+    },
+];
 
 const ToggleCashier = ({
     active_tab,
@@ -31,22 +42,12 @@ const ToggleCashier = ({
         />
         <Modal
             className='cashier'
-            modal_content={[
-                {
-                    icon : 'IconDepositSmall',
-                    label: localize('Deposit'),
-                    value: Deposit,
-                }, {
-                    icon : 'IconWithdrawalSmall',
-                    label: localize('Withdrawal'),
-                    value: Withdrawal,
-                },
-            ]}
-            header={<WalletInformation />}
+            disableApp={disableApp}
             enableApp={enableApp}
+            header={<WalletInformation />}
+            modal_content={modal_content}
             is_open={is_cashier_visible}
             selected_index={tabs[active_tab]}
-            disableApp={disableApp}
             title={localize('Cashier')}
             toggleModal={toggleCashier}
         />
@@ -62,4 +63,4 @@ ToggleCashier.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export { ToggleCashier };
+export default ToggleCashier;

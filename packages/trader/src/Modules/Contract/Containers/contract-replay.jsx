@@ -1,17 +1,14 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { withRouter }       from 'react-router';
-import Digits               from 'Modules/Contract/Components/Digits';
-import InfoBox              from 'Modules/Contract/Components/InfoBox';
-import { isEmptyObject }    from '_common/utility';
-import ChartLoader          from 'App/Components/Elements/chart-loader.jsx';
-import ContractDrawer       from 'App/Components/Elements/ContractDrawer';
-import NotificationMessages from 'App/Containers/notification-messages.jsx';
-import { connect }          from 'Stores/connect';
-import Icon                 from 'Assets/icon.jsx';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import AppRoutes            from 'Constants/routes';
-import { localize }         from 'App/i18n';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { withRouter }    from 'react-router';
+import { isEmptyObject } from '_common/utility';
+import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
+import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
+import Lazy              from 'App/Containers/Lazy';
+import { localize }      from 'App/i18n';
+import Icon              from 'Assets/icon.jsx';
+import AppRoutes         from 'Constants/routes';
+import { connect }       from 'Stores/connect';
 
 const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -58,17 +55,20 @@ class ContractReplay extends React.Component {
             is_ended,
             is_sell_requested,
             is_static_chart,
+            location,
             onClickSell,
             removeError,
             status,
         } = this.props;
 
+        const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
+
         return (
             <div className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
                     contract_info={contract_info}
-                    heading={ <Localize i18n_default_text='Reports' /> }
                     is_dark_theme={is_dark_theme}
+                    is_from_reports={is_from_table_row}
                     is_sell_requested={is_sell_requested}
                     onClickSell={onClickSell}
                     status={status}
@@ -76,29 +76,43 @@ class ContractReplay extends React.Component {
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
-                            <Icon
-                                className='vertical-tab__action-bar--icon'
+                            <div
+                                className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
-                                icon='ModalIconClose'
                                 onClick={() => this.props.history.push(AppRoutes.trade)}
-                            />
+                            >
+                                <Icon
+                                    className='vertical-tab__action-bar--icon'
+                                    icon='ModalIconClose'
+                                />
+                            </div>
                         </div>
-                        <NotificationMessages />
+                        <Lazy
+                            ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                            has_progress={false}
+                            should_load={true}
+                        />
                         <ChartLoader is_visible={is_chart_loading} />
                         {(!!(contract_info.underlying) && !isEmptyObject(config)) &&
                         <SmartChart
                             chartControlsWidgets={null}
                             Digits={
-                                <Digits
+                                <Lazy
+                                    ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
+                                    should_load={is_digit_contract}
+                                    is_digit_contract={is_digit_contract}
+                                    has_progress={true}
+                                    is_ended={is_ended}
                                     contract_info={contract_info}
                                     digits_info={digits_info}
                                     display_status={display_status}
-                                    is_digit_contract={is_digit_contract}
-                                    is_ended={is_ended}
                                 />
                             }
                             InfoBox={
-                                <InfoBox
+                                <Lazy
+                                    ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
+                                    should_load={true}
+                                    has_progress={false}
                                     contract_info={contract_info}
                                     error_message={error_message}
                                     is_contract_mode={true}

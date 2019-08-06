@@ -1,6 +1,5 @@
 import classNames        from 'classnames';
 import { isArrayLike }   from 'mobx';
-import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -15,7 +14,7 @@ import {
     getPrevIndex,
     getNextIndex }       from './helpers';
 
-class Dropdown extends React.Component {
+class Dropdown extends React.PureComponent {
     list_ref = React.createRef();
     state = {
         curr_index     : getItemFromValue(this.props.list, this.props.value).number,
@@ -207,6 +206,7 @@ class Dropdown extends React.Component {
                             >
                                 {isArrayLike(this.props.list) ?
                                     <Items
+                                        index={this.state.curr_index}
                                         handleSelect={this.handleSelect}
                                         has_symbol={this.props.has_symbol}
                                         items={this.props.list}
@@ -217,6 +217,7 @@ class Dropdown extends React.Component {
                                         <React.Fragment key={key}>
                                             <div className='list__label'>{key}</div>
                                             <Items
+                                                index={this.state.curr_index}
                                                 handleSelect={this.handleSelect}
                                                 has_symbol={this.props.has_symbol}
                                                 items={this.props.list[key]}
@@ -253,4 +254,4 @@ Dropdown.propTypes = {
     ]),
 };
 
-export default observer(Dropdown);
+export default Dropdown;

@@ -107,7 +107,7 @@
                 left: 2px;
                 width: calc(100vw - 300px);
                 height: calc(100% - 66px);
-                top: 66px;
+                top: 58px;
 
                 .ciq-chart {
                     .cq-top-ui-widgets, & .info-box {
@@ -184,7 +184,7 @@
             visibility: hidden;
             pointer-events: none;
 
-            .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets {
+            .chart-marker-line__wrapper, .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets, .cq-inchart-subholder {
                 display: none;
             }
         }

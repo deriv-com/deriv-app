@@ -12,6 +12,10 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
 
     &--full-screen {
         min-height: $MIN_HEIGHT;
+
+        .vertical-tab__tab {
+            min-width: 15%;
+        }
     }
     &:not(.vertical-tab--full-screen) {
         height: 600px;
@@ -28,10 +32,19 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         padding: 16px;
 
         &--icon {
-            cursor: pointer;
-
             @include themify($themes) {
                 @include colorIcon(themed('text_primary_color'));
+            }
+        }
+        &-wrapper {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: $BORDER_RADIUS;
+
+            &:hover {
+                @include themify($themes) {
+                    background: themed('tab_hover_color');
+                }
             }
         }
     }

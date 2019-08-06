@@ -1,9 +1,11 @@
 {
+  "version": "0.0.0-INITIAL",
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
   "bin": {
     "bot": "lib/index.js"
   },
+  "main": "dist/bot.js",
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/.jest"

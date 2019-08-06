@@ -1,0 +1,339 @@
+/** @define positions-drawer-card; weak */
+
+.positions-drawer-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    @include themify($themes) {
+        color: themed('navbar_active_color');
+    }
+
+    &__result {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 130px;
+        border-radius: $BORDER_RADIUS;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: 0 !important;
+
+            .result__caption {
+                opacity: 0;
+            }
+        }
+        &:after {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: $BORDER_RADIUS;
+            z-index: 2;
+        }
+        @include themify($themes) {
+            background-color: rgba(themed('container_color'), 0.8);
+
+            &--won, &--won:after {
+                background-image: themed('won_gradient_color');
+            }
+            &--lost, &--lost:after {
+                background-image: themed('lost_gradient_color');
+            }
+        }
+
+        &--enter, &--exit {
+            opacity: 0;
+        }
+        &--enter-done {
+            opacity: 1;
+        }
+    }
+    &__wrapper {
+        padding: 0.8em;
+        margin: 0 1em;
+        max-width: 218px;
+        border-radius: $BORDER_RADIUS;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        position: relative;
+        @include themify($themes) {
+            background: themed('container_color');
+        }
+
+        &--active:before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
+            border-radius: $BORDER_RADIUS;
+            pointer-events: none;
+        }
+        &:first-child {
+            margin-top: 2px;
+        }
+        &:not(:last-child) {
+            margin-bottom: 16px;
+        }
+        &:last-child {
+            margin-bottom: 10px;
+        }
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translateY(-16px);
+        }
+    }
+    &--active {
+        cursor: default;
+    }
+    &--green:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
+    }
+    &--orange:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(255, 153, 51, 0.16));
+    }
+    &--red:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        height: 52px;
+        width: calc(100% + 18px);
+        left: -9px;
+        top: -9px;
+        border-radius: $BORDER_RADIUS;
+    }
+    &__grid {
+        display: grid;
+        grid-template-rows: 1fr auto;
+
+        &-underlying-trade {
+            grid-template-columns: 1.5fr 1fr;
+        }
+        &-profit-payout {
+            grid-template-columns: 1fr 1fr;
+            padding: 8px;
+            border-radius: $BORDER_RADIUS;
+        }
+        &-price-payout {
+            grid-template-columns: 1fr 1fr;
+            padding: 0 8px;
+        }
+    }
+    &__purchase, &__payout {
+        &-label {
+            text-transform: none;
+            font-size: 1rem;
+            font-weight: normal;
+            white-space: nowrap;
+            max-width: 90px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &-value {
+            font-size: 1.2em;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-weight: bold;
+            padding: 4px 0 8px;
+        }
+        &-price {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    &__payout-price {
+        margin-left: 4px;
+    }
+    &__type {
+        font-size: 1.2em;
+        display: flex;
+        justify-content: flex-start;
+        font-weight: bold;
+
+        /* postcss-bem-linter: ignore */
+        .category-type {
+            .color1-fill {
+                @include themify($themes) {
+                    fill: themed('icon_color');
+                }
+            }
+        }
+    }
+    &__symbol {
+        margin-left: 0.5rem;
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    &__indicative {
+        font-size: 1.2em;
+        font-weight: bold;
+        display: flex;
+        justify-content: flex-start;
+        margin-left: 4px;
+        align-items: center;
+        @include themify($themes) {
+            color: themed('navbar_active_color');
+        }
+
+        &-label {
+            font-size: 1em;
+            font-weight: normal;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            max-width: 90px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &--movement {
+            margin-left: 2px;
+            width: 16px;
+            height: 16px;
+
+            &-complete, &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+    }
+    &__remaining-time {
+        font-size: 1em;
+        @include themify($themes) {
+            color: themed('text_secondary_color');
+        }
+    }
+    &__profit-loss {
+        font-size: 1.2em;
+        text-align: center;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+
+        &-label {
+            font-size: 1em;
+            margin-bottom: 4px;
+            font-weight: normal;
+            white-space: nowrap;
+            max-width: 90px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &--is-crypto {
+            margin-left: -6px;
+        }
+        &--negative {
+            color: $COLOR_RED;
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: $COLOR_GREEN_2;
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
+    &__underlying-name {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        margin: 4px -4px -4px;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
+
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+    }
+}
+
+/** @define contract-type */
+.contract-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin-left: -4px;
+
+    &__type-wrapper {
+        margin: 0;
+        padding: 0.5em 0.3em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /* postcss-bem-linter: ignore */
+        .category-type {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    &__type-label {
+        width: 3.8em;
+        line-height: 1.5;
+        text-align: left;
+    }
+}
+
+/** @define btn; */
+.btn {
+    &--sell {
+        margin: 8px 4px 4px !important;
+        width: 100%;
+
+        .btn__text {
+            font-size: 1.2em;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+    }
+}
+
+/** @define remaining-time; */
+.remaining-time {
+    display: inline;
+}

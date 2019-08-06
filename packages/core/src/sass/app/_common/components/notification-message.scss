@@ -1,0 +1,78 @@
+@import '../base/index';
+
+/** @define notification-messages; */
+.notification-messages {
+    z-index: 9999;
+    position: absolute;
+    right: 15px;
+    top: 8px;
+
+    & > :not(:last-child) {
+        margin-bottom: 16px;
+    }
+}
+
+/** @define notification; */
+.notification {
+    position: relative;
+    display: flex;
+    border-radius: 4px;
+    max-width: 348px;
+    padding: 16px;
+    color: $COLOR_WHITE;
+
+    &--danger {
+        background-color: $COLOR_RED;
+    }
+    &--info {
+        background-color: $COLOR_SKY_BLUE;
+    }
+    &--success {
+        background-color: $COLOR_GREEN_1;
+    }
+    &--warning {
+        background-color: $COLOR_ORANGE;
+    }
+    &--small {
+        max-width: 240px;
+    }
+    &__text-container {
+        display: flex;
+        flex-direction: column;
+    }
+    &__text-body {
+        font-size: 14px;
+        line-height: 1.43;
+    }
+    &__header {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }
+    &__close-button {
+        position: absolute;
+        top: -4px;
+        right: 8px;
+        visibility: visible;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+
+        &:focus, &:active {
+            outline: none;
+        }
+        &:after {
+            content: '\0000D7';
+            font-size: 30px;
+            font-weight: 300;
+            color: $COLOR_WHITE;
+        }
+    }
+    &__icon {
+        &-type {
+            margin-right: 8px;
+        }
+    }
+}

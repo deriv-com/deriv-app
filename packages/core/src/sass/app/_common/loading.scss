@@ -1,0 +1,58 @@
+/** @define barspinner */
+.barspinner {
+    margin: auto;
+    width: 6em;
+    height: 2em;
+    white-space: nowrap;
+
+    &__rect {
+        margin: 0.4em;
+        border-radius: 20px;
+        height: 60%;
+        width: 0.6em;
+        display: inline-block;
+        @include createBarspinnerAnimation(5, 1.2s, 0.1);
+    }
+    &--dark .barspinner__rect {
+        @include themify($themes) {
+            background-color: themed('spinner_background_color');
+        }
+    }
+}
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(1);
+    }
+    20% {
+        transform: scaleY(2);
+    }
+}
+
+/** @define initial-loader */
+.initial-loader {
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    @include themify($themes) {
+        background-color: themed('initial_loader_background');
+    }
+
+    &__barspinner {
+        margin: 5em auto;
+
+        &--rect {
+            background-color: $COLOR_GREEN_3;
+        }
+    }
+    &__text {
+        line-height: 44px;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        @include typeface(--paragraph-center-normal-black, none);
+    }
+}

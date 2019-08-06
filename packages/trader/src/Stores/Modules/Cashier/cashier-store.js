@@ -96,7 +96,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.removeOnIframeLoaded(container);
             this.config[container].onIframeLoaded = (function (e) {
-                if (/cashier/.test(e.origin)) {
+                if (/cashier|doughflow/.test(e.origin)) {
                     this.setLoading(false);
                     // set the height of the container after content loads so that the
                     // loading bar stays vertically centered until the end

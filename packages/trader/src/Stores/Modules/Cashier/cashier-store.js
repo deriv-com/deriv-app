@@ -89,7 +89,7 @@ export default class CashierStore extends BaseStore {
     async checkIframeLoaded(container) {
         if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('540', container);
+            this.setContainerHeight('700', container);
             // crypto cashier can only be accessed once and the session expires
             this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
@@ -101,7 +101,8 @@ export default class CashierStore extends BaseStore {
                     // set the height of the container after content loads so that the
                     // loading bar stays vertically centered until the end
                     this.setContainerHeight(+e.data || '1200', container);
-                    this.removeOnIframeLoaded(container);
+                    // do not remove the listener
+                    // on every iframe screen change we need to update the height to more/less to match the new content
                 }
             }).bind(this);
             window.addEventListener('message', this.config[container].onIframeLoaded, false);

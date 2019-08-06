@@ -69,6 +69,7 @@ export class AccountActions extends Component {
                             window.open(urlFor('user/accounts', undefined, undefined, true));
                         }}
                     />}
+                    {!is_virtual &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
@@ -77,6 +78,7 @@ export class AccountActions extends Component {
                         showFullBlur={showFullBlur}
                         hideFullBlur={hideFullBlur}
                     />
+                    }
                     {/* {!( */}
                     {/*     is_virtual */}
                     {/* ) && // TODO: remove this when cashier pop up is ready */}

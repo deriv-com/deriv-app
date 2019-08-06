@@ -12,6 +12,10 @@ const tabs = {
     deposit : 0,
     withdraw: 1,
 };
+
+const Deposit    = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal = () => import('App/Containers/CashierModal/withdrawal.jsx');
+
 const modal_content = [
     {
         icon : 'IconDepositSmall',
@@ -19,7 +23,7 @@ const modal_content = [
         // eslint-disable-next-line react/display-name
         value: () => (
             <Lazy
-                ctor={() => import('App/Containers/CashierModal/deposit.jsx')}
+                ctor={Deposit}
                 should_load={true}
                 has_progress={true}
             />
@@ -30,7 +34,7 @@ const modal_content = [
         // eslint-disable-next-line react/display-name
         value: () => (
             <Lazy
-                ctor={() => import('App/Containers/CashierModal/withdrawal.jsx')}
+                ctor={Withdrawal}
                 should_load={true}
                 has_progress={true}
             />

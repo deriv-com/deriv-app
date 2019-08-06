@@ -1,17 +1,23 @@
 #!/bin/sh
 
 function isStyleModified() {
-    if [[ `git diff --name-only` =~ \.css|s(c|a)ss ]]; then
-        return 0
-    fi
+    for file in `git diff --name-only`;
+    do
+        if [[ $file =~ \.css|s(c|a)ss ]] && [[ $file =~ $1 ]]; then
+            return 0
+        fi
+    done
 
     return 1
 }
 
 function isJavascriptModified() {
-    if [[ `git diff --name-only` =~ \.js|jsx ]]; then
-        return 0
-    fi
+    for file in `git diff --name-only`;
+    do
+        if [[ $file =~ \.js|jsx ]] && [[ $file =~ $1 ]]; then
+            return 0
+        fi
+    done
 
     return 1
 }
@@ -36,11 +42,11 @@ function main() {
     MODIFIED_PACKAGES=$(getModifiedPackages)
     for package in ${MODIFIED_PACKAGES[@]};
     do
-        if isJavascriptModified; then
+        if isJavascriptModified $package; then
             npm run test:eslint $package
         fi
 
-        if isStyleModified; then
+        if isStyleModified $package; then
             npm run test:stylelint $package
         fi
     done

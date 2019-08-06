@@ -29,18 +29,18 @@ function getModifiedPackages() {
         done
     done
 
-    echo $MODIFIED_PACKAGES
+    echo ${MODIFIED_PACKAGES[@]}
 }
 
 function main() {
     MODIFIED_PACKAGES=$(getModifiedPackages)
     for package in ${MODIFIED_PACKAGES[@]};
     do
-        if isJavascriptModified; then
+        if isJavascriptModified && [[ `git diff --name-only` =~ $package ]]; then
             npm run test:eslint $package
         fi
 
-        if isStyleModified; then
+        if isStyleModified && [[ `git diff --name-only` =~ $package ]]; then
             npm run test:stylelint $package
         fi
     done

@@ -2,9 +2,6 @@
   "version": "1.0.0",
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
-  "bin": {
-    "bot": "lib/index.js"
-  },
   "main": "dist/bot.js",
   "jest": {
     "setupFilesAfterEnv": [

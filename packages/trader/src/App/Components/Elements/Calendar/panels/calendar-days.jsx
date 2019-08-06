@@ -154,8 +154,13 @@ export class CalendarDays extends React.PureComponent {
     }
 }
 
+CalendarDays.defaultProps = {
+    disabled_date: [],
+    disabled_day : [],
+};
+
 CalendarDays.propTypes = {
-    calendar_date: PropTypes.object,
+    calendar_date: PropTypes.number,
     calendar_view: PropTypes.string,
     date_format  : PropTypes.string,
     disabled_date: PropTypes.arrayOf(

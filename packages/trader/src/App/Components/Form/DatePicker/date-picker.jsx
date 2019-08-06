@@ -85,7 +85,7 @@ class DatePicker extends React.PureComponent {
             value: this.props.mode === 'duration' ?
                 daysFromTodayTo(selected_date)
                 :
-                selected_date.unix(),
+                selected_date,
         }, this.updateStore);
     };
 

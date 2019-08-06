@@ -9,7 +9,7 @@ import CalendarHeader from './calendar-header.jsx';
 
 class Calendar extends React.PureComponent {
     state = {
-        calendar_date: toMoment(),
+        calendar_date: toMoment().unix(),
         selected_date: this.props.mode === 'duration' ?
             // if mode is 'duration', convert the duration value to epoch
             addDays(toMoment(), this.props.value || 1).unix()
@@ -23,7 +23,7 @@ class Calendar extends React.PureComponent {
 
     navigateTo = (new_date) => {
         this.setState({
-            calendar_date: toMoment(new_date),
+            calendar_date: toMoment(new_date).unix(),
         }, () => {
             if (this.props.onChangeCalendarMonth) {
                 this.props.onChangeCalendarMonth(this.state.calendar_date);
@@ -64,12 +64,12 @@ class Calendar extends React.PureComponent {
         }
 
         this.setState({
-            calendar_date: moment_date,
+            calendar_date: moment_date.unix(),
             selected_date: moment_date.unix(),
         });
 
         if (onSelect) {
-            onSelect(moment_date);
+            onSelect(moment_date.unix());
         }
     };
 
@@ -91,7 +91,7 @@ class Calendar extends React.PureComponent {
         if (this.isPeriodDisabled(date, type)) return;
 
         this.setState({
-            calendar_date: date,
+            calendar_date: date.unix(),
             calendar_view: view_map[type],
         }, () => {
             if (this.props.onChangeCalendarMonth) {
@@ -101,21 +101,21 @@ class Calendar extends React.PureComponent {
     };
 
     resetCalendar = () => {
-        const default_date = toMoment(this.props.start_date);
+        const default_date = toMoment(this.props.start_date).unix();
 
         this.setState({
             calendar_date: default_date,
-            selected_date: default_date.unix(),
+            selected_date: default_date,
             calendar_view: 'date',
         });
     };
 
     setToday = () => {
-        const now = toMoment();
+        const now = toMoment().unix();
 
         this.setState({
             calendar_date: now,
-            selected_date: now.unix(),
+            selected_date: now,
             calendar_view: 'date',
         });
 

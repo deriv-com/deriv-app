@@ -38,7 +38,7 @@ export const CalendarMonths = ({
 };
 
 CalendarMonths.propTypes = {
-    calendar_date   : PropTypes.object,
+    calendar_date   : PropTypes.number,
     isPeriodDisabled: PropTypes.func,
     selected_date   : PropTypes.number,
     updateSelected  : PropTypes.func,

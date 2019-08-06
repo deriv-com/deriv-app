@@ -2,14 +2,15 @@
 const MiniCssExtractPlugin   = require("mini-css-extract-plugin");
 const StyleLintPlugin        = require('stylelint-webpack-plugin');
 const path                   = require('path');
+const CopyWebpackPlugin      = require('copy-webpack-plugin');
 
 const isServe = process.env.BUILD_MODE === 'serve';
 
 module.exports = {
   target: 'web',
   entry: {
-    date: path.resolve(__dirname, 'src' ,'utils/date/index.js'),
-    events: path.resolve(__dirname, 'src' , 'utils/events/index.js'),
+    date   : path.resolve(__dirname, 'src' , 'utils/date/index.js'),
+    events : path.resolve(__dirname, 'src' , 'utils/events/index.js'),
   },
   output: {
       path: path.resolve(__dirname, 'utils'),
@@ -23,17 +24,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.(s*)css$/,
-        use: [
-            'css-hot-loader',
-              MiniCssExtractPlugin.loader,
-            {
-                loader: 'css-loader',
-                options: { sourceMap: true },
-            },
-        ]
-      },  
       ( !isServe ? {
         enforce: "pre",
         test: /\.(js)$/,
@@ -51,8 +41,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: 'shared.scss' }),
-    // new ExtractTextPlugin('[name].scss'),
+    new CopyWebpackPlugin([
+        { from: 'src/styles/*.scss' , to: 'styles' , flatten: true } ,
+        { from: 'src/styles/index.js'  , to: 'index.js' }
+  ]),
     new StyleLintPlugin( { fix: true })
   ],
   externals: {

@@ -11,9 +11,9 @@
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
   "scripts": {
-    "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
-    "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
+    "start": "rimraf utils && npm run test && webpack --mode=production --progress --watch",
+    "serve": "rimraf utils && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
+    "build": "rimraf utils && webpack --mode=production --optimize-minimize --progress",
     "test": "jest --all",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",
@@ -36,6 +36,7 @@
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
+    "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.1.0",
@@ -59,9 +60,6 @@
   },
   "peerDependencies": {
     "@babel/polyfill": "^7.0.0",
-    "moment": "^2.24.0"
-  },
-  "dependencies": {
     "moment": "^2.24.0"
   }
 }

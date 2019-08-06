@@ -91,6 +91,7 @@ export default class CashierStore extends BaseStore {
             this.setLoading(false);
             this.setContainerHeight('700', container);
             // crypto cashier can only be accessed once and the session expires
+            this.setIframeUrl('', container);
             this.clearSessionTimeout(this.root_store.ui.active_cashier_tab);
             this.setSessionTimeout(true, this.root_store.ui.active_cashier_tab);
         } else {
@@ -257,6 +258,7 @@ export default class CashierStore extends BaseStore {
     onUnmount() {
         this.clearVerification();
         [this.config.deposit.container, this.config.withdraw.container].forEach((container) => {
+            this.setIframeUrl('', container);
             this.clearSessionTimeout(container);
             this.setSessionTimeout(true, container);
         });

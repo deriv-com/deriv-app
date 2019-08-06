@@ -5,9 +5,6 @@ module.exports = {
         browser: true,
         amd    : true,
     },
-    // globals: {
-    //     texts_json: false,
-    // },
     rules: {
         camelcase                           : 0,
         semi                                : ['error', 'always'],

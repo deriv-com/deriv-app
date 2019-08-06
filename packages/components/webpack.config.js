@@ -18,6 +18,7 @@ module.exports = (env, argv) => ({
     },
     optimization : {
         minimize: true,
+        // TODO enable splitChunks
         // splitChunks: {
         //     chunks: 'all'
         // }

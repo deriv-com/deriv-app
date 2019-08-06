@@ -1,10 +1,21 @@
-import React       from 'react';
+
+import React from 'react';
+import FlyoutStore from '../../stores/flyout-store';
 import { connect } from '../../stores/connect';
+import { translate } from '../../utils/lang/i18n';
 
 class FlyoutBlockWorkspace extends React.PureComponent {
     render() {
+        const { block_node } = this.props;
         return (
-            <div ref={el => this.el_block_workspace = el} className='flyout__block-workspace' />
+            <>
+                <div className='flyout__item-buttons'>
+                    <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
+                        {translate('Add')}
+                    </button>
+                </div>
+                <div ref={el => this.el_block_workspace = el} className='flyout__block-workspace' />
+            </>
         );
     }
 

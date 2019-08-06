@@ -2,8 +2,6 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { BlueInfoIcon } from './Icons.jsx';
 import FlyoutBlockWorkspace from '../scratch/help-components/flyout-block-workspace.jsx';
-import FlyoutStore from '../stores/flyout-store';
-import { translate } from '../utils/lang/i18n';
 
 const FlyoutBlock = (props) => {
     const {
@@ -19,22 +17,19 @@ const FlyoutBlock = (props) => {
                 {!should_hide_label &&
                     <div className='flyout__item-label'>{block_node[0].getAttribute('type')}</div>
                 }
-                <div className='flyout__item-buttons'>
-                    {onInfoClick &&
-                        <div className='flyout__item-info' onClick={onInfoClick}>
-                            <BlueInfoIcon className={'info'} />
-                        </div>
-                    }
-                    <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
-                        {translate('Add')}
-                    </button>
-                </div>
+                &nbsp;
+                {onInfoClick &&
+                    <div className='flyout__item-info' onClick={onInfoClick}>
+                        <BlueInfoIcon className={'info'} />
+                    </div>
+                }
             </div>
             {
                 Object.keys(block_node).map(key => {
                     return (
                         <FlyoutBlockWorkspace
                             key={key}
+                            onInfoClick={onInfoClick}
                             should_center_block={should_center_block}
                             block_node={block_node[key]}
                         />

@@ -102,7 +102,7 @@ export default class FlyoutStore {
         Object.keys(block_node).forEach(key => {
             const node = block_node[key];
             const block_hw = Blockly.Block.getDimensions(node);
-    
+
             node.setAttribute('width', block_hw.width);
             node.setAttribute('height', block_hw.height);
         });
@@ -129,26 +129,16 @@ export default class FlyoutStore {
     @action.bound onSequenceClick(block_name, type) {
         const selected_category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
         const xml_list = Blockly.Toolbox.getContent(selected_category, Blockly.derivWorkspace);
-
+        const xml_list_group = this.groupBy(xml_list, true);
         const current_block = xml_list.find(xml => xml.getAttribute('type') === block_name);
-        const last_position = xml_list.length - 1;
 
-        let current_block_position = xml_list.indexOf(current_block);
-
-        const checkIfBlock = (current_position) => {
-            let current_pos = current_position;
-            if (current_pos >= 0 &&
-                current_pos < last_position &&
-                xml_list[current_pos].tagName.toUpperCase() !== 'BLOCK') {
-                if (type === 'next') {
-                    current_pos += 1;
-                } else if (type === 'previous') {
-                    current_pos -= 1;
-                }
+        let current_block_position, block_type;
+        Object.keys(xml_list_group).forEach((key, index) => {
+            if (current_block.getAttribute('type') === key) {
+                current_block_position = index;
             }
-
-            return current_pos;
-        };
+        });
+        const last_position = Object.keys(xml_list_group).length - 1;
 
         const adjustIndexOutofBound = (current_position, last) => {
             let current_pos = current_position;
@@ -163,28 +153,19 @@ export default class FlyoutStore {
 
         if (type === 'next') {
             current_block_position += 1;
-
             current_block_position = adjustIndexOutofBound(current_block_position, last_position);
-            current_block_position = checkIfBlock(current_block_position);
         } else if (type === 'previous') {
             current_block_position -= 1;
-
-            current_block_position = checkIfBlock(current_block_position);
             current_block_position = adjustIndexOutofBound(current_block_position, last_position);
         }
 
-        const target_block = xml_list[current_block_position];
-        const xml_list_group = this.groupBy(xml_list);
-
-        let target_blocks = [];
-        // eslint-disable-next-line
-        Object.keys(xml_list_group).forEach(key => {
-            const blocks = xml_list_group[key];
-
-            if (blocks.indexOf(target_block) > -1){
-                target_blocks = blocks;
+        Object.keys(xml_list_group).forEach((key, index) => {
+            if (current_block_position === index) {
+                block_type = key;
             }
         });
+
+        const target_blocks = xml_list_group[block_type];
         this.showHelpContent(target_blocks);
     }
 
@@ -274,9 +255,18 @@ export default class FlyoutStore {
         this.setFlyoutWidth(xmlList);
     }
 
-    groupBy = function(nodes) {
+    groupBy = function (nodes, onlyBlock = false) {
         return nodes.reduce(function (groupKey, node) {
-            (groupKey[node.getAttribute('type')] = groupKey[node.getAttribute('type')] || []).push(node);
+            const type = node.getAttribute('type');
+
+            if (onlyBlock) {
+                if (type !== null) {
+                    (groupKey[type] = groupKey[type] || []).push(node);
+                }
+            } else {
+                (groupKey[type] = groupKey[type] || []).push(node);
+            }
+
             return groupKey;
         }, {});
     };

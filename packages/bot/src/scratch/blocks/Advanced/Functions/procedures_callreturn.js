@@ -1,3 +1,5 @@
+import { lazy } from 'react';
+
 Blockly.Blocks.procedures_callreturn = {
     init() {
         this.arguments = [];
@@ -33,6 +35,7 @@ Blockly.Blocks.procedures_callreturn = {
     getVarModels          : Blockly.Blocks.procedures_callnoreturn.getVarModels,
     customContextMenu     : Blockly.Blocks.procedures_callnoreturn.customContextMenu,
     defType               : 'procedures_defreturn',
+    helpContent           : () => lazy(() => import('../../../help-components/Advanced/Functions/procedures_callreturn.jsx')),
 };
 
 Blockly.JavaScript.procedures_callreturn = block => {

@@ -69,13 +69,13 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     updateChartType(type) {
         this.chart_type = type;
-        this.trade_chart_type = type;
+        if (!this.is_contract_mode) this.trade_chart_type = type;
     }
 
     @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
-        this.trade_chart_granularity = granularity;
+        if (!this.is_contract_mode) this.trade_chart_granularity = granularity;
     }
 
     @action.bound
@@ -200,8 +200,8 @@ export default class SmartChartStore extends BaseStore {
         this.should_export_layout    = true;
         this.should_import_layout    = false;
         this.trade_chart_symbol      = this.root_store.modules.trade.symbol;
-        this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity;
-        this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type;
+        this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity || 0;
+        this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type || 'mountain';
         this.chart_id                = chart_id;
     }
 

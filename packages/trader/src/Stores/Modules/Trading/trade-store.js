@@ -665,9 +665,13 @@ export default class TradeStore extends BaseStore {
         if (smart_chart_store.trade_chart_granularity &&
             (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
+        } else {
+            smart_chart_store.granularity = 0;
         }
-        if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {
+        if (smart_chart_store.trade_chart_type !== smart_chart_store.chart_type) {
             smart_chart_store.chart_type = smart_chart_store.trade_chart_type;
+        } else {
+            smart_chart_store.chart_type = 'mountain';
         }
     }
 

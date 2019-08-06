@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-  "version": "0.0.0-INITIAL",
-=======
   "version": "1.0.0",
->>>>>>> Remove unused dependencies, update library names
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
   "bin": {

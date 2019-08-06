@@ -1,20 +1,18 @@
 #!/bin/sh
 
 function isStyleModified() {
-    for file in `git diff --name-only`; do
-        if [[ $file =~ \.css|s(c|a)ss ]]; then
-            return 0
-        fi
-    done
+    if [[ `git diff --name-only` =~ \.css|s(c|a)ss ]]; then
+        return 0
+    fi
+
     return 1
 }
 
 function isJavascriptModified() {
-    for file in `git diff --name-only`; do
-        if [[ $file =~ \.js|jsx ]]; then
-            return 0
-        fi
-    done
+    if [[ `git diff --name-only` =~ \.js|jsx ]]; then
+        return 0
+    fi
+
     return 1
 }
 

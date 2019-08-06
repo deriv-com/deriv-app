@@ -36,11 +36,11 @@ function main() {
     MODIFIED_PACKAGES=$(getModifiedPackages)
     for package in ${MODIFIED_PACKAGES[@]};
     do
-        if isJavascriptModified && [[ `git diff --name-only` =~ $package ]]; then
+        if isJavascriptModified; then
             npm run test:eslint $package
         fi
 
-        if isStyleModified && [[ `git diff --name-only` =~ $package ]]; then
+        if isStyleModified; then
             npm run test:stylelint $package
         fi
     done

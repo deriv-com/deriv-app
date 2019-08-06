@@ -33,8 +33,8 @@ function getModifiedPackages() {
 }
 
 function main() {
-    modified_packages=$(getModifiedPackages)
-    for package in ${modified_packages[@]};
+    MODIFIED_PACKAGES=$(getModifiedPackages)
+    for package in ${MODIFIED_PACKAGES[@]};
     do
         if isJavascriptModified; then
             npm run test:eslint $package

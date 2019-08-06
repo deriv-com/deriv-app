@@ -10,7 +10,7 @@ const output =  {
     filename: 'bot.js',
     chunkFilename: '[name]-[chunkhash:6].bot.js',
     libraryExport: 'default',
-    library: 'bot',
+    library: 'deriv-bot',
     libraryTarget: 'umd',
     hashDigestLength: 6,
 };

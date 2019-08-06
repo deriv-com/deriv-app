@@ -1,5 +1,3 @@
-
-// import Button                from 'deriv-components/lib/button'; // eslint-disable-line import/no-unresolved
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
 import Bot                      from './components/bot.jsx';
@@ -18,7 +16,7 @@ class App extends React.Component {
         );
     }
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line class-methods-use-this
     componentDidMount() {
         scratchWorkspaceInit('scratch_area', 'scratch_div');
     }

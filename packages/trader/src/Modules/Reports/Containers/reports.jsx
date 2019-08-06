@@ -21,14 +21,14 @@ class Reports extends React.Component {
     };
 
     componentDidMount() {
-        this.props.showBlur();
+        this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleReports(true);
     }
 
     componentWillUnmount() {
         this.props.toggleReports(false);
-        this.props.hideBlur();
+        this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
@@ -88,20 +88,20 @@ class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-    hideBlur     : PropTypes.func,
-    history      : PropTypes.object,
-    is_visible   : PropTypes.bool,
-    location     : PropTypes.object,
-    routes       : PropTypes.arrayOf(PropTypes.object),
-    showBlur     : PropTypes.func,
-    toggleReports: PropTypes.func,
+    disableRouteMode: PropTypes.func,
+    enableRouteMode : PropTypes.func,
+    history         : PropTypes.object,
+    is_visible      : PropTypes.bool,
+    location        : PropTypes.object,
+    routes          : PropTypes.arrayOf(PropTypes.object),
+    toggleReports   : PropTypes.funcunc,
 };
 
 export default connect(
     ({ ui }) => ({
-        hideBlur     : ui.disableRouteModal,
-        is_visible   : ui.is_reports_visible,
-        showBlur     : ui.setRouteModal,
-        toggleReports: ui.toggleReports,
+        disableRouteMode: ui.disableRouteModal,
+        enableRouteMode : ui.setRouteModal,
+        is_visible      : ui.is_reports_visible,
+        toggleReports   : ui.toggleReports,
     })
 )(withRouter(Reports));

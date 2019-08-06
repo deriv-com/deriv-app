@@ -25,12 +25,17 @@
         height: 100%;
         content: '';
         @include themify($themes) {
-            background-color: rgba(themed('container_color'), 0.76);
+            background-color: themed('background_modal_overlay');
         }
     }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
+    }
+    &--is-route-modal {
+        @include themify($themes) {
+            background-color: themed('background_modal_overlay');
+        }
     }
     &--show-positions-drawer {
         .trade-container {

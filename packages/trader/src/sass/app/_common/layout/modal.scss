@@ -13,7 +13,7 @@
     overflow: hidden;
     opacity: 0;
     @include themify($themes) {
-        background-color: rgba(themed('container_color'), 0.76);
+        background-color: themed('background_modal_overlay');
     }
 
     &:not(:empty) {

@@ -13,13 +13,13 @@
         position: absolute;
         opacity: 0;
         pointer-events: none;
-        top: 0;
+        top: -1px;
         left: 0;
         width: 100%;
         height: calc(100% + 2px);
         content: '';
         @include themify($themes) {
-            background-color: rgba(themed('container_color'), 0.76);
+            background-color: themed('background_modal_overlay');
         }
     }
     @include themify($themes) {

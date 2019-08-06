@@ -19,9 +19,9 @@ module.exports = (env, argv) => ({
     },
     optimization : {
         minimize: true,
-        splitChunks: {
-            chunks: 'all'
-        }
+        // splitChunks: {
+        //     chunks: 'all'
+        // }
     },
     devServer: {
         publicPath: '/dist/',

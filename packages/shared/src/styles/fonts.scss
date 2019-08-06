@@ -67,7 +67,7 @@ $TYPEFACES_LIST: generate-typefaces();
  * Usage example:
     padding: em(16px, 1.6em); // font-size in 'em'
  */
- @function em($px, $base: $BASE_FONT_SIZE) {
+@function em($px, $base: $BASE_FONT_SIZE) {
     $list: ();
     @if length($px) != 1 {
         @for $i from 1 through length($px) {
@@ -98,7 +98,7 @@ $TYPEFACES_LIST: generate-typefaces();
  * Usage example:
    @include setTypeface(16px, bold, black, uppercase);
  */
- @mixin setTypeface($size, $align, $weight, $colour, $tt) {
+@mixin setTypeface($size, $align, $weight, $colour, $tt) {
     @if $size {
         font-size: $size;
     }

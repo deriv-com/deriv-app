@@ -13,7 +13,7 @@ function getModifiedPackages() {
         done
     done
 
-    echo $MODIFIED_PACKAGES
+    echo ${MODIFIED_PACKAGES[@]}
 }
 
 MODIFIED_PACKAGES=$(getModifiedPackages)

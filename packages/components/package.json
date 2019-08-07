@@ -9,7 +9,10 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "babel-jest"
+    }
   },
   "scripts": {
     "start": "rimraf lib && webpack --mode=production --progress --watch",
@@ -37,10 +40,12 @@
     "@testing-library/react": "^8.0.7",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
+    "css-loader": "^3.1.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -53,9 +58,13 @@
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
     "prettier": "1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "sass-loader": "^7.1.0",
+    "sass-resources-loader": "^2.0.1",
+    "style-loader": "^0.23.1",
     "stylelint": "^10.0.1",
     "stylelint-formatter-pretty": "^1.0.3",
     "stylelint-selector-bem-pattern": "^2.1.0",
@@ -63,12 +72,11 @@
     "svg-sprite-loader": "^4.1.6",
     "svgo-loader": "^2.2.0",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
-    "webpack-merge-and-include-globally": "^2.1.16"
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "deriv-base-style": "^1.0.0",
+    "deriv-shared": "^1.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

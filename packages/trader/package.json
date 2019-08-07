@@ -116,7 +116,7 @@
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.4.42",
+    "smartcharts-beta": "^0.4.43",
     "tt-react-custom-scrollbars": "^4.2.1-tt2",
     "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15"

@@ -48,6 +48,29 @@ $LINEHEIGHTS: (
 );
 
 /*
+ * Generate typefaces key-value pair of variable name and config
+ * Example:
+   --paragraph-center-bold-black: (14px, center, bold, black)
+ */
+@function generate-typefaces() {
+    $typeface_list: ();
+    @each $fontsize_name, $size in $FONT_SIZES {
+        @each $textalign_name, $text_align in $TEXT_ALIGN {
+            @each $color_name, $color in $FONT_COLORS {
+                @each $fontweight_name, $weight in $FONT_WEIGHTS {
+                    $key: --#{$fontsize_name}-#{$textalign_name}-#{$fontweight_name}-#{$color_name};
+                    $val: ($size, $text_align, $weight, $color);
+                    $typeface: ($key: $val);
+                    $typeface_list: map-merge($typeface_list, $typeface);
+                }
+            }
+        }
+    }
+    // @debug $typeface_list; /* uncomment to debug */
+    @return $typeface_list;
+}
+
+/*
     List of all typefaces variables in the format: --$FONT_SIZES-$TEXT_ALIGN-$FONT_WEIGHTS-COLORS.
     See $FONT_SIZES, $TEXT_ALIGN, $FONT_WEIGHTS, $COLORS maps above for references.
     Variables name example: --title-center-semibold-red

@@ -1,0 +1,11 @@
+@import '../base/mixins';
+
+.blocklyFlyout {
+    @include vendor(filter, drop-shadow(0 10px 5px #999));
+}
+
+.blocklyFlyoutBackground {
+    height: calc(100% - 60px) !important;
+    fill: #fff !important;
+    fill-opacity: 0.95 !important;
+}

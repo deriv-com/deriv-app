@@ -1,0 +1,7 @@
+"project_identifier" : "binary-bot"
+api_key_env: CROWDIN_API_KEY
+
+files:
+  - 
+    source: /src/translations/en/i10n.json
+    translation: /src/translations/%locale_with_underscore%/%original_file_name%

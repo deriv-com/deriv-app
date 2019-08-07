@@ -1,0 +1,29 @@
+/** @define .wallet-information; weak; */
+.account-wallet {
+    @include typeface(--paragraph-left-normal-black);
+    @include themify($themes) {
+        color: themed('text_color');
+    }
+    text-transform: initial;
+
+    .description {
+        font-weight: bold;
+
+        &__currency {
+            font-size: 1.6rem;
+        }
+    }
+    .current-loginid, .symbols {
+        margin-left: 4px;
+    }
+    .label {
+        margin-left: 16px;
+    }
+    .inline-icon {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 8px;
+    }
+}

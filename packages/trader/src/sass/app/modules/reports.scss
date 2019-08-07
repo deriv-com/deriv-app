@@ -1,0 +1,366 @@
+@import '../_common/base/index';
+@import '../_common/components/wallet-information';
+@import '../_common/components/composite-calendar';
+@import '../_common/components/data-table';
+
+$side-padding: 1.2em;
+
+/** @define reports; weak */
+.reports {
+    margin: 16px;
+    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+
+    &__meta {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px 16px;
+
+        &-description {
+            &--heading {
+                @include typeface(--title-left-bold-black, none);
+                @include themify($themes) {
+                    color: themed('text_color');
+                }
+                line-height: 1.55;
+            }
+            &--paragraph {
+                @include typeface(--paragraph-left-normal-black, none);
+                @include themify($themes) {
+                    color: themed('text_primary_color');
+                }
+            }
+        }
+        &-filter {
+            position: relative;
+            display: flex;
+        }
+    }
+    &__inset_header {
+        @include themify($themes) {
+            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
+        }
+        margin-bottom: 24px;
+    }
+    .unknown-icon {
+        margin-left: 8px;
+        fill: $COLOR_DARK_BLUE_5;
+        border-radius: $BORDER_RADIUS;
+    }
+}
+
+/** @define statement; weak */
+.statement {
+    height: 100%;
+
+    &__content {
+        width: 100%;
+        max-height: 100%;
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+    }
+    &__row {
+        /*                     icon   refId tr_time  transaction cred/debt  balance */
+        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
+
+        &--detail {
+            display: flex;
+            justify-content: center;
+            padding: 1.12em;
+            @include themify($themes) {
+                background-color: themed('cell_hover_color');
+            }
+        }
+        .date {
+            text-align: left;
+        }
+    }
+    .amount, .balance {
+        justify-content: flex-end;
+    }
+    .amount {
+        font-weight: bold;
+
+        &--profit {
+            color: $COLOR_GREEN_1;
+        }
+        &--loss {
+            color: $COLOR_RED;
+        }
+    }
+    /*
+        MOBILE CARDS
+    */
+    &--card-view {
+        background: $COLOR_LIGHT_BLACK_4_SOLID;
+        overflow: hidden;
+
+        .statement__filter {
+            background-color: $COLOR_WHITE;
+            padding: 0 $side-padding;
+            border-bottom: 1px solid $COLOR_LIGHT_BLACK_4;
+
+            &-content {
+                padding: 0;
+                margin: 0 auto;
+                max-width: 450px;
+                display: grid;
+                grid-template-columns: 1fr 3em 1fr;
+                text-align: center;
+
+                .datepicker__input-field {
+                    width: 100%;
+                }
+            }
+            &-label {
+                display: none;
+            }
+        }
+        .statement__content {
+            padding: 0;
+        }
+        .statement__card-list {
+            padding: 0 $side-padding;
+            height: 100%;
+        }
+    }
+}
+
+/** @define statement-card */
+.statement-card {
+    &__header {
+        font-size: 1em;
+        padding: 0.5em;
+        border-bottom: 1px solid $COLOR_LIGHT_BLACK_4;
+        display: flex;
+        justify-content: space-between;
+    }
+    /* postcss-bem-linter: ignore */
+    &__refid a {
+        color: $COLOR_SKY_BLUE;
+        text-decoration: none;
+    }
+    &__body {
+        padding: 0.5em;
+        font-size: 1.2em;
+    }
+    &__desc {
+        margin-bottom: 0.7em;
+    }
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        font-weight: bold;
+    }
+    &__cell-text {
+        vertical-align: middle;
+    }
+    &__amount {
+        &--sell, &--deposit {
+            color: $COLOR_GREEN_1;
+        }
+        &--buy, &--withdrawal {
+            color: $COLOR_RED;
+        }
+    }
+    &__icon {
+        display: inline-block;
+        height: 1.6em;
+        width: 1.6em;
+        background-size: 1.6em 1.6em;
+        vertical-align: middle;
+        margin-right: 0.5em;
+    }
+}
+
+/** @define statement-empty */
+.statement-empty {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__icon {
+        height: 6.4em;
+        width: 6.4em;
+        margin-bottom: 1.4em;
+    }
+    &__text {
+        font-size: 1.4em;
+    }
+}
+
+/** @define profit-table; weak */
+.profit-table {
+    height: 100%;
+
+    &__content {
+        width: 100%;
+        max-height: 100%;
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+    }
+    &__row {
+        /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
+        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
+    }
+    .buy_price, .sell_price, .profit_loss {
+        justify-content: flex-end;
+    }
+    .sell_time, .purchase_time {
+        text-align: left;
+    }
+}
+
+/** @define open-positions; weak */
+.open-positions {
+    height: 100%;
+
+    &__content {
+        width: 100%;
+        max-height: 100%;
+    }
+    &__indicative {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        flex-direction: column;
+
+        &--amount {
+            display: flex;
+            align-items: center;
+            line-height: 16px;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: right;
+            font-size: smaller;
+        }
+    }
+    &__profit-loss {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--movement {
+            width: 16px;
+            height: 16px;
+
+            &-complete, &-complete:after {
+                display: none;
+            }
+            &:after {
+                content: '';
+                width: 16px;
+            }
+        }
+        &--negative {
+            color: $COLOR_RED;
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: $COLOR_GREEN_2;
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
+    /*
+        TABLE STYLES
+    */
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+    }
+    &__row {
+        /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
+        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
+        width: 100%;
+    }
+    .buy_price, .payout, .indicative, .profit {
+        justify-content: flex-end;
+    }
+    .type {
+        padding-right: 0;
+    }
+    .progress-slider {
+        border: none;
+        margin: 0;
+
+        &__ticks {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &-step {
+                @include themify($themes) {
+                    background: themed('reports_tick_step');
+                }
+            }
+            &-wrapper {
+                margin-top: 6px;
+            }
+            &-caption {
+                padding: 0;
+                margin-right: 8px;
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
+/** @define empty-trade-history; weak*/
+.empty-trade-history {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin: auto;
+
+    &__icon {
+        width: 96px;
+        height: 96px;
+        margin-bottom: 16px;
+
+        @include themify($themes) {
+            @include colorIcon(themed('disabled_icon_color'));
+        }
+    }
+    &__text {
+        font-size: em(14px);
+        text-align: center;
+        line-height: 20px;
+
+        @include themify($themes) {
+            color: themed('disabled_color');
+        }
+    }
+    .btn {
+        width: 100%;
+        height: 40px;
+        @include themify($themes) {
+            border-color: themed('background_button_color');
+            color: themed('text_primary_color');
+            background-color: themed('background_button_color');
+        }
+    }
+}

@@ -1,78 +1,82 @@
 Deriv App
-=============
+============
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://deriv.app) website.
+This repository contains the various platforms of Deriv.
 
 ## Installation
 
 In order to work on your own version of the Deriv Javascript and CSS, please **fork this project**.
 
-You will also need to install the following on your development machine:
+You will need to perform the following on your development machine:
 
-- Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
-- Go to project root, then run `npm install`
+1. Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
+2. Run `npm ci`
+3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.
 
-### Use a custom domain
-In order to use your custom domain, please put it in a file named `CNAME` inside `scripts` folder of your local clone of deriv-app.
+    1. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`
 
+    2. Install all packages with a hoisting strategy (lift all common packages to a root `node_modules` and not package specific), run `npm run hoist`
 
-How to work with this project
+How to work with this repo
 =============================
 
-### Deploy to your gh-pages for the first time
+All packages must contain the following scripts to perform the stated actions:
 
-1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.
-Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/en/redirect` for the Verification URL.
+| Command             | Description                                                                                   |
+| ------------------- |:---------------------------------------------------------------------------------------------:|
+| `start`             | Runs complete test and build suite and starts the dev server.                                 |
+| `serve`             | Runs build suite and starts the dev server.                                                   |
+| `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
+| `test`              | Runs the test suite.                                                                          |
+| `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
+| `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
+| `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |
+| `deploy:staging`    | Initiates procedures for deploying to staging. (Package specific)                             |
+| `deploy:production` | Initiates procedures for deploying to production. (Package specific)                          |
 
-    If you're using a custom domain, replace the github URLs above with your domain.
-
-2. In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
-   * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
-
-3. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
- 
-4. Run `npm run deploy:clean`
-
-### Deploy to root of gh pages
-This will overwrite modified files and only clear the content of `js` folder before pushing changes. It will leave other folders as they are.
-```
-npm run deploy
-```
-
-### Clean root and deploy to it
-This removes all files and folders and deploys your `dist` folder to the root.
-```
-npm run deploy:clean
+**Please follow the README of each package you intend to work with on how to get set up.** However, the above scripts can be run from the root directory in the following manner.
+## Usage
+### Example
+In order to run the `start` script for all packages (`trader`, `bot`, etc.), simply `cd` to the root of the repo and run:
+```bash
+npm run start
 ```
 
-### Deploy to test folder
-This will add all your changes to the test folder specified.
-Please ensure it is prefixed with `br_`.
-```
-npm run deploy:folder "br_my_test_folder"
+If you intend to run the script for a specific package, simply run:
+
+```bash
+npm run start trader
 ```
 
-### Preview on your local machine
-- Edit your `/etc/hosts` file to include this domain:
+Likewise, to run any of the `deploy` scripts such as `deploy:folder` or `deploy:staging` for a specific package, just run:
+```bash
+npm run deploy:folder trader br_test_folder
 ```
-127.0.0.1   localhost.binary.sx
-```
-- To preview your changes locally for the first time, run `sudo npm start`:
-    - It will run all tests, compile all css, and js/jsx as well as watch for further js/jsx/css changes and rebuild on every change you make.
-- To preview your changes locally without any tests, run `npm run serve`
-    - It will watch for js/jsx/css changes and rebuild on every change you make.
-- To run all tests, run `npm run test`
 
-## Miscellaneous
-- In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
+You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
-## Release
-### Staging
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and that you are on the `dev` branch._
-1. Navigate to root of project.
-2. Run `./scripts/release-staging.sh`
+### PR Guidelines
 
-### Production
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and `production` pointing to the [deriv-app-production](https://github.com/binary-com/deriv-app-production) repo, and that you are on the `master` branch._
-1. Navigate to root of project.
-2. Run `./scripts/release-prod.sh`
+1. Use the `[project 1|project 2] developer 1|developer 2/task_name` format for PR titles. (e.g.: `[trader] dev1/fixed_emoji_issue`)
+2. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
+
+### Clean projects
+
+If you intend to remove `node_modules` folder(s) from the projects, please run `lerna clean` and follow the intstructions.
+
+You can read more on the various lerna commands (and the `clean` command) over at the [Lerna docs](https://github.com/lerna/lerna/).
+
+### FAQ
+
+1. If you have to use `sudo -s` in your environment, please remove any hardcoded `sudo` from `packages/*` (eg., remove `sudo` from `start` and `serve` commands of `packages/trader`)
+
+2. How do I install a package?
+
+    A. Run `lerna add` with the `--scope` argument as the package you want to install to. (e.g.,  `lerna add npm-package-name --scope=trader`)
+
+3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
+
+    A. You have two options:
+
+    1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
+    2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`

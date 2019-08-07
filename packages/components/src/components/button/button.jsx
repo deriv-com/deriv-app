@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-// import './button.scss';
-import { CSSTransition } from 'react-transition-group';
+import './button.scss';
 
 const Button = ({
     children,
@@ -18,22 +17,20 @@ const Button = ({
 }) => {
     const classes = classNames('btn', { effect: has_effect }, className);
     const button = (
-        <CSSTransition timeout={1000}>
-            <button
-                id={id}
-                className={classes}
-                onClick={onClick || undefined}
-                disabled={is_disabled}
-                tabIndex={tabIndex || '0'}
-            >
-                { text &&
-                    <span className={classNames('btn__text', classNameSpan)}>
-                        {text}
-                    </span>
-                }
-                {children}
-            </button>
-        </CSSTransition>
+        <button
+            id={id}
+            className={classes}
+            onClick={onClick || undefined}
+            disabled={is_disabled}
+            tabIndex={tabIndex || '0'}
+        >
+            { text &&
+                <span className={classNames('btn__text', classNameSpan)}>
+                    {text}
+                </span>
+            }
+            {children}
+        </button>
     );
     const wrapper = (<div className={wrapperClassName}>{button}</div>);
 

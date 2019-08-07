@@ -1,4 +1,3 @@
-const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const path                      = require('path');
@@ -21,6 +20,10 @@ module.exports = {
     },
     optimization : {
         minimize: true,
+        // TODO enable splitChunks
+        // splitChunks: {
+        //     chunks: 'all'
+        // }
     },
     devServer: {
         publicPath: '/dist/',
@@ -32,7 +35,7 @@ module.exports = {
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
-                    MiniCssExtractPlugin.loader,
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: { sourceMap: true },
@@ -40,8 +43,14 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    }
-            ]
+                    },
+                    {
+                        loader: "sass-resources-loader",
+                        options: {
+                          resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
+                        }
+                    }                    
+               ]
             },  
             {  
                 test: /\.svg$/,
@@ -81,7 +90,6 @@ module.exports = {
         ],
     },
     plugins: [
-        // new MiniCssExtractPlugin({ filename: 'component.css' }),
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],

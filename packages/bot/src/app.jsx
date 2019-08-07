@@ -5,7 +5,13 @@ import { scratchWorkspaceInit } from './scratch';
 import RootStore                from './stores';
 
 class App extends React.Component {
-    rootStore = new RootStore();
+    constructor(props){
+        super(props);
+        
+        const { passthrough: { WS, root_store } } = props;
+
+        this.rootStore = new RootStore(root_store, WS);
+    }
 
     render() {
         return (

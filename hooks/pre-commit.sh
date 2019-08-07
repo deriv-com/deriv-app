@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo $(dirname $0)/common.sh
+. $(dirname $0)/common.sh
 
 function isStyleModified() {
     for file in `git diff --name-only`;

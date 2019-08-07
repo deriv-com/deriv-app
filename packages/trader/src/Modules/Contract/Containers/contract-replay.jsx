@@ -10,7 +10,10 @@ import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart               = React.lazy(() => import(/* webpackChunkName: "smart_chart", webpackPreload: true */'../../SmartChart'));
+const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
+const loadDigits               = () => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits');
+const loadInfoBox              = () => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox');
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -41,6 +44,8 @@ class ContractReplay extends React.Component {
             this.props.history.push(AppRoutes.trade);
         }
     };
+
+    goBackToTrade = () => this.props.history.push(AppRoutes.trade);
 
     render() {
         const {
@@ -80,7 +85,7 @@ class ContractReplay extends React.Component {
                                 id='dt_contract_replay_close_icon'
                                 className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
-                                onClick={() => this.props.history.push(AppRoutes.trade)}
+                                onClick={this.goBackToTrade}
                             >
                                 <Icon
                                     className='vertical-tab__action-bar--icon'
@@ -89,7 +94,7 @@ class ContractReplay extends React.Component {
                             </div>
                         </div>
                         <Lazy
-                            ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                            ctor={loadNotificationMessages}
                             has_progress={false}
                             should_load={true}
                         />
@@ -99,7 +104,7 @@ class ContractReplay extends React.Component {
                             chartControlsWidgets={null}
                             Digits={
                                 <Lazy
-                                    ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
+                                    ctor={loadDigits}
                                     should_load={is_digit_contract}
                                     is_digit_contract={is_digit_contract}
                                     has_progress={true}
@@ -111,7 +116,7 @@ class ContractReplay extends React.Component {
                             }
                             InfoBox={
                                 <Lazy
-                                    ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
+                                    ctor={loadInfoBox}
                                     should_load={true}
                                     has_progress={false}
                                     contract_info={contract_info}

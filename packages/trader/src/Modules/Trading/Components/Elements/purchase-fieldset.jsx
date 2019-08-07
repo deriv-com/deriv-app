@@ -11,10 +11,29 @@ import PurchaseButton    from 'Modules/Trading/Components/Elements/purchase-butt
 import { deeperCompare } from 'Utils/React/deeper-compare';
 
 class PurchaseFieldset extends React.Component {
-    state = { should_fade: false };
+    state = {
+        should_fade: false,
+        icon_type  : null,
+    };
 
     shouldComponentUpdate(next_props, next_state) {
         return deeperCompare(next_props, next_state, this.props, this.state);
+    }
+
+    buttonOnClick = () => {
+        this.props.setPurchaseState(this.props.index);
+        this.props.onClickPurchase(this.props.info.id, this.props.info.stake, this.props.type);
+    };
+
+    static getDerivedStateFromProps(props) {
+        const getIconType = () => {
+            if (!props.should_fade && props.is_loading) return '';
+            return (props.is_high_low) ? `${props.type.toLowerCase()}_barrier` : props.type.toLowerCase();
+        };
+
+        return {
+            icon_type: getIconType(),
+        };
     }
 
     componentDidMount() {
@@ -50,9 +69,7 @@ class PurchaseFieldset extends React.Component {
             purchased_states_arr,
             // is_purchase_confirm_on,
             // is_purchase_locked,
-            onClickPurchase,
             // togglePurchaseLock,
-            setPurchaseState,
             type,
         } = this.props;
 
@@ -68,9 +85,9 @@ class PurchaseFieldset extends React.Component {
                 is_loading={is_loading}
                 is_proposal_empty={is_proposal_empty}
                 purchased_states_arr={purchased_states_arr}
-                onClickPurchase={onClickPurchase}
-                setPurchaseState={setPurchaseState}
                 should_fade={this.state.should_fade}
+                buttonOnClick={this.buttonOnClick}
+                icon_type={this.state.icon_type}
                 type={type}
             />
         );

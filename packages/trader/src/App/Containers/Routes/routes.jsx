@@ -6,11 +6,13 @@ import BinaryRoutes                   from 'App/Components/Routes';
 import Lazy                           from 'App/Containers/Lazy';
 import { connect }                    from 'Stores/connect';
 
+const loadErrorComponent = () => import(/* webpackChunkName: "error-component" */'App/Components/Elements/Errors');
+
 const Routes = (props) => {
     if (props.has_error) {
         return (
             <Lazy
-                ctor={() => import(/* webpackChunkName: "error-component" */'App/Components/Elements/Errors')}
+                ctor={loadErrorComponent}
                 should_load={props.has_error}
                 has_progress={true}
                 {...props.error}

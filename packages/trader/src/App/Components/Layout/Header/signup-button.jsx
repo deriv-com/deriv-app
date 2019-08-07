@@ -1,8 +1,12 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import { localize } from 'App/i18n';
+import classNames          from 'classnames';
+import { Button }          from 'deriv-components';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { localize }        from 'App/i18n';
+
+const openSignUp = () => {
+    window.open('https://deriv.com');
+};
 
 const SignupButtonComponent = ({ className }) => (
     <Button
@@ -10,7 +14,7 @@ const SignupButtonComponent = ({ className }) => (
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
         text={localize('Sign up')}
-        onClick={() => { window.open('https://deriv.com'); }}
+        onClick={openSignUp}
     />
 );
 
@@ -18,4 +22,4 @@ SignupButtonComponent.propTypes = {
     className: PropTypes.string,
 };
 
-export const SignupButton = React.memo(SignupButtonComponent)
+export const SignupButton = React.memo(SignupButtonComponent);

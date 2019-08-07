@@ -21,7 +21,7 @@ const TradeTypeInfoItem = ({
     <div id={`dt_contract_info_${item.value}`}>
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
-            <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
+            <span id='dt_contract_info_back_nav' onClick={onBackButtonClick}>
                 <Icon icon='IconBack' />
             </span>
             <span className='title'>{item.text}</span>
@@ -66,7 +66,7 @@ const TradeTypeInfoItem = ({
             </div>
         </div>
         <div className='trade-type-info-navigation'>
-            <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
+            <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={handlePrevClick} >
                 <Icon icon='IconChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
@@ -88,7 +88,7 @@ const TradeTypeInfoItem = ({
                     ))
                 }
             </div>
-            <div id='dt_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
+            <div id='dt_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={handleNextClick} >
                 <Icon icon='IconChevronRight' />
             </div>
         </div>

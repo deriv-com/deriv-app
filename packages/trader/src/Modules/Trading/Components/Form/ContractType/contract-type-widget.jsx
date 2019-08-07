@@ -46,7 +46,8 @@ class ContractTypeWidget extends React.PureComponent {
         this.setState({ item });
     };
 
-    handleNextClick = (itemList) => {
+    handleNextClick = () => {
+        const itemList = this.getItemList();
         const navigationLength = itemList.length;
         const item = this.state.item;
         const currentIndex = itemList.findIndex((list_item) => list_item.value === item.value);
@@ -58,7 +59,8 @@ class ContractTypeWidget extends React.PureComponent {
         }
     };
 
-    handlePrevClick = (itemList) => {
+    handlePrevClick = () => {
+        const itemList = this.getItemList();
         const navigationLength = itemList.length;
         const item = this.state.item;
         const currentIndex = itemList.findIndex((list_item) => list_item.value === item.value);

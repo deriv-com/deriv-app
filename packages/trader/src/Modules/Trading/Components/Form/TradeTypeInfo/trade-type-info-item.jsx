@@ -21,7 +21,7 @@ const TradeTypeInfoItem = ({
     <React.Fragment>
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
-            <span onClick={() => onBackButtonClick()}>
+            <span onClick={onBackButtonClick}>
                 <Icon icon='IconBack' />
             </span>
             <span className='title'>{item.text}</span>
@@ -65,7 +65,7 @@ const TradeTypeInfoItem = ({
             </div>
         </div>
         <div className='trade-type-info-navigation'>
-            <div className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
+            <div className='trade-type-info-navigation__icon' onClick={handlePrevClick} >
                 <Icon icon='IconChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
@@ -86,7 +86,7 @@ const TradeTypeInfoItem = ({
                     ))
                 }
             </div>
-            <div className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
+            <div className='trade-type-info-navigation__icon' onClick={handleNextClick} >
                 <Icon icon='IconChevronRight' />
             </div>
         </div>

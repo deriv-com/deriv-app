@@ -5,7 +5,6 @@ import {
 import BinarySocket           from '_common/base/socket_base';
 import { isLoginPages }       from '_common/base/login';
 import { get as getLanguage } from '_common/language';
-import { getPropertyValue }   from '_common/utility';
 import {
     toMoment,
     epochToMoment }           from 'Utils/Date';
@@ -134,11 +133,10 @@ export default class GTMStore extends BaseStore {
                 bom_account_type: this.root_store.client.account_type,
                 bom_today       : moment_now.unix(),
                 transaction     : {
-                    id     : response.transaction.transaction_id,
-                    type   : response.transaction.action,
-                    time   : response.transaction.transaction_time,
-                    amount : response.transaction.amount,
-                    balance: response.transaction.balance,
+                    id    : response.transaction.transaction_id,
+                    type  : response.transaction.action,
+                    time  : response.transaction.transaction_time,
+                    amount: response.transaction.amount,
                 },
             };
             Object.assign(data, extra_data);
@@ -185,13 +183,6 @@ export default class GTMStore extends BaseStore {
             data.bom_date_joined = data.bom_today;
         }
 
-        if (!this.root_store.client.is_virtual) {
-            data.bom_age       = moment_now.diff(epochToMoment(get_settings.date_of_birth), 'year');
-            data.bom_firstname = get_settings.first_name;
-            data.bom_lastname  = get_settings.last_name;
-            data.bom_phone     = get_settings.phone;
-        }
-
         if (login_event) {
             data.event = login_event;
             BinarySocket.wait('mt5_login_list').then((response) => {
@@ -207,14 +198,6 @@ export default class GTMStore extends BaseStore {
         } else {
             this.pushDataLayer(data);
         }
-
-        // check if there are any transactions in the last 30 days for UX interview selection
-        BinarySocket.send({ statement: 1, limit: 1 }).then((response) => {
-            const last_transaction_timestamp = getPropertyValue(response, ['statement', 'transactions', '0', 'transaction_time']);
-            this.pushDataLayer({
-                bom_transaction_in_last_30d: !!last_transaction_timestamp && toMoment(last_transaction_timestamp * 1000).isAfter(toMoment().subtract(30, 'days')),
-            });
-        });
     }
 
     @action.bound

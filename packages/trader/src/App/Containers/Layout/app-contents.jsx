@@ -11,9 +11,9 @@ import Loading        from '../../../templates/app/components/loading.jsx';
 const AppContents = ({
     // addNotificationBar,
     children,
+    is_app_disabled,
     is_contract_mode,
     is_dark_mode,
-    is_app_disabled,
     is_loading,
     is_logged_in,
     is_positions_drawer_on,

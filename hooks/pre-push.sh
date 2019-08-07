@@ -14,7 +14,7 @@ function getModifiedPackages() {
         PACKAGE_TO_TEST=('trader' 'bot')
         for package in ${PACKAGE_TO_TEST[@]};
         do
-            if [[ $file =~ ${package} ]]; then
+            if [[ $file =~ packages/$package ]]; then
                 MODIFIED_PACKAGES+=($package)
             fi
         done
@@ -27,7 +27,7 @@ function isStyleModified() {
     MODIFIED_FILES=$(getModifiedFiles)
     for file in ${MODIFIED_FILES[@]};
     do
-        if [[ $file =~ \.css|s(c|a)ss ]] && [[ $file =~ $1 ]]; then
+        if [[ $file =~ \.css|s(c|a)ss ]] && [[ $file =~ packages/$1 ]]; then
             return 0
         fi
     done
@@ -39,7 +39,7 @@ function isJavascriptModified() {
     MODIFIED_FILES=$(getModifiedFiles)
     for file in ${MODIFIED_FILES[@]};
     do
-        if [[ $file =~ \.js|jsx ]] && [[ $file =~ $1 ]]; then
+        if [[ $file =~ \.js|jsx ]] && [[ $file =~ packages/$1 ]]; then
             return 0
         fi
     done

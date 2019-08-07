@@ -3,7 +3,8 @@
 . $(dirname $0)/common.sh
 
 function isStyleModified() {
-    for file in `git diff --name-only`;
+    MODIFIED_FILES=$(getModifiedFiles)
+    for file in ${MODIFIED_FILES[@]};
     do
         if [[ $file =~ \.css|s(c|a)ss ]] && [[ $file =~ $1 ]]; then
             return 0
@@ -14,7 +15,8 @@ function isStyleModified() {
 }
 
 function isJavascriptModified() {
-    for file in `git diff --name-only`;
+    MODIFIED_FILES=$(getModifiedFiles)
+    for file in ${MODIFIED_FILES[@]};
     do
         if [[ $file =~ \.js|jsx ]] && [[ $file =~ $1 ]]; then
             return 0

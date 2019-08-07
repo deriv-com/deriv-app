@@ -1,8 +1,15 @@
 #!/bin/sh
 
+function getModifiedFiles() {
+    branch=`git branch | grep \* | cut -d ' ' -f2`
+    MODIFIED_FILES=`git diff origin/$branch --name-only`
+    echo ${MODIFIED_FILES[@]}
+}
+
 function getModifiedPackages() {
     MODIFIED_PACKAGES=()
-    for file in `git diff --name-only`;
+    MODIFIED_FILES=$(getModifiedFiles)
+    for file in ${MODIFIED_FILES[@]};
     do
         PACKAGE_TO_TEST=('trader' 'bot')
         for package in ${PACKAGE_TO_TEST[@]};

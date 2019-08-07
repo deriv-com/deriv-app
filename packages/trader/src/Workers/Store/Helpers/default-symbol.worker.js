@@ -1,4 +1,4 @@
-import { pickDefaultSymbol } from '../../../Stores/Modules/Trading/Helpers/default-symbol';
+import { pickDefaultSymbol } from 'Stores/Modules/Trading/Helpers/default-symbol';
 
 onmessage = (event) => {
     const active_symbols = JSON.parse(event.data[0]);

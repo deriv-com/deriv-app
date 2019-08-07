@@ -12,6 +12,8 @@ import Lazy           from 'App/Containers/Lazy';
 import routes         from 'Constants/routes';
 import { connect }    from 'Stores/connect';
 
+const loadToggleMenuDrawer = () => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx');
+
 const Header = ({
     // active_cashier_tab,
     balance,
@@ -44,7 +46,7 @@ const Header = ({
                     <div className='header__menu-left'>
                         <Lazy
                             has_progress={false}
-                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
+                            ctor={loadToggleMenuDrawer}
                             should_load={is_mobile}
                         />
                         <MenuLinks

@@ -10,7 +10,10 @@ import Test                  from './test.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+const SmartChart               = React.lazy(() => import(/* webpackChunkName: "smart_chart", webpackPreload: true */'../../SmartChart'));
+const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
+const loadDigits               = () => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits');
+const loadInfoBox              = () => import(/* webpackChunkName: "info-box", webpackPrefetch: 98 */'Modules/Contract/Components/InfoBox');
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -37,7 +40,7 @@ class Trade extends React.Component {
                 <PositionsDrawer />
                 <div className='chart-container'>
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                        ctor={loadNotificationMessages}
                         has_progress={false}
                         should_load={true}
                     />
@@ -49,7 +52,7 @@ class Trade extends React.Component {
                                 chart_type={this.props.chart_type}
                                 Digits={
                                     <Lazy
-                                        ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
+                                        ctor={loadDigits}
                                         should_load={this.props.is_digit_contract}
                                         is_trade_page
                                         contract_info={this.props.contract_info}
@@ -61,7 +64,7 @@ class Trade extends React.Component {
                                 }
                                 InfoBox={
                                     <Lazy
-                                        ctor={() => import(/* webpackChunkName: "info-box", webpackPrefetch: true */'Modules/Contract/Components/InfoBox')}
+                                        ctor={loadInfoBox}
                                         should_load={true}
                                         has_progress={false}
                                         is_trade_page

@@ -18,6 +18,9 @@ import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
+const loadWip              = () => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip');
+const loadPushNotification = () => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx');
+
 const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
@@ -27,7 +30,7 @@ const App = ({ root_store }) => {
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
                         <Lazy
-                            ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
+                            ctor={loadWip}
                             should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
                             has_progress={true}
                         /> :
@@ -37,7 +40,7 @@ const App = ({ root_store }) => {
                                 <AppContents>
                                     <Routes />
                                     <Lazy
-                                        ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
+                                        ctor={loadPushNotification}
                                         should_load={!root_store.ui.is_loading}
                                         has_progress={false}
                                     />

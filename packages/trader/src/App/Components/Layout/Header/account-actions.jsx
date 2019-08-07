@@ -11,6 +11,8 @@ import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const should_show_deposit = false; // TODO remove this and all commented props when Deposit is ready
+const loadAccountInfo     = () => import(/* webpackChunkName: "account-info", webpackPreload: 10 */'App/Components/Layout/Header/account-info.jsx');
+const loadToggleCashier   = () => import(/* webpackChunkName: "toggle-cashier", webpackPrefetch: 100 */'App/Components/Layout/Header/toggle-cashier.jsx')
 
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
@@ -50,7 +52,7 @@ export class AccountActions extends Component {
             return (
                 <React.Fragment>
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx')}
+                        ctor={loadAccountInfo}
                         should_load={true}
                         has_progress={false}
                         balance={formatMoney(currency, balance, true)}
@@ -72,7 +74,7 @@ export class AccountActions extends Component {
                     />}
                     { should_show_deposit &&
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "toggle-cashier", webpackPrefetch: true */'App/Components/Layout/Header/toggle-cashier.jsx')}
+                        ctor={loadToggleCashier}
                         should_load={!is_virtual} // remove false when cashier is ready.
                         // active_tab={active_cashier_tab}
                         className='acc-info__button'

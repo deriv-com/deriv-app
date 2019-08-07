@@ -3,6 +3,21 @@ import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as messages        from 'Translations/messages.json';
 
+const getLanguageConfiguration = () => {
+    if (typeof window !== 'undefined') {
+        return window.location.search ?
+            window.location.search.includes('lang=') ?
+                window.location.search
+                    .substr(1).split('&')
+                    .find(query => query.includes('lang='))
+                    .split('=')[1]
+                    .toUpperCase()
+                : undefined
+            : undefined;
+    }
+    return undefined;
+};
+
 const i18n_config = {
     resources: {
         EN: {
@@ -16,15 +31,7 @@ const i18n_config = {
             return crc32(defaultValue);
         },
     },
-    lng: window.location.search ?
-        window.location.search.includes('lang=') ?
-            window.location.search
-                .substr(1).split('&')
-                .find(query => query.includes('lang='))
-                .split('=')[1]
-                .toUpperCase()
-            : undefined
-        : undefined,
+    lng        : getLanguageConfiguration(),
     fallbackLng: 'EN',
 };
 

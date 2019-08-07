@@ -5,7 +5,7 @@
  This will look for predefined `ignored_responses_in_trackjs` from GTM, if
  there is none, then it just does not filter out any response.
 */
-const ignored_responses_in_trackjs = window.ignored_responses_in_trackjs || [];
+const ignored_responses_in_trackjs = typeof window !== 'undefined' && window.ignored_responses_in_trackjs || [];
 
 class ResponseQueue {
     constructor() {
@@ -52,9 +52,10 @@ export const ApiCallProxyHandler = {
                             result.then(response => {
                                 if (response.error) {
                                     queue.push(response);
-                                    if (window.TrackJS) window.TrackJS.console.log(queue.list);
+                                    if (typeof window !== 'undefined' && window.TrackJS) window.TrackJS.console.log(queue.list);
                                     queue.fresh();
                                     if (
+                                        typeof window !== 'undefined' &&
                                         window.TrackJS &&
                                         !ignored_responses_in_trackjs.some(item => item === response.error.code)
                                     ) {
@@ -64,7 +65,8 @@ export const ApiCallProxyHandler = {
                                 queue.push(response);
                                 return_value = response;
                             }).catch(error => {
-                                if (window.TrackJS) {
+                                if (typeof window !== 'undefined' &&
+                                    window.TrackJS) {
                                     window.TrackJS.console.log(queue.list);
                                     window.TrackJS.track(error.getMessage());
                                 }

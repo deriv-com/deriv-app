@@ -90,6 +90,9 @@
         margin: 16px;
         height: calc(100vh - 115px);
         border-radius: $BORDER_RADIUS;
+        @include themify($themes) {
+            background-color: themed('background_container_color');
+        }
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
 
         .contract-drawer {
@@ -106,13 +109,14 @@
         .replay-chart__container {
             width: 100%;
             position: relative;
-            margin-left: 252px;
+            margin-left: 242px;
 
             .smartcharts {
-                left: 2px;
-                width: calc(100vw - 300px);
-                height: calc(100% - 66px);
-                top: 58px;
+                left: 0;
+                width: calc(100vw - 286px);
+                height: calc(100% - 65px);
+                top: 53px;
+                border-radius: $BORDER_RADIUS;
 
                 .ciq-chart {
                     .cq-top-ui-widgets, & .info-box {
@@ -161,13 +165,17 @@
 
     &__loader {
         position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
+        height: calc(100% - 68px);
+        width: calc(100% - 12px);
+        top: 54px;
         left: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: $BORDER_RADIUS;
+        @include themify($themes) {
+            background-color: themed('background_container_color');
+        }
 
         .barspinner {
             display: flex;

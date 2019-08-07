@@ -49,12 +49,6 @@ export default class ContractTradeStore extends BaseStore {
 
         const end_time = getEndTime(this.contract_info);
 
-        // Set chart granularity and chart_type
-        this.handleChartType(date_start, end_time || null);
-
-        // Set chart view to date_start
-        this.smart_chart.setChartView(date_start);
-
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
@@ -126,7 +120,8 @@ export default class ContractTradeStore extends BaseStore {
     onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
         this.smart_chart       = this.root_store.modules.smart_chart;
-        if (this.smart_chart.is_contract_mode) this.onCloseContract();
+        const has_existing_id  = this.smart_chart.is_contract_mode && !!(this.contract_id);
+        if (has_existing_id) this.resetValues(this.smart_chart);
         this.has_error         = false;
         this.error_message     = '';
         this.contract_id       = contract_id;
@@ -139,7 +134,7 @@ export default class ContractTradeStore extends BaseStore {
         if (contract_id) {
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode(true);
+                this.smart_chart.switchToContractMode(true, has_existing_id);
             }
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
@@ -148,7 +143,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    onCloseContract() {
+    resetValues(SmartChartStore) {
         this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
         this.contract_id         = null;
         this.contract_info       = {};
@@ -157,9 +152,13 @@ export default class ContractTradeStore extends BaseStore {
         this.has_error           = false;
         this.is_from_positions   = false;
         this.is_ongoing_contract = false;
+        SmartChartStore.cleanupContractChartView();
+    }
 
+    @action.bound
+    onCloseContract() {
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
-        this.smart_chart.cleanupContractChartView();
+        this.resetValues(this.smart_chart);
         this.smart_chart.applySavedTradeChartLayout();
     }
 
@@ -192,6 +191,16 @@ export default class ContractTradeStore extends BaseStore {
 
         this.contract_info = response.proposal_open_contract;
 
+        // Set chart granularity and chart_type
+        this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);
+
+        // Set chart view to date_start
+        if (this.is_from_positions) {
+            if (this.smart_chart.granularity !== 0) {
+                this.smart_chart.setChartView(this.contract_info.date_start);
+            }
+        }
+
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
             this.root_store.modules.trade.symbol = this.contract_info.underlying;
@@ -203,10 +212,9 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    async handleDigits(contract_info) {
+    handleDigits(contract_info) {
         if (this.is_digit_contract) {
-            const digit_info = await getDigitInfo(this.digits_info, contract_info);
-            extendObservable(this.digits_info, digit_info);
+            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
         }
     }
 

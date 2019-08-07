@@ -1,0 +1,270 @@
+$header-height: 4em;
+
+.contract-drawer {
+    width: $POSITIONS_DRAWER_WIDTH;
+    // removing 2px below for borders
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
+    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
+    position: absolute;
+    z-index: 2;
+    padding: 8px;
+    top: 0;
+    left: 4px;
+    box-sizing: border-box;
+    color: $COLOR_LIGHT_BLACK_1;
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: $BORDER_RADIUS;
+    @include themify($themes) {
+        border: 1px solid themed('background_container_color');
+        background-color: themed('background_container_color');
+        color: themed('text_color');
+    }
+
+    svg {
+        @extend %inline-icon;
+    }
+    h2 {
+        margin-left: 8px;
+        text-transform: none;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+    }
+    &--contract-mode {
+        &:before {
+            @include themify($themes) {
+                background: themed('background_container_color');
+            }
+            content: '';
+            position: absolute;
+            top: 38px;
+            left: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% - 32px);
+            filter: blur(3px);
+        }
+    }
+    &__heading {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0.5em;
+        margin-left: -8px;
+
+        &-btn {
+            padding: 4px 8px 0;
+            cursor: pointer;
+            border-radius: $BORDER_RADIUS;
+
+            &:hover {
+                @include themify($themes) {
+                    background: themed('tab_hover_color');
+                }
+            }
+        }
+        @include typeface(--title-left-bold-black);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
+    &__icon {
+        margin-right: 16px;
+    }
+}
+
+/** @define .contract-card */
+.contract-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    position: relative;
+    border-radius: $BORDER_RADIUS;
+    padding: 4px;
+
+    .progress-slider, .progress-slider--completed {
+        margin: 0;
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
+        }
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        height: 52px;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: $BORDER_RADIUS;
+    }
+    &--green:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
+    }
+    &--red:before {
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+    }
+    &__grid {
+        display: grid;
+        grid-template-rows: 1fr auto;
+
+        &-underlying-trade {
+            grid-template-columns: 1.5fr 1fr;
+            width: 100%;
+        }
+        &-profit-payout {
+            grid-template-columns: 1fr 1fr;
+            padding: 8px 0;
+            border-radius: $BORDER_RADIUS;
+            margin-left: -4px;
+            margin-right: -4px;
+            @include themify($themes) {
+                background: themed('hover_color');
+            }
+        }
+    }
+    .purchase-price, .potential-payout {
+        &-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        &__label {
+            font-size: 1rem;
+            align-self: flex-start;
+            text-transform: none;
+            margin-bottom: 4px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &__value {
+            font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+    }
+    .potential-payout {
+        &-container {
+            padding-left: 4px;
+        }
+        &-price__value {
+            font-size: 1em;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+    }
+    &__separator {
+        width: 100%;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
+    }
+    &__underlying-name {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.2em;
+        max-width: 120px;
+    }
+    &__type {
+        font-size: 1.2em;
+        display: flex;
+        justify-content: flex-start;
+        font-weight: bold;
+
+        /* postcss-bem-linter: ignore */
+        .category-type {
+            .color1-fill {
+                @include themify($themes) {
+                    fill: themed('icon_color');
+                }
+            }
+            .color2-fill {
+                fill: $COLOR_ORANGE !important;
+            }
+        }
+    }
+    &__symbol {
+        margin-left: 0.5rem;
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-evenly;
+        margin: 0.5em 0.2em;
+    }
+    &__body {
+        border-radius: $BORDER_RADIUS;
+        width: 100%;
+        padding: 8px 12px 0;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+    }
+    &__footer {
+        margin-bottom: 0.5em;
+        padding: 0 4px;
+
+        &-wrapper {
+            @include typeface(--small-center-normal-black);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            padding: 8px 8px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin: 8px 0 -4px;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        @include themify($themes) {
+            border-top: 1px solid themed('background_container_color');
+        }
+
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        .btn--sell {
+            height: 32px;
+        }
+    }
+    .contract-audit {
+        &__wrapper {
+            padding: 2px 0;
+            width: 100%;
+        }
+        &__wrapper--is-open {
+            margin-top: 0.5em;
+        }
+        &__toggle {
+            margin: 0 0 -0.5em;
+            width: 100%;
+        }
+        &__label {
+            font-size: 0.8em;
+            text-align: left;
+        }
+        &__value {
+            font-size: 1em;
+            text-align: left;
+        }
+    }
+    @include themify($themes) {
+        background-color: themed('container_color');
+        color: themed('text_color');
+    }
+}

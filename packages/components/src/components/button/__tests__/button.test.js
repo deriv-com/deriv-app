@@ -9,7 +9,7 @@ describe('Button' , () => {
     })
 
     it('should contains name', () =>{
-        const { getByText } = render(<Button name='yoo'/>);
-        getByText('yoo');
+        const { getByText } = render(<Button name='button'/>);
+        getByText('button');
     })
 })

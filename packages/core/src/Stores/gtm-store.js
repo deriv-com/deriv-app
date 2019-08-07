@@ -1,7 +1,6 @@
 import {
     action,
-    computed,
-    observable }              from 'mobx';
+    computed }              from 'mobx';
 import BinarySocket           from '_common/base/socket_base';
 import { isLoginPages }       from '_common/base/login';
 import { get as getLanguage } from '_common/language';
@@ -9,7 +8,7 @@ import BaseStore              from './base-store';
 import { getAppId }           from '../config';
 
 export default class GTMStore extends BaseStore {
-    @observable is_gtm_applicable = /^(16303|16929)$/.test(getAppId());
+    is_gtm_applicable = /^(16303|16929)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });

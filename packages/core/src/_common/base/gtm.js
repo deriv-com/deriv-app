@@ -6,7 +6,6 @@ const ServerTime       = require('./server_time');
 const BinarySocket     = require('./socket_base');
 const getLanguage      = require('../language').get;
 const LocalStore       = require('../storage').LocalStore;
-const State            = require('../storage').State;
 const getPropertyValue = require('../utility').getPropertyValue;
 const getAppId         = require('../../config').getAppId;
 
@@ -96,27 +95,6 @@ const GTM = (() => {
         });
     };
 
-    const mt5NewAccount = (response) => {
-        const acc_type = response.mt5_new_account.mt5_account_type ?
-            `${response.mt5_new_account.account_type}_${response.mt5_new_account.mt5_account_type}` : // financial_cent, demo_cent, ...
-            `${response.mt5_new_account.account_type === 'demo' ? 'demo' : 'real'}_gaming`;           // demo_gaming, real_gaming
-
-        const gtm_data = {
-            event          : 'mt5_new_account',
-            bom_email      : ClientBase.get('email'),
-            bom_country    : State.getResponse('get_settings.country'),
-            mt5_last_signup: acc_type,
-        };
-
-        gtm_data[`mt5_${acc_type}_id`] = response.mt5_new_account.login;
-
-        if (/demo/.test(acc_type) && !ClientBase.get('is_virtual')) {
-            gtm_data.visitorId = ClientBase.getAccountOfType('virtual').loginid;
-        }
-
-        pushDataLayer(gtm_data);
-    };
-
     // Pushes deposit & withdrawal data from transaction-stream to GTM
     const pushTransactionData = (response, extra_data = {}) => {
         if (!isGtmApplicable() || ClientBase.get('is_virtual')) return;
@@ -163,7 +141,6 @@ const GTM = (() => {
         pushDataLayer,
         eventHandler,
         pushTransactionData,
-        mt5NewAccount,
     };
 })();
 

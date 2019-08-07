@@ -91,7 +91,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountDeposit() {
-        await this.onMount('deposit');
+        await this.onMount(this.config.deposit.container);
     }
 
     @action.bound
@@ -199,7 +199,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountWithdraw(verification_code) {
-        await this.onMount('withdraw', verification_code);
+        await this.onMount(this.config.withdraw.container, verification_code);
     }
 
     @action.bound
@@ -208,6 +208,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
+        this.setErrorMessage('', this.config.withdraw.container);
         this.setVerificationButtonClicked(true);
         const response_verify_email = await WS.verifyEmail(this.root_store.client.email, 'payment_withdraw');
 

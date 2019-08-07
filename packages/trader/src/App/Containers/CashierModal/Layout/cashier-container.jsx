@@ -21,7 +21,7 @@ class CashierContainer extends React.Component {
                         height={this.props.iframe_height}
                         src={this.props.iframe_url}
                         frameBorder='0'
-                        scrolling='no'
+                        scrolling='auto'
                     />
                 </Scrollbars>
                 }

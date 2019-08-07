@@ -23,7 +23,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "sh ./hooks/pre-commit.sh",
       "pre-push": "sh ./hooks/pre-push.sh"
     }
   }

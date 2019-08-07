@@ -94,7 +94,7 @@ Reports.propTypes = {
     is_visible      : PropTypes.bool,
     location        : PropTypes.object,
     routes          : PropTypes.arrayOf(PropTypes.object),
-    toggleReports   : PropTypes.funcunc,
+    toggleReports   : PropTypes.func,
 };
 
 export default connect(

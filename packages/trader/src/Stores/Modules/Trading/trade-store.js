@@ -181,6 +181,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     refresh = () => {
+        this.proposal_info     = {};
+        this.purchase_info     = {};
+        this.proposal_requests = {};
         WS.forgetAll('proposal');
     };
 
@@ -367,12 +370,6 @@ export default class TradeStore extends BaseStore {
         })();
     }
 
-    @action.bound
-    onClickNewTrade(e) {
-        e.preventDefault();
-        WS.forgetAll('proposal').then(this.requestProposal());
-    }
-
     /**
      * Updates the store with new values
      * @param  {Object} new_state - new values to update the store with
@@ -406,10 +403,15 @@ export default class TradeStore extends BaseStore {
         return new_state;
     }
 
-    async processNewValuesAsync(obj_new_values = {}, is_changed_by_user = false, obj_old_values = {}) {
+    async processNewValuesAsync(
+        obj_new_values = {},
+        is_changed_by_user = false,
+        obj_old_values = {},
+        should_forget_first = true,
+    ) {
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
-        WS.forgetAll('proposal');
+        if (should_forget_first) WS.forgetAll('proposal');
         if (is_changed_by_user &&
             /\bcurrency\b/.test(Object.keys(obj_new_values))
         ) {
@@ -484,6 +486,13 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    clearPurchaseInfo() {
+        this.purchase_info = {};
+        this.proposal_requests = {};
+        this.proposal_info = {};
+    }
+
+    @action.bound
     requestProposal() {
         const requests = createProposalRequests(this);
 
@@ -514,6 +523,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
+        // We do not want new proposal requests when in contract mode
+        if (this.root_store.modules.smart_chart.is_contract_mode) return;
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -592,12 +603,13 @@ export default class TradeStore extends BaseStore {
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
-                { currency: this.currency }
+                true,
+                { currency: this.currency },
+                false,
             );
             await this.clearContract();
             await this.resetErrorServices();
             await this.refresh();
-            await this.prepareTradeStore();
             return resolve(this.debouncedProposal());
         });
     }
@@ -653,9 +665,13 @@ export default class TradeStore extends BaseStore {
         if (smart_chart_store.trade_chart_granularity &&
             (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
+        } else {
+            smart_chart_store.granularity = 0;
         }
-        if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {
+        if (smart_chart_store.trade_chart_type !== smart_chart_store.chart_type) {
             smart_chart_store.chart_type = smart_chart_store.trade_chart_type;
+        } else {
+            smart_chart_store.chart_type = 'mountain';
         }
     }
 

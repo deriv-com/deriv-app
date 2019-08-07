@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
@@ -87,7 +88,11 @@ const rules = (is_test_env = false, is_mocha_only = false) => ([
         exclude: /node_modules|public\//,
         use    : svg_loaders
     },
-    {
+    is_test_env ? {
+            test: /\.(sc|sa|c)ss$/,
+            loaders: 'null-loader'
+        }
+    : {
         test: /\.(sc|sa|c)ss$/,
         use : css_loaders
     }
@@ -96,7 +101,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => ([
 const MINIMIZERS = !IS_RELEASE ? [] : [
     new TerserPlugin({
         test     : /\.js/,
-        exclude  : /(vendors~|smartcharts)/,
+        exclude  : /(smartcharts)/,
         parallel : true,
         sourceMap: true,
     }),
@@ -108,6 +113,7 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     new CopyPlugin(copyConfig(base)),
     new HtmlWebPackPlugin(htmlOutputConfig()),
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
+    new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),

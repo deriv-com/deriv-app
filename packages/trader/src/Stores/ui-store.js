@@ -63,9 +63,11 @@ export default class UIStore extends BaseStore {
     // purchase button states
     @observable purchase_states = [ false, false ];
 
-    @observable is_app_disabled = false;
+    // app states for modal
     @observable is_app_disabled   = false;
     @observable is_route_modal_on = false;
+
+    // position states
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';

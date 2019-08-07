@@ -64,6 +64,10 @@ const CalendarHeader = ({
         () => navigateTo(addMonths(calendar_date, 1)) :
         undefined;
 
+    const monthButtonOnClick = () => disable_month_selector ? undefined : switchView('month');
+    const yearButtonOnClick = () => is_select_year_disabled ? undefined : switchView('year');
+    const decadeButtonOnClick = is_select_year_disabled ? undefined : () => switchView('decade');
+
     return (
         <div className='calendar__header'>
             <CalendarButton
@@ -92,7 +96,7 @@ const CalendarHeader = ({
                         className='calendar__btn calendar__btn--select'
                         is_hidden={!is_date_view}
                         label={month_headers[moment_date.format('MMM')]}
-                        onClick={() => disable_month_selector ? undefined : switchView('month')}
+                        onClick={monthButtonOnClick}
                     />
                 }
                 { (is_date_view || is_month_view) &&
@@ -101,7 +105,7 @@ const CalendarHeader = ({
                             'calendar__btn--disabled': is_select_year_disabled,
                         })}
                         label={moment_date.format('YYYY')}
-                        onClick={() => is_select_year_disabled ? undefined : switchView('year')}
+                        onClick={yearButtonOnClick}
                     />
                 }
                 { (is_year_view || is_decade_view) &&
@@ -109,7 +113,7 @@ const CalendarHeader = ({
                         className={classNames('calendar__btn calendar__btn--select', {
                             'calendar__btn--disabled': is_select_year_disabled,
                         })}
-                        onClick={is_select_year_disabled ? undefined : () => switchView('decade')}
+                        onClick={decadeButtonOnClick}
                     >
                         { is_year_view   && `${decade}`  }
                         { is_decade_view && `${century}` }

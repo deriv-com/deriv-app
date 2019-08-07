@@ -15,6 +15,7 @@ import {
     subDays,
     subMonths,
     toMoment }             from 'Utils/Date';
+import { memoize }         from 'Utils/React/memoize';
 import { CommonPropTypes } from './types';
 
 const getDays = ({
@@ -134,17 +135,19 @@ const getDays = ({
     return days;
 };
 
+const memoizedGetDays = memoize(getDays);
+const parsed_headers  = Object.keys(week_headers_abbr)
+    .map((item, idx) => (
+        <span key={idx} className='calendar__text calendar__text--bold'>{week_headers_abbr[item]}</span>
+    ));
+
 export const CalendarDays = (props) => {
-    const days = getDays(props).map(day => day);
+    const days = memoizedGetDays(props).map(day => day);
 
     return (
         <div className='calendar__body calendar__body--date'>
-            { Object.keys(week_headers_abbr)
-                .map((item, idx) => (
-                    <span key={idx} className='calendar__text calendar__text--bold'>{week_headers_abbr[item]}</span>
-                ))
-            }
-            { days }
+            {parsed_headers}
+            {days}
         </div>
     );
 };

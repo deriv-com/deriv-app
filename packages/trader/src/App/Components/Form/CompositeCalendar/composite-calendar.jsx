@@ -10,6 +10,8 @@ import {
     toMoment }      from 'Utils/Date';
 import SideList     from './side-list.jsx';
 
+const loadTwoMonthPicker = () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx');
+
 class CompositeCalendar extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -132,7 +134,7 @@ class CompositeCalendar extends React.PureComponent {
                 <div className='composite-calendar' ref={this.setWrapperRef}>
                     <SideList from={from} to={to} items={list} />
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
+                        ctor={loadTwoMonthPicker}
                         should_load={true}
                         has_progress={false}
                         value={to}
@@ -144,7 +146,7 @@ class CompositeCalendar extends React.PureComponent {
                 <div className='composite-calendar' ref={this.setWrapperRef}>
                     <SideList from={from} to={to} items={list} />
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx')}
+                        ctor={loadTwoMonthPicker}
                         should_load={true}
                         has_progress={false}
                         value={from}

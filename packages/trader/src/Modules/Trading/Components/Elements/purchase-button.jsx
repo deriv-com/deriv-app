@@ -5,9 +5,13 @@ import { Button }                 from 'deriv-components';
 import { localize }               from 'App/i18n';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
+import { memoize }                from 'Utils/React/memoize';
+
+const memoizedGetContractTypeDisplay = memoize(getContractTypeDisplay);
 
 const PurchaseButton = ({
     buy_info,
+    icon_type,
     index,
     info,
     is_contract_mode,
@@ -16,15 +20,10 @@ const PurchaseButton = ({
     is_loading,
     is_proposal_empty,
     purchased_states_arr,
-    setPurchaseState,
     should_fade,
-    onClickPurchase,
     type,
+    buttonOnClick,
 }) => {
-    const getIconType = () => {
-        if (!should_fade && is_loading) return '';
-        return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
-    };
     const is_button_disabled = ((is_contract_mode || is_disabled) && !is_loading) || is_proposal_empty;
 
     return (
@@ -39,10 +38,7 @@ const PurchaseButton = ({
                     'btn-purchase--animated--fade' : is_loading && should_fade,
                     'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),
                 })}
-            onClick={() => {
-                setPurchaseState(index);
-                onClickPurchase(info.id, info.stake, type);
-            }}
+            onClick={buttonOnClick}
         >
             <React.Fragment>
                 <div className='btn-purchase__info btn-purchase__info--left'>
@@ -51,12 +47,12 @@ const PurchaseButton = ({
                             <Icon
                                 icon='IconTradeType'
                                 className='btn-purchase__icon'
-                                type={getIconType()}
+                                type={icon_type}
                             />
                         </div>
                         <div className='btn-purchase__text_wrapper'>
                             <span className='btn-purchase__text'>
-                                {(!should_fade && is_loading) ? '' : localize('{{value}}', { value: getContractTypeDisplay(type, is_high_low) })}
+                                {(!should_fade && is_loading) ? '' : localize('{{value}}', { value: memoizedGetContractTypeDisplay(type, is_high_low) })}
                             </span>
                         </div>
                     </div>
@@ -74,8 +70,10 @@ const PurchaseButton = ({
 };
 
 PurchaseButton.propTypes = {
+    buttonOnClick       : PropTypes.func,
     buy_info            : PropTypes.object,
     currency            : PropTypes.string,
+    icon_type           : PropTypes.string,
     index               : PropTypes.number,
     info                : PropTypes.object,
     is_contract_mode    : PropTypes.bool,
@@ -83,9 +81,7 @@ PurchaseButton.propTypes = {
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,
     is_proposal_empty   : PropTypes.bool,
-    onClickPurchase     : PropTypes.func,
     purchased_states_arr: PropTypes.array,
-    setPurchaseState    : PropTypes.func,
     type                : PropTypes.string,
 };
 

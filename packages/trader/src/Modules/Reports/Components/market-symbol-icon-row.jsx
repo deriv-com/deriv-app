@@ -3,14 +3,19 @@ import React              from 'react';
 import { Popover }        from 'App/Components/Elements/Popover';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
 import Icon               from 'Assets/icon.jsx';
+import { memoize }        from 'Utils/React/memoize';
 import {
     getMarketName,
     getTradeTypeName }    from '../Helpers/market-underlying';
 import Shortcode          from '../Helpers/shortcode';
 
+const memoizedExtractInfoFromShortCode = memoize(Shortcode.extractInfoFromShortcode);
+const memoizedGetMarketName            = memoize(getMarketName);
+const memoizedGetTradeTypeName         = memoize(getTradeTypeName);
+
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
-    const info_from_shortcode = Shortcode.extractInfoFromShortcode(payload.shortcode);
+    const info_from_shortcode       = memoizedExtractInfoFromShortCode(payload.shortcode);
 
     if (should_show_category_icon && info_from_shortcode) {
         return (
@@ -20,7 +25,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='market-symbol-icon__popover'
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
-                        message={getMarketName(info_from_shortcode.underlying)}
+                        message={memoizedGetMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
                         <UnderlyingIcon market={info_from_shortcode.underlying} />
@@ -33,7 +38,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={getTradeTypeName(info_from_shortcode.category)}
+                        message={memoizedGetTradeTypeName(info_from_shortcode.category)}
                         disable_target_icon
                     >
                         <Icon

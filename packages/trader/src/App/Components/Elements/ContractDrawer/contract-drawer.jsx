@@ -24,12 +24,27 @@ import {
     getIndicativePrice,
     getEndTime,
     isUserSold,
-    isValidToSell       }      from 'Stores/Modules/Contract/Helpers/logic';
+    isValidToSell }            from 'Stores/Modules/Contract/Helpers/logic';
+import { memoize }             from 'Utils/React/memoize';
 import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
 import ContractCard            from './contract-card.jsx';
 import Money                   from '../money.jsx';
+
+const memoizedIsUserSold = memoize(isUserSold);
+const memoizedIsValidToSell = memoize(isValidToSell);
+const memoizedGetEndTime = memoize(getEndTime);
+const memoizedGetIndicativePrice = memoize(getIndicativePrice);
+const memoizedGetCurrentTick = memoize(getCurrentTick);
+const memoizedGetDurationPeriod = memoize(getDurationPeriod);
+const memoizedGetDurationTime = memoize(getDurationTime);
+const memoizedGetDurationUnitText = memoize(getDurationUnitText);
+
+const getTick = (contract_info) => {
+    if (!contract_info.tick_count) return null;
+    return memoizedGetCurrentTick(contract_info);
+};
 
 class ContractDrawer extends Component {
     state = {
@@ -40,7 +55,14 @@ class ContractDrawer extends Component {
         this.setState({ is_shade_on: shade });
     };
 
-    redirectBackToReports = () => this.props.history.push(routes.reports);
+    redirectBackToReports = () => {
+        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
+        if (this.props.history.location.state) {
+            this.props.history.goBack();
+        } else {
+            this.props.history.push(routes.reports);
+        }
+    };
 
     getBodyContent () {
         const {
@@ -51,20 +73,15 @@ class ContractDrawer extends Component {
             payout,
             profit,
         } = this.props.contract_info;
+
         const {
             contract_info,
             is_dark_theme,
             is_sell_requested,
             onClickSell,
         } = this.props;
-        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
-        const getTick = () => {
-            if (!contract_info.tick_count) return null;
-            let current_tick = getCurrentTick(contract_info);
-            current_tick = (current_tick > getCurrentTick(contract_info)) ?
-                current_tick : getCurrentTick(contract_info);
-            return current_tick;
-        };
+
+        const exit_spot = memoizedIsUserSold(contract_info) ? '-' : exit_tick_display_value;
 
         return (
             <React.Fragment>
@@ -100,14 +117,14 @@ class ContractDrawer extends Component {
                             is_loading={false}
                             start_time={contract_info.purchase_time}
                             expiry_time={contract_info.date_expiry}
-                            current_tick={getTick()}
+                            current_tick={getTick(contract_info)}
                             ticks_count={contract_info.tick_count}
                         />
                     }
                     <ContractCardBody>
                         <ProfitLossCardContent
                             pl_value={+profit}
-                            payout={getIndicativePrice(contract_info)}
+                            payout={memoizedGetIndicativePrice(contract_info)}
                             currency={currency}
                             is_sold={!!(is_sold)}
                             status={this.props.status}
@@ -139,7 +156,7 @@ class ContractDrawer extends Component {
                             </div>
                         </div>
                         <CSSTransition
-                            in={!!(isValidToSell(contract_info))}
+                            in={!!(memoizedIsValidToSell(contract_info))}
                             timeout={250}
                             classNames={{
                                 enter    : 'contract-card__sell-button--enter',
@@ -158,7 +175,7 @@ class ContractDrawer extends Component {
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}
-                                    is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                    is_disabled={!(memoizedIsValidToSell(contract_info)) || is_sell_requested}
                                     text={localize('Sell contract')}
                                     onClick={() => onClickSell(contract_info.contract_id)}
                                 />
@@ -168,27 +185,18 @@ class ContractDrawer extends Component {
                 </ContractCard>
                 <ContractAudit
                     contract_info={contract_info}
-                    contract_end_time={getEndTime(contract_info)}
+                    contract_end_time={memoizedGetEndTime(contract_info)}
                     is_dark_theme={is_dark_theme}
                     is_open={true}
                     is_shade_visible={this.handleShade}
-                    duration={getDurationTime(contract_info)}
-                    duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                    duration={memoizedGetDurationTime(contract_info)}
+                    duration_unit={memoizedGetDurationUnitText(memoizedGetDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold)}
                 />
             </React.Fragment>
         );
     }
-
-    redirectBackToReports = () => {
-        // history.goBack() will go to the wrong location if user goes to contract by pasting it in the url.
-        if (this.props.history.location.state) {
-            this.props.history.goBack();
-        } else {
-            this.props.history.push(routes.reports);
-        }
-    };
 
     render() {
         if (!this.props.contract_info) return null;

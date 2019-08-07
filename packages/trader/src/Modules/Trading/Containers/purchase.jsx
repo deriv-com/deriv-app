@@ -4,6 +4,21 @@ import { isEmptyObject }           from '_common/utility';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
+import { memoize }                 from 'Utils/React/memoize';
+
+const isLoading = (info, validation_errors) => {
+    const has_validation_error = Object.values(validation_errors).some(e => e.length);
+    return !has_validation_error && !info.has_error && !info.id;
+};
+
+const getSortedIndex = (contract_position, index) => {
+    if (contract_position === 'top') return 0;
+    if (contract_position === 'bottom') return 1;
+    return index;
+};
+
+const memoizedLoading = memoize(isLoading);
+const memoizedContractTypePosition = memoize(getContractTypePosition);
 
 const Purchase = ({
     basis,
@@ -25,19 +40,12 @@ const Purchase = ({
     validation_errors,
 }) => {
     const is_high_low = /high_low/.test(contract_type.toLowerCase());
-    const isLoading = info => {
-        const has_validation_error = Object.values(validation_errors).some(e => e.length);
-        return !has_validation_error && !info.has_error && !info.id;
-    };
     const is_proposal_empty = isEmptyObject(proposal_info);
-
     const components = [];
     Object.keys(trade_types).map((type, index) => {
-        const getSortedIndex = () => {
-            if (getContractTypePosition(type) === 'top') return 0;
-            if (getContractTypePosition(type) === 'bottom') return 1;
-            return index;
-        };
+        const  contract_position = memoizedContractTypePosition(type);
+        const sorted_index = getSortedIndex(contract_position, index);
+
         const info              = proposal_info[type] || {};
         const is_disabled       = is_contract_mode
             || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
@@ -49,11 +57,11 @@ const Purchase = ({
                 currency={currency}
                 info={info}
                 key={index}
-                index={getSortedIndex()}
+                index={sorted_index}
                 is_contract_mode={is_contract_mode}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
-                is_loading={isLoading(info)}
+                is_loading={memoizedLoading(info, validation_errors)}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -66,8 +74,7 @@ const Purchase = ({
                 type={type}
             />
         );
-
-        switch (getContractTypePosition(type)) {
+        switch (contract_position) {
             case 'top':
                 components.unshift(purchase_fieldset);
                 break;

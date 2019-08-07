@@ -11,7 +11,6 @@ class App extends React.Component {
         return (
             <Provider {...this.rootStore}>
                 <Bot>{this.rootStore.bot.title}</Bot>
-                {/* <Button text='test button' className='button-primary' /> */}
             </Provider>
         );
     }

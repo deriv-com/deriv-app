@@ -1,19 +1,47 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import Localize     from 'App/Components/Elements/localize.jsx';
-import Button       from 'App/Components/Form/button.jsx';
-import { localize } from 'App/i18n';
-import Icon         from 'Assets/icon.jsx';
-import { connect }  from 'Stores/connect';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import Localize       from 'App/Components/Elements/localize.jsx';
+import Button         from 'App/Components/Form/button.jsx';
+import { BinaryLink } from 'App/Components/Routes';
+import { localize }   from 'App/i18n';
+import Icon           from 'Assets/icon.jsx';
+import { connect }    from 'Stores/connect';
 
 class SendEmail extends React.Component {
+    onClickVerification = () => { this.props.setVerificationResendClicked(true); };
+
     render() {
         return (
-            <React.Fragment>
-                {this.props.error_message && <p className='cashier__error'>{this.props.error_message}</p>}
-                <div className='withdraw__verify-container'>
-                    <div className='withdraw__verify-wrapper'>
-                        <Icon icon='IconAuthenticateWithdrawals' className='withdraw__icon-authenticate' />
+            <div className='withdraw__wrapper'>
+                {this.props.is_email_sent ?
+                    <div className='withdraw__email-sent'>
+                        <Icon icon='IconEmailSent' className='withdraw__icon' />
+                        <p className='withdraw__email-sent-title'><Localize i18n_default_text={'We\'ve sent you an email.'} /></p>
+                        <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the authentication link in the email to access withdrawal.' /></p>
+                        <div className='withdraw__email-resend'>
+                            {this.props.is_resend_clicked ?
+                                <React.Fragment>
+                                    <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text={'Didn\'t receive our email?'} /></p>
+                                    <p className='withdraw__email-sent-text'><Localize i18n_default_text={'Please check your spam folder. If it\'s not there, try resending the email.'} /></p>
+                                    <Button
+                                        className='btn--secondary btn--secondary--orange withdraw__resend-button'
+                                        classNameSpan='withdraw__resend-button-text'
+                                        is_disabled={this.props.resend_timeout < 60}
+                                        has_effect
+                                        text={this.props.resend_timeout < 60 ? localize('Resend email in {{seconds}}s', { seconds: this.props.resend_timeout }) : localize('Resend email')}
+                                        onClick={this.props.resendVerificationEmail}
+                                    />
+                                </React.Fragment>
+                                :
+                                <BinaryLink className='withdraw__email-resend-text' onClick={this.onClickVerification}>
+                                    <Localize i18n_default_text={'Didn\'t receive our email?'} />
+                                </BinaryLink>
+                            }
+                        </div>
+                    </div>
+                    :
+                    <React.Fragment>
+                        <Icon icon='IconAuthenticateWithdrawals' className='withdraw__icon' />
                         <p className='withdraw__text'>
                             <Localize i18n_default_text='To protect your account, we need to authenticate withdrawals.' />
                         </p>
@@ -22,36 +50,31 @@ class SendEmail extends React.Component {
                             classNameSpan='withdraw__verify-button-text'
                             has_effect
                             text={localize('Get authentication email')}
-                            onClick={() => { this.props.sendVerificationEmail(this.props.client_email); }}
+                            onClick={this.props.sendVerificationEmail}
                         />
-                    </div>
-                </div>
-                {this.props.is_email_sent &&
-                <div className='withdraw__verify-container'>
-                    <div className='withdraw__email-sent'>
-                        <Icon icon='IconEmailSent' className='withdraw__icon-email-sent' />
-                        <p className='withdraw__email-sent-title'><Localize i18n_default_text="We've sent you an email." /></p>
-                        <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the authentication link in the email to continue.' /></p>
-                    </div>
-                </div>
+                    </React.Fragment>
                 }
-            </React.Fragment>
+            </div>
         );
     }
 }
 
 SendEmail.propTypes = {
-    client_email         : PropTypes.string,
-    error_message        : PropTypes.string,
-    is_email_sent        : PropTypes.bool,
-    sendVerificationEmail: PropTypes.func,
+    is_email_sent               : PropTypes.bool,
+    is_resend_clicked           : PropTypes.bool,
+    resend_timeout              : PropTypes.number,
+    resendVerificationEmail     : PropTypes.func,
+    sendVerificationEmail       : PropTypes.func,
+    setVerificationResendClicked: PropTypes.func,
 };
 
 export default connect(
-    ({ client, modules }) => ({
-        client_email         : client.email,
-        error_message        : modules.cashier.error_message,
-        is_email_sent        : modules.cashier.is_verification_email_sent,
-        sendVerificationEmail: modules.cashier.sendVerificationEmail,
+    ({ modules }) => ({
+        is_email_sent               : modules.cashier.config.verification.is_email_sent,
+        is_resend_clicked           : modules.cashier.config.verification.is_resend_clicked,
+        resend_timeout              : modules.cashier.config.verification.resend_timeout,
+        resendVerificationEmail     : modules.cashier.resendVerificationEmail,
+        sendVerificationEmail       : modules.cashier.sendVerificationEmail,
+        setVerificationResendClicked: modules.cashier.setVerificationResendClicked,
     })
 )(SendEmail);

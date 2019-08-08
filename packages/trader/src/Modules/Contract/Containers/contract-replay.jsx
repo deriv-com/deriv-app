@@ -174,7 +174,6 @@ export default withRouter(connect(
     })
 )(ContractReplay));
 
-
 // -----------------------------------------
 
 class Chart extends React.Component {

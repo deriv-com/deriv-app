@@ -1,0 +1,135 @@
+$BOTTOM_SPACING_REQUIRED: 32px; // Spacing between end of the container and Footer (including shadow)
+$MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
+
+.vertical-tab {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    @include themify($themes) {
+        background-color: themed('tab_background_color');
+    }
+
+    &--full-screen {
+        min-height: $MIN_HEIGHT;
+
+        .vertical-tab__tab {
+            min-width: 15%;
+        }
+    }
+    &:not(.vertical-tab--full-screen) {
+        height: 600px;
+
+        .vertical-tab__content {
+            @include toEm(padding, 24px);
+        }
+    }
+    &__action-bar {
+        width: 100%;
+        display: flex;
+        flex-flow: row-reverse nowrap;
+        justify-content: space-between;
+        padding: 16px;
+
+        &--icon {
+            @include themify($themes) {
+                @include colorIcon(themed('text_primary_color'));
+            }
+        }
+        &-wrapper {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: $BORDER_RADIUS;
+
+            &:hover {
+                @include themify($themes) {
+                    background: themed('tab_hover_color');
+                }
+            }
+        }
+    }
+    &__tab {
+        display: flex;
+        min-width: 28%;
+        height: 100%;
+        flex-direction: column;
+        border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
+        @include themify($themes) {
+            background-color: themed('tab_background_color');
+        }
+    }
+    &__header-title {
+        @include typeface(--paragraph-center-bold-black, none);
+        @include toEm(line-height, 20px);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        padding: 16px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.1s ease-in;
+        text-decoration: none;
+    }
+    &__header {
+        @include typeface(--paragraph-center-bold-black, none);
+        @include toEm(line-height, 20px);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        padding: 10px 16px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.1s ease-in;
+        text-decoration: none;
+
+        &:hover:not(.vertical-tab__header--active) {
+            @include themify($themes) {
+                background-color: themed('tab_hover_color');
+            }
+        }
+        &--active {
+            @include typeface(--paragraph-left-bold-active, none);
+            @include themify($themes) {
+                background-color: themed('tab_active_background_color');
+            }
+            border-left: 4px solid $COLOR_ORANGE;
+        }
+        &__link {
+            font-weight: normal;
+        }
+        &--active &__link {
+            font-weight: bold;
+        }
+        &__icon {
+            margin-right: 16px;
+            @include themify($themes) {
+                @include colorIcon(themed('text_primary_color'));
+            }
+
+            &--active {
+                // make up for the border being 4px
+                margin-left: -4px;
+            }
+        }
+    }
+    &__content {
+        width: 100%;
+        height: 100%;
+        min-height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+        @include themify($themes) {
+            background-color: themed('container_secondary_color');
+        }
+
+        &.vertical-tab:not(.vertical-tab--full-screen) {
+            @include toEm(padding, 24px);
+            height: 100%;
+        }
+    }
+}

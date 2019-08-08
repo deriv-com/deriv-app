@@ -7,23 +7,22 @@ import Lazy                 from 'App/Containers/Lazy';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
+// import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
-
-const should_show_deposit = false; // TODO remove this and all commented props when Deposit is ready
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
         return (
-            // nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
+            nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
             nextProps.balance !== this.props.balance ||
             nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            // nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid
@@ -71,18 +70,16 @@ export class AccountActions extends Component {
                             window.open(urlFor('user/accounts', undefined, undefined, true));
                         }}
                     />}
-                    { should_show_deposit &&
-                    <Lazy
-                        ctor={() => import(/* webpackChunkName: "toggle-cashier", webpackPrefetch: true */'App/Components/Layout/Header/toggle-cashier.jsx')}
-                        should_load={!is_virtual} // remove false when cashier is ready.
-                        // active_tab={active_cashier_tab}
-                        className='acc-info__button'
-                        // toggleCashier={toggleCashierModal}
-                        // is_cashier_visible={is_cashier_modal_on}
-                        // showFullBlur={showFullBlur}
-                        // hideFullBlur={hideFullBlur}
-                    />
-                    }
+                    {/* {!is_virtual && */}
+                    {/* <ToggleCashier */}
+                    {/*    active_tab={active_cashier_tab} */}
+                    {/*    className='acc-info__button' */}
+                    {/*    toggleCashier={toggleCashierModal} */}
+                    {/*    is_cashier_visible={is_cashier_modal_on} */}
+                    {/*    showFullBlur={showFullBlur} */}
+                    {/*    hideFullBlur={hideFullBlur} */}
+                    {/* /> */}
+                    {/* } */}
                     {!(
                         is_virtual
                     ) && // TODO: remove this when cashier pop up is ready

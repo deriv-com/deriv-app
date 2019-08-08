@@ -43,9 +43,9 @@
         justify-content: space-around;
         flex-direction: column;
         align-items: flex-start;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
         @include themify($themes) {
             background-color: themed('container_secondary_color');
+            box-shadow: 0 4px 6px 0 themed('background_modal_shadow');
         }
     }
     &__header {

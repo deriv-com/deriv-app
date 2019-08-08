@@ -6,6 +6,11 @@ import Button            from 'App/Components/Form/button.jsx';
 import { connect }       from 'Stores/connect';
 
 class FullPageModal extends React.Component {
+    componentDidMount() {
+        if (this.props.is_visible) {
+            this.props.disableApp();
+        }
+    }
 
     handleCancel = () => {
         if (this.props.is_closed_on_cancel) {
@@ -97,6 +102,7 @@ FullPageModal.defaultProps = {
 FullPageModal.propTypes = {
     cancel_button_text  : PropTypes.string,
     confirm_button_text : PropTypes.string,
+    disableApp          : PropTypes.func,
     enableApp           : PropTypes.func,
     is_closed_on_cancel : PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
@@ -109,6 +115,7 @@ FullPageModal.propTypes = {
 
 const full_page_modal = connect(
     ({ ui }) => ({
+        disableApp: ui.disableApp,
         enableApp : ui.enableApp,
         is_loading: ui.is_loading,
     }),

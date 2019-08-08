@@ -263,7 +263,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleServicesErrorModal(is_visible) {
         this.is_services_error_visible = is_visible;
-        if (is_visible) this.is_app_disabled = true;
     }
 
     @action.bound
@@ -329,13 +328,12 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
+        console.log('toggling', state_change);
         this.is_unsupported_contract_modal_visible = state_change;
-        if (this.is_unsupported_contract_modal_visible) this.is_app_disabled = true;
     }
 
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
-        if (this.is_account_signup_modal_visible) this.is_app_disabled = true;
     }
 }

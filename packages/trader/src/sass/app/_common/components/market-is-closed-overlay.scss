@@ -12,7 +12,7 @@
     flex-direction: column;
     padding: 0 32px;
     @include themify($themes) {
-        background-color: rgba(themed('container_color'), 0.76);
+        background-color: themed('market_overlay_background');
     }
 
     p {

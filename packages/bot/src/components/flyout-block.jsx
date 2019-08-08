@@ -1,7 +1,8 @@
-import React            from 'react';
+import React from 'react';
 import { BlueInfoIcon } from './Icons.jsx';
-import { connect }      from '../stores/connect';
-import FlyoutStore      from '../stores/flyout-store';
+import { connect } from '../stores/connect';
+import FlyoutStore from '../stores/flyout-store';
+import { translate } from '../utils/lang/i18n';
 
 class FlyoutBlock extends React.PureComponent {
     render() {
@@ -12,13 +13,13 @@ class FlyoutBlock extends React.PureComponent {
                 <div className='flyout__item-header'>
                     <div className='flyout__item-label'>{block_node.getAttribute('type')}</div>
                     <div className='flyout__item-buttons'>
-                        { onInfoClick &&
+                        {onInfoClick &&
                             <div className='flyout__item-info' onClick={onInfoClick}>
                                 <BlueInfoIcon className={'info'} />
                             </div>
                         }
                         <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
-                            Add
+                            {translate('Add')}
                         </button>
                     </div>
                 </div>
@@ -29,7 +30,7 @@ class FlyoutBlock extends React.PureComponent {
 
     componentDidMount() {
         const { initBlockWorkspace, block_node } = this.props;
-        
+
         initBlockWorkspace(this.el_block_workspace, block_node);
     }
 }

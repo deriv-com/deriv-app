@@ -29,23 +29,30 @@ export default class SmartChartStore extends BaseStore {
     @observable end_epoch;
     @observable margin;
 
-    @observable scroll_to_left_epoch        = null;
-    @observable scroll_to_left_epoch_offset = 0;
+    @observable scroll_to_left_epoch = null;
 
-    @observable chart_id             = 'trade';
-    @observable is_chart_loading     = false;
-    @observable is_chart_ready       = false;
-    @observable should_import_layout = false;
-    @observable should_export_layout = false;
-    @observable should_clear_chart   = false;
-    @observable trade_chart_layout   = null;
+    @observable chart_id                      = 'trade';
+    @observable is_chart_loading              = false;
+    @observable is_chart_ready                = false;
+    @observable should_import_layout          = false;
+    @observable should_export_layout          = false;
+    @observable should_clear_chart            = false;
+    @observable trade_chart_layout            = null;
+    @observable should_refresh_active_symbols = false;
+
     trade_chart_symbol               = null;
     trade_chart_granularity          = null;
     trade_chart_type                 = null;
 
     @action.bound
-    switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
-        this.saveAndClearTradeChartLayout('contract');
+    switchToContractMode(
+        is_from_positions = false,
+        is_from_other_position = false,
+        chart_type = 'mountain',
+        granularity = 0,
+    ) {
+
+        if (!is_from_other_position) this.saveAndClearTradeChartLayout(null);
         this.setContractMode(true);
         if (!is_from_positions) {
             this.updateGranularity(granularity);
@@ -61,13 +68,13 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     updateChartType(type) {
         this.chart_type = type;
-        this.trade_chart_type = type;
+        if (!this.is_contract_mode) this.trade_chart_type = type;
     }
 
     @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
-        this.trade_chart_granularity = granularity;
+        if (!this.is_contract_mode) this.trade_chart_granularity = granularity;
     }
 
     @action.bound
@@ -81,11 +88,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     updateEpochScrollToValue(epoch) {
         this.scroll_to_left_epoch = epoch;
-    }
-
-    @action.bound
-    updateEpochScrollToOffset(offset) {
-        this.scroll_to_left_epoch_offset = offset;
     }
 
     @action.bound
@@ -104,7 +106,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     resetScrollToLeft() {
         this.scroll_to_left_epoch = null;
-        this.scroll_to_left_epoch_offset = null;
     }
 
     @action.bound
@@ -133,7 +134,6 @@ export default class SmartChartStore extends BaseStore {
     // --------- Set Contract Scroll to Left ---------
     @action.bound
     setChartView(scroll_to_left_epoch) {
-        this.updateEpochScrollToOffset(1);
         this.updateEpochScrollToValue(scroll_to_left_epoch);
     }
 
@@ -141,11 +141,6 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     setContractStart(start) {
         this.start_epoch = start;
-
-        // SmartChart doesn't need scrollToEpoch when startEpoch has value.
-        if (start) {
-            this.resetScrollToLeft();
-        }
     }
 
     @action.bound
@@ -204,8 +199,8 @@ export default class SmartChartStore extends BaseStore {
         this.should_export_layout    = true;
         this.should_import_layout    = false;
         this.trade_chart_symbol      = this.root_store.modules.trade.symbol;
-        this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity;
-        this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type;
+        this.trade_chart_granularity = this.root_store.modules.smart_chart.granularity || 0;
+        this.trade_chart_type        = this.root_store.modules.smart_chart.chart_type || 'mountain';
         this.chart_id                = chart_id;
     }
 

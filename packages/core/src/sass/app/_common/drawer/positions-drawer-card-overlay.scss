@@ -1,0 +1,49 @@
+/** @define result */
+.result {
+    &__caption {
+        text-transform: capitalize;
+        font-size: 1.6em;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.25s ease;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 1rem;
+        height: calc(100% - 36px);
+
+        &--won {
+            color: $COLOR_GREEN_1;
+        }
+        &--lost {
+            color: $COLOR_RED;
+        }
+        &-wrapper {
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            height: calc(100% - 36px);
+            text-decoration: none;
+        }
+    }
+    &__close-btn {
+        position: absolute;
+        top: 2px;
+        right: 8px;
+        cursor: pointer;
+        visibility: visible;
+
+        &:after {
+            content: '\0000D7';
+            font-size: 24px;
+            font-weight: 300;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+    }
+    &__icon {
+        margin-left: 10px;
+    }
+}

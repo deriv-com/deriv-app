@@ -435,9 +435,17 @@ export default class ClientStore extends BaseStore {
         this.accounts = [];
         this.currencies_list  = {};
         this.selected_currency = '';
-        SocketCache.remove('active_symbols', true);
-        this.root_store.ui.removeAllNotifications();
-        this.root_store.modules.trade.onMount();
+        // SocketCache.remove('active_symbols', true);
+        // this.root_store.ui.removeAllNotifications();
+        // this.root_store.modules.trade.onMount();
+        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        return new Promise(async (resolve) => {
+            await this.root_store.modules.trade.clearContract();
+            await this.root_store.modules.trade.resetErrorServices();
+            await this.root_store.ui.removeAllNotifications();
+            await this.root_store.modules.trade.refresh();
+            return resolve(this.root_store.modules.trade.debouncedProposal());
+        });
     }
 
     /* eslint-disable */

@@ -12,6 +12,12 @@ class FullPageModal extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        if (this.props.is_visible) {
+            this.props.disableApp();
+        }
+    }
+
     handleCancel = () => {
         if (this.props.is_closed_on_cancel) {
             this.props.enableApp();

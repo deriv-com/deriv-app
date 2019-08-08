@@ -2,7 +2,6 @@ import React            from 'react';
 import { PropTypes }    from 'prop-types';
 import { BlueInfoIcon } from './Icons.jsx';
 import { connect }      from '../stores/connect';
-import FlyoutStore      from '../stores/flyout-store';
 import { translate }    from '../utils/lang/i18n';
 
 class FlyoutBlock extends React.PureComponent {
@@ -19,7 +18,10 @@ class FlyoutBlock extends React.PureComponent {
                                 <BlueInfoIcon className={'info'} />
                             </div>
                         }
-                        <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
+                        <button
+                            className='flyout__item-add'
+                            onClick={() => Blockly.derivWorkspace.addBlockNode(block_node) }
+                        >
                             { translate('Add') }
                         </button>
                     </div>

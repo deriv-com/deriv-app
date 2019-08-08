@@ -176,27 +176,4 @@ export default class FlyoutStore {
         workspace.dispose();
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
     }
-
-    /**
-     * Creates a copy of passed block_node on main workspace and positions it
-     * below the lowest block.
-     * @static
-     * @param {Element} block_node
-     * @memberof FlyoutStore
-     */
-    static onAddClick(block_node) {
-        const block = Blockly.Xml.domToBlock(block_node, Blockly.derivWorkspace);
-        const top_blocks = Blockly.derivWorkspace.getTopBlocks(true);
-
-        if (top_blocks.length) {
-            const last_block = top_blocks[top_blocks.length - 1];
-            const last_block_xy = last_block.getRelativeToSurfaceXY();
-            const extra_spacing = (last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
-            const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
-            
-            block.moveBy(last_block_xy.x, y);
-        }
-
-        Blockly.derivWorkspace.centerOnBlock(block.id, false);
-    }
 }

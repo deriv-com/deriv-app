@@ -5,26 +5,27 @@ import FullPageModal    from 'App/Components/Elements/FullPageModal/full-page-mo
 import Localize         from 'App/Components/Elements/localize.jsx';
 import { website_name } from '../../../../Constants/app-config';
 
-const UnsupportedContractModal = ({
-    is_visible,
-    onConfirm,
-    onClose,
-}) => (
-    <FullPageModal
-        title={localize('Whoops!')}
-        confirm_button_text={localize('Continue to Binary.com')}
-        cancel_button_text={localize('Back to trade page')}
-        onConfirm={onConfirm}
-        onCancel={onClose}
-        is_closed_on_cancel
-        is_visible={is_visible}
-    >
-        <Localize
-            i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
-            values={{ website_name }}
-        />
-    </FullPageModal>
-);
+class UnsupportedContractModal extends React.PureComponent {
+    render() {
+        const { is_visible, onConfirm, onClose } = this.props;
+        return (
+            <FullPageModal
+                title={localize('Whoops!')}
+                confirm_button_text={localize('Continue to Binary.com')}
+                cancel_button_text={localize('Back to trade page')}
+                onConfirm={onConfirm}
+                onCancel={onClose}
+                is_closed_on_cancel
+                is_visible={is_visible}
+            >
+                <Localize
+                    i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
+                    values={{ website_name }}
+                />
+            </FullPageModal>
+        );
+    }
+}
 
 UnsupportedContractModal.propTypes = {
     is_visible: PropTypes.bool,

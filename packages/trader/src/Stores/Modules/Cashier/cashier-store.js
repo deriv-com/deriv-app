@@ -62,8 +62,11 @@ export default class CashierStore extends BaseStore {
 
         // if session has timed out reset everything
         this.setIframeUrl('', current_action);
-        this.setSessionTimeout(true, current_action);
-        this.clearTimeoutCashierUrl(current_action);
+
+        if (current_action === this.config.withdraw.container && !verification_code) {
+            // if no verification code, we should request again
+            return;
+        }
 
         const response_cashier = await WS.cashier(current_action, verification_code);
 
@@ -71,6 +74,8 @@ export default class CashierStore extends BaseStore {
         if (response_cashier.error) {
             this.setLoading(false);
             this.setErrorMessage(response_cashier.error.message, current_action);
+            this.setSessionTimeout(true, current_action);
+            this.clearTimeoutCashierUrl(current_action);
             if (verification_code) {
                 // clear verification code on error
                 this.clearVerification();
@@ -120,6 +125,10 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIframeUrl(url, container) {
         this.config[container].iframe_url = url;
+        if (url) {
+            // after we set iframe url we can clear verification code
+            this.root_store.client.setVerificationCode('');
+        }
     }
 
     @action.bound

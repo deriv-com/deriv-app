@@ -14,18 +14,18 @@ export default class FlyoutStore {
      * Parses XML contents passed by Blockly.Toolbox. Supports all default
      * Blockly.Flyout elements i.e. <block>, <label>, <button> in their
      * original format, e.g. <label text="Hello World" />
-     * @param {Element[]} xmlList list of XML nodes
+     * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
      */
-    @action.bound setContents(xmlList) {
+    @action.bound setContents(xml_list) {
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
         
-        this.flyout_content.replace(xmlList);
+        this.flyout_content.replace(xml_list);
         this.setVisibility(true);
-        this.setFlyoutWidth(xmlList);
+        this.setFlyoutWidth(xml_list);
     }
 
     /**
@@ -99,9 +99,9 @@ export default class FlyoutStore {
         let longest_block_width = 0;
 
         xmlList.forEach((node) => {
-            const tagName = node.tagName.toUpperCase();
+            const tag_name = node.tagName.toUpperCase();
             
-            if (tagName === Blockly.Xml.NODE_BLOCK) {
+            if (tag_name === Blockly.Xml.NODE_BLOCK) {
                 const block_hw = Blockly.Block.getDimensions(node);
 
                 node.setAttribute('width', block_hw.width);

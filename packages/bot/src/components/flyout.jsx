@@ -11,9 +11,9 @@ const Flyout = ({ is_visible, flyout_width, flyout_content }) => {
             style={{ width: `${flyout_width}px` }}
         >
             { flyout_content.map((node, index) => {
-                const tag = node.tagName.toUpperCase();
+                const tag_name = node.tagName.toUpperCase();
 
-                if (tag === Blockly.Xml.NODE_BLOCK) {
+                if (tag_name === Blockly.Xml.NODE_BLOCK) {
                     return (
                         <FlyoutBlock
                             key={node.getAttribute('type') + index}
@@ -21,7 +21,7 @@ const Flyout = ({ is_visible, flyout_width, flyout_content }) => {
                             block_node={node}
                         />
                     );
-                } else if (tag === Blockly.Xml.NODE_LABEL) {
+                } else if (tag_name === Blockly.Xml.NODE_LABEL) {
                     return (
                         <div
                             key={node.getAttribute('text') + index}
@@ -30,7 +30,7 @@ const Flyout = ({ is_visible, flyout_width, flyout_content }) => {
                             { node.getAttribute('text') }
                         </div>
                     );
-                } else if (tag === Blockly.Xml.NODE_BUTTON) {
+                } else if (tag_name === Blockly.Xml.NODE_BUTTON) {
                     const callback_key = node.getAttribute('callbackKey');
                     const callback = Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => {});
 

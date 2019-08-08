@@ -1,14 +1,16 @@
 import React       from 'react';
 import { connect } from 'Stores/connect';
 import { urlFor }  from '_common/url';
-import Lazy        from '../Lazy';
 import 'Sass/app/modules/modals.scss';
+import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
+import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
+import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
+import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
 
 // const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
 
 const Modals = ({
     clearPurchaseInfo,
-    is_initial_idle,
     is_denial_of_service_modal_visible,
     is_unsupported_contract_modal_visible,
     is_market_unavailable_visible,
@@ -57,30 +59,24 @@ const Modals = ({
 
     return (
         <React.Fragment>
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "UnsupportedContractModal" */'App/Components/Elements/Modals/UnsupportedContractModal')}
-                should_load={is_initial_idle && is_unsupported_contract_modal_visible}
+            <UnsupportedContractModal
                 onConfirm={unsupportedContractOnConfirm}
                 onClose={unsupportedContractOnClose}
                 is_visible={is_unsupported_contract_modal_visible}
             />
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "DenialOfServiceModal" */'App/Components/Elements/Modals/DenialOfServiceModal')}
-                should_load={is_initial_idle && is_denial_of_service_modal_visible}
+
+            <DenialOfServiceModal
                 onConfirm={denialOfServiceOnConfirm}
                 onCancel={denialOfServiceOnCancel}
                 is_visible={is_denial_of_service_modal_visible}
             />
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "MarketUnavailableModal" */'App/Components/Elements/Modals/MarketUnavailableModal')}
-                should_load={is_initial_idle && is_market_unavailable_visible}
+
+            <MarketUnavailableModal
                 onConfirm={marketUnavailableOnConfirm}
                 onCancel={marketUnavailableOnCancel}
                 is_visible={is_market_unavailable_visible}
             />
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "ServicesErrorModal" */'App/Components/Elements/Modals/ServicesErrorModal')}
-                should_load={is_initial_idle && is_services_error_visible}
+            <ServicesErrorModal
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
                 is_visible={is_services_error_visible}
@@ -92,7 +88,6 @@ const Modals = ({
 };
 
 export default connect(({ ui, client, modules, common }) => ({
-    is_initial_idle                      : !ui.is_loading,
     is_denial_of_service_modal_visible   : !client.is_client_allowed_to_visit,
     is_market_unavailable_visible        : ui.has_only_forward_starting_contracts,
     is_services_error_visible            : ui.is_services_error_visible,

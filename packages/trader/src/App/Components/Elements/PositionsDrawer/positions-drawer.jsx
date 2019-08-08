@@ -34,7 +34,6 @@ class PositionsDrawer extends React.Component {
             is_positions_drawer_on,
             onClickSell,
             onClickRemove,
-            openContract,
             toggleDrawer,
             toggleUnsupportedContractModal,
         } = this.props;
@@ -62,7 +61,6 @@ class PositionsDrawer extends React.Component {
                                 is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
-                                openContract={openContract}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
@@ -125,7 +123,6 @@ PositionsDrawer.propTypes = {
     onClickSell           : PropTypes.func,
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
-    openContract          : PropTypes.func,
     toggleDrawer          : PropTypes.func,
 };
 
@@ -140,7 +137,6 @@ export default connect(
         is_loading                    : modules.portfolio.is_loading,
         onClickSell                   : modules.portfolio.onClickSell,
         onClickRemove                 : modules.portfolio.removePositionById,
-        openContract                  : modules.contract_trade.onMount,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
         is_dark_theme                 : ui.is_dark_mode_on,

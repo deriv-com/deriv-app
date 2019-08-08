@@ -2,6 +2,7 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
+import { NavLink }             from 'react-router-dom';
 import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
@@ -190,7 +191,7 @@ const PositionsDrawerCard = ({
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
                 :
-                <ContractLink
+                <NavLink
                     className={classNames(
                         'positions-drawer-card', {
                             'positions-drawer-card--active': (parseInt(active_position) === id),
@@ -198,10 +199,15 @@ const PositionsDrawerCard = ({
                             'positions-drawer-card--red'   : (profit_loss < 0) && !result,
                         }
                     )}
-                    contract_id={id}
+                    to={{
+                        pathname: `/contract/${id}`,
+                        state   : {
+                            // from_table_row: true,
+                        },
+                    }}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
-                </ContractLink>
+                </NavLink>
             }
             <CSSTransition
                 in={!!(is_valid_to_sell)}

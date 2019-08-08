@@ -174,11 +174,10 @@ export default withRouter(connect(
     })
 )(ContractReplay));
 
+
+// -----------------------------------------
+
 class Chart extends React.Component {
-    componentDidMount() { this.props.onMount(); }
-
-    componentWillUnmount() { this.props.onUnmount(); }
-
     topWidgets = () => (
         <TopWidgets
             InfoBox={this.props.InfoBox}
@@ -192,7 +191,6 @@ class Chart extends React.Component {
     );
 
     render() {
-        console.warn(this.props);
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
@@ -242,9 +240,7 @@ Chart.propTypes = {
     is_static_chart : PropTypes.bool,
     margin          : PropTypes.number,
     markers_array   : PropTypes.array,
-    onMount         : PropTypes.func,
     onSymbolChange  : PropTypes.func,
-    onUnmount       : PropTypes.func,
     replay_controls : PropTypes.object,
     scroll_to_epoch : PropTypes.number,
     settings        : PropTypes.object,
@@ -288,9 +284,6 @@ const ReplayChart = connect(
             is_static_chart: contract_replay.is_static_chart,
             barriers_array : contract_replay.barriers_array,
             markers_array  : contract_replay.markers_array,
-
-            onMount  : modules.smart_chart.onMount,
-            onUnmount: modules.smart_chart.onUnmount,
         });
     }
 )(Chart);

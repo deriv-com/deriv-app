@@ -82,8 +82,6 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     onMount(contract_id) {
         if (contract_id) {
-            this.smart_chart = this.root_store.modules.smart_chart;
-            this.smart_chart.setContractMode(true);
             this.contract_id = contract_id;
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
@@ -106,8 +104,6 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative     = 0;
         this.indicative          = 0;
         this.sell_info           = {};
-        this.smart_chart.setContractMode(false);
-        this.smart_chart.cleanupContractChartView();
     }
 
     @action.bound
@@ -121,7 +117,6 @@ export default class ContractReplayStore extends BaseStore {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.smart_chart.setContractMode(false);
             this.is_chart_loading = false;
             return;
         }
@@ -229,6 +224,31 @@ export default class ContractReplayStore extends BaseStore {
         this.has_error = false;
     }
 
+    createBarriersArray = (contract_info, is_dark_mode) => {
+        let result = [];
+        if (contract_info) {
+            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+
+            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+                // create barrier only when it's available in response
+                const main_barrier = new ChartBarrierStore(
+                    barrier || high_barrier,
+                    low_barrier,
+                    null,
+                    {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        line_style   : BARRIER_LINE_STYLES.SOLID,
+                        not_draggable: true,
+                    },
+                );
+
+                main_barrier.updateBarrierShade(true, contract_type);
+                result = [toJS(main_barrier)];
+            }
+        }
+        return result;
+    }
+
+
     // ---------------------------
     // ----- Computed values -----
     // ---------------------------
@@ -274,30 +294,6 @@ export default class ContractReplayStore extends BaseStore {
         }
         return WS.sendRequest(request_object);
     };
-
-    createBarriersArray = (contract_info, is_dark_mode) => {
-        let result = [];
-        if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
-
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
-                // create barrier only when it's available in response
-                const main_barrier = new ChartBarrierStore(
-                    barrier || high_barrier,
-                    low_barrier,
-                    null,
-                    {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                        line_style   : BARRIER_LINE_STYLES.SOLID,
-                        not_draggable: true,
-                    },
-                );
-
-                main_barrier.updateBarrierShade(true, contract_type);
-                result = [toJS(main_barrier)];
-            }
-        }
-        return result;
-    }
 }
 
 

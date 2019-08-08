@@ -82,6 +82,7 @@ class AccountSwitcher extends React.Component {
                             {
                                 real_accounts.map((account) => (
                                     <div
+                                        id={`rf_${account.loginid}`}
                                         key={account.loginid}
                                         className={classNames('acc-switcher__account', {
                                             'acc-switcher__account--selected': (account.loginid === this.props.account_loginid),
@@ -116,6 +117,7 @@ class AccountSwitcher extends React.Component {
                         </span>
                         <div className='acc-switcher__accounts'>
                             <div
+                                id={`rf_${this.props.virtual_loginid}`}
                                 className={classNames('acc-switcher__account', {
                                     'acc-switcher__account--selected': (this.props.virtual_loginid === this.props.account_loginid),
                                 })}
@@ -131,7 +133,7 @@ class AccountSwitcher extends React.Component {
                 { !!(this.props.is_upgrade_enabled && this.props.is_virtual) &&
                     <UpgradeButton text={localize('Upgrade to Real Account')} />
                 }
-                <div className='acc-switcher__logout' onClick={this.handleLogout}>
+                <div id='rf_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
                     <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
                 </div>

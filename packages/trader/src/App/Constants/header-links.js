@@ -5,11 +5,13 @@ import { routes }      from 'Constants/index';
 
 const header_links = [
     {
+        id     : 'rf_deriv_logo',
         logo   : <div className='header__logo'>{localize('BETA')}</div>,
         image  : <Icon icon='IconDeriv' className='header__icon' />,
         link_to: routes.trade,
     },
     {
+        id        : 'rf_reports_tab',
         icon      : <Icon icon='IconReports' className='header__icon' />,
         text      : localize('Reports'),
         link_to   : routes.reports,

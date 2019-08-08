@@ -23,7 +23,7 @@
 }
 
 .app-contents {
-    &--contract-mode, &--is-blurred {
+    &--contract-mode, &--is-disabled {
         .trade-container {
             .popover {
                 display: none;

@@ -31,8 +31,4 @@ describe('ToggleSettings', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
         expect(wrapper.find(Modal).prop('is_open')).to.be.true;
     });
-    it('should not have Modal if \'is_settings_visible\' is false/missing', () => {
-        const wrapper = shallow(<ToggleSettings />);
-        expect(wrapper.find(Modal).exists()).to.be.false;
-    });
 });

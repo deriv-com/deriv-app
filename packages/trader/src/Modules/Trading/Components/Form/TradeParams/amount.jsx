@@ -49,7 +49,7 @@ const Amount = ({
             currency={currency}
             error_messages={validation_errors.amount}
             fractional_digits={getDecimalPlaces(currency)}
-            id='amount'
+            id='rf_amount_input'
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float

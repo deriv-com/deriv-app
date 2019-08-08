@@ -54,6 +54,7 @@ const SimpleDuration = ({
             }
             { (simple_duration_unit !== 't' && simple_duration_unit !== 'd') &&
                 <InputField
+                    id='rf_duration_input'
                     classNameInput='trade-container__input'
                     error_messages={validation_errors.duration}
                     name='duration'

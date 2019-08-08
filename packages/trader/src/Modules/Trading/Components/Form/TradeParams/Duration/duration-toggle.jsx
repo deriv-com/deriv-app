@@ -18,7 +18,7 @@ const DurationToggle = ({
     );
     return (
         <Fragment>
-            <button className='advanced-simple-toggle' onClick={toggle}>
+            <button id={value ? 'rf_advanced_toggle' : 'rf_simple_toggle'} className='advanced-simple-toggle' onClick={toggle}>
                 <Icon icon='IconArrow' className={icon_className} classNamePath={'advanced-simple-toggle__icon-path'} />
             </button>
         </Fragment>);

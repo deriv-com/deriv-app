@@ -5,7 +5,7 @@
  * Usage example:
    @include themify($themes) { color: themed('background_color') }
  */
- @mixin themify($themes) {
+@mixin themify($themes) {
     @each $theme, $map in $themes {
         .theme--#{$theme} & {
             $theme-map: () !global;
@@ -25,7 +25,6 @@
  * Example:
    @include themify($themes) { border-color: 1px solid themed('background_color') }
  */
- @function themed($key) {
+@function themed($key) {
     @return map-get($theme-map, $key);
 }
-

@@ -14,7 +14,7 @@ module.exports = function (env, argv) {
         module      : {
             rules: rules(
                 true,
-                env.mocha_only
+                (env && env.mocha_only)
             ),
         },
         optimization: {
@@ -29,7 +29,7 @@ module.exports = function (env, argv) {
         plugins     : plugins(
             base,
             true,
-            env.mocha_only,
+            (env && env.mocha_only),
         ),
         resolve     : {
             alias     : ALIASES,

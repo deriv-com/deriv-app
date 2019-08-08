@@ -1,7 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React                  from 'react';
 import { observable, action } from 'mobx';
-import FlyoutBlock            from '../components/flyout-block.jsx';
 
 export default class FlyoutStore {
     block_listeners            = [];
@@ -24,56 +22,8 @@ export default class FlyoutStore {
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
-
-        const flyout_components = [];
-
-        xmlList.forEach((node, index) => {
-            const tagName = node.tagName.toUpperCase();
-
-            if (tagName === 'BLOCK') {
-                const key = node.getAttribute('type') + index;
-
-                flyout_components.push(
-                    <FlyoutBlock
-                        key={key}
-                        id={`flyout__item-workspace--${index}`}
-                        block_node={node}
-                    />
-                );
-            } else if (tagName === 'LABEL') {
-                const key = node.getAttribute('text') + index;
-
-                flyout_components.push(
-                    <div key={key} className='flyout__item-label'>
-                        { node.getAttribute('text') }
-                    </div>
-                );
-            } else if (tagName === 'BUTTON') {
-                const callbackKey = node.getAttribute('callbackKey');
-                const callback = Blockly.derivWorkspace.getButtonCallback(callbackKey) || (() => {});
-                const key = callbackKey + index;
-
-                flyout_components.push(
-                    <button
-                        key={key}
-                        className='flyout__button'
-                        onClick={(button) => {
-                            const flyout_button = button;
-
-                            // Workaround for not having a flyout workspace.
-                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                            flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
-
-                            callback(flyout_button);
-                        }}
-                    >
-                        { node.getAttribute('text') }
-                    </button>
-                );
-            }
-        });
-
-        this.flyout_content = flyout_components;
+        
+        this.flyout_content.replace(xmlList);
         this.setVisibility(true);
         this.setFlyoutWidth(xmlList);
     }
@@ -87,7 +37,7 @@ export default class FlyoutStore {
         this.is_visible = is_visible;
 
         if (!is_visible) {
-            this.flyout_content = [];
+            this.flyout_content.clear();
         }
     }
 
@@ -100,7 +50,7 @@ export default class FlyoutStore {
     @action.bound initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, {
             css   : false,
-            media : 'dist/media/',
+            media : `${__webpack_public_path__}media/`, // eslint-disable-line
             move  : { scrollbars: false, drag: true, wheel: false },
             sounds: false,
         });
@@ -146,34 +96,20 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setFlyoutWidth(xmlList) {
-        const options = new Blockly.Options({ media: '/dist/media/' });
-        const fragment = document.createDocumentFragment();
-        const el_injection_div = document.createElement('div');
-
-        fragment.appendChild(el_injection_div);
-
-        // Create a headless workspace to calculate xmlList block dimensions
-        const svg = Blockly.createDom_(el_injection_div, options);
-        const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
-
         let longest_block_width = 0;
 
         xmlList.forEach((node) => {
-            
             const tagName = node.tagName.toUpperCase();
             
-            if (tagName === 'BLOCK') {
-                const block = Blockly.Xml.domToBlock(node, workspace);
-                const block_hw = block.getHeightWidth();
+            if (tagName === Blockly.Xml.NODE_BLOCK) {
+                const block_hw = Blockly.Block.getDimensions(node);
 
                 node.setAttribute('width', block_hw.width);
                 node.setAttribute('height', block_hw.height);
-                
                 longest_block_width = Math.max(longest_block_width, block_hw.width);
             }
         });
 
-        workspace.dispose();
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
     }
 }

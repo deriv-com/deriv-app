@@ -37,6 +37,7 @@ const AccountSignup = ({ onSignup, residence_list }) => {
             {/*    onChange={onInputChange} */}
             {/* /> */}
             <Dropdown
+                id='signup_modal'
                 is_alignment_left
                 is_nativepicker={false}
                 list={residence_list}

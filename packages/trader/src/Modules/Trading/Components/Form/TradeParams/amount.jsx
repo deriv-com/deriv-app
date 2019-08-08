@@ -78,6 +78,7 @@ const Amount = ({
             {!is_single_currency ?
                 <div className='trade-container__currency-options'>
                     <Dropdown
+                        id='amount'
                         className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
                         classNameDisplay='trade-container__currency-options--display'
                         has_symbol

@@ -8,6 +8,7 @@ const Items = ({
     index,
     handleSelect,
     has_symbol,
+    id,
     items,
     name,
     value,
@@ -15,6 +16,7 @@ const Items = ({
     const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
     return (
         <div
+            id={item.value}
             className={classNames(
                 'list__item',
                 { 'list__item--highlighted': idx === index },

@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import {
     AccountActions,
     MenuLinks,
-    // ToggleCashier,
 }                     from 'App/Components/Layout/Header';
 import header_links   from 'App/Constants/header-links';
 import Lazy           from 'App/Containers/Lazy';
@@ -80,7 +79,7 @@ const Header = ({
 );
 
 Header.propTypes = {
-    // active_cashier_tab  : PropTypes.string,
+    active_cashier_tab  : PropTypes.string,
     balance             : PropTypes.string,
     can_upgrade         : PropTypes.bool,
     can_upgrade_to      : PropTypes.string,
@@ -89,7 +88,7 @@ Header.propTypes = {
     enableApp           : PropTypes.func,
     is_acc_switcher_on  : PropTypes.bool,
     is_app_disabled     : PropTypes.bool,
-    // is_cashier_modal_on : PropTypes.bool,
+    is_cashier_modal_on : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_loading          : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
@@ -100,7 +99,7 @@ Header.propTypes = {
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
-    // toggleCashierModal  : PropTypes.func,
+    toggleCashierModal  : PropTypes.func,
 };
 
 // need to wrap withRouter around connect

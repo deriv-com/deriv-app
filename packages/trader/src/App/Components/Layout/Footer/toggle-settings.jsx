@@ -45,6 +45,7 @@ const ToggleSettings = ({
             >
                 <Icon icon='IconSettings' className='footer__icon ic-settings__icon' />
             </a>
+            {is_settings_visible &&
             <React.Suspense fallback={<UILoader />}>
                 <Modal
                     modal_content={modal_content}
@@ -55,6 +56,7 @@ const ToggleSettings = ({
                     toggleModal={toggleSettings}
                 />
             </React.Suspense>
+            }
         </React.Fragment>
     );
 };

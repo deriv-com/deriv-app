@@ -231,7 +231,10 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleCashierModal() {
+    toggleCashierModal(active_tab) {
+        if (/^(deposit|withdraw)$/.test(active_tab)) {
+            this.setCashierActiveTab(active_tab);
+        }
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
@@ -328,7 +331,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
-        console.log('toggling', state_change);
         this.is_unsupported_contract_modal_visible = state_change;
     }
 

@@ -29,6 +29,7 @@ const SimpleDuration = ({
         <Fragment>
             { duration_units_list.length > 1 &&
                 <ButtonToggleMenu
+                    id='rf_simple_duration_toggle'
                     buttons_arr={filterMinutesAndTicks(duration_units_list)}
                     is_animated={true}
                     name='simple_duration_unit'

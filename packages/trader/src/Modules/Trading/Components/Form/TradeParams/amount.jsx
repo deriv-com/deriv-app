@@ -67,6 +67,7 @@ const Amount = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <ButtonToggleMenu
+                id='rf_amount_toggle'
                 buttons_arr={basis_list}
                 className='dropdown--no-margin'
                 is_animated={true}

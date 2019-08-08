@@ -15,7 +15,8 @@ export const Icon = svgItem => (props) => {
 
     return (
         <svg width={vb[0]} height={vb[1]} className={`icon icon-${className}`}>
-            <use xlinkHref={`./dist/bot-sprite.svg#${svgItem.id}`} />
+            { /* eslint-disable-next-line */ }
+            <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>
     );
 };

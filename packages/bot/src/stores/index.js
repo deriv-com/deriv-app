@@ -5,6 +5,10 @@ import FlyoutStore from './flyout-store';
 export const flyout = new FlyoutStore();
 
 export default class RootStore {
-    bot = new BotStore();
-    flyout = flyout;
+    constructor(core, ws) {
+        this.bot = new BotStore(ws);
+        this.flyout = new FlyoutStore();
+        this.core = core;
+        this.ws = ws;
+    }
 }

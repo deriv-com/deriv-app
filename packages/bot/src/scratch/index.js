@@ -24,23 +24,21 @@ import { observer as globalObserver }     from '../utils/observer';
 
 export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) => {
     try {
-        const el_scratch_div = document.getElementById(scratch_div_name);
         const el_scratch_area = document.getElementById(scratch_area_name);
-        const toolbox_xml = await fetch('dist/toolbox.xml').then(response => response.text());
-        const main_xml = await fetch('dist/main.xml').then(response => response.text());
+        const el_scratch_div = document.getElementById(scratch_div_name);
+        const el_app_contents = document.getElementById('app_contents');
 
-        Blockly.derivWorkspace = Blockly.inject(el_scratch_div, {
-            media  : 'dist/media/',
-            toolbox: toolbox_xml,
-            grid   : {
-                spacing: 40,
-                length : 11,
-                colour : '#ebebeb',
-            },
+        // eslint-disable-next-line
+        const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
+        // eslint-disable-next-line
+        const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
+
+        const workspace = Blockly.inject(el_scratch_div, {
+            grid    : { spacing: 40, length: 11, colour: '#ebebeb' },
+            media   : `${__webpack_public_path__}media/`, // eslint-disable-line
+            toolbox : toolbox_xml,
             trashcan: true,
-            zoom    : {
-                wheel: true,
-            },
+            zoom    : { wheel: true },
         });
 
         // Ensure flyout closes on click in workspace.
@@ -56,29 +54,27 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), Blockly.derivWorkspace);
 
         const onWorkspaceResize = () => {
-            let el = el_scratch_area;
+            let element = el_scratch_area;
             let x = 0;
             let y = 0;
         
             do {
-                x += el.offsetLeft;
-                y += el.offsetTop;
-                el = el.offsetParent;
-            } while (el);
+                x += element.offsetLeft;
+                y += element.offsetTop;
+                element = element.offsetParent;
+            } while (element);
         
             // Position scratch_div over scratch_area.
             el_scratch_div.style.left   = `${x}px`;
             el_scratch_div.style.top    = `${y}px`;
-            el_scratch_div.style.width  = `${el_scratch_area.offsetWidth}px`;
-            el_scratch_div.style.height = `${el_scratch_area.offsetHeight}px`;
+            el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
+            el_scratch_div.style.height = `${el_app_contents.offsetHeight}px`;
             
-            Blockly.svgResize(Blockly.derivWorkspace);
-        };
+            Blockly.svgResize(workspace);
 
-        // Resize workspace on workspace event, workaround for jumping workspace.
-        Blockly.derivWorkspace.addChangeListener(() =>  {
-            Blockly.svgResize(Blockly.derivWorkspace);
-        });
+            // eslint-disable-next-line no-underscore-dangle
+            workspace.toolbox_.flyout_.position();
+        };
 
         window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();

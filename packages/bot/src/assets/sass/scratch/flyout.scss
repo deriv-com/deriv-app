@@ -1,12 +1,12 @@
-@import './color';
+@import '~deriv-shared/utils/styles/colors';
 
 .flyout {
     $default-margin: 15px;
 
     position: absolute;
     left: 250px;
-    background-color: $white;
-    max-height: calc(100vh - 100px);
+    background-color: $COLOR_WHITE;
+    max-height: calc(100% - 100px);
     z-index: 1;
     border-radius: 10px;
     padding: 25px;
@@ -14,11 +14,9 @@
     margin-left: $default-margin;
     margin-top: 20px;
     overflow: auto;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+    min-width: 400px;
 
-    &--hidden {
-        display: none;
-    }
     &__block-workspace {
         margin-bottom: $default-margin;
 
@@ -36,7 +34,7 @@
         margin-bottom: $default-margin;
         border: none;
         border-radius: 5px;
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
         cursor: pointer;
     }
     &__item {
@@ -60,11 +58,11 @@
             padding: 5px 20px;
             border: none;
             font-size: 16px;
-            color: $white;
+            color: $COLOR_WHITE;
             border-radius: 5px;
             font-weight: bold;
             margin-left: $default-margin;
-            background-color: #ff9933;
+            background-color: $COLOR_ORANGE;
             cursor: pointer;
         }
         &-info {

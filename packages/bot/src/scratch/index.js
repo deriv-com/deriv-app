@@ -41,6 +41,8 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             zoom    : { wheel: true },
         });
 
+        Blockly.derivWorkspace = workspace;
+
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
         document.addEventListener('click', (event) => {

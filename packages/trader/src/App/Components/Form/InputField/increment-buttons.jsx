@@ -5,12 +5,14 @@ import Button    from '../button.jsx';
 
 const IncrementButtons = ({
     decrementValue,
+    id,
     incrementValue,
     max_is_disabled,
     min_is_disabled,
 }) => (
     <React.Fragment>
         <Button
+            id={`${id}_add`}
             className={'input-wrapper__button input-wrapper__button--increment'}
             is_disabled={max_is_disabled}
             onClick={incrementValue}
@@ -19,6 +21,7 @@ const IncrementButtons = ({
             <Icon icon='IconPlus' className={'input-wrapper__icon input-wrapper__icon--plus' } is_disabled={max_is_disabled} />
         </Button>
         <Button
+            id={`${id}_sub`}
             className={'input-wrapper__button input-wrapper__button--decrement'}
             is_disabled={min_is_disabled}
             onClick={decrementValue}
@@ -31,6 +34,7 @@ const IncrementButtons = ({
 
 IncrementButtons.propTypes = {
     decrementValue : PropTypes.func,
+    id             : PropTypes.string,
     incrementValue : PropTypes.func,
     max_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     min_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),

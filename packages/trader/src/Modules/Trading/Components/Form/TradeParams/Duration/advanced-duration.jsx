@@ -91,6 +91,7 @@ const AdvancedDuration = ({
                         }
                         { (advanced_duration_unit !== 't' && advanced_duration_unit !== 'd') &&
                             <InputField
+                                id='dt_advanced_duration_input'
                                 classNameInput='trade-container__input'
                                 error_messages={validation_errors.duration}
                                 label={duration_units_list.length === 1 ? duration_units_list[0].text : null}

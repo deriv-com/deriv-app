@@ -1,0 +1,80 @@
+/** @define theme */
+.theme {
+    &--light {
+        background: $COLOR_LIGHT_BLACK_4_SOLID;
+    }
+    &--dark {
+        background: $COLOR_DARK_BLUE_1;
+    }
+}
+
+/** @define container */
+.container {
+    width: 100%;
+    max-width: $MAX_CONTAINER_WIDTH;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/** @define hidden */
+.hidden {
+    visibility: hidden !important;
+    transition: none !important;
+}
+
+// Centers absolute element vertically
+/** @define absolute-center-v */
+.absolute-center-v {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+}
+
+/** @define link */
+.link {
+    color: $COLOR_ORANGE;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+    &--white {
+        color: $COLOR_WHITE;
+    }
+}
+
+/** @define icon */
+.icon--centered {
+    top: 0.8em;
+    left: 5%;
+}
+
+/** @define center-text */
+.center-text {
+    text-align: center;
+}
+
+/** @define no-margin */
+.no-margin {
+    margin: 0;
+}
+
+/** @define hr */
+.hr {
+    @include themify($themes) {
+        border-top: 1px solid themed('divider_color');
+    }
+    display: block;
+    height: 1px;
+    border: 0;
+    margin: 0.5em 0;
+    padding: 0;
+}
+
+/** @define deriv-app */
+.deriv-app {
+    height: 100%;
+    overflow: hidden;
+}

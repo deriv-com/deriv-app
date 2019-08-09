@@ -521,6 +521,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
+        // We do not want new proposal requests when in contract mode
+        if (this.root_store.modules.smart_chart.is_contract_mode) return;
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -635,9 +637,13 @@ export default class TradeStore extends BaseStore {
         if (smart_chart_store.trade_chart_granularity &&
             (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
             smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
+        } else {
+            smart_chart_store.granularity = 0;
         }
-        if (smart_chart_store.trade_chart_chart_type !== smart_chart_store.chart_type) {
+        if (smart_chart_store.trade_chart_type !== smart_chart_store.chart_type) {
             smart_chart_store.chart_type = smart_chart_store.trade_chart_type;
+        } else {
+            smart_chart_store.chart_type = 'mountain';
         }
     }
 

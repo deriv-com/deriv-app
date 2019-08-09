@@ -26,17 +26,9 @@ describe('ToggleSettings', () => {
     it('property \'in\' should depend on \'is_settings_visible\'', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
         expect(wrapper.find(Modal).shallow().find(CSSTransition).prop('in')).to.be.true;
-        wrapper.setProps({ is_settings_visible: false });
-        expect(wrapper.find(Modal).shallow().find(CSSTransition).prop('in')).to.be.false;
-    });
-    it('should have Modal', () => {
-        const wrapper = shallow(<ToggleSettings />);
-        expect(wrapper.find(Modal).exists()).to.be.true;
     });
     it('property \'is_open\' should depend on \'is_settings_visible\'', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
         expect(wrapper.find(Modal).prop('is_open')).to.be.true;
-        wrapper.setProps({ is_settings_visible: false });
-        expect(wrapper.find(Modal).prop('is_open')).to.be.false;
     });
 });

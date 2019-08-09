@@ -1,5 +1,9 @@
 import BotStore from './bot-store';
 
 export default class RootStore {
-    bot = new BotStore();
+    constructor(core, ws) {
+        this.bot = new BotStore(ws);
+        this.core = core;
+        this.ws = ws;
+    }
 }

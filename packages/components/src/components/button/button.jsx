@@ -1,7 +1,8 @@
 import React from 'react';
+import './button.scss';
 
 const Button = props => (
-    <button>{props.name}</button>
+    <button className='button-primary'>{props.name}</button>
 );
 
 export default Button;

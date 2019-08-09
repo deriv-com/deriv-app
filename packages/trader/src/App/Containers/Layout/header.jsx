@@ -4,7 +4,6 @@ import React          from 'react';
 import {
     AccountActions,
     MenuLinks,
-    // ToggleCashier,
 }                     from 'App/Components/Layout/Header';
 import header_links   from 'App/Constants/header-links';
 import Lazy           from 'App/Containers/Lazy';
@@ -16,22 +15,22 @@ const Header = ({
     can_upgrade,
     can_upgrade_to,
     currency,
-    // hideFullBlur,
+    enableApp,
     is_acc_switcher_on,
     // is_cashier_modal_on,
-    is_fully_blurred,
+    is_app_disabled,
     is_logged_in,
     is_mobile,
-    is_route_blurred,
+    is_route_modal_on,
     is_virtual,
     loginid,
     onClickUpgrade,
-    // showFullBlur,
+    disableApp,
     toggleAccountsDialog,
     // toggleCashierModal,
 }) => (
     <header className={classNames('header', {
-        'header--is-blurred': (is_fully_blurred || is_route_blurred),
+        'header--is-disabled': (is_app_disabled || is_route_modal_on),
     })}
     >
         <div className='header__menu-items'>
@@ -54,7 +53,8 @@ const Header = ({
                         can_upgrade_to={can_upgrade_to}
                         currency={currency}
                         can_upgrade={can_upgrade}
-                        // hideFullBlur={hideFullBlur}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
                         is_acc_switcher_on={is_acc_switcher_on}
                         // is_cashier_modal_on={is_cashier_modal_on}
                         is_logged_in={is_logged_in}
@@ -63,7 +63,6 @@ const Header = ({
                         onClickUpgrade={onClickUpgrade}
                         toggleAccountsDialog={toggleAccountsDialog}
                         // toggleCashierModal={toggleCashierModal}
-                        // showFullBlur={showFullBlur}
                     />
                 </div>
             </div>
@@ -72,25 +71,25 @@ const Header = ({
 );
 
 Header.propTypes = {
-    // active_cashier_tab  : PropTypes.string,
+    active_cashier_tab  : PropTypes.string,
     balance             : PropTypes.string,
     can_upgrade         : PropTypes.bool,
     can_upgrade_to      : PropTypes.string,
     currency            : PropTypes.string,
-    // hideFullBlur        : PropTypes.func,
+    disableApp          : PropTypes.func,
+    enableApp           : PropTypes.func,
     is_acc_switcher_on  : PropTypes.bool,
-    // is_cashier_modal_on : PropTypes.bool,
+    is_app_disabled     : PropTypes.bool,
+    is_cashier_modal_on : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
-    is_fully_blurred    : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
-    is_route_blurred    : PropTypes.bool,
+    is_route_modal_on   : PropTypes.bool,
     is_virtual          : PropTypes.bool,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
-    // showFullBlur        : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
-    // toggleCashierModal  : PropTypes.func,
+    toggleCashierModal  : PropTypes.func,
 };
 
 // need to wrap withRouter around connect
@@ -102,17 +101,18 @@ export default connect(
         can_upgrade         : client.can_upgrade,
         can_upgrade_to      : client.can_upgrade_to,
         currency            : client.currency,
-        // hideFullBlur        : ui.hideFullBlur,
         is_logged_in        : client.is_logged_in,
         is_virtual          : client.is_virtual,
         loginid             : client.loginid,
+        enableApp           : ui.enableApp,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         // is_cashier_modal_on : ui.is_cashier_modal_on,
         is_dark_mode        : ui.is_dark_mode_on,
-        is_fully_blurred    : ui.is_fully_blurred,
-        is_route_blurred    : ui.is_route_blurred,
+        is_app_disabled     : ui.is_app_disabled,
+        is_loading          : ui.is_loading,
+        is_route_modal_on   : ui.is_route_modal_on,
         is_mobile           : ui.is_mobile,
-        // showFullBlur        : ui.showFullBlur,
+        disableApp          : ui.disableApp,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         // toggleCashierModal  : ui.toggleCashierModal,
     })

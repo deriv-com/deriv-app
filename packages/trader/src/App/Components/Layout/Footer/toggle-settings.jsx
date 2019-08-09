@@ -3,23 +3,51 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import { Modal }    from 'App/Components/Elements/modal.jsx';
 import UILoader     from 'App/Components/Elements/ui-loader.jsx';
+import Lazy         from 'App/Containers/Lazy';
 import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
 import 'Sass/app/modules/settings.scss';
+
+const ThemeSetting = () => (
+    <Lazy
+        ctor={() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')}
+        should_load={true}
+        has_progress={true}
+    />
+);
+const LanguageSettingContainer = () => (
+    <Lazy
+        ctor={() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')}
+        should_load={true}
+        has_progress={true}
+    />
+);
+
+const ChartSettingContainer = () => (
+    <Lazy
+        ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')}
+    />
+);
+
+ChartSettingContainer.displayName    = 'ChartSettingContainer';
+LanguageSettingContainer.displayName = 'LanguageSettingContainer';
+ThemeSetting.displayName             = 'ThemeSettingContainer';
 
 const modal_content = [
     {
         icon : 'IconTheme',
         label: localize('Themes'),
-        value: React.lazy(() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')),
+        // eslint-disable-next-line react/display-name
+        value: ThemeSetting,
     }, {
         icon : 'IconLanguage',
         label: localize('Language'),
-        value: React.lazy(() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')),
+        value: LanguageSettingContainer,
     }, {
         icon : 'IconCharts',
         label: localize('Charts'),
-        value: React.lazy(() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')), // uncomment below lines to bring back purchase lock and purchase confirmation
+        value: ChartSettingContainer,
+        // uncomment below lines to bring back purchase lock and purchase confirmation}
         // }, {
         //     icon : IconPurchase,
         //     label: localize('Purchase'),
@@ -28,9 +56,9 @@ const modal_content = [
 ];
 
 const ToggleSettings = ({
-    hideFullBlur,
+    enableApp,
     is_settings_visible,
-    showFullBlur,
+    disableApp,
     toggleSettings,
 }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
@@ -48,9 +76,9 @@ const ToggleSettings = ({
             <React.Suspense fallback={<UILoader />}>
                 <Modal
                     modal_content={modal_content}
-                    hideFullBlur={hideFullBlur}
+                    enableApp={enableApp}
                     is_open={is_settings_visible}
-                    showFullBlur={showFullBlur}
+                    disableApp={disableApp}
                     title={localize('Platform settings')}
                     toggleModal={toggleSettings}
                 />
@@ -60,9 +88,9 @@ const ToggleSettings = ({
 };
 
 ToggleSettings.propTypes = {
-    hideFullBlur       : PropTypes.func,
+    disableApp         : PropTypes.func,
+    enableApp          : PropTypes.func,
     is_settings_visible: PropTypes.bool,
-    showFullBlur       : PropTypes.func,
     toggleSettings     : PropTypes.func,
 };
 

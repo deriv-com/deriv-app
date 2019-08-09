@@ -618,13 +618,16 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async onMount() {
-        await this.prepareTradeStore();
-        this.debouncedProposal();
+    onMount() {
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
+        return new Promise(async (resolve) => {
+            await this.refresh();
+            await this.prepareTradeStore();
+            return resolve(this.debouncedProposal());
+        });
     }
 
     @action.bound

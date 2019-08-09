@@ -1,5 +1,6 @@
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
+const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const path                      = require('path');
 
 const isServe = process.env.BUILD_MODE === 'serve';
@@ -35,7 +36,7 @@ module.exports = {
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: { sourceMap: true },
@@ -43,14 +44,14 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    },
+                    },                 
                     {
                         loader: "sass-resources-loader",
                         options: {
                           resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }                    
-               ]
+                    }     
+                ]
             },  
             {  
                 test: /\.svg$/,
@@ -89,7 +90,8 @@ module.exports = {
             },
         ],
     },
-    plugins: [
+    plugins: [       
+        new MiniCssExtractPlugin({ filename: 'deriv-components.css' }),
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],

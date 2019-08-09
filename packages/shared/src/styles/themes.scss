@@ -1,0 +1,178 @@
+$themes: (
+    light: (
+        active_color                     : $COLOR_LIGHT_GRAY_1,
+        animation_blink_name             : blinking-white,
+        background_button_color          : $COLOR_LIGHT_GRAY_2,
+        background_color                 : $COLOR_LIGHT_BLACK_4_SOLID,
+        background_container_color       : $COLOR_LIGHT_BLACK_4_SOLID,
+        background_cover                 : $COLOR_LIGHT_BLACK_4,
+        background_icon_color            : $COLOR_LIGHT_BLACK_4_SOLID,
+        background_modal_overlay         : transparentize($COLOR_WHITE, 0.04),
+        background_tooltip_color         : $COLOR_LIGHT_BLACK_1,
+        barspinner_color                 : $COLOR_DARK_BLUE_5,
+        border_color                     : $COLOR_LIGHT_BLACK_4_SOLID,
+        border_hover_color               : $COLOR_LIGHT_GRAY_1,
+        border_outline_color             : $COLOR_LIGHT_GRAY_2,
+        btn_purchase_disabled_accent     : $COLOR_LIGHT_BLACK_3_SOLID_1,
+        btn_purchase_disabled_bg         : $COLOR_LIGHT_BLACK_3_SOLID_2,
+        btn_close_market_bg              : $COLOR_ORANGE,
+        btn_close_market_color           : $COLOR_WHITE,
+        cell_hover_color                 : $COLOR_LIGHT_BLACK_4_SOLID,
+        chart_gradient_color             : $COLOR_LIGHT_WHITE_GRADIENT,
+        chart_line_color                 : $COLOR_LIGHT_GRAY_1,
+        container_color                  : $COLOR_WHITE,
+        container_secondary_color        : $COLOR_WHITE,
+        disabled_color                   : $COLOR_LIGHT_BLACK_3,
+        disabled_icon_color              : $COLOR_LIGHT_BLACK_3_SOLID_1,
+        divider_color                    : $COLOR_LIGHT_BLACK_4,
+        deriv_green_color                : $COLOR_GREEN_3,
+        error_color                      : $COLOR_RED,
+        hover_color                      : $COLOR_LIGHT_BLACK_4,
+        icon_color                       : $COLOR_DARK_BLUE_5,
+        icon_active_color                : $COLOR_LIGHT_BLACK_4_SOLID,
+        icon_start_time                  : $COLOR_LIGHT_GRAY_1,
+        initial_loader_background        : $COLOR_LIGHT_BLACK_4_SOLID,
+        loader_background                : $COLOR_BLACK,
+        label_default_color              : $COLOR_LIGHT_BLACK_4_SOLID,
+        label_default_background         : $COLOR_LIGHT_GRAY_1,
+        label_warn_color                 : $COLOR_ORANGE,
+        label_warn_background            : transparentize($COLOR_ORANGE, 0.84),
+        label_success_color              : $COLOR_GREEN_1,
+        label_success_background         : transparentize($COLOR_GREEN_1, 0.84),
+        label_danger_color               : $COLOR_RED,
+        label_danger_background          : transparentize($COLOR_RED, 0.84),
+        label_info_color                 : $COLOR_SKY_BLUE,
+        label_info_background            : transparentize($COLOR_SKY_BLUE, 0.84),
+        lost_gradient_color              : $COLOR_LIGHT_RED_GRADIENT,
+        market_overlay_background        : transparentize($COLOR_WHITE, 0.28),
+        navbar_active_color              : $COLOR_LIGHT_BLACK_1,
+        navbar_background_color          : $COLOR_WHITE,
+        slider_background_color          : $COLOR_WHITE,
+        slider_hover_color               : $COLOR_LIGHT_BLACK_3,
+        slider_icon_color                : $COLOR_LIGHT_GRAY_1,
+        sidebar_background_color         : $COLOR_LIGHT_GRAY_2,
+        spinner_background_color         : $COLOR_DARK_BLUE_5,
+        tab_active_background_color      : $COLOR_WHITE,
+        tab_background_color             : $COLOR_LIGHT_BLACK_4_SOLID,
+        tab_hover_color                  : $COLOR_LIGHT_BLACK_4,
+        text_active_color                : $COLOR_WHITE,
+        text_color                       : $COLOR_LIGHT_BLACK_1,
+        text_primary_color               : $COLOR_LIGHT_BLACK_1,
+        text_secondary_color             : $COLOR_LIGHT_BLACK_2,
+        tick_step_default                : $COLOR_LIGHT_BLACK_4,
+        tick_step_marked                 : $COLOR_LIGHT_GRAY_1,
+        reports_tick_step                : $COLOR_LIGHT_BLACK_4,
+        toggle_button_hover_background   : $COLOR_LIGHT_BLACK_4,
+        tooltip_background_color         : $COLOR_LIGHT_BLACK_1,
+        tooltip_background_error         : $COLOR_RED,
+        trade_carousel_indicator         : $COLOR_LIGHT_GRAY_1,
+        wip_btn_color                    : $COLOR_WHITE,
+        wip_color                        : $COLOR_DARK_BLUE_5,
+        won_gradient_color               : $COLOR_LIGHT_GREEN_GRADIENT,
+        won_color                        : $COLOR_GREEN_1,
+        loss_color                       : $COLOR_RED,
+    ),
+    dark: (
+        active_color                     : $COLOR_DARK_BLUE_5,
+        animation_blink_name             : blinking-dark-blue-2,
+        background_button_color          : $COLOR_DARK_BLUE_5,
+        background_color                 : $COLOR_DARK_BLUE_1,
+        background_container_color       : $COLOR_DARK_BLUE_3,
+        background_cover                 : $COLOR_DARK_BLUE_2,
+        background_icon_color            : $COLOR_DARK_BLUE_5,
+        background_modal_overlay         : transparentize($COLOR_DARK_BLUE_3, 0.04),
+        background_tooltip_color         : $COLOR_DARK_BLUE_5,
+        barspinner_color                 : $COLOR_WHITE,
+        border_color                     : $COLOR_DARK_BLUE_2,
+        border_hover_color               : $COLOR_DARK_BLUE_7,
+        border_outline_color             : $COLOR_DARK_BLUE_8,
+        btn_purchase_disabled_accent     : $COLOR_DARK_GRAY_2,
+        btn_purchase_disabled_bg         : $COLOR_DARK_GRAY_1,
+        btn_close_market_bg              : $COLOR_ORANGE,
+        btn_close_market_color           : $COLOR_WHITE,
+        cell_hover_color                 : $COLOR_DARK_BLUE_4,
+        chart_gradient_color             : $COLOR_DARK_BLACK_GRADIENT,
+        chart_line_color                 : $COLOR_WHITE,
+        container_color                  : $COLOR_DARK_BLUE_2,
+        container_secondary_color        : $COLOR_DARK_BLUE_3,
+        disabled_color                   : $COLOR_DARK_BLUE_8,
+        disabled_icon_color              : $COLOR_DARK_BLUE_8,
+        divider_color                    : $COLOR_DARK_BLUE_5,
+        deriv_green_color                : $COLOR_GREEN_3,
+        error_color                      : $COLOR_RED,
+        label_default_color              : $COLOR_LIGHT_BLACK_4_SOLID,
+        label_default_background         : $COLOR_LIGHT_GRAY_1,
+        label_warn_color                 : $COLOR_ORANGE,
+        label_warn_background            : transparentize($COLOR_ORANGE, 0.84),
+        label_success_color              : $COLOR_GREEN_1,
+        label_success_background         : transparentize($COLOR_GREEN_1, 0.84),
+        label_danger_color               : $COLOR_RED,
+        label_danger_background          : transparentize($COLOR_RED, 0.84),
+        label_info_color                 : $COLOR_SKY_BLUE,
+        label_info_background            : transparentize($COLOR_SKY_BLUE, 0.84),
+        market_overlay_background        : transparentize($COLOR_DARK_BLUE_2, 0.44),
+        hover_color                      : $COLOR_DARK_BLUE_3,
+        icon_color                       : $COLOR_WHITE,
+        icon_active_color                : $COLOR_DARK_BLUE_7,
+        icon_start_time                  : $COLOR_WHITE,
+        initial_loader_background        : $COLOR_DARK_BLUE_2,
+        loader_background                : $COLOR_WHITE,
+        lost_gradient_color              : $COLOR_DARK_RED_GRADIENT,
+        navbar_active_color              : $COLOR_WHITE,
+        navbar_background_color          : $COLOR_DARK_BLUE_5,
+        slider_background_color          : $COLOR_DARK_BLUE_8,
+        slider_hover_color               : $COLOR_DARK_BLUE_8,
+        slider_icon_color                : $COLOR_PURPLE,
+        spinner_background_color         : $COLOR_WHITE,
+        tab_active_background_color      : $COLOR_DARK_BLUE_3,
+        tab_background_color             : $COLOR_DARK_BLUE_2,
+        tab_hover_color                  : $COLOR_DARK_BLUE_4,
+        text_active_color                : $COLOR_WHITE,
+        text_color                       : $COLOR_WHITE,
+        text_primary_color               : $COLOR_DARK_BLUE_7,
+        text_secondary_color             : $COLOR_DARK_BLUE_7,
+        tick_step_default                : $COLOR_DARK_BLUE_3,
+        tick_step_marked                 : $COLOR_WHITE,
+        reports_tick_step                : $COLOR_DARK_BLUE_7,
+        toggle_button_hover_background   : $COLOR_DARK_BLUE_4,
+        tooltip_background_color         : $COLOR_DARK_BLUE_5,
+        tooltip_background_error         : $COLOR_RED,
+        trade_carousel_indicator         : $COLOR_WHITE,
+        wip_btn_color                    : $COLOR_DARK_BLUE_2,
+        wip_color                        : $COLOR_WHITE,
+        won_gradient_color               : $COLOR_DARK_GREEN_GRADIENT,
+        won_color                        : $COLOR_GREEN_1,
+        loss_color                       : $COLOR_RED,
+    ),
+);
+
+/*
+ * Implementation of themes
+ * generate sets of themes keys object property (dark / light)
+ * @param $themes - themes property
+ * Usage example:
+   @include themify($themes) { color: themed('background_color') }
+ */
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme--#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+/*
+ * Generate typefaces key-value pair of themefy object
+ * Should be inside themify mixins
+ * Example:
+   @include themify($themes) { border-color: 1px solid themed('background_color') }
+ */
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}

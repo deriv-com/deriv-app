@@ -75,7 +75,7 @@ class PositionsDrawer extends React.Component {
         );
 
         return (
-            <div className={classNames(
+            <div id='dt_positions_drawer' className={classNames(
                 'positions-drawer', {
                     'positions-drawer--open'         : is_positions_drawer_on,
                     'positions-drawer--contract-mode': is_contract_mode,
@@ -84,6 +84,7 @@ class PositionsDrawer extends React.Component {
                 <div className='positions-drawer__header'>
                     <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
                     <div
+                        id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >

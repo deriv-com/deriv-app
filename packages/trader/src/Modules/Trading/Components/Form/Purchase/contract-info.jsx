@@ -15,6 +15,7 @@ const ContractInfo = ({
     should_fade,
     is_visible,
     proposal_info,
+    type,
 }) => {
     const localized_basis = getLocalizedBasis();
     const stakeOrPayout = () => {
@@ -31,7 +32,7 @@ const ContractInfo = ({
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
     return (
         <div className='trade-container__price'>
-            <div className={classNames(
+            <div id={`dt_purchase_${type.toLowerCase()}_price`} className={classNames(
                 'trade-container__price-info',
                 {
                     'trade-container__price-info--disabled': has_error_or_not_loaded,
@@ -61,6 +62,7 @@ const ContractInfo = ({
             <Popover
                 alignment='left'
                 icon='info'
+                id={`dt_purchase_${type.toLowerCase()}_info`}
                 margin={210}
                 message={has_error_or_not_loaded ? '' : proposal_info.message }
             />
@@ -74,6 +76,7 @@ ContractInfo.propTypes = {
     is_loading   : PropTypes.bool,
     is_visible   : PropTypes.bool,
     proposal_info: PropTypes.object,
+    type         : PropTypes.string,
 };
 
 export default ContractInfo;

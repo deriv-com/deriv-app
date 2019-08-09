@@ -47,6 +47,7 @@ const AllowEquals = ({
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'
                     icon='info'
+                    id='dt_allow_equals_info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
                     margin={113}
                 />

@@ -150,7 +150,7 @@ class Dropdown extends React.PureComponent {
                 })}
             >
                 <div
-                    id={`rf_${this.props.id}_dropdown_display`}
+                    id={`dt_${this.props.id}_dropdown_display`}
                     className={classNames('dropdown__display', this.props.classNameDisplay, {
                         'dropdown__display--clicked'   : this.state.is_list_visible,
                         'dropdown__display--has-symbol': this.props.has_symbol,
@@ -192,7 +192,7 @@ class Dropdown extends React.PureComponent {
                     })}
                     >
                         <div
-                            id={`rf_${this.props.id}_dropdown_list`}
+                            id={`dt_${this.props.id}_dropdown_list`}
                             className={classNames('list', {
                                 'list--left': this.props.is_alignment_left,
                             })}

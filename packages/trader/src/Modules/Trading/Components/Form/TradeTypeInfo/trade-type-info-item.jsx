@@ -18,10 +18,10 @@ const TradeTypeInfoItem = ({
     onBackButtonClick,
     onSubmitButtonClick,
 }) => (
-    <div id={`rf_contract_info_${item.value}`}>
+    <div id={`dt_contract_info_${item.value}`}>
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
-            <span id='rf_contract_info_back_nav' onClick={() => onBackButtonClick()}>
+            <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
                 <Icon icon='IconBack' />
             </span>
             <span className='title'>{item.text}</span>
@@ -54,7 +54,7 @@ const TradeTypeInfoItem = ({
                             </div>
                             <div>
                                 <Button
-                                    id={`rf_contract_info_${item.value}_button`}
+                                    id={`dt_contract_info_${item.value}_button`}
                                     className='btn--primary--orange trade-type-info-dialog__choose-button'
                                     onClick={() => onSubmitButtonClick(type)}
                                     text={localize('Choose')}
@@ -66,7 +66,7 @@ const TradeTypeInfoItem = ({
             </div>
         </div>
         <div className='trade-type-info-navigation'>
-            <div id='rf_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
+            <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
                 <Icon icon='IconChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
@@ -80,7 +80,7 @@ const TradeTypeInfoItem = ({
                     itemList.map((contract, idx) => (
                         <React.Fragment key={idx}>
                             <div
-                                id={`rf_contract_info_${contract.value}_circle`}
+                                id={`dt_contract_info_${contract.value}_circle`}
                                 className='trade-type-info-navigation__circle-button'
                                 onClick={() => handleNavigationClick(contract)}
                             />
@@ -88,7 +88,7 @@ const TradeTypeInfoItem = ({
                     ))
                 }
             </div>
-            <div id='rf_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
+            <div id='dt_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
                 <Icon icon='IconChevronRight' />
             </div>
         </div>

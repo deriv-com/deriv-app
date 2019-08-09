@@ -84,7 +84,7 @@ export class AccountActions extends Component {
                         is_virtual
                     ) && // TODO: remove this when cashier pop up is ready
                     <Button
-                        id='rf_deposit_button'
+                        id='dt_deposit_button'
                         className='btn--primary btn--primary--orange acc-info__button'
                         has_effect
                         text={localize('Deposit')}

@@ -49,7 +49,7 @@ const Amount = ({
             currency={currency}
             error_messages={validation_errors.amount}
             fractional_digits={getDecimalPlaces(currency)}
-            id='rf_amount_input'
+            id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
@@ -67,7 +67,7 @@ const Amount = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <ButtonToggleMenu
-                id='rf_amount_toggle'
+                id='dt_amount_toggle'
                 buttons_arr={basis_list}
                 className='dropdown--no-margin'
                 is_animated={true}

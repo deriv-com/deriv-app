@@ -22,7 +22,7 @@ const ButtonToggleMenu = ({
         });
         return (
             <Button
-                id={`rf_${val.value}_toggle_item`}
+                id={`dt_${val.value}_toggle_item`}
                 key={idx}
                 text={`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
                 onClick={() => changeValue(val.value)}

@@ -52,7 +52,7 @@ const AdvancedDuration = ({
         <Fragment>
             { expiry_list.length > 1 &&
                 <ButtonToggleMenu
-                    id='rf_advanced_duration_toggle'
+                    id='dt_advanced_duration_toggle'
                     buttons_arr={expiry_list}
                     name='advanced_expiry_type'
                     is_animated={true}

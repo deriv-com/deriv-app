@@ -19,7 +19,7 @@ const AccountInfo = ({
 }) => (
     <div className='acc-info__wrapper'>
         <div
-            id='rf_account_dropdown'
+            id='dt_account_dropdown'
             className={classNames('acc-info', {
                 'acc-info--show'      : is_dialog_on,
                 'acc-info--is-virtual': is_virtual,

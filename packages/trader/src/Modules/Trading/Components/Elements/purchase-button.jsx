@@ -30,7 +30,7 @@ const PurchaseButton = ({
     return (
         <Button
             is_disabled={is_contract_mode || is_disabled}
-            id={`rf_purchase_${type.toLowerCase()}_button`}
+            id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames(
                 'btn-purchase',
                 {

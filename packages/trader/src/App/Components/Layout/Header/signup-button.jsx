@@ -7,7 +7,7 @@ import Button              from '../../Form/button.jsx';
 
 const SignupButton = ({ className }) => (
     <Button
-        id='rf_signup_button'
+        id='dt_signup_button'
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
         text={localize('Sign up')}

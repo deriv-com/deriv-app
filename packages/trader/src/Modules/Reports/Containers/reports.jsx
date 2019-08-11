@@ -21,18 +21,14 @@ class Reports extends React.Component {
     };
 
     componentDidMount() {
-        // SmartCharts keeps saving layout for ContractPlay even if layouts prop is set to null
-        // As a result, we have to remove it manually for each SmartChart instance in ContractReplay
-        // TODO: Remove this once SmartCharts finds a way to stop ChartIQ from saving layouts to localStorage
-        localStorage.removeItem('layout-contract-replay');
-        this.props.showBlur();
+        this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleReports(true);
     }
 
     componentWillUnmount() {
         this.props.toggleReports(false);
-        this.props.hideBlur();
+        this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
@@ -92,20 +88,20 @@ class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-    hideBlur     : PropTypes.func,
-    history      : PropTypes.object,
-    is_visible   : PropTypes.bool,
-    location     : PropTypes.object,
-    routes       : PropTypes.arrayOf(PropTypes.object),
-    showBlur     : PropTypes.func,
-    toggleReports: PropTypes.func,
+    disableRouteMode: PropTypes.func,
+    enableRouteMode : PropTypes.func,
+    history         : PropTypes.object,
+    is_visible      : PropTypes.bool,
+    location        : PropTypes.object,
+    routes          : PropTypes.arrayOf(PropTypes.object),
+    toggleReports   : PropTypes.func,
 };
 
 export default connect(
     ({ ui }) => ({
-        hideBlur     : ui.hideRouteBlur,
-        is_visible   : ui.is_reports_visible,
-        showBlur     : ui.showRouteBlur,
-        toggleReports: ui.toggleReports,
+        disableRouteMode: ui.disableRouteModal,
+        enableRouteMode : ui.setRouteModal,
+        is_visible      : ui.is_reports_visible,
+        toggleReports   : ui.toggleReports,
     })
 )(withRouter(Reports));

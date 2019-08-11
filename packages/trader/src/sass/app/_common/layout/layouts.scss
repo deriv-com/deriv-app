@@ -4,7 +4,6 @@
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
     overflow: hidden;
     backface-visibility: hidden;
-    filter: blur(0);
     @include themify($themes) {
         background-color: themed('container_color');
     }
@@ -16,12 +15,26 @@
             }
         }
     }
-    &--is-blurred {
-        filter: blur(3px);
-        @supports (-ms-ime-align:auto) { // Edge filter:blur not working when element has overflow:hidden
-            & .trade-container, & .statement {
-                filter: blur(3px);
-            }
+    &:after {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: '';
+        @include themify($themes) {
+            background-color: themed('background_modal_overlay');
+        }
+    }
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    &--is-route-modal {
+        @include themify($themes) {
+            background-color: themed('background_modal_overlay');
         }
     }
     &--show-positions-drawer {
@@ -77,6 +90,9 @@
         margin: 16px;
         height: calc(100vh - 115px);
         border-radius: $BORDER_RADIUS;
+        @include themify($themes) {
+            background-color: themed('background_container_color');
+        }
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
 
         .contract-drawer {
@@ -93,13 +109,14 @@
         .replay-chart__container {
             width: 100%;
             position: relative;
-            margin-left: 252px;
+            margin-left: 242px;
 
             .smartcharts {
-                left: 2px;
-                width: calc(100vw - 300px);
-                height: calc(100% - 66px);
-                top: 58px;
+                left: 0;
+                width: calc(100vw - 286px);
+                height: calc(100% - 65px);
+                top: 53px;
+                border-radius: $BORDER_RADIUS;
 
                 .ciq-chart {
                     .cq-top-ui-widgets, & .info-box {
@@ -148,13 +165,17 @@
 
     &__loader {
         position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
+        height: calc(100% - 68px);
+        width: calc(100% - 12px);
+        top: 54px;
         left: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: $BORDER_RADIUS;
+        @include themify($themes) {
+            background-color: themed('background_container_color');
+        }
 
         .barspinner {
             display: flex;
@@ -308,24 +329,34 @@
         width: $SIDEBAR_WIDTH;
         margin-top: 8px;
         z-index: 1;
-
-        &--is-blurred {
-            filter: blur(3px);
-        }
     }
     &__items {
         opacity: 1;
         transform: none;
-        transition: filter 0.25s linear;
-        filter: blur(0);
         position: relative;
         min-height: 460px;
         width: $SIDEBAR_WIDTH;
 
-        &--blur {
-            filter: blur(3px);
+        &:after {
+            transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+            opacity: 0;
+            position: absolute;
             pointer-events: none;
-
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            content: '';
+            @include themify($themes) {
+                background-color: themed('market_overlay_background');
+            }
+        }
+        &--is-disabled:after {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        &--is-disabled, &--market-closed {
             & .tooltip--with-label {
                 display: none;
             }

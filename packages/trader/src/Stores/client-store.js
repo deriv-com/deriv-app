@@ -19,6 +19,7 @@ import {
 import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
+import { getClientAccountType }      from './Helpers/client';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { setCurrencies }             from '../_common/base/currency_base';
 
@@ -151,6 +152,11 @@ export default class ClientStore extends BaseStore {
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
 
+    @computed
+    get account_type() {
+        return getClientAccountType(this.loginid);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -252,7 +258,6 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
-        this.root_store.ui.is_app_blurred = false;
     }
 
     /**

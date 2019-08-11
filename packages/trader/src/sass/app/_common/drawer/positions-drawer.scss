@@ -40,11 +40,23 @@ $header-height: 3.6em;
             height: calc(100% - 38px);
         }
         .positions-drawer-card__wrapper:not(.positions-drawer-card__wrapper--active) {
-            filter: blur(3px);
-            transition: filter 0.3s linear;
-
-            &:hover {
-                filter: blur(0);
+            &:after {
+                position: absolute;
+                opacity: 1;
+                pointer-events: none;
+                top: -1px;
+                left: -1px;
+                width: calc(100% + 2px);
+                height: calc(100% + 2px);
+                transition: opacity 0.15s linear;
+                border-radius: $BORDER_RADIUS;
+                content: '';
+                @include themify($themes) {
+                    background-color: rgba(themed('container_color'), 0.76);
+                }
+            }
+            &:hover:after {
+                opacity: 0;
             }
         }
     }

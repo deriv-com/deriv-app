@@ -44,6 +44,7 @@ export default class SmartChartStore extends BaseStore {
     trade_chart_symbol               = null;
     trade_chart_granularity          = null;
     trade_chart_type                 = null;
+    cached_request                   = {};
 
     @action.bound
     switchToContractMode(
@@ -326,10 +327,46 @@ export default class SmartChartStore extends BaseStore {
     }
 
     // ---------- WS ----------
-    wsSubscribe = (request_object, callback) => {
+    @action.bound
+    wsSubscribe(request_object, callback) {
         if (request_object.subscribe !== 1) return;
+        // set a request if there is one previously set
+        if (this.hasCache(request_object)) {
+            this.initFromCache(callback);
+            return;
+        }
+
+        this.cached_request = request_object;
         WS.subscribeTicksHistory({ ...request_object }, callback); // use a copy of the request_object to prevent updating the source
-    };
+    }
+
+    /**
+     * Pick the history from cache
+     *
+     * @param callback
+     */
+    initFromCache (callback) {
+        const trade_store = this.root_store.modules.trade;
+        trade_store.should_cache_ticks_for_chart = false;
+        if (trade_store.cached_ticks_history.history) {
+            callback(trade_store.cached_ticks_history); // sending the previous History to callback
+        }
+
+        WS.subscribeTicksHistory(this.cached_request, callback);
+    }
+
+    /**
+     * Check if current request is already sent
+     *
+     * @param request_object
+     * @return {boolean}
+     */
+    hasCache (request_object) {
+        return request_object.ticks_history ===
+            this.cached_request.ticks_history &&
+            this.cached_request.start < request_object.start &&
+            request_object.end === this.cached_request.end;
+    }
 
     wsForget = (match_values, callback) => (
         WS.forget('ticks_history', callback, match_values)

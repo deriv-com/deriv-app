@@ -8,26 +8,26 @@ import { connect }       from 'Stores/connect';
 class FullPageModal extends React.Component {
     componentDidMount() {
         if (this.props.is_visible) {
-            this.props.showFullBlur();
+            this.props.disableApp();
         }
     }
 
     componentDidUpdate() {
         if (this.props.is_visible) {
-            this.props.showFullBlur();
+            this.props.disableApp();
         }
     }
 
     handleCancel = () => {
         if (this.props.is_closed_on_cancel) {
-            this.props.hideFullBlur();
+            this.props.enableApp();
         }
         this.props.onCancel();
     };
 
     handleConfirm = () => {
         if (this.props.is_closed_on_confirm) {
-            this.props.hideFullBlur();
+            this.props.enableApp();
         }
         this.props.onConfirm();
     };
@@ -44,20 +44,6 @@ class FullPageModal extends React.Component {
         } = this.props;
         return (
             <React.Fragment>
-                <CSSTransition
-                    appear
-                    in={(is_visible && !is_loading)}
-                    timeout={50}
-                    classNames={{
-                        appear   : 'full-page-modal__background--enter',
-                        enter    : 'full-page-modal__background--enter',
-                        enterDone: 'full-page-modal__background--enter-done',
-                        exit     : 'full-page-modal__background--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <div className='full-page-modal__background' />
-                </CSSTransition>
                 <CSSTransition
                     appear
                     in={(is_visible && !is_loading)}
@@ -122,22 +108,22 @@ FullPageModal.defaultProps = {
 FullPageModal.propTypes = {
     cancel_button_text  : PropTypes.string,
     confirm_button_text : PropTypes.string,
-    hideFullBlur        : PropTypes.func,
+    disableApp          : PropTypes.func,
+    enableApp           : PropTypes.func,
     is_closed_on_cancel : PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
     is_loading          : PropTypes.bool,
     is_visible          : PropTypes.bool,
     onCancel            : PropTypes.func,
     onConfirm           : PropTypes.func,
-    showFullBlur        : PropTypes.func,
     title               : PropTypes.string,
 };
 
 const full_page_modal = connect(
     ({ ui }) => ({
-        hideFullBlur: ui.hideFullBlur,
-        is_loading  : ui.is_loading,
-        showFullBlur: ui.showFullBlur,
+        disableApp: ui.disableApp,
+        enableApp : ui.enableApp,
+        is_loading: ui.is_loading,
     }),
 )(FullPageModal);
 export default full_page_modal;

@@ -18,7 +18,7 @@ import {
 import { WS }                         from 'Services';
 import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
 import workerJob                      from 'Workers/loader';
-import defaultSymbolWorker            from 'Workers/Store/Helpers/default-symbol.worker'
+import defaultSymbolWorker            from 'Workers/Store/Helpers/default-symbol.worker';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -38,6 +38,7 @@ import {
     getProposalInfo }                 from './Helpers/proposal';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 import BaseStore                      from '../../base-store';
+import * as ServerTime from '../../../_common/base/server_time';
 
 const store_name = 'trade_store';
 
@@ -110,6 +111,9 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers;
     is_initial_barrier_applied = false;
+
+    cached_ticks_history = [];
+    @observable should_cache_ticks_for_chart = true;
 
     @action.bound
     init = async () => {
@@ -623,7 +627,9 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async onMount() {
+    async onMount () {
+        this.bootChartCache();
+
         this.onLoadingMount();
         await this.prepareTradeStore();
         this.debouncedProposal();
@@ -631,6 +637,59 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    @action.bound
+    ticksHistoryResponseHandler(response) {
+        if (response.error) return;
+
+        if (response.msg_type === 'history') {
+            this.cached_ticks_history = response;
+        } else if (response.msg_type === 'tick' && this.should_cache_ticks_for_chart) {
+            this.cached_ticks_history.history.prices.push(response.tick.quote);
+            this.cached_ticks_history.history.times.push(response.tick.epoch);
+        }
+    }
+
+    /**
+     * Fetch chart data to boost performance.
+     */
+    bootChartCache () {
+        const previous_chart_layout = LocalStore.get('layout-trade');
+        const sendRequest = (start_time) => {
+            this.root_store.modules.smart_chart.wsSubscribe({
+                ticks_history    : this.symbol,
+                style            : 'ticks',
+                end              : 'latest',
+                adjust_start_time: 1,
+                subscribe        : 1,
+                start            : start_time,
+            }, this.ticksHistoryResponseHandler);
+        };
+
+        const getWidth = () => {
+            const sidebar_el = document.querySelector('.sidebar__container');
+
+            if (!sidebar_el) {
+                requestAnimationFrame(getWidth);
+            } else {
+                let offset = 0;
+                let candle_width = 8;
+                try {
+                    const pcl = JSON.parse(previous_chart_layout);
+                    candle_width = pcl.candleWidth;
+                } catch (error) {
+                    candle_width = 8;
+                } finally {
+                    offset = Math.ceil(window.innerWidth -
+                        sidebar_el.getBoundingClientRect().width /
+                        candle_width * 2);
+                    sendRequest(
+                        this.root_store.common.server_time.unix() - offset);
+                }
+            }
+        };
+        requestAnimationFrame(getWidth);
     }
 
     onLoadingMount() {

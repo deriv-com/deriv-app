@@ -1,6 +1,7 @@
 import PropTypes   from 'prop-types';
 import React       from 'react';
 import { connect } from 'Stores/connect';
+import Error       from './error.jsx';
 import SendEmail   from './Withdrawal/send-email.jsx';
 import Withdraw    from './Withdrawal/withdraw.jsx';
 
@@ -12,11 +13,17 @@ class Withdrawal extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.error_message && <p className='cashier__error'>{this.props.error_message}</p>}
-                {(this.props.verification_code || this.props.iframe_url) ?
-                    <Withdraw />
+                {this.props.error_message ?
+                    <Error
+                        error_message={this.props.error_message}
+                        container='withdraw'
+                    />
                     :
-                    <SendEmail />
+                    ((this.props.verification_code || this.props.iframe_url) ?
+                        <Withdraw />
+                        :
+                        <SendEmail />
+                    )
                 }
             </React.Fragment>
         );

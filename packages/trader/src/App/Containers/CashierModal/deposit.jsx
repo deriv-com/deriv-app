@@ -1,6 +1,7 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { connect }      from 'Stores/connect';
+import Error            from './error.jsx';
 import CashierContainer from './Layout/cashier-container.jsx';
 
 class Deposit extends React.Component {
@@ -13,7 +14,10 @@ class Deposit extends React.Component {
         return (
             <React.Fragment>
                 {this.props.error_message ?
-                    <p className='cashier__error'>{this.props.error_message}</p>
+                    <Error
+                        error_message={this.props.error_message}
+                        container='deposit'
+                    />
                     :
                     <CashierContainer
                         iframe_height={this.props.iframe_height}

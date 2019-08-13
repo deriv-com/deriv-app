@@ -23,16 +23,16 @@ const Login = (() => {
         const signup_device      = LocalStore.get('signup_device') || (isMobile() ? 'mobile' : 'desktop');
         const date_first_contact = LocalStore.get('date_first_contact');
         const marketing_queries  = `&signup_device=${signup_device}${date_first_contact ? `&date_first_contact=${date_first_contact}` : ''}`;
-        const default_binary_url = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const default_deriv_url  = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {
             return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}`;
         }
         if (getAppId === domain_app_ids['deriv.app']) {
-            return default_binary_url;
+            return default_deriv_url;
         }
 
-        return urlForCurrentDomain(default_binary_url);
+        return urlForCurrentDomain(default_deriv_url);
     };
 
     // TODO: update this to handle logging into /app/ url

@@ -6,21 +6,21 @@
         :root {
             --logo-loading-color: rgba(0, 0, 0, 0.8);
             --header-footer-bg-color: rgba(0, 0, 0, 0.04);
-            --loader-bg-color: #fff;
+            --content-bg-color: #fff;
         }
         .deriv-app > .header__loading {
             background-color: var(--header-footer-bg-color);
             border-bottom: var(--header-footer-bg-color);
         }
         .deriv-app > .app-contents__loading {
-            background-color: var(--loader-bg-color);
+            background-color: var(--content-bg-color);
         }
         .deriv-app > .footer__loading {
             background-color: var(--header-footer-bg-color);
             border-bottom: var(--header-footer-bg-color);
         }
         .initial-loader__loading {
-            background-color: var(--loader-bg-color);
+            background-color: var(--content-bg-color);
         }
         .logo__loading--fill {
             fill: var(--logo-loading-color);
@@ -33,7 +33,7 @@
             if (is_dark_theme) {
                 // if dark theme, change the property colors for dark theme
                 document.documentElement.style.setProperty('--header-footer-bg-color', '#0b0e18');
-                document.documentElement.style.setProperty('--loader-bg-color', '#101320');
+                document.documentElement.style.setProperty('--content-bg-color', '#101320');
                 document.documentElement.style.setProperty('--logo-loading-color', '#fff');
             }
         }

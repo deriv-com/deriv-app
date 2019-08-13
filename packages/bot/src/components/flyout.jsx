@@ -41,7 +41,7 @@ const Flyout = ({
                 
                         return (
                             <button
-                                key={callback_key + index}
+                                key={`${callback_key}${index}`}
                                 className='flyout__button'
                                 onClick={(button) => {
                                     const flyout_button = button;

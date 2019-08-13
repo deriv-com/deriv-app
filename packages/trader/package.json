@@ -97,6 +97,7 @@
     "classnames": "^2.2.6",
     "crc-32": "^1.2.0",
     "event-source-polyfill": "^1.0.5",
+    "gh-pages": "2.1.1",
     "i18next": "^17.0.3",
     "js-cookie": "^2.2.0",
     "lodash.debounce": "^4.0.8",

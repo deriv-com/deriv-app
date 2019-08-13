@@ -44,7 +44,7 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    },                 
+                    },    
                     {
                         loader: "sass-resources-loader",
                         options: {

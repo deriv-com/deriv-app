@@ -1,8 +1,5 @@
 import {
-    toJS,
     action,
-    computed,
-    extendObservable,
     observable }              from 'mobx';
 import { setSmartChartsPublicPath } from 'smartcharts-beta';
 import { getUrlBase }          from '_common/url';
@@ -11,27 +8,14 @@ import BinarySocket           from '_common/base/socket_base';
 import ServerTime             from '_common/base/server_time';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
-import { createChartMarkers } from './Helpers/chart-markers';
-import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartConfig,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
+import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
 
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
-import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-
 setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
-
-
 export default class ContractReplayStore extends BaseStore {
+    @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
     @observable digits_info = observable.object({});
     @observable sell_info   = observable.object({});
@@ -39,14 +23,12 @@ export default class ContractReplayStore extends BaseStore {
     @observable has_error         = false;
     @observable error_message     = '';
     @observable is_chart_loading  = true;
-    @observable is_sell_requested = false;
 
     // ---- Replay Contract Config ----
     @observable contract_id;
     @observable indicative_status;
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
-
 
     // ---- chart props
     @observable margin;
@@ -83,6 +65,7 @@ export default class ContractReplayStore extends BaseStore {
     onMount(contract_id) {
         if (contract_id) {
             this.contract_id = contract_id;
+            this.contract_store = new ContractStore(this.root_store, { contract_id });
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
@@ -97,13 +80,14 @@ export default class ContractReplayStore extends BaseStore {
         this.digits_info         = {};
         this.is_ongoing_contract = false;
         this.is_static_chart     = false;
-        this.is_sell_requested   = false;
         this.is_chart_loading    = true;
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
         this.indicative          = 0;
         this.sell_info           = {};
+        this.error_message       = null;
+        this.has_error           = false;
     }
 
     @action.bound
@@ -137,7 +121,10 @@ export default class ContractReplayStore extends BaseStore {
         }
         this.prev_indicative = this.indicative;
 
-        const end_time = getEndTime(this.contract_info);
+        // update the contract_store here passing contract_info
+        this.contract_store.populateConfig(this.contract_info);
+
+        const end_time = this.contract_store.end_time;
 
         this.updateMargin(
             (end_time || this.contract_info.date_expiry) - this.contract_info.date_start
@@ -155,17 +142,15 @@ export default class ContractReplayStore extends BaseStore {
         }
 
         // TODO: don't update the barriers & markers if they are not changed
-        this.barriers_array = this.createBarriersArray(this.contract_info, this.root_store.ui.is_dark_mode_on);
-        this.markers_array = createChartMarkers(this.contract_info);
-
-        this.handleDigits(this.contract_info);
+        this.barriers_array = this.contract_store.barriers_array;
+        this.markers_array = this.contract_store.markers_array;
 
         this.is_chart_loading = false;
     }
 
     @action.bound
     updateMargin(duration) {
-        const granularity = this.contract_config.granularity;
+        const granularity = this.contract_store.contract_config.granularity;
 
         this.margin = Math.floor(
             !granularity ?  (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity
@@ -173,17 +158,10 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    handleDigits(contract_info) {
-        if (this.is_digit_contract) {
-            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
-        }
-    }
-
-    @action.bound
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
         if (contract_id && bid_price) {
-            this.is_sell_requested = true;
+            this.constract_store.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }
@@ -192,14 +170,14 @@ export default class ContractReplayStore extends BaseStore {
     handleSell(response) {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
-            this.is_sell_requested = false;
+            this.contract_store.is_sell_requested = false;
             this.root_store.common.services_error = {
                 type: response.msg_type,
                 ...response.error,
             };
             this.root_store.ui.toggleServicesErrorModal(true);
         } else if (!response.error && response.sell) {
-            this.is_sell_requested = false;
+            this.contract_store.is_sell_requested = false;
             // update contract store sell info after sell
             this.sell_info = {
                 sell_price    : response.sell.sold_for,
@@ -216,62 +194,6 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     removeErrorMessage() {
         delete this.error_message;
-    }
-
-    @action.bound
-    clearError() {
-        this.error_message = null;
-        this.has_error = false;
-    }
-
-    createBarriersArray = (contract_info, is_dark_mode) => {
-        let result = [];
-        if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
-
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
-                // create barrier only when it's available in response
-                const main_barrier = new ChartBarrierStore(
-                    barrier || high_barrier,
-                    low_barrier,
-                    null,
-                    {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                        line_style   : BARRIER_LINE_STYLES.SOLID,
-                        not_draggable: true,
-                    },
-                );
-
-                main_barrier.updateBarrierShade(true, contract_type);
-                result = [toJS(main_barrier)];
-            }
-        }
-        return result;
-    }
-
-
-    // ---------------------------
-    // ----- Computed values -----
-    // ---------------------------
-    // TODO: currently this runs on each response, even if contract_info is deep equal previous one
-
-    @computed
-    get contract_config() {
-        return getChartConfig(this.contract_info);
-    }
-
-    @computed
-    get display_status() {
-        return getDisplayStatus(this.contract_info);
-    }
-
-    @computed
-    get is_ended() {
-        return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_digit_contract() {
-        return isDigitContract(this.contract_info.contract_type);
     }
 
     // TODO: these can be shared between contract-replay-store.js & contract-trade-store.js

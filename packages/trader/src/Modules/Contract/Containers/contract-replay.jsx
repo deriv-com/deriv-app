@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
-import { SmartChart } from 'smartcharts-beta';
+import { SmartChart }    from 'smartcharts-beta';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
@@ -59,7 +59,7 @@ class ContractReplay extends React.Component {
             location,
             onClickSell,
             removeError,
-            status,
+            indicative_status,
         } = this.props;
 
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
@@ -72,7 +72,7 @@ class ContractReplay extends React.Component {
                     is_from_reports={is_from_table_row}
                     is_sell_requested={is_sell_requested}
                     onClickSell={onClickSell}
-                    status={status}
+                    status={indicative_status}
                 />
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
@@ -137,8 +137,8 @@ ContractReplay.propTypes = {
     display_status   : PropTypes.string,
     enableRouteMode  : PropTypes.func,
     error_message    : PropTypes.string,
-    hideBlur         : PropTypes.func,
     history          : PropTypes.object,
+    indicative_status: PropTypes.string,
     is_chart_loading : PropTypes.bool,
     is_dark_theme    : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
@@ -149,28 +149,29 @@ ContractReplay.propTypes = {
     removeError      : PropTypes.func,
     routes           : PropTypes.arrayOf(PropTypes.object),
     server_time      : PropTypes.object,
-    status           : PropTypes.string,
 };
 
 export default withRouter(connect(
-    ({ modules, ui }) => ({
-        contract_info    : modules.contract_replay.contract_info,
-        digits_info      : modules.contract_replay.digits_info,
-        display_status   : modules.contract_replay.display_status,
-        error_message    : modules.contract_replay.error_message,
-        is_digit_contract: modules.contract_replay.is_digit_contract,
-        is_ended         : modules.contract_replay.is_ended,
-        is_sell_requested: modules.contract_replay.is_sell_requested,
-        onClickSell      : modules.contract_replay.onClickSell,
-        onMount          : modules.contract_replay.onMount,
-        onUnmount        : modules.contract_replay.onUnmount,
-        removeError      : modules.contract_replay.removeErrorMessage,
-        status           : modules.contract_replay.indicative_status,
-        is_chart_loading : modules.contract_replay.is_chart_loading,
-        hideBlur         : ui.hideRouteBlur,
-        is_dark_theme    : ui.is_dark_mode_on,
-
-    })
+    ({ modules, ui }) => {
+        const contract_replay = modules.contract_replay;
+        const contract_store = contract_replay.contract_store;
+        return ({
+            contract_info    : contract_store.contract_info,
+            digits_info      : contract_store.digits_info,
+            display_status   : contract_store.display_status,
+            error_message    : contract_replay.error_message,
+            is_digit_contract: contract_store.is_digit_contract,
+            is_ended         : contract_store.is_ended,
+            is_sell_requested: contract_store.is_sell_requested,
+            onClickSell      : contract_replay.onClickSell,
+            onMount          : contract_replay.onMount,
+            onUnmount        : contract_replay.onUnmount,
+            removeError      : contract_replay.removeErrorMessage,
+            indicative_status: contract_replay.indicative_status,
+            is_chart_loading : contract_replay.is_chart_loading,
+            is_dark_theme    : ui.is_dark_mode_on,
+        });
+    }
 )(ContractReplay));
 
 // -----------------------------------------
@@ -253,7 +254,8 @@ Chart.propTypes = {
 const ReplayChart = connect(
     ({ modules, ui, common }) => {
         const contract_replay = modules.contract_replay;
-        const contract_config = modules.contract_replay.contract_config;
+        const contract_store = contract_replay.contract_store;
+        const contract_config = contract_store.contract_config;
         const settings = {
             lang                        : common.current_language,
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
@@ -272,7 +274,7 @@ const ReplayChart = connect(
             settings,
             is_mobile        : ui.is_mobile,
             is_socket_opened : common.is_socket_opened,
-            is_digit_contract: modules.contract_replay.is_digit_contract,
+            is_digit_contract: contract_store.is_digit_contract,
 
             margin         : contract_replay.margin,
             wsForget       : contract_replay.wsForget,
@@ -280,8 +282,9 @@ const ReplayChart = connect(
             wsSendRequest  : contract_replay.wsSendRequest,
             wsForgetStream : contract_replay.wsForgetStream,
             is_static_chart: contract_replay.is_static_chart,
-            barriers_array : contract_replay.barriers_array,
-            markers_array  : contract_replay.markers_array,
+
+            barriers_array: contract_store.barriers_array,
+            markers_array : contract_store.markers_array,
         });
     }
 )(Chart);

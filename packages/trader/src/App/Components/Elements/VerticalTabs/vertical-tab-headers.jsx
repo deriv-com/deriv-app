@@ -41,6 +41,7 @@ class VerticalTabHeaders extends React.PureComponent {
                             </NavLink>
                             :
                             <div
+                                id={`dt_${label}_link`}
                                 className={
                                     classNames('vertical-tab__header', {
                                         'vertical-tab__header--active': this.props.selected.label === item.label,

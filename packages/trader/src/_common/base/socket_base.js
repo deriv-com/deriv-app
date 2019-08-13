@@ -8,6 +8,7 @@ const isEmptyObject    = require('../utility').isEmptyObject;
 const PromiseClass     = require('../utility').PromiseClass;
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
+const website_name     = require('../../App/Constants/app-config').website_name;
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -25,7 +26,7 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before  = false;
 
-    const socket_url = `${getSocketURL()}?app_id=${getAppId()}&l=${getLanguage()}`;
+    const socket_url = `${getSocketURL()}?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
     const timeouts   = {};
     const promises   = {};
 

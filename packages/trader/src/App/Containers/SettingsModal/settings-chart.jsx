@@ -55,12 +55,12 @@ const ChartSettings = ({
                             {
                                 label: <Localize i18n_default_text='Bottom' />,
                                 value: true,
-                                id   : 'dt_settings_bottom_radio'
+                                id   : 'dt_settings_bottom_radio',
                             },
                             {
                                 label: <Localize i18n_default_text='Left' />,
                                 value: false,
-                                id   : 'dt_settings_left_radio'
+                                id   : 'dt_settings_left_radio',
                             },
                         ]}
                         selected={is_layout_default}

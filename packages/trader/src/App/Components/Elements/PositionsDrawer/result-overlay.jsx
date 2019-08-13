@@ -36,7 +36,7 @@ class ResultOverlay extends React.PureComponent {
                     }}
                     unmountOnExit
                 >
-                    <div 
+                    <div
                         id={`dt_drawer_${contract_id}_result`}
                         className={classNames('positions-drawer-card__result', {
                             'positions-drawer-card__result--won' : is_contract_won,

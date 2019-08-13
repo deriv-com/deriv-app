@@ -26,8 +26,8 @@ class Checkbox extends React.PureComponent {
 }
 
 Checkbox.propTypes = {
-    label: PropTypes.string,
     id   : PropTypes.string,
+    label: PropTypes.string,
     value: PropTypes.bool,
 };
 

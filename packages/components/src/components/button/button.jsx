@@ -40,6 +40,7 @@ const Button = ({
 Button.propTypes = {
     children        : PropTypes.node,
     className       : PropTypes.string,
+    classNameSpan   : PropTypes.string,
     has_effect      : PropTypes.bool,
     id              : PropTypes.string,
     is_disabled     : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),

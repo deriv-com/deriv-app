@@ -14,22 +14,22 @@ import {
 
 const Footer = ({
     active_positions,
-    hideFullBlur,
-    is_fully_blurred,
+    enableApp,
+    is_app_disabled,
     is_loading,
     is_logged_in,
     is_positions_drawer_on,
-    is_route_blurred,
+    is_route_modal_on,
     is_settings_modal_on,
     location,
-    showFullBlur,
+    disableApp,
     togglePositionsDrawer,
     toggleSettingsModal,
 }) => (
     <React.Fragment>
         { (!is_loading || location.pathname !== routes.trade) &&
             <footer className={classNames('footer', {
-                'footer--is-blurred': (is_fully_blurred || is_route_blurred),
+                'footer--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >
                 <div className='footer__links footer__links--left'>
@@ -48,8 +48,8 @@ const Footer = ({
                     <ToggleSettings
                         is_settings_visible={is_settings_modal_on}
                         toggleSettings={toggleSettingsModal}
-                        showFullBlur={showFullBlur}
-                        hideFullBlur={hideFullBlur}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
                     />
                     <ToggleFullScreen />
                 </div>
@@ -60,10 +60,10 @@ const Footer = ({
 
 Footer.propTypes = {
     active_positions      : MobxPropTypes.arrayOrObservableArray,
-    is_fully_blurred      : PropTypes.bool,
+    is_app_disabled       : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
-    is_route_blurred      : PropTypes.bool,
+    is_route_modal_on     : PropTypes.bool,
     is_settings_modal_on  : PropTypes.bool,
     location              : PropTypes.object,
     togglePositionsDrawer : PropTypes.func,
@@ -73,14 +73,14 @@ Footer.propTypes = {
 export default withRouter(connect(
     ({ client, modules, ui }) => ({
         active_positions      : modules.portfolio.active_positions,
-        hideFullBlur          : ui.hideFullBlur,
-        is_fully_blurred      : ui.is_fully_blurred,
-        is_route_blurred      : ui.is_route_blurred,
+        enableApp             : ui.enableApp,
+        is_app_disabled       : ui.is_app_disabled,
+        is_route_modal_on     : ui.is_route_modal_on,
         is_logged_in          : client.is_logged_in,
         is_loading            : ui.is_loading,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_settings_modal_on  : ui.is_settings_modal_on,
-        showFullBlur          : ui.showFullBlur,
+        disableApp            : ui.disableApp,
         togglePositionsDrawer : ui.togglePositionsDrawer,
         toggleSettingsModal   : ui.toggleSettingsModal,
     })

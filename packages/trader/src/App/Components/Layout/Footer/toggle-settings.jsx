@@ -67,7 +67,6 @@ const ToggleSettings = ({
     return (
         <React.Fragment>
             <a
-                href='javascript:;'
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >

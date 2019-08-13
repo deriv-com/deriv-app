@@ -10,7 +10,6 @@ const ContractLink = ({
 }) => (
     <a
         className={className}
-        href='javascript:;'
         onClick={() => openContract(contract_id, true)}
     >
         {children}

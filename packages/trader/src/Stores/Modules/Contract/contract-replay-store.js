@@ -5,7 +5,6 @@ import { setSmartChartsPublicPath } from 'smartcharts-beta';
 import { getUrlBase }          from '_common/url';
 import { localize }           from 'App/i18n';
 import BinarySocket           from '_common/base/socket_base';
-import ServerTime             from '_common/base/server_time';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
 import ContractStore          from './contract-store';
@@ -17,12 +16,12 @@ setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 export default class ContractReplayStore extends BaseStore {
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
-    @observable digits_info = observable.object({});
-    @observable sell_info   = observable.object({});
-
+    @observable is_sell_requested = false;
     @observable has_error         = false;
     @observable error_message     = '';
     @observable is_chart_loading  = true;
+    // ---- chart props
+    @observable margin;
 
     // ---- Replay Contract Config ----
     @observable contract_id;
@@ -30,18 +29,12 @@ export default class ContractReplayStore extends BaseStore {
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
 
-    // ---- chart props
-    @observable margin;
-    @observable barriers_array = [];
-    @observable markers_array = [];
-
     // ---- Normal properties ---
     is_ongoing_contract = false;
-
-    // Replay Contract Indicative Movement
     prev_indicative = 0;
-    indicative      = 0;
 
+    // TODO: you view a contract and then share that link with another person,
+    // when the person opens, try to switch account they get the error
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
@@ -77,15 +70,12 @@ export default class ContractReplayStore extends BaseStore {
     onUnmount() {
         this.forgetProposalOpenContract(this.contract_id, this.populateConfig);
         this.contract_id         = null;
-        this.digits_info         = {};
         this.is_ongoing_contract = false;
         this.is_static_chart     = false;
         this.is_chart_loading    = true;
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
-        this.indicative          = 0;
-        this.sell_info           = {};
         this.error_message       = null;
         this.has_error           = false;
     }
@@ -111,7 +101,6 @@ export default class ContractReplayStore extends BaseStore {
         // Add indicative status for contract
         const prev_indicative  = this.prev_indicative;
         const new_indicative   = +this.contract_info.bid_price;
-        this.indicative = new_indicative;
         if (new_indicative > prev_indicative) {
             this.indicative_status = 'profit';
         } else if (new_indicative < prev_indicative) {
@@ -119,7 +108,7 @@ export default class ContractReplayStore extends BaseStore {
         } else {
             this.indicative_status = null;
         }
-        this.prev_indicative = this.indicative;
+        this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
         this.contract_store.populateConfig(this.contract_info);
@@ -141,10 +130,6 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        // TODO: don't update the barriers & markers if they are not changed
-        this.barriers_array = this.contract_store.barriers_array;
-        this.markers_array = this.contract_store.markers_array;
-
         this.is_chart_loading = false;
     }
 
@@ -161,7 +146,7 @@ export default class ContractReplayStore extends BaseStore {
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
         if (contract_id && bid_price) {
-            this.constract_store.is_sell_requested = true;
+            this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }
@@ -170,14 +155,14 @@ export default class ContractReplayStore extends BaseStore {
     handleSell(response) {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
-            this.contract_store.is_sell_requested = false;
+            this.is_sell_requested = false;
             this.root_store.common.services_error = {
                 type: response.msg_type,
                 ...response.error,
             };
             this.root_store.ui.toggleServicesErrorModal(true);
         } else if (!response.error && response.sell) {
-            this.contract_store.is_sell_requested = false;
+            this.is_sell_requested = false;
             // update contract store sell info after sell
             this.sell_info = {
                 sell_price    : response.sell.sold_for,
@@ -195,27 +180,4 @@ export default class ContractReplayStore extends BaseStore {
     removeErrorMessage() {
         delete this.error_message;
     }
-
-    // TODO: these can be shared between contract-replay-store.js & contract-trade-store.js
-    // ---------- WS ----------
-    wsSubscribe = (request_object, callback) => {
-        if (request_object.subscribe === 1) {
-            WS.subscribeTicksHistory({ ...request_object }, callback);
-        }
-    };
-
-    wsForget = (match_values, callback) => WS.forget('ticks_history', callback, match_values);
-    wsForgetStream = (stream_id) => WS.forgetStream(stream_id);
-
-    wsSendRequest = (request_object) => {
-        if (request_object.time) {
-            return ServerTime.timePromise.then(() => ({
-                msg_type: 'time',
-                time    : ServerTime.get().unix(),
-            }));
-        }
-        return WS.sendRequest(request_object);
-    };
 }
-
-

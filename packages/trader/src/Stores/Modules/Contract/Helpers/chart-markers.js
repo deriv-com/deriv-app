@@ -15,6 +15,7 @@ import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 export const createChartMarkers = (contract_info) => {
     let markers = [];
     if (contract_info) {
+
         const end_time = getEndTime(contract_info);
         const chart_type = getChartType(contract_info.date_start, end_time);
 
@@ -35,6 +36,10 @@ export const createChartMarkers = (contract_info) => {
 
         markers = markers.filter(m => !!m);
     }
+    markers.forEach(marker => {
+        const contract_id = contract_info.contract_id;
+        marker.react_key = `${contract_id}-${marker.type}`;
+    });
 
     return markers;
 };

@@ -162,7 +162,7 @@ export default withRouter(connect(
             error_message    : contract_replay.error_message,
             is_digit_contract: contract_store.is_digit_contract,
             is_ended         : contract_store.is_ended,
-            is_sell_requested: contract_store.is_sell_requested,
+            is_sell_requested: contract_replay.is_sell_requested,
             onClickSell      : contract_replay.onClickSell,
             onMount          : contract_replay.onMount,
             onUnmount        : contract_replay.onUnmount,
@@ -214,9 +214,9 @@ class Chart extends React.Component {
                 isStaticChart={this.props.is_static_chart}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
-                { this.props.markers_array.map((marker, idx) => (
+                { this.props.markers_array.map(marker => (
                     <ChartMarker
-                        key={idx}
+                        key={marker.react_key}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
                         is_bottom_widget_visible={this.props.is_digit_contract}
@@ -253,6 +253,7 @@ Chart.propTypes = {
 
 const ReplayChart = connect(
     ({ modules, ui, common }) => {
+        const trade = modules.trade;
         const contract_replay = modules.contract_replay;
         const contract_store = contract_replay.contract_store;
         const contract_config = contract_store.contract_config;
@@ -277,14 +278,15 @@ const ReplayChart = connect(
             is_digit_contract: contract_store.is_digit_contract,
 
             margin         : contract_replay.margin,
-            wsForget       : contract_replay.wsForget,
-            wsSubscribe    : contract_replay.wsSubscribe,
-            wsSendRequest  : contract_replay.wsSendRequest,
-            wsForgetStream : contract_replay.wsForgetStream,
             is_static_chart: contract_replay.is_static_chart,
 
             barriers_array: contract_store.barriers_array,
             markers_array : contract_store.markers_array,
+
+            wsForget      : trade.wsForget,
+            wsSubscribe   : trade.wsSubscribe,
+            wsSendRequest : trade.wsSendRequest,
+            wsForgetStream: trade.wsForgetStream,
         });
     }
 )(Chart);

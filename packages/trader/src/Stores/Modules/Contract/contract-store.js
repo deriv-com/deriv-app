@@ -12,7 +12,6 @@ import {
     getDisplayStatus,
     getEndTime,
     isEnded }                 from './Helpers/logic';
-import BaseStore              from '../../base-store';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
@@ -36,9 +35,6 @@ export default class ContractStore {
 
     // TODO: see how to handle errors.
     @observable error_message = '';
-
-    @observable is_sell_requested = false;
-
     // ---- Replay Contract Config ----
     @observable contract_id;
     @observable contract_info   = observable.object({});

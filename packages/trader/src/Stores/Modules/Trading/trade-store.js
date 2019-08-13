@@ -16,6 +16,7 @@ import {
     isCryptocurrency }                from '_common/base/currency_base';
 import { WS }                         from 'Services';
 import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import ServerTime                     from '_common/base/server_time';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -318,7 +319,7 @@ export default class TradeStore extends BaseStore {
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
-                    this.smart_chart.switchToContractMode();
+                    // this.smart_chart.switchToContractMode();
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],
@@ -331,10 +332,11 @@ export default class TradeStore extends BaseStore {
                     } = response.buy;
                     // toggle smartcharts to contract mode
                     if (contract_id) {
+                        this.root_store.modules.contract_trade.addContract({ contract_id, start_time });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
-                        this.smart_chart.setChartView(start_time);
+                        // this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
@@ -685,4 +687,24 @@ export default class TradeStore extends BaseStore {
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
     }
+
+    // ---------- WS ----------
+    wsSubscribe = (request_object, callback) => {
+        if (request_object.subscribe === 1) {
+            WS.subscribeTicksHistory({ ...request_object }, callback);
+        }
+    };
+
+    wsForget = (match_values, callback) => WS.forget('ticks_history', callback, match_values);
+    wsForgetStream = (stream_id) => WS.forgetStream(stream_id);
+
+    wsSendRequest = (request_object) => {
+        if (request_object.time) {
+            return ServerTime.timePromise.then(() => ({
+                msg_type: 'time',
+                time    : ServerTime.get().unix(),
+            }));
+        }
+        return WS.sendRequest(request_object);
+    };
 }

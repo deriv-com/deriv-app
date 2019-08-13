@@ -18,6 +18,7 @@ import {
     getDisplayStatus,
     getEndTime,
     isEnded }                 from './Helpers/logic';
+import ContractStore          from './contract-store';
 import BaseStore              from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
@@ -61,8 +62,8 @@ export default class ContractTradeStore extends BaseStore {
             } else {
                 this.smart_chart.setStaticChart(false);
             }
-            this.smart_chart.setContractStart(date_start);
-            this.smart_chart.setContractEnd(end_time);
+            // this.smart_chart.setContractStart(date_start);
+            // this.smart_chart.setContractEnd(end_time);
 
             // Clear chart loading status once ChartListener returns ready for completed contract
             if (!this.is_ongoing_contract) {
@@ -100,6 +101,30 @@ export default class ContractTradeStore extends BaseStore {
         } else {
             WS.subscribeProposalOpenContract(...proposal_open_contract_request);
         }
+    }
+
+    @observable contracts = [];
+
+
+    @computed
+    get markers_array() {
+        return this.contracts.reduce((array, contract) => {
+            array.push(...contract.markers_array);
+            return array;
+        }, []);
+    }
+
+    @computed
+    get barriers_array() {
+        const length = this.contracts.length;
+        return length > 0 ? this.contracts[length - 1].barriers_array  : [];
+    }
+
+    @action.bound
+    addContract({ contract_id, start_time }) {
+        const contract = new ContractStore(this.root_store, { contract_id });
+        contract.populateConfig({ date_start: start_time });
+        this.contracts.push(contract);
     }
 
     @action.bound
@@ -145,7 +170,7 @@ export default class ContractTradeStore extends BaseStore {
         if (contract_id) {
             if (this.is_from_positions) {
                 this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode(true, has_existing_id);
+                // this.smart_chart.switchToContractMode(true, has_existing_id);
             }
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
@@ -181,6 +206,12 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     updateProposal(response) {
+        const contract_id = +response.proposal_open_contract.contract_id;
+        this.contracts.forEach(contract =>  {
+            if (contract.contract_id === contract_id) {
+                contract.populateConfig(response.proposal_open_contract);
+            }
+        });
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;

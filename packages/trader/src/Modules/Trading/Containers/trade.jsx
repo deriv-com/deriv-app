@@ -10,7 +10,7 @@ import Test                  from './test.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
 
-const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+// const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -42,7 +42,7 @@ class Trade extends React.Component {
                     { this.props.symbol &&
                         <React.Suspense fallback={<UILoader />} >
                             <ChartLoader is_visible={is_chart_visible} />
-                            <SmartChart
+                            <ChartTrade
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
                                 Digits={
@@ -137,34 +137,198 @@ Trade.propTypes = {
 
 export default connect(
     ({ modules, ui }) => ({
-        contract_info                      : modules.contract_trade.contract_info,
-        digits_info                        : modules.contract_trade.digits_info,
-        display_status                     : modules.contract_trade.display_status,
-        error_message                      : modules.contract_trade.error_message,
-        is_ended                           : modules.contract_trade.is_ended,
-        is_digit_contract                  : modules.contract_trade.is_digit_contract,
-        onCloseContract                    : modules.contract_trade.onCloseContract,
-        removeError                        : modules.contract_trade.removeErrorMessage,
-        chart_id                           : modules.smart_chart.chart_id,
-        chart_type                         : modules.smart_chart.chart_type,
-        scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,
-        granularity                        : modules.smart_chart.granularity,
-        end_epoch                          : modules.smart_chart.end_epoch,
-        start_epoch                        : modules.smart_chart.start_epoch,
-        is_chart_loading                   : modules.smart_chart.is_chart_loading,
-        is_chart_ready                     : modules.smart_chart.is_chart_ready,
-        is_contract_mode                   : modules.smart_chart.is_contract_mode,
-        is_static_chart                    : modules.smart_chart.is_static_chart,
-        contract_type                      : modules.trade.contract_type,
-        is_market_closed                   : modules.trade.is_market_closed,
-        is_trade_enabled                   : modules.trade.is_trade_enabled,
-        onMount                            : modules.trade.onMount,
-        onSymbolChange                     : modules.trade.onChange,
-        onUnmount                          : modules.trade.onUnmount,
-        purchase_info                      : modules.trade.purchase_info,
-        symbol                             : modules.trade.symbol,
+        contract_info    : modules.contract_trade.contract_info,
+        digits_info      : modules.contract_trade.digits_info,
+        display_status   : modules.contract_trade.display_status,
+        error_message    : modules.contract_trade.error_message,
+        is_ended         : modules.contract_trade.is_ended,
+        is_digit_contract: modules.contract_trade.is_digit_contract,
+        onCloseContract  : modules.contract_trade.onCloseContract,
+        removeError      : modules.contract_trade.removeErrorMessage,
+
+        chart_id        : modules.smart_chart.chart_id,
+        chart_type      : modules.smart_chart.chart_type,
+        scroll_to_epoch : modules.smart_chart.scroll_to_left_epoch,
+        granularity     : modules.smart_chart.granularity,
+        end_epoch       : modules.smart_chart.end_epoch,
+        start_epoch     : modules.smart_chart.start_epoch,
+        is_chart_loading: modules.smart_chart.is_chart_loading,
+        is_chart_ready  : modules.smart_chart.is_chart_ready,
+        is_contract_mode: modules.smart_chart.is_contract_mode,
+        is_static_chart : modules.smart_chart.is_static_chart,
+
+        contract_type   : modules.trade.contract_type,
+        is_market_closed: modules.trade.is_market_closed,
+        is_trade_enabled: modules.trade.is_trade_enabled,
+        onMount         : modules.trade.onMount,
+        onSymbolChange  : modules.trade.onChange,
+        onUnmount       : modules.trade.onUnmount,
+        purchase_info   : modules.trade.purchase_info,
+        symbol          : modules.trade.symbol,
+
         has_only_forward_starting_contracts: ui.has_only_forward_starting_contracts,
         is_mobile                          : ui.is_mobile,
         setHasOnlyForwardingContracts      : ui.setHasOnlyForwardingContracts,
     })
 )(Trade);
+
+/* eslint-disable */
+// ChartTrade
+import {
+    SmartChart,
+    setSmartChartsPublicPath } from 'smartcharts-beta';
+import { getUrlBase }          from '_common/url';
+import ControlWidgets          from '../../SmartChart/Components/control-widgets.jsx';
+import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
+import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
+import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
+import { symbolChange }        from '../../SmartChart/Helpers/symbol';
+/* eslint-enable */
+
+setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+
+class ChartTradeClass extends React.Component {
+    componentDidMount() { this.props.onMount(); }
+
+    componentWillUnmount() { this.props.onUnmount(); }
+
+    chartControlsWidgets = () => (
+        <ControlWidgets
+            updateChartType={this.props.updateChartType}
+            updateGranularity={this.props.updateGranularity}
+        />
+    );
+
+    topWidgets = () => (
+        <TopWidgets
+            InfoBox={this.props.InfoBox}
+            is_title_enabled={this.props.is_title_enabled}
+            onSymbolChange={symbolChange(this.props.onSymbolChange)}
+        />
+    );
+
+    bottomWidgets = () => (
+        <BottomWidgets Digits={this.props.Digits} />
+    );
+
+    render() {
+        return (
+            <SmartChart
+                barriers={this.props.barriers_array}
+                bottomWidgets={this.props.should_show_bottom_widgets ?
+                    this.bottomWidgets : null}
+                chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
+                chartStatusListener={this.props.getChartStatus}
+                chartType={this.props.chart_type}
+                endEpoch={this.props.end_epoch}
+                margin={this.props.margin || null}
+                id={this.props.chart_id}
+                isMobile={this.props.is_mobile}
+                enabledNavigationWidget={this.props.is_contract_mode}
+                granularity={this.props.granularity}
+                requestAPI={this.props.wsSendRequest}
+                requestForget={this.props.wsForget}
+                requestForgetStream={this.props.wsForgetStream}
+                requestSubscribe={this.props.wsSubscribe}
+                settings={this.props.settings}
+                showLastDigitStats={this.props.should_show_last_digit_stats}
+                startEpoch={this.props.start_epoch}
+                scrollToEpoch={this.props.scroll_to_epoch}
+                symbol={this.props.symbol}
+                topWidgets={this.topWidgets}
+                isConnectionOpened={this.props.is_socket_opened}
+                clearChart={this.props.should_clear_chart}
+                importedLayout={this.props.should_import_layout ? this.props.trade_chart_layout : null}
+                onExportLayout={this.props.should_export_layout ? this.props.exportLayout : null}
+                isStaticChart={this.props.is_static_chart}
+                shouldFetchTradingTimes={!this.props.end_epoch}
+            >
+                { this.props.markers_array.map(marker => (
+                    <ChartMarker
+                        key={marker.react_key}
+                        marker_config={marker.marker_config}
+                        marker_content_props={marker.content_config}
+                        is_bottom_widget_visible={this.props.should_show_bottom_widgets}
+                    />
+                ))}
+            </SmartChart>
+        );
+    }
+}
+
+ChartTradeClass.propTypes = {
+    barriers_array               : PropTypes.array,
+    BottomWidgets                : PropTypes.node,
+    chart_id                     : PropTypes.string,
+    chart_type                   : PropTypes.string,
+    end_epoch                    : PropTypes.number,
+    exportLayout                 : PropTypes.func,
+    getChartStatus               : PropTypes.func,
+    granularity                  : PropTypes.number,
+    InfoBox                      : PropTypes.node,
+    is_contract_mode             : PropTypes.bool,
+    is_mobile                    : PropTypes.bool,
+    is_socket_opened             : PropTypes.bool,
+    is_static_chart              : PropTypes.bool,
+    is_title_enabled             : PropTypes.bool,
+    margin                       : PropTypes.number,
+    markers_array                : PropTypes.array,
+    onMount                      : PropTypes.func,
+    onSymbolChange               : PropTypes.func,
+    onUnmount                    : PropTypes.func,
+    replay_controls              : PropTypes.object,
+    scroll_to_epoch              : PropTypes.number,
+    settings                     : PropTypes.object,
+    should_clear_chart           : PropTypes.bool,
+    should_export_layout         : PropTypes.bool,
+    should_import_layout         : PropTypes.bool,
+    should_refresh_active_symbols: PropTypes.bool,
+    should_show_last_digit_stats : PropTypes.bool,
+    start_epoch                  : PropTypes.number,
+    symbol                       : PropTypes.string,
+    trade_chart_layout           : PropTypes.object,
+    updateChartType              : PropTypes.func,
+    updateGranularity            : PropTypes.func,
+    wsForget                     : PropTypes.func,
+    wsForgetStream               : PropTypes.func,
+    wsSendRequest                : PropTypes.func,
+    wsSubscribe                  : PropTypes.func,
+};
+
+const ChartTrade = connect(
+    ({ modules, ui, common }) => ({
+        is_socket_opened: common.is_socket_opened,
+
+        markers_array : modules.contract_trade.markers_array,
+        barriers_array: modules.contract_trade.barriers_array,
+
+        settings: {
+            assetInformation            : false, // ui.is_chart_asset_info_visible,
+            countdown                   : ui.is_chart_countdown_visible,
+            isHighestLowestMarkerEnabled: false, // !this.is_contract_mode,
+            lang                        : common.current_language,
+            position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
+            theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
+        },
+
+        exportLayout        : modules.smart_chart.exportLayout,
+        getChartStatus      : modules.smart_chart.getChartStatus,
+        is_contract_mode    : modules.smart_chart.is_contract_mode,
+        is_title_enabled    : modules.smart_chart.is_title_enabled,
+        margin              : modules.smart_chart.margin,
+        onMount             : modules.smart_chart.onMount,
+        onUnmount           : modules.smart_chart.onUnmount,
+        should_clear_chart  : modules.smart_chart.should_clear_chart,
+        should_export_layout: modules.smart_chart.should_export_layout,
+        should_import_layout: modules.smart_chart.should_import_layout,
+        trade_chart_layout  : modules.smart_chart.trade_chart_layout,
+        updateChartType     : modules.smart_chart.updateChartType,
+        updateGranularity   : modules.smart_chart.updateGranularity,
+        is_mobile           : ui.is_mobile,
+
+        wsForget      : modules.trade.wsForget,
+        wsForgetStream: modules.trade.wsForgetStream,
+        wsSendRequest : modules.trade.wsSendRequest,
+        wsSubscribe   : modules.trade.wsSubscribe,
+    })
+)(ChartTradeClass);

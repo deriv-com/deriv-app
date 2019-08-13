@@ -68,13 +68,11 @@ const ToggleSettings = ({
         <React.Fragment>
             <a
                 id='dt_settings_toggle'
-                href='javascript:;'
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >
                 <Icon icon='IconSettings' className='footer__icon ic-settings__icon' />
             </a>
-            {is_settings_visible &&
             <React.Suspense fallback={<UILoader />}>
                 <Modal
                     id='dt_settings_modal'
@@ -86,7 +84,6 @@ const ToggleSettings = ({
                     toggleModal={toggleSettings}
                 />
             </React.Suspense>
-            }
         </React.Fragment>
     );
 };

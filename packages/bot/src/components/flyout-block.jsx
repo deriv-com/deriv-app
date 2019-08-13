@@ -7,14 +7,14 @@ import { translate }    from '../utils/lang/i18n';
 class FlyoutBlock extends React.PureComponent {
     render() {
         const { onInfoClick, block_node } = this.props;
-
+        
         return (
             <div className='flyout__item'>
                 <div className='flyout__item-header'>
                     <div className='flyout__item-label'>{block_node.getAttribute('type')}</div>
                     <div className='flyout__item-buttons'>
                         { onInfoClick &&
-                            <div className='flyout__item-info' onClick={onInfoClick}>
+                            <div className='flyout__item-info' onClick={ onInfoClick }>
                                 <BlueInfoIcon className={'info'} />
                             </div>
                         }
@@ -33,7 +33,7 @@ class FlyoutBlock extends React.PureComponent {
 
     componentDidMount() {
         const { initBlockWorkspace, block_node } = this.props;
-        
+
         initBlockWorkspace(this.el_block_workspace, block_node);
     }
 }
@@ -41,6 +41,7 @@ class FlyoutBlock extends React.PureComponent {
 FlyoutBlock.propTypes = {
     block_node        : PropTypes.any,
     initBlockWorkspace: PropTypes.func,
+    onInfoClick       : PropTypes.func,
 };
 
 export default connect(({ flyout }) => ({

@@ -9,5 +9,5 @@ notifications:
 before_install:
   - npm i -g npm@6.9.0
   - npm install -g lerna
-install: lerna bootstrap && npm run build shared && npm run build components
+install: lerna bootstrap && npm run build-travis
 script: lerna run test

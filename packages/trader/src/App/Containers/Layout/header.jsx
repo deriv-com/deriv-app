@@ -92,8 +92,6 @@ Header.propTypes = {
     toggleCashierModal  : PropTypes.func,
 };
 
-// need to wrap withRouter around connect
-// to prevent updates on <MenuLinks /> from being blocked
 export default connect(
     ({ client, ui }) => ({
         // active_cashier_tab  : ui.active_cashier_tab,

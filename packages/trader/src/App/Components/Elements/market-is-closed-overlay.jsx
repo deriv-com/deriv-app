@@ -1,6 +1,6 @@
 import React        from 'react';
-import { localize } from 'App/i18n';
 import Button       from 'deriv-components/lib/button';
+import { localize } from 'App/i18n';
 import Localize     from './localize.jsx';
 
 const toggleFade = ({ node, opacity, direction, color }) => {

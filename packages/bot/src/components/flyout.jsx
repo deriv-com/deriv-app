@@ -35,7 +35,7 @@ const Flyout = ({
                                 { node.getAttribute('text') }
                             </div>
                         );
-                    case Blockly.Xml.NODE_BUTTON:
+                    case Blockly.Xml.NODE_BUTTON: {
                         const callback_key = node.getAttribute('callbackKey');
                         const callback = Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => {});
                 
@@ -47,7 +47,9 @@ const Flyout = ({
                                     const flyout_button = button;
         
                                     // Workaround for not having a flyout workspace.
+                                    // eslint-disable-next-line no-underscore-dangle
                                     flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                    // eslint-disable-next-line no-underscore-dangle
                                     flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
         
                                     callback(flyout_button);
@@ -56,6 +58,7 @@ const Flyout = ({
                                 { node.getAttribute('text') }
                             </button>
                         );
+                    }
                     default:
                         return null;
                 }

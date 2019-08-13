@@ -32,13 +32,15 @@ const ContractInfo = ({
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
     return (
         <div className='trade-container__price'>
-            <div id={`dt_purchase_${type.toLowerCase()}_price`} className={classNames(
-                'trade-container__price-info',
-                {
-                    'trade-container__price-info--disabled': has_error_or_not_loaded,
-                    'trade-container__price-info--slide'   : is_loading && !should_fade,
-                    'trade-container__price-info--fade'    : is_loading && should_fade,
-                })}
+            <div
+                id={`dt_purchase_${type.toLowerCase()}_price`}
+                className={classNames(
+                    'trade-container__price-info',
+                    {
+                        'trade-container__price-info--disabled': has_error_or_not_loaded,
+                        'trade-container__price-info--slide'   : is_loading && !should_fade,
+                        'trade-container__price-info--fade'    : is_loading && should_fade,
+                    })}
             >
                 <div className='trade-container__price-info-basis'>
                     {has_error_or_not_loaded

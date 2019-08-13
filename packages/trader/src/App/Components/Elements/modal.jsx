@@ -51,6 +51,7 @@ class ModalElement extends React.PureComponent {
                 <VerticalTab
                     alignment='center'
                     classNameHeader='modal__tab-header'
+                    id='modal'
                     list={this.props.modal_content}
                     selected_index={this.props.selected_index}
                 />

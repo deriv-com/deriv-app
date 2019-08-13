@@ -77,6 +77,7 @@ class ContractReplay extends React.Component {
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
                             <div
+                                id='dt_contract_replay_close_icon'
                                 className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
                                 onClick={() => this.props.history.push(AppRoutes.trade)}

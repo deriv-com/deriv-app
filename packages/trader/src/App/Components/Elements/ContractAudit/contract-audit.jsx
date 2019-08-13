@@ -39,7 +39,7 @@ class ContractAudit extends React.PureComponent {
                         style={{ width: '100%', height: '100%' }}
                         autoHide
                     >
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_id_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('id', is_dark_theme)}
                                 label={localize('Reference ID')}
@@ -47,7 +47,7 @@ class ContractAudit extends React.PureComponent {
                                 value2={localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })}
                             />
                         </div>
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_duration_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('duration', is_dark_theme)}
                                 label={localize('Duration')}
@@ -57,7 +57,7 @@ class ContractAudit extends React.PureComponent {
                                     `${duration} ${duration_unit}`}
                             />
                         </div>
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_bt_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={
                                     isDigitType(contract_info.contract_type)
@@ -68,7 +68,7 @@ class ContractAudit extends React.PureComponent {
                                 value={getBarrierValue(contract_info) || ' - '}
                             />
                         </div>
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_start_time_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('start_time', is_dark_theme)}
                                 label={localize('Start time')}
@@ -76,7 +76,7 @@ class ContractAudit extends React.PureComponent {
                             />
                         </div>
                         {!isDigitType(contract_info.contract_type) &&
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_entry_spot_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={getThemedIcon('entry_spot', is_dark_theme)}
                                 label={localize('Entry spot')}
@@ -87,7 +87,7 @@ class ContractAudit extends React.PureComponent {
                         }
                         {
                             !isNaN(exit_spot) &&
-                            <div className='contract-audit__grid'>
+                            <div id={`dt_${contract_info.contract_id}_exit_spot_label`} className='contract-audit__grid'>
                                 <ContractAuditItem
                                     icon={getThemedIcon('exit_spot', is_dark_theme)}
                                     label={localize('Exit spot')}
@@ -96,7 +96,7 @@ class ContractAudit extends React.PureComponent {
                                 />
                             </div>
                         }
-                        <div className='contract-audit__grid'>
+                        <div id={`dt_${contract_info.contract_id}_exit_time_label`} className='contract-audit__grid'>
                             <ContractAuditItem
                                 icon={IconExitTime}
                                 label={localize('Exit Time')}

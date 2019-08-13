@@ -20,6 +20,7 @@ class VerticalTabHeaders extends React.PureComponent {
                     return (
                         this.props.is_routed ?
                             <NavLink
+                                id={`dt_${label}_link`}
                                 key={item.path}
                                 to={item.path}
                                 onClick={() => this.props.onChange(item)}

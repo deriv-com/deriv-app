@@ -6,7 +6,6 @@ import {
     addComma,
     getDecimalPlaces }                from '_common/base/currency_base';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
-import Dropdown                       from 'App/Components/Form/DropDown';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
@@ -50,7 +49,7 @@ const Amount = ({
             error_messages={validation_errors.amount}
             fractional_digits={getDecimalPlaces(currency)}
             id='amount'
-            inline_prefix={is_single_currency ? currency : null}
+            inline_prefix={is_single_currency ? currency : 'USD'}
             is_autocomplete_disabled
             is_float
             is_hj_whitelisted
@@ -74,25 +73,7 @@ const Amount = ({
                 onChange={onChange}
                 value={basis}
             />
-            {!is_single_currency ?
-                <div className='trade-container__currency-options'>
-                    <Dropdown
-                        className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
-                        classNameDisplay='trade-container__currency-options--display'
-                        has_symbol
-                        is_alignment_left
-                        is_nativepicker={false}
-                        list={currencies_list}
-                        name='currency'
-                        value={currency}
-                        onChange={onChange}
-                    />
-                    {input}
-                </div>
-                :
-                input
-
-            }
+            {input}
             <AllowEquals
                 contract_start_type={contract_start_type}
                 contract_type={contract_type}

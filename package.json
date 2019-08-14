@@ -7,10 +7,11 @@
   },
   "scripts": {
     "bootstrap": "f () { lerna bootstrap --scope deriv-${1:-'*'} ;}; f",
-    "hoist": "lerna bootstrap --hoist --nohoist=jsdom* --nohoist=mochapack",
+    "hoist": "lerna bootstrap --hoist --nohoist=jsdom* --nohoist=mochapack --nohoist=smartcharts-beta",
     "start": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run start ;}; f",
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
+    "build:travis": "lerna exec -- npm run build:travis",
     "test": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:eslint ;}; f",
     "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",

@@ -1,0 +1,42 @@
+@import './color';
+
+.integration-option {
+    margin: 0.5em;
+}
+
+.input-row {
+    margin: 1em 0;
+
+    &.last {
+        margin-bottom: 0;
+    }
+}
+
+.modal {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    border: solid 1px $brand-gray;
+    border-radius: 5px;
+    background-color: $white;
+    font-size: 20px;
+    min-height: 200px;
+    min-width: 400px;
+
+    &__header {
+        background-color: $brand-blue;
+        color: $white;
+        padding: 20px;
+    }
+    &__content {
+        padding: 25px;
+    }
+}
+
+#save-modal {
+    #save-filename {
+        width: 100%;
+        border: solid 1px $brand-gray;
+        padding: 10px;
+    }
+}

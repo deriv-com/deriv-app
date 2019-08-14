@@ -12,8 +12,6 @@ import {
     toMoment,
 }                               from 'Utils/Date';
 
-const NOOP = () => ({});
-
 class TwoMonthPicker extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -97,7 +95,6 @@ class TwoMonthPicker extends React.PureComponent {
                         navigateTo={this.navigateFrom.bind(this)}
                         isPeriodDisabled={this.validateFromArrows.bind(this)}
                         hide_disabled_periods={true}
-                        switchView={NOOP}
                     />
                     <CalendarBody
                         calendar_view='date'
@@ -116,7 +113,6 @@ class TwoMonthPicker extends React.PureComponent {
                         isPeriodDisabled={this.validateToArrows.bind(this)}
                         navigateTo={this.navigateTo.bind(this)}
                         hide_disabled_periods={true}
-                        switchView={NOOP}
                     />
                     <CalendarBody
                         calendar_view='date'

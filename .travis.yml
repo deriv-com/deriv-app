@@ -10,4 +10,6 @@ before_install:
   - npm i -g npm@6.9.0
   - npm install -g lerna
 install: lerna bootstrap
-script: lerna run test
+script:
+  - npm run build:travis
+  - npm run test

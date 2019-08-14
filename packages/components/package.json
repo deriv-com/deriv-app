@@ -24,7 +24,10 @@
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",
     "deploy:folder": "echo \"Error: no deploy:folder specified\"",
     "deploy:staging": "echo \"Error: no deploy:staging specified\"",
-    "deploy:production": "echo \"Error: no deploy:production specified\""
+    "deploy:production": "echo \"Error: no deploy:production specified\"",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook --output-dir .out",
+    "deploy-storybook": "exit 0; # TODO rm -fr .out && npm run build-storybook && cp scripts/CNAME .out/ && storybook-to-ghpages -- --existing-output-dir .out"
   },
   "author": "Deriv",
   "license": "Apache-2.0",
@@ -37,6 +40,11 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/addon-actions": "^5.1.11",
+    "@storybook/addon-links": "^5.1.11",
+    "@storybook/addons": "^5.1.11",
+    "@storybook/react": "^5.1.11",
+    "@storybook/storybook-deployer": "^2.8.1",
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.7",
     "babel-core": "^6.26.3",

@@ -38,13 +38,13 @@ describe('<BinaryLink />', () => {
         const wrapper = shallow(
             <BinaryLink />
         );
-        expect(wrapper.contains(<a href='javascript:;'></a>)).to.equal(true);
+        expect(wrapper.contains(<a />)).to.equal(true);
     });
     it('should not render <a> when property \'to\' is passed', () => {
         const wrapper = shallow(
             <BinaryLink to={routes.trade} />
         );
-        expect(wrapper.contains(<a href='javascript:;'></a>)).to.equal(false);
+        expect(wrapper.contains(<a />)).to.equal(false);
     });
     it('should render component with props if any given', () => {
         const wrapper = shallow(
@@ -59,7 +59,7 @@ describe('<BinaryLink />', () => {
                 <BinaryLink to='/wrongRoute' />
             );
         } catch (e) {
-            error = e
+            error = e;
         }
         expect(error).to.be.instanceOf(Error);
     });

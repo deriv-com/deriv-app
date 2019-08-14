@@ -19,6 +19,11 @@ test  :
   npm run test
   ```
 
+storybook: 
+```shell script
+  npm run storybook
+```
+
 ## Usage
 ```jsx
 import Button from 'deriv-components/lib/Button';

@@ -13,7 +13,7 @@ import Ticks                                 from './Ticks';
 import Total                                 from './Total';
 import { doUntilDone }                       from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import createError                           from '../../../utils/error';
+import { createError }                           from '../../../utils/error';
 import { translate }                         from '../../../utils/lang/i18n';
 import { durationToSecond }                  from '../../../utils/tools';
 import { observer as globalObserver }        from '../../../utils/observer';

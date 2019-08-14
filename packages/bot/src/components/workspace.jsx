@@ -7,8 +7,9 @@ import             '../assets/sass/scratch/flyout.scss';
 const Workspace = () => (
     <React.Fragment>
         <div id='scratch_area' />
-        <div id='scratch_div' />
-        <Flyout />
+        <div id='scratch_div'>
+            <Flyout />
+        </div>
     </React.Fragment>
 );
 

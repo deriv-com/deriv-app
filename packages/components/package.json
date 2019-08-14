@@ -26,7 +26,7 @@
     "deploy:staging": "echo \"Error: no deploy:staging specified\"",
     "deploy:production": "echo \"Error: no deploy:production specified\"",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook --output-dir .out",
+    "storybook:build": "build-storybook --output-dir .out",
     "deploy-storybook": "exit 0; # TODO rm -fr .out && npm run build-storybook && cp scripts/CNAME .out/ && storybook-to-ghpages -- --existing-output-dir .out"
   },
   "author": "Deriv",

@@ -11,5 +11,5 @@ before_install:
   - npm install -g lerna
 install: lerna bootstrap
 script:
-  - npm run build-travis
+  - npm run build:travis
   - npm run test

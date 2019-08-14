@@ -17,7 +17,7 @@ Blockly.Blocks.sell_price = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
             if (this.isDescendantOf('during_purchase')) {
                 if (this.disabled) {
                     this.setDisabled(false);

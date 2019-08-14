@@ -1,3 +1,5 @@
+import { translate } from '../../utils/lang/i18n';
+
 /* eslint-disable func-names, no-underscore-dangle */
 
 /**
@@ -70,7 +72,7 @@ Blockly.DataCategory = function(workspace) {
 Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const msg = Blockly.Msg.NEW_VARIABLE;
+    const msg = translate('Create variable');
     const callbackKey = 'CREATE_VARIABLE';
     const callback = function(button) {
         const buttonWorkspace = button.getTargetWorkspace();

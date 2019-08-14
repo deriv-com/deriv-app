@@ -2,6 +2,7 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { SlideIn }             from 'App/Components/Animations';
 import { LastDigitPrediction } from '../LastDigitPrediction';
+import 'Sass/app/modules/contract/digits.scss';
 
 class Digits extends React.PureComponent {
     state = {

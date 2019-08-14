@@ -5,14 +5,14 @@ import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore            from 'Stores';
 import { setStorageEvents } from 'Utils/Events/storage';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 const initStore = () => {
     Client.init();
 
-    setStorageEvents();
-
     const root_store = new RootStore();
+
+    setStorageEvents(root_store);
 
     NetworkMonitor.init(root_store);
     OutdatedBrowser.init(root_store);

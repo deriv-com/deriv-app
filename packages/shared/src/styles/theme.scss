@@ -1,0 +1,30 @@
+/*
+ * Implementation of themes
+ * generate sets of themes keys object property (dark / light)
+ * @param $themes - themes property
+ * Usage example:
+   @include themify($themes) { color: themed('background_color') }
+ */
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme--#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+/*
+ * Generate typefaces key-value pair of themefy object
+ * Should be inside themify mixins
+ * Example:
+   @include themify($themes) { border-color: 1px solid themed('background_color') }
+ */
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}

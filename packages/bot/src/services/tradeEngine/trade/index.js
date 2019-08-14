@@ -13,7 +13,7 @@ import Ticks                                 from './Ticks';
 import Total                                 from './Total';
 import { doUntilDone }                       from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import createError                           from '../../../utils/error';
+import { createError }                           from '../../../utils/error';
 import { translate }                         from '../../../utils/lang/i18n';
 import { durationToSecond }                  from '../../../utils/tools';
 import { observer as globalObserver }        from '../../../utils/observer';
@@ -117,10 +117,16 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
-                this.api.subscribeToBalance().then(r => {
-                    this.balance = Number(r.balance.balance);
+
+                // Only subscribe to balance in browser, not for tests.
+                if (document) {
+                    this.api.subscribeToBalance().then(r => {
+                        this.balance = Number(r.balance.balance);
+                        resolve();
+                    });
+                } else {
                     resolve();
-                });
+                }
             })
         );
     }

@@ -1,0 +1,176 @@
+/** @define progress-slider */
+// Progress Slider
+.progress-slider {
+    position: relative;
+    width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+    margin: 8px 0 0;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('background_container_color');
+    }
+
+    &--completed {
+        margin: 8px 0 0;
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
+        }
+    }
+    &__track {
+        @include themify($themes) {
+            background: themed('hover_color');
+        }
+        position: relative;
+        margin: 2px 0 8px;
+        height: 6px;
+        width: 100%;
+        border-radius: #{$BORDER_RADIUS * 2};
+    }
+    &__ticks {
+        position: relative;
+
+        &-wrapper {
+            position: relative;
+            margin: 2px 0 8px;
+            height: 6px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        &-step {
+            height: 6px;
+            width: 100%;
+            margin: 0 2px;
+            position: relative;
+            @include themify($themes) {
+                background: themed('tick_step_default');
+            }
+
+            &:before {
+                position: absolute;
+                content: '';
+                transition: transform 0.25s ease-in;
+                transform: scale3d(0, 1, 1);
+                transform-origin: left;
+                left: 0;
+                top: 0;
+                height: 6px;
+                width: 100%;
+                @include themify($themes) {
+                    background: themed('tick_step_marked');
+                }
+            }
+            &--marked:before {
+                transform: scale3d(1, 1, 1);
+            }
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+            &:first-child, &:first-child:before {
+                border-top-left-radius: $BORDER_RADIUS;
+                border-bottom-left-radius: $BORDER_RADIUS;
+            }
+            &:last-child, &:last-child:before {
+                border-top-right-radius: $BORDER_RADIUS;
+                border-bottom-right-radius: $BORDER_RADIUS;
+            }
+        }
+        &-caption {
+            display: flex;
+            padding: 4px 0;
+            justify-content: space-between;
+            line-height: 18px;
+        }
+    }
+    &__line {
+        @include themify($themes) {
+            background: themed('slider_icon_color');
+        }
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border-radius: #{$BORDER_RADIUS * 2};
+        pointer-events: none;
+        transition: width 0.3s;
+
+        &--ticks {
+            height: 2px;
+        }
+        &--green {
+            background: $COLOR_GREEN_1 !important;
+        }
+        &--orange {
+            background: $COLOR_ORANGE !important;
+        }
+        &--red {
+            background: $COLOR_RED !important;
+        }
+    }
+    &__infinite-loader {
+        position: relative;
+        height: 4px;
+        display: block;
+        width: 100%;
+        background-color: $COLOR_LIGHT_BLACK_4;
+        border-radius: 2px;
+        background-clip: padding-box;
+        margin: 0.5rem 0 1rem;
+        overflow: hidden;
+
+        &--indeterminate {
+            @include themify($themes) {
+                background-color: themed('tick_step_marked');
+            }
+
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                background-color: inherit;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                will-change: left, right;
+            }
+            &:before {
+                animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+            }
+            &:after {
+                animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+                animation-delay: 1.15s;
+            }
+        }
+        @keyframes indeterminate {
+            0% {
+                left: -35%;
+                right: 100%;
+            }
+            60% {
+                left: 100%;
+                right: -90%;
+            }
+            100% {
+                left: 100%;
+                right: -90%;
+            }
+        }
+        @keyframes indeterminate-short {
+            0% {
+                left: -200%;
+                right: 100%;
+            }
+            60% {
+                left: 107%;
+                right: -8%;
+            }
+            100% {
+                left: 107%;
+                right: -8%;
+            }
+        }
+    }
+}

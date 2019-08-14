@@ -19,6 +19,7 @@ import {
 import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
+import { getClientAccountType }      from './Helpers/client';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { setCurrencies }             from '../_common/base/currency_base';
 
@@ -27,12 +28,15 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable accounts;
-    @observable switched         = '';
-    @observable switch_broadcast = false;
-    @observable currencies_list  = {};
-    @observable selected_currency = '';
+    @observable email;
+    @observable switched                   = '';
+    @observable switch_broadcast           = false;
+    @observable currencies_list            = {};
+    @observable residence_list             = [];
+    @observable selected_currency          = '';
     @observable is_populating_account_list = false;
-    @observable website_status = {};
+    @observable website_status             = {};
+    @observable verification_code          = '';
 
     constructor(root_store) {
         super({ root_store });
@@ -148,6 +152,11 @@ export default class ClientStore extends BaseStore {
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
 
+    @computed
+    get account_type() {
+        return getClientAccountType(this.loginid);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -155,8 +164,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     resetLocalStorageValues(loginid) {
-        this.accounts[loginid].cashier_confirmed = 0;
-        this.accounts[loginid].accepted_bch      = 0;
+        this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.loginid = loginid;
@@ -422,6 +430,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setEmail(email) {
         this.accounts[this.loginid].email = email;
+        this.email = email;
     }
 
     @action.bound
@@ -433,8 +442,13 @@ export default class ClientStore extends BaseStore {
         this.currencies_list  = {};
         this.selected_currency = '';
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
-        this.root_store.ui.removeAllNotifications();
-        this.root_store.modules.trade.onMount();
+        return new Promise(async (resolve) => {
+            await this.root_store.modules.trade.clearContract();
+            await this.root_store.modules.trade.resetErrorServices();
+            await this.root_store.ui.removeAllNotifications();
+            await this.root_store.modules.trade.refresh();
+            return resolve(this.root_store.modules.trade.debouncedProposal());
+        });
     }
 
     /* eslint-disable */
@@ -534,6 +548,35 @@ export default class ClientStore extends BaseStore {
             });
             return authorize_response;
         }
+    }
+
+    @action.bound
+    setVerificationCode(code) {
+        this.verification_code = code;
+        if (code) {
+            LocalStore.set('verification_code', code);
+        } else {
+            LocalStore.remove('verification_code');
+        }
+        // TODO: add await if error handling needs to happen before AccountSignup is initialised
+        // this.fetchResidenceList(); // Prefetch for use in account signup process
+    }
+
+    @action.bound
+    onSignup({ password, residence }) {
+        if (!this.verification_code || !password || !residence) return;
+
+        // Currently the code doesn't reach here and the console log is needed for debugging.
+        // TODO: remove console log when AccountSignup component and validation are ready
+        WS.newAccountVirtual(this.verification_code, password, residence).then(response => console.log(response));
+    }
+
+    fetchResidenceList() {
+        WS.residenceList().then(response => {
+            runInAction(() => {
+                this.residence_list = response.residence_list || [];
+            })
+        });
     }
 }
 /* eslint-enable */

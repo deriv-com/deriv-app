@@ -13,7 +13,7 @@ module.exports = function (env, argv) {
     return {
         context     : path.resolve(__dirname, '../src'),
         devServer   : {
-            open              : openChromeBasedOnPlatform(),
+            open              : openChromeBasedOnPlatform(process.platform),
             host              : 'localhost.binary.sx',
             https             : true,
             hot               : true,
@@ -36,7 +36,29 @@ module.exports = function (env, argv) {
         optimization: {
             namedChunks: true,
             minimize   : IS_RELEASE,
-            minimizer  : MINIMIZERS
+            minimizer  : MINIMIZERS,
+            splitChunks: {
+                chunks: 'all',
+                minSize: 30000,
+                maxSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                automaticNameMaxLength: 30,
+                name: true,
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
+                    }
+                }
+            }
         },
         output      : {
             filename  : 'js/[name].[hash].js',

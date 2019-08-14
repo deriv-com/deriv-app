@@ -70,7 +70,7 @@ export const convertDurationUnit = (value, from_unit, to_unit) => {
 const getDurationFromString = (duration_string) => {
     const duration = duration_string.toString().match(/[a-zA-Z]+|[0-9]+/g);
     return {
-        duration: duration[0],
+        duration: +duration[0], // converts string to numbers
         unit    : duration[1],
     };
 };

@@ -1,21 +1,19 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
+import ReactDOM                    from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MobxProvider }            from 'Stores/connect';
 import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import PushNotification            from './Containers/push-notification.jsx';
 import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
+import Lazy                        from './Containers/Lazy';
+import Modals                      from './Containers/Modals';
 import Routes                      from './Containers/Routes/routes.jsx';
-import DenialOfServiceModal        from './Containers/DenialOfServiceModal';
-import MarketUnavailableModal      from './Containers/MarketUnavailableModal';
-import ServicesErrorModal          from './Containers/ServicesErrorModal';
-import UnsupportedContractModal    from './Containers/UnsupportedContractModal';
-import Wip                         from './Containers/Wip';
 import './i18n';
-import ReactDOM                    from "react-dom";
-import initStore                   from "./app.js";
+// eslint-disable-next-line import/extensions
+import initStore                   from './app.js';
+// eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
@@ -28,25 +26,30 @@ const App = ({ root_store }) => {
             <MobxProvider store={root_store}>
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
-                        <Wip /> :
+                        <Lazy
+                            ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
+                            should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
+                            has_progress={true}
+                        /> :
                         <React.Fragment>
                             <Header />
                             <ErrorBoundary>
                                 <AppContents>
                                     <Routes />
-                                    <PushNotification />
+                                    <Lazy
+                                        ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
+                                        should_load={!root_store.ui.is_loading}
+                                        has_progress={false}
+                                    />
                                 </AppContents>
-                                <UnsupportedContractModal />
-                                <DenialOfServiceModal />
-                                <MarketUnavailableModal />
-                                <ServicesErrorModal />
                             </ErrorBoundary>
                             <Footer />
+                            <Modals />
                         </React.Fragment>
                 }
             </MobxProvider>
         </Router>
-    )
+    );
 };
 
 App.propTypes = {
@@ -58,4 +61,5 @@ export default App;
 const root_store = initStore();
 
 const wrapper = document.getElementById('deriv_app');
+// eslint-disable-next-line no-unused-expressions
 wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

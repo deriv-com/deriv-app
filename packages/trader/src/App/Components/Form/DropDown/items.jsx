@@ -5,6 +5,7 @@ import { Popover }         from 'App/Components/Elements/Popover';
 import { getCurrencyName } from '_common/base/currency_base';
 
 const Items = ({
+    index,
     handleSelect,
     has_symbol,
     items,
@@ -16,11 +17,13 @@ const Items = ({
         <div
             className={classNames(
                 'list__item',
-                { 'list__item--selected': value === item.value }
+                { 'list__item--highlighted': idx === index },
+                { 'list__item--selected': value === item.value },
+                { 'list__item--disabled': item.disabled }
             )}
             name={name}
             value={item.value}
-            onClick={handleSelect.bind(null, item)}
+            onClick={item.disabled ? null : handleSelect.bind(null, item)}
             key={idx}
         >
             {!!has_symbol && item.has_tooltip &&

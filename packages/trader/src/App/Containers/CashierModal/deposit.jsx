@@ -1,38 +1,50 @@
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import { connect } from 'Stores/connect';
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { connect }      from 'Stores/connect';
+import CashierContainer from './Layout/cashier-container.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
+        this.props.setActiveTab('deposit');
         this.props.onMount();
-    }
-
-    componentWillUnmount() {
-        this.props.onUnmount();
     }
 
     render() {
         return (
-            <iframe
-                className='cashier__iframe'
-                src={this.props.deposit_url}
-                frameBorder='0'
-                scrolling='auto'
-            />
+            <React.Fragment>
+                {this.props.error_message ?
+                    <p className='cashier__error'>{this.props.error_message}</p>
+                    :
+                    <CashierContainer
+                        iframe_height={this.props.iframe_height}
+                        iframe_url={this.props.iframe_url}
+                        is_loading={this.props.is_loading}
+                    />
+                }
+            </React.Fragment>
         );
     }
 }
 
 Deposit.propTypes = {
-    deposit_url  : PropTypes.string,
-    iframe_height: PropTypes.number,
+    error_message: PropTypes.string,
+    iframe_height: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
+    iframe_url  : PropTypes.string,
+    is_loading  : PropTypes.bool,
+    onMount     : PropTypes.func,
+    setActiveTab: PropTypes.func,
 };
 
 export default connect(
     ({ modules }) => ({
-        deposit_url  : modules.cashier.deposit_url,
-        iframe_height: modules.cashier.iframe_height,
-        onMount      : modules.cashier.onMount,
-        onUnmount    : modules.cashier.onUnmount,
+        error_message: modules.cashier.config.deposit.error_message,
+        iframe_height: modules.cashier.config.deposit.iframe_height,
+        iframe_url   : modules.cashier.config.deposit.iframe_url,
+        is_loading   : modules.cashier.is_loading,
+        onMount      : modules.cashier.onMountDeposit,
+        setActiveTab : modules.cashier.setActiveTab,
     })
 )(Deposit);

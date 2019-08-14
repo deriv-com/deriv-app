@@ -33,6 +33,7 @@ export default class UIStore extends BaseStore {
     // @observable is_purchase_confirm_on    = false;
     @observable is_services_error_visible             = false;
     @observable is_unsupported_contract_modal_visible = false;
+    @observable is_account_signup_modal_visible       = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -66,6 +67,8 @@ export default class UIStore extends BaseStore {
     @observable is_app_blurred   = false;
     @observable is_route_blurred = false;
     @observable show_positions_toggle = true;
+
+    @observable active_cashier_tab = 'deposit';
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -236,8 +239,16 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleCashierModal() {
+    toggleCashierModal(active_tab) {
+        if (/^(deposit|withdraw)$/.test(active_tab)) {
+            this.setCashierActiveTab(active_tab);
+        }
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
+    }
+
+    @action.bound
+    setCashierActiveTab(tab = 'deposit') {
+        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
     }
 
     @action.bound
@@ -329,5 +340,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_unsupported_contract_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
+        this.is_account_signup_modal_visible = state_change;
     }
 }

@@ -1,7 +1,80 @@
 /** @define cashier */
 .cashier {
-    &__iframe {
-        height: 70%;
+    &__content {
         width: 100%;
+    }
+    &__error {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        font-size: 1.6rem;
+        align-self: center;
+    }
+}
+
+/** @define withdraw */
+.withdraw {
+    &__text {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        font-size: 1.6rem;
+    }
+    &__wrapper {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    &__verify-button {
+        margin-top: 3.2rem;
+        height: 4rem;
+
+        &-text {
+            font-size: 1.4rem;
+        }
+    }
+    &__icon {
+        margin-top: 8rem;
+        margin-bottom: 1.6rem;
+    }
+    &__email {
+        &-sent {
+            width: 40rem;
+            margin: auto;
+
+            &-title {
+                @include themify($themes) {
+                    color: themed('text_primary_color');
+                }
+                font-size: 1.6rem;
+                font-weight: bold;
+                margin-bottom: 0.8rem;
+                line-height: 1.5;
+
+                &-sub {
+                    font-size: 1.4rem;
+                }
+            }
+            &-text {
+                @include themify($themes) {
+                    color: themed('text_primary_color');
+                }
+            }
+        }
+        &-resend, &-sent {
+            &-text {
+                font-size: 1.4rem;
+                line-height: 1.43;
+            }
+        }
+        &-resend {
+            margin-top: 4rem;
+
+            &-text {
+                color: $COLOR_ORANGE;
+                font-weight: bold;
+                text-decoration: none;
+            }
+        }
     }
 }

@@ -97,10 +97,13 @@ export const getEndTime = (contract_info) => {
         is_expired,
         is_path_dependent,
         sell_time,
+        status,
         tick_count: is_tick_contract,
     } = contract_info;
 
-    if (!is_expired && !isUserSold(contract_info)) return undefined;
+    const is_finished = is_expired && (status !== 'open');
+
+    if (!is_finished && !isUserSold(contract_info)) return undefined;
 
     if (isUserSold(contract_info)) {
         return (sell_time > date_expiry) ?

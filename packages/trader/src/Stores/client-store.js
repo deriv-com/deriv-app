@@ -258,7 +258,6 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
-        this.root_store.ui.is_app_blurred = false;
     }
 
     /**

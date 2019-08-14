@@ -28,9 +28,9 @@ const modal_content = [
 ];
 
 const ToggleSettings = ({
-    hideFullBlur,
+    enableApp,
     is_settings_visible,
-    showFullBlur,
+    disableApp,
     toggleSettings,
 }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
@@ -39,7 +39,6 @@ const ToggleSettings = ({
     return (
         <React.Fragment>
             <a
-                href='javascript:;'
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >
@@ -62,9 +61,9 @@ const ToggleSettings = ({
 };
 
 ToggleSettings.propTypes = {
-    hideFullBlur       : PropTypes.func,
+    disableApp         : PropTypes.func,
+    enableApp          : PropTypes.func,
     is_settings_visible: PropTypes.bool,
-    showFullBlur       : PropTypes.func,
     toggleSettings     : PropTypes.func,
 };
 

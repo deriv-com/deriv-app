@@ -7,5 +7,6 @@ export default class RootStore {
         this.toolbar = new ToolbarStore(ws);
 
         this.core = core;
+        this.ws = ws;
     }
 }

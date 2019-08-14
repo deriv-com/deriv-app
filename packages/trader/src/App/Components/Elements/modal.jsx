@@ -18,7 +18,6 @@ class ModalElement extends React.PureComponent {
     componentDidMount = () => {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.el.classList.add('modal');
-        this.props.showFullBlur();
         this.state.modal_root.appendChild(this.el);
     };
 
@@ -30,7 +29,6 @@ class ModalElement extends React.PureComponent {
 
     handleClickOutside = (event) => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
-            this.props.hideFullBlur();
             this.props.toggleModal();
         }
     };
@@ -82,7 +80,6 @@ ModalElement.propTypes = {
 const Modal = ({
     className,
     header,
-    hideFullBlur,
     is_open,
     modal_content,
     selected_index,
@@ -105,7 +102,6 @@ const Modal = ({
         <ModalElement
             className={className}
             header={header}
-            hideFullBlur={hideFullBlur}
             is_open={is_open}
             modal_content={modal_content}
             selected_index={selected_index}

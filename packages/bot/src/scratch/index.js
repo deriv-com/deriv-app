@@ -42,6 +42,7 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         });
 
         Blockly.derivWorkspace = workspace;
+      
         // Keep in memory to allow category browsing
         workspace.initial_toolbox_xml = toolbox_xml;
         

@@ -59,7 +59,7 @@ describe('<BinaryLink />', () => {
                 <BinaryLink to='/wrongRoute' />
             );
         } catch (e) {
-            error = e
+            error = e;
         }
         expect(error).to.be.instanceOf(Error);
     });

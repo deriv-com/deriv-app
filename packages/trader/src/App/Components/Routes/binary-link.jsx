@@ -23,7 +23,7 @@ const BinaryLink = ({ active_class, to, children, ...props }) => {
                 {children}
             </NavLink>
             :
-            <a href='javascript:;' {...props}>
+            <a {...props}>
                 {children}
             </a>
     );

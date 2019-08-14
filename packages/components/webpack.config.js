@@ -44,16 +44,16 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    },    
+                    },
                     {
                         loader: "sass-resources-loader",
                         options: {
                           resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }     
+                    }
                 ]
-            },  
-            {  
+            },
+            {
                 test: /\.svg$/,
                 use: [
                     {
@@ -82,7 +82,7 @@ module.exports = {
                     options: {
                         fix: true
                     },
-                } :{}),                
+                } :{}),
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -90,7 +90,7 @@ module.exports = {
             },
         ],
     },
-    plugins: [       
+    plugins: [
         new MiniCssExtractPlugin({ filename: 'deriv-components.css' }),
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
@@ -113,6 +113,6 @@ module.exports = {
             root: 'mobxReact',
         },
         'babel-polyfill': 'babel-polyfill',
-       
+
     },
 }

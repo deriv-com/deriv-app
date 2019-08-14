@@ -23,9 +23,10 @@ export default class FlyoutStore {
         this.block_listeners = [];
         this.block_workspaces = [];
         
-        this.flyout_content.replace(xml_list);
-        this.setVisibility(true);
+        this.flyout_content = observable([]);
+        this.flyout_content.push(...xml_list);
         this.setFlyoutWidth(xml_list);
+        this.setVisibility(true);
     }
 
     /**
@@ -37,7 +38,7 @@ export default class FlyoutStore {
         this.is_visible = is_visible;
 
         if (!is_visible) {
-            this.flyout_content.clear();
+            this.flyout_content = observable([]);
         }
     }
 

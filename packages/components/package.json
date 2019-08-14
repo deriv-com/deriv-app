@@ -18,7 +18,7 @@
     "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
-    "build-travis": "rimraf lib && webpack --mode=production --optimize-minimize",
+    "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "test": "jest --all",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",

@@ -10,7 +10,7 @@
     "start": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run start ;}; f",
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
-    "build-travis": "lerna exec -- npm run build-travis",
+    "build:travis": "lerna exec -- npm run build:travis",
     "test": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test ;}; f",
     "deploy": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy ;}; f",
     "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ;}; f",

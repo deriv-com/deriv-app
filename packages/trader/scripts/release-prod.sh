@@ -15,7 +15,7 @@ function confirm {
     echo "${RESET}"
 }
 
-cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
+cd $(git rev-parse --show-toplevel) &&
 
 if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
     echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be deriv-app."
@@ -32,6 +32,10 @@ if [[ ! $(git rev-parse --abbrev-ref HEAD) =~ master ]]; then
     exit 1
 fi
 
+if [[ -z $(command -v lerna) ]]; then
+    echo ${RED}"  > ERROR: "${RESET}"Please install lerna globally."
+fi
+
 message "Creating CNAME" &&
 echo "deriv.app" > ./scripts/CNAME &&
 
@@ -42,7 +46,7 @@ then
 fi
 
 message "Installing packages" &&
-npm ci &&
+lerna bootstrap --ci && lerna run build &&
 
 confirm "Please confirm release to PRODUCTION" &&
 if [[ $REPLY =~ ^[Nn]$ ]]

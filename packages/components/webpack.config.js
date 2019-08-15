@@ -1,8 +1,11 @@
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
+const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const path                      = require('path');
 
-module.exports = (env, argv) => ({
+const isServe = process.env.BUILD_MODE === 'serve';
+
+module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
@@ -33,7 +36,7 @@ module.exports = (env, argv) => ({
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: { sourceMap: true },
@@ -41,14 +44,14 @@ module.exports = (env, argv) => ({
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    },
+                    },    
                     {
                         loader: "sass-resources-loader",
                         options: {
                           resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }                    
-               ]
+                    }     
+                ]
             },  
             {  
                 test: /\.svg$/,
@@ -71,7 +74,7 @@ module.exports = (env, argv) => ({
                     },
                 ],
             },
-           (argv.mode === 'production' ? {
+        ( !isServe ? {
                     enforce: "pre",
                     test: /\.(js|jsx)$/,
                     exclude: [/node_modules/],
@@ -79,16 +82,37 @@ module.exports = (env, argv) => ({
                     options: {
                         fix: true
                     },
-                  } :{}),                
+                } :{}),                
             {
-                  test   : /\.(js|jsx)$/,
+                test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 loader : 'babel-loader',
             },
         ],
     },
-    plugins: [
+    plugins: [       
+        new MiniCssExtractPlugin({ filename: 'deriv-components.css' }),
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],
-});
+    externals: {
+        mobx: 'mobx',
+        react: {
+            root: 'React',
+            commonjs: 'react',
+            commonjs2: 'react',
+        },
+        'react-dom': {
+            commonjs: 'react-dom',
+            commonjs2: 'react-dom',
+            root: 'ReactDOM',
+        },
+        'mobx-react': {
+            commonjs: 'mobx-react',
+            commonjs2: 'mobx-react',
+            root: 'mobxReact',
+        },
+        'babel-polyfill': 'babel-polyfill',
+       
+    },
+}

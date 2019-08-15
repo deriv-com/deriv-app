@@ -1,6 +1,8 @@
-/* stylelint-disable color-no-hex */
+/*------------------------------------*
+ *  # Constants
+ *------------------------------------*/
 
-// Basic
+/* stylelint-disable color-no-hex */
 $COLOR_BLACK      : #000000;
 $COLOR_GREEN_1    : #39b19d;
 $COLOR_GREEN_2    : #2d9f93;
@@ -11,7 +13,6 @@ $COLOR_PURPLE     : #4f60ae;
 $COLOR_RED        : #e31c4b;
 $COLOR_SKY_BLUE   : #2196f3;
 $COLOR_WHITE      : #ffffff;
-
 // Light theme
 $COLOR_LIGHT_BLACK_1        : rgba(0, 0, 0, 0.8);
 $COLOR_LIGHT_BLACK_2        : rgba(0, 0, 0, 0.4);
@@ -25,7 +26,6 @@ $COLOR_LIGHT_GRAY_2         : rgba(153, 156, 172, 0.32);
 $COLOR_LIGHT_GREEN_GRADIENT : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(0, 148, 117, 0.16));
 $COLOR_LIGHT_RED_GRADIENT   : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(227, 28, 75, 0.16));
 $COLOR_LIGHT_WHITE_GRADIENT : linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-
 // Dark theme
 $COLOR_DARK_BLACK_GRADIENT : linear-gradient(to right, rgba(16, 19, 32, 1), rgba(16, 19, 32, 0));
 $COLOR_DARK_BLUE_1         : #0b0e18;
@@ -43,3 +43,16 @@ $COLOR_DARK_RED_GRADIENT   : linear-gradient(to top, rgba(16, 19, 32, 0), rgba(2
 $COLOR_DARK_GRAY_1         : #282a37;
 $COLOR_DARK_GRAY_2         : #303342;
 $COLOR_DARK_GRAY_3         : #555975;
+/* stylelint-enable color-no-hex */
+
+$BORDER_RADIUS: 4px;
+
+$MAX_CONTAINER_WIDTH: 1440px;
+
+$POSITIONS_DRAWER_WIDTH  : 240px;
+$POSITIONS_DRAWER_MARGIN : 8px;
+
+$HEADER_HEIGHT: 48px;
+$FOOTER_HEIGHT: 35px;
+
+$SIDEBAR_WIDTH: 240px;

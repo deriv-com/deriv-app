@@ -14,6 +14,7 @@
     "start": "rimraf utils && npm run test && webpack --mode=production --progress --watch",
     "serve": "rimraf utils && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "build": "rimraf utils && webpack --mode=production --optimize-minimize --progress",
+    "build:travis": "rimraf utils && webpack --mode=production --optimize-minimize",
     "test": "jest --all",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",

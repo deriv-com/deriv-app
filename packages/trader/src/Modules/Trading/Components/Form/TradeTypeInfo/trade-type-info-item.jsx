@@ -2,8 +2,8 @@ import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
 import { Scrollbars }     from 'tt-react-custom-scrollbars';
+import Button             from 'deriv-components/lib/button';
 import Icon               from 'Assets/icon.jsx';
-import Button             from 'App/Components/Form/button.jsx';
 import { localize }       from 'App/i18n';
 
 const TradeTypeInfoItem = ({

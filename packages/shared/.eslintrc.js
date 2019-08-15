@@ -36,7 +36,6 @@ module.exports = {
         'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
         'import/prefer-default-export'      : 0,
         'import/extensions'                 : ['error', 'never', { 'jsx': 'always', 'json': 'always' }],
-
     },
     extends: [
         'airbnb-base',

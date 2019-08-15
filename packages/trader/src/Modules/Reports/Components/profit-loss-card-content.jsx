@@ -18,7 +18,7 @@ const ProfitLossCardContent = ({
             <div className='pl-card__item__header'>
                 { is_sold ? <Localize i18n_default_text='Profit/Loss:' /> : <Localize i18n_default_text='Potential profit/loss:' /> }
             </div>
-            <div className={classNames(
+            <div id='dt_profit_loss_label' className={classNames(
                 'pl-card__item__body', {
                     'pl-card__item__body--is-crypto': isCryptocurrency(currency),
                     'pl-card__item__body--loss'     : +pl_value < 0,
@@ -43,7 +43,7 @@ const ProfitLossCardContent = ({
             <div className='pl-card__item__header'>
                 { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
             </div>
-            <div className='pl-card__item__body'>
+            <div id='dt_payout_label' className='pl-card__item__body'>
                 <Money currency={currency} amount={payout} />
                 <div className={classNames(
                     'pl-card__indicative--movement', {

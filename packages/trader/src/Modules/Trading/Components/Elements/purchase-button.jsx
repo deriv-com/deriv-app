@@ -85,4 +85,4 @@ PurchaseButton.propTypes = {
     type                : PropTypes.string,
 };
 
-export default React.memo(PurchaseButton);
+export default PurchaseButton;

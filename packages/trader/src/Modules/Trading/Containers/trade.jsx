@@ -52,16 +52,12 @@ class Trade extends React.Component {
                         has_progress={false}
                         should_load={true}
                     />
-                    { this.props.symbol &&
-                        <React.Suspense fallback={<UILoader />} >
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            <ChartTrade
-                                is_trade_page
-                                is_static_chart={this.props.is_static_chart}
-                                symbol={this.props.symbol}
-                            />
-                        </React.Suspense>
-                    }
+
+                    <React.Suspense fallback={<UILoader />} >
+                        <ChartLoader is_visible={this.props.is_chart_loading} />
+                        <ChartTrade />
+                    </React.Suspense>
+
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
                 </div>
@@ -89,7 +85,6 @@ export default connect(
     ({ modules, ui }) => ({
 
         is_contract_mode: modules.smart_chart.is_contract_mode,
-        is_static_chart : modules.smart_chart.is_static_chart,
 
         is_chart_loading: modules.trade.is_chart_loading,
         is_market_closed: modules.trade.is_market_closed,
@@ -97,7 +92,6 @@ export default connect(
         onMount         : modules.trade.onMount,
         onUnmount       : modules.trade.onUnmount,
         purchase_info   : modules.trade.purchase_info,
-        symbol          : modules.trade.symbol,
 
         is_mobile: ui.is_mobile,
     })
@@ -232,7 +226,6 @@ class ChartTradeClass extends React.Component {
                 clearChart={false}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
-                isStaticChart={this.props.is_static_chart}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
                 <ChartMarkers />
@@ -257,11 +250,11 @@ const ChartTrade = connect(
             position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
         },
-
-        exportLayout      : modules.trade.exportLayout,
-        setChartStatus    : modules.trade.setChartStatus,
-        is_contract_mode  : modules.smart_chart.is_contract_mode,
-        chart_layout      : modules.trade.chart_layout,
+        symbol           : modules.trade.symbol,
+        exportLayout     : modules.trade.exportLayout,
+        setChartStatus   : modules.trade.setChartStatus,
+        is_contract_mode : modules.smart_chart.is_contract_mode,
+        chart_layout     : modules.trade.chart_layout,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,

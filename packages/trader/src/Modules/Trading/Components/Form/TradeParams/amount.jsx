@@ -50,7 +50,7 @@ const Amount = ({
             error_messages={validation_errors.amount}
             fractional_digits={getDecimalPlaces(currency)}
             id='amount'
-            inline_prefix={is_single_currency ? currency : 'USD'}
+            inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
             is_hj_whitelisted

@@ -148,12 +148,6 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_single_currency() {
-        // eslint-disable-next-line
-        console.log(this.currencies_list)
-        Object.keys(this.currencies_list).map(type => {
-            // eslint-disable-next-line
-            console.log(this.currencies_list[type].length)
-        })
         return Object.keys(this.currencies_list).map(type => Object.values(this.currencies_list[type]).length)
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }

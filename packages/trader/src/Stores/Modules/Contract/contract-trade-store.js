@@ -2,8 +2,7 @@ import {
     action,
     computed,
     extendObservable,
-    observable, 
-    toJS}              from 'mobx';
+    observable }              from 'mobx';
 import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { localize }           from 'App/i18n';
@@ -24,6 +23,11 @@ import BaseStore              from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
+
+    // Chart specific observables
+    @observable granularity;
+    @observable chart_type;
+
     @observable contract_id;
     @observable contract_info = observable.object({});
     @observable digits_info   = observable.object({});
@@ -41,6 +45,16 @@ export default class ContractTradeStore extends BaseStore {
     // -------------------
     // ----- Actions -----
     // -------------------
+    @action.bound
+    updateChartType(type) {
+        this.chart_type = type;
+    }
+
+    @action.bound
+    updateGranularity(granularity) {
+        this.granularity = granularity;
+    }
+
     @action.bound
     drawChart() {
         const {
@@ -106,7 +120,6 @@ export default class ContractTradeStore extends BaseStore {
 
     @observable contracts = [];
 
-
     @computed
     get markers_array() {
         return this.contracts.reduce((array, contract) => {
@@ -117,10 +130,10 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get barriers_array() {
-        return [ ];
-        const length = this.contracts.length;
-        const barriers = length > 0 ? this.contracts[length - 1].barriers_array  : [];
-        return toJS(barriers);
+        return [];
+        // const length = this.contracts.length;
+        // const barriers = length > 0 ? this.contracts[length - 1].barriers_array  : [];
+        // return toJS(barriers);
     }
 
     @action.bound

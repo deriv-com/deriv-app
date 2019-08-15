@@ -14,21 +14,20 @@ import { isDigitTradeType }  from '../Helpers/digits';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
-// function log_diff(path, a, b, n) {
-//     if (n <= 0) return;
-//     if (!a || !b) {
-//         if(a != b) console.log(path + " -> ", a, b);
-//         return;
-//     }
-//     Object.keys(a).forEach(key => {
-//         if (a[key] !== b[key]) {
-//             console.warn(path + "." + key + ' -> ', a[key], b[key]);
-//         } else if (typeof a[key] === 'object') {
-//             log_diff(path + "." + key, a[key], b[key], n - 1);
-//         }
-//     });
-// }
-
+function log_diff(path, a, b, n) {
+    if (n <= 0) return;
+    if (!a || !b) {
+        if(a != b) console.log(path + " -> ", a, b);
+        return;
+    }
+    Object.keys(a).forEach(key => {
+        if (a[key] !== b[key]) {
+            console.warn(path + "." + key + ' -> ', a[key], b[key]);
+        } else if (typeof a[key] === 'object') {
+            log_diff(path + "." + key, a[key], b[key], n - 1);
+        }
+    });
+}
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -60,7 +59,6 @@ class Trade extends React.Component {
                             <ChartLoader is_visible={is_chart_visible} />
                             <ChartTrade
                                 chart_id={this.props.chart_id}
-                                chart_type={this.props.chart_type}
                                 end_epoch={this.props.end_epoch}
                                 is_trade_page
                                 is_static_chart={this.props.is_static_chart}
@@ -98,7 +96,6 @@ export default connect(
         onCloseContract: modules.contract_trade.onCloseContract,
 
         chart_id        : modules.smart_chart.chart_id,
-        chart_type      : modules.smart_chart.chart_type,
         scroll_to_epoch : modules.smart_chart.scroll_to_left_epoch,
         end_epoch       : modules.smart_chart.end_epoch,
         start_epoch     : modules.smart_chart.start_epoch,
@@ -242,10 +239,10 @@ class ChartTradeClass extends React.Component {
         />
     );
 
-    // componentDidUpdate(prevProps) {
-    //     log_diff('', this.props, prevProps, 5);
-    //     console.warn('---------------------------------------');
-    // }
+    componentDidUpdate(prevProps) {
+        log_diff('', this.props, prevProps, 5);
+        console.warn('---------------------------------------');
+    }
 
     topWidgets = () => (<ChartTopWidgets />);
     bottomWidgets = () => (<ChartBottomWidgets />);
@@ -294,6 +291,7 @@ const ChartTrade = connect(
         is_socket_opened: common.is_socket_opened,
 
         contract_type : modules.trade.contract_type,
+        chart_type    : modules.contract_trade.chart_type,
         barriers_array: modules.contract_trade.barriers_array,
 
         settings: {
@@ -313,11 +311,9 @@ const ChartTrade = connect(
         onUnmount           : modules.smart_chart.onUnmount,
         should_clear_chart  : modules.smart_chart.should_clear_chart,
         chart_layout        : modules.trade.chart_layout,
-        should_export_layout: modules.smart_chart.should_export_layout,
-        should_import_layout: modules.smart_chart.should_import_layout,
-        updateChartType     : modules.smart_chart.updateChartType,
-        updateGranularity   : modules.smart_chart.updateGranularity,
-        granularity         : modules.smart_chart.granularity,
+        updateChartType     : modules.contract_trade.updateChartType,
+        updateGranularity   : modules.contract_trade.updateGranularity,
+        granularity         : modules.contract_trade.granularity,
         is_mobile           : ui.is_mobile,
 
         wsForget      : modules.trade.wsForget,

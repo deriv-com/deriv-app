@@ -14,7 +14,6 @@ import { connect }       from 'Stores/connect';
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
 import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
-import { symbolChange }        from '../../SmartChart/Helpers/symbol';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -181,7 +180,6 @@ class Chart extends React.Component {
         <TopWidgets
             InfoBox={this.props.InfoBox}
             is_title_enabled={false}
-            onSymbolChange={symbolChange(this.props.onSymbolChange)}
         />
     );
 
@@ -239,7 +237,6 @@ Chart.propTypes = {
     is_static_chart : PropTypes.bool,
     margin          : PropTypes.number,
     markers_array   : PropTypes.array,
-    onSymbolChange  : PropTypes.func,
     replay_controls : PropTypes.object,
     scroll_to_epoch : PropTypes.number,
     settings        : PropTypes.object,

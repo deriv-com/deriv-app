@@ -399,3 +399,9 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree) {
 
     this.height_ = this.table.offsetHeight;
 };
+
+Blockly.Toolbox.prototype.refreshCategory = function() {
+    const category = this.getSelectedItem();
+
+    this.setSelectedItem(category, false);
+};

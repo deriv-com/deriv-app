@@ -171,9 +171,7 @@ export default class FlyoutStore {
 
     static onBackClick() {
         const toolbox = Blockly.derivWorkspace.toolbox_;
-        const category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
-
-        toolbox.setSelectedItem(category, false);
+        toolbox.refreshCategory();
     }
 
     /**
@@ -289,6 +287,11 @@ export default class FlyoutStore {
             const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
 
             block.moveBy(last_block_xy.x, y);
+        }
+
+        if (/^procedures_/.test(block_node.getAttribute('type'))) {
+            const toolbox = Blockly.derivWorkspace.toolbox_;
+            toolbox.refreshCategory();
         }
 
         Blockly.derivWorkspace.centerOnBlock(block.id, false);

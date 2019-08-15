@@ -1,5 +1,4 @@
 import {
-    toJS,
     action,
     extendObservable,
     observable }              from 'mobx';
@@ -16,7 +15,6 @@ import {
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import BarrierStore from '../../../../smartcharts/src/store/BarrierStore';
 
 export default class ContractStore {
 
@@ -89,7 +87,7 @@ export default class ContractStore {
                 main_barrier.updateBarriers(
                     barrier || high_barrier,
                     low_barrier,
-                )
+                );
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
         }

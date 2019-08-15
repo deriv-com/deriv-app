@@ -5,8 +5,6 @@ import {
 
 export const getCurrenciesAsync = async(currency) => {
     const response = await WS.payoutCurrencies();
-    console.log(currency)
-    console.log('hi')
 
     const currencies_list  = buildCurrenciesList(response.payout_currencies);
     const default_currency = getDefaultCurrency(currencies_list, currency);

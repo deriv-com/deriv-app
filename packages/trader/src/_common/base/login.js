@@ -1,3 +1,4 @@
+const website_name        = require('App/Constants/app-config').website_name;
 const Client              = require('./client_base');
 const getElementById      = require('../common_functions').getElementById;
 const getLanguage         = require('../language').get;
@@ -7,7 +8,6 @@ const LocalStore          = require('../storage').LocalStore;
 const urlForCurrentDomain = require('../url').urlForCurrentDomain;
 const domain_app_ids      = require('../../config').domain_app_ids;
 const getAppId            = require('../../config').getAppId;
-const website_name        = require('../../App/Constants/app-config').website_name;
 
 const Login = (() => {
     const redirectToLogin = () => {
@@ -23,16 +23,16 @@ const Login = (() => {
         const signup_device      = LocalStore.get('signup_device') || (isMobile() ? 'mobile' : 'desktop');
         const date_first_contact = LocalStore.get('date_first_contact');
         const marketing_queries  = `&signup_device=${signup_device}${date_first_contact ? `&date_first_contact=${date_first_contact}` : ''}`;
-        const default_deriv_url  = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const default_login_url  = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {
             return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}`;
         }
         if (getAppId === domain_app_ids['deriv.app']) {
-            return default_deriv_url;
+            return default_login_url;
         }
 
-        return urlForCurrentDomain(default_deriv_url);
+        return urlForCurrentDomain(default_login_url);
     };
 
     // TODO: update this to handle logging into /app/ url

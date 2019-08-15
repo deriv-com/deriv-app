@@ -1,3 +1,4 @@
+const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const getLanguage      = require('../language').get;
@@ -8,7 +9,6 @@ const isEmptyObject    = require('../utility').isEmptyObject;
 const PromiseClass     = require('../utility').PromiseClass;
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
-const website_name     = require('../../App/Constants/app-config').website_name;
 
 /*
  * An abstraction layer over native javascript WebSocket,

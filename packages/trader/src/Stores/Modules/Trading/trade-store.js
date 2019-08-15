@@ -274,7 +274,8 @@ export default class TradeStore extends BaseStore {
 
         // save trade_chart_symbol upon user change
         if (name === 'symbol' && value) {
-            this.root_store.modules.smart_chart.trade_chart_symbol = value;
+            // TODO: Clear the contracts in contract-trade-store
+            // this.root_store.modules.smart_chart.trade_chart_symbol = value;
         }
 
         if (name === 'currency') {

@@ -124,11 +124,11 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onUnmount = () => {
-        this.symbol = null;
-        this.trade_chart_layout = null;
-        this.should_import_layout = false;
+        // this.symbol = null;
+        // this.trade_chart_layout = null;
+        // this.should_import_layout = false;
         // this.setIsChartLoading(false);
-        this.cleanupContractChartView();
+        // this.cleanupContractChartView();
     };
 
     // --------- Set Contract Scroll to Left ---------

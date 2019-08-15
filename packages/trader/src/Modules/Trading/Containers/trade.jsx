@@ -1,3 +1,4 @@
+
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import UILoader              from 'App/Components/Elements/ui-loader.jsx';
@@ -55,12 +56,8 @@ class Trade extends React.Component {
                         <React.Suspense fallback={<UILoader />} >
                             <ChartLoader is_visible={this.props.is_chart_loading} />
                             <ChartTrade
-                                chart_id={this.props.chart_id}
-                                end_epoch={this.props.end_epoch}
                                 is_trade_page
                                 is_static_chart={this.props.is_static_chart}
-                                scroll_to_epoch={this.props.scroll_to_epoch}
-                                start_epoch={this.props.start_epoch}
                                 symbol={this.props.symbol}
                             />
                         </React.Suspense>
@@ -90,12 +87,7 @@ class Trade extends React.Component {
 
 export default connect(
     ({ modules, ui }) => ({
-        onCloseContract: modules.contract_trade.onCloseContract,
 
-        chart_id        : modules.smart_chart.chart_id,
-        scroll_to_epoch : modules.smart_chart.scroll_to_left_epoch,
-        end_epoch       : modules.smart_chart.end_epoch,
-        start_epoch     : modules.smart_chart.start_epoch,
         is_contract_mode: modules.smart_chart.is_contract_mode,
         is_static_chart : modules.smart_chart.is_static_chart,
 
@@ -147,44 +139,17 @@ const ChartBottomWidgets = connect(
 )(LazyBottomDigits);
 
 // ---- InfoBox for chart
-const LazyTopWidgets = ({
-    contract_info,
-    error_message,
-    is_contract_mode,
-    removeError,
-    onCloseContract,
-    is_title_enabled,
-    onSymbolChange,
-}) => (
+const LazyTopWidgets = ({ onSymbolChange }) => (
     <TopWidgets
-        InfoBox={
-            <Lazy
-                ctor={() => import(/* webpackChunkName: "info-box", webpackPrefetch: true */'Modules/Contract/Components/InfoBox')}
-                should_load={true}
-                has_progress={false}
-                is_trade_page
-                contract_info={contract_info}
-                error_message={error_message}
-                is_contract_mode={is_contract_mode}
-                removeError={removeError}
-                onClose={onCloseContract}
-            />
-
-        }
-        is_title_enabled={is_title_enabled}
+        InfoBox={null}
+        is_title_enabled={true}
         onSymbolChange={symbolChange(onSymbolChange)}
     />
 );
 
 const ChartTopWidgets = connect(
     ({ modules }) => ({
-        contract_info   : modules.contract_trade.contract_info,
-        error_message   : modules.contract_trade.error_message,
-        is_contract_mode: modules.smart_chart.is_contract_mode,
-        removeError     : modules.contract_trade.removeErrorMessage,
-        onCloseContract : modules.contract_trade.onCloseContract,
-        is_title_enabled: modules.smart_chart.is_title_enabled,
-        onSymbolChange  : modules.trade.onChange,
+        onSymbolChange: modules.trade.onChange,
     })
 )(LazyTopWidgets);
 
@@ -224,9 +189,6 @@ import ChartMarker             from '../../SmartChart/Components/Markers/marker.
 setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
 class ChartTradeClass extends React.Component {
-    componentDidMount() { this.props.onMount(); }
-
-    componentWillUnmount() { this.props.onUnmount(); }
 
     chartControlsWidgets = () => (
         <ControlWidgets
@@ -254,8 +216,7 @@ class ChartTradeClass extends React.Component {
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
-                endEpoch={this.props.end_epoch}
-                id={this.props.chart_id}
+                id='trade'
                 isMobile={this.props.is_mobile}
                 enabledNavigationWidget={this.props.is_contract_mode}
                 granularity={this.props.granularity}
@@ -265,12 +226,10 @@ class ChartTradeClass extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 showLastDigitStats={should_show_last_digit_stats}
-                startEpoch={this.props.start_epoch}
-                scrollToEpoch={this.props.scroll_to_epoch}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
-                clearChart={this.props.should_clear_chart}
+                clearChart={false}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 isStaticChart={this.props.is_static_chart}
@@ -302,10 +261,6 @@ const ChartTrade = connect(
         exportLayout      : modules.trade.exportLayout,
         setChartStatus    : modules.trade.setChartStatus,
         is_contract_mode  : modules.smart_chart.is_contract_mode,
-        is_title_enabled  : modules.smart_chart.is_title_enabled,
-        onMount           : modules.smart_chart.onMount,
-        onUnmount         : modules.smart_chart.onUnmount,
-        should_clear_chart: modules.smart_chart.should_clear_chart,
         chart_layout      : modules.trade.chart_layout,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,

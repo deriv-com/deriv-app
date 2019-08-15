@@ -23,17 +23,17 @@ if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
 fi
 
 if [[ ! $(git config --get remote.production.url) =~ binary-com/deriv-app-production ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"remote 'production' should be pointing to binary-com/deriv-app-production."
+    echo "$RED  > ERROR: $RESET remote 'production' should be pointing to binary-com/deriv-app-production."
     exit 1
 fi
 
 if [[ ! $(git rev-parse --abbrev-ref HEAD) =~ master ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"Current working branch should be master."
+    echo "$RED  > ERROR: $RESET Current working branch should be master."
     exit 1
 fi
 
 if [[ -z $(command -v lerna) ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"Please install lerna globally."
+    echo "$RED  > ERROR: $RESET Please install lerna globally."
 fi
 
 message "Creating CNAME" &&

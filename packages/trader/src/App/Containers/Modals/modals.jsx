@@ -1,11 +1,12 @@
-import React       from 'react';
-import { connect } from 'Stores/connect';
-import { urlFor }  from '_common/url';
-import 'Sass/app/modules/modals.scss';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { urlFor }               from '_common/url';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
+import { connect }              from 'Stores/connect';
+import 'Sass/app/modules/modals.scss';
 
 const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
 
@@ -85,6 +86,22 @@ const Modals = ({
             <AccountSignupModal />
         </React.Fragment>
     );
+};
+
+Modals.propTypes = {
+    clearPurchaseInfo                    : PropTypes.any,
+    is_denial_of_service_modal_visible   : PropTypes.any,
+    is_market_unavailable_visible        : PropTypes.any,
+    is_services_error_visible            : PropTypes.any,
+    is_unsupported_contract_modal_visible: PropTypes.any,
+    resetPreviousSymbol                  : PropTypes.any,
+    resetPurchase                        : PropTypes.any,
+    services_error                       : PropTypes.any,
+    setHasOnlyForwardingContracts        : PropTypes.any,
+    switchAccount                        : PropTypes.any,
+    toggleServicesErrorModal             : PropTypes.any,
+    toggleUnsupportedContractModal       : PropTypes.any,
+    virtual_account_loginid              : PropTypes.any,
 };
 
 export default connect(({ ui, client, modules, common }) => ({

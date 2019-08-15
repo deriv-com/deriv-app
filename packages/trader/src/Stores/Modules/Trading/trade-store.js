@@ -320,6 +320,8 @@ export default class TradeStore extends BaseStore {
                 }
                 if (response.buy) {
                     // this.smart_chart.switchToContractMode();
+                    // this.smart_chart.setContractMode(true);
+
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],
@@ -682,10 +684,32 @@ export default class TradeStore extends BaseStore {
         this.purchase_info = {};
         WS.forgetAll('proposal');
         this.resetErrorServices();
-        this.restoreTradeChart();
+        // this.restoreTradeChart();
         this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
+
+        if (this.prev_chart_layout) {
+            this.prev_chart_layout.is_used = false;
+        }
+    }
+
+    prev_chart_layout = null;
+    get chart_layout() {
+        let layout = null;
+        if (this.prev_chart_layout && this.prev_chart_layout.is_used === false) {
+            layout = this.prev_chart_layout;
+        }
+        return layout;
+    }
+
+    @action.bound
+    exportLayout(layout) {
+        delete layout.previousMaxTicks; // TODO: fix it in smartcharts
+        this.prev_chart_layout = layout;
+        this.prev_chart_layout.isDone = () => {
+            this.prev_chart_layout.is_used = true;
+        };
     }
 
     // ---------- WS ----------

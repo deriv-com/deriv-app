@@ -52,12 +52,12 @@ export default class SmartChartStore extends BaseStore {
         granularity = 0,
     ) {
 
-        if (!is_from_other_position) this.saveAndClearTradeChartLayout(null);
-        this.setContractMode(true);
-        if (!is_from_positions) {
-            this.updateGranularity(granularity);
-            this.updateChartType(chart_type);
-        }
+        // if (!is_from_other_position) this.saveAndClearTradeChartLayout(null);
+        // this.setContractMode(true);
+        // if (!is_from_positions) {
+        //     this.updateGranularity(granularity);
+        //     this.updateChartType(chart_type);
+        // }
     }
 
     @action.bound
@@ -117,9 +117,9 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     onMount = () => {
         // remove any barriers and markers before chart is ready
-        if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
-            this.applySavedTradeChartLayout();
-        }
+        // if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
+        // this.applySavedTradeChartLayout();
+        // }
     };
 
     @action.bound

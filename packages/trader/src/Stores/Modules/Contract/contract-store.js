@@ -16,6 +16,7 @@ import {
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import BarrierStore from '../../../../smartcharts/src/store/BarrierStore';
 
 export default class ContractStore {
 
@@ -55,8 +56,8 @@ export default class ContractStore {
         this.end_time = getEndTime(this.contract_info);
 
         // TODO: don't update the barriers & markers if they are not changed
-        this.barriers_array = this.createBarriersArray(
-            this.contract_info,
+        this.updateBarriersArray(
+            contract_info,
             this.root_store.ui.is_dark_mode_on
         );
         this.markers_array = createChartMarkers(this.contract_info);
@@ -71,6 +72,26 @@ export default class ContractStore {
                 this.digits_info,
                 getDigitInfo(this.digits_info, this.contract_info)
             );
+        }
+    }
+
+    updateBarriersArray(contract_info, is_dark_mode) {
+        if   (!this.barriers_array.length) {
+            this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
+            return;
+        }
+
+        const main_barrier = this.barriers_array[0];
+        if (contract_info) {
+            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+
+            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+                main_barrier.updateBarriers(
+                    barrier || high_barrier,
+                    low_barrier,
+                )
+                main_barrier.updateBarrierColor(is_dark_mode);
+            }
         }
     }
 
@@ -92,7 +113,7 @@ export default class ContractStore {
                 );
 
                 main_barrier.updateBarrierShade(true, contract_type);
-                result = [toJS(main_barrier)];
+                result = [ main_barrier ];
             }
         }
         return result;

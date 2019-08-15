@@ -2,7 +2,8 @@ import {
     action,
     computed,
     extendObservable,
-    observable }              from 'mobx';
+    observable, 
+    toJS}              from 'mobx';
 import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { localize }           from 'App/i18n';
@@ -116,8 +117,10 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get barriers_array() {
+        return [ ];
         const length = this.contracts.length;
-        return length > 0 ? this.contracts[length - 1].barriers_array  : [];
+        const barriers = length > 0 ? this.contracts[length - 1].barriers_array  : [];
+        return toJS(barriers);
     }
 
     @action.bound

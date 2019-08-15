@@ -1,4 +1,3 @@
-import PropTypes             from 'prop-types';
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import UILoader              from 'App/Components/Elements/ui-loader.jsx';
@@ -14,20 +13,20 @@ import { isDigitTradeType }  from '../Helpers/digits';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
-function log_diff(path, a, b, n) {
-    if (n <= 0) return;
-    if (!a || !b) {
-        if(a != b) console.log(path + " -> ", a, b);
-        return;
-    }
-    Object.keys(a).forEach(key => {
-        if (a[key] !== b[key]) {
-            console.warn(path + "." + key + ' -> ', a[key], b[key]);
-        } else if (typeof a[key] === 'object') {
-            log_diff(path + "." + key, a[key], b[key], n - 1);
-        }
-    });
-}
+// function log_diff(path, a, b, n) {
+//     if (n <= 0) return;
+//     if (!a || !b) {
+//         if(a != b) console.log(path + " -> ", a, b);
+//         return;
+//     }
+//     Object.keys(a).forEach(key => {
+//         if (a[key] !== b[key]) {
+//             console.warn(path + "." + key + ' -> ', a[key], b[key]);
+//         } else if (typeof a[key] === 'object') {
+//             log_diff(path + "." + key, a[key], b[key], n - 1);
+//         }
+//     });
+// }
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -43,8 +42,6 @@ class Trade extends React.Component {
 
     render() {
         const form_wrapper_class           = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_chart_visible             = (this.props.is_chart_loading || !this.props.is_chart_ready);
-
         return (
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
@@ -56,7 +53,7 @@ class Trade extends React.Component {
                     />
                     { this.props.symbol &&
                         <React.Suspense fallback={<UILoader />} >
-                            <ChartLoader is_visible={is_chart_visible} />
+                            <ChartLoader is_visible={this.props.is_chart_loading} />
                             <ChartTrade
                                 chart_id={this.props.chart_id}
                                 end_epoch={this.props.end_epoch}
@@ -99,11 +96,10 @@ export default connect(
         scroll_to_epoch : modules.smart_chart.scroll_to_left_epoch,
         end_epoch       : modules.smart_chart.end_epoch,
         start_epoch     : modules.smart_chart.start_epoch,
-        is_chart_loading: modules.smart_chart.is_chart_loading,
-        is_chart_ready  : modules.smart_chart.is_chart_ready,
         is_contract_mode: modules.smart_chart.is_contract_mode,
         is_static_chart : modules.smart_chart.is_static_chart,
 
+        is_chart_loading: modules.trade.is_chart_loading,
         is_market_closed: modules.trade.is_market_closed,
         is_trade_enabled: modules.trade.is_trade_enabled,
         onMount         : modules.trade.onMount,
@@ -239,10 +235,10 @@ class ChartTradeClass extends React.Component {
         />
     );
 
-    componentDidUpdate(prevProps) {
-        log_diff('', this.props, prevProps, 5);
-        console.warn('---------------------------------------');
-    }
+    // componentDidUpdate(prevProps) {
+    //     log_diff('', this.props, prevProps, 5);
+    //     console.warn('---------------------------------------');
+    // }
 
     topWidgets = () => (<ChartTopWidgets />);
     bottomWidgets = () => (<ChartBottomWidgets />);
@@ -256,7 +252,7 @@ class ChartTradeClass extends React.Component {
                 barriers={this.props.barriers_array}
                 bottomWidgets={bottomWidgets}
                 chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
-                chartStatusListener={this.props.getChartStatus}
+                chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
                 id={this.props.chart_id}
@@ -303,18 +299,18 @@ const ChartTrade = connect(
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
         },
 
-        exportLayout        : modules.trade.exportLayout,
-        getChartStatus      : modules.smart_chart.getChartStatus,
-        is_contract_mode    : modules.smart_chart.is_contract_mode,
-        is_title_enabled    : modules.smart_chart.is_title_enabled,
-        onMount             : modules.smart_chart.onMount,
-        onUnmount           : modules.smart_chart.onUnmount,
-        should_clear_chart  : modules.smart_chart.should_clear_chart,
-        chart_layout        : modules.trade.chart_layout,
-        updateChartType     : modules.contract_trade.updateChartType,
-        updateGranularity   : modules.contract_trade.updateGranularity,
-        granularity         : modules.contract_trade.granularity,
-        is_mobile           : ui.is_mobile,
+        exportLayout      : modules.trade.exportLayout,
+        setChartStatus    : modules.trade.setChartStatus,
+        is_contract_mode  : modules.smart_chart.is_contract_mode,
+        is_title_enabled  : modules.smart_chart.is_title_enabled,
+        onMount           : modules.smart_chart.onMount,
+        onUnmount         : modules.smart_chart.onUnmount,
+        should_clear_chart: modules.smart_chart.should_clear_chart,
+        chart_layout      : modules.trade.chart_layout,
+        updateChartType  : modules.contract_trade.updateChartType,
+        updateGranularity: modules.contract_trade.updateGranularity,
+        granularity      : modules.contract_trade.granularity,
+        is_mobile        : ui.is_mobile,
 
         wsForget      : modules.trade.wsForget,
         wsForgetStream: modules.trade.wsForgetStream,

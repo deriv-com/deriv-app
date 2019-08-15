@@ -4,10 +4,10 @@ import { connect } from '../../stores/connect';
 import { translate } from '../../utils/lang/i18n';
 
 const SaveModal = props => {
-    const { onSaveLoadTypeChange, onConfirmSave, openSaveModal } = props;
+    const { onSaveLoadTypeChange, onConfirmSave, openSaveModal, closeSaveModal } = props;
 
     return (
-        <Modal title='Save' id='save-modal' isOpen={openSaveModal}>
+        <Modal title='Save' id='save-modal' isOpen={openSaveModal} onClose={closeSaveModal}>
             <form
                 id='save-dialog'
                 action='javascript:;' // eslint-disable-line no-script-url
@@ -85,4 +85,5 @@ export default connect(({ toolbar }) => ({
     onConfirmSave       : toolbar.onConfirmSave,
     onSaveLoadTypeChange: toolbar.onSaveLoadTypeChange,
     openSaveModal       : toolbar.openSaveModal,
+    closeSaveModal      : toolbar.closeSaveModal,
 }))(SaveModal);

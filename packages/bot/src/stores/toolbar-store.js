@@ -72,6 +72,10 @@ export default class ToolbarStore {
         });
         e.target.value = '';
 
+        this.closeLoadModal();
+    }
+
+    @action.bound closeLoadModal = () => {
         this.load_modal_open = false;
     }
 
@@ -93,6 +97,10 @@ export default class ToolbarStore {
             filesaver.saveAs(blob, file_name);
         }
 
+        this.closeSaveModal();
+    }
+
+    @action.bound closeSaveModal = () => {
         this.save_modal_open = false;
     }
 

@@ -26,7 +26,12 @@
     &__header {
         background-color: $brand-blue;
         color: $white;
+        font-size: 25px;
+        font-weight: bold;
         padding: 20px;
+    }
+    &__close {
+        float: right;
     }
     &__content {
         padding: 25px;
@@ -38,5 +43,8 @@
         width: 100%;
         border: solid 1px $brand-gray;
         padding: 10px;
+    }
+    .description {
+        font-size: 15px;
     }
 }

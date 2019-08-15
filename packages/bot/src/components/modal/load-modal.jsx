@@ -4,10 +4,10 @@ import { connect } from '../../stores/connect';
 import { translate } from '../../utils/tools';
 
 const LoadModal = props => {
-    const { onSaveLoadTypeChange, onLoadClick, handleFileChange, openLoadModal } = props;
+    const { onSaveLoadTypeChange, onLoadClick, handleFileChange, openLoadModal, closeLoadModal } = props;
 
     return (
-        <Modal title={translate('Load Blocks')} id='load-modal' isOpen={openLoadModal}>
+        <Modal title={translate('Load Blocks')} id='load-modal' isOpen={openLoadModal} onClose={closeLoadModal}>
             <form
                 id='load-form'
                 action='javascript:;' // eslint-disable-line no-script-url
@@ -55,4 +55,5 @@ export default connect(({ toolbar }) => ({
     onSaveLoadTypeChange: toolbar.onSaveLoadTypeChange,
     handleFileChange    : toolbar.handleFileChange,
     openLoadModal       : toolbar.openLoadModal,
+    closeLoadModal      : toolbar.closeLoadModal,
 }))(LoadModal);

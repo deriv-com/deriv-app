@@ -8,7 +8,7 @@ import {
 import moment                        from 'moment';
 import {
     requestLogout,
-    API,
+    WS,
 }                             from 'Services';
 import { getAccountTitle }           from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
@@ -291,7 +291,7 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await API.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.payoutCurrencies());
 
         this.registerReactions();
     }
@@ -568,11 +568,11 @@ export default class ClientStore extends BaseStore {
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        API.newAccountVirtual(this.verification_code, password, residence).then(response => console.log(response));
+        WS.newAccountVirtual(this.verification_code, password, residence).then(response => console.log(response));
     }
 
     fetchResidenceList() {
-        API.residenceList().then(response => {
+        WS.residenceList().then(response => {
             runInAction(() => {
                 this.residence_list = response.residence_list || [];
             })

@@ -18,7 +18,7 @@ const ProfitLossCardContent = ({
             <div className='pl-card__item__header'>
                 { is_sold ? <Localize i18n_default_text='Profit/Loss:' /> : <Localize i18n_default_text='Potential profit/loss:' /> }
             </div>
-            <div 
+            <div
                 id='dt_profit_loss_label'
                 className={classNames(
                     'pl-card__item__body', {

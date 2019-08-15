@@ -127,7 +127,7 @@ export default class SmartChartStore extends BaseStore {
         this.symbol = null;
         this.trade_chart_layout = null;
         this.should_import_layout = false;
-        this.setIsChartLoading(false);
+        // this.setIsChartLoading(false);
         this.cleanupContractChartView();
     };
 

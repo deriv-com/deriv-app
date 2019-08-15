@@ -185,7 +185,7 @@ export default class ContractTradeStore extends BaseStore {
 
         if (contract_id) {
             if (this.is_from_positions) {
-                this.smart_chart.setIsChartLoading(true);
+                this.root_store.modules.trade.setIsChartLoading(true);
                 // this.smart_chart.switchToContractMode(true, has_existing_id);
             }
             BinarySocket.wait('authorize').then(() => {

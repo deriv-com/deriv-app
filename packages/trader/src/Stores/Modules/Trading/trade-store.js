@@ -104,6 +104,10 @@ export default class TradeStore extends BaseStore {
     @observable proposal_info = {};
     @observable purchase_info = {};
 
+    // Chart loader observables
+    @observable is_chart_ready;
+    @observable is_chart_loading;
+
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 
@@ -678,6 +682,16 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    getChartStatus(status) {
+        this.is_chart_ready = status;
+    }
+
+    @action.bound
+    setIsChartLoading(bool) {
+        this.is_chart_loading = bool;
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.proposal_info = {};
@@ -688,7 +702,7 @@ export default class TradeStore extends BaseStore {
         this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
-
+        this.setIsChartLoading(true);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }
@@ -709,6 +723,7 @@ export default class TradeStore extends BaseStore {
         this.prev_chart_layout = layout;
         this.prev_chart_layout.isDone = () => {
             this.prev_chart_layout.is_used = true;
+            this.setIsChartLoading(false);
         };
     }
 

@@ -1,7 +1,7 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import Button         from 'deriv-components/lib/button';
 import Localize       from 'App/Components/Elements/localize.jsx';
-import Button         from 'App/Components/Form/button.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { localize }   from 'App/i18n';
 import Icon           from 'Assets/icon.jsx';

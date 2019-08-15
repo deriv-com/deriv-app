@@ -148,6 +148,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_single_currency() {
+        // eslint-disable-next-line
+        console.log(this.currencies_list)
+        Object.keys(this.currencies_list).map(type => {
+            // eslint-disable-next-line
+            console.log(this.currencies_list[type].length)
+        })
         return Object.keys(this.currencies_list).map(type => Object.values(this.currencies_list[type]).length)
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
@@ -250,9 +256,10 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     @action.bound
-    switchAccount(loginid) {
+    async switchAccount(loginid) {
         this.root_store.ui.removeAllNotifications();
         this.setSwitched(loginid);
+        this.responsePayoutCurrencies(await WS.payoutCurrencies());
     }
 
     @action.bound

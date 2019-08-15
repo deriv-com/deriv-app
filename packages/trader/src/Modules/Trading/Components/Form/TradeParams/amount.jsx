@@ -6,6 +6,7 @@ import {
     addComma,
     getDecimalPlaces }                from '_common/base/currency_base';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
+import Dropdown                       from 'App/Components/Form/DropDown';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
@@ -18,6 +19,7 @@ const Amount = ({
     contract_start_type,
     contract_type,
     contract_types_list,
+    currencies_list,
     currency,
     duration_unit,
     expiry_type,
@@ -72,7 +74,24 @@ const Amount = ({
                 onChange={onChange}
                 value={basis}
             />
-            {input}
+            {!is_single_currency ?
+                <div className='trade-container__currency-options'>
+                    <Dropdown
+                        className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
+                        classNameDisplay='trade-container__currency-options--display'
+                        has_symbol
+                        is_alignment_left
+                        is_nativepicker={false}
+                        list={currencies_list}
+                        name='currency'
+                        value={currency}
+                        onChange={onChange}
+                    />
+                    {input}
+                </div>
+                :
+                input
+            }
             <AllowEquals
                 contract_start_type={contract_start_type}
                 contract_type={contract_type}
@@ -96,6 +115,7 @@ Amount.propTypes = {
     contract_start_type: PropTypes.string,
     contract_type      : PropTypes.string,
     contract_types_list: MobxPropTypes.observableObject,
+    currencies_list    : MobxPropTypes.observableObject,
     currency           : PropTypes.string,
     duration_unit      : PropTypes.string,
     expiry_type        : PropTypes.string,
@@ -117,6 +137,7 @@ export default connect(({ modules, client }) => ({
     contract_start_type: modules.trade.contract_start_type,
     contract_type      : modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
+    currencies_list    : client.currencies_list,
     currency           : modules.trade.currency,
     duration_unit      : modules.trade.duration_unit,
     expiry_type        : modules.trade.expiry_type,

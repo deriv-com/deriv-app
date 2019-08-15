@@ -58,4 +58,4 @@ fi &&
 export NODE_ENV=production &&
 
 message "Running build and deploy" &&
-npm run deploy:clean -- --remote=production
+cd packages/trader/ && npm run deploy:clean -- --remote=production

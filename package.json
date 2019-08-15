@@ -16,7 +16,7 @@
     "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",
     "test:mocha": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:mocha ;}; f",
     "deploy": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy ;}; f",
-    "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ;}; f",
+    "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ${@:2} ;}; f",
     "deploy:folder": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:folder ${@:2} ;}; f",
     "deploy:staging": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:staging ;}; f",
     "deploy:production": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:production ;}; f"

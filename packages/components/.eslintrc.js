@@ -41,6 +41,7 @@ module.exports = {
         'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
         'import/prefer-default-export'      : 0,
         'import/extensions'                 : ['error', 'never', { 'jsx': 'always', 'json': 'always' }],
+        "import/no-unresolved"              : [2, { ignore: ['deriv-components' , 'deriv-shared'] }],
 
         // react rules
         'jsx-quotes'                        : ['error', 'prefer-single'],

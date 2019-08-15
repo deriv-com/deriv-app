@@ -10,7 +10,7 @@ In order to work on your own version of the Deriv Javascript and CSS, please **f
 You will need to perform the following on your development machine:
 
 1. Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
-2. Run `npm ci`
+2. Run `npm ci` (you also need to run this for git hooks to work)
 3. Run `npm run bootstrap`
 
 [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
@@ -27,7 +27,10 @@ All packages must contain the following scripts to perform the stated actions:
 | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | `serve`             | Runs build suite and starts the dev server.                                                   |
 | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| `test`              | Runs the test suite.                                                                          |
+| `test`              | Runs the test suite with eslint, and stylelint.                                               |
+| `test:eslint`       | Runs only eslint.                                                                             |
+| `test:stylelint`    | Runs only stylelint.                                                                          |
+| `test:mocha`        | Runs only the test suite.                                                                     |
 | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
 | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
 | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |

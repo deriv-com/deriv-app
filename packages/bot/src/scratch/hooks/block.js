@@ -1,4 +1,12 @@
-/* eslint-disable func-names */
+/* eslint-disable func-names, no-underscore-dangle */
+
+Blockly.Block.prototype.getDisplayName = function() {
+    if (this.meta) {
+        const block_meta = this.meta();
+        return block_meta && block_meta.display_name;
+    }
+    return this.type;
+};
 
 Blockly.Block.prototype.getSiblings = function() {
     const siblings = [this];
@@ -75,4 +83,24 @@ Blockly.Block.prototype.getTopParent = function() {
         parent = nextParent;
     }
     return null;
+};
+
+Blockly.Block.getDimensions = function(block_node) {
+    // eslint-disable-next-line
+    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
+    const fragment = document.createDocumentFragment();
+    const el_injection_div = document.createElement('div');
+
+    fragment.appendChild(el_injection_div);
+
+    // Create a headless workspace to calculate xmlList block dimensions
+    const svg = Blockly.createDom_(el_injection_div, options);
+    const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+
+    const block = Blockly.Xml.domToBlock(block_node, workspace);
+    const block_hw = block.getHeightWidth();
+
+    workspace.dispose();
+
+    return block_hw;
 };

@@ -7,9 +7,4 @@ describe('Button' , () => {
     it('renders without crashing' , () => {
         render(<Button/>)
     })
-
-    it('should contains name', () =>{
-        const { getByText } = render(<Button name='button'/>);
-        getByText('button');
-    })
 })

@@ -2,7 +2,7 @@ import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-import Button               from 'App/Components/Form/button.jsx';
+import Button               from 'deriv-components/lib/button';
 import Lazy                 from 'App/Containers/Lazy';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
@@ -10,6 +10,8 @@ import { SignupButton }     from './signup-button.jsx';
 // import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
+
+const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
@@ -48,19 +50,18 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <Lazy
-                        ctor={() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx')}
-                        should_load={true}
-                        has_progress={false}
-                        balance={formatMoney(currency, balance, true)}
-                        is_upgrade_enabled={can_upgrade}
-                        is_virtual={is_virtual}
-                        onClickUpgrade={onClickUpgrade}
-                        currency={currency}
-                        loginid={loginid}
-                        is_dialog_on={is_acc_switcher_on}
-                        toggleDialog={toggleAccountsDialog}
-                    />
+                    <React.Suspense fallback={<div />}>
+                        <AccountInfo
+                            balance={formatMoney(currency, balance, true)}
+                            is_upgrade_enabled={can_upgrade}
+                            is_virtual={is_virtual}
+                            onClickUpgrade={onClickUpgrade}
+                            currency={currency}
+                            loginid={loginid}
+                            is_dialog_on={is_acc_switcher_on}
+                            toggleDialog={toggleAccountsDialog}
+                        />
+                    </React.Suspense>
                     {!!(
                         can_upgrade_to && is_virtual
                     ) && <UpgradeButton

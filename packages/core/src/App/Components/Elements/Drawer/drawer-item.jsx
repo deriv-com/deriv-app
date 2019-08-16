@@ -17,7 +17,7 @@ class DrawerItem extends React.Component {
         return (
             <div className='drawer__item' onClick={this.drawerItemClicked}>
                 {custom_action ?
-                    <a href='javascript:;' className='drawer__item-link' onClick={custom_action}>
+                    <a className='drawer__item-link' onClick={custom_action}>
                         <span className='drawer__item-link-text'>{icon}{text}</span>
                     </a>
                     :

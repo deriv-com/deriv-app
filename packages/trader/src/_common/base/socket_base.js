@@ -51,7 +51,7 @@ const BinarySocketBase = (() => {
                 app_id  : getAppId(),
                 lang    : getLanguage(),
                 brand   : 'deriv',
-                store   : SocketCache,
+                storage : SocketCache,
             });
         }
 

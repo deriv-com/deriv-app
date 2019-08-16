@@ -59,7 +59,7 @@ const SocketCache = (() => {
             false;
     };
 
-    const set = (response) => {
+    const set = (key, response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
 
         // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
@@ -100,7 +100,6 @@ const SocketCache = (() => {
             return;
         }
 
-        const key      = makeKey(response.echo_req, msg_type);
         const expires  = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
@@ -125,7 +124,7 @@ const SocketCache = (() => {
         return is_empty_data;
     };
 
-    const get = (request, msg_type) => {
+    const get = (key) => {
         let response;
 
         if (isEmptyObject(data_obj)) {
@@ -137,7 +136,6 @@ const SocketCache = (() => {
             clear();
         }
 
-        const key          = makeKey(request, msg_type);
         const response_obj = getPropertyValue(data_obj, key) || {};
 
         if (moment().isBefore(response_obj.expires)) {
@@ -147,6 +145,10 @@ const SocketCache = (() => {
         }
 
         return response;
+    };
+
+    const has = (key) => {
+        return !!get(key);
     };
 
     const makeKey = (source_obj = {}, msg_type = '') => {
@@ -183,6 +185,7 @@ const SocketCache = (() => {
     return {
         set,
         get,
+        has,
         remove,
         clear,
     };

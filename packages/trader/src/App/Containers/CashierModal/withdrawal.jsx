@@ -13,9 +13,9 @@ class Withdrawal extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.error_message ?
+                {this.props.error.message ?
                     <Error
-                        error_message={this.props.error_message}
+                        error={this.props.error}
                         container='withdraw'
                     />
                     :
@@ -31,7 +31,7 @@ class Withdrawal extends React.Component {
 }
 
 Withdrawal.propTypes = {
-    error_message    : PropTypes.string,
+    error            : PropTypes.object,
     iframe_url       : PropTypes.string,
     setActiveTab     : PropTypes.func,
     verification_code: PropTypes.string,
@@ -40,7 +40,7 @@ Withdrawal.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         verification_code: client.verification_code,
-        error_message    : modules.cashier.config.withdraw.error_message,
+        error            : modules.cashier.config.withdraw.error,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         setActiveTab     : modules.cashier.setActiveTab,
     })

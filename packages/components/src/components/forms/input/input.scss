@@ -19,6 +19,7 @@
     --color-blue-2: #365899;
 
     // Text sizes
+    --text-size-xs: 1.2rem;
     --text-size-s: 1.6rem;
     --text-size-sm: 2rem;
     --text-size-m: 2.4rem;
@@ -108,9 +109,10 @@
                 opacity: 0.7;
             }
         }
-        &:valid {
+        &:not(:focus):valid {
             & ~ label {
                 transform: translate(-1.4rem, -2.2rem) scale(0.7);
+                color: var(--color-black-3);
                 padding: 0 4px;
                 @include themify($themes) {
                     background-color: themed('container_secondary_color');
@@ -133,4 +135,5 @@
 .dc-input__error {
     padding: 0 1.2rem;
     color: var(--color-red);
+    font-size: var(--text-size-xs);
 }

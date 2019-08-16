@@ -2,11 +2,7 @@ const DerivAPIBasic    = require('deriv-api/dist/DerivAPIBasic');
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const getLanguage      = require('../language').get;
-const State            = require('../storage').State;
-const cloneObject      = require('../utility').cloneObject;
 const getPropertyValue = require('../utility').getPropertyValue;
-const isEmptyObject    = require('../utility').isEmptyObject;
-const PromiseClass     = require('../utility').PromiseClass;
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 
@@ -19,64 +15,12 @@ const BinarySocketBase = (() => {
     let deriv_api;
 
     let config               = {};
-    let buffered_sends       = [];
-    let req_id               = 0;
     let wrong_app_id         = 0;
     let is_available         = true;
     let is_disconnect_called = false;
     let is_connected_before  = false;
 
-    const timeouts   = {};
-    const promises   = {};
-
-    const no_duplicate_requests = [
-        'authorize',
-        'get_settings',
-        'residence_list',
-        'landing_company',
-        'payout_currencies',
-        'asset_index',
-        'active_symbols',
-    ];
-
-    const sent_requests = {
-        items : [],
-        clear : () => { sent_requests.items = []; },
-        has   : msg_type => sent_requests.items.indexOf(msg_type) >= 0,
-        add   : (msg_type) => { if (!sent_requests.has(msg_type)) sent_requests.items.push(msg_type); },
-        remove: (msg_type) => {
-            if (sent_requests.has(msg_type)) sent_requests.items.splice(sent_requests.items.indexOf(msg_type, 1));
-        },
-    };
-
-    const waiting_list = {
-        items: {},
-        add  : (msg_type, promise_obj) => {
-            if (!waiting_list.items[msg_type]) {
-                waiting_list.items[msg_type] = [];
-            }
-            waiting_list.items[msg_type].push(promise_obj);
-        },
-        resolve: (response) => {
-            const msg_type      = response.msg_type;
-            const this_promises = waiting_list.items[msg_type];
-            if (this_promises && this_promises.length) {
-                this_promises.forEach((pr) => {
-                    if (!waiting_list.another_exists(pr, msg_type)) {
-                        pr.resolve(response);
-                    }
-                });
-                waiting_list.items[msg_type] = [];
-            }
-        },
-        another_exists: (pr, msg_type) => (
-            Object.keys(waiting_list.items)
-                .some(type => (
-                    type !== msg_type &&
-                    waiting_list.items[type].indexOf(pr) !== -1
-                ))
-        ),
-    };
+    const timeouts     = {};
 
     const clearTimeouts = () => {
         Object.keys(timeouts).forEach((key) => {
@@ -91,141 +35,30 @@ const BinarySocketBase = (() => {
 
     const hasReadyState = (...states) => deriv_api && states.some(s => deriv_api.connection.readyState === s);
 
-    const sendBufferedRequests = () => {
-        while (buffered_sends.length > 0 && is_available) {
-            const req_obj = buffered_sends.shift();
-            send(req_obj.request, req_obj.options);
-        }
-    };
-
-    const wait = (...msg_types) => {
-        const promise_obj = new PromiseClass();
-        let is_resolved   = true;
-        msg_types.forEach((msg_type) => {
-            const last_response = State.get(['response', msg_type]);
-            if (!last_response) {
-                if (msg_type !== 'authorize' || ClientBase.isLoggedIn()) {
-                    waiting_list.add(msg_type, promise_obj);
-                    is_resolved = false;
-                }
-            } else if (msg_types.length === 1) {
-                promise_obj.resolve(last_response);
-            }
-        });
-        if (is_resolved) {
-            promise_obj.resolve();
-        }
-        return promise_obj.promise;
-    };
-
-    /**
-     * @param {Object} data: request object
-     * @param {Object} options:
-     *      forced  : {boolean}  sends the request regardless the same msg_type has been sent before
-     *      msg_type: {string}   specify the type of request call
-     *      callback: {function} to call on response of streaming requests
-     */
-    // TODO: Keep the caching in place, remove creating of promise
-    const send = function (data, options = {}) {
-        const promise_obj = options.promise || new PromiseClass();
-        const has_callback = typeof options.callback === 'function';
-
-        if (!data || isEmptyObject(data)) return promise_obj.promise;
-
-        const msg_type = options.msg_type || no_duplicate_requests.find(c => c in data);
-
-        // Fetch from cache
-        if (!options.forced) {
-            const response = SocketCache.get(data, msg_type);
-            if (response) {
-                State.set(['response', msg_type], cloneObject(response));
-                if (isReady() && is_available && !options.skip_cache_update && !has_callback) { // make the request to keep the cache updated
-                    binary_socket.send(JSON.stringify(data), { forced: true });
-                } else if (+data.time !== 1) { // Do not buffer all time requests
-                    buffered_sends.push({
-                        request: data,
-                        options: Object.assign(options, { promise: promise_obj, forced: true }),
-                    });
-                }
-                promise_obj.resolve(response);
-                if (has_callback) {
-                    options.callback(response);
-                } else {
-                    return promise_obj.promise;
-                }
-            }
-        }
-
-        // Fetch from state
-        if (!options.forced && msg_type && no_duplicate_requests.indexOf(msg_type) !== -1) {
-            const last_response = State.get(['response', msg_type]);
-            if (last_response) {
-                promise_obj.resolve(last_response);
-                return promise_obj.promise;
-            } else if (sent_requests.has(msg_type)) {
-                return wait(msg_type).then((response) => {
-                    promise_obj.resolve(response);
-                    return promise_obj.promise;
-                });
-            }
-        }
-
-        if (!data.req_id) {
-            data.req_id = ++req_id;
-        }
-        promises[data.req_id] = {
-            callback: (response) => {
-                if (has_callback) {
-                    options.callback(response);
-                } else {
-                    promise_obj.resolve(response);
-                }
-            },
-            subscribe: !!data.subscribe,
-        };
-
-        if (isReady() && is_available && config.isOnline()) {
-            is_disconnect_called = false;
-            if (!getPropertyValue(data, 'passthrough') && !getPropertyValue(data, 'verify_email')) {
-                data.passthrough = {};
-            }
-
-            binary_socket.send(JSON.stringify(data));
-            config.wsEvent('send');
-            if (msg_type && !sent_requests.has(msg_type)) {
-                sent_requests.add(msg_type);
-            }
-        } else if (+data.time !== 1) { // Do not buffer all time requests
-            buffered_sends.push({ request: data, options: Object.assign(options, { promise: promise_obj }) });
-        }
-
-        return promise_obj.promise;
-    };
-
-
-
     const init = (options) => {
         if (wrong_app_id === getAppId()) {
             return;
         }
         if (typeof options === 'object' && config !== options) {
             config         = options;
-            buffered_sends = [];
         }
         clearTimeouts();
         config.wsEvent('init');
 
         if (isClose()) {
-            deriv_api = new DerivAPIBasic({ endpoint: getSocketURL(), app_id: getAppId(), lang: getLanguage() });
-            State.set('response', {});
+            deriv_api = new DerivAPIBasic({
+                endpoint: getSocketURL(),
+                app_id  : getAppId(),
+                lang    : getLanguage(),
+                brand   : 'deriv',
+                store   : SocketCache,
+            });
         }
 
         deriv_api.onOpen(() => {
             config.wsEvent('open');
             if (ClientBase.isLoggedIn()) {
-                send({ authorize: ClientBase.get('token') }, { forced: true });
-            } else {
-                sendBufferedRequests();
+                deriv_api.authorize(ClientBase.get('token'));
             }
 
             if (typeof config.onOpen === 'function') {
@@ -241,41 +74,19 @@ const BinarySocketBase = (() => {
             }
         });
 
-        deriv_api.onMessage(() => {
+        deriv_api.onMessage(({ data: response }) => {
             config.wsEvent('message');
-            const response = msg.data ? JSON.parse(msg.data) : undefined;
-            if (response) {
-                SocketCache.set(response);
-                const msg_type = response.msg_type;
 
-                // store in State
-                if (!getPropertyValue(response, ['echo_req', 'subscribe']) || /balance|website_status/.test(msg_type)) {
-                    State.set(['response', msg_type], cloneObject(response));
-                }
-                // resolve the send promise
-                const this_req_id = response.req_id;
-                const pr          = this_req_id ? promises[this_req_id] : null;
-                if (pr && typeof pr.callback === 'function') {
-                    pr.callback(response);
-                    if (!pr.subscribe) {
-                        delete promises[this_req_id];
-                    }
-                }
-                // resolve the wait promise
-                waiting_list.resolve(response);
+            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+                wrong_app_id = getAppId();
+            }
 
-                if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
-                    wrong_app_id = getAppId();
-                }
-
-                if (typeof config.onMessage === 'function') {
-                    config.onMessage(response);
-                }
+            if (typeof config.onMessage === 'function') {
+                config.onMessage(response);
             }
         });
 
         deriv_api.onClose(() => {
-            sent_requests.clear();
             clearTimeouts();
             config.wsEvent('close');
 
@@ -284,14 +95,6 @@ const BinarySocketBase = (() => {
                 is_disconnect_called = true;
             }
         });
-    };
-
-    const clear = (msg_type) => {
-        buffered_sends = [];
-        if (msg_type) {
-            State.set(['response', msg_type], undefined);
-            sent_requests.remove(msg_type);
-        }
     };
 
     const availability = (status) => {
@@ -303,13 +106,11 @@ const BinarySocketBase = (() => {
 
     return {
         init,
-        wait,
-        send,
-        clear,
         clearTimeouts,
         availability,
         hasReadyState,
-        sendBuffered      : sendBufferedRequests,
+        clear             : () => {},
+        sendBuffered      : () => {},
         get               : () => deriv_api,
         setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },

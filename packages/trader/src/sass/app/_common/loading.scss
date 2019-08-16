@@ -37,9 +37,7 @@
     align-items: center;
     flex-direction: column;
     display: flex;
-    @include themify($themes) {
-        background-color: themed('initial_loader_background');
-    }
+    background: transparent;
 
     &__barspinner {
         margin: 5em auto;

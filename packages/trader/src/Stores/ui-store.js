@@ -23,10 +23,6 @@ export default class UIStore extends BaseStore {
     @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
 
-    @observable is_loading              = true;
-    @observable is_slow_loading         = false;
-    @observable slow_loading_status     = [];
-
     @observable has_only_forward_starting_contracts = false;
 
     // Purchase Controls
@@ -157,11 +153,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
-    }
-
-    @action.bound
-    setAppLoading(is_visible) {
-        this.is_loading = is_visible;
     }
 
     @action.bound
@@ -302,12 +293,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
-    }
-
-    @action.bound
-    setSlowLoading(status, message) {
-        this.is_slow_loading     = status;
-        this.slow_loading_status = message;
     }
 
     @action.bound

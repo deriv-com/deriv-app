@@ -1,7 +1,6 @@
 
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-import UILoader              from 'App/Components/Elements/ui-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -50,7 +49,14 @@ class Trade extends React.Component {
                         should_load={true}
                     />
 
-                    <React.Suspense fallback={<UILoader />} >
+                    <React.Suspense
+                        fallback={
+                            <ChartLoader
+                                is_dark={this.props.is_dark_theme}
+                                is_visible={!this.props.symbol}
+                            />
+                        }
+                    >
                         <ChartLoader is_visible={this.props.is_chart_loading} />
                         <ChartTrade />
                     </React.Suspense>
@@ -61,6 +67,7 @@ class Trade extends React.Component {
                 <div className={form_wrapper_class}>
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
+                        is_dark_theme={this.props.is_dark_theme}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
                         is_trade_enabled={this.props.is_trade_enabled}
@@ -79,6 +86,7 @@ export default connect(
         onMount         : modules.trade.onMount,
         onUnmount       : modules.trade.onUnmount,
         purchase_info   : modules.trade.purchase_info,
+        is_dark_theme   : ui.is_dark_mode_on,
         is_mobile       : ui.is_mobile,
     })
 )(Trade);

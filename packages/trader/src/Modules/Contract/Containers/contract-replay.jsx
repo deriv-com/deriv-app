@@ -92,7 +92,7 @@ class ContractReplay extends React.Component {
                             has_progress={false}
                             should_load={true}
                         />
-                        <ChartLoader is_visible={is_chart_loading} />
+                        <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                         { contract_info.underlying  &&
                         <ReplayChart
                             Digits={

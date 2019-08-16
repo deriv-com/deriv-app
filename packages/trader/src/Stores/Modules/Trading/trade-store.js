@@ -212,11 +212,9 @@ export default class TradeStore extends BaseStore {
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
-            this.root_store.ui.setAppLoading(false);
             return;
         } else if (!active_symbols || !active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
-            this.root_store.ui.setAppLoading(false);
             return;
         }
 
@@ -615,39 +613,17 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async onMount() {
-        this.setChartStatus(true);
-        this.onLoadingMount();
-        await this.prepareTradeStore();
-        this.debouncedProposal();
+    onMount() {
         runInAction(() => {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
-    }
-
-    onLoadingMount() {
-        const first_timeout = setTimeout(() => {
-            const loading_message = localize('Your network connection might be slow.');
-            const secondary_message = localize('Please wait for the page to finish loading.');
-            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
-        }, 8000);
-
-        const second_timeout = setTimeout(() => {
-            const loading_message = localize('This page is taking too long to load.');
-            const secondary_message = localize('Please wait for the page to finish loading or check your network connection.');
-            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
-        }, 15000);
-
-        // TODO: write a `clearTimeouts()` funciton and call it when those flags are set.
-        const loading_interval = setInterval(() => {
-            if (this.is_trade_component_mounted) {
-                this.root_store.ui.setAppLoading(false);
-                clearInterval(loading_interval);
-                clearTimeout(first_timeout);
-                clearTimeout(second_timeout);
-            }
-        }, 400);
+        return new Promise(async (resolve) => {
+            await this.setChartStatus(true);
+            await this.refresh();
+            await this.prepareTradeStore();
+            return resolve(this.debouncedProposal());
+        });
     }
 
     @action.bound

@@ -253,6 +253,9 @@ export default class ContractTradeStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
+        if (isEnded(this.contract_info)) {
+            WS.forget('proposal_open_contract', this.updateProposal);
+        }
 
         // Set chart granularity and chart_type
         this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);

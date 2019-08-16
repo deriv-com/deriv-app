@@ -45,6 +45,7 @@ export default class ContractReplayStore extends BaseStore {
         const proposal_open_contract_request = [contract_id, cb, false];
 
         if (this.should_forget_first) {
+            // TODO; don't forget all ever
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
                 WS.subscribeProposalOpenContract(...proposal_open_contract_request);

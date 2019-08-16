@@ -25,10 +25,8 @@ class PositionsDrawer extends React.Component {
     render() {
         const {
             all_positions,
-            active_contract_id,
             error,
             currency,
-            is_contract_mode,
             is_dark_theme,
             is_empty,
             is_positions_drawer_on,
@@ -57,7 +55,6 @@ class PositionsDrawer extends React.Component {
                             unmountOnExit
                         >
                             <PositionsDrawerCard
-                                active_position={active_contract_id}
                                 is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
@@ -75,8 +72,7 @@ class PositionsDrawer extends React.Component {
         return (
             <div className={classNames(
                 'positions-drawer', {
-                    'positions-drawer--open'         : is_positions_drawer_on,
-                    'positions-drawer--contract-mode': is_contract_mode,
+                    'positions-drawer--open': is_positions_drawer_on,
                 })}
             >
                 <div className='positions-drawer__header'>
@@ -109,12 +105,10 @@ class PositionsDrawer extends React.Component {
 }
 
 PositionsDrawer.propTypes = {
-    active_contract_id    : PropTypes.number,
     all_positions         : MobxPropTypes.arrayOrObservableArray,
     children              : PropTypes.any,
     currency              : PropTypes.string,
     error                 : PropTypes.string,
-    is_contract_mode      : PropTypes.bool,
     is_dark_theme         : PropTypes.bool,
     is_empty              : PropTypes.bool,
     is_loading            : PropTypes.bool,
@@ -129,10 +123,8 @@ PositionsDrawer.propTypes = {
 export default connect(
     ({ modules, client, ui }) => ({
         currency                      : client.currency,
-        active_contract_id            : modules.contract_trade.contract_id,
         all_positions                 : modules.portfolio.all_positions,
         error                         : modules.portfolio.error,
-        is_contract_mode              : modules.smart_chart.is_contract_mode,
         is_empty                      : modules.portfolio.is_empty,
         is_loading                    : modules.portfolio.is_loading,
         onClickSell                   : modules.portfolio.onClickSell,

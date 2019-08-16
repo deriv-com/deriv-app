@@ -172,7 +172,7 @@ export default class ContractTradeStore extends BaseStore {
     onMount(contract_id, is_from_positions) {
         if (contract_id === this.contract_id) return;
         this.smart_chart       = this.root_store.modules.smart_chart;
-        const has_existing_id  = this.smart_chart.is_contract_mode && !!(this.contract_id);
+        const has_existing_id  = !!(this.contract_id);
         if (has_existing_id) this.resetValues(this.smart_chart);
         this.has_error         = false;
         this.error_message     = '';
@@ -212,6 +212,11 @@ export default class ContractTradeStore extends BaseStore {
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
         this.resetValues(this.smart_chart);
         this.smart_chart.applySavedTradeChartLayout();
+    }
+
+    @action.bound
+    removeContract({ contract_id }) {
+        this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
     }
 
     @action.bound

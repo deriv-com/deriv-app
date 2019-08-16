@@ -114,7 +114,6 @@ class ContractReplay extends React.Component {
                                     has_progress={false}
                                     contract_info={contract_info}
                                     error_message={error_message}
-                                    is_contract_mode={true}
                                     removeError={removeError}
                                 />
                             }
@@ -197,6 +196,7 @@ class Chart extends React.Component {
                 endEpoch={this.props.end_epoch}
                 margin={this.props.margin || null}
                 isMobile={this.props.is_mobile}
+                enabledNavigationWidget={true}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -260,7 +260,7 @@ const ReplayChart = connect(
             position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
             countdown                   : ui.is_chart_countdown_visible,
             assetInformation            : false, // ui.is_chart_asset_info_visible,
-            isHighestLowestMarkerEnabled: false, // !this.is_contract_mode, // TODO: Pending UI
+            isHighestLowestMarkerEnabled: false, // TODO: Pending UI
         };
         return ({
             end_epoch        : contract_config.end_epoch,

@@ -80,7 +80,6 @@ class ResultOverlay extends React.PureComponent {
 
 ResultOverlay.propTypes = {
     contract_id              : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    has_same_contract_mounted: PropTypes.bool,
     is_unsupported           : PropTypes.bool,
     is_visible               : PropTypes.bool,
     onClick                  : PropTypes.func,

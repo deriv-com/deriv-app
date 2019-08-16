@@ -74,7 +74,7 @@ export default class ContractStore {
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {
-        if   (!this.barriers_array.length) {
+        if (!this.barriers_array.length) {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }

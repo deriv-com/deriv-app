@@ -12,7 +12,6 @@ const AppContents = ({
     // addNotificationBar,
     children,
     is_app_disabled,
-    is_contract_mode,
     is_dark_mode,
     is_loading,
     is_logged_in,
@@ -52,7 +51,6 @@ const AppContents = ({
                 id='app_contents'
                 className={classNames('app-contents', {
                     'app-contents--show-positions-drawer': is_positions_drawer_on,
-                    'app-contents--contract-mode'        : is_contract_mode,
                     'app-contents--is-disabled'          : is_app_disabled,
                     'app-contents--is-route-modal'       : is_route_modal_on,
                 })}
@@ -73,7 +71,6 @@ AppContents.propTypes = {
     addNotificationBar    : PropTypes.func,
     children              : PropTypes.any,
     is_app_disabled       : PropTypes.bool,
-    is_contract_mode      : PropTypes.bool,
     is_dark_mode          : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
@@ -86,9 +83,8 @@ AppContents.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ client, modules, ui }) => ({
+    ({ client, ui }) => ({
         is_logged_in          : client.is_logged_in,
-        is_contract_mode      : modules.smart_chart.is_contract_mode,
         // addNotificationBar    : ui.addNotificationBar,
         is_app_disabled       : ui.is_app_disabled,
         is_dark_mode          : ui.is_dark_mode_on,

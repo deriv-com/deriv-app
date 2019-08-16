@@ -35,9 +35,6 @@ class Trade extends React.Component {
     }
 
     componentWillUnmount() {
-        if (this.props.is_contract_mode) {
-            this.props.onCloseContract();
-        }
         this.props.onUnmount();
     }
 
@@ -61,16 +58,9 @@ class Trade extends React.Component {
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
                 </div>
-                <div
-                    className={form_wrapper_class}
-                    onClick={this.props.is_contract_mode ? () => {
-                        this.props.onCloseContract();
-                    } : null}
-                    style={{ cursor: this.props.is_contract_mode ? 'pointer' : 'initial' }}
-                >
+                <div className={form_wrapper_class}>
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
-                        is_contract_visible={this.props.is_contract_mode}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
                         is_trade_enabled={this.props.is_trade_enabled}
@@ -83,7 +73,6 @@ class Trade extends React.Component {
 
 export default connect(
     ({ modules, ui }) => ({
-        is_contract_mode: modules.smart_chart.is_contract_mode,
         is_chart_loading: modules.trade.is_chart_loading,
         is_market_closed: modules.trade.is_market_closed,
         is_trade_enabled: modules.trade.is_trade_enabled,
@@ -147,7 +136,6 @@ const ChartTopWidgets = connect(
 // ChartMarkers --------------------------
 const Markers = ({
     markers_array,
-    is_contract_mode,
     is_digit_contract,
 }) => (
     markers_array.map(marker => (
@@ -155,7 +143,7 @@ const Markers = ({
             key={marker.react_key}
             marker_config={marker.marker_config}
             marker_content_props={marker.content_config}
-            is_bottom_widget_visible={is_contract_mode && is_digit_contract}
+            is_bottom_widget_visible={is_digit_contract}
         />
     ))
 );
@@ -163,7 +151,6 @@ const ChartMarkers = connect(
     ({ modules }) => ({
         markers_array    : modules.contract_trade.markers_array,
         is_digit_contract: modules.contract_trade.is_digit_contract,
-        is_contract_mode : modules.smart_chart.is_contract_mode,
     })
 )(Markers);
 
@@ -197,19 +184,17 @@ class ChartTradeClass extends React.Component {
     bottomWidgets = () => (<ChartBottomWidgets />);
 
     render() {
-        const should_show_last_digit_stats =
-            isDigitTradeType(this.props.contract_type) && !this.props.is_contract_mode;
+        const should_show_last_digit_stats = isDigitTradeType(this.props.contract_type);
         const bottomWidgets = should_show_last_digit_stats ? null : ChartBottomWidgets;
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
                 bottomWidgets={bottomWidgets}
-                chartControlsWidgets={this.props.is_contract_mode ? null : this.chartControlsWidgets}
+                chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
                 isMobile={this.props.is_mobile}
-                enabledNavigationWidget={this.props.is_contract_mode}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -241,7 +226,7 @@ const ChartTrade = connect(
         settings      : {
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,
-            isHighestLowestMarkerEnabled: false, // !this.is_contract_mode,
+            isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
             lang                        : common.current_language,
             position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
@@ -249,7 +234,6 @@ const ChartTrade = connect(
         symbol           : modules.trade.symbol,
         exportLayout     : modules.trade.exportLayout,
         setChartStatus   : modules.trade.setChartStatus,
-        is_contract_mode : modules.smart_chart.is_contract_mode,
         chart_layout     : modules.trade.chart_layout,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,

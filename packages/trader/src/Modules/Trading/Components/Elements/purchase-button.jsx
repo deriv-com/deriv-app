@@ -10,7 +10,6 @@ const PurchaseButton = ({
     buy_info,
     index,
     info,
-    is_contract_mode,
     is_disabled,
     is_high_low,
     is_loading,
@@ -29,7 +28,7 @@ const PurchaseButton = ({
 
     return (
         <Button
-            is_disabled={is_contract_mode || is_disabled}
+            is_disabled={is_disabled}
             id={`purchase_${type}`}
             className={classNames(
                 'btn-purchase',
@@ -78,7 +77,6 @@ PurchaseButton.propTypes = {
     currency            : PropTypes.string,
     index               : PropTypes.number,
     info                : PropTypes.object,
-    is_contract_mode    : PropTypes.bool,
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,

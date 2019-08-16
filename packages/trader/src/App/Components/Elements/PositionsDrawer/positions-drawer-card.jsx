@@ -16,7 +16,6 @@ import ProgressSlider          from './ProgressSlider';
 import ResultOverlay           from './result-overlay.jsx';
 
 const PositionsDrawerCard = ({
-    active_position,
     className,
     contract_info,
     currency,
@@ -162,16 +161,13 @@ const PositionsDrawerCard = ({
 
     return (
         <div className={classNames(
-            'positions-drawer-card__wrapper', {
-                'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
-            },
+            'positions-drawer-card__wrapper',
             className)}
         >
             <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
                 is_visible={!!(contract_info.is_sold)}
-                has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={(result || fallback_result)}
@@ -180,9 +176,8 @@ const PositionsDrawerCard = ({
                 <div
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
-                            'positions-drawer-card--green' : (profit_loss > 0) && !result,
-                            'positions-drawer-card--red'   : (profit_loss < 0) && !result,
+                            'positions-drawer-card--green': (profit_loss > 0) && !result,
+                            'positions-drawer-card--red'  : (profit_loss < 0) && !result,
                         }
                     )}
                     onClick={() => toggleUnsupportedContractModal(true)}
@@ -193,9 +188,8 @@ const PositionsDrawerCard = ({
                 <NavLink
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
-                            'positions-drawer-card--green' : (profit_loss > 0) && !result,
-                            'positions-drawer-card--red'   : (profit_loss < 0) && !result,
+                            'positions-drawer-card--green': (profit_loss > 0) && !result,
+                            'positions-drawer-card--red'  : (profit_loss < 0) && !result,
                         }
                     )}
                     to={{
@@ -237,10 +231,6 @@ const PositionsDrawerCard = ({
 };
 
 PositionsDrawerCard.propTypes = {
-    active_position: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
     className                     : PropTypes.string,
     contract_info                 : PropTypes.object,
     currency                      : PropTypes.string,

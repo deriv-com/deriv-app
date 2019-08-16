@@ -13,7 +13,6 @@ const ContractInfo = ({
     has_increased,
     is_loading,
     should_fade,
-    is_visible,
     proposal_info,
 }) => {
     const localized_basis = getLocalizedBasis();
@@ -50,13 +49,11 @@ const ContractInfo = ({
                     <Money amount={proposal_info.obj_contract_basis.value} className='trade-container__price-info-currency' currency={currency} />
                     }
                 </div>
-                {is_visible &&
                 <div className='trade-container__price-info-movement'>
                     {(!has_error_or_not_loaded && has_increased !== null) &&
                         <Icon icon='IconPriceMove' type={has_increased ? 'profit' : 'loss'} />
                     }
                 </div>
-                }
             </div>
             <Popover
                 alignment='left'
@@ -72,7 +69,6 @@ ContractInfo.propTypes = {
     currency     : PropTypes.string,
     has_increased: PropTypes.bool,
     is_loading   : PropTypes.bool,
-    is_visible   : PropTypes.bool,
     proposal_info: PropTypes.object,
 };
 

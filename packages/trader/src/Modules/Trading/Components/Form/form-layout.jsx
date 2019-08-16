@@ -4,7 +4,6 @@ import Lazy        from 'App/Containers/Lazy';
 import ScreenLarge from './screen-large.jsx';
 
 const FormLayout = ({
-    is_contract_visible,
     is_market_closed,
     is_mobile,
     is_trade_enabled,
@@ -17,17 +16,15 @@ const FormLayout = ({
         />
         :
         <ScreenLarge
-            is_contract_visible={is_contract_visible}
             is_trade_enabled={is_trade_enabled}
             is_market_closed={is_market_closed}
         />
 );
 
 FormLayout.propTypes = {
-    is_contract_visible: PropTypes.bool,
-    is_market_closed   : PropTypes.bool,
-    is_mobile          : PropTypes.bool,
-    is_trade_enabled   : PropTypes.bool,
+    is_market_closed: PropTypes.bool,
+    is_mobile       : PropTypes.bool,
+    is_trade_enabled: PropTypes.bool,
 };
 
 export default FormLayout;

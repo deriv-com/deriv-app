@@ -464,14 +464,8 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
-            if (!this.smart_chart.is_contract_mode) {
-                const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-                if (is_barrier_changed) {
-                    this.smart_chart.updateBarriers(this.barrier_1, this.barrier_2);
-                } else {
-                    this.smart_chart.removeBarriers();
-                }
-            }
+            // TODO: handle barrier updates on proposal api
+            // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
 
             const snapshot            = await processTradeParams(this, new_state);
             snapshot.is_trade_enabled = true;
@@ -486,9 +480,7 @@ export default class TradeStore extends BaseStore {
                 this.validateAllProperties();
             }
 
-            if (!this.smart_chart.is_contract_mode) {
-                this.debouncedProposal();
-            }
+            this.debouncedProposal();
         }
     }
 
@@ -530,8 +522,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
-        // We do not want new proposal requests when in contract mode
-        if (this.root_store.modules.smart_chart.is_contract_mode) return;
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -541,11 +531,9 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        if (!this.smart_chart.is_contract_mode) {
-            const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
-            const barrier_config = { color };
-            setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);
-        }
+        const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
+        const barrier_config = { color };
+        setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);
 
         if (response.error) {
             const error_id = getProposalErrorField(response);

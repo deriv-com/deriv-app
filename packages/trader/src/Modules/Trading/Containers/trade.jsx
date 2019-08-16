@@ -1,7 +1,6 @@
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-import UILoader              from 'App/Components/Elements/ui-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -41,9 +40,16 @@ class Trade extends React.Component {
                         has_progress={false}
                         should_load={true}
                     />
-                    { this.props.symbol &&
-                        <React.Suspense fallback={<UILoader />} >
-                            <ChartLoader is_visible={is_chart_visible} />
+                    {
+                        <React.Suspense
+                            fallback={
+                                <ChartLoader
+                                    is_dark={this.props.is_dark_theme}
+                                    is_visible={!this.props.symbol}
+                                />
+                            }
+                        >
+                            <ChartLoader is_dark={this.props.is_dark_theme} is_visible={is_chart_visible} />
                             <SmartChart
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
@@ -97,6 +103,8 @@ class Trade extends React.Component {
                 >
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
+
+                        is_dark_theme={this.props.is_dark_theme}
                         is_contract_visible={this.props.is_contract_mode}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
@@ -121,6 +129,7 @@ Trade.propTypes = {
     is_chart_loading : PropTypes.bool,
     is_chart_ready   : PropTypes.bool,
     is_contract_mode : PropTypes.bool,
+    is_dark_theme    : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_ended         : PropTypes.bool,
     is_market_closed : PropTypes.bool,
@@ -169,6 +178,7 @@ export default connect(
         hidePositions                      : ui.hidePositionsFooterToggle,
         showPositions                      : ui.showPositionsFooterToggle,
         has_only_forward_starting_contracts: ui.has_only_forward_starting_contracts,
+        is_dark_theme                      : ui.is_dark_mode_on,
         is_mobile                          : ui.is_mobile,
         setHasOnlyForwardingContracts      : ui.setHasOnlyForwardingContracts,
     })

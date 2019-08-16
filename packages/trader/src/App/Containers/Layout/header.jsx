@@ -1,14 +1,12 @@
 import classNames     from 'classnames';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { withRouter } from 'react-router';
 import {
     AccountActions,
     MenuLinks,
 }                     from 'App/Components/Layout/Header';
 import header_links   from 'App/Constants/header-links';
 import Lazy           from 'App/Containers/Lazy';
-import routes         from 'Constants/routes';
 import { connect }    from 'Stores/connect';
 
 const Header = ({
@@ -21,61 +19,55 @@ const Header = ({
     is_acc_switcher_on,
     // is_cashier_modal_on,
     is_app_disabled,
-    is_loading,
     is_logged_in,
     is_mobile,
     is_route_modal_on,
     is_virtual,
-    location,
     loginid,
     onClickUpgrade,
     disableApp,
     toggleAccountsDialog,
     // toggleCashierModal,
 }) => (
-    <React.Fragment>
-        {(!is_loading || location.pathname !== routes.trade) &&
-            <header className={classNames('header', {
-                'header--is-disabled': (is_app_disabled || is_route_modal_on),
-            })}
-            >
-                <div className='header__menu-items'>
-                    <div className='header__menu-left'>
-                        <Lazy
-                            has_progress={false}
-                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
-                            should_load={is_mobile}
-                        />
-                        <MenuLinks
-                            is_logged_in={is_logged_in}
-                            items={header_links}
-                        />
-                    </div>
-                    <div className='header__menu-right'>
-                        <div className='acc-info__container'>
-                            <AccountActions
-                                // active_cashier_tab={active_cashier_tab}
-                                balance={balance}
-                                can_upgrade_to={can_upgrade_to}
-                                currency={currency}
-                                can_upgrade={can_upgrade}
-                                disableApp={disableApp}
-                                enableApp={enableApp}
-                                is_acc_switcher_on={is_acc_switcher_on}
-                                // is_cashier_modal_on={is_cashier_modal_on}
-                                is_logged_in={is_logged_in}
-                                is_virtual={is_virtual}
-                                loginid={loginid}
-                                onClickUpgrade={onClickUpgrade}
-                                toggleAccountsDialog={toggleAccountsDialog}
-                                // toggleCashierModal={toggleCashierModal}
-                            />
-                        </div>
-                    </div>
+    <header className={classNames('header', {
+        'header--is-disabled': (is_app_disabled || is_route_modal_on),
+    })}
+    >
+        <div className='header__menu-items'>
+            <div className='header__menu-left'>
+                <Lazy
+                    has_progress={false}
+                    ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
+                    should_load={is_mobile}
+                />
+                <MenuLinks
+                    is_logged_in={is_logged_in}
+                    items={header_links}
+                />
+            </div>
+            <div className='header__menu-right'>
+                <div className='acc-info__container'>
+                    <AccountActions
+                        // active_cashier_tab={active_cashier_tab}
+                        balance={balance}
+                        can_upgrade_to={can_upgrade_to}
+                        currency={currency}
+                        can_upgrade={can_upgrade}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_acc_switcher_on={is_acc_switcher_on}
+                        // is_cashier_modal_on={is_cashier_modal_on}
+                        is_logged_in={is_logged_in}
+                        is_virtual={is_virtual}
+                        loginid={loginid}
+                        onClickUpgrade={onClickUpgrade}
+                        toggleAccountsDialog={toggleAccountsDialog}
+                        // toggleCashierModal={toggleCashierModal}
+                    />
                 </div>
-            </header>
-        }
-    </React.Fragment>
+            </div>
+        </div>
+    </header>
 );
 
 Header.propTypes = {
@@ -90,21 +82,17 @@ Header.propTypes = {
     is_app_disabled     : PropTypes.bool,
     is_cashier_modal_on : PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
-    is_loading          : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
     is_route_modal_on   : PropTypes.bool,
     is_virtual          : PropTypes.bool,
-    location            : PropTypes.object,
     loginid             : PropTypes.string,
     onClickUpgrade      : PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleCashierModal  : PropTypes.func,
 };
 
-// need to wrap withRouter around connect
-// to prevent updates on <MenuLinks /> from being blocked
-export default withRouter(connect(
+export default connect(
     ({ client, ui }) => ({
         // active_cashier_tab  : ui.active_cashier_tab,
         balance             : client.balance,
@@ -126,4 +114,4 @@ export default withRouter(connect(
         toggleAccountsDialog: ui.toggleAccountsDialog,
         // toggleCashierModal  : ui.toggleCashierModal,
     })
-)(Header));
+)(Header);

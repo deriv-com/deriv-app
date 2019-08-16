@@ -57,6 +57,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
+    "formik": "^1.5.8",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
@@ -86,6 +87,7 @@
   },
   "peerDependencies": {
     "@babel/polyfill": "^7.0.0",
+    "formik": "^1.5.8",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.2",
     "react": "^16.4.0",

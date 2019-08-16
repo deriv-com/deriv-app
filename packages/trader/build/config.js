@@ -6,7 +6,7 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/deriv-components/lib/deriv-components.css*'), to: 'css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-components/lib/deriv-components.*.css*'), to: 'css/', flatten: true },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
@@ -39,7 +39,9 @@ const htmlOutputConfig = () => ({
 const htmlInjectConfig = () => ({
     links: [
         'css/smartcharts.css',
-        'css/deriv-components.css',
+        'css/deriv-components.button.css',
+        'css/deriv-components.form.css',
+        'css/deriv-components.input.css',
         {
             path: 'manifest.json',
             attributes: {
@@ -71,7 +73,7 @@ const htmlInjectConfig = () => ({
         //     }
         // }
     ],
-    append: false 
+    append: false
 });
 
 const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });

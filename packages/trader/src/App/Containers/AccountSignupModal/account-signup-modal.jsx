@@ -1,10 +1,11 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
+import Input         from 'deriv-components/lib/input';
+import Form          from 'deriv-components/lib/form';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize      from 'App/Components/Elements/localize.jsx';
 import Button        from 'deriv-components/lib/button';
-import Dropdown      from 'App/Components/Form/DropDown';
-// import InputField    from 'App/Components/Form/InputField/input-field.jsx';
+// import Dropdown      from 'App/Components/Form/DropDown';
 import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';
 
@@ -12,40 +13,44 @@ import { connect }   from 'Stores/connect';
 //     ui.toggleUnsupportedContractModal(false);
 // };
 
+const signupInitialValues = { password: '', residence: '' };
+
+const validateSignup = (values) => {
+    const errors = {};
+
+    if (!values.password) {
+        errors.password = 'Password is required';
+    }
+
+    return errors;
+};
+
 const AccountSignup = ({ onSignup, residence_list }) => {
-    // THIS COMPONENT IS A WIP; IT IS NOT READY FOR USE.
-    const obj_user_input = { password: null, residence: null };
-
-    const onInputChange = ({ target }) => {
-        const { name, value } = target;
-        obj_user_input[name] = value;
-    };
-
-    const onSubmitSignup = () => onSignup(obj_user_input);
-
     return (
         <div className='account-signup'>
-            <h3>
-                <Localize i18n_default_text='Thanks for verifying your email.' />
-            </h3>
-            <input type='password' name='password' onChange={onInputChange} required placeholder={localize('Create a password')} />
-            {/* <InputField */}
-            {/*    name='password' */}
-            {/*    type='password' */}
-            {/*    placeholder='Create a password' */}
-            {/*    required */}
-            {/*    onChange={onInputChange} */}
-            {/* /> */}
-            <Dropdown
-                is_alignment_left
-                is_nativepicker={false}
-                list={residence_list}
-                name='residence'
-                onChange={onInputChange}
-            />
-            <Button onClick={onSubmitSignup}>
-                <Localize i18n_default_text='Start trading' />
-            </Button>
+            {/* <h3> */}
+            {/*    <Localize i18n_default_text='Thanks for verifying your email.' /> */}
+            {/* </h3> */}
+            <Form
+                initialValues={signupInitialValues}
+                validate={validateSignup}
+                onSubmit={onSignup}
+            >
+                {
+                    ({ resetForm }) => (
+                        <React.Fragment>
+                            <Input type='password' name='password' placeholder={localize('Create a password')} label={localize('Password')} required />
+
+                            <Button type='submit'>
+                                <Localize i18n_default_text='Start trading' />
+                            </Button>
+                            <Button type='button' onClick={resetForm}>
+                                <Localize i18n_default_text='Reset form (remove this)' />
+                            </Button>
+                        </React.Fragment>
+                    )
+                }
+            </Form>
         </div>
     );
 };

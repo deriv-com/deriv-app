@@ -2,19 +2,29 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "husky": "^3.0.1",
     "lerna": "^3.15.0"
   },
   "scripts": {
     "bootstrap": "f () { lerna bootstrap --scope deriv-${1:-'*'} ;}; f",
-    "hoist": "lerna bootstrap --hoist --nohoist=jsdom* --nohoist=mochapack",
     "start": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run start ;}; f",
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
+    "build:travis": "lerna exec -- npm run build:travis",
     "test": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test ;}; f",
+    "test:eslint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:eslint ;}; f",
+    "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",
+    "test:mocha": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:mocha ;}; f",
     "deploy": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy ;}; f",
-    "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ;}; f",
+    "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ${@:2} ;}; f",
     "deploy:folder": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:folder ${@:2} ;}; f",
     "deploy:staging": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:staging ;}; f",
     "deploy:production": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:production ;}; f"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "bash ./hooks/pre-push.sh",
+      "post-merge": "npm run build:travis"
+    }
   }
 }

@@ -75,6 +75,10 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
+        if (this.isInFlyout) {
+            return;
+        }
+        
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
             const promptMessage = translate('Specify a parameter name:');

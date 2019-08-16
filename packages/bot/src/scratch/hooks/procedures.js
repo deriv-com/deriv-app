@@ -138,3 +138,30 @@ Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
         return false;
     });
 };
+
+/**
+ * Move the workspace based on the most recent mouse movements.
+ * @param {!goog.math.Coordinate} currentDragDeltaXY How far the pointer has
+ *     moved from the position at the start of the drag, in pixel coordinates.
+ * @package
+ */
+Blockly.WorkspaceDragger.prototype.drag = function(currentDragDeltaXY) {
+    if (this.workspace_.isFlyout) {
+        return;
+    }
+
+    const metrics = this.startDragMetrics_;
+    const newXY = goog.math.Coordinate.sum(this.startScrollXY_, currentDragDeltaXY);
+
+    // Bound the new XY based on workspace bounds.
+    let x = Math.min(newXY.x, -metrics.contentLeft);
+    let y = Math.min(newXY.y, -metrics.contentTop);
+
+    x = Math.max(x, metrics.viewWidth - metrics.contentLeft - metrics.contentWidth);
+    y = Math.max(y, metrics.viewHeight - metrics.contentTop - metrics.contentHeight);
+
+    x = -x - metrics.contentLeft;
+    y = -y - metrics.contentTop;
+
+    this.updateScroll_(x, y);
+};

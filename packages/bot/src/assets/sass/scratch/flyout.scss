@@ -1,0 +1,77 @@
+.flyout {
+    $default-margin: 15px;
+
+    position: absolute;
+    left: 250px;
+    background-color: $COLOR_WHITE;
+    max-height: calc(100% - 40px);
+    z-index: 1;
+    border-radius: 10px;
+    padding: 25px;
+    font-size: 2em;
+    margin-left: $default-margin;
+    margin-top: 20px;
+    overflow: auto;
+    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+    min-width: 400px;
+
+    &__block-workspace {
+        margin-bottom: $default-margin;
+
+        * .blocklySvg {
+            background-color: inherit !important;
+        }
+        * .blocklyMainBackground {
+            stroke: none !important;
+        }
+    }
+    &__button {
+        width: 100%;
+        font-size: 100%;
+        padding: $default-margin;
+        margin-bottom: $default-margin;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+        cursor: pointer;
+    }
+    &__item {
+        &:not(:last-of-type) {
+            margin-bottom: 30px;
+        }
+        &-header {
+            display: flex;
+            margin-top: $default-margin;
+            margin-bottom: 10px;
+        }
+        &-label {
+            font-weight: bold;
+        }
+        &-buttons {
+            margin-left: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+        &-add {
+            padding: 5px 20px;
+            border: none;
+            font-size: 16px;
+            color: $COLOR_WHITE;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: $default-margin;
+            background-color: $COLOR_ORANGE;
+            cursor: pointer;
+        }
+        &-info {
+            cursor: pointer;
+            display: flex;
+
+            > .icon-info {
+                height: 20px;
+                width: 20px;
+                align-self: center;
+            }
+        }
+    }
+}

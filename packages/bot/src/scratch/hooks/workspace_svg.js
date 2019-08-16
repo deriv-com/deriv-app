@@ -57,3 +57,26 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
     
     this.scrollbar.set(scrollToCenterX, scrollToCenterY);
   };
+
+/**
+ * Creates a copy of passed block_node on main workspace and positions it
+ * below the lowest block on the canvas.
+ * @static
+ * @param {Element} block_node
+ * @public
+ */
+Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
+    const block = Blockly.Xml.domToBlock(block_node, this);
+    const top_blocks = this.getTopBlocks(true);
+
+    if (top_blocks.length) {
+        const last_block = top_blocks[top_blocks.length - 1];
+        const last_block_xy = last_block.getRelativeToSurfaceXY();
+        const extra_spacing = (last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
+        const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
+        
+        block.moveBy(last_block_xy.x, y);
+    }
+
+    this.centerOnBlock(block.id, false);
+}

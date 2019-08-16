@@ -8,7 +8,6 @@ import AppContents                 from './Containers/Layout/app-contents.jsx';
 import Footer                      from './Containers/Layout/footer.jsx';
 import Header                      from './Containers/Layout/header.jsx';
 import Lazy                        from './Containers/Lazy';
-import Modals                      from './Containers/Modals';
 import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
 // eslint-disable-next-line import/extensions
@@ -44,7 +43,11 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <Modals />
+                            <Lazy
+                                ctor={() => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals')}
+                                should_load={true}
+                                has_progress={false}
+                            />
                         </React.Fragment>
                 }
             </MobxProvider>

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ArrowIcon } from '../../components/Icons.jsx';
+import { flyout }    from '../../stores';
 import { translate } from '../../utils/lang/i18n';
-import { flyout } from '../../stores';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -359,7 +359,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
  * procedures.
  * deriv-bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function () { };
+Blockly.Toolbox.prototype.refreshSelection = function () {};
 
 /**
  * Create the DOM for a category in the toolbox.
@@ -400,7 +400,8 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     } else if (this.iconURI_) {
         // If category has iconURI attribute, it refers to an entry in our bot-sprite.svg
         const el_icon = goog.dom.createDom('div', { class: 'toolbox__icon' });
-        el_icon.innerHTML = `<svg><use xlink:href="./dist/bot-sprite.svg#${this.iconURI_}"></use></svg>`;
+        // eslint-disable-next-line
+        el_icon.innerHTML = `<svg><use xlink:href="${__webpack_public_path__}bot-sprite.svg#${this.iconURI_}"></use></svg>`;
         el_item.appendChild(el_icon);
     }
 

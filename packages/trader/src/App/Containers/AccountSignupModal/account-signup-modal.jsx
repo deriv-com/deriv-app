@@ -8,6 +8,7 @@ import Button        from 'deriv-components/lib/button';
 // import Dropdown      from 'App/Components/Form/DropDown';
 import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';
+import Icon          from 'Assets/icon.jsx';
 
 // const onClose = (ui) => {
 //     ui.toggleUnsupportedContractModal(false);
@@ -20,6 +21,10 @@ const validateSignup = (values) => {
 
     if (!values.password) {
         errors.password = 'Password is required';
+    }
+
+    if (!values.residence) {
+        errors.residence = 'Residence is required';
     }
 
     return errors;
@@ -39,7 +44,13 @@ const AccountSignup = ({ onSignup, residence_list }) => {
                 {
                     ({ resetForm }) => (
                         <React.Fragment>
-                            <Input type='password' name='password' placeholder={localize('Create a password')} label={localize('Password')} required />
+                            <Input
+                                type='text'
+                                name='residence'
+                                label={localize('Choose country')}
+                                required
+                                trailing_icon={<Icon icon='IconArrow' />}
+                            />
 
                             <Button type='submit'>
                                 <Localize i18n_default_text='Start trading' />

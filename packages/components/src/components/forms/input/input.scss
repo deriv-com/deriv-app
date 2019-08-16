@@ -78,11 +78,13 @@
     width: 100%;
     border-radius: 4px;
     border: 1px solid var(--color-grey-2);
+    display: flex;
+    align-items: center;
 
     &:focus-within {
         border-color: var(--color-green);
     }
-    .dc-input__field {
+    &__field {
         background: none;
         color: var(--color-black);
         font-size: var(--text-size-s);
@@ -120,7 +122,10 @@
             }
         }
     }
-    .dc-input__label {
+    &__trailing-icon {
+        margin: 0 1.2rem 0 0;
+    }
+    &__label {
         color: var(--color-grey);
         font-size: var(--text-size-s);
         position: absolute;

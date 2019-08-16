@@ -167,6 +167,9 @@
             background-color: themed('background_container_color');
         }
 
+        .initial-loader {
+            pointer-events: none;
+        }
         .barspinner {
             display: flex;
             justify-content: center;

@@ -91,7 +91,7 @@ module.exports = {
         ],
     },
     plugins: [       
-        new MiniCssExtractPlugin({ filename: 'deriv-components.css' }),
+        new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin( { fix: true }),
         new SpriteLoaderPlugin(),
     ],

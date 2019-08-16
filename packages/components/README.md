@@ -20,9 +20,10 @@ test  :
   ```
 
 ## Usage
+we can import individual components on demand and import style manually:
 ```jsx
 import Button from 'deriv-components/lib/Button';
-
+import 'deriv-components/lib/button.css';
 const SomeComponent = () => (
     <Button is_disabled primary>
       Hello World

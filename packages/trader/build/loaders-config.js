@@ -3,6 +3,9 @@ const path                 = require('path');
 
 const js_loaders = [
     {
+        loader: path.resolve(path.join(__dirname, 'deriv-components-loader.js'))
+    },
+    {
         loader : 'babel-loader',
         options: {
             presets: [
@@ -18,7 +21,7 @@ const js_loaders = [
                 '@babel/plugin-syntax-dynamic-import',
             ],
         }
-    }
+    },
 ];
 
 const html_loaders = [

@@ -19,6 +19,7 @@ import {
 import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
+import { getClientAccountType }      from './Helpers/client';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { setCurrencies }             from '../_common/base/currency_base';
 
@@ -151,6 +152,11 @@ export default class ClientStore extends BaseStore {
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
 
+    @computed
+    get account_type() {
+        return getClientAccountType(this.loginid);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -252,7 +258,6 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
-        this.root_store.ui.is_app_blurred = false;
     }
 
     /**
@@ -436,8 +441,13 @@ export default class ClientStore extends BaseStore {
         this.currencies_list  = {};
         this.selected_currency = '';
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
-        this.root_store.ui.removeAllNotifications();
-        this.root_store.modules.trade.onMount();
+        return new Promise(async (resolve) => {
+            await this.root_store.modules.trade.clearContract();
+            await this.root_store.modules.trade.resetErrorServices();
+            await this.root_store.ui.removeAllNotifications();
+            await this.root_store.modules.trade.refresh();
+            return resolve(this.root_store.modules.trade.debouncedProposal());
+        });
     }
 
     /* eslint-disable */

@@ -1,6 +1,6 @@
-import React            from 'react';
-import FlyoutStore      from '../../stores/flyout-store';
-import { connect }      from '../../stores/connect';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from '../../stores/connect';
 
 export const FlyoutVideo = (props) => {
     return (
@@ -16,23 +16,29 @@ export const FlyoutVideo = (props) => {
 };
 
 const HelpBase = (props) => {
-    const { onSequenceClick } = props;
+    const { onSequenceClick, title, children } = props;
 
     return (
         <React.Fragment>
             <div className='flyout__help-header'>
-                <button className='flyout__item-back' onClick={() => FlyoutStore.onBackClick()}>← Back</button>
-                &nbsp;<span><b>{props.title}</b></span>
+                <button className='flyout__item-btn flyout__item-btn-back' onClick={() => Blockly.derivWorkspace.reshowFlyout()}>← Back</button>
+                &nbsp;<span><b>{title}</b></span>
             </div>
             <div className='flyout__help-content'>
-                {props.children}
+                {children}
             </div>
             <div className='flyour__help-footer'>
-                <button className='flyout__item-previous' onClick={() => onSequenceClick(props.title, 'previous')}>Previous</button>
-                <button className='flyout__item-next' onClick={() => onSequenceClick(props.title, 'next')}>Next</button>
+                <button className='flyout__item-btn flyout__item-btn-previous' onClick={() => onSequenceClick(title, 'previous')}>Previous</button>
+                <button className='flyout__item-btn flyout__item-btn-next' onClick={() => onSequenceClick(title, 'next')}>Next</button>
             </div>
         </React.Fragment>
     );
+};
+
+HelpBase.propTypes = {
+    children       : PropTypes.any,
+    onSequenceClick: PropTypes.func,
+    title          : PropTypes.string,
 };
 
 export default connect(({ flyout }) => ({

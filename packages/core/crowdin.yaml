@@ -1,0 +1,6 @@
+project_identifier: 'deriv-app'
+api_key_env: DERIV_CROWDIN_API_KEY
+
+files:
+  - source: /src/public/i18n/messages.json
+    translation: /src/public/i18n/%locale_with_underscore%.json

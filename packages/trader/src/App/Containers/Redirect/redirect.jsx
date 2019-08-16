@@ -21,7 +21,7 @@ const Redirect = ({
         }
         case 'payment_withdraw': {
             setCashierActiveTab('withdraw');
-            toggleCashierModal(true);
+            toggleCashierModal();
             break;
         }
         default: break;

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import FlyoutStore from '../../stores/flyout-store';
+import PropTypes from 'prop-types';
 import { connect } from '../../stores/connect';
 import { translate } from '../../utils/lang/i18n';
 
@@ -10,7 +10,7 @@ class FlyoutBlockWorkspace extends React.PureComponent {
         return (
             <>
                 <div className='flyout__item-buttons'>
-                    <button className='flyout__item-add' onClick={() => FlyoutStore.onAddClick(block_node)}>
+                    <button className='flyout__item-btn flyout__item-btn-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}>
                         {translate('Add')}
                     </button>
                 </div>
@@ -24,6 +24,10 @@ class FlyoutBlockWorkspace extends React.PureComponent {
         initBlockWorkspace(this.el_block_workspace, block_node, should_center_block);
     }
 }
+
+FlyoutBlockWorkspace.propTypes = {
+    block_node: PropTypes.any,
+};
 
 export default connect(({ flyout }) => ({
     initBlockWorkspace: flyout.initBlockWorkspace,

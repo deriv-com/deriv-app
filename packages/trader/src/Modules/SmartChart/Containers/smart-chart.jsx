@@ -50,6 +50,7 @@ class Chart extends React.Component {
                 margin={this.props.margin || null}
                 id={this.props.chart_id}
                 isMobile={this.props.is_mobile}
+                enabledNavigationWidget={this.props.is_contract_mode}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -59,7 +60,6 @@ class Chart extends React.Component {
                 showLastDigitStats={this.props.should_show_last_digit_stats}
                 startEpoch={this.props.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
-                scrollToEpochOffset={this.props.scroll_to_offset}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
@@ -105,7 +105,6 @@ Chart.propTypes = {
     onUnmount                    : PropTypes.func,
     replay_controls              : PropTypes.object,
     scroll_to_epoch              : PropTypes.number,
-    scroll_to_epoch_offset       : PropTypes.number,
     settings                     : PropTypes.object,
     should_clear_chart           : PropTypes.bool,
     should_export_layout         : PropTypes.bool,

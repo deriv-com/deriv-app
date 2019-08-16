@@ -1,0 +1,151 @@
+@import '../base/mixins';
+
+$category-colours: (
+    trade_parameters   : #30409f,
+    purchase_conditions: #00897b,
+    sell_conditions    : #78909c,
+    trade_results      : #d81a60,
+    technical_analysis : #689e38,
+    utility            : #8e25aa,
+    math               : #fc8b01,
+    text               : #5d4037,
+    logic              : #1876d2,
+    lists              : #e53836,
+    custom_functions   : #00acc1,
+    variables          : #616161,
+    loops              : #afb42b,
+);
+
+.toolbox {
+    $toolbox         : &;
+    $white           : #fff;
+    $lightgrey       : #ebebeb;
+    $grey            : #f4f4f6;
+    $category-text-spacing: 15px;
+
+    background-color: $white;
+    border: 1px solid $lightgrey;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    max-height: calc(100% - 40px);
+    overflow: hidden;
+    position: absolute;
+    user-select: none;
+    z-index: 1;
+    width: 250px;
+
+    &__header {
+        padding: 0.5em;
+        position: relative;
+        font-weight: bold;
+        font-size: 1.6em;
+        background-color: $grey;
+        text-align: center;
+    }
+    &__item {
+        display: flex;
+        flex-direction: row;
+    }
+    &__category-arrow {
+        display: flex;
+        margin: auto;
+
+        &--back {
+            margin-left: $category-text-spacing;
+            fill: $white;
+            @include vendor(transform, rotate(90deg));
+        }
+        &--open {
+            margin-right: $category-text-spacing;
+            @include vendor(transform, rotate(270deg));
+        }
+    }
+    &__category-colour {
+        width: 5px;
+        flex-shrink: 0;
+    }
+    @each $category, $colour in $category-colours {
+        &__category {
+            &--#{$category} {
+                #{$toolbox}__category-colour {
+                    background-color: $colour;
+                }
+            }
+        }
+        &__category-return {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    background-color: $colour;
+                }
+            }
+        }
+    }
+
+    &__category-menu {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        overflow: auto;
+    }
+    &__category-return {
+        cursor: pointer;
+        color: $white;
+        text-align: center;
+
+        #{$toolbox}__label {
+            margin-left: -($category-text-spacing * 2);
+        }
+    }
+    &__category-text {
+        align-self: center;
+        margin: $category-text-spacing;
+        width: 100%;
+    }
+    &__description {
+        font-size: 1.3em;
+    }
+    &__icon {
+        display: flex;
+        align-self: center;
+        margin-right: $category-text-spacing;
+
+        > svg {
+            height: 25px;
+            width: 25px;
+        }
+    }
+    &__label {
+        font-weight: bold;
+        font-size: 1.6em;
+    }
+    &__row {
+        cursor: pointer;
+        border-top: 1px solid $lightgrey;
+
+        &:last-of-type {
+            border-bottom: 1px solid $lightgrey;
+        }
+
+        @each $category, $colour in $category-colours {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    &:hover:not(#{$toolbox}__category--selected) {
+                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
+                    }
+                }
+                &--#{$category}#{$toolbox}__category--selected {
+                    background-color: transparentize($colour, 0.9);
+                    @include vendor(transition, background-color 0.25s ease);
+                }
+            }
+        }
+    }
+    &__separator {
+        padding: 20px 0;
+        border-top: 1px solid $lightgrey;
+    }
+}

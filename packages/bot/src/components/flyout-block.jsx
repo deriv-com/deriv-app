@@ -29,7 +29,6 @@ const FlyoutBlock = (props) => {
                     return (
                         <FlyoutBlockWorkspace
                             key={key}
-                            onInfoClick={onInfoClick}
                             should_center_block={should_center_block}
                             block_node={block_node[key]}
                         />

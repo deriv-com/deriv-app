@@ -1,4 +1,12 @@
-/* eslint-disable func-names */
+/* eslint-disable func-names, no-underscore-dangle */
+
+Blockly.Block.prototype.getDisplayName = function() {
+    if (this.meta) {
+        const block_meta = this.meta();
+        return block_meta && block_meta.display_name;
+    }
+    return this.type;
+};
 
 Blockly.Block.prototype.getDisplayName = function() {
     if (this.meta) {
@@ -86,7 +94,8 @@ Blockly.Block.prototype.getTopParent = function() {
 };
 
 Blockly.Block.getDimensions = function(block_node) {
-    const options = new Blockly.Options({ media: '/dist/media/' });
+    // eslint-disable-next-line
+    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
     const fragment = document.createDocumentFragment();
     const el_injection_div = document.createElement('div');
 

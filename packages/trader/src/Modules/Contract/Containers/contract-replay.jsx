@@ -263,27 +263,23 @@ const ReplayChart = connect(
             isHighestLowestMarkerEnabled: false, // !this.is_contract_mode, // TODO: Pending UI
         };
         return ({
-            end_epoch      : contract_config.end_epoch,
-            chart_type     : contract_config.chart_type,
-            start_epoch    : contract_config.start_epoch,
-            granularity    : contract_config.granularity,
-            scroll_to_epoch: contract_config.scroll_to_epoch,
-
+            end_epoch        : contract_config.end_epoch,
+            chart_type       : contract_config.chart_type,
+            start_epoch      : contract_config.start_epoch,
+            granularity      : contract_config.granularity,
+            scroll_to_epoch  : contract_config.scroll_to_epoch,
             settings,
             is_mobile        : ui.is_mobile,
             is_socket_opened : common.is_socket_opened,
             is_digit_contract: contract_store.is_digit_contract,
-
-            margin         : contract_replay.margin,
-            is_static_chart: contract_replay.is_static_chart,
-
-            barriers_array: contract_store.barriers_array,
-            markers_array : contract_store.markers_array,
-
-            wsForget      : trade.wsForget,
-            wsSubscribe   : trade.wsSubscribe,
-            wsSendRequest : trade.wsSendRequest,
-            wsForgetStream: trade.wsForgetStream,
+            margin           : contract_replay.margin,
+            is_static_chart  : contract_replay.is_static_chart,
+            barriers_array   : contract_store.barriers_array,
+            markers_array    : contract_store.markers_array,
+            wsForget         : trade.wsForget,
+            wsSubscribe      : trade.wsSubscribe,
+            wsSendRequest    : trade.wsSendRequest,
+            wsForgetStream   : trade.wsForgetStream,
         });
     }
 )(Chart);

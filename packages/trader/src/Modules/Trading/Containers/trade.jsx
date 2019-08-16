@@ -42,7 +42,7 @@ class Trade extends React.Component {
     }
 
     render() {
-        const form_wrapper_class           = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+        const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         return (
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
@@ -83,17 +83,14 @@ class Trade extends React.Component {
 
 export default connect(
     ({ modules, ui }) => ({
-
         is_contract_mode: modules.smart_chart.is_contract_mode,
-
         is_chart_loading: modules.trade.is_chart_loading,
         is_market_closed: modules.trade.is_market_closed,
         is_trade_enabled: modules.trade.is_trade_enabled,
         onMount         : modules.trade.onMount,
         onUnmount       : modules.trade.onUnmount,
         purchase_info   : modules.trade.purchase_info,
-
-        is_mobile: ui.is_mobile,
+        is_mobile       : ui.is_mobile,
     })
 )(Trade);
 
@@ -241,8 +238,7 @@ const ChartTrade = connect(
         contract_type : modules.trade.contract_type,
         chart_type    : modules.contract_trade.chart_type,
         barriers_array: modules.contract_trade.barriers_array,
-
-        settings: {
+        settings      : {
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,
             isHighestLowestMarkerEnabled: false, // !this.is_contract_mode,
@@ -259,10 +255,9 @@ const ChartTrade = connect(
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,
         is_mobile        : ui.is_mobile,
-
-        wsForget      : modules.trade.wsForget,
-        wsForgetStream: modules.trade.wsForgetStream,
-        wsSendRequest : modules.trade.wsSendRequest,
-        wsSubscribe   : modules.trade.wsSubscribe,
+        wsForget         : modules.trade.wsForget,
+        wsForgetStream   : modules.trade.wsForgetStream,
+        wsSendRequest    : modules.trade.wsSendRequest,
+        wsSubscribe      : modules.trade.wsSubscribe,
     })
 )(ChartTradeClass);

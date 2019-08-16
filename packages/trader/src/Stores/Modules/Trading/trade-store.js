@@ -192,10 +192,8 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    clearContract = () => {
-        if (this.root_store.modules.smart_chart.is_contract_mode) {
-            this.root_store.modules.contract_trade.onCloseContract();
-        }
+    clearContracts = () => {
+        this.root_store.modules.contract_trade.contracts = [];
     };
 
     @action.bound
@@ -274,6 +272,7 @@ export default class TradeStore extends BaseStore {
 
         // save trade_chart_symbol upon user change
         if (name === 'symbol' && value) {
+            // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
             // this.root_store.modules.smart_chart.trade_chart_symbol = value;
         }
@@ -318,8 +317,6 @@ export default class TradeStore extends BaseStore {
             this.is_purchase_enabled = false;
             processPurchase(proposal_id, price).then(action((response) => {
                 if (this.proposal_info[type].id !== proposal_id) {
-                    this.smart_chart.cleanupContractChartView();
-                    this.smart_chart.applySavedTradeChartLayout();
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
@@ -346,8 +343,13 @@ export default class TradeStore extends BaseStore {
                         // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
+                        this.proposal_info = {};
+                        WS.forgetAll('proposal');
+                        this.purchase_info = response;
+                        this.debouncedProposal();
+                        this.root_store.gtm.pushPurchaseData(contract_data);
+                        return;
                     }
-                    this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {
                     // using javascript to disable purchase-buttons manually to compensate for mobx lag
                     this.disablePurchaseButtons();
@@ -612,7 +614,7 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency },
                 false,
             );
-            await this.clearContract();
+            await this.clearContracts();
             await this.resetErrorServices();
             await this.refresh();
             return resolve(this.debouncedProposal());

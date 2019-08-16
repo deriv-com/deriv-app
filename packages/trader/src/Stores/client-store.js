@@ -376,7 +376,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
-                this.root_store.modules.trade.clearContract();
+                this.root_store.modules.trade.clearContracts();
                 return;
             }
 
@@ -445,7 +445,7 @@ export default class ClientStore extends BaseStore {
         // this.root_store.modules.trade.onMount();
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
         return new Promise(async (resolve) => {
-            await this.root_store.modules.trade.clearContract();
+            await this.root_store.modules.trade.clearContracts();
             await this.root_store.modules.trade.resetErrorServices();
             await this.root_store.ui.removeAllNotifications();
             await this.root_store.modules.trade.refresh();

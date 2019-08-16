@@ -25,7 +25,7 @@ const PurchaseButton = ({
         if (!should_fade && is_loading) return '';
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-    const is_button_disabled = ((is_contract_mode || is_disabled) && !is_loading) || is_proposal_empty;
+    const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
     return (
         <Button

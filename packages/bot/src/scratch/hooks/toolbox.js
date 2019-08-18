@@ -1,6 +1,7 @@
 import React         from 'react';
 import ReactDOM      from 'react-dom';
 import { ArrowIcon } from '../../components/Icons.jsx';
+import { flyout }    from '../../stores';
 import { translate } from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
@@ -65,17 +66,16 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
-    let allContents = [];
+    const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
+    let xml_list = selected_category.getContents();
 
-    const category = this.categoryMenu_.categories_.find(menuCategory => menuCategory.id_ === category_id);
-    if (!category) {
-        return;
+    // Dynamic categories
+    if (typeof xml_list === 'string') {
+        const fnToApply = this.workspace_.getToolboxCategoryCallback(xml_list);
+        xml_list = fnToApply(this.workspace_);
     }
 
-    allContents = allContents.concat(category.getContents());
-
-    this.flyout_.autoClose = true;
-    this.flyout_.show(allContents);
+    flyout.setContents(xml_list);
 };
 
 /**
@@ -114,15 +114,17 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
             this.selectedItem_.id_ === item.id_
         ) {
             this.selectedItem_ = null;
-            this.flyout_.hide();
+            if (flyout.is_visible) {
+                flyout.setVisibility(false);
+            }
             return;
         }
     }
 
     this.selectedItem_ = item;
 
-    if (item === null) {
-        this.flyout_.hide();
+    if (!item) {
+        flyout.setVisibility(false);
     } else {
         const getCategoryTree = (parent_name, parent_id, colour, children) => {
             const xml_document = document.implementation.createDocument(null, null, null);
@@ -176,7 +178,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                 const el_parent = selected_category.parentElement;
 
                 if (el_parent.tagName === 'xml') {
-                    this.flyout_.hide();
+                    flyout.setVisibility(false);
                     this.workspace_.updateToolbox(initial_toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
@@ -186,7 +188,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                         el_parent.children,
                     );
 
-                    this.flyout_.hide();
+                    flyout.setVisibility(false);
                     this.workspace_.updateToolbox(newTree);
                 }
             }
@@ -199,7 +201,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                 this.selectedItem_.contents_,
             );
 
-            this.flyout_.hide();
+            flyout.setVisibility(false);
             this.workspace_.updateToolbox(newTree);
         } else {
             // Show blocks that belong to this category.
@@ -215,9 +217,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
  * procedures.
  * deriv-bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function () {
-    // Hello, I'm doing nothing. :)
-};
+Blockly.Toolbox.prototype.refreshSelection = function () {};
 
 /**
  * Create the DOM for a category in the toolbox.

@@ -9,6 +9,9 @@
     "build": "f () { npm run test && webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
     "build:travis": "echo \"Error: no build:travis specified\"",
     "test": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\"",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
+    "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",
+    "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only",
     "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
     "deploy:clean": "npm run build && gh-pages -d dist",
     "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f",
@@ -118,7 +121,7 @@
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.4.43",
+    "smartcharts-beta": "^0.4.44",
     "tt-react-custom-scrollbars": "^4.2.1-tt2",
     "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15"

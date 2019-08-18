@@ -25,7 +25,7 @@ Blockly.Blocks.payout = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
             if (this.isDescendantOf('before_purchase')) {
                 if (this.disabled) {
                     this.setDisabled(false);

@@ -54,9 +54,7 @@ class DurationWrapper extends React.Component {
         const {
             advanced_duration_unit,
             advanced_expiry_type,
-            contract_expiry_type,
             duration,
-            duration_min_max,
             duration_unit,
             expiry_type,
             getDurationFromUnit,
@@ -68,8 +66,6 @@ class DurationWrapper extends React.Component {
 
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
-        const [min_value, max_value] =
-            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
@@ -85,13 +81,7 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
-            onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
-            onChange({ target: { name: 'duration', value: max_value } });
-        }
+        this.assertDurationIsWithinBoundary(duration_unit, current_duration, onChangeUiStore, onChange);
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
@@ -121,6 +111,24 @@ class DurationWrapper extends React.Component {
 
         if (duration !== current_duration) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
+        }
+
+        this.assertDurationIsWithinBoundary(duration_unit, current_duration, onChangeUiStore, onChange);
+    }
+
+    assertDurationIsWithinBoundary (duration_unit, current_duration, onChangeUiStore, onChange) {
+        const [min_value, max_value] = this.getDurationMinMaxValues(
+            this.props.duration_min_max,
+            this.props.contract_expiry_type,
+            duration_unit,
+        );
+
+        if (current_duration < min_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
+        } else if (current_duration > max_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
         }
     }
 

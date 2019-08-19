@@ -75,6 +75,7 @@ class Reports extends React.Component {
                         action_bar={action_bar_items}
                         action_bar_classname='reports__inset_header'
                         alignment='center'
+                        id='report'
                         classNameHeader='reports__tab-header'
                         current_path={this.props.location.pathname}
                         is_routed={true}

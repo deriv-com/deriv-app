@@ -7,6 +7,7 @@ import Button              from 'deriv-components/lib/button';
 
 const SignupButton = ({ className }) => (
     <Button
+        id='dt_signup_button'
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
         text={localize('Sign up')}

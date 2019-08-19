@@ -67,6 +67,7 @@ const ToggleSettings = ({
     return (
         <React.Fragment>
             <a
+                id='dt_settings_toggle'
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >
@@ -74,6 +75,7 @@ const ToggleSettings = ({
             </a>
             <React.Suspense fallback={<UILoader />}>
                 <Modal
+                    id='dt_settings_modal'
                     modal_content={modal_content}
                     enableApp={enableApp}
                     is_open={is_settings_visible}

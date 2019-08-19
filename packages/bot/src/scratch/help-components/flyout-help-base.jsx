@@ -8,6 +8,7 @@ export const FlyoutVideo = (props) => {
             src={props.url}
             frameBorder='0'
             allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+            height='200px'
             allowFullScreen
             width={'100%'}
         />
@@ -22,12 +23,12 @@ const HelpBase = (props) => {
         <React.Fragment>
             <div className='flyout__help-header'>
                 <button className='flyout__item-btn flyout__item-btn-back' onClick={() => Blockly.derivWorkspace.reshowFlyout()}>← Back</button>
-                &nbsp;<span><b>{title}</b></span>
+                <span className='flyout__help-title'>{title}</span>
             </div>
             <div className='flyout__help-content'>
                 {children}
             </div>
-            <div className='flyour__help-footer'>
+            <div className='flyout__help-footer'>
                 <button className='flyout__item-btn flyout__item-btn-previous' onClick={() => onSequenceClick(title, 'previous')}>Previous</button>
                 <button className='flyout__item-btn flyout__item-btn-next' onClick={() => onSequenceClick(title, 'next')}>Next</button>
             </div>

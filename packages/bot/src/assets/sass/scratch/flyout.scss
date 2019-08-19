@@ -87,4 +87,14 @@
             }
         }
     }
+    &__help {
+        &-header {
+            padding: 20px 0;
+        }
+        &-title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+    }
 }

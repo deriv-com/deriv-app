@@ -625,6 +625,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
+        this.clearContracts();
+        this.resetErrorServices();
+
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
@@ -632,10 +635,8 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency },
                 false,
             );
-            await this.clearContracts();
-            await this.resetErrorServices();
-            await this.refresh();
-            return resolve(this.debouncedProposal());
+            this.refresh();
+            resolve(this.debouncedProposal());
         });
     }
 
@@ -650,11 +651,11 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
         });
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.setChartStatus(true);
+        this.refresh();
         return new Promise(async (resolve) => {
-            await this.setChartStatus(true);
-            await this.refresh();
             await this.prepareTradeStore();
-            return resolve(this.debouncedProposal());
+            resolve(this.debouncedProposal());
         });
     }
 
@@ -666,10 +667,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.proposal_info = {};
-        this.purchase_info = {};
-        WS.forgetAll('proposal');
-        this.resetErrorServices();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();

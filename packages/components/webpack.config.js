@@ -3,7 +3,7 @@ const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 
-const isServe = process.env.BUILD_MODE === 'serve';
+const is_serve = process.env.BUILD_MODE === 'serve';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
@@ -74,7 +74,7 @@ module.exports = {
                     },
                 ],
             },
-            (!isServe ? {
+            (!is_serve ? {
                 enforce: 'pre',
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/],

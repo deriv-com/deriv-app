@@ -9,6 +9,7 @@ import Test                  from './test.jsx';
 import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { symbolChange }      from '../../SmartChart/Helpers/symbol';
+import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
 // TODO: see if it worth it to lazy load smartcharts.js here and in contract-replay.jsx
 
@@ -76,6 +77,15 @@ export default connect(
 )(Trade);
 
 // CHART -----------------------------------------------------------------
+/* eslint-disable */
+// ChartTrade
+import {
+    SmartChart,
+    setSmartChartsPublicPath } from 'smartcharts-beta';
+import { getUrlBase }          from '_common/url';
+import ControlWidgets          from '../../SmartChart/Components/control-widgets.jsx';
+import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
+/* eslint-enable */
 
 // --- BottomWidgets for chart
 // TODO: fix bottom widgets jumps
@@ -128,16 +138,12 @@ const ChartTopWidgets = connect(
 // ChartMarkers --------------------------
 const Markers = ({
     markers_array,
-    is_digit_contract,
+    // is_digit_contract,
 }) => (
-    markers_array.map(marker => (
-        <ChartMarker
-            key={marker.react_key}
-            marker_config={marker.marker_config}
-            marker_content_props={marker.content_config}
-            is_bottom_widget_visible={is_digit_contract}
-        />
-    ))
+    markers_array.map(marker => {
+        const Marker = AllMarkers[marker.type];
+        return (<Marker key={marker.key} {...marker} />);
+    })
 );
 const ChartMarkers = connect(
     ({ modules }) => ({
@@ -145,16 +151,6 @@ const ChartMarkers = connect(
         is_digit_contract: modules.contract_trade.is_digit_contract,
     })
 )(Markers);
-
-/* eslint-disable */
-// ChartTrade
-import {
-    SmartChart,
-    setSmartChartsPublicPath } from 'smartcharts-beta';
-import { getUrlBase }          from '_common/url';
-import ControlWidgets          from '../../SmartChart/Components/control-widgets.jsx';
-import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
-/* eslint-enable */
 
 setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 

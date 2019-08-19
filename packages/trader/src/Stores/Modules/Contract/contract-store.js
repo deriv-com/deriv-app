@@ -1,7 +1,9 @@
 import {
     action,
     extendObservable,
-    observable }              from 'mobx';
+    observable,
+    toJS,
+} from 'mobx';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDigitInfo,
@@ -15,6 +17,7 @@ import {
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import contract from '../../../Modules/Contract/Containers/contract';
 
 export default class ContractStore {
 
@@ -44,6 +47,7 @@ export default class ContractStore {
     @observable margin;
     @observable barriers_array = [];
     @observable markers_array = [];
+    @observable markers_array_v2 = [];
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
@@ -59,6 +63,7 @@ export default class ContractStore {
             this.root_store.ui.is_dark_mode_on
         );
         this.markers_array = createChartMarkers(this.contract_info);
+        this.markers_array_v2 = calculate_markers(this.contract_info);
 
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
@@ -116,4 +121,20 @@ export default class ContractStore {
         }
         return result;
     }
+}
+
+function calculate_markers(contract_info) {
+    if (!contract_info) { return []; }
+    const result = [];
+    const { tick_stream, contract_id } = contract_info;
+    if (tick_stream) {
+        tick_stream.forEach(tick => result.push({
+            type   : 'SpotMarker',
+            key    : `${contract_id}-tick-${tick.epoch}`,
+            epoch  : tick.epoch,
+            price  : tick.tick,
+            caption: tick.tick_display_value,
+        }));
+    }
+    return result;
 }

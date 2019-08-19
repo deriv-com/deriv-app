@@ -61,7 +61,7 @@ export default class ContractTradeStore extends BaseStore {
     @computed
     get markers_array() {
         return this.contracts.reduce((array, contract) => {
-            array.push(...contract.markers_array);
+            array.push(...contract.markers_array_v2);
             return array;
         }, []);
     }

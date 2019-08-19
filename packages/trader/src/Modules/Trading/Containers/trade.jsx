@@ -11,8 +11,8 @@ import { isDigitTradeType }  from '../Helpers/digits';
 
 const SmartChart               = React.lazy(() => import(/* webpackChunkName: "smart_chart", webpackPreload: true */'../../SmartChart'));
 const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
-const loadDigits               = () => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits');
-const loadInfoBox              = () => import(/* webpackChunkName: "info-box", webpackPrefetch: 98 */'Modules/Contract/Components/InfoBox');
+const Digits                   = React.lazy(() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits'));
+const InfoBox                  = React.lazy(() => import(/* webpackChunkName: "info-box", webpackPrefetch: 98 */'Modules/Contract/Components/InfoBox'));
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -57,9 +57,7 @@ class Trade extends React.Component {
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
                                 Digits={
-                                    <Lazy
-                                        ctor={loadDigits}
-                                        should_load={this.props.is_digit_contract}
+                                    <Digits
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         digits_info={this.props.digits_info}
@@ -69,10 +67,7 @@ class Trade extends React.Component {
                                     />
                                 }
                                 InfoBox={
-                                    <Lazy
-                                        ctor={loadInfoBox}
-                                        should_load={true}
-                                        has_progress={false}
+                                    <InfoBox
                                         is_trade_page
                                         contract_info={this.props.contract_info}
                                         error_message={this.props.error_message}

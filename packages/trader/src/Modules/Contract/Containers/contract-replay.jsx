@@ -12,8 +12,8 @@ import { connect }       from 'Stores/connect';
 
 const SmartChart               = React.lazy(() => import(/* webpackChunkName: "smart_chart", webpackPreload: true */'../../SmartChart'));
 const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
-const loadDigits               = () => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits');
-const loadInfoBox              = () => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox');
+const Digits                   = React.lazy(() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits'));
+const InfoBox                  = React.lazy(() => import(/* webpackChunkName: "info-box", webpackPrefetch: 98 */'Modules/Contract/Components/InfoBox'));
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -103,11 +103,8 @@ class ContractReplay extends React.Component {
                         <SmartChart
                             chartControlsWidgets={null}
                             Digits={
-                                <Lazy
-                                    ctor={loadDigits}
-                                    should_load={is_digit_contract}
+                                <Digits
                                     is_digit_contract={is_digit_contract}
-                                    has_progress={true}
                                     is_ended={is_ended}
                                     contract_info={contract_info}
                                     digits_info={digits_info}
@@ -115,10 +112,7 @@ class ContractReplay extends React.Component {
                                 />
                             }
                             InfoBox={
-                                <Lazy
-                                    ctor={loadInfoBox}
-                                    should_load={true}
-                                    has_progress={false}
+                                <InfoBox
                                     contract_info={contract_info}
                                     error_message={error_message}
                                     is_contract_mode={true}

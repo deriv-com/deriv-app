@@ -15,7 +15,7 @@ import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
 import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
 
-// const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
+// TODO: see if it worth to lazy load the smartchart.js here and at trade.jsx
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {

@@ -10,22 +10,7 @@ import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { symbolChange }      from '../../SmartChart/Helpers/symbol';
 
-// const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
-
-// function log_diff(path, a, b, n) {
-//     if (n <= 0) return;
-//     if (!a || !b) {
-//         if(a != b) console.log(path + " -> ", a, b);
-//         return;
-//     }
-//     Object.keys(a).forEach(key => {
-//         if (a[key] !== b[key]) {
-//             console.warn(path + "." + key + ' -> ', a[key], b[key]);
-//         } else if (typeof a[key] === 'object') {
-//             log_diff(path + "." + key, a[key], b[key], n - 1);
-//         }
-//     });
-// }
+// TODO: see if it worth it to lazy load smartcharts.js here and in contract-replay.jsx
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -181,11 +166,6 @@ class ChartTradeClass extends React.Component {
             updateGranularity={this.props.updateGranularity}
         />
     );
-
-    // componentDidUpdate(prevProps) {
-    //     log_diff('', this.props, prevProps, 5);
-    //     console.warn('---------------------------------------');
-    // }
 
     topWidgets = () => (<ChartTopWidgets />);
     bottomWidgets = () => (<ChartBottomWidgets />);

@@ -303,6 +303,13 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    updateBarrierColor(is_dark_mode) {
+        if (this.main_barrier) {
+            this.main_barrier.updateBarrierColor(is_dark_mode);
+        }
+    }
+
+    @action.bound
     onHoverPurchase(is_over, contract_type) {
         if (this.is_purchase_enabled && this.main_barrier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);

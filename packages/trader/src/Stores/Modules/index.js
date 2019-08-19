@@ -14,7 +14,7 @@ export default class ModulesStore {
         this.contract_trade  = new ContractTradeStore({ root_store });
         this.portfolio       = new PortfolioStore({ root_store });
         this.profit_table    = new ProfitTableStore({ root_store });
-        this.smart_chart     = new SmartChartStore({ root_store });
+        // this.smart_chart     = new SmartChartStore({ root_store });
         this.statement       = new StatementStore({ root_store });
         this.trade           = new TradeStore({ root_store });
         window.r = this;

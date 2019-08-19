@@ -93,7 +93,6 @@ const Amount = ({
                 </div>
                 :
                 input
-
             }
             <AllowEquals
                 contract_start_type={contract_start_type}

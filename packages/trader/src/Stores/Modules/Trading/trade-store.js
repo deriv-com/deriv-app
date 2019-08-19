@@ -671,6 +671,7 @@ export default class TradeStore extends BaseStore {
         WS.forgetAll('proposal');
         this.resetErrorServices();
         this.is_trade_component_mounted = false;
+        // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);

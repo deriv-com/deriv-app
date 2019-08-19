@@ -170,7 +170,7 @@ export default class CashierStore extends BaseStore {
         let error_message,
             error_link;
 
-        const error_button_text = localize('Okay');
+        let error_button_text = localize('Okay');
 
         switch (error.code) {
             case 'ASK_EMAIL_VERIFY':
@@ -228,7 +228,8 @@ export default class CashierStore extends BaseStore {
                 error_link    = 'user/security/self_exclusionws';
                 break;
             default:
-                error_message = error.message;
+                error_message     = error.message;
+                error_button_text = '';
         }
 
         return { error_message, error_link, error_button_text };

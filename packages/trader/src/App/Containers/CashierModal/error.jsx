@@ -17,19 +17,21 @@ class Error extends React.Component {
         return (
             <div className='cashier__wrapper'>
                 <Icon icon='IconCashierError' className='cashier-error__icon' />
-                {typeof this.props.error.message === 'string' ?
-                    <p className='cashier-error__text'>{this.props.error.message}</p>
-                    :
+                {Array.isArray(this.props.error.message) ?
                     this.props.error.message.map((message, idx) =>
                         <p className='cashier-error__text' key={idx}>{message}</p>
                     )
+                    :
+                    <p className='cashier-error__text'>{this.props.error.message}</p>
                 }
+                {this.props.error.button_text &&
                 <Button
                     className='btn--secondary btn--secondary--orange cashier-error__button'
                     has_effect
                     text={this.props.error.button_text}
                     onClick={this.onClickButton}
                 />
+                }
             </div>
         );
     }

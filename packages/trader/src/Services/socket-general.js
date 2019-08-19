@@ -88,7 +88,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const setBalance = flow(function* (balance) {
-        yield BinarySocket.wait('website_status');
+        yield BinarySocket.expectResponse('website_status');
         client_store.setBalance(balance);
     });
 
@@ -133,8 +133,8 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = (response) => {
         client_store.responseAuthorize(response);
-        WS.subscribeBalance(ResponseHandlers.balance, true);
-        WS.sendRequest({ get_settings: 1 }, { forced: true });
+        WS.subscribeBalance(ResponseHandlers.balance);
+        WS.send({ get_settings: 1 });
         WS.getAccountStatus();
         WS.payoutCurrencies();
         WS.mt5LoginList();

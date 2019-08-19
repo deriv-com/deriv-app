@@ -6,7 +6,7 @@ import { redirectToLogin } from '_common/base/login';
 import { WS }              from 'Services';
 
 export const showUnavailableLocationError = flow(function* (showError) {
-    const website_status = yield BinarySocket.wait('website_status');
+    const website_status = yield BinarySocket.expectResponse('website_status');
     const residence_list = yield WS.residenceList();
 
     const clients_country_code = website_status.website_status.clients_country;

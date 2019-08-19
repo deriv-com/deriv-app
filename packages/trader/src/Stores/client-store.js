@@ -279,12 +279,12 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.send({ authorize: client.token }, { forced: true });
+                await BinarySocket.send({ authorize: client.token });
             }
         }
 
         if (client && !client.is_virtual) {
-            BinarySocket.wait('landing_company', 'website_status').then(() => {
+            BinarySocket.expectResponse('landing_company', 'website_status').then(() => {
                 handleClientNotifications(client, this.root_store.ui.addNotification, this.loginid);
             });
         }
@@ -398,7 +398,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
-        await BinarySocket.send({ 'authorize': this.getToken() }, { forced: true });
+        await BinarySocket.send({ 'authorize': this.getToken() });
         await this.init();
         this.broadcastAccountChange();
     }

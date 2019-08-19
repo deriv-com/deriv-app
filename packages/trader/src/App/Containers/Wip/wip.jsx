@@ -14,7 +14,7 @@ const onClick = (e) => {
 };
 
 const Wip = ({ is_dark_mode, pushDataLayer }) => {
-    BinarySocket.wait('website_status').then(() => {
+    BinarySocket.expectResponse('website_status').then(() => {
         pushDataLayer({ event: 'page_load' });
     });
 

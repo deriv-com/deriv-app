@@ -1,8 +1,12 @@
 const DerivAPIBasic    = require('deriv-api/dist/DerivAPIBasic');
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
+const { State }        = require('../storage');
 const getLanguage      = require('../language').get;
-const getPropertyValue = require('../utility').getPropertyValue;
+const {
+    cloneObject,
+    getPropertyValue,
+} = require('../utility');
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 
@@ -55,7 +59,7 @@ const BinarySocketBase = (() => {
             });
         }
 
-        deriv_api.onOpen(() => {
+        deriv_api.onOpen().subscribe(() => {
             config.wsEvent('open');
             if (ClientBase.isLoggedIn()) {
                 deriv_api.authorize(ClientBase.get('token'));
@@ -74,7 +78,10 @@ const BinarySocketBase = (() => {
             }
         });
 
-        deriv_api.onMessage(({ data: response }) => {
+        deriv_api.onMessage().subscribe(({ data: response }) => {
+            const msg_type = response.msg_type;
+            State.set(['response', msg_type], cloneObject(response));
+
             config.wsEvent('message');
 
             if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
@@ -86,7 +93,7 @@ const BinarySocketBase = (() => {
             }
         });
 
-        deriv_api.onClose(() => {
+        deriv_api.onClose().subscribe(() => {
             clearTimeouts();
             config.wsEvent('close');
 
@@ -104,8 +111,69 @@ const BinarySocketBase = (() => {
         return is_available;
     };
 
+    const noop = () => {};
+
+    const send = (request, options = {}) => {
+
+        const promise = deriv_api.storage.send(request);
+
+        if (options.callback) {
+            promise.then(callback);
+        }
+
+        return promise;
+    };
+
+    const subscribeBalance = (cb) =>
+        deriv_api.subscribe({ balance: 1 }).subscribe(cb, noop);
+
+    const subscribeProposal = (req, cb) =>
+        deriv_api.subscribe({ proposal: 1, ...req }).subscribe(cb, noop);
+
+    const subscribeProposalOpenContract = (contract_id = null, cb) =>
+        deriv_api.subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }).subscribe(cb, noop);
+
+    const subscribeProposalOpenContractOnBuy = (buy_request, cb) =>
+        deriv_api.subscribe({ ...buy_request }).subscribe(cb, noop);
+
+    const subscribeTicks = (symbol, cb) =>
+        deriv_api.subscribe({ ticks: symbol }).subscribe(cb, noop);
+
+    const subscribeTicksHistory = (request_object, cb) =>
+        deriv_api.subscribe(request_object).subscribe(cb, noop);
+
+    const subscribeTransaction = (cb) =>
+        deriv_api.subscribe({ transaction: 1 }).subscribe(cb, noop);
+
+    const subscribeWebsiteStatus = (cb) =>
+        deriv_api.subscribe({ website_status: 1 }).subscribe(cb, noop);
+
+    const buy = (proposal_id, price) =>
+        send({ buy: proposal_id, price });
+
+    const cashier = (action, verification_code) =>
+        send({ cashier: action, ...(verification_code && { verification_code }) });
+
+    const newAccountVirtual = (verification_code, client_password, residence) =>
+        send({
+            new_account_virtual: 1,
+            verification_code,
+            client_password,
+            residence,
+        });
+
+    const profitTable = (limit, offset, date_boundaries) =>
+        send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
+
+    const statement = (limit, offset, date_boundaries) =>
+        send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+
+    const verifyEmail = (email, type) =>
+        send({ verify_email: email, type });
+
     return {
         init,
+        send,
         clearTimeouts,
         availability,
         hasReadyState,
@@ -116,6 +184,20 @@ const BinarySocketBase = (() => {
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
         removeOnReconnect : () => { delete config.onReconnect; },
         removeOnDisconnect: () => { delete config.onDisconnect; },
+        buy,
+        cashier,
+        newAccountVirtual,
+        profitTable,
+        statement,
+        verifyEmail,
+        subscribeBalance,
+        subscribeProposal,
+        subscribeProposalOpenContract,
+        subscribeProposalOpenContractOnBuy,
+        subscribeTicks,
+        subscribeTicksHistory,
+        subscribeTransaction,
+        subscribeWebsiteStatus,
     };
 })();
 
@@ -126,7 +208,7 @@ const proxied_socket_base = new Proxy(BinarySocketBase, {
         const api = target.get();
         if (!api) return undefined;
 
-        if (api[field]) return api[field];
+        if (api[field]) return api[field].bind(api);
 
         return undefined;
     },

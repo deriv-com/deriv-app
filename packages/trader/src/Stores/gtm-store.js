@@ -59,7 +59,7 @@ export default class GTMStore extends BaseStore {
     @action.bound
     async pushDataLayer(data) {
         if (this.is_gtm_applicable && !isLoginPages()) {
-            BinarySocket.wait('authorize').then(() => {
+            BinarySocket.expectResponse('authorize').then(() => {
                 dataLayer.push({
                     ...this.common_variables,
                     ...data,
@@ -185,7 +185,7 @@ export default class GTMStore extends BaseStore {
 
         if (login_event) {
             data.event = login_event;
-            BinarySocket.wait('mt5_login_list').then((response) => {
+            BinarySocket.expectResponse('mt5_login_list').then((response) => {
                 (response.mt5_login_list || []).forEach((obj) => {
                     const acc_type = (getMT5AccountType(obj.group) || '')
                         .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming

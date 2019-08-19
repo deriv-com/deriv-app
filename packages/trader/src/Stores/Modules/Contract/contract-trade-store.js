@@ -85,7 +85,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        const proposal_open_contract_request = [contract_id, cb, false];
+        const proposal_open_contract_request = [contract_id, cb];
 
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {
@@ -111,7 +111,7 @@ export default class ContractTradeStore extends BaseStore {
         // clear proposal and purchase info once contract is mounted
         this.root_store.modules.trade.proposal_info = {};
         this.root_store.modules.trade.purchase_info = {};
-        BinarySocket.wait('authorize').then(() => {
+        BinarySocket.expectResponse('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         });
     }
@@ -136,7 +136,7 @@ export default class ContractTradeStore extends BaseStore {
                 this.smart_chart.setIsChartLoading(true);
                 this.smart_chart.switchToContractMode(true, has_existing_id);
             }
-            BinarySocket.wait('authorize').then(() => {
+            BinarySocket.expectResponse('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
             });
         }

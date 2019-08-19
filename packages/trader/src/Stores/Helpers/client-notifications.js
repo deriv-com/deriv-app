@@ -234,7 +234,7 @@ export const handleClientNotifications = (client, addNotification, loginid) => {
 
     WS.getAccountStatus().then((response) => checkAccountStatus(response, client, addNotification, loginid));
 
-    WS.sendRequest({ get_settings: 1 }, { forced: true }).then((response) => {
+    WS.send({ get_settings: 1 }).then((response) => {
         if (loginid !== LocalStore.get('active_loginid')) return;
 
         if (shouldAcceptTnc()) addNotification(client_notifications.tnc);

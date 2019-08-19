@@ -4,7 +4,9 @@ import {
     computed,
     observable,
     reaction,
-    runInAction }                     from 'mobx';
+    runInAction,
+    toJS,
+}                     from 'mobx';
 import BinarySocket                   from '_common/base/socket_base';
 import { localize }                   from 'App/i18n';
 import {
@@ -25,7 +27,6 @@ import {
     showUnavailableLocationError,
     isMarketClosed,
 }                                     from './Helpers/active-symbols';
-import { setChartBarrier }            from './Helpers/chart';
 import ContractType                   from './Helpers/contract-type';
 import {
     convertDurationLimit,
@@ -35,8 +36,10 @@ import {
     createProposalRequests,
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
-import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 import BaseStore                      from '../../base-store';
+import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
+import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
+import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 
 const store_name = 'trade_store';
 
@@ -236,7 +239,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        this.smart_chart      = this.root_store.modules.smart_chart;
         this.currency         = this.root_store.client.currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
@@ -272,7 +274,6 @@ export default class TradeStore extends BaseStore {
         if (name === 'symbol' && value) {
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
-            // this.root_store.modules.smart_chart.trade_chart_symbol = value;
         }
 
         if (name === 'currency') {
@@ -303,9 +304,34 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onHoverPurchase(is_over, contract_type) {
-        if (this.is_purchase_enabled) {
-            this.smart_chart.updateBarrierShade(is_over, contract_type);
+        if (this.is_purchase_enabled && this.main_barrier) {
+            this.main_barrier.updateBarrierShade(is_over, contract_type);
         }
+    }
+
+    @computed
+    get main_barrier_flattened() {
+        return toJS(this.main_barrier);
+    }
+
+    @observable main_barrier = null;
+    setMainBarrier = (proposal_info) => {
+        if (!proposal_info) { return ; }
+        const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
+
+        if (isBarrierSupported(contract_type)) {
+            const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
+            // create barrier only when it's available in response
+            const main_barrier = new ChartBarrierStore(
+                barrier || high_barrier,
+                low_barrier,
+                this.onChartBarrierChange,
+                { color },
+            );
+
+            this.main_barrier = main_barrier;
+            // this.main_barrier.updateBarrierShade(true, contract_type);
+        } else { this.main_barrier = null; }
     }
 
     @action.bound
@@ -318,8 +344,6 @@ export default class TradeStore extends BaseStore {
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
-                    // this.smart_chart.switchToContractMode();
-                    // this.smart_chart.setContractMode(true);
 
                     const contract_data = {
                         ...this.proposal_requests[type],
@@ -337,7 +361,6 @@ export default class TradeStore extends BaseStore {
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
-                        // this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
                         // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
@@ -383,7 +406,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     updateStore(new_state) {
         Object.keys(cloneObject(new_state)).forEach((key) => {
-            if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency', 'smart_chart'].indexOf(key) > -1) return;
+            if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
             } else {
@@ -533,9 +556,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
-        const barrier_config = { color };
-        setChartBarrier(this.smart_chart, response, this.onChartBarrierChange, barrier_config);
+        this.setMainBarrier(response.echo_req);
 
         if (response.error) {
             const error_id = getProposalErrorField(response);
@@ -631,26 +652,6 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    restoreTradeChart() {
-        const smart_chart_store = this.root_store.modules.smart_chart;
-        if (smart_chart_store.trade_chart_symbol &&
-            (smart_chart_store.trade_chart_symbol !== this.symbol)) {
-            this.symbol = smart_chart_store.trade_chart_symbol;
-        }
-        if (smart_chart_store.trade_chart_granularity &&
-            (smart_chart_store.trade_chart_granularity !== smart_chart_store.granularity)) {
-            smart_chart_store.granularity = smart_chart_store.trade_chart_granularity;
-        } else {
-            smart_chart_store.granularity = 0;
-        }
-        if (smart_chart_store.trade_chart_type !== smart_chart_store.chart_type) {
-            smart_chart_store.chart_type = smart_chart_store.trade_chart_type;
-        } else {
-            smart_chart_store.chart_type = 'mountain';
-        }
-    }
-
-    @action.bound
     setChartStatus(status) {
         this.is_chart_loading = status;
     }
@@ -662,7 +663,6 @@ export default class TradeStore extends BaseStore {
         this.purchase_info = {};
         WS.forgetAll('proposal');
         this.resetErrorServices();
-        // this.restoreTradeChart();
         this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);

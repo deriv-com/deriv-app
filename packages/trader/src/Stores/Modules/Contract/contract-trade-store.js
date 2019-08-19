@@ -1,21 +1,12 @@
 import {
     action,
     computed,
-    extendObservable,
     observable }              from 'mobx';
 import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { localize }           from 'App/i18n';
 import { WS }                 from 'Services';
-import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartGranularity,
-    getChartType,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
+import { isEnded }                 from './Helpers/logic';
 import ContractStore          from './contract-store';
 import BaseStore              from '../../base-store';
 
@@ -149,9 +140,6 @@ export default class ContractTradeStore extends BaseStore {
             WS.forget('proposal_open_contract', this.updateProposal);
         }
 
-        // Set chart granularity and chart_type
-        this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);
-
         // TODO: fix this for multiple contracts
         // Set contract symbol if trade_symbol and contract_symbol don't match
         if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
@@ -163,18 +151,6 @@ export default class ContractTradeStore extends BaseStore {
     get last_contract() {
         const len = this.contracts.length;
         return len > 0 ? this.contracts[len - 1] : { };
-    }
-
-    handleChartType(start, expiry) {
-        if (!this.smart_chart) {
-            this.smart_chart = this.root_store.modules.smart_chart;
-        }
-
-        const chart_type  = getChartType(start, expiry);
-        const granularity = getChartGranularity(start, expiry);
-
-        this.smart_chart.updateChartType(chart_type);
-        this.smart_chart.updateGranularity(granularity);
     }
 
     forgetProposalOpenContract = (contract_id, cb) => {

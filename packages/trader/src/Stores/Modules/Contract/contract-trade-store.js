@@ -1,14 +1,13 @@
 import {
     action,
     computed,
-    observable }              from 'mobx';
-import BinarySocket           from '_common/base/socket_base';
-import { isEmptyObject }      from '_common/utility';
-import { localize }           from 'App/i18n';
-import { WS }                 from 'Services';
-import { isEnded }                 from './Helpers/logic';
-import ContractStore          from './contract-store';
-import BaseStore              from '../../base-store';
+    observable }         from 'mobx';
+import BinarySocket      from '_common/base/socket_base';
+import { isEmptyObject } from '_common/utility';
+import { localize }      from 'App/i18n';
+import { WS }            from 'Services';
+import ContractStore     from './contract-store';
+import BaseStore         from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -100,7 +99,7 @@ export default class ContractTradeStore extends BaseStore {
     onUnmount() {
         this.disposeSwitchAccount();
         // TODO: don't forget the tick history when switching to contract-replay-store
-        // TODO: don't forget the POC when swithcing to contract-replay-store
+        // TODO: don't forget the POC when switching to contract-replay-store
         if (this.contract_id) {
             this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
             this.contract_id = null;
@@ -136,9 +135,6 @@ export default class ContractTradeStore extends BaseStore {
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
 
         this.contract_info = response.proposal_open_contract;
-        if (isEnded(this.contract_info)) {
-            WS.forget('proposal_open_contract', this.updateProposal);
-        }
 
         // TODO: fix this for multiple contracts
         // Set contract symbol if trade_symbol and contract_symbol don't match

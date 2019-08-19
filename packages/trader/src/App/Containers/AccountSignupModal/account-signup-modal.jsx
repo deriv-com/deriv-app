@@ -6,10 +6,8 @@ import Form          from 'deriv-components/lib/form';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize      from 'App/Components/Elements/localize.jsx';
 import Button        from 'deriv-components/lib/button';
-// import Dropdown      from 'App/Components/Form/DropDown';
 import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';
-import Icon          from 'Assets/icon.jsx';
 
 // const onClose = (ui) => {
 //     ui.toggleUnsupportedContractModal(false);
@@ -32,16 +30,6 @@ const validateSignup = (values) => {
 };
 
 const AccountSignup = ({ onSignup, residence_list }) => {
-    const arr = [
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-        'Monday',
-    ];
-
     return (
         <div className='account-signup'>
             {/* <h3> */}
@@ -66,7 +54,7 @@ const AccountSignup = ({ onSignup, residence_list }) => {
                                 name='residence'
                                 label={localize('Choose country')}
                                 required
-                                list_items={arr}
+                                list_items={residence_list}
                             />
 
                             <Button type='submit' is_disabled={isSubmitting}>

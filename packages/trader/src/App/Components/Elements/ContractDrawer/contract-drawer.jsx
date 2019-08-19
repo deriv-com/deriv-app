@@ -79,13 +79,13 @@ class ContractDrawer extends Component {
                             'contract-card__grid-underlying-trade'
                         )}
                         >
-                            <div className='contract-card__underlying-name'>
+                            <div id='dt_underlying_label' className='contract-card__underlying-name'>
                                 <UnderlyingIcon market={contract_info.underlying} />
                                 <span className='contract-card__symbol'>
                                     {contract_info.display_name}
                                 </span>
                             </div>
-                            <div className='contract-card__type'>
+                            <div id='dt_contract_type_label' className='contract-card__type'>
                                 <ContractTypeCell
                                     type={contract_info.contract_type}
                                     is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
@@ -119,7 +119,7 @@ class ContractDrawer extends Component {
                                 <span className='purchase-price__label'>
                                     {localize('Purchase price:')}
                                 </span>
-                                <span className='purchase-price__value' >
+                                <span id='dt_purchase_price_label' className='purchase-price__value' >
                                     <Money
                                         currency={currency}
                                         amount={buy_price}
@@ -130,7 +130,7 @@ class ContractDrawer extends Component {
                                 <span className='potential-payout__label'>
                                     {localize('Potential payout:')}
                                 </span>
-                                <span className='potential-payout-price__value' >
+                                <span id='dt_potential_payout_label' className='potential-payout-price__value' >
                                     <Money
                                         currency={currency}
                                         amount={payout}
@@ -207,7 +207,7 @@ class ContractDrawer extends Component {
             </React.Fragment>
         );
         return (
-            <div className={classNames('contract-drawer', {})}>
+            <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
                 <div className='contract-drawer__heading'>
                     {
                         this.props.is_from_reports &&

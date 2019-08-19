@@ -137,6 +137,7 @@ class ContractTypeWidget extends React.PureComponent {
         const item_index = this.getItemIndex(item, this.getItemList());
         return (
             <div
+                id='dt_contract_dropdown'
                 className='contract-type-widget dropdown--left'
                 ref={this.setWrapperRef}
                 tabIndex='0'

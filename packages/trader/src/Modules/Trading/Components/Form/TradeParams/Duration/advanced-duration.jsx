@@ -52,6 +52,7 @@ const AdvancedDuration = ({
         <Fragment>
             { expiry_list.length > 1 &&
                 <ButtonToggleMenu
+                    id='dt_advanced_duration_toggle'
                     buttons_arr={expiry_list}
                     name='advanced_expiry_type'
                     is_animated={true}
@@ -64,6 +65,7 @@ const AdvancedDuration = ({
                     <div className='duration-container'>
                         { duration_units_list.length > 1 &&
                             <Dropdown
+                                id='duration'
                                 is_alignment_left
                                 is_nativepicker={false}
                                 list={duration_units_list}
@@ -89,6 +91,7 @@ const AdvancedDuration = ({
                         }
                         { (advanced_duration_unit !== 't' && advanced_duration_unit !== 'd') &&
                             <InputField
+                                id='dt_advanced_duration_input'
                                 classNameInput='trade-container__input'
                                 error_messages={validation_errors.duration}
                                 label={duration_units_list.length === 1 ? duration_units_list[0].text : null}

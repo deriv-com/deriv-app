@@ -49,7 +49,7 @@ const Amount = ({
             currency={currency}
             error_messages={validation_errors.amount}
             fractional_digits={getDecimalPlaces(currency)}
-            id='amount'
+            id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
@@ -67,6 +67,7 @@ const Amount = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <ButtonToggleMenu
+                id='dt_amount_toggle'
                 buttons_arr={basis_list}
                 className='dropdown--no-margin'
                 is_animated={true}
@@ -77,6 +78,7 @@ const Amount = ({
             {!is_single_currency ?
                 <div className='trade-container__currency-options'>
                     <Dropdown
+                        id='amount'
                         className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
                         classNameDisplay='trade-container__currency-options--display'
                         has_symbol

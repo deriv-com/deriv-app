@@ -1,7 +1,13 @@
-// import { Button } from 'deriv-components';
-//  ↓ ↓ ↓
-// import Button from 'deriv-components/lib/button';
-// import 'deriv-components/lib/button.css';
+/* Using this loader you can import components from deriv-components without having to manually
+import the corresponding stylesheet. The deriv-components-loader will automatically import 
+stylesheets.
+
+    import { Button } from 'deriv-components';
+    ↓ ↓ ↓
+    import Button from 'deriv-components/lib/button';
+    import 'deriv-components/lib/button.css';
+*/
+
 module.exports = function(source) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {

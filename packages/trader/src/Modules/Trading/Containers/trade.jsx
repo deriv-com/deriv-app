@@ -118,11 +118,11 @@ const LazyBottomDigits = ({
 
 const ChartBottomWidgets = connect(
     ({ modules }) => ({
-        is_digit_contract: modules.contract_trade.is_digit_contract,
-        contract_info    : modules.contract_trade.contract_info,
-        digits_info      : modules.contract_trade.digits_info,
-        display_status   : modules.contract_trade.display_status,
-        is_ended         : modules.contract_trade.is_ended,
+        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
+        contract_info    : modules.contract_trade.last_contract.contract_info || { },
+        digits_info      : modules.contract_trade.last_contract.digits_info || { },
+        display_status   : modules.contract_trade.last_contract.display_status,
+        is_ended         : modules.contract_trade.last_contract.is_ended,
     })
 )(LazyBottomDigits);
 
@@ -192,12 +192,13 @@ class ChartTradeClass extends React.Component {
     bottomWidgets = () => (<ChartBottomWidgets />);
 
     render() {
-        const should_show_last_digit_stats = isDigitTradeType(this.props.contract_type);
-        const bottomWidgets = should_show_last_digit_stats ? null : ChartBottomWidgets;
+        const { last_contract, show_digits_stats } = this.props;
+        const bottomWidgets = (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
                 bottomWidgets={bottomWidgets}
+                showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
@@ -209,7 +210,6 @@ class ChartTradeClass extends React.Component {
                 requestForgetStream={this.props.wsForgetStream}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
-                showLastDigitStats={should_show_last_digit_stats}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
@@ -226,12 +226,15 @@ class ChartTradeClass extends React.Component {
 
 const ChartTrade = connect(
     ({ modules, ui, common }) => ({
+        is_mobile       : ui.is_mobile,
         is_socket_opened: common.is_socket_opened,
 
-        contract_type : modules.trade.contract_type,
-        chart_type    : modules.contract_trade.chart_type,
-        barriers_array: modules.contract_trade.barriers_array,
-        settings      : {
+        updateChartType  : modules.contract_trade.updateChartType,
+        updateGranularity: modules.contract_trade.updateGranularity,
+        granularity      : modules.contract_trade.granularity,
+        chart_type       : modules.contract_trade.chart_type,
+        barriers_array   : modules.contract_trade.barriers_array,
+        settings         : {
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,
             isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
@@ -239,14 +242,16 @@ const ChartTrade = connect(
             position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
         },
+        last_contract: {
+            is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
+            is_ended         : modules.contract_trade.last_contract.is_ended,
+        },
+        show_digits_stats: modules.trade.show_digits_stats,
+        contract_type    : modules.trade.contract_type,
         symbol           : modules.trade.symbol,
         exportLayout     : modules.trade.exportLayout,
         setChartStatus   : modules.trade.setChartStatus,
         chart_layout     : modules.trade.chart_layout,
-        updateChartType  : modules.contract_trade.updateChartType,
-        updateGranularity: modules.contract_trade.updateGranularity,
-        granularity      : modules.contract_trade.granularity,
-        is_mobile        : ui.is_mobile,
         wsForget         : modules.trade.wsForget,
         wsForgetStream   : modules.trade.wsForgetStream,
         wsSendRequest    : modules.trade.wsSendRequest,

@@ -333,13 +333,13 @@ export default class TradeStore extends BaseStore {
                     } = response.buy;
                     // toggle smartcharts to contract mode
                     if (contract_id) {
-                        this.root_store.modules.contract_trade.addContract({ contract_id, start_time });
+                        this.root_store.modules.contract_trade.addContract({ contract_id, start_time, longcode });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
                         // this.smart_chart.setChartView(start_time);
                         // draw the start time line and show longcode then mount contract
-                        this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
+                        // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                         this.root_store.ui.openPositionsDrawer();
                         this.proposal_info = {};
                         WS.forgetAll('proposal');
@@ -482,6 +482,11 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    @computed
+    get show_digits_stats() {
+        return isDigitTradeType(this.contract_type);
+    }
+
     @action.bound
     clearPurchaseInfo() {
         this.purchase_info = {};
@@ -504,7 +509,6 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
-            this.root_store.modules.contract_trade.setIsDigitContract(Object.keys(this.proposal_requests)[0]);
 
             Object.keys(this.proposal_requests).forEach((type) => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);

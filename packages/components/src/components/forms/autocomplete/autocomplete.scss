@@ -1,3 +1,15 @@
 .dc-autocomplete {
     width: 100%;
+
+    &__trailing-icon {
+        position: absolute;
+        right: 0;
+        pointer-events: none;
+        cursor: text;
+        transition: transform 0.2s ease;
+
+        &--opened {
+            transform: rotate(180deg);
+        }
+    }
 }

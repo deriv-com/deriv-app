@@ -2,26 +2,30 @@ import React                   from 'react';
 import { Scrollbars }          from 'tt-react-custom-scrollbars';
 import                              './dropdown-list.scss';
 
-const DropdownList = ({ is_visible, list_items, onItemSelection }) => {
+const trackHorizontal = props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />;
+const thumbHorizontal = props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />;
+
+const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
     console.log(list_items);
 
     if (!is_visible) return null;
 
     return (
-        <div className='dc-dropdown-list'>
+        <div style={style} className='dc-dropdown-list'>
             <Scrollbars
                 autoHeight
                 autoHide
-                autoHeightMax={220}
-                renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
-                renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
+                autoHeightMax={220} // As specified by design spec
+                renderTrackHorizontal={trackHorizontal}
+                renderThumbHorizontal={thumbHorizontal}
             >
                 {
                     list_items.map((item, idx) => {
                         return (
                             <div
                                 key={idx}
-                                onClick={() => onItemSelection(item)}
+                                // onMouseDown ensures the click handler runs before the onBlur event of Input
+                                onMouseDown={() => onItemSelection(item)}
                                 className='dc-dropdown-list__item'
                             >
                                 { item }

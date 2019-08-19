@@ -56,13 +56,6 @@ const AccountSignup = ({ onSignup, residence_list }) => {
                     ({ isSubmitting }) => (
                         <React.Fragment>
                             {/* <Input */}
-                            {/*    type='text' */}
-                            {/*    name='residence' */}
-                            {/*    label={localize('Choose country')} */}
-                            {/*    required */}
-                            {/*    trailing_icon={<Icon icon='IconArrow' />} */}
-                            {/* /> */}
-                            {/* <Input */}
                             {/*    type='password' */}
                             {/*    name='password' */}
                             {/*    label={localize('Create a password')} */}
@@ -73,7 +66,6 @@ const AccountSignup = ({ onSignup, residence_list }) => {
                                 name='residence'
                                 label={localize('Choose country')}
                                 required
-                                trailing_icon={<Icon icon='IconArrow' />}
                                 list_items={arr}
                             />
 

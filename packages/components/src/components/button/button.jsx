@@ -14,6 +14,7 @@ const Button = ({
     tabIndex,
     text,
     wrapperClassName,
+    type,
 }) => {
     const classes = classNames('btn', { effect: has_effect }, className);
     const button = (
@@ -23,6 +24,7 @@ const Button = ({
             onClick={onClick || undefined}
             disabled={is_disabled}
             tabIndex={tabIndex || '0'}
+            type={type || 'submit'}
         >
             { text &&
                 <span className={classNames('btn__text', classNameSpan)}>

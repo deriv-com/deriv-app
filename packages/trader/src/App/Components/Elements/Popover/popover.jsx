@@ -40,6 +40,7 @@ class Popover extends React.PureComponent {
             disable_target_icon,
             has_error,
             icon,
+            id,
             margin,
             message,
         } = this.props;
@@ -48,6 +49,7 @@ class Popover extends React.PureComponent {
         return (
             <div
                 className='popover'
+                id={id}
                 onMouseEnter={this.toggleOpen}
                 onMouseLeave={this.toggleClose}
             >
@@ -68,6 +70,7 @@ class Popover extends React.PureComponent {
                     className={classNameBubble}
                     has_error={has_error}
                     icon={icon}
+                    id={`${id}_bubble`}
                     is_open={this.state.is_open}
                     target_rectangle={this.state.target_rectangle}
                     margin={margin}
@@ -87,6 +90,7 @@ Popover.propTypes = {
     disable_target_icon: PropTypes.bool,
     has_error          : PropTypes.bool,
     icon               : PropTypes.string,
+    id                 : PropTypes.string,
     margin             : PropTypes.number,
     message            : PropTypes.string,
 };

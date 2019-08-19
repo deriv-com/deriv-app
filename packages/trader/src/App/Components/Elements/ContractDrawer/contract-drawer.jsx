@@ -3,7 +3,7 @@ import PropTypes               from 'prop-types';
 import React, { Component }    from 'react';
 import { withRouter }          from 'react-router';
 import { CSSTransition }       from 'react-transition-group';
-import Button                  from 'deriv-components/lib/button';
+import { Button }              from 'deriv-components';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';

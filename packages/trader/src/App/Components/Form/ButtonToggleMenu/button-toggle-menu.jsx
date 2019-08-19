@@ -1,7 +1,7 @@
 import classNames       from 'classnames';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import Button           from 'deriv-components/lib/button';
+import { Button }       from 'deriv-components';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 
 const ButtonToggleMenu = ({

@@ -2,7 +2,7 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
-import Button                  from 'deriv-components/lib/button';
+import { Button }              from 'deriv-components';
 import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';

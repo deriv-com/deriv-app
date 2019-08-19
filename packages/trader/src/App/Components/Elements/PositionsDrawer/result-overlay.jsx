@@ -36,12 +36,15 @@ class ResultOverlay extends React.PureComponent {
                     }}
                     unmountOnExit
                 >
-                    <div className={classNames('positions-drawer-card__result', {
-                        'positions-drawer-card__result--won' : is_contract_won,
-                        'positions-drawer-card__result--lost': !is_contract_won,
-                    })}
+                    <div
+                        id={`dt_drawer_${contract_id}_result`}
+                        className={classNames('positions-drawer-card__result', {
+                            'positions-drawer-card__result--won' : is_contract_won,
+                            'positions-drawer-card__result--lost': !is_contract_won,
+                        })}
                     >
                         <span
+                            id={`dt_drawer_${contract_id}_result_close_icon`}
                             className='result__close-btn'
                             onClick={() => onClickRemove(contract_id)}
                         />

@@ -7,6 +7,7 @@ import { localize }        from 'App/i18n';
 
 const LoginButton = ({ className }) => (
     <Button
+        id='dt_login_button'
         className={classNames(className, 'btn--secondary btn--secondary--orange')}
         has_effect
         text={localize('Log in')}

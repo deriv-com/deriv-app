@@ -161,11 +161,13 @@ const PositionsDrawerCard = ({
     );
 
     return (
-        <div className={classNames(
-            'positions-drawer-card__wrapper', {
-                'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
-            },
-            className)}
+        <div
+            id={`dt_drawer_card_${id}`}
+            className={classNames(
+                'positions-drawer-card__wrapper', {
+                    'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
+                },
+                className)}
         >
             <ResultOverlay
                 contract_id={id}
@@ -215,6 +217,7 @@ const PositionsDrawerCard = ({
             >
                 <div className='positions-drawer-card__sell-button'>
                     <Button
+                        id={`dt_drawer_card_${id}_button`}
                         className={classNames(
                             'btn--primary',
                             'btn--primary--green',

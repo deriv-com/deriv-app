@@ -1,5 +1,5 @@
 import React        from 'react';
-import Button       from 'deriv-components/lib/button';
+import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
 import Localize     from './localize.jsx';
 

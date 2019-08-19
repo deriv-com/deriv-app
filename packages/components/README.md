@@ -30,5 +30,14 @@ const SomeComponent = () => (
     </Button>
   );
 ```
+ or we can use deriv-components-loader to import components from antd without having to manually import the corresponding stylesheet. The antd loader will automatically import stylesheets.
 
+ ```jsx
+import { Button } from 'deriv-components';
+const SomeComponent = () => (
+    <Button is_disabled primary>
+      Hello World
+    </Button>
+  );
+```
 ## Components

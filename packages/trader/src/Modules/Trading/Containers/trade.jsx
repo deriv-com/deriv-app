@@ -9,7 +9,6 @@ import Test                  from './test.jsx';
 import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { symbolChange }      from '../../SmartChart/Helpers/symbol';
-import { isDigitTradeType }  from '../Helpers/digits';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -192,11 +191,20 @@ class ChartTradeClass extends React.Component {
     bottomWidgets = () => (<ChartBottomWidgets />);
 
     render() {
-        const { last_contract, show_digits_stats } = this.props;
-        const bottomWidgets = (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
+        const {
+            last_contract,
+            show_digits_stats,
+            barriers_array,
+            main_barrier,
+        } = this.props;
+        const bottomWidgets =
+            (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
+
+        const barriers = [main_barrier, ...barriers_array];
+
         return (
             <SmartChart
-                barriers={this.props.barriers_array}
+                barriers={barriers}
                 bottomWidgets={bottomWidgets}
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}
@@ -246,6 +254,7 @@ const ChartTrade = connect(
             is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
             is_ended         : modules.contract_trade.last_contract.is_ended,
         },
+        main_barrier     : modules.trade.main_barrier_flattened,
         show_digits_stats: modules.trade.show_digits_stats,
         contract_type    : modules.trade.contract_type,
         symbol           : modules.trade.symbol,

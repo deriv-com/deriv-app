@@ -36,7 +36,7 @@ const AllowEquals = ({
                     className='allow-equals__input-field'
                     classNameInput='allow-equals__input trade-container__input'
                     checked={value}
-                    id='allow_equals'
+                    id='dt_allow_equals_input'
                     name='is_equal'
                     onChange={changeValue}
                     type='checkbox'
@@ -47,6 +47,7 @@ const AllowEquals = ({
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'
                     icon='info'
+                    id='dt_allow_equals_info'
                     message={localize('Win payout if exit spot is also equal to entry spot.')}
                     margin={113}
                 />

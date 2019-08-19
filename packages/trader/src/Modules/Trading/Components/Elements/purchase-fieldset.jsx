@@ -72,6 +72,7 @@ class PurchaseFieldset extends React.PureComponent {
                         has_increased={info.has_increased}
                         is_loading={is_loading}
                         should_fade={this.state.should_fade}
+                        type={type}
                     />
                     <div
                         className={classNames(

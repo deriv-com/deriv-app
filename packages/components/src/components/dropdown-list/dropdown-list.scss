@@ -1,0 +1,26 @@
+.dc-dropdown-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
+    cursor: pointer;
+    @include themify($themes) {
+        background-color: themed('container_secondary_color');
+    }
+
+    &__item {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.6rem;
+
+        &:hover {
+            @include themify($themes) {
+                background-color: themed('hover_color');
+            }
+        }
+    }
+}

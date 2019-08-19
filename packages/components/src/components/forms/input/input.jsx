@@ -18,7 +18,6 @@ const Input = (props) => {
                                     { className: 'dc-input__trailing-icon' },
                                 )
                             }
-                            {/* { TrailingIcon && <TrailingIcon className='dc-input__trailing-icon' /> } */}
                             <label className='dc-input__label' htmlFor={ field.id }>{ props.label || props.placeholder }</label>
                         </div>
                         <ErrorMessage name={ field.name }>

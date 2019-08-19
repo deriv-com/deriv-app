@@ -41,6 +41,7 @@ const htmlInjectConfig = () => ({
         'css/smartcharts.css',
         'css/deriv-components.button.css',
         'css/deriv-components.form.css',
+        'css/deriv-components.autocomplete.css',
         'css/deriv-components.input.css',
         {
             path: 'manifest.json',

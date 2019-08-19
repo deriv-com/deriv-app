@@ -1,5 +1,6 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
+import Autocomplete  from 'deriv-components/lib/autocomplete';
 import Input         from 'deriv-components/lib/input';
 import Form          from 'deriv-components/lib/form';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
@@ -31,6 +32,16 @@ const validateSignup = (values) => {
 };
 
 const AccountSignup = ({ onSignup, residence_list }) => {
+    const arr = [
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+        'Monday',
+    ];
+
     return (
         <div className='account-signup'>
             {/* <h3> */}
@@ -42,21 +53,32 @@ const AccountSignup = ({ onSignup, residence_list }) => {
                 onSubmit={onSignup}
             >
                 {
-                    ({ resetForm }) => (
+                    ({ isSubmitting }) => (
                         <React.Fragment>
-                            <Input
+                            {/* <Input */}
+                            {/*    type='text' */}
+                            {/*    name='residence' */}
+                            {/*    label={localize('Choose country')} */}
+                            {/*    required */}
+                            {/*    trailing_icon={<Icon icon='IconArrow' />} */}
+                            {/* /> */}
+                            {/* <Input */}
+                            {/*    type='password' */}
+                            {/*    name='password' */}
+                            {/*    label={localize('Create a password')} */}
+                            {/*    required */}
+                            {/* /> */}
+                            <Autocomplete
                                 type='text'
                                 name='residence'
                                 label={localize('Choose country')}
                                 required
                                 trailing_icon={<Icon icon='IconArrow' />}
+                                list_items={arr}
                             />
 
-                            <Button type='submit'>
+                            <Button type='submit' is_disabled={isSubmitting}>
                                 <Localize i18n_default_text='Start trading' />
-                            </Button>
-                            <Button type='button' onClick={resetForm}>
-                                <Localize i18n_default_text='Reset form (remove this)' />
                             </Button>
                         </React.Fragment>
                     )

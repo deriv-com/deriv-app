@@ -67,7 +67,7 @@ npm run deploy:folder "br_my_test_folder"
 - In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
 
 ## Selenium tests
-Elements For selenium test purposes should have `id` attributes, with the value of `dt_[element_name]_[unique_name|id]_[element_type]`. (e.g. `dt_settings_dark_button`)
+Elements for selenium test purposes should have `id` attributes, with the value of `dt_[element_name]_[unique_name|id]_[element_type]`. (e.g. `dt_settings_dark_button`)
 
 ## Release
 ### Staging

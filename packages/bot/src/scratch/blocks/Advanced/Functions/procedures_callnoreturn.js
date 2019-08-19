@@ -155,8 +155,8 @@ Blockly.Blocks.procedures_callnoreturn = {
     getProcedureDefinition(name) {
         // Assume that a procedure definition is a top block.
         return this.workspace.getTopBlocks(false).find(block => {
-            if (block.getProcedureDef) {
-                const tuple = block.getProcedureDef();
+            if (block.getProcedureDefinition) {
+                const tuple = block.getProcedureDefinition();
                 return tuple && Blockly.Names.equals(tuple[0], name);
             }
             return false;

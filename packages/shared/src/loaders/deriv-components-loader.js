@@ -5,7 +5,7 @@
 module.exports = function(source) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {
-        const matches = /\s*import\s+\{(.*)\}\s*from\s+\'deriv-components/.exec(line);
+        const matches = /\s*import\s+\{(.*)\}\s*from\s+\'deriv-components/.exec(line); // eslint-disable-line no-useless-escape
         if (!matches || !matches[1]) {
             return line; // do nothing;
         }
@@ -15,8 +15,7 @@ import ${c} from 'deriv-components/lib/${c.toLocaleLowerCase()}';
 import 'deriv-components/lib/${c.toLocaleLowerCase()}.css';
         `).join('\n');
 
-        console.warn(replace);
         return replace;
     });
     return mapped_lines.join('\n');
-}
+};

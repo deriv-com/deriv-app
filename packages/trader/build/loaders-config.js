@@ -1,9 +1,9 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');                     
 const path                 = require('path');
 
 const js_loaders = [
     {
-        loader: path.resolve(path.join(__dirname, 'deriv-components-loader.js'))
+        loader: 'deriv-shared/utils/deriv-components-loader.js'
     },
     {
         loader : 'babel-loader',

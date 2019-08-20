@@ -9,6 +9,7 @@ class VerticalTabContentContainer extends React.PureComponent {
         const {
             action_bar,
             action_bar_classname,
+            id,
             is_routed,
             items,
             selected,
@@ -31,6 +32,7 @@ class VerticalTabContentContainer extends React.PureComponent {
                                         <Component key={title} />
                                         :
                                         <div
+                                            id={`dt_${id}_close_icon`}
                                             className='vertical-tab__action-bar-wrapper'
                                             key={title}
                                             onClick={onClick}

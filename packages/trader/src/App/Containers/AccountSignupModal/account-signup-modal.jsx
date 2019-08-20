@@ -2,7 +2,7 @@ import React         from 'react';
 import PropTypes     from 'prop-types';
 import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize      from 'App/Components/Elements/localize.jsx';
-import Button        from 'deriv-components/lib/button';
+import { Button }    from 'deriv-components';
 import Dropdown      from 'App/Components/Form/DropDown';
 // import InputField    from 'App/Components/Form/InputField/input-field.jsx';
 import { localize }  from 'App/i18n';
@@ -37,6 +37,7 @@ const AccountSignup = ({ onSignup, residence_list }) => {
             {/*    onChange={onInputChange} */}
             {/* /> */}
             <Dropdown
+                id='signup_modal'
                 is_alignment_left
                 is_nativepicker={false}
                 list={residence_list}

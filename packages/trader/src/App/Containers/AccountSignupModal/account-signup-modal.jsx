@@ -1,14 +1,15 @@
-import classNames    from 'classnames';
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import Autocomplete  from 'deriv-components/lib/autocomplete';
-import Input         from 'deriv-components/lib/input';
-import Form          from 'deriv-components/lib/form';
-import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import Button        from 'deriv-components/lib/button';
-import { localize }  from 'App/i18n';
-import { connect }   from 'Stores/connect';
+import classNames        from 'classnames';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import Autocomplete      from 'deriv-components/lib/autocomplete';
+import Input             from 'deriv-components/lib/input';
+import Form              from 'deriv-components/lib/form';
+import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import Localize          from 'App/Components/Elements/localize.jsx';
+import Button            from 'deriv-components/lib/button';
+import { localize }      from 'App/i18n';
+import { connect }       from 'Stores/connect';
+import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import 'Sass/app/modules/account-signup.scss';
 
 // const onClose = (ui) => {
@@ -17,15 +18,25 @@ import 'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
 
-const validateSignup = (values) => {
+const validateSignup = (values, residence_list) => {
     const errors = {};
+    const min_password_length = 6;
 
-    if (!values.password) {
-        errors.password = 'Password is required';
+    if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
+        errors.password = true;
     }
 
     if (!values.residence) {
-        errors.residence = 'Residence is required';
+        errors.residence = true;
+    } else {
+        const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+        if (index_of_selection > -1) {
+            if (residence_list[index_of_selection].disabled === 'DISABLED') {
+                errors.residence = localize('Unfortunately, Deriv is not available in your country.');
+            }
+        } else {
+            errors.residence = localize('Unfortunately, Deriv is not available in your country.');
+        }
     }
 
     return errors;
@@ -43,14 +54,13 @@ class AccountSignup extends React.Component {
     render() {
         const { onSignup, residence_list } = this.props;
 
+        const validateSignupPassthrough = (values) => validateSignup(values, residence_list);
+
         return (
             <div className='account-signup'>
-                {/* <h3> */ }
-                {/*    <Localize i18n_default_text='Thanks for verifying your email.' /> */ }
-                {/* </h3> */ }
                 <Form
                     initialValues={ signupInitialValues }
-                    validate={ validateSignup }
+                    validate={ validateSignupPassthrough }
                     onSubmit={ onSignup }
                 >
                     {

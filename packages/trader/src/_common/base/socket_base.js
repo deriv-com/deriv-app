@@ -148,7 +148,7 @@ const BinarySocketBase = (() => {
     const buy = (proposal_id, price) =>
         send({ buy: proposal_id, price });
 
-    const buyAndSubscribe = (buy_request, cb) =>
+    const buyAndSubscribe = (proposal_id, price) =>
         send({ buy: proposal_id, price, subscribe: 1 });
 
     const cashier = (action, verification_code) =>

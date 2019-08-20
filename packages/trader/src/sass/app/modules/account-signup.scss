@@ -25,6 +25,7 @@
         margin-bottom: 3.3rem;
     }
     &__subtext {
+        font-size: 1.2rem;
         text-align: center;
         margin: 1rem 0 2.4rem 0;
     }
@@ -38,8 +39,7 @@
         }
 
         &--disabled {
-            background-color: rgb(234, 236, 237);
-            color: $COLOR_LIGHT_BLACK_3_SOLID_1 !important;
+            background-color: rgba(255, 68, 79, 0.32);
             cursor: initial;
             font-weight: normal !important;
         }

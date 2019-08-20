@@ -6,7 +6,7 @@
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
     cursor: pointer;
     @include themify($themes) {
-        background-color: themed('container_secondary_color');
+        background-color: themed('container_color');
     }
 
     &__item {

@@ -34,8 +34,19 @@
     --brand-orange: #ff6444;
     // Brand secondary colors
     --brand-secondary: #85acb0;
+
+    .theme--dark {
+        --text-color: var(--color-white);
+        --text-color-3: var(--color-white);
+    }
+    .theme--light {
+        --text-color: var(--color-black);
+        --text-color-3: var(--color-black-3);
+    }
 }
 /* stylelint-enable color-no-hex */
+
+// TODO: use-phase-2-colors - Switch to using phase 2 colors, following the new color palette (refer Abstract)
 
 //.theme--dark {
 //    // Dark color palette of style guide with style guide name as comment
@@ -87,7 +98,7 @@
     }
     &__field {
         background: none;
-        color: var(--color-black);
+        color: var(--text-color);
         font-size: var(--text-size-s);
         padding: 1rem 1.2rem;
         width: 100%;
@@ -116,7 +127,7 @@
         &:not(:focus):valid {
             & ~ label {
                 transform: translate(-1.6rem, -2.2rem) scale(0.75);
-                color: var(--color-black-3);
+                color: var(--text-color-3);
                 padding: 0 4px;
                 @include themify($themes) {
                     background-color: themed('container_secondary_color');

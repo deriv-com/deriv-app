@@ -5,7 +5,7 @@ import {
     Autocomplete,
     Input,
     Form,
-    Button }  from 'deriv-components';
+    Button }             from 'deriv-components';
 import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';

@@ -2,7 +2,7 @@
 
 /* @define account-signup */
 .account-signup {
-    margin: 1.6rem 1.6rem 0 1.6rem;
+    margin: 1.6rem 1.6rem 0;
 
     &__residence-selection, &__password-selection {
         display: flex;
@@ -27,7 +27,7 @@
     &__subtext {
         font-size: 1.2rem;
         text-align: center;
-        margin: 1rem 0 2.4rem 0;
+        margin: 1rem 0 2.4rem;
     }
     &__btn {
         align-self: flex-end;

@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import React        from 'react';
-import PropTypes     from 'prop-types';
-import { Field }    from 'formik'
+import PropTypes    from 'prop-types';
+import { Field }    from 'formik';
 import Input        from '../input';
 import DropdownList from '../../dropdown-list';
 import                   './autocomplete.scss';

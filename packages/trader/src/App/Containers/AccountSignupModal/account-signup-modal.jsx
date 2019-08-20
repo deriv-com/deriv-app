@@ -1,12 +1,13 @@
 import classNames        from 'classnames';
 import React             from 'react';
 import PropTypes         from 'prop-types';
-import Autocomplete      from 'deriv-components/lib/autocomplete';
-import Input             from 'deriv-components/lib/input';
-import Form              from 'deriv-components/lib/form';
+import {
+    Autocomplete,
+    Input,
+    Form,
+    Button }  from 'deriv-components';
 import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
-import Button            from 'deriv-components/lib/button';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';

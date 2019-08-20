@@ -67,6 +67,7 @@ class DataTable extends React.PureComponent {
             id } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
+        const contract_id = data_source[index].contract_id || data_source[index].id;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const content = (
@@ -74,6 +75,7 @@ class DataTable extends React.PureComponent {
                 className={className}
                 row_obj={item}
                 columns={columns}
+                id={contract_id}
                 key={id}
                 to={typeof action === 'string' ? action : undefined}
                 replace={typeof action === 'object' ? action : undefined}

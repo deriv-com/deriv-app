@@ -45,6 +45,7 @@ const ChartSettings = ({
                 <MediaIcon
                     disabled={is_dark_mode ? ChartPositionDisabledDarkIcon : ChartPositionDisabledLightIcon}
                     enabled={is_dark_mode ? ChartPositionEnabledDarkIcon : ChartPositionEnabledLightIcon}
+                    id='dt_settings_position_image'
                     is_enabled={is_layout_default}
                 />
                 <div className='media__form'>
@@ -54,10 +55,12 @@ const ChartSettings = ({
                             {
                                 label: <Localize i18n_default_text='Bottom' />,
                                 value: true,
+                                id   : 'dt_settings_bottom_radio',
                             },
                             {
                                 label: <Localize i18n_default_text='Left' />,
                                 value: false,
+                                id   : 'dt_settings_left_radio',
                             },
                         ]}
                         selected={is_layout_default}
@@ -97,10 +100,12 @@ const ChartSettings = ({
                 <MediaIcon
                     disabled={is_dark_mode ? IntervalDurationDisabledDarkIcon : IntervalDurationDisabledLightIcon}
                     enabled={is_dark_mode ? IntervalDurationEnabledDarkIcon : IntervalDurationEnabledLightIcon}
+                    id='dt_settings_interval_image'
                     is_enabled={is_countdown_visible}
                 />
                 <div className='media__form'>
                     <Checkbox
+                        id='dt_settings_interval_checkbox'
                         value={is_countdown_visible}
                         label={localize('Display remaining time for each interval')}
                         onClick={toggleCountdown}

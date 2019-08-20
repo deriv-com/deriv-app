@@ -66,7 +66,7 @@ class RangeSlider extends React.PureComponent {
                 <label className='range-slider__label' htmlFor='range'>
                     <input
                         className='input trade-container__input range-slider__track'
-                        id='range'
+                        id='dt_duration_range_input'
                         max={max_value}
                         max_value={max_value}
                         min={min_value}
@@ -104,7 +104,7 @@ class RangeSlider extends React.PureComponent {
                 <div className='range-slider__caption'>
                     {
                         !!display_value &&
-                        <span className='range-slider__caption-title'>
+                        <span id='dt_range_slider_label' className='range-slider__caption-title'>
                             {display_value === 1 && localize('{{display_value}} Tick', { display_value })}
                             {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
                         </span>

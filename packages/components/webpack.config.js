@@ -1,9 +1,9 @@
-const StyleLintPlugin           = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
-const MiniCssExtractPlugin      = require('mini-css-extract-plugin');
-const path                      = require('path');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
-const isServe = process.env.BUILD_MODE === 'serve';
+const is_serve = process.env.BUILD_MODE === 'serve';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
@@ -51,7 +51,7 @@ module.exports = {
                     {
                         loader : 'sass-resources-loader',
                         options: {
-                            resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
+                            resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
                         },
                     },
                 ],
@@ -77,7 +77,7 @@ module.exports = {
                     },
                 ],
             },
-            (!isServe ? {
+            (!is_serve ? {
                 enforce: 'pre',
                 test   : /\.(js|jsx)$/,
                 exclude: [/node_modules/],
@@ -94,7 +94,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'deriv-components.[name].css' }),
+        new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
         new SpriteLoaderPlugin(),
     ],
@@ -117,6 +117,5 @@ module.exports = {
             root     : 'mobxReact',
         },
         'babel-polyfill': 'babel-polyfill',
-
     },
 };

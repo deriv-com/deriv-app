@@ -75,6 +75,7 @@ class PurchaseFieldset extends React.PureComponent {
                         is_loading={is_loading}
                         should_fade={this.state.should_fade}
                         is_visible={!is_contract_mode}
+                        type={type}
                     />
                     <div
                         className={classNames(

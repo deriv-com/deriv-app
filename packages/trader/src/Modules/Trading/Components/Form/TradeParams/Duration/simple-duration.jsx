@@ -29,6 +29,7 @@ const SimpleDuration = ({
         <Fragment>
             { duration_units_list.length > 1 &&
                 <ButtonToggleMenu
+                    id='dt_simple_duration_toggle'
                     buttons_arr={filterMinutesAndTicks(duration_units_list)}
                     is_animated={true}
                     name='simple_duration_unit'
@@ -53,6 +54,7 @@ const SimpleDuration = ({
             }
             { (simple_duration_unit !== 't' && simple_duration_unit !== 'd') &&
                 <InputField
+                    id='dt_simple_duration_input'
                     classNameInput='trade-container__input'
                     error_messages={validation_errors.duration}
                     name='duration'

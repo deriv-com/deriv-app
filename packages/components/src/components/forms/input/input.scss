@@ -13,6 +13,7 @@
     --color-grey-2: #e8e8e8;
     --color-grey-3: #646464;
     --color-grey-4: #fafbfb;
+    --color-grey-5: #c2c2c2;
     --color-grey: #9b9b9b;
     --color-green: #85acb0;
     --color-blue: #4c76be;
@@ -38,10 +39,12 @@
     .theme--dark {
         --text-color: var(--color-white);
         --text-color-3: var(--color-white);
+        --icon-general: var(--color-grey-5);
     }
     .theme--light {
         --text-color: var(--color-black);
         --text-color-3: var(--color-black-3);
+        --icon-general: var(--color-black-3);
     }
 }
 /* stylelint-enable color-no-hex */

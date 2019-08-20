@@ -41,7 +41,9 @@
         &--disabled {
             background-color: rgba(255, 68, 79, 0.32);
             cursor: initial;
-            font-weight: normal !important;
+            @include themify($themes) {
+                color: themed('phase2_button_text');
+            }
         }
     }
     &__residence-field {

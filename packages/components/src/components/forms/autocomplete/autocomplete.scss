@@ -1,13 +1,4 @@
-:root {
-    --color-grey-5: #c2c2c2;
-
-    .theme--dark {
-        --icon-general: var(--color-grey-5);
-    }
-    .theme--light {
-        --icon-general: var(--color-black-3);
-    }
-}
+// Colors used here are borrowed from input.scss
 // TODO: use-phase-2-colors - Switch to using phase 2 colors, following the new color palette (refer Abstract)
 
 .dc-autocomplete {

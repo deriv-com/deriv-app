@@ -187,12 +187,12 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    refresh = () => {
+    refresh() {
         this.proposal_info     = {};
         this.purchase_info     = {};
         this.proposal_requests = {};
         WS.forgetAll('proposal');
-    };
+    }
 
     @action.bound
     clearContracts = () => {
@@ -210,7 +210,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        // TODO: deosn't need to be forced? ¯\_(ツ)_/¯
+        // TODO: doesn't need to be forced? ¯\_(ツ)_/¯
         const { active_symbols, error } = await WS.activeSymbols({ forced: true });
 
         if (error) {
@@ -250,7 +250,11 @@ export default class TradeStore extends BaseStore {
             runInAction(() => {
                 this.processNewValuesAsync({
                     is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                });
+                },
+                true,
+                null,
+                false,
+                );
             });
         });
     }
@@ -629,7 +633,7 @@ export default class TradeStore extends BaseStore {
         this.resetErrorServices();
 
         return new Promise(async (resolve) => {
-            await this.processNewValuesAsync(
+            this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
                 true,
                 { currency: this.currency },
@@ -647,15 +651,13 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        runInAction(() => {
-            this.is_trade_component_mounted = true;
-        });
         this.onSwitchAccount(this.accountSwitcherListener);
         this.setChartStatus(true);
-        this.refresh();
-        return new Promise(async (resolve) => {
+        runInAction(async() => {
+            this.is_trade_component_mounted = true;
+            this.refresh();
             await this.prepareTradeStore();
-            resolve(this.debouncedProposal());
+            this.debouncedProposal();
         });
     }
 

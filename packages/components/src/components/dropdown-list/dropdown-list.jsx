@@ -7,8 +7,6 @@ const trackHorizontal = props => <div {...props} className='track-horizontal' st
 const thumbHorizontal = props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />;
 
 const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
-    console.log('Dropdown list items:', list_items);
-
     if (!is_visible) {
         return null;
     }

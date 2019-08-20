@@ -1,0 +1,53 @@
+@import '../_common/base/index';
+
+/* @define account-signup */
+.account-signup {
+    margin: 1.6rem 1.6rem 0 1.6rem;
+
+    &__residence-selection, &__password-selection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: nowrap column;
+    }
+    &__password-selection {
+        .account-signup__heading {
+            margin-bottom: 3.3rem;
+        }
+    }
+    &__heading {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0.8rem;
+    }
+    &__text {
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__subtext {
+        text-align: center;
+        margin: 1rem 0 2.4rem 0;
+    }
+    &__btn {
+        align-self: flex-end;
+        margin: 0;
+        background-color: rgb(255, 68, 79);
+        font-weight: bold;
+        @include themify($themes) {
+            color: themed('text_active_color');
+        }
+
+        &--disabled {
+            background-color: rgb(234, 236, 237);
+            color: $COLOR_LIGHT_BLACK_3_SOLID_1 !important;
+            cursor: initial;
+            font-weight: normal !important;
+        }
+    }
+    &__residence-field {
+        width: 30rem;
+    }
+    &__password-field {
+        width: 30rem;
+    }
+}

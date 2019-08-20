@@ -7,20 +7,18 @@ const Input = (props, ref) => (
     <Field { ...props }>
         {
             ({ field }) => (
-                <React.Fragment>
-                    <div className='dc-input'>
-                        <input ref={ ref } { ...field } { ...props } className='dc-input__field' />
-                        {
-                            props.trailing_icon &&
-                            React.cloneElement(
-                                props.trailing_icon,
-                                { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
-                            )
-                        }
-                        <label className='dc-input__label' htmlFor={ field.id }>
-                            { props.label || props.placeholder }
-                        </label>
-                    </div>
+                <div className={ classNames('dc-input', props.className) }>
+                    <input ref={ ref } { ...field } { ...props } className='dc-input__field' />
+                    {
+                        props.trailing_icon &&
+                        React.cloneElement(
+                            props.trailing_icon,
+                            { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
+                        )
+                    }
+                    <label className='dc-input__label' htmlFor={ field.id }>
+                        { props.label || props.placeholder }
+                    </label>
                     <ErrorMessage name={ field.name }>
                         {
                             (msg) => (
@@ -30,7 +28,7 @@ const Input = (props, ref) => (
                             )
                         }
                     </ErrorMessage>
-                </React.Fragment>
+                </div>
             )
         }
     </Field>

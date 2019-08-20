@@ -1,3 +1,4 @@
+import classNames    from 'classnames';
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import Autocomplete  from 'deriv-components/lib/autocomplete';
@@ -8,6 +9,7 @@ import Localize      from 'App/Components/Elements/localize.jsx';
 import Button        from 'deriv-components/lib/button';
 import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';
+import 'Sass/app/modules/account-signup.scss';
 
 // const onClose = (ui) => {
 //     ui.toggleUnsupportedContractModal(false);
@@ -29,43 +31,102 @@ const validateSignup = (values) => {
     return errors;
 };
 
-const AccountSignup = ({ onSignup, residence_list }) => {
-    return (
-        <div className='account-signup'>
-            {/* <h3> */}
-            {/*    <Localize i18n_default_text='Thanks for verifying your email.' /> */}
-            {/* </h3> */}
-            <Form
-                initialValues={signupInitialValues}
-                validate={validateSignup}
-                onSubmit={onSignup}
-            >
-                {
-                    ({ isSubmitting }) => (
-                        <React.Fragment>
-                            {/* <Input */}
-                            {/*    type='password' */}
-                            {/*    name='password' */}
-                            {/*    label={localize('Create a password')} */}
-                            {/*    required */}
-                            {/* /> */}
-                            <Autocomplete
-                                type='text'
-                                name='residence'
-                                label={localize('Choose country')}
-                                required
-                                list_items={residence_list}
-                            />
+class AccountSignup extends React.Component {
+    state = {
+        has_valid_residence: false,
+    };
 
-                            <Button type='submit' is_disabled={isSubmitting}>
-                                <Localize i18n_default_text='Start trading' />
-                            </Button>
-                        </React.Fragment>
-                    )
-                }
-            </Form>
-        </div>
-    );
+    onResidenceSelection = () => {
+        this.setState({ has_valid_residence: true });
+    };
+
+    render() {
+        const { onSignup, residence_list } = this.props;
+
+        return (
+            <div className='account-signup'>
+                {/* <h3> */ }
+                {/*    <Localize i18n_default_text='Thanks for verifying your email.' /> */ }
+                {/* </h3> */ }
+                <Form
+                    initialValues={ signupInitialValues }
+                    validate={ validateSignup }
+                    onSubmit={ onSignup }
+                >
+                    {
+                        ({ isSubmitting, errors, values }) => (
+                            <React.Fragment>
+                                {
+                                    !this.state.has_valid_residence ?
+                                        <div className='account-signup__residence-selection'>
+                                            <p className='account-signup__heading'>
+                                                <Localize i18n_default_text='Thanks for verifying your email' />
+                                            </p>
+                                            <p className='account-signup__text'>
+                                                <Localize i18n_default_text='Where are you a resident?' />
+                                            </p>
+                                            <Autocomplete
+                                                className='account-signup__residence-field'
+                                                type='text'
+                                                name='residence'
+                                                label={ localize('Choose country') }
+                                                required
+                                                list_items={ residence_list }
+                                            />
+                                            <p className='account-signup__subtext'>
+                                                <Localize
+                                                    i18n_default_text='We need this to make sure our service complies with laws and regulations in your country.'
+                                                />
+                                            </p>
+
+                                            <Button
+                                                className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.residence || errors.residence })}
+                                                type='button'
+                                                is_disabled={ !values.residence || errors.residence }
+                                                onClick={this.onResidenceSelection}
+                                            >
+                                                <Localize i18n_default_text='Next' />
+                                            </Button>
+                                        </div>
+                                        :
+                                        <div className='account-signup__password-selection'>
+                                            <p className='account-signup__heading'>
+                                                <Localize i18n_default_text='Keep your account secure with a password' />
+                                            </p>
+                                            <Input
+                                                className='account-signup__password-field'
+                                                type='password'
+                                                name='password'
+                                                label={localize('Create a password')}
+                                                required
+                                            />
+                                            <p className='account-signup__subtext'>
+                                                <Localize
+                                                    i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.'
+                                                />
+                                            </p>
+
+                                            <Button
+                                                className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.password || errors.password || isSubmitting })}
+                                                type='submit'
+                                                is_disabled={ !values.password || errors.password || isSubmitting }
+                                            >
+                                                <Localize i18n_default_text='Start trading' />
+                                            </Button>
+                                        </div>
+                                }
+                            </React.Fragment>
+                        )
+                    }
+                </Form>
+            </div>
+        );
+    }
+}
+
+AccountSignup.propTypes = {
+    onSignup      : PropTypes.func,
+    residence_list: PropTypes.array,
 };
 
 const AccountSignupModal = ({ is_visible, onSignup, residence_list }) => {

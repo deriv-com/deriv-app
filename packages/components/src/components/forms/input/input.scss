@@ -80,6 +80,7 @@
     border: 1px solid var(--color-grey-2);
     display: flex;
     align-items: center;
+    margin-bottom: 1.8rem;
 
     &:focus-within {
         border-color: var(--color-green);
@@ -90,6 +91,7 @@
         font-size: var(--text-size-s);
         padding: 1rem 1.2rem;
         width: 100%;
+        height: 4rem;
         display: block;
 
         &::placeholder {
@@ -100,7 +102,7 @@
             outline: none;
 
             & ~ label {
-                transform: translate(-1.4rem, -2.2rem) scale(0.75);
+                transform: translate(-1.6rem, -2.2rem) scale(0.75);
                 color: var(--color-green);
                 padding: 0 4px;
                 @include themify($themes) {
@@ -113,7 +115,7 @@
         }
         &:not(:focus):valid {
             & ~ label {
-                transform: translate(-1.4rem, -2.2rem) scale(0.75);
+                transform: translate(-1.6rem, -2.2rem) scale(0.75);
                 color: var(--color-black-3);
                 padding: 0 4px;
                 @include themify($themes) {
@@ -135,10 +137,12 @@
         transition: 0.25s ease all;
         transform: translateZ(0);
     }
-}
-
-.dc-input__error {
-    padding: 0 1.2rem;
-    color: var(--color-red);
-    font-size: var(--text-size-xs);
+    &__error {
+        position: absolute;
+        top: 4rem;
+        text-align: left !important;
+        padding: 0 1.2rem;
+        color: var(--color-red);
+        font-size: var(--text-size-xs);
+    }
 }

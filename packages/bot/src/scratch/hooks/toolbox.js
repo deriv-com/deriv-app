@@ -234,8 +234,8 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * @param {Blockly.Toolbox.Category} item The category to select.
  */
 Blockly.Toolbox.prototype.setSelectedItem = function (item) {
-
-    if (item === 'search'){
+    const category_item = item;
+    if (category_item === 'search'){
         if (this.selectedItem_) {
             this.selectedItem_.setSelected(false);
         }
@@ -250,9 +250,9 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
 
         // Selecting the same category will close it.
         if (
-            item &&
-            !item.is_category_return_ &&
-            !item.has_child_category_ &&
+            category_item &&
+            !category_item.is_category_return_ &&
+            !category_item.has_child_category_ &&
             this.selectedItem_.id_ === item.id_
         ) {
             this.selectedItem_ = null;

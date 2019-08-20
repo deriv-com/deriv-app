@@ -82,7 +82,7 @@ Blockly.Procedures.populateDynamicProcedures = function(tuple) {
             const block = document.createElement('block');
             block.setAttribute('type', templateName);
             block.setAttribute('gap', 16);
-    
+
             const mutation = document.createElement('mutation');
             mutation.setAttribute('name', name);
             block.appendChild(mutation);

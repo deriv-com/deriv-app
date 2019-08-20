@@ -12,10 +12,6 @@ import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import 'Sass/app/modules/account-signup.scss';
 
-// const onClose = (ui) => {
-//     ui.toggleUnsupportedContractModal(false);
-// };
-
 const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
@@ -51,17 +47,31 @@ class AccountSignup extends React.Component {
         this.setState({ has_valid_residence: true });
     };
 
+    onSignupComplete = (error) => {
+        // Error would be returned on invalid token (and the like) cases.
+        // TODO: Proper error handling (currently we have no place to put the message)
+
+        if (!error) {
+            this.props.toggleUnsupportedContractModal(false);
+        }
+    };
+
     render() {
         const { onSignup, residence_list } = this.props;
 
         const validateSignupPassthrough = (values) => validateSignup(values, residence_list);
+        const onSignupPassthrough = (values) => {
+            const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+            const modded_values = { ...values, residence: residence_list[index_of_selection].value };
+            onSignup(modded_values, this.onSignupComplete);
+        };
 
         return (
             <div className='account-signup'>
                 <Form
                     initialValues={ signupInitialValues }
                     validate={ validateSignupPassthrough }
-                    onSubmit={ onSignup }
+                    onSubmit={ onSignupPassthrough }
                 >
                     {
                         ({ isSubmitting, errors, values }) => (
@@ -139,10 +149,14 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
 };
 
-const AccountSignupModal = ({ is_visible, onSignup, residence_list }) => {
+const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleUnsupportedContractModal }) => {
     return (
         <FullPageModal is_visible={is_visible}>
-            <AccountSignup onSignup={onSignup} residence_list={residence_list} />
+            <AccountSignup
+                onSignup={onSignup}
+                residence_list={residence_list}
+                closeModal={toggleUnsupportedContractModal}
+            />
         </FullPageModal>
     );
 };
@@ -155,8 +169,9 @@ AccountSignupModal.propTypes = {
 
 export default connect(
     ({ ui, client }) => ({
-        is_visible    : ui.is_account_signup_modal_visible,
-        onSignup      : client.onSignup,
-        residence_list: client.residence_list,
+        is_visible                    : ui.is_account_signup_modal_visible,
+        toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
+        onSignup                      : client.onSignup,
+        residence_list                : client.residence_list,
     }),
 )(AccountSignupModal);

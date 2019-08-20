@@ -6,7 +6,6 @@ import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Lazy                  from 'App/Containers/Lazy';
-import Test                  from './test.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { isDigitTradeType }  from '../Helpers/digits';
 
@@ -85,8 +84,6 @@ class Trade extends React.Component {
                             />
                         </React.Suspense>
                     }
-                    {/* Remove Test component for debugging below for production release */}
-                    <Test />
                 </div>
                 <div
                     className={form_wrapper_class}

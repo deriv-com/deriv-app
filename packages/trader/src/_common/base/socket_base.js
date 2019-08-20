@@ -118,7 +118,7 @@ const BinarySocketBase = (() => {
         const promise = deriv_api.storage.send(request);
 
         if (options.callback) {
-            promise.then(callback);
+            promise.then(options.callback);
         }
 
         return promise;
@@ -171,6 +171,9 @@ const BinarySocketBase = (() => {
     const verifyEmail = (email, type) =>
         send({ verify_email: email, type });
 
+    const activeSymbols = () =>
+        send({ active_symbols: 'brief' });
+
     return {
         init,
         send,
@@ -190,6 +193,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        activeSymbols,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

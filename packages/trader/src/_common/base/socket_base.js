@@ -124,6 +124,11 @@ const BinarySocketBase = (() => {
         return promise;
     };
 
+    const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
+
+    const expectResponse = (...responses) =>
+        deriv_api.expectResponse(...responses.filter(excludeAuthorize));
+
     const subscribeBalance = (cb) =>
         deriv_api.subscribe({ balance: 1 }).subscribe(cb, noop);
 
@@ -177,6 +182,7 @@ const BinarySocketBase = (() => {
     return {
         init,
         send,
+        expectResponse,
         clearTimeouts,
         availability,
         hasReadyState,

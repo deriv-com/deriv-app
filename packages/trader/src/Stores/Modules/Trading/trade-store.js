@@ -112,7 +112,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
-        await BinarySocket.expectResponse('website_status');
+        await BinarySocket.expectResponse('authorize', 'website_status');
         WS.activeSymbols().then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;

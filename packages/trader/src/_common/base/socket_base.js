@@ -133,9 +133,6 @@ const BinarySocketBase = (() => {
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
         deriv_api.subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }).subscribe(cb, noop);
 
-    const subscribeProposalOpenContractOnBuy = (buy_request, cb) =>
-        deriv_api.subscribe({ ...buy_request }).subscribe(cb, noop);
-
     const subscribeTicks = (symbol, cb) =>
         deriv_api.subscribe({ ticks: symbol }).subscribe(cb, noop);
 
@@ -150,6 +147,9 @@ const BinarySocketBase = (() => {
 
     const buy = (proposal_id, price) =>
         send({ buy: proposal_id, price });
+
+    const buyAndSubscribe = (buy_request, cb) =>
+        send({ buy: proposal_id, price, subscribe: 1 });
 
     const cashier = (action, verification_code) =>
         send({ cashier: action, ...(verification_code && { verification_code }) });
@@ -188,6 +188,7 @@ const BinarySocketBase = (() => {
         removeOnReconnect : () => { delete config.onReconnect; },
         removeOnDisconnect: () => { delete config.onDisconnect; },
         buy,
+        buyAndSubscribe,
         cashier,
         newAccountVirtual,
         profitTable,
@@ -197,7 +198,6 @@ const BinarySocketBase = (() => {
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,
-        subscribeProposalOpenContractOnBuy,
         subscribeTicks,
         subscribeTicksHistory,
         subscribeTransaction,

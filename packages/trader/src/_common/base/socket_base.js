@@ -111,18 +111,20 @@ const BinarySocketBase = (() => {
         return is_available;
     };
 
-    const noop = () => {};
-
     const send = (request, options = {}) => {
-
         const promise = deriv_api.storage.send(request);
 
         if (options.callback) {
             promise.then(options.callback);
         }
 
-        return promise;
+        return new Promise((r) => {
+            // Sorry Promise, we all failed you :|
+            promise.then(r, r);
+        });
     };
+
+    const noop = () => {};
 
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 

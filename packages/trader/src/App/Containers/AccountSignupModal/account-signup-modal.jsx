@@ -51,9 +51,13 @@ class AccountSignup extends React.Component {
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
 
-        if (!error) {
-            this.props.toggleUnsupportedContractModal(false);
+        if (error) {
+            throw Error(error);
         }
+
+        // Handle lower level modal controls due to overriding modal rendering
+        this.props.isModalVisible(false);
+        this.props.enableApp();
     };
 
     render() {
@@ -149,13 +153,14 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
 };
 
-const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleUnsupportedContractModal }) => {
+const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccountSignupModal, enableApp }) => {
     return (
         <FullPageModal is_visible={is_visible}>
             <AccountSignup
                 onSignup={onSignup}
                 residence_list={residence_list}
-                closeModal={toggleUnsupportedContractModal}
+                isModalVisible={toggleAccountSignupModal}
+                enableApp={enableApp}
             />
         </FullPageModal>
     );
@@ -169,9 +174,10 @@ AccountSignupModal.propTypes = {
 
 export default connect(
     ({ ui, client }) => ({
-        is_visible                    : ui.is_account_signup_modal_visible,
-        toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-        onSignup                      : client.onSignup,
-        residence_list                : client.residence_list,
+        is_visible              : ui.is_account_signup_modal_visible,
+        toggleAccountSignupModal: ui.toggleAccountSignupModal,
+        enableApp               : ui.enableApp,
+        onSignup                : client.onSignup,
+        residence_list          : client.residence_list,
     }),
 )(AccountSignupModal);

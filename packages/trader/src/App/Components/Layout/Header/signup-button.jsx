@@ -11,7 +11,7 @@ const SignupButton = ({ className }) => (
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
         text={localize('Sign up')}
-        onClick={() => { window.open(urlFor('new-account', undefined, undefined, true)); }}
+        onClick={() => { window.open('https://deriv.com'); }}
     />
 );
 

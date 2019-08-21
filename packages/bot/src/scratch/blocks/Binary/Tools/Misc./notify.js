@@ -3,7 +3,10 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.notify = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Notify %1 with sound: %2 %3'),
             args0   : [
                 {
@@ -28,7 +31,14 @@ Blockly.Blocks.notify = {
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Creates a notification'),
-        });
+            cateogry         : Blockly.Categories.Miscellaneous,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Pop out notify'),
+            'description' : translate('Pop out notify description'),
+        };
     },
 };
 

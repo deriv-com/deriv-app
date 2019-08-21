@@ -98,6 +98,5 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
     const finalOffsetMainWs = finalOffsetPixels.scale(1 / targetWorkspace.scale);
   
     block.moveBy(finalOffsetMainWs.x, finalOffsetMainWs.y);
-
     return block;
 };

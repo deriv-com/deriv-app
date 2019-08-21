@@ -8,9 +8,10 @@ class Checkbox extends React.PureComponent {
     };
 
     render() {
-        const { value, label } = this.props;
+        const { value, label, id } = this.props;
         return (
             <div
+                id={id}
                 className='checkbox'
                 onClick={this.onClick}
             >
@@ -25,6 +26,7 @@ class Checkbox extends React.PureComponent {
 }
 
 Checkbox.propTypes = {
+    id   : PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.bool,
 };

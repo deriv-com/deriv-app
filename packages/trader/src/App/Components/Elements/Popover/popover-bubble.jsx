@@ -58,6 +58,7 @@ class PopoverBubble extends React.PureComponent {
             className,
             has_error,
             icon,
+            id,
             is_open,
             message,
             target_rectangle,
@@ -77,6 +78,7 @@ class PopoverBubble extends React.PureComponent {
                             'popover__bubble',
                             { 'popover__bubble--error': has_error },
                         )}
+                        id={id}
                     >
                         { icon === 'info' &&
                             <i className='popover__bubble__icon'>
@@ -107,6 +109,7 @@ PopoverBubble.propTypes = {
     className       : PropTypes.string,
     has_error       : PropTypes.bool,
     icon            : PropTypes.string,
+    id              : PropTypes.string,
     is_open         : PropTypes.bool,
     margin          : PropTypes.number,
     message         : PropTypes.string.isRequired,

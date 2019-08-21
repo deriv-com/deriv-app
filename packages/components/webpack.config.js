@@ -1,25 +1,25 @@
-const StyleLintPlugin           = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
-const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
-const path                      = require('path');
+const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path                 = require('path');
 
-const isServe = process.env.BUILD_MODE === 'serve';
+const is_serve = process.env.BUILD_MODE === 'serve';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button: path.resolve(__dirname, 'src' ,'components/button/index.js'),
-        label: path.resolve(__dirname, 'src' , 'components/label/index.js'),
+        button: path.resolve(__dirname, 'src', 'components/button/index.js'),
+        label: path.resolve(__dirname, 'src', 'components/label/index.js'),
     },
     output: {
         path: path.resolve(__dirname, 'lib'),
-        filename: "[name].js",
+        filename: '[name].js',
         libraryExport: 'default',
-        library: ["deriv-component", "[name]"],
+        library: ['deriv-component', '[name]'],
         libraryTarget: 'umd',
     },
-    optimization : {
+    optimization: {
         minimize: true,
         // TODO enable splitChunks
         // splitChunks: {
@@ -44,16 +44,16 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
-                    },    
+                    },
                     {
-                        loader: "sass-resources-loader",
+                        loader: 'sass-resources-loader',
                         options: {
-                          resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
+                            resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }     
+                    }
                 ]
-            },  
-            {  
+            },
+            {
                 test: /\.svg$/,
                 use: [
                     {
@@ -74,25 +74,25 @@ module.exports = {
                     },
                 ],
             },
-        ( !isServe ? {
-                    enforce: "pre",
-                    test: /\.(js|jsx)$/,
-                    exclude: [/node_modules/],
-                    loader: "eslint-loader",
-                    options: {
-                        fix: true
-                    },
-                } :{}),                
+            (!is_serve ? {
+                enforce: 'pre',
+                test: /\.(js|jsx)$/,
+                exclude: [/node_modules/],
+                loader: 'eslint-loader',
+                options: {
+                    fix: true
+                },
+            } : {}),
             {
-                test   : /\.(js|jsx)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : 'babel-loader',
+                loader: 'babel-loader',
             },
         ],
     },
-    plugins: [       
-        new MiniCssExtractPlugin({ filename: 'deriv-components.css' }),
-        new StyleLintPlugin( { fix: true }),
+    plugins: [
+        new MiniCssExtractPlugin({ filename: '[name].css' }),
+        new StyleLintPlugin({ fix: true }),
         new SpriteLoaderPlugin(),
     ],
     externals: {
@@ -113,6 +113,6 @@ module.exports = {
             root: 'mobxReact',
         },
         'babel-polyfill': 'babel-polyfill',
-       
+
     },
 }

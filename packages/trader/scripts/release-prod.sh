@@ -46,7 +46,7 @@ then
 fi
 
 message "Installing packages" &&
-lerna bootstrap --ci && lerna run build &&
+lerna bootstrap --ci && lerna run build --scope=deriv-shared --scope=deriv-components &&
 
 confirm "Please confirm release to PRODUCTION" &&
 if [[ $REPLY =~ ^[Nn]$ ]]

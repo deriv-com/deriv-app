@@ -104,7 +104,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require(path.resolve(__dirname, '../node_modules/deriv-shared/utils/index.js')),
+            resources: require('deriv-shared/utils/index.js'),
         }
     }
 ];

@@ -1,4 +1,3 @@
-import { oppositesToDropdown } from '../../../utils';
 import config                  from '../../../../constants/const';
 import { translate }           from '../../../../utils/lang/i18n';
 
@@ -23,45 +22,40 @@ Blockly.Blocks.trade_definition_contracttype = {
         this.setDeletable(false);
     },
     onchange(event) {
-        const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];
-        if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        const topParentBlock = this.getTopParent();
-        if (!topParentBlock || topParentBlock.type !== 'trade_definition') {
-            this.enforceParent();
-            return;
-        }
+        this.enforceLimitations();
 
-        const getContractTypes = () => {
-            const tradeTypeBlock = topParentBlock.getChildByType('trade_definition_tradetype');
-            const tradeType = tradeTypeBlock && tradeTypeBlock.getFieldValue('TRADETYPE_LIST');
-            if (tradeType) {
-                return [[translate('Both'), 'both'], ...oppositesToDropdown(config.opposites[tradeType.toUpperCase()])];
-            }
-            return [['', '']];
-        };
-
-        const updateTypeList = (useDefault = true) => {
-            const typeList = this.getField('TYPE_LIST');
-            const typeListArgs = [getContractTypes()];
-            if (useDefault) {
-                typeListArgs.push(typeList.getValue());
-            }
-            typeList.updateOptions(...typeListArgs);
-        };
-
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.updateContractTypes();
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TRADETYPE_LIST') {
-                updateTypeList();
-            }
-        } else if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids.includes(this.id)) {
-                updateTypeList();
+                this.updateContractTypes();
             }
         }
     },
-    enforceParent: Blockly.Blocks.trade_definition_market.enforceParent,
+    updateContractTypes() {
+        const top_parent_block    = this.getTopParent();
+        const trade_type_block    = top_parent_block.getChildByType('trade_definition_tradetype');
+        const trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
+        const contract_type_field = this.getField('TYPE_LIST');
+
+        let contract_types;
+
+        if (trade_type) {
+            const { opposites } = config;
+            contract_types      = [
+                [translate('Both'), 'both'],
+                ...opposites[trade_type.toUpperCase()].map(type => Object.entries(type)[0].reverse()),
+            ];
+        } else {
+            contract_types = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+
+        contract_type_field.updateOptions(contract_types);
+    },
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 Blockly.JavaScript.trade_definition_contracttype = () => '';

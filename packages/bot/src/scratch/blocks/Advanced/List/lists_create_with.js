@@ -3,7 +3,15 @@ import { translate }    from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_create_with = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Render a ➕-icon for adding additional `lists_statement` blocks
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', () => this.onIconClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'STACK');
+    },
+    definition(){
+        return {
             message0: translate('set %1 to create list with'),
             message1: '%1',
             args0   : [
@@ -24,12 +32,15 @@ Blockly.Blocks.lists_create_with = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        // Render a ➕-icon for adding additional `lists_statement` blocks
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'STACK');
+            tooltip          : translate('Create List with'),
+            category         : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Create list with'),
+            'description' : translate('Create list with description'),
+        };
     },
     onIconClick() {
         if (!this.workspace || this.isInFlyout) {

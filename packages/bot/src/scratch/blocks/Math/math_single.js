@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_single = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('%1 %2'),
             args0   : [
                 {
@@ -28,7 +31,15 @@ Blockly.Blocks.math_single = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Mathematical Single Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Mathematical Single'),
+            'description' : translate('Mathematical Single Description'),
+        };
     },
 };
 

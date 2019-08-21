@@ -3,7 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import Icon              from 'Components/dummy.jsx';
+import Icon              from 'Components/icon-arrow.jsx';
 import {
     getItemFromValue,
     getValueFromIndex,

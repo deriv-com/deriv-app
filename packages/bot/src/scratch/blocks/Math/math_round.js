@@ -1,3 +1,5 @@
+import { translate } from '../../../utils/lang/i18n';
+
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
 Blockly.Blocks.math_round = {
     /**
@@ -6,7 +8,10 @@ Blockly.Blocks.math_round = {
      * @this Blockly.Block
      */
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2',
             args0   : [
                 {
@@ -24,7 +29,15 @@ Blockly.Blocks.math_round = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Math Round Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Math Round'),
+            'description' : translate('Math Round Description'),
+        };
     },
 };
 

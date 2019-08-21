@@ -3,7 +3,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.emaa_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Exponentional Moving Average Array %2'),
             message1: '%1',
             args0   : [
@@ -29,7 +32,13 @@ Blockly.Blocks.emaa_statement = {
             tooltip          : translate('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    }, meta(){
+        return {
+            'display_name': translate('Exponential Moving Average Statement'),
+            'description' : translate('Exponential Moving Average Statement Dscription'),
+        };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'period'],

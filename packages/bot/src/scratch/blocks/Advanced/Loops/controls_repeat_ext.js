@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_repeat_ext = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('repeat %1 times'),
             args0   : [
                 {
@@ -23,7 +26,15 @@ Blockly.Blocks.controls_repeat_ext = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Control Repeat Tooltip'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Control Repeat'),
+            'description' : translate('Control Repeat Description'),
+        };
     },
 };
 

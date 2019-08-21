@@ -37,6 +37,8 @@ export default class ClientStore extends BaseStore {
     @observable is_populating_account_list = false;
     @observable website_status             = {};
     @observable verification_code          = '';
+    @observable account_settings           = {};
+    @observable account_status             = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -284,8 +286,8 @@ export default class ClientStore extends BaseStore {
         }
 
         if (client && !client.is_virtual) {
-            BinarySocket.wait('landing_company', 'website_status').then(() => {
-                handleClientNotifications(client, this.root_store.ui.addNotification, this.loginid);
+            BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
+                handleClientNotifications(client, this.account_settings, this.account_status, this.root_store.ui.addNotification, this.loginid);
             });
         }
 
@@ -431,6 +433,16 @@ export default class ClientStore extends BaseStore {
     setEmail(email) {
         this.accounts[this.loginid].email = email;
         this.email = email;
+    }
+
+    @action.bound
+    setAccountSettings(settings) {
+        this.account_settings = settings;
+    }
+
+    @action.bound
+    setAccountStatus(status) {
+        this.account_status = status;
     }
 
     @action.bound

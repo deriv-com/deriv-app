@@ -67,8 +67,12 @@ const BinarySocketGeneral = (() => {
                 if (response.get_settings) {
                     setResidence(response.get_settings.country_code);
                     client_store.setEmail(response.get_settings.email);
+                    client_store.setAccountSettings(response.get_settings);
                     gtm_store.eventHandler(response.get_settings);
                 }
+                break;
+            case 'get_account_status':
+                client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
                 client_store.responsePayoutCurrencies(response.payout_currencies);

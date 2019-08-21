@@ -143,8 +143,8 @@ const client_notifications = {
     },
 };
 
-const hasMissingRequiredField = (response, client) => {
-    if (!response.get_settings) return false;
+const hasMissingRequiredField = (account_settings, client) => {
+    if (!account_settings) return false;
 
     const { landing_company_shortcode } = client;
     const is_svg = (landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica');
@@ -156,8 +156,7 @@ const hasMissingRequiredField = (response, client) => {
         required_fields = getRequiredFields();
     }
 
-    const get_settings = response.get_settings;
-    return required_fields.some(field => !get_settings[field]);
+    return required_fields.some(field => !account_settings[field]);
 
     function getSVGRequiredFields() {
         const necessary_withdrawal_fields = State.getResponse('landing_company.financial_company.requirements.withdrawal');
@@ -185,11 +184,11 @@ const hasMissingRequiredField = (response, client) => {
     }
 };
 
-const checkAccountStatus = (response, client, addNotification, loginid) => {
-    if (!response.get_account_status) return;
+const checkAccountStatus = (account_status, client, addNotification, loginid) => {
+    if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    const { prompt_client_to_authenticate, status } = response.get_account_status;
+    const { prompt_client_to_authenticate, status } = account_status;
 
     const {
         document_under_review,
@@ -227,20 +226,18 @@ const checkAccountStatus = (response, client, addNotification, loginid) => {
     }
 };
 
-export const handleClientNotifications = (client, addNotification, loginid) => {
+export const handleClientNotifications = (client, account_settings, account_status, addNotification, loginid) => {
     const { currency, excluded_until } = client;
-    if (!currency)         addNotification(client_notifications.currency);
+    if (currency)         addNotification(client_notifications.currency);
     if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
 
-    WS.getAccountStatus().then((response) => checkAccountStatus(response, client, addNotification, loginid));
+    checkAccountStatus(account_status, client, addNotification, loginid);
 
-    WS.sendRequest({ get_settings: 1 }, { forced: true }).then((response) => {
-        if (loginid !== LocalStore.get('active_loginid')) return;
+    if (loginid !== LocalStore.get('active_loginid')) return;
 
-        if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
+    if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
 
-        if (hasMissingRequiredField(response, client)) {
-            addNotification(client_notifications.required_fields);
-        }
-    });
+    if (hasMissingRequiredField(account_settings, client)) {
+        addNotification(client_notifications.required_fields);
+    }
 };

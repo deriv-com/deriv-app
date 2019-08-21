@@ -151,19 +151,6 @@ const SocketCache = (() => {
         return !!get(key);
     };
 
-    const makeKey = (source_obj = {}, msg_type = '') => {
-        let key = msg_type || Object.keys(source_obj).find(type => config[type]);
-
-        if (key && !isEmptyObject(source_obj)) {
-            ((config[key] || {}).map_to || []).forEach((map_key) => {
-                const value = typeof map_key === 'function' ? map_key() : source_obj[map_key];
-                key += map_key ? `_${value || ''}` : '';
-            });
-        }
-
-        return key;
-    };
-
     const remove = (key, should_match_all) => {
         if (should_match_all) {
             Object.keys(data_obj).forEach((data_key) => {

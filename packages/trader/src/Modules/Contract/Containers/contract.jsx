@@ -9,11 +9,6 @@ import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
-    constructor () {
-        super();
-        this.redirectOnClick.bind(this);
-    }
-
     componentWillUnmount() {
         if (this.props.has_error) this.props.clearError();
     }

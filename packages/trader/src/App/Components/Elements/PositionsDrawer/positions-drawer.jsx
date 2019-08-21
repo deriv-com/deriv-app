@@ -14,12 +14,6 @@ import { connect }                    from 'Stores/connect';
 import PositionsDrawerCard            from './positions-drawer-card.jsx';
 
 class PositionsDrawer extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.setUnSupportedContractModal.bind(this);
-    }
-
     componentDidMount()    {
         this.props.onMount();
     }
@@ -28,7 +22,7 @@ class PositionsDrawer extends React.Component {
         this.props.onUnmount();
     }
 
-    setUnSupportedContractModal = () => this.props.toggleUnsupportedContractModal(true);
+    setUnsupportedContractModal = () => this.props.toggleUnsupportedContractModal(true);
 
     render() {
         const {
@@ -71,7 +65,7 @@ class PositionsDrawer extends React.Component {
                                 openContract={openContract}
                                 key={portfolio_position.id}
                                 currency={currency}
-                                toggleUnsupportedContractModal={this.setUnSupportedContractModal}
+                                toggleUnsupportedContractModal={this.setUnsupportedContractModal}
                                 {...portfolio_position}
                             />
                         </CSSTransition>

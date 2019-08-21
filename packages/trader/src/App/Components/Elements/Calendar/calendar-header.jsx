@@ -66,7 +66,7 @@ const CalendarHeader = ({
 
     const monthButtonOnClick = () => disable_month_selector || !switchView ? undefined : switchView('month');
     const yearButtonOnClick = () => is_select_year_disabled || !switchView ? undefined : switchView('year');
-    const decadeButtonOnClick = () => is_select_year_disabled || !switchView ? undefined : () => switchView('decade');
+    const decadeButtonOnClick = () => is_select_year_disabled || !switchView ? undefined : switchView('decade');
 
     return (
         <div className='calendar__header'>

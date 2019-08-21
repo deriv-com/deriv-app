@@ -2,7 +2,25 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_prompt_ext = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Change shape based on selected type
+        const typeField = this.getField('TYPE');
+        typeField.setValidator(value => {
+            if (value === 'TEXT') {
+                this.setOutputShape(Blockly.OUTPUT_SHAPE_SQUARE);
+                this.setOutput(true, 'String');
+            } else if (value === 'NUMBER') {
+                this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+                this.setOutput(true, 'Number');
+            }
+            this.initSvg();
+            this.render(false);
+            return undefined;
+        });
+    },
+    definition(){
+        return {
             message0: translate('prompt for %1 with message %2'),
             args0   : [
                 {
@@ -20,22 +38,15 @@ Blockly.Blocks.text_prompt_ext = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        // Change shape based on selected type
-        const typeField = this.getField('TYPE');
-        typeField.setValidator(value => {
-            if (value === 'TEXT') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_SQUARE);
-                this.setOutput(true, 'String');
-            } else if (value === 'NUMBER') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-                this.setOutput(true, 'Number');
-            }
-            this.initSvg();
-            this.render(false);
-            return undefined;
-        });
+            tooltip        : translate('Text Prompt Tooltip'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'trade_name' : translate('Text Prompt'),
+            'description': translate('Text Prompt Description'),
+        };
     },
 };
 

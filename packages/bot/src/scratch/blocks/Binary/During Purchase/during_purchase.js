@@ -4,7 +4,10 @@ import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.during_purchase = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('%1 (3) Watch and sell your purchased contract %2'),
             message1: '%1',
             args0   : [
@@ -32,7 +35,14 @@ Blockly.Blocks.during_purchase = {
             tooltip        : translate(
                 'Watch the purchased contract info and sell at market if available (Runs on contract update)'
             ),
-        });
+            category: Blockly.Categories.During_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('During Purchase'),
+            'description' : translate('During Purchase Description'),
+        };
     },
     onchange(event) {
         setBlockTextColor(this);

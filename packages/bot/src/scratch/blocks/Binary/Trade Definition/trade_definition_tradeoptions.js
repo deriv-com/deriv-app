@@ -8,7 +8,13 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Ensure one of this type per statement-stack
+        this.setNextStatement(false);
+    },
+    definition(){
+        return {
             message0: translate('Duration: %1 %2 Stake: %3 %4'),
             args0   : [
                 {
@@ -36,10 +42,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        // Ensure one of this type per statement-stack
-        this.setNextStatement(false);
+            tooltip          : translate('Trade Options Tooltip'),
+            category         : Blockly.Categories.Trade_Definition,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Trade Options'),
+            'description' : translate('Trade Options Description'),
+        };
     },
     onchange(event) {
         const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];

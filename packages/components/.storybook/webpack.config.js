@@ -34,6 +34,16 @@ module.exports = async ({ config, mode }) => {
         enforce: 'pre',
     });
 
+    config.module.rules.push({
+        resolve: {
+            alias: {
+                Components: path.resolve(__dirname, '../src/components'),
+                Stories: path.resolve(__dirname, '../stories')
+            },
+            extensions: ['.js', '.jsx'],
+        },
+    });
+
     // Return the altered config
     return config;
 };

@@ -1,9 +1,9 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import { Button }    from 'deriv-components';
-import Dropdown      from 'App/Components/Form/DropDown';
+import { Button, Dropdown } from 'deriv-components';
+import React                from 'react';
+import PropTypes            from 'prop-types';
+import FullPageModal        from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import Localize             from 'App/Components/Elements/localize.jsx';
+
 // import InputField    from 'App/Components/Form/InputField/input-field.jsx';
 import { localize }  from 'App/i18n';
 import { connect }   from 'Stores/connect';

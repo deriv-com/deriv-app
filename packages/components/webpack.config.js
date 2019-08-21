@@ -11,6 +11,7 @@ module.exports = {
         // index: path.join(__dirname, 'src', 'index.js'),
         button: path.resolve(__dirname, 'src', 'components/button/index.js'),
         label: path.resolve(__dirname, 'src', 'components/label/index.js'),
+        dropdown: path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
     },
     output: {
         path: path.resolve(__dirname, 'lib'),
@@ -18,6 +19,11 @@ module.exports = {
         libraryExport: 'default',
         library: ['deriv-component', '[name]'],
         libraryTarget: 'umd',
+    },
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'src', 'components'),
+        },
     },
     optimization: {
         minimize: true,

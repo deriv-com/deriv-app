@@ -2,7 +2,7 @@ import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React, { Fragment }            from 'react';
-import Dropdown                       from 'App/Components/Form/DropDown';
+import Dropdown                       from 'deriv-components/lib/dropdown';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
 import InputField                     from 'App/Components/Form/InputField';
 import RangeSlider                    from 'App/Components/Form/RangeSlider';

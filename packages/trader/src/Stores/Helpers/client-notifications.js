@@ -226,9 +226,15 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     }
 };
 
-export const handleClientNotifications = (client, account_settings, account_status, addNotification, loginid) => {
+export const handleClientNotifications = (
+    client,
+    account_settings,
+    account_status, 
+    addNotification, 
+    loginid
+) => {
     const { currency, excluded_until } = client;
-    if (currency)         addNotification(client_notifications.currency);
+    if (!currency)         addNotification(client_notifications.currency);
     if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
 
     checkAccountStatus(account_status, client, addNotification, loginid);

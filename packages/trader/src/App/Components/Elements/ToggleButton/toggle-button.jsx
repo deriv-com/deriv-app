@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React     from 'react';
-import Button    from 'deriv-components/lib/button';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import { Button } from 'deriv-components';
 
 const ToggleButton = ({
     children,

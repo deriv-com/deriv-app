@@ -20,6 +20,7 @@ class VerticalTabHeaders extends React.PureComponent {
                     return (
                         this.props.is_routed ?
                             <NavLink
+                                id={`dt_${label}_link`}
                                 key={item.path}
                                 to={item.path}
                                 onClick={() => this.props.onChange(item)}
@@ -40,6 +41,7 @@ class VerticalTabHeaders extends React.PureComponent {
                             </NavLink>
                             :
                             <div
+                                id={`dt_${label}_link`}
                                 className={
                                     classNames('vertical-tab__header', {
                                         'vertical-tab__header--active': this.props.selected.label === item.label,

@@ -1,10 +1,6 @@
 import { observable } from 'mobx';
 
 export default class BotStore {
-    constructor(ws) {
-        this.ws = ws;
-    }
-
     @observable title = 'Hi new bot!';
 
     /* @action.bound onClick = () => {

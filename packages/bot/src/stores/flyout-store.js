@@ -33,7 +33,7 @@ export default class FlyoutStore {
 
             if (no_result) {
                 const label = document.createElement('label');
-                label.setAttribute('text', translate('No Blocks Found'));
+                label.setAttribute('text', translate('No Block Found'));
 
                 processed_xml.push(label);
             } else {

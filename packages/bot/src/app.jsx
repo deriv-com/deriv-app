@@ -23,7 +23,7 @@ class App extends React.Component {
 
     // eslint-disable-next-line class-methods-use-this
     componentDidMount() {
-        scratchWorkspaceInit('scratch_area', 'scratch_div');
+        scratchWorkspaceInit('scratch_area', 'scratch_div', this.rootStore);
     }
 }
 

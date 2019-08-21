@@ -78,18 +78,18 @@ const config = {
         ],
         ENDSINOUT: [
             {
-                EXPIRYRANGE: translate('Ends In'),
+                EXPIRYRANGE: translate('Ends Between'),
             },
             {
-                EXPIRYMISS: translate('Ends Out'),
+                EXPIRYMISS: translate('Ends Outside'),
             },
         ],
         STAYSINOUT: [
             {
-                RANGE: translate('Stays In'),
+                RANGE: translate('Stays Between'),
             },
             {
-                UPORDOWN: translate('Goes Out'),
+                UPORDOWN: translate('Goes Outside'),
             },
         ],
         ASIANS: [
@@ -186,13 +186,13 @@ const config = {
         runs        : ['runs'],
     },
     conditionsCategoryName: {
-        callput     : translate('Up/Down'),
-        callputequal: translate('Up/Down Equals'),
+        callput     : translate('Rise/Fall'),
+        callputequal: translate('Rise/Fall Equals'),
         asian       : translate('Asians'),
         digits      : translate('Digits'),
         touchnotouch: translate('Touch/No Touch'),
-        endsinout   : translate('Ends In/Out'),
-        staysinout  : translate('Stays In/Goes Out'),
+        endsinout   : translate('Ends Between/Ends Outside'),
+        staysinout  : translate('Stays Between/Goes Outside'),
         highlowticks: translate('High/Low Ticks'),
         reset       : translate('Reset Call/Reset Put'),
         runs        : translate('Only Ups/Only Downs'),
@@ -226,9 +226,22 @@ const config = {
         timeout        : translate('Run After n Seconds'),
         interval       : translate('Run Every n Seconds'),
     },
-    bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
-    macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
-    gd        : {
+    DEFAULT_DURATION_DROPDOWN_OPTIONS: [
+        [translate('Ticks'), 't'],
+        [translate('Seconds'), 's'],
+        [translate('Minutes'), 'm'],
+        [translate('Hours'), 'h'],
+        [translate('Days'), 'd'],
+    ],
+    BARRIER_LABELS                  : [translate('High barrier'), translate('Low barrier')],
+    ABSOLUTE_BARRIER_DROPDOWN_OPTION: [[translate('Absolute'), 'absolute']],
+    NOT_AVAILABLE_DROPDOWN_OPTIONS  : [[translate('Not available'), 'na']],
+    NOT_AVAILABLE_DURATIONS         : [{ display: translate('Not available'), unit: 'na', min: 0 }],
+    BARRIERLESS_TRADE_CATEGORIES    : ['reset', 'runs'],
+    DIGIT_CATEGORIES                : ['digits', 'highlowticks'],
+    bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
+    macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
+    gd                              : {
         cid: '646610722767-7ivdbunktgtnumj23en9gkecbgtf2ur7.apps.googleusercontent.com',
         aid: 'binarybot-237009',
         api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',

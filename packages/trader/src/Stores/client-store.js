@@ -38,6 +38,7 @@ export default class ClientStore extends BaseStore {
     @observable is_populating_account_list = false;
     @observable website_status             = {};
     @observable verification_code          = '';
+    @observable device_data                = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -570,12 +571,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setDeviceData(device_data) {
+        this.device_data = device_data;
+    }
+
+    @action.bound
     onSignup({ password, residence }, cb) {
         if (!this.verification_code || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code, password, residence).then(async response => {
+        WS.newAccountVirtual(this.verification_code, password, residence, this.device_data).then(async response => {
             if (response.error) {
                 cb(response.error.message)
             } else {

@@ -119,38 +119,32 @@ const BinarySocketBase = (() => {
         }
 
         return new Promise((r) => {
-            // Sorry Promise, we all failed you :|
-            promise.then(r, r);
+            promise.then(r, r); // Delegate error handling to the callback
         });
     };
-
-    const noop = () => {};
 
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 
     const expectResponse = (...responses) =>
         deriv_api.expectResponse(...responses.filter(excludeAuthorize));
 
-    const subscribeBalance = (cb) =>
-        deriv_api.subscribe({ balance: 1 }).subscribe(cb, noop);
+    const subscribe = (request, cb) =>
+        deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const subscribeProposal = (req, cb) =>
-        deriv_api.subscribe({ proposal: 1, ...req }).subscribe(cb, noop);
+    const subscribeBalance = (cb) => subscribe({ balance: 1 }, cb);
+
+    const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
-        deriv_api.subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }).subscribe(cb, noop);
+        subscribe({ proposal_open_contract: 1, ...(contract_id && { contract_id }) }, cb);
 
-    const subscribeTicks = (symbol, cb) =>
-        deriv_api.subscribe({ ticks: symbol }).subscribe(cb, noop);
+    const subscribeTicks = (symbol, cb) => subscribe({ ticks: symbol }, cb);
 
-    const subscribeTicksHistory = (request_object, cb) =>
-        deriv_api.subscribe(request_object).subscribe(cb, noop);
+    const subscribeTicksHistory = (request_object, cb) => subscribe(request_object, cb);
 
-    const subscribeTransaction = (cb) =>
-        deriv_api.subscribe({ transaction: 1 }).subscribe(cb, noop);
+    const subscribeTransaction = (cb) => subscribe({ transaction: 1 }, cb);
 
-    const subscribeWebsiteStatus = (cb) =>
-        deriv_api.subscribe({ website_status: 1 }).subscribe(cb, noop);
+    const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
 
     const buy = (proposal_id, price) =>
         send({ buy: proposal_id, price });

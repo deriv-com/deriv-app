@@ -47,7 +47,7 @@ npm run deploy:clean
 
 ### Deploy to test folder
 This will add all your changes to the test folder specified.
-Please ensure it is prefixed with `br_|bot`.
+Please ensure it is prefixed with `br_`.
 ```
 npm run deploy:folder "br_my_test_folder"
 ```

@@ -1,6 +1,5 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
-import { WS }           from 'Services';
 import { getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
@@ -229,8 +228,8 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
 export const handleClientNotifications = (
     client,
     account_settings,
-    account_status, 
-    addNotification, 
+    account_status,
+    addNotification,
     loginid
 ) => {
     const { currency, excluded_until } = client;

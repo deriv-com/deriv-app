@@ -152,8 +152,13 @@ const BinarySocketBase = (() => {
     const buy = (proposal_id, price) =>
         send({ buy: proposal_id, price });
 
-    const buyAndSubscribe = (proposal_id, price) =>
-        send({ buy: proposal_id, price, subscribe: 1 });
+    const buyAndSubscribe = async (proposal_id, price) => {
+        const buy = await send({ buy: proposal_id, price });
+
+        subscribeProposalOpenContract(buy.buy.contract_id, () => {});
+
+        return buy;
+    }
 
     const cashier = (action, verification_code) =>
         send({ cashier: action, ...(verification_code && { verification_code }) });

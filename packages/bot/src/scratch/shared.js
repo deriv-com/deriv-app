@@ -1,49 +1,51 @@
 import filesaver                         from 'file-saver';
-import { oppositesToDropdown }           from './utils';
+import { oppositesToDropdownOptions }    from './utils';
 import config                            from '../constants/const';
 import { translate }                     from '../utils/lang/i18n';
 
-let purchaseChoices = [[translate('Click to select'), '']];
+let purchase_choices = [[translate('Click to select'), '']];
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
     filesaver.saveAs(blob, filename);
 };
 
-export const getPurchaseChoices = () => purchaseChoices;
+export const getPurchaseChoices = () => purchase_choices;
 
-const filterPurchaseChoices = (contractType, oppositesName) => {
-    const { [oppositesName]: tradeTypes } = config.opposites;
+const getPurchaseDropdownOptions = (contract_type, opposite_name) => {
+    const { [opposite_name]: trade_types } = config.opposites;
+    let temp_purchase_choices = [];
 
-    let tmpPurchaseChoices = tradeTypes.filter(k =>
-        contractType === 'both' ? true : contractType === Object.keys(k)[0]
-    );
-
-    if (!tmpPurchaseChoices.length) {
-        tmpPurchaseChoices = tradeTypes;
+    if (trade_types) {
+        temp_purchase_choices.push(...trade_types.filter(trade_type => {
+            return contract_type === 'both' || contract_type === Object.keys(trade_type)[0];
+        }));
     }
-    return oppositesToDropdown(tmpPurchaseChoices);
+
+    if (temp_purchase_choices.length === 0) {
+        temp_purchase_choices = trade_types;
+    }
+
+    return oppositesToDropdownOptions(temp_purchase_choices);
 };
 
-export const updatePurchaseChoices = (contractType, oppositesName) => {
-    purchaseChoices = filterPurchaseChoices(contractType, oppositesName);
-    const purchases = Blockly.mainWorkspace
-        .getAllBlocks()
-        .filter(r => ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0);
-    Blockly.Events.recordUndo = false;
-    purchases.forEach(purchase => {
-        const value = purchase.getField('PURCHASE_LIST').getValue();
-        Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-        if (value === purchaseChoices[0][1]) {
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[0][0]);
-        } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[1][0]);
-        } else {
-            purchase.getField('PURCHASE_LIST').setValue(purchaseChoices[0][1]);
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[0][0]);
-        }
+export const updatePurchaseChoices = (contract_type, opposite_name) => {
+    Blockly.Events.disable();
+
+    purchase_choices = getPurchaseDropdownOptions(contract_type, opposite_name);
+
+    const purchase_blocks = Blockly.derivWorkspace.getAllBlocks().filter(block => {
+        return ['purchase', 'payout', 'ask_price'].includes(block.type);
     });
-    Blockly.Events.recordUndo = true;
+
+    purchase_blocks.forEach(purchase_block => {
+        const purchase_list_field = purchase_block.getField('PURCHASE_LIST');
+        const selected_value = purchase_list_field.getValue();
+
+        purchase_list_field.updateOptions(purchase_choices, selected_value, false);
+    });
+
+    Blockly.Events.enable();
 };
 
 export const expectValue = (block, field) => {

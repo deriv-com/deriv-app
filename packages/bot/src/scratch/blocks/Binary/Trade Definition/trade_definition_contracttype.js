@@ -31,7 +31,7 @@ Blockly.Blocks.trade_definition_contracttype = {
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.updateContractTypes();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            if (event.name === 'TRADETYPE_LIST') {
+            if (event.name === 'TRADETYPE_LIST' && !['', 'na'].includes(event.newValue)) {
                 this.updateContractTypes();
             }
         }

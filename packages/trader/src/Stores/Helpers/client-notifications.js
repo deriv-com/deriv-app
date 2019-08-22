@@ -218,7 +218,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     }
 
     function getStatusValidations(status_arr) {
-        return status_arr.reduce((validations, account_status) => {
+        return status_arr.reduce((validations) => {
             validations[account_status] = true;
             return validations;
         }, {});

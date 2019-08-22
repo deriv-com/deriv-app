@@ -60,8 +60,9 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### PR Guidelines
 
-1. Use the `[project 1|project 2] developer 1|developer 2/task_name` format for PR titles. (e.g.: `[trader] dev1/fixed_emoji_issue`)
-2. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
+1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1/fixed_emoji_issue`)
+2. Use the appropriate package labels available on the repo to indicate what packages your PR modifies.
+3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 
 ### Clean projects
 

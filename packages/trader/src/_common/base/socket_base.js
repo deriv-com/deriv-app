@@ -111,16 +111,19 @@ const BinarySocketBase = (() => {
         return is_available;
     };
 
+    // Delegate error handling to the callback
+    const promiseRejectToResolve = promise => new Promise((r) => {
+        promise.then(r, r);
+    });
+
     const send = (request, options = {}) => {
-        const promise = deriv_api.send(request);
+        const promise = promiseRejectToResolve(deriv_api.send(request));
 
         if (options.callback) {
             promise.then(options.callback);
         }
 
-        return new Promise((r) => {
-            promise.then(r, r); // Delegate error handling to the callback
-        });
+        return promise;
     };
 
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
@@ -173,7 +176,7 @@ const BinarySocketBase = (() => {
         send({ verify_email: email, type });
 
     const activeSymbols = () =>
-        send({ active_symbols: 'brief' });
+        promiseRejectToResolve(deriv_api.storage.activeSymbols('brief'));
 
     return {
         init,

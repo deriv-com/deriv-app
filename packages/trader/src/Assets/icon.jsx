@@ -48,6 +48,7 @@ class Icon extends React.PureComponent {
 
             // Cashier
             IconAuthenticateWithdrawals: React.lazy(() => import('./Cashier/icon-authenticate-withdrawals.jsx')),
+            IconCashierError           : React.lazy(() => import('./Cashier/icon-cashier-error.jsx')),
             IconEmailSent              : React.lazy(() => import('./Cashier/icon-email-sent.jsx')),
 
             // Modal

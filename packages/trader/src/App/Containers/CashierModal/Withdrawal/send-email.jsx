@@ -1,6 +1,6 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import Button         from 'deriv-components/lib/button';
+import { Button }     from 'deriv-components';
 import Localize       from 'App/Components/Elements/localize.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { localize }   from 'App/i18n';
@@ -12,7 +12,7 @@ class SendEmail extends React.Component {
 
     render() {
         return (
-            <div className='withdraw__wrapper'>
+            <div className='cashier__wrapper'>
                 {this.props.is_email_sent ?
                     <div className='withdraw__email-sent'>
                         <Icon icon='IconEmailSent' className='withdraw__icon' />

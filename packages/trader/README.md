@@ -66,6 +66,9 @@ npm run deploy:folder "br_my_test_folder"
 ## Miscellaneous
 - In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
 
+## Selenium tests
+Elements for selenium test purposes should have `id` attributes, with the value of `dt_[element_name]_[unique_name|id]_[element_type]`. (e.g. `dt_settings_dark_button`)
+
 ## Release
 ### Staging
 _Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and that you are on the `dev` branch._

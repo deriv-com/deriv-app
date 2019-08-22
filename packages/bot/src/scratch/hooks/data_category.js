@@ -9,11 +9,19 @@ import { translate } from '../../utils/lang/i18n';
  */
 Blockly.DataCategory = function(workspace) {
     const variableModelList = workspace.getVariablesOfType('');
-    const xmlList = [];
-
+    let xmlList = [];
+    
     // `Create Variable`-button
     Blockly.DataCategory.addCreateButton(xmlList, workspace);
 
+    const block_types = ['variables_set', 'variables_get', 'math_change'];
+    xmlList = xmlList.concat(Blockly.DataCategory.search(variableModelList, block_types));
+
+    return xmlList;
+};
+
+Blockly.DataCategory.search = function(variableModelList){
+    const xmlList = [];
     if (variableModelList.length > 0) {
         const generateVariableFieldXmlString = variableModel => {
             // The variable name may be user input, so it may contain characters that

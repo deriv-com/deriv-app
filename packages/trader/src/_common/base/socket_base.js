@@ -1,3 +1,4 @@
+const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const getLanguage      = require('../language').get;
@@ -25,7 +26,7 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before  = false;
 
-    const socket_url = `${getSocketURL()}?app_id=${getAppId()}&l=${getLanguage()}`;
+    const socket_url = `${getSocketURL()}?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
     const timeouts   = {};
     const promises   = {};
 

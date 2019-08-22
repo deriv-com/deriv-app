@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_constrain = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('constrain %1 low %2 high %3'),
             args0   : [
                 {
@@ -26,7 +29,15 @@ Blockly.Blocks.math_constrain = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Math Constrain Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Math Constrain'),
+            'description' : translate('Math Constrain Description'),
+        };
     },
 };
 

@@ -1,17 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
+import { translate } from '../utils/lang/i18n';
 
 export default class FlyoutStore {
-    block_listeners            = [];
-    block_workspaces           = [];
-    flyout_min_width           = 400;
+    block_listeners = [];
+    block_workspaces = [];
+    flyout_min_width = 400;
 
     @observable is_help_content = false;
     @observable block_nodes = [];
 
     @observable flyout_content = [];
-    @observable flyout_width   = this.flyout_min_width;
-    @observable is_visible     = false;
+    @observable flyout_width = this.flyout_min_width;
+    @observable is_visible = false;
 
     /**
      * Parses XML contents passed by Blockly.Toolbox. Supports all default
@@ -21,16 +22,38 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setContents(xml_list) {
-        const xml_list_group = this.groupBy(xml_list);
         this.is_help_content = false;
-
+      let processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
-        
+
+        if (xml_list.type === 'search') {
+            const blocks = xml_list.blocks;
+            const no_result = !blocks.length;
+
+            processed_xml = [];
+
+            if (no_result) {
+                const label = document.createElement('label');
+                label.setAttribute('text', translate('No Blocks Found'));
+
+                processed_xml.push(label);
+            } else {
+                const label = document.createElement('label');
+                label.setAttribute('text', translate('Result(s)'));
+
+                processed_xml.push(label);
+            }
+
+            processed_xml = processed_xml.concat(blocks);
+        }
+
+        const xml_list_group = this.groupBy(processed_xml);
+
         this.flyout_content = observable(xml_list_group);
-        this.setFlyoutWidth(xml_list);
+        this.setFlyoutWidth(processed_xml);
         this.setVisibility(true);
     }
 
@@ -56,7 +79,7 @@ export default class FlyoutStore {
     @action.bound initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, {
             css   : false,
-            media : `${__webpack_public_path__}media/`, // eslint-disable-line
+            media: `${__webpack_public_path__}media/`, // eslint-disable-line
             move  : { scrollbars: false, drag: true, wheel: false },
             sounds: false,
         });
@@ -106,7 +129,7 @@ export default class FlyoutStore {
 
         xmlList.forEach((node) => {
             const tag_name = node.tagName.toUpperCase();
-            
+
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
                 const block_hw = Blockly.Block.getDimensions(node);
 

@@ -1,6 +1,11 @@
+import { translate } from '../../../utils/lang/i18n';
+
 Blockly.Blocks.math_constant = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1',
             args0   : [
                 {
@@ -21,7 +26,15 @@ Blockly.Blocks.math_constant = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Math Constant Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Math Constant'),
+            'description' : translate('Math Constant Description'),
+        };
     },
 };
 

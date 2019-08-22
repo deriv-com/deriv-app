@@ -6,7 +6,21 @@ Blockly.Blocks.procedures_defreturn = {
         this.arguments = [];
         this.argumentVarModels = [];
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Enforce unique procedure names
+        const nameField = this.getField('NAME');
+        nameField.setValidator(Blockly.Procedures.rename);
+
+        // Render a ➕-icon for adding parameters
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'RETURN');
+
+        this.setStatements(true);
+    },
+    definition(){
+        return {
             message0: translate('function %1 %2 %3'),
             message1: 'return %1',
             args0   : [
@@ -35,18 +49,15 @@ Blockly.Blocks.procedures_defreturn = {
             colour         : Blockly.Colours.BinaryProcedures.colour,
             colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
             colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-        });
-
-        // Enforce unique procedure names
-        const nameField = this.getField('NAME');
-        nameField.setValidator(Blockly.Procedures.rename);
-
-        // Render a ➕-icon for adding parameters
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'RETURN');
-
-        this.setStatements(true);
+            tooltip        : translate('Function def with return value'),
+            category       : Blockly.Categories.Functions,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Function def with return value'),
+            'description' : translate('Function def with return value Description'),
+        };
     },
     onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,
     onchange     : Blockly.Blocks.procedures_defnoreturn.onchange,

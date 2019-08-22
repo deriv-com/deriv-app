@@ -3,7 +3,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.smaa_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Simple Moving Average Array %2'),
             message1: '%1',
             args0   : [
@@ -29,7 +32,14 @@ Blockly.Blocks.smaa_statement = {
             tooltip          : translate('Calculates Simple Moving Average (SMA) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Simple Moving Average Statement'),
+            'description' : translate('Simple Moving Average Statement Description'),
+        };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,
 };

@@ -1,0 +1,19 @@
+// Colors used here are borrowed from input.scss
+// TODO: use-phase-2-colors - Switch to using phase 2 colors, following the new color palette (refer Abstract)
+
+.dc-autocomplete {
+    width: 100%;
+
+    &__trailing-icon {
+        position: absolute;
+        right: 0;
+        pointer-events: none;
+        cursor: text;
+        transition: transform 0.2s ease;
+        stroke: var(--icon-general);
+
+        &--opened {
+            transform: rotate(180deg);
+        }
+    }
+}

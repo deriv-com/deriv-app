@@ -3,7 +3,15 @@ import { translate }    from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_join = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
+
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'STACK');
+    },
+    definition(){
+        return {
             message0: translate('set %1 to create text with'),
             message1: '%1',
             args0   : [
@@ -24,12 +32,15 @@ Blockly.Blocks.text_join = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
-
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'STACK');
+            tooltip          : translate('Text Join Tooltip'),
+            category         : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text Join'),
+            'description' : translate('Text Join Description'),
+        };
     },
     onIconClick() {
         if (!this.workspace || this.isInFlyout) {

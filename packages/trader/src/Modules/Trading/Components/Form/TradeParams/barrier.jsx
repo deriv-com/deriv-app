@@ -43,6 +43,7 @@ const Barrier = ({
         >
             <div>
                 <InputField
+                    id='dt_barrier_1_input'
                     type='number'
                     name='barrier_1'
                     value={barrier_1}
@@ -57,6 +58,7 @@ const Barrier = ({
                 {barrier_count === 2 &&
                     <React.Fragment>
                         <InputField
+                            id='dt_barrier_2_input'
                             type='number'
                             name='barrier_2'
                             value={barrier_2}

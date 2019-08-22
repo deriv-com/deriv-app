@@ -286,7 +286,7 @@ export default class ContractsFor {
             }
         });
 
-        return (trade_type_categories.length > 0 ? trade_type_categories : [['Not available', 'na']]);
+        return (trade_type_categories.length > 0 ? trade_type_categories : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
     }
 
     getTradeTypes(market, submarket, symbol, trade_type_category) {
@@ -312,7 +312,7 @@ export default class ContractsFor {
             });
         }
 
-        return trade_types;
+        return (trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
     }
 
     isDisabledOption(compare_obj) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { BlueInfoIcon } from './Icons.jsx';
-import FlyoutBlockWorkspace from '../scratch/help-components/flyout-block-workspace.jsx';
+import FlyoutBlockWorkspace from './flyout-block-workspace.jsx';
+import { translate } from '../utils/tools';
 
 const FlyoutBlock = (props) => {
     const {
@@ -17,13 +17,11 @@ const FlyoutBlock = (props) => {
                 {!should_hide_label &&
                     <div className='flyout__item-label'>{block_node[0].getAttribute('type')}</div>
                 }
-                &nbsp;
-                {onInfoClick &&
-                    <div className='flyout__item-info' onClick={onInfoClick}>
-                        <BlueInfoIcon className={'info'} />
-                    </div>
-                }
             </div>
+            <p className='flyout__item-desc'>
+                {translate('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut porta id felis id efficitur.')}
+                {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a>}
+            </p>
             {
                 Object.keys(block_node).map(key => {
                     return (

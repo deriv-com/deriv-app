@@ -1,5 +1,3 @@
-import { lazy } from 'react';
-
 Blockly.Blocks.math_number = {
     init() {
         this.jsonInit({
@@ -27,7 +25,6 @@ Blockly.Blocks.math_number = {
         }
         return null;
     },
-    helpContent: () => lazy(() => import('../../help-components/Math/math_number.jsx')),
 };
 
 Blockly.JavaScript.math_number = block => {

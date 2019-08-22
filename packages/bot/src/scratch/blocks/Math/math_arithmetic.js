@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 
 Blockly.Blocks.math_arithmetic = {
     init() {
@@ -28,7 +27,6 @@ Blockly.Blocks.math_arithmetic = {
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
         });
     },
-    helpContent: () => lazy(() => import('../../help-components/Math/math_arithmetic.jsx')),
 };
 
 Blockly.JavaScript.math_arithmetic = block => {

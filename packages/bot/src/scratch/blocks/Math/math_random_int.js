@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_random_int = {
@@ -24,7 +23,6 @@ Blockly.Blocks.math_random_int = {
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
         });
     },
-    helpContent: () => lazy(() => import('../../help-components/Math/math_random_int.jsx')),
 };
 
 Blockly.JavaScript.math_random_int = block => {

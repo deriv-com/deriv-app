@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
 import { observable, action } from 'mobx';
 
 export default class FlyoutStore {
     block_listeners            = [];
     block_workspaces           = [];
     flyout_min_width           = 400;
+
+    @observable is_help_content = false;
+    @observable block_nodes = [];
 
     @observable flyout_content = [];
     @observable flyout_width   = this.flyout_min_width;
@@ -20,6 +22,7 @@ export default class FlyoutStore {
      */
     @action.bound setContents(xml_list) {
         const xml_list_group = this.groupBy(xml_list);
+        this.is_help_content = false;
 
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
@@ -160,6 +163,7 @@ export default class FlyoutStore {
     }
 
     @action.bound showHelpContent(block_node) {
+        this.is_help_content = true;
         Object.keys(block_node).forEach(key => {
             const node = block_node[key];
             const block_hw = Blockly.Block.getDimensions(node);
@@ -168,22 +172,8 @@ export default class FlyoutStore {
             node.setAttribute('height', block_hw.height);
         });
 
-        const block_type = Blockly.Blocks[block_node[0].getAttribute('type')];
-
-        if (typeof block_type.helpContent === 'undefined') {
-            return;
-        }
-
-        const HelpComponent = block_type.helpContent();
-
-        const help_content = (
-            <React.Suspense key={block_type} fallback={<div>Loading...</div>}>
-                <HelpComponent block_node={block_node} />
-            </React.Suspense>
-        );
-
         this.flyout_width = 600;
-        this.flyout_content = observable(help_content);
+        this.block_nodes = block_node;
 
     }
 

@@ -1,4 +1,3 @@
-
 export default function PendingPromise() {
     let resolve,
         reject;

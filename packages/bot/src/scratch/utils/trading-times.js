@@ -1,4 +1,4 @@
-import PendingPromise from "./pending-promise";
+import PendingPromise from './pending-promise';
 
 export default class TradingTimes {
     constructor(ws, server_time) {
@@ -37,11 +37,11 @@ export default class TradingTimes {
 
                     // Get tomorrow's date (UTC) and set it as next update if no nextDate available
                     const next_update_date = new Date(`${this.last_update_date}T00:00:00Z`);
-
                     next_update_date.setDate(next_update_date.getDate() + 1);
 
                     // if somehow the next update date is in the past, use the current date
-                    this.last_update_date = ((now > next_update_date) ? now : next_update_date).toISOString().substring(0, 10);
+                    const last_update_date = ((now > next_update_date) ? now : next_update_date);
+                    this.last_update_date = last_update_date.toISOString().substring(0, 10);
 
                     // Retain the current market open close status, because the trade times
                     // will now be the following day:
@@ -62,12 +62,13 @@ export default class TradingTimes {
                 }
 
                 const wait_period = next_update - this.server_time.getLocalDate();
-
                 this.update_timer = setTimeout(periodicUpdate, wait_period);
-            }
+            };
 
             await periodicUpdate();
         }
+
+        return this.init_promise;
 
     }
 
@@ -110,7 +111,7 @@ export default class TradingTimes {
                         is_open_all_day,
                         is_closed_all_day,
                         times: processed_times,
-                    }
+                    };
                 });
             });
         });
@@ -135,14 +136,14 @@ export default class TradingTimes {
     calcIsMarketOpened(symbol_name) {
         const now = this.server_time.getLocalDate();
         const {
-            times, 
-            is_open_all_day, 
+            times,
+            is_open_all_day,
             is_closed_all_day,
         } = this.trading_times[symbol_name];
 
         if (is_closed_all_day) {
             return false;
-        } 
+        }
 
         if (is_open_all_day) {
             return true;
@@ -160,7 +161,7 @@ export default class TradingTimes {
         let nextDate;
 
         Object.keys(this.trading_times).forEach(symbol_name => {
-            const { 
+            const {
                 times,
                 is_open_all_day,
                 is_closed_all_day,
@@ -188,11 +189,7 @@ export default class TradingTimes {
     isMarketOpened(symbol_name) {
         const symbol_names = Object.keys(this.trading_times);
 
-        if (!symbol_names.length) {
-            return;
-        }
-
-        if (!symbol_names.includes(symbol_name)) {
+        if (!symbol_names.length || !symbol_names.includes(symbol_name)) {
             return false;
         }
 

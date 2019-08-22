@@ -16,13 +16,13 @@ describe('symbol', () => {
         });
         it('getAllowedCategoryNames returns allowed category names', () => {
             expect(symbol.getAllowedCategoryNames('r_100')).to.be.ok.and.to.have.all.members([
-                'Up/Down',
-                'Up/Down Equals',
+                'Rise/Fall',
+                'Rise/Fall Equals',
                 'Digits',
                 'Asians',
                 'Touch/No Touch',
-                'Ends In/Out',
-                'Stays In/Goes Out',
+                'Ends Between/Ends Outside',
+                'Stays Between/Goes Outside',
                 'High/Low Ticks',
                 'Reset Call/Reset Put',
                 'Only Ups/Only Downs',
@@ -30,7 +30,7 @@ describe('symbol', () => {
             expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
         });
         it('getCategoryNameForCondition returns category name of a condition', () => {
-            expect(symbol.getCategoryNameForCondition('risefall')).to.be.equal('Up/Down');
+            expect(symbol.getCategoryNameForCondition('risefall')).to.be.equal('Rise/Fall');
         });
         it('getConditionName returns name of a condition', () => {
             expect(symbol.getConditionName('risefall')).to.be.equal('Rise/Fall');

@@ -1,4 +1,4 @@
-import PendingPromise from "./pending-promise";
+import PendingPromise from './pending-promise';
 
 export default class ServerTime {
     constructor(ws) {
@@ -14,9 +14,9 @@ export default class ServerTime {
             clearInterval(this.getTimeInterval);
             await this.requestTime();
             this.getTimeInterval = setInterval(this.requestTime.bind(this), 30000);
-        } else {
-            return this.init_promise;
         }
+
+        return this.init_promise;
     }
 
     async requestTime() {
@@ -60,16 +60,20 @@ export default class ServerTime {
         return this.getLocalDateByEpoch(this.getEpoch());
     }
     
+    // eslint-disable-next-line class-methods-use-this
     getLocalDateByEpoch(epoch) {
         return new Date(epoch * 1000);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     getUTCEpoch(date) {
-        return (date.getTime() / 1000) - (date.getTimezoneOffset() * 60) | 0;
+        return (date.getTime() / 1000) - (date.getTimezoneOffset() * 60);
     }
     
+    // eslint-disable-next-line class-methods-use-this
     getUTCDate(epoch) {
-        const UTCdate = new Date(epoch * 1000).toISOString();
-        return UTCdate.substring(0, 19);
+        const utc_date = new Date(epoch * 1000).toISOString();
+
+        return utc_date.substring(0, 19);
     }
 }

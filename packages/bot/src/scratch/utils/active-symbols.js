@@ -1,12 +1,12 @@
-import PendingPromise from "./pending-promise";
-import config         from "../../constants/const";
+import PendingPromise from './pending-promise';
+import config         from '../../constants/const';
 
 export default class ActiveSymbols {
     constructor(ws, trading_times) {
         this.active_symbols      = {};
         this.disabled_markets    = [];
         this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
-        this.disabled_submarkets = ['energy'] // These are only forward-starting.
+        this.disabled_submarkets = ['energy']; // These are only forward-starting.
         this.init_promise        = new PendingPromise();
         this.is_initialised      = false;
         this.processed_symbols   = {};
@@ -42,6 +42,8 @@ export default class ActiveSymbols {
         };
 
         this.init_promise.resolve();
+        
+        return this.active_symbols;
     }
 
     processActiveSymbols() {
@@ -57,7 +59,7 @@ export default class ActiveSymbols {
             const isExistingValue = (object, prop) => Object.keys(object).findIndex(a => a === symbol[prop]) !== -1;
 
             if (!isExistingValue(processed_symbols, 'market')) {
-                processed_symbols[symbol.market] = { 
+                processed_symbols[symbol.market] = {
                     display_name: symbol.market_display_name,
                     submarkets  : {},
                 };
@@ -79,7 +81,7 @@ export default class ActiveSymbols {
                     display_name: symbol.display_name,
                     pip_size    : `${symbol.pip}`.length - 2,
                     is_active   : (!symbol.is_trading_suspended && symbol.exchange_is_open),
-                }
+                };
             }
 
             return processed_symbols;
@@ -87,7 +89,7 @@ export default class ActiveSymbols {
     }
 
     getMarketDropdownOptions() {
-        const market_options = Object.keys(this.processed_symbols).map(market_name => { 
+        const market_options = Object.keys(this.processed_symbols).map(market_name => {
             const market = this.processed_symbols[market_name];
             return [market.display_name, market_name];
         });
@@ -103,7 +105,7 @@ export default class ActiveSymbols {
             const { submarkets } = market_obj;
 
             submarket_options.push(...Object.keys(submarkets).map(submarket_name => {
-                return [submarkets[submarket_name].display_name, submarket_name]
+                return [submarkets[submarket_name].display_name, submarket_name];
             }));
         }
 

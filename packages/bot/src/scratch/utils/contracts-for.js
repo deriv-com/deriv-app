@@ -1,5 +1,5 @@
-import PendingPromise from "./pending-promise";
-import config         from "../../constants/const";
+import PendingPromise from './pending-promise';
+import config         from '../../constants/const';
 
 export default class ContractsFor {
     constructor(ws, server_time) {
@@ -10,14 +10,14 @@ export default class ContractsFor {
         // the props is left omitted, the rule applies to each of the values of the omitted prop.
         // e.g. if market omitted, rule will apply to all markets.
         this.disabled_options      = [
-            { 
-                market    : 'forex', 
-                submarket : 'smart_fx', 
+            {
+                market    : 'forex',
+                submarket : 'smart_fx',
                 trade_type: 'higherlower',
-            }, 
+            },
             { trade_type_category: 'callputspread' },
             { trade_type_category: 'lookback' },
-        ],
+        ];
         this.retrieving_contracts_for  = {};
         this.server_time               = server_time;
         this.ws                        = ws;
@@ -28,7 +28,7 @@ export default class ContractsFor {
         const barrier_props          = ['high_barrier', 'low_barrier'];
         const contracts_for_category = await this.getContractsByCategory(symbol, trade_type_category, trade_type);
         const durations              = await this.getDurations(symbol, trade_type_category);
-        const offset_regexp          = new RegExp('^[-|+]([0-9]+.[0-9]+)$')
+        const offset_regexp          = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
         const isOffset               = input => input && offset_regexp.test(input.toString());
         
         if (contracts_for_category.length > 0) {
@@ -36,14 +36,14 @@ export default class ContractsFor {
                 const has_selected_offset_type = ['+', '-'].includes(barrier_type);
                 let contract;
 
-                contract = contracts_for_category.find(contract => {
+                contract = contracts_for_category.find(c => {
                     const has_duration = durations.findIndex(d => d.unit === duration) !== -1;
     
                     if (has_duration) {
-                        const barrierIsOffset = () => isOffset(contract.barrier || contract[barrier_props[index]]);
+                        const barrierIsOffset = () => isOffset(c.barrier || c[barrier_props[index]]);
 
                         return (
-                            (has_selected_offset_type && barrierIsOffset()) || 
+                            (has_selected_offset_type && barrierIsOffset()) ||
                             (!has_selected_offset_type && !barrierIsOffset())
                         );
                     }
@@ -94,22 +94,23 @@ export default class ContractsFor {
         return barriers;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     getConditionCategory(trade_type) {
         const { conditionsCategory: conditions_category } = config;
 
         return Object.keys(conditions_category).find(condition_category => {
-            return condition_category === trade_type || conditions_category[condition_category].includes(trade_type)
+            return condition_category === trade_type || conditions_category[condition_category].includes(trade_type);
         });
     }
 
     async getContractsByCategory(symbol, trade_type_category, trade_type) {
         const contracts = await this.getContractsFor(symbol);
-        const { 
+        const {
             barrierCategories: barrier_categories,
-            conditionsCategory: conditions_category 
+            conditionsCategory: conditions_category,
         } = config;
-        const condition_category = Object.keys(conditions_category).find(condition_category => {
-            return condition_category === trade_type_category || conditions_category[condition_category].includes(trade_type_category)
+        const condition_category = Object.keys(conditions_category).find(c => {
+            return c === trade_type_category || conditions_category[c].includes(trade_type_category);
         });
         
         return contracts.filter(contract => {
@@ -128,7 +129,7 @@ export default class ContractsFor {
                 });
 
                 return !conditions.includes(false);
-            }
+            };
             const test = hasMatchingBarrier();
 
             return has_matching_category && test;
@@ -140,9 +141,8 @@ export default class ContractsFor {
             if (this.retrieving_contracts_for[symbol]) {
                 await this.retrieving_contracts_for[symbol];
                 return this.contracts_for[symbol].contracts;
-            } else {
-                this.retrieving_contracts_for[symbol] = new PendingPromise();
             }
+            this.retrieving_contracts_for[symbol] = new PendingPromise();
 
             const response = await this.ws.contractsFor(symbol);
 
@@ -154,18 +154,18 @@ export default class ContractsFor {
 
             // We don't offer forward-starting contracts in bot.
             const filtered_contracts = contracts.filter(contract => {
-                return contract.start_type !== 'forward'
+                return contract.start_type !== 'forward';
             });
 
-            this.contracts_for[symbol] = { 
-                contracts: filtered_contracts, 
-                timestamp: this.server_time.getEpoch()
+            this.contracts_for[symbol] = {
+                contracts: filtered_contracts,
+                timestamp: this.server_time.getEpoch(),
             };
 
             this.retrieving_contracts_for[symbol].resolve();
 
             return filtered_contracts;
-        }
+        };
 
         if (this.contracts_for[symbol]) {
             const { contracts, timestamp } = this.contracts_for[symbol];
@@ -178,7 +178,7 @@ export default class ContractsFor {
             return contracts;
         }
 
-        return await getContractsForFromApi();
+        return getContractsForFromApi();
     }
 
     async getDurations(symbol, trade_type_category, trade_type) {
@@ -238,7 +238,7 @@ export default class ContractsFor {
             const contract = contracts.find(c => {
                 const categories = Object.keys(config.opposites);
 
-                return categories.some(category => 
+                return categories.some(category =>
                     config.opposites[category]
                         .map(subcategory => Object.keys(subcategory)[0])
                         .includes(c.contract_type)
@@ -264,22 +264,22 @@ export default class ContractsFor {
             const category_name = conditionsCategoryName[contract.contract_category];
 
             if (category_name) {
-                const is_disabled = this.isDisabledOption({ 
-                    market, 
-                    submarket, 
-                    symbol, 
-                    trade_type_category: contract.contract_category 
+                const is_disabled = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
+                    trade_type_category: contract.contract_category,
                 });
 
                 if (!is_disabled) {
-                    const is_existing_category = trade_type_categories.findIndex(trade_type_category => 
+                    const is_existing_category = trade_type_categories.findIndex(trade_type_category =>
                         trade_type_category[1] === contract.contract_category
                     ) !== -1;
 
                     if (!is_existing_category) {
                         trade_type_categories.push([
                             category_name,
-                            contract.contract_category
+                            contract.contract_category,
                         ]);
                     }
                 }
@@ -296,12 +296,12 @@ export default class ContractsFor {
 
         if (subcategories) {
             subcategories.forEach(trade_type => {
-                const is_disabled = this.isDisabledOption({ 
-                    market, 
-                    submarket, 
-                    symbol, 
+                const is_disabled = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
                     trade_type_category,
-                    trade_type 
+                    trade_type,
                 });
 
                 if (!is_disabled) {
@@ -316,7 +316,7 @@ export default class ContractsFor {
     }
 
     isDisabledOption(compare_obj) {
-        return this.disabled_options.some(disabled_obj => 
+        return this.disabled_options.some(disabled_obj =>
             Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
         );
     }

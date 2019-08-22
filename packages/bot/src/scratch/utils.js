@@ -9,7 +9,7 @@ export const oppositesToDropdownOptions = opposite_name => {
         // i.e. [['CALL', translate('Rise')]] becomes [[translate('Rise'), 'CALL']];
         return Object.entries(contract_type)[0].reverse();
     });
-}
+};
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     const { clientX = 0, clientY = 0 } = dropEvent || {};
@@ -218,7 +218,7 @@ export const loadRemote = blockObj =>
                 }
             });
             if (!isNew) {
-                disable(blockObj);
+                blockObj.setDisabled(true);
                 reject(translate('This url is already loaded'));
             } else {
                 $.ajax({
@@ -247,7 +247,7 @@ export const loadRemote = blockObj =>
                     })
                     .done(xml => {
                         loadBlocksFromHeader(xml, blockObj).then(() => {
-                            enable(blockObj);
+                            blockObj.setDisabled(false);
                             blockObj.url = url; // eslint-disable-line no-param-reassign
                             resolve(blockObj);
                         }, reject);

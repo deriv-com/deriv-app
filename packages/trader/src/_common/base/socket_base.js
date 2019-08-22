@@ -112,7 +112,7 @@ const BinarySocketBase = (() => {
     };
 
     const send = (request, options = {}) => {
-        const promise = deriv_api.storage.send(request);
+        const promise = deriv_api.send(request);
 
         if (options.callback) {
             promise.then(options.callback);

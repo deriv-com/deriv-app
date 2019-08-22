@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.variables_get = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             type    : 'variables_get',
             message0: '%1',
             args0   : [
@@ -17,8 +20,15 @@ Blockly.Blocks.variables_get = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : '',
-        });
+            tooltip        : translate('Get Variable Tooltip'),
+            category       : Blockly.Categories.Variables,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Get Variable Value'),
+            'description' : translate('Get Variable Value Description'),
+        };
     },
 };
 

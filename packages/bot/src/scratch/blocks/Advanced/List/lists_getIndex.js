@@ -34,6 +34,13 @@ Blockly.Blocks.lists_getIndex = {
 
         this.updateAt(true);
     },
+    meta(){
+        return {
+            'display_name': translate('List Get Index'),
+            'description' : translate('List Get Index Description'),
+            'category'    : Blockly.Categories.List,
+        };
+    },
     mutationToDom() {
         const container = document.createElement('mutation');
         const isStatement = !this.outputConnection;

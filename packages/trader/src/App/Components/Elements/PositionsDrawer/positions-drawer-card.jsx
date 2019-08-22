@@ -3,7 +3,7 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
 import { NavLink }             from 'react-router-dom';
-import Button                  from 'deriv-components/lib/button';
+import { Button }              from 'deriv-components';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';

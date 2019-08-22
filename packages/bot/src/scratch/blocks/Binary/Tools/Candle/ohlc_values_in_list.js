@@ -3,7 +3,10 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.ohlc_values_in_list = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Make a list of %1 values from candles list %2'),
             args0   : [
                 {
@@ -22,7 +25,14 @@ Blockly.Blocks.ohlc_values_in_list = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Returns a list of the selected candle values'),
-        });
+            category       : Blockly.Categories.Candle,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Selected Candle list value'),
+            'description' : translate('Selected Candle list value description'),
+        };
     },
 };
 

@@ -7,7 +7,16 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.argumentVarModels = [];
         this.previousDisabledState = false;
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    /**
+     * Block definitions describe how a block looks and behaves, including the text,
+     * the colour, the shape, and what other blocks it can connect to. We've separated
+     * the block definition from the init function so we can search through it.
+     * https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks
+     */
+    definition() {
+        return {
             message0: '%1 %2',
             args0   : [
                 {
@@ -25,7 +34,20 @@ Blockly.Blocks.procedures_callnoreturn = {
             colourTertiary   : Blockly.Colours.BinaryProcedures.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Function with no return value tooltip'),
+            category         : Blockly.Categories.Functions,
+        };
+    },
+    /**
+     * Meta returns an object with with properties that contain human readable strings,
+     * these strings are used in the flyout help content, as well as used for searching
+     * for specific blocks.
+     */
+    meta() {
+        return {
+            'display_name': translate('Function With no Return name'),
+            'description' : translate('Function with no return value description'),
+        };
     },
     /**
      * Procedure calls cannot exist without the corresponding procedure

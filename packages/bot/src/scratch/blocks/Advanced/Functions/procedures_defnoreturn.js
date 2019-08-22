@@ -7,7 +7,20 @@ Blockly.Blocks.procedures_defnoreturn = {
         this.arguments = [];
         this.argumentVarModels = [];
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Enforce unique procedure names
+        const nameField = this.getField('NAME');
+        nameField.setValidator(Blockly.Procedures.rename);
+
+        // Render a ➕-icon for adding parameters
+        const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+
+        this.setStatements(true);
+    },
+    definition() {
+        return {
             message0: translate('function %1 %2'),
             args0   : [
                 {
@@ -24,17 +37,15 @@ Blockly.Blocks.procedures_defnoreturn = {
             colour         : Blockly.Colours.BinaryProcedures.colour,
             colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
             colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-        });
-
-        // Enforce unique procedure names
-        const nameField = this.getField('NAME');
-        nameField.setValidator(Blockly.Procedures.rename);
-
-        // Render a ➕-icon for adding parameters
-        const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-
-        this.setStatements(true);
+            tooltip        : translate('function with no return tooltip'),
+            category       : Blockly.Categories.Functions,
+        };
+    },
+    meta() {
+        return {
+            'display_name': translate('Function with no return value'),
+            'description' : translate('Function with no return value description'),
+        };
     },
     /**
      * Sets the block colour and updates this procedure's caller blocks

@@ -1,9 +1,14 @@
+import { translate } from '../../../../utils/lang/i18n';
+
 Blockly.Blocks.procedures_callreturn = {
     init() {
         this.arguments = [];
         this.previousDisabledState = false;
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2',
             args0   : [
                 {
@@ -20,7 +25,15 @@ Blockly.Blocks.procedures_callreturn = {
             colour         : Blockly.Colours.BinaryProcedures.colour,
             colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
             colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-        });
+            tooltip        : translate('Function with return value'),
+            category       : Blockly.Categories.Functions,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Function with return value'),
+            'description' : translate('Function with return value Description'),
+        };
     },
     onchange              : Blockly.Blocks.procedures_callnoreturn.onchange,
     getProcedureDefinition: Blockly.Blocks.procedures_callnoreturn.getProcedureDefinition,

@@ -53,4 +53,5 @@ fi &&
 export NODE_ENV=staging &&
 
 message "Running build and deploy" &&
-cd packages/trader/ && npm run deploy:clean
+cd packages/trader/ && npm run deploy:clean &&
+cd ../core/ && npm run deploy:folder bot

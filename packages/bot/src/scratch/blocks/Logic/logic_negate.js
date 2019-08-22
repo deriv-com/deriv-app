@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.logic_negate = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('not %1'),
             args0   : [
                 {
@@ -15,7 +18,15 @@ Blockly.Blocks.logic_negate = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Logic Negate Tooltip'),
+            category       : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Logic Negate'),
+            'description' : translate('Logic Negate Description'),
+        };
     },
 };
 

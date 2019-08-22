@@ -2,7 +2,10 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.timeout = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('%1 %2 Run after %3 second(s)'),
             args0   : [
                 {
@@ -23,7 +26,14 @@ Blockly.Blocks.timeout = {
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Run the blocks inside every n seconds'),
-        });
+            category         : Blockly.Categories.Time,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Timeout'),
+            'description' : translate('Timeout Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

@@ -4,7 +4,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bb_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Bollinger Bands %2 %3'),
             message1: '%1',
             args0   : [
@@ -35,7 +38,14 @@ Blockly.Blocks.bb_statement = {
             tooltip          : translate('Calculates Bollinger Bands (BB) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('BB Statement'),
+            'descriptionL': translate('BB Statement Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

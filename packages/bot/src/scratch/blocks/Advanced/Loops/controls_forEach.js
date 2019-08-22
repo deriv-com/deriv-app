@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_forEach = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('for each item %1 in list %2'),
             args0   : [
                 {
@@ -28,7 +31,15 @@ Blockly.Blocks.controls_forEach = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Control Foreach Tooltip'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Control Foreach'),
+            'description' : translate('Control Foreach'),
+        };
     },
 };
 

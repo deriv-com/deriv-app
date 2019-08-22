@@ -1,6 +1,7 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { connect }      from 'Stores/connect';
+import Error            from './error.jsx';
 import CashierContainer from './Layout/cashier-container.jsx';
 
 class Deposit extends React.Component {
@@ -12,8 +13,11 @@ class Deposit extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.error_message ?
-                    <p className='cashier__error'>{this.props.error_message}</p>
+                {this.props.error.message ?
+                    <Error
+                        error={this.props.error}
+                        container='deposit'
+                    />
                     :
                     <CashierContainer
                         iframe_height={this.props.iframe_height}
@@ -27,7 +31,7 @@ class Deposit extends React.Component {
 }
 
 Deposit.propTypes = {
-    error_message: PropTypes.string,
+    error        : PropTypes.object,
     iframe_height: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
@@ -40,7 +44,7 @@ Deposit.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        error_message: modules.cashier.config.deposit.error_message,
+        error        : modules.cashier.config.deposit.error,
         iframe_height: modules.cashier.config.deposit.iframe_height,
         iframe_url   : modules.cashier.config.deposit.iframe_url,
         is_loading   : modules.cashier.is_loading,

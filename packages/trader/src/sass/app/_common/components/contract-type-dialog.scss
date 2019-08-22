@@ -4,7 +4,7 @@
     width: 100%;
     pointer-events: none;
     position: absolute;
-    transition: transform 0.25s ease, opacity 0.25s;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
     user-select: none;
     opacity: 0;
     height: 0;
@@ -25,13 +25,13 @@
         }
     }
     &--enter, &--exit {
-        transform: translateX(20%);
+        transform: translate3d(20%, 0, 0);
         pointer-events: none;
         opacity: 0;
         height: 0;
     }
     &--enterDone {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
         max-height: 100%;
         opacity: 1;
         pointer-events: auto;

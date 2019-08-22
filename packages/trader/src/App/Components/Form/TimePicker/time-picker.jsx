@@ -69,7 +69,7 @@ class TimePicker extends React.Component {
                     is_nativepicker
                         ? <input
                             type='time'
-                            id={`${prefix_class}-input`}
+                            id={`dt_${name}_input`}
                             value={selected_time}
                             onChange={this.handleChange}
                             name={name}
@@ -83,7 +83,7 @@ class TimePicker extends React.Component {
                                     type='text'
                                     is_hj_whitelisted
                                     is_read_only
-                                    id={`${prefix_class}-input`}
+                                    id={`dt_${name}_input`}
                                     className={classNames(`${prefix_class}-input`)}
                                     value={`${selected_time} GMT`}
                                     onClick={this.toggleDropDown}

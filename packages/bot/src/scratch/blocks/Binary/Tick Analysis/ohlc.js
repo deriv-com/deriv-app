@@ -3,7 +3,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.ohlc = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Candles List'),
             message1: translate('with interval: %1'),
             args1   : [
@@ -19,29 +22,14 @@ Blockly.Blocks.ohlc = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Returns the candle list'),
-        });
+            category       : Blockly.Categories.Tick_Analysis,
+        };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            const allowedScopes = [
-                'trade_definition',
-                'during_purchase',
-                'before_purchase',
-                'after_purchase',
-                'tick_analysis',
-            ];
-            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
+    meta(){
+        return {
+            'display_name': translate('Candle List'),
+            'description' : translate('Candle List Description'),
+        };
     },
 };
 

@@ -3,7 +3,7 @@ import React            from 'react';
 import { website_name } from 'App/Constants/app-config';
 import { connect }      from 'Stores/connect';
 import { localize }     from 'App/i18n';
-import Button           from '../../Components/Form/button.jsx';
+import { Button }       from 'deriv-components';
 
 const InstallPWA = ({
     onClose,

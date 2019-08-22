@@ -2,7 +2,7 @@ import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-import Button               from 'App/Components/Form/button.jsx';
+import { Button }           from 'deriv-components';
 import Lazy                 from 'App/Containers/Lazy';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
@@ -84,6 +84,7 @@ export class AccountActions extends Component {
                         is_virtual
                     ) && // TODO: remove this when cashier pop up is ready
                     <Button
+                        id='dt_deposit_button'
                         className='btn--primary btn--primary--orange acc-info__button'
                         has_effect
                         text={localize('Deposit')}

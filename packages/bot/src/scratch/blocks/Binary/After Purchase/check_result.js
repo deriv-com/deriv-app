@@ -3,7 +3,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.contract_check_result = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Result is %1'),
             args0   : [
                 {
@@ -18,14 +21,21 @@ Blockly.Blocks.contract_check_result = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('True if the result matches the selection'),
-        });
+            category       : Blockly.Categories.After_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Check Result'),
+            'description' : translate('Check Result Description'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
             if (this.isDescendantOf('after_purchase')) {
                 if (this.disabled) {
                     this.setDisabled(false);

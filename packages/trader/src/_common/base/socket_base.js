@@ -1,4 +1,5 @@
 const DerivAPIBasic    = require('deriv-api/dist/DerivAPIBasic');
+const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const { State }        = require('../storage');
@@ -54,7 +55,7 @@ const BinarySocketBase = (() => {
                 endpoint: getSocketURL(),
                 app_id  : getAppId(),
                 lang    : getLanguage(),
-                brand   : 'deriv',
+                brand   : website_name.toLowerCase(),
                 storage : SocketCache,
             });
         }
@@ -166,12 +167,13 @@ const BinarySocketBase = (() => {
     const cashier = (action, verification_code) =>
         send({ cashier: action, ...(verification_code && { verification_code }) });
 
-    const newAccountVirtual = (verification_code, client_password, residence) =>
+    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
         send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
+            ...device_data,
         });
 
     const profitTable = (limit, offset, date_boundaries) =>

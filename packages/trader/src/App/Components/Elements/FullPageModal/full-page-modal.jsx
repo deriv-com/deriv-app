@@ -2,7 +2,7 @@ import classNames        from 'classnames';
 import React             from 'react';
 import PropTypes         from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import Button            from 'App/Components/Form/button.jsx';
+import { Button }        from 'deriv-components';
 import { connect }       from 'Stores/connect';
 
 class FullPageModal extends React.Component {

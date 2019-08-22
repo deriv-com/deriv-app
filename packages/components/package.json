@@ -15,9 +15,10 @@
     }
   },
   "scripts": {
-    "start": "rimraf lib && webpack --mode=production --progress --watch",
-    "serve": "rimraf lib && webpack --mode=development --progress --watch",
+    "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
+    "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
+    "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "test": "jest --all",
     "deploy": "echo \"Error: no deploy specified\"",
     "deploy:clean": "echo \"Error: no deploy:clean specified\"",
@@ -56,6 +57,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
+    "formik": "^1.5.8",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
@@ -77,8 +79,19 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "deriv-shared": "^1.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-transition-group": "^4.2.1",
+    "tt-react-custom-scrollbars": "^4.2.1-tt2"
+  },
+  "peerDependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "formik": "^1.5.8",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.1.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   }
 }

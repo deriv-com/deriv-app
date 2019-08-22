@@ -184,6 +184,7 @@ class InputField extends React.Component {
 
         const increment_buttons =
             <IncrementButtons
+                id={id}
                 max_is_disabled={max_is_disabled}
                 incrementValue={incrementValue}
                 min_is_disabled={min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0)}

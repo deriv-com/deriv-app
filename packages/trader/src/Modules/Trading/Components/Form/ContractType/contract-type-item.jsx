@@ -14,6 +14,7 @@ const ContractTypeItem = ({
 }) => (
     contracts.map((contract, idx) => (
         <div
+            id={`dt_contract_${contract.value}_item`}
             key={idx}
             className={classNames('contract-type-item', {
                 'contract-type-item--selected' : value === contract.value,

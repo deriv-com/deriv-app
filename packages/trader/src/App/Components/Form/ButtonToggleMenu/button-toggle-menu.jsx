@@ -1,11 +1,12 @@
 import classNames       from 'classnames';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import Button           from 'App/Components/Form/button.jsx';
+import { Button }       from 'deriv-components';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 
 const ButtonToggleMenu = ({
     buttons_arr,
+    id,
     is_animated,
     name,
     onChange,
@@ -21,6 +22,7 @@ const ButtonToggleMenu = ({
         });
         return (
             <Button
+                id={`dt_${val.value}_toggle_item`}
                 key={idx}
                 text={`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
                 onClick={() => changeValue(val.value)}
@@ -29,7 +31,7 @@ const ButtonToggleMenu = ({
         );
     });
     return (
-        <div className='button-menu'>
+        <div id={id} className='button-menu'>
             {is_animated ?
                 <HighlightWrapper>
                     {menu}
@@ -45,6 +47,7 @@ const ButtonToggleMenu = ({
 
 ButtonToggleMenu.propTypes = {
     buttons_arr: PropTypes.array,
+    id         : PropTypes.string,
     is_animated: PropTypes.bool,
     name       : PropTypes.string,
     onChange   : PropTypes.func,

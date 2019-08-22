@@ -41,10 +41,19 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             zoom    : { wheel: true },
         });
 
-        // Keep in memory to allow category browsing
-        workspace.initial_toolbox_xml = toolbox_xml;
-        
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
+        Blockly.derivWorkspace = workspace;
+
+        // Ensure flyout closes on click in workspace.
+        const el_blockly_svg = document.querySelector('.blocklySvg');
+        document.addEventListener('click', (event) => {
+            if (el_blockly_svg.contains(event.target)) {
+                Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
+            }
+        });
+
+        // Keep XML in memory to allow multilevel categories
+        Blockly.derivWorkspace.initial_toolbox_xml = toolbox_xml;
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), Blockly.derivWorkspace);
 
         const onWorkspaceResize = () => {
             let element = el_scratch_area;
@@ -67,6 +76,13 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
 
             // eslint-disable-next-line no-underscore-dangle
             workspace.toolbox_.flyout_.position();
+            
+            // Center on first root block, if applicable.
+            const top_blocks = workspace.getTopBlocks(true);
+
+            if (top_blocks.length > 0) {
+                workspace.centerOnBlock(top_blocks[0].id);
+            }
         };
 
         window.addEventListener('resize', onWorkspaceResize);

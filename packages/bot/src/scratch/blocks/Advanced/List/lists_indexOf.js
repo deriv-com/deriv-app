@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_indexOf = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('in list %1 find %2 occurence of item %3'),
             args0   : [
                 {
@@ -24,7 +27,15 @@ Blockly.Blocks.lists_indexOf = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Index of List Tooltip'),
+            category       : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Index Of List'),
+            'description' : translate('Index of List Description'),
+        };
     },
 };
 

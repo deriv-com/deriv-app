@@ -74,16 +74,16 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    addContract({ contract_id, start_time, longcode }) {
+    addContract({ contract_id, contract_type, start_time, longcode }) {
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig({ date_start: start_time, longcode });
+        contract.populateConfig({ date_start: start_time, longcode, contract_type });
         this.contracts.push(contract);
 
         // TODO: handle proposal for mulitple contracts.
-        if (this.contract_id) {
-            this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-            this.contract_id = null;
-        }
+        // if (this.contract_id) {
+        //     this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
+        //     this.contract_id = null;
+        // }
         this.contract_id = contract_id;
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);

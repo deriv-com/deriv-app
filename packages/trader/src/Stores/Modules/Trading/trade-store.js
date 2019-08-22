@@ -28,6 +28,7 @@ import {
     isMarketClosed,
 }                                     from './Helpers/active-symbols';
 import ContractType                   from './Helpers/contract-type';
+import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import {
     convertDurationLimit,
     resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -368,7 +369,14 @@ export default class TradeStore extends BaseStore {
                     } = response.buy;
                     // toggle smartcharts to contract mode
                     if (contract_id) {
-                        this.root_store.modules.contract_trade.addContract({ contract_id, start_time, longcode });
+                        const shortcode = response.buy.shortcode;
+                        const { category } = Shortcode.extractInfoFromShortcode(shortcode);
+                        this.root_store.modules.contract_trade.addContract({
+                            contract_id,
+                            start_time,
+                            longcode,
+                            contract_type: category.toUpperCase(),
+                        });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time

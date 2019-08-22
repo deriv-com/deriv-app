@@ -126,15 +126,17 @@ export default class ContractStore {
 function calculate_markers(contract_info) {
     if (!contract_info) { return []; }
     const result = [];
-    const { tick_stream, contract_id } = contract_info;
-    if (tick_stream) {
-        tick_stream.forEach(tick => result.push({
-            type   : 'SpotMarker',
-            key    : `${contract_id}-tick-${tick.epoch}`,
-            epoch  : tick.epoch,
-            price  : tick.tick,
-            caption: tick.tick_display_value,
-        }));
+    // console.warn(toJS(contract_info));
+    const { tick_stream, contract_id, date_start, contract_type, exit_tick_time } = contract_info;
+    const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
+    if (date_start) {
+        result.push({
+            contract_type,
+            exit_tick_time,
+            type       : 'SpotMarker',
+            key        : `${contract_id}-date_start`,
+            epoch_array: [date_start, ...ticks_epoch_array],
+        });
     }
     return result;
 }

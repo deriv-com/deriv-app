@@ -96,10 +96,16 @@ export default class ActiveSymbols {
     }
 
     getSubmarketDropdownOptions(market) {
-        const { submarkets }    = this.processed_symbols[market];
-        const submarket_options = Object.keys(submarkets).map(submarket_name => {
-            return [submarkets[submarket_name].display_name, submarket_name]
-        });
+        const submarket_options = [];
+        const market_obj = this.processed_symbols[market];
+
+        if (market_obj) {
+            const { submarkets } = market_obj;
+
+            submarket_options.push(...Object.keys(submarkets).map(submarket_name => {
+                return [submarkets[submarket_name].display_name, submarket_name]
+            }));
+        }
 
         return (submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options);
     }

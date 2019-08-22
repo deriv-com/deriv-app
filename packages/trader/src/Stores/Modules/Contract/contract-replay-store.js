@@ -77,8 +77,6 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
-        this.error_message       = null;
-        this.has_error           = false;
     }
 
     @action.bound
@@ -179,6 +177,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     removeErrorMessage() {
+        delete this.has_error;
         delete this.error_message;
     }
 }

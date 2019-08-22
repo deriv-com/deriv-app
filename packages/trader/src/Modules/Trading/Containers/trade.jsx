@@ -1,4 +1,3 @@
-
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import { connect }           from 'Stores/connect';

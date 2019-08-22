@@ -152,6 +152,9 @@ const BinarySocketBase = (() => {
     const buy = (proposal_id, price) =>
         send({ buy: proposal_id, price });
 
+    const sell = (contract_id, bid_price) =>
+        send({ sell: contract_id, price: bid_price });
+
     const buyAndSubscribe = async (proposal_id, price) => {
         const buy = await send({ buy: proposal_id, price });
 
@@ -198,6 +201,7 @@ const BinarySocketBase = (() => {
         removeOnReconnect : () => { delete config.onReconnect; },
         removeOnDisconnect: () => { delete config.onDisconnect; },
         buy,
+        sell,
         buyAndSubscribe,
         cashier,
         newAccountVirtual,

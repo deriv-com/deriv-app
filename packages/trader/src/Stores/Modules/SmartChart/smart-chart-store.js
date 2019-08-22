@@ -336,7 +336,7 @@ export default class SmartChartStore extends BaseStore {
     );
 
     wsForgetStream = (stream_id) => (
-        WS.forgetStream(stream_id)
+        WS.forget(stream_id)
     );
 
     wsSendRequest = (request_object) => {

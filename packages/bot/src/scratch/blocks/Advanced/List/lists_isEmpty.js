@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_isEmpty = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('list %1 is empty'),
             args0   : [
                 {
@@ -16,7 +19,15 @@ Blockly.Blocks.lists_isEmpty = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('List is Empty Tooltip'),
+            category       : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('List is Empty'),
+            'description' : translate('List is empty Description'),
+        };
     },
 };
 

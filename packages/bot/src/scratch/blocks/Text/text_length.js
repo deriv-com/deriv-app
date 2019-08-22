@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_length = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('length of %1'),
             args0   : [
                 {
@@ -15,7 +18,15 @@ Blockly.Blocks.text_length = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Text Length Tooltip'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text Length'),
+            'description' : translate('Text Length Description'),
+        };
     },
 };
 

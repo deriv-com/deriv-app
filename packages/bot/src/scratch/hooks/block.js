@@ -8,6 +8,14 @@ Blockly.Block.prototype.getDisplayName = function() {
     return this.type;
 };
 
+Blockly.Block.prototype.getDisplayName = function() {
+    if (this.meta) {
+        const block_meta = this.meta();
+        return block_meta && block_meta.display_name;
+    }
+    return this.type;
+};
+
 Blockly.Block.prototype.getSiblings = function() {
     const siblings = [this];
     ['getPreviousBlock', 'getNextBlock'].forEach(functionName => {

@@ -3,7 +3,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.rsia_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Relative Strength Index Array %2'),
             message1: '%1',
             args0   : [
@@ -29,7 +32,14 @@ Blockly.Blocks.rsia_statement = {
             tooltip          : translate('Calculates Relative Strength Index (RSI) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Relative Strength Index Statement'),
+            'description' : translate('Relative Strength Index Statement Description'),
+        };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'period'],

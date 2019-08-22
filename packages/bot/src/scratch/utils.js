@@ -4,7 +4,12 @@ import { translate } from '../utils/lang/i18n';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
-export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse());
+export const oppositesToDropdownOptions = opposite_name => {
+    return opposite_name.map(contract_type => {
+        // i.e. [['CALL', translate('Rise')]] becomes [[translate('Rise'), 'CALL']];
+        return Object.entries(contract_type)[0].reverse();
+    });
+}
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     const { clientX = 0, clientY = 0 } = dropEvent || {};

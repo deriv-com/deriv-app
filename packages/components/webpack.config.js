@@ -1,7 +1,7 @@
-const StyleLintPlugin      = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path                 = require('path');
+const path = require('path');
 
 const is_serve = process.env.BUILD_MODE === 'serve';
 
@@ -9,14 +9,17 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button: path.resolve(__dirname, 'src', 'components/button/index.js'),
-        label: path.resolve(__dirname, 'src', 'components/label/index.js'),
+        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
     },
     output: {
-        path: path.resolve(__dirname, 'lib'),
-        filename: '[name].js',
+        path         : path.resolve(__dirname, 'lib'),
+        filename     : '[name].js',
         libraryExport: 'default',
-        library: ['deriv-component', '[name]'],
+        library      : ['deriv-component', '[name]'],
         libraryTarget: 'umd',
     },
     optimization: {
@@ -30,23 +33,23 @@ module.exports = {
         publicPath: '/dist/',
     },
     devtool: 'source-map',
-    module: {
+    module : {
         rules: [
             {
                 test: /\.(s*)css$/,
-                use: [
+                use : [
                     'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {
-                        loader: 'css-loader',
+                        loader : 'css-loader',
                         options: { sourceMap: true },
                     },
                     {
-                        loader: 'sass-loader',
+                        loader : 'sass-loader',
                         options: { sourceMap: true },
                     },
                     {
-                        loader: 'sass-resources-loader',
+                        loader : 'sass-resources-loader',
                         options: {
                             resources: require('deriv-shared/utils/index.js'),
                         }
@@ -55,16 +58,16 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
-                use: [
+                use : [
                     {
-                        loader: 'svg-sprite-loader',
+                        loader : 'svg-sprite-loader',
                         options: {
-                            extract: true,
+                            extract       : true,
                             spriteFilename: 'bot-sprite.svg',
                         },
                     },
                     {
-                        loader: 'svgo-loader',
+                        loader : 'svgo-loader',
                         options: {
                             plugins: [
                                 { removeUselessStrokeAndFill: false },
@@ -76,17 +79,17 @@ module.exports = {
             },
             (!is_serve ? {
                 enforce: 'pre',
-                test: /\.(js|jsx)$/,
+                test   : /\.(js|jsx)$/,
                 exclude: [/node_modules/],
-                loader: 'eslint-loader',
+                loader : 'eslint-loader',
                 options: {
-                    fix: true
+                    fix: true,
                 },
             } : {}),
             {
-                test: /\.(js|jsx)$/,
+                test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader : 'babel-loader',
             },
         ],
     },
@@ -96,23 +99,23 @@ module.exports = {
         new SpriteLoaderPlugin(),
     ],
     externals: {
-        mobx: 'mobx',
-        react: {
-            root: 'React',
-            commonjs: 'react',
+        formik: 'formik',
+        mobx  : 'mobx',
+        react : {
+            root     : 'React',
+            commonjs : 'react',
             commonjs2: 'react',
         },
         'react-dom': {
-            commonjs: 'react-dom',
+            commonjs : 'react-dom',
             commonjs2: 'react-dom',
-            root: 'ReactDOM',
+            root     : 'ReactDOM',
         },
         'mobx-react': {
-            commonjs: 'mobx-react',
+            commonjs : 'mobx-react',
             commonjs2: 'mobx-react',
-            root: 'mobxReact',
+            root     : 'mobxReact',
         },
         'babel-polyfill': 'babel-polyfill',
-
     },
-}
+};

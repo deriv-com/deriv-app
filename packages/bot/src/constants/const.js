@@ -42,6 +42,7 @@ const config = {
             [translate('Error'), 'error'],
             [translate('Severe error'), 'severe-error'],
         ],
+        CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD'], ...CRYPTO_CURRENCIES.map(c => [c, c])],
     },
     opposites: {
         RISEFALL: [
@@ -247,10 +248,5 @@ const config = {
         api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
     },
 };
-
-export async function updateConfigCurrencies() {
-    // TODO: Retrieve currencies from API
-    config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
-}
 
 export default config;

@@ -161,7 +161,7 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
-    const openContractOnClick = () => openContract(id);
+    const openContractOnClick = () => openContract(id, true);
     const sellOnClick = () => onClickSell(id);
 
     return (

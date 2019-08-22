@@ -24,7 +24,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type   : 'field_dropdown',
                     name   : 'CURRENCY_LIST',
-                    options: [['USD', 'USD']], // TODO: Don't use hardcoded currency.
+                    options: config.lists.CURRENCY,
                 },
                 {
                     type : 'input_value',

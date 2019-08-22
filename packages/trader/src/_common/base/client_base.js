@@ -160,10 +160,10 @@ const ClientBase = (() => {
         });
     };
 
-    const shouldAcceptTnc = () => {
+    const shouldAcceptTnc = (account_settings = State.getResponse('get_settings.client_tnc_status')) => {
         if (get('is_virtual')) return false;
         const website_tnc_version = State.getResponse('website_status.terms_conditions_version');
-        const client_tnc_status   = State.getResponse('get_settings.client_tnc_status');
+        const client_tnc_status   = account_settings.client_tnc_status;
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== website_tnc_version;
     };
 

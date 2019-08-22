@@ -103,8 +103,8 @@ const BinarySocketBase = (() => {
         let is_resolved   = true;
         msg_types.forEach((msg_type) => {
             const last_response = State.get(['response', msg_type]);
-            if (!last_response) {
-                if (msg_type !== 'authorize' || ClientBase.isLoggedIn()) {
+            if (!last_response || (last_response && msg_type === 'get_settings')) {
+                if (msg_type !== 'authorize' || msg_type !== 'get_settings' || ClientBase.isLoggedIn()) {
                     waiting_list.add(msg_type, promise_obj);
                     is_resolved = false;
                 }

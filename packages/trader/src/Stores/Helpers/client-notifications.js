@@ -241,7 +241,7 @@ export const handleClientNotifications = (
 
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
+    if (shouldAcceptTnc(account_settings)) addNotification(client_notifications.tnc);
 
     if (hasMissingRequiredField(account_settings, client)) {
         addNotification(client_notifications.required_fields);

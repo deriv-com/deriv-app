@@ -287,7 +287,13 @@ export default class ClientStore extends BaseStore {
 
         if (client && !client.is_virtual) {
             BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                handleClientNotifications(client, this.account_settings, this.account_status, this.root_store.ui.addNotification, this.loginid);
+                handleClientNotifications(
+                    client,
+                    this.account_settings,
+                    this.account_status,
+                    this.root_store.ui.addNotification,
+                    this.loginid
+                );
             });
         }
 

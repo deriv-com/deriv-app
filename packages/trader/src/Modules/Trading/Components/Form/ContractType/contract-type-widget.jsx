@@ -134,7 +134,9 @@ class ContractTypeWidget extends React.PureComponent {
     render() {
         const { is_dark_theme, is_equal, is_mobile, list, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item }             = this.state;
-        const item_index = this.getItemIndex(item, this.getItemList());
+        const contractTypes       = this.getItemList();
+        const item_index          = this.getItemIndex(item, contractTypes);
+        const contractTypesLength = contractTypes ? contractTypes.length : 0;
         return (
             <div
                 id='dt_contract_dropdown'
@@ -192,7 +194,8 @@ class ContractTypeWidget extends React.PureComponent {
                         is_mobile={is_mobile}
                         item={item}
                         item_index={item_index < 0 ? undefined : item_index}
-                        itemList={this.getItemList()}
+                        itemList={contractTypes}
+                        itemListLength={contractTypesLength}
                         onBackButtonClick={this.onBackButtonClick}
                         onSubmitButtonClick={this.onSubmitButtonClick}
                     />

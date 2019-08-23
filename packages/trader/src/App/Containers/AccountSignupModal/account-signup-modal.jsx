@@ -26,7 +26,10 @@ const validateSignup = (values, residence_list) => {
     if (!values.residence) {
         errors.residence = true;
     } else {
-        const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+        const index_of_selection = residence_list.findIndex(item => (
+            item.text.toLowerCase() === values.residence.toLowerCase()
+        ));
+
         if (index_of_selection > -1) {
             if (residence_list[index_of_selection].disabled === 'DISABLED') {
                 errors.residence = localize('Unfortunately, Deriv is not available in your country.');
@@ -66,7 +69,10 @@ class AccountSignup extends React.Component {
 
         const validateSignupPassthrough = (values) => validateSignup(values, residence_list);
         const onSignupPassthrough = (values) => {
-            const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+            const index_of_selection = residence_list.findIndex(item => (
+                item.text.toLowerCase() === values.residence.toLowerCase()
+            ));
+
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
             onSignup(modded_values, this.onSignupComplete);
         };

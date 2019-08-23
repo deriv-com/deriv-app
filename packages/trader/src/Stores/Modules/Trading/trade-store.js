@@ -602,7 +602,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        this.clearContracts();
         this.resetErrorServices();
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(

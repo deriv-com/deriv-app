@@ -298,6 +298,8 @@ export default class ClientStore extends BaseStore {
                     this.loginid
                 );
             });
+        } else if (!client || client.is_virtual) {
+            this.root_store.ui.removeAllNotifications();
         }
 
         this.selectCurrency('');

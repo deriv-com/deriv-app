@@ -157,12 +157,12 @@ const BinarySocketBase = (() => {
         send({ sell: contract_id, price: bid_price });
 
     const buyAndSubscribe = async (proposal_id, price) => {
-        const buy = await send({ buy: proposal_id, price });
+        const response = await send({ buy: proposal_id, price });
 
-        subscribeProposalOpenContract(buy.buy.contract_id, () => {});
+        subscribeProposalOpenContract(response.buy.contract_id, () => {});
 
-        return buy;
-    }
+        return response;
+    };
 
     const cashier = (action, verification_code) =>
         send({ cashier: action, ...(verification_code && { verification_code }) });

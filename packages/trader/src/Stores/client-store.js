@@ -592,8 +592,17 @@ export default class ClientStore extends BaseStore {
                 };
                 await this.init(new_user_login);
 
-                // TODO: clean-refresh-trade: Find a way to do this without re-preparing the trade store
-                this.root_store.modules.trade.onMount();
+                // Refresh trade-store currency and proposal before requesting new proposal upon login
+                runInAction(async() => {
+                  await this.root_store.modules.trade.processNewValuesAsync(
+                      { currency: response.new_account_virtual.currency },
+                      true,
+                      { currency: this.root_store.modules.trade.currency },
+                      false,
+                  );
+                  this.root_store.modules.trade.refresh();
+                  this.root_store.modules.trade.debouncedProposal();
+                });
             }
         });
     }

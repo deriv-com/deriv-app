@@ -9,7 +9,7 @@ import moment                        from 'moment';
 import {
     requestLogout,
     WS }                             from 'Services';
-import { getAccountTitle }           from '_common/base/client_base';
+import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
 import { isEmptyObject }             from '_common/utility';
@@ -90,7 +90,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get account_title() {
-        return getAccountTitle(this.loginid);
+        return ClientBase.getAccountTitle(this.loginid);
     }
 
     @computed
@@ -218,6 +218,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
+        ClientBase.responseAuthorize(response);
     }
 
     @action.bound
@@ -361,7 +362,7 @@ export default class ClientStore extends BaseStore {
         const account      = this.getAccount(loginid);
         const currency     = account.currency;
         const is_virtual   = account.is_virtual;
-        const account_type = !is_virtual && currency ? currency : getAccountTitle(loginid);
+        const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
 
         return {
             loginid,

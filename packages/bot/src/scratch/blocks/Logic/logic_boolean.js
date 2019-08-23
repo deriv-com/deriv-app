@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.logic_boolean = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1',
             args0   : [
                 {
@@ -16,8 +19,15 @@ Blockly.Blocks.logic_boolean = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            category       : Blockly.Categories.operators,
-        });
+            tooltip        : translate('Logic Boolean Tooltip'),
+            category       : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Logic Boolean'),
+            'description' : translate('Logic Boolean Description'),
+        };
     },
 };
 

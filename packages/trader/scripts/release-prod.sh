@@ -46,7 +46,7 @@ then
 fi
 
 message "Installing packages" &&
-lerna bootstrap --ci && lerna run build &&
+lerna bootstrap --ci && lerna run build --scope=deriv-shared --scope=deriv-components &&
 
 confirm "Please confirm release to PRODUCTION" &&
 if [[ $REPLY =~ ^[Nn]$ ]]
@@ -58,4 +58,4 @@ fi &&
 export NODE_ENV=production &&
 
 message "Running build and deploy" &&
-npm run deploy:clean -- --remote=production
+cd packages/trader/ && npm run deploy:clean -- --remote=production

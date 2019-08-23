@@ -18,17 +18,17 @@ const validRequired     = (value/* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
-const validEmail        = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
-const validGeneral      = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
-const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
-const validPhone        = value => /^\+?[0-9\s]*$/.test(value);
-const validRegular      = (value, options) => options.regex.test(value);
-const validEmailToken   = value => value.trim().length === 8;
-const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-const validBarrier      = value => /^[+-]?\d+\.?\d*$/.test(value);
+const validEmail           = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+const validLetterSymbol    = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
+const validGeneral         = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
+const validAddress         = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+const validPostCode        = value => /^[a-zA-Z\d-\s]*$/.test(value);
+const validPhone           = value => /^\+?[0-9\s]*$/.test(value);
+const validRegular         = (value, options) => options.regex.test(value);
+const validEmailToken      = value => value.trim().length === 8;
+const validTaxID           = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
+const validBarrier         = value => /^[+-]?\d+\.?\d*$/.test(value);
 
 const validCompare  = (value, options) => value === getElementById(options.to.substr(1)).value;
 const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;

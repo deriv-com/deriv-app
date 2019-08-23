@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_flow_statements = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('%1 of loop'),
             args0   : [
                 {
@@ -19,7 +22,15 @@ Blockly.Blocks.controls_flow_statements = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Control Statement Tooltip'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Control Statement'),
+            'description' : translate('Control Statement Description'),
+        };
     },
 };
 

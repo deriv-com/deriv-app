@@ -21,7 +21,7 @@ const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     return (
-        <Router basename={/^\/br_/.test(l.pathname) ? `/${base}` : null}>
+        <Router basename={/^\/br_|bot/.test(l.pathname) ? `/${base}` : null}>
             <MobxProvider store={root_store}>
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?

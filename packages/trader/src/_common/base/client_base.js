@@ -138,7 +138,7 @@ const ClientBase = (() => {
 
     const responseAuthorize = (response) => {
         const authorize = response.authorize;
-        set('loginid',    authorize.loginid);
+        set('loginid', authorize.loginid);
     };
 
     const shouldAcceptTnc = (account_settings = State.getResponse('get_settings.client_tnc_status')) => {

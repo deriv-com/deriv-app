@@ -6,6 +6,7 @@ import routes         from '../../../Constants/routes';
 const Redirect = ({
     history,
     setCashierActiveTab,
+    setDeviceData,
     setVerificationCode,
     toggleAccountSignupModal,
     toggleCashierModal,
@@ -16,6 +17,15 @@ const Redirect = ({
 
     switch (url_params.get('action')) {
         case 'signup': {
+            const device_data = {
+                utm_source        : url_params.get('utm_source') || '',
+                signup_device     : url_params.get('signup_device') || '',
+                utm_medium        : url_params.get('utm_medium') || '',
+                utm_campaign      : url_params.get('utm_campaign') || '',
+                date_first_contact: url_params.get('date_first_contact') || '',
+            };
+
+            setDeviceData(device_data);
             toggleAccountSignupModal(true);
             break;
         }
@@ -36,6 +46,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     history                 : PropTypes.object,
+    setDeviceData           : PropTypes.func,
     setVerificationCode     : PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleCashierModal      : PropTypes.func,
@@ -44,6 +55,7 @@ Redirect.propTypes = {
 export default withRouter(connect(
     ({ client, ui }) => ({
         setCashierActiveTab     : ui.setCashierActiveTab,
+        setDeviceData           : client.setDeviceData,
         setVerificationCode     : client.setVerificationCode,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleCashierModal      : ui.toggleCashierModal,

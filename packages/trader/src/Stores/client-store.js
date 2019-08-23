@@ -441,14 +441,14 @@ export default class ClientStore extends BaseStore {
         this.loginid = null;
         this.upgrade_info = undefined;
         this.accounts = {};
-        this.currencies_list  = {};
-        this.selected_currency = '';
+        runInAction(async () => {
+            this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
+        });
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
-        this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();
         this.root_store.modules.trade.refresh();
-        return this.root_store.modules.trade.debouncedProposal();
+        this.root_store.modules.trade.debouncedProposal();
     }
 
     /* eslint-disable */

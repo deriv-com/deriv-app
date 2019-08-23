@@ -120,6 +120,8 @@ const BinarySocketBase = (() => {
     const send = (request, options = {}) => {
         const promise = promiseRejectToResolve(deriv_api.send(request));
 
+        config.wsEvent('send');
+
         if (options.callback) {
             promise.then(options.callback);
         }

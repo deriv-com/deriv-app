@@ -156,14 +156,6 @@ const BinarySocketBase = (() => {
     const sell = (contract_id, bid_price) =>
         send({ sell: contract_id, price: bid_price });
 
-    const buyAndSubscribe = async (proposal_id, price) => {
-        const response = await send({ buy: proposal_id, price });
-
-        subscribeProposalOpenContract(response.buy.contract_id, () => {});
-
-        return response;
-    };
-
     const cashier = (action, verification_code) =>
         send({ cashier: action, ...(verification_code && { verification_code }) });
 
@@ -188,9 +180,13 @@ const BinarySocketBase = (() => {
     const activeSymbols = () =>
         promiseRejectToResolve(deriv_api.storage.activeSymbols('brief'));
 
+    const forgetStream = (id) =>
+        promiseRejectToResolve(deriv_api.forget(id));
+
     return {
         init,
         send,
+        forgetStream,
         expectResponse,
         clearTimeouts,
         availability,
@@ -204,7 +200,6 @@ const BinarySocketBase = (() => {
         removeOnDisconnect: () => { delete config.onDisconnect; },
         buy,
         sell,
-        buyAndSubscribe,
         cashier,
         newAccountVirtual,
         profitTable,

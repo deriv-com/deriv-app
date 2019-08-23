@@ -17,10 +17,11 @@ import BaseStore              from '../../base-store';
 export default class SmartChartStore extends BaseStore {
     @observable chart_type;
     @observable granularity;
-    @observable barriers = observable.object({});
-    @observable markers  = observable.object({});
-    barriers_empty_array = [];
-    markers_empty_array = [];
+    @observable barriers  = observable.object({});
+    @observable markers   = observable.object({});
+    barriers_empty_array  = [];
+    markers_empty_array   = [];
+    subscription_requests = [];
 
     @observable is_contract_mode = false;
     @observable is_static_chart  = false;
@@ -328,12 +329,30 @@ export default class SmartChartStore extends BaseStore {
     // ---------- WS ----------
     wsSubscribe = (request_object, callback) => {
         if (request_object.subscribe !== 1) return;
-        WS.subscribeTicksHistory({ ...request_object }, callback); // use a copy of the request_object to prevent updating the source
+        const request = { ...request_object };
+        const subscriber = WS.subscribeTicksHistory(request, callback); // use a copy of the request_object to prevent updating the source
+        this.subscription_requests.push({ request, unsubscribe: subscriber.unsubscribe.bind(subscriber) });
     };
 
-    wsForget = (match_values, callback) => (
-        WS.forget('ticks_history', callback, match_values)
-    );
+    wsForget = (match_values) => {
+        const to_delete_index_list = [];
+
+        this.subscription_requests.forEach((r, i) => {
+            if (Object.keys(match_values).every(f => match_values[f] === r.request[f])) {
+                r.unsubscribe();
+                to_delete_index_list.push(i);
+            }
+        });
+
+        const new_list = [];
+        this.subscription_requests.forEach(i => {
+            if (!to_delete_index_list.includes(i)) return;
+
+            new_list.push(this.subscription_requests[i]);
+        });
+
+        this.subscription_requests = new_list;
+    };
 
     wsForgetStream = (stream_id) => (
         WS.forget(stream_id)

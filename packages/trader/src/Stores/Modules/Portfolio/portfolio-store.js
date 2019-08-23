@@ -26,6 +26,8 @@ export default class PortfolioStore extends BaseStore {
     @observable error      = '';
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
+    subscribers = {};
+
     @action.bound
     initializePortfolio = async () => {
         this.is_loading = true;
@@ -70,7 +72,7 @@ export default class PortfolioStore extends BaseStore {
             const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
             if (!new_pos) return;
             this.pushNewPosition(new_pos);
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+            this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
@@ -81,7 +83,7 @@ export default class PortfolioStore extends BaseStore {
             if (i === -1) return;
 
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails);
+            WS.send({ proposal_open_contract: 1, contract_id }).then(this.populateResultDetails);
         }
     }
 
@@ -188,7 +190,9 @@ export default class PortfolioStore extends BaseStore {
         if (isEnded(contract_response)) {
             // also forget for buy
             [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
-                WS.forget('proposal_open_contract', cb, { contract_id: contract_response.contract_id });
+                if (!(contract_response.contract_id in this.subscribers)) return;
+                this.subscribers[contract_response.contract_id].unsubscribe();
+                delete this.subscribers[contract_response.contract_id];
             });
         }
     };

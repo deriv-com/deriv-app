@@ -101,7 +101,7 @@
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "crc-32": "^1.2.0",
-    "deriv-api": "^1.0.0-beta.6",
+    "deriv-api": "file:../../../deriv-api",
     "deriv-components": "^1.0.0",
     "deriv-shared": "^1.0.0",
     "event-source-polyfill": "^1.0.5",

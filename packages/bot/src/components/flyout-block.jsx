@@ -11,15 +11,21 @@ const FlyoutBlock = (props) => {
         should_center_block,
     } = props;
 
+    const block_type = block_node[0].getAttribute('type');
+    const block_meta = Blockly.Blocks[block_type].meta();
+    const display_name = block_meta.display_name;
+    const description = block_meta.description;
+
     return (
         <div className='flyout__item'>
             <div className='flyout__item-header'>
                 {!should_hide_label &&
-                    <div className='flyout__item-label'>{block_node[0].getAttribute('type')}</div>
+                    <div className='flyout__item-label'>{display_name}</div>
                 }
             </div>
             <p className='flyout__item-desc'>
-                {translate('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut porta id felis id efficitur.')}
+                {description}
+                &nbsp;
                 {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a>}
             </p>
             {

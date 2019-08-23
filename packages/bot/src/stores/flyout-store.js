@@ -23,7 +23,7 @@ export default class FlyoutStore {
      */
     @action.bound setContents(xml_list) {
         this.is_help_content = false;
-      let processed_xml = xml_list;
+        let processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];

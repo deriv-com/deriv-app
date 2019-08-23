@@ -17,7 +17,7 @@ const Flyout = ({
 }) => {
     return (
         <div
-            className={`flyout${!is_visible ? ' hidden' : ''}${is_help_content ? ' flyout__help' : ''}`}
+            className={`flyout${!is_visible ? ' hidden' : ''}${is_help_content ? ' flyout__help' : ' flyout__content'}`}
             style={{ width: `${flyout_width}px` }}
         >
             {

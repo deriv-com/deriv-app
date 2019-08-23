@@ -45,6 +45,7 @@ module.exports = {
                         loader: "sass-resources-loader",
                         options: {
                         resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
+                        }
                     }
                ]
             },  

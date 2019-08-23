@@ -5,7 +5,7 @@ const FlyoutImage = props => {
     const { url } = props;
 
     return (
-        <img src={url} className='flyout__item-img flyout__item' />
+        <img src={url} className='flyout__help-img flyout__item' />
     );
 };
 

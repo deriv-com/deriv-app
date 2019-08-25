@@ -68,8 +68,8 @@ class Dropdown extends React.PureComponent {
     }
 
     get list_class_names () {
-        return classNames('list', {
-            'list--left': this.props.is_alignment_left,
+        return classNames('dc-list', {
+            'dc-list--left': this.props.is_alignment_left,
         });
     }
 

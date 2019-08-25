@@ -14,7 +14,7 @@
     &--left {
         width: unset;
 
-        .list__item-text, .list__item-symbol {
+        .dc-list__item-text, .dc-list__item-symbol {
             padding-left: 2.286em;
             padding-right: 2.286em;
             overflow: hidden;
@@ -52,7 +52,7 @@
                 color: themed('text_color');
             }
         }
-        &--selected .list__item-text, &--selected .list__item-symbol, &--selected .list__item-tooltip {
+        &--selected .dc-list__item-text, &--selected .dc-list__item-symbol, &--selected .dc-list__item-tooltip {
             @include typeface(--paragraph-left-bold-active);
             @include themify($themes) {
                 color: themed('text_active_color');

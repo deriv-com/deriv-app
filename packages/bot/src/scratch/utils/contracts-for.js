@@ -15,7 +15,6 @@ export default class ContractsFor {
                 submarket : 'smart_fx',
                 trade_type: 'higherlower',
             },
-            { trade_type_category: 'callputspread' },
             { trade_type_category: 'lookback' },
         ];
         this.retrieving_contracts_for  = {};
@@ -258,35 +257,49 @@ export default class ContractsFor {
     async getTradeTypeCategories(market, submarket, symbol) {
         const contracts = await this.getContractsFor(symbol);
         const trade_type_categories = [];
-        const { conditionsCategoryName } = config;
+        const { conditionsCategory, conditionsCategoryName } = config;
 
         contracts.forEach(contract => {
-            const category_name = conditionsCategoryName[contract.contract_category];
+            const conditions_category = Object.keys(conditionsCategory).find(condition_category => 
+                condition_category === contract.contract_category 
+                || conditionsCategory[condition_category].includes(contract.contract_category)
+            );
+            const category_name = conditionsCategoryName[conditions_category];
 
             if (category_name) {
                 const is_disabled = this.isDisabledOption({
                     market,
                     submarket,
                     symbol,
-                    trade_type_category: contract.contract_category,
+                    trade_type_category: category_name,
                 });
 
                 if (!is_disabled) {
                     const is_existing_category = trade_type_categories.findIndex(trade_type_category =>
-                        trade_type_category[1] === contract.contract_category
+                        trade_type_category[1] === conditions_category
                     ) !== -1;
 
                     if (!is_existing_category) {
                         trade_type_categories.push([
                             category_name,
-                            contract.contract_category,
+                            conditions_category,
                         ]);
                     }
                 }
             }
         });
 
-        return (trade_type_categories.length > 0 ? trade_type_categories : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
+        if (trade_type_categories.length > 0) {
+            const category_names = Object.keys(config.conditionsCategoryName);
+
+            return trade_type_categories.sort((a, b) => {
+                const index_a = category_names.findIndex(c => c === a[1]);
+                const index_b = category_names.findIndex(c => c === b[1]);
+                return (index_a === index_b ? 0 : index_a > index_b ? 1 : -1);
+            });
+        }
+
+        return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
     getTradeTypes(market, submarket, symbol, trade_type_category) {

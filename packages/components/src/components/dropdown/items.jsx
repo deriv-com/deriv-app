@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import Popover             from 'Components/dummy.jsx';
+import Popover             from 'Components/popover';
 
 const Items = ({
     index,

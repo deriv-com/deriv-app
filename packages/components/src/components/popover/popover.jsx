@@ -1,20 +1,21 @@
 import classNames    from 'classnames';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import Icon          from 'Assets/icon.jsx';
 import PopoverBubble from './popover-bubble.jsx';
+import Icon          from '../dummy.jsx';
+import './popover.scss';
 
 class Popover extends React.PureComponent {
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
+        this.state            = {
             is_open         : false,
             target_rectangle: null,
         };
         this.target_reference = React.createRef();
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.setState({
             is_open         : this.props.has_error,
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
@@ -26,11 +27,11 @@ class Popover extends React.PureComponent {
             is_open         : Boolean(this.props.message),
             target_rectangle: this.target_reference.current.getBoundingClientRect(),
         });
-    }
+    };
 
     toggleClose = () => this.setState({ is_open: false });
 
-    render() {
+    render () {
         const {
             alignment,
             children,
@@ -48,21 +49,21 @@ class Popover extends React.PureComponent {
         const icon_class_name = classNames(classNameTargetIcon, icon);
         return (
             <div
-                className='popover'
+                className='dc-popover'
                 id={id}
                 onMouseEnter={this.toggleOpen}
                 onMouseLeave={this.toggleClose}
             >
-                <div className={classNames(classNameTarget, 'popover__target')} ref={this.target_reference}>
-                    { !disable_target_icon &&
-                        <i className={message ? 'popover__target__icon' : 'popover__target__icon--disabled'}>
-                            {(icon === 'info')     && <Icon icon='IconInfoOutline' className={icon_class_name} /> }
-                            {(icon === 'question') && <Icon icon='IconQuestion'    className={icon_class_name} />}
-                            {(icon === 'dot')      && <Icon icon='IconRedDot'      className={icon_class_name} />}
-                        </i>
+                <div className={classNames(classNameTarget, 'dc-popover__target')} ref={this.target_reference}>
+                    {!disable_target_icon &&
+                    <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
+                        {(icon === 'info') && <Icon icon='IconInfoOutline' className={icon_class_name} />}
+                        {(icon === 'question') && <Icon icon='IconQuestion' className={icon_class_name} />}
+                        {(icon === 'dot') && <Icon icon='IconRedDot' className={icon_class_name} />}
+                    </i>
                     }
 
-                    { children }
+                    {children}
                 </div>
 
                 <PopoverBubble
@@ -71,15 +72,20 @@ class Popover extends React.PureComponent {
                     has_error={has_error}
                     icon={icon}
                     id={`${id}_bubble`}
-                    is_open={this.state.is_open}
+                    is_open={true}
                     target_rectangle={this.state.target_rectangle}
                     margin={margin}
                     message={message}
+                    portal_container={this.props.portal_container}
                 />
             </div>
         );
     }
 }
+
+Popover.defaultProps = {
+    portal_container: 'deriv_app',
+};
 
 Popover.propTypes = {
     alignment          : PropTypes.string,
@@ -93,6 +99,7 @@ Popover.propTypes = {
     id                 : PropTypes.string,
     margin             : PropTypes.number,
     message            : PropTypes.string,
+    portal_container   : PropTypes.string,
 };
 
 export default Popover;

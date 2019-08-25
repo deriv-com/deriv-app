@@ -17,7 +17,7 @@ class SymbolSpan extends Component {
             <span
                 name={this.props.name}
                 value={this.props.value}
-                className='dropdown__display-text'
+                className='dc-dropdown__display-text'
             >
                 {getDisplayText(this.props.list, this.props.value)}
             </span>

@@ -89,9 +89,19 @@ export default class ActiveSymbols {
     }
 
     getMarketDropdownOptions() {
-        const market_options = Object.keys(this.processed_symbols).map(market_name => {
-            const market = this.processed_symbols[market_name];
-            return [market.display_name, market_name];
+        const market_options = [];
+        
+        Object.keys(this.processed_symbols).forEach(market_name => {
+            const submarkets = this.getSubmarketDropdownOptions(market_name);
+            const is_closed = submarkets.every(submarket_option => {
+                const symbol_options = this.getSymbolDropdownOptions(submarket_option[1]);
+                return symbol_options.every(symbol_option => !this.trading_times.isMarketOpened(symbol_option[1]));
+            });
+
+            if (!is_closed) {
+                const market = this.processed_symbols[market_name];
+                market_options.push([market.display_name, market_name]);
+            }
         });
 
         return (market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options);
@@ -99,14 +109,19 @@ export default class ActiveSymbols {
 
     getSubmarketDropdownOptions(market) {
         const submarket_options = [];
-        const market_obj = this.processed_symbols[market];
+        const market_obj        = this.processed_symbols[market];
 
         if (market_obj) {
             const { submarkets } = market_obj;
 
-            submarket_options.push(...Object.keys(submarkets).map(submarket_name => {
-                return [submarkets[submarket_name].display_name, submarket_name];
-            }));
+            Object.keys(submarkets).forEach(submarket_name => {
+                const symbols   = this.getSymbolDropdownOptions(submarket_name);
+                const is_closed = symbols.every(symbol_option => !this.trading_times.isMarketOpened(symbol_option[1]));
+
+                if (!is_closed) {
+                    submarket_options.push([submarkets[submarket_name].display_name, submarket_name]);
+                }
+            });
         }
 
         return (submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options);

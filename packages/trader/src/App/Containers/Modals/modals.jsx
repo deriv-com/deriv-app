@@ -7,7 +7,7 @@ import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnava
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
 
-// const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'./Containers/AccountSignupModal'));
+const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
 
 const Modals = ({
     clearPurchaseInfo,
@@ -82,7 +82,7 @@ const Modals = ({
                 is_visible={is_services_error_visible}
             />
             {/* TODO: Enable AccountSignupModal once its UI component is ready */}
-            {/* <AccountSignupModal /> */}
+            <AccountSignupModal />
         </React.Fragment>
     );
 };

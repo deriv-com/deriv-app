@@ -1,7 +1,7 @@
-const StyleLintPlugin      = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path                 = require('path');
+const path = require('path');
 
 const is_serve = process.env.BUILD_MODE === 'serve';
 
@@ -9,10 +9,13 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button  : path.resolve(__dirname, 'src', 'components/button/index.js'),
-        label   : path.resolve(__dirname, 'src', 'components/label/index.js'),
-        dropdown: path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
-        popover : path.resolve(__dirname, 'src', 'components/popover/index.js'),
+        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
+        popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -103,6 +106,7 @@ module.exports = {
         new SpriteLoaderPlugin(),
     ],
     externals: {
+        formik: 'formik',
         mobx : 'mobx',
         react: {
             root     : 'React',
@@ -120,6 +124,5 @@ module.exports = {
             root     : 'mobxReact',
         },
         'babel-polyfill': 'babel-polyfill',
-
     },
 };

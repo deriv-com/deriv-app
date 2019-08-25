@@ -2,6 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import Popover             from 'Components/popover';
+import './list.scss';
 
 const Items = ({
     index,
@@ -16,10 +17,10 @@ const Items = ({
     return (
         <div
             className={classNames(
-                'list__item',
-                { 'list__item--highlighted': idx === index },
-                { 'list__item--selected': value === item.value },
-                { 'list__item--disabled': item.disabled }
+                'dc-list__item',
+                { 'dc-list__item--highlighted': idx === index },
+                { 'dc-list__item--selected': value === item.value },
+                { 'dc-list__item--disabled': item.disabled }
             )}
             name={name}
             value={item.value}
@@ -34,7 +35,7 @@ const Items = ({
                     <span
                         className={classNames(
                             'symbols',
-                            'list__item-symbol',
+                            'dc-list__item-symbol',
                             symbol_type_class_name
                         )}
                     />
@@ -45,14 +46,14 @@ const Items = ({
                 <span
                     className={classNames(
                         'symbols',
-                        'list__item-text',
+                        'dc-list__item-text',
                         symbol_type_class_name,
                     )}
                 />
             }
 
             {!has_symbol &&
-                <span className='list__item-text'>{item.text}</span>
+                <span className='dc-list__item-text'>{item.text}</span>
             }
         </div>
     );

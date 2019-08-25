@@ -43,27 +43,27 @@ class Dropdown extends React.PureComponent {
     }
 
     get container_class_name () {
-        return classNames('dropdown-container',
+        return classNames('dc-dropdown-container',
             this.props.className, {
-                'dropdown--left'    : this.props.is_alignment_left,
-                'dropdown--show'    : this.state.is_list_visible,
-                'dropdown--disabled': this.is_single_option,
+                'dc-dropdown--left'    : this.props.is_alignment_left,
+                'dc-dropdown--show'    : this.state.is_list_visible,
+                'dc-dropdown--disabled': this.is_single_option,
             },
         );
     }
 
     get dropdown_display_class_name () {
-        return classNames('dropdown__display',
+        return classNames('dc-dropdown__display',
             this.props.classNameDisplay, {
-                'dropdown__display--clicked'   : this.state.is_list_visible,
-                'dropdown__display--has-symbol': this.props.has_symbol,
+                'dc-dropdown__display--clicked'   : this.state.is_list_visible,
+                'dc-dropdown__display--has-symbol': this.props.has_symbol,
             },
         );
     }
 
     get dropdown_list_class_names () {
-        return classNames('dropdown__list', {
-            'dropdown__list--left': this.props.is_alignment_left,
+        return classNames('dc-dropdown__list', {
+            'dc-dropdown__list--left': this.props.is_alignment_left,
         });
     }
 
@@ -75,14 +75,14 @@ class Dropdown extends React.PureComponent {
 
     get transition_class_names () {
         return {
-            enter: `dropdown__list--enter${this.props.is_alignment_left
-                ? ' dropdown__list--left--enter'
+            enter: `dc-dropdown__list--enter${this.props.is_alignment_left
+                ? ' dc-dropdown__list--left--enter'
                 : ''}`,
-            enterDone: `dropdown__list--enter-done${this.props.is_alignment_left
-                ? ' dropdown__list--left--enter-done'
+            enterDone: `dc-dropdown__list--enter-done${this.props.is_alignment_left
+                ? ' dc-dropdown__list--left--enter-done'
                 : ''}`,
-            exit: `dropdown__list--exit${this.props.is_alignment_left
-                ? ' dropdown__list--left--exit'
+            exit: `dc-dropdown__list--exit${this.props.is_alignment_left
+                ? ' dc-dropdown__list--left--exit'
                 : ''}`,
         };
     }
@@ -253,8 +253,8 @@ class Dropdown extends React.PureComponent {
                 {
                     !this.is_single_option && <Icon
                         icon='IconArrow'
-                        className={classNames('dropdown__select-arrow', {
-                            'dropdown__select-arrow--left': this.props.is_alignment_left,
+                        className={classNames('dc-dropdown__select-arrow', {
+                            'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
                         })}
                     />
                 }

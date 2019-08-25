@@ -1,1 +1,1 @@
-export Popover from './popover.jsx';
+export default from './popover.jsx';

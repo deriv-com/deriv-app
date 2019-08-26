@@ -164,8 +164,8 @@ const config = {
             },
         ],
     },
-    barrierTypes: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
-    ohlcFields  : [
+    BARRIER_TYPES: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
+    ohlcFields   : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
         [translate('Low'), 'low'],

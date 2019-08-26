@@ -66,8 +66,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         this.selected_trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_duration            = this.getFieldValue('DURATIONTYPE_LIST');
         this.selected_barrier_types       = [
-            this.getFieldValue('BARRIERTYPE_LIST') || config.barrierTypes[0][1],
-            this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.barrierTypes[1][1],
+            this.getFieldValue('BARRIERTYPE_LIST') || config.BARRIER_TYPES[0][1],
+            this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
         if (
@@ -75,22 +75,24 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             (event.type === Blockly.Events.END_DRAG && event.blockId === this.id)
         ) {
             this.updateBarrierInputs();
-            this.enforceSingleBarrierType('BARRIERTYPE_LIST');
+            this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
             this.updateDurationInput(true);
             this.updatePredictionInput();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'DURATIONTYPE_LIST') {
                 // Update barrier suggested values when changing duration unit.
                 this.updateBarrierInputs();
+                this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
                 // Update duration minimum amount when changing duration unit.
                 this.updateDurationInput(false);
             } else if (event.name === 'BARRIERTYPE_LIST' || event.name === 'SECONDBARRIERTYPE_LIST') {
-                this.enforceSingleBarrierType(event.name);
                 // Update barrier suggested values when changing barrier type.
                 this.updateBarrierInputs();
+                this.enforceSingleBarrierType(event.name, false);
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 // Update durations, barriers, and prediction when changing the trade type.
                 this.updateBarrierInputs();
+                this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
                 this.updateDurationInput(true);
                 this.updatePredictionInput();
             }
@@ -132,7 +134,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             } else {
                 input = this.appendValueInput(input_names[i])
                     .appendField(label, `${input_names[i]}_LABEL`)
-                    .appendField(new Blockly.FieldDropdown(config.barrierTypes), `${input_names[i]}TYPE_LIST`);
+                    .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
 
                 const shadow_block = this.workspace.newBlock('math_number');
 
@@ -142,7 +144,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 shadow_block.initSvg();
                 shadow_block.render(true);
             }
-            
         }
 
         // Remove any extra inputs (quietly) if not required
@@ -194,15 +195,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
             for (let i = 0; i < barriers.values.length; i++) {
                 const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
-                const { ABSOLUTE_BARRIER_DROPDOWN_OPTION, barrierTypes } = config;
+                const { ABSOLUTE_BARRIER_DROPDOWN_OPTION, BARRIER_TYPES } = config;
                 
                 if (this.selected_duration === 'd') {
                     barrier_field_dropdown.updateOptions(ABSOLUTE_BARRIER_DROPDOWN_OPTION, 'absolute');
                 } else if (barriers.allow_both_types || barriers.allow_absolute_type) {
-                    const options = [].concat(barrierTypes, ABSOLUTE_BARRIER_DROPDOWN_OPTION);
+                    const options = [].concat(BARRIER_TYPES, ABSOLUTE_BARRIER_DROPDOWN_OPTION);
                     barrier_field_dropdown.updateOptions(options, barrier_field_dropdown.getValue());
                 } else {
-                    barrier_field_dropdown.updateOptions(barrierTypes, barrier_field_dropdown.getValue());
+                    barrier_field_dropdown.updateOptions(BARRIER_TYPES, barrier_field_dropdown.getValue());
                 }
 
                 const { connection } = this.getInput(input_names[i]);
@@ -238,21 +239,26 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         });
     },
-    enforceSingleBarrierType(barrier_input_name) {
+    enforceSingleBarrierType(barrier_input_name, should_force_distinct = false) {
         const new_value                = this.getFieldValue(barrier_input_name);
         const other_barrier_input_name = barrier_input_name === 'BARRIERTYPE_LIST' ? 'SECONDBARRIERTYPE_LIST' : 'BARRIERTYPE_LIST';
         const other_barrier_field      = this.getField(other_barrier_input_name);
+        const { BARRIER_TYPES }        = config;
 
         if (other_barrier_field) {
+            const has_other_barrier = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
             const other_barrier_type = other_barrier_field.getValue();
 
-            if (config.barrierTypes.findIndex(type => type[1] === new_value) !== -1 && other_barrier_type === 'absolute') {
-                const other_barrier_value = config.barrierTypes.find(type => type[1] !== new_value);
+            Blockly.Events.disable();
 
+            if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
+                const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
                 other_barrier_field.setValue(other_barrier_value[1]);
             } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
                 other_barrier_field.setValue('absolute');
             }
+
+            Blockly.Events.enable();
         }
     },
     domToMutation(xmlElement) {

@@ -224,7 +224,7 @@ export default class SmartChartStore extends BaseStore {
             if (this.trade_chart_symbol !== this.root_store.modules.trade.symbol) {
                 this.root_store.modules.trade.symbol = this.trade_chart_symbol;
             }
-            WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal());
+            WS.forgetAll('proposal').then(this.root_store.modules.trade.requestProposal({reuse: true}));
 
             // Clear chart loading status once ChartListener returns ready
             if (this.is_chart_ready) {

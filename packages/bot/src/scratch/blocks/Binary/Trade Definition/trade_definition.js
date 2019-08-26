@@ -5,7 +5,10 @@ import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition() {
+        return {
             message0: translate('%1 (1) Define your trade contract %2'),
             message1: '%1',
             message2: translate('Run Once at Start: %1'),
@@ -56,7 +59,15 @@ Blockly.Blocks.trade_definition = {
             colour         : '#2a3052',
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Trade Definition tooltip'),
+            category       : Blockly.Categories.Trade_Definition,
+        };
+    },
+    meta() {
+        return {
+            'display_name': translate('Trade Definition'),
+            'description' : translate('Define market type, stake, trade type and duration in trade'),
+        };
     },
     onchange(event) {
         setBlockTextColor(this);

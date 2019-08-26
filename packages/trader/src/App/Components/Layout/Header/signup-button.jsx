@@ -1,9 +1,8 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { localize }        from 'App/i18n';
-import { urlFor }          from '_common/url';
-import Button              from 'deriv-components/lib/button';
+import classNames   from 'classnames';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { Button }   from 'deriv-components';
+import { localize } from 'App/i18n';
 
 const SignupButton = ({ className }) => (
     <Button
@@ -11,7 +10,7 @@ const SignupButton = ({ className }) => (
         className={classNames(className, 'btn--primary btn--primary--orange')}
         has_effect
         text={localize('Sign up')}
-        onClick={() => { window.open(urlFor('new-account', undefined, undefined, true)); }}
+        onClick={() => { window.open('https://deriv.com'); }}
     />
 );
 

@@ -2,7 +2,6 @@ import {
     action,
     extendObservable,
     observable,
-    toJS,
 } from 'mobx';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
@@ -17,7 +16,6 @@ import {
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import contract from '../../../Modules/Contract/Containers/contract';
 
 export default class ContractStore {
 
@@ -37,8 +35,7 @@ export default class ContractStore {
 
     // TODO: see how to handle errors.
     @observable error_message = '';
-    // ---- Replay Contract Config ----
-    @observable contract_id;
+
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
     @observable end_time = null;

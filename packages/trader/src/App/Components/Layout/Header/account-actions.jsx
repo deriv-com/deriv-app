@@ -2,8 +2,7 @@ import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-import Button               from 'deriv-components/lib/button';
-import Lazy                 from 'App/Containers/Lazy';
+import { Button }           from 'deriv-components';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
@@ -16,13 +15,13 @@ const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info",
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
         return (
-            nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
+            // nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
             nextProps.balance !== this.props.balance ||
             nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            // nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid
@@ -36,7 +35,6 @@ export class AccountActions extends Component {
             can_upgrade,
             can_upgrade_to,
             currency,
-            // hideFullBlur,
             is_acc_switcher_on,
             // is_cashier_modal_on,
             is_logged_in,
@@ -45,7 +43,6 @@ export class AccountActions extends Component {
             onClickUpgrade,
             toggleAccountsDialog,
             // toggleCashierModal,
-            // showFullBlur,
         } = this.props;
         if (is_logged_in) {
             return (
@@ -76,8 +73,6 @@ export class AccountActions extends Component {
                     {/*    className='acc-info__button' */}
                     {/*    toggleCashier={toggleCashierModal} */}
                     {/*    is_cashier_visible={is_cashier_modal_on} */}
-                    {/*    showFullBlur={showFullBlur} */}
-                    {/*    hideFullBlur={hideFullBlur} */}
                     {/* /> */}
                     {/* } */}
                     {!(
@@ -109,19 +104,17 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
-    active_cashier_tab  : PropTypes.any,
+    // active_cashier_tab  : PropTypes.any,
     balance             : PropTypes.any,
     can_upgrade         : PropTypes.any,
     can_upgrade_to      : PropTypes.any,
     currency            : PropTypes.any,
-    hideFullBlur        : PropTypes.any,
     is_acc_switcher_on  : PropTypes.any,
-    is_cashier_modal_on : PropTypes.any,
+    // is_cashier_modal_on : PropTypes.any,
     is_logged_in        : PropTypes.any,
     is_virtual          : PropTypes.any,
     loginid             : PropTypes.any,
     onClickUpgrade      : PropTypes.any,
-    showFullBlur        : PropTypes.any,
     toggleAccountsDialog: PropTypes.any,
-    toggleCashierModal  : PropTypes.any,
+    // toggleCashierModal  : PropTypes.any,
 };

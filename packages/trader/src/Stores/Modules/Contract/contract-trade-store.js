@@ -11,20 +11,13 @@ import BaseStore         from '../../base-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
+    @observable contracts = [];
+    @observable has_error     = false;
+    @observable error_message = '';
 
     // Chart specific observables
     @observable granularity;
     @observable chart_type;
-
-    @observable contract_id;
-    @observable contract_info = observable.object({});
-    // @observable digits_info   = observable.object({});
-
-    @observable has_error     = false;
-    @observable error_message = '';
-
-    // ---- Normal properties ---
-    is_ongoing_contract = false;
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
@@ -55,8 +48,6 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
-    @observable contracts = [];
-
     @computed
     get markers_array() {
         return this.contracts.reduce((array, contract) => {
@@ -78,15 +69,8 @@ export default class ContractTradeStore extends BaseStore {
         const contract = new ContractStore(this.root_store, { contract_id });
         contract.populateConfig({ date_start: start_time, longcode, contract_type });
         this.contracts.push(contract);
-
-        // TODO: handle proposal for mulitple contracts.
-        // if (this.contract_id) {
-        //     this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-        //     this.contract_id = null;
-        // }
-        this.contract_id = contract_id;
         BinarySocket.wait('authorize').then(() => {
-            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
+            this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);
         });
     }
 
@@ -100,14 +84,34 @@ export default class ContractTradeStore extends BaseStore {
         this.disposeSwitchAccount();
         // TODO: don't forget the tick history when switching to contract-replay-store
         // TODO: don't forget the POC when switching to contract-replay-store
-        if (this.contract_id) {
-            this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-            this.contract_id = null;
+        if (this.contracts.length > 0) {
+            this.contracts.forEach(contract =>  {
+                const { contract_id, is_forgotten, is_ended } = contract;
+                if (contract_id && !is_forgotten && is_ended) {
+                    this.forgetProposalOpenContract(contract_id, this.updateProposal);
+                    // once contract for the id is forgotten, add flag to indicate it's already forgotten
+                    contract.is_forgotten = true;
+                }
+            });
         }
     }
 
     @action.bound
     updateProposal(response) {
+        if ('error' in response) {
+            this.has_error     = true;
+            this.error_message = response.error.message;
+            return;
+        }
+        // Empty response means the contract belongs to a different account
+        if (isEmptyObject(response.proposal_open_contract)) {
+            this.has_error           = true;
+            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
+            this.should_forget_first = true;
+            // If contract does not belong to this account
+            this.contracts           = [];
+            return;
+        }
         // Update the contract-store corresponding to this POC
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
@@ -117,36 +121,12 @@ export default class ContractTradeStore extends BaseStore {
                 }
             });
         }
-        if ('error' in response) {
-            this.has_error     = true;
-            this.error_message = response.error.message;
-            this.contract_info = {};
-            return;
-        }
-        // Empty response means the contract belongs to a different account
-        if (isEmptyObject(response.proposal_open_contract)) {
-            this.has_error           = true;
-            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
-            this.should_forget_first = true;
-            this.contract_info       = {};
-            this.contract_id         = null;
-            return;
-        }
-        if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
-
-        this.contract_info = response.proposal_open_contract;
-
-        // TODO: fix this for multiple contracts
-        // Set contract symbol if trade_symbol and contract_symbol don't match
-        if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-            this.root_store.modules.trade.symbol = this.contract_info.underlying;
-        }
     }
 
     @computed
     get last_contract() {
-        const len = this.contracts.length;
-        return len > 0 ? this.contracts[len - 1] : { };
+        const length = this.contracts.length;
+        return length > 0 ? this.contracts[length - 1] : { };
     }
 
     forgetProposalOpenContract = (contract_id, cb) => {
@@ -154,13 +134,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    removeErrorMessage() {
-        delete this.error_message;
-    }
-
-    @action.bound
     clearError() {
-        this.error_message = null;
         this.has_error = false;
+        this.error_message = null;
     }
 }

@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_whileUntil = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('repeat %1 %2'),
             args0   : [
                 {
@@ -28,7 +31,15 @@ Blockly.Blocks.controls_whileUntil = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Control While Tooltip'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Control While'),
+            'description' : translate('Control While Description'),
+        };
     },
 };
 

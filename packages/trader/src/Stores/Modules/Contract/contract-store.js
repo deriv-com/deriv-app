@@ -127,15 +127,16 @@ function calculate_markers(contract_info) {
     if (!contract_info) { return []; }
     const result = [];
     // console.warn(toJS(contract_info));
-    const { tick_stream, contract_id, date_start, contract_type, exit_tick_time } = contract_info;
+    const { tick_stream, contract_id, date_start } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     if (date_start) {
         result.push({
-            contract_type,
-            exit_tick_time,
-            type       : 'SpotMarker',
-            key        : `${contract_id}-date_start`,
-            epoch_array: [date_start, ...ticks_epoch_array],
+            contract_info: toJS(contract_info),
+            // contract_type,
+            // exit_tick_time,
+            type         : 'SpotMarker',
+            key          : `${contract_id}-date_start`,
+            epoch_array  : [date_start, ...ticks_epoch_array],
         });
     }
     return result;

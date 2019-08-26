@@ -42,10 +42,16 @@ const config = {
             [translate('Error'), 'error'],
             [translate('Severe error'), 'severe-error'],
         ],
-        CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD'], ...CRYPTO_CURRENCIES.map(c => [c, c])],
+        CURRENCY: [
+            ['USD', 'USD'],
+            ['EUR', 'EUR'],
+            ['GBP', 'GBP'],
+            ['AUD', 'AUD'],
+            ...CRYPTO_CURRENCIES.map(c => [c, c]),
+        ],
     },
     opposites: {
-        RISEFALL: [
+        CALLPUT: [
             {
                 CALL: translate('Rise'),
             },
@@ -53,7 +59,7 @@ const config = {
                 PUT: translate('Fall'),
             },
         ],
-        RISEFALLEQUALS: [
+        CALLPUTEQUAL: [
             {
                 CALLE: translate('Rise Equals'),
             },
@@ -181,10 +187,14 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks        : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
-    conditionsCategory: {
-        callput      : ['risefall', 'higherlower'],
-        callputequal : ['risefallequals'],
+    mainBlocks                             : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
+    TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
+        callput: ['callput', 'higherlower'],
+        asian  : ['asians'],
+        digits : ['matchesdiffers', 'evenodd', 'overunder'],
+    },
+    TRADE_TYPE_CATEGORIES: {
+        callput      : ['callput', 'callputequal', 'higherlower'],
         touchnotouch : ['touchnotouch'],
         inout        : ['endsinout', 'staysinout'],
         asian        : ['asians'],
@@ -194,9 +204,8 @@ const config = {
         highlowticks : ['highlowticks'],
         runs         : ['runs'],
     },
-    conditionsCategoryName: {
+    TRADE_TYPE_CATEGORY_NAMES: {
         callput      : translate('Up/Down'),
-        callputequal : translate('Up/Down Equals'),
         touchnotouch : translate('Touch/No Touch'),
         inout        : translate('In/Out'),
         asian        : translate('Asians'),
@@ -207,8 +216,8 @@ const config = {
         runs         : translate('Only Ups/Only Downs'),
     },
     conditions: [
-        'risefall',
-        'risefallequals',
+        'callput',
+        'callputequal',
         'higherlower',
         'touchnotouch',
         'endsinout',
@@ -219,8 +228,8 @@ const config = {
         'overunder',
         'callputspread',
     ],
-    barrierCategories: {
-        euro_atm     : ['callput', 'risefall', 'risefallequals'],
+    BARRIER_CATEGORIES: {
+        euro_atm     : ['callput', 'callputequal'],
         euro_non_atm : ['endsinout', 'higherlower', 'callputspread'],
         american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],

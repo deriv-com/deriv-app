@@ -9,7 +9,7 @@ const FlyoutText = props => {
     );
 };
 
-FlyoutText.PropTypes = {
+FlyoutText.propTypes = {
     text: PropTypes.string,
 };
 

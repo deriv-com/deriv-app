@@ -1,11 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import FlyoutBlock from './flyout-block.jsx';
-import { connect } from '../stores/connect';
-import { translate } from '../utils/lang/i18n';
-import * as config from '../scratch/help-content/help-content.config';
-import '../assets/sass/scratch/flyout.scss';
-import HelpBase from '../scratch/help-content/flyout-help-base.jsx';
+import React                from 'react';
+import PropTypes            from 'prop-types';
+import FlyoutBlockGroup     from './flyout-block-group.jsx';
+import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
+import { connect }          from '../stores/connect';
+import * as config          from '../scratch/help-content/help-content.config';
+import                           '../assets/sass/scratch/flyout.scss';
 
 const Flyout = ({
     is_help_content,
@@ -22,7 +21,7 @@ const Flyout = ({
         >
             {
                 is_help_content ?
-                    <HelpBase nodes={block_nodes} /> :
+                    <HelpBase block_nodes={block_nodes} /> :
                     Object.keys(flyout_content).map((key, index) => {
                         const nodes = flyout_content[key];
                         const node = nodes[0];
@@ -31,11 +30,16 @@ const Flyout = ({
                         switch (tag_name) {
                             case Blockly.Xml.NODE_BLOCK: {
                                 const block_type = node.getAttribute('type');
+                                let flyout_block_key = `${block_type} ${index}`;
+                                if (Blockly.Block.isDynamic(block_type)) {
+                                    flyout_block_key = `${block_type} ${Math.random()}`;
+                                }
+
                                 return (
-                                    <FlyoutBlock
-                                        key={`${block_type} ${Math.random()}`}
+                                    <FlyoutBlockGroup
+                                        key={flyout_block_key}
                                         id={`flyout__item-workspace--${index}`}
-                                        block_node={nodes}
+                                        block_nodes={nodes}
                                         onInfoClick={
                                             config[block_type]
                                             && (() => showHelpContent(nodes))
@@ -59,7 +63,7 @@ const Flyout = ({
                                 return (
                                     <button
                                         key={`${callback_key}${index}`}
-                                        className='flyout__button'
+                                        className='flyout__button flyout__button-new'
                                         onClick={(button) => {
                                             const flyout_button = button;
 
@@ -77,7 +81,7 @@ const Flyout = ({
                                 );
                             }
                             default:
-                                return <div>{translate('Something went wrong')}</div>;
+                                return null;
                         }
                     })
             }

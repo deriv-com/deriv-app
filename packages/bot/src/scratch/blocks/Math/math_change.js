@@ -1,4 +1,4 @@
-import { translate }    from '../../../utils/lang/i18n';
+import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_change = {
     /**

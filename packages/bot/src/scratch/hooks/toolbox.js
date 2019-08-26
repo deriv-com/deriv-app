@@ -198,13 +198,13 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content.blocks = flyout_content.blocks.concat(uniqueProceBlocks);
     } else {
         const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
-        flyout_content = Blockly.Toolbox.getContent(selected_category, this.workspace_);
+        flyout_content = this.getCategoryContents(selected_category, this.workspace_);
     }
 
     flyout.setContents(flyout_content);
 };
 
-Blockly.Toolbox.getContent = function(selected_category, workspace) {
+Blockly.Toolbox.prototype.getCategoryContents = function(selected_category, workspace) {
     let xml_list = selected_category.getContents();
 
     // Dynamic categories
@@ -238,9 +238,9 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * Opens the selected category
  * deriv-bot: Category-specific flyouts + removed opt_shouldScroll
  * @param {Blockly.Toolbox.Category} item The category to select.
- * @param {boolean} closeOnSameCat Close when select the same category
+ * @param {boolean} should_close_on_same_category Close when select the same category
  */
-Blockly.Toolbox.prototype.setSelectedItem = function (item, closeOnSame = true) {
+Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
     const category_item = item;
     if (category_item === 'search'){
         if (this.selectedItem_) {
@@ -261,7 +261,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, closeOnSame = true) 
             !item.is_category_return_ &&
             !item.has_child_category_ &&
             this.selectedItem_.id_ === item.id_ &&
-            closeOnSame
+            should_close_on_same_category
         ) {
             this.selectedItem_ = null;
             if (flyout.is_visible) {

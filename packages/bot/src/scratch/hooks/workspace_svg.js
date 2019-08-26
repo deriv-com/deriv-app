@@ -79,7 +79,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     }
 
     if (/^procedures_/.test(block_node.getAttribute('type'))) {
-        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const toolbox = this.toolbox_;
         toolbox.refreshCategory();
     }
 
@@ -87,6 +87,6 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
 }
 
 Blockly.WorkspaceSvg.prototype.reshowFlyout = function () {
-    const toolbox = Blockly.derivWorkspace.toolbox_;
+    const toolbox = this.toolbox_;
     toolbox.refreshCategory();
 }

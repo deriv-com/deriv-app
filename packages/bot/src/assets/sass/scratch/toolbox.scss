@@ -90,7 +90,8 @@ $category-colours: (
         flex-direction: column;
         flex-grow: 1;
         min-height: 0;
-        overflow: hidden;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     &__category-return {
         cursor: pointer;

@@ -112,3 +112,7 @@ Blockly.Block.getDimensions = function(block_node) {
 
     return block_hw;
 };
+
+Blockly.Block.isDynamic = function(block_type) {
+    return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
+};

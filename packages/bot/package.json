@@ -81,7 +81,6 @@
     "sass-resources-loader": "^2.0.1",
     "scratch-blocks": "0.1.0-prerelease.1558719162",
     "sha1": "^1.1.1",
-    "shelljs": "^0.8.3",
     "stylelint": "^10.0.1",
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-webpack-plugin": "^0.10.5",

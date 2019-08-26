@@ -5,11 +5,13 @@ const FlyoutImage = props => {
     const { url } = props;
 
     return (
-        <img src={url} className='flyout__help-img flyout__item' />
+        <div className='flyout__item'>
+            <img src={url} className='flyout__image' />
+        </div>
     );
 };
 
-FlyoutImage.PropTypes = {
+FlyoutImage.propTypes = {
     url: PropTypes.string,
 };
 

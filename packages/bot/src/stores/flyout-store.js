@@ -9,7 +9,6 @@ export default class FlyoutStore {
 
     @observable is_help_content = false;
     @observable block_nodes = [];
-
     @observable flyout_content = [];
     @observable flyout_width = this.flyout_min_width;
     @observable is_visible = false;
@@ -22,20 +21,20 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setContents(xml_list) {
-        this.is_help_content = false;
         let processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
+        this.is_help_content = false;
 
         if (xml_list.type === 'search') {
             const blocks = xml_list.blocks;
-            const no_result = !blocks.length;
+            const has_result = blocks.length;
 
             processed_xml = [];
 
-            if (no_result) {
+            if (!has_result) {
                 const label = document.createElement('label');
                 label.setAttribute('text', translate('No Blocks Found'));
 
@@ -142,51 +141,44 @@ export default class FlyoutStore {
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
     }
 
-    @action.bound onSequenceClick(block_name, type) {
-        const selected_category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
-        const xml_list = Blockly.Toolbox.getContent(selected_category, Blockly.derivWorkspace);
+    @action.bound onSequenceClick(block_name, should_go_next) {
+        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const selected_category = toolbox.getSelectedItem();
+        const xml_list = toolbox.getCategoryContents(selected_category, Blockly.derivWorkspace);
         const xml_list_group = this.groupBy(xml_list, true);
         const current_block = xml_list.find(xml => xml.getAttribute('type') === block_name);
 
-        let current_block_position, block_type;
+        let current_block_index;
+
         Object.keys(xml_list_group).forEach((key, index) => {
             if (current_block.getAttribute('type') === key) {
-                current_block_position = index;
+                current_block_index = index;
             }
         });
         const last_position = Object.keys(xml_list_group).length - 1;
 
-        const adjustIndexOutofBound = (current_position, last) => {
-            let current_pos = current_position;
+        const adjustIndexOutOfBounds = (current_index, last_index) => {
+            let current_pos = current_index;
             if (current_pos < 0) {
-                current_pos = last;
-            } else if (current_pos > last) {
+                current_pos = last_index;
+            } else if (current_pos > last_index) {
                 current_pos = 0;
             }
 
             return current_pos;
         };
 
-        if (type === 'next') {
-            current_block_position += 1;
-            current_block_position = adjustIndexOutofBound(current_block_position, last_position);
-        } else if (type === 'previous') {
-            current_block_position -= 1;
-            current_block_position = adjustIndexOutofBound(current_block_position, last_position);
-        }
+        const increment = should_go_next ? 1 : -1;
 
-        Object.keys(xml_list_group).forEach((key, index) => {
-            if (current_block_position === index) {
-                block_type = key;
-            }
-        });
+        current_block_index = adjustIndexOutOfBounds(current_block_index + increment, last_position);
 
+        const block_type = Object.keys(xml_list_group).find((key, index) => current_block_index === index);
         const target_blocks = xml_list_group[block_type];
+
         this.showHelpContent(target_blocks);
     }
 
     @action.bound showHelpContent(block_node) {
-        this.is_help_content = true;
         Object.keys(block_node).forEach(key => {
             const node = block_node[key];
             const block_hw = Blockly.Block.getDimensions(node);
@@ -197,23 +189,22 @@ export default class FlyoutStore {
 
         this.flyout_width = 600;
         this.block_nodes = block_node;
-
+        this.is_help_content = true;
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    @action.bound groupBy(nodes, onlyBlock = false) {
-        return nodes.reduce(function (groupKey, node) {
+    // eslint-disable-next-line
+    groupBy(nodes, should_include_block_only = false) {
+        return nodes.reduce(function (block_group, node) {
             const type = node.getAttribute('type');
-
-            if (onlyBlock) {
-                if (type !== null) {
-                    (groupKey[type] = groupKey[type] || []).push(node);
-                }
-            } else {
-                (groupKey[type] = groupKey[type] || []).push(node);
+            if (!block_group[type]) {
+                block_group[type] = [];
             }
 
-            return groupKey;
+            if (!should_include_block_only || (should_include_block_only && type !== null)) {
+                block_group[type].push(node);
+            }
+            
+            return block_group;
         }, {});
     }
 }

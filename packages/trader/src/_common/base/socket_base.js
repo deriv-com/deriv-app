@@ -182,6 +182,11 @@ const BinarySocketBase = (() => {
     const activeSymbols = () =>
         promiseRejectToResolve(deriv_api.storage.activeSymbols('brief'));
 
+    const payoutCurrencies = async () => {
+        await expectResponse('authorize');
+        return deriv_api.payoutCurrencies();
+    };
+
     const forgetStream = (id) =>
         promiseRejectToResolve(deriv_api.forget(id));
 
@@ -208,6 +213,7 @@ const BinarySocketBase = (() => {
         statement,
         verifyEmail,
         activeSymbols,
+        payoutCurrencies,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

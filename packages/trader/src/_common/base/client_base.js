@@ -141,7 +141,7 @@ const ClientBase = (() => {
         set('loginid', authorize.loginid);
     };
 
-    const shouldAcceptTnc = (account_settings = State.getResponse('get_settings.client_tnc_status')) => {
+    const shouldAcceptTnc = (account_settings = State.getResponse('get_settings')) => {
         if (get('is_virtual')) return false;
         const website_tnc_version = State.getResponse('website_status.terms_conditions_version');
         const client_tnc_status   = account_settings.client_tnc_status;
@@ -237,7 +237,7 @@ const ClientBase = (() => {
         return (landing_company_object || {})[key];
     };
 
-    const getRiskAssessment = (account_status) => {
+    const getRiskAssessment = (account_status = State.getResponse('get_account_status')) => {
         const status       = account_status.status;
         const is_high_risk = /high/.test(account_status.risk_classification);
 

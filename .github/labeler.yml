@@ -1,9 +1,0 @@
-Trader: packages/trader/**/*
-
-Bot: packages/bot/**/*
-
-Core: packages/core/**/*
-
-Components: packages/components/**/*
-
-Shared: packages/shared/**/*

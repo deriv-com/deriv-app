@@ -594,6 +594,9 @@ export default class ClientStore extends BaseStore {
                     curr1 : response.new_account_virtual.currency,
                 };
                 await this.init(new_user_login);
+
+                // TODO: clean-refresh-trade: Find a way to do this without re-preparing the trade store
+                this.root_store.modules.trade.onMount();
             }
         });
     }

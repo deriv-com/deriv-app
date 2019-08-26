@@ -21,23 +21,33 @@ const parseAssetIndex = assetIndex => {
 };
 
 const getAllowedConditionsOrCategoriesForSymbol = symbol => {
-    let conditions = [];
-    const categories = [];
-    const index = parsedAssetIndex[symbol.toLowerCase()];
-    if (index) {
-        Object.keys(config.conditionsCategory).forEach(conditionName => {
-            if (conditionName in index) {
-                conditions = conditions.concat(config.conditionsCategory[conditionName]);
-                categories.push(conditionName);
-            }
+    const categories   = [];
+    const symbol_index = parsedAssetIndex[symbol.toLowerCase()];
+    let conditions     = [];
+
+    if (symbol_index) {
+        const symbol_trade_types = Object.keys(symbol_index);
+
+        Object.keys(config.TRADE_TYPE_CATEGORIES).forEach(trade_type_category => {
+            const category_trade_types = config.TRADE_TYPE_CATEGORIES[trade_type_category];
+
+            symbol_trade_types.forEach(symbol_trade_type => {
+                if (category_trade_types.includes(symbol_trade_type) || trade_type_category === symbol_trade_type) {
+                    conditions = conditions.concat(category_trade_types);
+
+                    if (!categories.includes(trade_type_category)) {
+                        categories.push(trade_type_category);
+                    }
+                }
+            });
         });
     }
     return { conditions, categories };
 };
 
 const getCategoryForCondition = condition =>
-    Object.keys(config.conditionsCategory).find(
-        category => config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0
+    Object.keys(config.TRADE_TYPE_CATEGORIES).find(
+        category => config.TRADE_TYPE_CATEGORIES[category].indexOf(condition.toLowerCase()) >= 0
     );
 
 export default class _Symbol {
@@ -88,7 +98,7 @@ export default class _Symbol {
     }
 
     getCategoryNameForCondition(condition) {
-        return config.conditionsCategoryName[getCategoryForCondition(condition)];
+        return config.TRADE_TYPE_CATEGORY_NAMES[getCategoryForCondition(condition)];
     }
 
     getAllowedCategories(symbol) {
@@ -97,7 +107,7 @@ export default class _Symbol {
 
     getAllowedCategoryNames(symbol) {
         const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol);
-        return categories.map(el => config.conditionsCategoryName[el]);
+        return categories.map(el => config.TRADE_TYPE_CATEGORY_NAMES[el]);
     }
     /* eslint-enable */
 }

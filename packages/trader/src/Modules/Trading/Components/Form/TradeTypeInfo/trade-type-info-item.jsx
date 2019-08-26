@@ -15,6 +15,7 @@ const TradeTypeInfoItem = ({
     item,
     item_index,
     itemList,
+    itemListLength,
     onBackButtonClick,
     onSubmitButtonClick,
 }) => (
@@ -52,6 +53,7 @@ const TradeTypeInfoItem = ({
                                     <Icon icon='TradeCategories' category={type.value} />
                                 </Scrollbars>
                             </div>
+                            {itemListLength > 1 &&
                             <div>
                                 <Button
                                     id={`dt_contract_info_${item.value}_button`}
@@ -60,11 +62,13 @@ const TradeTypeInfoItem = ({
                                     text={localize('Choose')}
                                 />
                             </div>
+                            }
                         </div>
                     ))
                 }
             </div>
         </div>
+        {itemListLength > 1 &&
         <div className='trade-type-info-navigation'>
             <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
                 <Icon icon='IconChevronLeft' />
@@ -92,6 +96,7 @@ const TradeTypeInfoItem = ({
                 <Icon icon='IconChevronRight' />
             </div>
         </div>
+        }
     </div>
 );
 

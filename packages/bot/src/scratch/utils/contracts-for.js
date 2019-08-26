@@ -3,7 +3,7 @@ import config         from '../../constants/const';
 
 export default class ContractsFor {
     constructor(ws, server_time) {
-        this.cache_age_in_min          = 0;
+        this.cache_age_in_min          = 10;
         this.contracts_for             = {};
         // Below you can disable specific trade types and trade type categories, you may specify
         // market, submarket, symbol, trade_type, and trade_type_category. If one of
@@ -180,6 +180,7 @@ export default class ContractsFor {
             };
 
             this.retrieving_contracts_for[symbol].resolve();
+            delete this.retrieving_contracts_for[symbol];
 
             return filtered_contracts;
         };

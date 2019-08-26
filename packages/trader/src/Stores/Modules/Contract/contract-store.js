@@ -2,6 +2,7 @@ import {
     action,
     extendObservable,
     observable,
+    toJS,
 } from 'mobx';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {

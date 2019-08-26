@@ -1,9 +1,9 @@
 import React                  from 'react';
 import { expect }             from 'chai';
+import { Popover }            from 'deriv-components';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { NetworkStatus }      from '../network-status.jsx';
-import { Popover }            from 'deriv-components';
 
 configure({ adapter: new Adapter() });
 

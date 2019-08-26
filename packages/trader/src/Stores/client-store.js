@@ -585,24 +585,16 @@ export default class ClientStore extends BaseStore {
             } else {
                 cb();
                 // Initialize client store with new user login
+                const { client_id, currency, oauth_token } = response.new_account_virtual;
                 const new_user_login = {
-                    acct1 : response.new_account_virtual.client_id,
-                    token1: response.new_account_virtual.oauth_token,
-                    curr1 : response.new_account_virtual.currency,
+                    acct1 : client_id,
+                    token1: oauth_token,
+                    curr1 : currency,
                 };
                 await this.init(new_user_login);
 
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
-                runInAction(async() => {
-                  await this.root_store.modules.trade.processNewValuesAsync(
-                      { currency: response.new_account_virtual.currency },
-                      true,
-                      { currency: this.root_store.modules.trade.currency },
-                      false,
-                  );
-                  this.root_store.modules.trade.refresh();
-                  this.root_store.modules.trade.debouncedProposal();
-                });
+                this.root_store.modules.trade.initAccountCurrency(currency);
             }
         });
     }

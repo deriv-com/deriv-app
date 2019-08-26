@@ -652,9 +652,26 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    initAccountCurrency(new_currency) {
+        runInAction(async() => {
+            await this.processNewValuesAsync(
+                { currency: new_currency },
+                true,
+                { currency: this.currency },
+                false,
+            );
+            this.refresh();
+            this.debouncedProposal();
+        });
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.is_trade_component_mounted = false;
+        this.refresh();
+        this.resetErrorServices();
+        this.restoreTradeChart();
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
     }

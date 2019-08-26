@@ -104,7 +104,7 @@ const BinarySocketBase = (() => {
         let is_resolved   = true;
         msg_types.forEach((msg_type) => {
             const last_response = State.get(['response', msg_type]);
-            if (last_response && msg_type === 'get_settings') {
+            if (last_response && (msg_type === 'get_settings' || msg_type === 'get_account_status')) {
                 waiting_list.add(msg_type, promise_obj);
                 is_resolved = false;
             } else if (!last_response) {

@@ -179,8 +179,8 @@ const ClientBase = (() => {
         return landing_company_response[landing_company_prop] || {};
     };
 
-    const shouldCompleteTax = () => isAccountOfType('financial') &&
-        !/crs_tin_information/.test((State.getResponse('get_account_status') || {}).status);
+    const shouldCompleteTax = (account_status = State.getResponse('get_account_status')) => isAccountOfType('financial') &&
+        !/crs_tin_information/.test((account_status || {}).status);
 
     // remove manager id or master distinction from group
     // remove EUR or GBP distinction from group
@@ -237,9 +237,9 @@ const ClientBase = (() => {
         return (landing_company_object || {})[key];
     };
 
-    const getRiskAssessment = () => {
-        const status       = State.getResponse('get_account_status.status');
-        const is_high_risk = /high/.test(State.getResponse('get_account_status.risk_classification'));
+    const getRiskAssessment = (account_status) => {
+        const status       = account_status.status;
+        const is_high_risk = /high/.test(account_status.risk_classification);
 
         return (
             isAccountOfType('financial') ?

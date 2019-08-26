@@ -207,19 +207,20 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (document_needs_action) addNotification(client_notifications.document_needs_action);
     if (unwelcome)             addNotification(client_notifications.unwelcome);
     if (is_mf_retail)          addNotification(client_notifications.mf_retail);
+
     if (ukrts_max_turnover_limit_not_set) {
         addNotification(client_notifications.financial_limit);
     }
-    if (getRiskAssessment()) addNotification(client_notifications.risk);
-    if (shouldCompleteTax()) addNotification(client_notifications.tax);
+    if (getRiskAssessment(account_status)) addNotification(client_notifications.risk);
+    if (shouldCompleteTax(account_status)) addNotification(client_notifications.tax);
 
     if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
         addNotification(client_notifications.authenticate);
     }
 
     function getStatusValidations(status_arr) {
-        return status_arr.reduce((validations) => {
-            validations[account_status] = true;
+        return status_arr.reduce((validations, stats) => {
+            validations[stats] = true;
             return validations;
         }, {});
     }
@@ -233,8 +234,8 @@ export const handleClientNotifications = (
     loginid
 ) => {
     const { currency, excluded_until } = client;
-    if (!currency)         addNotification(client_notifications.currency);
-    if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
+    if (!currency)      addNotification(client_notifications.currency);
+    if (excluded_until) addNotification(client_notifications.self_exclusion(excluded_until));
 
     checkAccountStatus(account_status, client, addNotification, loginid);
 

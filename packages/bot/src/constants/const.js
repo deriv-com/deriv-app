@@ -235,7 +235,7 @@ const config = {
     ABSOLUTE_BARRIER_DROPDOWN_OPTION: [[translate('Absolute'), 'absolute']],
     NOT_AVAILABLE_DROPDOWN_OPTIONS  : [[translate('Not available'), 'na']],
     NOT_AVAILABLE_DURATIONS         : [{ display: translate('Not available'), unit: 'na', min: 0 }],
-    BARRIER_TRADE_TYPES             : ['higherlower', 'touchnotouch', 'endsinout', 'stayinout', 'callputspread'],
+    BARRIER_TRADE_TYPES             : ['higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'callputspread'],
     DIGIT_CATEGORIES                : ['digits', 'highlowticks'],
     bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],

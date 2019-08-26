@@ -652,17 +652,15 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    initAccountCurrency(new_currency) {
-        runInAction(async() => {
-            await this.processNewValuesAsync(
-                { currency: new_currency },
-                true,
-                { currency: this.currency },
-                false,
-            );
-            this.refresh();
-            this.debouncedProposal();
-        });
+    async initAccountCurrency(new_currency) {
+        await this.processNewValuesAsync(
+            { currency: new_currency },
+            true,
+            { currency: this.currency },
+            false,
+        );
+        this.refresh();
+        this.debouncedProposal();
     }
 
     @action.bound

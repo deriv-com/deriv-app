@@ -11,21 +11,21 @@ const RawMarkerMaker = (draw_callback) => {
     return Marker;
 };
 
-// const FastMarkerMaker = children => {
-//     const Marker = ({ epoch, price, calculate_price, draw_callback, ...rest }) => {
-//         const onRef = ref => {
-//             if (ref) {
-//                 ref.setPosition({ epoch, price, calculate_price, draw_callback });
-//             }
-//         };
-//         return (
-//             <FastMarker markerRef={onRef}>
-//                 {children(rest)}
-//             </FastMarker>
-//         );
-//     };
-//     return Marker;
-// };
+export const FastMarkerMaker = children => {
+    const Marker = ({ epoch, price, calculate_price, draw_callback, ...rest }) => {
+        const onRef = ref => {
+            if (ref) {
+                ref.setPosition({ epoch, price, calculate_price, draw_callback });
+            }
+        };
+        return (
+            <FastMarker markerRef={onRef}>
+                {children(rest)}
+            </FastMarker>
+        );
+    };
+    return Marker;
+};
 
 /** @param {CanvasRenderingContext2D} ctx */
 const draw_path = (ctx, { top, left, paths }) => {

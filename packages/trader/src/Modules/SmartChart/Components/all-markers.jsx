@@ -11,21 +11,21 @@ const RawMarkerMaker = (draw_callback) => {
     return Marker;
 };
 
-const FastMarkerMaker = children => {
-    const Marker = ({ epoch, price, calculate_price, draw_callback, ...rest }) => {
-        const onRef = ref => {
-            if (ref) {
-                ref.setPosition({ epoch, price, calculate_price, draw_callback });
-            }
-        };
-        return (
-            <FastMarker markerRef={onRef}>
-                {children(rest)}
-            </FastMarker>
-        );
-    };
-    return Marker;
-};
+// const FastMarkerMaker = children => {
+//     const Marker = ({ epoch, price, calculate_price, draw_callback, ...rest }) => {
+//         const onRef = ref => {
+//             if (ref) {
+//                 ref.setPosition({ epoch, price, calculate_price, draw_callback });
+//             }
+//         };
+//         return (
+//             <FastMarker markerRef={onRef}>
+//                 {children(rest)}
+//             </FastMarker>
+//         );
+//     };
+//     return Marker;
+// };
 
 /** @param {CanvasRenderingContext2D} ctx */
 const draw_path = (ctx, { top, left, paths }) => {
@@ -132,12 +132,12 @@ const svgs = {
     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.1464 5.14645C11.3417 4.95118 11.6583 4.95118 11.8536 5.14645C12.0488 5.34171 12.0488 5.65829 11.8536 5.85355L6.85355 10.8536C6.65829 11.0488 6.34171 11.0488 6.14645 10.8536L4.14645 8.85355C3.95118 8.65829 3.95118 8.34171 4.14645 8.14645C4.34171 7.95118 4.65829 7.95118 4.85355 8.14645L6.5 9.79289L11.1464 5.14645Z" fill="white" stroke="white"/>
     </svg>
 
-    `)
+    `),
 };
 
 const SpotMarker = RawMarkerMaker(({
     ctx: context,
-    points: [{ left, top }, ...ticks],
+    points: [{ left }, ...ticks],
     contract_info: {
         contract_type,
         exit_tick_time,
@@ -147,6 +147,8 @@ const SpotMarker = RawMarkerMaker(({
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
+
+    // console.warn(ticks);
 
     const colors = {
         open: '#2196F3',

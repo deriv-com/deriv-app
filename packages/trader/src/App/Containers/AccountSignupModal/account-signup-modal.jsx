@@ -5,8 +5,8 @@ import {
     Autocomplete,
     Input,
     Form,
-    Button }             from 'deriv-components';
-import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+    Button,
+    Dialog }             from 'deriv-components';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
@@ -160,16 +160,20 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
 };
 
-const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccountSignupModal, enableApp }) => {
+const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccountSignupModal, enableApp, disableApp, is_loading }) => {
     return (
-        <FullPageModal is_visible={is_visible}>
+        <Dialog 
+            is_visible={is_visible} 
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_loading={is_loading}>
             <AccountSignup
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
-        </FullPageModal>
+        </Dialog>
     );
 };
 
@@ -184,6 +188,8 @@ export default connect(
         is_visible              : ui.is_account_signup_modal_visible,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         enableApp               : ui.enableApp,
+        disableApp              : ui.disableApp,
+        is_loading              : ui.is_loading,
         onSignup                : client.onSignup,
         residence_list          : client.residence_list,
     }),

@@ -9,11 +9,12 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
-        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
+        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        dialog      : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -80,7 +81,7 @@ module.exports = {
             (!is_serve ? {
                 enforce: 'pre',
                 test   : /\.(js|jsx)$/,
-                exclude: [/node_modules/],
+                exclude: [/node_modules/, /lib/],
                 loader : 'eslint-loader',
                 options: {
                     fix: true,

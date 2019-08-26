@@ -15,6 +15,10 @@ export default class ContractsFor {
                 submarket : 'smart_fx',
                 trade_type: 'higherlower',
             },
+            {
+                submarket : 'minor_pairs',
+                trade_type: 'higherlower',
+            },
             { trade_type_category: 'lookback' },
         ];
         this.retrieving_contracts_for  = {};
@@ -38,45 +42,42 @@ export default class ContractsFor {
         if (contracts_for_category.length > 0) {
             barrier_types.forEach((barrier_type, index) => {
                 const has_selected_offset_type = ['+', '-'].includes(barrier_type);
-                const real_trade_type = (trade_type === 'higherlower' ? 'callput' : trade_type);
+                const real_trade_type = this.getContractCategoryByTradeType(trade_type);
 
                 let contract = contracts_for_category.find(c => {
-                    const {  BARRIER_CATEGORIES, BARRIER_TRADE_TYPES } = config;
+                    const {  BARRIER_CATEGORIES } = config;
                     const barrier_category = Object.keys(BARRIER_CATEGORIES).find(b =>
                         BARRIER_CATEGORIES[b].includes(trade_type)
                     );
 
-                    const conditions = [
-                        c.contract_category === real_trade_type,              // has_matching_category
-                        durations.findIndex(d => d.unit === duration) !== -1, // has_matching_duration
-                        c.barrier_category === barrier_category,              // has_matching_barrier_category
-                    ];
+                    const has_matching_category         = c.contract_category === real_trade_type;
+                    const has_matching_duration         = durations.findIndex(d => d.unit === duration) !== -1;
+                    const has_matching_barrier_category = c.barrier_category === barrier_category;
+                    const has_matching_barrier_type     =
+                        // Match offset type barriers.
+                        (has_selected_offset_type && isOffset(c.barrier || c[barrier_props[index]])) ||
+                        // Match absolute type barriers.
+                        (!has_selected_offset_type && !isOffset(c.barrier || c[barrier_props[index]]));
 
-                    if (BARRIER_TRADE_TYPES.includes(trade_type)) {
-                        const has_matching_barrier_type =
-                            // Match offset type barriers.
-                            has_selected_offset_type && isOffset(c.barrier || c[barrier_props[index]]) ||
-                            // Match absolute type barriers.
-                            !has_selected_offset_type && !isOffset(c.barrier || c[barrier_props[index]]);
-
-                        conditions.push(has_matching_barrier_type);
-                    }
-
-                    return conditions.every(condition => condition);
+                    return (
+                        has_matching_category
+                        && has_matching_duration
+                        && has_matching_barrier_category
+                        && has_matching_barrier_type
+                    );
                 });
 
-                // Absolute barrier value could not be found, fallback to largest available barriers.
+                // Fallback to smallest available barriers if no contract could be found.
                 if (!contract) {
                     contract = contracts_for_category
                         // Retrieve contracts with barriers.
                         .filter(c => c.barrier || c.high_barrier)
-                        // Get contract with largest barriers.
+                        // Get contract with smallest barriers.
                         .sort((a, b) => {
                             const c = a.barrier || a.high_barrier;
                             const d = b.barrier || b.high_barrier;
                             return parseFloat(c) - parseFloat(d);
                         })
-                        .reverse()
                         .shift();
                 }
 

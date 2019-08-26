@@ -25,7 +25,7 @@ export default class ContractsFor {
     async getBarriers(symbol, trade_type, duration, barrier_types) {
         const barriers               = { values: [] };
 
-        if (config.BARRIERLESS_TRADE_CATEGORIES.includes(trade_type)) {
+        if (!config.BARRIER_TRADE_TYPES.includes(trade_type)) {
             return barriers;
         }
 
@@ -41,35 +41,43 @@ export default class ContractsFor {
                 const real_trade_type = (trade_type === 'higherlower' ? 'callput' : trade_type);
 
                 let contract = contracts_for_category.find(c => {
-                    const { BARRIER_CATEGORIES }        = config;
-                    const barrier_category              = Object.keys(BARRIER_CATEGORIES).find(b =>
+                    const {  BARRIER_CATEGORIES, BARRIER_TRADE_TYPES } = config;
+                    const barrier_category = Object.keys(BARRIER_CATEGORIES).find(b =>
                         BARRIER_CATEGORIES[b].includes(trade_type)
                     );
-                    const has_matching_category         = c.contract_category === real_trade_type;
-                    const has_matching_duration         = durations.findIndex(d => d.unit === duration) !== -1;
-                    const has_matching_barrier_category = c.barrier_category === barrier_category;
-                    const has_matching_barrier_type     =
-                        // Match offset type barriers.
-                        has_selected_offset_type && isOffset(c.barrier || c[barrier_props[index]]) ||
-                        // Match absolute type barriers.
-                        !has_selected_offset_type && !isOffset(c.barrier || c[barrier_props[index]]);
 
-                    return (
-                        has_matching_category
-                        && has_matching_duration
-                        && has_matching_barrier_category
-                        && has_matching_barrier_type
-                    );
+                    const conditions = [
+                        c.contract_category === real_trade_type,              // has_matching_category
+                        durations.findIndex(d => d.unit === duration) !== -1, // has_matching_duration
+                        c.barrier_category === barrier_category,              // has_matching_barrier_category
+                    ];
+
+                    if (BARRIER_TRADE_TYPES.includes(trade_type)) {
+                        const has_matching_barrier_type =
+                            // Match offset type barriers.
+                            has_selected_offset_type && isOffset(c.barrier || c[barrier_props[index]]) ||
+                            // Match absolute type barriers.
+                            !has_selected_offset_type && !isOffset(c.barrier || c[barrier_props[index]]);
+
+                        conditions.push(has_matching_barrier_type);
+                    }
+
+                    return conditions.every(condition => condition);
                 });
 
-                // Absolute barrier value could not be found, fallback to smallest available barriers.
+                // Absolute barrier value could not be found, fallback to largest available barriers.
                 if (!contract) {
                     contract = contracts_for_category
+                        // Retrieve contracts with barriers.
+                        .filter(c => c.barrier || c.high_barrier)
+                        // Get contract with largest barriers.
                         .sort((a, b) => {
                             const c = a.barrier || a.high_barrier;
                             const d = b.barrier || b.high_barrier;
                             return parseFloat(c) - parseFloat(d);
-                        }).shift();
+                        })
+                        .reverse()
+                        .shift();
                 }
 
                 if (contract) {

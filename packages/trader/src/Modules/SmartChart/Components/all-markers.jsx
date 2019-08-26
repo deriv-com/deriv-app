@@ -137,7 +137,7 @@ const svgs = {
 
 const SpotMarker = RawMarkerMaker(({
     ctx: context,
-    points: [{ left }, ...ticks],
+    points: [st, ...ticks], // st = start_time tick
     contract_info: {
         contract_type,
         exit_tick_time,
@@ -147,8 +147,6 @@ const SpotMarker = RawMarkerMaker(({
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
-
-    // console.warn(ticks);
 
     const colors = {
         open: '#2196F3',
@@ -163,40 +161,50 @@ const SpotMarker = RawMarkerMaker(({
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    if (ticks.length <= 1) {
-        ctx.fillText('Start Time', left + 5, 21);
+    if (ticks.length <= 1 && st.visible) {
+        ctx.fillText('Start Time', st.left + 5, 21);
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
-        ctx.moveTo(left, 0);
-        ctx.lineTo(left, ctx.canvas.height);
+        ctx.moveTo(st.left, 0);
+        ctx.lineTo(st.left, ctx.canvas.height);
         ctx.stroke();
     }
-
-    if (ticks.length) {
-        const first = ticks[0];
-        const last = ticks[ticks.length - 1];
-        // vertical dashed line
+    if (!ticks.length) {
+        ctx.restore();
+        return;
+    }
+    const first = ticks[0];
+    const last = ticks[ticks.length - 1];
+    // horizontal dashed line
+    if (st.visible || first.visible) {
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
-        ctx.moveTo(left, first.top);
+        ctx.moveTo(st.left, first.top);
         ctx.lineTo(first.left, first.top);
         ctx.stroke();
-        // entry spot
+    }
+    // barrier solid line
+    if (
+        (first.visible && last.visible && last.left - first.left > 16) ||
+        first.visible !== last.visible
+    ) {
         ctx.beginPath();
-        ctx.arc(first.left, first.top, 3, 0, Math.PI * 2);
+        ctx.setLineDash([]);
+        ctx.moveTo(first.left, first.top);
+        ctx.lineTo(last.left, first.top);
+        ctx.stroke();
+    }
+    // entry spot
+    if (first.visible) {
+        ctx.beginPath();
+        ctx.arc(first.left, first.top, 2, 0, Math.PI * 2);
         ctx.fill();
-        if (last.left - first.left > 16) {
-            // barrier solid line
-            ctx.beginPath();
-            ctx.setLineDash([]);
-            ctx.moveTo(first.left, first.top);
-            ctx.lineTo(last.left, first.top);
-            ctx.stroke();
-        }
-        // start-time marker
+    }
+    // start-time marker
+    if (st.visible) {
         draw_path(ctx, {
             top  : first.top - 8,
-            left : left - 8,
+            left : st.left - 8,
             paths: svgs[contract_type]
                 .paths
                 .map(({ points, fill, stroke }) => ({
@@ -205,18 +213,19 @@ const SpotMarker = RawMarkerMaker(({
                     fill: fill !== 'white' ? color : fill,
                 })),
         });
-        // status marker
-        if (
-            last.left - first.left > 16 &&
-            last.epoch * 1 === exit_tick_time * 1 &&
-            status !== 'open'
-        ) {
-            draw_path(ctx, {
-                top  : first.top - 8,
-                left : last.left - 8,
-                paths: svgs[status].paths,
-            });
-        }
+    }
+    // status marker
+    if (
+        last.visible &&
+        last.left - first.left > 16 &&
+        last.epoch * 1 === exit_tick_time * 1 &&
+        status !== 'open'
+    ) {
+        draw_path(ctx, {
+            top  : first.top - 8,
+            left : last.left - 8,
+            paths: svgs[status].paths,
+        });
     }
     ctx.restore();
 });

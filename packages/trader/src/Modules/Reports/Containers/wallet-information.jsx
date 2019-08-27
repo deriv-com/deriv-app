@@ -36,7 +36,7 @@ const WalletInformation = ({
             </span>
             {has_loginid && <span className='current-loginid'>{loginid}</span>}
             {is_website_status_ready &&
-            <Label mode={`${is_virtual ? 'warn-invert' : 'success-invert'}`} size='large'>
+            <Label className='account-wallet__label' mode={`${is_virtual ? 'warn-invert' : 'success-invert'}`} size='large'>
                 <Money amount={balance} currency={currency} />
             </Label>
             }

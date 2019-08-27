@@ -401,6 +401,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
+        WS.forgetAll('balance');
         await BinarySocket.send({ 'authorize': this.getToken() });
         await this.init();
         this.broadcastAccountChange();

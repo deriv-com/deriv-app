@@ -124,17 +124,55 @@ export default class ContractStore {
 function calculate_markers(contract_info) {
     if (!contract_info) { return []; }
     const result = [];
-    // console.warn(toJS(contract_info));
-    const { tick_stream, contract_id, date_start } = contract_info;
+    const {
+        transaction_ids,
+        tick_stream,
+        contract_id,
+        date_start,
+        date_expiry,
+        entry_tick_time,
+        tick_count,
+    } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
-    if (date_start) {
+
+    window.ci = toJS(contract_info);
+    // console.warn(ci);
+
+    if (!date_start) { return result; }
+    // if we have not yet received the first POC response
+    if (!transaction_ids) {
         result.push({
             contract_info: toJS(contract_info),
-            // contract_type,
-            // exit_tick_time,
-            type         : 'SpotMarker',
+            type         : 'TickContract',
+            key          : `${contract_id}-date_start`,
+            epoch_array  : [date_start],
+        });
+        return result;
+    }
+
+    // TickContract
+    if (tick_count >= 1) {
+        result.push({
+            contract_info: toJS(contract_info),
+            type         : 'TickContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start, ...ticks_epoch_array],
+        });
+    }
+    // NonTickContract
+    if (!tick_count) {
+        // getEndTime returns undefined when contract is running.
+        const end_time = getEndTime(contract_info) || date_expiry;
+        // the order of items in epoch_array matches the NonTickContract params.
+        const epoch_array = [date_start, end_time];
+        if (entry_tick_time) {
+            epoch_array.push(entry_tick_time);
+        }
+        result.push({
+            contract_info: toJS(contract_info),
+            type         : 'NonTickContract',
+            key          : `${contract_id}-date_start`,
+            epoch_array,
         });
     }
     return result;

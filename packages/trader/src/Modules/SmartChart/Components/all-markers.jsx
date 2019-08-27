@@ -28,12 +28,32 @@ export const FastMarkerMaker = children => {
     return Marker;
 };
 
-/** @param {CanvasRenderingContext2D} ctx */
-const draw_path = (ctx, { top, left, paths }) => {
-    ctx.save();
-    ctx.translate(left, top);
+function get_color({ status, profit }) {
+    const colors = {
+        open: '#2196F3',
+        won : '#2D9F93',
+        lost: '#EC3F3F',
+    };
+    let color = colors[status || 'open'];
+    if (status === 'open' && profit) {
+        color = colors[profit > 0 ? 'won' : 'lost'];
+    }
+    return color;
+}
 
-    paths.forEach(({ points, fill, stroke }) => {
+/** @param {CanvasRenderingContext2D} ctx */
+const draw_path = (ctx, { zoom, top, left, icon }) => {
+    ctx.save();
+    const scale = zoom ? Math.max(Math.min(zoom / 8, 1),  0.5) : 1;
+
+    ctx.translate(
+        left - icon.width * scale / 2,
+        top - icon.height * scale / 2 ,
+    );
+
+    ctx.scale(scale, scale);
+
+    icon.paths.forEach(({ points, fill, stroke }) => {
         if (fill) { ctx.fillStyle = fill; }
         if (stroke) { ctx.strokeStyle = stroke; }
         ctx.beginPath();
@@ -80,7 +100,7 @@ const draw_path = (ctx, { top, left, paths }) => {
     ctx.restore();
 };
 
-const SpotMarker = RawMarkerMaker(({
+const TickContract = RawMarkerMaker(({
     ctx: context,
     points: [st, ...ticks], // st = start_time tick
     contract_info: {
@@ -88,20 +108,15 @@ const SpotMarker = RawMarkerMaker(({
         exit_tick_time,
         status,
         profit,
+        tick_stream,
     },
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
 
-    const colors = {
-        open: '#2196F3',
-        won : '#2D9F93',
-        lost: '#EC3F3F',
-    };
-    let color = colors[status || 'open'];
-    if (status === 'open' && profit && ticks.length >= 2) {
-        color = colors[profit > 0 ? 'won' : 'lost'];
-    }
+    const tick_count = tick_stream ? tick_stream.length : 0;
+    const color = get_color({ status, profit: tick_count > 1 ? profit : null });
+
     ctx.save();
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
@@ -130,7 +145,7 @@ const SpotMarker = RawMarkerMaker(({
     }
     // barrier solid line
     if (
-        (first.visible && last.visible && last.left - first.left > 16) ||
+        (first.visible && last.visible) ||
         first.visible !== last.visible
     ) {
         ctx.beginPath();
@@ -140,7 +155,7 @@ const SpotMarker = RawMarkerMaker(({
         ctx.stroke();
     }
     // entry spot
-    if (first.visible) {
+    if (first.zoom >= 10 && first.visible) {
         ctx.beginPath();
         ctx.arc(first.left, first.top, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -148,33 +163,100 @@ const SpotMarker = RawMarkerMaker(({
     // start-time marker
     if (st.visible) {
         draw_path(ctx, {
-            top  : first.top - 8,
-            left : st.left - 8,
-            paths: ICONS[contract_type]
-                .paths
-                .map(({ points, fill, stroke }) => ({
-                    points,
-                    stroke,
-                    fill: fill !== 'white' ? color : fill,
-                })),
+            top : first.top,
+            left: st.left,
+            zoom: st.zoom,
+            icon: (ICONS[contract_type] || ICONS.CALL).with_color(color),
         });
     }
     // status marker
     if (
         last.visible &&
-        last.left - first.left > 16 &&
+        // last.left - first.left > 16 &&
         last.epoch * 1 === exit_tick_time * 1 &&
         status !== 'open'
     ) {
         draw_path(ctx, {
-            top  : first.top - 8,
-            left : last.left - 8,
-            paths: ICONS[status.toUpperCase()].paths,
+            top : first.top,
+            left: last.left,
+            zoom: last.zoom,
+            icon: (ICONS[status.toUpperCase()] || ICONS.LOST),
         });
     }
     ctx.restore();
 });
 
+const NonTickContract = RawMarkerMaker(({
+    ctx: context,
+    points: [start, expiry, entry], // st = start_time tick
+    contract_info: {
+        contract_type,
+        exit_tick_time,
+        status,
+        profit,
+    },
+}) => {
+    /** @type {CanvasRenderingContext2D} */
+    const ctx = context;
+
+    const color = get_color({ status, profit });
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+
+    if (start.visible) {
+        ctx.fillText('Start Time', start.left + 5, 21);
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, 0);
+        ctx.lineTo(start.left, ctx.canvas.height);
+        ctx.stroke();
+    }
+    // barrier solid line
+    if (
+        (start.visible && expiry.visible) ||
+        start.visible !== expiry.visible
+    ) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.moveTo(start.left, start.top);
+        ctx.lineTo(expiry.left, start.top);
+        ctx.stroke();
+    }
+    // // entry spot
+    // if (first.zoom >= 10 && first.visible) {
+    //     ctx.beginPath();
+    //     ctx.arc(first.left, first.top, 2, 0, Math.PI * 2);
+    //     ctx.fill();
+    // }
+    // // start-time marker
+    // if (st.visible) {
+    //     draw_path(ctx, {
+    //         top : first.top,
+    //         left: st.left,
+    //         zoom: st.zoom,
+    //         icon: ICONS[contract_type].with_color(color),
+    //     });
+    // }
+    // // status marker
+    // if (
+    //     last.visible &&
+    //     // last.left - first.left > 16 &&
+    //     last.epoch * 1 === exit_tick_time * 1 &&
+    //     status !== 'open'
+    // ) {
+    //     draw_path(ctx, {
+    //         top : first.top,
+    //         left: last.left,
+    //         zoom: last.zoom,
+    //         icon: ICONS[status.toUpperCase()],
+    //     });
+    // }
+    ctx.restore();
+});
+
 export default {
-    SpotMarker,
+    TickContract,
+    NonTickContract,
 };

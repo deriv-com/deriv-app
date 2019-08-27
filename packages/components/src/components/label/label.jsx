@@ -17,12 +17,12 @@ const available_sizes = [
     'large',
 ];
 
-const Label = ({ mode, children, size = 'regular' }) => {
+const Label = ({ mode, children, size = 'regular', className }) => {
     const type = available_modes.some(m => m === mode) ? mode : 'default';
     const scale = available_sizes.some(s => s === size) ? size : 'regular';
 
     return (
-        <span className={classNames('dc-label', {
+        <span className={classNames('dc-label', className, {
             [`dc-label--${scale}`]: scale,
             [`dc-label--${type}`] : type,
         })}

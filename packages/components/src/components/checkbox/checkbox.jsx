@@ -12,14 +12,14 @@ class Checkbox extends React.PureComponent {
         return (
             <div
                 id={id}
-                className='checkbox'
+                className={classNames('dc-checkbox', this.props.className)}
                 onClick={this.onClick}
             >
-                <div className={classNames('checkbox__box', {
-                    'checkbox__box--active': value,
+                <div className={classNames('dc-checkbox__box', {
+                    'dc-checkbox__box--active': value,
                 })}
                 />
-                <div className='checkbox__label'>{label}</div>
+                <div className='dc-checkbox__label'>{label}</div>
             </div>
         );
     }

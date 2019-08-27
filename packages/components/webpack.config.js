@@ -9,11 +9,12 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
-        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
-        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
+        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        checkbox    : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
+        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),

@@ -1,3 +1,4 @@
+import { Checkbox }                      from 'deriv-components';
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
 import { localize }                      from 'App/i18n';
@@ -8,7 +9,6 @@ import MediaItem, {
     MediaIcon,
     MediaDescription,
 }                                        from 'App/Components/Elements/Media';
-import Checkbox                          from 'App/Components/Form/Checkbox';
 import RadioGroup                        from 'App/Components/Form/Radio';
 import ChartPositionEnabledLightIcon     from 'Assets/SvgComponents/settings/bottom.svg';
 

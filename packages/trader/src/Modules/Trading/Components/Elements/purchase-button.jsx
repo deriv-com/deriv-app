@@ -1,7 +1,7 @@
 import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
-import Button                     from 'deriv-components/lib/button';
+import { Button }                 from 'deriv-components';
 import { localize }               from 'App/i18n';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
@@ -30,7 +30,7 @@ const PurchaseButton = ({
     return (
         <Button
             is_disabled={is_contract_mode || is_disabled}
-            id={`purchase_${type}`}
+            id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames(
                 'btn-purchase',
                 {

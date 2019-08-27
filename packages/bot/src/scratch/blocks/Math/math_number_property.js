@@ -2,7 +2,17 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_number_property = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        this.setOnChange(event => {
+            if (event.name === 'PROPERTY') {
+                const hasDivisorInput = this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY';
+                this.updateShape(hasDivisorInput);
+            }
+        });
+    },
+    definition(){
+        return {
             message0: translate('%1 is %2'),
             args0   : [
                 {
@@ -28,14 +38,15 @@ Blockly.Blocks.math_number_property = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        this.setOnChange(event => {
-            if (event.name === 'PROPERTY') {
-                const hasDivisorInput = this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY';
-                this.updateShape(hasDivisorInput);
-            }
-        });
+            toolip         : translate('Math Number Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Math Number'),
+            'description' : translate('Math Number Description'),
+        };
     },
     domToMutation(xmlElement) {
         const hasDivisorInput = xmlElement.getAttribute('divisor_input') === 'true';

@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.logic_operation = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2 %3',
             args0   : [
                 {
@@ -24,7 +27,15 @@ Blockly.Blocks.logic_operation = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Logic Operator Tooltip'),
+            category       : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Logic Operator'),
+            'description' : translate('Logic Operator Description'),
+        };
     },
 };
 

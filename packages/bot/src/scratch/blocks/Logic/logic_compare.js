@@ -1,6 +1,11 @@
+import { translate } from '../../../utils/lang/i18n';
+
 Blockly.Blocks.logic_compare = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2 %3',
             args0   : [
                 {
@@ -29,7 +34,15 @@ Blockly.Blocks.logic_compare = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Logic Compare Tooltip'),
+            category       : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Logic Compare'),
+            'description' : translate('Logic Compare Description'),
+        };
     },
 };
 

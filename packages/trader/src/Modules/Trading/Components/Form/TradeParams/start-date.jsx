@@ -37,6 +37,7 @@ const StartDate = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <Dropdown
+                id='start_date'
                 is_alignment_left
                 is_nativepicker={is_nativepicker}
                 list={start_dates_list}

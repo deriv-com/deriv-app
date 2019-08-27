@@ -64,7 +64,7 @@ class ContractReplay extends React.Component {
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
 
         return (
-            <div className='trade-container__replay' ref={this.setWrapperRef}>
+            <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
                     contract_info={contract_info}
                     is_dark_theme={is_dark_theme}
@@ -77,6 +77,7 @@ class ContractReplay extends React.Component {
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
                             <div
+                                id='dt_contract_replay_close_icon'
                                 className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
                                 onClick={() => this.props.history.push(AppRoutes.trade)}

@@ -8,6 +8,7 @@ import TableRowInfo from './table-row-info.jsx';
 const TableRow = ({
     className,
     columns,
+    id,
     is_footer,
     is_header,
     replace,
@@ -35,6 +36,7 @@ const TableRow = ({
     return (
         to ?
             <NavLink
+                id={`dt_reports_contract_${id}`}
                 className={row_class_name}
                 to={{
                     pathname: to,
@@ -58,6 +60,7 @@ const TableRow = ({
 TableRow.propTypes = {
     className: PropTypes.string,
     columns  : PropTypes.array,
+    id       : PropTypes.number,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
     replace  : PropTypes.object,

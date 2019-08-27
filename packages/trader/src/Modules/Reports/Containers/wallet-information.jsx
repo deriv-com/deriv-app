@@ -1,7 +1,7 @@
+import { Label }         from 'deriv-components';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import Icon              from 'Assets/icon.jsx';
-import Label             from 'App/Components/Elements/Label/label.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import Money             from 'App/Components/Elements/money.jsx';
 import { connect }       from 'Stores/connect';

@@ -1,3 +1,3 @@
-const Label = 'Label';
+import Label from './label.jsx';
 
 export default Label;

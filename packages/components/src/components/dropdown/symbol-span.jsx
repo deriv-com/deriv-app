@@ -1,6 +1,6 @@
 import PropTypes                        from 'prop-types';
 import React, { Component }             from 'react';
-import { getDisplayText, listPropType } from './helpers';
+import { getDisplayText, listPropType } from './dropdown';
 
 class SymbolSpan extends Component {
     render () {

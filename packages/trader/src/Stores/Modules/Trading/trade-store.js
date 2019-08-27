@@ -211,7 +211,7 @@ export default class TradeStore extends BaseStore {
             // if SmartCharts has requested active_symbols, we wait for the response
             await BinarySocket.expectResponse('active_symbols')
             : // else requests new active_symbols
-            await WS.activeSymbols({ forced: true });
+            await WS.activeSymbols();
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));

@@ -1,5 +1,4 @@
 const moment           = require('moment');
-const getLanguage      = require('../language').get;
 const LocalStore       = require('../storage').LocalStore;
 const getPropertyValue = require('../utility').getPropertyValue;
 const getStaticHash    = require('../utility').getStaticHash;

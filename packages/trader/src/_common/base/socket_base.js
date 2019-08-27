@@ -17,7 +17,8 @@ const getSocketURL     = require('../../config').getSocketURL;
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api;
+    let deriv_api,
+        derivAPISend;
 
     let config               = {};
     let wrong_app_id         = 0;
@@ -25,7 +26,8 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before  = false;
 
-    const timeouts     = {};
+    const timeouts        = {};
+    const debounced_calls = {};
 
     const clearTimeouts = () => {
         Object.keys(timeouts).forEach((key) => {
@@ -58,6 +60,8 @@ const BinarySocketBase = (() => {
                 brand   : website_name.toLowerCase(),
                 storage : SocketCache,
             });
+            derivAPISend = deriv_api.send.bind(deriv_api);
+            deriv_api.send = send;
         }
 
         deriv_api.onOpen().subscribe(() => {
@@ -118,13 +122,21 @@ const BinarySocketBase = (() => {
     });
 
     const send = (request, options = {}) => {
-        const promise = promiseRejectToResolve(deriv_api.send(request));
+        const key = JSON.stringify(request);
+        if (key in debounced_calls) {
+            return debounced_calls[key];
+        }
+
+        const promise = promiseRejectToResolve(derivAPISend(request));
 
         config.wsEvent('send');
 
         if (options.callback) {
             promise.then(options.callback);
         }
+
+        debounced_calls[key] = promise;
+        promise.then(() => { delete debounced_calls[key]; });
 
         return promise;
     };
@@ -180,15 +192,10 @@ const BinarySocketBase = (() => {
         send({ verify_email: email, type });
 
     const activeSymbols = () =>
-        promiseRejectToResolve(deriv_api.storage.activeSymbols('brief'));
-
-    const payoutCurrencies = async () => {
-        await expectResponse('authorize');
-        return deriv_api.payoutCurrencies();
-    };
+        deriv_api.storage.activeSymbols('brief');
 
     const forgetStream = (id) =>
-        promiseRejectToResolve(deriv_api.forget(id));
+        deriv_api.forget(id);
 
     return {
         init,
@@ -205,6 +212,8 @@ const BinarySocketBase = (() => {
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
         removeOnReconnect : () => { delete config.onReconnect; },
         removeOnDisconnect: () => { delete config.onDisconnect; },
+        cache             : delegateToObject({}, () => deriv_api.cache),
+        storage           : delegateToObject({}, () => deriv_api.storage),
         buy,
         sell,
         cashier,
@@ -213,7 +222,6 @@ const BinarySocketBase = (() => {
         statement,
         verifyEmail,
         activeSymbols,
-        payoutCurrencies,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,
@@ -224,17 +232,43 @@ const BinarySocketBase = (() => {
     };
 })();
 
-const proxied_socket_base = new Proxy(BinarySocketBase, {
+function delegateToObject(base_obj, extending_obj_getter) {
+    return new Proxy(base_obj, {
+        get(target, field) {
+            if (target[field]) return target[field];
+
+            const extending_obj = typeof extending_obj_getter === 'function'
+                ? extending_obj_getter()
+                : extending_obj_getter;
+
+            if (!extending_obj) return undefined;
+
+            const value = extending_obj[field];
+            if (value) {
+                if (typeof value === 'function') {
+                    return (...args) => value.call(extending_obj, ...args);
+                }
+                return value;
+            }
+
+            return undefined;
+        },
+    });
+}
+
+const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocketBase.get());
+
+const proxyForAuthorize = obj => new Proxy(obj, {
     get(target, field) {
-        if (target[field]) return target[field];
-
-        const api = target.get();
-        if (!api) return undefined;
-
-        if (api[field]) return api[field].bind(api);
-
-        return undefined;
+        if (typeof target[field] !== 'function') {
+            return proxyForAuthorize(target[field], proxied_socket_base[field]);
+        }
+        return (...args) => (
+            BinarySocketBase.expectResponse('authorize')
+                .then(() => target[field](...args)));
     },
 });
+
+BinarySocketBase.authorized = proxyForAuthorize(proxied_socket_base);
 
 module.exports = proxied_socket_base;

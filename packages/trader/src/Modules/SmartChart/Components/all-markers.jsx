@@ -166,7 +166,7 @@ const TickContract = RawMarkerMaker(({
             top : first.top,
             left: st.left,
             zoom: st.zoom,
-            icon: ICONS[contract_type].with_color(color),
+            icon: (ICONS[contract_type] || ICONS.CALL).with_color(color),
         });
     }
     // status marker
@@ -180,7 +180,7 @@ const TickContract = RawMarkerMaker(({
             top : first.top,
             left: last.left,
             zoom: last.zoom,
-            icon: ICONS[status.toUpperCase()],
+            icon: (ICONS[status.toUpperCase()] || ICONS.LOST),
         });
     }
     ctx.restore();

@@ -21,11 +21,24 @@ const parse_svg = (markup) => {
             stroke: stroke && stroke.value,
         });
     });
+    function with_color(color) {
+        return {
+            width,
+            height,
+            paths: paths
+                .map(({ points, fill, stroke }) => ({
+                    points,
+                    stroke,
+                    fill: fill !== 'white' ? color : fill,
+                })),
+        };
+    }
 
     return {
         width,
         height,
         paths,
+        with_color,
     };
 };
 

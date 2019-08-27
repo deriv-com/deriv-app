@@ -103,7 +103,7 @@ const SocketCache = (() => {
             data_obj.static_hash = getStaticHash();
         }
 
-        data_obj[key] = { value: response, expires };
+        data_obj[key] = { value: response, expires, msg_type  };
         LocalStore.setObject(storage_key, data_obj);
     };
 
@@ -121,9 +121,7 @@ const SocketCache = (() => {
         return is_empty_data;
     };
 
-    const get = (key) => {
-        let response;
-
+    const reloadDataObj = () => {
         if (isEmptyObject(data_obj)) {
             data_obj = LocalStore.getObject(storage_key);
             if (isEmptyObject(data_obj)) return undefined;
@@ -132,9 +130,35 @@ const SocketCache = (() => {
         if (data_obj.static_hash !== getStaticHash()) { // new release
             clear();
         }
+    };
 
-        const response_obj = getPropertyValue(data_obj, key) || {};
+    const getData = key => (getPropertyValue(data_obj, key) || {});
 
+    const get = (key) => {
+        reloadDataObj();
+
+        const response_obj = getData(key);
+
+        let response;
+        if (moment().isBefore(response_obj.expires)) {
+            response = response_obj.value;
+        } else { // remove if expired
+            remove(key);
+        }
+
+        return response;
+    };
+
+    const getByMsgType = (msg_type) => {
+        reloadDataObj();
+
+        const key = Object.keys(data_obj).find(k => getData(k).msg_type === msg_type);
+
+        if (!key) return undefined;
+
+        const response_obj = getData(key);
+
+        let response;
         if (moment().isBefore(response_obj.expires)) {
             response = response_obj.value;
         } else { // remove if expired
@@ -169,6 +193,7 @@ const SocketCache = (() => {
     return {
         set,
         get,
+        getByMsgType,
         has,
         remove,
         clear,

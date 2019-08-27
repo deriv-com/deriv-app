@@ -136,7 +136,7 @@ const BinarySocketGeneral = (() => {
         WS.subscribeBalance(ResponseHandlers.balance);
         WS.send({ get_settings: 1 });
         WS.getAccountStatus();
-        WS.payoutCurrencies();
+        WS.storage.payoutCurrencies();
         WS.mt5LoginList();
         setResidence(
             response.authorize.country ||

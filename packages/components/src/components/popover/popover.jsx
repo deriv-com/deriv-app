@@ -5,7 +5,6 @@ import PopoverBubble   from './popover-bubble.jsx';
 import IconInfoOutline from '../icon-info-outline.jsx';
 import IconQuestion    from '../icon-question.jsx';
 import IconRedDot      from '../icon-red-dot.jsx';
-import './popover.scss';
 
 class Popover extends React.PureComponent {
     constructor (props) {

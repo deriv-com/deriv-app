@@ -10,11 +10,10 @@ import {
     getPrevIndex,
     getNextIndex,
     listPropType,
-}                        from './helpers';
+}                        from './dropdown';
 import Items             from './items.jsx';
 import NativeSelect      from './native-select.jsx';
 import SymbolSpan        from './symbol-span.jsx';
-import './dropdown.scss';
 
 class Dropdown extends React.PureComponent {
     list_ref = React.createRef();

@@ -22,6 +22,8 @@ test  :
 ## Usage
 
 ### Base styles
+
+#### Fonts, Constants, Mixins, Themes, Devices:
 Run `npm i sass-resources-loader --save-dev` and add the following in your webpack css loader
 
 ```js {
@@ -30,6 +32,11 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
         resources: require('deriv-shared/utils/index.js'),
     }
 }
+```
+
+#### Browser css reset:
+```scss
+@import deriv-shared/src/styles/reset.scss
 ```
 
 ### Utility functions

@@ -11,9 +11,9 @@ module.exports = {
         // index: path.join(__dirname, 'src', 'index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
-        autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
-        form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),

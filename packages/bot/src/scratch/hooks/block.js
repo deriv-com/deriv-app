@@ -1,5 +1,5 @@
 /* eslint-disable func-names, no-underscore-dangle */
-import config from '../../constants/const';
+import config from '../../constants';
 
 Blockly.Block.prototype.getDisplayName = function() {
     if (this.meta) {
@@ -110,13 +110,6 @@ Blockly.Block.prototype.isMainBlock = function() {
 };
 
 Blockly.Block.prototype.isIndependentBlock = function() {
-    const independent_blocks = [
-        'block_holder',
-        'tick_analysis',
-        'loader',
-        'procedures_defreturn',
-        'procedures_defnoreturn',
-    ];
-    
-    return independent_blocks.some(block_type => block_type === this.type);
+    const { INDEPEDENT_BLOCKS } = config;
+    return INDEPEDENT_BLOCKS.some(block_type => block_type === this.type);
 };

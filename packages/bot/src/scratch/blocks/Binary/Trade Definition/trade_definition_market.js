@@ -1,3 +1,5 @@
+import ApiHelpers from '../../../../services/api/helpers';
+
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
@@ -36,9 +38,9 @@ Blockly.Blocks.trade_definition_market = {
 
         this.enforceLimitations();
 
-        const { deriv_helpers: { active_symbols } } = Blockly;
-        const market_field                        = this.getField('MARKET_LIST');
-        const submarket_field                     = this.getField('SUBMARKET_LIST');
+        const { active_symbols } = ApiHelpers.instance;
+        const market_field       = this.getField('MARKET_LIST');
+        const submarket_field    = this.getField('SUBMARKET_LIST');
 
         if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
             active_symbols.retrieveActiveSymbols().then(() => {

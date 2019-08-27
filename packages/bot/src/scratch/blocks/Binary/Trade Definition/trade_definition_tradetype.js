@@ -1,3 +1,4 @@
+import ApiHelpers    from '../../../../services/api/helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradetype = {
@@ -34,7 +35,7 @@ Blockly.Blocks.trade_definition_tradetype = {
 
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
-                const { contracts_for } = Blockly.deriv_helpers;
+                const { contracts_for } = ApiHelpers.instance;
                 const top_parent_block  = this.getTopParent();
                 const market_block      = top_parent_block.getChildByType('trade_definition_market');
                 const market            = market_block.getFieldValue('MARKET_LIST');

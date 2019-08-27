@@ -237,6 +237,7 @@ const config = {
     NOT_AVAILABLE_DURATIONS         : [{ display: translate('Not available'), unit: 'na', min: 0 }],
     BARRIER_TRADE_TYPES             : ['higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'callputspread'],
     DIGIT_CATEGORIES                : ['digits', 'highlowticks'],
+    INDEPEDENT_BLOCKS               : ['block_holder', 'tick_analysis', 'loader', 'procedures_defreturn', 'procedures_defnoreturn'],
     bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd                              : {

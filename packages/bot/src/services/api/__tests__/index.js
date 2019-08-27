@@ -15,19 +15,7 @@ describe('symbol', () => {
             });
         });
         it('getAllowedCategoryNames returns allowed category names', () => {
-            const test = symbol.getAllowedCategoryNames('r_100');
-            console.log({ functionCall: test, static: [ // eslint-disable-line
-                'Up/Down',
-                'Touch/No Touch',
-                'In/Out',
-                'Asians',
-                'Digits',
-                'Reset Call/Reset Put',
-                'Call Spread/Put Spread',
-                'High/Low Ticks',
-                'Only Ups/Only Downs',
-            ] });
-            expect(test).to.be.ok.and.to.have.all.members([
+            expect(symbol.getAllowedCategoryNames('r_100')).to.be.ok.and.to.have.all.members([
                 'Up/Down',
                 'Touch/No Touch',
                 'In/Out',

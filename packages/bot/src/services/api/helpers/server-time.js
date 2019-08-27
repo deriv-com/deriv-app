@@ -1,4 +1,4 @@
-import PendingPromise from './pending-promise';
+import PendingPromise from '../../../utils/pending-promise';
 
 export default class ServerTime {
     constructor(ws) {

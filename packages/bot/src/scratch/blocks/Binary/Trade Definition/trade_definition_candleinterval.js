@@ -1,4 +1,4 @@
-import config from '../../../../constants/const';
+import config from '../../../../constants';
 
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {

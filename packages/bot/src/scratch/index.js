@@ -7,26 +7,15 @@ import {
     addDomAsBlock,
     cleanBeforeExport,
 }                                     from './utils';
-import ActiveSymbols                  from './utils/active-symbols';
-import ContractsFor                   from './utils/contracts-for';
-import ServerTime                     from './utils/server-time';
-import TradingTimes                   from './utils/trading-times';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import createError                    from '../utils/error';
 import { translate }                  from '../utils/lang/i18n';
 import { observer as globalObserver } from '../utils/observer';
 
-export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name, root_store) => {
-    const server_time    = new ServerTime(root_store.ws);
-    const trading_times  = new TradingTimes(root_store.ws, server_time);
-    const contracts_for  = new ContractsFor(root_store.ws, server_time);
-    const active_symbols = new ActiveSymbols(root_store.ws, trading_times);
-
-    Blockly.deriv_helpers = { active_symbols, contracts_for, server_time, trading_times, root_store };
-
+export const scratchWorkspaceInit = async () => {
     try {
-        const el_scratch_area = document.getElementById(scratch_area_name);
-        const el_scratch_div = document.getElementById(scratch_div_name);
+        const el_scratch_area = document.getElementById('scratch_area');
+        const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
 
         // eslint-disable-next-line

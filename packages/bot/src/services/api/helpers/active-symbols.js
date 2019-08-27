@@ -1,5 +1,5 @@
-import PendingPromise from './pending-promise';
-import config         from '../../constants/const';
+import PendingPromise from '../../../utils/pending-promise';
+import config         from '../../../constants';
 
 export default class ActiveSymbols {
     constructor(ws, trading_times) {

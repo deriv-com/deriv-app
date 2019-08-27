@@ -1,5 +1,5 @@
 import { saveAs }    from './shared';
-import config        from '../constants/const';
+import config        from '../constants';
 import { translate } from '../utils/lang/i18n';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;

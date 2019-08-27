@@ -1,6 +1,6 @@
 import filesaver                         from 'file-saver';
 import { oppositesToDropdownOptions }    from './utils';
-import config                            from '../constants/const';
+import config                            from '../constants';
 import { translate }                     from '../utils/lang/i18n';
 
 let purchase_choices = [[translate('Click to select'), '']];

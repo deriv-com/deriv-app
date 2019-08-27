@@ -1,4 +1,5 @@
-import config        from '../../../../constants/const';
+import config        from '../../../../constants';
+import ApiHelpers    from '../../../../services/api/helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
@@ -154,10 +155,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         Blockly.Events.enable();
     },
     updateDurationInput(should_use_default_unit) {
-        Blockly.deriv_helpers.contracts_for.getDurations(
-            this.selected_symbol,
-            this.selected_trade_type
-        ).then(durations => {
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
             const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
             const duration_input          = this.getInput('DURATION');
             const { connection }          = duration_input;
@@ -183,7 +183,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updateBarrierInputs() {
-        Blockly.deriv_helpers.contracts_for.getBarriers(
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getBarriers(
             this.selected_symbol,
             this.selected_trade_type,
             this.selected_duration,
@@ -218,10 +220,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updatePredictionInput() {
-        Blockly.deriv_helpers.contracts_for.getPredictionRange(
-            this.selected_symbol,
-            this.selected_trade_type
-        ).then(prediction_range => {
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
             this.createPredictionInput(prediction_range);
 
             if (prediction_range.length > 0) {

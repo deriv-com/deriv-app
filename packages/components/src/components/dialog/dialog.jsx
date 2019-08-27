@@ -48,28 +48,28 @@ class Dialog extends React.Component {
                     in={(is_visible && !is_loading)}
                     timeout={50}
                     classNames={{
-                        appear   : 'dialog__wrapper--enter',
-                        enter    : 'dialog__wrapper--enter',
-                        enterDone: 'dialog__wrapper--enter-done',
-                        exit     : 'dialog__wrapper--exit',
+                        appear   : 'dc-dialog__wrapper--enter',
+                        enter    : 'dc-dialog__wrapper--enter',
+                        enterDone: 'dc-dialog__wrapper--enter-done',
+                        exit     : 'dc-dialog__wrapper--exit',
                     }}
                     unmountOnExit
                 >
-                    <div className='dialog__wrapper'>
-                        <div className='dialog__dialog'>
+                    <div className='dc-dialog__wrapper'>
+                        <div className='dc-dialog__dialog'>
                             { title &&
-                                <h1 className='dialog__header'>{title}</h1>
+                                <h1 className='dc-dialog__header'>{title}</h1>
                             }
                             { typeof children === 'string' ?
-                                <p className='dialog__content'>{children}</p>
+                                <p className='dc-dialog__content'>{children}</p>
                                 :
-                                <div className='dialog__content'>{children}</div>
+                                <div className='dc-dialog__content'>{children}</div>
                             }
-                            <div className='dialog__footer'>
+                            <div className='dc-dialog__footer'>
                                 { onCancel &&
                                     <Button
                                         className={classNames(
-                                            'dialog__button',
+                                            'dc-dialog__button',
                                             'btn--secondary',
                                             'btn--secondary--orange',
                                         )}
@@ -81,7 +81,7 @@ class Dialog extends React.Component {
                                 { confirm_button_text &&
                                     <Button
                                         className={classNames(
-                                            'dialog__button',
+                                            'dc-dialog__button',
                                             'btn--primary',
                                             'btn--primary--orange',
                                         )}

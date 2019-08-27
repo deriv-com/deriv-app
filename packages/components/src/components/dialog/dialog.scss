@@ -1,6 +1,6 @@
-/** @define dialog */
+/** @define dc-dialog */
 
-.dialog {
+.dc-dialog {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -92,7 +92,7 @@
 }
 
 @media screen and (max-width: 560px) {
-    .dialog {
+    .dc-dialog {
         &__dialog {
             width: 100vw;
             height: 100vh;

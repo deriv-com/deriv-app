@@ -13,8 +13,9 @@ const tabs = {
     withdraw: 1,
 };
 
-const Deposit    = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const Deposit      = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal   = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent = () => import('App/Containers/CashierModal/payment-agent.jsx');
 
 const modal_content = [
     {
@@ -35,6 +36,17 @@ const modal_content = [
         value: () => (
             <Lazy
                 ctor={Withdrawal}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    }, {
+        icon : 'IconPaymentAgent',
+        label: localize('Payment agent'),
+        // eslint-disable-next-line react/display-name
+        value: () => (
+            <Lazy
+                ctor={PaymentAgent}
                 should_load={true}
                 has_progress={true}
             />

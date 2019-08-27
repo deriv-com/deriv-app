@@ -92,3 +92,11 @@
         }
     }
 }
+
+/** @define payment-agent */
+.payment-agent {
+    &__wrapper {
+        font-size: 1.4rem;
+        line-height: 1.43;
+    }
+}

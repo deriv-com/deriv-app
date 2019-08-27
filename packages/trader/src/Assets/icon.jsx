@@ -38,6 +38,7 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')), // TODO: update big when design is ready
             IconWithdrawalSmall   : React.lazy(() => import('./Common/icon-withdrawal-small.jsx')),
+            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
 
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),

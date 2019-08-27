@@ -1,13 +1,13 @@
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import { connect } from 'Stores/connect';
-import Error       from './error.jsx';
-import SendEmail   from './send-email.jsx';
-import Withdraw    from './Withdrawal/withdraw.jsx';
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { connect }      from 'Stores/connect';
+import Error            from './error.jsx';
+import SendEmail        from './send-email.jsx';
+import PaymentAgentList from './PaymentAgent/payment-agent-list.jsx';
 
-class Withdrawal extends React.Component {
+class PaymentAgent extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab('withdraw');
+        this.props.setActiveTab('payment_agent');
     }
 
     render() {
@@ -19,10 +19,10 @@ class Withdrawal extends React.Component {
                         container='withdraw'
                     />
                     :
-                    ((this.props.verification_code || this.props.iframe_url) ?
-                        <Withdraw />
-                        :
+                    (this.props.verification_code ?
                         <SendEmail />
+                        :
+                        <PaymentAgentList />
                     )
                 }
             </React.Fragment>
@@ -30,9 +30,8 @@ class Withdrawal extends React.Component {
     }
 }
 
-Withdrawal.propTypes = {
+PaymentAgent.propTypes = {
     error            : PropTypes.object,
-    iframe_url       : PropTypes.string,
     setActiveTab     : PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -41,7 +40,6 @@ export default connect(
     ({ client, modules }) => ({
         verification_code: client.verification_code,
         error            : modules.cashier.config.withdraw.error,
-        iframe_url       : modules.cashier.config.withdraw.iframe_url,
         setActiveTab     : modules.cashier.setActiveTab,
     })
-)(Withdrawal);
+)(PaymentAgent);

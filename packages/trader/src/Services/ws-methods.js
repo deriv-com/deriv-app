@@ -49,6 +49,9 @@ const WS = (() => {
     const oauthApps = () =>
         BinarySocket.send({ oauth_apps: 1 });
 
+    const paymentAgentList = (country, currency) =>
+        BinarySocket.send({ paymentagent_list: country, ...(currency && { currency }) });
+
     const payoutCurrencies = () =>
         BinarySocket.send({ payout_currencies: 1 });
 
@@ -133,6 +136,7 @@ const WS = (() => {
         newAccountVirtual,
         oauthApps,
         portfolio,
+        paymentAgentList,
         payoutCurrencies,
         profitTable,
         proposalOpenContract,

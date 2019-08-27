@@ -31,7 +31,11 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
     @observable config = {
-        deposit     : new Config({ container: 'deposit' }),
+        deposit      : new Config({ container: 'deposit' }),
+        payment_agent: {
+            container: 'payment_agent',
+            list     : [],
+        },
         verification: {
             is_button_clicked: false,
             is_email_sent    : false,
@@ -359,6 +363,15 @@ export default class CashierStore extends BaseStore {
     setActiveTab(container) {
         // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
         this.root_store.ui.setCashierActiveTab(container);
+    }
+
+    @action.bound
+    async onMountPaymentAgent() {
+        const residence          = this.root_store.client.accounts[this.root_store.client.loginid].residence;
+        const currency           = this.root_store.client.currency;
+        const payment_agent_list = await WS.paymentAgentList(residence, currency);
+
+        this.config.payment_agent.list = payment_agent_list.paymentagent_list.list;
     }
 
     onUnmount() {

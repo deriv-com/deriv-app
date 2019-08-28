@@ -108,6 +108,8 @@ export default class ClientStore extends BaseStore {
     get default_currency() {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
+            // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
+            if (this.currencies_list.Fiat.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         } return 'USD';
     }
@@ -462,16 +464,14 @@ export default class ClientStore extends BaseStore {
         this.loginid = null;
         this.upgrade_info = undefined;
         this.accounts = {};
-        this.currencies_list  = {};
-        this.selected_currency = '';
-        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
-        return new Promise(async (resolve) => {
-            await this.root_store.modules.trade.clearContract();
-            await this.root_store.modules.trade.resetErrorServices();
-            await this.root_store.ui.removeAllNotifications();
-            await this.root_store.modules.trade.refresh();
-            return resolve(this.root_store.modules.trade.debouncedProposal());
+        runInAction(async () => {
+            this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
         });
+        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.resetErrorServices();
+        this.root_store.ui.removeAllNotifications();
+        this.root_store.modules.trade.refresh();
+        this.root_store.modules.trade.debouncedProposal();
     }
 
     /* eslint-disable */
@@ -608,15 +608,16 @@ export default class ClientStore extends BaseStore {
             } else {
                 cb();
                 // Initialize client store with new user login
+                const { client_id, currency, oauth_token } = response.new_account_virtual;
                 const new_user_login = {
-                    acct1 : response.new_account_virtual.client_id,
-                    token1: response.new_account_virtual.oauth_token,
-                    curr1 : response.new_account_virtual.currency,
+                    acct1 : client_id,
+                    token1: oauth_token,
+                    curr1 : currency,
                 };
                 await this.init(new_user_login);
 
-                // TODO: clean-refresh-trade: Find a way to do this without re-preparing the trade store
-                this.root_store.modules.trade.onMount();
+                // Refresh trade-store currency and proposal before requesting new proposal upon login
+                this.root_store.modules.trade.initAccountCurrency(currency);
             }
         });
     }

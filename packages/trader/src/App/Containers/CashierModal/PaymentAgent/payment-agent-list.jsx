@@ -1,16 +1,16 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
+import PropTypes                      from 'prop-types';
+import React                          from 'react';
+import { Scrollbars }                 from 'tt-react-custom-scrollbars';
 import {
     Accordion,
-    Button }          from 'deriv-components';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import Dropdown       from 'App/Components/Form/DropDown';
-import { localize }   from 'App/i18n';
-import { connect }    from 'Stores/connect';
-import Icon           from 'Assets/icon.jsx';
-import Loading        from '../../../../templates/_common/components/loading.jsx';
-import {PropTypes as MobxPropTypes} from "mobx-react";
+    Button }                          from 'deriv-components';
+import Localize                       from 'App/Components/Elements/localize.jsx';
+import Dropdown                       from 'App/Components/Form/DropDown';
+import { localize }                   from 'App/i18n';
+import { connect }                    from 'Stores/connect';
+import Icon                           from 'Assets/icon.jsx';
+import Loading                        from '../../../../templates/_common/components/loading.jsx';
 
 class PaymentAgentList extends React.Component {
     componentDidMount() {
@@ -51,8 +51,6 @@ class PaymentAgentList extends React.Component {
                                     <Dropdown
                                         id='payment_methods'
                                         className='payment-agent__drop-down'
-                                        is_alignment_left={false}
-                                        is_nativepicker={true}
                                         list={
                                             this.props.available_payment_methods.map((payment_method) =>
                                                 ({ text: payment_method, value: payment_method.toLowerCase() }))
@@ -64,10 +62,9 @@ class PaymentAgentList extends React.Component {
                                 </div>
                                 <Accordion
                                     className='payment-agent__accordion'
-                                    list={this.props.payment_agent_list.map((payment_agent, idx) => ({
-                                        className: idx === 0 ? 'first' : (idx === this.props.payment_agent_list.length - 1 ? 'last' : undefined),
-                                        header   : payment_agent.name,
-                                        content  : (
+                                    list={this.props.payment_agent_list.map((payment_agent) => ({
+                                        header : payment_agent.name,
+                                        content: (
                                             <div className='payment-agent__accordion-content'>
                                                 <div><Icon icon='IconPhone' className='payment-agent__accordion-content-icon' />{payment_agent.phone}</div>
                                                 <div><Icon icon='IconWebsite' className='payment-agent__accordion-content-icon' />{payment_agent.url}</div>

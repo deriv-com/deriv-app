@@ -180,9 +180,9 @@ class Dropdown extends React.PureComponent {
                     in={this.state.is_list_visible}
                     timeout={100}
                     classNames={{
-                        enter    : `dropdown__list--enter ${this.props.is_alignment_left ? 'dropdown__list--left--enter' : ''}`,
-                        enterDone: `dropdown__list--enter-done ${this.props.is_alignment_left ? 'dropdown__list--left--enter-done' : ''}`,
-                        exit     : `dropdown__list--exit ${this.props.is_alignment_left ? 'dropdown__list--left--exit' : ''}`,
+                        enter    : `dropdown__list--enter${this.props.is_alignment_left ? 'dropdown__list--left--enter' : ''}`,
+                        enterDone: `dropdown__list--enter-done${this.props.is_alignment_left ? 'dropdown__list--left--enter-done' : ''}`,
+                        exit     : `dropdown__list--exit${this.props.is_alignment_left ? 'dropdown__list--left--exit' : ''}`,
                     }}
                     onEntered={setListWidth}
                     unmountOnExit

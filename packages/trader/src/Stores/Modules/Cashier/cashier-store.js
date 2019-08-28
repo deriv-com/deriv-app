@@ -379,10 +379,11 @@ export default class CashierStore extends BaseStore {
     setPaymentAgentList(payment_agent_list) {
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
-                email: payment_agent.email,
-                phone: payment_agent.telephone,
-                name : payment_agent.name,
-                url  : payment_agent.url,
+                email          : payment_agent.email,
+                phone          : payment_agent.telephone,
+                name           : payment_agent.name,
+                supported_banks: payment_agent.supported_banks,
+                url            : payment_agent.url,
             });
             payment_agent.supported_banks.split(',').forEach((bank) => {
                 if (bank && this.config.payment_agent.available_payment_methods.indexOf(bank) === -1) {
@@ -390,14 +391,12 @@ export default class CashierStore extends BaseStore {
                 }
             });
         });
-        console.log(this.config.payment_agent.available_payment_methods);
-        console.log(this.config.payment_agent.available_payment_methods.map((payment_method) =>
-            ({ text: payment_method, value: payment_method.toLowerCase() })));
     }
 
     @action.bound
     onChangePaymentMethod() {
-        console.log('here');
+        // TODO: filter list based on available payment methods
+        this.setPaymentAgentList();
     }
 
     onUnmount() {

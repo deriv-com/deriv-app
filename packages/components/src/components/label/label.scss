@@ -1,1 +1,60 @@
-@import 'deriv-shared/shared.scss';
+.dc-label {
+    font-size: 14px;
+    font-weight: bold;
+    height: 24px;
+    line-height: 20px;
+    border-radius: $BORDER_RADIUS * 3;
+    padding: 2px 8px;
+    margin: 0 2px;
+
+    &--default {
+        @include themify($themes) {
+            color: themed('label_default_color');
+            background-color: themed('label_default_background');
+        }
+    }
+    &--danger {
+        @include themify($themes) {
+            color: themed('label_danger_color');
+            background-color: themed('label_danger_background');
+        }
+    }
+    &--warn {
+        @include themify($themes) {
+            color: themed('label_warn_color');
+            background-color: themed('label_warn_background');
+        }
+    }
+    &--success {
+        @include themify($themes) {
+            color: themed('label_success_color');
+            background-color: themed('label_success_background');
+        }
+    }
+    &--success-invert {
+        @include themify($themes) {
+            color: themed('label_default_color');
+            background-color: themed('label_success_color');
+        }
+    }
+    &--warn-invert {
+        @include themify($themes) {
+            color: themed('label_default_color');
+            background-color: themed('label_warn_color');
+        }
+    }
+    &--info {
+        @include themify($themes) {
+            color: themed('label_info_color');
+            background-color: themed('label_info_background');
+        }
+    }
+    &--large {
+        height: 28px;
+        line-height: 24px;
+        border-radius: $BORDER_RADIUS * 5;
+        padding: 4px 8px 4px 4px;
+        margin: 0 2px;
+        font-size: 16px;
+    }
+}

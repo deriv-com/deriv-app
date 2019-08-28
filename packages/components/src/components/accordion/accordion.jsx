@@ -41,7 +41,13 @@ class Accordion extends React.Component {
             <div className={classNames('dc-accordion__wrapper', className)}>
                 {list.map((item, idx) => (
                     <div
-                        className={classNames('dc-accordion__item', `dc-accordion__item--${this.state.open_idx === idx ? 'open' : 'close'}`, { [`dc-accordion__item--${item.className}`]: item.className })}
+                        className={
+                            classNames(
+                                'dc-accordion__item',
+                                `dc-accordion__item--${this.state.open_idx === idx ? 'open' : 'close'}`,
+                                { [`dc-accordion__item--${idx === 0 ? 'first' : 'last'}`]: idx === 0 || idx === list.length - 1 },
+                            )
+                        }
                         key={idx}
                     >
                         <div className='dc-accordion__item-header' onClick={() => { this.onClick(idx); }}>

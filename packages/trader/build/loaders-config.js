@@ -1,9 +1,14 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 
+/**
+ * Please ensure the loaders are chained properly.
+ * The last loader will be called first and will be passed the contents of the raw resource.
+ * The first loader will be called last and is expected to return JavaScript.
+ */
 const js_loaders = [
     {
-        loader: 'deriv-shared/utils/deriv-components-loader.js'
+        loader: 'deriv-shared/utils/deriv-components-loader.js',
     },
     {
         loader : 'babel-loader',

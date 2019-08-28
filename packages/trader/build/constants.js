@@ -63,8 +63,8 @@ const rules = (is_test_env = false, is_mocha_only = false) => ([
     ] : []),
     {
         test   : /\.(js|jsx)$/,
-        exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
-        include: is_test_env ? /__tests__|src/ : /src/,
+        // tell webpack to parse .jsx icons files in deriv-components
+        exclude: is_test_env ? /node_modules\/(?!deriv-components)\/.*/ : /node_modules\/(?!deriv-components)|__tests__/,
         use    : js_loaders
     },
     {

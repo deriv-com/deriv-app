@@ -198,19 +198,19 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content.blocks = flyout_content.blocks.concat(uniqueProceBlocks);
     } else {
         const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
-        flyout_content = this.getCategoryContents(selected_category, this.workspace_);
+        flyout_content = this.getCategoryContents(selected_category);
     }
 
     flyout.setContents(flyout_content);
 };
 
-Blockly.Toolbox.prototype.getCategoryContents = function(selected_category, workspace) {
+Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
     let xml_list = selected_category.getContents();
 
     // Dynamic categories
     if (typeof xml_list === 'string') {
-        const fnToApply = workspace.getToolboxCategoryCallback(xml_list);
-        xml_list = fnToApply(workspace);
+        const fnToApply = this.workspace_.getToolboxCategoryCallback(xml_list);
+        xml_list = fnToApply(this.workspace_);
     }
 
     return xml_list;

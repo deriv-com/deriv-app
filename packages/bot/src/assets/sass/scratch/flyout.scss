@@ -5,6 +5,7 @@
 }
 
 .flyout {
+    $flyout        : &;
     $default-margin: 15px;
     $button-padding: 5px 20px;
 
@@ -53,7 +54,7 @@
             color: $COLOR_WHITE;
         }
         &-back {
-            @include vertical-center();
+            align-self: center;
             background-color: transparent;
             color: $COLOR_BLACK;
         }
@@ -113,12 +114,12 @@
             overflow-y: auto;
             height: calc(100vh - 300px);
 
-            .flyout__item {
+            #{$flyout}__item {
                 margin-bottom: 2em;
             }
         }
         &-title {
-            @include vertical-center();
+            align-self: center;
             font-size: 25px;
             font-weight: bold;
         }

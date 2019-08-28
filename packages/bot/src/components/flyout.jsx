@@ -2,8 +2,8 @@ import React                from 'react';
 import PropTypes            from 'prop-types';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
-import { connect }          from '../stores/connect';
 import * as config          from '../scratch/help-content/help-content.config';
+import { connect }          from '../stores/connect';
 import                           '../assets/sass/scratch/flyout.scss';
 
 const Flyout = ({
@@ -31,7 +31,7 @@ const Flyout = ({
                             case Blockly.Xml.NODE_BLOCK: {
                                 const block_type = node.getAttribute('type');
                                 let flyout_block_key = `${block_type} ${index}`;
-                                if (Blockly.Block.isDynamic(block_type)) {
+                                if (Blockly.Block.isDynamic(block_type) || is_help_content) {
                                     flyout_block_key = `${block_type} ${Math.random()}`;
                                 }
 

@@ -144,7 +144,7 @@ export default class FlyoutStore {
     @action.bound onSequenceClick(block_name, should_go_next) {
         const toolbox = Blockly.derivWorkspace.toolbox_;
         const selected_category = toolbox.getSelectedItem();
-        const xml_list = toolbox.getCategoryContents(selected_category, Blockly.derivWorkspace);
+        const xml_list = toolbox.getCategoryContents(selected_category);
         const xml_list_group = this.groupBy(xml_list, true);
         const current_block = xml_list.find(xml => xml.getAttribute('type') === block_name);
 
@@ -196,7 +196,12 @@ export default class FlyoutStore {
     groupBy(nodes, should_include_block_only = false) {
         return nodes.reduce(function (block_group, node) {
             const type = node.getAttribute('type');
-            if (!block_group[type]) {
+
+            if (should_include_block_only && type === null) {
+                return block_group;
+            }
+
+            if (!block_group[type]){
                 block_group[type] = [];
             }
 

@@ -61,7 +61,6 @@ const BinarySocketBase = (() => {
                 connection: binary_socket,
                 storage   : SocketCache,
             });
-            window.deriv_api = deriv_api;
             derivAPISend = deriv_api.send.bind(deriv_api);
             deriv_api.send = send;
         }

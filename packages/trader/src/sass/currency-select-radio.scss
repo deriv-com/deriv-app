@@ -1,0 +1,59 @@
+@import "app/_common/base/index";
+
+.currency-list {
+  width: 100%;
+
+  &__items {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  &__item {
+    border-radius: $BORDER_RADIUS;
+    display: inline-flex;
+    flex-direction: column;
+    width: 120px;
+    height: 120px;
+    justify-content: space-around;
+    align-items: center;
+    margin: $BORDER_RADIUS;
+    @include themify($themes) {
+      border: 1px solid themed('container_color');
+    }
+
+    &:hover:not(&--selected) {
+      @include themify($themes) {
+        border: 1px solid themed('border_color');
+      }
+    }
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+    p {
+      text-align: center;
+      @include typeface(--paragraph-center-normal-black);
+      @include themify($themes) {
+        color: themed('text_primary_color')
+      }
+    }
+    &--selected {
+      @include themify($themes) {
+        border: 1px solid themed('border_outline_color');
+      }
+
+      & > p {
+        @include typeface(--paragraph-center-bold-black);
+      }
+    }
+  }
+}
+
+.currency-hr {
+  height: 2px;
+  width: 100%;
+  margin: 16px 0;
+  @include themify($themes) {
+    border-top: 1px solid themed('border_color');
+  }
+}

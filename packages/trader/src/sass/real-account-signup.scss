@@ -1,0 +1,104 @@
+@import 'app/_common/base/index';
+
+.form-progress {
+  width: 100%;
+  height: 100%;
+  max-height: 122px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    margin: 0 -24px;
+    @include themify($themes) {
+      border-bottom: 1px solid themed('label_default_color');
+    }
+
+    & h2 {
+      @include typeface(--paragraph-center-bold-black);
+      @include themify($themes) {
+        color: themed('text_primary_color');
+      }
+    }
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 6rem;
+    min-width: 120px;
+    z-index: 2;
+
+
+    .identifier {
+      border-radius: 50%;
+      width: 24px;
+      display: block;
+      text-align: center;
+      @include typeface(--paragraph-center-normal-black);
+      @include themify($themes) {
+        color: themed('background_button_color');
+        background-color: themed('container_color');
+        border: 1px solid themed('background_button_color');
+      }
+    }
+
+    &--active {
+      .identifier {
+        transition: all 0.3s ease;
+        @include typeface(--paragraph-center-normal-black);
+        @include themify($themes) {
+          color: themed('container_color');
+          background-color: themed('label_success_color');
+          border: 1px solid themed('label_success_color');
+        }
+        font-weight: bold;
+      }
+
+      .title {
+        @include themify($themes) {
+          font-weight: bold;
+          color: themed('label_success_color');
+        }
+      }
+    }
+  }
+
+  &__steps {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &--before {
+      @include themify($themes) {
+        border-top: 2px solid themed('border_outline_color');
+      }
+      content: "";
+      margin: 0 auto; /* this centers the line to the full width specified */
+      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+      top: 18px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 67%;
+    }
+    &--after {
+      @include themify($themes) {
+        border-top: 2px solid themed('label_success_color');
+      }
+      content: "";
+      margin: 0 auto; /* this centers the line to the full width specified */
+      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+      top: 18px;
+      bottom: 0;
+      left:0;
+      transition: width 0.3s ease;
+    }
+  }
+}

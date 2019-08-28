@@ -1,0 +1,21 @@
+@import 'app/_common/base/index';
+
+.account-wizard {
+  width: 100%;
+  &__body {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    h2 {
+      @include typeface(--paragraph-center-bold-black);
+      @include themify($themes) {
+        color: themed('border_outline_color');
+      }
+    }
+  }
+}

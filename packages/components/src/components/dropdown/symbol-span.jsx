@@ -9,7 +9,7 @@ class SymbolSpan extends Component {
                 <span
                     name={this.props.name}
                     value={this.props.value}
-                    className={`symbols dropdown__display-symbol symbols--${(this.props.value || '').toLowerCase()}`}
+                    className={`symbols dc-dropdown__display-symbol symbols--${(this.props.value || '').toLowerCase()}`}
                 />
             );
         }

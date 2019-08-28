@@ -39,6 +39,11 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
 @import deriv-shared/src/styles/reset.scss
 ```
 
+#### Google fonts:
+```scss
+@import deriv-shared/src/styles/google-fonts.scss
+```
+
 ### Utility functions
 ```js
 import { toMomemt } 'deriv-shared/utils/date'

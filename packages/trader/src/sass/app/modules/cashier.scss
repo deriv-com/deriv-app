@@ -98,5 +98,39 @@
     &__wrapper {
         font-size: 1.4rem;
         line-height: 1.43;
+        height: 100%;
+        width: 100%;
+    }
+    &__header {
+        font-size: 1.6rem;
+        line-height: 1.5;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+    &__description {
+        margin-bottom: 24px;
+    }
+    &__instructions {
+        display: flex;
+
+        &-section {
+            flex: 1;
+
+            .payment-agent__header {
+                margin-bottom: 8px;
+            }
+        }
+    }
+    &__button {
+        margin: 0;
+        height: 40px;
+    }
+    &__accordion-content {
+        color: var(--color-red);
+
+        &-icon {
+            vertical-align: middle;
+            margin-right: 12px;
+        }
     }
 }

@@ -9,6 +9,7 @@ module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
+        accordion   : path.resolve(__dirname, 'src', 'components/accordion/index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),

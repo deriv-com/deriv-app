@@ -33,8 +33,9 @@ export default class CashierStore extends BaseStore {
     @observable config = {
         deposit      : new Config({ container: 'deposit' }),
         payment_agent: {
-            container: 'payment_agent',
-            list     : [],
+            available_payment_methods: [localize('Any')],
+            container                : 'payment_agent',
+            list                     : [],
         },
         verification: {
             is_button_clicked: false,
@@ -371,7 +372,32 @@ export default class CashierStore extends BaseStore {
         const currency           = this.root_store.client.currency;
         const payment_agent_list = await WS.paymentAgentList(residence, currency);
 
-        this.config.payment_agent.list = payment_agent_list.paymentagent_list.list;
+        this.setPaymentAgentList(payment_agent_list);
+    }
+
+    @action.bound
+    setPaymentAgentList(payment_agent_list) {
+        payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
+            this.config.payment_agent.list.push({
+                email: payment_agent.email,
+                phone: payment_agent.telephone,
+                name : payment_agent.name,
+                url  : payment_agent.url,
+            });
+            payment_agent.supported_banks.split(',').forEach((bank) => {
+                if (bank && this.config.payment_agent.available_payment_methods.indexOf(bank) === -1) {
+                    this.config.payment_agent.available_payment_methods.push(bank);
+                }
+            });
+        });
+        console.log(this.config.payment_agent.available_payment_methods);
+        console.log(this.config.payment_agent.available_payment_methods.map((payment_method) =>
+            ({ text: payment_method, value: payment_method.toLowerCase() })));
+    }
+
+    @action.bound
+    onChangePaymentMethod() {
+        console.log('here');
     }
 
     onUnmount() {

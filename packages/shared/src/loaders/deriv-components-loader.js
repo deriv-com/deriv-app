@@ -1,5 +1,5 @@
 /* Using this loader you can import components from deriv-components without having to manually
-import the corresponding stylesheet. The deriv-components-loader will automatically import 
+import the corresponding stylesheet. The deriv-components-loader will automatically import
 stylesheets.
 
     import { Button } from 'deriv-components';
@@ -7,6 +7,10 @@ stylesheets.
     import Button from 'deriv-components/lib/button';
     import 'deriv-components/lib/button.css';
 */
+
+function getKebabCase(str) {
+    return str.split(/(?=[A-Z])/).join('-').toLowerCase();
+}
 
 module.exports = function(source) {
     const lines  = source.split(/\n/);
@@ -17,8 +21,8 @@ module.exports = function(source) {
         }
         const components = matches[1].replace(/\s+/g, '').split(',');
         const replace = components.map(c => `
-import ${c} from 'deriv-components/lib/${c.toLocaleLowerCase()}';
-import 'deriv-components/lib/${c.toLocaleLowerCase()}.css';
+import ${c} from 'deriv-components/lib/${getKebabCase(c)}';
+import 'deriv-components/lib/${getKebabCase(c)}.css';
         `).join('\n');
 
         return replace;

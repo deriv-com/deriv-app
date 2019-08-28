@@ -18,7 +18,8 @@ const getSocketURL     = require('../../config').getSocketURL;
  */
 const BinarySocketBase = (() => {
     let deriv_api,
-        derivAPISend;
+        derivAPISend,
+        binary_socket;
 
     let config               = {};
     let wrong_app_id         = 0;
@@ -26,6 +27,7 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before  = false;
 
+    const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
     const timeouts        = {};
     const debounced_calls = {};
 
@@ -38,9 +40,9 @@ const BinarySocketBase = (() => {
 
     const isReady = () => hasReadyState(1);
 
-    const isClose = () => !deriv_api || hasReadyState(2, 3);
+    const isClose = () => !binary_socket || hasReadyState(2, 3);
 
-    const hasReadyState = (...states) => deriv_api && states.some(s => deriv_api.connection.readyState === s);
+    const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
     const init = (options) => {
         if (wrong_app_id === getAppId()) {
@@ -53,13 +55,13 @@ const BinarySocketBase = (() => {
         config.wsEvent('init');
 
         if (isClose()) {
+            is_disconnect_called = false;
+            binary_socket = new WebSocket(socket_url);
             deriv_api = new DerivAPIBasic({
-                endpoint: getSocketURL(),
-                app_id  : getAppId(),
-                lang    : getLanguage(),
-                brand   : website_name.toLowerCase(),
-                storage : SocketCache,
+                connection: binary_socket,
+                storage   : SocketCache,
             });
+            window.deriv_api = deriv_api;
             derivAPISend = deriv_api.send.bind(deriv_api);
             deriv_api.send = send;
         }

@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
 import { Popover }  from 'App/Components/Elements/Popover';
-import { Button }   from 'deriv-components';
 
 const SellButton = ({
     contract_info,

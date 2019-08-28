@@ -72,7 +72,8 @@ export default class PortfolioStore extends BaseStore {
             const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
             if (!new_pos) return;
             this.pushNewPosition(new_pos);
-            this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+            this.subscribers[contract_id] =
+                WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
@@ -189,7 +190,7 @@ export default class PortfolioStore extends BaseStore {
 
         if (isEnded(contract_response)) {
             // also forget for buy
-            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
+            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
                 if (!(contract_response.contract_id in this.subscribers)) return;
                 this.subscribers[contract_response.contract_id].unsubscribe();
                 delete this.subscribers[contract_response.contract_id];

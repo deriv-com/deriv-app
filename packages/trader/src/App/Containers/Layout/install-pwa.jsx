@@ -1,9 +1,9 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
+import { Button }       from 'deriv-components';
 import { website_name } from 'App/Constants/app-config';
 import { connect }      from 'Stores/connect';
 import { localize }     from 'App/i18n';
-import { Button }       from 'deriv-components';
 
 const InstallPWA = ({
     onClose,

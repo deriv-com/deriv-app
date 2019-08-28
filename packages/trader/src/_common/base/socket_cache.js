@@ -123,7 +123,7 @@ const SocketCache = (() => {
     const reloadDataObj = () => {
         if (isEmptyObject(data_obj)) {
             data_obj = LocalStore.getObject(storage_key);
-            if (isEmptyObject(data_obj)) return undefined;
+            if (isEmptyObject(data_obj)) return;
         }
 
         if (data_obj.static_hash !== getStaticHash()) { // new release

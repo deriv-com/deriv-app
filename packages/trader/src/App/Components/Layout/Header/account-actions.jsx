@@ -1,8 +1,8 @@
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
+import { Button }           from 'deriv-components';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-import { Button }           from 'deriv-components';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';

@@ -249,7 +249,11 @@ export default class TradeStore extends BaseStore {
             runInAction(() => {
                 this.processNewValuesAsync({
                     is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                });
+                },
+                true,
+                null,
+                false,
+                );
             });
         });
     }
@@ -598,6 +602,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
+        this.resetErrorServices();
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
@@ -605,10 +610,8 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency },
                 false,
             );
-            await this.clearContract();
-            await this.resetErrorServices();
-            await this.refresh();
-            return resolve(this.debouncedProposal());
+            this.refresh();
+            resolve(this.debouncedProposal());
         });
     }
 
@@ -619,14 +622,12 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        runInAction(() => {
-            this.is_trade_component_mounted = true;
-        });
         this.onSwitchAccount(this.accountSwitcherListener);
-        return new Promise(async (resolve) => {
-            await this.refresh();
+        runInAction(async() => {
+            this.is_trade_component_mounted = true;
+            this.refresh();
             await this.prepareTradeStore();
-            return resolve(this.debouncedProposal());
+            this.debouncedProposal();
         });
     }
 
@@ -651,14 +652,24 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    async initAccountCurrency(new_currency) {
+        await this.processNewValuesAsync(
+            { currency: new_currency },
+            true,
+            { currency: this.currency },
+            false,
+        );
+        this.refresh();
+        this.debouncedProposal();
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.proposal_info = {};
-        this.purchase_info = {};
-        WS.forgetAll('proposal');
+        this.is_trade_component_mounted = false;
+        this.refresh();
         this.resetErrorServices();
         this.restoreTradeChart();
-        this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
     }

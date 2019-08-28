@@ -11,9 +11,9 @@ module.exports = {
         // index: path.join(__dirname, 'src', 'index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
-        autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
-        form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
         dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
     },
@@ -107,8 +107,8 @@ module.exports = {
     ],
     externals: {
         formik: 'formik',
-        mobx : 'mobx',
-        react: {
+        mobx  : 'mobx',
+        react : {
             root     : 'React',
             commonjs : 'react',
             commonjs2: 'react',

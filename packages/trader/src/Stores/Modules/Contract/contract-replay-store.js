@@ -190,13 +190,8 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     removeErrorMessage() {
-        delete this.error_message;
-    }
-
-    @action.bound
-    clearError() {
-        this.error_message = null;
-        this.has_error = false;
+        this.error_message = '';
+        this.has_error     = false;
     }
 
     // ---------------------------

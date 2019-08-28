@@ -17,19 +17,20 @@ const available_sizes = [
     'large',
 ];
 
-const Label = ({ mode, children, size = 'regular' }) => {
+const Label = ({ mode, children, size = 'regular', className }) => {
     const type = available_modes.some(m => m === mode) ? mode : 'default';
     const scale = available_sizes.some(s => s === size) ? size : 'regular';
 
     return (
-        <span className={classNames('label', {
-            [`label--${scale}`]: scale,
-            [`label--${type}`] : type,
+        <span className={classNames('dc-label', className, {
+            [`dc-label--${scale}`]: scale,
+            [`dc-label--${type}`] : type,
         })}
         >{children}
         </span>
     );
 };
+
 Label.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
@@ -37,4 +38,5 @@ Label.propTypes = {
     ]),
     mode: PropTypes.oneOf(available_modes),
 };
+
 export default Label;

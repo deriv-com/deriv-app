@@ -92,7 +92,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const setBalance = flow(function* (balance) {
-        yield BinarySocket.expectResponse('website_status');
+        yield BinarySocket.wait('website_status');
         client_store.setBalance(balance);
     });
 

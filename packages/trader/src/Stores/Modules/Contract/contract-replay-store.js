@@ -76,7 +76,7 @@ export default class ContractReplayStore extends BaseStore {
             this.smart_chart = this.root_store.modules.smart_chart;
             this.smart_chart.setContractMode(true);
             this.contract_id = contract_id;
-            BinarySocket.expectResponse('authorize').then(() => {
+            BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
             WS.activeSymbols({ skip_cache_update: true });

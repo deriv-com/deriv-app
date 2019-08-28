@@ -34,7 +34,7 @@ const RouteWithSubRoutes = route => {
         Language.setCookie();
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
-        BinarySocket.expectResponse('website_status').then(() => {
+        BinarySocket.wait('website_status').then(() => {
             route.pushDataLayer({ event: 'page_load' });
         });
         return result;

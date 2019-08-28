@@ -115,7 +115,7 @@ export default class ContractTradeStore extends BaseStore {
         // clear proposal and purchase info once contract is mounted
         this.root_store.modules.trade.proposal_info = {};
         this.root_store.modules.trade.purchase_info = {};
-        BinarySocket.expectResponse('authorize').then(() => {
+        BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
         });
     }
@@ -140,7 +140,7 @@ export default class ContractTradeStore extends BaseStore {
                 this.smart_chart.setIsChartLoading(true);
                 this.smart_chart.switchToContractMode(true, has_existing_id);
             }
-            BinarySocket.expectResponse('authorize').then(() => {
+            BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
             });
         }

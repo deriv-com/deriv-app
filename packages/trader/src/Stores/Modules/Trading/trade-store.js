@@ -112,7 +112,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
-        await BinarySocket.expectResponse('authorize', 'website_status');
+        await BinarySocket.wait('authorize', 'website_status');
         WS.activeSymbols().then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -209,7 +209,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const { active_symbols, error } = this.smart_chart.should_refresh_active_symbols ?
             // if SmartCharts has requested active_symbols, we wait for the response
-            await BinarySocket.expectResponse('active_symbols')
+            await BinarySocket.wait('active_symbols')
             : // else requests new active_symbols
             await WS.activeSymbols();
 
@@ -243,7 +243,7 @@ export default class TradeStore extends BaseStore {
         this.currency         = this.root_store.client.currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-        await BinarySocket.expectResponse('authorize');
+        await BinarySocket.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
             this.setDefaultSymbol();

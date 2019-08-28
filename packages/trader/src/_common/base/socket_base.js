@@ -144,7 +144,7 @@ const BinarySocketBase = (() => {
 
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 
-    const expectResponse = (...responses) =>
+    const wait = (...responses) =>
         deriv_api.expectResponse(...responses.filter(excludeAuthorize));
 
     const subscribe = (request, cb) =>
@@ -202,7 +202,7 @@ const BinarySocketBase = (() => {
         init,
         send,
         forgetStream,
-        expectResponse,
+        wait,
         clearTimeouts,
         availability,
         hasReadyState,
@@ -265,7 +265,7 @@ const proxyForAuthorize = obj => new Proxy(obj, {
             return proxyForAuthorize(target[field], proxied_socket_base[field]);
         }
         return (...args) => (
-            BinarySocketBase.expectResponse('authorize')
+            BinarySocketBase.wait('authorize')
                 .then(() => target[field](...args)));
     },
 });

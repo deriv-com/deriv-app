@@ -329,6 +329,6 @@ export default class BaseStore {
     }
 
     waitFor = async (...prerequisites) => {
-        await BinarySocket.expectResponse(...prerequisites);
+        await BinarySocket.wait(...prerequisites);
     };
 }

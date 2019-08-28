@@ -3,7 +3,7 @@ import React        from 'react';
 import PropTypes    from 'prop-types';
 import { Field }    from 'formik';
 import Input        from '../input';
-import DropdownList from '../../dropdown-list';
+import DropdownList from '../dropdown-list';
 import                   './autocomplete.scss';
 
 // TODO: use-from-shared - Use this icon from icons' shared package

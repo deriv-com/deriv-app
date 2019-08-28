@@ -22,8 +22,8 @@ const WS = (() => {
     const getSelfExclusion = () =>
         BinarySocket.send({ get_self_exclusion: 1 });
 
-    const getSettings = () =>
-        BinarySocket.send({ get_settings: 1 });
+    const getSettings = (options) =>
+        BinarySocket.send({ get_settings: 1 }, options);
 
     const getTradingTimes = (date) =>
         BinarySocket.send({ trading_times: date });

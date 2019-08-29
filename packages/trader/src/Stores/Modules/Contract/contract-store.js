@@ -131,11 +131,21 @@ function calculate_marker(contract_info) {
         date_expiry,
         entry_tick_time,
         tick_count,
+        barrier_count,
+        barrier,
+        high_barrier,
+        low_barrier,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
 
     window.ci = toJS(contract_info);
-    // console.warn(ci);
+
+    let price_array = [];
+    if (+barrier_count === 1 && barrier) {
+        price_array = [+barrier];
+    } else if (+barrier_count === 2 && high_barrier && low_barrier) {
+        price_array = [+low_barrier, +high_barrier];
+    }
 
     if (!date_start) { return null; }
     // if we have not yet received the first POC response
@@ -145,6 +155,7 @@ function calculate_marker(contract_info) {
             type         : 'TickContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start],
+            price_array,
         };
     }
 
@@ -155,6 +166,7 @@ function calculate_marker(contract_info) {
             type         : 'TickContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start, ...ticks_epoch_array],
+            price_array,
         };
     }
     // NonTickContract
@@ -171,6 +183,7 @@ function calculate_marker(contract_info) {
             type         : 'NonTickContract',
             key          : `${contract_id}-date_start`,
             epoch_array,
+            price_array,
         };
     }
     return null;

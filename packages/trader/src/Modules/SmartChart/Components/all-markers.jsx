@@ -3,9 +3,10 @@ import { FastMarker, RawMarker } from 'smartcharts-beta';
 import * as ICONS from './icons';
 
 const RawMarkerMaker = (draw_callback) => {
-    const Marker = ({ epoch_array, ...rest }) => (
+    const Marker = ({ epoch_array, price_array, ...rest }) => (
         <RawMarker
             epoch_array={epoch_array}
+            price_array={price_array}
             draw_callback={args => draw_callback({ ...args, ...rest })}
         />
     );
@@ -112,7 +113,8 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
 
 const TickContract = RawMarkerMaker(({
     ctx: context,
-    points: [st, ...ticks], // st = start_time tick
+    points: [start, ...ticks],
+    prices: [barrier], // TODO: support two barrier contracts
     is_last_contract,
     contract_info: {
         contract_type,
@@ -132,71 +134,75 @@ const TickContract = RawMarkerMaker(({
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    if (is_last_contract && st.visible) {
+    if (is_last_contract && start.visible) {
         render_label({
             ctx,
             text: 'Start\nTime',
             tick: {
-                ...st,
+                ...start,
                 top: 100,
             },
         });
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
-        ctx.moveTo(st.left, 0);
-        ctx.lineTo(st.left, ctx.canvas.height);
+        ctx.moveTo(start.left, 0);
+        ctx.lineTo(start.left, ctx.canvas.height);
         ctx.stroke();
     }
-    if (!ticks.length) {
+    if (!ticks.length || !barrier) {
         ctx.restore();
         return;
     }
-    const first = ticks[0];
-    const last = ticks[ticks.length - 1];
+    const entry = ticks[0];
+    const expiry = ticks[ticks.length - 1];
     // horizontal dashed line
-    if (st.visible || first.visible) {
+    if (start.visible || entry.visible) {
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
-        ctx.moveTo(st.left, first.top);
-        ctx.lineTo(first.left, first.top);
+        ctx.moveTo(start.left, barrier);
+        ctx.lineTo(entry.left, barrier);
         ctx.stroke();
     }
     // barrier solid line
-    if (
-        (first.visible && last.visible) ||
-        first.visible !== last.visible
-    ) {
+    if (entry.visible || expiry.visible) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.moveTo(first.left, first.top);
-        ctx.lineTo(last.left, first.top);
+        ctx.moveTo(entry.left, barrier);
+        ctx.lineTo(expiry.left, barrier);
+        ctx.stroke();
+    }
+    if ((entry.visible || expiry.visible) && barrier !== entry.top) {
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(entry.left, entry.top);
+        ctx.lineTo(expiry.left, entry.top);
         ctx.stroke();
     }
     // entry spot
-    if (first.zoom >= 10 && first.visible) {
+    if (entry.zoom >= 10 && entry.visible) {
         ctx.beginPath();
-        ctx.arc(first.left, first.top, 2, 0, Math.PI * 2);
+        ctx.arc(entry.left, entry.top, 2, 0, Math.PI * 2);
         ctx.fill();
     }
     // start-time marker
-    if (st.visible) {
+    if (start.visible) {
         draw_path(ctx, {
-            top : first.top,
-            left: st.left,
-            zoom: st.zoom,
+            top : entry.top,
+            left: start.left,
+            zoom: start.zoom,
             icon: (ICONS[contract_type] || ICONS.CALL).with_color(color),
         });
     }
     // status marker
     if (
-        last.visible &&
-        last.epoch * 1 === exit_tick_time * 1 &&
+        expiry.visible &&
+        expiry.epoch * 1 === exit_tick_time * 1 &&
         status !== 'open'
     ) {
         draw_path(ctx, {
-            top : first.top,
-            left: last.left,
-            zoom: last.zoom,
+            top : entry.top,
+            left: expiry.left,
+            zoom: expiry.zoom,
             icon: (ICONS[status.toUpperCase()] || ICONS.LOST),
         });
     }
@@ -205,7 +211,7 @@ const TickContract = RawMarkerMaker(({
 
 const NonTickContract = RawMarkerMaker(({
     ctx: context,
-    points: [start, expiry, entry], // st = start_time tick
+    points: [start, expiry, entry],
     is_last_contract,
     contract_info: {
         contract_type,

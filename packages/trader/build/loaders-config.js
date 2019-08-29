@@ -101,6 +101,12 @@ const css_loaders = [
             sourceMap: true,
         }
     },
+    {
+        loader: 'sass-resources-loader',
+        options: {
+            resources: require('deriv-shared/utils/index.js'),
+        }
+    }
 ];
 
 module.exports = {

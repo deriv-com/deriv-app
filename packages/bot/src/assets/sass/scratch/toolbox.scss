@@ -1,5 +1,3 @@
-@import '../base/mixins';
-
 $category-colours: (
     search          : #afffda,
     trade_parameters   : #30409f,
@@ -57,11 +55,11 @@ $category-colours: (
         &--back {
             margin-left: $category-text-spacing;
             fill: $white;
-            @include vendor(transform, rotate(90deg));
+            transform: rotate(90deg);
         }
         &--open {
             margin-right: $category-text-spacing;
-            @include vendor(transform, rotate(270deg));
+            transform: rotate(270deg);
         }
     }
     &__category-colour {
@@ -140,7 +138,7 @@ $category-colours: (
                 }
                 &--#{$category}#{$toolbox}__category--selected {
                     background-color: transparentize($colour, 0.9);
-                    @include vendor(transition, background-color 0.25s ease);
+                    transition: background-color 0.25s ease;
                 }
             }
         }

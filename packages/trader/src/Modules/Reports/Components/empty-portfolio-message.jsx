@@ -1,6 +1,6 @@
 import React        from 'react';
-import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
+import { localize } from 'App/i18n';
 
 const EmptyPortfolioMessage = ({ error }) => (
     <div className='portfolio-empty'>

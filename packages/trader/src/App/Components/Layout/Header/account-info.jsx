@@ -40,7 +40,7 @@ const AccountInfo = ({
                     {balance}
                 </p>
             }
-            <Icon icon='IconArrowBold' className='acc-info__select-arrow' />
+            <Icon icon='IconChevronUpBold' className='acc-info__select-arrow' />
         </div>
         <CSSTransition
             in={is_dialog_on}

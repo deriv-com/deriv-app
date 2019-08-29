@@ -7,7 +7,7 @@ const InfoBoxLongcode = ({
     contract_info,
 }) => (
     <div className='info-box-longcode'>
-        <Icon icon='IconFlag' className='info-box-longcode-icon' />
+        <Icon icon='IconFlagCheckered' className='info-box-longcode-icon' />
         <span className='info-box-longcode-text'>{contract_info.longcode}</span>
     </div>
 );

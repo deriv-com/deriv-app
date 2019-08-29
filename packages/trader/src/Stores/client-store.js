@@ -371,7 +371,7 @@ export default class ClientStore extends BaseStore {
         return {
             loginid,
             is_virtual,
-            icon : account_type.toLowerCase(), // TODO: display the icon
+            icon : account_type.charAt(0).toUpperCase() + account_type.slice(1).toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
     }

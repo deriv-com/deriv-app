@@ -35,6 +35,17 @@
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
+
+        .bg-fill {
+            @include themify($themes) {
+                fill: themed('background_icon_color');
+            }
+        }
+        .path-fill {
+            @include themify($themes) {
+               fill: themed('loader_background');
+            }
+        }
     }
     &__item {
         display: flex;

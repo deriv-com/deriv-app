@@ -2,9 +2,9 @@ import classNames   from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import Icon         from 'Assets/icon.jsx';
 import { addComma } from '_common/base/currency_base';
 import { toMoment } from 'Utils/Date';
-import Icon         from 'Assets/icon.jsx';
 import MarkerSpot   from './marker-spot.jsx';
 
 class MarkerSpotLabel extends React.Component {

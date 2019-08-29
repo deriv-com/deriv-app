@@ -153,6 +153,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
             if (!row_obj.contract_info || !row_obj.contract_info.profit) return;
             const profit = row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
+            const IconProfitLoss = profit > 0 ? <Icon icon='IconProfit' /> : <Icon icon='IconLoss' />;
             return (
                 <div className={classNames('open-positions__profit-loss', {
                     'open-positions__profit-loss--negative': (
@@ -165,7 +166,7 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div className='open-positions__profit-loss--movement'>
-                        <Icon icon='IconPriceMove' type={profit > 0 ? 'profit' : 'loss'} />
+                        <IconProfitLoss />
                     </div>
                 </div>
             );

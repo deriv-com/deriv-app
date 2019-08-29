@@ -1,9 +1,9 @@
-// import React           from 'react';
-// import PropTypes       from 'prop-types';
-// import { localize }    from 'App/i18n';
-// import { Button }      from 'deriv-components';
-// import { Icon }        from 'Assets/Common/icon.jsx';
-// import { IconLock }    from 'Assets/Trading/icon-lock.jsx';
+// import React        from 'react';
+// import PropTypes    from 'prop-types';
+// import { localize } from 'App/i18n';
+// import { Button }   from 'deriv-components';
+// import Icon         from 'Assets/icon.jsx';
+// import { IconLock } from 'deriv-components';
 //
 // const PurchaseLock = ({ onClick }) => (
 //     <div className='purchase-container__lock'>

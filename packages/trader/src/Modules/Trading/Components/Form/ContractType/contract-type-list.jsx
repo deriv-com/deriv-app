@@ -10,28 +10,27 @@ const ContractTypeList = ({
     list,
     name,
     value,
-}) =>
-    (
-        Object.keys(list).map(key => (
-            // TODO: Remove this line after other contracts are ready to be served
-            !['In/Out', 'Asians'].includes(key) &&
-            <React.Fragment key={key}>
-                <div className='contract-type-list'>
-                    <div className='contract-type-list__label'><span>{key}</span></div>
-                    <div className='contract-type-list__contracts-wrapper'>
-                        <ContractTypeItem
-                            contracts={list[key]}
-                            name={name}
-                            value={value}
-                            handleSelect={handleSelect}
-                            handleInfoClick={handleInfoClick}
-                            is_equal={is_equal}
-                        />
-                    </div>
+}) => (
+    Object.keys(list).map(key => (
+        // TODO: Remove this line after other contracts are ready to be served
+        !['In/Out', 'Asians'].includes(key) &&
+        <React.Fragment key={key}>
+            <div className='contract-type-list'>
+                <div className='contract-type-list__label'><span>{key}</span></div>
+                <div className='contract-type-list__contracts-wrapper'>
+                    <ContractTypeItem
+                        contracts={list[key]}
+                        name={name}
+                        value={value}
+                        handleSelect={handleSelect}
+                        handleInfoClick={handleInfoClick}
+                        is_equal={is_equal}
+                    />
                 </div>
-            </React.Fragment>
-        ))
-    );
+            </div>
+        </React.Fragment>
+    ))
+);
 
 ContractTypeList.propTypes = {
     handleInfoClick: PropTypes.func,

@@ -99,7 +99,7 @@ const ContractType = (() => {
 
                 if (!sub_cats) return;
 
-                sub_cats[sub_cats.indexOf(type)] = { value: type, text: contract_types[type].title };
+                sub_cats[sub_cats.indexOf(type)] = { value: type, text: contract_types[type].title, trade_types: contract_types[type].trade_types };
 
                 // populate available contract types
                 available_contract_types[type] = cloneObject(contract_types[type]);

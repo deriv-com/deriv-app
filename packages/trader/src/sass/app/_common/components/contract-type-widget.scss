@@ -35,7 +35,7 @@
             border-color: $COLOR_DARK_BLUE_5;
 
             .contract-type-widget__select-arrow {
-                transform: rotate(-90deg);
+                transform: rotate(-180deg);
             }
         }
     }
@@ -52,7 +52,7 @@
         left: 0.6em;
         line-height: 1;
         transition: transform 0.25s ease;
-        transform: rotate(90deg);
+        transform: rotate(0deg);
         transform-origin: 45% 45;
         color: $COLOR_LIGHT_BLACK_4;
         @extend %inline-icon;
@@ -67,24 +67,9 @@
         .category-wrapper {
             margin: 0 0.2em;
 
-            /* postcss-bem-linter: ignore */
-            .category-type {
+            .color1-fill {
                 @include themify($themes) {
-                    /* postcss-bem-linter: ignore */
-                    path, rect {
-                        /* postcss-bem-linter: ignore */
-                        &:not(.important) {
-                            fill: themed('icon_color');
-                        }
-                        /* postcss-bem-linter: ignore */
-                        &.transparent {
-                            fill: themed('background_icon_color');
-                        }
-                    }
-                    /* postcss-bem-linter: ignore */
-                    .stroke-active {
-                        stroke: themed('icon_color');
-                    }
+                    fill: themed('trade_type_info_dialog_arrow_fill');
                 }
             }
         }

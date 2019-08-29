@@ -25,7 +25,7 @@ const WalletInformation = ({
 }) => {
     return (
         <div className='account-wallet'>
-            {!is_virtual && <Icon icon='IconAccountsCurrency' type={currency.toLowerCase()} />}
+            {!is_virtual && <Icon icon='IconCurrency' />}
             {is_virtual && <Icon icon='IconDemo' />}
             <span className='description'>
                 { has_description ?

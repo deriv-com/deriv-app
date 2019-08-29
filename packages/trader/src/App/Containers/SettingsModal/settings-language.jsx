@@ -21,22 +21,25 @@ const NonClickableLink = ({ children, lang }) => (
     </div>
 );
 
-const LanguageLink = ({ lang }) => (
-    <React.Fragment>
-        <Icon
-            icon='IconCountryFlag'
-            className={'settings-language__language-link-flag settings-language__language-flag'}
-            type={lang.replace(/(\s|_)/, '-').toLowerCase()}
-        />
-        <span
-            className={classNames('settings-language__language-name', {
-                'settings-language__language-name--active': isCurrentLanguage(lang),
-            })}
-        >
-            {getAllowedLanguages()[lang]}
-        </span>
-    </React.Fragment>
-);
+const LanguageLink = ({ lang }) => {
+    const flag = lang === 'EN' ? 'UK' : lang; // if 'EN', show UK flag
+    const icon = (flag.charAt(0) + flag.slice(1).toLowerCase()); // convert to PascalCase
+    return (
+        <React.Fragment>
+            <Icon
+                icon={`IconFlag${icon}`}
+                className={'settings-language__language-link-flag settings-language__language-flag'}
+                type={lang.replace(/(\s|_)/, '-').toLowerCase()}
+            />
+            <span
+                className={classNames('settings-language__language-name', {
+                    'settings-language__language-name--active': isCurrentLanguage(lang),
+                })}
+            >
+                {getAllowedLanguages()[lang]}
+            </span>
+        </React.Fragment>
+)};
 
 const LanguageSettings = () => (
     <div className='settings-language'>

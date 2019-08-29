@@ -46,6 +46,7 @@ const PositionsDrawerCard = ({
         </div>
     );
     const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
+    const IconProfitLoss  = status === 'profit' ? <Icon icon='IconProfit' /> : <Icon icon='IconLoss' />;
     const contract_el = (
         <React.Fragment>
             <div className={classNames(
@@ -110,10 +111,7 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {(status !== 'complete') ? IconProfitLoss : null}
                     </div>
                 </div>
                 <div className='positions-drawer-card__indicative'>
@@ -124,10 +122,7 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {(status !== 'complete') ? IconProfitLoss : null}
                     </div>
                 </div>
             </div>

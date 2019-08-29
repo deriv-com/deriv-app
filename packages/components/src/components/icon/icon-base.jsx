@@ -13,17 +13,19 @@ function getThemifiedProps(Svg, theme, key) {
             const [attr, value] = attribute.split('=');
             if (value && props[attr] === value) {
                 return React.cloneElement(Svg, { key, className: theme[rule] });
-            } else if ((props['data-theme'] === 'none')
-                || (props[attribute] === 'none')
-                || !props[attribute]
-                || type !== 'path') {
-                return undefined;
-            }
+            } 
+        } else if (element === type) {
+            return React.cloneElement(Svg, { key, className: theme[rule] });
         }
 
-        if (!!element && element !== type) { return undefined; }
-
-        return React.cloneElement(Svg, { key, className: theme[rule] });
+        if ((props['data-theme'] === 'none')
+            || (props[attribute] === 'none')
+            || !props[attribute]
+            || type !== 'path') {
+            return undefined;
+        } else {
+            return React.cloneElement(Svg, { key, className: theme[rule] });
+        }
     }).filter(c => c !== undefined)[0];
 
     if (themifiedProps) {
@@ -51,10 +53,12 @@ const IconBase = Svg => {
     } = Svg.props;
 
     let childrenWithProps;
+    
     if (theme === 'none') {
         childrenWithProps = children;
     } else if (customColors) {
         childrenWithProps = getThemifiedProps(children, customColors);
+        console.log('custom',childrenWithProps);
     } else if (theme === 'twoTone') {
         const twoToneColors = {
             'rect'  : 'bg-fill',
@@ -62,7 +66,7 @@ const IconBase = Svg => {
             'path'  : 'path-fill',
         };
         childrenWithProps = getThemifiedProps(children, twoToneColors);
-    } else {
+    } else if (!theme || theme === 'outline') {
         const fillColors = {
             '&fill'          : 'color1-fill',
             '&stroke'        : 'color1-stroke',

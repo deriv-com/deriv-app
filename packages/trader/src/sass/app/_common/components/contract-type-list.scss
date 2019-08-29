@@ -134,21 +134,10 @@
         /* postcss-bem-linter: ignore */
         .category-wrapper {
             margin: 0 0.2em;
-            @include themify($themes) {
-                /* postcss-bem-linter: ignore */
-                path, rect {
-                    /* postcss-bem-linter: ignore */
-                    &:not(.important) {
-                        fill: themed('icon_color');
-                    }
-                    /* postcss-bem-linter: ignore */
-                    &.transparent {
-                        fill: themed('background_icon_color');
-                    }
-                }
-                /* postcss-bem-linter: ignore */
-                .stroke-active {
-                    stroke: themed('icon_color');
+
+            .color1-fill {
+                @include themify($themes) {
+                    fill: themed('trade_type_info_dialog_arrow_fill');
                 }
             }
         }

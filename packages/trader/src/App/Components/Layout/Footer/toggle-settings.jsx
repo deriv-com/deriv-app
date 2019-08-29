@@ -71,7 +71,7 @@ const ToggleSettings = ({
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >
-                <Icon icon='IconSettings' className='footer__icon ic-settings__icon' />
+                <Icon icon='IconGear' className='footer__icon ic-settings__icon' />
             </a>
             <React.Suspense fallback={<UILoader />}>
                 <Modal

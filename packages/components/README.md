@@ -101,7 +101,17 @@ node rename.js path/to/directory 'string-to-search' 'string-to-replace'
 ```
 
 
-2. Building the icons
+2. For SVG elements that doesn't need to be themed, you can add `data-theme="none"` manually to the element attribute.
+```html
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+  <g fill="none" fill-rule="evenodd">
+    <rect width="24" height="24" fill="#191C31" fill-rule="nonzero" rx="4"/>
+    <path fill="#F93" data-theme="none" d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14z"/> // prevent theming on this element
+    <path fill="#191C31" fill-rule="nonzero" d="M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+  </g>
+</svg>
+```
+3. Building the icons
 
 Add `.svg` files to `components/icon/svg` folder, then rebuild all the icons by:
 ```sh

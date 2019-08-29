@@ -1,8 +1,9 @@
 import classNames    from 'classnames';
 import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
-import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
-import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
+import {
+    IconThemeDark,
+    IconThemeLight } from 'deriv-components';
 import { connect }   from 'Stores/connect';
 
 const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor, pushDataLayer }) => {
@@ -28,12 +29,12 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                     <Localize i18n_default_text='Select theme' />
                 </h4>
                 <div className='theme-select-settings__content'>
-                    <div id='dt_settings_dark_button' className='theme-select-settings__option'>
-                        <DarkModeIcon
+                    <div id='dt_settings_dark_button' className='theme-select-settings__option' onClick={darkOnClick}>
+                        <IconThemeDark
                             className={classNames('theme-select-settings__option__icon', {
                                 'theme-select-settings__option__icon--active': is_dark_mode,
                             })}
-                            onClick={darkOnClick}
+                            theme='none'
                         />
                         <p className={classNames('theme-select-settings__option__title', {
                             'theme-select-settings__option__title--selected': is_dark_mode,
@@ -42,12 +43,12 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                             <Localize i18n_default_text='Dark' />
                         </p>
                     </div>
-                    <div id='dt_settings_light_button' className='theme-select-settings__option'>
-                        <LightModeIcon
+                    <div id='dt_settings_light_button' className='theme-select-settings__option' onClick={lightOnClick}>
+                        <IconThemeLight
                             className={classNames('theme-select-settings__option__icon', {
                                 'theme-select-settings__option__icon--active': !is_dark_mode,
                             })}
-                            onClick={lightOnClick}
+                            theme='none'
                         />
                         <p className={classNames('theme-select-settings__option__title', {
                             'theme-select-settings__option__title--selected': !is_dark_mode,

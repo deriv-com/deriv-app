@@ -13,7 +13,7 @@ const ChartCloseBtn = ({
             onClick={onClose}
         >
             <Icon
-                icon='ContractIconClose'
+                icon='IconCloseCircle'
                 className='ic-chart-close'
             />
         </div>

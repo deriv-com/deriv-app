@@ -140,7 +140,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             &-icon {
                 @extend .info-box-container-icon;
                 margin-right: 1.6em;
-                padding: 0.4em;
             }
             &-text {
                 @include typeface(--paragraph-left-normal-black, unset);

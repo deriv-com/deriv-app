@@ -3,8 +3,7 @@ import React             from 'react';
 import { localize }      from 'App/i18n';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
-
-const TradeCategories = ({ category }) => {
+const TradeTypeInfoTemplate = ({ category }) => {
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
@@ -108,8 +107,8 @@ const TradeCategories = ({ category }) => {
     );
 };
 
-TradeCategories.propTypes = {
+TradeTypeInfoTemplate.propTypes = {
     category: PropTypes.string,
 };
 
-export default TradeCategories;
+export default TradeTypeInfoTemplate;

@@ -3,6 +3,7 @@ import classNames                     from 'classnames';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import Icon                           from 'Assets/icon.jsx';
+import IconTradeCategory              from './icon-trade-categories.jsx';
 
 const ContractTypeItem = ({
     contracts,
@@ -24,7 +25,11 @@ const ContractTypeItem = ({
             value={contract.value}
             onClick={(e) => handleSelect(contract, e)}
         >
-            <Icon icon='IconTradeCategory' category={contract.value} className='contract-type-item__icon-wrapper' />
+            <IconTradeCategory
+                className='contract-type-item__icon-wrapper'
+                is_high_low={/high_low/.test(contract.value) || undefined}
+                trade_types={contract.trade_types}
+            />
             <span className='contract-type-item__title'>
                 {contract.text}
             </span>

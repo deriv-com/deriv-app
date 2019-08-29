@@ -1,21 +1,23 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { Scrollbars }     from 'tt-react-custom-scrollbars';
-import { Button }         from 'deriv-components';
-import Icon               from 'Assets/icon.jsx';
-import { localize }       from 'App/i18n';
+import classNames            from 'classnames';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import { Scrollbars }        from 'tt-react-custom-scrollbars';
+import { Button }            from 'deriv-components';
+import Icon                  from 'Assets/icon.jsx';
+import { localize }          from 'App/i18n';
+import TradeTypeInfoTemplate from './trade-type-info-template.jsx';
+
+const snakeCaseToKebabCase = (str) => str.charAt(0).toUpperCase() + str.substr(1).replace(/(_\w)/g, (m) => m[1].toUpperCase());
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,
     handleNextClick,
     handlePrevClick,
-    is_dark_theme,
+    // is_dark_theme,
     is_mobile,
     item,
     item_index,
     itemList,
-    itemListLength,
     onBackButtonClick,
     onSubmitButtonClick,
 }) => (
@@ -23,7 +25,7 @@ const TradeTypeInfoItem = ({
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
             <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
-                <Icon icon='IconBack' />
+                <Icon icon='IconArrowLeft' />
             </span>
             <span className='title'>{item.text}</span>
         </div>
@@ -39,10 +41,12 @@ const TradeTypeInfoItem = ({
                         <div className='trade-type-info-dialog__card' key={idx}>
                             <div className='trade-type-info-dialog__gif'>
                                 <Icon
-                                    icon='TradeCategoriesGIF'
-                                    category={type.value}
+                                    icon={`ImgTradetypes${snakeCaseToKebabCase(type.value)}`}
                                     className='trade-type-info-dialog__gif-image'
-                                    is_dark_theme={is_dark_theme}
+                                    customColors={{
+                                        '&fill=#191C31': 'bg-fill',
+                                        '&fill=#FFF'   : 'arrow-fill',
+                                    }}
                                 />
                             </div>
                             <div className='trade-type-info-dialog__content'>
@@ -50,10 +54,9 @@ const TradeTypeInfoItem = ({
                                     autoHide
                                     style={{ height: '100%' }}
                                 >
-                                    <Icon icon='TradeCategories' category={type.value} />
+                                    <TradeTypeInfoTemplate category={type.value} />
                                 </Scrollbars>
                             </div>
-                            {itemListLength > 1 &&
                             <div>
                                 <Button
                                     id={`dt_contract_info_${item.value}_button`}
@@ -62,13 +65,11 @@ const TradeTypeInfoItem = ({
                                     text={localize('Choose')}
                                 />
                             </div>
-                            }
                         </div>
                     ))
                 }
             </div>
         </div>
-        {itemListLength > 1 &&
         <div className='trade-type-info-navigation'>
             <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
                 <Icon icon='IconChevronLeft' />
@@ -96,7 +97,6 @@ const TradeTypeInfoItem = ({
                 <Icon icon='IconChevronRight' />
             </div>
         </div>
-        }
     </div>
 );
 

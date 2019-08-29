@@ -403,11 +403,12 @@
     transition: background-color 0.25s linear;
 
     &__icon {
+        transform: rotate(-90deg);
         transition: transform 0.2s ease;
         @extend %inline-icon;
 
         &--active {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
         }
     }
     &:hover {

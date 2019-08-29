@@ -4,6 +4,7 @@ import React               from 'react';
 import Icon                from 'Assets/icon.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';
+import IconTradeCategory   from './icon-trade-categories.jsx';
 import TradeTypeInfoDialog from '../TradeTypeInfo/trade-type-info-dialog.jsx';
 import TradeTypeInfoItem   from '../TradeTypeInfo/trade-type-info-item.jsx';
 
@@ -132,11 +133,25 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     render() {
-        const { is_dark_theme, is_equal, is_mobile, list, name, value } = this.props;
-        const { is_dialog_open, is_info_dialog_open, item }             = this.state;
-        const item_list        = this.getItemList();
-        const item_index       = this.getItemIndex(item, item_list);
-        const item_list_length = item_list ? item_list.length : 0;
+        const {
+            is_dark_theme,
+            is_equal,
+            is_mobile,
+            list,
+            name,
+            value,
+        } = this.props;
+
+        const {
+            is_dialog_open,
+            is_info_dialog_open,
+            item,
+        } = this.state;
+
+        const item_list   = this.getItemList();
+        const item_index  = this.getItemIndex(item, item_list);
+        const trade_types = (item_list.filter(item => item.value === value)[0]||[]).trade_types;
+
         return (
             <div
                 id='dt_contract_dropdown'
@@ -150,16 +165,16 @@ class ContractTypeWidget extends React.PureComponent {
                     })}
                     onClick={this.onWidgetClick}
                 >
-                    <Icon
-                        icon='IconTradeCategory'
-                        category={value}
+                    <IconTradeCategory
                         className='contract-type-widget__icon-wrapper'
+                        is_high_low={/high_low/.test(value) || undefined}
+                        trade_types={trade_types}
                     />
                     <span name={name} value={value}>
                         {this.getDisplayText()}
                     </span>
                     <Icon
-                        icon='IconArrow'
+                        icon='IconChevronLeft'
                         className={classNames(
                           'contract-type-widget__select-arrow',
                           'contract-type-widget__select-arrow--left')}
@@ -194,8 +209,7 @@ class ContractTypeWidget extends React.PureComponent {
                         is_mobile={is_mobile}
                         item={item}
                         item_index={item_index < 0 ? undefined : item_index}
-                        itemList={item_list}
-                        itemListLength={item_list_length}
+                        itemList={this.getItemList()}
                         onBackButtonClick={this.onBackButtonClick}
                         onSubmitButtonClick={this.onSubmitButtonClick}
                     />

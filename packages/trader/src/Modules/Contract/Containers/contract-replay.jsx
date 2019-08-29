@@ -20,14 +20,14 @@ class ContractReplay extends React.Component {
     componentDidMount() {
         this.props.hidePositions();
         this.props.setChartLoader(true);
-        this.props.showBlur();
+        this.props.enableRouteMode();
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillUnmount() {
-        this.props.hideBlur();
+        this.props.disableRouteMode();
         this.props.onUnmount();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
@@ -64,7 +64,7 @@ class ContractReplay extends React.Component {
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
 
         return (
-            <div className='trade-container__replay' ref={this.setWrapperRef}>
+            <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
                     contract_info={contract_info}
                     is_dark_theme={is_dark_theme}
@@ -77,6 +77,7 @@ class ContractReplay extends React.Component {
                     <div className='replay-chart__container'>
                         <div className='vertical-tab__action-bar'>
                             <div
+                                id='dt_contract_replay_close_icon'
                                 className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
                                 onClick={() => this.props.history.push(AppRoutes.trade)}
@@ -92,7 +93,7 @@ class ContractReplay extends React.Component {
                             has_progress={false}
                             should_load={true}
                         />
-                        <ChartLoader is_visible={is_chart_loading} />
+                        <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                         {(!!(contract_info.underlying) && !isEmptyObject(config)) &&
                         <SmartChart
                             chartControlsWidgets={null}
@@ -137,9 +138,10 @@ ContractReplay.propTypes = {
     contract_id      : PropTypes.number,
     contract_info    : PropTypes.object,
     digits_info      : PropTypes.object,
+    disableRouteMode : PropTypes.func,
     display_status   : PropTypes.string,
+    enableRouteMode  : PropTypes.func,
     error_message    : PropTypes.string,
-    hideBlur         : PropTypes.func,
     hidePositions    : PropTypes.func,
     history          : PropTypes.object,
     is_chart_loading : PropTypes.bool,
@@ -154,7 +156,6 @@ ContractReplay.propTypes = {
     routes           : PropTypes.arrayOf(PropTypes.object),
     server_time      : PropTypes.object,
     setChartLoader   : PropTypes.func,
-    showBlur         : PropTypes.func,
     status           : PropTypes.string,
 };
 
@@ -177,9 +178,9 @@ export default withRouter(connect(
         is_chart_loading : modules.smart_chart.is_chart_loading,
         setChartLoader   : modules.smart_chart.setIsChartLoading,
         hidePositions    : ui.hidePositionsFooterToggle,
-        hideBlur         : ui.hideRouteBlur,
+        disableRouteMode : ui.disableRouteModal,
+        enableRouteMode  : ui.setRouteModal,
         is_dark_theme    : ui.is_dark_mode_on,
-        showBlur         : ui.showRouteBlur,
 
     })
 )(ContractReplay));

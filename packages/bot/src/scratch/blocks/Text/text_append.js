@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_append = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('to %1 append text %2'),
             args0   : [
                 {
@@ -20,7 +23,15 @@ Blockly.Blocks.text_append = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Text Append Tooltip'),
+            category         : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text Append'),
+            'description' : translate('Text Append Description'),
+        };
     },
 };
 

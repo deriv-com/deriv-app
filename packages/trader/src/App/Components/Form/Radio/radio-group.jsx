@@ -10,6 +10,7 @@ class RadioGroup extends React.PureComponent {
                 {items.map((item, idx) => (
                     <Radio
                         key={idx}
+                        id={item.id}
                         value={item.value}
                         selected={selected === item.value}
                         onClick={this.props.onToggle}

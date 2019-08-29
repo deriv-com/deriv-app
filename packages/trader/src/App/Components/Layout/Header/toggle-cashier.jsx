@@ -1,10 +1,10 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
 import Lazy         from 'App/Containers/Lazy';
 import { Modal }    from 'App/Components/Elements/modal.jsx';
-import Button       from '../../Form/button.jsx';
 import UILoader     from '../../Elements/ui-loader.jsx';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
@@ -49,9 +49,9 @@ class ToggleCashier extends React.PureComponent {
         const {
             active_tab,
             className,
-            hideFullBlur,
+            disableApp,
+            enableApp,
             is_cashier_visible,
-            showFullBlur,
             toggleCashier,
         } = this.props;
 
@@ -66,12 +66,12 @@ class ToggleCashier extends React.PureComponent {
                 <React.Suspense fallback={<UILoader />}>
                     <Modal
                         className='cashier'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
                         modal_content={modal_content}
                         header={<WalletInformation />}
-                        hideFullBlur={hideFullBlur}
                         is_open={is_cashier_visible}
                         selected_index={tabs[active_tab]}
-                        showFullBlur={showFullBlur}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
                     />
@@ -82,12 +82,12 @@ class ToggleCashier extends React.PureComponent {
 }
 
 ToggleCashier.propTypes = {
-    active_tab  : PropTypes.string,
-    className   : PropTypes.string,
-    hideFullBlur: PropTypes.func,
-    is_open     : PropTypes.bool,
-    showFullBlur: PropTypes.func,
-    toggleModal : PropTypes.func,
+    active_tab : PropTypes.string,
+    className  : PropTypes.string,
+    disableApp : PropTypes.func,
+    enableApp  : PropTypes.func,
+    is_open    : PropTypes.bool,
+    toggleModal: PropTypes.func,
 };
 
 export default ToggleCashier;

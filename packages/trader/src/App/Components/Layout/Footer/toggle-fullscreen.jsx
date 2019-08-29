@@ -40,7 +40,7 @@ class ToggleFullScreen extends React.Component {
         } else {
             this.setState({ is_full_screen: false }); // fullscreen API is not enabled
         }
-    }
+    };
 
     render() {
         const full_screen_icon_class = classNames('ic-fullscreen', 'footer__link', {
@@ -48,9 +48,9 @@ class ToggleFullScreen extends React.Component {
         });
         return (
             <a
-                href='javascript:;'
                 className={full_screen_icon_class}
                 onClick={this.toggleFullScreen}
+                id='dt_fullscreen_toggle'
             >
                 <Icon icon='IconMaximize' className='footer__icon' />
             </a>

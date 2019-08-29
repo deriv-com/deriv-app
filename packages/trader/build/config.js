@@ -69,7 +69,7 @@ const htmlInjectConfig = () => ({
         //     }
         // }
     ],
-    append: true
+    append: false
 });
 
 const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });

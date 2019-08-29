@@ -213,11 +213,9 @@ export default class TradeStore extends BaseStore {
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
-            this.root_store.ui.setAppLoading(false);
             return;
         } else if (!active_symbols || !active_symbols.length) {
             showUnavailableLocationError(this.root_store.common.showError);
-            this.root_store.ui.setAppLoading(false);
             return;
         }
 
@@ -251,7 +249,11 @@ export default class TradeStore extends BaseStore {
             runInAction(() => {
                 this.processNewValuesAsync({
                     is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                });
+                },
+                true,
+                null,
+                false,
+                );
             });
         });
     }
@@ -600,6 +602,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
+        this.resetErrorServices();
         return new Promise(async (resolve) => {
             await this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
@@ -607,10 +610,8 @@ export default class TradeStore extends BaseStore {
                 { currency: this.currency },
                 false,
             );
-            await this.clearContract();
-            await this.resetErrorServices();
-            await this.refresh();
-            return resolve(this.debouncedProposal());
+            this.refresh();
+            resolve(this.debouncedProposal());
         });
     }
 
@@ -620,39 +621,14 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async onMount() {
-        this.onLoadingMount();
-        await this.prepareTradeStore();
-        this.debouncedProposal();
-        runInAction(() => {
-            this.is_trade_component_mounted = true;
-        });
+    onMount() {
         this.onSwitchAccount(this.accountSwitcherListener);
-    }
-
-    onLoadingMount() {
-        const first_timeout = setTimeout(() => {
-            const loading_message = localize('Your network connection might be slow.');
-            const secondary_message = localize('Please wait for the page to finish loading.');
-            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
-        }, 8000);
-
-        const second_timeout = setTimeout(() => {
-            const loading_message = localize('This page is taking too long to load.');
-            const secondary_message = localize('Please wait for the page to finish loading or check your network connection.');
-            this.root_store.ui.setSlowLoading(true, [loading_message, secondary_message]);
-        }, 15000);
-
-        const loading_interval = setInterval(() => {
-            if (this.smart_chart) {
-                if (this.smart_chart.is_chart_ready && this.is_trade_component_mounted) {
-                    this.root_store.ui.setAppLoading(false);
-                    clearInterval(loading_interval);
-                    clearTimeout(first_timeout);
-                    clearTimeout(second_timeout);
-                }
-            }
-        }, 400);
+        runInAction(async() => {
+            this.is_trade_component_mounted = true;
+            this.refresh();
+            await this.prepareTradeStore();
+            this.debouncedProposal();
+        });
     }
 
     @action.bound
@@ -676,14 +652,24 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    async initAccountCurrency(new_currency) {
+        await this.processNewValuesAsync(
+            { currency: new_currency },
+            true,
+            { currency: this.currency },
+            false,
+        );
+        this.refresh();
+        this.debouncedProposal();
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.proposal_info = {};
-        this.purchase_info = {};
-        WS.forgetAll('proposal');
+        this.is_trade_component_mounted = false;
+        this.refresh();
         this.resetErrorServices();
         this.restoreTradeChart();
-        this.is_trade_component_mounted = false;
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
     }

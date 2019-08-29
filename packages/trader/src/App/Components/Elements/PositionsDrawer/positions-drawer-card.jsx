@@ -2,12 +2,12 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
+import { Button }              from 'deriv-components';
 import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
-import Button                  from 'App/Components/Form/button.jsx';
 import Money                   from 'App/Components/Elements/money.jsx';
 import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -161,11 +161,13 @@ const PositionsDrawerCard = ({
     );
 
     return (
-        <div className={classNames(
-            'positions-drawer-card__wrapper', {
-                'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
-            },
-            className)}
+        <div
+            id={`dt_drawer_card_${id}`}
+            className={classNames(
+                'positions-drawer-card__wrapper', {
+                    'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
+                },
+                className)}
         >
             <ResultOverlay
                 contract_id={id}
@@ -215,6 +217,7 @@ const PositionsDrawerCard = ({
             >
                 <div className='positions-drawer-card__sell-button'>
                     <Button
+                        id={`dt_drawer_card_${id}_button`}
                         className={classNames(
                             'btn--primary',
                             'btn--primary--green',

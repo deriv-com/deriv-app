@@ -9,7 +9,13 @@ Blockly.Blocks.controls_if = {
         this.elseIfCount = 0;
         this.elseCount = 0;
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const addInputIcon = this.getAddInputIcon();
+        this.appendDummyInput('MUTATOR').appendField(addInputIcon);
+    },
+    definition(){
+        return {
             message0: translate('if %1 then'),
             message1: '%1',
             args0   : [
@@ -28,13 +34,18 @@ Blockly.Blocks.controls_if = {
             colour           : Blockly.Colours.Binary.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
-            category         : Blockly.Categories.control,
+            // category         : Blockly.Categories.control,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        const addInputIcon = this.getAddInputIcon();
-        this.appendDummyInput('MUTATOR').appendField(addInputIcon);
+            tooltip          : translate('If else statement tooltip'),
+            category         : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': 'If else statement',
+            'description' : 'If else statement description',
+        };
     },
     /**
      * Create XML to represent the number of else-if and else inputs.

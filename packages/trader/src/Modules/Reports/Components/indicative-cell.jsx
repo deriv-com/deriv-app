@@ -13,10 +13,10 @@ class IndicativeCell extends React.PureComponent {
         };
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(prevProps) {
         this.setState(() => ({
-            movement: props.amount >= this.state.amount ? 'profit' : 'loss',
-            amount  : props.amount,
+            movement: prevProps.amount >= this.state.amount ? 'profit' : 'loss',
+            amount  : prevProps.amount,
         }));
     }
 

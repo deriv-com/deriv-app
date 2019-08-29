@@ -15,6 +15,7 @@ const Items = ({
     const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
     return (
         <div
+            id={`dt_duration_${item.value}_item`}
             className={classNames(
                 'list__item',
                 { 'list__item--highlighted': idx === index },

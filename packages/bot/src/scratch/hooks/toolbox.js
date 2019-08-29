@@ -1,6 +1,7 @@
-import React         from 'react';
-import ReactDOM      from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { ArrowIcon } from '../../components/Icons.jsx';
+import { flyout }    from '../../stores';
 import { translate } from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
@@ -8,10 +9,10 @@ import { translate } from '../../utils/lang/i18n';
 /**
  * Initializes the toolbox.
  */
-Blockly.Toolbox.prototype.init = function() {
+Blockly.Toolbox.prototype.init = function () {
     const workspace = this.workspace_;
     const svg = this.workspace_.getParentSvg();
-  
+
     /**
      * HTML container for the Toolbox menu.
      * @type {Element}
@@ -27,10 +28,24 @@ Blockly.Toolbox.prototype.init = function() {
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
+    const el_toolbox_search = goog.dom.createDom(goog.dom.TagName.INPUT, { 'id': 'search_input', 'placeholder': 'Search' });
+
+    this.HtmlDiv.appendChild(el_toolbox_search);
+
+    ['keyup', 'click'].forEach(e => {
+        el_toolbox_search.addEventListener(e, () => {
+            const toolbox = workspace.toolbox_;
+    
+            flyout.setVisibility(false);
+    
+            toolbox.setSelectedItem('search');
+        });
+    });
+
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
-  
+
     // Clicking on toolbox closes popups.
-    Blockly.bindEventWithChecks_(this.HtmlDiv, 'mousedown', this, function(e) {
+    Blockly.bindEventWithChecks_(this.HtmlDiv, 'mousedown', this, function (e) {
         // Cancel any gestures in progress.
         this.workspace_.cancelCurrentGesture();
 
@@ -43,7 +58,7 @@ Blockly.Toolbox.prototype.init = function() {
         }
         Blockly.Touch.clearTouchIdentifier();  // Don't block future drags.
     }, /* opt_noCaptureIdentifier */ false, /* opt_noPreventDefault */ true);
-  
+
     this.createFlyout_();
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
@@ -65,17 +80,134 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
-    let allContents = [];
+    let flyout_content;
 
-    const category = this.categoryMenu_.categories_.find(menuCategory => menuCategory.id_ === category_id);
-    if (!category) {
-        return;
+    if (category_id === 'search') {
+        let search_term = document.getElementById('search_input').value;
+        const all_variables = this.flyout_.workspace_.getVariablesOfType('');
+        const all_procedures = Blockly.Procedures.allProcedures(Blockly.derivWorkspace);
+
+        if (search_term.length <= 1) {
+            flyout.setVisibility(false);
+            return;
+        }
+
+        flyout_content = {
+            type  : 'search',
+            blocks: [],
+        };
+
+        if (typeof search_term === 'string') {
+            search_term = search_term.trim().toLowerCase();
+            search_term = search_term.split(' ');
+        }
+
+        const blocks = Blockly.Blocks;
+        Object.keys(blocks).forEach(blockKey => {
+            let keywords = ` ${blockKey}`;
+            const block = blocks[blockKey];
+            const block_meta = block.meta instanceof Function && block.meta();
+            const block_definition = block.definition instanceof Function && block.definition();
+
+            if (!block_meta) {
+                return;
+            }
+
+            Object.keys(block_meta).forEach(key => {
+                const meta = block_meta[key];
+                keywords += ` ${meta}`;
+            });
+
+            Object.keys(block_definition).forEach(key => {
+                const definition = block_definition[key];
+
+                if (typeof definition === 'string') {
+                    keywords += ` ${definition}`;
+                } else if (definition instanceof Array) {
+                    definition.forEach(def => {
+                        if (def instanceof Object) {
+                            keywords += !def.type.includes('image') ? ` ${JSON.stringify(def)}` : '';
+                        } else {
+                            keywords += ` ${def}`;
+                        }
+                    });
+                }
+            });
+
+            const block_category = (block_definition && block_definition.category) ||
+                                    (block_meta && block_meta.category);
+            const category =
+                this.categoryMenu_.categories_
+                    .find(menuCategory => menuCategory.id_ === block_category);
+            let contents = category && category.getContents();
+
+            if (typeof contents === 'string') {
+                const fnToApply = this.workspace_.getToolboxCategoryCallback(contents);
+                contents = fnToApply(this.workspace_);
+            }
+
+            if (contents) {
+                search_term.forEach(term => {
+                    if (keywords.toLowerCase().includes(term)) {
+                        const blockContents = contents
+                            .filter(content => content.attributes[0].nodeValue === blockKey);
+
+                        if (blockContents.length && flyout_content.blocks.indexOf(blockContents[0]) === -1) {
+                            flyout_content.blocks.push(blockContents[0]);
+                        }
+
+                    }
+                });
+            }
+        });
+
+        const searched_variables = [];
+        all_variables.forEach(variable => {
+            search_term.forEach(term => {
+                if (variable.name.toLowerCase().includes(term)) {
+                    searched_variables.push(variable);
+                }
+            });
+        });
+
+        const variables_blocks = Blockly.DataCategory.search(searched_variables);
+        /* eslint-disable-next-line consistent-return */
+        const uniqueVarBlocks = variables_blocks.map(variableBlock => {
+            if (flyout_content.blocks.indexOf(variableBlock) === -1){
+                return variableBlock;
+            }
+        });
+        flyout_content.blocks = flyout_content.blocks.concat(uniqueVarBlocks);
+
+        const searched_procedures = {};
+        Object.keys(all_procedures).forEach(key => {
+            search_term.forEach(term => {
+                if (all_procedures[key].length && all_procedures[key][0][0].toLowerCase().includes(term)) {
+                    searched_procedures[key] = all_procedures[key];
+                }
+            });
+        });
+
+        const procedures_blocks = Blockly.Procedures.populateDynamicProcedures(searched_procedures);
+        /* eslint-disable-next-line consistent-return */
+        const uniqueProceBlocks = procedures_blocks.map(procedureBlock => {
+            if (flyout_content.blocks.indexOf(procedureBlock) === -1){
+                return procedureBlock;
+            }
+        });
+        flyout_content.blocks = flyout_content.blocks.concat(uniqueProceBlocks);
+    } else {
+        const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
+        flyout_content = selected_category.getContents();
+
+        // Dynamic categories
+        if (typeof flyout_content === 'string') {
+            const fnToApply = this.workspace_.getToolboxCategoryCallback(flyout_content);
+            flyout_content = fnToApply(this.workspace_);
+        }
     }
 
-    allContents = allContents.concat(category.getContents());
-
-    this.flyout_.autoClose = true;
-    this.flyout_.show(allContents);
+    flyout.setContents(flyout_content);
 };
 
 /**
@@ -86,13 +218,13 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
  * @return {string} The css class names to be applied, space-separated.
  * deriv-bot: Custom class names
  */
-Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
+Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
     const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
 
     if (selected) {
         classNames.push('toolbox__category--selected');
     }
-    
+
     return classNames.join(' ');
 };
 
@@ -102,27 +234,39 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
  * @param {Blockly.Toolbox.Category} item The category to select.
  */
 Blockly.Toolbox.prototype.setSelectedItem = function (item) {
+    const category_item = item;
+    if (category_item === 'search'){
+        if (this.selectedItem_) {
+            this.selectedItem_.setSelected(false);
+        }
+        this.selectedItem_ = null;
+        this.showCategory_('search');
+        return;
+    }
+
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
 
         // Selecting the same category will close it.
         if (
-            item &&
-            !item.is_category_return_ &&
-            !item.has_child_category_ &&
+            category_item &&
+            !category_item.is_category_return_ &&
+            !category_item.has_child_category_ &&
             this.selectedItem_.id_ === item.id_
         ) {
             this.selectedItem_ = null;
-            this.flyout_.hide();
+            if (flyout.is_visible) {
+                flyout.setVisibility(false);
+            }
             return;
         }
     }
 
     this.selectedItem_ = item;
 
-    if (item === null) {
-        this.flyout_.hide();
+    if (!item) {
+        flyout.setVisibility(false);
     } else {
         const getCategoryTree = (parent_name, parent_id, colour, children) => {
             const xml_document = document.implementation.createDocument(null, null, null);
@@ -176,7 +320,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                 const el_parent = selected_category.parentElement;
 
                 if (el_parent.tagName === 'xml') {
-                    this.flyout_.hide();
+                    flyout.setVisibility(false);
                     this.workspace_.updateToolbox(initial_toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
@@ -186,7 +330,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                         el_parent.children,
                     );
 
-                    this.flyout_.hide();
+                    flyout.setVisibility(false);
                     this.workspace_.updateToolbox(newTree);
                 }
             }
@@ -199,7 +343,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
                 this.selectedItem_.contents_,
             );
 
-            this.flyout_.hide();
+            flyout.setVisibility(false);
             this.workspace_.updateToolbox(newTree);
         } else {
             // Show blocks that belong to this category.
@@ -215,9 +359,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
  * procedures.
  * deriv-bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function () {
-    // Hello, I'm doing nothing. :)
-};
+Blockly.Toolbox.prototype.refreshSelection = function () {};
 
 /**
  * Create the DOM for a category in the toolbox.
@@ -237,13 +379,13 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
         const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
         el_item.appendChild(el_colour);
     }
-    
+
     const el_label = goog.dom.createDom('div', 'toolbox__label', this.name_);
     const el_toolbox_text = goog.dom.createDom('div', 'toolbox__category-text');
 
     this.label_ = el_label;
     el_toolbox_text.appendChild(el_label);
-    
+
     if (this.description_) {
         const el_description = goog.dom.createDom('div', 'toolbox__description', this.description_);
         el_toolbox_text.appendChild(el_description);
@@ -322,7 +464,7 @@ Blockly.Toolbox.Category.prototype.parseContents_ = function (domTree) {
  *     Colours are a hex string or hue on a colour wheel (0-360).
  * deriv-bot: We don't need secondaryColour
  */
-Blockly.Toolbox.Category.prototype.setColour = function(node) {
+Blockly.Toolbox.Category.prototype.setColour = function (node) {
     const colour = node.getAttribute('colour');
 
     if (goog.isString(colour)) {
@@ -341,7 +483,7 @@ Blockly.Toolbox.Category.prototype.setColour = function(node) {
  * Create the DOM for the category menu.
  * deriv-bot: Custom class names
  */
-Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
+Blockly.Toolbox.CategoryMenu.prototype.createDom = function () {
     const className = this.parent_.horizontalLayout_ ?
         'toolbox__horizontal-category-menu' :
         'toolbox__category-menu';
@@ -355,14 +497,16 @@ Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
  * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
  * @param {Node} domTree DOM tree of blocks, or null.
  */
-Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree) {
+Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, isSubCategory = false) {
     if (!domTree) {
         return;
     }
 
     // Remove old categories
-    this.dispose();
-    this.createDom();
+    if (!isSubCategory) {
+        this.dispose();
+        this.createDom();
+    }
 
     domTree.childNodes.forEach(childNode => {
         const is_category = () => childNode.tagName && childNode.tagName.toUpperCase() === 'CATEGORY';
@@ -381,8 +525,22 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree) {
             }
 
             const toolbox_category = new Blockly.Toolbox.Category(this, el_row, childNode);
-            
-            this.table.appendChild(el_row);
+
+            const child = childNode.children;
+            /* eslint-disable consistent-return */
+            const subCategory = Object.keys(child).map(key => {
+                if (child[key].tagName === 'category') {
+                    return child[key];
+                }
+            });
+
+            if (subCategory.length) {
+                this.populate(childNode, true);
+            }
+
+            if (!isSubCategory) {
+                this.table.appendChild(el_row);
+            }
             this.categories_.push(toolbox_category);
         } else if (is_separator()) {
             const el_separator = goog.dom.createDom('div', { class: 'toolbox__separator' });

@@ -1,7 +1,6 @@
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-import UILoader              from 'App/Components/Elements/ui-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -41,9 +40,16 @@ class Trade extends React.Component {
                         has_progress={false}
                         should_load={true}
                     />
-                    { this.props.symbol &&
-                        <React.Suspense fallback={<UILoader />} >
-                            <ChartLoader is_visible={is_chart_visible} />
+                    {
+                        <React.Suspense
+                            fallback={
+                                <ChartLoader
+                                    is_dark={this.props.is_dark_theme}
+                                    is_visible={!this.props.symbol}
+                                />
+                            }
+                        >
+                            <ChartLoader is_dark={this.props.is_dark_theme} is_visible={is_chart_visible} />
                             <SmartChart
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
@@ -97,10 +103,12 @@ class Trade extends React.Component {
                 >
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
-                        is_mobile={this.props.is_mobile}
+
+                        is_dark_theme={this.props.is_dark_theme}
                         is_contract_visible={this.props.is_contract_mode}
+                        is_market_closed={this.props.is_market_closed}
+                        is_mobile={this.props.is_mobile}
                         is_trade_enabled={this.props.is_trade_enabled}
-                        is_blurred={this.props.is_market_closed}
                     />
                 </div>
             </div>
@@ -121,13 +129,13 @@ Trade.propTypes = {
     is_chart_loading : PropTypes.bool,
     is_chart_ready   : PropTypes.bool,
     is_contract_mode : PropTypes.bool,
+    is_dark_theme    : PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_ended         : PropTypes.bool,
     is_market_closed : PropTypes.bool,
     is_mobile        : PropTypes.bool,
     is_static_chart  : PropTypes.bool,
     is_trade_enabled : PropTypes.bool,
-    onClickNewTrade  : PropTypes.func,
     onCloseContract  : PropTypes.func,
     onMount          : PropTypes.func,
     onSymbolChange   : PropTypes.func,
@@ -148,7 +156,7 @@ export default connect(
         is_ended                           : modules.contract_trade.is_ended,
         is_digit_contract                  : modules.contract_trade.is_digit_contract,
         onCloseContract                    : modules.contract_trade.onCloseContract,
-        removeError                        : modules.contract_trade.removeErrorMessage,
+        removeError                        : modules.contract_trade.clearError,
         chart_id                           : modules.smart_chart.chart_id,
         chart_type                         : modules.smart_chart.chart_type,
         scroll_to_epoch                    : modules.smart_chart.scroll_to_left_epoch,
@@ -162,7 +170,6 @@ export default connect(
         contract_type                      : modules.trade.contract_type,
         is_market_closed                   : modules.trade.is_market_closed,
         is_trade_enabled                   : modules.trade.is_trade_enabled,
-        onClickNewTrade                    : modules.trade.onClickNewTrade,
         onMount                            : modules.trade.onMount,
         onSymbolChange                     : modules.trade.onChange,
         onUnmount                          : modules.trade.onUnmount,
@@ -171,6 +178,7 @@ export default connect(
         hidePositions                      : ui.hidePositionsFooterToggle,
         showPositions                      : ui.showPositionsFooterToggle,
         has_only_forward_starting_contracts: ui.has_only_forward_starting_contracts,
+        is_dark_theme                      : ui.is_dark_mode_on,
         is_mobile                          : ui.is_mobile,
         setHasOnlyForwardingContracts      : ui.setHasOnlyForwardingContracts,
     })

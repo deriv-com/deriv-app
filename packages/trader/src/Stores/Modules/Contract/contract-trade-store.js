@@ -1,7 +1,8 @@
 import {
     action,
     computed,
-    observable }         from 'mobx';
+    observable, 
+    toJS}         from 'mobx';
 import BinarySocket      from '_common/base/socket_base';
 import { isEmptyObject } from '_common/utility';
 import { localize }      from 'App/i18n';
@@ -50,10 +51,14 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get markers_array() {
-        return this.contracts.reduce((array, contract) => {
-            array.push(...contract.markers_array_v2);
-            return array;
-        }, []);
+        const markers = this.contracts
+            .map(c => c.marker)
+            .filter(m => m)
+            .map(m => toJS(m));
+        if (markers.length) {
+            markers[markers.length - 1].is_last_contract = true;
+        }
+        return markers;
     }
 
     @computed

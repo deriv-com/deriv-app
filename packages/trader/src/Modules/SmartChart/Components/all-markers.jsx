@@ -100,9 +100,20 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
+const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
+    const scale = zoom ? Math.max(Math.min(zoom / 8, 1),  0.5) : 1;
+    const size = Math.floor(scale * 3 + 7);
+    ctx.font = `${size}px Roboto`;
+    text.split(/\n/).forEach((line, idx) => {
+        const w = Math.ceil(ctx.measureText(line).width);
+        ctx.fillText(line, left - 5 - w , top + idx * size + 1);
+    });
+};
+
 const TickContract = RawMarkerMaker(({
     ctx: context,
     points: [st, ...ticks], // st = start_time tick
+    is_last_contract,
     contract_info: {
         contract_type,
         exit_tick_time,
@@ -121,8 +132,15 @@ const TickContract = RawMarkerMaker(({
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    if (ticks.length <= 1 && st.visible) {
-        ctx.fillText('Start Time', st.left + 5, 21);
+    if (is_last_contract && st.visible) {
+        render_label({
+            ctx,
+            text: 'Start\nTime',
+            tick: {
+                ...st,
+                top: 100,
+            },
+        });
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
         ctx.moveTo(st.left, 0);
@@ -172,7 +190,6 @@ const TickContract = RawMarkerMaker(({
     // status marker
     if (
         last.visible &&
-        // last.left - first.left > 16 &&
         last.epoch * 1 === exit_tick_time * 1 &&
         status !== 'open'
     ) {
@@ -189,6 +206,7 @@ const TickContract = RawMarkerMaker(({
 const NonTickContract = RawMarkerMaker(({
     ctx: context,
     points: [start, expiry, entry], // st = start_time tick
+    is_last_contract,
     contract_info: {
         contract_type,
         exit_tick_time,
@@ -205,54 +223,51 @@ const NonTickContract = RawMarkerMaker(({
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    if (start.visible) {
-        ctx.fillText('Start Time', start.left + 5, 21);
+    if (is_last_contract && start.visible) {
+        render_label({
+            ctx,
+            text: 'Start\nTime',
+            tick: {
+                ...start,
+                top: 100,
+            },
+        });
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
         ctx.moveTo(start.left, 0);
         ctx.lineTo(start.left, ctx.canvas.height);
         ctx.stroke();
     }
-    // barrier solid line
-    if (
-        (start.visible && expiry.visible) ||
-        start.visible !== expiry.visible
-    ) {
+    // barrier line
+    if ((start.visible || expiry.visible) && entry) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.moveTo(start.left, start.top);
-        ctx.lineTo(expiry.left, start.top);
+        ctx.moveTo(start.left, entry.top);
+        ctx.lineTo(expiry.left, entry.top);
         ctx.stroke();
     }
-    // // entry spot
-    // if (first.zoom >= 10 && first.visible) {
-    //     ctx.beginPath();
-    //     ctx.arc(first.left, first.top, 2, 0, Math.PI * 2);
-    //     ctx.fill();
-    // }
-    // // start-time marker
-    // if (st.visible) {
-    //     draw_path(ctx, {
-    //         top : first.top,
-    //         left: st.left,
-    //         zoom: st.zoom,
-    //         icon: ICONS[contract_type].with_color(color),
-    //     });
-    // }
-    // // status marker
-    // if (
-    //     last.visible &&
-    //     // last.left - first.left > 16 &&
-    //     last.epoch * 1 === exit_tick_time * 1 &&
-    //     status !== 'open'
-    // ) {
-    //     draw_path(ctx, {
-    //         top : first.top,
-    //         left: last.left,
-    //         zoom: last.zoom,
-    //         icon: ICONS[status.toUpperCase()],
-    //     });
-    // }
+    // start-time marker
+    if (start.visible && entry) {
+        draw_path(ctx, {
+            top : entry.top,
+            left: start.left,
+            zoom: start.zoom,
+            icon: ICONS[contract_type].with_color(color),
+        });
+    }
+    // status marker
+    if (
+        expiry.visible &&
+        expiry.epoch * 1 === exit_tick_time * 1 &&
+        status !== 'open'
+    ) {
+        draw_path(ctx, {
+            top : entry.top,
+            left: expiry.left,
+            zoom: expiry.zoom,
+            icon: ICONS[status.toUpperCase()],
+        });
+    }
     ctx.restore();
 });
 

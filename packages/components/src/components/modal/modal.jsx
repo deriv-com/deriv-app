@@ -42,16 +42,16 @@ class ModalElement extends React.PureComponent {
         return ReactDOM.createPortal(
             <div ref={this.setWrapperRef} id={this.props.id} className={classNames('modal__container', this.props.className && `modal__${this.props.className}`)}>
                 <div className='modal-header'>
-                    <h3 className='modal-header__sidebar'>{this.props.title}</h3>
-                    <div className='modal-header__main'>
-                        { this.props.header &&
-                            <div className='modal-header__section'>
-                                {this.props.header}
-                            </div>
-                        }
-                        <div id='dt_modal_close_icon' className='modal-header__close' onClick={this.props.toggleModal}>
-                            <IconClose icon='ModalIconClose' />
-                        </div>
+                    {  this.props.title &&
+                    <h3 className='modal-header__title'>{this.props.title}</h3>
+                    }
+                    { this.props.header &&
+                    <div className='modal-header__section'>
+                        {this.props.header}
+                    </div>
+                    }
+                    <div id='dt_modal_close_icon' className='modal-header__close' onClick={this.props.toggleModal}>
+                        <IconClose icon='ModalIconClose' />
                     </div>
                 </div>
                 {this.props.children}

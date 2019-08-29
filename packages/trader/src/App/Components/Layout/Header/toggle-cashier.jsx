@@ -75,6 +75,7 @@ class ToggleCashier extends React.PureComponent {
                 />
                 <React.Suspense fallback={<UILoader />}>
                     <Modal
+                        id='dt_cashier_modal'
                         className='cashier'
                         disableApp={disableApp}
                         enableApp={enableApp}

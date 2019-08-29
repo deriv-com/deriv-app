@@ -122,3 +122,13 @@
         padding: 0;
     }
 }
+
+#dt_settings_modal {
+    .modal {
+        &-header {
+            &__title {
+                min-width: 28%;
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Modal }    from 'App/Components/Elements/modal.jsx';
+import { Modal }    from 'deriv-components';
 import UILoader     from 'App/Components/Elements/ui-loader.jsx';
 import Lazy         from 'App/Containers/Lazy';
 import { localize } from 'App/i18n';

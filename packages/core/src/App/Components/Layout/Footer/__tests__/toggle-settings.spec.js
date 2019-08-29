@@ -4,7 +4,8 @@ import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { ToggleSettings }     from '../toggle-settings.jsx';
 import Icon                   from 'Assets/icon.jsx';
-import { Modal }              from '../../../Elements/modal.jsx';
+import Modal                  from 'deriv-components/lib/modal';
+import                        'deriv-components/lib/modal.css';
 import { CSSTransition }      from 'react-transition-group';
 
 configure({ adapter: new Adapter() });

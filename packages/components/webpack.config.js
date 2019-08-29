@@ -14,6 +14,7 @@ module.exports = {
         autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
         input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
         form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        modal       : path.resolve(__dirname, 'src', 'components/modal/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),

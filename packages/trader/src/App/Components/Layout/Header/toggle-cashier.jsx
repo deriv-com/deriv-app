@@ -1,11 +1,10 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import { localize } from 'App/i18n';
-import Lazy         from 'App/Containers/Lazy';
-import { Modal }    from 'App/Components/Elements/modal.jsx';
-import UILoader     from '../../Elements/ui-loader.jsx';
+import classNames         from 'classnames';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { Button , Modal } from 'deriv-components';
+import { localize }       from 'App/i18n';
+import Lazy               from 'App/Containers/Lazy';
+import UILoader           from '../../Elements/ui-loader.jsx';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 const tabs = {

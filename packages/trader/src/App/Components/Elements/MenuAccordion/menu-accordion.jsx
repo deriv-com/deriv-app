@@ -1,8 +1,8 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { MenuAccordionContent } from './menu-accordion-content.jsx';
-import { MenuAccordionHeaders } from './menu-accordion-headers.jsx';
+import classNames                      from 'classnames';
+import PropTypes                       from 'prop-types';
+import React                           from 'react';
+import { MenuAccordionHeaders }        from './menu-accordion-headers.jsx';
+import { VerticalTabContentContainer } from '../VerticalTabs/vertical-tab-content-container.jsx';
 
 class MenuAccordion extends React.PureComponent {
     constructor(props) {
@@ -31,9 +31,8 @@ class MenuAccordion extends React.PureComponent {
                     items={this.props.list}
                     onChange={this.changeSelected}
                     selected={this.state.selected}
-                    is_routed={this.props.is_routed}
                 />
-                <MenuAccordionContent
+                <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}
                     id={this.props.id}

@@ -1,5 +1,5 @@
-import React       from 'react';
-import Icon        from 'Assets/icon.jsx';
+import React                  from 'react';
+import Icon                   from 'Assets/icon.jsx';
 import { VerticalTabHeaders } from '../VerticalTabs/vertical-tab-headers.jsx';
 
 class MenuAccordionHeaders extends React.PureComponent {

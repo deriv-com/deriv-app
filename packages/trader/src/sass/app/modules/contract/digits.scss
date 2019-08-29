@@ -17,7 +17,7 @@
             @include toEm(width, 40px, 1em);
             @include toEm(height, 40px, 1em);
             @include themify($themes) {
-                background-color: themed('background_icon_color');
+                background-color: themed('container_secondary_color');
                 color: themed('text_color');
             }
             margin-bottom: 0.5em;
@@ -88,6 +88,32 @@
         &--loss {
             transform: translateY(8px);
             transition: transform 0.2s ease-out 1s;
+        }
+    }
+    &__pie-container {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+    }
+    &__pie-progress {
+        transform: rotate(-90deg);
+        width: 42px;
+        height: 42px;
+
+        .progress__value {
+            stroke-dasharray: 339.292;
+            // stroke-dashoffset: 339.292;
+            // animation: progress 2s infinite alternate;
+        }
+        @keyframes progress {
+            from {
+                stroke-dashoffset: 339.292;
+                stroke-opacity: 0.1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                stroke-opacity: 1;
+            }
         }
     }
     &__pointer {

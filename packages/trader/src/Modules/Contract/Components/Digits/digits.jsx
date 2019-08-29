@@ -16,16 +16,17 @@ class Digits extends React.PureComponent {
     render() {
         const {
             contract_info,
+            digits_array,
             digits_info,
             display_status,
             is_digit_contract,
             is_ended,
             is_trade_page,
         } = this.props;
-
+        const digits = digits_array ? digits_array.digits : null;
         return (
             <SlideIn
-                is_visible={is_digit_contract && this.state.mounted}
+                is_visible={(digits_array || is_digit_contract) && this.state.mounted}
                 className='digits'
                 keyname='digits'
                 type='bottom'
@@ -33,6 +34,7 @@ class Digits extends React.PureComponent {
                 <LastDigitPrediction
                     barrier={+contract_info.barrier}
                     contract_type={contract_info.contract_type}
+                    digits={digits}
                     digits_info={digits_info}
                     is_ended={is_ended}
                     is_trade_page={is_trade_page}

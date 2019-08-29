@@ -5,19 +5,23 @@ import React        from 'react';
 import { Bounce }   from 'App/Components/Animations';
 import Digit        from './digit.jsx';
 import DigitSpot    from './digit-spot.jsx';
+import LastDigitStat from './last-digit-stat.jsx';
 
 const DigitDisplay = ({
     barrier,
     is_lost,
+    is_max,
+    is_min,
     is_trade_page,
     is_won,
     latest_digit,
+    stats,
     value,
 }) => {
     const { digit, spot } = latest_digit;
     const is_latest       = value === digit;
     const is_selected     = value === barrier;
-
+    const percentage      = stats ? stats * 100 / 1000 : null;
     return (
         <div
             className={classNames('digits__digit', {
@@ -25,6 +29,11 @@ const DigitDisplay = ({
                 'digits__digit--loss': is_lost && is_latest,
             })}
         >
+            <LastDigitStat
+                is_min={is_min}
+                is_max={is_max}
+                percentage={percentage}
+            />
             <Bounce
                 is_visible={!!(is_latest && spot)}
                 className='digits__digit-spot'
@@ -43,6 +52,7 @@ const DigitDisplay = ({
                 is_trade_page={is_trade_page}
                 is_selected={is_selected}
                 is_won={is_won}
+                percentage={percentage}
                 value={value}
             />
         </div>

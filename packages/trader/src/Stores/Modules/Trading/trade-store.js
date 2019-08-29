@@ -19,6 +19,7 @@ import {
 import { WS }                         from 'Services';
 import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
+import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -28,7 +29,6 @@ import {
     isMarketClosed,
 }                                     from './Helpers/active-symbols';
 import ContractType                   from './Helpers/contract-type';
-import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import {
     convertDurationLimit,
     resetEndTimeOnVolatilityIndices } from './Helpers/duration';

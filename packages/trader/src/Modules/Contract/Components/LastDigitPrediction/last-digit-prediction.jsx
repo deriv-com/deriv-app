@@ -34,7 +34,7 @@ class LastDigitPrediction extends React.Component {
     };
 
     render() {
-        const { digits_info, is_ended, is_trade_page, status } = this.props;
+        const { digits_info, digits, is_ended, is_trade_page, status } = this.props;
         const digits_array = Object.keys(digits_info).sort().map(spot_time => digits_info[spot_time]);
         const latest_digit = digits_array.slice(-1)[0] || {};
 
@@ -45,8 +45,10 @@ class LastDigitPrediction extends React.Component {
         // but we only need is_lost condition only once we have the 'won' or 'lost' status
         const is_lost = is_ended && status === 'lost';
 
-        const position = this.state[latest_digit.digit];
+        const min = digits ? Math.min(...digits) : null;
+        const max = digits ? Math.max(...digits) : null;
 
+        const position = this.state[latest_digit.digit];
         return (
             <div
                 ref={node => this.node = node}
@@ -59,6 +61,9 @@ class LastDigitPrediction extends React.Component {
                         is_trade_page={is_trade_page}
                         is_won={is_won}
                         key={idx}
+                        is_max={digits ? (digits[idx] === max) : null}
+                        is_min={digits ? (digits[idx] === min) : null}
+                        stats={ digits ? digits[idx] : null}
                         latest_digit={latest_digit}
                         value={idx}
                     />

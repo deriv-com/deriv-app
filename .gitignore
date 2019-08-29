@@ -13,3 +13,4 @@ lerna-debug.log
 lib/
 coverage
 packages/shared/utils
+packages/components/.out

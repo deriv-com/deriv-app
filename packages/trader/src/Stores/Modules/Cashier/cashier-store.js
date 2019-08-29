@@ -3,6 +3,7 @@ import {
     observable,
     toJS }                  from 'mobx';
 import { isCryptocurrency } from '_common/base/currency_base';
+import BinarySocket         from '_common/base/socket_base';
 import { isEmptyObject }    from '_common/utility';
 import { localize }         from 'App/i18n';
 import { WS }               from 'Services';
@@ -101,6 +102,15 @@ export default class CashierStore extends BaseStore {
         if (this.active_container === this.config.withdraw.container && !verification_code) {
             // if no verification code, we should request again
             return;
+        }
+
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        if (!this.config.payment_agent.list.length) {
+            const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
+            const currency  = this.root_store.client.currency;
+            const payment_agent_list = await WS.paymentAgentList(residence, currency);
+            this.setPaymentAgentList(payment_agent_list);
         }
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
@@ -373,13 +383,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgent() {
-        this.setLoading(true);
-        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-        const currency  = this.root_store.client.currency;
-
         if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await WS.paymentAgentList(residence, currency);
-            this.setPaymentAgentList(payment_agent_list);
+            this.setLoading(true);
+            await BinarySocket.wait('paymentagent_list');
         }
 
         this.setIsNameSelected(true);

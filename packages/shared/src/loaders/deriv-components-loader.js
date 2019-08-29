@@ -12,7 +12,7 @@ function getKebabCase(str) {
     return str.split(/(?=[A-Z])/).join('-').toLowerCase();
 }
 
-module.exports = function(source) {
+module.exports = function(source, map) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'deriv-components/.exec(line); // eslint-disable-line no-useless-escape
@@ -27,5 +27,5 @@ import 'deriv-components/lib/${getKebabCase(c)}.css';
 
         return replace;
     });
-    return mapped_lines.join('\n');
+    return this.callback(null, mapped_lines.join('\n'), map);
 };

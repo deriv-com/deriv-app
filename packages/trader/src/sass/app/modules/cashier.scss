@@ -107,10 +107,8 @@
         font-weight: bold;
         margin-bottom: 16px;
     }
-    &__description {
-        margin-bottom: 24px;
-    }
     &__instructions {
+        margin-top: 24px;
         display: flex;
 
         &-section {
@@ -119,18 +117,48 @@
             .payment-agent__header {
                 margin-bottom: 8px;
             }
+            &:not(:first-child) {
+                margin-left: 24px;
+            }
         }
     }
     &__button {
         margin: 0;
         height: 40px;
     }
+    &__available {
+        &-header {
+            margin-top: 32px;
+        }
+        &-selector {
+            margin-bottom: 16px;
+        }
+    }
+    &__loader {
+        font-size: 1rem;
+    }
     &__accordion-content {
         color: var(--color-red);
 
+        &-line {
+            margin-bottom: 8px;
+        }
         &-icon {
             vertical-align: middle;
             margin-right: 12px;
+        }
+    }
+    &__disclaimer {
+        @include themify($themes) {
+            background-color: themed('background_color');
+        }
+        margin-top: 24px;
+        padding: 8px 16px;
+        font-size: 1.2rem;
+        line-height: 1.42;
+
+        &--bold {
+            font-weight: bold;
         }
     }
 }

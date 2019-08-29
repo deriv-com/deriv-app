@@ -33,9 +33,10 @@ export default class CashierStore extends BaseStore {
     @observable config = {
         deposit      : new Config({ container: 'deposit' }),
         payment_agent: {
-            available_payment_methods: [localize('Any')],
-            container                : 'payment_agent',
-            list                     : [],
+            container      : 'payment_agent',
+            filtered_list  : [],
+            list           : [],
+            supported_banks: [{ text: localize('Any'), value: '' }],
         },
         verification: {
             is_button_clicked: false,
@@ -368,6 +369,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgent() {
+        this.setLoading(true);
         const residence          = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency           = this.root_store.client.currency;
         const payment_agent_list = await WS.paymentAgentList(residence, currency);
@@ -377,6 +379,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setPaymentAgentList(payment_agent_list) {
+        this.config.payment_agent.list            = [];
+        this.config.payment_agent.supported_banks = [{ text: localize('Any'), value: '' }];
+
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -386,17 +391,34 @@ export default class CashierStore extends BaseStore {
                 url            : payment_agent.url,
             });
             payment_agent.supported_banks.split(',').forEach((bank) => {
-                if (bank && this.config.payment_agent.available_payment_methods.indexOf(bank) === -1) {
-                    this.config.payment_agent.available_payment_methods.push(bank);
+                if (!this.config.payment_agent.supported_banks
+                    .find(supported_bank => supported_bank.value === bank.toLowerCase())) {
+                    this.config.payment_agent.supported_banks.push({ text: bank, value: bank.toLowerCase() });
                 }
             });
         });
+
+        this.filterPaymentAgentList();
+        this.setLoading(false);
     }
 
     @action.bound
-    onChangePaymentMethod() {
-        // TODO: filter list based on available payment methods
-        this.setPaymentAgentList();
+    filterPaymentAgentList(bank) {
+        if (bank) {
+            this.config.payment_agent.filtered_list = [];
+            this.config.payment_agent.list.forEach((payment_agent) => {
+                if (payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1) {
+                    this.config.payment_agent.filtered_list.push(payment_agent);
+                }
+            });
+        } else {
+            this.config.payment_agent.filtered_list = this.config.payment_agent.list;
+        }
+    }
+
+    @action.bound
+    onChangePaymentMethod({ target }) {
+        this.filterPaymentAgentList(target.value);
     }
 
     onUnmount() {

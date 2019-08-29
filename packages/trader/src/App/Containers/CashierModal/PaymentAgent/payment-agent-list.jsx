@@ -9,6 +9,7 @@ import Localize                       from 'App/Components/Elements/localize.jsx
 import Dropdown                       from 'App/Components/Form/DropDown';
 import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
+import { website_name }               from 'App/Constants/app-config';
 import Icon                           from 'Assets/icon.jsx';
 import Loading                        from '../../../../templates/_common/components/loading.jsx';
 
@@ -19,83 +20,82 @@ class PaymentAgentList extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
-                {this.props.is_loading ?
-                    <Loading />
-                    :
-                    <React.Fragment>
-                        <div className='payment-agent__wrapper'>
-                            <Scrollbars
-                                style={{ width: '100%', height: '100%' }}
-                                autoHide
-                            >
-                                <p className='payment-agent__description'><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on Deriv.' /></p>
-                                <div className='payment-agent__instructions'>
-                                    <div className='payment-agent__instructions-section'>
-                                        <h2 className='payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
-                                        <p className='payment-agent__description'><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
-                                    </div>
-                                    <div className='payment-agent__instructions-section'>
-                                        <h2 className='payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
-                                        <Button
-                                            className='btn--primary btn--primary--orange payment-agent__button'
-                                            has_effect
-                                            text={localize('Request withdrawal form')}
-                                            onClick={this.handleConfirm}
-                                        />
-                                    </div>
-                                </div>
-                                <h2 className='payment-agent__header'><Localize i18n_default_text='Available Payment Agents' /></h2>
-                                <div className='payment-agent__description'>
-                                    <Localize i18n_default_text='Deposit/withdrawal method' />
-                                    <Dropdown
-                                        id='payment_methods'
-                                        className='payment-agent__drop-down'
-                                        list={
-                                            this.props.available_payment_methods.map((payment_method) =>
-                                                ({ text: payment_method, value: payment_method.toLowerCase() }))
-                                        }
-                                        name='payment_methods'
-                                        value='any'
-                                        onChange={this.props.onChangePaymentMethod}
-                                    />
-                                </div>
-                                <Accordion
-                                    className='payment-agent__accordion'
-                                    list={this.props.payment_agent_list.map((payment_agent) => ({
-                                        header : payment_agent.name,
-                                        content: (
-                                            <div className='payment-agent__accordion-content'>
-                                                <div><Icon icon='IconPhone' className='payment-agent__accordion-content-icon' />{payment_agent.phone}</div>
-                                                <div><Icon icon='IconWebsite' className='payment-agent__accordion-content-icon' />{payment_agent.url}</div>
-                                                <div><Icon icon='IconEmail' className='payment-agent__accordion-content-icon' />{payment_agent.email}</div>
-                                            </div>
-                                        ),
-                                    }))}
-                                />
-                            </Scrollbars>
+            <div className='payment-agent__wrapper'>
+                <Scrollbars
+                    style={{ width: '100%', height: '100%' }}
+                    autoHide
+                >
+                    <p><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
+                    <div className='payment-agent__instructions'>
+                        <div className='payment-agent__instructions-section'>
+                            <h2 className='payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
+                            <p><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
                         </div>
-                    </React.Fragment>
-                }
-            </React.Fragment>
+                        <div className='payment-agent__instructions-section'>
+                            <h2 className='payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
+                            <Button
+                                className='btn--primary btn--primary--orange payment-agent__button'
+                                has_effect
+                                text={localize('Request withdrawal form')}
+                                onClick={this.handleConfirm}
+                            />
+                        </div>
+                    </div>
+                    <h2 className='payment-agent__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
+                    {this.props.is_loading ?
+                        <Loading className='payment-agent__loader' />
+                        :
+                        <React.Fragment>
+                            <div className='payment-agent__available-selector'>
+                                <Localize i18n_default_text='Deposit/withdrawal method' />
+                                <Dropdown
+                                    id='payment_methods'
+                                    className='payment-agent__drop-down'
+                                    list={this.props.supported_banks}
+                                    name='payment_methods'
+                                    value=''
+                                    onChange={this.props.onChangePaymentMethod}
+                                />
+                            </div>
+                            <Accordion
+                                className='payment-agent__accordion'
+                                list={this.props.payment_agent_list.map((payment_agent) => ({
+                                    header : payment_agent.name,
+                                    content: (
+                                        <div className='payment-agent__accordion-content'>
+                                            <div className='payment-agent__accordion-content-line'><Icon icon='IconPhone' className='payment-agent__accordion-content-icon' />{payment_agent.phone}</div>
+                                            <div className='payment-agent__accordion-content-line'><Icon icon='IconWebsite' className='payment-agent__accordion-content-icon' />{payment_agent.url}</div>
+                                            <div><Icon icon='IconEmail' className='payment-agent__accordion-content-icon' />{payment_agent.email}</div>
+                                        </div>
+                                    ),
+                                }))}
+                            />
+                        </React.Fragment>
+                    }
+                    <div className='payment-agent__disclaimer'>
+                        <span className='payment-agent__disclaimer--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
+                        <Localize i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.' values={{ website_name }} />
+                    </div>
+                </Scrollbars>
+            </div>
         );
     }
 }
 
 PaymentAgentList.propTypes = {
-    available_payment_methods: MobxPropTypes.arrayOrObservableArray,
-    is_loading               : PropTypes.bool,
-    onChangePaymentMethod    : PropTypes.func,
-    onMount                  : PropTypes.func,
-    payment_agent_list       : PropTypes.array,
+    is_loading           : PropTypes.bool,
+    onChangePaymentMethod: PropTypes.func,
+    onMount              : PropTypes.func,
+    payment_agent_list   : PropTypes.array,
+    supported_banks      : MobxPropTypes.arrayOrObservableArray,
 };
 
 export default connect(
     ({ modules }) => ({
-        available_payment_methods: modules.cashier.config.payment_agent.available_payment_methods,
-        is_loading               : modules.cashier.is_loading,
-        onChangePaymentMethod    : modules.cashier.onChangePaymentMethod,
-        onMount                  : modules.cashier.onMountPaymentAgent,
-        payment_agent_list       : modules.cashier.config.payment_agent.list,
+        is_loading           : modules.cashier.is_loading,
+        onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
+        onMount              : modules.cashier.onMountPaymentAgent,
+        payment_agent_list   : modules.cashier.config.payment_agent.filtered_list,
+        supported_banks      : modules.cashier.config.payment_agent.supported_banks,
     })
 )(PaymentAgentList);

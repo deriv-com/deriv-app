@@ -11,6 +11,7 @@ import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { website_name }  from 'App/Constants/app-config';
 import 'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
@@ -32,10 +33,10 @@ const validateSignup = (values, residence_list) => {
 
         if (index_of_selection > -1) {
             if (residence_list[index_of_selection].disabled === 'DISABLED') {
-                errors.residence = localize('Unfortunately, Deriv is not available in your country.');
+                errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', { website_name });
             }
         } else {
-            errors.residence = localize('Unfortunately, Deriv is not available in your country.');
+            errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', { website_name });
         }
     }
 

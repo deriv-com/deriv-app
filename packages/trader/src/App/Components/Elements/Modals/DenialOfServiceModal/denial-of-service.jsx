@@ -1,8 +1,9 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { localize }  from 'App/i18n';
-import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
-import Localize      from 'App/Components/Elements/localize.jsx';
+import React            from 'react';
+import PropTypes        from 'prop-types';
+import { localize }     from 'App/i18n';
+import FullPageModal    from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import Localize         from 'App/Components/Elements/localize.jsx';
+import { website_name } from 'App/Constants/app-config';
 
 const DenialOfServiceModal = ({ is_visible, onCancel, onConfirm }) => (
     <FullPageModal
@@ -14,7 +15,7 @@ const DenialOfServiceModal = ({ is_visible, onCancel, onConfirm }) => (
         is_closed_on_cancel={false}
         is_visible={is_visible}
     >
-        <Localize i18n_default_text='You cannot use your real money account with Deriv at this time.' />
+        <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
     </FullPageModal>
 );
 

@@ -16,6 +16,9 @@
             border-bottom-width: 1px;
         }
         &--open {
+            .dc-accordion__item-header {
+                border-bottom: 1px solid rgb(234, 234, 234);
+            }
             .dc-accordion__item-content {
                 display: block;
             }
@@ -38,7 +41,7 @@
             }
         }
         &-content {
-            padding: 0 16px 16px;
+            padding: 16px;
         }
     }
 }

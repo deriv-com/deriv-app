@@ -7,7 +7,7 @@ import './accordion.scss';
 const IconExpand = () => (
     <svg width='16px' height='16px' viewBox='0 0 16 16'>
         <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
-            <path d='M8,2 C8.55228475,2 9,2.44771525 9,3 L9,7 L13,7 C13.5522847,7 14,7.44771525 14,8 C14,8.55228475 13.5522847,9 13,9 L9,9 L9,13 C9,13.5522847 8.55228475,14 8,14 C7.44771525,14 7,13.5522847 7,13 L7,9 L3,9 C2.44771525,9 2,8.55228475 2,8 C2,7.44771525 2.44771525,7 3,7 L7,7 L7,3 C7,2.44771525 7.44771525,2 8,2 Z' fill='#333333' />
+            <path d='M8,2 C8.27614237,2 8.5,2.22385763 8.5,2.5 L8.5,7.5 L13.5,7.5 C13.7761424,7.5 14,7.72385763 14,8 C14,8.27614237 13.7761424,8.5 13.5,8.5 L8.5,8.5 L8.5,13.5 C8.5,13.7761424 8.27614237,14 8,14 C7.72385763,14 7.5,13.7761424 7.5,13.5 L7.5,8.5 L2.5,8.5 C2.22385763,8.5 2,8.27614237 2,8 C2,7.72385763 2.22385763,7.5 2.5,7.5 L7.5,7.5 L7.5,2.5 C7.5,2.22385763 7.72385763,2 8,2 Z' fill='#333333' fillRule='nonzero' />
         </g>
     </svg>
 );
@@ -16,7 +16,7 @@ const IconExpand = () => (
 const IconCollapse = () => (
     <svg width='16px' height='16px' viewBox='0 0 16 16'>
         <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
-            <rect fill='#333333' x='2' y='7' width='12' height='2' rx='1' />
+            <rect fill='#333333' fillRule='nonzero' x='2' y='7.5' width='12' height='1' rx='0.5' />
         </g>
     </svg>
 );
@@ -25,6 +25,12 @@ class Accordion extends React.Component {
     state = {
         open_idx: null,
     };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.list !== prevProps.list) {
+            this.setState({ open_idx: null });
+        }
+    }
 
     onClick(index) {
         // close if clicking the accordion that's open, otherwise open the new one

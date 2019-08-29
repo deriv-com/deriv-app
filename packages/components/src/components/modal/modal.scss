@@ -70,7 +70,7 @@
         &__close {
             display: block;
             cursor: pointer;
-            // @extend %inline-icon.white;
+            @extend %inline-icon.white;
         }
     }
 }

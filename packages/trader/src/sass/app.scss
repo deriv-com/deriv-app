@@ -1,6 +1,12 @@
 // Base
 @import 'app/_common/base/index';
 
+// Fonts
+@import 'deriv-shared/src/styles/google-fonts.scss';
+
+// Reset
+@import 'deriv-shared/src/styles/reset.scss';
+
 // General
 @import 'app/_common/symbols';
 @import 'app/_common/tooltip';

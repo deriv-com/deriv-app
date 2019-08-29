@@ -58,6 +58,8 @@ export default class CashierStore extends BaseStore {
         },
     };
 
+    active_container = this.config.deposit.container;
+
     containers = [
         this.config.deposit.container,
         this.config.withdraw.container,
@@ -80,74 +82,69 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMount(current_action, verification_code) {
-        if (this.containers.indexOf(current_action) === -1) {
+    async onMount(verification_code) {
+        if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
-        this.setErrorMessage('', current_action);
-        this.setContainerHeight(0, current_action);
+        this.setErrorMessage('');
+        this.setContainerHeight(0);
         this.setLoading(true);
 
-        if (!this.config[current_action].is_session_timeout) {
-            this.checkIframeLoaded(current_action);
+        if (!this.config[this.active_container].is_session_timeout) {
+            this.checkIframeLoaded();
             return;
         }
 
         // if session has timed out reset everything
-        this.setIframeUrl('', current_action);
+        this.setIframeUrl('');
 
-        if (current_action === this.config.withdraw.container && !verification_code) {
+        if (this.active_container === this.config.withdraw.container && !verification_code) {
             // if no verification code, we should request again
             return;
         }
 
-        const response_cashier = await WS.cashier(current_action, verification_code);
+        const response_cashier = await WS.cashier(this.active_container, verification_code);
 
         if (response_cashier.error) {
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error, current_action);
-            this.setSessionTimeout(true, current_action);
-            this.clearTimeoutCashierUrl(current_action);
+            this.setErrorMessage(response_cashier.error);
+            this.setSessionTimeout(true);
+            this.clearTimeoutCashierUrl();
             if (verification_code) {
                 // clear verification code on error
-                this.clearVerification(current_action);
+                this.clearVerification();
             }
         } else if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('700', current_action);
-            this.setIframeUrl(response_cashier.cashier, current_action);
+            this.setContainerHeight('700');
+            this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive
         } else {
-            await this.checkIframeLoaded(current_action);
-            this.setIframeUrl(response_cashier.cashier, current_action);
-            this.setSessionTimeout(false, current_action);
-            this.setTimeoutCashierUrl(current_action);
+            await this.checkIframeLoaded();
+            this.setIframeUrl(response_cashier.cashier);
+            this.setSessionTimeout(false);
+            this.setTimeoutCashierUrl();
         }
     }
 
     @action.bound
-    async onMountDeposit() {
-        await this.onMount(this.config.deposit.container);
-    }
-
-    @action.bound
-    async checkIframeLoaded(container) {
-        this.removeOnIframeLoaded(container);
-        this.config[container].onIframeLoaded = (function (e) {
+    async checkIframeLoaded() {
+        this.removeOnIframeLoaded();
+        this.config[this.active_container].onIframeLoaded = (function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                this.setContainerHeight(+e.data || '1200', container);
+                this.setContainerHeight(+e.data || '1200');
                 // do not remove the listener
                 // on every iframe screen change we need to update the height to more/less to match the new content
             }
         }).bind(this);
-        window.addEventListener('message', this.config[container].onIframeLoaded, false);
+        window.addEventListener('message', this.config[this.active_container].onIframeLoaded, false);
     }
 
-    removeOnIframeLoaded(container) {
+    removeOnIframeLoaded(container = this.active_container) {
         if (this.config[container].onIframeLoaded) {
             window.removeEventListener('message', this.config[container].onIframeLoaded, false);
             this.config[container].onIframeLoaded = '';
@@ -155,7 +152,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIframeUrl(url, container) {
+    setIframeUrl(url, container = this.active_container) {
         this.config[container].iframe_url = url;
         if (url) {
             // after we set iframe url we can clear verification code
@@ -164,14 +161,14 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setContainerHeight(height, container) {
-        this.config[container].iframe_height = height;
+    setContainerHeight(height) {
+        this.config[this.active_container].iframe_height = height;
     }
 
     @action.bound
-    setErrorMessage(error, container) {
+    setErrorMessage(error) {
         const obj_error = this.getError(error) || {};
-        this.config[container].error = {
+        this.config[this.active_container].error = {
             message    : obj_error.error_message,
             button_text: obj_error.error_button_text,
             link       : obj_error.error_link,
@@ -256,7 +253,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setSessionTimeout(is_session_time_out, container) {
+    setSessionTimeout(is_session_time_out, container = this.active_container) {
         this.config[container].is_session_timeout = is_session_time_out;
         if (is_session_time_out) {
             this.removeOnIframeLoaded(container);
@@ -264,26 +261,26 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setVerificationButtonClicked(is_button_clicked, container) {
+    setVerificationButtonClicked(is_button_clicked, container = this.active_container) {
         this.config[container].verification.is_button_clicked = is_button_clicked;
     }
 
     @action.bound
-    setVerificationEmailSent(is_email_sent, container) {
+    setVerificationEmailSent(is_email_sent, container = this.active_container) {
         this.config[container].verification.is_email_sent = is_email_sent;
     }
 
     @action.bound
-    setVerificationResendClicked(is_resend_clicked, container = this.root_store.ui.active_cashier_tab) {
+    setVerificationResendClicked(is_resend_clicked, container = this.active_container) {
         this.config[container].verification.is_resend_clicked = is_resend_clicked;
     }
 
     @action.bound
-    setVerificationResendTimeout(resend_timeout, container) {
+    setVerificationResendTimeout(resend_timeout, container = this.active_container) {
         this.config[container].verification.resend_timeout = resend_timeout;
     }
 
-    clearTimeoutCashierUrl(container) {
+    clearTimeoutCashierUrl(container = this.active_container) {
         if (this.config[container].timeout_session) {
             clearTimeout(this.config[container].timeout_session);
         }
@@ -292,14 +289,14 @@ export default class CashierStore extends BaseStore {
     // cashier session expires after one minute
     // so we should resend the request for container (deposit|withdraw) url on next mount
     @action.bound
-    setTimeoutCashierUrl(container) {
-        this.clearTimeoutCashierUrl(container);
-        this.config[container].timeout_session = setTimeout(() => {
-            this.setSessionTimeout(true, container);
+    setTimeoutCashierUrl() {
+        this.clearTimeoutCashierUrl();
+        this.config[this.active_container].timeout_session = setTimeout(() => {
+            this.setSessionTimeout(true);
         }, 60000);
     }
 
-    clearTimeoutVerification(container) {
+    clearTimeoutVerification(container = this.active_container) {
         if (this.config[container].verification.timeout_button) {
             clearTimeout(this.config[container].verification.timeout_button);
         }
@@ -308,64 +305,57 @@ export default class CashierStore extends BaseStore {
     // verification token expires after one hour
     // so we should show the verification request button again after that
     @action.bound
-    setTimeoutVerification(container) {
-        this.clearTimeoutVerification(container);
-        this.config[container].verification.timeout_button = setTimeout(() => {
-            this.clearVerification(container);
+    setTimeoutVerification() {
+        this.clearTimeoutVerification();
+        this.config[this.active_container].verification.timeout_button = setTimeout(() => {
+            this.clearVerification();
         }, 3600000);
     }
 
     @action.bound
-    async onMountWithdraw(verification_code) {
-        await this.onMount(this.config.withdraw.container, verification_code);
-    }
-
-    @action.bound
     async sendVerificationEmail() {
-        const container = this.root_store.ui.active_cashier_tab;
-        if (this.config[container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked) {
             return;
         }
 
-        this.setErrorMessage('', this.config.withdraw.container);
-        this.setVerificationButtonClicked(true, container);
-        const withdrawal_type = `payment${container === this.config.payment_agent.container ? 'agent' : ''}_withdraw`;
+        this.setErrorMessage('');
+        this.setVerificationButtonClicked(true);
+        const withdrawal_type = `payment${this.active_container === this.config.payment_agent.container ? 'agent' : ''}_withdraw`;
         const response_verify_email = await WS.verifyEmail(this.root_store.client.email, withdrawal_type);
 
         if (response_verify_email.error) {
-            this.clearVerification(container);
-            this.setErrorMessage(response_verify_email.error, this.config.withdraw.container);
+            this.clearVerification();
+            this.setErrorMessage(response_verify_email.error);
         } else {
-            this.setVerificationEmailSent(true, container);
-            this.setTimeoutVerification(container);
+            this.setVerificationEmailSent(true);
+            this.setTimeoutVerification();
         }
     }
 
     @action.bound
     resendVerificationEmail() {
-        const container = this.root_store.ui.active_cashier_tab;
         // don't allow clicking while ongoing timeout
-        if (this.config[container].verification.resend_timeout < 60) {
+        if (this.config[this.active_container].verification.resend_timeout < 60) {
             return;
         }
-        this.setVerificationButtonClicked(false, container);
-        this.setCountDownResendVerification(container);
+        this.setVerificationButtonClicked(false);
+        this.setCountDownResendVerification();
         this.sendVerificationEmail();
     }
 
-    setCountDownResendVerification(container) {
-        this.setVerificationResendTimeout(this.config[container].verification.resend_timeout - 1, container);
+    setCountDownResendVerification() {
+        this.setVerificationResendTimeout(this.config[this.active_container].verification.resend_timeout - 1);
         const resend_interval = setInterval(() => {
-            if (this.config[container].verification.resend_timeout === 1) {
-                this.setVerificationResendTimeout(60, container);
+            if (this.config[this.active_container].verification.resend_timeout === 1) {
+                this.setVerificationResendTimeout(60);
                 clearInterval(resend_interval);
             } else {
-                this.setVerificationResendTimeout(this.config[container].verification.resend_timeout - 1, container);
+                this.setVerificationResendTimeout(this.config[this.active_container].verification.resend_timeout - 1);
             }
         }, 1000);
     }
 
-    clearVerification(container) {
+    clearVerification(container = this.active_container) {
         this.clearTimeoutVerification(container);
         this.setVerificationButtonClicked(false, container);
         this.setVerificationEmailSent(false, container);
@@ -376,6 +366,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setActiveTab(container) {
+        this.active_container = container;
         // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
         this.root_store.ui.setCashierActiveTab(container);
     }
@@ -450,7 +441,7 @@ export default class CashierStore extends BaseStore {
         this.filterPaymentAgentList(target.value);
     }
 
-    onUnmount() {
+    onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {
             this.clearVerification(container);
         });
@@ -462,6 +453,6 @@ export default class CashierStore extends BaseStore {
     }
 
     accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.onUnmount()));
+        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
     }
 }

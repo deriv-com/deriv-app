@@ -1,29 +1,21 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { connect }          from 'Stores/connect';
-import Error                from './error.jsx';
 import PaymentAgentList     from './PaymentAgent/payment-agent-list.jsx';
 import PaymentAgentWithdraw from './PaymentAgent/payment-agent-withdraw.jsx';
 
 class PaymentAgent extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab('payment_agent');
+        this.props.setActiveTab(this.props.container);
     }
 
     render() {
         return (
             <React.Fragment>
-                {this.props.error.message ?
-                    <Error
-                        error={this.props.error}
-                        container='withdraw'
-                    />
+                {this.props.verification_code ?
+                    <PaymentAgentWithdraw />
                     :
-                    (this.props.verification_code ?
-                        <PaymentAgentWithdraw />
-                        :
-                        <PaymentAgentList />
-                    )
+                    <PaymentAgentList />
                 }
             </React.Fragment>
         );
@@ -31,7 +23,7 @@ class PaymentAgent extends React.Component {
 }
 
 PaymentAgent.propTypes = {
-    error            : PropTypes.object,
+    container        : PropTypes.string,
     setActiveTab     : PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -39,7 +31,7 @@ PaymentAgent.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         verification_code: client.verification_code,
-        error            : modules.cashier.config.withdraw.error,
+        container        : modules.cashier.config.payment_agent.container,
         setActiveTab     : modules.cashier.setActiveTab,
     })
 )(PaymentAgent);

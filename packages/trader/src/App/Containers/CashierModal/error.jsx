@@ -10,7 +10,7 @@ class Error extends React.Component {
         if (this.props.link) {
             window.open(urlFor(this.props.link, undefined, undefined, true));
         }
-        this.props.setErrorMessage('', this.props.container);
+        this.props.setErrorMessage('');
     };
 
     render() {
@@ -38,7 +38,6 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-    container      : PropTypes.string,
     error          : PropTypes.object,
     setErrorMessage: PropTypes.func,
 };

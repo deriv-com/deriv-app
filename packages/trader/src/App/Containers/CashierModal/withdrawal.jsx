@@ -7,7 +7,11 @@ import Withdraw    from './Withdrawal/withdraw.jsx';
 
 class Withdrawal extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab('withdraw');
+        this.props.setActiveTab(this.props.container);
+    }
+
+    componentWillUnmount() {
+        this.props.setErrorMessage('');
     }
 
     render() {
@@ -16,7 +20,6 @@ class Withdrawal extends React.Component {
                 {this.props.error.message ?
                     <Error
                         error={this.props.error}
-                        container='withdraw'
                     />
                     :
                     ((this.props.verification_code || this.props.iframe_url) ?
@@ -31,6 +34,7 @@ class Withdrawal extends React.Component {
 }
 
 Withdrawal.propTypes = {
+    container        : PropTypes.string,
     error            : PropTypes.object,
     iframe_url       : PropTypes.string,
     setActiveTab     : PropTypes.func,
@@ -40,8 +44,10 @@ Withdrawal.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         verification_code: client.verification_code,
+        container        : modules.cashier.config.withdraw.container,
         error            : modules.cashier.config.withdraw.error,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         setActiveTab     : modules.cashier.setActiveTab,
+        setErrorMessage  : modules.cashier.setErrorMessage,
     })
 )(Withdrawal);

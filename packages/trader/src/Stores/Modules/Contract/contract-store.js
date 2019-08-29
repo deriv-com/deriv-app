@@ -130,6 +130,7 @@ function calculate_marker(contract_info) {
         date_start,
         date_expiry,
         entry_tick_time,
+        contract_type,
         tick_count,
         barrier_count,
         barrier,
@@ -138,7 +139,7 @@ function calculate_marker(contract_info) {
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
 
-    window.ci = toJS(contract_info);
+    // window.ci = toJS(contract_info);
 
     let price_array = [];
     if (+barrier_count === 1 && barrier) {
@@ -150,23 +151,33 @@ function calculate_marker(contract_info) {
     if (!date_start) { return null; }
     // if we have not yet received the first POC response
     if (!transaction_ids) {
+        const type = isDigitContract(contract_type) ? 'DigitContract' : 'TickContract';
         return {
+            type,
             contract_info: toJS(contract_info),
-            type         : 'TickContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start],
             price_array,
         };
     }
 
-    // TickContract
     if (tick_count >= 1) {
+        if (!isDigitContract(contract_type)) {
+            // TickContract
+            return {
+                contract_info: toJS(contract_info),
+                type         : 'TickContract',
+                key          : `${contract_id}-date_start`,
+                epoch_array  : [date_start, ...ticks_epoch_array],
+                price_array,
+            };
+        }
+        // DigitContract
         return {
             contract_info: toJS(contract_info),
-            type         : 'TickContract',
+            type         : 'DigitContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start, ...ticks_epoch_array],
-            price_array,
         };
     }
     // NonTickContract

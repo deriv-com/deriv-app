@@ -1,3 +1,7 @@
+// Things to do before touching this file :P
+// 1- Please read https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial
+// 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
+// 3- Please read contract-store.js & trade.jsx carefully
 import React          from 'react';
 import { FastMarker, RawMarker } from 'smartcharts-beta';
 import * as ICONS from './icons';
@@ -286,7 +290,87 @@ const NonTickContract = RawMarkerMaker(({
     ctx.restore();
 });
 
+const DigitContract = RawMarkerMaker(({
+    ctx: context,
+    points: [start, ...ticks],
+    is_last_contract,
+    contract_info: {
+        contract_type,
+        status,
+        profit,
+        is_sold,
+        barrier,
+        tick_stream,
+    },
+}) => {
+    /** @type {CanvasRenderingContext2D} */
+    const ctx = context;
+
+    const color = get_color({ status, profit: is_sold ? profit : null });
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+
+    const draw_start_line = is_last_contract && start.visible && !is_sold;
+
+    if (draw_start_line) {
+        let title = contract_type.replace('DIGIT', '').toLowerCase();
+        if (barrier) {
+            title = `${title} ${barrier}`;
+        }
+        render_label({
+            ctx,
+            text: title,
+            tick: { ...start, top: 100 },
+        });
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, 0);
+        ctx.lineTo(start.left, ctx.canvas.height);
+        ctx.stroke();
+    }
+
+    if (!ticks.length) {
+        ctx.restore();
+        return;
+    }
+    const entry = ticks[0];
+    const expiry = ticks[ticks.length - 1];
+
+    // barrier line
+    if (start.visible || entry.visible || expiry.visible) {
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, entry.top);
+        ctx.lineTo(expiry.left, entry.top);
+        ctx.stroke();
+    }
+    // start-time marker
+    if (start.visible) {
+        draw_path(ctx, {
+            top : entry.top,
+            left: start.left,
+            zoom: start.zoom,
+            icon: (ICONS[contract_type] || ICONS.CALL).with_color(color),
+        });
+    }
+    // date expiry marker
+    if (expiry.visible) {
+        const last_tick = tick_stream[tick_stream.length - 1];
+        const last_digit = last_tick.tick_display_value.slice(-1);
+        let font = '10px Roboto';
+        if (is_sold) {
+            font = `bold ${font}`;
+        }
+        ctx.font = font;
+        ctx.fillText(last_digit, expiry.left + 3, entry.top + 1);
+    }
+    ctx.restore();
+});
+
 export default {
     TickContract,
     NonTickContract,
+    DigitContract,
 };

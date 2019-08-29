@@ -6,6 +6,7 @@ import { urlFor }           from '_common/url';
 import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
+import ToggleAccountManagement from './toggle-account-management.jsx';
 // import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
@@ -22,6 +23,7 @@ export class AccountActions extends Component {
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
             // nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_account_management_modal_on !== this.props.is_account_management_modal_on ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid
@@ -37,16 +39,22 @@ export class AccountActions extends Component {
             currency,
             is_acc_switcher_on,
             // is_cashier_modal_on,
+            is_account_management_modal_on,
             is_logged_in,
             is_virtual,
             loginid,
             onClickUpgrade,
             toggleAccountsDialog,
             // toggleCashierModal,
+            toggleAccountManagementModal,
         } = this.props;
         if (is_logged_in) {
             return (
                 <React.Fragment>
+                    <ToggleAccountManagement
+                        is_open={is_account_management_modal_on}
+                        toggleModal={toggleAccountManagementModal}
+                    />
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={formatMoney(currency, balance, true)}

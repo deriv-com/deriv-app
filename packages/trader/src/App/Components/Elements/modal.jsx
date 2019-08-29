@@ -4,6 +4,7 @@ import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon              from 'Assets/icon.jsx';
+import MenuAccordion     from 'App/Components/Elements/MenuAccordion';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 
 class ModalElement extends React.PureComponent {
@@ -48,13 +49,23 @@ class ModalElement extends React.PureComponent {
                         </div>
                     </div>
                 </div>
-                <VerticalTab
-                    alignment='center'
-                    classNameHeader='modal__tab-header'
-                    id='modal'
-                    list={this.props.modal_content}
-                    selected_index={this.props.selected_index}
-                />
+                { this.props.menu_type === 'accordion' ?
+                    <MenuAccordion
+                        alignment='center'
+                        classNameHeader='modal__tab-header'
+                        id='modal'
+                        list={this.props.modal_content}
+                        selected_index={this.props.selected_index}
+                    />
+                    :
+                    <VerticalTab
+                        alignment='center'
+                        classNameHeader='modal__tab-header'
+                        id='modal'
+                        list={this.props.modal_content}
+                        selected_index={this.props.selected_index}
+                    />
+                }
             </div>,
             this.el
         );
@@ -85,6 +96,7 @@ const Modal = ({
     selected_index,
     title,
     toggleModal,
+    menu_type,
 }) => (
     <CSSTransition
         appear
@@ -107,6 +119,7 @@ const Modal = ({
             selected_index={selected_index}
             title={title}
             toggleModal={toggleModal}
+            menu_type={menu_type}
         />
     </CSSTransition>
 );

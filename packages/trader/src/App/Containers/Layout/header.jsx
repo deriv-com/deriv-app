@@ -18,6 +18,7 @@ const Header = ({
     enableApp,
     is_acc_switcher_on,
     // is_cashier_modal_on,
+    is_account_management_modal_on,
     is_app_disabled,
     is_logged_in,
     is_mobile,
@@ -28,6 +29,7 @@ const Header = ({
     disableApp,
     toggleAccountsDialog,
     // toggleCashierModal,
+    toggleAccountManagementModal,
 }) => (
     <header className={classNames('header', {
         'header--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -57,12 +59,14 @@ const Header = ({
                         enableApp={enableApp}
                         is_acc_switcher_on={is_acc_switcher_on}
                         // is_cashier_modal_on={is_cashier_modal_on}
+                        is_account_management_modal_on={is_account_management_modal_on}
                         is_logged_in={is_logged_in}
                         is_virtual={is_virtual}
                         loginid={loginid}
                         onClickUpgrade={onClickUpgrade}
                         toggleAccountsDialog={toggleAccountsDialog}
                         // toggleCashierModal={toggleCashierModal}
+                        toggleAccountManagementModal={toggleAccountManagementModal}
                     />
                 </div>
             </div>
@@ -81,6 +85,7 @@ Header.propTypes = {
     is_acc_switcher_on  : PropTypes.bool,
     is_app_disabled     : PropTypes.bool,
     // is_cashier_modal_on : PropTypes.bool,
+    is_account_management_modal_on: PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_logged_in        : PropTypes.bool,
     is_mobile           : PropTypes.bool,
@@ -105,6 +110,7 @@ export default connect(
         enableApp           : ui.enableApp,
         is_acc_switcher_on  : ui.is_accounts_switcher_on,
         // is_cashier_modal_on : ui.is_cashier_modal_on,
+        is_account_management_modal_on: ui.is_account_management_modal_on,
         is_dark_mode        : ui.is_dark_mode_on,
         is_app_disabled     : ui.is_app_disabled,
         is_loading          : ui.is_loading,
@@ -113,5 +119,6 @@ export default connect(
         disableApp          : ui.disableApp,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         // toggleCashierModal  : ui.toggleCashierModal,
+        toggleAccountManagementModal: ui.toggleAccountManagementModal,
     })
 )(Header);

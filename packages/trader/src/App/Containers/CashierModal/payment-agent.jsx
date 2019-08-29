@@ -1,9 +1,9 @@
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import { connect }      from 'Stores/connect';
-import Error            from './error.jsx';
-import SendEmail        from './send-email.jsx';
-import PaymentAgentList from './PaymentAgent/payment-agent-list.jsx';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { connect }          from 'Stores/connect';
+import Error                from './error.jsx';
+import PaymentAgentList     from './PaymentAgent/payment-agent-list.jsx';
+import PaymentAgentWithdraw from './PaymentAgent/payment-agent-withdraw.jsx';
 
 class PaymentAgent extends React.Component {
     componentDidMount() {
@@ -20,7 +20,7 @@ class PaymentAgent extends React.Component {
                     />
                     :
                     (this.props.verification_code ?
-                        <SendEmail />
+                        <PaymentAgentWithdraw />
                         :
                         <PaymentAgentList />
                     )

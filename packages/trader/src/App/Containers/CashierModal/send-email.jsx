@@ -12,18 +12,20 @@ class SendEmail extends React.Component {
         return (
             <div className='cashier__wrapper'>
                 {this.props.is_email_sent ?
-                    <EmailSent />
+                    <EmailSent
+                        is_email_sent={this.props.is_email_sent}
+                        is_resend_clicked={this.props.is_resend_clicked}
+                    />
                     :
                     <React.Fragment>
                         <Icon icon='IconAuthenticateWithdrawals' className='withdraw__icon' />
-                        <p className='withdraw__text'>
-                            <Localize i18n_default_text='To protect your account, we need to authenticate withdrawals.' />
-                        </p>
+                        <p className='withdraw__header'><Localize i18n_default_text='To initiate withdrawal, we need to authenticate you via email.' /></p>
+                        <p className='withdraw__text'><Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' /></p>
                         <Button
                             className='btn--primary btn--primary--orange withdraw__verify-button'
                             classNameSpan='withdraw__verify-button-text'
                             has_effect
-                            text={localize('Get authentication email')}
+                            text={localize('Request authentication email')}
                             onClick={this.props.sendVerificationEmail}
                         />
                     </React.Fragment>
@@ -35,12 +37,16 @@ class SendEmail extends React.Component {
 
 SendEmail.propTypes = {
     is_email_sent        : PropTypes.bool,
+    is_resend_clicked    : PropTypes.bool,
+    resend_timeout       : PropTypes.number,
     sendVerificationEmail: PropTypes.func,
 };
 
 export default connect(
     ({ modules }) => ({
-        is_email_sent        : modules.cashier.config.verification.is_email_sent,
+        is_email_sent        : modules.cashier.config.withdraw.verification.is_email_sent,
+        is_resend_clicked    : modules.cashier.config.withdraw.verification.is_resend_clicked,
+        resend_timeout       : modules.cashier.config.withdraw.verification.resend_timeout,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
     })
 )(SendEmail);

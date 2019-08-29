@@ -36,6 +36,11 @@ const Redirect = ({
             toggleCashierModal();
             break;
         }
+        case 'payment_agent_withdraw': {
+            setCashierActiveTab('payment_agent');
+            toggleCashierModal();
+            break;
+        }
         default: break;
     }
 

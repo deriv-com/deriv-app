@@ -15,12 +15,12 @@ class EmailSent extends React.Component {
             <div className='withdraw__email-sent'>
                 <Icon icon='IconEmailSent' className='withdraw__icon' />
                 <p className='withdraw__email-sent-title'><Localize i18n_default_text={'We\'ve sent you an email.'} /></p>
-                <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the authentication link in the email to access withdrawal.' /></p>
+                <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the link in the email to access withdrawal.' /></p>
                 <div className='withdraw__email-resend'>
                     {this.props.is_resend_clicked ?
                         <React.Fragment>
-                            <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text={'Didn\'t receive our email?'} /></p>
-                            <p className='withdraw__email-sent-text'><Localize i18n_default_text={'Please check your spam folder. If it\'s not there, try resending the email.'} /></p>
+                            <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text={'Didn\'t receive the email?'} /></p>
+                            <p className='withdraw__email-sent-text'><Localize i18n_default_text={'Check your spam or junk folder. If it\'s not there, try resending the email.'} /></p>
                             <Button
                                 className='btn--secondary btn--secondary--orange withdraw__resend-button'
                                 classNameSpan='withdraw__resend-button-text'
@@ -50,8 +50,6 @@ EmailSent.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        is_resend_clicked           : modules.cashier.config.verification.is_resend_clicked,
-        resend_timeout              : modules.cashier.config.verification.resend_timeout,
         resendVerificationEmail     : modules.cashier.resendVerificationEmail,
         sendVerificationEmail       : modules.cashier.sendVerificationEmail,
         setVerificationResendClicked: modules.cashier.setVerificationResendClicked,

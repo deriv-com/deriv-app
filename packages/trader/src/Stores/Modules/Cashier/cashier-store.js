@@ -1,6 +1,7 @@
 import {
     action,
-    observable }            from 'mobx';
+    observable,
+    toJS }                  from 'mobx';
 import { isCryptocurrency } from '_common/base/currency_base';
 import { isEmptyObject }    from '_common/utility';
 import { localize }         from 'App/i18n';
@@ -27,25 +28,34 @@ class Config {
     }
 }
 
+class ConfigVerification {
+    is_button_clicked = false;
+    timeout_button    = '';
+
+    @observable is_email_sent     = false;
+    @observable is_resend_clicked = false;
+    @observable resend_timeout    = 60;
+}
+
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
+
+    bank_default_option = [{ text: localize('Any'), value: '' }];
 
     @observable config = {
         deposit      : new Config({ container: 'deposit' }),
         payment_agent: {
-            container      : 'payment_agent',
-            filtered_list  : [],
-            list           : [],
-            supported_banks: [{ text: localize('Any'), value: '' }],
+            container       : 'payment_agent',
+            filtered_list   : [],
+            list            : [],
+            is_name_selected: true,
+            supported_banks : this.bank_default_option,
+            verification    : new ConfigVerification(),
         },
-        verification: {
-            is_button_clicked: false,
-            is_email_sent    : false,
-            is_resend_clicked: false,
-            resend_timeout   : 60,
-            timeout_button   : '',
+        withdraw: {
+            ...(toJS(new Config({ container: 'withdraw' }))),
+            verification: new ConfigVerification(),
         },
-        withdraw: new Config({ container: 'withdraw' }),
     };
 
     containers = [
@@ -100,7 +110,7 @@ export default class CashierStore extends BaseStore {
             this.clearTimeoutCashierUrl(current_action);
             if (verification_code) {
                 // clear verification code on error
-                this.clearVerification();
+                this.clearVerification(current_action);
             }
         } else if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
@@ -254,23 +264,23 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setVerificationButtonClicked(is_button_clicked) {
-        this.config.verification.is_button_clicked = is_button_clicked;
+    setVerificationButtonClicked(is_button_clicked, container) {
+        this.config[container].verification.is_button_clicked = is_button_clicked;
     }
 
     @action.bound
-    setVerificationEmailSent(is_email_sent) {
-        this.config.verification.is_email_sent = is_email_sent;
+    setVerificationEmailSent(is_email_sent, container) {
+        this.config[container].verification.is_email_sent = is_email_sent;
     }
 
     @action.bound
-    setVerificationResendClicked(is_resend_clicked) {
-        this.config.verification.is_resend_clicked = is_resend_clicked;
+    setVerificationResendClicked(is_resend_clicked, container = this.root_store.ui.active_cashier_tab) {
+        this.config[container].verification.is_resend_clicked = is_resend_clicked;
     }
 
     @action.bound
-    setVerificationResendTimeout(resend_timeout) {
-        this.config.verification.resend_timeout = resend_timeout;
+    setVerificationResendTimeout(resend_timeout, container) {
+        this.config[container].verification.resend_timeout = resend_timeout;
     }
 
     clearTimeoutCashierUrl(container) {
@@ -289,19 +299,19 @@ export default class CashierStore extends BaseStore {
         }, 60000);
     }
 
-    clearTimeoutVerification() {
-        if (this.config.verification.timeout_button) {
-            clearTimeout(this.config.verification.timeout_button);
+    clearTimeoutVerification(container) {
+        if (this.config[container].verification.timeout_button) {
+            clearTimeout(this.config[container].verification.timeout_button);
         }
     }
 
     // verification token expires after one hour
     // so we should show the verification request button again after that
     @action.bound
-    setTimeoutVerification() {
-        this.clearTimeoutVerification();
-        this.config.verification.timeout_button = setTimeout(() => {
-            this.clearVerification();
+    setTimeoutVerification(container) {
+        this.clearTimeoutVerification(container);
+        this.config[container].verification.timeout_button = setTimeout(() => {
+            this.clearVerification(container);
         }, 3600000);
     }
 
@@ -312,52 +322,55 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config.verification.is_button_clicked) {
+        const container = this.root_store.ui.active_cashier_tab;
+        if (this.config[container].verification.is_button_clicked) {
             return;
         }
 
         this.setErrorMessage('', this.config.withdraw.container);
-        this.setVerificationButtonClicked(true);
-        const response_verify_email = await WS.verifyEmail(this.root_store.client.email, 'payment_withdraw');
+        this.setVerificationButtonClicked(true, container);
+        const withdrawal_type = `payment${container === this.config.payment_agent.container ? 'agent' : ''}_withdraw`;
+        const response_verify_email = await WS.verifyEmail(this.root_store.client.email, withdrawal_type);
 
         if (response_verify_email.error) {
-            this.clearVerification();
+            this.clearVerification(container);
             this.setErrorMessage(response_verify_email.error, this.config.withdraw.container);
         } else {
-            this.setVerificationEmailSent(true);
-            this.setTimeoutVerification();
+            this.setVerificationEmailSent(true, container);
+            this.setTimeoutVerification(container);
         }
     }
 
     @action.bound
     resendVerificationEmail() {
+        const container = this.root_store.ui.active_cashier_tab;
         // don't allow clicking while ongoing timeout
-        if (this.config.verification.resend_timeout < 60) {
+        if (this.config[container].verification.resend_timeout < 60) {
             return;
         }
-        this.setVerificationButtonClicked(false);
-        this.setCountDownResendVerification();
+        this.setVerificationButtonClicked(false, container);
+        this.setCountDownResendVerification(container);
         this.sendVerificationEmail();
     }
 
-    setCountDownResendVerification() {
-        this.setVerificationResendTimeout(this.config.verification.resend_timeout - 1);
+    setCountDownResendVerification(container) {
+        this.setVerificationResendTimeout(this.config[container].verification.resend_timeout - 1, container);
         const resend_interval = setInterval(() => {
-            if (this.config.verification.resend_timeout === 1) {
-                this.setVerificationResendTimeout(60);
+            if (this.config[container].verification.resend_timeout === 1) {
+                this.setVerificationResendTimeout(60, container);
                 clearInterval(resend_interval);
             } else {
-                this.setVerificationResendTimeout(this.config.verification.resend_timeout - 1);
+                this.setVerificationResendTimeout(this.config[container].verification.resend_timeout - 1, container);
             }
         }, 1000);
     }
 
-    clearVerification() {
-        this.clearTimeoutVerification();
-        this.setVerificationButtonClicked(false);
-        this.setVerificationEmailSent(false);
-        this.setVerificationResendClicked(false);
-        this.setVerificationResendTimeout(60);
+    clearVerification(container) {
+        this.clearTimeoutVerification(container);
+        this.setVerificationButtonClicked(false, container);
+        this.setVerificationEmailSent(false, container);
+        this.setVerificationResendClicked(false, container);
+        this.setVerificationResendTimeout(60, container);
         this.root_store.client.setVerificationCode('');
     }
 
@@ -370,17 +383,39 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgent() {
         this.setLoading(true);
-        const residence          = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-        const currency           = this.root_store.client.currency;
-        const payment_agent_list = await WS.paymentAgentList(residence, currency);
+        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
+        const currency  = this.root_store.client.currency;
 
-        this.setPaymentAgentList(payment_agent_list);
+        if (!this.config.payment_agent.list.length) {
+            const payment_agent_list = await WS.paymentAgentList(residence, currency);
+            this.setPaymentAgentList(payment_agent_list);
+        }
+
+        this.setIsNameSelected(true);
+        this.filterPaymentAgentList();
+        this.setLoading(false);
+    }
+
+    @action.bound
+    setIsNameSelected(is_name_selected = !this.config.payment_agent.is_name_selected) {
+        this.config.payment_agent.is_name_selected = is_name_selected;
+    }
+
+    @action.bound
+    addSupportedBank(bank) {
+        const supported_bank_exists =
+            this.config.payment_agent.supported_banks.find(supported_bank =>
+                supported_bank.value === bank.toLowerCase()
+            );
+        if (!supported_bank_exists) {
+            this.config.payment_agent.supported_banks.push({ text: bank, value: bank.toLowerCase() });
+        }
     }
 
     @action.bound
     setPaymentAgentList(payment_agent_list) {
         this.config.payment_agent.list            = [];
-        this.config.payment_agent.supported_banks = [{ text: localize('Any'), value: '' }];
+        this.config.payment_agent.supported_banks = this.bank_default_option;
 
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
@@ -391,15 +426,9 @@ export default class CashierStore extends BaseStore {
                 url            : payment_agent.url,
             });
             payment_agent.supported_banks.split(',').forEach((bank) => {
-                if (!this.config.payment_agent.supported_banks
-                    .find(supported_bank => supported_bank.value === bank.toLowerCase())) {
-                    this.config.payment_agent.supported_banks.push({ text: bank, value: bank.toLowerCase() });
-                }
+                this.addSupportedBank(bank);
             });
         });
-
-        this.filterPaymentAgentList();
-        this.setLoading(false);
     }
 
     @action.bound
@@ -422,7 +451,9 @@ export default class CashierStore extends BaseStore {
     }
 
     onUnmount() {
-        this.clearVerification();
+        [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {
+            this.clearVerification(container);
+        });
         [this.config.deposit.container, this.config.withdraw.container].forEach((container) => {
             this.setIframeUrl('', container);
             this.clearTimeoutCashierUrl(container);

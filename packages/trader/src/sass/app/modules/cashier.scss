@@ -33,11 +33,23 @@
 
 /** @define withdraw */
 .withdraw {
-    &__text {
+    &__header {
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 1.6rem;
+        line-height: 1.5;
+    }
+    &__header, &__text {
         @include themify($themes) {
             color: themed('text_primary_color');
         }
-        font-size: 1.6rem;
+    }
+    &__text {
+        font-size: 1.4rem;
+        line-height: 1.43;
+        max-width: 70%;
+        margin-left: auto;
+        margin-right: auto;
     }
     &__verify-button {
         margin-top: 3.2rem;
@@ -100,6 +112,7 @@
         line-height: 1.43;
         height: 100%;
         width: 100%;
+        text-align: left;
     }
     &__header {
         font-size: 1.6rem;

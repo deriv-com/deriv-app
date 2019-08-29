@@ -43,7 +43,7 @@ class ModalElement extends React.PureComponent {
                             </div>
                         }
                         <div id='dt_modal_close_icon' className='modal-header__close' onClick={this.props.toggleModal}>
-                            <span icon='ModalIconClose' />
+                            {/* <Icon icon='ModalIconClose' /> */}
                         </div>
                     </div>
                 </div>
@@ -103,14 +103,13 @@ const Modal = ({
 );
 
 Modal.propTypes = {
-    children     : PropTypes.node,
-    className    : PropTypes.string,
-    header       : PropTypes.node,
-    id           : PropTypes.string,
-    is_open      : PropTypes.bool,
-    modal_content: PropTypes.array,
-    title        : PropTypes.string,
-    toggleModal  : PropTypes.func,
+    children   : PropTypes.node,
+    className  : PropTypes.string,
+    header     : PropTypes.node,
+    id         : PropTypes.string,
+    is_open    : PropTypes.bool,
+    title      : PropTypes.string,
+    toggleModal: PropTypes.func,
 };
 
 export default Modal;

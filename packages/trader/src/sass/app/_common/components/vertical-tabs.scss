@@ -18,7 +18,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
     }
     &:not(.vertical-tab--full-screen) {
-        height: 600px;
+        height: 500px;
 
         .vertical-tab__content {
             @include toEm(padding, 24px);

@@ -121,6 +121,7 @@ const TickContract = RawMarkerMaker(({
         exit_tick_time,
         status,
         profit,
+        is_sold,
         tick_stream,
     },
 }) => {
@@ -134,14 +135,13 @@ const TickContract = RawMarkerMaker(({
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    if (is_last_contract && start.visible) {
+    const draw_start_line = is_last_contract && start.visible && !is_sold;
+
+    if (draw_start_line) {
         render_label({
             ctx,
             text: 'Start\nTime',
-            tick: {
-                ...start,
-                top: 100,
-            },
+            tick: { ...start, top: 100 },
         });
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
@@ -149,43 +149,120 @@ const TickContract = RawMarkerMaker(({
         ctx.lineTo(start.left, ctx.canvas.height);
         ctx.stroke();
     }
+
     if (!ticks.length || !barrier) {
         ctx.restore();
         return;
     }
     const entry = ticks[0];
     const expiry = ticks[ticks.length - 1];
-    // horizontal dashed line
-    if (start.visible || entry.visible) {
+    // vertical line connecting date start to barrier
+    if (!draw_start_line && barrier && entry && start.visible && barrier !== entry.top) {
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, barrier);
+        ctx.lineTo(start.left, entry.top);
+        ctx.stroke();
+    }
+
+    // barrier line
+    if (start.visible || entry.visible || expiry.visible) {
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
         ctx.moveTo(start.left, barrier);
         ctx.lineTo(entry.left, barrier);
         ctx.stroke();
-    }
-    // barrier solid line
-    if (entry.visible || expiry.visible) {
+
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(expiry.left, barrier);
         ctx.stroke();
     }
-    if ((entry.visible || expiry.visible) && barrier !== entry.top) {
-        ctx.beginPath();
-        ctx.setLineDash([2, 2]);
-        ctx.moveTo(entry.left, entry.top);
-        ctx.lineTo(expiry.left, entry.top);
-        ctx.stroke();
-    }
-    // entry spot
+    // date start marker
     if (entry.zoom >= 10 && entry.visible) {
         ctx.beginPath();
-        ctx.arc(entry.left, entry.top, 2, 0, Math.PI * 2);
+        ctx.arc(entry.left, barrier, 2, 0, Math.PI * 2);
         ctx.fill();
     }
     // start-time marker
     if (start.visible) {
+        draw_path(ctx, {
+            top : entry.top,
+            left: start.left,
+            zoom: start.zoom,
+            icon: (ICONS[contract_type] || ICONS.CALL).with_color(color),
+        });
+    }
+    // date expiry marker
+    if (
+        expiry.visible &&
+        expiry.epoch * 1 === exit_tick_time * 1 &&
+        status !== 'open'
+    ) {
+        draw_path(ctx, {
+            top : barrier,
+            left: expiry.left,
+            zoom: expiry.zoom,
+            icon: (ICONS[status.toUpperCase()] || ICONS.LOST),
+        });
+    }
+    ctx.restore();
+});
+
+const NonTickContract = RawMarkerMaker(({
+    ctx: context,
+    points: [start, expiry, entry],
+    is_last_contract,
+    prices: [barrier], // TODO: support two barrier contracts
+    contract_info: {
+        contract_type,
+        exit_tick_time,
+        is_sold,
+        status,
+        profit,
+    },
+}) => {
+    /** @type {CanvasRenderingContext2D} */
+    const ctx = context;
+
+    const color = get_color({ status, profit });
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+
+    const draw_start_line = is_last_contract && start.visible && !is_sold;
+    if (draw_start_line) {
+        render_label({
+            ctx,
+            text: 'Start\nTime',
+            tick: { ...start, top: 100 },
+        });
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, 0);
+        ctx.lineTo(start.left, ctx.canvas.height);
+        ctx.stroke();
+    }
+    // vertical line from date start to barrier
+    if (!draw_start_line && barrier && entry && start.visible && barrier !== entry.top) {
+        ctx.beginPath();
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(start.left, barrier);
+        ctx.lineTo(start.left, entry.top);
+        ctx.stroke();
+    }
+    // barrier line
+    if ((start.visible || expiry.visible) && barrier) {
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.moveTo(start.left, barrier);
+        ctx.lineTo(expiry.left, barrier);
+        ctx.stroke();
+    }
+    // start-time marker
+    if (start.visible && entry) {
         draw_path(ctx, {
             top : entry.top,
             left: start.left,
@@ -200,78 +277,10 @@ const TickContract = RawMarkerMaker(({
         status !== 'open'
     ) {
         draw_path(ctx, {
-            top : entry.top,
+            top : barrier,
             left: expiry.left,
             zoom: expiry.zoom,
             icon: (ICONS[status.toUpperCase()] || ICONS.LOST),
-        });
-    }
-    ctx.restore();
-});
-
-const NonTickContract = RawMarkerMaker(({
-    ctx: context,
-    points: [start, expiry, entry],
-    is_last_contract,
-    contract_info: {
-        contract_type,
-        exit_tick_time,
-        status,
-        profit,
-    },
-}) => {
-    /** @type {CanvasRenderingContext2D} */
-    const ctx = context;
-
-    const color = get_color({ status, profit });
-
-    ctx.save();
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-
-    if (is_last_contract && start.visible) {
-        render_label({
-            ctx,
-            text: 'Start\nTime',
-            tick: {
-                ...start,
-                top: 100,
-            },
-        });
-        ctx.beginPath();
-        ctx.setLineDash([2, 2]);
-        ctx.moveTo(start.left, 0);
-        ctx.lineTo(start.left, ctx.canvas.height);
-        ctx.stroke();
-    }
-    // barrier line
-    if ((start.visible || expiry.visible) && entry) {
-        ctx.beginPath();
-        ctx.setLineDash([]);
-        ctx.moveTo(start.left, entry.top);
-        ctx.lineTo(expiry.left, entry.top);
-        ctx.stroke();
-    }
-    // start-time marker
-    if (start.visible && entry) {
-        draw_path(ctx, {
-            top : entry.top,
-            left: start.left,
-            zoom: start.zoom,
-            icon: ICONS[contract_type].with_color(color),
-        });
-    }
-    // status marker
-    if (
-        expiry.visible &&
-        expiry.epoch * 1 === exit_tick_time * 1 &&
-        status !== 'open'
-    ) {
-        draw_path(ctx, {
-            top : entry.top,
-            left: expiry.left,
-            zoom: expiry.zoom,
-            icon: ICONS[status.toUpperCase()],
         });
     }
     ctx.restore();

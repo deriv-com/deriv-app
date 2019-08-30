@@ -1,7 +1,7 @@
 import React from 'react';
 
 function getThemifiedProps(Svg, theme, key) {
-    if (!Svg || !Svg.props) return <div />;
+    if (!Svg || !Svg.props) return Svg;
 
     const { type } = Svg;
     const { children, ...props } = Svg.props;
@@ -21,7 +21,8 @@ function getThemifiedProps(Svg, theme, key) {
         if ((props['data-theme'] === 'none')
             || (props[attribute] === 'none')
             || !props[attribute]
-            || type !== 'path') {
+            // || type !== 'path'
+            ) {
             return undefined;
         } else {
             return React.cloneElement(Svg, { key, className: theme[rule] });
@@ -58,7 +59,6 @@ const IconBase = Svg => {
         childrenWithProps = children;
     } else if (customColors) {
         childrenWithProps = getThemifiedProps(children, customColors);
-        console.log('custom',childrenWithProps);
     } else if (theme === 'twoTone') {
         const twoToneColors = {
             'rect'  : 'bg-fill',

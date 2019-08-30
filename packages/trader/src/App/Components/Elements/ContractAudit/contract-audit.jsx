@@ -95,7 +95,7 @@ class ContractAudit extends React.PureComponent {
                             !isNaN(exit_spot) &&
                             <div id='dt_exit_spot_label' className='contract-audit__grid'>
                                 <ContractAuditItem
-                                    icon={<IconExitSpot theme='twoTone'/>}
+                                    icon={<IconExitSpot theme='twoTone' customColors={{ '&fill="#191C31': 'none' }} />}
                                     label={localize('Exit spot')}
                                     value={exit_spot || ' - '}
                                     value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}

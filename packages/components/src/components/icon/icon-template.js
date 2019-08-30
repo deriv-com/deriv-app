@@ -11,9 +11,8 @@ function template(
       ${imports}
       import IconBase from './icon-base.jsx';
       const ${componentName} = (${props}) => {
-          props = { ...props };
-          const Icon = IconBase(${jsx});
-          return Icon;
+          props = {...props};
+          return IconBase(${jsx});
       };
       export default ${componentName};
     `

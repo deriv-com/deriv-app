@@ -1,30 +1,30 @@
-import { Checkbox }                      from 'deriv-components';
-import PropTypes                         from 'prop-types';
-import React                             from 'react';
-import { localize }                      from 'App/i18n';
-import { connect }                       from 'Stores/connect';
-import Localize                          from 'App/Components/Elements/localize.jsx';
+import {
+    Checkbox,
+    ImgToolbarBottomDark,
+    ImgToolbarBottomLight,
+    ImgToolbarLeftDark,
+    ImgToolbarLeftLight,
+    ImgIntervalDisabledDark,
+    ImgIntervalDisabledLight,
+    ImgIntervalEnabledDark,
+    ImgIntervalEnabledLight }  from 'deriv-components';
+// TODO: enable asset information
+// import {
+//     ImgOhlcDisabledDark,
+//     ImgOhlcDisabledLight,
+//     ImgOhlcEnabledDark,
+//     ImgOhlcEnabledLight
+// } from 'deriv-components';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { localize }            from 'App/i18n';
+import { connect }             from 'Stores/connect';
+import Localize                from 'App/Components/Elements/localize.jsx';
 import MediaItem, {
     MediaHeading,
     MediaIcon,
-    MediaDescription,
-}                                        from 'App/Components/Elements/Media';
-import RadioGroup                        from 'App/Components/Form/Radio';
-import ChartPositionEnabledLightIcon     from 'Assets/SvgComponents/settings/bottom.svg';
-
-// TODO: enable asset information
-// import OHLCDisabledLightIcon             from 'Assets/SvgComponents/settings/OHLC-disabled.svg';
-// import OHLCEnabledLightIcon              from 'Assets/SvgComponents/settings/OHLC-enabled.svg';
-// import OHLCDisabledDarkIcon              from 'Assets/SvgComponents/settings/dark/OHLC-disabled.svg';
-// import OHLCEnabledDarkIcon               from 'Assets/SvgComponents/settings/dark/OHLC-enabled.svg';
-
-import ChartPositionEnabledDarkIcon      from 'Assets/SvgComponents/settings/dark/bottom.svg';
-import IntervalDurationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/interval-disabled.svg';
-import IntervalDurationEnabledDarkIcon   from 'Assets/SvgComponents/settings/dark/interval-enabled.svg';
-import ChartPositionDisabledDarkIcon     from 'Assets/SvgComponents/settings/dark/left.svg';
-import IntervalDurationDisabledLightIcon from 'Assets/SvgComponents/settings/interval-disabled.svg';
-import IntervalDurationEnabledLightIcon  from 'Assets/SvgComponents/settings/interval-enabled.svg';
-import ChartPositionDisabledLightIcon    from 'Assets/SvgComponents/settings/left.svg';
+    MediaDescription }         from 'App/Components/Elements/Media';
+import RadioGroup              from 'App/Components/Form/Radio';
 
 const ChartSettings = ({
     // TODO: enable asset information
@@ -43,8 +43,8 @@ const ChartSettings = ({
             </MediaHeading>
             <MediaDescription>
                 <MediaIcon
-                    disabled={is_dark_mode ? ChartPositionDisabledDarkIcon : ChartPositionDisabledLightIcon}
-                    enabled={is_dark_mode ? ChartPositionEnabledDarkIcon : ChartPositionEnabledLightIcon}
+                    disabled={is_dark_mode ? ImgToolbarLeftDark : ImgToolbarLeftLight}
+                    enabled={is_dark_mode ? ImgToolbarBottomDark : ImgToolbarBottomLight}
                     id='dt_settings_position_image'
                     is_enabled={is_layout_default}
                 />
@@ -79,8 +79,8 @@ const ChartSettings = ({
             </MediaHeading>
             <MediaDescription>
                 <MediaIcon
-                    disabled={is_dark_mode ? OHLCDisabledDarkIcon : OHLCDisabledLightIcon }
-                    enabled={is_dark_mode ? OHLCEnabledDarkIcon : OHLCEnabledLightIcon}
+                    disabled={is_dark_mode ? ImgOhlcDisabledDark : ImgOhlcDisabledLight }
+                    enabled={is_dark_mode ? ImgOhlcEnabledDark : ImgOhlcEnabledLight}
                     is_enabled={is_asset_visible}
                 />
                 <div className='media__form'>
@@ -98,8 +98,8 @@ const ChartSettings = ({
             </MediaHeading>
             <MediaDescription>
                 <MediaIcon
-                    disabled={is_dark_mode ? IntervalDurationDisabledDarkIcon : IntervalDurationDisabledLightIcon}
-                    enabled={is_dark_mode ? IntervalDurationEnabledDarkIcon : IntervalDurationEnabledLightIcon}
+                    disabled={is_dark_mode ? ImgIntervalDisabledDark : ImgIntervalDisabledLight}
+                    enabled={is_dark_mode ? ImgIntervalEnabledDark : ImgIntervalEnabledLight}
                     id='dt_settings_interval_image'
                     is_enabled={is_countdown_visible}
                 />

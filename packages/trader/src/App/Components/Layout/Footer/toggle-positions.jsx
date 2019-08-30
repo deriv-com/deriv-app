@@ -17,7 +17,7 @@ const TogglePositions = ({
     );
     return (
         <a
-            href='javascript:;'
+            id='dt_positions_toggle'
             className={toggle_positions_class}
             onClick={togglePositionsDrawer}
             data-count={positions_count}

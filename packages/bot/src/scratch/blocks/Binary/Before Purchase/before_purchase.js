@@ -4,7 +4,10 @@ import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.before_purchase = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition() {
+        return {
             message0: translate('%1 (2) Watch and purchase your contract %2'),
             message1: '%1',
             args0   : [
@@ -30,7 +33,14 @@ Blockly.Blocks.before_purchase = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Watch the tick stream and purchase the desired contract (Runs on tick update)'),
-        });
+            category       : Blockly.Categories.Before_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Before Purchase'),
+            'description' : translate('Before Purchase Description'),
+        };
     },
     onchange(event) {
         setBlockTextColor(this);

@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_changeCase = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('to %1 %2'),
             args0   : [
                 {
@@ -24,7 +27,15 @@ Blockly.Blocks.text_changeCase = {
             colour         : Blockly.Colours.Binary.colour,
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            tooltip        : translate('Text Change Case Tooltip'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text Change Case'),
+            'description' : translate('Text Change Case Description'),
+        };
     },
 };
 

@@ -27,7 +27,7 @@ Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and
     If you're using a custom domain, replace the github URLs above with your domain and remove the `deriv-app` base path.
 
 2. In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
-   * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
+   * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/config.js`
 
 3. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
 
@@ -65,6 +65,9 @@ npm run deploy:folder "br_my_test_folder"
 
 ## Miscellaneous
 - In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.  
+
+## Selenium tests
+Elements for selenium test purposes should have `id` attributes, with the value of `dt_[element_name]_[unique_name|id]_[element_type]`. (e.g. `dt_settings_dark_button`)
 
 ## Release
 ### Staging

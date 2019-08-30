@@ -1,78 +1,102 @@
-/* eslint-disable func-names, no-underscore-dangle */
-
+/* eslint-disable no-underscore-dangle */
 /**
- * Corner radius of the flyout background.
- * @type {number}
- * @const
+ * Create a copy of this block on the workspace.
+ * @param {!Blockly.BlockSvg} originalBlock The block to copy from the flyout.
+ * @return {Blockly.BlockSvg} The newly created block, or null if something
+ *     went wrong with deserialization.
+ * @package
  */
-Blockly.Flyout.prototype.CORNER_RADIUS = 10;
+Blockly.Flyout.prototype.createBlock = function(event, originalBlock) {
+    Blockly.Events.disable();
 
-/**
- * Margin around the edges of the blocks in the flyout.
- * @type {number}
- * @const
- */
-Blockly.Flyout.prototype.MARGIN = 30;
+    const variablesBeforeCreation = this.targetWorkspace_.getAllVariables();
 
-/**
- * Top/bottom padding between scrollbar and edge of flyout background.
- * deriv-bot: Should be equal to CORNER_RADIUS
- * @type {number}
- * @const
- */
-Blockly.Flyout.prototype.SCROLLBAR_PADDING = 20;
+    this.targetWorkspace_.setResizesEnabled(false);
 
-/**
- * The fraction of the distance to the scroll target to move the flyout on
- * each animation frame, when auto-scrolling. Values closer to 1.0 will make
- * the scroll animation complete faster. Use 1.0 for no animation.
- * @type {number}
- */
-Blockly.Flyout.prototype.scrollAnimationFraction = 1.0;
+    let newBlock = null;
 
-/**
- * Update the view based on coordinates calculated in position().
- * @param {number} width The computed width of the flyout's SVG group
- * @param {number} height The computed height of the flyout's SVG group.
- * @param {number} x The computed x origin of the flyout's SVG group.
- * @param {number} y The computed y origin of the flyout's SVG group.
- * @protected
- */
-Blockly.Flyout.prototype.positionAt_ = function(width, height, x, y) {
-    this.svgGroup_.setAttribute('width', width);
-    this.svgGroup_.setAttribute('height', height);
-
-    if (this.svgGroup_.tagName === 'svg') {
-        const transform = `translate(${x}px,${y}px)`;
-
-        Blockly.utils.setCssTransform(this.svgGroup_, transform);
-    } else {
-        // IE and Edge don't support CSS transforms on SVG elements so
-        // it's important to set the transform on the SVG element itself
-        const transform = `translate(${x},${y})`;
-
-        this.svgGroup_.setAttribute('transform', transform);
+    try {
+        newBlock = this.placeNewBlock_(event, originalBlock);
+        // Close the flyout.
+        Blockly.hideChaff();
+    } finally {
+        Blockly.Events.enable();
+    }
+  
+    const newVariables = Blockly.Variables.getAddedVariables(this.targetWorkspace_, variablesBeforeCreation);
+  
+    if (Blockly.Events.isEnabled()) {
+        Blockly.Events.setGroup(true);
+        Blockly.Events.fire(new Blockly.Events.Create(newBlock));
+        // Fire a VarCreate event for each (if any) new variable created.
+        for (let i = 0; i < newVariables.length; i++) {
+            const thisVariable = newVariables[i];
+            Blockly.Events.fire(new Blockly.Events.VarCreate(thisVariable));
+        }
     }
 
-    // Update the scrollbar (if one exists).
-    if (this.scrollbar_) {
-        const newX = x - this.ARROW_SIZE;
-
-        // Set the scrollbars origin to be the top left of the flyout.
-        this.scrollbar_.setOrigin(newX, y);
-        this.scrollbar_.resize();
-
-        // Set the position again so that if the metrics were the same (and the
-        // resize failed) our position is still updated.
-        this.scrollbar_.setPosition_(this.scrollbar_.position_.x, this.scrollbar_.position_.y);
+    if (this.autoClose) {
+        this.hide();
     }
+
+    Blockly.derivWorkspace.toolbox_.clearSelection();
+    newBlock.isInFlyout = false;
+
+    return newBlock;
 };
 
 /**
- * Get the width of the flyout.
- * @return {number} The width of the flyout.
- * deriv-bot: Return actual width rather than this.DEFAULT_WIDTH.
+ * Copy a block from the flyout to the workspace and position it correctly.
+ * @param {!Blockly.Block} oldBlock The flyout block to copy.
+ * @return {!Blockly.Block} The new block in the main workspace.
+ * @private
  */
-Blockly.Flyout.prototype.getWidth = function() {
-    return this.width_;
+Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
+    const targetWorkspace = this.targetWorkspace_;
+    const svgRootOld = oldBlock.getSvgRoot();
+
+    if (!svgRootOld) {
+        throw new Error('oldBlock is not rendered.');
+    }
+  
+    // Create the new block by cloning the block in the flyout (via XML).
+    const xml = Blockly.Xml.blockToDom(oldBlock);
+    // The target workspace would normally resize during domToBlock, which will
+    // lead to weird jumps.  Save it for terminateDrag.
+    targetWorkspace.setResizesEnabled(false);
+  
+    // Using domToBlock instead of domToWorkspace means that the new block will be
+    // placed at position (0, 0) in main workspace units.
+    const block = Blockly.Xml.domToBlock(xml, targetWorkspace);
+    const svgRootNew = block.getSvgRoot();
+
+    if (!svgRootNew) {
+        throw new Error('block is not rendered.');
+    }
+  
+    // The offset in pixels between the main workspace's origin and the upper left
+    // corner of the injection div.
+    const mainOffsetPixels = targetWorkspace.getOriginOffsetInPixels();
+  
+    // The offset in pixels between the flyout workspace's origin and the upper
+    // left corner of the injection div.
+    const flyoutOffsetPixels = this.workspace_.getOriginOffsetInPixels();
+  
+    // The position of the old block in pixels relative to the flyout
+    // workspace's origin.
+    const oldBlockPosPixels = new goog.math.Coordinate(event.clientX - 50 , event.clientY - 20);
+  
+    // The position of the old block in pixels relative to the upper left corner
+    // of the injection div.
+    const oldBlockOffsetPixels = goog.math.Coordinate.sum(flyoutOffsetPixels, oldBlockPosPixels);
+  
+    // The position of the old block in pixels relative to the origin of the
+    // main workspace.
+    const finalOffsetPixels = goog.math.Coordinate.difference(oldBlockOffsetPixels, mainOffsetPixels);
+  
+    // The position of the old block in main workspace coordinates.
+    const finalOffsetMainWs = finalOffsetPixels.scale(1 / targetWorkspace.scale);
+  
+    block.moveBy(finalOffsetMainWs.x, finalOffsetMainWs.y);
+    return block;
 };

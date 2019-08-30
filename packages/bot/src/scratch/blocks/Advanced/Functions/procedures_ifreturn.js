@@ -9,7 +9,10 @@ Blockly.Blocks.procedures_ifreturn = {
     init() {
         this.hasReturnValue = true;
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('if %1 return %2'),
             args0   : [
                 {
@@ -26,7 +29,15 @@ Blockly.Blocks.procedures_ifreturn = {
             colourTertiary   : Blockly.Colours.BinaryProcedures.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Function If Else'),
+            category         : Blockly.Categories.Functions,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Function If else'),
+            'description' : translate('Function If else Description'),
+        };
     },
     /**
      * Create XML to represent whether this block has a return value.

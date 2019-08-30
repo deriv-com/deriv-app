@@ -1,5 +1,6 @@
-/* eslint-disable func-names, no-underscore-dangle */
 import { translate } from '../../utils/lang/i18n';
+
+/* eslint-disable func-names, no-underscore-dangle */
 
 /**
  * Construct the blocks required by the flyout for the variable category.
@@ -8,11 +9,19 @@ import { translate } from '../../utils/lang/i18n';
  */
 Blockly.DataCategory = function(workspace) {
     const variableModelList = workspace.getVariablesOfType('');
-    const xmlList = [];
-
+    let xmlList = [];
+    
     // `Create Variable`-button
     Blockly.DataCategory.addCreateButton(xmlList, workspace);
 
+    const block_types = ['variables_set', 'variables_get', 'math_change'];
+    xmlList = xmlList.concat(Blockly.DataCategory.search(variableModelList, block_types));
+
+    return xmlList;
+};
+
+Blockly.DataCategory.search = function(variableModelList){
+    const xmlList = [];
     if (variableModelList.length > 0) {
         const generateVariableFieldXmlString = variableModel => {
             // The variable name may be user input, so it may contain characters that
@@ -22,11 +31,6 @@ Blockly.DataCategory = function(workspace) {
             )}">${goog.string.htmlEscape(variableModel.name)}</field>`;
             return escapedText;
         };
-
-        // TEMP: Label for testing only
-        const operationsLabel = document.createElement('label');
-        operationsLabel.setAttribute('text', translate('variables_set'));
-        xmlList.push(operationsLabel);
 
         const firstVariable = variableModelList[0];
 
@@ -40,11 +44,6 @@ Blockly.DataCategory = function(workspace) {
             xmlList.push(setBlock);
         }
 
-        // TEMP: Label for testing only
-        const changeLabel = document.createElement('label');
-        changeLabel.setAttribute('text', translate('math_change'));
-        xmlList.push(changeLabel);
-
         // Create 'Change `var` by `1`'-block
         if (Blockly.Blocks.math_change) {
             const gap = Blockly.Blocks.variables_get ? 20 : 8;
@@ -54,11 +53,6 @@ Blockly.DataCategory = function(workspace) {
             const changeBlock = Blockly.Xml.textToDom(changeBlockText).firstChild;
             xmlList.push(changeBlock);
         }
-
-        // TEMP: Label for testing only
-        const variablesLabel = document.createElement('label');
-        variablesLabel.setAttribute('text', translate('variable_get'));
-        xmlList.push(variablesLabel);
 
         // Create `variable_get` block for each variable
         if (Blockly.Blocks.variables_get) {
@@ -86,7 +80,7 @@ Blockly.DataCategory = function(workspace) {
 Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const msg = Blockly.Msg.NEW_VARIABLE;
+    const msg = translate('Create variable');
     const callbackKey = 'CREATE_VARIABLE';
     const callback = function(button) {
         const buttonWorkspace = button.getTargetWorkspace();

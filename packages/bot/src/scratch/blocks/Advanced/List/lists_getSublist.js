@@ -29,6 +29,13 @@ Blockly.Blocks.lists_getSublist = {
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
+    meta() {
+        return {
+            'display_name': translate('List get sublit'),
+            'description' : translate('List get sublist description'),
+            'category'    : Blockly.Categories.List,
+        };
+    },
     mutationToDom() {
         const container = document.createElement('mutation');
         const isAt1 = this.getInput('AT1').type === Blockly.INPUT_VALUE;

@@ -4,7 +4,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.macda_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to MACD Array %2 %3'),
             message1: '%1',
             args0   : [
@@ -35,7 +38,14 @@ Blockly.Blocks.macda_statement = {
             tooltip          : translate('Calculates Moving Average Convergence Divergence (MACD) list from a list'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Moving Average Convergence Divergence'),
+            'decription'  : translate('Moving Average Convergence Divergence Description'),
+        };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],

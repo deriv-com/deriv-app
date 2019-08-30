@@ -10,12 +10,11 @@ In order to work on your own version of the Deriv Javascript and CSS, please **f
 You will need to perform the following on your development machine:
 
 1. Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
-2. Run `npm ci`
-3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.
+2. Run `npm run bootstrap` from the root folder
 
-    1. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`
-
-    2. Install all packages with a hoisting strategy (lift all common packages to a root `node_modules` and not package specific), run `npm run hoist`
+[comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
+[comment]: <> (1. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
+[comment]: <> (2. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
 
 How to work with this repo
 =============================
@@ -27,7 +26,10 @@ All packages must contain the following scripts to perform the stated actions:
 | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | `serve`             | Runs build suite and starts the dev server.                                                   |
 | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| `test`              | Runs the test suite.                                                                          |
+| `test`              | Runs the test suite with eslint, and stylelint.                                               |
+| `test:eslint`       | Runs only eslint.                                                                             |
+| `test:stylelint`    | Runs only stylelint.                                                                          |
+| `test:mocha`        | Runs only the test suite.                                                                     |
 | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
 | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
 | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |
@@ -57,8 +59,9 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### PR Guidelines
 
-1. Use the `[project 1|project 2] developer 1|developer 2/task_name` format for PR titles. (e.g.: `[trader] dev1/fixed_emoji_issue`)
-2. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
+1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1/fixed_emoji_issue`)
+2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
+3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 
 ### Clean projects
 

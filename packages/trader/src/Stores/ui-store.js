@@ -23,10 +23,6 @@ export default class UIStore extends BaseStore {
     @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
 
-    @observable is_loading              = true;
-    @observable is_slow_loading         = false;
-    @observable slow_loading_status     = [];
-
     @observable has_only_forward_starting_contracts = false;
 
     // Purchase Controls
@@ -63,9 +59,11 @@ export default class UIStore extends BaseStore {
     // purchase button states
     @observable purchase_states = [ false, false ];
 
-    @observable is_fully_blurred = false;
-    @observable is_app_blurred   = false;
-    @observable is_route_blurred = false;
+    // app states for modal
+    @observable is_app_disabled   = false;
+    @observable is_route_modal_on = false;
+
+    // position states
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
@@ -133,43 +131,28 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showRouteBlur() {
-        this.is_route_blurred = true;
+    setRouteModal() {
+        this.is_route_modal_on = true;
     }
 
     @action.bound
-    hideRouteBlur() {
-        this.is_route_blurred = false;
+    disableRouteModal() {
+        this.is_route_modal_on = false;
     }
 
     @action.bound
-    showAppBlur() {
-        this.is_app_blurred = true;
+    disableApp() {
+        this.is_app_disabled = true;
     }
 
     @action.bound
-    hideAppBlur() {
-        this.is_app_blurred = false;
-    }
-
-    @action.bound
-    showFullBlur() {
-        this.is_fully_blurred = true;
-    }
-
-    @action.bound
-    hideFullBlur() {
-        this.is_fully_blurred = false;
+    enableApp() {
+        this.is_app_disabled = false;
     }
 
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
-    }
-
-    @action.bound
-    setAppLoading(is_visible) {
-        this.is_loading = is_visible;
     }
 
     @action.bound
@@ -239,7 +222,10 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleCashierModal() {
+    toggleCashierModal(active_tab) {
+        if (/^(deposit|withdraw)$/.test(active_tab)) {
+            this.setCashierActiveTab(active_tab);
+        }
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
@@ -320,12 +306,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
-    }
-
-    @action.bound
-    setSlowLoading(status, message) {
-        this.is_slow_loading     = status;
-        this.slow_loading_status = message;
     }
 
     @action.bound

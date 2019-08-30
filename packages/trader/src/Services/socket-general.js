@@ -1,5 +1,4 @@
 import { action, flow }     from 'mobx';
-import GTM                  from '_common/base/gtm';
 import Login                from '_common/base/login';
 import ServerTime           from '_common/base/server_time';
 import BinarySocket         from '_common/base/socket_base';
@@ -10,7 +9,8 @@ import { requestLogout }    from './logout';
 import WS                   from './ws-methods';
 
 let client_store,
-    common_store;
+    common_store,
+    gtm_store;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
@@ -67,17 +67,18 @@ const BinarySocketGeneral = (() => {
                 if (response.get_settings) {
                     setResidence(response.get_settings.country_code);
                     client_store.setEmail(response.get_settings.email);
-                    // GTM.eventHandler(response.get_settings);
-                    // if (response.get_settings.is_authenticated_payment_agent) {
-                    //     $('#topMenuPaymentAgent').setVisibility(1);
-                    // }
+                    client_store.setAccountSettings(response.get_settings);
+                    gtm_store.eventHandler(response.get_settings);
                 }
+                break;
+            case 'get_account_status':
+                client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
                 client_store.responsePayoutCurrencies(response.payout_currencies);
                 break;
             case 'transaction':
-                GTM.pushTransactionData(response, { bom_ui: 'new' });
+                gtm_store.pushTransactionData(response);
                 break;
             // no default
         }
@@ -125,6 +126,7 @@ const BinarySocketGeneral = (() => {
     const init = (store) => {
         client_store = store.client;
         common_store = store.common;
+        gtm_store    = store.gtm;
 
         return {
             onDisconnect,
@@ -136,7 +138,7 @@ const BinarySocketGeneral = (() => {
     const authorizeAccount = (response) => {
         client_store.responseAuthorize(response);
         WS.subscribeBalance(ResponseHandlers.balance, true);
-        WS.sendRequest({ get_settings: 1 }, { forced: true });
+        WS.getSettings({ forced: true });
         WS.getAccountStatus();
         WS.payoutCurrencies();
         WS.mt5LoginList();

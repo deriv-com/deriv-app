@@ -1,0 +1,55 @@
+/*
+    Constants
+*/
+$FONT_STACK: roboto, sans-serif;
+$BASE_FONT_SIZE: 10px;
+
+/*
+    Variables
+*/
+$FONT_SIZES: (
+    'heading'   em(30px),
+    'large'     em(28px),
+    'title'     em(16px),
+    'paragraph' em(14px),
+    'small'     em(12px),
+    'xsmall'    em(10px),
+    'xxsmall'   em(8px),
+    'xxxsmall'  em(6px),
+);
+
+$FONT_COLORS: (
+    'active'   $COLOR_WHITE,
+    'black'    $COLOR_LIGHT_BLACK_1,
+    'grey'     $COLOR_LIGHT_BLACK_2,
+    'disabled' $COLOR_LIGHT_BLACK_3,
+    'green'    $COLOR_GREEN_1,
+    'red'      $COLOR_RED,
+    'orange'   $COLOR_ORANGE,
+);
+
+$FONT_WEIGHTS: (
+    'bold'     700,
+    'semibold' 500,
+    'normal'   400,
+    'light'    300,
+);
+
+$TEXT_ALIGN: (
+    'center' center,
+    'left'   left,
+    'right'  right,
+);
+
+$LINEHEIGHTS: (
+    'large' : 1.75,
+    'medium': 1.5,
+    'small' : 1.25,
+);
+
+/*
+    List of all typefaces variables in the format: --$FONT_SIZES-$TEXT_ALIGN-$FONT_WEIGHTS-COLORS.
+    See $FONT_SIZES, $TEXT_ALIGN, $FONT_WEIGHTS, $COLORS maps above for references.
+    Variables name example: --title-center-semibold-red
+ */
+$TYPEFACES_LIST: generate-typefaces();

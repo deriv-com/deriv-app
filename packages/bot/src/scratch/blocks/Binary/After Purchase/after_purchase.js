@@ -4,7 +4,10 @@ import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.after_purchase = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('%1 (4) Get your trade result and trade again %2'),
             message1: '%1',
             args0   : [
@@ -32,7 +35,14 @@ Blockly.Blocks.after_purchase = {
             tooltip        : translate(
                 'Get the previous trade information and result, then trade again (Runs on trade finish)'
             ),
-        });
+            category: Blockly.Categories.After_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('After Purchase'),
+            'description' : translate('After Purchase Description'),
+        };
     },
     onchange(event) {
         setBlockTextColor(this);

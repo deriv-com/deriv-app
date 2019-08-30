@@ -2,6 +2,7 @@ const DerivAPIBasic    = require('deriv-api/dist/DerivAPIBasic');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
+const APIMiddleware    = require('./api_middleware');
 const { State }        = require('../storage');
 const getLanguage      = require('../language').get;
 const {
@@ -18,8 +19,8 @@ const getSocketURL     = require('../../config').getSocketURL;
  */
 const BinarySocketBase = (() => {
     let deriv_api,
-        derivAPISend,
-        binary_socket;
+        binary_socket,
+        middleware;
 
     let config               = {};
     let wrong_app_id         = 0;
@@ -29,7 +30,6 @@ const BinarySocketBase = (() => {
 
     const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
     const timeouts        = {};
-    const debounced_calls = {};
 
     const clearTimeouts = () => {
         Object.keys(timeouts).forEach((key) => {
@@ -49,7 +49,8 @@ const BinarySocketBase = (() => {
             return;
         }
         if (typeof options === 'object' && config !== options) {
-            config         = options;
+            config     = options;
+            middleware = new APIMiddleware(config);
         }
         clearTimeouts();
         config.wsEvent('init');
@@ -60,9 +61,8 @@ const BinarySocketBase = (() => {
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage   : SocketCache,
+                middleware,
             });
-            derivAPISend = deriv_api.send.bind(deriv_api);
-            deriv_api.send = send;
         }
 
         deriv_api.onOpen().subscribe(() => {
@@ -117,31 +117,6 @@ const BinarySocketBase = (() => {
         return is_available;
     };
 
-    // Delegate error handling to the callback
-    const promiseRejectToResolve = promise => new Promise((r) => {
-        promise.then(r, r);
-    });
-
-    const send = (request, options = {}) => {
-        const key = JSON.stringify(request);
-        if (key in debounced_calls) {
-            return debounced_calls[key];
-        }
-
-        const promise = promiseRejectToResolve(derivAPISend(request));
-
-        config.wsEvent('send');
-
-        if (options.callback) {
-            promise.then(options.callback);
-        }
-
-        debounced_calls[key] = promise;
-        promise.then(() => { delete debounced_calls[key]; });
-
-        return promise;
-    };
-
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 
     const wait = (...responses) =>
@@ -166,16 +141,16 @@ const BinarySocketBase = (() => {
     const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
 
     const buy = (proposal_id, price) =>
-        send({ buy: proposal_id, price });
+        deriv_api.send({ buy: proposal_id, price });
 
     const sell = (contract_id, bid_price) =>
-        send({ sell: contract_id, price: bid_price });
+        deriv_api.send({ sell: contract_id, price: bid_price });
 
     const cashier = (action, verification_code) =>
-        send({ cashier: action, ...(verification_code && { verification_code }) });
+        deriv_api.send({ cashier: action, ...(verification_code && { verification_code }) });
 
     const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
-        send({
+        deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
@@ -184,13 +159,13 @@ const BinarySocketBase = (() => {
         });
 
     const profitTable = (limit, offset, date_boundaries) =>
-        send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
+        deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
     const statement = (limit, offset, date_boundaries) =>
-        send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+        deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
 
     const verifyEmail = (email, type) =>
-        send({ verify_email: email, type });
+        deriv_api.send({ verify_email: email, type });
 
     const activeSymbols = () =>
         deriv_api.storage.activeSymbols('brief');
@@ -200,7 +175,6 @@ const BinarySocketBase = (() => {
 
     return {
         init,
-        send,
         forgetStream,
         wait,
         clearTimeouts,

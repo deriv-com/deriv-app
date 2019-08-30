@@ -140,6 +140,12 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             &-icon {
                 @extend .info-box-container-icon;
                 margin-right: 1.6em;
+
+                .color1-fill {
+                    @include themify($themes) {
+                        fill: themed('background_modal_overlay');
+                    }
+                }
             }
             &-text {
                 @include typeface(--paragraph-left-normal-black, unset);
@@ -261,6 +267,12 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         z-index: 11;
         right: 0;
         top: 0;
+
+        .color1-fill {
+            @include themify($themes) {
+                fill: themed('background_modal_shadow');
+            }
+        }
     }
 }
 // TODO: THEMIFY

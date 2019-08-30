@@ -48,6 +48,11 @@
         & > .input-field:not(:first-child) {
             margin-left: 8px;
         }
+        .color2-fill {
+            @include themify($themes) {
+                fill: themed('text_primary_color');
+            }
+        }
     }
     & > .first-month, & > .second-month {
         .calendar__body {

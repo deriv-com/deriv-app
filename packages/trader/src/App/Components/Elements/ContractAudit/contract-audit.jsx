@@ -22,6 +22,12 @@ import {
     isDigitType }        from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item.jsx';
 
+const customColors = {
+    'rect'         : 'bg-fill',
+    '&fill=#999CAC': 'color1-fill',
+    '&fill=#FFF'   : 'color2-fill',
+};
+
 class ContractAudit extends React.PureComponent {
     render() {
         const {
@@ -68,7 +74,7 @@ class ContractAudit extends React.PureComponent {
                                 icon={
                                     isDigitType(contract_info.contract_type)
                                         ? <IconTarget theme='twoTone' />
-                                        : <IconBarrier theme='twoTone' />
+                                        : <IconBarrier colors={{ 'rect': 'bg-fill' }} />
                                 }
                                 label={getBarrierLabel(contract_info)}
                                 value={getBarrierValue(contract_info) || ' - '}
@@ -76,7 +82,7 @@ class ContractAudit extends React.PureComponent {
                         </div>
                         <div id='dt_start_time_label' className='contract-audit__grid'>
                             <ContractAuditItem
-                                icon={<IconStartTime theme='twoTone'/>}
+                                icon={<IconStartTime colors={customColors} />}
                                 label={localize('Start time')}
                                 value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
                             />
@@ -84,7 +90,7 @@ class ContractAudit extends React.PureComponent {
                         {!isDigitType(contract_info.contract_type) &&
                         <div id='dt_entry_spot_label' className='contract-audit__grid'>
                             <ContractAuditItem
-                                icon={<IconEntrySpot theme='twoTone' />}
+                                icon={<IconEntrySpot colors={customColors} />}
                                 label={localize('Entry spot')}
                                 value={contract_info.entry_spot_display_value || ' - '}
                                 value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
@@ -95,7 +101,7 @@ class ContractAudit extends React.PureComponent {
                             !isNaN(exit_spot) &&
                             <div id='dt_exit_spot_label' className='contract-audit__grid'>
                                 <ContractAuditItem
-                                    icon={<IconExitSpot theme='twoTone' customColors={{ '&fill="#191C31': 'none' }} />}
+                                    icon={<IconExitSpot colors={customColors} />}
                                     label={localize('Exit spot')}
                                     value={exit_spot || ' - '}
                                     value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}

@@ -43,11 +43,7 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <Lazy
-                                ctor={() => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals')}
-                                should_load={true}
-                                has_progress={false}
-                            />
+                          
                         </React.Fragment>
                 }
             </MobxProvider>

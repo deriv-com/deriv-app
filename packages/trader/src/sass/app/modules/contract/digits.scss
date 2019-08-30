@@ -147,13 +147,13 @@
         }
     }
     &__icon {
-        &-color {
+        .color1-fill {
             fill: $COLOR_ORANGE;
         }
-        &--win .digits__icon-color {
+        &--win .color1-fill {
             fill: $COLOR_GREEN_1;
         }
-        &--loss .digits__icon-color {
+        &--loss .color1-fill {
             fill: $COLOR_RED;
         }
     }

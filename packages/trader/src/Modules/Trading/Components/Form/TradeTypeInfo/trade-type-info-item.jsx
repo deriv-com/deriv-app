@@ -43,7 +43,7 @@ const TradeTypeInfoItem = ({
                                 <Icon
                                     icon={`ImgTradetypes${snakeCaseToKebabCase(type.value)}`}
                                     className='trade-type-info-dialog__gif-image'
-                                    customColors={{
+                                    colors={{
                                         '&fill=#191C31': 'bg-fill',
                                         '&fill=#FFF'   : 'arrow-fill',
                                     }}

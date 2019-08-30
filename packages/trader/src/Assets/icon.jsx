@@ -5,7 +5,7 @@ class Icon extends React.PureComponent {
     render() {
         const options = {
             className    : this.props.className,
-            customColors : this.props.customColors,
+            colors       : this.props.colors,
             is_disabled  : this.props.is_disabled,
             onClick      : this.props.onClick,
             onMouseEnter : this.props.onMouseEnter,
@@ -26,7 +26,7 @@ class Icon extends React.PureComponent {
 
 Icon.propTypes = {
     className   : PropTypes.string,
-    customColors: PropTypes.object,
+    colors: PropTypes.object,
     icon        : PropTypes.string,
     is_disabled : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClick     : PropTypes.func,

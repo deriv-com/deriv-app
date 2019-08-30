@@ -10,10 +10,7 @@ function template(
     return template.ast`
       ${imports}
       import IconBase from './icon-base.jsx';
-      const ${componentName} = (${props}) => {
-          props = {...props};
-          return IconBase(${jsx});
-      };
+      const ${componentName} = (${props}) => IconBase(${jsx});
       export default ${componentName};
     `
 }

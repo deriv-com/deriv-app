@@ -6,38 +6,36 @@ function getThemifiedProps(Svg, theme, key) {
     const { type } = Svg;
     const { children, ...props } = Svg.props;
 
-    const themifiedProps = Object.keys(theme).map(rule => {
+    const themifiedProps = [];
+    Object.keys(theme).map(rule => {
         const [element, attribute] = rule.split('&');
-
+        if (props['data-theme'] === 'none') return themifiedProps.push(Svg);
+        if (type === 'path') {
+            if (attribute && props[attribute]) {
+                themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] })); 
+            }
+        }
+        if (type === element) {
+            themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] }));
+        }
         if (attribute) {
             const [attr, value] = attribute.split('=');
             if (value && props[attr] === value) {
-                return React.cloneElement(Svg, { key, className: theme[rule] });
+                themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] }));
             } 
-        } else if (element === type) {
-            return React.cloneElement(Svg, { key, className: theme[rule] });
         }
-
-        if ((props['data-theme'] === 'none')
-            || (props[attribute] === 'none')
-            || !props[attribute]
-            // || type !== 'path'
-            ) {
-            return undefined;
-        } else {
-            return React.cloneElement(Svg, { key, className: theme[rule] });
-        }
-    }).filter(c => c !== undefined)[0];
-
-    if (themifiedProps) {
-        return themifiedProps;
-    }
-
-    const childrenWithProps = [];
-    React.Children.map(children, (child, idx) => {
-        childrenWithProps.push(getThemifiedProps(child, theme, idx));
     });
 
+    const childrenWithProps = [];
+    if (children) {
+        React.Children.map(children, (child, idx) => {
+            childrenWithProps.push(getThemifiedProps(child, theme, idx));
+        });
+    }
+
+    if (themifiedProps[0]) {
+        return React.cloneElement(themifiedProps[0], { key, children: childrenWithProps })
+    }
     return React.cloneElement(Svg, { key, children: childrenWithProps });
 }
 
@@ -47,7 +45,7 @@ const IconBase = Svg => {
     const {
         children,
         className,
-        customColors,
+        colors,
         height,
         theme,
         width,
@@ -57,8 +55,6 @@ const IconBase = Svg => {
     
     if (theme === 'none') {
         childrenWithProps = children;
-    } else if (customColors) {
-        childrenWithProps = getThemifiedProps(children, customColors);
     } else if (theme === 'twoTone') {
         const twoToneColors = {
             'rect'  : 'bg-fill',
@@ -71,13 +67,19 @@ const IconBase = Svg => {
             '&fill'          : 'color1-fill',
             '&stroke'        : 'color1-stroke',
             '&strokeLinejoin': 'color1-stroke',
+            'g'              : 'color2-fill',
+            
         };
         childrenWithProps = getThemifiedProps(children, fillColors);
+    } 
+    
+    if (colors) {
+        childrenWithProps = getThemifiedProps(children, colors);
     }
 
     return (
         <svg
-            className={`inline-icon ${className}`}
+            className={`inline-icon ${className || ''}`}
             height={height}
             width={width}
             viewBox={`0 0 ${width} ${height}`}

@@ -28,7 +28,7 @@
     &__info-wrapper {
         position: absolute;
         width: 290px;
-        height: 544px;
+        min-height: 544px;
         right: calc(100% + 10px);
         top: -66px;
         z-index: 2;

@@ -12,7 +12,7 @@ class ContractTypeWidget extends React.PureComponent {
     state = {
         is_dialog_open     : false,
         is_info_dialog_open: false,
-        item               : {},
+        item               : { value: this.props.value },
     };
 
     componentDidMount() {
@@ -150,7 +150,7 @@ class ContractTypeWidget extends React.PureComponent {
 
         const item_list   = this.getItemList();
         const item_index  = this.getItemIndex(item, item_list);
-        const trade_types = (item_list.filter(item => item.value === value)[0]||[]).trade_types;
+        const trade_types = item_list[item_index].trade_types;
 
         return (
             <div

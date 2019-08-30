@@ -46,6 +46,16 @@
                fill: themed('loader_background');
             }
         }
+        .color1-fill {
+            @include themify($themes) {
+                fill: themed('icon_start_time') !important;
+            }
+        }
+        .color2-fill {
+            @include themify($themes) {
+                fill: themed('background_icon_color') !important;
+            }
+        }
     }
     &__item {
         display: flex;

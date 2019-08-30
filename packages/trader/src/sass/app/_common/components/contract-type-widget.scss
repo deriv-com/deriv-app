@@ -69,7 +69,7 @@
 
             .color1-fill {
                 @include themify($themes) {
-                    fill: themed('trade_type_info_dialog_arrow_fill');
+                    fill: themed('icon_color');
                 }
             }
         }

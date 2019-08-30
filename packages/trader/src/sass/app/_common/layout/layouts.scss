@@ -445,7 +445,7 @@
 
     .color1-fill {
         @include themify($themes) {
-            fill: themed('text_color');
+            fill: themed('icon_color');
         }
     }
 }

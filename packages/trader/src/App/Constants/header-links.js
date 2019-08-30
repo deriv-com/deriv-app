@@ -9,7 +9,7 @@ const header_links = [
     {
         id     : 'dt_deriv_logo',
         logo   : <div className='header__logo'>{localize('BETA')}</div>,
-        image  : <IconDeriv className='header__icon' customColors={{ '&fill': 'color3-fill' }} />,
+        image  : <IconDeriv className='header__icon' colors={{ '&fill': 'color3-fill' }} />,
         link_to: routes.trade,
     },
     {

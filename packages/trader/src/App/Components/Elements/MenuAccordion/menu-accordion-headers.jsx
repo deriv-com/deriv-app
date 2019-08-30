@@ -9,7 +9,7 @@ import {
 class MenuAccordionHeaders extends React.PureComponent {
     state = {
         is_active_tab_open: true,
-        selected_tab      : this.props.items[0].label
+        selected_tab      : this.props.items[0].label,
     }
 
     handleAccordion = (selected) => {
@@ -37,9 +37,12 @@ class MenuAccordionHeaders extends React.PureComponent {
                         <div key={idx}>
                             <div>
                                 <VerticalTabHeader item={item} onChange={this.handleAccordion} >
-                                    <Icon icon='IconChevronRight' className={classNames('dt_accordion-chevron', {
-                                        'dt_accordion-chevron--show': show_sub_tab_list, // this.state.is_active_tab_open,
-                                    })} />
+                                    <Icon
+                                        icon='IconChevronRight'
+                                        className={classNames('dt_accordion-chevron', {
+                                            'dt_accordion-chevron--show': show_sub_tab_list,
+                                        })}
+                                    />
                                 </VerticalTabHeader>
                             </div>
                             {show_sub_tab_list && (
@@ -50,7 +53,8 @@ class MenuAccordionHeaders extends React.PureComponent {
                                 />
                             )}
                         </div>
-                    )}
+                    );
+                }
                 )}
             </VerticalTabWrapper>
         );

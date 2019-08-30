@@ -6,4 +6,4 @@ const VerticalTabWrapper = ({ children }) => (
     </div>
 );
 
-export { VerticalTabWrapper }
+export { VerticalTabWrapper };

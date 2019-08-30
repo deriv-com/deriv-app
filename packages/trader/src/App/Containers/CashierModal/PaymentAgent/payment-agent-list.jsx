@@ -109,11 +109,9 @@ export default connect(
         is_email_sent        : modules.cashier.config.payment_agent.verification.is_email_sent,
         is_resend_clicked    : modules.cashier.config.payment_agent.verification.is_resend_clicked,
         is_loading           : modules.cashier.is_loading,
-        onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
         onMount              : modules.cashier.onMountPaymentAgent,
         payment_agent_list   : modules.cashier.config.payment_agent.filtered_list,
         resend_timeout       : modules.cashier.config.withdraw.verification.resend_timeout,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
-        supported_banks      : modules.cashier.config.payment_agent.supported_banks,
     })
 )(PaymentAgentList);

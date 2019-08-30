@@ -1,6 +1,6 @@
-import React       from 'react';
-import { VerticalTabWrapper } from './vertical-tab-wrapper';
-import { VerticalTabHeader } from './vertical-tab-header';
+import React                  from 'react';
+import { VerticalTabWrapper } from './vertical-tab-wrapper.jsx';
+import { VerticalTabHeader }  from './vertical-tab-header.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
     render() {
@@ -13,14 +13,14 @@ class VerticalTabHeaders extends React.PureComponent {
                 }
 
                 {this.props.items.map(item => (
-                        <VerticalTabHeader
-                            item={item}
-                            onChange={this.props.onChange} 
-                            is_routed={this.props.is_routed}
-                            selected={this.props.selected}
-                            key={item.label}
-                        />
-                    )
+                    <VerticalTabHeader
+                        item={item}
+                        onChange={this.props.onChange}
+                        is_routed={this.props.is_routed}
+                        selected={this.props.selected}
+                        key={item.label}
+                    />
+                )
                 )}
             </VerticalTabWrapper>
         );

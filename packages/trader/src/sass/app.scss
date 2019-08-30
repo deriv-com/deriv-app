@@ -50,6 +50,7 @@
 @import 'app/_common/components/market-is-closed-overlay';
 @import 'app/_common/components/market-symbol-icon';
 @import 'app/_common/components/media-item';
+@import 'app/_common/components/menu-accordion';
 @import 'app/_common/components/modal';
 @import 'app/_common/components/number-selector';
 @import 'app/_common/components/popconfirm';
@@ -69,6 +70,7 @@
 @import 'app/_common/fullscreen-dialog';
 
 // Modules
+@import 'app/modules/account-management';
 @import 'app/modules/cashier';
 @import 'app/modules/contract';
 @import 'app/modules/contract/bottom-widgets';

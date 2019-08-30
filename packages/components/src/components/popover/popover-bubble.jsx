@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
 import posed, { PoseGroup } from 'react-pose';
-import Icon                 from 'Assets/icon.jsx';
+import IconInfoBlue         from '../icon-info-blue.jsx';
 
 const FadeIn = posed.span({
     enter: {
@@ -62,6 +62,7 @@ class PopoverBubble extends React.PureComponent {
             is_open,
             message,
             target_rectangle,
+            portal_container,
         } = this.props;
 
         if (!target_rectangle) return null;
@@ -75,21 +76,21 @@ class PopoverBubble extends React.PureComponent {
                         data-popover-pos={alignment}
                         className={classNames(
                             className,
-                            'popover__bubble',
-                            { 'popover__bubble--error': has_error },
+                            'dc-popover__bubble',
+                            { 'dc-popover__bubble--error': has_error },
                         )}
                         id={id}
                     >
                         { icon === 'info' &&
-                            <i className='popover__bubble__icon'>
-                                <Icon icon='IconInfoBlue' />
+                            <i className='dc-popover__bubble__icon'>
+                                <IconInfoBlue />
                             </i>
                         }
 
-                        <span className='popover__bubble__text'>
+                        <span className='dc-popover__bubble__text'>
                             { message }
                         </span>
-                        <span className='popover__bubble__arrow' />
+                        <span className='dc-popover__bubble__arrow' />
                     </span>
                 </FadeIn>
                 }
@@ -98,7 +99,7 @@ class PopoverBubble extends React.PureComponent {
 
         return ReactDOM.createPortal(
             popover_bubble,
-            document.getElementById('deriv_app')
+            document.getElementById(portal_container)
         );
     }
 }

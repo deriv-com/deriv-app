@@ -1,4 +1,4 @@
-import { Checkbox }                      from 'deriv-components';
+import { Checkbox, RadioGroup }          from 'deriv-components';
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
 import { localize }                      from 'App/i18n';
@@ -9,7 +9,6 @@ import MediaItem, {
     MediaIcon,
     MediaDescription,
 }                                        from 'App/Components/Elements/Media';
-import RadioGroup                        from 'App/Components/Form/Radio';
 import ChartPositionEnabledLightIcon     from 'Assets/SvgComponents/settings/bottom.svg';
 
 // TODO: enable asset information

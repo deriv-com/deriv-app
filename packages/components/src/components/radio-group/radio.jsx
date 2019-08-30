@@ -10,15 +10,15 @@ class Radio extends React.PureComponent {
     };
 
     render() {
-        const { selected, children, id } = this.props;
+        const { selected, children, id, className } = this.props;
 
         return (
-            <div id={id} className='radio-group__item' onClick={this.clickHandler}>
-                <div className={classNames('radio-group__circle', {
-                    'radio-group__circle--selected': selected,
+            <div id={id} className={classNames('dc-radio-group__item', className)} onClick={this.clickHandler}>
+                <div className={classNames('dc-radio-group__circle', {
+                    'dc-radio-group__circle--selected': selected,
                 })}
                 />
-                <div className='radio-group__label'>{children}</div>
+                <div className='dc-radio-group__label'>{children}</div>
             </div>
         );
     }
@@ -32,4 +32,4 @@ Radio.propTypes = {
     value   : PropTypes.bool,
 };
 
-export { Radio };
+export default Radio;

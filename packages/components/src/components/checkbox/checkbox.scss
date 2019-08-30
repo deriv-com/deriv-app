@@ -1,4 +1,4 @@
-.checkbox {
+.dc-checkbox {
     display: flex;
     justify-content: flex-start;
     cursor: pointer;
@@ -17,20 +17,6 @@
         &--active {
             border: none;
             background-color: $COLOR_ORANGE;
-
-            &:after {
-                font-size: 1em;
-                color: $COLOR_WHITE;
-                font-weight: 500;
-                text-transform: capitalize;
-                text-align: left;
-                line-height: unset;
-                content: 'L';
-                transform: scaleX(-1) rotate(-40deg);
-                position: absolute;
-                margin-left: 0.3em;
-                margin-top: -0.2em;
-            }
         }
     }
 }

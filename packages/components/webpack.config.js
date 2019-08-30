@@ -13,9 +13,11 @@ module.exports = {
         autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
         checkbox    : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
+        dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
         input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -23,6 +25,11 @@ module.exports = {
         libraryExport: 'default',
         library      : ['deriv-component', '[name]'],
         libraryTarget: 'umd',
+    },
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'src', 'components'),
+        },
     },
     optimization: {
         minimize: true,

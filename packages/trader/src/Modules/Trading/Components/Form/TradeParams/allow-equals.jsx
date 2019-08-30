@@ -1,8 +1,8 @@
-import { Checkbox }             from 'deriv-components';
+import { Popover, Checkbox }    from 'deriv-components';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
 import { localize }             from 'App/i18n';
-import { Popover }              from 'App/Components/Elements/Popover';
+import InputField               from 'App/Components/Form/InputField';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,

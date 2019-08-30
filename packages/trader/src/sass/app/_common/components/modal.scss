@@ -36,6 +36,9 @@
             }
         }
     }
+    &__account_management {
+        width: 904px;
+    }
     /**
      * @define modal-header
      */
@@ -51,7 +54,7 @@
                 background-color: themed('background_cover');
                 color: themed('text_color');
             }
-            width: 28%;
+            min-width: 28%;
             line-height: 24px;
             padding: 16px;
         }

@@ -197,6 +197,7 @@ class ToggleAccountManagement extends React.PureComponent {
                     <Icon icon='IconUser' />
                 </div>
                 <Modal
+                    className='account_management'
                     disableApp={disableApp}
                     enableApp={enableApp}
                     menu_type='accordion'

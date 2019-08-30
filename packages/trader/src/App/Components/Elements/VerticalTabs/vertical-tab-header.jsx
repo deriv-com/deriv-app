@@ -15,7 +15,7 @@ const HeaderIcon = ({ icon, is_active }) => (
 const Header = ({ text }) => <div className='vertical-tab__header__link'>{text}</div>;
 
 const VerticalTabHeader = ({ children, is_routed, item, onChange, selected }) => {
-    const label       = item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
+    const label       = item.label; // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
     const is_active   = selected && selected.label === item.label;
     const handleClick = () => onChange(item);
     const id          = `dt_${label}_link`;

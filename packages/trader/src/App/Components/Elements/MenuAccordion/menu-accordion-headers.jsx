@@ -34,7 +34,7 @@ class MenuAccordionHeaders extends React.PureComponent {
                     const show_sub_tab_list = (selected_tab === item.label && is_active_tab_open);
 
                     return (
-                        <div key={idx}>
+                        <div key={idx} className='menu-accordion'>
                             <div>
                                 <VerticalTabHeader item={item} onChange={this.handleAccordion} >
                                     <Icon

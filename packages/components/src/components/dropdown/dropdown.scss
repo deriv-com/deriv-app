@@ -37,8 +37,8 @@
         text-rendering: optimizeLegibility;
         position: absolute;
         pointer-events: none;
-        top: 9px;
-        right: 6px;
+        top: calc(50% - 6px);
+        right: 12px;
         transition: transform 0.2s ease;
         transform: rotate(0deg);
         transform-origin: 50% 45%;

@@ -59,9 +59,12 @@ class PaymentAgentList extends React.Component {
                                         <Dropdown
                                             id='payment_methods'
                                             className='payment-agent__drop-down'
+                                            classNameDisplay='payment-agent__drop-down-display'
+                                            classNameDisplaySpan='payment-agent__drop-down-display-span'
+                                            classNameItems='payment-agent__drop-down-items'
                                             list={this.props.supported_banks}
                                             name='payment_methods'
-                                            value=''
+                                            value={this.props.selected_bank}
                                             onChange={this.props.onChangePaymentMethod}
                                         />
                                     </div>
@@ -100,6 +103,7 @@ PaymentAgentList.propTypes = {
     onMount              : PropTypes.func,
     payment_agent_list   : PropTypes.array,
     resend_timeout       : PropTypes.number,
+    selected_bank        : PropTypes.string,
     sendVerificationEmail: PropTypes.func,
     supported_banks      : MobxPropTypes.arrayOrObservableArray,
 };
@@ -109,7 +113,6 @@ export default connect(
         is_email_sent        : modules.cashier.config.payment_agent.verification.is_email_sent,
         is_resend_clicked    : modules.cashier.config.payment_agent.verification.is_resend_clicked,
         is_loading           : modules.cashier.is_loading,
-        onMount              : modules.cashier.onMountPaymentAgent,
         payment_agent_list   : modules.cashier.config.payment_agent.filtered_list,
         resend_timeout       : modules.cashier.config.withdraw.verification.resend_timeout,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,

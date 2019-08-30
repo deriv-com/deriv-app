@@ -147,6 +147,30 @@
             margin-bottom: 16px;
         }
     }
+    &__drop-down {
+        display: inline-block;
+        width: 20rem;
+        height: 4rem;
+        margin: 0 0 0 8px;
+        line-height: 1.43;
+
+        &-display {
+            justify-content: left;
+
+            &-span {
+                font-size: 1.4rem;
+                text-align: left;
+                padding: 10px 12px;
+                text-transform: none;
+            }
+        }
+        &-items {
+            text-transform: none !important;
+            text-align: left !important;
+            font-size: 1.4rem !important;
+            justify-content: left;
+        }
+    }
     &__loader {
         font-size: 1rem;
     }

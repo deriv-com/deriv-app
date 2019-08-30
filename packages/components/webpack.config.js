@@ -3,7 +3,8 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const is_serve = process.env.BUILD_MODE === 'serve';
+const is_serve   = process.env.BUILD_MODE === 'serve';
+const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
@@ -40,7 +41,7 @@ module.exports = {
     devServer: {
         publicPath: '/dist/',
     },
-    devtool: 'source-map',
+    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     module : {
         rules: [
             {

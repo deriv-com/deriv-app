@@ -7,6 +7,10 @@ import RadioGroup                     from 'App/Components/Form/Radio';
 import { connect }                    from 'Stores/connect';
 
 class PaymentAgentWithdraw extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
     render() {
         return (
             <div className='payment-agent__wrapper'>
@@ -21,9 +25,12 @@ class PaymentAgentWithdraw extends React.Component {
                                     <Dropdown
                                         id='payment_methods'
                                         className='payment-agent__drop-down'
+                                        classNameDisplay='payment-agent__drop-down-display'
+                                        classNameDisplaySpan='payment-agent__drop-down-display-span'
+                                        classNameItems='payment-agent__drop-down-items'
                                         list={this.props.supported_banks}
                                         name='payment_methods'
-                                        value=''
+                                        value={this.props.selected_bank}
                                         onChange={this.props.onChangePaymentMethod}
                                     />
                                 </React.Fragment>
@@ -46,6 +53,8 @@ class PaymentAgentWithdraw extends React.Component {
 PaymentAgentWithdraw.propTypes = {
     is_name_selected     : PropTypes.bool,
     onChangePaymentMethod: PropTypes.func,
+    onMount              : PropTypes.func,
+    selected_bank        : PropTypes.string,
     setIsNameSelected    : PropTypes.func,
     supported_banks      : MobxPropTypes.arrayOrObservableArray,
     verification_code    : PropTypes.string,

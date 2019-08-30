@@ -15,13 +15,17 @@ class PaymentAgent extends React.Component {
             <React.Fragment>
                 {this.props.verification_code ?
                     <PaymentAgentWithdraw
-                        supported_banks={this.props.supported_banks}
                         onChangePaymentMethod={this.props.onChangePaymentMethod}
+                        onMount={this.props.onMount}
+                        selected_bank={this.props.selected_bank}
+                        supported_banks={this.props.supported_banks}
                     />
                     :
                     <PaymentAgentList
-                        supported_banks={this.props.supported_banks}
                         onChangePaymentMethod={this.props.onChangePaymentMethod}
+                        onMount={this.props.onMount}
+                        selected_bank={this.props.selected_bank}
+                        supported_banks={this.props.supported_banks}
                     />
                 }
             </React.Fragment>
@@ -32,6 +36,8 @@ class PaymentAgent extends React.Component {
 PaymentAgent.propTypes = {
     container            : PropTypes.string,
     onChangePaymentMethod: PropTypes.func,
+    onMount              : PropTypes.func,
+    selected_bank        : PropTypes.string,
     setActiveTab         : PropTypes.func,
     supported_banks      : MobxPropTypes.arrayOrObservableArray,
     verification_code    : PropTypes.string,
@@ -42,7 +48,9 @@ export default connect(
         verification_code    : client.verification_code,
         container            : modules.cashier.config.payment_agent.container,
         onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
+        onMount              : modules.cashier.onMountPaymentAgent,
         setActiveTab         : modules.cashier.setActiveTab,
+        selected_bank        : modules.cashier.config.payment_agent.selected_bank,
         supported_banks      : modules.cashier.config.payment_agent.supported_banks,
     })
 )(PaymentAgent);

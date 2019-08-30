@@ -41,7 +41,7 @@ class ConfigVerification {
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
-    bank_default_option = [{ text: localize('Any'), value: '' }];
+    bank_default_option = [{ text: localize('any'), value: '' }];
 
     @observable config = {
         deposit      : new Config({ container: 'deposit' }),
@@ -50,6 +50,7 @@ export default class CashierStore extends BaseStore {
             filtered_list   : [],
             list            : [],
             is_name_selected: true,
+            selected_bank   : this.bank_default_option[0].value, // TODO: remove this and have drop-down keep track of its own selected value
             supported_banks : this.bank_default_option,
             verification    : new ConfigVerification(),
         },
@@ -104,14 +105,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-            const currency  = this.root_store.client.currency;
-            const payment_agent_list = await WS.paymentAgentList(residence, currency);
-            this.setPaymentAgentList(payment_agent_list);
-        }
+        this.getPaymentAgentList();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
@@ -385,12 +379,28 @@ export default class CashierStore extends BaseStore {
     async onMountPaymentAgent() {
         if (!this.config.payment_agent.list.length) {
             this.setLoading(true);
-            await BinarySocket.wait('paymentagent_list');
+            if (this.root_store.client.verification_code) {
+                await this.getPaymentAgentList();
+            } else {
+                await BinarySocket.wait('paymentagent_list');
+            }
         }
 
         this.setIsNameSelected(true);
         this.filterPaymentAgentList();
         this.setLoading(false);
+    }
+
+    @action.bound
+    async getPaymentAgentList() {
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        if (!this.config.payment_agent.list.length) {
+            const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
+            const currency  = this.root_store.client.currency;
+            const payment_agent_list = await WS.paymentAgentList(residence, currency);
+            this.setPaymentAgentList(payment_agent_list);
+        }
     }
 
     @action.bound
@@ -412,6 +422,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setPaymentAgentList(payment_agent_list) {
         this.config.payment_agent.list            = [];
+        this.config.payment_agent.selected_bank   = this.bank_default_option[0].value;
         this.config.payment_agent.supported_banks = this.bank_default_option;
 
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
@@ -425,6 +436,13 @@ export default class CashierStore extends BaseStore {
             payment_agent.supported_banks.split(',').forEach((bank) => {
                 this.addSupportedBank(bank);
             });
+        });
+
+        // sort supported banks alphabetically by value, the option 'any' with value '' should be on top
+        this.config.payment_agent.supported_banks = this.config.payment_agent.supported_banks.sort(function(a, b){
+            if (a.value < b.value) { return -1; }
+            if (a.value > b.value) { return 1; }
+            return 0;
         });
     }
 
@@ -444,6 +462,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangePaymentMethod({ target }) {
+        this.config.payment_agent.selected_bank = target.value;
         this.filterPaymentAgentList(target.value);
     }
 

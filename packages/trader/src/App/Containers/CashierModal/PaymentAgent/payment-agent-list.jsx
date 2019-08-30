@@ -4,9 +4,9 @@ import React                          from 'react';
 import { Scrollbars }                 from 'tt-react-custom-scrollbars';
 import {
     Accordion,
-    Button }                          from 'deriv-components';
+    Button,
+    Dropdown }                        from 'deriv-components';
 import Localize                       from 'App/Components/Elements/localize.jsx';
-import Dropdown                       from 'App/Components/Form/DropDown';
 import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
 import { website_name }               from 'App/Constants/app-config';

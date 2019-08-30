@@ -1,8 +1,8 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
+import { Dropdown }                   from 'deriv-components';
 import Localize                       from 'App/Components/Elements/localize.jsx';
-import Dropdown                       from 'App/Components/Form/DropDown';
 import RadioGroup                     from 'App/Components/Form/Radio';
 import { connect }                    from 'Stores/connect';
 

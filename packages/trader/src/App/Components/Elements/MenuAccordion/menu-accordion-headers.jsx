@@ -34,9 +34,10 @@ class MenuAccordionHeaders extends React.PureComponent {
 
                     return (
                         <div key={idx}>
-                            <div className='dt_accordion'>
-                                <VerticalTabHeader item={item} onChange={this.handleAccordion}/>
-                                <Icon icon='IconChevronRight' className='dt_accordion__chevron' />
+                            <div>
+                                <VerticalTabHeader item={item} onChange={this.handleAccordion} >
+                                    <Icon icon='IconChevronRight' className='dt_accordion-chevron' />
+                                </VerticalTabHeader>
                             </div>
                             {show_sub_tab_list && (
                                 <VerticalTabHeaders

@@ -7,11 +7,6 @@ import { Modal }    from 'App/Components/Elements/modal.jsx';
 import UILoader     from '../../Elements/ui-loader.jsx';
 import Icon         from 'Assets/icon.jsx';
 
-const tabs = {
-    deposit : 0,
-    withdraw: 1,
-};
-
 // Profile
 const PersonalDetails     = () => import('App/Containers/AccountManagementModal/Profile/personal-details.jsx');
 const FinancialAssessment = () => import('App/Containers/AccountManagementModal/Profile/financial-assessment.jsx');
@@ -194,12 +189,7 @@ const modal_content = [
 
 class ToggleAccountManagement extends React.PureComponent {
     render() {
-        const {
-            active_tab,
-            disableApp,
-            enableApp,
-            is_open,
-        } = this.props;
+        const { disableApp, enableApp, is_open } = this.props;
 
         return (
             <React.Suspense fallback={<UILoader />}>
@@ -212,7 +202,6 @@ class ToggleAccountManagement extends React.PureComponent {
                     menu_type='accordion'
                     modal_content={modal_content}
                     is_open={is_open}
-                    selected_index={tabs[active_tab]}
                     title={localize('Settings')}
                     toggleModal={this.props.toggleModal}
                 />

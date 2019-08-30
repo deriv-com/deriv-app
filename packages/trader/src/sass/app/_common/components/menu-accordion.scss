@@ -1,10 +1,4 @@
-.dt_accordion {
-    position: relative;
-
-    &__chevron {
-        position: absolute;
-        top: 12px;
-        right: 10px;
-        transform: rotate(90deg);
-    }
+.dt_accordion-chevron {
+    transform: rotate(90deg);
+    margin-left: auto;
 }

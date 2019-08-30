@@ -1,3 +1,4 @@
+import classNames       from 'classnames';
 import React            from 'react';
 import Icon             from 'Assets/icon.jsx';
 import {
@@ -36,7 +37,9 @@ class MenuAccordionHeaders extends React.PureComponent {
                         <div key={idx}>
                             <div>
                                 <VerticalTabHeader item={item} onChange={this.handleAccordion} >
-                                    <Icon icon='IconChevronRight' className='dt_accordion-chevron' />
+                                    <Icon icon='IconChevronRight' className={classNames('dt_accordion-chevron', {
+                                        'dt_accordion-chevron--show': show_sub_tab_list, // this.state.is_active_tab_open,
+                                    })} />
                                 </VerticalTabHeader>
                             </div>
                             {show_sub_tab_list && (

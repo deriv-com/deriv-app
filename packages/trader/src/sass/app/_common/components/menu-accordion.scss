@@ -1,4 +1,10 @@
 .dt_accordion-chevron {
     transform: rotate(90deg);
     margin-left: auto;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform-origin: 50% 45%;
+
+    &--show {
+        transform: rotate(-90deg);
+    }
 }

@@ -5,28 +5,37 @@ import { localize } from 'App/i18n';
 import Lazy         from 'App/Containers/Lazy';
 import { Modal }    from 'App/Components/Elements/modal.jsx';
 import UILoader     from '../../Elements/ui-loader.jsx';
-import Icon from 'Assets/icon.jsx';
-// const IconUser = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
+import Icon         from 'Assets/icon.jsx';
 
-const tabs = {
-    deposit : 0,
-    withdraw: 1,
-};
+// Profile
+const PersonalDetails     = () => import('App/Containers/AccountManagementModal/Profile/personal-details.jsx');
+const FinancialAssessment = () => import('App/Containers/AccountManagementModal/Profile/financial-assessment.jsx');
 
-const Deposit    = () => import('App/Containers/CashierModal/deposit.jsx');
-// const Withdrawal = () => import('App/Containers/CashierModal/withdrawal.jsx');
+// Verification
+const ProofOfAddress  = () => import('App/Containers/AccountManagementModal/Verification/proof-of-address.jsx');
+const ProofOfIdentity = () => import('App/Containers/AccountManagementModal/Verification/proof-of-identity.jsx');
+
+// Security and Safety
+const AccountLimits           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/account-limits.jsx');
+const ApiToken                = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/api-token.jsx');
+const ConnectedApps           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/connected-apps.jsx');
+const DerivPassword           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/deriv-password.jsx');
+const LoginHistory            = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/login-history.jsx');
+const SelfExclusion           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/self-exclusion.jsx');
+const TwoFactorAuthentication = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/two-factor-authentication.jsx');
+const Vpn                     = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/vpn.jsx');
 
 const modal_content = [
     {
         icon        : 'IconUser',
-        tab_heading : localize('Profile'),
+        label       : localize('Profile'),
         sub_tab_list: [
             {
                 label: localize('Personal details'),
                 // eslint-disable-next-line react/display-name
                 value: () => (
                     <Lazy
-                        ctor={Deposit}
+                        ctor={PersonalDetails}
                         should_load={true}
                         has_progress={true}
                     />
@@ -37,7 +46,7 @@ const modal_content = [
                 // eslint-disable-next-line react/display-name
                 value: () => (
                     <Lazy
-                        ctor={Deposit}
+                        ctor={FinancialAssessment}
                         should_load={true}
                         has_progress={true}
                     />
@@ -47,15 +56,15 @@ const modal_content = [
         ],
     },
     {
-        icon        : 'IconUser',
-        tab_heading : localize('Verification'),
+        icon        : 'IconVerification',
+        label       : localize('Verification'),
         sub_tab_list: [
             {
                 label: localize('Proof of identity'),
                 // eslint-disable-next-line react/display-name
                 value: () => (
                     <Lazy
-                        ctor={Deposit}
+                        ctor={ProofOfIdentity}
                         should_load={true}
                         has_progress={true}
                     />
@@ -66,7 +75,108 @@ const modal_content = [
                 // eslint-disable-next-line react/display-name
                 value: () => (
                     <Lazy
-                        ctor={Deposit}
+                        ctor={ProofOfAddress}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            }
+        ],
+    },
+    {
+        icon        : 'IconSecurity',
+        label       : localize('Security and safety'),
+        sub_tab_list: [
+            {
+                label: localize('Deriv password'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={DerivPassword}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+            },
+            {     
+                label: localize('Self-exclusion'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={SelfExclusion}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('Account limits'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={AccountLimits}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('Login history'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={LoginHistory}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('API token'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={ApiToken}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('Connected apps'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={ConnectedApps}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('Two-factor authentication'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={TwoFactorAuthentication}
+                        should_load={true}
+                        has_progress={true}
+                    />
+                )
+
+            },
+            {     
+                label: localize('VPN'),
+                // eslint-disable-next-line react/display-name
+                value: () => (
+                    <Lazy
+                        ctor={Vpn}
                         should_load={true}
                         has_progress={true}
                     />
@@ -78,21 +188,12 @@ const modal_content = [
 ];
 
 class ToggleAccountManagement extends React.PureComponent {
-    // onClick = () => { this.props.toggleAccountManagementModal(); };
-
     render() {
-        const {
-            active_tab,
-            // className,
-            disableApp,
-            enableApp,
-            is_open,
-            // toggleCashier,
-        } = this.props;
+        const { disableApp, enableApp, is_open } = this.props;
 
         return (
             <React.Suspense fallback={<UILoader />}>
-                <div onClick={this.props.toggleModal}>
+                <div onClick={this.props.toggleModal} className='account-management-toggle'>
                     <Icon icon='IconUser' />
                 </div>
                 <Modal
@@ -101,7 +202,6 @@ class ToggleAccountManagement extends React.PureComponent {
                     menu_type='accordion'
                     modal_content={modal_content}
                     is_open={is_open}
-                    selected_index={tabs[active_tab]}
                     title={localize('Settings')}
                     toggleModal={this.props.toggleModal}
                 />
@@ -112,7 +212,6 @@ class ToggleAccountManagement extends React.PureComponent {
 
 ToggleAccountManagement.propTypes = {
     active_tab : PropTypes.string,
-    className  : PropTypes.string,
     disableApp : PropTypes.func,
     enableApp  : PropTypes.func,
     is_open    : PropTypes.bool,

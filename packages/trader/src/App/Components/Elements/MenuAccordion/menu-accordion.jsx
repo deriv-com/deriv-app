@@ -1,45 +1,39 @@
-import classNames                      from 'classnames';
-import PropTypes                       from 'prop-types';
-import React                           from 'react';
-import { MenuAccordionHeaders }        from './menu-accordion-headers.jsx';
-import { VerticalTabContentContainer } from '../VerticalTabs/vertical-tab-content-container.jsx';
+import PropTypes                                          from 'prop-types';
+import React                                              from 'react';
+import { MenuAccordionHeaders }                           from './menu-accordion-headers.jsx';
+import { VerticalTabContentContainer, VerticalTabLayout } from '../VerticalTabs';
 
+const getAllSubTabList = list => list.map(item => item.sub_tab_list).flat();
 class MenuAccordion extends React.PureComponent {
     constructor(props) {
         super(props);
-        const flat_list = props.list.map(item => item.sub_tab_list).flat();
-        this.state = {
-            selected: flat_list[props.selected_index || 0],
-        };
+        const sub_tabs = getAllSubTabList(this.props.list);
+        this.state     = { selected_content: sub_tabs[props.selected_index || 0] };
     }
 
-    changeSelected = (e) => {
-        this.setState({
-            selected: e,
-        });
-    };
+    changeSelectedContent = (selected_content) => this.setState({ selected_content });
 
     render() {
-        const flat_list = this.props.list.map(item => item.sub_tab_list).flat();
+        const { list, action_bar, action_bar_classname, id, is_full_width } = this.props;
+        const { selected_content } = this.state;
+
+        const sub_tabs = getAllSubTabList(list);
+
         return (
-            <div
-                className={classNames('vertical-tab', {
-                    'vertical-tab--full-screen': this.props.is_full_width,
-                })}
-            >
+            <VerticalTabLayout is_full_width={is_full_width}>
                 <MenuAccordionHeaders 
-                    items={this.props.list}
-                    onChange={this.changeSelected}
-                    selected={this.state.selected}
+                    items={list}
+                    onChange={this.changeSelectedContent}
+                    selected={selected_content}
                 />
                 <VerticalTabContentContainer
-                    action_bar={this.props.action_bar}
-                    action_bar_classname={this.props.action_bar_classname}
-                    id={this.props.id}
-                    items={flat_list}
-                    selected={this.state.selected}
+                    action_bar={action_bar}
+                    action_bar_classname={action_bar_classname}
+                    id={id}
+                    items={sub_tabs}
+                    selected={selected_content}
                 />
-            </div>
+            </VerticalTabLayout>
         );
     }
 }
@@ -54,11 +48,8 @@ MenuAccordion.propTypes = {
         })
     ),
     action_bar_classname: PropTypes.string,
-    current_path        : PropTypes.string,
-    header_title        : PropTypes.string,
     id                  : PropTypes.string,
     is_full_width       : PropTypes.bool,
-    is_routed           : PropTypes.bool,
     list                : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,

@@ -1,53 +1,47 @@
-import React                  from 'react';
-import Icon                   from 'Assets/icon.jsx';
-import { VerticalTabHeaders } from '../VerticalTabs/vertical-tab-headers.jsx';
+import React            from 'react';
+import {
+    VerticalTabHeaders,
+    VerticalTabWrapper,
+    VerticalTabHeader } from '../VerticalTabs';
 
 class MenuAccordionHeaders extends React.PureComponent {
     state = {
-        active_tab        : 0,
         is_active_tab_open: true,
-        selected          : this.props.selected,
+        selected_main_header: this.props.items[0].label
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return {
-            selected: props.selected,
+    handleAccordion = (selected) => {
+        const is_same_header   = this.state.selected_main_header === selected.label
+        let is_active_tab_open = true;
+
+        if (is_same_header) {
+            is_active_tab_open = !this.state.is_active_tab_open;
+        } else {
+            this.props.onChange(selected.sub_tab_list[0])
         }
-    }
-
-    toggleAccordion = (active_tab) => {        
-        this.setState(state => ({
-            active_tab,
-            is_active_tab_open: state.active_tab === active_tab ? !state.is_active_tab_open : true,
-            selected          : this.props.onChange(this.props.items[active_tab].sub_tab_list[0]),
-        }));
+        this.setState({ selected_main_header: selected.label, is_active_tab_open })
     }
 
     render() {
+        const { selected_main_header, is_active_tab_open } = this.state;
+        const { onChange, selected }                       = this.props;
+
         return (
-            <div className='vertical-tab__tab'>
-                {this.props.items.map((item, idx) => {
-                    return (
+            <VerticalTabWrapper>
+                {this.props.items.map((item, idx) => (
                         <div key={idx}>
-                            <div
-                                id={`dt_${item.tab_heading}_link`}
-                                onClick={() => this.toggleAccordion(idx)}
-                                className='vertical-tab__header'
-                            >
-                                <Icon icon={item.icon} />
-                                <span className='vertical-tab__header__link'>{item.tab_heading}</span>
-                            </div>
-                            {(this.state.active_tab === idx && this.state.is_active_tab_open) && (
+                            <VerticalTabHeader item={item} onChange={this.handleAccordion}/>
+                            {(selected_main_header === item.label && is_active_tab_open) && (
                                 <VerticalTabHeaders
                                     items={item.sub_tab_list}
-                                    onChange={this.props.onChange}
-                                    selected={this.props.selected}
+                                    onChange={onChange}
+                                    selected={selected}
                                 />
                             )}
                         </div>
                     )
-                })}
-            </div>
+                )}
+            </VerticalTabWrapper>
         );
     }
 }

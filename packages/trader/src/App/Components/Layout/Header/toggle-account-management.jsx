@@ -19,7 +19,7 @@ const Deposit    = () => import('App/Containers/CashierModal/deposit.jsx');
 const modal_content = [
     {
         icon        : 'IconUser',
-        tab_heading : localize('Profile'),
+        label       : localize('Profile'),
         sub_tab_list: [
             {
                 label: localize('Personal details'),
@@ -48,7 +48,7 @@ const modal_content = [
     },
     {
         icon        : 'IconUser',
-        tab_heading : localize('Verification'),
+        label       : localize('Verification'),
         sub_tab_list: [
             {
                 label: localize('Proof of identity'),

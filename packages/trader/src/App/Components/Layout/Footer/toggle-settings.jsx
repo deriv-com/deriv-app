@@ -88,6 +88,7 @@ const ToggleSettings = ({
             <React.Suspense fallback={<UILoader />}>
                 <Modal
                     id='dt_settings_modal'
+                    className='modal-settings'
                     enableApp={enableApp}
                     is_open={is_settings_visible}
                     disableApp={disableApp}

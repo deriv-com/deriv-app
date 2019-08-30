@@ -123,12 +123,11 @@
     }
 }
 
-#dt_settings_modal {
-    .modal {
-        &-header {
-            &__title {
-                min-width: 28%;
-            }
+/** @define modal-header; */
+.modal-header {
+    &__title {
+        &--modal-settings {
+            min-width: 28%;
         }
     }
 }

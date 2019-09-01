@@ -111,11 +111,12 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
-        is_payment_agent_visible: !!modules.cashier.config.payment_agent.list.length,
-        is_route_modal_on       : ui.is_route_modal_on,
-        is_mobile               : ui.is_mobile,
-        disableApp              : ui.disableApp,
-        toggleAccountsDialog    : ui.toggleAccountsDialog,
-        toggleCashierModal      : ui.toggleCashierModal,
+        is_payment_agent_visible:
+            !!(modules.cashier.config.payment_agent.list.length || modules.cashier.config.payment_agent.agents.length),
+        is_route_modal_on   : ui.is_route_modal_on,
+        is_mobile           : ui.is_mobile,
+        disableApp          : ui.disableApp,
+        toggleAccountsDialog: ui.toggleAccountsDialog,
+        toggleCashierModal  : ui.toggleCashierModal,
     })
 )(Header);

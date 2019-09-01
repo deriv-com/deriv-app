@@ -46,10 +46,13 @@ export default class CashierStore extends BaseStore {
     @observable config = {
         deposit      : new Config({ container: 'deposit' }),
         payment_agent: {
+            agents          : [],
             container       : 'payment_agent',
             filtered_list   : [],
             list            : [],
             is_name_selected: true,
+            is_withdraw     : false,
+            selected_agent  : '', // TODO: remove this and have drop-down keep track of its own selected value
             selected_bank   : this.bank_default_option[0].value, // TODO: remove this and have drop-down keep track of its own selected value
             supported_banks : this.bank_default_option,
             verification    : new ConfigVerification(),
@@ -105,7 +108,12 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        this.getPaymentAgentList();
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        if (!this.config.payment_agent.list.length) {
+            const payment_agent_list = await this.getPaymentAgentList();
+            this.setPaymentAgentList(payment_agent_list);
+        }
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
@@ -376,14 +384,10 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMountPaymentAgent() {
+    async onMountPaymentAgentList() {
         if (!this.config.payment_agent.list.length) {
             this.setLoading(true);
-            if (this.root_store.client.verification_code) {
-                await this.getPaymentAgentList();
-            } else {
-                await BinarySocket.wait('paymentagent_list');
-            }
+            await BinarySocket.wait('paymentagent_list');
         }
 
         this.setIsNameSelected(true);
@@ -393,14 +397,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async getPaymentAgentList() {
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-            const currency  = this.root_store.client.currency;
-            const payment_agent_list = await WS.paymentAgentList(residence, currency);
-            this.setPaymentAgentList(payment_agent_list);
-        }
+        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
+        const currency  = this.root_store.client.currency;
+        return WS.paymentAgentList(residence, currency);
     }
 
     @action.bound
@@ -421,10 +420,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setPaymentAgentList(payment_agent_list) {
-        this.config.payment_agent.list            = [];
-        this.config.payment_agent.selected_bank   = this.bank_default_option[0].value;
-        this.config.payment_agent.supported_banks = this.bank_default_option;
-
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -439,11 +434,13 @@ export default class CashierStore extends BaseStore {
         });
 
         // sort supported banks alphabetically by value, the option 'any' with value '' should be on top
-        this.config.payment_agent.supported_banks = this.config.payment_agent.supported_banks.sort(function(a, b){
-            if (a.value < b.value) { return -1; }
-            if (a.value > b.value) { return 1; }
-            return 0;
-        });
+        this.config.payment_agent.supported_banks.replace(
+            this.config.payment_agent.supported_banks.slice().sort(function(a, b){
+                if (a.value < b.value) { return -1; }
+                if (a.value > b.value) { return 1; }
+                return 0;
+            })
+        );
     }
 
     @action.bound
@@ -464,6 +461,38 @@ export default class CashierStore extends BaseStore {
     onChangePaymentMethod({ target }) {
         this.config.payment_agent.selected_bank = target.value;
         this.filterPaymentAgentList(target.value);
+    }
+
+    @action.bound
+    async onMountPaymentAgentWithdraw() {
+        this.setIsWithdraw(true);
+
+        this.setLoading(true);
+        const payment_agent_list = await this.getPaymentAgentList();
+        payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
+            this.addPaymentAgent(payment_agent);
+        });
+
+        this.onChangePaymentAgent({ target: { value: this.config.payment_agent.agents[0].value } });
+        this.setLoading(false);
+    }
+
+    @action.bound
+    setIsWithdraw(is_withdraw = !this.config.payment_agent.is_withdraw) {
+        this.config.payment_agent.is_withdraw = is_withdraw;
+    }
+
+    @action.bound
+    addPaymentAgent(payment_agent) {
+        this.config.payment_agent.agents.push({
+            text : payment_agent.name,
+            value: payment_agent.paymentagent_loginid,
+        });
+    }
+
+    @action.bound
+    onChangePaymentAgent({ target }) {
+        this.config.payment_agent.selected_agent = target.value;
     }
 
     onAccountSwitch() {

@@ -54,6 +54,7 @@ class ModalElement extends React.PureComponent {
                     id='modal'
                     list={this.props.modal_content}
                     selected_index={this.props.selected_index}
+                    visible_items={this.props.visible_items}
                 />
             </div>,
             this.el
@@ -74,6 +75,7 @@ ModalElement.propTypes = {
     selected_index: PropTypes.number,
     title         : PropTypes.string,
     toggleModal   : PropTypes.func,
+    visible_items : PropTypes.array,
 };
 
 const Modal = ({
@@ -85,6 +87,7 @@ const Modal = ({
     selected_index,
     title,
     toggleModal,
+    visible_items,
 }) => (
     <CSSTransition
         appear
@@ -107,6 +110,7 @@ const Modal = ({
             selected_index={selected_index}
             title={title}
             toggleModal={toggleModal}
+            visible_items={visible_items}
         />
     </CSSTransition>
 );
@@ -120,6 +124,7 @@ Modal.propTypes = {
     selected_index: PropTypes.number,
     title         : PropTypes.string,
     toggleModal   : PropTypes.func,
+    visible_items : PropTypes.array,
 };
 
 export {

@@ -84,7 +84,7 @@ class PaymentAgentList extends React.Component {
                                 </React.Fragment>
                             }
                             <div className='payment-agent__disclaimer'>
-                                <span className='payment-agent__disclaimer--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
+                                <span className='payment-agent__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
                                 <Localize i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.' values={{ website_name }} />
                             </div>
                         </Scrollbars>
@@ -113,8 +113,12 @@ export default connect(
         is_email_sent        : modules.cashier.config.payment_agent.verification.is_email_sent,
         is_resend_clicked    : modules.cashier.config.payment_agent.verification.is_resend_clicked,
         is_loading           : modules.cashier.is_loading,
+        onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
+        onMount              : modules.cashier.onMountPaymentAgentList,
         payment_agent_list   : modules.cashier.config.payment_agent.filtered_list,
         resend_timeout       : modules.cashier.config.withdraw.verification.resend_timeout,
+        selected_bank        : modules.cashier.config.payment_agent.selected_bank,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
+        supported_banks      : modules.cashier.config.payment_agent.supported_banks,
     })
 )(PaymentAgentList);

@@ -169,6 +169,7 @@
             text-align: left !important;
             font-size: 1.4rem !important;
             justify-content: left;
+            padding-left: 12px;
         }
     }
     &__loader {
@@ -193,12 +194,65 @@
         padding: 8px 16px;
         font-size: 1.2rem;
         line-height: 1.42;
-
-        &--bold {
-            font-weight: bold;
-        }
+    }
+    &__text--bold {
+        font-weight: bold;
     }
     &__radio {
         display: block;
+    }
+    &__receipt {
+        text-align: center;
+    }
+    &__transferred {
+        &-amount {
+            color: $COLOR_GREEN_1;
+            font-size: 3.2rem;
+            line-height: 0.75;
+            margin-bottom: 16px;
+        }
+        &-details {
+            margin-left: 8px;
+            vertical-align: super;
+
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        &-icon {
+            @extend %inline-icon;
+            transform: scale(-1, 1);
+            vertical-align: middle;
+            margin: 0 16px;
+        }
+        &-contact {
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+    }
+    &__separator {
+        @include themify($themes) {
+            border-bottom: 1px solid themed('background_container_color');
+        }
+        margin-top: 32px;
+        margin-bottom: 16px;
+        // cover the whole container instead of within the container's padding
+        width: calc(100% + 2.4rem + 2.4rem);
+        margin-left: -2.4rem;
+    }
+    &__explanation {
+        margin-top: -8px;
+        margin-bottom: 24px;
+    }
+    &__buttons {
+        float: right;
+    }
+    &__statement-button, &__done-button {
+        margin: 0;
+    }
+    &__done-button {
+        margin-left: 8.5px;
     }
 }

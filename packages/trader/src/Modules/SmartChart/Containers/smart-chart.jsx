@@ -25,13 +25,15 @@ class Chart extends React.Component {
         />
     );
 
-    topWidgets = () => (
-        <TopWidgets
-            InfoBox={this.props.InfoBox}
-            is_title_enabled={this.props.is_title_enabled}
-            onSymbolChange={symbolChange(this.props.onSymbolChange)}
-        />
-    );
+    topWidgets = () => React.useMemo(()=> {
+        return (
+            <TopWidgets
+                InfoBox={this.props.InfoBox}
+                is_title_enabled={this.props.is_title_enabled}
+                onSymbolChange={symbolChange(this.props.onSymbolChange)}
+            />
+        );
+    }, [this.props.InfoBox, this.props.is_title_enabled]);
 
     bottomWidgets = () => (
         <BottomWidgets Digits={this.props.Digits} />

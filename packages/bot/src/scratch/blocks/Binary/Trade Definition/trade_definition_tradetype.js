@@ -43,7 +43,7 @@ Blockly.Blocks.trade_definition_tradetype = {
                 const symbol            = market_block.getFieldValue('SYMBOL_LIST');
                 const trade_type_cat    = this.getFieldValue('TRADETYPECAT_LIST');
 
-                if (event.name === 'SYMBOL_LIST') {
+                if (symbol && event.name === 'SYMBOL_LIST') {
                     contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                         const trade_type_cat_block = this.getField('TRADETYPECAT_LIST');
                         trade_type_cat_block.updateOptions(categories);

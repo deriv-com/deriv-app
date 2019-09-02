@@ -71,6 +71,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
+        if (!this.selected_symbol) {
+            return;
+        }
+
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
             (event.type === Blockly.Events.END_DRAG && event.blockId === this.id)

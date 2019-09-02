@@ -140,16 +140,22 @@ export default class ContractsFor {
         return TRADE_TYPE_CATEGORY_NAMES[trade_type_category];
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    getBarrierCategoryByTradeType(trade_type) {
+        const { BARRIER_CATEGORIES } = config;
+        return Object.keys(BARRIER_CATEGORIES).find(barrier_category =>
+            BARRIER_CATEGORIES[barrier_category].includes(trade_type)
+        );
+    }
+
     async getContractsByTradeType(symbol, trade_type) {
-        const contracts = await this.getContractsFor(symbol);
-        const {  BARRIER_CATEGORIES } = config;
+        const contracts         = await this.getContractsFor(symbol);
         const contract_category = this.getContractCategoryByTradeType(trade_type);
+        const barrier_category  = this.getBarrierCategoryByTradeType(trade_type);
 
         return contracts.filter(contract => {
             const has_matching_category = contract.contract_category === contract_category;
-            const has_matching_barrier = Object.keys(BARRIER_CATEGORIES).some(barrier_category =>
-                BARRIER_CATEGORIES[barrier_category].includes(contract_category)
-            );
+            const has_matching_barrier  = contract.barrier_category === barrier_category;
 
             return has_matching_category && has_matching_barrier;
         });

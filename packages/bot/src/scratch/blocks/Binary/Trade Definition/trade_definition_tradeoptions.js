@@ -247,10 +247,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { BARRIER_TYPES }        = config;
 
         if (other_barrier_field) {
-            const has_other_barrier = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
+            const has_other_barrier  = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
             const other_barrier_type = other_barrier_field.getValue();
-
-            Blockly.Events.disable();
 
             if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
                 const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
@@ -258,8 +256,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
                 other_barrier_field.setValue('absolute');
             }
-
-            Blockly.Events.enable();
         }
     },
     domToMutation(xmlElement) {

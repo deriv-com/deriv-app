@@ -1,7 +1,7 @@
 /**
- * @define modal
+ * @define dc-modal
  */
-.modal {
+.dc-modal {
     &__container {
         width: 736px;
         position: relative;
@@ -28,7 +28,7 @@
         }
     }
     /**
-     * @define modal-header
+     * @define dc-modal-header
      */
     &-header {
         display: flex;

@@ -23,7 +23,7 @@ class ModalElement extends React.PureComponent {
 
     componentDidMount = () => {
         document.addEventListener('mousedown', this.handleClickOutside);
-        this.el.classList.add('modal');
+        this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
     };
 
@@ -40,17 +40,17 @@ class ModalElement extends React.PureComponent {
 
     render() {
         return ReactDOM.createPortal(
-            <div ref={this.setWrapperRef} id={this.props.id} className={classNames('modal__container', this.props.className && `modal__container_${this.props.className}`)}>
-                <div className={classNames('modal-header', this.props.className && `modal-header__${this.props.className}`)}>
+            <div ref={this.setWrapperRef} id={this.props.id} className={classNames('dc-modal__container', this.props.className && `dc-modal__container_${this.props.className}`)}>
+                <div className={classNames('dc-modal-header', this.props.className && `dc-modal-header__${this.props.className}`)}>
                     {  this.props.title &&
-                    <h3 className={classNames('modal-header__title', this.props.className && `modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
+                    <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
                     }
                     { this.props.header &&
-                    <div className={classNames('modal-header__section', this.props.className && `modal-header__section--${this.props.className}`)}>
+                    <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
                         {this.props.header}
                     </div>
                     }
-                    <div id='dt_modal_close_icon' onClick={this.props.toggleModal} className={classNames('modal-header__close', this.props.className && `modal-header__close--${this.props.className}`)} >
+                    <div id='dt_modal_close_icon' onClick={this.props.toggleModal} className={classNames('dc-modal-header__close', this.props.className && `dc-modal-header__close--${this.props.className}`)} >
                         <IconClose icon='ModalIconClose' />
                     </div>
                 </div>
@@ -89,10 +89,10 @@ const Modal = ({
         in={is_open}
         timeout={250}
         classNames={{
-            appear   : 'modal__container--enter',
-            enter    : 'modal__container--enter',
-            enterDone: 'modal__container--enter-done',
-            exit     : 'modal__container--exit',
+            appear   : 'dc-modal__container--enter',
+            enter    : 'dc-modal__container--enter',
+            enterDone: 'dc-modal__container--enter-done',
+            exit     : 'dc-modal__container--exit',
         }}
         unmountOnExit
     >

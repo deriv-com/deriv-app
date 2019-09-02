@@ -1,8 +1,7 @@
-import { Popover }              from 'deriv-components';
+import { Popover, Checkbox }    from 'deriv-components';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
 import { localize }             from 'App/i18n';
-import InputField               from 'App/Components/Form/InputField';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
@@ -17,6 +16,7 @@ const AllowEquals = ({
     onChange,
     value,
 }) => {
+    const name = 'is_equal';
     const has_callputequal_duration = hasDurationForCallPutEqual(contract_types_list,
         duration_unit, contract_start_type);
     const has_callputequal          = hasCallPutEqual(contract_types_list);
@@ -24,25 +24,21 @@ const AllowEquals = ({
     const has_allow_equals = isRiseFallEqual(contract_type) &&
             ((has_callputequal_duration || expiry_type === 'endtime') && has_callputequal);
 
-    const changeValue = (e) => {
-        const { name, checked } = e.target;
-        onChange({ target: { name, value: Number(checked) } });
+    const changeValue = (checkbox_state) => {
+        onChange({ target: { name, value: Number(checkbox_state) } });
     };
 
     return (
         has_allow_equals &&
             <div className='allow-equals'>
-                <InputField
+                <Checkbox
                     className='allow-equals__input-field'
-                    classNameInput='allow-equals__input trade-container__input'
-                    checked={value}
                     id='dt_allow_equals_input'
-                    name='is_equal'
-                    onChange={changeValue}
-                    type='checkbox'
+                    onClick={changeValue}
                     value={value}
+                    label={localize('Allow equals')}
+                    classNameLabel='allow-equals__label'
                 />
-                <label className='allow-equals__label' htmlFor='allow_equals'>{localize('Allow equals')}</label>
                 <Popover
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'

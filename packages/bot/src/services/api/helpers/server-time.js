@@ -2,10 +2,9 @@ import PendingPromise from '../../../utils/pending-promise';
 
 export default class ServerTime {
     constructor(ws) {
-        this.clock_started         = false;
-        this.init_promise          = new PendingPromise();
-        this.ws                    = ws;
-        this.init();
+        this.clock_started = false;
+        this.init_promise  = new PendingPromise();
+        this.ws            = ws;
     }
 
     async init() {
@@ -23,7 +22,6 @@ export default class ServerTime {
         this.client_time_at_request = this.getUTCEpoch(new Date());
         const time_response = await this.ws.sendRequest({ time: 1 });
         this.processTimeResponse(time_response);
-        this.init_promise.resolve();
     }
 
     processTimeResponse(response) {
@@ -46,6 +44,7 @@ export default class ServerTime {
 
         clearInterval(this.updateTimeInterval);
         this.updateTimeInterval = setInterval(updateTime, 1000);
+        this.init_promise.resolve();
     }
 
     getEpoch() {

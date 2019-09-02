@@ -140,7 +140,7 @@ const BinarySocketGeneral = (() => {
         WS.forgetAll('balance').then(() => {
             WS.subscribeBalance(ResponseHandlers.balance);
         });
-        WS.send({ get_settings: 1 });
+        WS.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
         WS.mt5LoginList();

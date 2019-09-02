@@ -368,7 +368,7 @@ export default class SmartChartStore extends BaseStore {
         }
         if (request_object.active_symbols) {
             if (this.should_refresh_active_symbols) {
-                return WS.send(request_object);
+                return WS.activeSymbols(request_object);
             }
             return BinarySocket.wait('active_symbols');
         }

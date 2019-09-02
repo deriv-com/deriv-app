@@ -79,7 +79,7 @@ export default class ContractReplayStore extends BaseStore {
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
-            WS.activeSymbols({ skip_cache_update: true });
+            WS.storage.activeSymbols('brief');
         }
     }
 

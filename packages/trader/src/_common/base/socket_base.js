@@ -167,9 +167,6 @@ const BinarySocketBase = (() => {
     const verifyEmail = (email, type) =>
         deriv_api.send({ verify_email: email, type });
 
-    const activeSymbols = () =>
-        deriv_api.storage.activeSymbols('brief');
-
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -196,7 +193,6 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
-        activeSymbols,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,
@@ -221,7 +217,7 @@ function delegateToObject(base_obj, extending_obj_getter) {
             const value = extending_obj[field];
             if (value) {
                 if (typeof value === 'function') {
-                    return (...args) => value.call(extending_obj, ...args);
+                    return value.bind(extending_obj);
                 }
                 return value;
             }

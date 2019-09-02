@@ -84,7 +84,7 @@ export default class PortfolioStore extends BaseStore {
             if (i === -1) return;
 
             this.positions[i].is_loading = true;
-            WS.send({ proposal_open_contract: 1, contract_id }).then(this.populateResultDetails);
+            WS.proposalOpenContract({ contract_id }).then(this.populateResultDetails);
         }
     }
 

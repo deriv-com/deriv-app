@@ -286,7 +286,7 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.send({ authorize: client.token });
+                await BinarySocket.authorize(client.token);
             }
         }
 
@@ -414,7 +414,7 @@ export default class ClientStore extends BaseStore {
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
         WS.forgetAll('balance');
-        await BinarySocket.send({ 'authorize': this.getToken() });
+        await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
     }

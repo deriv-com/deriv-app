@@ -113,7 +113,7 @@ export default class TradeStore extends BaseStore {
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
         await BinarySocket.wait('authorize', 'website_status');
-        WS.activeSymbols().then(({ active_symbols }) => {
+        WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
             });
@@ -211,7 +211,7 @@ export default class TradeStore extends BaseStore {
             // if SmartCharts has requested active_symbols, we wait for the response
             await BinarySocket.wait('active_symbols')
             : // else requests new active_symbols
-            await WS.activeSymbols();
+            await WS.activeSymbols('brief');
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));

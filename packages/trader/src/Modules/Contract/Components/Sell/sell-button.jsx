@@ -4,7 +4,6 @@ import {
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
 
 const SellButton = ({

@@ -1,6 +1,5 @@
 import { Button }   from 'deriv-components';
 import React        from 'react';
-import { Button }   from 'deriv-components';
 import BinarySocket from '_common/base/socket_base';
 import { urlFor }   from '_common/url';
 import Localize     from 'App/Components/Elements/localize.jsx';

@@ -360,7 +360,7 @@ export default class ContractsFor {
         if (subcategories) {
             for (let i = 0; i < subcategories.length; i++) {
                 const trade_type    = subcategories[i];
-                const durations     = await this.getDurations(symbol, trade_type);
+                const durations     = await this.getDurations(symbol, trade_type); // eslint-disable-line no-await-in-loop
                 const has_durations = JSON.stringify(durations) !== JSON.stringify(NOT_AVAILABLE_DURATIONS);
                 const is_disabled   = this.isDisabledOption({
                     market,

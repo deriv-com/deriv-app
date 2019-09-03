@@ -10,7 +10,6 @@ class ApiHelpers {
         this.trading_times  = new TradingTimes(this.root_store);
         this.contracts_for  = new ContractsFor(this.root_store);
         this.active_symbols = new ActiveSymbols(this.root_store, this.trading_times);
-        window.api_helpers = this;
     }
 
     static setInstance(root_store) {

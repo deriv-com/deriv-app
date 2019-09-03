@@ -1,7 +1,8 @@
 import {
     action,
     computed,
-    observable }         from 'mobx';
+    observable,
+    toJS }               from 'mobx';
 import BinarySocket      from '_common/base/socket_base';
 import { isEmptyObject } from '_common/utility';
 import { localize }      from 'App/i18n';
@@ -50,16 +51,27 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get markers_array() {
-        return this.contracts.reduce((array, contract) => {
-            array.push(...contract.markers_array_v2);
-            return array;
-        }, []);
+        const underlying = this.root_store.modules.trade.symbol;
+        const markers = this.contracts
+            .filter(c => c.contract_info.underlying === underlying)
+            .map(c => c.marker)
+            .filter(m => m)
+            .map(m => toJS(m));
+        if (markers.length) {
+            markers[markers.length - 1].is_last_contract = true;
+        }
+        return markers;
     }
 
     @action.bound
-    addContract({ contract_id, contract_type, start_time, longcode }) {
+    addContract({ contract_id, contract_type, start_time, longcode, underlying }) {
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig({ date_start: start_time, longcode, contract_type });
+        contract.populateConfig({
+            date_start: start_time,
+            longcode,
+            contract_type,
+            underlying,
+        });
         this.contracts.push(contract);
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);

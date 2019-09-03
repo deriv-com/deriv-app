@@ -375,11 +375,12 @@ export default class TradeStore extends BaseStore {
                     // toggle smartcharts to contract mode
                     if (contract_id) {
                         const shortcode = response.buy.shortcode;
-                        const { category } = Shortcode.extractInfoFromShortcode(shortcode);
+                        const { category, underlying } = Shortcode.extractInfoFromShortcode(shortcode);
                         this.root_store.modules.contract_trade.addContract({
                             contract_id,
                             start_time,
                             longcode,
+                            underlying,
                             contract_type: category.toUpperCase(),
                         });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle

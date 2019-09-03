@@ -45,7 +45,7 @@ export default class ContractStore {
     @observable margin;
     @observable barriers_array = [];
     @observable markers_array = [];
-    @observable markers_array_v2 = [];
+    @observable marker = null;
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
@@ -61,7 +61,7 @@ export default class ContractStore {
             this.root_store.ui.is_dark_mode_on
         );
         this.markers_array = createChartMarkers(this.contract_info);
-        this.markers_array_v2 = calculate_markers(this.contract_info);
+        this.marker = calculate_marker(this.contract_info);
 
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
@@ -121,9 +121,8 @@ export default class ContractStore {
     }
 }
 
-function calculate_markers(contract_info) {
-    if (!contract_info) { return []; }
-    const result = [];
+function calculate_marker(contract_info) {
+    if (!contract_info) { return null; }
     const {
         transaction_ids,
         tick_stream,
@@ -131,33 +130,55 @@ function calculate_markers(contract_info) {
         date_start,
         date_expiry,
         entry_tick_time,
+        contract_type,
         tick_count,
+        barrier_count,
+        barrier,
+        high_barrier,
+        low_barrier,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
 
-    window.ci = toJS(contract_info);
-    // console.warn(ci);
+    // window.ci = toJS(contract_info);
 
-    if (!date_start) { return result; }
-    // if we have not yet received the first POC response
-    if (!transaction_ids) {
-        result.push({
-            contract_info: toJS(contract_info),
-            type         : 'TickContract',
-            key          : `${contract_id}-date_start`,
-            epoch_array  : [date_start],
-        });
-        return result;
+    let price_array = [];
+    if (+barrier_count === 1 && barrier) {
+        price_array = [+barrier];
+    } else if (+barrier_count === 2 && high_barrier && low_barrier) {
+        price_array = [+low_barrier, +high_barrier];
     }
 
-    // TickContract
-    if (tick_count >= 1) {
-        result.push({
+    if (!date_start) { return null; }
+    // if we have not yet received the first POC response
+    if (!transaction_ids) {
+        const type = isDigitContract(contract_type) ? 'DigitContract' : 'TickContract';
+        return {
+            type,
             contract_info: toJS(contract_info),
-            type         : 'TickContract',
+            key          : `${contract_id}-date_start`,
+            epoch_array  : [date_start],
+            price_array,
+        };
+    }
+
+    if (tick_count >= 1) {
+        if (!isDigitContract(contract_type)) {
+            // TickContract
+            return {
+                contract_info: toJS(contract_info),
+                type         : 'TickContract',
+                key          : `${contract_id}-date_start`,
+                epoch_array  : [date_start, ...ticks_epoch_array],
+                price_array,
+            };
+        }
+        // DigitContract
+        return {
+            contract_info: toJS(contract_info),
+            type         : 'DigitContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start, ...ticks_epoch_array],
-        });
+        };
     }
     // NonTickContract
     if (!tick_count) {
@@ -168,12 +189,13 @@ function calculate_markers(contract_info) {
         if (entry_tick_time) {
             epoch_array.push(entry_tick_time);
         }
-        result.push({
+        return {
             contract_info: toJS(contract_info),
             type         : 'NonTickContract',
             key          : `${contract_id}-date_start`,
             epoch_array,
-        });
+            price_array,
+        };
     }
-    return result;
+    return null;
 }

@@ -22,8 +22,8 @@ const WS = (() => {
     const getSelfExclusion = () =>
         BinarySocket.send({ get_self_exclusion: 1 });
 
-    const getSettings = () =>
-        BinarySocket.send({ get_settings: 1 });
+    const getSettings = (options) =>
+        BinarySocket.send({ get_settings: 1 }, options);
 
     const getTradingTimes = (date) =>
         BinarySocket.send({ trading_times: date });
@@ -49,8 +49,8 @@ const WS = (() => {
     const oauthApps = () =>
         BinarySocket.send({ oauth_apps: 1 });
 
-    const payoutCurrencies = () =>
-        BinarySocket.send({ payout_currencies: 1 });
+    const payoutCurrencies = (options) =>
+        BinarySocket.send({ payout_currencies: 1 }, { msg_type: 'payout_currencies', ...(options && options) });
 
     const portfolio = () =>
         BinarySocket.send({ portfolio: 1 });

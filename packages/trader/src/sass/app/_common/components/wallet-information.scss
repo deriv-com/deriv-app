@@ -16,8 +16,8 @@
     .current-loginid, .symbols {
         margin-left: 4px;
     }
-    .label {
-        margin-left: 16px;
+    &__label {
+        margin-left: 16px !important;
     }
     .inline-icon {
         width: 24px;

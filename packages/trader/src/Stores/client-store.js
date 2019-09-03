@@ -9,7 +9,7 @@ import moment                        from 'moment';
 import {
     requestLogout,
     WS }                             from 'Services';
-import { getAccountTitle }           from '_common/base/client_base';
+import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
 import { isEmptyObject }             from '_common/utility';
@@ -38,6 +38,8 @@ export default class ClientStore extends BaseStore {
     @observable is_populating_account_list = false;
     @observable website_status             = {};
     @observable verification_code          = '';
+    @observable account_settings           = {};
+    @observable account_status             = {};
     @observable device_data                = {};
 
     constructor(root_store) {
@@ -88,7 +90,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get account_title() {
-        return getAccountTitle(this.loginid);
+        return ClientBase.getAccountTitle(this.loginid);
     }
 
     @computed
@@ -106,6 +108,8 @@ export default class ClientStore extends BaseStore {
     get default_currency() {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
+            // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
+            if (this.currencies_list.Fiat.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         } return 'USD';
     }
@@ -216,6 +220,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
+        ClientBase.responseAuthorize(response);
     }
 
     @action.bound
@@ -286,9 +291,17 @@ export default class ClientStore extends BaseStore {
         }
 
         if (client && !client.is_virtual) {
-            BinarySocket.wait('landing_company', 'website_status').then(() => {
-                handleClientNotifications(client, this.root_store.ui.addNotification, this.loginid);
+            BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
+                handleClientNotifications(
+                    client,
+                    this.account_settings,
+                    this.account_status,
+                    this.root_store.ui.addNotification,
+                    this.loginid
+                );
             });
+        } else if (!client || client.is_virtual) {
+            this.root_store.ui.removeAllNotifications();
         }
 
         this.selectCurrency('');
@@ -353,7 +366,7 @@ export default class ClientStore extends BaseStore {
         const account      = this.getAccount(loginid);
         const currency     = account.currency;
         const is_virtual   = account.is_virtual;
-        const account_type = !is_virtual && currency ? currency : getAccountTitle(loginid);
+        const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
 
         return {
             loginid,
@@ -436,21 +449,29 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setAccountSettings(settings) {
+        this.account_settings = settings;
+    }
+
+    @action.bound
+    setAccountStatus(status) {
+        this.account_status = status;
+    }
+
+    @action.bound
     cleanUp() {
         this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid = null;
         this.upgrade_info = undefined;
         this.accounts = {};
-        this.currencies_list  = {};
-        this.selected_currency = '';
-        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
-        return new Promise(async (resolve) => {
-            await this.root_store.modules.trade.clearContract();
-            await this.root_store.modules.trade.resetErrorServices();
-            await this.root_store.ui.removeAllNotifications();
-            await this.root_store.modules.trade.refresh();
-            return resolve(this.root_store.modules.trade.debouncedProposal());
+        runInAction(async () => {
+            this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
         });
+        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.resetErrorServices();
+        this.root_store.ui.removeAllNotifications();
+        this.root_store.modules.trade.refresh();
+        this.root_store.modules.trade.debouncedProposal();
     }
 
     /* eslint-disable */
@@ -587,12 +608,16 @@ export default class ClientStore extends BaseStore {
             } else {
                 cb();
                 // Initialize client store with new user login
+                const { client_id, currency, oauth_token } = response.new_account_virtual;
                 const new_user_login = {
-                    acct1 : response.new_account_virtual.client_id,
-                    token1: response.new_account_virtual.oauth_token,
-                    curr1 : response.new_account_virtual.currency,
+                    acct1 : client_id,
+                    token1: oauth_token,
+                    curr1 : currency,
                 };
                 await this.init(new_user_login);
+
+                // Refresh trade-store currency and proposal before requesting new proposal upon login
+                this.root_store.modules.trade.initAccountCurrency(currency);
             }
         });
     }

@@ -1,11 +1,11 @@
 import classNames        from 'classnames';
-import React             from 'react';
-import PropTypes         from 'prop-types';
 import {
     Autocomplete,
     Input,
     Form,
     Button }             from 'deriv-components';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
@@ -26,7 +26,10 @@ const validateSignup = (values, residence_list) => {
     if (!values.residence) {
         errors.residence = true;
     } else {
-        const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+        const index_of_selection = residence_list.findIndex(item => (
+            item.text.toLowerCase() === values.residence.toLowerCase()
+        ));
+
         if (index_of_selection > -1) {
             if (residence_list[index_of_selection].disabled === 'DISABLED') {
                 errors.residence = localize('Unfortunately, Deriv is not available in your country.');
@@ -66,7 +69,10 @@ class AccountSignup extends React.Component {
 
         const validateSignupPassthrough = (values) => validateSignup(values, residence_list);
         const onSignupPassthrough = (values) => {
-            const index_of_selection = residence_list.findIndex(item => item.text === values.residence);
+            const index_of_selection = residence_list.findIndex(item => (
+                item.text.toLowerCase() === values.residence.toLowerCase()
+            ));
+
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
             onSignup(modded_values, this.onSignupComplete);
         };

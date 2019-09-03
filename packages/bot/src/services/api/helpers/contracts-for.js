@@ -348,8 +348,9 @@ export default class ContractsFor {
         return NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
-    getTradeTypes(market, submarket, symbol, trade_type_category) {
+    async getTradeTypes(market, submarket, symbol, trade_type_category) {
         const {
+            NOT_AVAILABLE_DURATIONS,
             TRADE_TYPE_CATEGORIES,
             opposites,
         }                   = config;
@@ -357,21 +358,24 @@ export default class ContractsFor {
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
 
         if (subcategories) {
-            subcategories.forEach(trade_type => {
-                const is_disabled = this.isDisabledOption({
+            for (let i = 0; i < subcategories.length; i++) {
+                const trade_type    = subcategories[i];
+                const durations     = await this.getDurations(symbol, trade_type);
+                const has_durations = JSON.stringify(durations) !== JSON.stringify(NOT_AVAILABLE_DURATIONS);
+                const is_disabled   = this.isDisabledOption({
                     market,
                     submarket,
                     symbol,
                     trade_type_category,
                     trade_type,
                 });
-
-                if (!is_disabled) {
+    
+                if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
                     // e.g. [['Rise/Fall', 'callput']]
                     trade_types.push([types.map(type => type[Object.keys(type)[0]]).join('/'), trade_type]);
                 }
-            });
+            }
         }
 
         return (trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);

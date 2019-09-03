@@ -6,7 +6,7 @@ export default class ActiveSymbols {
         this.active_symbols      = {};
         this.disabled_markets    = [];
         this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
-        this.disabled_submarkets = []; // These are only forward-starting.
+        this.disabled_submarkets = ['energy']; // These are only forward-starting.
         this.init_promise        = new PendingPromise();
         this.is_initialised      = false;
         this.processed_symbols   = {};
@@ -93,16 +93,8 @@ export default class ActiveSymbols {
         const market_options = [];
         
         Object.keys(this.processed_symbols).forEach(market_name => {
-            const submarkets = this.getSubmarketDropdownOptions(market_name);
-            const is_closed = submarkets.every(submarket_option => {
-                const symbol_options = this.getSymbolDropdownOptions(submarket_option[1]);
-                return symbol_options.every(symbol_option => !this.trading_times.isMarketOpened(symbol_option[1]));
-            });
-
-            if (!is_closed) {
-                const market = this.processed_symbols[market_name];
-                market_options.push([market.display_name, market_name]);
-            }
+            const market = this.processed_symbols[market_name];
+            market_options.push([market.display_name, market_name]);
         });
 
         return (market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options);
@@ -116,12 +108,7 @@ export default class ActiveSymbols {
             const { submarkets } = market_obj;
 
             Object.keys(submarkets).forEach(submarket_name => {
-                const symbols   = this.getSymbolDropdownOptions(submarket_name);
-                const is_closed = symbols.every(symbol_option => !this.trading_times.isMarketOpened(symbol_option[1]));
-
-                if (!is_closed) {
-                    submarket_options.push([submarkets[submarket_name].display_name, submarket_name]);
-                }
+                submarket_options.push([submarkets[submarket_name].display_name, submarket_name]);
             });
         }
 
@@ -135,11 +122,8 @@ export default class ActiveSymbols {
             Object.keys(submarkets).forEach(submarket_name => {
                 if (submarket_name === submarket) {
                     const { symbols } = submarkets[submarket_name];
-
                     Object.keys(symbols).forEach(symbol_name => {
-                        if (this.trading_times.isMarketOpened(symbol_name)) {
-                            accumulator.push([symbols[symbol_name].display_name, symbol_name]);
-                        }
+                        accumulator.push([symbols[symbol_name].display_name, symbol_name]);
                     });
                 }
             });

@@ -1,9 +1,3 @@
-@mixin vertical-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .flyout {
     $flyout        : &;
     $default-margin: 15px;
@@ -36,12 +30,18 @@
         }
     }
     &__button {
-        padding: $button-padding;
         border: none;
-        border-radius: 5px;
+        border-radius: $BORDER_RADIUS;
+        padding: $button-padding;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        text-align: center;
+        color: #ffffff;
 
         &-new {
             width: 100%;
@@ -50,7 +50,7 @@
             margin-bottom: $default-margin;
         }
         &-add {
-            background-color: $COLOR_ORANGE;
+            background-color: $COLOR_CORAL_RED;
             color: $COLOR_WHITE;
         }
         &-back {
@@ -110,7 +110,7 @@
         padding: 0;
 
         &-header {
-            padding: 1.2em 0;
+            padding: 1.2em 1em;
             display: flex;
             background-color: $COLOR_LIGHT_BLACK_4_SOLID;
         }

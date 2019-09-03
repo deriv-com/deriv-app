@@ -5,6 +5,7 @@ import FlyoutVideo          from './help-components/flyout-video.jsx';
 import FlyoutText           from './help-components/flyout-text.jsx';
 import FlyoutImage          from './help-components/flyout-img.jsx';
 import FlyoutBlock          from '../../components/flyout-block.jsx';
+import { Arrow2Icon }       from '../../components/Icons.jsx';
 import { connect }          from '../../stores/connect';
 import { translate }        from '../../utils/tools';
 
@@ -63,7 +64,9 @@ class HelpBase extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className='flyout__help-header'>
-                    <button className='flyout__button flyout__button-back' onClick={() => Blockly.derivWorkspace.reshowFlyout()}>⬅</button>
+                    <button className='flyout__button flyout__button-back' onClick={() => Blockly.derivWorkspace.reshowFlyout()}>
+                        <Arrow2Icon />
+                    </button>
                     <span className='flyout__help-title'>{title}</span>
                 </div>
                 <div className='flyout__help-content'>

@@ -54,29 +54,29 @@ import { IconDeriv } from 'deriv-components';
 
 ### API
 
-props         | description | type  | default
-------------- |-------------| ----- | -------
-className     | Add classnames to parent element | `string` | -
-customColors  | Sets custom colors to the icon | `object` | -
-theme         | Sets the icon theme. `twoTone` renders two-tone icons. `none` renders the icons without theming. |   `twoTone | outline | none` | `outline` 
+props     | description | type  | default
+----------|-------------| ----- | -------
+className | Add classnames to parent element | `string` | -
+colors    | Sets custom colors to the icon | `object {[element]/&[attribute]: classname}` | -
+theme     | Sets the icon theme. `twoTone` renders two-tone icons. `none` renders the icons without theming. |   `twoTone | outline | none` | `outline` 
 
-By default, the icon's `<path>` are injected with `.color1-fill` or `.color1-stroke` to support theming. You can customize the icon's theme colors by replacing the default theming classnames using the `customColors` props. `customColors` props accepts [element|&attr=classname] key-value pair.
+By default, the SVG's `<path>` are injected with `.color1-fill` or `.color1-stroke` to support theming. You can customize the icon's theme colors by replacing the default theming classnames using the `customColors` props. `colors` props accepts [element|&attr=classname] key-value pair.
 
 ### Example
 ```jsx
 import { IconDeriv } from 'deriv-components';
 
 const customColors = {
-  // element: classname
+  // [element]: classname
   'circle': 'new-circle-color',
-  // or &attr: classname
+  // or &[attribute name]: classname
   '&fill': 'new-path-color',
-  // or target specific path by specifiying the fill value
+  // or you can target specific path by specifiying the fill value
   '&fill="#454545"': 'new-path-color'
 };
 
 // renders custom color icons
-<IconDeriv customColors={customColors} />
+<IconDeriv colors={customColors} />
 ```
 ```jsx
 import { IconDeriv } from 'deriv-components';
@@ -113,7 +113,8 @@ node rename.js path/to/directory 'string-to-search' 'string-to-replace'
 ```
 3. Building the icons
 
-Add `.svg` files to `components/icon/svg` folder, then rebuild all the icons by:
-```sh
-npm run build:icons
-```
+Add `.svg` files to the `components/icon/svg` folder, then rebuild all the icons by:
+  ```sh
+  npm run build:icons
+  ```
+Some icons like country flags and currencies doesn't need to be themed. Add those `.svg` files to the `components/icon/svg-no-theme` folder.

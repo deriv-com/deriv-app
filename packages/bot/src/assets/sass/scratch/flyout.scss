@@ -57,6 +57,10 @@
             align-self: center;
             background-color: transparent;
             color: $COLOR_BLACK;
+
+            &:focus {
+                outline: none;
+            }
         }
         &-next,
         &-previous {
@@ -85,6 +89,7 @@
         &-info {
             cursor: pointer;
             color: $COLOR_RED;
+            margin-left: 0.2em;
         }
         &-description {
             font-size: 0.8em;

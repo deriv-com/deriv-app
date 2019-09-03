@@ -169,11 +169,12 @@ const TickContract = RawMarkerMaker(({
     const entry = ticks[0];
     const expiry = ticks[ticks.length - 1];
     // vertical line connecting date start to barrier
-    if (!draw_start_line && barrier && entry && start.visible && barrier !== entry.top) {
+    if (!draw_start_line && barrier && entry && start.visible && barrier !== start.top) {
         ctx.beginPath();
         ctx.setLineDash([2, 2]);
-        ctx.moveTo(start.left, barrier);
-        ctx.lineTo(start.left, entry.top);
+        const [low, high] = [barrier, start.top].sort();
+        ctx.moveTo(start.left, low);
+        ctx.lineTo(start.left, high);
         ctx.stroke();
     }
 
@@ -206,7 +207,7 @@ const TickContract = RawMarkerMaker(({
     // start-time marker
     if (start.visible) {
         draw_path(ctx, {
-            top : entry.top,
+            top : start.top,
             left: start.left,
             zoom: start.zoom,
             icon: ICONS[contract_type].with_color(color),

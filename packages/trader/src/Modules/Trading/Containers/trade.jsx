@@ -181,7 +181,7 @@ class ChartTradeClass extends React.Component {
         // const bottomWidgets =
         //     (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
 
-        const barriers = [main_barrier];
+        const barriers = main_barrier ? [main_barrier] : [];
 
         return (
             <SmartChart

@@ -39,7 +39,8 @@ const LanguageLink = ({ lang }) => {
                 {getAllowedLanguages()[lang]}
             </span>
         </React.Fragment>
-)};
+    );
+};
 
 const LanguageSettings = () => (
     <div className='settings-language'>

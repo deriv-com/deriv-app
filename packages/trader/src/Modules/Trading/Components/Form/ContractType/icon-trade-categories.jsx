@@ -8,8 +8,8 @@ const IconTradeCategory = ({ className, is_high_low, trade_types }) => {
     let [type1, type2] = Object.values(trade_types).map(type => type.toLowerCase());
 
     if (is_high_low) {
-        type1 = `${type1}_barrier`
-        type2 = `${type2}_barrier`
+        type1 = `${type1}_barrier`;
+        type2 = `${type2}_barrier`;
     }
 
     return (

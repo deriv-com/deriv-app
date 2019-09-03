@@ -147,12 +147,15 @@
         }
     }
     &__icon {
-        .color1-fill {
+        /* postcss-bem-linter: ignore */
+        &-color {
             fill: $COLOR_ORANGE;
         }
+        /* postcss-bem-linter: ignore */
         &--win .color1-fill {
             fill: $COLOR_GREEN_1;
         }
+        /* postcss-bem-linter: ignore */
         &--loss .color1-fill {
             fill: $COLOR_RED;
         }

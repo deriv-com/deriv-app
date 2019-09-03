@@ -1,12 +1,12 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from 'App/i18n';
-import InputField   from 'App/Components/Form/InputField/input-field.jsx';
-import Lazy         from 'App/Containers/Lazy';
 import {
     IconCalendarDateto,
     IconCalendarDatefrom,
 }                   from 'deriv-components';
+import { localize } from 'App/i18n';
+import InputField   from 'App/Components/Form/InputField/input-field.jsx';
+import Lazy         from 'App/Containers/Lazy';
 import {
     daysFromTodayTo,
     epochToMoment,

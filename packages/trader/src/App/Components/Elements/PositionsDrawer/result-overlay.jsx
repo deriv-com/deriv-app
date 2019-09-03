@@ -3,10 +3,10 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { NavLink }         from 'react-router-dom';
-import { getContractPath } from 'App/Components/Routes/helpers';
 import {
     IconCheck,
     IconCross }            from 'deriv-components';
+import { getContractPath } from 'App/Components/Routes/helpers';
 import { localize }        from 'App/i18n';
 
 class ResultOverlay extends React.PureComponent {

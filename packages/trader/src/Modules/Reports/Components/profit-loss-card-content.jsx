@@ -57,7 +57,8 @@ const ProfitLossCardContent = ({
                 </div>
             </div>
         </div>
-)};
+    );
+};
 
 ProfitLossCardContent.propTypes = {
     currency: PropTypes.string,

@@ -43,7 +43,7 @@
         }
         .path-fill {
             @include themify($themes) {
-               fill: themed('loader_background');
+                fill: themed('loader_background');
             }
         }
         .color1-fill {

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 class Icon extends React.PureComponent {
     render() {
         const options = {
-            className    : this.props.className,
-            colors       : this.props.colors,
-            is_disabled  : this.props.is_disabled,
-            onClick      : this.props.onClick,
-            onMouseEnter : this.props.onMouseEnter,
-            onMouseLeave : this.props.onMouseLeave,
-            theme        : this.props.theme,
+            className   : this.props.className,
+            colors      : this.props.colors,
+            is_disabled : this.props.is_disabled,
+            onClick     : this.props.onClick,
+            onMouseEnter: this.props.onMouseEnter,
+            onMouseLeave: this.props.onMouseLeave,
+            theme       : this.props.theme,
         };
 
         const IconLazy = React.lazy(() => import(`deriv-components/lib/icons/${this.props.icon}.jsx`));
@@ -25,12 +25,12 @@ class Icon extends React.PureComponent {
 }
 
 Icon.propTypes = {
-    className   : PropTypes.string,
-    colors: PropTypes.object,
-    icon        : PropTypes.string,
-    is_disabled : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    onClick     : PropTypes.func,
-    theme       : PropTypes.string,
+    className  : PropTypes.string,
+    colors     : PropTypes.object,
+    icon       : PropTypes.string,
+    is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    onClick    : PropTypes.func,
+    theme      : PropTypes.string,
 };
 
 export default Icon;

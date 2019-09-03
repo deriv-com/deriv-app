@@ -1,9 +1,9 @@
 import classNames    from 'classnames';
 import React         from 'react';
-import Localize      from 'App/Components/Elements/localize.jsx';
 import {
     IconThemeDark,
     IconThemeLight } from 'deriv-components';
+import Localize      from 'App/Components/Elements/localize.jsx';
 import { connect }   from 'Stores/connect';
 
 const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor, pushDataLayer }) => {

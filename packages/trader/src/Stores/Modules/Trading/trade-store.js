@@ -324,11 +324,6 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get main_barrier_flattened() {
-        if (isDigitTradeType(this.contract_type)) {
-            // Do not render draggable barrier if contract type is digit
-            const main_barrier = new ChartBarrierStore(null, null, null, { not_draggable: true });
-            return main_barrier;
-        }
         return toJS(this.main_barrier);
     }
 

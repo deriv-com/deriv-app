@@ -17,6 +17,7 @@ const output =  {
 
 module.exports = {
     entry : [
+        'core-js/fn/promise',
         path.join(__dirname, 'src', 'app.js') 
     ],
     output,

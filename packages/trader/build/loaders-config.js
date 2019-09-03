@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');                     
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 
 const js_loaders = [

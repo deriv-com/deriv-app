@@ -1,11 +1,11 @@
 import classNames        from 'classnames';
-import React             from 'react';
-import PropTypes         from 'prop-types';
 import {
     Autocomplete,
     Input,
     Form,
     Button }             from 'deriv-components';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';

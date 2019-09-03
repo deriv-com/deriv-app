@@ -1,6 +1,6 @@
+import { Popover }        from 'deriv-components';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { Popover }        from 'App/Components/Elements/Popover';
 import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
 import Icon               from 'Assets/icon.jsx';
 import {

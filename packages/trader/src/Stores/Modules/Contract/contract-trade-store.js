@@ -87,17 +87,15 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        const proposal_open_contract_request = [contract_id, cb];
-
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
-                this.subscribers[proposal_open_contract_request[0]]
-                    = WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+                this.subscribers[contract_id]
+                    = WS.subscribeProposalOpenContract(contract_id, cb);
             });
         } else {
-            this.subscribers[proposal_open_contract_request[0]]
-                = WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            this.subscribers[contract_id]
+                = WS.subscribeProposalOpenContract(contract_id, cb);
         }
     }
 

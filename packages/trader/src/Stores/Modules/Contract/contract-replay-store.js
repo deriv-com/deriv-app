@@ -52,21 +52,17 @@ export default class ContractReplayStore extends BaseStore {
     // ----- Actions -----
     // -------------------
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        const proposal_open_contract_request = [contract_id, cb, false];
-
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
-                WS.storage.proposalOpenContract({ contract_id: proposal_open_contract_request[0] })
-                    .then(proposal_open_contract_request[1]);
-                this.subscribers[proposal_open_contract_request[0]] =
-                    WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+                WS.storage.proposalOpenContract({ contract_id }).then(cb);
+                this.subscribers[contract_id] =
+                    WS.subscribeProposalOpenContract(contract_id, cb);
             });
         } else {
-            WS.storage.proposalOpenContract({ contract_id: proposal_open_contract_request[0] })
-                .then(proposal_open_contract_request[1]);
-            this.subscribers[proposal_open_contract_request[0]]
-                = WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            WS.storage.proposalOpenContract({ contract_id }).then(cb);
+            this.subscribers[contract_id]
+                = WS.subscribeProposalOpenContract(contract_id, cb);
         }
     };
 

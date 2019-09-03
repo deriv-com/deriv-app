@@ -323,7 +323,8 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get main_barrier_flattened() {
-        return toJS(this.main_barrier);
+        const is_digit_trade_type = isDigitTradeType(this.contract_type);
+        return is_digit_trade_type ? null : toJS(this.main_barrier);
     }
 
     @observable main_barrier = null;

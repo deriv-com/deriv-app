@@ -1,4 +1,4 @@
-const DerivAPIBasic    = require('deriv-api/dist/DerivAPIBasic');
+const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');

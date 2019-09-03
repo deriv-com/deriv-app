@@ -204,6 +204,10 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions.splice(contract_idx, 1);
         this.root_store.modules.contract_trade.removeContract({ contract_id });
+        this.root_store.modules.contract_trade.forgetProposalOpenContract(
+            contract_id,
+            this.root_store.modules.contract_trade.updateProposal,
+        );
     }
 
     @action.bound

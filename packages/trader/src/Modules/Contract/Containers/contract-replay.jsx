@@ -5,6 +5,8 @@ import { SmartChart }    from 'smartcharts-beta';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
+import Digits            from 'Modules/Contract/Components/Digits';
+import InfoBox           from 'Modules/Contract/Components/InfoBox';
 import Lazy              from 'App/Containers/Lazy';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
@@ -62,7 +64,6 @@ class ContractReplay extends React.Component {
         } = this.props;
 
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
-
         return (
             <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
@@ -97,9 +98,9 @@ class ContractReplay extends React.Component {
                         { contract_info.underlying  &&
                         <ReplayChart
                             Digits={
-                                <Lazy
-                                    ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
-                                    should_load={is_digit_contract}
+                                <Digits
+                                    // ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
+                                    // should_load={is_digit_contract}
                                     is_digit_contract={is_digit_contract}
                                     has_progress={true}
                                     is_ended={is_ended}
@@ -109,9 +110,9 @@ class ContractReplay extends React.Component {
                                 />
                             }
                             InfoBox={
-                                <Lazy
-                                    ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
-                                    should_load={true}
+                                <InfoBox
+                                    // ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
+                                    // should_load={true}
                                     has_progress={false}
                                     contract_info={contract_info}
                                     error_message={error_message}

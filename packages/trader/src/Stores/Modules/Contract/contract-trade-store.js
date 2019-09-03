@@ -56,14 +56,6 @@ export default class ContractTradeStore extends BaseStore {
         }, []);
     }
 
-    @computed
-    get barriers_array() {
-        return [];
-        // const length = this.contracts.length;
-        // const barriers = length > 0 ? this.contracts[length - 1].barriers_array  : [];
-        // return toJS(barriers);
-    }
-
     @action.bound
     addContract({ contract_id, contract_type, start_time, longcode }) {
         const contract = new ContractStore(this.root_store, { contract_id });

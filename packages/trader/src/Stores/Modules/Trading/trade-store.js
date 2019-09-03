@@ -84,6 +84,7 @@ export default class TradeStore extends BaseStore {
     @observable barrier_1     = '';
     @observable barrier_2     = '';
     @observable barrier_count = 0;
+    @observable main_barrier  = [];
 
     // Start Time
     @observable start_date       = Number(0); // Number(0) refers to 'now'
@@ -323,10 +324,14 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get main_barrier_flattened() {
+        if (isDigitTradeType(this.contract_type)) {
+            // Do not render draggable barrier if contract type is digit
+            const main_barrier = new ChartBarrierStore(null, null, null, { not_draggable: true });
+            return main_barrier;
+        }
         return toJS(this.main_barrier);
     }
 
-    @observable main_barrier = null;
     setMainBarrier = (proposal_info) => {
         if (!proposal_info) { return ; }
         const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;

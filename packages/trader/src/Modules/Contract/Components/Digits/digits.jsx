@@ -22,8 +22,9 @@ class Digits extends React.PureComponent {
             is_digit_contract,
             is_ended,
             is_trade_page,
+            tick,
         } = this.props;
-        const digits = digits_array ? digits_array.digits : null;
+
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}
@@ -32,13 +33,18 @@ class Digits extends React.PureComponent {
                 type='bottom'
             >
                 <LastDigitPrediction
+                    // dimension of a single digit widget including margin/padding (number)
+                    // i.e - 40px + 4px left and 4px right padding/margin = 48
+                    dimension={48}
                     barrier={+contract_info.barrier}
                     contract_type={contract_info.contract_type}
-                    digits={digits}
+                    digits={digits_array}
                     digits_info={digits_info}
+                    is_digit_contract={is_digit_contract}
                     is_ended={is_ended}
                     is_trade_page={is_trade_page}
                     status={display_status}
+                    tick={tick}
                 />
             </SlideIn>
         );

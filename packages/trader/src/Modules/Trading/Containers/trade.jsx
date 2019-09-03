@@ -96,11 +96,13 @@ const BottomDigits = ({
     digits_info,
     display_status,
     is_ended,
+    tick,
 }) => (
     <div className='bottom-widgets'>
         <Digits
             // ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
             // should_load={is_digit_contract}
+            tick={tick}
             digits_array={digits}
             is_trade_page
             contract_info={contract_info}
@@ -166,26 +168,25 @@ class ChartTradeClass extends React.Component {
     );
 
     topWidgets = () => (<ChartTopWidgets />);
-    bottomWidgets = (digits) => (
-        <ChartBottomWidgets digits={digits} />
+    bottomWidgets = ({ digits, tick }) => (
+        <ChartBottomWidgets digits={digits} tick={tick} />
     );
 
     render() {
         const {
             // last_contract,
             show_digits_stats,
-            barriers_array,
             main_barrier,
         } = this.props;
         // const bottomWidgets =
         //     (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
 
-        const barriers = [main_barrier, ...barriers_array];
+        const barriers = [main_barrier];
 
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={this.bottomWidgets}
+                bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
@@ -221,7 +222,6 @@ const ChartTrade = connect(
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,
         chart_type       : modules.contract_trade.chart_type,
-        barriers_array   : modules.contract_trade.barriers_array,
         settings         : {
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,

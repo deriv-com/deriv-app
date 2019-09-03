@@ -94,7 +94,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 // Update barrier suggested values when changing barrier type.
                 this.updateBarrierInputs();
                 this.enforceSingleBarrierType(event.name, false);
-            } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
+            } else if (
+                event.name === 'SYMBOL_LIST' ||
+                event.name === 'TRADETYPECAT_LIST' ||
+                event.name === 'TRADETYPE_LIST'
+            ) {
                 // Update durations, barriers, and prediction when changing the trade type.
                 this.updateBarrierInputs();
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
@@ -217,7 +221,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 if (connection) {
                     const target_block = connection.targetBlock();
                     if (target_block.isShadow()) {
-                        target_block.setFieldValue(barriers.values[i], 'NUM');
+                        const barrier_value = barriers.values[i] !== false ? barriers.values[i] : '';
+                        target_block.setFieldValue(barrier_value, 'NUM');
                     }
                 }
             }

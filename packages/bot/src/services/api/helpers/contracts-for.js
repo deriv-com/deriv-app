@@ -28,7 +28,7 @@ export default class ContractsFor {
     }
 
     async getBarriers(symbol, trade_type, duration, barrier_types) {
-        const barriers               = { values: [] };
+        const barriers = { values: [] };
 
         if (!config.BARRIER_TRADE_TYPES.includes(trade_type)) {
             return barriers;
@@ -39,7 +39,9 @@ export default class ContractsFor {
         const durations              = await this.getDurations(symbol, trade_type, false);
         const offset_regexp          = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
         const isOffset               = input => input && offset_regexp.test(input.toString());
-        
+
+        let has_absolute_default_value = true;
+
         if (contracts_for_category.length > 0) {
             barrier_types.forEach((barrier_type, index) => {
                 const has_selected_offset_type = ['+', '-'].includes(barrier_type);
@@ -80,8 +82,12 @@ export default class ContractsFor {
                             return parseFloat(c) - parseFloat(d);
                         })
                         .shift();
-                }
 
+                    if (contract && !has_selected_offset_type) {
+                        has_absolute_default_value = false;
+                    }
+                }
+                
                 if (contract) {
                     const barrier_prop_name = (contract.barriers === 1 ? 'barrier' : barrier_props[index]);
     
@@ -102,13 +108,17 @@ export default class ContractsFor {
                 }
             });
 
-            // Set distinct values for both barriers if they have equal values
-            if (
-                barriers.values.length === 2 &&
-                barrier_types.every(barrier_type => barrier_type === barrier_types[0]) &&
-                barriers.values.every(barrier => barrier === barriers.values[0])
-            ) {
-                barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
+            if (!has_absolute_default_value) {
+                barriers.values = barriers.values.map(() => false);
+            } else {
+                // Set distinct values for both barriers if they have equal values
+                if (
+                    barriers.values.length === 2 &&
+                    barrier_types.every(barrier_type => barrier_type === barrier_types[0]) &&
+                    barriers.values.every(barrier => barrier === barriers.values[0])
+                ) {
+                    barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
+                }
             }
         }
 

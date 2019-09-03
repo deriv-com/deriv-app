@@ -13,6 +13,7 @@ module.exports = {
         autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
         checkbox    : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
+        drawer      : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
         dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
         input       : path.resolve(__dirname, 'src', 'components/input/index.js'),

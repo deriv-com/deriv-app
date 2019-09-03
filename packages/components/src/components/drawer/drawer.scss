@@ -1,0 +1,96 @@
+$HEADER-HEIGHT: 3.6em;
+
+.dc-drawer {
+    width: $DRAWER_WIDTH;
+    // removing 2px below for borders
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$DRAWER_MARGIN} * 3.6));
+    margin-top: #{$DRAWER_MARGIN * 2};
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 4px;
+    box-sizing: border-box;
+    opacity: 0;
+    color: $COLOR_LIGHT_BLACK_1;
+    transform: translateX(-100%);
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: $BORDER_RADIUS;
+    @include themify($themes) {
+        border: 1px solid themed('background_container_color');
+        background-color: themed('background_container_color');
+        color: themed('text_color');
+    }
+
+    &--open {
+        transform: translateX(#{$DRAWER_MARGIN});
+        opacity: 1;
+    }
+    &__header {
+        height: $HEADER-HEIGHT;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 1em;
+
+        &:after {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: 39px;
+            z-index: 1;
+            @include themify($themes) {
+                box-shadow: 0 8px 2px -2px themed('background_container_color') inset;
+            }
+        }
+    }
+    &__body {
+        height: calc(100% - #{$HEADER-HEIGHT * 2.7});
+        padding: 0.8em 0 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        align-self: center;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+    }
+    &__footer {
+        position: relative;
+        height: 6em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:before {
+            content: '';
+            position: absolute;
+            height: 8px;
+            width: calc(100% - 18px);
+            left: 9px;
+            top: -6px;
+            @include themify($themes) {
+                box-shadow: 0 -8px 2px -2px themed('background_container_color') inset;
+            }
+        }
+    }
+    &__title {
+        font-size: 1.4em;
+        font-weight: bold;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+    }
+    &__icon-close {
+        display: inline-block;
+        margin-left: auto;
+        cursor: pointer;
+
+        svg {
+            @extend %inline-icon;
+            height: 1.6em;
+            width: 1.6em;
+        }
+    }
+}

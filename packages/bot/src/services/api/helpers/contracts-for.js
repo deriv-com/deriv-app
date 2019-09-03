@@ -2,7 +2,7 @@ import config         from '../../../constants';
 import PendingPromise from '../../../utils/pending-promise';
 
 export default class ContractsFor {
-    constructor(ws, server_time) {
+    constructor(root_store) {
         this.cache_age_in_min          = 10;
         this.contracts_for             = {};
         // Below you can disable specific trade types and trade type categories, you may specify
@@ -22,8 +22,9 @@ export default class ContractsFor {
             { trade_type_category: 'lookback' },
         ];
         this.retrieving_contracts_for  = {};
-        this.server_time               = server_time;
-        this.ws                        = ws;
+        this.root_store                = root_store;
+        this.ws                        = this.root_store.ws;
+        
     }
 
     async getBarriers(symbol, trade_type, duration, barrier_types) {
@@ -162,6 +163,8 @@ export default class ContractsFor {
     }
 
     async getContractsFor(symbol) {
+        const { server_time } = this.root_store.core.common;
+
         const getContractsForFromApi = async () => {
             if (this.retrieving_contracts_for[symbol]) {
                 await this.retrieving_contracts_for[symbol];
@@ -182,7 +185,7 @@ export default class ContractsFor {
 
             this.contracts_for[symbol] = {
                 contracts: filtered_contracts,
-                timestamp: this.server_time.getEpoch(),
+                timestamp: server_time.unix(),
             };
 
             this.retrieving_contracts_for[symbol].resolve();
@@ -193,7 +196,7 @@ export default class ContractsFor {
 
         if (this.contracts_for[symbol]) {
             const { contracts, timestamp } = this.contracts_for[symbol];
-            const is_expired = (this.server_time.getEpoch() - timestamp > this.cache_age_in_min * 60000);
+            const is_expired = (server_time.unix() - timestamp > this.cache_age_in_min * 60000);
 
             if (is_expired) {
                 getContractsForFromApi();

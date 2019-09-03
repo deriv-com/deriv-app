@@ -1,23 +1,23 @@
 import PendingPromise from '../../../utils/pending-promise';
 
 export default class TradingTimes {
-    constructor(ws, server_time) {
+    constructor(root_store) {
         this.init_promise   = new PendingPromise();
         this.is_initialised = false;
-        this.server_time    = server_time;
         this.trading_times  = {};
-        this.ws             = ws;
+        this.root_store     = root_store;
+        this.ws             = this.root_store.ws;
     }
 
     async initialise() {
-        await this.server_time.init();
-
         if (this.is_initialised) {
             return this.init_promise;
         }
 
-        this.is_initialised   = true;
-        this.last_update_date = this.server_time.getLocalDate().toISOString().substring(0, 10);
+        this.is_initialised     = true;
+        const { server_time }   = this.root_store.core.common;
+        this.server_time        = server_time.clone();
+        this.last_update_moment = this.server_time.local();
 
         if (!Object.keys(this.trading_times).length) {
             await this.updateTradingTimes();
@@ -30,19 +30,18 @@ export default class TradingTimes {
                     this.onMarketOpenCloseChanged(changes);
                 }
 
-                let next_update = this.nextUpdateDate();
+                let next_update_date = this.nextUpdateDate();
 
-                if (!next_update) {
-                    const now = this.server_time.getLocalDate();
+                if (!next_update_date) {
+                    const now_moment         = this.server_time.local();
+                    const next_update_moment = this.last_update_moment.clone().add(1, 'days');
 
-                    // Get tomorrow's date (UTC) and set it as next update if no nextDate available
-                    const next_update_date = new Date(`${this.last_update_date}T00:00:00Z`);
-                    next_update_date.setDate(next_update_date.getDate() + 1);
-
-                    // if somehow the next update date is in the past, use the current date
-                    const last_update_date = ((now > next_update_date) ? now : next_update_date);
-                    this.last_update_date = last_update_date.toISOString().substring(0, 10);
-
+                    if (now_moment.isAfter(next_update_moment)) {
+                        this.last_update_moment = now_moment.clone();
+                    } else {
+                        this.last_update_moment = next_update_moment.clone();
+                    }
+                    
                     // Retain the current market open close status, because the trade times
                     // will now be the following day:
                     const is_open_map = {};
@@ -58,10 +57,11 @@ export default class TradingTimes {
                     });
 
                     // next update date will be 00:00 hours (UTC) of the following day:
-                    next_update = next_update_date;
+                    next_update_moment.set({ hour: 0, minute: 0, second: 0 });
+                    next_update_date = next_update_moment.toDate();
                 }
 
-                const wait_period = next_update - this.server_time.getLocalDate();
+                const wait_period = next_update_date - this.server_time.local().toDate();
                 this.update_timer = setTimeout(periodicUpdate, wait_period);
             };
 
@@ -73,7 +73,8 @@ export default class TradingTimes {
     }
 
     async updateTradingTimes() {
-        const response  = await this.ws.getTradingTimes(this.last_update_date);
+        const last_update_date = this.last_update_moment.format('YYYY-MM-DD');
+        const response         = await this.ws.getTradingTimes(last_update_date);
 
         if (response.error) {
             return;
@@ -81,7 +82,7 @@ export default class TradingTimes {
 
         this.trading_times = {};
 
-        const now = this.server_time.getLocalDate();
+        const now = this.server_time.local().toDate();
         const date_str = now.toISOString().substring(0, 11);
         const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
         const { trading_times: { markets } } = response;
@@ -134,7 +135,7 @@ export default class TradingTimes {
     }
 
     calcIsMarketOpened(symbol_name) {
-        const now = this.server_time.getLocalDate();
+        const now = this.server_time.local().unix();
         const {
             times,
             is_open_all_day,
@@ -156,7 +157,7 @@ export default class TradingTimes {
     }
 
     nextUpdateDate() {
-        const now = this.server_time.getLocalDate();
+        const now = this.server_time.local().toDate();
 
         let nextDate;
 

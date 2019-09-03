@@ -11,12 +11,13 @@ module.exports = {
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
         accordion   : path.resolve(__dirname, 'src', 'components/accordion/index.js'),
-        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
-        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
-        form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
+        button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        checkbox    : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
+        label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
     },
     output: {

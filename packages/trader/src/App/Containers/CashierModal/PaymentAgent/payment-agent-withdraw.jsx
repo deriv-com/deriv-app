@@ -13,13 +13,7 @@ import { connect }         from 'Stores/connect';
 import PaymentAgentReceipt from './payment-agent-receipt.jsx';
 import Loading             from '../../../../templates/_common/components/loading.jsx';
 
-const withdrawInitialValues = (selected_payment_agent) => ({
-    amount        : '',
-    payment_agents: selected_payment_agent,
-    payment_method: 'payment_agents',
-});
-
-const validateWithdraw = (values) => {
+const validateWithdrawal = (values) => {
     const errors = {};
 
     if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
@@ -43,9 +37,6 @@ class PaymentAgentWithdraw extends React.Component {
     }
 
     render() {
-        const withdrawInitialValuesPassthrough =
-            (values) => withdrawInitialValues(values, this.props.selected_payment_agent);
-
         return (
             <React.Fragment>
                 {this.props.is_loading ?
@@ -58,8 +49,12 @@ class PaymentAgentWithdraw extends React.Component {
                             <React.Fragment>
                                 <h2 className='payment-agent__header'><Localize i18n_default_text='Payment agent withdrawal' /></h2>
                                 <Form
-                                    initialValues={ withdrawInitialValuesPassthrough }
-                                    // validate={ validateWithdraw }
+                                    initialValues={{
+                                        amount        : '',
+                                        payment_agents: this.props.selected_payment_agent,
+                                        payment_method: 'payment_agents',
+                                    }}
+                                    validate={ validateWithdrawal }
                                     // onSubmit={ onSubmit }
                                 >
                                     {

@@ -27,5 +27,6 @@ import 'deriv-components/lib/${getKebabCase(c)}.css';
 
         return replace;
     });
-    return this.callback(null, mapped_lines.join('\n'), map);
+
+    this.callback(null, mapped_lines.join('\n'), map);
 };

@@ -48,7 +48,7 @@ class PaymentAgentReceipt extends React.Component {
                     </div>
                 </div>
                 <div className='payment-agent__separator' />
-                {this.props.payment_agent_name &&
+                {this.props.payment_agent_name ?
                     <React.Fragment>
                         <h2 className='payment-agent__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
                         <p className='payment-agent__explanation'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
@@ -59,6 +59,8 @@ class PaymentAgentReceipt extends React.Component {
                             <div><Icon icon='IconEmail' className='payment-agent__accordion-content-icon' />{this.props.payment_agent_email}</div>
                         </div>
                     </React.Fragment>
+                    :
+                    <p className='payment-agent__text'><Localize i18n_default_text='Please contact your payment agent to validate your withdrawal request.' /></p>
                 }
                 <div className='payment-agent__buttons'>
                     <Button

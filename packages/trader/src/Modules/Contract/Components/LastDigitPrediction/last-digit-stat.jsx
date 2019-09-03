@@ -3,15 +3,6 @@ import PropTypes  from 'prop-types';
 import React      from 'react';
 
 const LastDigitStat = ({ is_max, is_min, is_selected, percentage }) => {
-    // TODO: Refactor and handle fixed colors in css stylesheet
-    const stroke_color = () => {
-        if (is_max) {
-            return '#4BB4B3';
-        } else if (is_min) {
-            return '#EC3F3F';
-        }
-        return '#1C5AE3';
-    };
     // interpolate color opacity within 7.5 to 12.5 range
     let opacity = (percentage - 10) / 4;
     opacity = Math.min(Math.max(opacity, -1), +1);
@@ -43,12 +34,14 @@ const LastDigitStat = ({ is_max, is_min, is_selected, percentage }) => {
                 />
                 {percentage &&
                 <circle
-                    className='progress__value'
+                    className={classNames('progress__value', {
+                        'progress__value--is-max': is_max,
+                        'progress__value--is-min': is_min,
+                    })}
                     cx='60'
                     cy='60'
                     r='54'
                     fill='none'
-                    stroke={stroke_color()}
                     strokeOpacity={(is_max || is_min) ? 1 : opacity}
                     strokeWidth='12'
                     strokeDasharray={[w * p, w * (1 - p)]}

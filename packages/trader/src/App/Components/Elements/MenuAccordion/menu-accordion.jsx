@@ -21,7 +21,7 @@ class MenuAccordion extends React.PureComponent {
 
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
-                <MenuAccordionHeaders 
+                <MenuAccordionHeaders
                     items={list}
                     onChange={this.changeSelectedContent}
                     selected={selected_content}

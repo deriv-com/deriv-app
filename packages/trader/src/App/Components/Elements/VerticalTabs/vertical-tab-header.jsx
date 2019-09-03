@@ -10,7 +10,7 @@ const HeaderIcon = ({ icon, is_active }) => (
             'vertical-tab__header__icon--active': is_active,
         })}
     />
-)
+);
 
 const Header = ({ text }) => <div className='vertical-tab__header__link'>{text}</div>;
 
@@ -35,7 +35,7 @@ const VerticalTabHeader = ({ children, is_routed, item, onChange, selected }) =>
             >
                 <HeaderIcon icon={item.icon} is_active={is_active} />
                 <Header text={label} />
-                    {children}
+                {children}
             </NavLink>
             :
             <div
@@ -49,9 +49,9 @@ const VerticalTabHeader = ({ children, is_routed, item, onChange, selected }) =>
             >
                 <HeaderIcon icon={item.icon} is_active={is_active} />
                 <Header text={label} />
-                    {children}
+                {children}
             </div>
     );
-}
+};
 
-export { VerticalTabHeader }
+export { VerticalTabHeader };

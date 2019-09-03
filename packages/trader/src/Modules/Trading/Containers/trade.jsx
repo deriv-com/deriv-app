@@ -169,13 +169,12 @@ class ChartTradeClass extends React.Component {
         const {
             last_contract,
             show_digits_stats,
-            barriers_array,
             main_barrier,
         } = this.props;
         const bottomWidgets =
             (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
 
-        const barriers = [main_barrier, ...barriers_array];
+        const barriers = [main_barrier];
 
         return (
             <SmartChart
@@ -216,7 +215,6 @@ const ChartTrade = connect(
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,
         chart_type       : modules.contract_trade.chart_type,
-        barriers_array   : modules.contract_trade.barriers_array,
         settings         : {
             assetInformation            : false, // ui.is_chart_asset_info_visible,
             countdown                   : ui.is_chart_countdown_visible,

@@ -51,7 +51,9 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get markers_array() {
+        const underlying = this.root_store.modules.trade.symbol;
         const markers = this.contracts
+            .filter(c => c.contract_info.underlying === underlying)
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
@@ -61,18 +63,15 @@ export default class ContractTradeStore extends BaseStore {
         return markers;
     }
 
-    @computed
-    get barriers_array() {
-        return [];
-        // const length = this.contracts.length;
-        // const barriers = length > 0 ? this.contracts[length - 1].barriers_array  : [];
-        // return toJS(barriers);
-    }
-
     @action.bound
-    addContract({ contract_id, contract_type, start_time, longcode }) {
+    addContract({ contract_id, contract_type, start_time, longcode, underlying }) {
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig({ date_start: start_time, longcode, contract_type });
+        contract.populateConfig({
+            date_start: start_time,
+            longcode,
+            contract_type,
+            underlying,
+        });
         this.contracts.push(contract);
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);

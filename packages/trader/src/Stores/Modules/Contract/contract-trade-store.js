@@ -81,6 +81,7 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        this.forgetProposalOpenContract(contract_id, this.updateProposal);
     }
 
     @action.bound

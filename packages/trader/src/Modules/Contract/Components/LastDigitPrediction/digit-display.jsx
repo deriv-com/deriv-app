@@ -26,9 +26,9 @@ const DigitDisplay = ({
     return (
         <div
             className={classNames('digits__digit', {
+                'digits__digit--latest': is_latest,
                 'digits__digit--win'   : is_won && is_latest,
                 'digits__digit--loss'  : is_lost && is_latest,
-                'digits__digit--latest': is_latest,
             })}
         >
             <LastDigitStat

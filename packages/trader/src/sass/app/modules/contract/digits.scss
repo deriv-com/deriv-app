@@ -15,7 +15,7 @@
 
         &--win {
             z-index: 1;
-            transform: scale(1.25) !important;
+            transform: scale(1.25);
 
             .digits__pie-container:before {
                 box-shadow: 0px 1px 18px rgba(75, 180, 179, 1);
@@ -23,7 +23,7 @@
         }
         &--loss {
             z-index: 1;
-            transform: scale(1.25) !important;
+            transform: scale(1.25);
 
             .digits__pie-container:before {
                 box-shadow: 0px 1px 18px rgba(255, 68, 79, 1);
@@ -79,9 +79,6 @@
                     background-color: themed('container_color');
                 }
             }
-            // &--latest {
-            //     transform: translateY(8px);
-            // }
             &--win {
                 @include themify($themes) {
                     background-color: themed('won_color');
@@ -145,10 +142,6 @@
                 }
             }
         }
-        // &--loss {
-        //     transform: translateY(8px);
-        //     transition: transform 0.2s ease-out 1s;
-        // }
     }
     &__pie-container {
         position: absolute;
@@ -176,22 +169,6 @@
         transform: rotate(-90deg);
         width: 42px;
         height: 42px;
-
-        // .progress__value {
-        //     stroke-dasharray: 339.292;
-        //     // stroke-dashoffset: 339.292;
-        //     // animation: progress 2s infinite alternate;
-        // }
-        @keyframes progress {
-            from {
-                stroke-dashoffset: 339.292;
-                stroke-opacity: 0.1;
-            }
-            to {
-                stroke-dashoffset: 0;
-                stroke-opacity: 1;
-            }
-        }
     }
     &__pointer {
         position: absolute;

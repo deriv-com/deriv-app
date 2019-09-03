@@ -99,8 +99,6 @@ class ContractReplay extends React.Component {
                         <ReplayChart
                             Digits={
                                 <Digits
-                                    // ctor={() => import(/* webpackChunkName: "digits" */'Modules/Contract/Components/Digits')}
-                                    // should_load={is_digit_contract}
                                     is_digit_contract={is_digit_contract}
                                     has_progress={true}
                                     is_ended={is_ended}
@@ -111,8 +109,6 @@ class ContractReplay extends React.Component {
                             }
                             InfoBox={
                                 <InfoBox
-                                    // ctor={() => import(/* webpackChunkName: "info-box" */'Modules/Contract/Components/InfoBox')}
-                                    // should_load={true}
                                     has_progress={false}
                                     contract_info={contract_info}
                                     error_message={error_message}

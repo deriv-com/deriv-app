@@ -100,8 +100,6 @@ const BottomDigits = ({
 }) => (
     <div className='bottom-widgets'>
         <Digits
-            // ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
-            // should_load={is_digit_contract}
             tick={tick}
             digits_array={digits}
             is_trade_page
@@ -174,12 +172,9 @@ class ChartTradeClass extends React.Component {
 
     render() {
         const {
-            // last_contract,
             show_digits_stats,
             main_barrier,
         } = this.props;
-        // const bottomWidgets =
-        //     (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
 
         const barriers = main_barrier ? [main_barrier] : [];
 

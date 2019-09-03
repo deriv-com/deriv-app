@@ -110,15 +110,12 @@ export default class ContractsFor {
 
             if (!has_absolute_default_value) {
                 barriers.values = barriers.values.map(() => false);
-            } else {
-                // Set distinct values for both barriers if they have equal values
-                if (
-                    barriers.values.length === 2 &&
-                    barrier_types.every(barrier_type => barrier_type === barrier_types[0]) &&
-                    barriers.values.every(barrier => barrier === barriers.values[0])
-                ) {
-                    barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
-                }
+            } else if (
+                barriers.values.length === 2 &&
+                barrier_types.every(barrier_type => barrier_type === barrier_types[0]) &&
+                barriers.values.every(barrier => barrier === barriers.values[0])
+            ) {
+                barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
             }
         }
 

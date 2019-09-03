@@ -6,7 +6,7 @@ export default class ActiveSymbols {
         this.active_symbols      = {};
         this.disabled_markets    = [];
         this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
-        this.disabled_submarkets = ['energy']; // These are only forward-starting.
+        this.disabled_submarkets = []; // These are only forward-starting.
         this.init_promise        = new PendingPromise();
         this.is_initialised      = false;
         this.processed_symbols   = {};

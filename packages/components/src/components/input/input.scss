@@ -105,12 +105,15 @@
         font-size: var(--text-size-s);
         padding: 1rem 1.2rem;
         width: 100%;
-        height: 4rem;
+        height: 3.8rem;
         display: block;
 
         &::placeholder {
             opacity: 0;
             transition: opacity 0.25s;
+        }
+        &--placeholder-visible::placeholder {
+            opacity: 0.7;
         }
         &:focus {
             outline: none;
@@ -136,6 +139,17 @@
                     background-color: themed('container_secondary_color');
                 }
             }
+        }
+    }
+    &__leading-icon {
+        margin: 0.9rem 0 1rem 1rem !important;
+        position: absolute;
+        left: 0;
+        pointer-events: none;
+        cursor: text;
+
+        + .dc-input__field {
+            padding-left: calc(1rem + 8px);
         }
     }
     &__trailing-icon {

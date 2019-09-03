@@ -8,7 +8,14 @@ const Input = (props, ref) => (
         {
             ({ field }) => (
                 <div className={ classNames('dc-input', props.className) }>
-                    <input ref={ ref } { ...field } { ...props } className='dc-input__field' />
+                    {
+                        props.leading_icon &&
+                        React.cloneElement(
+                            props.leading_icon,
+                            { className: classNames('dc-input__leading-icon', props.leading_icon.props.className) },
+                        )
+                    }
+                    <input ref={ ref } { ...field } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !props.label && props.placeholder })} />
                     {
                         props.trailing_icon &&
                         React.cloneElement(
@@ -16,9 +23,11 @@ const Input = (props, ref) => (
                             { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
                         )
                     }
-                    <label className='dc-input__label' htmlFor={ field.id }>
-                        { props.label || props.placeholder }
-                    </label>
+                    {props.label &&
+                        <label className='dc-input__label' htmlFor={ field.id }>
+                            { props.label }
+                        </label>
+                    }
                     <ErrorMessage name={ field.name }>
                         {
                             (msg) => (

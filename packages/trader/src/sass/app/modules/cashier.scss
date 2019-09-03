@@ -156,6 +156,7 @@
 
         &-display {
             justify-content: left;
+            height: 3.8rem;
 
             &-span {
                 font-size: 1.4rem;
@@ -199,7 +200,11 @@
         font-weight: bold;
     }
     &__radio {
-        display: block;
+        margin-bottom: 16px;
+
+        &-group {
+            display: block;
+        }
     }
     &__receipt {
         text-align: center;
@@ -254,5 +259,33 @@
     }
     &__done-button {
         margin-left: 8.5px;
+    }
+    &__input {
+        width: 12.6rem !important;
+        margin-left: 8px;
+
+        &-field {
+            text-align: left;
+            font-size: 1.4rem;
+            padding: 10px 12px !important;
+            height: 4rem;
+        }
+        &, &-long {
+            display: inline-block !important;
+            margin-bottom: 0 !important;
+        }
+        &-long {
+            width: calc(100% - 1.6rem - 9.8rem) !important;
+        }
+    }
+    &__withdraw-button {
+        width: 9.8rem;
+        min-width: 9.8rem;
+        margin: 0;
+        margin-left: 1.6rem;
+        display: inline-block;
+        height: 4rem;
+        font-size: 1.4rem;
+        padding: 1rem 1.6rem;
     }
 }

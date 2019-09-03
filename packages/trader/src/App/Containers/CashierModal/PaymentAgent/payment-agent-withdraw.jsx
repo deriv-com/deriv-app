@@ -8,13 +8,34 @@ import {
     Input }                from 'deriv-components';
 import Localize            from 'App/Components/Elements/localize.jsx';
 import RadioGroup          from 'App/Components/Form/Radio';
+import { localize }        from 'App/i18n';
 import { connect }         from 'Stores/connect';
 import PaymentAgentReceipt from './payment-agent-receipt.jsx';
 import Loading             from '../../../../templates/_common/components/loading.jsx';
 
+const withdrawInitialValues = (selected_payment_agent) => ({
+    amount        : '',
+    payment_agents: selected_payment_agent,
+    payment_method: 'payment_agents',
+});
+
+const validateWithdraw = (values) => {
+    const errors = {};
+
+    if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
+        errors.payment_method = true;
+    }
+
+    if (!values.amount) {
+        errors.amount = true;
+    }
+
+    return errors;
+};
+
 class PaymentAgentWithdraw extends React.Component {
     state = {
-        is_submitting: false,
+        is_submitted: false,
     };
 
     componentDidMount() {
@@ -22,33 +43,34 @@ class PaymentAgentWithdraw extends React.Component {
     }
 
     render() {
+        const withdrawInitialValuesPassthrough =
+            (values) => withdrawInitialValues(values, this.props.selected_payment_agent);
+
         return (
             <React.Fragment>
                 {this.props.is_loading ?
                     <Loading className='payment-agent__loader' />
                     :
                     <div className='payment-agent__wrapper'>
-                        {this.state.is_submitting ?
+                        {this.state.is_submitted ?
                             <PaymentAgentReceipt />
                             :
                             <React.Fragment>
                                 <h2 className='payment-agent__header'><Localize i18n_default_text='Payment agent withdrawal' /></h2>
                                 <Form
-                                    initialValues={{
-                                        amount        : '',
-                                        payment_agents: this.props.selected_payment_agent,
-                                    }}
-                                    // validate={ validate }
+                                    initialValues={ withdrawInitialValuesPassthrough }
+                                    // validate={ validateWithdraw }
                                     // onSubmit={ onSubmit }
                                 >
                                     {
                                         ({ isSubmitting, isValid, values }) => (
                                             <React.Fragment>
                                                 <RadioGroup
-                                                    className='payment-agent__radio'
+                                                    className='payment-agent__radio-group'
                                                     items={[
                                                         {
-                                                            label: (
+                                                            className: 'payment-agent__radio',
+                                                            label    : (
                                                                 <React.Fragment>
                                                                     <Localize i18n_default_text='By name' />
                                                                     <Dropdown
@@ -67,15 +89,16 @@ class PaymentAgentWithdraw extends React.Component {
                                                             value: true,
                                                         },
                                                         {
-                                                            label: (
+                                                            className: 'payment-agent__radio',
+                                                            label    : (
                                                                 <React.Fragment>
                                                                     <Localize i18n_default_text='By payment agent ID' />
-                                                                    {/* TODO: after radio-group refactor */}
-                                                                    {/* <Input */}
-                                                                    {/*    className='payment-agent__input' */}
-                                                                    {/*    type='text' */}
-                                                                    {/*    name='payment_agent' */}
-                                                                    {/* /> */}
+                                                                    <Input
+                                                                        className='payment-agent__input'
+                                                                        type='text'
+                                                                        name='payment_agent'
+                                                                        placeholder='CR'
+                                                                    />
                                                                 </React.Fragment>
                                                             ),
                                                             value: false,
@@ -86,12 +109,25 @@ class PaymentAgentWithdraw extends React.Component {
                                                     onToggle={this.props.setIsNameSelected}
                                                 />
                                                 <Input
-                                                    className='payment-agent__input'
-                                                    type='text'
+                                                    className='payment-agent__input-long'
+                                                    type='number'
                                                     name='amount'
+                                                    label={localize('Amount')}
+                                                    leading_icon={
+                                                        <span
+                                                            className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}
+                                                        />
+                                                    }
                                                 />
                                                 <Button
-                                                    className={classNames('payment-agent__withdraw-button', { 'payment-agent__withdraw-button--disabled': !values.payment_method || !isValid || isSubmitting })}
+                                                    className={
+                                                        classNames(
+                                                            'payment-agent__withdraw-button',
+                                                            'btn--primary',
+                                                            'btn--primary--orange',
+                                                            { 'payment-agent__withdraw-button--disabled': !values.payment_method || !isValid || isSubmitting },
+                                                        )
+                                                    }
                                                     type='submit'
                                                     is_disabled={ !values.payment_method || !isValid || isSubmitting }
                                                 >
@@ -111,6 +147,7 @@ class PaymentAgentWithdraw extends React.Component {
 }
 
 PaymentAgentWithdraw.propTypes = {
+    currency              : PropTypes.string,
     is_loading            : PropTypes.bool,
     is_name_selected      : PropTypes.bool,
     onChangePaymentAgent  : PropTypes.func,
@@ -121,10 +158,12 @@ PaymentAgentWithdraw.propTypes = {
 };
 
 export default connect(
-    ({ modules }) => ({
+    ({ client, modules }) => ({
+        currency              : client.currency,
         is_name_selected      : modules.cashier.config.payment_agent.is_name_selected,
         is_loading            : modules.cashier.is_loading,
         onChangePaymentAgent  : modules.cashier.onChangePaymentAgent,
+        onChangePaymentAgentID: modules.cashier.onChangePaymentAgentID,
         onMount               : modules.cashier.onMountPaymentAgentWithdraw,
         payment_agent_list    : modules.cashier.config.payment_agent.agents,
         selected_payment_agent: modules.cashier.config.payment_agent.selected_agent,

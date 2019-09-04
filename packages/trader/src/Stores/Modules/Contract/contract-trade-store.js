@@ -51,11 +51,25 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        const { symbol: underlying, contract_type } = this.root_store.modules.trade;
-        const { trade_types } = getContractTypesConfig()[contract_type];
+        const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
+        const { trade_types } = getContractTypesConfig()[trade_type];
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
-            .filter(c => trade_types.indexOf(c.contract_info.contract_type) !== -1);
+            .filter(c => {
+                const info = c.contract_info;
+                let ok = trade_types.indexOf(info.contract_type) !== -1;
+                // both high_low & rise_fall have the same contract_types in POC response
+                if (ok
+                    && info.barrier
+                    && info.entry_spot
+                    && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
+                ) {
+                    // entry_spot=barrier means it is rise_fall (blame the api)
+                    const type = `${info.entry_spot}` === `${info.barrier}` ? 'rise_fall' : 'high_low';
+                    ok = trade_type === type;
+                }
+                return ok;
+            });
     }
 
     @computed

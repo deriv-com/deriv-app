@@ -4,6 +4,7 @@ import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Lazy                  from 'App/Containers/Lazy';
+import Digits                from 'Modules/Contract/Components/Digits';
 import Test                  from './test.jsx';
 import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
@@ -88,17 +89,19 @@ import ChartMarker             from '../../SmartChart/Components/Markers/marker.
 
 // --- BottomWidgets for chart
 // TODO: fix bottom widgets jumps
-const LazyBottomDigits = ({
+const BottomDigits = ({
     is_digit_contract,
     contract_info,
+    digits,
     digits_info,
     display_status,
     is_ended,
+    tick,
 }) => (
     <div className='bottom-widgets'>
-        <Lazy
-            ctor={() => import(/* webpackChunkName: "digits", webpackPrefetch: true */'Modules/Contract/Components/Digits')}
-            should_load={is_digit_contract}
+        <Digits
+            tick={tick}
+            digits_array={digits}
             is_trade_page
             contract_info={contract_info}
             digits_info={digits_info}
@@ -117,7 +120,7 @@ const ChartBottomWidgets = connect(
         display_status   : modules.contract_trade.last_contract.display_status,
         is_ended         : modules.contract_trade.last_contract.is_ended,
     })
-)(LazyBottomDigits);
+)(BottomDigits);
 
 // ---- InfoBox for chart
 const LazyTopWidgets = ({ onSymbolChange }) => (
@@ -163,23 +166,22 @@ class ChartTradeClass extends React.Component {
     );
 
     topWidgets = () => (<ChartTopWidgets />);
-    bottomWidgets = () => (<ChartBottomWidgets />);
+    bottomWidgets = ({ digits, tick }) => (
+        <ChartBottomWidgets digits={digits} tick={tick} />
+    );
 
     render() {
         const {
-            last_contract,
             show_digits_stats,
             main_barrier,
         } = this.props;
-        const bottomWidgets =
-            (last_contract.is_digit_contract && !last_contract.is_ended) ? ChartBottomWidgets : null;
 
         const barriers = main_barrier ? [main_barrier] : [];
 
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={bottomWidgets}
+                bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}

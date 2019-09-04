@@ -84,6 +84,7 @@ export default class TradeStore extends BaseStore {
     @observable barrier_1     = '';
     @observable barrier_2     = '';
     @observable barrier_count = 0;
+    @observable main_barrier  = null;
 
     // Start Time
     @observable start_date       = Number(0); // Number(0) refers to 'now'
@@ -327,7 +328,6 @@ export default class TradeStore extends BaseStore {
         return is_digit_trade_type ? null : toJS(this.main_barrier);
     }
 
-    @observable main_barrier = null;
     setMainBarrier = (proposal_info) => {
         if (!proposal_info) { return ; }
         const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;

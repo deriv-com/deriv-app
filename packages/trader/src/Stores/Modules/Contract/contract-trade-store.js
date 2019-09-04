@@ -1,8 +1,8 @@
 import {
     action,
     computed,
-    observable, 
-    toJS}         from 'mobx';
+    observable,
+    toJS }               from 'mobx';
 import BinarySocket      from '_common/base/socket_base';
 import { isEmptyObject } from '_common/utility';
 import { localize }      from 'App/i18n';
@@ -81,6 +81,7 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        this.forgetProposalOpenContract(contract_id, this.updateProposal);
     }
 
     @action.bound

@@ -85,7 +85,10 @@ Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
     const callback = function(button) {
         const buttonWorkspace = button.getTargetWorkspace();
         Blockly.Variables.createVariable(buttonWorkspace, null, '');
-        buttonWorkspace.toolbox_.showCategory_('Variables');
+
+        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
+        toolbox.setSelectedItem(category, false);
     };
 
     buttonXml.setAttribute('text', msg);

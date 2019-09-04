@@ -1,5 +1,6 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
+import { getDiffInSeconds }    from 'Stores/Modules/Contract/Helpers/logic';
 import { SlideIn }             from 'App/Components/Animations';
 import { LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
@@ -25,6 +26,9 @@ class Digits extends React.PureComponent {
             tick,
         } = this.props;
 
+        const is_contract_elapsed = (tick && is_trade_page) ?
+            getDiffInSeconds(contract_info, tick.epoch) : false;
+
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}
@@ -36,14 +40,14 @@ class Digits extends React.PureComponent {
                     // dimension of a single digit widget including margin/padding (number)
                     // i.e - 40px + 4px left and 4px right padding/margin = 48
                     dimension={48}
-                    barrier={+contract_info.barrier}
-                    contract_type={contract_info.contract_type}
+                    barrier={!is_contract_elapsed ? +contract_info.barrier : null}
+                    contract_type={!is_contract_elapsed ? contract_info.contract_type : null}
                     digits={digits_array}
-                    digits_info={digits_info}
+                    digits_info={!is_contract_elapsed ? digits_info : {}}
                     is_digit_contract={is_digit_contract}
                     is_ended={is_ended}
                     is_trade_page={is_trade_page}
-                    status={display_status}
+                    status={!is_contract_elapsed ? display_status : null}
                     tick={tick}
                 />
             </SlideIn>

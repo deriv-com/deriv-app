@@ -49,6 +49,17 @@ export const getDisplayStatus = (contract_info) => {
     return status;
 };
 
+export const getDiffInSeconds = (contract_info, tick_epoch) => {
+    const end_time = getEndTime(contract_info);
+    if (end_time && tick_epoch) {
+        const seconds = moment.duration(
+            moment.unix(tick_epoch).diff(moment.unix(end_time))
+        ).asSeconds();
+        return (seconds >= 2);
+    }
+    return false;
+};
+
 export const getFinalPrice = (contract_info) => (
     +(contract_info.sell_price || contract_info.bid_price)
 );

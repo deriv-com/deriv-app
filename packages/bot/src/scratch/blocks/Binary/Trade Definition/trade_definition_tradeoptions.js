@@ -75,24 +75,21 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             return;
         }
 
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.END_DRAG && event.blockId === this.id)
-        ) {
-            this.updateBarrierInputs();
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.updateBarrierInputs(true);
             this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
             this.updateDurationInput(true);
             this.updatePredictionInput();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'DURATIONTYPE_LIST') {
                 // Update barrier suggested values when changing duration unit.
-                this.updateBarrierInputs();
+                this.updateBarrierInputs(true);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
                 // Update duration minimum amount when changing duration unit.
                 this.updateDurationInput(false);
             } else if (event.name === 'BARRIERTYPE_LIST' || event.name === 'SECONDBARRIERTYPE_LIST') {
                 // Update barrier suggested values when changing barrier type.
-                this.updateBarrierInputs();
+                this.updateBarrierInputs(false);
                 this.enforceSingleBarrierType(event.name, false);
             } else if (
                 event.name === 'SYMBOL_LIST' ||
@@ -100,7 +97,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 event.name === 'TRADETYPE_LIST'
             ) {
                 // Update durations, barriers, and prediction when changing the trade type.
-                this.updateBarrierInputs();
+                this.updateBarrierInputs(true);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
                 this.updateDurationInput(true);
                 this.updatePredictionInput();
@@ -190,14 +187,18 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         });
     },
-    updateBarrierInputs() {
+    updateBarrierInputs(should_use_default_types) {
         const { contracts_for } = ApiHelpers.instance;
+        const { BARRIER_TYPES } = config;
+        const selected_barrier_types = should_use_default_types ?
+            BARRIER_TYPES.map(barrier_option => barrier_option[1]) :
+            this.selected_barrier_types;
 
         contracts_for.getBarriers(
             this.selected_symbol,
             this.selected_trade_type,
             this.selected_duration,
-            this.selected_barrier_types
+            selected_barrier_types
         ).then(barriers => {
             this.createBarrierInputs(barriers);
             
@@ -205,15 +206,18 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
             for (let i = 0; i < barriers.values.length; i++) {
                 const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
-                const { ABSOLUTE_BARRIER_DROPDOWN_OPTION, BARRIER_TYPES } = config;
+                const { ABSOLUTE_BARRIER_DROPDOWN_OPTION } = config;
+                const barrier_field_value =  should_use_default_types ?
+                    selected_barrier_types[i] :
+                    barrier_field_dropdown.getValue();
                 
                 if (this.selected_duration === 'd') {
                     barrier_field_dropdown.updateOptions(ABSOLUTE_BARRIER_DROPDOWN_OPTION, 'absolute');
                 } else if (barriers.allow_both_types || barriers.allow_absolute_type) {
                     const options = [].concat(BARRIER_TYPES, ABSOLUTE_BARRIER_DROPDOWN_OPTION);
-                    barrier_field_dropdown.updateOptions(options, barrier_field_dropdown.getValue());
+                    barrier_field_dropdown.updateOptions(options, barrier_field_value);
                 } else {
-                    barrier_field_dropdown.updateOptions(BARRIER_TYPES, barrier_field_dropdown.getValue());
+                    barrier_field_dropdown.updateOptions(BARRIER_TYPES, barrier_field_value);
                 }
 
                 const { connection } = this.getInput(input_names[i]);

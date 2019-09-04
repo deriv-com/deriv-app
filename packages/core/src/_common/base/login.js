@@ -26,7 +26,7 @@ const Login = (() => {
         const default_login_url  = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {
-            return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}`;
+            return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
         }
         if (getAppId === domain_app_ids['deriv.app']) {
             return default_login_url;

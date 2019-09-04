@@ -122,12 +122,12 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
 
 const TickContract = RawMarkerMaker(({
     ctx: context,
-    points: [start, expiry, ...ticks],
+    points: [start, ...ticks], // [start, expiry, ...ticks],
     prices: [barrier], // TODO: support two barrier contracts
     is_last_contract,
     contract_info: {
-        contract_type,
-        exit_tick_time,
+        // contract_type,
+        // exit_tick_time,
         status,
         profit,
         is_sold,
@@ -266,9 +266,9 @@ const NonTickContract = RawMarkerMaker(({
     is_last_contract,
     prices: [barrier], // TODO: support two barrier contracts
     contract_info: {
-        contract_type,
-        exit_tick_time,
-        is_expired,
+        // contract_type,
+        // exit_tick_time,
+        // is_expired,
         is_sold,
         status,
         profit,
@@ -374,11 +374,11 @@ const DigitContract = RawMarkerMaker(({
     points: [start, ...ticks],
     is_last_contract,
     contract_info: {
-        contract_type,
+        // contract_type,
         status,
         profit,
         is_sold,
-        barrier,
+        // barrier,
         tick_stream,
         tick_count,
     },

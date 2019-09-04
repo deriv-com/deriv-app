@@ -248,15 +248,13 @@ export default class TradeStore extends BaseStore {
         runInAction(async() => {
             await this.setDefaultSymbol();
             await this.setContractTypes();
-            runInAction(() => {
-                this.processNewValuesAsync({
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false,
-                );
-            });
+            await this.processNewValuesAsync({
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false,
+            );
         });
     }
 

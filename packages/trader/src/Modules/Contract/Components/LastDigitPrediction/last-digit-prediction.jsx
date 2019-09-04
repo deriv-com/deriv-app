@@ -9,13 +9,17 @@ const display_array = Array.from(Array(10).keys()); // digits array [0 - 9]
 class LastDigitPrediction extends React.Component {
     state = {};
 
-    componentDidMount() {
-        this.node.querySelectorAll('.digits__digit').forEach((el, idx) => {
-            // get offsetLeft of each Digits
-            this.setState({
-                [idx]: el.offsetLeft,
-            });
-        });
+    digit_left_offset = {
+        0: 4,
+        1: 4 + (this.props.dimension * 1),
+        2: 4 + (this.props.dimension * 2),
+        3: 4 + (this.props.dimension * 3),
+        4: 4 + (this.props.dimension * 4),
+        5: 4 + (this.props.dimension * 5),
+        6: 4 + (this.props.dimension * 6),
+        7: 4 + (this.props.dimension * 7),
+        8: 4 + (this.props.dimension * 8),
+        9: 4 + (this.props.dimension * 9),
     }
 
     getBarrier = (num) => {
@@ -45,7 +49,7 @@ class LastDigitPrediction extends React.Component {
         // but we only need is_lost condition only once we have the 'won' or 'lost' status
         const is_lost = is_ended && status === 'lost';
 
-        const position = this.state[latest_digit.digit];
+        const position = this.digit_left_offset[latest_digit.digit];
 
         return (
             <div

@@ -130,6 +130,7 @@ function calculate_marker(contract_info) {
         date_start,
         date_expiry,
         entry_tick_time,
+        exit_tick_time,
         contract_type,
         tick_count,
         barrier_count,
@@ -188,6 +189,9 @@ function calculate_marker(contract_info) {
         const epoch_array = [date_start, end_time];
         if (entry_tick_time) {
             epoch_array.push(entry_tick_time);
+        }
+        if (exit_tick_time) {
+            epoch_array.push(exit_tick_time);
         }
         return {
             contract_info: toJS(contract_info),

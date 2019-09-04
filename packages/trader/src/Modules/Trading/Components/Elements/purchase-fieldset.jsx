@@ -1,9 +1,9 @@
 import classNames     from 'classnames';
+import { Popover }    from 'deriv-components';
 import React          from 'react';
 import PropTypes      from 'prop-types';
 // import { localize }   from 'App/i18n';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
-import { Popover }    from 'App/Components/Elements/Popover';
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
 import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 // import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';

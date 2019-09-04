@@ -4,16 +4,20 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const is_serve = process.env.BUILD_MODE === 'serve';
+const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
+        autocomplete: path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
         button      : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        checkbox    : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
+        dropdown    : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
+        form        : path.resolve(__dirname, 'src', 'components/form/index.js'),
+        input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
-        autocomplete: path.resolve(__dirname, 'src', 'components/forms/autocomplete/index.js'),
-        input       : path.resolve(__dirname, 'src', 'components/forms/input/index.js'),
-        form        : path.resolve(__dirname, 'src', 'components/forms/form/index.js'),
+        popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -21,6 +25,11 @@ module.exports = {
         libraryExport: 'default',
         library      : ['deriv-component', '[name]'],
         libraryTarget: 'umd',
+    },
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'src', 'components'),
+        },
     },
     optimization: {
         minimize: true,
@@ -32,7 +41,7 @@ module.exports = {
     devServer: {
         publicPath: '/dist/',
     },
-    devtool: 'source-map',
+    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     module : {
         rules: [
             {
@@ -51,10 +60,10 @@ module.exports = {
                     {
                         loader : 'sass-resources-loader',
                         options: {
-                            resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
-                        },
-                    },
-                ],
+                            resources: require('deriv-shared/utils/index.js'),
+                        }
+                    }
+                ]
             },
             {
                 test: /\.svg$/,

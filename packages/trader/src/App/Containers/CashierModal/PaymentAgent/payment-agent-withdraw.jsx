@@ -45,12 +45,21 @@ class PaymentAgentWithdraw extends React.Component {
     }
 
     render() {
-        const validateWithdrawalPassthrough =
-            (values) => validateWithdrawal(values, {
+        const validateWithdrawalPassthrough = (values) =>
+            validateWithdrawal(values, {
                 balance      : this.props.balance,
                 currency     : this.props.currency,
                 payment_agent: this.props.selected_payment_agent,
             });
+
+        const onWithdrawalPassthrough = (values) => {
+            this.props.requestPaymentAgentWithdraw({
+                loginid          : values.payment_agents || values.payment_agent,
+                currency         : this.props.currency,
+                amount           : values.amount,
+                verification_code: this.props.verification_code,
+            });
+        };
 
         return (
             <React.Fragment>
@@ -70,7 +79,7 @@ class PaymentAgentWithdraw extends React.Component {
                                         payment_method: 'payment_agents',
                                     }}
                                     validate={ validateWithdrawalPassthrough }
-                                    // onSubmit={ onSubmit }
+                                    onSubmit={ onWithdrawalPassthrough }
                                 >
                                     {
                                         ({ isSubmitting, isValid, values }) => (
@@ -160,28 +169,31 @@ class PaymentAgentWithdraw extends React.Component {
 }
 
 PaymentAgentWithdraw.propTypes = {
-    balance               : PropTypes.string,
-    currency              : PropTypes.string,
-    is_loading            : PropTypes.bool,
-    is_name_selected      : PropTypes.bool,
-    onChangePaymentAgent  : PropTypes.func,
-    onMount               : PropTypes.func,
-    payment_agent_list    : PropTypes.array,
-    selected_payment_agent: PropTypes.object,
-    setIsNameSelected     : PropTypes.func,
+    balance                    : PropTypes.string,
+    currency                   : PropTypes.string,
+    is_loading                 : PropTypes.bool,
+    is_name_selected           : PropTypes.bool,
+    onChangePaymentAgent       : PropTypes.func,
+    onMount                    : PropTypes.func,
+    payment_agent_list         : PropTypes.array,
+    requestPaymentAgentWithdraw: PropTypes.func,
+    selected_payment_agent     : PropTypes.object,
+    setIsNameSelected          : PropTypes.func,
+    verification_code          : PropTypes.string,
 };
 
 export default connect(
     ({ client, modules }) => ({
-        balance               : client.balance,
-        currency              : client.currency,
-        is_name_selected      : modules.cashier.config.payment_agent.is_name_selected,
-        is_loading            : modules.cashier.is_loading,
-        onChangePaymentAgent  : modules.cashier.onChangePaymentAgent,
-        onChangePaymentAgentID: modules.cashier.onChangePaymentAgentID,
-        onMount               : modules.cashier.onMountPaymentAgentWithdraw,
-        payment_agent_list    : modules.cashier.config.payment_agent.agents,
-        selected_payment_agent: modules.cashier.config.payment_agent.selected_agent,
-        setIsNameSelected     : modules.cashier.setIsNameSelected,
+        balance                    : client.balance,
+        currency                   : client.currency,
+        is_name_selected           : modules.cashier.config.payment_agent.is_name_selected,
+        is_loading                 : modules.cashier.is_loading,
+        onChangePaymentAgent       : modules.cashier.onChangePaymentAgent,
+        onChangePaymentAgentID     : modules.cashier.onChangePaymentAgentID,
+        onMount                    : modules.cashier.onMountPaymentAgentWithdraw,
+        payment_agent_list         : modules.cashier.config.payment_agent.agents,
+        requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
+        selected_payment_agent     : modules.cashier.config.payment_agent.selected_agent,
+        setIsNameSelected          : modules.cashier.setIsNameSelected,
     })
 )(PaymentAgentWithdraw);

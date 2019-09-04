@@ -13,7 +13,7 @@ class PaymentAgent extends React.Component {
         return (
             <React.Fragment>
                 {this.props.verification_code || this.props.is_payment_agent_withdraw ?
-                    <PaymentAgentWithdraw />
+                    <PaymentAgentWithdraw verification_code={this.props.verification_code} />
                     :
                     <PaymentAgentList />
                 }

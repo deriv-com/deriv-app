@@ -88,6 +88,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMount(verification_code) {
+        await BinarySocket.wait('authorize');
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
@@ -385,6 +386,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgentList() {
+        await BinarySocket.wait('authorize');
         if (!this.config.payment_agent.list.length) {
             this.setLoading(true);
             await BinarySocket.wait('paymentagent_list');
@@ -465,6 +467,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgentWithdraw() {
+        await BinarySocket.wait('authorize');
         this.setIsWithdraw(true);
 
         this.setLoading(true);
@@ -501,6 +504,11 @@ export default class CashierStore extends BaseStore {
             name          : target.value,
         };
     }
+
+    @action.bound
+    requestPaymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) => {
+        WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
+    };
 
     onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {

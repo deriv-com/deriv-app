@@ -1,14 +1,14 @@
 import React            from 'react';
 import PropTypes        from 'prop-types';
-import { localize }     from 'App/i18n';
 import { Dialog }       from 'deriv-components';
+import { localize }     from 'App/i18n';
 import Localize         from 'App/Components/Elements/localize.jsx';
 import { connect }      from 'Stores/connect';
 import { website_name } from '../../../../Constants/app-config';
 
 class UnsupportedContractModal extends React.PureComponent {
     render() {
-        const { is_visible, onConfirm, onClose, disableApp, enableApp, is_loading} = this.props;
+        const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose} = this.props;
         return (
             <Dialog
                 title={localize('Whoops!')}
@@ -32,6 +32,9 @@ class UnsupportedContractModal extends React.PureComponent {
 }
 
 UnsupportedContractModal.propTypes = {
+    disableApp: PropTypes.bool,
+    enableApp : PropTypes.bool,
+    is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onClose   : PropTypes.func,
     onConfirm : PropTypes.func,

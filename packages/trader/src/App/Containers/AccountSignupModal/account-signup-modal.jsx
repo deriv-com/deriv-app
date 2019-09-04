@@ -160,7 +160,15 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
 };
 
-const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccountSignupModal, enableApp, disableApp, is_loading }) => {
+const AccountSignupModal = ({ 
+    enableApp,
+    disableApp,
+    is_loading,
+    is_visible,
+    onSignup,
+    residence_list,
+    toggleAccountSignupModal 
+}) => {
     return (
         <Dialog 
             is_visible={is_visible} 
@@ -178,6 +186,9 @@ const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccoun
 };
 
 AccountSignupModal.propTypes = {
+    disableApp    : PropTypes.bool,
+    enableApp     : PropTypes.bool,
+    is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onSignup      : PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),

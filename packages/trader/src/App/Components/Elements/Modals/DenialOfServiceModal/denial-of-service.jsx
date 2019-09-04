@@ -6,12 +6,12 @@ import Localize      from 'App/Components/Elements/localize.jsx';
 import { connect }   from 'Stores/connect';
 
 const DenialOfServiceModal = ({ 
+    disableApp,
+    enableApp,
+    is_loading,
     is_visible,
     onCancel,
     onConfirm,
-    disableApp,
-    enableApp,
-    is_loading
 }) => (
     <Dialog
         title={localize('Whoops!')}
@@ -30,6 +30,9 @@ const DenialOfServiceModal = ({
 );
 
 DenialOfServiceModal.propTypes = {
+    disableApp: PropTypes.bool,
+    enableApp : PropTypes.bool,
+    is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onCancel  : PropTypes.func,
     onConfirm : PropTypes.func,

@@ -15,29 +15,11 @@
     right: 0;
     bottom: 0;
 
-    &__background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        transition: opacity 0.15s linear;
-
-        &--enter, &--exit {
-            opacity: 0;
-        }
-        &--enter-done {
-            opacity: 1;
-        }
-        @include themify($themes) {
-            background-color: rgba(themed('container_color'), 0.56);
-        }
-    }
     &__wrapper {
         position: absolute;
         left: calc(100vw - 70%);
         top: calc(100vh - 70%);
-        transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.15s linear;
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
         &--enter, &--exit {
             transform: translate3d(0, 50px, 0);

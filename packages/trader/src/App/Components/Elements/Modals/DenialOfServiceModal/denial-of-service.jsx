@@ -1,7 +1,7 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { localize }  from 'App/i18n';
 import { Dialog }    from 'deriv-components';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import { localize }  from 'App/i18n';
 import Localize      from 'App/Components/Elements/localize.jsx';
 import { connect }   from 'Stores/connect';
 

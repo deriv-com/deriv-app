@@ -50,8 +50,8 @@ class ModalElement extends React.PureComponent {
                         {this.props.header}
                     </div>
                     }
-                    <div id='dt_modal_close_icon' onClick={this.props.toggleModal} className={classNames('dc-modal-header__close', this.props.className && `dc-modal-header__close--${this.props.className}`)} >
-                        <IconClose icon='ModalIconClose' />
+                    <div onClick={this.props.toggleModal} className={classNames('dc-modal-header__close', this.props.className && `dc-modal-header__close--${this.props.className}`)} >
+                        <IconClose />
                     </div>
                 </div>
                 {this.props.children}

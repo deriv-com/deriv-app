@@ -31,6 +31,7 @@ class Digits extends React.PureComponent {
                 type='bottom'
             >
                 <LastDigitPrediction
+                    dimension={48}
                     barrier={+contract_info.barrier}
                     contract_type={contract_info.contract_type}
                     digits_info={digits_info}

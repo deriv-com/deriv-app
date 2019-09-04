@@ -195,9 +195,9 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    setDefaultSymbol() {
+    async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            this.processNewValuesAsync({
+            await this.processNewValuesAsync({
                 symbol: pickDefaultSymbol(this.active_symbols),
             });
         }
@@ -244,17 +244,15 @@ export default class TradeStore extends BaseStore {
         await BinarySocket.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
-            this.setDefaultSymbol();
+            await this.setDefaultSymbol();
             await this.setContractTypes();
-            runInAction(() => {
-                this.processNewValuesAsync({
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false,
-                );
-            });
+            await this.processNewValuesAsync({
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false,
+            );
         });
     }
 

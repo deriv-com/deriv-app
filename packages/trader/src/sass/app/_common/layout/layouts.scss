@@ -407,9 +407,9 @@
         transition: transform 0.2s ease;
         @extend %inline-icon;
 
-        &--active {
-            transform: rotate(90deg);
-        }
+        // &--active {
+        //     transform: rotate(90deg);
+        // }
     }
     &:hover {
         cursor: pointer;
@@ -419,6 +419,11 @@
     }
     &:focus {
         outline: none;
+    }
+    &--active {
+        .advanced-simple-toggle__icon {
+            transform: rotate(90deg);
+        }
     }
 }
 

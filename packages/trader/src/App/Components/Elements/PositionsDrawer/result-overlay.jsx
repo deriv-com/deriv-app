@@ -4,7 +4,7 @@ import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { NavLink }         from 'react-router-dom';
 import {
-    IconCheck,
+    IconCheckmarkCircle,
     IconCross }            from 'deriv-components';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { localize }        from 'App/i18n';
@@ -65,7 +65,7 @@ class ResultOverlay extends React.PureComponent {
                                     (is_contract_won) ?
                                         <React.Fragment>
                                             {localize('won')}
-                                            <IconCheck className='result__icon' />
+                                            <IconCheckmarkCircle className='result__icon' />
                                         </React.Fragment>
                                         :
                                         <React.Fragment>

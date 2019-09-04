@@ -1,10 +1,11 @@
 import classNames      from 'classnames';
 import PropTypes       from 'prop-types';
 import React           from 'react';
+import {
+    IconInfoOutline,
+    IconQuestion,
+    IconRedDot }       from 'Components/Icon/icons';
 import PopoverBubble   from './popover-bubble.jsx';
-import IconInfoOutline from '../icon-info-outline.jsx';
-import IconQuestion    from '../icon-question.jsx';
-import IconRedDot      from '../icon-red-dot.jsx';
 
 class Popover extends React.PureComponent {
     constructor (props) {

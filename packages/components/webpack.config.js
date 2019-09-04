@@ -30,6 +30,7 @@ module.exports = {
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'src', 'components'),
+            // Icon: path.resolve(__dirname, 'src', 'components/icon/index.js'),
         },
     },
     optimization: {
@@ -66,23 +67,43 @@ module.exports = {
                     }
                 ]
             },
-            {
+            // {
+            //     test: /\.svg$/,
+            //     use : [
+            //         {
+            //             loader : 'svg-sprite-loader',
+            //             options: {
+            //                 extract       : true,
+            //                 spriteFilename: 'bot-sprite.svg',
+            //             },
+            //         },
+            //         {
+            //             loader : 'svgo-loader',
+            //             options: {
+            //                 plugins: [
+            //                     { removeUselessStrokeAndFill: false },
+            //                     { removeUnknownsAndDefaults: false },
+            //                 ],
+            //             },
+            //         },
+            //     ],
+            // },
+               {  
                 test: /\.svg$/,
-                use : [
+                use: [
                     {
-                        loader : 'svg-sprite-loader',
+                        loader: '@svgr/webpack',
                         options: {
-                            extract       : true,
-                            spriteFilename: 'bot-sprite.svg',
-                        },
-                    },
-                    {
-                        loader : 'svgo-loader',
-                        options: {
-                            plugins: [
-                                { removeUselessStrokeAndFill: false },
-                                { removeUnknownsAndDefaults: false },
-                            ],
+                          template: (
+                            { template },
+                            opts,
+                            { imports, componentName, props, jsx, exports }
+                          ) => template.ast`
+                            ${imports}
+                            import IconBase from '../icon-base.jsx';
+                            const ${componentName} = (${props}) => IconBase(${jsx});
+                            export default ${componentName};
+                          `,
                         },
                     },
                 ],

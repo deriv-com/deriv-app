@@ -11,15 +11,16 @@ const DurationToggle = ({
     const toggle = () => {
         onChange({ target: { value: !value, name } });
     };
-    const icon_className = classNames(
-        'advanced-simple-toggle__icon',
-        'select-arrow',
-        { 'advanced-simple-toggle__icon--active': value },
-    );
     return (
         <Fragment>
-            <button id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'} className='advanced-simple-toggle' onClick={toggle}>
-                <Icon icon='IconChevronLeft' className={icon_className} classNamePath={'advanced-simple-toggle__icon-path'} />
+            <button
+                id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'}
+                className={classNames('advanced-simple-toggle', {
+                    'advanced-simple-toggle--active': value,
+                })}
+                onClick={toggle}
+            >
+                <Icon icon='IconChevronLeft' className='advanced-simple-toggle__icon select-arrow' />
             </button>
         </Fragment>);
 };

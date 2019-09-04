@@ -117,7 +117,7 @@ class ContractTypeWidget extends React.PureComponent {
         return text;
     };
 
-    getItemIndex = (curr_item, itemList) => itemList.findIndex((list_item) => list_item.value === curr_item.value);
+    getItemIndex = (curr_item, itemList) => itemList.findIndex((list_item) => list_item.value.indexOf(curr_item.value));
 
     getItemList = () => {
         const itemList = [];

@@ -12,7 +12,7 @@ function getThemifiedProps(Svg, theme, key) {
         if (props['data-theme'] === 'none') return themifiedProps.push(Svg);
         if (type === 'path') {
             if (attribute && props[attribute]) {
-                themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] })); 
+                themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] }));
             }
         }
         if (type === element) {
@@ -22,7 +22,7 @@ function getThemifiedProps(Svg, theme, key) {
             const [attr, value] = attribute.split('=');
             if (value && props[attr] === value) {
                 themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] }));
-            } 
+            }
         }
     });
 
@@ -34,7 +34,7 @@ function getThemifiedProps(Svg, theme, key) {
     }
 
     if (themifiedProps[0]) {
-        return React.cloneElement(themifiedProps[0], { key, children: childrenWithProps })
+        return React.cloneElement(themifiedProps[0], { key, children: childrenWithProps });
     }
     return React.cloneElement(Svg, { key, children: childrenWithProps });
 }
@@ -71,7 +71,7 @@ const IconBase = Svg => {
             
         };
         childrenWithProps = getThemifiedProps(children, fillColors);
-    } 
+    }
     
     if (colors) {
         childrenWithProps = getThemifiedProps(children, colors);

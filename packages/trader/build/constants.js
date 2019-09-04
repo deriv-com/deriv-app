@@ -47,24 +47,24 @@ const ALIASES = {
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => ([
-    ...(is_test_env && !is_mocha_only ? [
-        {
-            test   : /\.(js|jsx)$/,
-            exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
-            include: /src/,
-            loader : 'eslint-loader',
-            enforce: 'pre',
-            options: {
-                formatter : require('eslint-formatter-pretty'),
-                configFile: path.resolve(__dirname, '../.eslintrc.js'),
-                ignorePath: path.resolve(__dirname, '../.eslintignore'),
-            }
-        }
-    ] : []),
+    // ...(is_test_env && !is_mocha_only ? [
+    //     {
+    //         test   : /\.(js|jsx)$/,
+    //         exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+    //         include: /src/,
+    //         loader : 'eslint-loader',
+    //         enforce: 'pre',
+    //         options: {
+    //             formatter : require('eslint-formatter-pretty'),
+    //             configFile: path.resolve(__dirname, '../.eslintrc.js'),
+    //             ignorePath: path.resolve(__dirname, '../.eslintignore'),
+    //         }
+    //     }
+    // ] : []),
     {
         test   : /\.(js|jsx)$/,
         // tell webpack to parse .jsx icons files in deriv-components
-        exclude: is_test_env ? /node_modules\/(?!deriv-components)\/.*/ : /node_modules\/(?!deriv-components)|__tests__/,
+        exclude: is_test_env ? /node_modules\/(?!deriv-components)|packages\/components/ : /node_modules\/(?!deriv-components)|__tests__/,
         use    : js_loaders
     },
     {

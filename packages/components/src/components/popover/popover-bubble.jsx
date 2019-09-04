@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
 import posed, { PoseGroup } from 'react-pose';
-import IconInfoBlue         from '../icon-info-blue.jsx';
+import { IconInfoBlue }     from 'Components/Icon/icons';
 
 const FadeIn = posed.span({
     enter: {

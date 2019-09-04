@@ -9,6 +9,7 @@ import { localize }      from 'App/i18n';
 import { WS }            from 'Services';
 import ContractStore     from './contract-store';
 import BaseStore         from '../../base-store';
+import { getContractTypesConfig } from '../Trading/Constants/contract';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -49,11 +50,17 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
+    applicable_contracts = () => {
+        const { symbol: underlying, contract_type } = this.root_store.modules.trade;
+        const { trade_types } = getContractTypesConfig()[contract_type];
+        return this.contracts
+            .filter(c => c.contract_info.underlying === underlying)
+            .filter(c => trade_types.indexOf(c.contract_info.contract_type) !== -1);
+    }
+
     @computed
     get markers_array() {
-        const underlying = this.root_store.modules.trade.symbol;
-        const markers = this.contracts
-            .filter(c => c.contract_info.underlying === underlying)
+        const markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
@@ -130,8 +137,9 @@ export default class ContractTradeStore extends BaseStore {
 
     @computed
     get last_contract() {
-        const length = this.contracts.length;
-        return length > 0 ? this.contracts[length - 1] : { };
+        const applicable_contracts = this.applicable_contracts();
+        const length = applicable_contracts.length;
+        return length > 0 ? applicable_contracts[length - 1] : { };
     }
 
     forgetProposalOpenContract = (contract_id, cb) => {

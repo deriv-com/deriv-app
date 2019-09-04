@@ -1,12 +1,12 @@
 import classNames        from 'classnames';
-import React             from 'react';
-import PropTypes         from 'prop-types';
 import {
     Autocomplete,
     Input,
     Form,
     Button,
     Dialog }             from 'deriv-components';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';

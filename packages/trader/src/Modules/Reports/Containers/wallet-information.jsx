@@ -1,7 +1,7 @@
+import { Label }         from 'deriv-components';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import Icon              from 'Assets/icon.jsx';
-import Label             from 'App/Components/Elements/Label/label.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import Money             from 'App/Components/Elements/money.jsx';
 import { connect }       from 'Stores/connect';
@@ -36,7 +36,7 @@ const WalletInformation = ({
             </span>
             {has_loginid && <span className='current-loginid'>{loginid}</span>}
             {is_website_status_ready &&
-            <Label mode={`${is_virtual ? 'warn-invert' : 'success-invert'}`} size='large'>
+            <Label className='account-wallet__label' mode={`${is_virtual ? 'warn-invert' : 'success-invert'}`} size='large'>
                 <Money amount={balance} currency={currency} />
             </Label>
             }

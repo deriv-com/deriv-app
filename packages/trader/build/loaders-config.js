@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');                     
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 
 const js_loaders = [
@@ -101,6 +101,12 @@ const css_loaders = [
             sourceMap: true,
         }
     },
+    {
+        loader: 'sass-resources-loader',
+        options: {
+            resources: require('deriv-shared/utils/index.js'),
+        }
+    }
 ];
 
 module.exports = {

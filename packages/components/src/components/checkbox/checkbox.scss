@@ -1,0 +1,22 @@
+.dc-checkbox {
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+    align-items: flex-start;
+
+    &__box {
+        width: 16px;
+        height: 16px;
+        transition: 0.3s ease-in-out;
+        flex-shrink: 0;
+        margin: 2px 8px 0 0;
+        border-radius: 2px;
+        align-self: flex-start;
+        border: 2px solid $COLOR_DARK_BLUE_7;
+
+        &--active {
+            border: none;
+            background-color: $COLOR_ORANGE;
+        }
+    }
+}

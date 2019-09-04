@@ -190,15 +190,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     updateBarrierInputs(should_use_default_types) {
         const { contracts_for } = ApiHelpers.instance;
         const { BARRIER_TYPES } = config;
-        const selected_barrier_types = should_use_default_types ?
-            BARRIER_TYPES.map(barrier_option => barrier_option[1]) :
-            this.selected_barrier_types;
 
         contracts_for.getBarriers(
             this.selected_symbol,
             this.selected_trade_type,
             this.selected_duration,
-            selected_barrier_types
+            this.selected_barrier_types
         ).then(barriers => {
             this.createBarrierInputs(barriers);
             
@@ -208,15 +205,18 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
                 const { ABSOLUTE_BARRIER_DROPDOWN_OPTION } = config;
                 const barrier_field_value =  should_use_default_types ?
-                    selected_barrier_types[i] :
+                    BARRIER_TYPES[i][1] :
                     barrier_field_dropdown.getValue();
                 
                 if (this.selected_duration === 'd') {
+                    // Only absolute types are allowed.
                     barrier_field_dropdown.updateOptions(ABSOLUTE_BARRIER_DROPDOWN_OPTION, 'absolute');
                 } else if (barriers.allow_both_types || barriers.allow_absolute_type) {
+                    // Both offset + absolute types are allowed.
                     const options = [].concat(BARRIER_TYPES, ABSOLUTE_BARRIER_DROPDOWN_OPTION);
                     barrier_field_dropdown.updateOptions(options, barrier_field_value);
                 } else {
+                    // Only offset types are allowed.
                     barrier_field_dropdown.updateOptions(BARRIER_TYPES, barrier_field_value);
                 }
 

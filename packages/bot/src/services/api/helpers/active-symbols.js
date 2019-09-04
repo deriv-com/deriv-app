@@ -15,17 +15,19 @@ export default class ActiveSymbols {
         this.ws                  = this.root_store.ws;
     }
 
-    async retrieveActiveSymbols() {
+    async retrieveActiveSymbols(is_forced_update = false) {
         await this.trading_times.initialise();
 
-        if (this.is_initialised) {
-            await this.init_promise;
-            return this.active_symbols;
+        if (!is_forced_update) {
+            if (this.is_initialised) {
+                await this.init_promise;
+                return this.active_symbols;
+            }
+    
+            this.is_initialised = true;
         }
 
-        this.is_initialised = true;
-
-        const { active_symbols } = await this.ws.activeSymbols();
+        const { active_symbols } = await this.ws.activeSymbols({ forced: is_forced_update });
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
@@ -89,7 +91,9 @@ export default class ActiveSymbols {
         }, {});
     }
 
-    getMarketDropdownOptions() {
+    async getMarketDropdownOptions() {
+        await this.retrieveActiveSymbols();
+
         const market_options = [];
         
         Object.keys(this.processed_symbols).forEach(market_name => {
@@ -100,7 +104,9 @@ export default class ActiveSymbols {
         return (market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options);
     }
 
-    getSubmarketDropdownOptions(market) {
+    async getSubmarketDropdownOptions(market) {
+        await this.retrieveActiveSymbols();
+
         const submarket_options = [];
         const market_obj        = this.processed_symbols[market];
 
@@ -115,7 +121,9 @@ export default class ActiveSymbols {
         return (submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options);
     }
 
-    getSymbolDropdownOptions(submarket) {
+    async getSymbolDropdownOptions(submarket) {
+        await this.retrieveActiveSymbols();
+
         const symbol_options = Object.keys(this.processed_symbols).reduce((accumulator, market_name) => {
             const { submarkets } = this.processed_symbols[market_name];
 

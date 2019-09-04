@@ -72,7 +72,7 @@ from a permanent storage, if available. The permanent storage currently used is
 the socket cache module, therefore the expiry of the fields related to the
 storage is defined in there.
 
-By default `WS.cache` looks up `WS.storage` first, if it's available then looks up
+By default `WS.cache` looks up `WS.storage` first, if it's unavailable then looks up
 the API.
 
 Same as cache, method calls on the `WS.storage` are passed to `DerivAPI` so method

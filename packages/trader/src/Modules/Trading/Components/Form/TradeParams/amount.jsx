@@ -1,4 +1,5 @@
 import classNames                     from 'classnames';
+import { Dropdown }                   from 'deriv-components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
@@ -6,7 +7,6 @@ import {
     addComma,
     getDecimalPlaces }                from '_common/base/currency_base';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
-import Dropdown                       from 'App/Components/Form/DropDown';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';

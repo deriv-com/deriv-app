@@ -12,6 +12,7 @@ import { symbolChange }      from '../../SmartChart/Helpers/symbol';
 import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
 // TODO: see if it worth it to lazy load smartcharts.js here and in contract-replay.jsx
+const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -29,11 +30,10 @@ class Trade extends React.Component {
                 <PositionsDrawer />
                 <div className='chart-container'>
                     <Lazy
-                        ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                        ctor={loadNotificationMessages}
                         has_progress={false}
                         should_load={true}
                     />
-
                     <React.Suspense
                         fallback={
                             <ChartLoader
@@ -114,10 +114,10 @@ const BottomDigits = ({
 
 const ChartBottomWidgets = connect(
     ({ modules }) => ({
-        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
         contract_info    : modules.contract_trade.last_contract.contract_info || { },
         digits_info      : modules.contract_trade.last_contract.digits_info || { },
         display_status   : modules.contract_trade.last_contract.display_status,
+        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
         is_ended         : modules.contract_trade.last_contract.is_ended,
     })
 )(BottomDigits);
@@ -210,9 +210,8 @@ class ChartTradeClass extends React.Component {
 
 const ChartTrade = connect(
     ({ modules, ui, common }) => ({
-        is_mobile       : ui.is_mobile,
-        is_socket_opened: common.is_socket_opened,
-
+        is_mobile        : ui.is_mobile,
+        is_socket_opened : common.is_socket_opened,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,

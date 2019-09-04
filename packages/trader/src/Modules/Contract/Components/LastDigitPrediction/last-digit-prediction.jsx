@@ -25,7 +25,7 @@ class LastDigitPrediction extends React.Component {
 
         const barrier_map = {
             DIGITMATCH: (val) => val === barrier,
-            DIGITDIFF : (val) => val !== barrier,
+            DIGITDIFF : (val) => (val !== barrier) && !isNaN(barrier),
             DIGITOVER : (val) => val > barrier,
             DIGITUNDER: (val) => val < barrier,
             DIGITODD  : (val) => val % 2,
@@ -36,7 +36,14 @@ class LastDigitPrediction extends React.Component {
     };
 
     render() {
-        const { digits_info, digits, is_digit_contract, is_ended, is_trade_page, tick, status } = this.props;
+        const {
+            digits,
+            digits_info,
+            is_digit_contract,
+            is_ended,
+            is_trade_page,
+            tick,
+            status } = this.props;
         const digits_array = Object.keys(digits_info).sort().map(spot_time => digits_info[spot_time]);
         const last_contract_digit = digits_array.slice(-1)[0] || {};
 

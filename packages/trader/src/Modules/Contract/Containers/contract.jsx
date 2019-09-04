@@ -61,7 +61,7 @@ export default withRouter(connect(
         error_message     : modules.contract_replay.error_message,
         has_error         : modules.contract_replay.has_error,
         removeErrorMessage: modules.contract_replay.removeErrorMessage,
-        is_mobile         : ui.is_mobile,
         symbol            : modules.contract_replay.contract_info.underlying,
+        is_mobile         : ui.is_mobile,
     }),
 )(Contract));

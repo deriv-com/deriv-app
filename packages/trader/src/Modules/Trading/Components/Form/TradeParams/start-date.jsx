@@ -1,10 +1,10 @@
+import { Dropdown }             from 'deriv-components';
 import {
     PropTypes as MobxPropTypes,
     observer }                  from 'mobx-react';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { localize }             from 'App/i18n';
-import Dropdown                 from 'App/Components/Form/DropDown';
 import Fieldset                 from 'App/Components/Form/fieldset.jsx';
 import TimePicker               from 'App/Components/Form/TimePicker';
 

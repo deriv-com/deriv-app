@@ -18,6 +18,7 @@ import ChartMarker             from '../../SmartChart/Components/Markers/marker.
 import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
 
 // TODO: see if it worth to lazy load the smartchart.js here and at trade.jsx
+const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -45,6 +46,8 @@ class ContractReplay extends React.Component {
             this.props.history.push(AppRoutes.trade);
         }
     };
+
+    goBackToTrade = () => this.props.history.push(AppRoutes.trade);
 
     render() {
         const {
@@ -81,7 +84,7 @@ class ContractReplay extends React.Component {
                                 id='dt_contract_replay_close_icon'
                                 className='vertical-tab__action-bar-wrapper'
                                 key={localize('Close')}
-                                onClick={() => this.props.history.push(AppRoutes.trade)}
+                                onClick={this.goBackToTrade}
                             >
                                 <Icon
                                     className='vertical-tab__action-bar--icon'
@@ -90,7 +93,7 @@ class ContractReplay extends React.Component {
                             </div>
                         </div>
                         <Lazy
-                            ctor={() => import(/* webpackChunkName: "notification-messages" */'App/Containers/notification-messages.jsx')}
+                            ctor={loadNotificationMessages}
                             has_progress={false}
                             should_load={true}
                         />
@@ -100,7 +103,6 @@ class ContractReplay extends React.Component {
                             Digits={
                                 <Digits
                                     is_digit_contract={is_digit_contract}
-                                    has_progress={true}
                                     is_ended={is_ended}
                                     contract_info={contract_info}
                                     digits_info={digits_info}
@@ -109,7 +111,6 @@ class ContractReplay extends React.Component {
                             }
                             InfoBox={
                                 <InfoBox
-                                    has_progress={false}
                                     contract_info={contract_info}
                                     error_message={error_message}
                                     removeError={removeError}

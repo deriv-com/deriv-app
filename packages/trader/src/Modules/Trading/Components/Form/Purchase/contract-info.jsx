@@ -1,10 +1,10 @@
 import classNames            from 'classnames';
+import { Popover }           from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from 'App/i18n';
 import Money                 from 'App/Components/Elements/money.jsx';
-import { Popover }           from 'App/Components/Elements/Popover';
 import Icon                  from 'Assets/icon.jsx';
 
 const ContractInfo = ({

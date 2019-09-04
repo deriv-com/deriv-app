@@ -17,7 +17,9 @@ import {
     getMinPayout,
     isCryptocurrency }                from '_common/base/currency_base';
 import { WS }                         from 'Services';
-import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+import {
+    isDigitContractType,
+    isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase }            from './Actions/purchase';
@@ -202,9 +204,9 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    setDefaultSymbol() {
+    async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            this.processNewValuesAsync({
+            await this.processNewValuesAsync({
                 symbol: pickDefaultSymbol(this.active_symbols),
             });
         }
@@ -247,17 +249,15 @@ export default class TradeStore extends BaseStore {
         await BinarySocket.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
-            this.setDefaultSymbol();
+            await this.setDefaultSymbol();
             await this.setContractTypes();
-            runInAction(() => {
-                this.processNewValuesAsync({
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false,
-                );
-            });
+            await this.processNewValuesAsync({
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false,
+            );
         });
     }
 
@@ -372,11 +372,13 @@ export default class TradeStore extends BaseStore {
                     if (contract_id) {
                         const shortcode = response.buy.shortcode;
                         const { category, underlying } = Shortcode.extractInfoFromShortcode(shortcode);
+                        const is_digit_contract = isDigitContractType(category.toUpperCase());
                         this.root_store.modules.contract_trade.addContract({
                             contract_id,
                             start_time,
                             longcode,
                             underlying,
+                            barrier      : is_digit_contract ? +this.last_digit : null,
                             contract_type: category.toUpperCase(),
                         });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
@@ -641,7 +643,6 @@ export default class TradeStore extends BaseStore {
     accountSwitcherListener() {
         this.clearContracts();
         this.resetErrorServices();
-
         return new Promise(async (resolve) => {
             this.processNewValuesAsync(
                 { currency: this.root_store.client.currency },
@@ -677,11 +678,25 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    async initAccountCurrency(new_currency) {
+        await this.processNewValuesAsync(
+            { currency: new_currency },
+            true,
+            { currency: this.currency },
+            false,
+        );
+        this.refresh();
+        this.debouncedProposal();
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();
+        this.refresh();
+        this.resetErrorServices();
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {

@@ -85,12 +85,13 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    addContract({ contract_id, contract_type, start_time, longcode, underlying }) {
+    addContract({ barrier, contract_id, contract_type, start_time, longcode, underlying }) {
         const contract = new ContractStore(this.root_store, { contract_id });
         contract.populateConfig({
             date_start: start_time,
-            longcode,
+            barrier,
             contract_type,
+            longcode,
             underlying,
         });
         this.contracts.push(contract);
@@ -162,7 +163,7 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     clearError() {
+        this.error_message = '';
         this.has_error = false;
-        this.error_message = null;
     }
 }

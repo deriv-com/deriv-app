@@ -2,6 +2,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const is_serve = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
@@ -106,6 +107,12 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
         new SpriteLoaderPlugin(),
+        new CopyPlugin([
+            {
+                from: path.resolve(__dirname, 'src', 'components/icon/icon-base.jsx'),
+                to: path.resolve(__dirname, 'lib', 'icons/icon-base.jsx')
+            },
+        ]),
     ],
     externals: {
         formik: 'formik',

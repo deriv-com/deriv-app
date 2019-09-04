@@ -6,7 +6,6 @@ import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import Icon                  from 'Assets/icon.jsx';
 import { localize }          from 'App/i18n';
 import Money                 from 'App/Components/Elements/money.jsx';
-import Icon                  from 'Assets/icon.jsx';
 
 const ContractInfo = ({
     basis,

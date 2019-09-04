@@ -220,7 +220,7 @@ const config = {
         euro_non_atm : ['endsinout', 'higherlower', 'callputspread'],
         american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
-        asian        : ['asian'],
+        asian        : ['asians'],
         reset        : ['reset'],
         lookback     : ['lookback'],
     },

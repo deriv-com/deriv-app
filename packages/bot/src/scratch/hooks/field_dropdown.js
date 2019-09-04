@@ -19,6 +19,10 @@ Blockly.FieldDropdown.prototype.updateOptions = function(options, opt_default = 
 
     Blockly.Events.enable();
 
+    if (Blockly.DropDownDiv.isVisible()) {
+        Blockly.DropDownDiv.hideWithoutAnimation();
+    }
+
     if (should_trigger_event) {
         const event = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
 

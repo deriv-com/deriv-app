@@ -49,11 +49,12 @@ export const getDisplayStatus = (contract_info) => {
     return status;
 };
 
-export const getDiffInSeconds = (contract_info, tick_epoch) => {
+export const getDiffInSeconds = (contract_info, tick) => {
+    if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info);
-    if (end_time && tick_epoch) {
+    if (end_time && tick.epoch) {
         const seconds = moment.duration(
-            moment.unix(tick_epoch).diff(moment.unix(end_time))
+            moment.unix(tick.epoch).diff(moment.unix(end_time))
         ).asSeconds();
         return (seconds >= 2);
     }

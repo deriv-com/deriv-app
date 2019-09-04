@@ -10,6 +10,7 @@ class Digits extends React.PureComponent {
         mounted: false,
     }
 
+    // TODO: make Digits into stateless component and fix issue with transition not working without mounted state
     componentDidMount() {
         this.setState({ mounted: true });
     }
@@ -26,8 +27,9 @@ class Digits extends React.PureComponent {
             tick,
         } = this.props;
 
-        const is_contract_elapsed = (tick && is_trade_page) ?
-            getDiffInSeconds(contract_info, tick.epoch) : false;
+        const is_tick_ready       = is_trade_page ? !!(tick) : true;
+        const is_contract_elapsed = (is_trade_page) ?
+            getDiffInSeconds(contract_info, tick) : false;
 
         return (
             <SlideIn
@@ -40,14 +42,14 @@ class Digits extends React.PureComponent {
                     // dimension of a single digit widget including margin/padding (number)
                     // i.e - 40px + 4px left and 4px right padding/margin = 48
                     dimension={48}
-                    barrier={!is_contract_elapsed ? +contract_info.barrier : null}
-                    contract_type={!is_contract_elapsed ? contract_info.contract_type : null}
+                    barrier={(!is_contract_elapsed && is_tick_ready) ? +contract_info.barrier : null}
+                    contract_type={(!is_contract_elapsed && is_tick_ready) ? contract_info.contract_type : null}
                     digits={digits_array}
-                    digits_info={!is_contract_elapsed ? digits_info : {}}
+                    digits_info={(!is_contract_elapsed && is_tick_ready) ? digits_info : {}}
                     is_digit_contract={is_digit_contract}
                     is_ended={is_ended}
                     is_trade_page={is_trade_page}
-                    status={!is_contract_elapsed ? display_status : null}
+                    status={(!is_contract_elapsed && is_tick_ready) ? display_status : null}
                     tick={tick}
                 />
             </SlideIn>

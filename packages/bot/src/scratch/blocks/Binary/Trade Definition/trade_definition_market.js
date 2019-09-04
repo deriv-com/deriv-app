@@ -43,22 +43,22 @@ Blockly.Blocks.trade_definition_market = {
         const submarket_field    = this.getField('SUBMARKET_LIST');
 
         if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
-            active_symbols.retrieveActiveSymbols().then(() => {
-                const markets = active_symbols.getMarketDropdownOptions();
-                market_field.updateOptions(markets, null, true);
+            active_symbols.getMarketDropdownOptions().then(market_options => {
+                market_field.updateOptions(market_options, null, true);
             });
         } else if (event.type === Blockly.Events.CHANGE) {
             if (event.name === 'MARKET_LIST') {
-                active_symbols.retrieveActiveSymbols().then(() => {
-                    const submarkets = active_symbols.getSubmarketDropdownOptions(market_field.getValue());
-                    submarket_field.updateOptions(submarkets, null, true);
+                const submarket = market_field.getValue();
+
+                active_symbols.getSubmarketDropdownOptions(submarket).then(submarket_options => {
+                    submarket_field.updateOptions(submarket_options, null, true);
                 });
             } else if (event.name === 'SUBMARKET_LIST') {
                 const symbol_field = this.getField('SYMBOL_LIST');
+                const symbol = submarket_field.getValue();
 
-                active_symbols.retrieveActiveSymbols().then(() => {
-                    const symbols = active_symbols.getSymbolDropdownOptions(submarket_field.getValue());
-                    symbol_field.updateOptions(symbols, null, true);
+                active_symbols.getSymbolDropdownOptions(symbol).then(symbol_options => {
+                    symbol_field.updateOptions(symbol_options, null, true);
                 });
             }
         }

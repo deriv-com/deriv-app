@@ -170,6 +170,10 @@ export default class ContractsFor {
     }
 
     async getContractsFor(symbol) {
+        if (!symbol || symbol === 'na') {
+            return [];
+        }
+
         const { server_time } = this.root_store.core.common;
 
         const getContractsForFromApi = async () => {
@@ -203,7 +207,7 @@ export default class ContractsFor {
 
         if (this.contracts_for[symbol]) {
             const { contracts, timestamp } = this.contracts_for[symbol];
-            const is_expired = (server_time.unix() - timestamp > this.cache_age_in_min * 60000);
+            const is_expired = (server_time.unix() - timestamp > this.cache_age_in_min * 60);
 
             if (is_expired) {
                 getContractsForFromApi();
@@ -385,5 +389,9 @@ export default class ContractsFor {
         return this.disabled_options.some(disabled_obj =>
             Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
         );
+    }
+
+    disposeCache() {
+        this.contracts_for = {};
     }
 }

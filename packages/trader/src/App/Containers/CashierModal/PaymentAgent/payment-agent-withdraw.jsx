@@ -1,19 +1,23 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
 import {
     Button,
     Dropdown,
     Form,
-    Input }                from 'deriv-components';
-import Localize            from 'App/Components/Elements/localize.jsx';
-import RadioGroup          from 'App/Components/Form/Radio';
-import { localize }        from 'App/i18n';
-import { connect }         from 'Stores/connect';
-import PaymentAgentReceipt from './payment-agent-receipt.jsx';
-import Loading             from '../../../../templates/_common/components/loading.jsx';
+    Input }                 from 'deriv-components';
+import { getDecimalPlaces } from '_common/base/currency_base';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import RadioGroup           from 'App/Components/Form/Radio';
+import { localize }         from 'App/i18n';
+import { connect }          from 'Stores/connect';
+import {
+    validNumber,
+    getPreBuildDVRs }       from 'Utils/Validator/declarative-validation-rules';
+import PaymentAgentReceipt  from './payment-agent-receipt.jsx';
+import Loading              from '../../../../templates/_common/components/loading.jsx';
 
-const validateWithdrawal = (values) => {
+const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
 
     if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
@@ -22,6 +26,10 @@ const validateWithdrawal = (values) => {
 
     if (!values.amount) {
         errors.amount = true;
+    } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: payment_agent.min_withdrawal, max: payment_agent.max_withdrawal })) {
+        errors.amount = getPreBuildDVRs().number.message;
+    } else if (+balance < +values.amount) {
+        errors.amount = localize('Insufficient balance.');
     }
 
     return errors;
@@ -37,6 +45,13 @@ class PaymentAgentWithdraw extends React.Component {
     }
 
     render() {
+        const validateWithdrawalPassthrough =
+            (values) => validateWithdrawal(values, {
+                balance      : this.props.balance,
+                currency     : this.props.currency,
+                payment_agent: this.props.selected_payment_agent,
+            });
+
         return (
             <React.Fragment>
                 {this.props.is_loading ?
@@ -51,10 +66,10 @@ class PaymentAgentWithdraw extends React.Component {
                                 <Form
                                     initialValues={{
                                         amount        : '',
-                                        payment_agents: this.props.selected_payment_agent,
+                                        payment_agents: this.props.selected_payment_agent.name,
                                         payment_method: 'payment_agents',
                                     }}
-                                    validate={ validateWithdrawal }
+                                    validate={ validateWithdrawalPassthrough }
                                     // onSubmit={ onSubmit }
                                 >
                                     {
@@ -76,7 +91,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                         classNameItems='payment-agent__drop-down-items'
                                                                         list={this.props.payment_agent_list}
                                                                         name='payment_agents'
-                                                                        value={this.props.selected_payment_agent}
+                                                                        value={this.props.selected_payment_agent.name}
                                                                         onChange={this.props.onChangePaymentAgent}
                                                                     />
                                                                 </React.Fragment>
@@ -89,6 +104,8 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 <React.Fragment>
                                                                     <Localize i18n_default_text='By payment agent ID' />
                                                                     <Input
+                                                                        autoComplete='off'
+                                                                        maxLength='20'
                                                                         className='payment-agent__input'
                                                                         type='text'
                                                                         name='payment_agent'
@@ -106,6 +123,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                 <Input
                                                     className='payment-agent__input-long'
                                                     type='number'
+                                                    maxLength='30'
                                                     name='amount'
                                                     label={localize('Amount')}
                                                     leading_icon={
@@ -142,18 +160,20 @@ class PaymentAgentWithdraw extends React.Component {
 }
 
 PaymentAgentWithdraw.propTypes = {
+    balance               : PropTypes.string,
     currency              : PropTypes.string,
     is_loading            : PropTypes.bool,
     is_name_selected      : PropTypes.bool,
     onChangePaymentAgent  : PropTypes.func,
     onMount               : PropTypes.func,
     payment_agent_list    : PropTypes.array,
-    selected_payment_agent: PropTypes.string,
+    selected_payment_agent: PropTypes.object,
     setIsNameSelected     : PropTypes.func,
 };
 
 export default connect(
     ({ client, modules }) => ({
+        balance               : client.balance,
         currency              : client.currency,
         is_name_selected      : modules.cashier.config.payment_agent.is_name_selected,
         is_loading            : modules.cashier.is_loading,

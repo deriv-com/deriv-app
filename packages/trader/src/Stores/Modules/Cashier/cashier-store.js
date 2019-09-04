@@ -52,8 +52,8 @@ export default class CashierStore extends BaseStore {
             list            : [],
             is_name_selected: true,
             is_withdraw     : false,
-            selected_agent  : '', // TODO: remove this and have drop-down keep track of its own selected value
-            selected_bank   : this.bank_default_option[0].value, // TODO: remove this and have drop-down keep track of its own selected value
+            selected_agent  : {},
+            selected_bank   : this.bank_default_option[0].value,
             supported_banks : this.bank_default_option,
             verification    : new ConfigVerification(),
         },
@@ -485,14 +485,21 @@ export default class CashierStore extends BaseStore {
     @action.bound
     addPaymentAgent(payment_agent) {
         this.config.payment_agent.agents.push({
-            text : payment_agent.name,
-            value: payment_agent.paymentagent_loginid,
+            text          : payment_agent.name,
+            value         : payment_agent.paymentagent_loginid,
+            max_withdrawal: payment_agent.max_withdrawal,
+            min_withdrawal: payment_agent.min_withdrawal,
         });
     }
 
     @action.bound
     onChangePaymentAgent({ target }) {
-        this.config.payment_agent.selected_agent = target.value;
+        const payment_agent_details = this.config.payment_agent.agents.find((agent) => agent.value === target.value);
+        this.config.payment_agent.selected_agent = {
+            max_withdrawal: payment_agent_details.max_withdrawal,
+            min_withdrawal: payment_agent_details.min_withdrawal,
+            name          : target.value,
+        };
     }
 
     onAccountSwitch() {

@@ -140,9 +140,14 @@
                 }
             }
         }
+        &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
     &__leading-icon {
-        margin: 0.9rem 0 1rem 1rem !important;
+        margin-left: 1rem;
+        top: 8px;
         position: absolute;
         left: 0;
         pointer-events: none;

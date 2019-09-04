@@ -1,4 +1,4 @@
-import { translate }        from '../utils/lang/i18n';
+import { translate } from '../utils/lang/i18n';
 import { load as loadLang } from '../utils/lang/lang';
 
 loadLang();
@@ -232,6 +232,12 @@ const config = {
         cid: '646610722767-7ivdbunktgtnumj23en9gkecbgtf2ur7.apps.googleusercontent.com',
         aid: 'binarybot-237009',
         api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
+    },
+    help: {
+        TEXT : 'text',
+        VIDEO: 'video',
+        IMAGE: 'image',
+        BLOCK: 'block',
     },
 };
 

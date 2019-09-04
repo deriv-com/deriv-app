@@ -1,28 +1,56 @@
-module.exports = {
-    math_change: {
-        order    : ['description', 'video', 'explanation', 'block'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-    },
-    math_number: {
-        order    : ['description', 'explanation', 'video', 'block'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-    },
-    math_arithmetic: {
-        order    : ['video', 'explanation', 'block', 'image', 'description'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-        img_url  : 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false',
-    },
-    math_random_float: {
-        order    : ['description', 'explanation', 'video', 'block'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-    },
-    math_random_int: {
-        order    : ['description', 'video', 'block', 'explanation'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-    },
-    variables_get: {
-        order    : ['description', 'video', 'explanation', 'image', 'block'],
-        video_url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0',
-        img_url  : 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false',
-    },
+import config from '../../constants/const';
+
+const { help: { TEXT, VIDEO, IMAGE, BLOCK } } = config;
+
+export const help_config = {
+    math_change: [
+        { type: TEXT },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: TEXT },
+        { type: BLOCK },
+    ],
+    math_arithmetic: [
+        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: BLOCK },
+    ],
+    math_number: [
+        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    ],
+    math_random_float: [
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    ],
+    math_random_int: [
+        { type: TEXT },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    ],
+    variables_get: [
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+        { type: TEXT },
+        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    ],
 };

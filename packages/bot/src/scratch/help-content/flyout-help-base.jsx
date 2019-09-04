@@ -1,13 +1,14 @@
-import React                from 'react';
-import PropTypes            from 'prop-types';
-import * as config          from './help-content.config';
-import FlyoutVideo          from './help-components/flyout-video.jsx';
-import FlyoutText           from './help-components/flyout-text.jsx';
-import FlyoutImage          from './help-components/flyout-img.jsx';
-import FlyoutBlock          from '../../components/flyout-block.jsx';
-import { Arrow2Icon }       from '../../components/Icons.jsx';
-import { connect }          from '../../stores/connect';
-import { translate }        from '../../utils/tools';
+import React            from 'react';
+import PropTypes        from 'prop-types';
+import FlyoutVideo      from './help-components/flyout-video.jsx';
+import FlyoutText       from './help-components/flyout-text.jsx';
+import FlyoutImage      from './help-components/flyout-img.jsx';
+import { help_config }  from './help-content.config';
+import FlyoutBlock      from '../../components/flyout-block.jsx';
+import constant         from '../../constants/const';
+import { Arrow2Icon }   from '../../components/Icons.jsx';
+import { connect }      from '../../stores/connect';
+import { translate }    from '../../utils/tools';
 
 class HelpBase extends React.PureComponent {
     constructor(props) {
@@ -58,8 +59,8 @@ class HelpBase extends React.PureComponent {
             help_string,
             has_help_content,
         } = this.state;
-        const block_config = help_string && config[block_type];
-        const component_order = block_config && block_config.order;
+        const block_help_component = help_string && help_config[block_type];
+        let text_count = 0;
 
         return (
             <React.Fragment>
@@ -71,26 +72,25 @@ class HelpBase extends React.PureComponent {
                 </div>
                 <div className='flyout__help-content'>
                     {
-                        block_config &&
-                        component_order.map(component => {
-                            switch (component) {
-                                case 'description':
+                        block_help_component &&
+                        block_help_component.map((component, index) => {
+                            const { type, url } = component;
+                            const { text } = help_string;
+
+                            switch (type) {
+                                case constant.help.TEXT:
                                     return (
-                                        <FlyoutText text={help_string.description} />
+                                        <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
                                     );
-                                case 'explanation':
+                                case constant.help.VIDEO:
                                     return (
-                                        <FlyoutText text={help_string.explanation} />
+                                        <FlyoutVideo key={`${block_type}_${index}`} url={url} />
                                     );
-                                case 'video':
+                                case constant.help.IMAGE:
                                     return (
-                                        <FlyoutVideo url={block_config.video_url} />
+                                        <FlyoutImage key={`${block_type}_${index}`} url={url} />
                                     );
-                                case 'image':
-                                    return (
-                                        <FlyoutImage url={block_config.img_url} />
-                                    );
-                                case 'block':
+                                case constant.help.BLOCK:
                                 {
                                     return Object.keys(block_nodes).map(key => {
                                         return (

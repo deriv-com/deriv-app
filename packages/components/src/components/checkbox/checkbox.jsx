@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { IconCheckmark } from 'Components/Icon/icons';
+import { IconCheckmark } from 'Components/icon/icons';
 
 class Checkbox extends React.PureComponent {
     onClick = () => {

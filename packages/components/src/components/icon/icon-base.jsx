@@ -9,7 +9,7 @@ function getThemifiedProps(Svg, theme, key) {
     const themifiedProps = [];
     Object.keys(theme).map(rule => {
         const [element, attribute] = rule.split('&');
-        if (props['data-theme'] === 'none') return themifiedProps.push(Svg);
+        if (props['data-theme'] === 'none') themifiedProps.push(Svg);
         if (type === 'path') {
             if (attribute && props[attribute]) {
                 themifiedProps.push(React.cloneElement(Svg, { key, className: theme[rule] }));

@@ -30,7 +30,6 @@ module.exports = {
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'src', 'components'),
-            // Icon: path.resolve(__dirname, 'src', 'components/icon/index.js'),
         },
     },
     optimization: {

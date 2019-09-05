@@ -170,11 +170,11 @@
         width: 42px;
         height: 42px;
 
-
         .progress__value {
             @include themify($themes) {
                 stroke: themed('digit_widget_stroke_color');
             }
+
             &--is-max {
                 @include themify($themes) {
                     stroke: themed('digit_widget_stroke_max_color');

@@ -17,13 +17,14 @@ class PaymentAgentReceipt extends React.Component {
     };
 
     render() {
+        const payment_agent = this.props.receipt.payment_agent_name || this.props.receipt.payment_agent_id;
         return (
             <React.Fragment>
                 <div className='payment-agent__receipt'>
                     <h2 className='payment-agent__header'>
                         <Localize
                             i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
-                            values={{ payment_agent: this.props.receipt.payment_agent_name || this.props.receipt.payment_agent_id }}
+                            values={{ payment_agent }}
                         />
                     </h2>
                     <div className='payment-agent__transferred-amount payment-agent__text--bold'>

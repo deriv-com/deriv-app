@@ -5,6 +5,7 @@ import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
 import ContractStore          from './contract-store';
+import { localize }           from 'App/i18n';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
 

@@ -140,7 +140,7 @@ const BinarySocketBase = (() => {
 
     const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
 
-    const buyAndSubscribe = (request, cb) => {
+    const buyAndSubscribe = (request) => {
         return new Promise((resolve) => {
             let called = false;
             subscribe(request, response => {

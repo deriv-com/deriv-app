@@ -387,7 +387,7 @@ const DigitContract = RawMarkerMaker(({
     ctx.fillStyle = color;
 
     const draw_start_line = is_last_contract && start.visible && !is_sold;
-    const scale = calc_scale(entry.zoom);
+    const scale = calc_scale(start.zoom);
 
     if (draw_start_line) {
         ctx.beginPath();
@@ -405,7 +405,6 @@ const DigitContract = RawMarkerMaker(({
         ctx.restore();
         return;
     }
-    const entry = ticks[0];
     const expiry = ticks[ticks.length - 1];
 
     // count down

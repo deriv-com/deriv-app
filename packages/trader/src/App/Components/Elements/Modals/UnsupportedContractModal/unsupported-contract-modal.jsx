@@ -6,7 +6,7 @@ import Localize         from 'App/Components/Elements/localize.jsx';
 import { connect }      from 'Stores/connect';
 import { website_name } from '../../../../Constants/app-config';
 
-class UnsupportedContractModal extends React.PureComponent {
+class UnsupportedContractModal extends React.Component {
     render() {
         const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose} = this.props;
         return (

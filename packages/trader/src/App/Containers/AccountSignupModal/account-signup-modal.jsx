@@ -186,8 +186,8 @@ const AccountSignupModal = ({
 };
 
 AccountSignupModal.propTypes = {
-    disableApp    : PropTypes.bool,
-    enableApp     : PropTypes.bool,
+    disableApp    : PropTypes.func,
+    enableApp     : PropTypes.func,
     is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onSignup      : PropTypes.func,

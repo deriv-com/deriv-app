@@ -135,17 +135,18 @@ const ChartTopWidgets = connect(
 // ChartMarkers --------------------------
 const Markers = ({
     markers_array,
-    // is_digit_contract,
+    is_dark_theme,
 }) => (
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
-        return (<Marker key={marker.key} {...marker} />);
+        return (<Marker key={marker.key} is_dark_theme={is_dark_theme} {...marker} />);
     })
 );
 const ChartMarkers = connect(
-    ({ modules }) => ({
+    ({ modules, ui }) => ({
         markers_array    : modules.contract_trade.markers_array,
         is_digit_contract: modules.contract_trade.is_digit_contract,
+        is_dark_theme    : ui.is_dark_mode_on,
     })
 )(Markers);
 

@@ -53,7 +53,14 @@ const WS = (() => {
         BinarySocket.send({ paymentagent_list: country, ...(currency && { currency }) });
 
     const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
-        BinarySocket.send({ paymentagent_withdraw: 1, dry_run: 0, paymentagent_loginid: loginid, verification_code, amount, currency });
+        BinarySocket.send({
+            amount,
+            currency,
+            verification_code,
+            paymentagent_withdraw: 1,
+            dry_run              : 0,
+            paymentagent_loginid : loginid,
+        });
 
     const payoutCurrencies = (options) =>
         BinarySocket.send({ payout_currencies: 1 }, { msg_type: 'payout_currencies', ...(options && options) });

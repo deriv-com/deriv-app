@@ -551,6 +551,9 @@ export default class CashierStore extends BaseStore {
                 payment_agent_url  : this.config.payment_agent.selected_agent.url,
             });
             this.setIsWithdrawSuccessful(true);
+        } else {
+            // TODO: handle showing error message
+            this.resetPaymentAgent();
         }
     }
 

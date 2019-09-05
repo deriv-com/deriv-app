@@ -108,6 +108,9 @@
 /** @define payment-agent */
 .payment-agent {
     &__wrapper {
+        @include themify($themes) {
+            color: themed('text_color');
+        }
         font-size: 1.4rem;
         line-height: 1.43;
         height: 100%;
@@ -145,6 +148,10 @@
         }
         &-selector {
             margin-bottom: 16px;
+
+            .payment-agent__drop-down {
+                margin-left: 8px;
+            }
         }
     }
     &__drop-down {
@@ -152,7 +159,7 @@
         width: 20rem;
         height: 4rem;
         //margin: 0 0 0 8px;
-        margin: 0 0 16px 0;
+        margin: 0 0 16px;
         line-height: 1.43;
 
         &-display {

@@ -2,9 +2,9 @@
 // 1- Please read https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
-import React          from 'react';
-import { FastMarker, RawMarker } from 'smartcharts-beta';
-import * as ICONS from './icons';
+import React         from 'react';
+import { RawMarker } from 'Modules/SmartChart';
+import * as ICONS    from './icons';
 
 const RawMarkerMaker = (draw_callback) => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
@@ -14,22 +14,6 @@ const RawMarkerMaker = (draw_callback) => {
             draw_callback={args => draw_callback({ ...args, ...rest })}
         />
     );
-    return Marker;
-};
-
-export const FastMarkerMaker = children => {
-    const Marker = ({ epoch, price, calculate_price, draw_callback, ...rest }) => {
-        const onRef = ref => {
-            if (ref) {
-                ref.setPosition({ epoch, price, calculate_price, draw_callback });
-            }
-        };
-        return (
-            <FastMarker markerRef={onRef}>
-                {children(rest)}
-            </FastMarker>
-        );
-    };
     return Marker;
 };
 
@@ -122,7 +106,7 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
 
 const TickContract = RawMarkerMaker(({
     ctx: context,
-    points: [start, ...ticks], // [start, expiry, ...ticks],
+    points: [start, ...ticks],
     prices: [barrier], // TODO: support two barrier contracts
     is_last_contract,
     contract_info: {

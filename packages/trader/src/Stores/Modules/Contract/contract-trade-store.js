@@ -52,6 +52,7 @@ export default class ContractTradeStore extends BaseStore {
 
     applicable_contracts = () => {
         const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
+        if (!trade_type || !underlying) { return []; }
         const { trade_types } = getContractTypesConfig()[trade_type];
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)

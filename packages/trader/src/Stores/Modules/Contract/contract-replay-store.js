@@ -1,17 +1,12 @@
 import {
     action,
     observable }              from 'mobx';
-import { setSmartChartsPublicPath } from 'smartcharts-beta';
-import { getUrlBase }          from '_common/url';
-import { localize }           from 'App/i18n';
 import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
 import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
-
-setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
 export default class ContractReplayStore extends BaseStore {
     @observable contract_store = { contract_info: {} };

@@ -1,3 +1,5 @@
+import PropTypes      from 'prop-types';
+import React          from 'react';
 import {
     ChartSize,
     ChartTypes,
@@ -7,9 +9,7 @@ import {
     Share,
     StudyLegend,
     Timeperiod,
-    Views }           from 'smartcharts-beta';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+    Views }           from 'Modules/SmartChart';
 
 const ControlWidgets = ({
     updateChartType,

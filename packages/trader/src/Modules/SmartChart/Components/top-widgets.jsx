@@ -1,8 +1,8 @@
-import {
-    AssetInformation,
-    ChartTitle }      from 'smartcharts-beta';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import {
+    AssetInformation,
+    ChartTitle }      from 'Modules/SmartChart';
 
 const TopWidgets = ({
     InfoBox,

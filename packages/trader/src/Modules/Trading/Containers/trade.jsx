@@ -76,16 +76,11 @@ export default connect(
     })
 )(Trade);
 
-// CHART -----------------------------------------------------------------
+// CHART (ChartTrade)--------------------------------------------------------
+
 /* eslint-disable */
-// ChartTrade
-import {
-    SmartChart,
-    setSmartChartsPublicPath } from 'smartcharts-beta';
-import { getUrlBase }          from '_common/url';
 import ControlWidgets          from '../../SmartChart/Components/control-widgets.jsx';
-import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
-/* eslint-enable */
+import { SmartChart } from 'Modules/SmartChart';
 
 // --- BottomWidgets for chart
 // TODO: fix bottom widgets jumps
@@ -153,8 +148,6 @@ const ChartMarkers = connect(
         is_digit_contract: modules.contract_trade.is_digit_contract,
     })
 )(Markers);
-
-setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
 class ChartTradeClass extends React.Component {
 

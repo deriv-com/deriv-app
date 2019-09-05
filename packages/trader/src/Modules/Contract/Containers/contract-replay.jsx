@@ -1,7 +1,6 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
-import { SmartChart }    from 'smartcharts-beta';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
@@ -11,6 +10,7 @@ import Lazy              from 'App/Containers/Lazy';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
+import { SmartChart }    from 'Modules/SmartChart';
 import { connect }       from 'Stores/connect';
 // --------------------------
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
@@ -171,7 +171,7 @@ export default withRouter(connect(
     }
 )(ContractReplay));
 
-// -----------------------------------------
+// CHART -----------------------------------------
 
 class Chart extends React.Component {
     topWidgets = () => (

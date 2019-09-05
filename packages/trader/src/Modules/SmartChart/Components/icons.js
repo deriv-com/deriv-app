@@ -4,7 +4,10 @@
 // Use figma.com which by default exports paths as absolute.
 // Only <path /> tags is supported.
 const parse_svg = (markup) => {
-    const parser = new DOMParser();
+    // make tests pass
+    if (!window.DOMParser) { return null; }
+
+    const parser = new window.DOMParser();
     const svg = parser.parseFromString(markup, 'image/svg+xml').children[0];
     let { width, height } = svg.attributes;
     width = width.value * 1;
@@ -51,5 +54,4 @@ export const END = parse_svg(`
 <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.833333 0C0.373096 0 0 0.373096 0 0.833334V1.66667V15V19.1667C0 19.6269 0.373097 20 0.833334 20H0.871212C1.33145 20 1.70455 19.6269 1.70455 19.1667V15H17.0833C18.0038 15 18.75 14.2538 18.75 13.3333V3.33333C18.75 2.41286 18.0038 1.66667 17.0833 1.66667H1.70455V0.833333C1.70455 0.373096 1.33145 0 0.871212 0H0.833333ZM6.81818 3.33333H10.2273V6.66667H6.81818V3.33333ZM6.81818 10H3.40909V6.66667H6.81818V10ZM10.2273 10V13.3333H6.81818V10H10.2273ZM13.6364 10H10.2273V6.66667H13.6364V10ZM13.6364 10H17.0455V13.3333H13.6364V10ZM13.6364 6.66667V3.33333H17.0455V6.66667H13.6364Z" fill="#333333"/>
 </svg>
-
 `);

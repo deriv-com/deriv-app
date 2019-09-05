@@ -169,7 +169,7 @@ function calculate_marker(contract_info) {
                 contract_info: toJS(contract_info),
                 type         : 'TickContract',
                 key          : `${contract_id}-date_start`,
-                epoch_array  : [date_start, date_expiry, ...ticks_epoch_array],
+                epoch_array  : [date_start, ...ticks_epoch_array],
                 price_array,
             };
         }

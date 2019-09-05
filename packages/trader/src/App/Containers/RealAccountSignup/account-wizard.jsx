@@ -1,103 +1,175 @@
-import { Button }           from 'deriv-components';
-import React, { Component } from 'react';
+import React                from 'react';
 import { localize }         from 'App/i18n';
+import { connect }          from 'Stores/connect';
+import { toMoment }         from 'Utils/Date';
 import CurrencySelector     from './currency-selector.jsx';
+import FormProgress         from './form-progress.jsx';
 import PersonalDetails      from './personal-details.jsx';
+import TermsOfUse           from './terms-of-use.jsx';
+import 'Sass/real-account-signup.scss';
+import 'Sass/account-wizard.scss';
 
-const usual_control_button = {
-    next_button_label    : localize('Next'),
-    has_previous_button  : true,
-    has_next_button      : true,
-    previous_button_label: localize('Previous'),
-};
+class AccountWizard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            finished  : undefined,
+            step      : 0,
+            form_error: '',
+            items     : [
+                {
+                    header: {
+                        active_title: localize('Please choose your currency'),
+                        title       : localize('Account currency'),
+                    },
+                    body      : CurrencySelector,
+                    form_value: {
+                        currency: '',
+                    },
+                },
+                {
+                    header: {
+                        active_title: localize('Complete your personal details'),
+                        title       : localize('Personal details'),
+                    },
+                    body      : PersonalDetails,
+                    form_value: {
+                        first_name   : '',
+                        last_name    : '',
+                        date_of_birth: '',
+                    },
+                },
+                {
+                    header: {
+                        active_title: localize('Terms of use'),
+                        title       : localize('Terms of use'),
+                    },
+                    body      : TermsOfUse,
+                    form_value: {
+                        agreed_tos: false,
+                        agreed_tnc: false,
+                    },
+                },
+            ],
+        };
+    }
 
-const items = [
-    {
-        header: {
-            active_title: localize('Please choose your currency'),
-            title       : localize('Account currency'),
-        },
-        body   : <CurrencySelector />,
-        control: { ...usual_control_button, has_previous_button: false },
-    },
-    {
-        header: {
-            active_title: localize('Complete your personal details'),
-            title       : localize('Personal details'),
-        },
-        body   : <PersonalDetails />,
-        control: { ...usual_control_button },
-    },
-    {
-        header: {
-            active_title: localize('Terms of use'),
-            title       : localize('Terms of use'),
-        },
-        body   : <PersonalDetails />,
-        control: { ...usual_control_button, next_button_label: localize('Add account') },
-    },
-];
+    get form_values() {
+        return this.state.items.map(item => item.form_value)
+            .reduce((obj, item) => {
+                const values = Object.fromEntries(new Map(Object.entries(item)));
+                if (values.date_of_birth) {
+                    values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
+                }
 
-// eslint-disable-next-line no-shadow
-const FormProgress = ({ items = [], current_step, nextStep, prevStep }) => {
-    return (
-        <div>
-            {items.map((item, idx) => (
-                <div key={idx} className='form-progress__step'>
-                    {idx + 1 === current_step &&
-                    <React.Fragment>
-                        {item.header.active_title}
-                        {item.control.has_next_button &&
-                        <Button
-                            text={item.control.next_button_label}
-                            onClick={nextStep}
-                        />
-                        }
-                        {item.control.has_previous_button &&
-                        <Button
-                            text={item.control.previous_button_label}
-                            onClick={prevStep}
-                        />
-                        }
-                    </React.Fragment>
-                    }
+                return {
+                    ...obj,
+                    ...values,
+                };
+            });
+    }
 
-                </div>
-            ))}
-        </div>
-    );
+    get state_index() {
+        return this.state.step;
+    }
 
-};
-
-class AccountWizard extends Component {
-    state = {
-        step: 1,
+    clearError = () => {
+        this.setState({
+            form_error: '',
+        });
     };
 
-    nextStep = () => {
-        this.setState({
-            step: this.state.step + 1,
-        });
+    getFinishedComponent = () => {
+        return this.state.finished;
+    };
+
+    nextStep = (setSubmitting) => {
+        this.clearError();
+        // Check if account wizard is not finished
+        if (this.hasMoreSteps()) {
+            this.goNext();
+        } else {
+            this.createRealAccount(setSubmitting);
+        }
     };
 
     prevStep = () => {
         this.setState({
-            step: this.state.step - 1,
+            step      : this.state.step - 1,
+            form_error: '',
+        });
+    };
+
+    submitForm = () => {
+        return this.props.realAccountSignup(this.form_values);
+    };
+
+    updateValue = (index, value, setSubmitting) => {
+        const cloned_items             = Object.assign([], this.state.items);
+        cloned_items[index].form_value = value;
+        this.setState({
+            items: cloned_items,
+        }, () => this.nextStep(setSubmitting));
+    };
+
+    getCurrent = (key) => {
+        return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
+    };
+
+    createRealAccount(setSubmitting) {
+        this.submitForm()
+            .then(() => setSubmitting(false))
+            .catch(error_message => {
+                this.setState({
+                    form_error: error_message,
+                }, () => setSubmitting(false));
+            });
+    }
+
+    goNext() {
+        this.setState({
+            step: this.state.step + 1,
         });
     }
 
+    hasMoreSteps() {
+        return this.state.step + 1 < this.state.items.length;
+    }
+
     render() {
+        if (!this.state.finished) {
+            const BodyComponent = this.getCurrent('body');
+            return (
+                <div className='account-wizard'>
+                    <FormProgress
+                        steps={this.state.items}
+                        current_step={this.state.step}
+                    />
+                    <div
+                        className='account-wizard__body'
+                        style={{
+                            height: 'calc(100% - 112px)',
+                        }}
+                    >
+                        <BodyComponent
+                            value={this.getCurrent('form_value')}
+                            index={this.state_index}
+                            onSubmit={this.updateValue}
+                            onCancel={this.prevStep}
+                            form_error={this.state.form_error}
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+        const FinishedModalItem = this.getFinishedComponent();
         return (
-            <div>
-                <FormProgress
-                    items={items}
-                    current_step={this.state.step}
-                    nextStep={this.nextStep}
-                    prevStep={this.prevStep}
-                />
-            </div>
+            <FinishedModalItem />
         );
     }
 }
 
-export default AccountWizard;
+export default connect(({ client }) => ({
+    realAccountSignup: client.realAccountSignup,
+}))(AccountWizard);

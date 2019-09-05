@@ -3,11 +3,15 @@
 .currency-list {
   width: 100%;
 
-  &__items {
+  form {
     width: 100%;
+  }
+
+  &__items {
     display: flex;
     justify-content: space-around;
   }
+
   &__item {
     border-radius: $BORDER_RADIUS;
     display: inline-flex;
@@ -26,17 +30,11 @@
         border: 1px solid themed('border_color');
       }
     }
-    svg {
-      width: 48px;
-      height: 48px;
+
+    &--current {
+      opacity: 0.5;
     }
-    p {
-      text-align: center;
-      @include typeface(--paragraph-center-normal-black);
-      @include themify($themes) {
-        color: themed('text_primary_color')
-      }
-    }
+
     &--selected {
       @include themify($themes) {
         border: 1px solid themed('border_outline_color');
@@ -46,14 +44,61 @@
         @include typeface(--paragraph-center-bold-black);
       }
     }
+
+    .change-currency &--selected {
+      @include themify($themes) {
+        background-color: $COLOR_WHITE;
+      }
+    }
+
+    .change-currency &:hover {
+      @include themify($themes) {
+        background-color: themed('border_outline_color');
+      }
+    }
+
+    .change-currency & {
+      @include themify($themes) {
+        border: 1px solid themed('border_color');
+      }
+    }
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    p {
+      text-align: center;
+      @include typeface(--paragraph-center-normal-black);
+      @include themify($themes) {
+        color: themed('text_primary_color')
+      }
+    }
+  }
+
+  &__radio-button {
+    display: none;
   }
 }
 
 .currency-hr {
   height: 2px;
   width: 100%;
-  margin: 16px 0;
+  margin: 1rem 0 0;
   @include themify($themes) {
     border-top: 1px solid themed('border_color');
+  }
+}
+
+.currency-selector {
+  display: flex;
+  flex-direction: column;
+
+  &__radio-group {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
 }

@@ -5,8 +5,8 @@
     &__container {
         width: 736px;
         position: relative;
-        overflow: hidden;
         border-radius: $BORDER_RADIUS;
+        overflow: hidden;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         @include themify($themes) {
             background-color: themed('container_secondary_color');

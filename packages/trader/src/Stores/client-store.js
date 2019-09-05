@@ -8,7 +8,8 @@ import {
 import moment                        from 'moment';
 import {
     requestLogout,
-    WS }                             from 'Services';
+    WS,
+}                                    from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
@@ -16,13 +17,15 @@ import { isEmptyObject }             from '_common/utility';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
-    State }                          from '_common/storage';
+    State,
+}                                    from '_common/storage';
 import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
 import { getClientAccountType }      from './Helpers/client';
 import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
 import { setCurrencies }             from '../_common/base/currency_base';
+import { toMoment }                  from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -41,6 +44,13 @@ export default class ClientStore extends BaseStore {
     @observable account_settings           = {};
     @observable account_status             = {};
     @observable device_data                = {};
+    @observable landing_companies          = {
+        financial_company: {},
+        gaming_company   : {},
+    };
+
+    @observable upgradeable_landing_companies = [];
+    @observable website_status = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -64,6 +74,29 @@ export default class ClientStore extends BaseStore {
         return !!(
             !this.is_logged_in || this.is_virtual || this.accounts[this.loginid].landing_company_shortcode === 'svg'
         );
+    }
+
+    @computed
+    get has_real_account() {
+        return this.active_accounts.some(acc => acc.is_virtual === 0);
+    }
+
+    @computed
+    get legal_allowed_currencies () {
+        if (!this.landing_companies) return [];
+        return this.landing_companies.gaming_company.legal_allowed_currencies ||
+            this.landing_companies.financial_company.legal_allowed_currencies;
+    }
+
+    @computed
+    get upgradeable_currencies () {
+        if (!this.legal_allowed_currencies) return [];
+        return this.legal_allowed_currencies.map(currency => (
+            {
+                value: currency,
+                ...this.website_status.currencies_config[currency]
+            }
+        ));
     }
 
     @computed
@@ -100,8 +133,8 @@ export default class ClientStore extends BaseStore {
         } else if (this.is_logged_in) {
             return this.accounts[this.loginid].currency;
         }
-        return this.default_currency;
 
+        return this.default_currency;
     }
 
     @computed
@@ -111,7 +144,9 @@ export default class ClientStore extends BaseStore {
             // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
             if (this.currencies_list.Fiat.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
-        } return 'USD';
+        }
+
+        return 'USD';
     }
 
     @computed
@@ -205,7 +240,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responsePayoutCurrencies(response) {
-        const list = response.payout_currencies || response;
+        const list           = response.payout_currencies || response;
         this.currencies_list = buildCurrenciesList(list);
         this.selectCurrency('');
     }
@@ -229,10 +264,71 @@ export default class ClientStore extends BaseStore {
         setCurrencies(this.website_status);
     }
 
+    @action.bound
+    realAccountSignup(form_values) {
+        return new Promise(async (resolve, reject) => {
+            form_values.residence = this.accounts[this.loginid].residence;
+            form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
+            const response = await WS.newAccountReal(form_values);
+            if (!response.error) {
+                const { client_id, oauth_token } = response.new_account_real;
+                await this.switchToNewlyCreatedAccount(client_id, oauth_token, form_values.currency);
+                resolve(response);
+            } else {
+                reject(response.error.message);
+            }
+        });
+    }
+
+    @action.bound
+    setAccountCurrency(currency) {
+        return new Promise(async (resolve, reject) => {
+            const response = await WS.setAccountCurrency(currency, {
+                previous_currency: this.currency,
+            });
+            if (!response.error) {
+                this.selectCurrency(currency);
+                ClientBase.set('currency', currency);
+                const clonedAccounts = Object.assign({}, this.accounts);
+                clonedAccounts[this.loginid].currency = currency;
+                this.setAccounts(clonedAccounts);
+                // Refresh trade-store currency and proposal before requesting new proposal upon login
+                await this.root_store.modules.trade.initAccountCurrency(currency);
+                resolve(response);
+            } else {
+                reject(response.error.message);
+            }
+        });
+    }
+
+    @action.bound
+    createCryptoAccount(currency) {
+        const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
+        const residence = this.accounts[this.loginid].residence;
+
+        return new Promise(async (resolve, reject) => {
+            const response = await WS.newAccountReal({
+                first_name,
+                last_name,
+                salutation,
+                residence,
+                currency,
+                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+            });
+            if (!response.error) {
+                const { client_id, oauth_token } = response.new_account_real;
+                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+                resolve(response);
+            } else {
+                reject(response.error.message);
+            }
+        });
+    }
+
     @computed
-    get is_website_status_ready () {
+    get is_website_status_ready() {
         return this.website_status &&
-        this.website_status.site_status === 'up';
+            this.website_status.site_status === 'up';
     }
 
     @action.bound
@@ -297,7 +393,7 @@ export default class ClientStore extends BaseStore {
                     this.account_settings,
                     this.account_status,
                     this.root_store.ui.addNotification,
-                    this.loginid
+                    this.loginid,
                 );
             });
         } else if (!client || client.is_virtual) {
@@ -307,8 +403,19 @@ export default class ClientStore extends BaseStore {
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.payoutCurrencies());
-
+        this.responseLandingCompany(await WS.landingCompany());
+        this.responseWebsiteStatus(await BinarySocket.wait('website_status'));
         this.registerReactions();
+    }
+
+    @action.bound
+    responseWebsiteStatus(response) {
+        this.website_status = response.website_status;
+    }
+
+    @action.bound
+    responseLandingCompany(response) {
+        this.landing_companies = response.landing_company;
     }
 
     @action.bound
@@ -382,7 +489,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async switchAccountHandler () {
+    async switchAccountHandler() {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
             // Logout if the switched_account doesn't belong to any loginid.
             if (!this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid) {
@@ -423,7 +530,7 @@ export default class ClientStore extends BaseStore {
         // Switch account reactions.
         when(
             () => this.switched,
-            this.switchAccountHandler
+            this.switchAccountHandler,
         );
     }
 
@@ -445,7 +552,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setEmail(email) {
         this.accounts[this.loginid].email = email;
-        this.email = email;
+        this.email                        = email;
     }
 
     @action.bound
@@ -461,9 +568,9 @@ export default class ClientStore extends BaseStore {
     @action.bound
     cleanUp() {
         this.root_store.gtm.pushDataLayer({ event: 'log_out' });
-        this.loginid = null;
+        this.loginid      = null;
         this.upgrade_info = undefined;
-        this.accounts = {};
+        this.accounts     = {};
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
         });
@@ -479,7 +586,7 @@ export default class ClientStore extends BaseStore {
     storeClientAccounts(obj_params, account_list) {
         // store consistent names with other API calls
         // API_V4: send consistent names
-        const map_names = {
+        const map_names     = {
             country             : 'residence',
             landing_company_name: 'landing_company_shortcode',
         };
@@ -516,9 +623,9 @@ export default class ClientStore extends BaseStore {
         });
 
         let i = 1;
-        while (obj_params[`acct${  i}`]) {
-            const loginid = obj_params[`acct${  i}`];
-            const token   = obj_params[`token${  i}`];
+        while (obj_params[`acct${i}`]) {
+            const loginid = obj_params[`acct${i}`];
+            const token   = obj_params[`token${i}`];
             if (loginid && token) {
                 client_object[loginid].token = token;
             }
@@ -542,7 +649,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async setUserLogin(login_new_user) { // login_new_user is populated only on virtual sign-up
         let obj_params = {};
-        const search     = window.location.search;
+        const search   = window.location.search;
         if (search) {
             const arr_params = window.location.search.substr(1).split('&');
             arr_params.forEach(function(param) {
@@ -562,7 +669,11 @@ export default class ClientStore extends BaseStore {
 
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
-            const authorize_response = await BinarySocket.send({ authorize: login_new_user ? login_new_user.token1 : obj_params.token1 });
+            const authorize_response        = await BinarySocket.send({
+                authorize: login_new_user
+                    ? login_new_user.token1
+                    : obj_params.token1,
+            });
             this.is_populating_account_list = false;
 
             if (login_new_user) { // overwrite obj_params if login is for new virtual account
@@ -571,6 +682,7 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
+                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies
                 if (account_list && isEmptyObject(this.accounts)) {
                     this.storeClientAccounts(obj_params, account_list);
                 }
@@ -604,29 +716,33 @@ export default class ClientStore extends BaseStore {
         // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(this.verification_code, password, residence, this.device_data).then(async response => {
             if (response.error) {
-                cb(response.error.message)
+                cb(response.error.message);
             } else {
                 cb();
                 // Initialize client store with new user login
                 const { client_id, currency, oauth_token } = response.new_account_virtual;
-                const new_user_login = {
-                    acct1 : client_id,
-                    token1: oauth_token,
-                    curr1 : currency,
-                };
-                await this.init(new_user_login);
-
-                // Refresh trade-store currency and proposal before requesting new proposal upon login
-                this.root_store.modules.trade.initAccountCurrency(currency);
+                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
             }
         });
+    }
+
+    async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
+        const new_user_login = {
+            acct1 : client_id,
+            token1: oauth_token,
+            curr1 : currency,
+        };
+        await this.init(new_user_login);
+
+        // Refresh trade-store currency and proposal before requesting new proposal upon login
+        this.root_store.modules.trade.initAccountCurrency(currency);
     }
 
     fetchResidenceList() {
         WS.residenceList().then(response => {
             runInAction(() => {
                 this.residence_list = response.residence_list || [];
-            })
+            });
         });
     }
 }

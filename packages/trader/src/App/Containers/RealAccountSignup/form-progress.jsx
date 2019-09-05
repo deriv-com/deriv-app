@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { Button } from 'deriv-components';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
@@ -18,11 +17,11 @@ class FormProgress extends React.PureComponent {
     }
 
     animateCompleteBar() {
-        const el_first_identifier                     = document.querySelector('.identifier') || {
+        const el_first_identifier = document.querySelector('.identifier') || {
             offsetLeft : 0,
             clientWidth: 1,
         };
-        this.el_completed_bar.current.style.width     = `${(this.props.current_step - 1) * 33}%`;
+        this.el_completed_bar.current.style.width     = `${(this.props.current_step) * 33}%`;
         this.el_completed_bar.current.style.transform =
             `translateX(${el_first_identifier.offsetLeft + (el_first_identifier.clientWidth / 2)}px)`;
     }
@@ -35,7 +34,7 @@ class FormProgress extends React.PureComponent {
         return (
             <div className='form-progress'>
                 <div className='form-progress__header'>
-                    <h2>{steps[current_step - 1].header.active_title}</h2>
+                    <h2>{steps[current_step].header.active_title}</h2>
                     <div className='form-progress__steps'>
                         <div className='form-progress__steps--before' />
                         {
@@ -43,7 +42,7 @@ class FormProgress extends React.PureComponent {
                                 <div
                                     key={idx + 1}
                                     className={classNames('form-progress__step', {
-                                        'form-progress__step--active': (idx + 1) <= current_step,
+                                        'form-progress__step--active': (idx) <= current_step,
                                     })}
                                 >
                                     <span className='identifier'>{idx + 1}</span>

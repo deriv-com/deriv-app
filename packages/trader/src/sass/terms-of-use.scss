@@ -1,0 +1,23 @@
+@import "app/_common/base/index";
+
+.terms-of-use {
+  margin: 0 2rem;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+
+  h4 {
+    @include typeface(--paragraph-left-bold-black);
+    text-transform: none;
+    margin: 1rem 0;
+  }
+
+  p {
+    @include typeface(--paragraph-left-normal-black);
+    text-transform: none;
+  }
+
+  input {
+    display: none;
+  }
+}

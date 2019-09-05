@@ -102,3 +102,12 @@
     }
   }
 }
+.modal__container.modal__real-account-signup-modal {
+  width: 900px;
+
+  .vertical-tab {
+    &__content {
+      padding: 0 !important;
+    }
+  }
+}

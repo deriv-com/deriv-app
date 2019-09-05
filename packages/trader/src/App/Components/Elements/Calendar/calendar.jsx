@@ -160,7 +160,7 @@ class Calendar extends React.PureComponent {
             default_message = localize('Minimum duration is 1 day');
             is_minimum = true;
         }
-        
+
         return (
             <div className='calendar' data-value={selected_date}>
                 <CalendarHeader

@@ -46,6 +46,18 @@ const WS = (() => {
             ...device_data,
         });
 
+    const setAccountCurrency = (currency, passthrough) =>
+        BinarySocket.send({
+            set_account_currency: currency,
+            ...(passthrough && { passthrough }),
+        });
+
+    const newAccountReal = (values) =>
+        BinarySocket.send({
+            new_account_real: 1,
+            ...values,
+        });
+
     const oauthApps = () =>
         BinarySocket.send({ oauth_apps: 1 });
 
@@ -96,7 +108,12 @@ const WS = (() => {
         SubscriptionManager.subscribe('proposal', req, cb, should_forget_first);
 
     const subscribeProposalOpenContract = (contract_id = null, cb, should_forget_first) =>
-        SubscriptionManager.subscribe('proposal_open_contract', { proposal_open_contract: 1, subscribe: 1, ...(contract_id && { contract_id }) }, cb, should_forget_first);
+        SubscriptionManager.subscribe(
+            'proposal_open_contract',
+            { proposal_open_contract: 1, subscribe: 1, ...(contract_id && { contract_id }) },
+            cb,
+            should_forget_first,
+        );
 
     const subscribeProposalOpenContractOnBuy = (buy_request) =>
         SubscriptionManager.addSubscriptionFromRequest(
@@ -131,6 +148,7 @@ const WS = (() => {
         logout,
         mt5LoginList,
         newAccountVirtual,
+        newAccountReal,
         oauthApps,
         portfolio,
         payoutCurrencies,
@@ -147,6 +165,7 @@ const WS = (() => {
         forget,
         forgetAll,
         forgetStream,
+        setAccountCurrency,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

@@ -1,5 +1,7 @@
 @import '../base/index';
 @import '../inline-icons';
+$DERIV_RED: #ff444f;
+
 /** @define acc-info */
 .acc-info {
     display: flex;
@@ -114,29 +116,40 @@
     &__new-account {
         display: flex;
         justify-content: center;
+        align-items: center;
         margin: 0.8em 0 1.6em;
+        background-color: $DERIV_RED;
+        height: 40px;
+        border-radius: 4px;
 
         &-link {
-            @include typeface(--small-center-normal-grey, none);
-            @include toEm(padding, 8px 16px, 1.2em);
-            width: 100%;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            @include themify($themes) {
-                color: themed('text_secondary_color');
-                border: 1px dashed themed('text_secondary_color');
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
 
-                &:before {
-                    content: '\002B';
-                    color: themed('text_secondary_color');
-                    float: left;
+            & .btn {
+                background-color: transparent;
+                margin: 0;
+                padding: 0;
+
+                &__text {
+                    color: $COLOR_WHITE;
                 }
-                &:hover {
-                    background: themed('tab_hover_color');
-                }
-                &:visited, &:active {
-                    color: themed('text_secondary_color');
+            }
+        }
+        &--outlined {
+            background-color: $COLOR_WHITE;
+            border: 1px solid $DERIV_RED;
+
+            .btn__text {
+                color: $DERIV_RED;
+            }
+
+            &:hover {
+                background-color: $DERIV_RED !important;
+
+                .btn__text {
+                    color: $COLOR_WHITE;
                 }
             }
         }

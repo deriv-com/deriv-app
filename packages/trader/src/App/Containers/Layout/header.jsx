@@ -1,13 +1,14 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import {
     AccountActions,
     MenuLinks,
-}                     from 'App/Components/Layout/Header';
-import header_links   from 'App/Constants/header-links';
-import Lazy           from 'App/Containers/Lazy';
-import { connect }    from 'Stores/connect';
+}                        from 'App/Components/Layout/Header';
+import header_links      from 'App/Constants/header-links';
+import Lazy              from 'App/Containers/Lazy';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import { connect }       from 'Stores/connect';
 
 const Header = ({
     // active_cashier_tab,
@@ -67,6 +68,7 @@ const Header = ({
                 </div>
             </div>
         </div>
+        <RealAccountSignup />
     </header>
 );
 

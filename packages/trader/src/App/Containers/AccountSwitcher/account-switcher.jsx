@@ -1,12 +1,12 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from 'App/i18n';
 import { isEmptyObject } from '_common/utility';
+import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
+import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import { requestLogout } from 'Services/index';
 import { connect }       from 'Stores/connect';
-import RealAccountSignup from '../RealAccountSignup';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -89,10 +89,13 @@ class AccountSwitcher extends React.Component {
                             }
                         </div>
 
-                        {   // TODO: Add link to account opening page for upgrade or multi account page for new account.
-                            // Update text below for handling types of account to create :- e.g - Investment
-                            !!(this.props.is_upgrade_enabled && this.props.upgrade_info.can_open_multi) &&
-                            <RealAccountSignup text={localize('Add new account')} />
+                        {!!(this.props.is_upgrade_enabled &&
+                            this.props.upgrade_info.can_open_multi) &&
+                            <UpgradeButton
+                                onClick={this.props.openRealAccountSignup}
+                                text={localize('Add/manage account')}
+                                outlined
+                            />
                         }
                     </div>
                 }
@@ -118,7 +121,10 @@ class AccountSwitcher extends React.Component {
                     </div>
                 }
                 { !!(this.props.is_upgrade_enabled && this.props.is_virtual) &&
-                    <RealAccountSignup text={localize('Upgrade to Real Account')} />
+                    <UpgradeButton
+                        text={localize('Upgrade to Real Account')}
+                        onClick={this.props.openRealAccountSignup}
+                    />
                 }
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
@@ -160,6 +166,7 @@ const account_switcher = connect(
         clearError            : modules.contract_trade.clearError,
         has_error             : modules.contract_trade.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,
+        openRealAccountSignup : ui.openRealAccountSignup,
         togglePositionsDrawer : ui.togglePositionsDrawer,
     }),
 )(AccountSwitcher);

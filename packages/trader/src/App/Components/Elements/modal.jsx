@@ -22,7 +22,6 @@ class ModalElement extends React.PureComponent {
     };
 
     componentWillUnmount = () => {
-        debugger;
         document.removeEventListener('mousedown', this.handleClickOutside);
         this.state.modal_root.removeChild(this.el);
     };
@@ -40,13 +39,16 @@ class ModalElement extends React.PureComponent {
                 id={this.props.id}
                 className={classNames('modal__container', this.props.className && `modal__${this.props.className}`)}
             >
+
                 <div className='modal-header'>
+                    {this.props.has_header &&
                     <h3 className={classNames({
                         'modal-header__sidebar'   : this.props.is_sidebar_enabled,
                         'modal-header--no-sidebar': !this.props.is_sidebar_enabled,
                     })}
                     >{this.props.title}
                     </h3>
+                    }
                     <div className={classNames('modal-header__main', {
                         'modal-header--no-sidebar': !this.props.is_sidebar_enabled,
                     })}
@@ -81,6 +83,7 @@ class ModalElement extends React.PureComponent {
 
 ModalElement.propTypes = {
     className     : PropTypes.string,
+    has_header    : PropTypes.bool,
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
@@ -100,6 +103,7 @@ const Modal = ({
     selected_index,
     title,
     toggleModal,
+    has_header,
 }) => (
     <CSSTransition
         appear
@@ -118,6 +122,7 @@ const Modal = ({
             header={header}
             id={id}
             is_open={is_open}
+            has_header={has_header}
             modal_content={modal_content}
             selected_index={selected_index}
             title={title}
@@ -129,10 +134,12 @@ const Modal = ({
 
 Modal.defaultProps = {
     is_sidebar_enabled: true,
+    has_header        : true,
 };
 
 Modal.propTypes = {
     className         : PropTypes.string,
+    has_header        : PropTypes.bool,
     header            : PropTypes.node,
     id                : PropTypes.string,
     is_open           : PropTypes.bool,

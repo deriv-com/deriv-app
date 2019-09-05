@@ -63,6 +63,9 @@ export default class UIStore extends BaseStore {
     @observable is_app_disabled   = false;
     @observable is_route_modal_on = false;
 
+    // real account signup
+    @observable is_real_acc_signup_on = false;
+
     // position states
     @observable show_positions_toggle = true;
 
@@ -242,6 +245,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     openPositionsDrawer() { // show and hide Positions Drawer
         this.is_positions_drawer_on = true;
+    }
+
+    @action.bound
+    openRealAccountSignup() {
+        this.is_real_acc_signup_on = true;
+    }
+
+    @action.bound
+    closeRealAccountSignup() {
+        this.is_real_acc_signup_on = false;
     }
 
     @action.bound

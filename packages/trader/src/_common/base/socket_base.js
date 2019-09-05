@@ -140,8 +140,15 @@ const BinarySocketBase = (() => {
 
     const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
 
-    const buy = (proposal_id, price) =>
-        deriv_api.send({ buy: proposal_id, price });
+    const buyAndSubscribe = (request, cb) => {
+        return new Promise((resolve) => {
+            let called = false;
+            subscribe(request, response => {
+                if (!called) return resolve(response);
+                return called = !called;
+            });
+        });
+    };
 
     const sell = (contract_id, bid_price) =>
         deriv_api.send({ sell: contract_id, price: bid_price });
@@ -186,7 +193,7 @@ const BinarySocketBase = (() => {
         removeOnDisconnect: () => { delete config.onDisconnect; },
         cache             : delegateToObject({}, () => deriv_api.cache),
         storage           : delegateToObject({}, () => deriv_api.storage),
-        buy,
+        buyAndSubscribe,
         sell,
         cashier,
         newAccountVirtual,

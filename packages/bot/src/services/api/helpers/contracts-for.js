@@ -183,7 +183,7 @@ export default class ContractsFor {
             }
 
             this.retrieving_contracts_for[symbol] = new PendingPromise();
-            const response = await this.ws.contractsFor(symbol);
+            const response = await this.ws.sendRequest({ contracts_for: symbol }, { forced: true });
 
             if (response.error) {
                 return [];

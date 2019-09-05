@@ -1,10 +1,15 @@
 // Base
 @import 'app/_common/base/index';
 
+// Fonts
+@import 'deriv-shared/src/styles/google-fonts.scss';
+
+// Reset
+@import 'deriv-shared/src/styles/reset.scss';
+
 // General
 @import 'app/_common/symbols';
 @import 'app/_common/tooltip';
-@import 'app/_common/popover';
 @import 'app/_common/loading';
 
 // Layout
@@ -23,7 +28,6 @@
 
 // Form
 @import 'app/_common/form/button-toggle-menu';
-@import 'app/_common/form/dropdown';
 @import 'app/_common/form/input-field';
 @import 'app/_common/form/time-picker';
 
@@ -32,12 +36,10 @@
 @import 'app/_common/components/allow-equals';
 @import 'app/_common/components/calendar';
 @import 'app/_common/components/card-list';
-@import 'app/_common/components/checkbox';
 @import 'app/_common/components/contract-audit';
 @import 'app/_common/components/contract-type-dialog';
 @import 'app/_common/components/contract-type-widget';
 @import 'app/_common/components/contract-type-list';
-@import 'app/_common/components/label';
 @import 'app/_common/components/trade-type-info-dialog';
 @import 'app/_common/components/date-picker';
 @import 'app/_common/components/error-boundary';

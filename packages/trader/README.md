@@ -27,7 +27,7 @@ Use `https://YOUR_GITHUB_USERNAME.github.io/deriv-app/` for the Redirect URL and
     If you're using a custom domain, replace the github URLs above with your domain and remove the `deriv-app` base path.
 
 2. In `src/config.js`: Insert the `Application ID` of your registered application in `user_app_id`.
-   * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/javascript/config.js`
+   * **NOTE:** In order to avoid accidentally committing personal changes to this file, use `git update-index --assume-unchanged src/config.js`
 
 3. Set `NODE_ENV` to `development` with `export NODE_ENV=development`
 

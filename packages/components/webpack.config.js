@@ -108,23 +108,14 @@ module.exports = {
         new SpriteLoaderPlugin(),
     ],
     externals: {
-        formik: 'formik',
-        mobx  : 'mobx',
-        react : {
-            root     : 'React',
-            commonjs : 'react',
-            commonjs2: 'react',
-        },
-        'react-dom': {
-            commonjs : 'react-dom',
-            commonjs2: 'react-dom',
-            root     : 'ReactDOM',
-        },
-        'mobx-react': {
-            commonjs : 'mobx-react',
-            commonjs2: 'mobx-react',
-            root     : 'mobxReact',
-        },
-        'babel-polyfill': 'babel-polyfill',
+        'formik'                     : 'formik',
+        'classnames'                 : 'classnames',
+        'react'                      : 'React',
+        'react-dom'                  : 'react-dom',
+        'react-pose'                 : 'react-pose',
+        'babel-polyfill'             : 'babel-polyfill',
+        'prop-types'                 : 'prop-types',
+        'react-transition-group'     : 'react-transition-group',
+        'tt-react-custom-scrollbars' : 'tt-react-custom-scrollbars'
     },
 };

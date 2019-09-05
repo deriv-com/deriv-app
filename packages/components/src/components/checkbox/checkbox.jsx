@@ -52,7 +52,7 @@ Checkbox.propTypes = {
     classNameLabel: PropTypes.string,
     id            : PropTypes.string,
     label         : PropTypes.string,
-    value         : PropTypes.bool,
+    value         : PropTypes.oneOfType([ PropTypes.bool, PropTypes.number ]),
 };
 
 export default Checkbox;

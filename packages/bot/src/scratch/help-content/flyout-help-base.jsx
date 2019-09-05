@@ -3,7 +3,7 @@ import PropTypes        from 'prop-types';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
 import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
-import { config }  from './help-content.config';
+import { config }       from './help-content.config';
 import FlyoutBlock      from '../../components/flyout-block.jsx';
 import constant         from '../../constants/const';
 import { Arrow2Icon }   from '../../components/Icons.jsx';

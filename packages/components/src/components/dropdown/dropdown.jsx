@@ -3,7 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import Icon              from 'Components/icon';
+import { IconChevronLeft } from 'Components/icon';
 import {
     getItemFromValue,
     getValueFromIndex,
@@ -250,8 +250,7 @@ class Dropdown extends React.PureComponent {
                     />
                 </div>
                 {
-                    !this.is_single_option && <Icon
-                        icon='IconChevronLeft'
+                    !this.is_single_option && <IconChevronLeft
                         className={classNames('dc-dropdown__select-arrow', {
                             'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
                         })}

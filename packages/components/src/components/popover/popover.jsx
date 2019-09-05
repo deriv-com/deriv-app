@@ -4,7 +4,7 @@ import React           from 'react';
 import {
     IconInfoOutline,
     IconQuestion,
-    IconRedDot }       from 'Components/icon/icons';
+    IconRedDot }       from 'Components/icon';
 import PopoverBubble   from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {

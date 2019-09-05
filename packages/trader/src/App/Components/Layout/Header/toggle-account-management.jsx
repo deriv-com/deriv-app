@@ -188,6 +188,12 @@ const modal_content = [
 ];
 
 class ToggleAccountManagement extends React.PureComponent {
+    state = {
+        header: modal_content[0].sub_tab_list[0].label,
+    };
+
+    onChangeHeader = (header) => this.setState({ header });
+
     render() {
         const { disableApp, enableApp, is_open } = this.props;
 
@@ -197,10 +203,14 @@ class ToggleAccountManagement extends React.PureComponent {
                     <Icon icon='IconUser' />
                 </div>
                 <Modal
+                    className='account-management'
                     disableApp={disableApp}
                     enableApp={enableApp}
+                    header={this.state.header}
                     menu_type='accordion'
                     modal_content={modal_content}
+                    modal_content_footer={modal_content_footer}
+                    onChangeHeader={this.onChangeHeader}
                     is_open={is_open}
                     title={localize('Settings')}
                     toggleModal={this.props.toggleModal}

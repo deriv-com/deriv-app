@@ -55,6 +55,7 @@ class ModalElement extends React.PureComponent {
                         classNameHeader='modal__tab-header'
                         id='modal'
                         list={this.props.modal_content}
+                        onChangeHeader={this.props.onChangeHeader}
                         selected_index={this.props.selected_index}
                     />
                     :
@@ -82,6 +83,7 @@ ModalElement.propTypes = {
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
     modal_content : PropTypes.array,
+    onChangeHeader: PropTypes.func,
     selected_index: PropTypes.number,
     title         : PropTypes.string,
     toggleModal   : PropTypes.func,
@@ -97,6 +99,7 @@ const Modal = ({
     title,
     toggleModal,
     menu_type,
+    onChangeHeader,
 }) => (
     <CSSTransition
         appear
@@ -120,6 +123,7 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             menu_type={menu_type}
+            onChangeHeader={onChangeHeader}
         />
     </CSSTransition>
 );
@@ -130,6 +134,7 @@ Modal.propTypes = {
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
     modal_content : PropTypes.array,
+    onChangeHeader: PropTypes.func,
     selected_index: PropTypes.number,
     title         : PropTypes.string,
     toggleModal   : PropTypes.func,

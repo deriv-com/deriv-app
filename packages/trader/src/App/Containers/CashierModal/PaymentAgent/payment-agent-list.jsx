@@ -74,7 +74,6 @@ class PaymentAgentList extends React.Component {
                                             header : payment_agent.name,
                                             content: (
                                                 <PaymentAgentDetails
-                                                    className='payment-agent__transferred-contact'
                                                     payment_agent_email={payment_agent.email}
                                                     payment_agent_phone={payment_agent.phone}
                                                     payment_agent_url={payment_agent.url}

@@ -20,6 +20,7 @@ import Loading              from '../../../../templates/_common/components/loadi
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
 
+    // TODO: uncomment this when adding the input field in the form
     // if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
     //     errors.payment_method = true;
     // }
@@ -92,6 +93,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                     value={this.props.selected_payment_agent.value}
                                                     onChange={this.props.onChangePaymentAgent}
                                                 />
+                                                {/* TODO: uncomment these when radio group can be in form */}
                                                 {/* <RadioGroup */}
                                                 {/*    className='payment-agent__radio-group' */}
                                                 {/*    items={[ */}

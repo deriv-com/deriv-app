@@ -17,9 +17,10 @@ build :
 test  :
   ```sh 
   npm run test
+  ```
 storybook: 
-  ```shell script
-    npm run storybook
+  ```sh 
+  npm run storybook
   ```
 
 # Usage

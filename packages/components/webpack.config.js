@@ -1,5 +1,4 @@
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -66,28 +65,7 @@ module.exports = {
                     }
                 ]
             },
-            // {
-            //     test: /\.svg$/,
-            //     use : [
-            //         {
-            //             loader : 'svg-sprite-loader',
-            //             options: {
-            //                 extract       : true,
-            //                 spriteFilename: 'bot-sprite.svg',
-            //             },
-            //         },
-            //         {
-            //             loader : 'svgo-loader',
-            //             options: {
-            //                 plugins: [
-            //                     { removeUselessStrokeAndFill: false },
-            //                     { removeUnknownsAndDefaults: false },
-            //                 ],
-            //             },
-            //         },
-            //     ],
-            // },
-               {  
+            {  
                 test: /\.svg$/,
                 use: [
                     {
@@ -126,7 +104,6 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
-        new SpriteLoaderPlugin(),
         new CopyPlugin([
             {
                 from: path.resolve(__dirname, 'src', 'components/icon/icon-base.jsx'),

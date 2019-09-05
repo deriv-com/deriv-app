@@ -406,10 +406,6 @@
         transform: rotate(-90deg);
         transition: transform 0.2s ease;
         @extend %inline-icon;
-
-        // &--active {
-        //     transform: rotate(90deg);
-        // }
     }
     &:hover {
         cursor: pointer;

@@ -10,7 +10,7 @@ import Localize                       from 'App/Components/Elements/localize.jsx
 import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
 import { website_name }               from 'App/Constants/app-config';
-import Icon                           from 'Assets/icon.jsx';
+import PaymentAgentDetails            from './payment-agent-details.jsx';
 import EmailSent                      from '../email-sent.jsx';
 import Loading                        from '../../../../templates/_common/components/loading.jsx';
 
@@ -73,11 +73,12 @@ class PaymentAgentList extends React.Component {
                                         list={this.props.payment_agent_list.map((payment_agent) => ({
                                             header : payment_agent.name,
                                             content: (
-                                                <div className='payment-agent__accordion-content'>
-                                                    <div className='payment-agent__accordion-content-line'><Icon icon='IconPhone' className='payment-agent__accordion-content-icon' />{payment_agent.phone}</div>
-                                                    <div className='payment-agent__accordion-content-line'><Icon icon='IconWebsite' className='payment-agent__accordion-content-icon' />{payment_agent.url}</div>
-                                                    <div><Icon icon='IconEmail' className='payment-agent__accordion-content-icon' />{payment_agent.email}</div>
-                                                </div>
+                                                <PaymentAgentDetails
+                                                    className='payment-agent__transferred-contact'
+                                                    payment_agent_email={payment_agent.email}
+                                                    payment_agent_phone={payment_agent.phone}
+                                                    payment_agent_url={payment_agent.url}
+                                                />
                                             ),
                                         }))}
                                     />

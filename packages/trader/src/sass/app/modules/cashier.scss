@@ -151,7 +151,8 @@
         display: inline-block;
         width: 20rem;
         height: 4rem;
-        margin: 0 0 0 8px;
+        //margin: 0 0 0 8px;
+        margin: 0 0 16px 0;
         line-height: 1.43;
 
         &-display {
@@ -177,8 +178,6 @@
         font-size: 1rem;
     }
     &__accordion-content {
-        color: var(--color-red);
-
         &-line {
             margin-bottom: 8px;
         }
@@ -236,6 +235,10 @@
             margin-top: 16px;
             margin-bottom: 8px;
         }
+    }
+    &__contact {
+        text-decoration: none;
+        color: var(--color-red);
     }
     &__separator {
         @include themify($themes) {

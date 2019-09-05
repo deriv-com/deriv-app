@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
@@ -61,7 +62,6 @@
     "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
-    "@babel/polyfill": "^7.0.0",
     "moment": "^2.24.0"
   }
 }

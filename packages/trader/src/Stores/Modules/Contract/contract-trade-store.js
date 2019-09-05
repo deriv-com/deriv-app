@@ -60,15 +60,15 @@ export default class ContractTradeStore extends BaseStore {
                 const info = c.contract_info;
                 let ok = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
-                if (ok
-                    && info.barrier
-                    && info.entry_spot
-                    && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
-                ) {
-                    // entry_spot=barrier means it is rise_fall (blame the api)
-                    const type = `${info.entry_spot}` === `${info.barrier}` ? 'rise_fall' : 'high_low';
-                    ok = trade_type === type;
-                }
+                // if (ok
+                //     && info.barrier
+                //     && info.entry_spot
+                //     && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
+                // ) {
+                //     // entry_spot=barrier means it is rise_fall (blame the api)
+                //     const type = `${info.entry_spot}` === `${info.barrier}` ? 'rise_fall' : 'high_low';
+                //     ok = trade_type === type;
+                // }
                 return ok;
             });
     }

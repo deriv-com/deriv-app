@@ -17,12 +17,21 @@ const RawMarkerMaker = (draw_callback) => {
     return Marker;
 };
 
-function get_color({ status, profit }) {
-    const colors = {
-        open: '#2196F3',
-        won : '#2D9F93',
+function get_color({ status, profit, is_dark_theme }) {
+    const colors = is_dark_theme ? {
+        open: '#1C5AE3',
+        won : '#00A79E',
+        lost: '#CC2E3D',
+        sold: '#1C5AE3',
+        fg: '#FFFFFF',
+        bg: '#10131F',
+    } : {
+        open: '#1C5AE3',
+        won : '#4BB4B3',
         lost: '#EC3F3F',
-        sold: '#2196F3',
+        sold: '#1C5AE3',
+        fg: '#333333',
+        bg: '#FFFFFF',
     };
     let color = colors[status || 'open'];
     if (status === 'open' && profit) {
@@ -109,6 +118,7 @@ const TickContract = RawMarkerMaker(({
     points: [start, ...ticks],
     prices: [barrier], // TODO: support two barrier contracts
     is_last_contract,
+    is_dark_theme,
     contract_info: {
         // contract_type,
         // exit_tick_time,
@@ -124,6 +134,7 @@ const TickContract = RawMarkerMaker(({
     const ctx = context;
 
     const color = get_color({
+        is_dark_theme,
         status,
         profit: (tick_stream || []).length > 1 ? profit : null,
     });
@@ -140,16 +151,16 @@ const TickContract = RawMarkerMaker(({
         render_label({
             ctx,
             text: 'Start\nTime',
-            tick: { zom: start.zoom, left: start.left - 1,  top: height - 50 },
+            tick: { zom: start.zoom, left: start.left - 1 * scale,  top: height - 50 },
         });
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left - 1, 0);
+        ctx.moveTo(start.left - 1 * scale, 0);
         if (ticks.length && barrier) {
-            ctx.lineTo(start.left - 1, barrier - 30 * scale);
-            ctx.moveTo(start.left - 1, barrier + 4 * scale);
+            ctx.lineTo(start.left - 1 * scale, barrier - 30 * scale);
+            ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
         }
-        ctx.lineTo(start.left - 1, ctx.canvas.height);
+        ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
         ctx.stroke();
     }
 
@@ -179,9 +190,10 @@ const TickContract = RawMarkerMaker(({
         ticks
             .filter(tick => tick.visible)
             .forEach(tick => {
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = tick === exit ?
+                    color : get_color({ status: 'fg', is_dark_theme });
                 ctx.beginPath();
-                ctx.arc(tick.left - 1, tick.top, 1 * scale, 0, Math.PI * 2);
+                ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
                 ctx.fill();
             });
         ctx.fillStyle = color;
@@ -191,18 +203,18 @@ const TickContract = RawMarkerMaker(({
         if (tick && tick.visible) {
             ctx.setLineDash([2, 2]);
             ctx.beginPath();
-            ctx.moveTo(tick.left - 1, tick.top);
-            ctx.lineTo(tick.left - 1, barrier);
+            ctx.moveTo(tick.left - 1 * scale, tick.top);
+            ctx.lineTo(tick.left - 1 * scale, barrier);
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.arc(tick.left - 1, tick.top, 3 * scale, 0, Math.PI * 2);
+            ctx.arc(tick.left - 1 * scale, tick.top, 3 * scale, 0, Math.PI * 2);
             ctx.fill();
 
             if (tick === entry) {
                 ctx.beginPath();
-                ctx.fillStyle = 'white';
-                ctx.arc(tick.left - 1, tick.top, 2 * scale, 0, Math.PI * 2);
+                ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
+                ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = color;
             }
@@ -223,7 +235,7 @@ const TickContract = RawMarkerMaker(({
     if (start.visible) {
         draw_path(ctx, {
             top : barrier - 9 * scale,
-            left: start.left - 1,
+            left: start.left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color),
         });
@@ -245,6 +257,7 @@ const NonTickContract = RawMarkerMaker(({
     points: [start, expiry, entry, exit],
     is_last_contract,
     prices: [barrier], // TODO: support two barrier contracts
+    is_dark_theme,
     contract_info: {
         // contract_type,
         // exit_tick_time,
@@ -257,7 +270,7 @@ const NonTickContract = RawMarkerMaker(({
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
 
-    const color = get_color({ status, profit });
+    const color = get_color({ status, profit, is_dark_theme });
 
     ctx.save();
     ctx.strokeStyle = color;
@@ -271,16 +284,16 @@ const NonTickContract = RawMarkerMaker(({
         render_label({
             ctx,
             text: 'Start\nTime',
-            tick: { zom: start.zoom, left: start.left - 1,  top: height - 50 },
+            tick: { zom: start.zoom, left: start.left - 1 * scale,  top: height - 50 },
         });
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left - 1, 0);
+        ctx.moveTo(start.left - 1 * scale, 0);
         if (barrier) {
-            ctx.lineTo(start.left - 1, barrier - 20 * scale);
-            ctx.moveTo(start.left - 1, barrier + 4 * scale);
+            ctx.lineTo(start.left - 1 * scale, barrier - 20 * scale);
+            ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
         }
-        ctx.lineTo(start.left - 1, ctx.canvas.height);
+        ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
         ctx.stroke();
     }
     // barrier line
@@ -307,18 +320,18 @@ const NonTickContract = RawMarkerMaker(({
         if (tick && tick.visible) {
             ctx.setLineDash([2, 2]);
             ctx.beginPath();
-            ctx.moveTo(tick.left - 1, tick.top);
-            ctx.lineTo(tick.left - 1, barrier);
+            ctx.moveTo(tick.left - 1 * scale, tick.top);
+            ctx.lineTo(tick.left - 1 * scale, barrier);
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.arc(tick.left - 1, tick.top, 3 * scale, 0, Math.PI * 2);
+            ctx.arc(tick.left - 1 * scale, tick.top, 3 * scale, 0, Math.PI * 2);
             ctx.fill();
 
             if (tick === entry) {
                 ctx.beginPath();
-                ctx.fillStyle = 'white';
-                ctx.arc(tick.left - 1, tick.top, 2 * scale, 0, Math.PI * 2);
+                ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
+                ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = color;
             }
@@ -329,7 +342,7 @@ const NonTickContract = RawMarkerMaker(({
     if (start.visible && barrier) {
         draw_path(ctx, {
             top : barrier - 9 * scale,
-            left: start.left - 1,
+            left: start.left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color),
         });
@@ -351,6 +364,7 @@ const DigitContract = RawMarkerMaker(({
     ctx: context,
     points: [start, ...ticks],
     is_last_contract,
+    is_dark_theme,
     contract_info: {
         // contract_type,
         status,
@@ -364,7 +378,11 @@ const DigitContract = RawMarkerMaker(({
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
 
-    const color = get_color({ status, profit: is_sold ? profit : null });
+    const color = get_color({
+        is_dark_theme,
+        status,
+        profit: is_sold ? profit : null,
+    });
 
     ctx.save();
     ctx.strokeStyle = color;
@@ -376,12 +394,12 @@ const DigitContract = RawMarkerMaker(({
     if (draw_start_line) {
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left - 1, 0);
+        ctx.moveTo(start.left - 1 * scale, 0);
         if (ticks.length) {
-            ctx.lineTo(start.left - 1, start.top - 30 * scale);
-            ctx.moveTo(start.left - 1, start.top + 4 * scale);
+            ctx.lineTo(start.left - 1 * scale, start.top - 30 * scale);
+            ctx.moveTo(start.left - 1 * scale, start.top + 4 * scale);
         }
-        ctx.lineTo(start.left - 1, ctx.canvas.height);
+        ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
         ctx.stroke();
     }
 
@@ -395,14 +413,15 @@ const DigitContract = RawMarkerMaker(({
     ticks.forEach((tick, idx) => {
         if (is_sold && tick !== expiry) { return; }
         if (!tick.visible) { return; }
-        const clr = tick !== expiry ? 'black' : color;
+        const clr = tick !== expiry ?
+            get_color({ status: 'fg', is_dark_theme }) : color;
         ctx.beginPath();
         ctx.fillStyle = clr;
         ctx.arc(tick.left, tick.top, 6 * scale, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
         ctx.arc(tick.left, tick.top, 5 * scale, 0, Math.PI * 2);
         ctx.fill();
 
@@ -420,7 +439,7 @@ const DigitContract = RawMarkerMaker(({
         ctx.font = `bold ${size}px Roboto`;
         ctx.fillText(
             `${ticks.length}/${tick_count}`,
-            start.left,
+            start.left - 1 * scale,
             start.top - 23 * scale,
         );
     }
@@ -428,7 +447,7 @@ const DigitContract = RawMarkerMaker(({
     if (start.visible) {
         draw_path(ctx, {
             top : start.top - 9 * scale,
-            left: start.left - 1,
+            left: start.left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color),
         });

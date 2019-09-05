@@ -37,7 +37,6 @@
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
@@ -94,6 +93,7 @@
     "webpack-merge-and-include-globally": "^2.1.16"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@binary-com/smartcharts": "^0.3.9",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",

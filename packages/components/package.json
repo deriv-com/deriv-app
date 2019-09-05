@@ -32,7 +32,6 @@
   "author": "Deriv",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/polyfill": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
@@ -89,6 +88,7 @@
     "webpack-cli": "^3.3.4"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@wapps/storybook-addon-state": "0.0.4",
     "classnames": "^2.2.6",
     "deriv-shared": "^1.0.0",

@@ -232,7 +232,7 @@ const TickContract = RawMarkerMaker(({
         ctx.fillText(
             `${ticks.length - 1}/${tick_count}`,
             start.left,
-            barrier - 22 * scale,
+            barrier - 23 * scale,
         );
     }
     // start-time marker
@@ -407,29 +407,9 @@ const DigitContract = RawMarkerMaker(({
     }
     const expiry = ticks[ticks.length - 1];
 
-    // count down
-    if (start.visible && start.top && !is_sold) {
-        ctx.textAlign = 'center';
-        const size = Math.floor(scale * 3 + 7);
-        ctx.font = `bold ${size}px Roboto`;
-        ctx.fillText(
-            `${ticks.length}/${tick_count}`,
-            start.left,
-            start.top - 22 * scale,
-        );
-    }
-    // start-time marker
-    if (start.visible) {
-        draw_path(ctx, {
-            top : start.top - 9 * scale,
-            left: start.left - 1,
-            zoom: start.zoom,
-            icon: ICONS.START.with_color(color),
-        });
-    }
     // remaining ticks
     ticks.forEach((tick, idx) => {
-        if (!is_last_contract && tick !== expiry) { return; }
+        if (is_sold && tick !== expiry) { return; }
         if (!tick.visible) { return; }
         const clr = tick !== expiry ? 'black' : color;
         ctx.beginPath();
@@ -449,6 +429,26 @@ const DigitContract = RawMarkerMaker(({
         ctx.font = `${10 * scale}px Roboto`;
         ctx.fillText(last_digit, tick.left, tick.top + 1 * scale);
     });
+    // count down
+    if (start.visible && start.top && !is_sold) {
+        ctx.textAlign = 'center';
+        const size = Math.floor(scale * 3 + 7);
+        ctx.font = `bold ${size}px Roboto`;
+        ctx.fillText(
+            `${ticks.length}/${tick_count}`,
+            start.left,
+            start.top - 23 * scale,
+        );
+    }
+    // start-time marker
+    if (start.visible) {
+        draw_path(ctx, {
+            top : start.top - 9 * scale,
+            left: start.left - 1,
+            zoom: start.zoom,
+            icon: ICONS.START.with_color(color),
+        });
+    }
     // status marker
     if (expiry.visible && is_sold) {
         ctx.fillStyle = color;

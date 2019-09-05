@@ -58,7 +58,7 @@ export default class ContractTradeStore extends BaseStore {
             .filter(c => c.contract_info.underlying === underlying)
             .filter(c => {
                 const info = c.contract_info;
-                let ok = trade_types.indexOf(info.contract_type) !== -1;
+                const ok = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
                 // if (ok
                 //     && info.barrier

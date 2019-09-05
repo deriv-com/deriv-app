@@ -1,6 +1,6 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { translate } from '../../../utils/lang/i18n';
+import React            from 'react';
+import { PropTypes }    from 'prop-types';
+import { translate }    from '../../../utils/lang/i18n';
 
 const FlyoutText = props => {
     const { text } = props;

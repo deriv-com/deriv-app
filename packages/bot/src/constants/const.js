@@ -1,4 +1,4 @@
-import { translate } from '../utils/lang/i18n';
+import { translate }        from '../utils/lang/i18n';
 import { load as loadLang } from '../utils/lang/lang';
 
 loadLang();

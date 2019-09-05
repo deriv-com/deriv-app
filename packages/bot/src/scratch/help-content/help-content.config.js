@@ -1,8 +1,8 @@
-import config from '../../constants/const';
+import constant from '../../constants/const';
 
-const { help: { TEXT, VIDEO, IMAGE, BLOCK } } = config;
+const { help: { TEXT, VIDEO, IMAGE, BLOCK } } = constant;
 
-export const help_config = {
+export const config = {
     math_change: [
         { type: TEXT },
         { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },

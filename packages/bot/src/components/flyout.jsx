@@ -2,7 +2,7 @@ import React                from 'react';
 import PropTypes            from 'prop-types';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
-import { help_config }      from '../scratch/help-content/help-content.config';
+import { config }      from '../scratch/help-content/help-content.config';
 import { connect }          from '../stores/connect';
 import                           '../assets/sass/scratch/flyout.scss';
 
@@ -41,7 +41,7 @@ const Flyout = ({
                                         id={`flyout__item-workspace--${index}`}
                                         block_nodes={nodes}
                                         onInfoClick={
-                                            help_config[block_type]
+                                            config[block_type]
                                             && (() => showHelpContent(nodes))
                                         }
                                     />

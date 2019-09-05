@@ -3,7 +3,7 @@ import PropTypes        from 'prop-types';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
 import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
-import { help_config }  from './help-content.config';
+import { config }  from './help-content.config';
 import FlyoutBlock      from '../../components/flyout-block.jsx';
 import constant         from '../../constants/const';
 import { Arrow2Icon }   from '../../components/Icons.jsx';
@@ -59,7 +59,7 @@ class HelpBase extends React.PureComponent {
             help_string,
             has_help_content,
         } = this.state;
-        const block_help_component = help_string && help_config[block_type];
+        const block_help_component = help_string && config[block_type];
         let text_count = 0;
 
         return (

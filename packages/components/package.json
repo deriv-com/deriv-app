@@ -88,7 +88,7 @@
     "webpack-cli": "^3.3.4"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.4.4",
     "@wapps/storybook-addon-state": "0.0.4",
     "classnames": "^2.2.6",
     "deriv-shared": "^1.0.0",

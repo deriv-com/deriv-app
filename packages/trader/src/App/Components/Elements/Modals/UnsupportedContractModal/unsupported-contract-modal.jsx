@@ -32,8 +32,8 @@ class UnsupportedContractModal extends React.PureComponent {
 }
 
 UnsupportedContractModal.propTypes = {
-    disableApp: PropTypes.bool,
-    enableApp : PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp : PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onClose   : PropTypes.func,

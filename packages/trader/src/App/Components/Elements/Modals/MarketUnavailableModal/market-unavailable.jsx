@@ -29,8 +29,8 @@ const MarketUnavailableModal = ({
 );
 
 MarketUnavailableModal.propTypes = {
-    disableApp: PropTypes.bool,
-    enableApp : PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp : PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onCancel  : PropTypes.func,

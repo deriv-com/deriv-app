@@ -23,8 +23,8 @@ function get_color({ status, profit, is_dark_theme }) {
         won : '#00A79E',
         lost: '#CC2E3D',
         sold: '#1C5AE3',
-        fg: '#FFFFFF',
-        bg: '#10131F',
+        bg: '#FFFFFF',
+        fg: '#10131F',
     } : {
         open: '#1C5AE3',
         won : '#4BB4B3',
@@ -190,8 +190,8 @@ const TickContract = RawMarkerMaker(({
         ticks
             .filter(tick => tick.visible)
             .forEach(tick => {
-                ctx.fillStyle = tick === exit ?
-                    color : get_color({ status: 'fg', is_dark_theme });
+                ctx.fillStyle = tick === exit ? color
+                    : get_color({ status: is_dark_theme ? 'bg' : 'fg', is_dark_theme });
                 ctx.beginPath();
                 ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
                 ctx.fill();

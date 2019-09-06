@@ -10,6 +10,7 @@ import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations'
 import BaseStore              from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
+    @observable is_chart_ready = false;
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
     @observable is_sell_requested = false;
@@ -135,6 +136,12 @@ export default class ContractReplayStore extends BaseStore {
         this.margin = Math.floor(
             !granularity ?  (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity
         );
+    }
+    @action.bound
+    setIsChartReady(v) {
+        // SmartChart has a bug with scroll_to_epoch
+        // @morteza: It ignores the scroll_to_epoch if feed is not ready
+        setTimeout(action(() => { this.is_chart_ready = v; }), 200);
     }
 
     @action.bound

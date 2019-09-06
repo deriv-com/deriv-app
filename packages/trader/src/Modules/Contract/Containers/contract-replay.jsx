@@ -12,6 +12,7 @@ import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { SmartChart }    from 'Modules/SmartChart';
 import { connect }       from 'Stores/connect';
+import { toJS }          from 'mobx';
 // --------------------------
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
@@ -185,6 +186,7 @@ class Chart extends React.Component {
         <BottomWidgets Digits={this.props.Digits} />
     );
 
+
     render() {
         return (
             <SmartChart
@@ -204,11 +206,11 @@ class Chart extends React.Component {
                 settings={this.props.settings}
                 startEpoch={this.props.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
-                scrollToEpochOffset={this.props.scroll_to_offset}
+                chartStatusListener={this.props.setIsChartReady}
                 symbol={this.props.symbol}
                 topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
-                isStaticChart={this.props.is_static_chart}
+                isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
                 { this.props.markers_array.map(marker => (
@@ -253,6 +255,7 @@ const ReplayChart = connect(
         const contract_replay = modules.contract_replay;
         const contract_store = contract_replay.contract_store;
         const contract_config = contract_store.contract_config;
+        const is_chart_ready = contract_replay.is_chart_ready;
         const settings = {
             lang                        : common.current_language,
             theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
@@ -266,11 +269,12 @@ const ReplayChart = connect(
             chart_type       : contract_config.chart_type,
             start_epoch      : contract_config.start_epoch,
             granularity      : contract_config.granularity,
-            scroll_to_epoch  : contract_config.scroll_to_epoch,
+            scroll_to_epoch  : is_chart_ready ? contract_config.scroll_to_epoch : undefined,
             settings,
             is_mobile        : ui.is_mobile,
             is_socket_opened : common.is_socket_opened,
             is_digit_contract: contract_store.is_digit_contract,
+            setIsChartReady  : contract_replay.setIsChartReady,
             margin           : contract_replay.margin,
             is_static_chart  : contract_replay.is_static_chart,
             barriers_array   : contract_store.barriers_array,

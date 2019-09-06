@@ -19,6 +19,7 @@
     justify-content: flex-end;
 
     @include themify($themes) {
+        border-width: 1px;
         border-top: themed('tab_background_color');
     }
 }

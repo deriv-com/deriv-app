@@ -18,14 +18,12 @@ export default class ActiveSymbols {
     async retrieveActiveSymbols(is_forced_update = false) {
         await this.trading_times.initialise();
 
-        if (!is_forced_update) {
-            if (this.is_initialised) {
-                await this.init_promise;
-                return this.active_symbols;
-            }
-    
-            this.is_initialised = true;
+        if (!is_forced_update && this.is_initialised) {
+            await this.init_promise;
+            return this.active_symbols;
         }
+
+        this.is_initialised = true;
 
         const { active_symbols } = await this.ws.activeSymbols({ forced: is_forced_update });
 

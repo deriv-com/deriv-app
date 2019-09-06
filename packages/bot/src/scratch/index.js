@@ -11,11 +11,8 @@ import Interpreter                    from '../services/tradeEngine/utils/interp
 import createError                    from '../utils/error';
 import { translate }                  from '../utils/lang/i18n';
 import { observer as globalObserver } from '../utils/observer';
-import ApiHelpers                     from '../services/api/helpers';
 
-export const scratchWorkspaceInit = async (root_store) => {
-    ApiHelpers.setInstance(root_store); // "Preload" helpers.
-
+export const scratchWorkspaceInit = async () => {
     try {
         const el_scratch_area = document.getElementById('scratch_area');
         const el_scratch_div = document.getElementById('scratch_div');

@@ -8,24 +8,30 @@ import RootStore                from './stores';
 class App extends React.Component {
     constructor(props){
         super(props);
-        
         const { passthrough: { WS, root_store } } = props;
         this.rootStore = new RootStore(root_store, WS);
-
         ApiHelpers.setInstance(this.rootStore);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     render() {
         return (
             <Provider {...this.rootStore}>
-                <Bot>{this.rootStore.bot.title}</Bot>
+                <Bot />
             </Provider>
         );
     }
 
     // eslint-disable-next-line class-methods-use-this
     componentDidMount() {
-        scratchWorkspaceInit(this.rootStore);
+        scratchWorkspaceInit();
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    componentWillUnmount() {
+        if (Blockly.derivWorkspace) {
+            Blockly.derivWorkspace.dispose();
+        }
     }
 }
 

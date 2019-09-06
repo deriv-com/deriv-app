@@ -37,35 +37,33 @@ Blockly.Blocks.purchase = {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('before_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
+        if (this.isDescendantOf('before_purchase')) {
+            if (this.disabled) {
+                this.setDisabled(false);
             }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.BLOCK_CREATE) {
-            const tradeDefinitionBlock = this.workspace
-                .getAllBlocks(true)
-                .find(block => block.type === 'trade_definition');
+        } else if (!this.disabled) {
+            this.setDisabled(true);
+        }
 
-            if (!tradeDefinitionBlock) {
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            (event.type === Blockly.Events.BLOCK_CHANGE)
+        ) {
+            const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
+
+            if (!trade_definition_block) {
                 return;
             }
 
-            const tradeTypeBlock = tradeDefinitionBlock.getChildByType('trade_definition_tradetype');
-            if (!tradeTypeBlock) {
-                return;
-            }
+            const trade_type_block    = trade_definition_block.getChildByType('trade_definition_tradetype');
+            const contract_type_block = trade_definition_block.getChildByType('trade_definition_contracttype');
 
-            const tradeType = tradeTypeBlock.getFieldValue('TRADETYPE_LIST');
-            const contractTypeBlock = tradeDefinitionBlock.getChildByType('trade_definition_contracttype');
-            const contractType = contractTypeBlock.getFieldValue('TYPE_LIST');
-            const oppositesName = tradeType.toUpperCase();
+            const trade_type    = trade_type_block.getFieldValue('TRADETYPE_LIST');
+            const opposite_name = trade_type.toUpperCase();
+            const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
 
-            if (tradeType && contractType && oppositesName) {
-                updatePurchaseChoices(contractType, oppositesName);
+            if (opposite_name && opposite_name !== 'NA' && trade_type && contract_type) {
+                updatePurchaseChoices(contract_type, opposite_name);
             }
         }
     },

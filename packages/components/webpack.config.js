@@ -17,6 +17,7 @@ module.exports = {
         'field-error': path.resolve(__dirname, 'src', 'components/field-error/index.js'),
         input        : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label        : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        modal        : path.resolve(__dirname, 'src', 'components/modal/index.js'),
         popover      : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group': path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
     },

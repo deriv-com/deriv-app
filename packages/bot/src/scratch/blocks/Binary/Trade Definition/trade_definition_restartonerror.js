@@ -1,7 +1,9 @@
+import { translate } from '../../../../utils/lang/i18n';
+
 Blockly.Blocks.trade_definition_restartonerror = {
     init() {
         this.jsonInit({
-            message0: 'Restart last trade on error (bot ignores the unsuccessful trade): %1',
+            message0: translate('Restart last trade on error (bot ignores the unsuccessful trade): %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -19,16 +21,13 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange(event) {
-        const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];
-        if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
+    onchange() {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            this.enforceParent();
-        }
+        
+        this.enforceLimitations();
     },
-    enforceParent: Blockly.Blocks.trade_definition_market.enforceParent,
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 Blockly.JavaScript.trade_definition_restartonerror = () => {};

@@ -1,7 +1,7 @@
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
 import { translate, trackAndEmitError } from '../tools';
-import config                           from '../../constants/const';
+import config                           from '../../constants';
 import { loadWorkspace, loadBlocks }    from '../../scratch';
 
 class GoogleDrive {

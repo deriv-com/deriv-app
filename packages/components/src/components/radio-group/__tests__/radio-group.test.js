@@ -41,11 +41,12 @@ describe('<RadioGroup />', () => {
     it('should load radio buttons based on input', () => {
         const { container } = render(<RadioGroup
             items={valid_items}
+            selected={true}
             onToggle={() => (
                 {}
             )}
         />);
-        expect(container.querySelectorAll('div.dc-radio-group__item')).toHaveLength(2);
+        expect(container.querySelectorAll('label.dc-radio-group__item')).toHaveLength(2);
     });
 
     // TODO: Add explanation to README for tests

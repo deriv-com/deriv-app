@@ -8,8 +8,8 @@ $shadow-cover-index: 3;
 $shadow-index: 2;
 $content-index: 1;
 
-/** @define fullscreen-dialog; weak */
-.fullscreen-dialog {
+/** @define mobile-dialog; weak */
+.mobile-dialog {
     box-sizing: border-box;
     position: fixed;
     top: 0;
@@ -28,10 +28,10 @@ $content-index: 1;
         opacity: 1;
         pointer-events: auto;
 
-        & .fullscreen-dialog__content {
+        & .mobile-dialog__content {
             transform: scale(1);
         }
-        & .fullscreen-dialog__header {
+        & .mobile-dialog__header {
             transform: translateY(0);
         }
     }

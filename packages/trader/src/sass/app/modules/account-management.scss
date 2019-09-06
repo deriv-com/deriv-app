@@ -7,3 +7,19 @@
         width: 24px;
     }
 }
+
+.account-management-form-footer {
+    height: 80px;
+    position: absolute;
+    bottom: 0;
+    margin-left: -2.4em;
+    display: flex;
+    width: 100%;
+    padding: 26px 40px 34px;
+    justify-content: flex-end;
+
+    @include themify($themes) {
+        border-width: 1px;
+        border-top: themed('tab_background_color');
+    }
+}

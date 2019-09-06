@@ -2,8 +2,11 @@ import classNames        from 'classnames';
 import {
     Autocomplete,
     Input,
-    Form,
     Button }             from 'deriv-components';
+import {
+    Field,
+    Formik,
+    Form }               from 'formik';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
@@ -30,11 +33,7 @@ const validateSignup = (values, residence_list) => {
             item.text.toLowerCase() === values.residence.toLowerCase()
         ));
 
-        if (index_of_selection > -1) {
-            if (residence_list[index_of_selection].disabled === 'DISABLED') {
-                errors.residence = localize('Unfortunately, Deriv is not available in your country.');
-            }
-        } else {
+        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
             errors.residence = localize('Unfortunately, Deriv is not available in your country.');
         }
     }
@@ -79,14 +78,15 @@ class AccountSignup extends React.Component {
 
         return (
             <div className='account-signup'>
-                <Form
+                <Formik
                     initialValues={ signupInitialValues }
                     validate={ validateSignupPassthrough }
                     onSubmit={ onSignupPassthrough }
                 >
-                    {
-                        ({ isSubmitting, errors, values }) => (
+                    {({ isSubmitting, errors, values, setFieldValue, touched }) => (
+                        <Form>
                             <React.Fragment>
+                                <p>{ JSON.stringify(values, null, 2) }</p>
                                 {
                                     !this.state.has_valid_residence ?
                                         <div className='account-signup__residence-selection'>
@@ -96,14 +96,22 @@ class AccountSignup extends React.Component {
                                             <p className='account-signup__text'>
                                                 <Localize i18n_default_text='Where are you a resident?' />
                                             </p>
-                                            <Autocomplete
-                                                className='account-signup__residence-field'
-                                                type='text'
-                                                name='residence'
-                                                label={ localize('Choose country') }
-                                                required
-                                                list_items={ residence_list }
-                                            />
+                                            <Field name='residence'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        { ...field }
+                                                        className='account-signup__residence-field'
+                                                        type='text'
+                                                        label={ localize('Choose country') }
+                                                        error={ touched.residence && errors.residence }
+                                                        required
+                                                        list_items={ residence_list }
+                                                        onItemSelection={
+                                                            (item) => setFieldValue('residence', item.text, true)
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
                                             <p className='account-signup__subtext'>
                                                 <Localize
                                                     i18n_default_text='We need this to make sure our service complies with laws and regulations in your country.'
@@ -124,13 +132,18 @@ class AccountSignup extends React.Component {
                                             <p className='account-signup__heading'>
                                                 <Localize i18n_default_text='Keep your account secure with a password' />
                                             </p>
-                                            <Input
-                                                className='account-signup__password-field'
-                                                type='password'
-                                                name='password'
-                                                label={localize('Create a password')}
-                                                required
-                                            />
+                                            <Field name='password'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        { ...field }
+                                                        className='account-signup__password-field'
+                                                        type='password'
+                                                        label={localize('Create a password')}
+                                                        error={ touched.password && errors.password }
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
                                             <p className='account-signup__subtext'>
                                                 <Localize
                                                     i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.'
@@ -147,9 +160,9 @@ class AccountSignup extends React.Component {
                                         </div>
                                 }
                             </React.Fragment>
-                        )
-                    }
-                </Form>
+                        </Form>
+                    )}
+                </Formik>
             </div>
         );
     }

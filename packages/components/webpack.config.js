@@ -15,7 +15,6 @@ module.exports = {
         checkbox     : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         dropdown     : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         'field-error': path.resolve(__dirname, 'src', 'components/field-error/index.js'),
-        form         : path.resolve(__dirname, 'src', 'components/form/index.js'),
         input        : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label        : path.resolve(__dirname, 'src', 'components/label/index.js'),
         popover      : path.resolve(__dirname, 'src', 'components/popover/index.js'),

@@ -1,11 +1,24 @@
 // import PropTypes        from 'prop-types';
 import React            from 'react';
+import { WS }           from 'Services';
+import {
+    Autocomplete,
+    Button,
+    Checkbox,
+    Input,
+    Form,
+}                       from 'deriv-components';
 
 class FinancialAssessment extends React.Component {
     render() {
         return (
-            <h1>Financial Assessment</h1>
+            <div></div>
         );
+    }
+    componentDidMount() {
+        WS.getFinancialAssessment().then((data) => {
+            console.log(data);
+        })
     }
 }
 

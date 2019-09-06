@@ -622,6 +622,7 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    @action.bound
     fetchResidenceList() {
         WS.residenceList().then(response => {
             runInAction(() => {

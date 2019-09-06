@@ -209,7 +209,6 @@ class ToggleAccountManagement extends React.PureComponent {
                     header={this.state.header}
                     menu_type='accordion'
                     modal_content={modal_content}
-                    modal_content_footer={modal_content_footer}
                     onChangeHeader={this.onChangeHeader}
                     is_open={is_open}
                     title={localize('Settings')}

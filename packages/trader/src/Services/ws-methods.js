@@ -19,6 +19,9 @@ const WS = (() => {
     const getAccountStatus = () =>
         BinarySocket.send({ get_account_status: 1 });
 
+    const getFinancialAssessment = () =>
+        BinarySocket.send({ get_financial_assessment: 1 });
+
     const getSelfExclusion = () =>
         BinarySocket.send({ get_self_exclusion: 1 });
 
@@ -73,6 +76,9 @@ const WS = (() => {
     const sendRequest = (request_object, force_request) =>
         Promise.resolve(!isEmptyObject(request_object) ? BinarySocket.send(request_object, force_request) : {});
 
+    const setSettings = settings =>
+        BinarySocket.send({ set_settings: 1, ...settings })
+
     const statement = (limit, offset, date_boundaries) =>
         BinarySocket.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -124,6 +130,7 @@ const WS = (() => {
         cashier,
         contractsFor,
         getAccountStatus,
+        getFinancialAssessment,
         getSelfExclusion,
         getSettings,
         getTradingTimes,
@@ -140,6 +147,7 @@ const WS = (() => {
         sell,
         sellExpired,
         sendRequest,
+        setSettings,
         statement,
         verifyEmail,
 

@@ -86,7 +86,6 @@ class AccountSignup extends React.Component {
                     {({ isSubmitting, errors, values, setFieldValue, touched }) => (
                         <Form>
                             <React.Fragment>
-                                <p>{ JSON.stringify(values, null, 2) }</p>
                                 {
                                     !this.state.has_valid_residence ?
                                         <div className='account-signup__residence-selection'>

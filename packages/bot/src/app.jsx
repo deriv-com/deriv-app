@@ -13,7 +13,6 @@ class App extends React.Component {
         ApiHelpers.setInstance(this.rootStore);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     render() {
         return (
             <Provider {...this.rootStore}>
@@ -22,12 +21,10 @@ class App extends React.Component {
         );
     }
 
-    // eslint-disable-next-line class-methods-use-this
     componentDidMount() {
         scratchWorkspaceInit();
     }
 
-    // eslint-disable-next-line class-methods-use-this
     componentWillUnmount() {
         if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();

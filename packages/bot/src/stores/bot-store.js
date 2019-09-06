@@ -1,4 +1,5 @@
 import { action, reaction } from 'mobx';
+import ApiHelpers           from '../services/api/helpers';
 
 export default class BotStore {
     constructor(root_store) {
@@ -8,7 +9,7 @@ export default class BotStore {
     @action.bound
     registerAccountSwitcherListener() {
         const { client } = this.root_store.core;
-        const { active_symbols, contracts_for } = this.root_store.api_helpers;
+        const { active_symbols, contracts_for } = ApiHelpers.instance;
 
         this.switchAccountDisposer = reaction(
             () => client.switch_broadcast,

@@ -110,7 +110,7 @@ module.exports = {
     externals: {
         'formik'                     : 'formik',
         'classnames'                 : 'classnames',
-        'react'                      : 'React',
+        'react'                      : 'react',
         'react-dom'                  : 'react-dom',
         'react-pose'                 : 'react-pose',
         'babel-polyfill'             : 'babel-polyfill',

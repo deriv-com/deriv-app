@@ -1,5 +1,4 @@
-import { fieldGeneratorMapping }      from '../../../shared';
-import { observer as globalObserver } from '../../../../utils/observer';
+import ApiHelpers from '../../../../services/api/helpers';
 
 Blockly.Blocks.trade_definition_market = {
     init() {
@@ -9,7 +8,7 @@ Blockly.Blocks.trade_definition_market = {
                 {
                     type   : 'field_dropdown',
                     name   : 'MARKET_LIST',
-                    options: fieldGeneratorMapping.MARKET_LIST,
+                    options: [['', '']],
                 },
                 {
                     type   : 'field_dropdown',
@@ -33,58 +32,60 @@ Blockly.Blocks.trade_definition_market = {
         this.setDeletable(false);
     },
     onchange(event) {
-        const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];
-        if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        globalObserver.emit('bot.init', this.getFieldValue('SYMBOL_LIST'));
+        this.enforceLimitations();
 
-        const topParentBlock = this.getTopParent();
-        if (!topParentBlock || topParentBlock.type !== 'trade_definition') {
-            this.enforceParent();
-            return;
-        }
+        const { active_symbols } = ApiHelpers.instance;
+        const market_field       = this.getField('MARKET_LIST');
+        const submarket_field    = this.getField('SUBMARKET_LIST');
 
-        const updateMarketLists = (fields, useDefault = true) => {
-            fields.forEach(field => {
-                const list = this.getField(field);
-                const listArgs = [fieldGeneratorMapping[field](this)()];
-                if (useDefault) {
-                    listArgs.push(list.getValue());
-                }
-                list.updateOptions(...listArgs);
+        if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
+            active_symbols.getMarketDropdownOptions().then(market_options => {
+                market_field.updateOptions(market_options, null, true);
             });
-        };
+        } else if (event.type === Blockly.Events.CHANGE) {
+            if (event.name === 'MARKET_LIST') {
+                const submarket = market_field.getValue();
 
-        if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids.includes(this.id)) {
-                updateMarketLists(['SUBMARKET_LIST', 'SYMBOL_LIST']);
-            }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            if (event.blockId === this.id) {
-                if (event.name === 'MARKET_LIST') {
-                    updateMarketLists(['SUBMARKET_LIST']);
-                } else if (event.name === 'SUBMARKET_LIST') {
-                    updateMarketLists(['SYMBOL_LIST']);
-                }
+                active_symbols.getSubmarketDropdownOptions(submarket).then(submarket_options => {
+                    submarket_field.updateOptions(submarket_options, null, true);
+                });
+            } else if (event.name === 'SUBMARKET_LIST') {
+                const symbol_field = this.getField('SYMBOL_LIST');
+                const symbol = submarket_field.getValue();
+
+                active_symbols.getSymbolDropdownOptions(symbol).then(symbol_options => {
+                    symbol_field.updateOptions(symbol_options, null, true);
+                });
             }
         }
     },
-    enforceParent() {
+    enforceLimitations() {
         if (!this.isDescendantOf('trade_definition')) {
             Blockly.Events.disable();
-            this.unplug(false);
 
-            const tradeDefinitionBlock = this.workspace.getAllBlocks().find(block => block.type === 'trade_definition');
-            if (tradeDefinitionBlock) {
-                const connection = tradeDefinitionBlock.getLastConnectionInStatement('TRADE_OPTIONS');
+            this.unplug(false); // Unplug without reconnecting siblings
+
+            const top_blocks = this.workspace.getTopBlocks();
+            const trade_definition_block = top_blocks.find(block => block.type === 'trade_definition');
+
+            // Reconnect self to trade definition block.
+            if (trade_definition_block) {
+                const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');
                 connection.connect(this.previousConnection);
             } else {
                 this.dispose();
             }
 
             Blockly.Events.enable();
+        }
+
+        // These blocks cannot be disabled.
+        if (this.disabled) {
+            this.setDisabled(false);
         }
     },
 };

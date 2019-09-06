@@ -1,7 +1,6 @@
 import classNames              from 'classnames';
 import React                   from 'react';
 import { ErrorMessage, Field } from 'formik';
-import                              './input.scss';
 
 const Input = (props, ref) => (
     <Field { ...props }>

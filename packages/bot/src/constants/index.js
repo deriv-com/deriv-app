@@ -42,9 +42,16 @@ const config = {
             [translate('Error'), 'error'],
             [translate('Severe error'), 'severe-error'],
         ],
+        CURRENCY: [
+            ['USD', 'USD'],
+            ['EUR', 'EUR'],
+            ['GBP', 'GBP'],
+            ['AUD', 'AUD'],
+            ...CRYPTO_CURRENCIES.map(c => [c, c]),
+        ],
     },
     opposites: {
-        RISEFALL: [
+        CALLPUT: [
             {
                 CALL: translate('Rise'),
             },
@@ -52,7 +59,7 @@ const config = {
                 PUT: translate('Fall'),
             },
         ],
-        RISEFALLEQUALS: [
+        CALLPUTEQUAL: [
             {
                 CALLE: translate('Rise Equals'),
             },
@@ -78,18 +85,18 @@ const config = {
         ],
         ENDSINOUT: [
             {
-                EXPIRYRANGE: translate('Ends In'),
+                EXPIRYRANGE: translate('Ends Between'),
             },
             {
-                EXPIRYMISS: translate('Ends Out'),
+                EXPIRYMISS: translate('Ends Outside'),
             },
         ],
         STAYSINOUT: [
             {
-                RANGE: translate('Stays In'),
+                RANGE: translate('Stays Between'),
             },
             {
-                UPORDOWN: translate('Goes Out'),
+                UPORDOWN: translate('Goes Outside'),
             },
         ],
         ASIANS: [
@@ -148,9 +155,17 @@ const config = {
                 RUNLOW: translate('Only Downs'),
             },
         ],
+        CALLPUTSPREAD: [
+            {
+                CALLSPREAD: translate('Call Spread'),
+            },
+            {
+                PUTSPREAD: translate('Put Spread'),
+            },
+        ],
     },
-    barrierTypes: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
-    ohlcFields  : [
+    BARRIER_TYPES: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
+    ohlcFields   : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
         [translate('Low'), 'low'],
@@ -172,63 +187,60 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks        : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
-    conditionsCategory: {
-        callput     : ['risefall', 'higherlower'],
-        callputequal: ['risefallequals'],
-        touchnotouch: ['touchnotouch'],
-        endsinout   : ['endsinout'],
-        staysinout  : ['staysinout'],
-        asian       : ['asians'],
-        digits      : ['matchesdiffers', 'evenodd', 'overunder'],
-        highlowticks: ['highlowticks'],
-        reset       : ['reset'],
-        runs        : ['runs'],
+    mainBlocks                             : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
+    TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
+        callput: ['callput', 'higherlower'],
+        asian  : ['asians'],
+        digits : ['matchesdiffers', 'evenodd', 'overunder'],
     },
-    conditionsCategoryName: {
-        callput     : translate('Up/Down'),
-        callputequal: translate('Up/Down Equals'),
-        asian       : translate('Asians'),
-        digits      : translate('Digits'),
-        touchnotouch: translate('Touch/No Touch'),
-        endsinout   : translate('Ends In/Out'),
-        staysinout  : translate('Stays In/Goes Out'),
-        highlowticks: translate('High/Low Ticks'),
-        reset       : translate('Reset Call/Reset Put'),
-        runs        : translate('Only Ups/Only Downs'),
+    TRADE_TYPE_CATEGORIES: {
+        callput      : ['callput', 'callputequal', 'higherlower'],
+        touchnotouch : ['touchnotouch'],
+        inout        : ['endsinout', 'staysinout'],
+        asian        : ['asians'],
+        digits       : ['matchesdiffers', 'evenodd', 'overunder'],
+        reset        : ['reset'],
+        callputspread: ['callputspread'],
+        highlowticks : ['highlowticks'],
+        runs         : ['runs'],
     },
-    conditions: [
-        'risefall',
-        'risefallequals',
-        'higherlower',
-        'touchnotouch',
-        'endsinout',
-        'staysinout',
-        'asians',
-        'matchesdiffers',
-        'evenodd',
-        'overunder',
-    ],
-    barrierCategories: {
-        euro_atm     : ['callput', 'risefall', 'risefallequals'],
-        euro_non_atm : ['endsinout', 'higherlower'],
+    TRADE_TYPE_CATEGORY_NAMES: {
+        callput      : translate('Up/Down'),
+        touchnotouch : translate('Touch/No Touch'),
+        inout        : translate('In/Out'),
+        asian        : translate('Asians'),
+        digits       : translate('Digits'),
+        reset        : translate('Reset Call/Reset Put'),
+        callputspread: translate('Call Spread/Put Spread'),
+        highlowticks : translate('High/Low Ticks'),
+        runs         : translate('Only Ups/Only Downs'),
+    },
+    BARRIER_CATEGORIES: {
+        euro_atm     : ['callput', 'callputequal'],
+        euro_non_atm : ['endsinout', 'higherlower', 'callputspread'],
         american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
-        asian        : ['asian'],
+        asian        : ['asians'],
         reset        : ['reset'],
         lookback     : ['lookback'],
     },
-    scopeNames: {
-        before_purchase: translate('Before Purchase'),
-        during_purchase: translate('During Purchase'),
-        after_purchase : translate('After Purchase'),
-        tick_analysis  : translate('Tick Analysis'),
-        timeout        : translate('Run After n Seconds'),
-        interval       : translate('Run Every n Seconds'),
-    },
-    bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
-    macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
-    gd        : {
+    DEFAULT_DURATION_DROPDOWN_OPTIONS: [
+        [translate('Ticks'), 't'],
+        [translate('Seconds'), 's'],
+        [translate('Minutes'), 'm'],
+        [translate('Hours'), 'h'],
+        [translate('Days'), 'd'],
+    ],
+    BARRIER_LABELS                  : [translate('High barrier'), translate('Low barrier')],
+    ABSOLUTE_BARRIER_DROPDOWN_OPTION: [[translate('Absolute'), 'absolute']],
+    NOT_AVAILABLE_DROPDOWN_OPTIONS  : [[translate('Not available'), 'na']],
+    NOT_AVAILABLE_DURATIONS         : [{ display: translate('Not available'), unit: 'na', min: 0 }],
+    BARRIER_TRADE_TYPES             : ['higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'callputspread'],
+    DIGIT_CATEGORIES                : ['digits', 'highlowticks'],
+    INDEPEDENT_BLOCKS               : ['block_holder', 'tick_analysis', 'loader', 'procedures_defreturn', 'procedures_defnoreturn'],
+    bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
+    macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
+    gd                              : {
         cid: '646610722767-7ivdbunktgtnumj23en9gkecbgtf2ur7.apps.googleusercontent.com',
         aid: 'binarybot-237009',
         api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
@@ -240,10 +252,5 @@ const config = {
         BLOCK: 'block',
     },
 };
-
-export async function updateConfigCurrencies() {
-    // TODO: Retrieve currencies from API
-    config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
-}
 
 export default config;

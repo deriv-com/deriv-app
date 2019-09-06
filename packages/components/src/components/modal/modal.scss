@@ -69,6 +69,9 @@
             }
         }
         &__close {
+            position: absolute;
+            right: 0;
+            top: 20px;
             display: block;
             cursor: pointer;
             padding-right: 16px;

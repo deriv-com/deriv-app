@@ -20,6 +20,6 @@
 
     @include themify($themes) {
         border-width: 1px;
-        border-top: themed('tab_background_color');
+        border-top: 1px solid themed('tab_background_color');
     }
 }

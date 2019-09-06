@@ -1,0 +1,1 @@
+npx lerna run build:travis --since `git branch | grep \* | cut -d ' ' -f2`

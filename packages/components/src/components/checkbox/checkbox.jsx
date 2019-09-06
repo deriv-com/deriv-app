@@ -15,8 +15,17 @@ const IconCheckmark = ({ className, classNamePath }) => (
 );
 
 class Checkbox extends React.PureComponent {
-    onClick = () => {
-        this.props.onClick(!this.props.value);
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            checked: props.defaultChecked,
+        };
+    }
+
+    onChange = (e) => {
+        this.setState({ checked: e.target.checked });
+        this.props.onChange(e);
     };
 
     render() {
@@ -25,24 +34,32 @@ class Checkbox extends React.PureComponent {
             classNameLabel,
             id,
             label,
-            value,
+            onChange,
+            ...otherProps
         } = this.props;
+
         return (
-            <div
-                id={id}
-                className={classNames('dc-checkbox', className)}
-                onClick={this.onClick}
-            >
-                <div className={classNames('dc-checkbox__box', {
-                    'dc-checkbox__box--active': value,
-                })}
+            <label htmlFor={ id } className={ classNames('dc-checkbox', className) }>
+                <input
+                    className='dc-checkbox__input'
+                    type='checkbox'
+                    id={ id }
+                    onChange={ this.onChange }
+                    { ...otherProps }
+                />
+                <span
+                    className={ classNames('dc-checkbox__box', {
+                        'dc-checkbox__box--active': this.state.checked,
+                    }) }
                 >
-                    { !!value &&
+                    { !!this.state.checked &&
                         <IconCheckmark />
                     }
-                </div>
-                <div className={classNames('dc-checkbox__label', classNameLabel)}>{label}</div>
-            </div>
+                </span>
+                <span className={classNames('dc-checkbox__label', classNameLabel)}>
+                    { label }
+                </span>
+            </label>
         );
     }
 }
@@ -52,7 +69,6 @@ Checkbox.propTypes = {
     classNameLabel: PropTypes.string,
     id            : PropTypes.string,
     label         : PropTypes.string,
-    value         : PropTypes.bool,
 };
 
 export default Checkbox;

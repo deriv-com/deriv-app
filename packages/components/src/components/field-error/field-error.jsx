@@ -13,4 +13,4 @@ FieldError.propTypes = {
     message  : PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
 };
 
-export default React.forwardRef(FieldError);
+export default FieldError;

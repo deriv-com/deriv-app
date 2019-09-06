@@ -28,11 +28,11 @@ import ChartPositionDisabledLightIcon    from 'Assets/SvgComponents/settings/lef
 const ChartSettings = ({
     // TODO: enable asset information
     // is_asset_visible,
-    // toggleAsset,
+    // setAsset,
     is_countdown_visible,
     is_dark_mode,
     is_layout_default,
-    toggleCountdown,
+    setCountdown,
     toggleLayout,
 }) => (
     <div className='settings-chart'>
@@ -84,9 +84,9 @@ const ChartSettings = ({
                 />
                 <div className='media__form'>
                     <Checkbox
-                        value={is_asset_visible}
+                        defaultChecked={is_asset_visible}
                         label={localize('Display open-high-low-close (OHLC) information for current chart')}
-                        onClick={toggleAsset}
+                        onChange={(e) => { setAsset(e.target.checked); }}
                     />
                 </div>
             </MediaDescription>
@@ -105,9 +105,9 @@ const ChartSettings = ({
                 <div className='media__form'>
                     <Checkbox
                         id='dt_settings_interval_checkbox'
-                        value={is_countdown_visible}
+                        defaultChecked={is_countdown_visible}
                         label={localize('Display remaining time for each interval')}
-                        onClick={toggleCountdown}
+                        onChange={(e) => { setCountdown(e.target.checked); } }
                     />
                 </div>
             </MediaDescription>
@@ -131,8 +131,8 @@ export default connect(({ ui }) => (
         is_countdown_visible: ui.is_chart_countdown_visible,
         is_dark_mode        : ui.is_dark_mode_on,
         is_layout_default   : ui.is_chart_layout_default,
-        toggleAsset         : ui.toggleChartAssetInfo,
-        toggleCountdown     : ui.toggleChartCountdown,
+        setAsset            : ui.setChartAssetInfo,
+        setCountdown        : ui.setChartCountdown,
         toggleLayout        : ui.toggleChartLayout,
     }
 ))(ChartSettings);

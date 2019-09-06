@@ -18,10 +18,10 @@ const FlyoutBlockGroup = (props) => {
             <div className='flyout__item-header'>
                 <div className='flyout__item-label'>{display_name}</div>
             </div>
-            <p className='flyout__item-description'>
+            <div className='flyout__item-description'>
                 {description}
-                {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a>}
-            </p>
+                {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a></p>}
+            </div>
             {
                 Object.keys(block_nodes).map(key => {
                     return (

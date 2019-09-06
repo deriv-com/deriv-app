@@ -53,4 +53,45 @@ export const config = {
         { type: TEXT },
         { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
     ],
+    trade_definition: [
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: BLOCK },
+    ],
+    trade_definition_tradeoptions: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
+    before_purchase: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
+    during_purchase: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
+    sell_at_market: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
+    after_purchase: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
+    trade_again: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ],
 };

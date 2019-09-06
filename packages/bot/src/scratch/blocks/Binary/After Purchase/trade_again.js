@@ -14,14 +14,14 @@ Blockly.Blocks.trade_again = {
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             previousStatement: null,
-            tooltip          : translate('Runs the trade block again'),
+            tooltip          : translate('This blocks transfers control to the Purchase conditions block.'),
             category         : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
             'display_name': translate('Trade Again'),
-            'description' : translate('Trade Again Description'),
+            'description' : translate('This blocks transfers control to the Purchase conditions block.'),
         };
     },
     onchange(event) {

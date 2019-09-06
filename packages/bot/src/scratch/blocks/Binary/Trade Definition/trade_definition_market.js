@@ -4,7 +4,7 @@ import { observer as globalObserver } from '../../../../utils/observer';
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: 'Market: %1 Submarket: %2 Symbol: %3',
+            message0: 'Market: %1 > %2 > %3',
             args0   : [
                 {
                     type   : 'field_dropdown',

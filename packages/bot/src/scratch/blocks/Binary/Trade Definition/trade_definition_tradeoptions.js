@@ -49,7 +49,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     meta(){
         return {
             'display_name': translate('Trade Options'),
-            'description' : translate('Trade Options Description'),
+            'description' : translate('This block is used to define trade options within the Trade parameters block. Some options are only applicable for certain trade types.'),
         };
     },
     onchange(event) {

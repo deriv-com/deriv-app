@@ -11,7 +11,7 @@ import { translate } from '../../../../utils/lang/i18n';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: translate('Trade Category: %1 Trade Type: %2'),
+            message0: translate('Trade Type: %1 > %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',

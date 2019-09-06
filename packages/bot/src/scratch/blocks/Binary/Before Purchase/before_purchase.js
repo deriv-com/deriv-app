@@ -8,7 +8,7 @@ Blockly.Blocks.before_purchase = {
     },
     definition() {
         return {
-            message0: translate('%1 (2) Watch and purchase your contract %2'),
+            message0: translate('%1 (2) Purchase conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -32,14 +32,14 @@ Blockly.Blocks.before_purchase = {
             colour         : '#2a3052',
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Watch the tick stream and purchase the desired contract (Runs on tick update)'),
+            tooltip        : translate('Specify contract type and purchase conditions.'),
             category       : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Before Purchase'),
-            'description' : translate('Before Purchase Description'),
+            'display_name': translate('Purchase conditions'),
+            'description' : translate('This block is mandatory, it allows you to specify contract type and purchase conditions.'),
         };
     },
     onchange(event) {

@@ -3,8 +3,8 @@
     <!-- Trade Parameters -->
     <category 
         id="trade_parameters" 
-        name="Trade parameters" 
-        description="Trade duration, barrier, stake"
+        name="Set up your trade" 
+        description="Choose market, contract-type, stake, duration, and barrier"
         iconURI="ic-stage-1"
     >
         <block type="trade_definition">
@@ -69,40 +69,48 @@
     <!-- Purchase Conditions -->
     <category 
         id="purchase_conditions" 
-        name="Purchase conditions" 
-        description="Purchase contract, get payout/price" 
+        name="Purchase contract" 
+        description="Define purchase conditions, select trade-type" 
         iconURI="ic-stage-2"
     >
         <block type="before_purchase"></block>
-        <block type="payout"></block>
-        <block type="ask_price"></block>
         <block type="purchase"></block>
     </category>
     <!-- Sell Conditions -->
     <category 
         id="sell_conditions" 
-        name="Sell conditions" 
-        description="Sell at market price if needed" 
+        name="Sell contract (optional)" 
+        description="Sell at active contract at market price if you wish" 
         iconURI="ic-stage-3"
     >
         <block type="during_purchase"></block>
-        <block type="check_sell"></block>
-        <block type="sell_price"></block>
         <block type="sell_at_market"></block>
     </category>
     <!-- Trade Results -->
     <category 
         id="trade_results" 
-        name="Trade results" 
-        description="Expired contract details, stop loss" 
+        name="Trade again" 
+        description="Check your profit and trade again" 
         iconURI="ic-stage-4"
     >
         <block type="after_purchase"></block>
-        <block type="contract_check_result"></block>
-        <block type="read_details"></block>
         <block type="trade_again"></block>
     </category>
     <sep />
+    <!-- Contract details -->
+    <category 
+        id="contract_details" 
+        name="Contract details" 
+        description="Statement, payout, purchase/sell price, etc." 
+    >
+        <block type="contract_check_result"></block>
+        <block type="read_details"></block>
+        <block type="check_sell"></block>
+        <block type="sell_price"></block>
+        <block type="payout"></block>
+        <block type="ask_price"></block>
+         
+    </category>
     <!-- Technical Analysis -->
     <category 
         id="technical_analysis" 

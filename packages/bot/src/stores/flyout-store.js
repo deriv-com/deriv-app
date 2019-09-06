@@ -187,7 +187,7 @@ export default class FlyoutStore {
             node.setAttribute('height', block_hw.height);
         });
 
-        this.flyout_width = 600;
+        this.flyout_width = 650;
         this.block_nodes = block_node;
         this.is_help_content = true;
     }

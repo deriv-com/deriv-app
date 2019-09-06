@@ -9,11 +9,11 @@ Blockly.Blocks.trade_definition = {
     },
     definition() {
         return {
-            message0: translate('%1 (1) Define your trade contract %2'),
+            message0: translate('%1 (1) Trade parameters %2'),
             message1: '%1',
             message2: translate('Run Once at Start: %1'),
             message3: '%1',
-            message4: translate('Define Trade Options: %1'),
+            message4: translate('Trade Options: %1'),
             message5: '%1',
             args0   : [
                 {
@@ -59,14 +59,14 @@ Blockly.Blocks.trade_definition = {
             colour         : '#2a3052',
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Trade Definition tooltip'),
+            tooltip        : translate('Here is where you define the parameters of your desired contract.'),
             category       : Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
-            'display_name': translate('Trade Definition'),
-            'description' : translate('Define market type, stake, trade type and duration in trade'),
+            'display_name': translate('Trade parameters'),
+            'description' : translate('Here is where you define the parameters of your desired contract.'),
         };
     },
     onchange(event) {

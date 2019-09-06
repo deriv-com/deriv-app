@@ -8,7 +8,7 @@ Blockly.Blocks.during_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 (3) Watch and sell your purchased contract %2'),
+            message0: translate('%1 (3) Sell conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -33,15 +33,15 @@ Blockly.Blocks.during_purchase = {
             colourSecondary: Blockly.Colours.Binary.colourSecondary,
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate(
-                'Watch the purchased contract info and sell at market if available (Runs on contract update)'
+                'Sell your active contract if needed (optional)'
             ),
             category: Blockly.Categories.During_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('During Purchase'),
-            'description' : translate('During Purchase Description'),
+            'display_name': translate('Sell conditions'),
+            'description' : translate('This block allows you to specify conditions for selling your purchased contract before its expiration.'),
         };
     },
     onchange(event) {

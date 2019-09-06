@@ -8,18 +8,30 @@
     }
 }
 
-.account-management-form-footer {
-    height: 80px;
-    position: absolute;
-    bottom: 0;
-    margin-left: -2.4em;
-    display: flex;
-    width: 100%;
-    padding: 26px 40px 34px;
-    justify-content: flex-end;
+.account-management-form {
+    overflow: scroll;
 
-    @include themify($themes) {
-        border-width: 1px;
-        border-top: 1px solid themed('tab_background_color');
+    &-footer {
+        height: 80px;
+        position: absolute;
+        bottom: 0;
+        margin-left: -2.4em;
+        display: flex;
+        width: 100%;
+        padding: 16px 24px 24px;
+        align-items: center;
+        justify-content: flex-end;
+        z-index: 999;
+        @include themify($themes) {
+            border-width: 1px;
+            border-top: 1px solid themed('tab_background_color');
+            background-color: themed('navbar_background_color');
+        }
+
+        .btn {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-right: 0;
+        }
     }
 }

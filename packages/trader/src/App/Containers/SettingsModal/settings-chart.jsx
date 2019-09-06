@@ -33,7 +33,7 @@ const ChartSettings = ({
     is_dark_mode,
     is_layout_default,
     setCountdown,
-    toggleLayout,
+    setChartLayout,
 }) => (
     <div className='settings-chart'>
         <MediaItem>
@@ -62,8 +62,12 @@ const ChartSettings = ({
                                 id   : 'dt_settings_left_radio',
                             },
                         ]}
+                        name='chart_layout_default'
                         selected={is_layout_default}
-                        onToggle={toggleLayout}
+                        onToggle={ (e) => {
+                            e.persist();
+                            setChartLayout(e.target.value === 'true');
+                        } }
                     />
                 </div>
             </MediaDescription>
@@ -120,9 +124,9 @@ ChartSettings.propTypes = {
     is_countdown_visible: PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_layout_default   : PropTypes.bool,
+    setChartLayout      : PropTypes.func,
     toggleAsset         : PropTypes.func,
     toggleCountdown     : PropTypes.func,
-    toggleLayout        : PropTypes.func,
 };
 
 export default connect(({ ui }) => (
@@ -133,6 +137,6 @@ export default connect(({ ui }) => (
         is_layout_default   : ui.is_chart_layout_default,
         setAsset            : ui.setChartAssetInfo,
         setCountdown        : ui.setChartCountdown,
-        toggleLayout        : ui.toggleChartLayout,
+        setChartLayout      : ui.setChartLayout,
     }
 ))(ChartSettings);

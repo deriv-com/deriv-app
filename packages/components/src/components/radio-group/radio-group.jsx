@@ -13,9 +13,10 @@ class RadioGroup extends React.PureComponent {
                         key={idx}
                         id={item.id}
                         value={item.value}
-                        selected={selected === item.value}
-                        onClick={this.props.onToggle}
+                        defaultChecked={item.value === selected}
+                        onChange={this.props.onToggle}
                         className={item.className}
+                        name={this.props.name}
                     >
                         {item.label}
                     </Radio>

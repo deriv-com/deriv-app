@@ -180,8 +180,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleChartLayout() {
-        this.is_chart_layout_default = !this.is_chart_layout_default;
+    setChartLayout(is_default) {
+        this.is_chart_layout_default = is_default;
     }
 
     // TODO: enable asset information

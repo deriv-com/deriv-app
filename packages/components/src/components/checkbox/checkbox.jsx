@@ -34,7 +34,7 @@ class Checkbox extends React.PureComponent {
             classNameLabel,
             id,
             label,
-            onChange,
+            onChange, // This needs to be here so it's not included in `otherProps`
             ...otherProps
         } = this.props;
 

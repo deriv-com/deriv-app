@@ -10,7 +10,10 @@ const FieldError = ({ message, className }) => (
 
 FieldError.propTypes = {
     className: PropTypes.string,
-    message  : PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
+    message  : PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node,
+    ]),
 };
 
 export default FieldError;

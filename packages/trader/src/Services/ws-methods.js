@@ -76,6 +76,9 @@ const WS = (() => {
     const sendRequest = (request_object, force_request) =>
         Promise.resolve(!isEmptyObject(request_object) ? BinarySocket.send(request_object, force_request) : {});
 
+    const setFinancialAssessment = details =>
+        BinarySocket.send({ set_financial_assessment: 1, ...details });
+
     const setSettings = settings =>
         BinarySocket.send({ set_settings: 1, ...settings })
 
@@ -147,6 +150,7 @@ const WS = (() => {
         sell,
         sellExpired,
         sendRequest,
+        setFinancialAssessment,
         setSettings,
         statement,
         verifyEmail,

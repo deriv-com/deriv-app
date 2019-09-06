@@ -47,102 +47,103 @@ class PersonalDetailsForm extends React.Component {
     }
 
     render() {
-        const {
-            date_of_birth,
-            first_name,
-            last_name,
-            citizen,
-            email,
-            tax_identification_number,
-            tax_residence,
-            email_consent,
-            is_loading } = this.state
+        return (<div>div</div>)
+        // const {
+        //     date_of_birth,
+        //     first_name,
+        //     last_name,
+        //     citizen,
+        //     email,
+        //     tax_identification_number,
+        //     tax_residence,
+        //     email_consent,
+        //     is_loading } = this.state
 
-        let citizen_text = '';
-        let tax_residence_text = '';
-        if (this.props.residence_list.length && !is_loading) {
-            citizen_text = this.props.residence_list.find(location => location.value === citizen).text
-            tax_residence_text = this.props.residence_list.find(location => location.value === tax_residence).text
-        }
-        const date_of_birth_human = formatDate(date_of_birth)
-        return (
-            <>
-                {(!is_loading && this.props.residence_list.length) &&
-                    <Form 
-                        initialValues={{ first_name, last_name, email, tax_identification_number, email_consent, citizen_text, tax_residence_text, date_of_birth_human }}
-                        onSubmit={ this.updateSettings }
-                    >
-                    {
-                            ({ values, handleChange }) => {
-                                return (
-                            <>
-                                <h2 style={{fontSize: '14px', fontWeight: 'bold', marginBottom: '20px'}}>Details</h2>
-                                <InputGroup>
-                                    <Input
-                                        data-lpignore="true"
-                                        type='text'
-                                        name='first_name'
-                                        label='First name'
-                                        required
-                                    />
-                                    <Input
-                                        data-lpignore="true"
-                                        type='text'
-                                        name='last_name'
-                                        label='Last name'
-                                        required
-                                    />
-                                </InputGroup>
-                                <DatepickerInput>
-                                    <DatePicker 
-                                        name="date_of_birth_human"
-                                        value={values.date_of_birth_human}
-                                        min_date="1919-01-01"
-                                        alignment="bottom"
-                                        onChange={handleChange}
-                                    />
-                                </DatepickerInput>
-                                <Autocomplete
-                                    data-lpignore="true"
-                                    type='text'
-                                    name='citizen_text'
-                                    label='Citizenship'
-                                    required
-                                    list_items={ this.props.residence_list }
-                                />
-                                <Input
-                                    data-lpignore="true"
-                                    type='text'
-                                    name='email'
-                                    label='Email'
-                                    required
-                                    disabled
-                                />
-                                <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Tax information</h2>
-                                <Autocomplete
-                                    data-lpignore="true"
-                                    type='text'
-                                    name='tax_residence_text'
-                                    label='Tax residence'
-                                    required
-                                    list_items={ this.props.residence_list }
-                                />
-                                <Input
-                                    data-lpignore="true"
-                                    type='text'
-                                    name='tax_identification_number'
-                                    label='Tax identification number'
-                                    required
-                                />
-                                <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Email preference</h2>
-                                <Checkbox value={values.email_consent} onClick={handleChange} name='email_consent' label='Get updates about Deriv products, services and events.'/>
-                                <Button type='submit'>Save</Button>
-                            </>
-                    )}}
-                    </Form>
-                }
-            </>
-        );
+        // let citizen_text = '';
+        // let tax_residence_text = '';
+        // if (this.props.residence_list.length && !is_loading) {
+        //     citizen_text = this.props.residence_list.find(location => location.value === citizen).text
+        //     tax_residence_text = this.props.residence_list.find(location => location.value === tax_residence).text
+        // }
+        // const date_of_birth_human = formatDate(date_of_birth)
+        // return (
+        //     <>
+        //         {(!is_loading && this.props.residence_list.length) &&
+        //             <Form 
+        //                 initialValues={{ first_name, last_name, email, tax_identification_number, email_consent, citizen_text, tax_residence_text, date_of_birth_human }}
+        //                 onSubmit={ this.updateSettings }
+        //             >
+        //             {
+        //                     ({ values, handleChange }) => {
+        //                         return (
+        //                     <>
+        //                         <h2 style={{fontSize: '14px', fontWeight: 'bold', marginBottom: '20px'}}>Details</h2>
+        //                         <InputGroup>
+        //                             <Input
+        //                                 data-lpignore="true"
+        //                                 type='text'
+        //                                 name='first_name'
+        //                                 label='First name'
+        //                                 required
+        //                             />
+        //                             <Input
+        //                                 data-lpignore="true"
+        //                                 type='text'
+        //                                 name='last_name'
+        //                                 label='Last name'
+        //                                 required
+        //                             />
+        //                         </InputGroup>
+        //                         <DatepickerInput>
+        //                             <DatePicker 
+        //                                 name="date_of_birth_human"
+        //                                 value={values.date_of_birth_human}
+        //                                 min_date="1919-01-01"
+        //                                 alignment="bottom"
+        //                                 onChange={handleChange}
+        //                             />
+        //                         </DatepickerInput>
+        //                         <Autocomplete
+        //                             data-lpignore="true"
+        //                             type='text'
+        //                             name='citizen_text'
+        //                             label='Citizenship'
+        //                             required
+        //                             list_items={ this.props.residence_list }
+        //                         />
+        //                         <Input
+        //                             data-lpignore="true"
+        //                             type='text'
+        //                             name='email'
+        //                             label='Email'
+        //                             required
+        //                             disabled
+        //                         />
+        //                         <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Tax information</h2>
+        //                         <Autocomplete
+        //                             data-lpignore="true"
+        //                             type='text'
+        //                             name='tax_residence_text'
+        //                             label='Tax residence'
+        //                             required
+        //                             list_items={ this.props.residence_list }
+        //                         />
+        //                         <Input
+        //                             data-lpignore="true"
+        //                             type='text'
+        //                             name='tax_identification_number'
+        //                             label='Tax identification number'
+        //                             required
+        //                         />
+        //                         <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Email preference</h2>
+        //                         <Checkbox value={values.email_consent} onClick={handleChange} name='email_consent' label='Get updates about Deriv products, services and events.'/>
+        //                         <Button type='submit'>Save</Button>
+        //                     </>
+        //             )}}
+        //             </Form>
+        //         }
+        //     </>
+        // );
     }
 
     componentDidMount() {

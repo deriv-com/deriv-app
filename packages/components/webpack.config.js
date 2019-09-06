@@ -19,6 +19,7 @@ module.exports = {
         input       : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
+        modal       : path.resolve(__dirname, 'src', 'components/modal/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),

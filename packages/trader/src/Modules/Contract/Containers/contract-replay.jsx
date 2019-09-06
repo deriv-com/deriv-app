@@ -12,8 +12,7 @@ import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { SmartChart }    from 'Modules/SmartChart';
 import { connect }       from 'Stores/connect';
-import { toJS }          from 'mobx';
-// --------------------------
+
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
 import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
@@ -185,7 +184,6 @@ class Chart extends React.Component {
     bottomWidgets = () => (
         <BottomWidgets Digits={this.props.Digits} />
     );
-
 
     render() {
         return (

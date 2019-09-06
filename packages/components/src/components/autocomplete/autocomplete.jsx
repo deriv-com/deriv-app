@@ -3,7 +3,6 @@ import React        from 'react';
 import PropTypes    from 'prop-types';
 import Input        from '../input';
 import DropdownList from '../dropdown-list';
-import                   './autocomplete.scss';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconArrow = ({ className, classNamePath }) => (

@@ -2,14 +2,14 @@ import classNames        from 'classnames';
 import {
     Autocomplete,
     Input,
-    Button }             from 'deriv-components';
+    Button,
+    Dialog }             from 'deriv-components';
 import {
     Field,
     Formik,
     Form }               from 'formik';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import FullPageModal     from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
@@ -173,20 +173,35 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
 };
 
-const AccountSignupModal = ({ is_visible, onSignup, residence_list, toggleAccountSignupModal, enableApp }) => {
+const AccountSignupModal = ({
+    enableApp,
+    disableApp,
+    is_loading,
+    is_visible,
+    onSignup,
+    residence_list,
+    toggleAccountSignupModal
+}) => {
     return (
-        <FullPageModal is_visible={is_visible}>
+        <Dialog
+            is_visible={is_visible}
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_loading={is_loading}>
             <AccountSignup
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
-        </FullPageModal>
+        </Dialog>
     );
 };
 
 AccountSignupModal.propTypes = {
+    disableApp    : PropTypes.func,
+    enableApp     : PropTypes.func,
+    is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onSignup      : PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
@@ -197,6 +212,8 @@ export default connect(
         is_visible              : ui.is_account_signup_modal_visible,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         enableApp               : ui.enableApp,
+        disableApp              : ui.disableApp,
+        is_loading              : ui.is_loading,
         onSignup                : client.onSignup,
         residence_list          : client.residence_list,
     }),

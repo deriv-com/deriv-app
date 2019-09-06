@@ -1,11 +1,12 @@
 // import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { localize } from 'App/i18n';
-import Lazy         from 'App/Containers/Lazy';
-import { Modal }    from 'App/Components/Elements/modal.jsx';
-import UILoader     from '../../Elements/ui-loader.jsx';
-import Icon         from 'Assets/icon.jsx';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import { Modal }     from 'deriv-components';
+import { localize }  from 'App/i18n';
+import MenuAccordion from 'App/Components/Elements/MenuAccordion';
+import Lazy          from 'App/Containers/Lazy';
+import UILoader      from '../../Elements/ui-loader.jsx';
+import Icon          from 'Assets/icon.jsx';
 
 // Profile
 const PersonalDetails     = () => import('App/Containers/AccountManagementModal/Profile/personal-details.jsx');
@@ -209,11 +210,17 @@ class ToggleAccountManagement extends React.PureComponent {
                     header={this.state.header}
                     menu_type='accordion'
                     modal_content={modal_content}
-                    onChangeHeader={this.onChangeHeader}
                     is_open={is_open}
                     title={localize('Settings')}
                     toggleModal={this.props.toggleModal}
-                />
+                >
+                    <MenuAccordion
+                        alignment='center'
+                        classNameHeader='modal__tab-header'
+                        list={modal_content}
+                        onChangeHeader={this.onChangeHeader}
+                    />
+                </Modal>
             </React.Suspense>
         );
     }

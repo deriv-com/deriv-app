@@ -29,10 +29,15 @@
             background-color: themed('background_modal_overlay');
         }
     }
-    &--is-disabled:after {
-        z-index: 1;
-        opacity: 1;
-        pointer-events: auto;
+    &--is-disabled {
+        .chart-container {
+            z-index: 1;
+        }
+        &:after {
+            z-index: 1;
+            opacity: 1;
+            pointer-events: auto;
+        }
     }
     &--is-route-modal {
         @include themify($themes) {

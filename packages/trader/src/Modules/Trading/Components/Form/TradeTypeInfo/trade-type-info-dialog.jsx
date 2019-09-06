@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import FullScreenDialog  from '../../Elements/full-screen-dialog.jsx';
+import MobileDialog      from '../../Elements/mobile-dialog.jsx';
 
 const TradeTypeInfoDialog = ({
     children,
@@ -11,14 +11,14 @@ const TradeTypeInfoDialog = ({
     title,
 }) => (
     is_mobile ?
-        <FullScreenDialog
+        <MobileDialog
             visible={open}
             onClose={onClose}
             title={title}
             wrapperClassName='trade-type-info-modal'
         >
             {children}
-        </FullScreenDialog>
+        </MobileDialog>
         :
         <CSSTransition
             classNames={{

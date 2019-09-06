@@ -245,6 +245,12 @@ const config = {
         aid: 'binarybot-237009',
         api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
     },
+    help: {
+        TEXT : 'text',
+        VIDEO: 'video',
+        IMAGE: 'image',
+        BLOCK: 'block',
+    },
 };
 
 export default config;

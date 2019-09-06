@@ -1,5 +1,6 @@
-/** @define full-page-modal */
-.full-page-modal {
+/** @define dc-dialog */
+
+.dc-dialog {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -22,14 +23,12 @@
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
         &--enter, &--exit {
-            transform: translateY(50px);
+            transform: translate3d(0, 50px, 0);
             opacity: 0;
-            pointer-events: none;
         }
         &--enter-done {
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
             opacity: 1;
-            pointer-events: auto;
         }
     }
     &__dialog {
@@ -44,9 +43,9 @@
         justify-content: space-around;
         flex-direction: column;
         align-items: flex-start;
+        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
         @include themify($themes) {
             background-color: themed('container_secondary_color');
-            box-shadow: 0 4px 6px 0 themed('background_modal_shadow');
         }
     }
     &__header {
@@ -76,7 +75,7 @@
 }
 
 @media screen and (max-width: 560px) {
-    .full-page-modal {
+    .dc-dialog {
         &__dialog {
             width: 100vw;
             height: 100vh;

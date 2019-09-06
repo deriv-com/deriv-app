@@ -24,7 +24,7 @@ const LastDigitStat = ({ is_max, is_min, is_selected, percentage }) => {
                 viewBox='0 0 120 120'
             >
                 <circle
-                    className='digits__pie-border'
+                    className='progress__bg'
                     cx='60'
                     cy='60'
                     r='54'

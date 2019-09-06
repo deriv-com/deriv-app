@@ -8,16 +8,16 @@ const display_array = Array.from(Array(10).keys()); // digits array [0 - 9]
 
 class LastDigitPrediction extends React.Component {
     digit_left_offset = {
-        0: 4,
-        1: 4 + (this.props.dimension * 1),
-        2: 4 + (this.props.dimension * 2),
-        3: 4 + (this.props.dimension * 3),
-        4: 4 + (this.props.dimension * 4),
-        5: 4 + (this.props.dimension * 5),
-        6: 4 + (this.props.dimension * 6),
-        7: 4 + (this.props.dimension * 7),
-        8: 4 + (this.props.dimension * 8),
-        9: 4 + (this.props.dimension * 9),
+        0: 6,
+        1: 6 + (this.props.dimension * 1),
+        2: 6 + (this.props.dimension * 2),
+        3: 6 + (this.props.dimension * 3),
+        4: 6 + (this.props.dimension * 4),
+        5: 6 + (this.props.dimension * 5),
+        6: 6 + (this.props.dimension * 6),
+        7: 6 + (this.props.dimension * 7),
+        8: 6 + (this.props.dimension * 8),
+        9: 6 + (this.props.dimension * 9),
     }
 
     getBarrier = (num) => {

@@ -92,6 +92,7 @@ const BottomDigits = ({
     display_status,
     is_ended,
     tick,
+    underlying,
 }) => (
     <div className='bottom-widgets'>
         <Digits
@@ -103,6 +104,7 @@ const BottomDigits = ({
             display_status={display_status}
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
+            underlying={underlying}
         />
     </div>
 );
@@ -114,6 +116,7 @@ const ChartBottomWidgets = connect(
         display_status   : modules.contract_trade.last_contract.display_status,
         is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
         is_ended         : modules.contract_trade.last_contract.is_ended,
+        underlying       : modules.trade.symbol,
     })
 )(BottomDigits);
 

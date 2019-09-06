@@ -49,7 +49,7 @@ export const getDisplayStatus = (contract_info) => {
     return status;
 };
 
-export const getDiffInSeconds = (contract_info, tick) => {
+export const isContractElapsed = (contract_info, tick) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info);
     if (end_time && tick.epoch) {

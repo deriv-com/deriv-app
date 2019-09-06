@@ -19,10 +19,11 @@ const DigitDisplay = ({
     stats,
     value,
 }) => {
-    const { digit, spot } = latest_digit;
-    const is_latest       = value === digit;
-    const is_selected     = value === barrier;
-    const percentage      = stats ? stats * 100 / 1000 : null;
+    const { digit, spot }     = latest_digit;
+    const is_latest           = value === digit;
+    const is_selected         = value === barrier;
+    const is_selected_winning = digit === barrier;
+    const percentage          = stats ? stats * 100 / 1000 : null;
     return (
         <div
             className={classNames('digits__digit', {
@@ -45,6 +46,7 @@ const DigitDisplay = ({
                 <DigitSpot
                     current_spot={spot}
                     is_lost={is_lost}
+                    is_selected_winning={is_selected_winning}
                     is_visible={!!(is_latest && spot)}
                     is_won={is_won}
                 />

@@ -12,6 +12,7 @@ export default class FlyoutStore {
     @observable flyout_content = [];
     @observable flyout_width = this.flyout_min_width;
     @observable is_visible = false;
+    @observable is_search_flyout = false;
 
     /**
      * Parses XML contents passed by Blockly.Toolbox. Supports all default
@@ -28,13 +29,12 @@ export default class FlyoutStore {
         this.block_workspaces = [];
         this.is_help_content = false;
 
-        if (xml_list.type === 'search') {
-            const blocks = xml_list.blocks;
-            const has_result = blocks.length;
+        if (this.is_search_flyout) {
+            const no_result = !xml_list.length;
 
             processed_xml = [];
 
-            if (!has_result) {
+            if (no_result) {
                 const label = document.createElement('label');
                 label.setAttribute('text', translate('No Blocks Found'));
 
@@ -46,7 +46,7 @@ export default class FlyoutStore {
                 processed_xml.push(label);
             }
 
-            processed_xml = processed_xml.concat(blocks);
+            processed_xml = processed_xml.concat(xml_list);
         }
 
         const xml_list_group = this.groupBy(processed_xml);
@@ -67,6 +67,15 @@ export default class FlyoutStore {
         if (!is_visible) {
             this.flyout_content = observable([]);
         }
+    }
+
+    /**
+     * Sets whether the flyout is search or not.
+     * @param {boolean} is_search
+     * @memberof FlyoutStore
+     */
+    @action.bound setIsSearchFlyout(is_search) {
+        this.is_search_flyout = is_search;
     }
 
     /**

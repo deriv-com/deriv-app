@@ -1,14 +1,15 @@
 import React            from 'react';
 import Workspace        from './workspace.jsx';
-import { connect }      from '../stores/connect';
+import LoadModal        from './modal/load-modal.jsx';
+import SaveModal        from './modal/save-modal.jsx';
 import                       '../assets/sass/bot.scss';
 
 const Bot = () => (
     <React.Fragment>
         <Workspace />
+        <LoadModal />
+        <SaveModal />
     </React.Fragment>
 );
 
-export default connect(({ bot }) => ({
-    title: bot.title,
-}))(Bot);
+export default Bot;

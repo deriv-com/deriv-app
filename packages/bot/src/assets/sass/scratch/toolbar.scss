@@ -1,0 +1,167 @@
+@keyframes animate-progress {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 48%;
+    }
+}
+
+@keyframes animate-progress-complete {
+    0% {
+        width: 50%;
+    }
+    100% {
+        width: 96%;
+    }
+}
+
+@keyframes animate-circle {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+.toolbar {
+    $toolbar: &;
+    $TOOLBAR_BUTTONS_HEIGHT: 5em;
+    $static-circle-diameter: 1em;
+    $dynamic-circle-diameter: 1.5em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &__section {
+        display: flex;
+        flex-wrap: wrap;
+
+        > * {
+            align-self: center;
+            margin: 1em;
+        }
+        > #{$toolbar}__btn,
+        #{$toolbar}__group {
+            height: calc(#{$TOOLBAR_BUTTONS_HEIGHT} - 0.6em);
+        }
+        > #{$toolbar}__form {
+            height: $TOOLBAR_BUTTONS_HEIGHT;
+        }
+    }
+    &__btn {
+        &-icon {
+            cursor: pointer;
+            border: none;
+        }
+    }
+    &__group {
+        display: flex;
+        border-radius: $BORDER_RADIUS;
+        border: solid 1px $COLOR_LIGHT_GRAY_2;
+
+        &-btn {
+            > * {
+                align-self: center;
+                margin: 0.5em;
+            }
+        }
+        &-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 0.5em;
+        }
+        &-progress {
+            padding: 0.5em 3em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 285px;
+        }
+    }
+    &__form {
+        width: 18%;
+        min-width: 16em;
+
+        &-field {
+            margin-bottom: 0;
+            margin-top: 0.5em;
+        }
+    }
+    &__progress {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+
+        .circular-wrapper {
+            width: $static-circle-diameter;
+            height: $static-circle-diameter;
+            display: flex;
+
+            &.active,
+            &.completed {
+                .static-circle {
+                    border-color: $COLOR_GREEN_1;
+                }
+            }
+            &.completed {
+                .static-circle {
+                    background-color: $COLOR_GREEN_1;
+                }
+            }
+            &.active {
+                .dynamic-circle {
+                    position: absolute;
+                    width: $dynamic-circle-diameter;
+                    height: $dynamic-circle-diameter;
+                    background-color: $COLOR_GREEN_1;
+                    border-radius: 100%;
+                    opacity: 0.32;
+                    animation: animate-circle 0.8s infinite;
+                    transform: translate(-50%, -50%);
+                    margin-top: 0.5em;
+                    margin-left: 0.5em;
+                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                    z-index: 1;
+                }
+            }
+            .static-circle {
+                width: $static-circle-diameter;
+                height: $static-circle-diameter;
+                border-radius: 100%;
+                border: 0.25em solid;
+                align-self: center;
+                border-color: $COLOR_LIGHT_BLACK_4_SOLID;
+                z-index: 1;
+            }
+        }
+        &-line {
+            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+            height: 0.25em;
+            width: 100%;
+            top: 42%;
+            position: absolute;
+        }
+        &-bar {
+            background-color: $COLOR_GREEN_1;
+            width: 0;
+            height: 100%;
+        }
+        &-succeed {
+            animation: animate-progress 0.5s 1;
+            animation-fill-mode: forwards;
+        }
+        &-closed {
+            animation: animate-progress-complete 0.5s 1;
+            animation-fill-mode: forwards;
+        }
+        &-stage.active {
+            border-color: $COLOR_GREEN_1;
+        }
+    }
+}

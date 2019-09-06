@@ -8,6 +8,7 @@ import                           '../assets/sass/scratch/flyout.scss';
 
 const Flyout = ({
     is_help_content,
+    is_search_flyout,
     block_nodes,
     flyout_content,
     flyout_width,
@@ -16,7 +17,7 @@ const Flyout = ({
 }) => {
     return (
         <div
-            className={`flyout${!is_visible ? ' hidden' : ''}${is_help_content ? ' flyout__help' : ' flyout__content'}`}
+            className={`flyout${!is_visible ? ' hidden' : ''}${is_search_flyout ? ' flyout__search' : ''}${is_help_content ? ' flyout__help' : ' flyout__content'}`}
             style={{ width: `${flyout_width}px` }}
         >
             {
@@ -30,14 +31,10 @@ const Flyout = ({
                         switch (tag_name) {
                             case Blockly.Xml.NODE_BLOCK: {
                                 const block_type = node.getAttribute('type');
-                                let flyout_block_key = `${block_type} ${index}`;
-                                if (Blockly.Block.isDynamic(block_type) || is_help_content) {
-                                    flyout_block_key = `${block_type} ${Math.random()}`;
-                                }
 
                                 return (
                                     <FlyoutBlockGroup
-                                        key={flyout_block_key}
+                                        key={node.getAttribute('type') + Math.random()}
                                         id={`flyout__item-workspace--${index}`}
                                         block_nodes={nodes}
                                         onInfoClick={
@@ -90,20 +87,22 @@ const Flyout = ({
 };
 
 Flyout.propTypes = {
-    block_nodes    : PropTypes.array,
-    flyout_content : PropTypes.array,
-    flyout_width   : PropTypes.number,
-    is_help_content: PropTypes.bool,
-    is_visible     : PropTypes.bool,
-    showHelpContent: PropTypes.func,
+    block_nodes     : PropTypes.array,
+    flyout_content  : PropTypes.any,
+    flyout_width    : PropTypes.number,
+    is_help_content : PropTypes.bool,
+    is_search_flyout: PropTypes.bool,
+    is_visible      : PropTypes.bool,
+    showHelpContent : PropTypes.func,
 };
 
 export default connect(({ flyout }) => ({
-    is_help_content: flyout.is_help_content,
-    block_nodes    : flyout.block_nodes,
-    flyout_content : flyout.flyout_content,
-    flyout_width   : flyout.flyout_width,
-    is_visible     : flyout.is_visible,
-    showHelpContent: flyout.showHelpContent,
+    is_help_content : flyout.is_help_content,
+    block_nodes     : flyout.block_nodes,
+    flyout_content  : flyout.flyout_content,
+    flyout_width    : flyout.flyout_width,
+    is_visible      : flyout.is_visible,
+    is_search_flyout: flyout.is_search_flyout,
+    showHelpContent : flyout.showHelpContent,
 }))(Flyout);
 

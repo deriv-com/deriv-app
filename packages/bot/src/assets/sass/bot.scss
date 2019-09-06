@@ -7,3 +7,35 @@
 .main {
     background: rgba(206, 17, 17, 0.5);
 }
+
+.center-text {
+    text-align: center;
+}
+
+.btn--icon {
+    display: flex;
+
+    > * {
+        align-self: center;
+    }
+    &-text {
+        color: $COLOR-WHITE;
+        font-size: 1.4em;
+        font-weight: bold;
+        margin-left: 0.5em;
+    }
+}
+
+button:focus {
+    outline: none;
+}
+
+.vd {
+    width: 1px;
+    height: 50%;
+    background-color: $COLOR_LIGHT_GRAY_2;
+}
+
+.icon {
+    vertical-align: middle;
+}

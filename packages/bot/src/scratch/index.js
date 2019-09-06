@@ -22,10 +22,9 @@ import { translate, xml as translateXml } from '../utils/lang/i18n';
 import { getLanguage }                    from '../utils/lang/lang';
 import { observer as globalObserver }     from '../utils/observer';
 
-export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) => {
+export const scratchWorkspaceInit = async () => {
     try {
-        const el_scratch_area = document.getElementById(scratch_area_name);
-        const el_scratch_div = document.getElementById(scratch_div_name);
+        const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
 
         // eslint-disable-next-line
@@ -42,6 +41,8 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         });
 
         Blockly.derivWorkspace = workspace;
+        Blockly.derivWorkspace.blocksXmlStr = main_xml;
+        Blockly.derivWorkspace.toolbox_.addStyle('hidden');
 
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
@@ -50,21 +51,16 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
                 Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
             }
         });
-
-        // Keep XML in memory to allow multilevel categories
-        Blockly.derivWorkspace.initial_toolbox_xml = toolbox_xml;
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), Blockly.derivWorkspace);
+        
+        // Keep in memory to allow category browsing
+        workspace.initial_toolbox_xml = toolbox_xml;
+        
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
+        Blockly.derivWorkspace.clearUndo();
 
         const onWorkspaceResize = () => {
-            let element = el_scratch_area;
-            let x = 0;
-            let y = 0;
-        
-            do {
-                x += element.offsetLeft;
-                y += element.offsetTop;
-                element = element.offsetParent;
-            } while (element);
+            const x = 0;
+            const y = document.getElementById('toolbar').clientHeight;
         
             // Position scratch_div over scratch_area.
             el_scratch_div.style.left   = `${x}px`;

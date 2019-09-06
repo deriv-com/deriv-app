@@ -1,5 +1,6 @@
 import React        from 'react';
-import arrow        from '../assets/icons/ic-arrow.svg';
+import arrow1       from '../assets/icons/ic-arrow-1.svg';
+import arrow2       from '../assets/icons/ic-arrow-2.svg';
 import logo         from '../assets/icons/ic-logo.svg';
 import tradeActive  from '../assets/icons/ic-trade-active.svg';
 import stage1       from '../assets/icons/ic-stage-1.svg';
@@ -23,7 +24,8 @@ export const Icon = svgItem => (props) => {
 
 export const LogoIcon     = Icon(logo);
 export const TradeActive  = Icon(tradeActive);
-export const ArrowIcon    = Icon(arrow);
+export const Arrow1Icon   = Icon(arrow1);
+export const Arrow2Icon   = Icon(arrow2);
 export const Stage1Icon   = Icon(stage1);
 export const Stage2Icon   = Icon(stage2);
 export const Stage3Icon   = Icon(stage3);

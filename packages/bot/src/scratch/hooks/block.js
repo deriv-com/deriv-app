@@ -105,6 +105,7 @@ Blockly.Block.getDimensions = function(block_node) {
 
     return block_hw;
 };
+
 Blockly.Block.prototype.isMainBlock = function() {
     return config.mainBlocks.some(block_type => block_type === this.type);
 };
@@ -112,4 +113,8 @@ Blockly.Block.prototype.isMainBlock = function() {
 Blockly.Block.prototype.isIndependentBlock = function() {
     const { INDEPEDENT_BLOCKS } = config;
     return INDEPEDENT_BLOCKS.some(block_type => block_type === this.type);
+}
+
+Blockly.Block.isDynamic = function(block_type) {
+    return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };

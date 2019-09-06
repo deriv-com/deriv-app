@@ -19,6 +19,11 @@ test  :
   npm run test
   ```
 
+storybook: 
+```shell script
+  npm run storybook
+```
+
 ## Usage
 You can import individual components on demand and import style manually:
 ```jsx

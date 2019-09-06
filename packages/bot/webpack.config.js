@@ -47,7 +47,7 @@ module.exports = {
                         options: {
                           resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }     
+                    }
                ]
             },  
             {  

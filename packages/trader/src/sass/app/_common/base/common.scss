@@ -1,3 +1,84 @@
+/* postcss-bem-linter: ignore */
+html {
+    font-size: 62.5%; // Set root font size to 10px (1rem) to convert units in base 10
+
+    /** TODO: define breakpoints */
+    // @include breakpoints(big-desktop) {
+    //     font-size: 75.5%; /* 1rem = 12px */
+    // }
+    // @include breakpoints(tab-land) {
+    //     font-size: 50%; /* 1rem = 8px */
+    // }
+    // @include breakpoints(tab-port) {
+    //     font-size: 47%; /* 1rem = 7.5px */
+    // }
+    // @include breakpoints(phone-xl) {
+    //     font-size: 38%; /* 1rem = 6px */
+    // }
+    // @include breakpoints(phone-lg) {
+    //     font-size: 35%; /* 1rem = 5.5px */
+    // }
+}
+
+/** @define body */
+.body {
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* postcss-bem-linter: ignore */
+*, html, .body {
+    font-family: $FONT_STACK;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+
+// Forms
+/** @define select */
+.select {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    padding: 2px 3px;
+    border: 1px solid $COLOR_LIGHT_BLACK_4;
+    border-radius: $BORDER_RADIUS;
+}
+
+/** @define input */
+.input {
+    font-family: inherit;
+    font-style: inherit;
+    padding: 2px 3px;
+    @include themify($themes) {
+        color: themed('text_color');
+    }
+}
+
+// Placeholders
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: $COLOR_LIGHT_BLACK_3;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: $COLOR_LIGHT_BLACK_3;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: $COLOR_LIGHT_BLACK_3;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: $COLOR_LIGHT_BLACK_3;
+}
+
 /** @define theme */
 .theme {
     &--light {

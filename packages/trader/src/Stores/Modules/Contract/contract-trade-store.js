@@ -235,13 +235,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    removeErrorMessage() {
-        delete this.error_message;
-    }
-
-    @action.bound
     clearError() {
-        this.error_message = null;
+        this.error_message = '';
         this.has_error = false;
     }
 

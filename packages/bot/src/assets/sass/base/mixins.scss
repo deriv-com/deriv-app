@@ -1,7 +1,0 @@
-@mixin vendor($property, $value) {
-    $prefixes: ('moz', 'webkit', 'ms', 'o');
-    @each $prefix in $prefixes {
-        -#{$prefix}-#{$property}: #{$value};
-    }
-    #{$property}: #{$value};
-}

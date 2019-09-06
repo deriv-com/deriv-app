@@ -52,6 +52,7 @@ export default class ContractStore {
 
     @action.bound
     populateConfig(contract_info) {
+        const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
 
@@ -67,6 +68,10 @@ export default class ContractStore {
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
+        // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
+        if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
+            this.contract_info.barrier = prev_contract_info.barrier;
+        }
 
         if (this.is_digit_contract) {
             extendObservable(

@@ -1,7 +1,10 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-import { getDiffInSeconds }    from 'Stores/Modules/Contract/Helpers/logic';
+import { Popover }             from 'deriv-components';
+import { localize }            from 'App/i18n';
+import { isContractElapsed }   from 'Stores/Modules/Contract/Helpers/logic';
 import { SlideIn }             from 'App/Components/Animations';
+import { getMarketNamesMap }   from 'Constants';
 import { LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
 
@@ -24,12 +27,13 @@ class Digits extends React.PureComponent {
             is_digit_contract,
             is_ended,
             is_trade_page,
+            underlying,
             tick,
         } = this.props;
 
         const is_tick_ready       = is_trade_page ? !!(tick) : true;
         const is_contract_elapsed = (is_trade_page) ?
-            getDiffInSeconds(contract_info, tick) : false;
+            isContractElapsed(contract_info, tick) : false;
 
         return (
             <SlideIn
@@ -38,10 +42,23 @@ class Digits extends React.PureComponent {
                 keyname='digits'
                 type='bottom'
             >
+                {underlying &&
+                    <div className='digits__tooltip-container'>
+                        <Popover
+                            alignment='top'
+                            classNameBubble='digits__tooltip-bubble'
+                            disable_message_icon
+                            icon='info'
+                            id='dt_last_digits_info_tooltip'
+                            margin={4}
+                            message={localize(`Last digit stats for latest 1000 ticks for ${getMarketNamesMap()[underlying.toUpperCase()]}`)}
+                        />
+                    </div>
+                }
                 <LastDigitPrediction
                     // dimension of a single digit widget including margin/padding (number)
-                    // i.e - 40px + 4px left and 4px right padding/margin = 48
-                    dimension={48}
+                    // i.e - 40px + 6px left and 6px right padding/margin = 52
+                    dimension={52}
                     barrier={(!is_contract_elapsed && is_tick_ready) ? +contract_info.barrier : null}
                     contract_type={(!is_contract_elapsed && is_tick_ready) ? contract_info.contract_type : null}
                     digits={digits_array}

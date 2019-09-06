@@ -1,5 +1,14 @@
 @import '../../_common/base/index';
 
+/** @define cq-bottom-ui-widgets; weak */
+.cq-bottom-ui-widgets {
+    z-index: 4;
+
+    .bottom-widgets {
+        left: -3.5em;
+    }
+}
+
 /** @define digits */
 .digits {
     display: flex;
@@ -7,18 +16,35 @@
     position: relative;
     margin: 0 2.5em 0 1em;
 
+    &__tooltip-container {
+        position: absolute;
+        z-index: 2;
+        top: 14px;
+        left: -18px;
+    }
     &__digit {
-        margin: 0 0.4em;
+        pointer-events: none;
+        margin: 0 0.6em;
         text-align: center;
         position: relative;
         transition: transform 0.25s linear;
 
+        &--latest {
+            z-index: 1;
+            transform: scale(1.2);
+
+            .digits__digit-spot {
+                font-size: 0.9em;
+            }
+        }
         &--win {
             z-index: 1;
             transform: scale(1.25);
 
             .digits__pie-container:before {
-                box-shadow: 0px 1px 18px rgba(75, 180, 179, 1);
+                @include themify($themes) {
+                    box-shadow: 0px 1px 18px themed('digit_widget_win');
+                }
             }
         }
         &--loss {
@@ -26,15 +52,12 @@
             transform: scale(1.25);
 
             .digits__pie-container:before {
-                box-shadow: 0px 1px 18px rgba(255, 68, 79, 1);
-            }
-        }
-        &--latest {
-            z-index: 1;
-            transform: scale(1.2);
-
-            .digits__digit-spot {
-                font-size: 0.9em;
+                top: -2px;
+                left: -2px;
+                @include themify($themes) {
+                    box-shadow: 0px 1px 18px themed('digit_widget_loss');
+                    border: 3px solid themed('digit_widget_loss');
+                }
             }
         }
         &-display-value {
@@ -64,7 +87,7 @@
             @include toEm(width, 40px, 1em);
             @include toEm(height, 40px, 1em);
             @include themify($themes) {
-                background-color: themed('container_secondary_color');
+                background-color: themed('digit_widget_background_color');
                 color: themed('text_color');
             }
             margin-bottom: 0.5em;
@@ -76,7 +99,7 @@
 
             &--selected {
                 @include themify($themes) {
-                    background-color: themed('container_color');
+                    background-color: themed('digit_widget_selected_bg');
                 }
             }
             &--win {
@@ -84,7 +107,7 @@
                     color: $COLOR_WHITE;
                 }
                 @include themify($themes) {
-                    background-color: themed('won_color');
+                    background-color: themed('digit_widget_win');
                     color: themed('text_active_color');
                 }
             }
@@ -99,7 +122,7 @@
             &--loss {
                 border: none !important;
                 @include themify($themes) {
-                    background-color: themed('loss_color');
+                    background-color: themed('digit_widget_loss');
                     color: themed('text_active_color');
                 }
 
@@ -121,7 +144,7 @@
                 display: inline-block;
                 @include typeface(--paragraph-center-bold-black);
                 @include themify($themes) {
-                    color: themed('text_secondary_color');
+                    color: themed('digit_widget_spot_text');
                 }
             }
             &-last {
@@ -130,15 +153,29 @@
                 border-radius: 50%;
                 @include typeface(--paragraph-center-bold-black);
                 @include themify($themes) {
+                    border: 1px solid themed('digit_widget_spot_border');
                     color: themed('text_color');
-                    background: themed('slider_hover_color');
+                    background: themed('digit_widget_background_color');
                 }
 
+                &--selected-win {
+                    @include themify($themes) {
+                        color: themed('digit_widget_win');
+                    }
+                }
                 &--win {
-                    color: $COLOR_GREEN_1;
+                    @include themify($themes) {
+                        color: themed('text_color');
+                        border-color: themed('digit_widget_win');
+                        background: themed('digit_widget_win');
+                    }
                 }
                 &--loss {
-                    color: $COLOR_RED;
+                    @include themify($themes) {
+                        color: themed('text_color');
+                        border-color: themed('digit_widget_loss');
+                        background: themed('digit_widget_loss');
+                    }
                 }
             }
         }
@@ -158,11 +195,14 @@
             content: '';
         }
         &--selected:before {
-            border: 2px solid $COLOR_GREEN_1;
             top: -2px;
             left: -2px;
             width: 42px;
             height: 42px;
+
+            @include themify($themes) {
+                border: 2px solid themed('digit_widget_win');
+            }
         }
     }
     &__pie-progress {
@@ -170,6 +210,11 @@
         width: 42px;
         height: 42px;
 
+        .progress__bg {
+            @include themify($themes) {
+                stroke: themed('digit_widget_stroke_bg_color');
+            }
+        }
         .progress__value {
             @include themify($themes) {
                 stroke: themed('digit_widget_stroke_color');

@@ -353,6 +353,7 @@ export default class TradeStore extends BaseStore {
         if (proposal_id) {
             this.is_purchase_enabled = false;
             processPurchase(proposal_id, price).then(action((response) => {
+                const last_digit = +this.last_digit;
                 if (this.proposal_info[type].id !== proposal_id) {
                     throw new Error('Proposal ID does not match.');
                 }
@@ -378,7 +379,7 @@ export default class TradeStore extends BaseStore {
                             start_time,
                             longcode,
                             underlying,
-                            barrier      : is_digit_contract ? +this.last_digit : null,
+                            barrier      : is_digit_contract ? last_digit : null,
                             contract_type: category.toUpperCase(),
                         });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle

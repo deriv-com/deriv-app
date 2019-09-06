@@ -23,15 +23,15 @@ function get_color({ status, profit, is_dark_theme }) {
         won : '#00A79E',
         lost: '#CC2E3D',
         sold: '#1C5AE3',
-        bg: '#FFFFFF',
-        fg: '#10131F',
+        fg  : '#FFFFFF',
+        bg  : '#10131F',
     } : {
         open: '#1C5AE3',
         won : '#4BB4B3',
         lost: '#EC3F3F',
         sold: '#1C5AE3',
-        fg: '#333333',
-        bg: '#FFFFFF',
+        fg  : '#333333',
+        bg  : '#FFFFFF',
     };
     let color = colors[status || 'open'];
     if (status === 'open' && profit) {
@@ -213,7 +213,7 @@ const TickContract = RawMarkerMaker(({
 
             if (tick === entry) {
                 ctx.beginPath();
-                ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
+                ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
                 ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = color;
@@ -330,7 +330,7 @@ const NonTickContract = RawMarkerMaker(({
 
             if (tick === entry) {
                 ctx.beginPath();
-                ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
+                ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
                 ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = color;
@@ -421,7 +421,7 @@ const DigitContract = RawMarkerMaker(({
         ctx.fill();
 
         ctx.beginPath();
-        ctx.fillStyle = get_color({status: 'bg', is_dark_theme});
+        ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
         ctx.arc(tick.left, tick.top, 5 * scale, 0, Math.PI * 2);
         ctx.fill();
 

@@ -140,6 +140,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                 {/*    onToggle={this.props.setIsNameSelected} */}
                                                 {/* /> */}
                                                 <Input
+                                                    autoComplete='off'
                                                     className='payment-agent__input-long'
                                                     type='number'
                                                     maxLength='30'

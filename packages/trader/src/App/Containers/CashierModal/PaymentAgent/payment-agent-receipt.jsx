@@ -31,7 +31,7 @@ class PaymentAgentReceipt extends React.Component {
                         <span
                             className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}
                         />
-                        {this.props.amount_transferred}
+                        {this.props.receipt.amount_transferred}
                     </div>
                     <div className='payment-agent__transferred-details-wrapper'>
                         <Icon icon='IconAccountsCurrency' type={this.props.currency.toLowerCase()} />
@@ -41,7 +41,7 @@ class PaymentAgentReceipt extends React.Component {
                         <Icon className='payment-agent__transferred-icon' icon='IconBack' />
                         <Icon icon='IconPaymentAgent' />
                         <span className='payment-agent__transferred-details'>
-                            {this.props.receipt.payment_agent_name && <span className='payment-agent__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.loginid})
+                            {this.props.receipt.payment_agent_name && <span className='payment-agent__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
                         </span>
                     </div>
                 </div>
@@ -85,7 +85,6 @@ PaymentAgentReceipt.propTypes = {
     currency          : PropTypes.string,
     loginid           : PropTypes.string,
     receipt           : PropTypes.object,
-    setIsWithdraw     : PropTypes.func,
     toggleCashierModal: PropTypes.func,
 };
 
@@ -95,7 +94,6 @@ export default withRouter(connect(
         loginid           : client.loginid,
         receipt           : modules.cashier.config.payment_agent.receipt,
         resetPaymentAgent : modules.cashier.resetPaymentAgent,
-        setIsWithdraw     : modules.cashier.setIsWithdraw,
         toggleCashierModal: ui.toggleCashierModal,
     })
 )(PaymentAgentReceipt));

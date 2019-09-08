@@ -100,6 +100,7 @@
                 color: $COLOR_ORANGE;
                 font-weight: bold;
                 text-decoration: none;
+                cursor: pointer;
             }
         }
     }
@@ -156,21 +157,23 @@
     }
     &__drop-down {
         display: inline-block;
-        width: 20rem;
-        height: 4rem;
+        min-width: 20rem;
+        min-height: 4rem;
         //margin: 0 0 0 8px;
         margin: 0 0 16px;
         line-height: 1.43;
 
         &-display {
             justify-content: left;
-            height: 3.8rem;
+            min-height: 3.8rem;
+            height: auto;
 
             &-span {
                 font-size: 1.4rem;
                 text-align: left;
-                padding: 10px 12px;
+                padding: 9px 12px;
                 text-transform: none;
+                line-height: 1.43;
             }
         }
         &-items {

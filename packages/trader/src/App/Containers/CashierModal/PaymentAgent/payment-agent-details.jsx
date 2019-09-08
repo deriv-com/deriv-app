@@ -65,6 +65,8 @@ class PaymentAgentDetails extends React.Component {
                     value={this.props.payment_agent_email}
                     icon='Email'
                     is_last_child
+                    target='_blank'
+                    rel='noopener noreferrer'
                 />
                 }
             </div>

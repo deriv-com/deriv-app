@@ -32,7 +32,7 @@ class EmailSent extends React.Component {
                         </React.Fragment>
                         :
                         <BinaryLink className='withdraw__email-resend-text' onClick={this.onClickVerification}>
-                            <Localize i18n_default_text={'Didn\'t receive our email?'} />
+                            <Localize i18n_default_text={'Didn\'t receive the email?'} />
                         </BinaryLink>
                     }
                 </div>

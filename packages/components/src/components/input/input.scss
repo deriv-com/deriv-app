@@ -147,14 +147,15 @@
     }
     &__leading-icon {
         margin-left: 1rem;
-        top: 8px;
+        top: 0.7rem;
         position: absolute;
         left: 0;
         pointer-events: none;
         cursor: text;
+        font-size: var(--text-size-s);
 
         + .dc-input__field {
-            padding-left: calc(1rem + 8px);
+            padding-left: calc(1rem + 11px);
         }
     }
     &__trailing-icon {

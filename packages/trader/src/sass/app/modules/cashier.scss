@@ -287,20 +287,38 @@
             display: inline-block !important;
             margin-bottom: 0 !important;
         }
-        &-long {
-            width: calc(100% - 1.6rem - 9.8rem) !important;
-        }
     }
     &__withdraw-button {
         width: 9.8rem;
         min-width: 9.8rem;
-        margin: 0;
-        margin-left: 1.6rem;
         display: inline-block;
         height: 4rem;
         font-size: 1.4rem;
         padding: 1rem 1.6rem;
         font-weight: bold;
         color: $COLOR_WHITE;
+        margin: 1.6rem 2.4rem 2.4rem;
+    }
+    &__submit {
+        display: flex;
+        justify-content: flex-end;
+        box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
+        width: 72%;
+        margin-left: -2.4rem;
+        position: absolute;
+        bottom: 0;
+        height: 8rem;
+    }
+    &__error {
+        flex: 1;
+        margin: 2rem 5.6rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        line-height: 1.33;
+
+        &-icon {
+            position: absolute;
+            left: 0;
+        }
     }
 }

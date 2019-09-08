@@ -15,18 +15,19 @@ class Config {
     onIframeLoaded     = '';
     timeout_session    = '';
 
-    @observable error = {
-        message    : '',
-        button_text: '',
-        link       : '',
-    };
-
     @observable iframe_height = 0;
     @observable iframe_url    = '';
 
     constructor({ container }) {
         this.container = container;
     }
+}
+
+class ConfigError {
+    @observable message       = '';
+    @observable button_text   = '';
+    @observable link          = '';
+    @observable onClickButton = null;
 }
 
 class ConfigVerification {
@@ -44,10 +45,14 @@ export default class CashierStore extends BaseStore {
     bank_default_option = [{ text: localize('any'), value: '' }];
 
     @observable config = {
-        deposit      : new Config({ container: 'deposit' }),
+        deposit: {
+            ...(toJS(new Config({ container: 'deposit' }))),
+            error: new ConfigError(),
+        },
         payment_agent: {
             agents                : [],
             container             : 'payment_agent',
+            error                 : new ConfigError(),
             filtered_list         : [],
             list                  : [],
             is_name_selected      : true,
@@ -61,6 +66,7 @@ export default class CashierStore extends BaseStore {
         },
         withdraw: {
             ...(toJS(new Config({ container: 'withdraw' }))),
+            error       : new ConfigError(),
             verification: new ConfigVerification(),
         },
     };
@@ -181,9 +187,10 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error) {
+    setErrorMessage(error, onClickButton) {
         const obj_error = this.getError(error) || {};
         this.config[this.active_container].error = {
+            onClickButton,
             message    : obj_error.error_message,
             button_text: obj_error.error_button_text,
             link       : obj_error.error_link,
@@ -552,8 +559,7 @@ export default class CashierStore extends BaseStore {
             });
             this.setIsWithdrawSuccessful(true);
         } else {
-            // TODO: handle showing error message
-            this.resetPaymentAgent();
+            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
         }
     }
 

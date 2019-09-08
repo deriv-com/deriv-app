@@ -17,6 +17,7 @@ const output =  {
 
 module.exports = {
     entry : [
+        'core-js/fn/promise',
         path.join(__dirname, 'src', 'app.js') 
     ],
     output,
@@ -44,9 +45,9 @@ module.exports = {
                     {
                         loader: "sass-resources-loader",
                         options: {
-                            resources: require('deriv-shared/utils/index.js'),
+                          resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
                         }
-                    }     
+                    }
                ]
             },  
             {  

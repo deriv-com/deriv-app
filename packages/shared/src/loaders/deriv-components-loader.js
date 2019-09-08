@@ -1,5 +1,5 @@
 /* Using this loader you can import components from deriv-components without having to manually
-import the corresponding stylesheet. The deriv-components-loader will automatically import 
+import the corresponding stylesheet. The deriv-components-loader will automatically import
 stylesheets.
 
     import { Button } from 'deriv-components';
@@ -8,7 +8,7 @@ stylesheets.
     import 'deriv-components/lib/button.css';
 */
 
-module.exports = function(source) {
+module.exports = function(source, map) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'deriv-components/.exec(line); // eslint-disable-line no-useless-escape
@@ -23,5 +23,6 @@ import 'deriv-components/lib/${c.toLocaleLowerCase()}.css';
 
         return replace;
     });
-    return mapped_lines.join('\n');
+
+    this.callback(null, mapped_lines.join('\n'), map);
 };

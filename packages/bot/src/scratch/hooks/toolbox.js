@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ArrowIcon } from '../../components/Icons.jsx';
+import { Arrow1Icon } from '../../components/Icons.jsx';
 import { flyout }    from '../../stores';
 import { translate } from '../../utils/lang/i18n';
 
@@ -198,16 +198,22 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content.blocks = flyout_content.blocks.concat(uniqueProceBlocks);
     } else {
         const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
-        flyout_content = selected_category.getContents();
-
-        // Dynamic categories
-        if (typeof flyout_content === 'string') {
-            const fnToApply = this.workspace_.getToolboxCategoryCallback(flyout_content);
-            flyout_content = fnToApply(this.workspace_);
-        }
+        flyout_content = this.getCategoryContents(selected_category);
     }
 
     flyout.setContents(flyout_content);
+};
+
+Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
+    let xml_list = selected_category.getContents();
+
+    // Dynamic categories
+    if (typeof xml_list === 'string') {
+        const fnToApply = this.workspace_.getToolboxCategoryCallback(xml_list);
+        xml_list = fnToApply(this.workspace_);
+    }
+
+    return xml_list;
 };
 
 /**
@@ -232,8 +238,9 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * Opens the selected category
  * deriv-bot: Category-specific flyouts + removed opt_shouldScroll
  * @param {Blockly.Toolbox.Category} item The category to select.
+ * @param {boolean} should_close_on_same_category Close when select the same category
  */
-Blockly.Toolbox.prototype.setSelectedItem = function (item) {
+Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
     const category_item = item;
     if (category_item === 'search'){
         if (this.selectedItem_) {
@@ -250,10 +257,11 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item) {
 
         // Selecting the same category will close it.
         if (
-            category_item &&
-            !category_item.is_category_return_ &&
-            !category_item.has_child_category_ &&
-            this.selectedItem_.id_ === item.id_
+            item &&
+            !item.is_category_return_ &&
+            !item.has_child_category_ &&
+            this.selectedItem_.id_ === item.id_ &&
+            should_close_on_same_category
         ) {
             this.selectedItem_ = null;
             if (flyout.is_visible) {
@@ -373,7 +381,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
 
     if (this.is_category_return_) {
         const el_return_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--back');
-        ReactDOM.render(<ArrowIcon className='arrow' />, el_return_arrow);
+        ReactDOM.render(<Arrow1Icon className='arrow' />, el_return_arrow);
         el_item.appendChild(el_return_arrow);
     } else {
         const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
@@ -395,7 +403,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
 
     if (this.has_child_category_) {
         const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
-        ReactDOM.render(<ArrowIcon className='arrow' />, el_category_arrow);
+        ReactDOM.render(<Arrow1Icon className='arrow' />, el_category_arrow);
         el_item.appendChild(el_category_arrow);
     } else if (this.iconURI_) {
         // If category has iconURI attribute, it refers to an entry in our bot-sprite.svg
@@ -549,4 +557,10 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, isSubCatego
     });
 
     this.height_ = this.table.offsetHeight;
+};
+
+Blockly.Toolbox.prototype.refreshCategory = function() {
+    const category = this.getSelectedItem();
+
+    this.setSelectedItem(category, false);
 };

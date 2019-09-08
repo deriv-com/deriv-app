@@ -3,7 +3,7 @@ import PropTypes  from 'prop-types';
 import React      from 'react';
 import Icon       from 'Assets/icon.jsx';
 
-const FullScreenDialog = (props) => {
+const MobileDialog = (props) => {
     const { title, visible, children, wrapperClassName } = props;
 
     const checkVisibility = () => {
@@ -42,26 +42,26 @@ const FullScreenDialog = (props) => {
 
     return (
         <div
-            className={classNames('fullscreen-dialog', {
-                'fullscreen-dialog--open': visible,
+            className={classNames('mobile-dialog', {
+                'mobile-dialog--open': visible,
             })}
             onClick={handleClick}
         >
-            <div className='fullscreen-dialog__header'>
-                <h2 className='fullscreen-dialog__title'>
+            <div className='mobile-dialog__header'>
+                <h2 className='mobile-dialog__title'>
                     {title}
                 </h2>
                 <div
-                    className='icons btn-close fullscreen-dialog__close-btn'
+                    className='icons btn-close mobile-dialog__close-btn'
                     onClick={props.onClose}
                 >
-                    <Icon icon='IconClose' className='fullscreen-dialog__close-btn-icon' />
+                    <Icon icon='IconClose' className='mobile-dialog__close-btn-icon' />
                 </div>
             </div>
-            <div className='fullscreen-dialog__header-shadow-cover' />
-            <div className='fullscreen-dialog__header-shadow' />
-            <div className='fullscreen-dialog__content'>
-                <div className={`fullscreen-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
+            <div className='mobile-dialog__header-shadow-cover' />
+            <div className='mobile-dialog__header-shadow' />
+            <div className='mobile-dialog__content'>
+                <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
                     {children}
                 </div>
             </div>
@@ -69,7 +69,7 @@ const FullScreenDialog = (props) => {
     );
 };
 
-FullScreenDialog.propTypes = {
+MobileDialog.propTypes = {
     children        : PropTypes.any,
     onClose         : PropTypes.func,
     title           : PropTypes.string,
@@ -77,4 +77,4 @@ FullScreenDialog.propTypes = {
     wrapperClassName: PropTypes.string,
 };
 
-export default FullScreenDialog;
+export default MobileDialog;

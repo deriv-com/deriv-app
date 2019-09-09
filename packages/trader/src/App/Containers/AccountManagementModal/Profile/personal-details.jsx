@@ -21,8 +21,8 @@ const makeSettingsRequest = (settings, residence_list) => {
 
 // TODO: localize
 // TODO: make dynamic
-const InputGroup = ({ children }) => <div className='dt-input-group'>{children}</div>
-const DatepickerInput = ({ children }) => <div className='dt-datepicker-input'>{children}</div>
+const InputGroup = ({ children }) => <div>{children}</div>
+const DatepickerInput = ({ children }) => <div>{children}</div>
 const account_opening_reasons = ['Speculative', 'Income Earning', 'Hedging'];
 
 class PersonalDetailsForm extends React.Component {

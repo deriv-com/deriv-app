@@ -13,7 +13,7 @@ class Icon extends React.PureComponent {
             theme       : this.props.theme,
         };
 
-        const IconLazy = React.lazy(() => import(`deriv-components/lib/icons/${this.props.icon}.jsx`));
+        const IconLazy = React.lazy(() => import(`deriv-components/lib/icons/${this.props.icon}.js`));
         if (!IconLazy) return <div />;
 
         return (

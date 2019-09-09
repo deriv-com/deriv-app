@@ -2,9 +2,12 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const BuildIconsPlugin = require('./src/scripts/build-icons').buildIcons;
 
 const is_serve = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+
+const icons = require('./src/scripts/icons'); // Icons entry object
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
@@ -20,6 +23,7 @@ module.exports = {
         label       : path.resolve(__dirname, 'src', 'components/label/index.js'),
         popover     : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         modal       : path.resolve(__dirname, 'src', 'components/modal/index.js'),
+        ...icons,
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -112,6 +116,7 @@ module.exports = {
                 to: path.resolve(__dirname, 'lib', 'icons/icon-base.jsx')
             },
         ]),
+        BuildIconsPlugin,
     ],
     externals: {
         formik: 'formik',

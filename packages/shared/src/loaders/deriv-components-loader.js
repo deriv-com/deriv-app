@@ -24,8 +24,8 @@ module.exports = function(source, map) {
         const components = matches[1].replace(/\s+/g, '').split(',');
         const replace = components.map(c => {
             // import icon components
-            if (c.startsWith('Ic') || c.startsWith('Img')) {
-return `import ${c} from 'deriv-components/lib/icons/${c}.jsx';`
+            if (c.startsWith('Icon') || c.startsWith('Img')) {
+return `import ${c} from 'deriv-components/lib/icons/${c}.js';`
             }
             // import UI components
             return `

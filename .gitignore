@@ -14,3 +14,5 @@ lib/
 coverage
 packages/shared/utils
 packages/components/.out
+# exclude auto-generated components/icon/index.js file from commit
+packages/components/src/components/icon/index.js

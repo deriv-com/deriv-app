@@ -80,7 +80,7 @@ const WS = (() => {
         BinarySocket.send({ set_financial_assessment: 1, ...details });
 
     const setSettings = settings =>
-        BinarySocket.send({ set_settings: 1, ...settings })
+        BinarySocket.send({ set_settings: 1, ...settings });
 
     const statement = (limit, offset, date_boundaries) =>
         BinarySocket.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });

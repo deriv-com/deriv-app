@@ -5,11 +5,11 @@ export const FormFooter = ({ children }) => (
     <div className='account-management-form-footer'>{children}</div>
 );
 
-export const FormBody = ({ children }) => (
+export const FormBody = ({ children, scroll_offset }) => (
     <Scrollbars
         autoHide
         style={{
-            height: 'calc(100% + 4em)',
+            height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
         }}
     >
         <div className='account-management-form-body'>{children}</div>

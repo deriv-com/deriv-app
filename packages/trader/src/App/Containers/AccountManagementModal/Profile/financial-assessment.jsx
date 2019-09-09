@@ -82,7 +82,7 @@ class FinancialAssessment extends React.Component {
                 }) => (
                     <form className='account-management-form' onSubmit={handleSubmit}>
                         <h1>{localize('Financial information')}</h1>
-                        <FormBody>
+                        <FormBody scroll_offset='120px'>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
                                     placeholder={localize('source of income')}

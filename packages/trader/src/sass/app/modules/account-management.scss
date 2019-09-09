@@ -35,3 +35,45 @@
         }
     }
 }
+
+.account-management-form-header {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.43;
+}
+
+.account-management-modal-header {
+    display: flex;
+
+    &__icon-wrapper {
+        display: flex;
+        align-content: center;
+        font-size: 12px;
+        font-weight: normal;
+
+        span {
+            padding: 0 8px;
+        }
+        svg {
+            height: 24px;
+            width: 24px;
+        }
+    }
+}
+
+.account-management-text {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.43;
+}
+
+.account-management-table {
+    width: 100%;
+
+    th {
+        padding: 24px 0 16px 0;
+    }
+    td {
+        padding: 8px 0;
+    }
+}

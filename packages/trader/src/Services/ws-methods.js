@@ -16,6 +16,9 @@ const WS = (() => {
     const contractsFor = (symbol) =>
         BinarySocket.send({ contracts_for: symbol });
 
+    const getAccountLimits = () =>
+        BinarySocket.send({ get_limits: 1 });
+
     const getAccountStatus = () =>
         BinarySocket.send({ get_account_status: 1 });
 
@@ -132,6 +135,7 @@ const WS = (() => {
         buy,
         cashier,
         contractsFor,
+        getAccountLimits,
         getAccountStatus,
         getFinancialAssessment,
         getSelfExclusion,

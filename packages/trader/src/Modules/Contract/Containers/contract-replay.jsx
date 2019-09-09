@@ -36,6 +36,7 @@ class ContractReplay extends React.Component {
     }
 
     handleClickOutside = (event) => {
+        if (this.props.has_service_error) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             const classname_string = event.target.classList[0];
             if (/^.*(modal|btn|notification)/.test(classname_string)) {
@@ -180,6 +181,7 @@ export default withRouter(connect(
         disableRouteMode : ui.disableRouteModal,
         enableRouteMode  : ui.setRouteModal,
         is_dark_theme    : ui.is_dark_mode_on,
+        has_service_error: ui.is_services_error_visible,
 
     })
 )(ContractReplay));

@@ -100,18 +100,18 @@ const modal_content = [
                     />
                 )
             },
-            {     
-                label: localize('Self-exclusion'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={SelfExclusion}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // {     
+            //     label: localize('Self-exclusion'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={SelfExclusion}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            },
+            // },
             {     
                 label: localize('Account limits'),
                 // eslint-disable-next-line react/display-name
@@ -124,66 +124,66 @@ const modal_content = [
                 )
 
             },
-            {     
-                label: localize('Login history'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={LoginHistory}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // {     
+            //     label: localize('Login history'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={LoginHistory}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            },
-            {     
-                label: localize('API token'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={ApiToken}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // },
+            // {     
+            //     label: localize('API token'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={ApiToken}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            },
-            {     
-                label: localize('Connected apps'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={ConnectedApps}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // },
+            // {     
+            //     label: localize('Connected apps'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={ConnectedApps}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            },
-            {     
-                label: localize('Two-factor authentication'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={TwoFactorAuthentication}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // },
+            // {     
+            //     label: localize('Two-factor authentication'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={TwoFactorAuthentication}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            },
-            {     
-                label: localize('VPN'),
-                // eslint-disable-next-line react/display-name
-                value: () => (
-                    <Lazy
-                        ctor={Vpn}
-                        should_load={true}
-                        has_progress={true}
-                    />
-                )
+            // },
+            // {     
+            //     label: localize('VPN'),
+            //     // eslint-disable-next-line react/display-name
+            //     value: () => (
+            //         <Lazy
+            //             ctor={Vpn}
+            //             should_load={true}
+            //             has_progress={true}
+            //         />
+            //     )
 
-            }
+            // }
         ],
     }
 ];

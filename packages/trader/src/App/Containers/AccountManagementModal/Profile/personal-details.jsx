@@ -7,6 +7,7 @@ import { Button }       from 'deriv-components';
 import { Formik }       from 'formik';
 import { formatDate }   from 'Utils/Date';
 import Loading          from '../../../../templates/app/components/loading.jsx';
+import { FormFooter, FormSubHeader } from '../Components/layout-components.jsx';
 
 const makeSettingsRequest = (settings, residence_list) => {
     let citizen = residence_list.find(location => location.text === settings.tax_residence_text).value
@@ -53,8 +54,8 @@ class PersonalDetailsForm extends React.Component {
         let citizen_text = '';
         let tax_residence_text = '';
         if (this.props.residence_list.length) {
-            console.log('citizen', citizen, this.props.residence_list.find(location => location.value === citizen));
-            console.log('residence_list', this.props.residence_list);
+            // console.log('citizen', citizen, this.props.residence_list.find(location => location.value === citizen));
+            // console.log('residence_list', this.props.residence_list);
             // citizen_text = citizen ? this.props.residence_list.find(location => location.value === citizen).text : '';
             // tax_residence_text = this.props.residence_list.find(location => location.value === tax_residence).text;
         }
@@ -76,7 +77,7 @@ class PersonalDetailsForm extends React.Component {
               validateField,
             }) => (
                 <form>
-                    <h2 style={{fontSize: '14px', fontWeight: 'bold', marginBottom: '20px'}}>Details</h2>
+                    <FormSubHeader text="Personal Details" />
                     {/* <InputGroup>
                         <Input
                             data-lpignore="true"
@@ -136,7 +137,11 @@ class PersonalDetailsForm extends React.Component {
                     />
                     <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Email preference</h2>
                     <Checkbox value={values.email_consent} onClick={handleChange} name='email_consent' label='Get updates about Deriv products, services and events.'/> */}
-                    <Button type='submit'>Save</Button>
+                    <FormFooter>
+                        <button type="submit" disabled={isSubmitting}>
+                            Submit
+                        </button>
+                    </FormFooter>
                 </form>
             )}
             </Formik>

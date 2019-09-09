@@ -7,8 +7,17 @@ import Icon                  from 'Assets/icon.jsx';
 import { localize }          from 'App/i18n';
 import TradeTypeInfoTemplate from './trade-type-info-template.jsx';
 
-const snakeCaseToKebabCase = (str) => str.charAt(0).toUpperCase() + str.substr(1).replace(/(_\w)/g, (m) => m[1].toUpperCase());
-
+// TODO: move to String utils
+function toPascalCase(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '$')
+        .replace(/[^A-Za-z0-9]+/g, '$')
+        .replace(/([a-z])([A-Z])/g, (m, a, b) => a + '$' + b)
+        .toLowerCase()
+        .replace(/(\$)(\w?)/g, (m, a, b) => b.toUpperCase());
+}
+    
 const TradeTypeInfoItem = ({
     handleNavigationClick,
     handleNextClick,
@@ -41,7 +50,7 @@ const TradeTypeInfoItem = ({
                         <div className='trade-type-info-dialog__card' key={idx}>
                             <div className='trade-type-info-dialog__gif'>
                                 <Icon
-                                    icon={`ImgTradetypes${snakeCaseToKebabCase(type.value)}`}
+                                    icon={`ImgTradetypes${toPascalCase(type.value)}`}
                                     className='trade-type-info-dialog__gif-image'
                                     colors={{
                                         '&fill=#191C31': 'bg-fill',

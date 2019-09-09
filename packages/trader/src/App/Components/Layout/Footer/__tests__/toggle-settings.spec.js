@@ -18,9 +18,9 @@ describe('ToggleSettings', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={false} />);
         expect(wrapper.find('.ic-settings--active').exists()).to.be.false;
     });
-    it('should contain <Icon icon=\'IconSettings\' />', () => {
+    it('should contain <Icon icon=\'IconGear\' />', () => {
         const wrapper = shallow(<ToggleSettings />);
-        expect(wrapper.contains(<Icon icon='IconSettings' className='footer__icon ic-settings__icon' />)).to.be.true;
+        expect(wrapper.contains(<Icon icon='IconGear' className='footer__icon ic-settings__icon' />)).to.be.true;
     });
     it('property \'is_open\' should depend on \'is_settings_visible\'', () => {
         const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);

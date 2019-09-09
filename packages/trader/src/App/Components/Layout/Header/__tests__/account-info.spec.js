@@ -34,9 +34,9 @@ describe('AccountInfo', () => {
         const wrapper = shallow(<AccountInfo loginid='12345' />);
         expect(wrapper.contains(<p className='acc-info__id' title='12345'>12345&nbsp;</p>)).to.be.true;
     });
-    it('should have <Icon icon=\'IconArrow\' />', () => {
+    it('should have <Icon icon=\'IconChevronUpBold\' />', () => {
         const wrapper = shallow(<AccountInfo />);
-        expect(wrapper.contains(<Icon icon='IconArrowBold' className='acc-info__select-arrow' />)).to.be.true;
+        expect(wrapper.contains(<Icon icon='IconChevronUpBold' className='acc-info__select-arrow' />)).to.be.true;
     });
     it('should contain <CSSTransition /> and children', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={false}

@@ -2,7 +2,8 @@
  * Converts string to PascalCase
  */
 
- module.exports = function(str) {
+// TODO: move to String utils
+module.exports = function(str) {
     if (!str) return '';
     return String(str)
       .replace(/^[^A-Za-z0-9]*|[^A-Za-z0-9]*$/g, '$')

@@ -13,7 +13,7 @@ import {
 }                        from './dropdown';
 import Items             from './items.jsx';
 import NativeSelect      from './native-select.jsx';
-import SymbolSpan        from './symbol-span.jsx';
+import DisplayText       from './display-text.jsx';
 
 class Dropdown extends React.PureComponent {
     list_ref = React.createRef();
@@ -44,9 +44,10 @@ class Dropdown extends React.PureComponent {
     get container_class_name () {
         return classNames('dc-dropdown-container',
             this.props.className, {
-                'dc-dropdown--left'    : this.props.is_alignment_left,
-                'dc-dropdown--show'    : this.state.is_list_visible,
-                'dc-dropdown--disabled': this.is_single_option,
+                'dc-dropdown--has-placeholder': this.props.placeholder,
+                'dc-dropdown--left'           : this.props.is_alignment_left,
+                'dc-dropdown--show'           : this.state.is_list_visible,
+                'dc-dropdown--disabled'       : this.is_single_option,
             },
         );
     }
@@ -54,8 +55,9 @@ class Dropdown extends React.PureComponent {
     get dropdown_display_class_name () {
         return classNames('dc-dropdown__display',
             this.props.classNameDisplay, {
-                'dc-dropdown__display--clicked'   : this.state.is_list_visible,
-                'dc-dropdown__display--has-symbol': this.props.has_symbol,
+                'dc-dropdown__display--clicked'     : this.state.is_list_visible,
+                'dc-dropdown__display--has-symbol'  : this.props.has_symbol,
+                'dc-dropdown__display--is-left-text': this.props.is_align_text_left,
             },
         );
     }
@@ -83,20 +85,6 @@ class Dropdown extends React.PureComponent {
             exit: `dc-dropdown__list--exit${this.props.is_alignment_left
                 ? ' dc-dropdown__list--left--exit'
                 : ''}`,
-        };
-    }
-
-    /**
-     * Set Initial State based on props
-	 *
-     * @param props
-     * @param state
-     * @return {{curr_index: *, is_list_visible: boolean}}
-     */
-    static getDerivedStateFromProps (props, state) {
-        return {
-            curr_index     : getItemFromValue(props.list, props.value).number,
-            is_list_visible: !!state && !!state.is_list_visible,
         };
     }
 
@@ -154,13 +142,13 @@ class Dropdown extends React.PureComponent {
             return;
         }
         event.preventDefault();
-        const index = getItemFromValue(this.props.list, this.props.value);
-        const value = getValueFromIndex(this.props.list, this.state.curr_index);
+        const index = this.props.value ? getItemFromValue(this.props.list, this.props.value) : 0;
+        const value = this.props.value ? getValueFromIndex(this.props.list, this.state.curr_index) : null;
 
         switch (event.keyCode) {
             case 13: // Enter is pressed
             case 32: // Space is pressed
-                this.handleToggle(value);
+                if (value) this.handleToggle(value);
                 break;
             case 38: // Up Arrow is pressed
                 if (this.state.is_list_visible) {
@@ -242,11 +230,20 @@ class Dropdown extends React.PureComponent {
                     onClick={this.handleVisibility}
                     onKeyDown={this.onKeyPressed}
                 >
-                    <SymbolSpan
+                    <input
+                        type='hidden'
+                        readOnly='readonly'
+                        className='dc-dropdown__inner'
+                        value={this.props.value || 0}
+                    />
+                    <DisplayText
                         has_symbol={this.props.has_symbol}
                         name={this.props.name}
-                        value={this.props.value}
+                        is_title={this.state.is_list_visible}
+                        placeholder={this.props.placeholder}
+                        value={this.props.value || 0}
                         list={this.props.list}
+                        is_align_text_left={this.props.is_align_text_left}
                     />
                 </div>
                 {
@@ -294,6 +291,7 @@ class Dropdown extends React.PureComponent {
                                         has_symbol={this.props.has_symbol}
                                         items={this.props.list}
                                         name={this.props.name}
+                                        is_align_text_left={this.props.is_align_text_left}
                                         value={this.props.value}
                                     /> :
                                     Object.keys(this.props.list).map(key => (
@@ -305,6 +303,7 @@ class Dropdown extends React.PureComponent {
                                                 has_symbol={this.props.has_symbol}
                                                 items={this.props.list[key]}
                                                 name={this.props.name}
+                                                is_align_text_left={this.props.is_align_text_left}
                                                 value={this.props.value}
                                             />
                                         </React.Fragment>
@@ -329,6 +328,7 @@ Dropdown.propTypes = {
     list             : listPropType(),
     name             : PropTypes.string,
     onChange         : PropTypes.func,
+    placeholder      : PropTypes.string,
     value            : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

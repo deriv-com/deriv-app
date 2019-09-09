@@ -9,8 +9,17 @@
 }
 
 .account-management-form {
-    overflow: scroll;
+    margin: 25px 16px 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 
+    &-body {
+        height: 100%;
+    }
+    &-fieldset {
+        margin: 28px 16px;
+    }
     &-footer {
         height: 80px;
         position: absolute;

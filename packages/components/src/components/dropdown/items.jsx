@@ -9,6 +9,7 @@ const Items = ({
     has_symbol,
     items,
     name,
+    is_align_text_left,
     value,
 }) =>  items.map((item, idx) => {
     const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
@@ -52,7 +53,12 @@ const Items = ({
             }
 
             {!has_symbol &&
-                <span className='dc-list__item-text'>{item.text}</span>
+                <span className={classNames('dc-list__item-text',
+                    { 'dc-list__item-text--left': is_align_text_left },
+                )}
+                >
+                    {item.text}
+                </span>
             }
         </div>
     );

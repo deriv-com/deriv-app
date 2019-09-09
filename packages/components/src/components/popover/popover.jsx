@@ -3,8 +3,8 @@ import PropTypes       from 'prop-types';
 import React           from 'react';
 import {
     IconInfoOutline,
-    IconQuestion,
-    IconRedDot }       from 'Components/icon';
+    IconQuestionmark,
+    IconRedCircle }    from 'Components/icon';
 import PopoverBubble   from './popover-bubble.jsx';
 
 class Popover extends React.PureComponent {
@@ -60,8 +60,8 @@ class Popover extends React.PureComponent {
                     {!disable_target_icon &&
                     <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
                         {(icon === 'info') && <IconInfoOutline className={icon_class_name} />}
-                        {(icon === 'question') && <IconQuestion className={icon_class_name} />}
-                        {(icon === 'dot') && <IconRedDot className={icon_class_name} />}
+                        {(icon === 'question') && <IconQuestionmark className={icon_class_name} />}
+                        {(icon === 'dot') && <IconRedCircle className={icon_class_name} />}
                     </i>
                     }
 

@@ -19,7 +19,7 @@ import IconFlagPt from './svg-no-theme/icon-flag-pt.svg';
 import IconFlagRu from './svg-no-theme/icon-flag-ru.svg';
 import IconFlagTh from './svg-no-theme/icon-flag-th.svg';
 import IconFlagUk from './svg-no-theme/icon-flag-uk.svg';
-import IconRedSpot from './svg-no-theme/icon-red-spot.svg';
+import IconRedCircle from './svg-no-theme/icon-red-circle.svg';
 import IconThemeDark from './svg-no-theme/icon-theme-dark.svg';
 import IconThemeLight from './svg-no-theme/icon-theme-light.svg';
 import ImgConfirmationDisabledDark from './svg-no-theme/img-confirmation-disabled-dark.svg';
@@ -105,6 +105,7 @@ import IconPrevious from './svg/icon-previous.svg';
 import IconProfitTable from './svg/icon-profit-table.svg';
 import IconProfit from './svg/icon-profit.svg';
 import IconPurchase from './svg/icon-purchase.svg';
+import IconQuestionmark from './svg/icon-questionmark.svg';
 import IconReports from './svg/icon-reports.svg';
 import IconSelfExclusion from './svg/icon-self-exclusion.svg';
 import IconStartTimeCircle from './svg/icon-start-time-circle.svg';
@@ -157,7 +158,7 @@ export {
 	IconFlagRu,
 	IconFlagTh,
 	IconFlagUk,
-	IconRedSpot,
+	IconRedCircle,
 	IconThemeDark,
 	IconThemeLight,
 	ImgConfirmationDisabledDark,
@@ -243,6 +244,7 @@ export {
 	IconProfitTable,
 	IconProfit,
 	IconPurchase,
+	IconQuestionmark,
 	IconReports,
 	IconSelfExclusion,
 	IconStartTimeCircle,

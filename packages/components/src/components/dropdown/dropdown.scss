@@ -68,6 +68,7 @@
                 transform-origin: top left;
                 @include themify($themes) {
                     background: themed('container_color');
+                    color: themed('text_color');
                 }
             }
             &--is-title {

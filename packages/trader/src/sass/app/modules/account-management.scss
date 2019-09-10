@@ -11,6 +11,7 @@
 .account-management-form {
     overflow: hidden;
     height: 100%;
+    min-height: 500px;
     width: 100%;
 
     &-header {
@@ -25,11 +26,15 @@
             padding: 0 8px;
             @include themify($themes) {
                 background: themed('navbar_background_color');
+                color: themed('text_color');
             }
         }
         &-subheader {
             padding-left: 8px;
             font-weight: normal;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
         }
         &:before {
             content: '';

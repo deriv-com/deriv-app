@@ -41,12 +41,12 @@
 #  kelly-binary
 #  Mahboobeh-binary
 #  mahdipourziaei-binary
-#  mamali-fs
 #  morteza-binary
 #  mustofa-binary
 #  nazanin-binary
 #  negarn
 #  oskar-binary
+#  reza-fs
 #  sam-binary
 #  zaki-binary
 
@@ -75,6 +75,24 @@
 
 
 # ===========================================================
+#  binary-com/deriv-core
+# ===========================================================
+#  Used for approving all relevant changes to Core
+#
+#   - aaron-binary
+#   - mahdipourziaei-binary
+
+
+# ===========================================================
+#  binary-com/deriv-shared
+# ===========================================================
+#  Used for approving all relevant changes to Core
+#
+#   - Mahboobeh-binary
+#   - reza-fs
+
+
+# ===========================================================
 #  binary-com/deriv-trader
 # ===========================================================
 #  Used for approving all relevant changes to Trader
@@ -82,12 +100,12 @@
 #   - brandon-binary
 #   - kelly-binary
 #   - mahdipourziaei-binary
-#   - mamali-fs
 #   - morteza-binary
 #   - mustofa-binary
 #   - nazanin-binary
 #   - negarn
 #   - oskar-binary
+#   - reza-fs
 #   - zaki-binary
 
 
@@ -120,6 +138,24 @@
 # ================================================
 
 /packages/bot/**                                  @binary-com/deriv-bot
+
+
+
+
+# ================================================
+#  deriv-app/core
+# ================================================
+
+/packages/core/**                                 @binary-com/deriv-core
+
+
+
+# ================================================
+#  deriv-app/shared
+# ================================================
+
+/packages/shared/**                               @binary-com/deriv-shared
+/packages/components/**                           @binary-com/deriv-shared
 
 
 

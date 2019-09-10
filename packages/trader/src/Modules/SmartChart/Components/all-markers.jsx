@@ -41,12 +41,12 @@ function get_color({ status, profit, is_dark_theme }) {
 }
 
 const calc_scale = (zoom) => {
-    return zoom ? Math.max(Math.min(Math.sqrt(zoom / 12), 1.2),  0.7) : 1;
+    return zoom ? Math.max(Math.min(Math.sqrt(zoom / 18), 1.2),  0.8) : 1;
 };
 const calc_opacity = (from, to) => {
     const opacity = Math.floor(
         Math.min(
-            Math.max(to - from - 6, 0) / 12,
+            Math.max(to - from - 8, 0) / 10,
             1
         ) * 255
     ).toString(16);
@@ -305,6 +305,7 @@ const NonTickContract = RawMarkerMaker(({
 
     const draw_start_line = is_last_contract && start.visible && !is_sold;
     const scale = calc_scale(start.zoom);
+    const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
     if (draw_start_line) {
         const height = (ctx.canvas.height / window.devicePixelRatio);
@@ -329,6 +330,7 @@ const NonTickContract = RawMarkerMaker(({
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)
     )) {
+        ctx.strokeStyle = color + opacity;
         ctx.beginPath();
         ctx.setLineDash([1, 1]);
         ctx.moveTo(start.left, barrier);
@@ -340,28 +342,32 @@ const NonTickContract = RawMarkerMaker(({
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(expiry.left, barrier);
         ctx.stroke();
+        ctx.strokeStyle = color;
     }
 
     // entry & expiry tick markers
     [entry, exit].forEach(tick => {
         if (tick && tick.visible) {
+            ctx.strokeStyle = color + opacity;
             ctx.setLineDash([2, 2]);
             ctx.beginPath();
             ctx.moveTo(tick.left - 1 * scale, tick.top);
             ctx.lineTo(tick.left - 1 * scale, barrier);
             ctx.stroke();
 
+            ctx.fillStyle = color + opacity;
             ctx.beginPath();
             ctx.arc(tick.left - 1 * scale, tick.top, 3 * scale, 0, Math.PI * 2);
             ctx.fill();
 
             if (tick === entry) {
                 ctx.beginPath();
-                ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
+                ctx.fillStyle = get_color({ status: 'bg', is_dark_theme }) + opacity;
                 ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle = color;
             }
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
         }
     });
 
@@ -371,7 +377,7 @@ const NonTickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color),
+            icon: ICONS.START.with_color(color + opacity),
         });
     }
     // status marker

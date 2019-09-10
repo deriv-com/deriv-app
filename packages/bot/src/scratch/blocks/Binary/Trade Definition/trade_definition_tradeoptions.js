@@ -1,9 +1,5 @@
-import {
-    getBarriersForContracts,
-    pollForContracts,
-    getDurationsForContracts,
-}                    from '../../../shared';
-import config        from '../../../../constants/const';
+import config        from '../../../../constants';
+import ApiHelpers    from '../../../../services/api/helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
@@ -29,7 +25,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type   : 'field_dropdown',
                     name   : 'CURRENCY_LIST',
-                    options: [['USD', 'USD']], // TODO: Don't use hardcoded currency.
+                    options: config.lists.CURRENCY,
                 },
                 {
                     type : 'input_value',
@@ -53,240 +49,294 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         };
     },
     onchange(event) {
-        const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];
-        if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        const topParentBlock = this.getTopParent();
-        if (!topParentBlock || topParentBlock.type !== 'trade_definition') {
-            if (!this.disabled) {
-                this.setDisabled(true);
-            }
+        const top_parent_block = this.getTopParent();
+
+        if (!top_parent_block) {
             return;
-        } else if (this.disabled) {
-            this.setDisabled(false);
         }
 
-        const symbol = topParentBlock.getChildFieldValue('trade_definition_market', 'SYMBOL_LIST') || '';
-        const tradeTypeBlock = topParentBlock.getChildByType('trade_definition_tradetype');
-        const tradeType = tradeTypeBlock.getFieldValue('TRADETYPE_LIST') || '';
-        const durationUnit = this.getFieldValue('DURATIONTYPE_LIST');
+        const market_block                = top_parent_block.getChildByType('trade_definition_market');
+        const trade_type_block            = top_parent_block.getChildByType('trade_definition_tradetype');
 
-        if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids.includes(this.id)) {
-                pollForContracts(symbol).then(contracts => {
-                    const durations = getDurationsForContracts(contracts, tradeType);
-                    this.updateDurationInput(durations, true);
-                });
-            }
+        this.selected_symbol              = market_block.getFieldValue('SYMBOL_LIST');
+        this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
+        this.selected_trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
+        this.selected_duration            = this.getFieldValue('DURATIONTYPE_LIST');
+        this.selected_barrier_types       = [
+            this.getFieldValue('BARRIERTYPE_LIST') || config.BARRIER_TYPES[0][1],
+            this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.BARRIER_TYPES[1][1],
+        ];
+
+        if (!this.selected_symbol) {
+            return;
+        }
+
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.updateBarrierInputs(true);
+            this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
+            this.updateDurationInput(true);
+            this.updatePredictionInput();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            if (event.blockId === this.id) {
-                if (event.name === 'DURATIONTYPE_LIST') {
-                    pollForContracts(symbol).then(contracts => {
-                        this.updateBarrierInputs(contracts, tradeType, durationUnit);
-                    });
-                } else if (event.name === 'BARRIERTYPE_LIST' || event.name === 'SECONDBARRIERTYPE_LIST') {
-                    this.applyBarrierHandlebars(event.name);
-                    pollForContracts(symbol).then(contracts => {
-                        this.updateBarrierInputs(contracts, tradeType, durationUnit);
-                    });
-                }
-            }
-        } else if (event.type === Blockly.Events.END_DRAG) {
-            if (event.blockId === this.id) {
-                pollForContracts(symbol).then(contracts => {
-                    const durations = getDurationsForContracts(contracts, tradeType);
-                    this.updateDurationInput(durations, true);
-                });
+            if (event.name === 'DURATIONTYPE_LIST') {
+                // Update barrier suggested values when changing duration unit.
+                this.updateBarrierInputs(true);
+                this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
+                // Update duration minimum amount when changing duration unit.
+                this.updateDurationInput(false);
+            } else if (event.name === 'BARRIERTYPE_LIST' || event.name === 'SECONDBARRIERTYPE_LIST') {
+                // Update barrier suggested values when changing barrier type.
+                this.updateBarrierInputs(false);
+                this.enforceSingleBarrierType(event.name, false);
+            } else if (
+                event.name === 'SYMBOL_LIST' ||
+                event.name === 'TRADETYPECAT_LIST' ||
+                event.name === 'TRADETYPE_LIST'
+            ) {
+                // Update durations, barriers, and prediction when changing the trade type.
+                this.updateBarrierInputs(true);
+                this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
+                this.updateDurationInput(true);
+                this.updatePredictionInput();
             }
         }
     },
-    createPredictionInput(predictionRange) {
+    createPredictionInput(prediction_range) {
         Blockly.Events.disable();
 
-        if (this.getInput('PREDICTION')) {
-            return;
+        if (prediction_range.length === 0) {
+            this.removeInput('PREDICTION_LABEL', true);
+            this.removeInput('PREDICTION', true);
+        } else if (!this.getInput('PREDICTION')) {
+            this.appendDummyInput('PREDICTION_LABEL')
+                .appendField(translate('Prediction:'));
+
+            const prediction_input = this.appendValueInput('PREDICTION');
+            const shadow_block = this.workspace.newBlock('math_number');
+
+            shadow_block.setShadow(true);
+            shadow_block.setFieldValue(prediction_range[0], 'NUM');
+            shadow_block.outputConnection.connect(prediction_input.connection);
+            shadow_block.initSvg();
+            shadow_block.render(true);
         }
-
-        this.appendDummyInput('PREDICTION_LABEL').appendField(translate('Prediction:'));
-
-        const predictionInput = this.appendValueInput('PREDICTION');
-
-        // We can't determine which contract a user buys, so sometimes the prediction range
-        // returned may not be valid, start at minimum index 1 (if possible) to bypass that
-        const index = Math.min(1, predictionRange.length - 1);
-        const shadowBlock = this.workspace.newBlock('math_number');
-
-        shadowBlock.setShadow(true);
-        shadowBlock.setFieldValue(predictionRange[index], 'NUM');
-        shadowBlock.outputConnection.connect(predictionInput.connection);
-        shadowBlock.initSvg();
-        shadowBlock.render(true);
 
         Blockly.Events.enable();
     },
-    createBarrierInput(barriers, startIndex = 0) {
-        const inputNames = ['BARRIER', 'SECONDBARRIER'];
-        const inputLabels = [translate('High barrier'), translate('Low barrier')];
+    createBarrierInputs(barriers) {
+        Blockly.Events.disable();
 
-        for (let i = startIndex; i < barriers.values.length; i++) {
-            if (this.getInput(inputNames[i])) {
-                return;
-            }
-
-            const label = barriers.values.length === 1 ? translate('Barrier') : inputLabels[i];
-            const input = this.appendValueInput(inputNames[i])
-                .appendField(translate(label), `${inputNames[i]}_LABEL`)
-                .appendField(new Blockly.FieldDropdown(config.barrierTypes), `${inputNames[i]}TYPE_LIST`);
-
-            const shadowBlock = this.workspace.newBlock('math_number');
-            shadowBlock.setShadow(true);
-            shadowBlock.setFieldValue(barriers.values[i], 'NUM');
-            shadowBlock.outputConnection.connect(input.connection);
-            shadowBlock.initSvg();
-            shadowBlock.render(true);
-        }
-    },
-    updateDurationInput(durations, setMinDuration) {
-        const durationList = this.getField('DURATIONTYPE_LIST');
-        durationList.updateOptions(durations.map(duration => [duration.label, duration.unit]));
-
-        const durationInput = this.getInput('DURATION');
-        if (durationInput.connection.isConnected()) {
-            const targetBlock = durationInput.connection.targetBlock();
-            if (targetBlock.isShadow()) {
-                const minDuration = durations.find(duration => duration.unit === durationList.getValue());
-                if (setMinDuration) {
-                    targetBlock.setFieldValue(minDuration.minimum, 'NUM');
-                }
-            }
-        }
-    },
-    // Only updates a single `trade_definition_tradeoptions` block, i.e. `this` instance
-    updateBarrierInputs(contracts, tradeType, durationUnit) {
-        const selectedBarrierTypes = [
-            this.getFieldValue('BARRIERTYPE_LIST') || config.barrierTypes[0][1],
-            this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.barrierTypes[1][1],
-        ];
-
-        const barriers = getBarriersForContracts(contracts, tradeType, durationUnit, selectedBarrierTypes);
-        const inputNames = ['BARRIER', 'SECONDBARRIER'];
+        const input_names  = ['BARRIER', 'SECONDBARRIER'];
 
         for (let i = 0; i < barriers.values.length; i++) {
-            const input = this.getInput(inputNames[i]);
+            const label = (barriers.values.length === 1 ? translate('Barrier') : config.BARRIER_LABELS[i]);
+            let input   = this.getInput(input_names[i]);
 
-            if (input && input.connection.isConnected()) {
-                const targetBlock = input.connection.targetBlock();
-                const barrierTypeList = this.getField(`${inputNames[i]}TYPE_LIST`);
-                const absoluteType = [[translate('Absolute'), 'absolute']];
+            if (input) {
+                input.fieldRow[0].setText(label);
+            } else {
+                input = this.appendValueInput(input_names[i])
+                    .appendField(label, `${input_names[i]}_LABEL`)
+                    .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
 
-                if (durationUnit === 'd') {
-                    barrierTypeList.updateOptions(absoluteType, 'absolute');
-                } else if (barriers.allowBothTypes || barriers.allowAbsoluteType) {
-                    barrierTypeList.updateOptions(
-                        [...config.barrierTypes, ...absoluteType],
-                        barrierTypeList.getValue()
-                    );
+                const shadow_block = this.workspace.newBlock('math_number');
+
+                shadow_block.setShadow(true);
+                shadow_block.setFieldValue(barriers.values[i], 'NUM');
+                shadow_block.outputConnection.connect(input.connection);
+                shadow_block.initSvg();
+                shadow_block.render(true);
+            }
+        }
+
+        // Remove any extra inputs (quietly) if not required
+        for (let i = input_names.length; i > barriers.values.length; i--) {
+            this.removeInput(input_names[i - 1], true);
+        }
+
+        Blockly.Events.enable();
+    },
+    updateDurationInput(should_use_default_unit) {
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
+            const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
+            const duration_input          = this.getInput('DURATION');
+            const { connection }          = duration_input;
+            const duration_options        = durations.map(duration => [duration.display, duration.unit]);
+
+            if (should_use_default_unit) {
+                duration_field_dropdown.updateOptions(duration_options);
+            } else {
+                duration_field_dropdown.updateOptions(duration_options, this.selected_duration, false);
+            }
+            
+            if (connection) {
+                const target_block = connection.targetBlock();
+
+                if (target_block && target_block.isShadow()) {
+                    const min_duration = durations.find(d => d.unit === this.selected_duration);
+
+                    if (min_duration) {
+                        target_block.setFieldValue(min_duration.min, 'NUM');
+                    }
+                }
+            }
+        });
+    },
+    updateBarrierInputs(should_use_default_types) {
+        const { contracts_for } = ApiHelpers.instance;
+        const { BARRIER_TYPES } = config;
+
+        contracts_for.getBarriers(
+            this.selected_symbol,
+            this.selected_trade_type,
+            this.selected_duration,
+            this.selected_barrier_types
+        ).then(barriers => {
+            this.createBarrierInputs(barriers);
+            
+            const input_names = ['BARRIER', 'SECONDBARRIER'];
+
+            for (let i = 0; i < barriers.values.length; i++) {
+                const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
+                const { ABSOLUTE_BARRIER_DROPDOWN_OPTION } = config;
+                const barrier_field_value =  should_use_default_types ?
+                    BARRIER_TYPES[i][1] :
+                    barrier_field_dropdown.getValue();
+                
+                if (this.selected_duration === 'd') {
+                    // Only absolute types are allowed.
+                    barrier_field_dropdown.updateOptions(ABSOLUTE_BARRIER_DROPDOWN_OPTION, 'absolute');
+                } else if (barriers.allow_both_types || barriers.allow_absolute_type) {
+                    // Both offset + absolute types are allowed.
+                    const options = [].concat(BARRIER_TYPES, ABSOLUTE_BARRIER_DROPDOWN_OPTION);
+                    barrier_field_dropdown.updateOptions(options, barrier_field_value);
                 } else {
-                    barrierTypeList.updateOptions(config.barrierTypes, barrierTypeList.getValue());
+                    // Only offset types are allowed.
+                    barrier_field_dropdown.updateOptions(BARRIER_TYPES, barrier_field_value);
                 }
 
-                if (targetBlock.isShadow()) {
-                    targetBlock.setFieldValue(barriers.values[i], 'NUM');
+                const { connection } = this.getInput(input_names[i]);
+
+                if (connection) {
+                    const target_block = connection.targetBlock();
+                    if (target_block.isShadow()) {
+                        const barrier_value = barriers.values[i] !== false ? barriers.values[i] : '';
+                        target_block.setFieldValue(barrier_value, 'NUM');
+                    }
                 }
+            }
+        });
+    },
+    updatePredictionInput() {
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
+            this.createPredictionInput(prediction_range);
+
+            if (prediction_range.length > 0) {
+                const prediction_input = this.getInput('PREDICTION');
+                const { connection } = prediction_input;
+
+                if (connection) {
+                    const target_block = connection.targetBlock();
+
+                    if (target_block) {
+                        const initial_prediction = Math.max(1, prediction_range[0]);
+                        target_block.setFieldValue(initial_prediction, 'NUM');
+                    }
+                }
+            }
+        });
+    },
+    enforceSingleBarrierType(barrier_input_name, should_force_distinct = false) {
+        const new_value                = this.getFieldValue(barrier_input_name);
+        const other_barrier_input_name = barrier_input_name === 'BARRIERTYPE_LIST' ? 'SECONDBARRIERTYPE_LIST' : 'BARRIERTYPE_LIST';
+        const other_barrier_field      = this.getField(other_barrier_input_name);
+        const { BARRIER_TYPES }        = config;
+
+        if (other_barrier_field) {
+            const has_other_barrier  = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
+            const other_barrier_type = other_barrier_field.getValue();
+
+            if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
+                const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
+                other_barrier_field.setValue(other_barrier_value[1]);
+            } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
+                other_barrier_field.setValue('absolute');
             }
         }
     },
-    // Allow only one type of barrier (i.e. either both offset or absolute barrier type)
-    applyBarrierHandlebars(barrierInputName) {
-        const newValue = this.getFieldValue(barrierInputName);
-        const otherBarrierListName =
-            barrierInputName === 'BARRIERTYPE_LIST' ? 'SECONDBARRIERTYPE_LIST' : 'BARRIERTYPE_LIST';
-        const otherBarrierList = this.getField(otherBarrierListName);
-
-        if (otherBarrierList) {
-            const otherBarrierType = otherBarrierList.getValue();
-
-            if (config.barrierTypes.findIndex(type => type[1] === newValue) !== -1 && otherBarrierType === 'absolute') {
-                const otherValue = config.barrierTypes.find(type => type[1] !== newValue);
-
-                otherBarrierList.setValue(otherValue[1]);
-            } else if (newValue === 'absolute' && otherBarrierType !== 'absolute') {
-                otherBarrierList.setValue('absolute');
-            }
-        }
-    },
-    // Rebuild block from XML
     domToMutation(xmlElement) {
-        const hasFirstBarrier = xmlElement.getAttribute('has_first_barrier') === 'true';
-        const hasSecondBarrier = xmlElement.getAttribute('has_second_barrier') === 'true';
-        const hasPrediction = xmlElement.getAttribute('has_prediction') === 'true';
+        const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';
+        const has_second_barrier = xmlElement.getAttribute('has_second_barrier') === 'true';
+        const has_prediction     = xmlElement.getAttribute('has_prediction') === 'true';
 
-        if (hasFirstBarrier && hasSecondBarrier) {
-            this.createBarrierInput({ values: [1, 2] });
-        } else if (hasFirstBarrier) {
-            this.createBarrierInput({ values: [1] });
-        } else if (hasPrediction) {
+        if (has_first_barrier && has_second_barrier) {
+            this.createBarrierInputs({ values: [1, -1] }); // These values are overwritten with XML values.
+        } else if (has_first_barrier) {
+            this.createBarrierInputs({ values: [1] });
+        } else if (has_prediction) {
             this.createPredictionInput([1]);
         }
     },
-    // Export mutations to XML
     mutationToDom() {
         const container = document.createElement('mutation');
+
         container.setAttribute('has_first_barrier', !!this.getInput('BARRIER'));
         container.setAttribute('has_second_barrier', !!this.getInput('SECONDBARRIER'));
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
+        
         return container;
     },
-    enforceParent: Blockly.Blocks.trade_definition_market.enforceParent,
 };
 
 Blockly.JavaScript.trade_definition_tradeoptions = block => {
-    const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
-    const durationType = block.getFieldValue('DURATIONTYPE_LIST') || '0';
-    const currency = block.getFieldValue('CURRENCY_LIST');
-    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
+    const amount           = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
+    const currency         = block.getFieldValue('CURRENCY_LIST');
+    const duration_type    = block.getFieldValue('DURATIONTYPE_LIST') || '0';
+    const duration_value   = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
 
-    let predictionValue = 'undefined';
-
-    if (block.getInput('PREDICTION')) {
-        predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION') || '-1';
-    }
-
-    const getBarrierValue = (barrierOffsetType, value) => {
+    const getBarrierValue = (barrier_offset_type, value) => {
         // Variables should not be encapsulated in quotes
         if (/^(\d+(\.\d+)?)$/.test(value)) {
-            return barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
+            return barrier_offset_type === 'absolute' ? `'${value}'` : `'${barrier_offset_type}${value}'`;
         }
-        return barrierOffsetType === 'absolute' ? value : `'${barrierOffsetType}' + ${value}`;
+        return barrier_offset_type === 'absolute' ? value : `'${barrier_offset_type}' + ${value}`;
     };
 
-    let barrierOffsetValue = 'undefined';
-    let secondBarrierOffsetValue = 'undefined';
+    let prediction_value, barrier_offset_value, second_barrier_offset_value;
+
+    if (block.getInput('PREDICTION')) {
+        prediction_value = Blockly.JavaScript.valueToCode(block, 'PREDICTION') || '-1';
+    }
 
     if (block.getInput('BARRIER')) {
-        const barrierOffsetType = block.getFieldValue('BARRIERTYPE_LIST');
-        const value = Blockly.JavaScript.valueToCode(block, 'BARRIER') || '0';
-        barrierOffsetValue = getBarrierValue(barrierOffsetType, value);
+        const barrier_offset_type = block.getFieldValue('BARRIERTYPE_LIST');
+        const value               = Blockly.JavaScript.valueToCode(block, 'BARRIER') || '0';
+        barrier_offset_value      = getBarrierValue(barrier_offset_type, value);
     }
 
     if (block.getInput('SECONDBARRIER')) {
-        const barrierOffsetType = block.getFieldValue('SECONDBARRIERTYPE_LIST');
-        const value = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIER') || '0';
-        secondBarrierOffsetValue = getBarrierValue(barrierOffsetType, value);
+        const barrier_offset_type   = block.getFieldValue('SECONDBARRIERTYPE_LIST');
+        const value                 = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIER') || '0';
+        second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 
     const code = `
         Bot.start({
-        limitations: BinaryBotPrivateLimitations,
-        duration: ${durationValue},
-        duration_unit: '${durationType}',
-        currency: '${currency}',
-        amount: ${amount},
-        prediction: ${predictionValue},
-        barrierOffset: ${barrierOffsetValue},
-        secondBarrierOffset: ${secondBarrierOffsetValue},
+        limitations        : BinaryBotPrivateLimitations,
+        duration           : ${duration_value || '0'},
+        duration_unit      : '${duration_type || '0'}',
+        currency           : '${currency}',
+        amount             : ${amount || '0'},
+        prediction         : ${prediction_value || 'undefined'},
+        barrierOffset      : ${barrier_offset_value || 'undefined'},
+        secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
         });
     `;
     return code;

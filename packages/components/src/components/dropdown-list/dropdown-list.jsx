@@ -1,7 +1,6 @@
 import React          from 'react';
 import PropTypes      from 'prop-types';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
-import                     './dropdown-list.scss';
 
 const trackHorizontal = props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />;

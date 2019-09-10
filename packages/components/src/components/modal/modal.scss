@@ -1,7 +1,7 @@
 /**
- * @define modal
+ * @define dc-modal
  */
-.modal {
+.dc-modal {
     &__container {
         width: 736px;
         position: relative;
@@ -27,49 +27,34 @@
             pointer-events: auto;
         }
     }
-    &__cashier {
-        width: 915px;
-
-        .modal-header__main {
-            @include themify($themes) {
-                box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
-            }
-        }
-    }
     /**
-     * @define modal-header
+     * @define dc-modal-header
      */
     &-header {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        box-shadow: 0 2px 8px 0 var($COLOR_LIGHT_BLACK_3);
+        line-height: 24px;
+        align-items: center;
 
-        &__sidebar {
+        &__title {
             @include typeface(--title-left-bold-black);
             @include themify($themes) {
                 background-color: themed('background_cover');
                 color: themed('text_color');
             }
-            width: 28%;
             line-height: 24px;
             padding: 16px;
-        }
-        &__main {
-            width: 72%;
-            font-size: 16px;
-            padding: 16px;
-            line-height: 24px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
         }
         &__section {
             flex-grow: 1;
+            padding: 16px;
+            line-height: 24px;
         }
         &__close {
             display: block;
             cursor: pointer;
+            padding-right: 16px;
             @extend %inline-icon.white;
         }
     }

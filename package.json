@@ -6,7 +6,7 @@
     "lerna": "^3.15.0"
   },
   "scripts": {
-    "bootstrap": "f () { npm ci && lerna bootstrap --scope deriv-${1:-'*'} && npm run build:travis ;}; f",
+    "bootstrap": "f () { npm ci && lerna bootstrap --scope deriv-${1:-'*'} && npm run build:travis && lerna link ;}; f",
     "start": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run start ;}; f",
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",

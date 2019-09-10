@@ -47,23 +47,19 @@
 @import 'app/_common/components/market-is-closed-overlay';
 @import 'app/_common/components/market-symbol-icon';
 @import 'app/_common/components/media-item';
-@import 'app/_common/components/modal';
 @import 'app/_common/components/number-selector';
 @import 'app/_common/components/popconfirm';
 @import 'app/_common/components/pl-card';
 @import 'app/_common/components/purchase-button';
-@import 'app/_common/components/radio-group';
 @import 'app/_common/components/range-slider';
 @import 'app/_common/components/tabs';
 @import 'app/_common/components/toggle-button';
 @import 'app/_common/components/select';
 @import 'app/_common/components/switch-button';
 @import 'app/_common/components/ui-loader';
-@import 'app/_common/components/full-page-modal';
 @import 'app/_common/components/vertical-tabs';
 @import 'app/_common/components/wallet-information';
-@import 'app/_common/inline-icons';
-@import 'app/_common/fullscreen-dialog';
+@import 'app/_common/mobile-dialog';
 
 // Modules
 @import 'app/modules/cashier';

@@ -1,11 +1,13 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Modal }    from 'App/Components/Elements/modal.jsx';
-import UILoader     from 'App/Components/Elements/ui-loader.jsx';
-import Lazy         from 'App/Containers/Lazy';
-import { localize } from 'App/i18n';
-import Icon         from 'Assets/icon.jsx';
+import classNames     from 'classnames';
+import { Modal }      from 'deriv-components';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import UILoader       from 'App/Components/Elements/ui-loader.jsx';
+import Lazy           from 'App/Containers/Lazy';
+import { localize }   from 'App/i18n';
+import Icon           from 'Assets/icon.jsx';
+import VerticalTab    from 'App/Components/Elements/VerticalTabs';
+
 import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = () => (
@@ -33,27 +35,37 @@ ChartSettingContainer.displayName    = 'ChartSettingContainer';
 LanguageSettingContainer.displayName = 'LanguageSettingContainer';
 ThemeSetting.displayName             = 'ThemeSettingContainer';
 
-const modal_content = [
-    {
-        icon : 'IconTheme',
-        label: localize('Themes'),
-        // eslint-disable-next-line react/display-name
-        value: ThemeSetting,
-    }, {
-        icon : 'IconLanguage',
-        label: localize('Language'),
-        value: LanguageSettingContainer,
-    }, {
-        icon : 'IconCharts',
-        label: localize('Charts'),
-        value: ChartSettingContainer,
-        // uncomment below lines to bring back purchase lock and purchase confirmation}
-        // }, {
-        //     icon : IconPurchase,
-        //     label: localize('Purchase'),
-        //     value: PurchaseSettings,
-    },
-];
+const ModalContent = () => {
+    const content = [
+        {
+            icon : 'IconTheme',
+            label: localize('Themes'),
+            // eslint-disable-next-line react/display-name
+            value: ThemeSetting,
+        }, {
+            icon : 'IconLanguage',
+            label: localize('Language'),
+            value: LanguageSettingContainer,
+        }, {
+            icon : 'IconCharts',
+            label: localize('Charts'),
+            value: ChartSettingContainer,
+            // uncomment below lines to bring back purchase lock and purchase confirmation}
+            // }, {
+            //     icon : IconPurchase,
+            //     label: localize('Purchase'),
+            //     value: PurchaseSettings,
+        },
+    ];
+    return (
+        <VerticalTab
+            alignment='center'
+            classNameHeader='modal__tab-header'
+            id='modal'
+            list={content}
+        />
+    );
+};
 
 const ToggleSettings = ({
     enableApp,
@@ -76,13 +88,15 @@ const ToggleSettings = ({
             <React.Suspense fallback={<UILoader />}>
                 <Modal
                     id='dt_settings_modal'
-                    modal_content={modal_content}
+                    className='modal-settings'
                     enableApp={enableApp}
                     is_open={is_settings_visible}
                     disableApp={disableApp}
                     title={localize('Platform settings')}
                     toggleModal={toggleSettings}
-                />
+                >
+                    <ModalContent />
+                </Modal>
             </React.Suspense>
         </React.Fragment>
     );

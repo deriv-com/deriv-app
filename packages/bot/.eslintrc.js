@@ -22,6 +22,7 @@ module.exports = {
       semi                                : ['error', 'always'],
       'array-callback-return'             : 0,
       'brace-style'                       : ['error', '1tbs', { allowSingleLine: true }],
+      'class-methods-use-this'            : ["error", { 'exceptMethods': ['render', 'getInitialState', 'getDefaultProps', 'getChildContext', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount'] }], 
       'eol-last'                          : ['error', 'always'],
       'func-names'                        : ['error', 'never'],
       'keyword-spacing'                   : ['error', { after: true , before: true }],

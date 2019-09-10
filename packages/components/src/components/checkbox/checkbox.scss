@@ -2,9 +2,13 @@
     display: flex;
     justify-content: flex-start;
     cursor: pointer;
-    align-items: flex-start;
+    align-items: center;
 
+    &__input {
+        display: none;
+    }
     &__box {
+        display: block;
         width: 16px;
         height: 16px;
         transition: 0.3s ease-in-out;

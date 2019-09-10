@@ -1,0 +1,22 @@
+/** @define multistep */
+.multistep {
+    &-btn {
+        display: flex;
+        align-items: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+        cursor: pointer;
+
+        &__icon {
+            margin-right: 8px;
+
+            .color1-fill {
+                fill: black;   
+            }
+        }
+    }
+    &-component {
+        width: 100%;
+        height: 100%;
+    }
+}

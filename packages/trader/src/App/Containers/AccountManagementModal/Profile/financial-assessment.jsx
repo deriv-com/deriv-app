@@ -93,7 +93,7 @@ class FinancialAssessment extends React.Component {
                                 <i className='account-management-form-header-subheader'>
                                     ({localize('All fields are required')})
                                 </i>
-                            </h1>x
+                            </h1>
                         </div>
                         {is_loading ?
                             <FormBody>

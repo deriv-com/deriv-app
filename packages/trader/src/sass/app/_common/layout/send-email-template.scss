@@ -1,0 +1,25 @@
+/** @define send-email-template */
+.send-email-template {
+    &__title {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-bottom: 0.8rem;
+        line-height: 1.5;
+    }
+    &__subtitle {
+        font-size: 1.4rem;
+    }
+    &__icon {
+        margin-top: 5.6rem;
+        margin-bottom: 1.6rem;
+    }
+    &__sent, &__cta {
+        text-align: center;
+    }
+    &__cta-btn {
+        margin-top: 3.2rem;
+    }
+}

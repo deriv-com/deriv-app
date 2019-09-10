@@ -1,15 +1,35 @@
-import { action, reaction } from 'mobx';
-import ApiHelpers           from '../services/api/helpers';
+import { reaction }   from 'mobx';
+import TradingTimes  from './trading-times';
+import ContractsFor  from './contracts-for';
+import ActiveSymbols from './active-symbols';
 
-export default class BotStore {
+class ApiHelpers {
+    static singleton = null;
+
     constructor(root_store) {
         this.root_store = root_store;
+        this.trading_times = new TradingTimes(this.root_store);
+        this.contracts_for = new ContractsFor(this.root_store);
+        this.active_symbols = new ActiveSymbols(this.root_store, this.trading_times);
     }
 
-    @action.bound
-    registerAccountSwitcherListener() {
+    static setInstance(root_store) {
+        if (!this.singleton) {
+            this.singleton = new ApiHelpers(root_store);
+        }
+
+        return this.instance;
+    }
+
+    static get instance() {
+        return this.singleton;
+    }
+
+    /**
+     * Register a reaction to switchaccount
+     */
+    registerAccountSwitcherListener = () => {
         const { client } = this.root_store.core;
-        const { active_symbols, contracts_for } = ApiHelpers.instance;
 
         this.switchAccountDisposer = reaction(
             () => client.switch_broadcast,
@@ -21,8 +41,8 @@ export default class BotStore {
                 const { derivWorkspace: workspace } = Blockly;
 
                 if (workspace) {
-                    active_symbols.retrieveActiveSymbols(true).then(() => {
-                        contracts_for.disposeCache();
+                    this.active_symbols.retrieveActiveSymbols(true).then(() => {
+                        this.contracts_for.disposeCache();
                         workspace.getAllBlocks()
                             .filter(block => block.type === 'trade_definition_market')
                             .forEach(block => {
@@ -35,20 +55,14 @@ export default class BotStore {
         );
     }
 
-    @action.bound
+    /**
+     * Dispose the reaction that has been added to switchaccount broadcast
+     */
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
         }
     }
-
-    @action.bound
-    onMount() {
-        this.registerAccountSwitcherListener();
-    }
-
-    @action.bound
-    onUnmount() {
-        this.disposeSwitchAccount();
-    }
 }
+
+export default ApiHelpers;

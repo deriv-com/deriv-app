@@ -14,7 +14,7 @@ import { observer as globalObserver } from '../utils/observer';
 
 export const scratchWorkspaceInit = async () => {
     try {
-        const el_scratch_area = document.getElementById('scratch_area');
+        // const el_scratch_area = document.getElementById('scratch_area');
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
 
@@ -46,20 +46,23 @@ export const scratchWorkspaceInit = async () => {
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), Blockly.derivWorkspace);
 
         const onWorkspaceResize = () => {
-            let element = el_scratch_area;
-            let x = 0;
-            let y = 0;
+            // let element = el_scratch_area;
+            // let x = 0;
+            // let y = 0;
         
-            do {
-                x += element.offsetLeft;
-                y += element.offsetTop;
-                element = element.offsetParent;
-            } while (element);
+            // do {
+            //     x += element.offsetLeft;
+            //     y += element.offsetTop;
+            //     element = element.offsetParent;
+            // } while (element);
         
-            // Position scratch_div over scratch_area.
-            el_scratch_div.style.left   = `${x}px`;
-            el_scratch_div.style.top    = `${y}px`;
-            el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
+            // // Position scratch_div over scratch_area.
+            // el_scratch_div.style.left   = `${x}px`;
+            // el_scratch_div.style.top    = `${y}px`;
+
+            // el_scratch_div.style.left   = '0px';
+            // el_scratch_div.style.top    = '0px';
+            el_scratch_div.style.width  = `${el_app_contents.offsetWidth - 366}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight}px`;
             
             Blockly.svgResize(workspace);

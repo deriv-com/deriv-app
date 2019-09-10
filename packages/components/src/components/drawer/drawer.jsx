@@ -1,47 +1,45 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
 
-const IconMinimize = ({ className }) => (
-    <svg className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <path className='color1-fill' fill='#000' fillOpacity='0.8' fillRule='nonzero' d='M0 7h16v2H0z' />
-    </svg>
-);
-
 const Drawer = ({
+    alignment,
+    children,
+    className,
+    footer,
+    header,
     is_open,
-    title,
-    toggleDrawer,
 }) => {
-    retun(
+    return (
         <CSSTransition
             appear
             in={is_open}
             timeout={250}
             classNames={{
-                appear   : 'dc-drawer__container--enter',
-                enter    : 'dc-drawer__container--enter',
-                enterDone: 'dc-drawer__container--enter-done',
-                exit     : 'dc-drawer__container--exit',
+                appear   : 'dc-drawer--enter',
+                enter    : 'dc-drawer--enter',
+                enterDone: 'dc-drawer--enter-done',
+                exit     : 'dc-drawer--exit',
             }}
             unmountOnExit
         >
-            <div
-                className={classNames(
-                    'dc-drawer', { 'dc-drawer--open': is_open })}
+            <div className={classNames('dc-drawer',
+                alignment && `dc-drawer--${alignment}`,
+                is_open   && 'dc-drawer--open',
+                className && `dc-drawer--${className}`)}
             >
-                <div className='dc-drawer__header'>
-                    {title && <span className='dc-drawer__title'>{title}</span>}
-                    <div
-                        className='dc-drawer__icon-close'
-                        onClick={toggleDrawer}
+                {header &&
+                    <div className={classNames('dc-drawer__header',
+                        className && `dc-drawer__header--${className}`)}
                     >
-                        <IconMinimize />
+                        {header}
                     </div>
-                </div>
-                <div className='dc-drawer__body'>
+                }
+                <div className={classNames('dc-drawer__content',
+                    className && `dc-drawer__content--${className}`)}
+                >
                     <Scrollbars
                         style={{ width: '100%', height: '100%' }}
                         autoHide
@@ -50,20 +48,32 @@ const Drawer = ({
                     </Scrollbars>
                 </div>
                 {footer &&
-                    <div className='dc-drawer__footer'>
-                        <footer />
+                    <div className={classNames('dc-drawer__footer',
+                        className && `dc-drawer__footer--${className}`)}
+                    >
+                        {footer}
                     </div>
                 }
             </div>
-        </CSSTransition>
-
+        </CSSTransition >
     );
 };
 
 Drawer.propTypes = {
-    is_open     : PropTypes.bool,
-    title       : PropTypes.string,
-    toggleDrawer: PropTypes.func,
+    alignment: PropTypes.string,
+    children : PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+    ]),
+    footer: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.string,
+    ]),
+    header: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.string,
+    ]),
+    is_open: PropTypes.bool,
 };
 
 export default Drawer;

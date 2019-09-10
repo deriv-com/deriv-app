@@ -13,9 +13,9 @@
     ]
   },
   "scripts": {
-    "start": "eslint ./src && rimraf dist &&  webpack-dev-server --mode=development --open 'Google Chrome' --hot --inline --port 80",
-    "serve": "webpack --mode=development --progress --watch --open 'Google Chrome' --hot --inline --port 80",
-    "build": "rimraf dist && cross-env NODE_ENV=production webpack --mode=production --optimize-minimize --progress",
+    "start": "rimraf dist && npm run test && webpack --mode=development --progress --watch",
+    "serve": "rimraf dist && webpack --mode=development --progress --watch",
+    "build": "rimraf dist && npm run test && cross-env NODE_ENV=production webpack --mode=production --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "eslint ./src && jest -w 1 --coverage",
     "test:eslint": "eslint ./src",

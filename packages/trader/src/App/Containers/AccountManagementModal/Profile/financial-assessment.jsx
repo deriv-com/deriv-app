@@ -81,7 +81,14 @@ class FinancialAssessment extends React.Component {
                     // validateField,
                 }) => (
                     <form className='account-management-form' onSubmit={handleSubmit}>
-                        <h1>{localize('Financial information')}</h1>
+                        <div className='account-management-form-header'>
+                            <h1 className='account-management-form-header-text'>
+                                {localize('Financial information')}
+                                <i className='account-management-form-header-subheader'>
+                                    ({localize('All fields are required')})
+                                </i>
+                            </h1>
+                        </div>
                         <FormBody scroll_offset='64px'>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown

@@ -134,6 +134,8 @@ function calculate_marker(contract_info) {
         contract_id,
         date_start,
         date_expiry,
+        entry_tick,
+        exit_tick,
         entry_tick_time,
         exit_tick_time,
         contract_type,
@@ -192,12 +194,11 @@ function calculate_marker(contract_info) {
         const end_time = getEndTime(contract_info) || date_expiry;
         // the order of items in epoch_array matches the NonTickContract params.
         const epoch_array = [date_start, end_time];
-        if (entry_tick_time) {
-            epoch_array.push(entry_tick_time);
-        }
-        if (exit_tick_time) {
-            epoch_array.push(exit_tick_time);
-        }
+        if (entry_tick_time) { epoch_array.push(entry_tick_time); }
+        if (exit_tick_time) { epoch_array.push(exit_tick_time); }
+
+        if (entry_tick) { price_array.push(entry_tick); }
+        if (exit_tick) { price_array.push(exit_tick); }
         return {
             contract_info: toJS(contract_info),
             type         : 'NonTickContract',

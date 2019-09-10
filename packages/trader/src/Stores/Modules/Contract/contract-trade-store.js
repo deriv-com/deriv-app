@@ -34,6 +34,16 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     updateGranularity(granularity) {
+        const tick_chart_types = ['mountain','line', 'colored_line', 'spline', 'baseline'];
+        // TODO: fix this in smartcharts
+        if (granularity === 0
+            && tick_chart_types.indexOf(this.chart_type) === -1) {
+                this.chart_type = 'mountain';
+        }
+        if (granularity !== 0
+            && tick_chart_types.indexOf(this.chart_type) !== -1) {
+                this.chart_type = 'candle';
+        }
         this.granularity = granularity;
     }
 

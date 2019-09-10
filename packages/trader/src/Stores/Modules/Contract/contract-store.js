@@ -146,20 +146,26 @@ function calculate_marker(contract_info) {
         low_barrier,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
+    const is_digit_contract = isDigitContract(contract_type);
 
     // window.ci = toJS(contract_info);
 
     let price_array = [];
-    if (+barrier_count === 1 && barrier) {
+    if (is_digit_contract) {
+        price_array = [];
+    } else if (+barrier_count === 1 && barrier) {
         price_array = [+barrier];
     } else if (+barrier_count === 2 && high_barrier && low_barrier) {
         price_array = [+low_barrier, +high_barrier];
     }
 
+    if (entry_tick) { price_array.push(entry_tick); }
+    if (exit_tick) { price_array.push(exit_tick); }
+
     if (!date_start) { return null; }
     // if we have not yet received the first POC response
     if (!transaction_ids) {
-        const type = isDigitContract(contract_type) ? 'DigitContract' : 'TickContract';
+        const type = is_digit_contract ? 'DigitContract' : 'TickContract';
         return {
             type,
             contract_info: toJS(contract_info),
@@ -186,6 +192,7 @@ function calculate_marker(contract_info) {
             type         : 'DigitContract',
             key          : `${contract_id}-date_start`,
             epoch_array  : [date_start, ...ticks_epoch_array],
+            price_array,
         };
     }
     // NonTickContract
@@ -196,9 +203,6 @@ function calculate_marker(contract_info) {
         const epoch_array = [date_start, end_time];
         if (entry_tick_time) { epoch_array.push(entry_tick_time); }
         if (exit_tick_time) { epoch_array.push(exit_tick_time); }
-
-        if (entry_tick) { price_array.push(entry_tick); }
-        if (exit_tick) { price_array.push(exit_tick); }
         return {
             contract_info: toJS(contract_info),
             type         : 'NonTickContract',

@@ -41,8 +41,18 @@ function get_color({ status, profit, is_dark_theme }) {
 }
 
 const calc_scale = (zoom) => {
-    return zoom ? Math.max(Math.min(Math.sqrt(zoom / 10), 1),  0.6) : 1;
+    return zoom ? Math.max(Math.min(Math.sqrt(zoom / 12), 1.2),  0.7) : 1;
 };
+const calc_opacity = (from, to) => {
+    const opacity = Math.floor(
+        Math.min(
+            Math.max(to - from - 6, 0) / 12,
+            1
+        ) * 255
+    ).toString(16);
+    if(opacity.length === 1) { return '0' + opacity; }
+    return opacity;
+}
 
 /** @param {CanvasRenderingContext2D} ctx */
 const draw_path = (ctx, { zoom, top, left, icon }) => {
@@ -127,7 +137,7 @@ const TickContract = RawMarkerMaker(({
         profit,
         is_sold,
         is_expired,
-        tick_stream,
+        // tick_stream,
         tick_count,
     },
 }) => {
@@ -173,7 +183,9 @@ const TickContract = RawMarkerMaker(({
     const exit = ticks[ticks.length - 1];
 
     // barrier line
+    const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
     if (start.visible || entry.visible || exit.visible) {
+        ctx.strokeStyle = color + opacity;
         ctx.beginPath();
         ctx.setLineDash([1, 1]);
         ctx.moveTo(start.left, barrier);
@@ -185,14 +197,16 @@ const TickContract = RawMarkerMaker(({
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(exit.left, barrier);
         ctx.stroke();
+        ctx.strokeStyle = color;
     }
     // ticks for last contract
-    if (is_last_contract && granularity === 0) {
+    if (is_last_contract && granularity === 0 && !is_sold) {
         ticks
             .filter(tick => tick.visible)
             .forEach(tick => {
-                ctx.fillStyle = tick === exit ? color
+                const clr = tick === exit ? color
                     : get_color({ status: is_dark_theme ? 'bg' : 'fg', is_dark_theme });
+                ctx.fillStyle = clr + opacity;
                 ctx.beginPath();
                 ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
                 ctx.fill();
@@ -203,25 +217,28 @@ const TickContract = RawMarkerMaker(({
     if(granularity === 0) {
         [entry, is_expired ? exit : null].forEach(tick => {
             if (tick && tick.visible) {
+                ctx.strokeStyle = color + opacity;
                 ctx.setLineDash([2, 2]);
                 ctx.beginPath();
                 ctx.moveTo(tick.left - 1 * scale, tick.top);
                 ctx.lineTo(tick.left - 1 * scale, barrier);
                 ctx.stroke();
 
+                ctx.fillStyle = color + opacity;
                 ctx.beginPath();
                 ctx.arc(tick.left - 1 * scale, tick.top, 3 * scale, 0, Math.PI * 2);
                 ctx.fill();
 
                 if (tick === entry) {
                     ctx.beginPath();
-                    ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
+                    ctx.fillStyle = get_color({ status: 'bg', is_dark_theme }) + opacity;
                     ctx.arc(tick.left - 1 * scale, tick.top, 2 * scale, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.fillStyle = color;
                 }
             }
         });
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
     }
     // count down
     if (start.visible && !is_sold) {
@@ -240,7 +257,7 @@ const TickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color),
+            icon: ICONS.START.with_color(color + (is_sold ? opacity : '' )),
         });
     }
     // status marker
@@ -373,8 +390,10 @@ const NonTickContract = RawMarkerMaker(({
 const DigitContract = RawMarkerMaker(({
     ctx: context,
     points: [start, ...ticks],
+    prices: [entry_tick_top, exit_tick_top],
     is_last_contract,
     is_dark_theme,
+    granularity,
     contract_info: {
         // contract_type,
         status,
@@ -401,6 +420,7 @@ const DigitContract = RawMarkerMaker(({
     const draw_start_line = is_last_contract && start.visible && !is_sold;
     const scale = calc_scale(start.zoom);
 
+    if (granularity !== 0 && start && entry_tick_top) { start.top = entry_tick_top; }
     if (draw_start_line) {
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
@@ -418,11 +438,15 @@ const DigitContract = RawMarkerMaker(({
         return;
     }
     const expiry = ticks[ticks.length - 1];
+    const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
+    if (granularity !== 0 && expiry && exit_tick_top) { expiry.top = exit_tick_top; }
 
     // remaining ticks
     ticks.forEach((tick, idx) => {
         if (is_sold && tick !== expiry) { return; }
         if (!tick.visible) { return; }
+        if (granularity !== 0 && tick !== expiry) { return; }
+        if (granularity !== 0 && tick === expiry && !is_sold) { return; }
         const clr = tick !== expiry ?
             get_color({ status: 'fg', is_dark_theme }) : color;
         ctx.beginPath();
@@ -454,12 +478,12 @@ const DigitContract = RawMarkerMaker(({
         );
     }
     // start-time marker
-    if (start.visible) {
+    if (start.visible && (granularity === 0 || !is_sold)) {
         draw_path(ctx, {
             top : start.top - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color),
+            icon: ICONS.START.with_color(color + opacity),
         });
     }
     // status marker

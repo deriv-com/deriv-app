@@ -15,6 +15,7 @@
     --color-black-6: #3e3e3e;
     --color-black-7: #000000b8;
     --color-black-8: #323738;
+    --color-black-9: #0e0e0ef5;
     --color-white: #ffffff;
     --color-white-1: #fffffff5;
     --color-red: #ff444f;
@@ -112,43 +113,43 @@
         --general-hover: var(--color-black-5);
         --general-active: var(--color-black-8);
         // Icons and Texts
-        --text-prominent: var(--color-black-1);
-        --text-general: var(--color-black-1);
-        --text-less-prominent: var(--color-grey-1);
-        --text-disabled: var(--color-grey-6);
-        --text-profit-success: var(--color-green-1);
-        --text-loss-danger: var(--color-red-1);
-        --text-dark-background: var(--color-white);
+        --text-prominent: var(--color-white);
+        --text-general: var(--color-grey);
+        --text-less-prominent: var(--color-grey-7);
+        --text-disabled: var(--color-black-6);
+        --text-profit-success: var(--color-green-3);
+        --text-loss-danger: var(--color-red-2);
+        // TODO: --text-dark-background: var(--color-white);
         // Purchase
-        --purchase-main-1: var(--color-green-1);
-        --purchase-section-1: var(--color-green-2);
-        --purchase-main-2: var(--color-red-1);
-        --purchase-section-2: var(--color-red-4);
-        --purchase-disabled-main: var(--color-grey-3);
-        --purchase-disabled-section: var(--color-grey-4);
-        // Buttons
-        --button-primary-default: var(--brand-red-coral);
-        --button-secondary-default: transparent;
+        --purchase-main-1: var(--color-green-3);
+        --purchase-section-1: var(--color-green-4);
+        --purchase-main-2: var(--color-red-2);
+        --purchase-section-2: var(--color-red-3);
+        --purchase-disabled-main: var(--color-black-4);
+        --purchase-disabled-section: var(--color-black);
+        // TODO: Buttons
+        // --button-primary-default: var(--brand-red-coral);
+        // --button-secondary-default: transparent;
         // TODO: update hover colors until comment resolved
         // Overlay
         --overlay-outside-dialog: var(--color-black-7);
-        --overlay-inside-dialog: var(--color-white-1);
+        --overlay-inside-dialog: var(--color-black-9);
         // TODO: Shadow
         // States
-        --state-normal: var(--color-white);
-        --state-hover: var(--color-grey-4);
-        --state-active: var(--color-grey-5);
-        --state-disabled: var(--color-grey-3);
+        --state-normal: var(--color-black);
+        --state-hover: var(--color-black-5);
+        --state-active: var(--color-black-8);
+        --state-disabled: var(--color-black-4);
         // Border
-        --border-normal: var(--color-grey-5);
-        --border-hover: var(--color-grey-1);
+        --border-normal: var(--color-black-8);
+        --border-hover: var(--color-grey-7);
         --border-active: var(--brand-secondary);
-        --border-disabled: var(--color-grey-3);
+        --border-disabled: var(--color-black-4);
         // Fill
-        --fill-main: var(--color-white);
-        --fill-hover: var(--color-grey-1);
+        --fill-main: var(--color-black);
+        --fill-hover: var(--color-grey-7);
         --fill-active: var(--brand-secondary);
-        --fill-disabled: var(--color-grey-3);
+        --fill-disabled: var(--color-black-4);
     }
 }
 

@@ -460,7 +460,7 @@ const DigitContract = RawMarkerMaker(({
 
     // remaining ticks
     ticks.forEach((tick, idx) => {
-        if (is_sold && tick !== expiry) { return; }
+        if (/*is_sold &&*/ tick !== expiry) { return; }
         if (!tick.visible) { return; }
         if (granularity !== 0 && tick !== expiry) { return; }
         if (granularity !== 0 && tick === expiry && !is_sold) { return; }

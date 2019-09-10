@@ -156,10 +156,10 @@ export const clientNotifications = {
     },
     switch_to_tick_chart: {
         key    : 'switch_to_tick_chart',
-        header : localize('Switch to tick duration'),
+        header : localize('This chart duration is not ideal for tick contracts'),
         message: (
             <Localize
-                i18n_default_text='Please switch the chart to tick duration when trading tick and digit contrats'
+                i18n_default_text='Please change the chart duration to tick.'
             />
         ),
         type: 'info',

@@ -62,18 +62,75 @@
 }
 
 .account-management-text {
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.43;
+    @include typeface(--paragraph-left-normal-black, none);
+    @include themify($themes) {
+        color: themed('text_primary_color');
+    }
+
+    &--small {
+        @include typeface(--small-left-normal-black, none);
+    }
+    &--xsmall {
+        @include typeface(--xsmall-left-normal-black, none);
+    }
+    &--grey {
+        @include themify($themes) {
+            color: themed('active_color');
+        }
+    }
+}
+
+.account-management-flex-wrapper {
+    display: flex;
+}
+
+.account-management-text-container {
+    margin-top: 12px;
+    margin-bottom: 24px;
 }
 
 .account-management-table {
     width: 100%;
+    max-width: 546px;
 
-    th {
-        padding: 24px 0 16px 0;
+    thead {
+        tr {
+            padding-bottom: 8px;
+        }
     }
-    td {
-        padding: 8px 0;
+    tbody {
+        tr {
+            &:not(:first-child):not(:last-child) {
+                padding: 8px 0;
+            }
+            &:first-child {
+                padding-bottom: 4px;
+            }
+            &:last-child {
+                padding-top: 4px;
+            }
+        }
     }
+}
+
+.account-limit-container {
+    overflow: scroll;
+
+    &__main-text {
+        margin-bottom: 16px;
+    }
+    &__withdrawal-table {
+        margin-top: 28px;
+    }
+}
+
+.account-limit-popover {
+    display: flex;
+    align-content: center;
+    padding-left: 4px;
+}
+.account-limit-popover-target {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }

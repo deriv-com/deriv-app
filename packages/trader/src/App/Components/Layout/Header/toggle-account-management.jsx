@@ -237,6 +237,7 @@ class ToggleAccountManagement extends React.PureComponent {
                     is_open={is_open}
                     title={localize('Settings')}
                     toggleModal={this.props.toggleModal}
+                    id='account-management-modal'
                 >
                     <MenuAccordion
                         alignment='center'

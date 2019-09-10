@@ -1,9 +1,12 @@
-.radio-group {
+.dc-radio-group {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-top: 16px;
 
+    &__input {
+        display: none;
+    }
     &__item {
         display: flex;
         cursor: pointer;

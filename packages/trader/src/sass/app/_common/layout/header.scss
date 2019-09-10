@@ -133,9 +133,9 @@
         }
     }
     &__logo {
-        background-color: $COLOR_RED;
+        background-color: var(--brand-secondary);
         border-radius: 10px;
-        color: $COLOR_WHITE;
+        color: var(--color-white);
         display: inline-block;
         font-size: 1.4rem;
         font-weight: normal;
@@ -143,6 +143,11 @@
         line-height: 1.43;
         text-align: center;
         width: 50px;
+        margin-left: 8px;
+    }
+    &__title {
+        display: inline-block;
+        font-weight: bold;
     }
     &__icon {
         margin-right: 0.8rem;

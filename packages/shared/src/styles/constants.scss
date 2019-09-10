@@ -3,6 +3,158 @@
  *------------------------------------*/
 
 /* stylelint-disable color-no-hex */
+
+/* COLOR PALETTE */
+
+:root {
+    --color-black: #0e0e0e;
+    --color-black-1: #333333;
+    --color-black-3: #151717;
+    --color-black-4: #1d1f20;
+    --color-black-5: #242828;
+    --color-black-6: #3e3e3e;
+    --color-black-7: #000000b8;
+    --color-black-8: #323738;
+    --color-white: #ffffff;
+    --color-white-1: #fffffff5;
+    --color-red: #ff444f;
+    --color-red-1: #ec3f3f;
+    --color-red-2: #cc2e3d;
+    --color-red-3: #a32430;
+    --color-red-4: #d33636;
+    --color-grey: #c2c2c2;
+    --color-grey-1: #999999;
+    --color-grey-2: #f2f3f4;
+    --color-grey-3: #eaeced;
+    --color-grey-4: #e6e9e9;
+    --color-grey-5: #d6dadb;
+    --color-grey-6: #d6d6d6;
+    --color-grey-7: #6e6e6e;
+    --color-green: #85acb0;
+    --color-green-1: #4bb4b3;
+    --color-green-2: #3d9494;
+    --color-green-3: #00a79e;
+    --color-green-4: #008079;
+    --color-orange: #ff6444;
+
+    // Text sizes
+    --text-size-xs: 1.2rem;
+    --text-size-s: 1.6rem;
+    --text-size-sm: 2rem;
+    --text-size-m: 2.4rem;
+    --text-size-l: 3.2rem;
+    --text-size-xl: 4.8rem;
+    --text-size-xxl: 6.4rem;
+
+    // Brand primary colors
+    --brand-dark-grey: var(--color-black);
+    --brand-red-coral: var(--color-red);
+    --brand-orange: var(--color-orange);
+    // Brand secondary colors
+    --brand-secondary: var(--color-green);
+
+    .theme--light {
+        // General
+        --general-main-1: var(--color-white);
+        --general-main-2: var(--color-white);
+        --general-section-1: var(--color-grey-2);
+        --general-section-2: var(--color-grey-2);
+        --general-disabled: var(--color-grey-3);
+        --general-hover: var(--color-grey-4);
+        --general-active: var(--color-grey-5);
+        // Icons and Texts
+        --text-prominent: var(--color-black-1);
+        --text-general: var(--color-black-1);
+        --text-less-prominent: var(--color-grey-1);
+        --text-disabled: var(--color-grey-6);
+        --text-profit-success: var(--color-green-1);
+        --text-loss-danger: var(--color-red-1);
+        --text-dark-background: var(--color-white);
+        // Purchase
+        --purchase-main-1: var(--color-green-1);
+        --purchase-section-1: var(--color-green-2);
+        --purchase-main-2: var(--color-red-1);
+        --purchase-section-2: var(--color-red-4);
+        --purchase-disabled-main: var(--color-grey-3);
+        --purchase-disabled-section: var(--color-grey-4);
+        // Buttons
+        --button-primary-default: var(--brand-red-coral);
+        --button-secondary-default: transparent;
+        // TODO: update hover colors until comment resolved
+        // Overlay
+        --overlay-outside-dialog: var(--color-black-7);
+        --overlay-inside-dialog: var(--color-white-1);
+        // TODO: Shadow
+        // States
+        --state-normal: var(--color-white);
+        --state-hover: var(--color-grey-4);
+        --state-active: var(--color-grey-5);
+        --state-disabled: var(--color-grey-3);
+        // Border
+        --border-normal: var(--color-grey-5);
+        --border-hover: var(--color-grey-1);
+        --border-active: var(--brand-secondary);
+        --border-disabled: var(--color-grey-3);
+        // Fill
+        --fill-main: var(--color-white);
+        --fill-hover: var(--color-grey-1);
+        --fill-active: var(--brand-secondary);
+        --fill-disabled: var(--color-grey-3);
+
+    }
+    .theme--dark {
+        // General
+        --general-main-1: var(--color-black);
+        --general-main-2: var(--color-black-3);
+        --general-section-1: var(--color-black-3);
+        --general-section-2: var(--color-black);
+        --general-disabled: var(--color-black-4);
+        --general-hover: var(--color-black-5);
+        --general-active: var(--color-black-8);
+        // Icons and Texts
+        --text-prominent: var(--color-black-1);
+        --text-general: var(--color-black-1);
+        --text-less-prominent: var(--color-grey-1);
+        --text-disabled: var(--color-grey-6);
+        --text-profit-success: var(--color-green-1);
+        --text-loss-danger: var(--color-red-1);
+        --text-dark-background: var(--color-white);
+        // Purchase
+        --purchase-main-1: var(--color-green-1);
+        --purchase-section-1: var(--color-green-2);
+        --purchase-main-2: var(--color-red-1);
+        --purchase-section-2: var(--color-red-4);
+        --purchase-disabled-main: var(--color-grey-3);
+        --purchase-disabled-section: var(--color-grey-4);
+        // Buttons
+        --button-primary-default: var(--brand-red-coral);
+        --button-secondary-default: transparent;
+        // TODO: update hover colors until comment resolved
+        // Overlay
+        --overlay-outside-dialog: var(--color-black-7);
+        --overlay-inside-dialog: var(--color-white-1);
+        // TODO: Shadow
+        // States
+        --state-normal: var(--color-white);
+        --state-hover: var(--color-grey-4);
+        --state-active: var(--color-grey-5);
+        --state-disabled: var(--color-grey-3);
+        // Border
+        --border-normal: var(--color-grey-5);
+        --border-hover: var(--color-grey-1);
+        --border-active: var(--brand-secondary);
+        --border-disabled: var(--color-grey-3);
+        // Fill
+        --fill-main: var(--color-white);
+        --fill-hover: var(--color-grey-1);
+        --fill-active: var(--brand-secondary);
+        --fill-disabled: var(--color-grey-3);
+    }
+}
+
+/* Preserve legacy variables */
+/* Primary */
+
 $COLOR_BLACK      : #000000;
 $COLOR_GREEN_1    : #39b19d;
 $COLOR_GREEN_2    : #2d9f93;

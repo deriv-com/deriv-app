@@ -16,12 +16,13 @@
     &-header {
         position: relative;
         height: 1.4em;
+        margin: 0 0 1em;
 
         &-text {
             font-size: 1.4em;
             font-weight: bold;
             position: absolute;
-            padding-right: 8px;
+            padding: 0 8px;
             @include themify($themes) {
                 background: themed('navbar_background_color');
             }
@@ -44,11 +45,8 @@
     }
     &-body {
         height: 100%;
-
-        .initial-loader {
-            width: 100%;
-            height: calc(100vh - 240px);
-        }
+        margin-left: -1em;
+        margin-top: -2em;
     }
     &-fieldset {
         margin: 28px 16px;
@@ -62,7 +60,7 @@
         left: 0;
         display: flex;
         width: 100%;
-        padding: 16px 24px 24px;
+        padding: 16px 24px;
         align-items: center;
         justify-content: flex-end;
         z-index: 999;
@@ -78,6 +76,10 @@
             margin-right: 0;
         }
     }
+}
+
+.initial-loader--accounts-modal {
+    height: calc(100vh - 240px);
 }
 
 .fa-dropdown__error-message {

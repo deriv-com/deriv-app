@@ -90,10 +90,10 @@ class FinancialAssessment extends React.Component {
                         </div>
                         {is_loading ?
                             <FormBody>
-                                <Loading />
+                                <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
                             </FormBody>
                             :
-                            <FormBody scroll_offset='64px'>
+                            <FormBody scroll_offset='90px'>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Dropdown
                                         placeholder={localize('source of income')}

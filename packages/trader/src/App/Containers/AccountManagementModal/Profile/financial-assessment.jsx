@@ -25,7 +25,7 @@ const validateFields = values => {
     const errors = {};
     const required_fields = ['income_source', 'employment_status', 'employment_industry', 'occupation', 'source_of_wealth', 'education_level', 'net_income', 'estimated_worth', 'account_turnover'];
     required_fields.forEach(required => {
-        if (!values[required]) errors[required] = 'This field is required';
+        if (!values[required]) errors[required] = localize('This field is required');
     });
     return errors;
 };
@@ -82,7 +82,7 @@ class FinancialAssessment extends React.Component {
                 }) => (
                     <form className='account-management-form' onSubmit={handleSubmit}>
                         <h1>{localize('Financial information')}</h1>
-                        <FormBody scroll_offset='120px'>
+                        <FormBody scroll_offset='64px'>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
                                     placeholder={localize('source of income')}
@@ -92,7 +92,11 @@ class FinancialAssessment extends React.Component {
                                     value={values.income_source}
                                     onChange={handleChange}
                                 />
-                                {errors.income_source && touched.income_source && errors.income_source}
+                                {(errors.income_source || (touched.income_source && errors.income_source)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.income_source}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -103,7 +107,12 @@ class FinancialAssessment extends React.Component {
                                     value={values.employment_status}
                                     onChange={handleChange}
                                 />
-                                {errors.employment_status && touched.employment_status && errors.employment_status}
+                                {(errors.employment_status ||
+                                    (touched.employment_status && errors.employment_status)) &&
+                                    <span className='fa-dropdown__error-message'>
+                                        {errors.employment_status}
+                                    </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -114,8 +123,12 @@ class FinancialAssessment extends React.Component {
                                     value={values.employment_industry}
                                     onChange={handleChange}
                                 />
-                                {errors.employment_industry && touched.employment_industry
-                                    && errors.employment_industry}
+                                {(errors.employment_industry ||
+                                    (touched.employment_industry && errors.employment_industry)) &&
+                                    <span className='fa-dropdown__error-message'>
+                                        {errors.employment_industry}
+                                    </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -126,7 +139,11 @@ class FinancialAssessment extends React.Component {
                                     value={values.occupation}
                                     onChange={handleChange}
                                 />
-                                {errors.occupation && touched.occupation && errors.occupation}
+                                {(errors.occupation || (errors.occupation && touched.occupation)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.occupation}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -137,7 +154,11 @@ class FinancialAssessment extends React.Component {
                                     value={values.source_of_wealth}
                                     onChange={handleChange}
                                 />
-                                {errors.source_of_wealth && touched.source_of_wealth && errors.source_of_wealth}
+                                {(errors.source_of_wealth || (touched.source_of_wealth && errors.source_of_wealth)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.source_of_wealth}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -148,7 +169,11 @@ class FinancialAssessment extends React.Component {
                                     value={values.education_level}
                                     onChange={handleChange}
                                 />
-                                {errors.education_level && touched.education_level && errors.education_level}
+                                {(errors.education_level || (touched.education_level && errors.education_level)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.education_level}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
@@ -159,29 +184,43 @@ class FinancialAssessment extends React.Component {
                                     value={values.net_income}
                                     onChange={handleChange}
                                 />
-                                {errors.net_income && touched.net_income && errors.net_income}
+                                {(errors.net_income || (touched.net_income && errors.net_income)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.net_income}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
                                     placeholder={localize('estimated net worth')}
+                                    is_alignment_top
                                     is_align_text_left
                                     name='estimated_worth'
                                     list={estimated_worth_list}
                                     value={values.estimated_worth}
                                     onChange={handleChange}
                                 />
-                                {errors.estimated_worth && touched.estimated_worth && errors.estimated_worth}
+                                {(errors.estimated_worth || (errors.estimated_worth && touched.estimated_worth)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.estimated_worth}
+                                </span>
+                                }
                             </fieldset>
                             <fieldset className='account-management-form-fieldset'>
                                 <Dropdown
                                     placeholder={localize('anticipated account turnover')}
+                                    is_alignment_top
                                     is_align_text_left
                                     name='account_turnover'
                                     list={account_turnover_list}
                                     value={values.account_turnover}
                                     onChange={handleChange}
                                 />
-                                {errors.account_turnover && touched.account_turnover && errors.account_turnover}
+                                {(errors.account_turnover || (errors.account_turnover && touched.account_turnover)) &&
+                                <span className='fa-dropdown__error-message'>
+                                    {errors.account_turnover}
+                                </span>
+                                }
                             </fieldset>
                         </FormBody>
                         <FormFooter>

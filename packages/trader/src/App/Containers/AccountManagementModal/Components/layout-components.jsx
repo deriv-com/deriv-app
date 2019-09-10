@@ -1,4 +1,3 @@
-import React            from 'react';
 import classNames       from 'classnames';
 import React            from 'react';
 import { Scrollbars }   from 'tt-react-custom-scrollbars';

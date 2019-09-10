@@ -16,7 +16,6 @@ const AllowEquals = ({
     onChange,
     value,
 }) => {
-    const name = 'is_equal';
     const has_callputequal_duration = hasDurationForCallPutEqual(contract_types_list,
         duration_unit, contract_start_type);
     const has_callputequal          = hasCallPutEqual(contract_types_list);
@@ -24,8 +23,10 @@ const AllowEquals = ({
     const has_allow_equals = isRiseFallEqual(contract_type) &&
             ((has_callputequal_duration || expiry_type === 'endtime') && has_callputequal);
 
-    const changeValue = (checkbox_state) => {
-        onChange({ target: { name, value: Number(checkbox_state) } });
+    const changeValue = (e) => {
+        e.persist();
+        const { name, checked } = e.target;
+        onChange({ target: { name, value: Number(checked) } });
     };
 
     return (
@@ -34,8 +35,9 @@ const AllowEquals = ({
                 <Checkbox
                     className='allow-equals__input-field'
                     id='dt_allow_equals_input'
-                    onClick={changeValue}
-                    value={value}
+                    onChange={changeValue}
+                    defaultChecked={value}
+                    name='is_equal'
                     label={localize('Allow equals')}
                     classNameLabel='allow-equals__label'
                 />

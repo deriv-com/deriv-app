@@ -10,6 +10,7 @@ import { WS }            from 'Services';
 import ContractStore     from './contract-store';
 import BaseStore         from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
+import { clientNotifications }         from '../../Helpers/client-notifications.js';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -45,6 +46,11 @@ export default class ContractTradeStore extends BaseStore {
                 this.chart_type = 'candle';
         }
         this.granularity = granularity;
+        if(this.granularity === 0) {
+            this.root_store.ui.removeNotification(
+                clientNotifications.switch_to_tick_chart
+            );
+        }
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
@@ -96,7 +102,15 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    addContract({ barrier, contract_id, contract_type, start_time, longcode, underlying }) {
+    addContract({
+        barrier,
+        contract_id,
+        contract_type,
+        start_time,
+        longcode,
+        underlying,
+        is_tick_contract,
+    }) {
         const contract = new ContractStore(this.root_store, { contract_id });
         contract.populateConfig({
             date_start: start_time,
@@ -109,6 +123,12 @@ export default class ContractTradeStore extends BaseStore {
         BinarySocket.wait('authorize').then(() => {
             this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);
         });
+
+        if(is_tick_contract && this.granularity !== 0) {
+            this.root_store.ui.addNotification(
+                clientNotifications.switch_to_tick_chart
+            );
+        }
     }
 
     @action.bound
@@ -156,6 +176,11 @@ export default class ContractTradeStore extends BaseStore {
             this.contracts.forEach(contract =>  {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
+                    if(response.proposal_open_contract.is_sold) {
+                        this.root_store.ui.removeNotification(
+                            clientNotifications.switch_to_tick_chart
+                        );
+                    }
                 }
             });
         }

@@ -352,13 +352,13 @@ export default class TradeStore extends BaseStore {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(action((response) => {
                 const last_digit = +this.last_digit;
                 if (this.proposal_info[type].id !== proposal_id) {
                     throw new Error('Proposal ID does not match.');
                 }
                 if (response.buy) {
-
                     const contract_data = {
                         ...this.proposal_requests[type],
                         ...this.proposal_info[type],
@@ -381,6 +381,7 @@ export default class TradeStore extends BaseStore {
                             underlying,
                             barrier      : is_digit_contract ? last_digit : null,
                             contract_type: category.toUpperCase(),
+                            is_tick_contract,
                         });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,

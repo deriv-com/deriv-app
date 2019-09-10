@@ -274,15 +274,15 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        if (this.notification_messages.indexOf(notification) === -1) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        }
     }
 
     @action.bound
-    removeNotification(notification) {
-        const index = this.notification_messages.indexOf(notification);
-        if (index > -1) {
-            this.notification_messages.splice(index, 1);
-        }
+    removeNotification({key}) {
+        this.notification_messages = this.notification_messages
+            .filter(n => n.key !== key);
     }
 
     @action.bound

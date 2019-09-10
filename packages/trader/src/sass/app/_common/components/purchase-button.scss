@@ -131,6 +131,34 @@
             }
         }
     }
+    &--1 {
+        background-color: var(--purchase-section-1);
+
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-1);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-1);
+
+            &--arrow {
+                background: var(--purchase-main-1);
+            }
+        }
+    }
+    &--2 {
+        background-color: var(--purchase-section-2);
+
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-2);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-2);
+
+            &--arrow {
+                background: var(--purchase-main-2);
+            }
+        }
+    }
     &--disabled, &[disabled] {
         cursor: default;
 

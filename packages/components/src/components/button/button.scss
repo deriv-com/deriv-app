@@ -34,6 +34,7 @@
         .btn__text {
             color: $COLOR_WHITE;
         }
+        // TODO: (colors) remove this line after colors migration complete
         &--orange {
             background: $COLOR_ORANGE;
 
@@ -47,6 +48,9 @@
             &.effect:focus:not(:active):after {
                 border: 0 solid $COLOR_ORANGE;
             }
+        }
+        &--red {
+            background: var(--button-primary-default);
         }
         &--green {
             background: $COLOR_GREEN_1;
@@ -87,6 +91,13 @@
             /* postcss-bem-linter: ignore */
             &.effect:focus:not(:active):after {
                 border: 0 solid $COLOR_ORANGE;
+            }
+        }
+        &--red {
+            border: 1px solid var(--button-primary-default);
+
+            .btn__text {
+                color: var(--brand-red-coral);
             }
         }
         &--green {

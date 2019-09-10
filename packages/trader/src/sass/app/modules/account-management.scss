@@ -44,6 +44,11 @@
     }
     &-body {
         height: 100%;
+
+        .initial-loader {
+            width: 100%;
+            height: calc(100vh - 240px);
+        }
     }
     &-fieldset {
         margin: 28px 16px;

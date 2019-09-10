@@ -157,12 +157,15 @@ const TickContract = RawMarkerMaker(({
     const draw_start_line = is_last_contract && start.visible && !is_sold;
     const scale = calc_scale(start.zoom);
 
+    const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
+    if (barrier) {
+        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32);
+    }
     if (draw_start_line) {
-        const height = (ctx.canvas.height / window.devicePixelRatio);
         render_label({
             ctx,
             text: 'Start\nTime',
-            tick: { zom: start.zoom, left: start.left - 1 * scale,  top: height - 50 },
+            tick: { zom: start.zoom, left: start.left - 1 * scale,  top: canvas_height - 50 },
         });
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
@@ -309,7 +312,7 @@ const NonTickContract = RawMarkerMaker(({
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 4), canvas_height - 32);
+        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32);
     }
 
     if (draw_start_line) {

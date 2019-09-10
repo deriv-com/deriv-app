@@ -14,6 +14,12 @@ const OpenPositions = lazy(() => import(/* webpackChunkName: "open_positions" */
 const ProfitTable   = lazy(() => import(/* webpackChunkName: "profit_table" */   'Modules/Reports/Containers/profit-table.jsx'));
 const Statement     = lazy(() => import(/* webpackChunkName: "statement" */      'Modules/Reports/Containers/statement.jsx'));
 
+// Account Management Routes
+const Account             = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
+const PersonalDetails     = lazy(() => import(/* webpackChunkName: "personal_details" */     'Modules/Account/Containers/personal-details.jsx'));
+const FinancialAssessment = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Containers/financial-assessment.jsx'));
+// const AccountLimits = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Containers/financial-assessment.jsx'));
+
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -29,6 +35,16 @@ const initRoutesConfig = () => ([
             { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: 'IconOpenPositions', default: true },
             { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: 'IconProfitTable' },
             { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: 'IconStatement' },
+        ],
+    },
+    {
+        path            : routes.account,
+        component       : Account,
+        is_authenticated: true,
+        title           : localize('Accounts management'),
+        routes          : [
+            { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal Details'),     icon_component: 'IconOpenPositions', default: true },
+            { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial Assessment'), icon_component: 'IconProfitTable' },
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),    exact: true },

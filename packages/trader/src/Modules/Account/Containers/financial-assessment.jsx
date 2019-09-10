@@ -15,11 +15,11 @@ import {
     education_level_list,
     net_income_list,
     estimated_worth_list,
-    account_turnover_list } from './constants-financial-information';
+    account_turnover_list } from '../Constants/constants-financial-information';
 import {
     FormBody,
     FormFooter } from '../Components/layout-components.jsx';
-import Loading   from '../../../../templates/app/components/loading.jsx';
+import Loading   from '../../../templates/app/components/loading.jsx';
 
 const validateFields = values => {
     const errors = {};
@@ -86,7 +86,7 @@ class FinancialAssessment extends React.Component {
                     isSubmitting,
                     // validateField,
                 }) => (
-                    <form className='account-management-form' onSubmit={handleSubmit}>
+                    <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 160px)' }}>
                         <div className='account-management-form-header'>
                             <h1 className='account-management-form-header-text'>
                                 {localize('Financial information')}

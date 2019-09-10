@@ -53,6 +53,7 @@ class Trade extends React.Component {
                             }
                         >
                             <ChartLoader is_dark={this.props.is_dark_theme} is_visible={is_chart_visible} />
+                            {!this.props.is_modals_on &&
                             <SmartChart
                                 chart_id={this.props.chart_id}
                                 chart_type={this.props.chart_type}
@@ -87,6 +88,7 @@ class Trade extends React.Component {
                                 should_show_last_digit_stats={should_show_last_digit_stats}
                                 symbol={this.props.symbol}
                             />
+                            }
                         </React.Suspense>
                     }
                     {/* Remove Test component for debugging below for production release */}
@@ -177,6 +179,7 @@ export default connect(
         showPositions                      : ui.showPositionsFooterToggle,
         has_only_forward_starting_contracts: ui.has_only_forward_starting_contracts,
         is_dark_theme                      : ui.is_dark_mode_on,
+        is_modals_on                       : ui.is_account_management_modal_on || ui.is_cashier_modal_on,
         is_mobile                          : ui.is_mobile,
         setHasOnlyForwardingContracts      : ui.setHasOnlyForwardingContracts,
     })

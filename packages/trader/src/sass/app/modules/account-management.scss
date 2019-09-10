@@ -9,16 +9,63 @@
 }
 
 .account-management-form {
-    overflow: scroll;
+    overflow: hidden;
+    height: 100%;
+    min-height: 500px;
+    width: 100%;
 
+    &-header {
+        position: relative;
+        height: 1.4em;
+        margin: 0 0 1em;
+
+        &-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            position: absolute;
+            padding: 0 8px;
+            @include themify($themes) {
+                background: themed('navbar_background_color');
+                color: themed('text_color');
+            }
+        }
+        &-subheader {
+            padding-left: 8px;
+            font-weight: normal;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0.7em;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            @include themify($themes) {
+                border-top: 1px solid themed('tab_background_color');
+            }
+        }
+    }
+    &-body {
+        height: 100%;
+        margin-left: -1em;
+        margin-top: -2em;
+    }
+    &-fieldset {
+        margin: 28px 16px;
+        position: relative;
+        max-width: 400px;
+    }
     &-footer {
         height: 80px;
         position: absolute;
         bottom: 0;
-        margin-left: -2.4em;
+        left: 0;
         display: flex;
         width: 100%;
-        padding: 16px 24px 24px;
+        padding: 16px 24px;
         align-items: center;
         justify-content: flex-end;
         z-index: 999;
@@ -129,8 +176,28 @@
     align-content: center;
     padding-left: 4px;
 }
+
 .account-limit-popover-target {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+.initial-loader--accounts-modal {
+    height: calc(100vh - 240px);
+}
+
+.fa-dropdown__error-message {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    padding: 0.5em 1em 0 0;
+    left: 0;
+
+    @include themify($themes) {
+        color: themed('error_color');
+    }
 }

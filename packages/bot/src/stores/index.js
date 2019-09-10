@@ -6,9 +6,9 @@ export const flyout = new FlyoutStore();
 
 export default class RootStore {
     constructor(core, ws) {
-        this.bot = new BotStore();
-        this.flyout = flyout;
+        this.bot = new BotStore(this);
         this.core = core;
+        this.flyout = flyout;
         this.ws = ws;
     }
 }

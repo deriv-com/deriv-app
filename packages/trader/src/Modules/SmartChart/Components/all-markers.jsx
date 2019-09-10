@@ -50,9 +50,9 @@ const calc_opacity = (from, to) => {
             1
         ) * 255
     ).toString(16);
-    if(opacity.length === 1) { return '0' + opacity; }
+    if (opacity.length === 1) { return `0${opacity}`; }
     return opacity;
-}
+};
 
 /** @param {CanvasRenderingContext2D} ctx */
 const draw_path = (ctx, { zoom, top, left, icon }) => {
@@ -159,7 +159,7 @@ const TickContract = RawMarkerMaker(({
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32);
+        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32); // eslint-disable-line
     }
     if (draw_start_line) {
         render_label({
@@ -217,7 +217,7 @@ const TickContract = RawMarkerMaker(({
         ctx.fillStyle = color;
     }
     // entry & expiry markers
-    if(granularity === 0) {
+    if (granularity === 0) {
         [entry, is_expired ? exit : null].forEach(tick => {
             if (tick && tick.visible) {
                 ctx.strokeStyle = color + opacity;
@@ -260,7 +260,7 @@ const TickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + (is_sold ? opacity : '' )),
+            icon: ICONS.START.with_color(color + (is_sold ? opacity : '')),
         });
     }
     // status marker
@@ -295,9 +295,9 @@ const NonTickContract = RawMarkerMaker(({
     const ctx = context;
 
     // the y value reported for candles is not accurate
-    if(granularity !== 0) {
-        if(entry) { entry.top = entry_tick_top; }
-        if(exit) { exit.top = exit_tick_top; }
+    if (granularity !== 0) {
+        if (entry) { entry.top = entry_tick_top; }
+        if (exit) { exit.top = exit_tick_top; }
     }
 
     const color = get_color({ status, profit, is_dark_theme });
@@ -312,7 +312,7 @@ const NonTickContract = RawMarkerMaker(({
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32);
+        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32); // eslint-disable-line
     }
 
     if (draw_start_line) {
@@ -320,9 +320,9 @@ const NonTickContract = RawMarkerMaker(({
             ctx,
             text: 'Start\nTime',
             tick: {
-                zom: start.zoom,
+                zom : start.zoom,
                 left: start.left - 1 * scale,
-                top: canvas_height - 50
+                top : canvas_height - 50,
             },
         });
         ctx.beginPath();
@@ -480,7 +480,7 @@ const DigitContract = RawMarkerMaker(({
     }
     // remaining ticks
     ticks.forEach((tick, idx) => {
-        if (/*is_sold &&*/ tick !== expiry) { return; }
+        if (tick !== expiry) { return; }
         if (!tick.visible) { return; }
         if (granularity !== 0 && tick !== expiry) { return; }
         if (granularity !== 0 && tick === expiry && !is_sold) { return; }

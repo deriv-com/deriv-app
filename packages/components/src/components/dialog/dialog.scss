@@ -19,6 +19,7 @@
         position: absolute;
         left: calc(100vw - 70%);
         top: calc(100vh - 70%);
+        z-index: 1;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
         &--enter, &--exit {

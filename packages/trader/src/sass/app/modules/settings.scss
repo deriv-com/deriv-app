@@ -122,3 +122,12 @@
         padding: 0;
     }
 }
+
+/** @define dc-modal-header; */
+.dc-modal-header {
+    &__title {
+        &--modal-settings {
+            min-width: 28%;
+        }
+    }
+}

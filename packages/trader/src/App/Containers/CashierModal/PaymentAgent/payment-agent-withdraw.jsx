@@ -56,7 +56,7 @@ class PaymentAgentWithdraw extends React.Component {
 
     onWithdrawalPassthrough = (values) => {
         this.props.requestPaymentAgentWithdraw({
-            loginid          : values.payment_agents || values.payment_agent,
+            loginid          : this.props.selected_payment_agent.value,
             currency         : this.props.currency,
             amount           : values.amount,
             verification_code: this.props.verification_code,

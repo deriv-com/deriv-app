@@ -9,7 +9,7 @@ import { localize }         from 'App/i18n';
 import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
-const bank_default_option = [{ text: localize('any'), value: '' }];
+const bank_default_option = [{ text: localize('Any'), value: '' }];
 
 class Config {
     container          = '';
@@ -33,12 +33,12 @@ class ConfigError {
 }
 
 class ConfigPaymentAgent {
-    list = [];
 
     @observable agents                 = [];
     @observable container              = 'payment_agent';
     @observable error                  = new ConfigError();
     @observable filtered_list          = [];
+    @observable list                   = [];
     @observable is_name_selected       = true;
     @observable is_withdraw            = false;
     @observable is_withdraw_successful = false;
@@ -360,8 +360,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resendVerificationEmail() {
         // don't allow clicking while ongoing timeout
-        console.log('pa', this.config.payment_agent.verification.resend_timeout);
-        console.log('withdraw', this.config.withdraw.verification.resend_timeout);
         if (this.config[this.active_container].verification.resend_timeout < 60) {
             return;
         }
@@ -469,7 +467,7 @@ export default class CashierStore extends BaseStore {
         if (bank) {
             this.config.payment_agent.filtered_list = [];
             this.config.payment_agent.list.forEach((payment_agent) => {
-                if (payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1) {
+                if (payment_agent.supported_banks && payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1) {
                     this.config.payment_agent.filtered_list.push(payment_agent);
                 }
             });

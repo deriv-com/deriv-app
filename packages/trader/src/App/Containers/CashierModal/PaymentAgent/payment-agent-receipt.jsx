@@ -13,8 +13,13 @@ import PaymentAgentDetails from './payment-agent-details.jsx';
 class PaymentAgentReceipt extends React.Component {
     openStatement = () => {
         this.props.history.push(routes.statement);
+        this.props.resetPaymentAgent();
         this.props.toggleCashierModal();
     };
+
+    componentWillUnmount() {
+        this.props.resetPaymentAgent();
+    }
 
     render() {
         const payment_agent = this.props.receipt.payment_agent_name || this.props.receipt.payment_agent_id;

@@ -34,6 +34,7 @@
 @import 'app/_common/form/time-picker';
 
 // Components
+@import 'app/_common/components/account-settings-toggle';
 @import 'app/_common/components/amount';
 @import 'app/_common/components/allow-equals';
 @import 'app/_common/components/calendar';
@@ -65,7 +66,6 @@
 @import 'app/_common/mobile-dialog';
 
 // Modules
-@import 'app/modules/account';
 @import 'app/modules/cashier';
 @import 'app/modules/contract';
 @import 'app/modules/contract/bottom-widgets';

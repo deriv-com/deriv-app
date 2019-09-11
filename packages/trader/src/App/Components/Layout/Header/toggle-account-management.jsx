@@ -1,13 +1,13 @@
-// import classNames   from 'classnames';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { Modal }     from 'deriv-components';
-import { localize }  from 'App/i18n';
-import MenuAccordion from 'App/Components/Elements/MenuAccordion';
-import Lazy          from 'App/Containers/Lazy';
-import UILoader      from '../../Elements/ui-loader.jsx';
-import Icon          from 'Assets/icon.jsx';
-import { connect }   from 'Stores/connect';
+// import classNames  from 'classnames';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { Modal }      from 'deriv-components';
+import { localize }   from 'App/i18n';
+import MenuAccordion  from 'App/Components/Elements/MenuAccordion';
+import Lazy           from 'App/Containers/Lazy';
+import Icon           from 'Assets/icon.jsx';
+import { connect }    from 'Stores/connect';
+import { BinaryLink } from '../../Routes';
 
 // Profile
 const PersonalDetails     = () => import('App/Containers/AccountManagementModal/Profile/personal-details.jsx');
@@ -43,7 +43,7 @@ const modal_content = [
                     />
                 )
             },
-            {     
+            {
                 label: localize('Financial assessment'),
                 // eslint-disable-next-line react/display-name
                 value: () => (
@@ -72,7 +72,7 @@ const modal_content = [
                     />
                 )
             },
-            {     
+            {
                 label: localize('Proof of address'),
                 // eslint-disable-next-line react/display-name
                 value: () => (
@@ -101,7 +101,7 @@ const modal_content = [
                     />
                 )
             },
-            // {     
+            // {
             //     label: localize('Self-exclusion'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -113,7 +113,7 @@ const modal_content = [
             //     )
 
             // },
-            {     
+            {
                 label: localize('Account limits'),
                 // eslint-disable-next-line react/display-name
                 value: () => (
@@ -125,7 +125,7 @@ const modal_content = [
                 )
 
             },
-            // {     
+            // {
             //     label: localize('Login history'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -137,7 +137,7 @@ const modal_content = [
             //     )
 
             // },
-            // {     
+            // {
             //     label: localize('API token'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -149,7 +149,7 @@ const modal_content = [
             //     )
 
             // },
-            // {     
+            // {
             //     label: localize('Connected apps'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -161,7 +161,7 @@ const modal_content = [
             //     )
 
             // },
-            // {     
+            // {
             //     label: localize('Two-factor authentication'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -173,7 +173,7 @@ const modal_content = [
             //     )
 
             // },
-            // {     
+            // {
             //     label: localize('VPN'),
             //     // eslint-disable-next-line react/display-name
             //     value: () => (
@@ -223,29 +223,29 @@ class ToggleAccountManagement extends React.PureComponent {
         const HeaderComponent = makeHeader(this.state.header, currency);
 
         return (
-            <React.Suspense fallback={<UILoader />}>
-                <div onClick={this.props.toggleModal} className='account-management-toggle'>
+            <React.Suspense fallback={<div />}>
+                <BinaryLink className='account-settings-toggle' to='/account'>
                     <Icon icon='IconUser' />
-                </div>
-                <Modal
-                    className='account-management'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    header={HeaderComponent}
-                    menu_type='accordion'
-                    modal_content={modal_content}
-                    is_open={is_open}
-                    title={localize('Settings')}
-                    toggleModal={this.props.toggleModal}
-                    id='account-management-modal'
-                >
-                    <MenuAccordion
-                        alignment='center'
-                        classNameHeader='modal__tab-header'
-                        list={modal_content}
-                        onChangeHeader={this.onChangeHeader}
-                    />
-                </Modal>
+                </BinaryLink>
+                    {/*<Modal
+                        className='account-management'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        header={HeaderComponent}
+                        menu_type='accordion'
+                        modal_content={modal_content}
+                        is_open={is_open}
+                        title={localize('Settings')}
+                        toggleModal={this.props.toggleModal}
+                        id='account-management-modal'
+                    >
+                        <MenuAccordion
+                            alignment='center'
+                            classNameHeader='modal__tab-header'
+                            list={modal_content}
+                            onChangeHeader={this.onChangeHeader}
+                        />
+                    </Modal>*/}
             </React.Suspense>
         );
     }

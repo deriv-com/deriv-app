@@ -6,15 +6,6 @@
     .vertical-tab {
         height: calc(100vh - 83px);
     }
-    .account-management-toggle {
-        &:hover {
-            cursor: pointer;
-        }
-        svg {
-            height: 24px;
-            width: 24px;
-        }
-    }
     .account-management-form {
         overflow: hidden;
         height: 100%;

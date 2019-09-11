@@ -18,10 +18,10 @@
         position: relative;
         height: 1.4em;
         margin: 0 0 1em;
+        font-size: 1.4em;
+        font-weight: bold;
 
         &-text {
-            font-size: 1.4em;
-            font-weight: bold;
             position: absolute;
             padding: 0 8px;
             @include themify($themes) {
@@ -102,6 +102,121 @@
     }
 }
 
+.account-management-modal-header {
+    display: flex;
+
+    &__icon-wrapper {
+        display: flex;
+        align-content: center;
+        font-size: 12px;
+        font-weight: normal;
+
+        span {
+            padding: 0 8px;
+        }
+        svg {
+            height: 24px;
+            width: 24px;
+        }
+    }
+}
+
+.account-management-text {
+    @include typeface(--paragraph-left-normal-black, none);
+    @include themify($themes) {
+        color: themed('text_primary_color');
+    }
+
+    &--small {
+        @include typeface(--small-left-normal-black, none);
+    }
+    &--xsmall {
+        @include typeface(--xsmall-left-normal-black, none);
+    }
+    &--grey {
+        @include themify($themes) {
+            color: themed('active_color');
+        }
+    }
+}
+
+.account-management-flex-wrapper {
+    display: flex;
+}
+
+.account-management-text-container {
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+.account-management-table {
+    width: 100%;
+    max-width: 546px;
+
+    thead {
+        position: relative;
+        tr {
+            padding-bottom: 8px;
+        }
+        th {
+            @include typeface(--paragraph-left-bold-black, none);
+        }
+    }
+    &__divider {
+        position: relative;
+        display: block;
+
+        th {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            left: 0px;
+            @include themify($themes) {
+                border-bottom: 1px solid themed('tab_background_color');
+            }
+        }
+    }
+    tbody {
+        tr {
+            &:not(:first-child):not(:last-child) {
+                padding: 8px 0;
+            }
+            &:first-child {
+                padding-top: 8px;
+                padding-bottom: 4px;
+            }
+            &:last-child {
+                padding-top: 4px;
+            }
+        }
+    }
+    &--last {
+        margin-top: 28px;
+    }
+}
+
+.account-limit-container {
+    margin-top: -24px;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+
+    &__main-text {
+        margin: 16px 0;
+    }
+}
+
+.account-limit-popover {
+    display: flex;
+    align-content: center;
+    padding-left: 4px;
+}
+
+.account-limit-popover-target {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
 /**
  * Deriv password
  */

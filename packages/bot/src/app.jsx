@@ -23,10 +23,8 @@ class App extends React.Component {
                     <Drawer
                         is_open={true}
                         header='this is a drawer header'
-                        footer='this is a drawer header'
-                    >
-                        <span>hey there</span>
-                    </Drawer>
+                        footer='this is a drawer footer'
+                    />
                 </React.Fragment>
             </Provider>
         );

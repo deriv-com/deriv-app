@@ -1,67 +1,75 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
 
-const Drawer = ({
-    alignment,
-    children,
-    className,
-    footer,
-    header,
-    is_open,
-}) => {
-    return (
-        <CSSTransition
-            appear
-            in={is_open}
-            timeout={250}
-            classNames={{
-                appear   : 'dc-drawer--enter',
-                enter    : 'dc-drawer--enter',
-                enterDone: 'dc-drawer--enter-done',
-                exit     : 'dc-drawer--exit',
-            }}
-            unmountOnExit
-        >
+class Drawer extends React.PureComponent {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            is_open: true,
+        };
+    }
+
+    toggleDrawer = () => {
+        this.setState({ is_open: !this.state.is_open });
+        if (this.props.toggleDrawer) {
+            this.props.toggleDrawer(this.state.is_open);
+        }
+    };
+
+    render() {
+        const {
+            children,
+            className,
+            footer,
+            header,
+        } = this.props;
+
+        return (
             <div className={classNames('dc-drawer',
-                alignment && `dc-drawer--${alignment}`,
-                is_open   && 'dc-drawer--open',
-                className && `dc-drawer--${className}`)}
+                this.state.is_open && `dc-drawer--${'open'}`)}
             >
-                {header &&
-                    <div className={classNames('dc-drawer__header',
-                        className && `dc-drawer__header--${className}`)}
-                    >
-                        {header}
-                    </div>
-                }
-                <div className={classNames('dc-drawer__content',
-                    className && `dc-drawer__content--${className}`)}
+                <div className={classNames('dc-drawer__container',
+                    className && `dc-drawer__container--${className}`)}
                 >
-                    <Scrollbars
-                        style={{ width: '100%', height: '100%' }}
-                        autoHide
+                    {header &&
+                        <div className={classNames('dc-drawer__header',
+                            className && `dc-drawer__header--${className}`)}
+                        >
+                            {header}
+                        </div>
+                    }
+                    <div className={classNames('dc-drawer__content',
+                        className && `dc-drawer__content--${className}`)}
                     >
                         {children}
-                    </Scrollbars>
-                </div>
-                {footer &&
-                    <div className={classNames('dc-drawer__footer',
-                        className && `dc-drawer__footer--${className}`)}
-                    >
-                        {footer}
                     </div>
-                }
+                    {footer &&
+                        <div className={classNames('dc-drawer__footer',
+                            className && `dc-drawer__footer--${className}`)}
+                        >
+                            {footer}
+                        </div>
+                    }
+                </div>
+                <div
+                    className={classNames('dc-drawer__toggle',
+                        this.state.is_open && 'dc-drawer__toggle--open')}
+                    onClick={this.toggleDrawer}
+                >
+                    <div className='dc-drawer__toggle-icon-wraper'>
+                        <div className='dc-drawer__toggle-icon' />
+                    </div>
+                </div>
             </div>
-        </CSSTransition >
-    );
-};
+        );
+    }
+}
 
 Drawer.propTypes = {
-    alignment: PropTypes.string,
-    children : PropTypes.oneOfType([
+    children: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
     ]),

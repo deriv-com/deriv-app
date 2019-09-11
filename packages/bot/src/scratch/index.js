@@ -62,7 +62,7 @@ export const scratchWorkspaceInit = async () => {
 
             // el_scratch_div.style.left   = '0px';
             // el_scratch_div.style.top    = '0px';
-            el_scratch_div.style.width  = `${el_app_contents.offsetWidth - 366}px`;
+            el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight}px`;
             
             Blockly.svgResize(workspace);

@@ -1,13 +1,13 @@
 // import PropTypes        from 'prop-types';
 import React            from 'react';
+import { Formik }       from 'formik';
+import { Button }       from 'deriv-components';
 import { WS }           from 'Services';
 import { connect }      from 'Stores/connect';
-import { Button }       from 'deriv-components';
 // import DatePicker       from 'App/Components/Form/DatePicker';
-import { Formik }       from 'formik';
 import { formatDate }   from 'Utils/Date';
-import Loading          from '../../../templates/app/components/loading.jsx';
-import { FormFooter, FormSubHeader } from '../Components/layout-components.jsx';
+import Loading          from '../../../../../templates/app/components/loading.jsx';
+import { FormFooter, FormSubHeader } from '../../../Components/layout-components.jsx';
 
 const makeSettingsRequest = (settings, residence_list) => {
     let citizen = residence_list.find(location => location.text === settings.tax_residence_text).value
@@ -77,17 +77,17 @@ class PersonalDetailsForm extends React.Component {
               validateField,
             }) => (
                 <form>
-                    <FormSubHeader text="Personal Details" />
+                    <FormSubHeader text='Personal Details' />
                     {/* <InputGroup>
                         <Input
-                            data-lpignore="true"
+                            data-lpignore='true'
                             type='text'
                             name='first_name'
                             label='First name'
                             required
                         />
                         <Input
-                            data-lpignore="true"
+                            data-lpignore='true'
                             type='text'
                             name='last_name'
                             label='Last name'
@@ -95,16 +95,16 @@ class PersonalDetailsForm extends React.Component {
                         />
                     </InputGroup>
                     <DatepickerInput>
-                        <DatePicker 
-                            name="date_of_birth_human"
+                        <DatePicker
+                            name='date_of_birth_human'
                             value={values.date_of_birth_human}
-                            min_date="1919-01-01"
-                            alignment="bottom"
+                            min_date='1919-01-01'
+                            alignment='bottom'
                             onChange={handleChange}
                         />
                     </DatepickerInput>
                     <Autocomplete
-                        data-lpignore="true"
+                        data-lpignore='true'
                         type='text'
                         name='citizen_text'
                         label='Citizenship'
@@ -112,7 +112,7 @@ class PersonalDetailsForm extends React.Component {
                         list_items={ this.props.residence_list }
                     />
                     <Input
-                        data-lpignore="true"
+                        data-lpignore='true'
                         type='text'
                         name='email'
                         label='Email'
@@ -121,7 +121,7 @@ class PersonalDetailsForm extends React.Component {
                     />
                     <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Tax information</h2>
                     <Autocomplete
-                        data-lpignore="true"
+                        data-lpignore='true'
                         type='text'
                         name='tax_residence_text'
                         label='Tax residence'
@@ -129,7 +129,7 @@ class PersonalDetailsForm extends React.Component {
                         list_items={ this.props.residence_list }
                     />
                     <Input
-                        data-lpignore="true"
+                        data-lpignore='true'
                         type='text'
                         name='tax_identification_number'
                         label='Tax identification number'
@@ -138,7 +138,7 @@ class PersonalDetailsForm extends React.Component {
                     <h2 style={{fontSize: '16px', fontWeight: 'bold', margin: '20px 0'}}>Email preference</h2>
                     <Checkbox value={values.email_consent} onClick={handleChange} name='email_consent' label='Get updates about Deriv products, services and events.'/> */}
                     <FormFooter>
-                        <button type="submit" disabled={isSubmitting}>
+                        <button type='submit' disabled={isSubmitting}>
                             Submit
                         </button>
                     </FormFooter>

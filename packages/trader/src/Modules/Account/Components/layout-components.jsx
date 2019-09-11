@@ -30,13 +30,18 @@ export const FormFooter = ({ children }) => (
     <div className='account-management-form-footer'>{children}</div>
 );
 
-export const TextContainer = ({ children }) => <div className='account-management-text-container'>{children}</div>
+export const TextContainer = ({ children }) => (
+    <div className='account-management-text-container'>{children}</div>
+);
 
 export const Text = ({ children, size, color, className }) => (
-        <p
-                className={classNames('account-management-text', className, {
-                'account-management-text--xsmall': size === 'xsmall',
-                'account-management-text--small': size === 'small',
-                'account-management-text--grey': color === 'grey',
-        })}>{children}</p>
+    <p
+        className={classNames('account-management-text', className, {
+            'account-management-text--xsmall': size === 'xsmall',
+            'account-management-text--small' : size === 'small',
+            'account-management-text--grey'  : color === 'grey',
+        })}
+    >
+        {children}
+    </p>
 );

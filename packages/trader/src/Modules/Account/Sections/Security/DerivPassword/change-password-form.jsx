@@ -4,6 +4,7 @@ import React        from 'react';
 import { Formik }   from 'formik';
 import {
     Button,
+    Label,
     Input }         from 'deriv-components';
 import { localize } from 'App/i18n';
 import {
@@ -37,7 +38,7 @@ class ChangePasswordForm extends React.Component {
 
     render() {
         return (
-            <>
+            <React.Fragment>
                 <Formik
                     initialValues={{
                         old_password: '',
@@ -69,12 +70,12 @@ class ChangePasswordForm extends React.Component {
                                 :
                                 <FormBody scroll_offset='90px'>
                                     {/** TODO: replace with Input */}
-                                    <label>Current password</label>
-                                    <input type='password' name='old_password' value={values.old_password} onChange={handleChange} />
+                                    <Label>Current password</Label>
+                                    <Input type='password' name='old_password' value={values.old_password} onChange={handleChange} />
                                     {errors.old_password || (touched.old_password && errors.old_password)}
 
-                                    <label>New password</label>
-                                    <input type='password' name='new_password' value={values.new_password} onChange={handleChange} />
+                                    <Label>New password</Label>
+                                    <Input type='password' name='new_password' value={values.new_password} onChange={handleChange} />
                                     {errors.new_password || (touched.new_password && errors.new_password)}
                                 </FormBody>
                             }
@@ -96,7 +97,7 @@ class ChangePasswordForm extends React.Component {
                         </form>
                     )}
                 </Formik>
-            </>
+            </React.Fragment>
         );
     }
 }

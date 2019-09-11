@@ -7,8 +7,8 @@ import { localize }     from 'App/i18n';
 import Localize         from 'App/Components/Elements/localize.jsx';
 import { WS }           from 'Services';
 import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
-import Loading          from '../../../../../templates/app/components/loading.jsx';
-import { TextContainer, Text } from '../../../Components/layout-components.jsx';
+import Loading          from '../../../../templates/app/components/loading.jsx';
+import { TextContainer, Text } from '../../Components/layout-components.jsx';
 
 const display_decimals = 2;
 const makeTurnoverLimitRow = arr => (
@@ -71,6 +71,7 @@ class AccountLimits extends React.Component {
 
         const { commodities, forex, indices, volidx } = market_specific;
 
+        if (!market_specific) return null;
         return (
             <section className='account-limit-container'>
                 <Scrollbars>

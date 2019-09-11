@@ -237,7 +237,7 @@ class FinancialAssessment extends React.Component {
                             </FormBody>
                         }
                         <FormFooter>
-                            <Button type='submit' disabled={isSubmitting || this.state.is_loading}>
+                            <Button type='submit' disabled={isSubmitting}>
                               Submit
                             </Button>
                         </FormFooter>

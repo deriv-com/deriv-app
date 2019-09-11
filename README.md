@@ -1,10 +1,18 @@
 Deriv App
 ============
-
 This repository contains the various platforms of Deriv.
 
-## Installation
+- [Installation](#installation)
+- [Working With This Repo](#working-with-this-repo)
+- [Usage](#usage)
+  - [How to Clean Packages](#how-to-clean-packages)
+  - [Examples](#examples)
+- [PR Guidelines](#pr-guidelines)
+- [FAQ](#faq)
 
+[comment]: <> (TODO: Refactor Clean Project to be under usage)
+
+## Installation
 In order to work on your own version of the Deriv Javascript and CSS, please **fork this project**.
 
 You will need to perform the following on your development machine:
@@ -16,9 +24,7 @@ You will need to perform the following on your development machine:
 [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
 [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
 
-How to work with this repo
-=============================
-
+## Working With This Repo
 All packages must contain the following scripts to perform the stated actions:
 
 | Command             | Description                                                                                   |
@@ -37,8 +43,14 @@ All packages must contain the following scripts to perform the stated actions:
 | `deploy:production` | Initiates procedures for deploying to production. (Package specific)                          |
 
 **Please follow the README of each package you intend to work with on how to get set up.** However, the above scripts can be run from the root directory in the following manner.
-## Usage
-### Example
+
+### Usage
+#### How to Clean Packages
+If you intend to remove `node_modules` folder(s) from the projects, please run `lerna clean` and follow the instructions.
+
+You can read more on the various lerna commands (and the `clean` command) over at the [Lerna docs](https://github.com/lerna/lerna/).
+
+#### Examples
 In order to run the `start` script for all packages (`trader`, `bot`, etc.), simply `cd` to the root of the repo and run:
 ```bash
 npm run start
@@ -58,19 +70,11 @@ npm run deploy:folder trader br_test_folder
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
 ### PR Guidelines
-
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1/fixed_emoji_issue`)
 2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 
-### Clean projects
-
-If you intend to remove `node_modules` folder(s) from the projects, please run `lerna clean` and follow the intstructions.
-
-You can read more on the various lerna commands (and the `clean` command) over at the [Lerna docs](https://github.com/lerna/lerna/).
-
 ### FAQ
-
 1. If you have to use `sudo -s` in your environment, please remove any hardcoded `sudo` from `packages/*` (eg., remove `sudo` from `start` and `serve` commands of `packages/trader`)
 
 2. How do I install a package?

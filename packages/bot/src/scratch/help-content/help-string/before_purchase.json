@@ -1,6 +1,6 @@
 {
     "text": [
         "This block is mandatory, it allows you to specify contract type and purchase conditions. You can add only one copy of this block to the canvas. When you first time open Deriv Bot or when you chose to create new strategy, this block is added to the canvas by default.",
-        "After defining trade parameter and trade options, you may instruct your bot to purchase contracts when specific conditions are met. This can be done using logic and indicator blocks that help your bot to make decisions. A Bollinger Bans block is used in the example here to identify the trend, i.e. the direction market price may go."
+        "After defining trade parameters and trade options, you may want to instruct your bot to purchase contracts when specific conditions are met. To do that you can use conditional blocks and indicators blocks to help your bot to make decisions. A Bollinger Bands block is used in the example here to identify the trend, i.e. the direction market price may go."
     ]
 }

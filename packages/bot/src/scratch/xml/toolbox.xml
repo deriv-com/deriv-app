@@ -80,7 +80,7 @@
     <category 
         id="sell_conditions" 
         name="Sell contract (optional)" 
-        description="Sell at active contract at market price if you wish" 
+        description="Sell active contract at market price if you wish" 
         iconURI="ic-stage-3"
     >
         <block type="during_purchase"></block>

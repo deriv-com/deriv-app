@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import FullScreenDialog  from '../../Elements/full-screen-dialog.jsx';
+import MobileDialog      from '../../Elements/mobile-dialog.jsx';
 
 const ContractTypeDialog = ({
     children,
@@ -12,13 +12,13 @@ const ContractTypeDialog = ({
     is_mobile ?
         <React.Fragment>
             <span className='contract-type-widget__select-arrow' />
-            <FullScreenDialog
+            <MobileDialog
                 title='Select Trading Type'
                 visible={open}
                 onClose={onClose}
             >
                 {children}
-            </FullScreenDialog>
+            </MobileDialog>
         </React.Fragment>
         :
         <CSSTransition

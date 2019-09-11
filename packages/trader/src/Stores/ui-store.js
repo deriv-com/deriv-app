@@ -183,24 +183,29 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleChartLayout() {
-        this.is_chart_layout_default = !this.is_chart_layout_default;
+    setChartLayout(is_default) {
+        this.is_chart_layout_default = is_default;
     }
 
     // TODO: enable asset information
     // @action.bound
-    // toggleChartAssetInfo() {
-    //     this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
+    // setChartAssetInfo(is_visible) {
+    //     this.is_chart_asset_info_visible = is_visible;
     // }
 
     @action.bound
-    toggleChartCountdown() {
-        this.is_chart_countdown_visible = !this.is_chart_countdown_visible;
+    setChartCountdown(is_visible) {
+        this.is_chart_countdown_visible = is_visible;
     }
 
     // @action.bound
     // togglePurchaseLock() {
     //     this.is_purchase_lock_on = !this.is_purchase_lock_on;
+    // }
+
+    // @action.bound
+    // setPurchaseLock(is_locked) {
+    //     this.is_purchase_lock_on = is_locked;
     // }
 
     // @action.bound

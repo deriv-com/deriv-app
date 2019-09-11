@@ -263,7 +263,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccount(is_visible) {
+    toggleAccountSettings(is_visible) {
         this.is_account_settings_visible = is_visible;
     }
 

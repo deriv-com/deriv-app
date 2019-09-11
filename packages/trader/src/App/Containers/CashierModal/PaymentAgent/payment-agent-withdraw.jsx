@@ -172,10 +172,8 @@ class PaymentAgentWithdraw extends React.Component {
                                                         <div className='payment-agent__submit'>
                                                             {this.props.error.message &&
                                                             <React.Fragment>
-                                                                <Icon
-                                                                    icon='IconEmergency'
-                                                                    className='payment-agent__error-icon'
-                                                                />
+                                                                <Icon icon='IconEmergency' className='payment-agent__error-icon' />
+                                                                <Icon icon='IconError' className='payment-agent__error-small-icon' />
                                                                 <p className='payment-agent__error'>
                                                                     {this.props.error.message}
                                                                 </p>

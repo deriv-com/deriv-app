@@ -7,7 +7,6 @@ const IconDepositSmall = ({ className }) => (
             <path d='M-4-29h118V89H-4z' />
         </g>
     </svg>
-
 );
 
 export default IconDepositSmall;

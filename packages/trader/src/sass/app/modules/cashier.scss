@@ -311,7 +311,7 @@
     }
     &__error {
         flex: 1;
-        margin: 2rem 5.6rem;
+        margin: 2rem 5.6rem 4.4rem 0;
         font-size: 1.2rem;
         font-weight: 500;
         line-height: 1.33;
@@ -319,6 +319,9 @@
         &-icon {
             position: absolute;
             left: 0;
+        }
+        &-small-icon {
+            margin: 2rem 1.6rem 4.4rem 2.4rem;
         }
     }
 }

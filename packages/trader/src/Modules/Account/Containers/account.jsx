@@ -1,13 +1,10 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-// import Lazy          from 'App/Containers/Lazy';
-import { withRouter }    from 'react-router-dom';
-// import { localize }      from 'App/i18n';
-import { FadeWrapper }   from 'App/Components/Animations';
-// import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import MenuAccordion     from 'App/Components/Elements/MenuAccordion';
-import AppRoutes         from 'Constants/routes';
-import { connect }       from 'Stores/connect';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { withRouter }  from 'react-router-dom';
+import { FadeWrapper } from 'App/Components/Animations';
+import MenuAccordion   from 'App/Components/Elements/MenuAccordion';
+import AppRoutes       from 'Constants/routes';
+import { connect }     from 'Stores/connect';
 import 'Sass/app/modules/account.scss';
 
 class Account extends React.Component {
@@ -40,17 +37,6 @@ class Account extends React.Component {
     onChangeHeader = header => this.setState({ header });
 
     render () {
-        // const action_bar_items = [
-        //     {
-        //         onClick: () => {
-        //             this.props.history.push(AppRoutes.trade);
-        //             this.props.toggleAccount(false);
-        //         },
-        //         icon : 'ModalIconClose',
-        //         title: localize('Close'),
-        //     },
-        // ];
-
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}

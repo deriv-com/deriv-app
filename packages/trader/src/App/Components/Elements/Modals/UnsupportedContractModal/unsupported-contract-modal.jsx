@@ -1,20 +1,24 @@
-import React            from 'react';
+import { Dialog }       from 'deriv-components';
 import PropTypes        from 'prop-types';
+import React            from 'react';
 import { localize }     from 'App/i18n';
-import FullPageModal    from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
 import Localize         from 'App/Components/Elements/localize.jsx';
-import { website_name } from 'App/Constants/app-config';
+import { connect }      from 'Stores/connect';
+import { website_name } from '../../../../Constants/app-config';
 
-class UnsupportedContractModal extends React.PureComponent {
+class UnsupportedContractModal extends React.Component {
     render() {
-        const { is_visible, onConfirm, onClose } = this.props;
+        const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose } = this.props;
         return (
-            <FullPageModal
+            <Dialog
                 title={localize('Whoops!')}
                 confirm_button_text={localize('Continue to Binary.com')}
                 cancel_button_text={localize('Back to trade page')}
                 onConfirm={onConfirm}
                 onCancel={onClose}
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_loading={is_loading}
                 is_closed_on_cancel
                 is_visible={is_visible}
             >
@@ -22,15 +26,24 @@ class UnsupportedContractModal extends React.PureComponent {
                     i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to Binary.com for details.'
                     values={{ website_name }}
                 />
-            </FullPageModal>
+            </Dialog>
         );
     }
 }
 
 UnsupportedContractModal.propTypes = {
+    disableApp: PropTypes.func,
+    enableApp : PropTypes.func,
+    is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onClose   : PropTypes.func,
     onConfirm : PropTypes.func,
 };
 
-export default UnsupportedContractModal;
+export default connect(
+    ({ ui }) => ({
+        disableApp: ui.disableApp,
+        enableApp : ui.enableApp,
+        is_loading: ui.is_loading,
+    }),
+)(UnsupportedContractModal);

@@ -1,11 +1,11 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import { localize } from 'App/i18n';
-import Lazy         from 'App/Containers/Lazy';
-import { Modal }    from 'App/Components/Elements/modal.jsx';
-import UILoader     from '../../Elements/ui-loader.jsx';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { Button, Modal } from 'deriv-components';
+import { localize }      from 'App/i18n';
+import Lazy              from 'App/Containers/Lazy';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs';
+import UILoader          from '../../Elements/ui-loader.jsx';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 
@@ -13,45 +13,60 @@ const Deposit      = () => import('App/Containers/CashierModal/deposit.jsx');
 const Withdrawal   = () => import('App/Containers/CashierModal/withdrawal.jsx');
 const PaymentAgent = () => import('App/Containers/CashierModal/payment-agent.jsx');
 
-const modal_content = [
-    {
-        container: 'deposit',
-        icon     : 'IconDepositSmall',
-        label    : localize('Deposit'),
-        // eslint-disable-next-line react/display-name
-        value    : () => (
-            <Lazy
-                ctor={Deposit}
-                should_load={true}
-                has_progress={true}
-            />
-        ),
-    }, {
-        container: 'withdraw',
-        icon     : 'IconWithdrawalSmall',
-        label    : localize('Withdrawal'),
-        // eslint-disable-next-line react/display-name
-        value    : () => (
-            <Lazy
-                ctor={Withdrawal}
-                should_load={true}
-                has_progres={true}
-            />
-        ),
-    }, {
-        container: 'payment_agent',
-        icon     : 'IconPaymentAgent',
-        label    : localize('Payment agent'),
-        // eslint-disable-next-line react/display-name
-        value    : () => (
-            <Lazy
-                ctor={PaymentAgent}
-                should_load={true}
-                has_progress={true}
-            />
-        ),
-    },
-];
+const ModalContent = ({
+    selected_index,
+    visible_items,
+}) => {
+    const content = [
+        {
+            container: 'deposit',
+            icon     : 'IconDepositSmall',
+            label    : localize('Deposit'),
+            // eslint-disable-next-line react/display-name
+            value    : () => (
+                <Lazy
+                    ctor={Deposit}
+                    should_load={true}
+                    has_progress={true}
+                />
+            ),
+        }, {
+            container: 'withdraw',
+            icon     : 'IconWithdrawalSmall',
+            label    : localize('Withdrawal'),
+            // eslint-disable-next-line react/display-name
+            value    : () => (
+                <Lazy
+                    ctor={Withdrawal}
+                    should_load={true}
+                    has_progress={true}
+                />
+            ),
+        }, {
+            container: 'payment_agent',
+            icon     : 'IconPaymentAgent',
+            label    : localize('Payment agent'),
+            // eslint-disable-next-line react/display-name
+            value    : () => (
+                <Lazy
+                    ctor={PaymentAgent}
+                    should_load={true}
+                    has_progress={true}
+                />
+            ),
+        },
+    ];
+    return (
+        <VerticalTab
+            alignment='center'
+            classNameHeader='modal__tab-header'
+            id='modal'
+            list={content}
+            selected_index={selected_index}
+            visible_items={visible_items}
+        />
+    );
+};
 
 class ToggleCashier extends React.PureComponent {
     onClickDeposit = () => { this.props.toggleCashier('deposit'); };
@@ -87,17 +102,17 @@ class ToggleCashier extends React.PureComponent {
                 />
                 <React.Suspense fallback={<UILoader />}>
                     <Modal
-                        className='cashier'
+                        id='dt_cashier_modal'
+                        className='modal-cashier'
                         disableApp={disableApp}
                         enableApp={enableApp}
-                        modal_content={modal_content}
                         header={<WalletInformation />}
                         is_open={is_cashier_visible}
-                        selected_index={modal_content.indexOf(selected_tab)}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
-                        visible_items={visible_items}
-                    />
+                    >
+                        <ModalContent visible_items={visible_items} selected_index={modal_content.indexOf(selected_tab)} />
+                    </Modal>
                 </React.Suspense>
             </React.Fragment>
         );

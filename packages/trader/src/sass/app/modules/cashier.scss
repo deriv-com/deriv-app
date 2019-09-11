@@ -322,3 +322,26 @@
         }
     }
 }
+
+/** @define dc-modal; */
+.dc-modal {
+    &__container {
+        &_modal-cashier {
+            width: 915px;
+        }
+    }
+}
+
+/** @define dc-modal-header; */
+.dc-modal-header {
+    &__modal-cashier {
+        @include themify($themes) {
+            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
+        }
+    }
+    &__title {
+        &--modal-cashier {
+            min-width: 28%;
+        }
+    }
+}

@@ -1,27 +1,22 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import { Radio }  from './radio.jsx';
+import Radio      from './radio.jsx';
 
 class RadioGroup extends React.PureComponent {
     render() {
-        const {
-            className,
-            items,
-            onToggle,
-            selected,
-        } = this.props;
-
+        const { selected, items, className } = this.props;
         return (
-            <div className={classNames('radio-group', className)}>
+            <div className={ classNames('dc-radio-group', className) }>
                 {items.map((item, idx) => (
                     <Radio
                         key={idx}
-                        className={item.className}
                         id={item.id}
                         value={item.value}
-                        selected={selected === item.value}
-                        onClick={onToggle}
+                        defaultChecked={item.value === selected}
+                        onChange={this.props.onToggle}
+                        className={item.className}
+                        name={this.props.name}
                     >
                         {item.label}
                     </Radio>

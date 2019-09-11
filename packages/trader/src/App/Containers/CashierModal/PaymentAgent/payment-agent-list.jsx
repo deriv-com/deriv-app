@@ -26,6 +26,7 @@ class PaymentAgentList extends React.Component {
                     <EmailSent
                         is_email_sent={this.props.is_email_sent}
                         is_resend_clicked={this.props.is_resend_clicked}
+                        resend_timeout={this.props.resend_timeout}
                     />
                     :
                     <div className='payment-agent__wrapper'>
@@ -116,7 +117,7 @@ export default connect(
         onChangePaymentMethod: modules.cashier.onChangePaymentMethod,
         onMount              : modules.cashier.onMountPaymentAgentList,
         payment_agent_list   : modules.cashier.config.payment_agent.filtered_list,
-        resend_timeout       : modules.cashier.config.withdraw.verification.resend_timeout,
+        resend_timeout       : modules.cashier.config.payment_agent.verification.resend_timeout,
         selected_bank        : modules.cashier.config.payment_agent.selected_bank,
         sendVerificationEmail: modules.cashier.sendVerificationEmail,
         supported_banks      : modules.cashier.config.payment_agent.supported_banks,

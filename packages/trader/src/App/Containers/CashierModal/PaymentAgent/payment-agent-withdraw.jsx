@@ -4,8 +4,11 @@ import React                from 'react';
 import {
     Button,
     Dropdown,
-    Form,
     Input }                 from 'deriv-components';
+import {
+    Field,
+    Formik,
+    Form }                  from 'formik';
 import { getDecimalPlaces } from '_common/base/currency_base';
 import Localize             from 'App/Components/Elements/localize.jsx';
 // import RadioGroup           from 'App/Components/Form/Radio';
@@ -80,7 +83,7 @@ class PaymentAgentWithdraw extends React.Component {
                                         <h2 className='payment-agent__header'>
                                             <Localize i18n_default_text='Payment agent withdrawal' />
                                         </h2>
-                                        <Form
+                                        <Formik
                                             initialValues={{
                                                 amount        : '',
                                                 payment_agents: this.props.selected_payment_agent.value,
@@ -90,8 +93,8 @@ class PaymentAgentWithdraw extends React.Component {
                                             onSubmit={this.onWithdrawalPassthrough}
                                         >
                                             {
-                                                ({ isSubmitting, isValid, values }) => (
-                                                    <React.Fragment>
+                                                ({ errors, isSubmitting, isValid, touched, values }) => (
+                                                    <Form>
                                                         <Dropdown
                                                             id='payment_agents'
                                                             className='payment-agent__drop-down'
@@ -151,15 +154,21 @@ class PaymentAgentWithdraw extends React.Component {
                                                         {/*    onToggle={this.props.setIsNameSelected} */}
                                                         {/* /> */}
                                                         {/* eslint-enable max-len */}
-                                                        <Input
-                                                            autoComplete='off'
-                                                            className='payment-agent__input-long'
-                                                            type='number'
-                                                            maxLength='30'
-                                                            name='amount'
-                                                            label={localize('Amount')}
-                                                            leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
-                                                        />
+                                                        <Field name='amount'>
+                                                            {({ field }) => (
+                                                                <Input
+                                                                    { ...field }
+                                                                    className='payment-agent__input-long dc-input--no-placeholder'
+                                                                    type='number'
+                                                                    label={localize('Amount')}
+                                                                    error_message={ touched.amount && errors.amount }
+                                                                    required
+                                                                    leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                                                    autoComplete='off'
+                                                                    maxLength='30'
+                                                                />
+                                                            )}
+                                                        </Field>
                                                         <div className='payment-agent__submit'>
                                                             {this.props.error.message &&
                                                             <React.Fragment>
@@ -189,10 +198,10 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 <Localize i18n_default_text='Withdraw' />
                                                             </Button>
                                                         </div>
-                                                    </React.Fragment>
+                                                    </Form>
                                                 )
                                             }
-                                        </Form>
+                                        </Formik>
                                     </React.Fragment>
                                 }
                             </div>

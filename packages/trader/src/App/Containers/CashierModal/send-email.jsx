@@ -15,6 +15,7 @@ class SendEmail extends React.Component {
                     <EmailSent
                         is_email_sent={this.props.is_email_sent}
                         is_resend_clicked={this.props.is_resend_clicked}
+                        resend_timeout={this.props.resend_timeout}
                     />
                     :
                     <React.Fragment>

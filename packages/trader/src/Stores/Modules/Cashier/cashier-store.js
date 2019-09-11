@@ -9,6 +9,8 @@ import { localize }         from 'App/i18n';
 import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
+const bank_default_option = [{ text: localize('any'), value: '' }];
+
 class Config {
     container          = '';
     is_session_timeout = true;
@@ -30,6 +32,23 @@ class ConfigError {
     @observable onClickButton = null;
 }
 
+class ConfigPaymentAgent {
+    list = [];
+
+    @observable agents                 = [];
+    @observable container              = 'payment_agent';
+    @observable error                  = new ConfigError();
+    @observable filtered_list          = [];
+    @observable is_name_selected       = true;
+    @observable is_withdraw            = false;
+    @observable is_withdraw_successful = false;
+    @observable receipt                = {};
+    @observable selected_agent         = {};
+    @observable selected_bank          = bank_default_option[0].value;
+    @observable supported_banks        = bank_default_option;
+    @observable verification           = new ConfigVerification();
+}
+
 class ConfigVerification {
     is_button_clicked = false;
     timeout_button    = '';
@@ -42,29 +61,13 @@ class ConfigVerification {
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
-    bank_default_option = [{ text: localize('any'), value: '' }];
-
     @observable config = {
         deposit: {
             ...(toJS(new Config({ container: 'deposit' }))),
             error: new ConfigError(),
         },
-        payment_agent: {
-            agents                : [],
-            container             : 'payment_agent',
-            error                 : new ConfigError(),
-            filtered_list         : [],
-            list                  : [],
-            is_name_selected      : true,
-            is_withdraw           : false,
-            is_withdraw_successful: false,
-            receipt               : {},
-            selected_agent        : {},
-            selected_bank         : this.bank_default_option[0].value,
-            supported_banks       : this.bank_default_option,
-            verification          : new ConfigVerification(),
-        },
-        withdraw: {
+        payment_agent: new ConfigPaymentAgent(),
+        withdraw     : {
             ...(toJS(new Config({ container: 'withdraw' }))),
             error       : new ConfigError(),
             verification: new ConfigVerification(),
@@ -357,6 +360,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resendVerificationEmail() {
         // don't allow clicking while ongoing timeout
+        console.log('pa', this.config.payment_agent.verification.resend_timeout);
+        console.log('withdraw', this.config.withdraw.verification.resend_timeout);
         if (this.config[this.active_container].verification.resend_timeout < 60) {
             return;
         }
@@ -564,9 +569,12 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetPaymentAgent = () => {
+    resetPaymentAgent = (should_clear_list) => {
         this.setIsWithdraw(false);
         this.clearVerification();
+        if (should_clear_list) {
+            this.config.payment_agent = new ConfigPaymentAgent();
+        }
     };
 
     onAccountSwitch() {
@@ -578,6 +586,7 @@ export default class CashierStore extends BaseStore {
             this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
+        this.resetPaymentAgent(true);
     }
 
     accountSwitcherListener() {

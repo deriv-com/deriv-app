@@ -61,6 +61,8 @@ class FinancialAssessment extends React.Component {
             account_turnover,
             is_loading } = this.state;
 
+        if (is_loading) return <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
+
         return (
             <Formik
                 initialValues={{
@@ -89,11 +91,7 @@ class FinancialAssessment extends React.Component {
                 }) => (
                     <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
                         <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
-                        {is_loading ?
-                            <FormBody>
-                                <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
-                            </FormBody>
-                            :
+                        {
                             <FormBody scroll_offset='90px'>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Dropdown

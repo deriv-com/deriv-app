@@ -22,7 +22,7 @@ const ProofOfIdentity = () => import('App/Containers/AccountManagementModal/Veri
 const AccountLimits           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/account-limits.jsx');
 // const ApiToken                = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/api-token.jsx');
 // const ConnectedApps           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/connected-apps.jsx');
-const DerivPassword           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/deriv-password.jsx');
+const DerivPassword           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/DerivPassword/');
 // const LoginHistory            = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/login-history.jsx');
 // const SelfExclusion           = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/self-exclusion.jsx');
 // const TwoFactorAuthentication = () => import('App/Containers/AccountManagementModal/SecurityAndSafety/two-factor-authentication.jsx');

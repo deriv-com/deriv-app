@@ -16,7 +16,7 @@ const Statement     = lazy(() => import(/* webpackChunkName: "statement" */     
 
 // Account Management Routes
 const Account             = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
-const PersonalDetails     = lazy(() => import(/* webpackChunkName: "personal_details" */     'Modules/Account/Containers/personal-details.jsx'));
+const PersonalDetails     = lazy(() => import(/* webpackChunkName: "personal_details" */     'Modules/Account/Sections/Profile/PersonalDetails'));
 const FinancialAssessment = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Sections/Profile/FinancialAssessment'));
 const ProofOfIdentity     = lazy(() => import(/* webpackChunkName: "proof_of_identity" */    'Modules/Account/Sections/Verification/ProofOfIdentity'));
 const ProofOfAddress      = lazy(() => import(/* webpackChunkName: "proof_of_address" */     'Modules/Account/Sections/Verification/ProofOfAddress'));

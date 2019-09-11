@@ -7,6 +7,9 @@
             --logo-loading-color: rgba(0, 0, 0, 0.8);
             --header-footer-bg-color: rgba(0, 0, 0, 0.04);
             --content-bg-color: #fff;
+            --general-main-1: #ffffff;
+            --general-section-1: #f2f3f4;
+            --text-prominent: #333333;
             font-size: 62.5%;
         }
         .deriv-app > .header__loading {
@@ -36,6 +39,9 @@
                 document.documentElement.style.setProperty('--header-footer-bg-color', '#0b0e18');
                 document.documentElement.style.setProperty('--content-bg-color', '#101320');
                 document.documentElement.style.setProperty('--logo-loading-color', '#fff');
+                document.documentElement.style.setProperty('--general-main-1', '#0e0e0e');
+                document.documentElement.style.setProperty('--general-section-1', '#151717');
+                document.documentElement.style.setProperty('--text-prominent', '#ffffff');
             }
         }
     </script>
@@ -123,7 +129,7 @@
 <!-- End GTM NoScript -->
 
 <div id="deriv_app" class="deriv-app">
-    <header class="header__loading" style="position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;">
+    <header class="header__loading" style="background: var(--general-main-1); border-bottom: 1px solid var(--general-section-1); position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;">
         <div class="icon_loading" style="height: 100%; padding: 0 1.6em; position: relative; display: inline-flex; align-items: center;">
             <svg className='inline-icon header__icon' style='margin-right: 0.8rem; vertical-align: middle;' width='32' height='32' viewBox='0 0 32 32'>
                 <g fill='none' fillRule='evenodd'>
@@ -132,7 +138,7 @@
                     <path fill='#FFF' d='M15.393 5.982H9.45l2.484 3.05h3.448a6.979 6.979 0 0 1 6.839 6.98c0 3.8-3.04 6.902-6.839 6.978h-3.734l-2.41 2.93h6.144c5.449-.06 9.82-4.52 9.77-9.969.05-5.445-4.315-9.903-9.76-9.97' />
                 </g>
             </svg>
-            <div className='header__title' style='display: inline-block; font-weight: bold; font-size: 1.6rem;'>DTrader<span className='header__logo' style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;">BETA</span></div>
+            <div className='header__title' style='display: inline-block; font-weight: bold; font-size: 1.6rem; color: var(--text-prominent);'>DTrader<span className='header__logo' style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;">BETA</span></div>
         </div>
     </header>
     <div class="app-contents app-contents__loading" style="margin-bottom: 0; overflow: hidden;">
@@ -146,7 +152,7 @@
             </div>
         </div>
     </div>
-    <footer class="footer__loading" style="position: fixed; bottom: 0; width: 100%; height: 35px; z-index: 3;"></footer>
+    <footer class="footer__loading" style="background: var(--general-main-1); border-top: 1px solid var(--general-section-1); position: fixed; bottom: 0; width: 100%; height: 35px; z-index: 3;"></footer>
 </div>
 <div id="modal_root" class="modal-root"></div>
 </body>

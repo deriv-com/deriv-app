@@ -116,22 +116,10 @@ $header-height: 3.6em;
             width: 100%;
             margin: 8px;
             height: 40px;
-            @include themify($themes) {
-                background-color: themed('background_button_color');
-                border-color: themed('background_button_color');
-            }
 
-            &:hover {
-                @include themify($themes) {
-                    background-color: themed('tab_hover_color');
-                }
-            }
             .btn__text {
-                font-size: 1.2em;
+                font-size: 1.4em;
                 font-weight: bold;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
             }
         }
     }

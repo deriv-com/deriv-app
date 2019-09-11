@@ -24,7 +24,7 @@ class SendEmail extends React.Component {
                                     <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'><Localize i18n_default_text={'Didn\'t receive our email?'} /></p>
                                     <p className='withdraw__email-sent-text'><Localize i18n_default_text={'Please check your spam folder. If it\'s not there, try resending the email.'} /></p>
                                     <Button
-                                        className='btn--secondary btn--secondary--orange withdraw__resend-button'
+                                        className='btn--secondary--default withdraw__resend-button'
                                         classNameSpan='withdraw__resend-button-text'
                                         is_disabled={this.props.resend_timeout < 60}
                                         has_effect
@@ -46,7 +46,7 @@ class SendEmail extends React.Component {
                             <Localize i18n_default_text='To protect your account, we need to authenticate withdrawals.' />
                         </p>
                         <Button
-                            className='btn--primary btn--primary--orange withdraw__verify-button'
+                            className='btn--primary--default withdraw__verify-button'
                             classNameSpan='withdraw__verify-button-text'
                             has_effect
                             text={localize('Get authentication email')}

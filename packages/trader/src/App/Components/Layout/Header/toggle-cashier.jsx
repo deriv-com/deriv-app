@@ -68,7 +68,7 @@ class ToggleCashier extends React.PureComponent {
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary btn--primary--orange')}
+                    className={classNames(className, 'btn--primary--default')}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}

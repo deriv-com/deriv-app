@@ -12,6 +12,9 @@
     align-items: center;
     transition: opacity 0.3s;
     backface-visibility: hidden;
+    background: var(--general-main-1);
+    color: var(--text-prominent);
+    border-top: 1px solid var(--general-section-1);
 
     &:after {
         position: absolute;
@@ -26,11 +29,6 @@
             background-color: themed('background_modal_overlay');
         }
     }
-    @include themify($themes) {
-        background-color: themed('background_color');
-        color: themed('text_primary_color');
-    }
-
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;

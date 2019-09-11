@@ -80,7 +80,7 @@ export class AccountActions extends Component {
                     ) && // TODO: remove this when cashier pop up is ready
                     <Button
                         id='dt_deposit_button'
-                        className='btn--primary btn--primary--orange acc-info__button'
+                        className='btn--primary--default acc-info__button'
                         has_effect
                         text={localize('Deposit')}
                         onClick={() => {

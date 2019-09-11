@@ -110,6 +110,9 @@
                 opacity: 0.32;
                 cursor: not-allowed !important;
             }
+            .btn__text {
+                color: var(--text-prominent);
+            }
         }
         // TODO: (colors) remove this line after colors migration complete
         &--orange {

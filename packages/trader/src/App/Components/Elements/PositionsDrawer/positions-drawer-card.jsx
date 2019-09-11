@@ -219,8 +219,7 @@ const PositionsDrawerCard = ({
                     <Button
                         id={`dt_drawer_card_${id}_button`}
                         className={classNames(
-                            'btn--primary',
-                            'btn--primary--green',
+                            'btn--primary--default',
                             'btn--sell', {
                                 'btn--loading': is_sell_requested,
                             })}

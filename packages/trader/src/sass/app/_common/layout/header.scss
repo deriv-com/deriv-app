@@ -22,10 +22,12 @@
             background-color: themed('background_modal_overlay');
         }
     }
-    @include themify($themes) {
-        background-color: themed('background_color');
-        border-bottom: 1px solid themed('background_color');
-    }
+    background-color: var(--general-main-1);
+    border-bottom: 1px solid var(--general-section-1);
+    // @include themify($themes) {
+    //     background-color: themed('background_color');
+    //     border-bottom: 1px solid themed('background_color');
+    // }
 
     &--is-disabled:after {
         opacity: 1;
@@ -92,10 +94,8 @@
             @include typeface(--title-left-normal-black);
             padding: 0.5em 0;
             position: relative;
-            @include themify($themes) {
-                @include colorIcon(themed('text_primary_color'), none, themed('text_primary_color'));
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
+            @include colorIcon(var(--text-prominent), none, var(--text-prominent));
 
             &:before {
                 position: absolute;
@@ -135,7 +135,7 @@
     &__logo {
         background-color: var(--brand-secondary);
         border-radius: 10px;
-        color: var(--color-white);
+        color: var(--text-colored-background);
         display: inline-block;
         font-size: 1.4rem;
         font-weight: normal;
@@ -148,6 +148,7 @@
     &__title {
         display: inline-block;
         font-weight: bold;
+        color: var(--text-prominent);
     }
     &__icon {
         margin-right: 0.8rem;

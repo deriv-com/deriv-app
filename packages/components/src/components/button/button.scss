@@ -40,6 +40,10 @@
             &:active:not([disabled]) {
                 background: var(--button-primary-default);
             }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
             .btn__text {
                 color: var(--color-white);
             }
@@ -101,6 +105,10 @@
             }
             &:active:not([disabled]) {
                 border: 1px solid var(--button-secondary-default);
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
             }
         }
         // TODO: (colors) remove this line after colors migration complete
@@ -166,6 +174,10 @@
             }
             .btn__text {
                 color: var(--brand-red-coral); /* stylelint-disable-line color-no-hex */
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
             }
         }
     }

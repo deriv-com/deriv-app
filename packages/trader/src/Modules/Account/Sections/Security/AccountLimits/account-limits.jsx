@@ -1,14 +1,16 @@
 // import PropTypes        from 'prop-types';
-import classNames       from 'classnames';
-import React            from 'react';
-import { Scrollbars }   from 'tt-react-custom-scrollbars';
-import { localize }     from 'App/i18n';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { WS }           from 'Services';
-import Loading          from '../../../../templates/app/components/loading.jsx';
-import { addCommaToNumber } from '../../../Components/Elements/PositionsDrawer/helpers/positions-helper';
-import { Popover }     from 'deriv-components';
-import { TextContainer, Text } from '../Components/layout-components';
+import classNames           from 'classnames';
+import React                from 'react';
+import { Scrollbars }       from 'tt-react-custom-scrollbars';
+import { Popover }          from 'deriv-components';
+import { localize }         from 'App/i18n';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
+import { WS }               from 'Services';
+import {
+    Text,
+    TextContainer }         from '../../../Components/layout-components.jsx';
+import Loading              from '../../../../../templates/app/components/loading.jsx';
 
 const display_decimals = 2;
 const makeTurnoverLimitRow = arr => (
@@ -200,4 +202,4 @@ class AccountLimits extends React.Component {
 
 // AccountLimits.propTypes = {};
 
-export default AccountLimits
+export default AccountLimits;

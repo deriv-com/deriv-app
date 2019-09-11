@@ -11,4 +11,4 @@ class ProofOfAddress extends React.Component {
 
 // ProofOfAddress.propTypes = {};
 
-export default ProofOfAddress
+export default ProofOfAddress;

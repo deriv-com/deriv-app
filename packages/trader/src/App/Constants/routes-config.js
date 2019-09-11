@@ -18,7 +18,10 @@ const Statement     = lazy(() => import(/* webpackChunkName: "statement" */     
 const Account             = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
 const PersonalDetails     = lazy(() => import(/* webpackChunkName: "personal_details" */     'Modules/Account/Containers/personal-details.jsx'));
 const FinancialAssessment = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Sections/Profile/FinancialAssessment'));
-// const AccountLimits = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Containers/financial-assessment.jsx'));
+const ProofOfIdentity     = lazy(() => import(/* webpackChunkName: "proof_of_identity" */    'Modules/Account/Sections/Verification/ProofOfIdentity'));
+const ProofOfAddress      = lazy(() => import(/* webpackChunkName: "proof_of_address" */     'Modules/Account/Sections/Verification/ProofOfAddress'));
+const DerivPassword       = lazy(() => import(/* webpackChunkName: "deriv_password" */       'Modules/Account/Sections/Security/DerivPassword'));
+const AccountLimits       = lazy(() => import(/* webpackChunkName: "account_limits" */       'Modules/Account/Sections/Security/AccountLimits'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -43,8 +46,30 @@ const initRoutesConfig = () => ([
         is_authenticated: true,
         title           : localize('Accounts management'),
         routes          : [
-            { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal Details'),     icon_component: 'IconOpenPositions', default: true },
-            { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial Assessment'), icon_component: 'IconProfitTable' },
+            {
+                title: localize('Profile'),
+                icon: 'IconUser',
+                subroutes: [
+                    { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
+                    { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
+                ],
+            },
+            {
+                title: localize('Verification'),
+                icon: 'IconVerification',
+                subroutes: [
+                    { path: routes.proof_of_identity, component: ProofOfIdentity, title: localize('Proof of identity') },
+                    { path: routes.proof_of_address,  component: ProofOfAddress,  title: localize('Proof of address') },
+                ]
+            },
+            {
+                title: localize('Security and safety'),
+                icon: 'IconSecurity',
+                subroutes: [
+                    { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
+                    { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },
+                ],
+            }
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),    exact: true },

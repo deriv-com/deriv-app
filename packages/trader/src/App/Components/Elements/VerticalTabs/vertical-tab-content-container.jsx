@@ -51,11 +51,11 @@ class VerticalTabContentContainer extends React.PureComponent {
                     <Switch>
                         <Redirect exact from={routes.reports} to={routes.positions} />
                         {
-                            items.map(({ value, path, icon }) => {
-                                const Component = value;
+                            items.map(({ value, component, path, icon }, idx) => {
+                                const Component = value || component;
                                 return (
                                     <Route
-                                        key={path}
+                                        key={idx}
                                         path={path}
                                         render={() => <Component component_icon={icon} />}
                                     />

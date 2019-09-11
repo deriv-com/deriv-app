@@ -3,7 +3,7 @@ import React                                              from 'react';
 import { MenuAccordionHeaders }                           from './menu-accordion-headers.jsx';
 import { VerticalTabContentContainer, VerticalTabLayout } from '../VerticalTabs';
 
-const getAllSubTabList = list => list.map(item => item.sub_tab_list).flat();
+const getAllSubTabList = list => list.map(item => item.subroutes).flat();
 class MenuAccordion extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class MenuAccordion extends React.PureComponent {
     };
 
     render() {
-        const { list, action_bar, action_bar_classname, id, is_full_width } = this.props;
+        const { list, action_bar, action_bar_classname, id, is_full_width, is_routed } = this.props;
         const { selected_content } = this.state;
 
         const sub_tabs = getAllSubTabList(list);
@@ -29,12 +29,14 @@ class MenuAccordion extends React.PureComponent {
                     items={list}
                     onChange={this.changeSelectedContent}
                     selected={selected_content}
+                    is_routed={is_routed}
                 />
                 <VerticalTabContentContainer
                     action_bar={action_bar}
                     action_bar_classname={action_bar_classname}
                     id={id}
                     items={sub_tabs}
+                    is_routed={is_routed}
                     selected={selected_content}
                 />
             </VerticalTabLayout>

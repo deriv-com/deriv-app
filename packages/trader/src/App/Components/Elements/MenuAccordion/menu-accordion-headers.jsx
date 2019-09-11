@@ -8,12 +8,12 @@ import {
 
 class MenuAccordionHeaders extends React.PureComponent {
     state = {
-        [this.props.items[0].label]: true,
+        [this.props.items[0].title]: true,
     }
 
     handleAccordion = (selected) => {
         this.setState({
-            [selected.label]: !this.state[selected.label],
+            [selected.title]: !this.state[selected.title],
         });
     }
 
@@ -23,7 +23,7 @@ class MenuAccordionHeaders extends React.PureComponent {
         return (
             <VerticalTabWrapper>
                 {items.map((item, idx) => {
-                    const show_sub_tab_list = this.state[item.label] ;
+                    const show_sub_tab_list = this.state[item.title];
 
                     return (
                         <div key={idx} className='menu-accordion'>
@@ -44,9 +44,10 @@ class MenuAccordionHeaders extends React.PureComponent {
                             })}
                             >
                                 <VerticalTabHeaders
-                                    items={item.sub_tab_list}
+                                    items={item.subroutes}
                                     onChange={onChange}
                                     selected={selected}
+                                    is_routed={this.props.is_routed}
                                 />
                             </div>
                         </div>

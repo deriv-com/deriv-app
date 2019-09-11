@@ -11,4 +11,4 @@ class ProofOfIdentity extends React.Component {
 
 // ProofOfIdentity.propTypes = {};
 
-export default ProofOfIdentity
+export default ProofOfIdentity;

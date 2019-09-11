@@ -31,10 +31,23 @@
         text-decoration: none;
     }
     &--primary {
+        &--default {
+            background: var(--button-primary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-primary-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-primary-default);
+            }
+            .btn__text {
+                color: var(--color-white);
+            }
+        }
+        // TODO: (colors) remove this line after colors migration complete
         .btn__text {
             color: $COLOR_WHITE;
         }
-        // TODO: (colors) remove this line after colors migration complete
         &--orange {
             background: $COLOR_ORANGE;
 
@@ -74,10 +87,23 @@
                 color: $COLOR_LIGHT_BLACK_4;
             }
         }
+        // TODO: (colors) remove this line after colors migration complete -- End here
     }
     &--secondary {
         background: transparent;
 
+        &--default {
+            background: transparent;
+            border: 1px solid var(--button-secondary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-secondary-hover);
+            }
+            &:active:not([disabled]) {
+                border: 1px solid var(--button-secondary-default);
+            }
+        }
+        // TODO: (colors) remove this line after colors migration complete
         &--orange {
             .btn__text {
                 color: $COLOR_ORANGE;
@@ -125,6 +151,22 @@
             border: 0 !important;
             color: $COLOR_LIGHT_BLACK_4 !important;
             cursor: not-allowed !important;
+        }
+        // TODO: (colors) remove this line after colors migration complete -- End here
+    }
+    &--tertiary {
+        &--default {
+            background: var(--button-tertiary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-tertiary-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-tertiary-default);
+            }
+            .btn__text {
+                color: var(--brand-red-coral); /* stylelint-disable-line color-no-hex */
+            }
         }
     }
     &--flat {

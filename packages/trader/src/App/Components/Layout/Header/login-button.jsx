@@ -8,7 +8,7 @@ import { localize }        from 'App/i18n';
 const LoginButton = ({ className }) => (
     <Button
         id='dt_login_button'
-        className={classNames(className, 'btn--secondary btn--secondary--red')}
+        className={classNames(className, 'btn--tertiary--default')}
         has_effect
         text={localize('Log in')}
         onClick={redirectToLogin}

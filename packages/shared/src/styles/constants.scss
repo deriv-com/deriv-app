@@ -16,6 +16,7 @@
     --color-black-7: #000000b8;
     --color-black-8: #323738;
     --color-black-9: #0e0e0ef5;
+    --color-black-10: #00000014;
     --color-white: #ffffff;
     --color-white-1: #fffffff5;
     --color-red: #ff444f;
@@ -23,6 +24,8 @@
     --color-red-2: #cc2e3d;
     --color-red-3: #a32430;
     --color-red-4: #d33636;
+    --color-red-5: #eb3e48;
+    --color-red-6: #ff444f14;
     --color-grey: #c2c2c2;
     --color-grey-1: #999999;
     --color-grey-2: #f2f3f4;
@@ -70,7 +73,7 @@
         --text-disabled: var(--color-grey-6);
         --text-profit-success: var(--color-green-1);
         --text-loss-danger: var(--color-red-1);
-        --text-dark-background: var(--color-white);
+        --text-colored-background: var(--color-white);
         // Purchase
         --purchase-main-1: var(--color-green-1);
         --purchase-section-1: var(--color-green-2);
@@ -80,7 +83,11 @@
         --purchase-disabled-section: var(--color-grey-4);
         // Buttons
         --button-primary-default: var(--brand-red-coral);
-        --button-secondary-default: transparent;
+        --button-secondary-default: var(--color-grey-1);
+        --button-tertiary-default: transparent;
+        --button-primary-hover: var(--color-red-5);
+        --button-secondary-hover: var(--color-black-10);
+        --button-tertiary-hover: var(--color-red-6);
         // TODO: update hover colors until comment resolved
         // Overlay
         --overlay-outside-dialog: var(--color-black-7);
@@ -119,7 +126,7 @@
         --text-disabled: var(--color-black-6);
         --text-profit-success: var(--color-green-3);
         --text-loss-danger: var(--color-red-2);
-        // TODO: --text-dark-background: var(--color-white);
+        --text-colored-background: var(--color-white);
         // Purchase
         --purchase-main-1: var(--color-green-3);
         --purchase-section-1: var(--color-green-4);
@@ -127,10 +134,12 @@
         --purchase-section-2: var(--color-red-3);
         --purchase-disabled-main: var(--color-black-4);
         --purchase-disabled-section: var(--color-black);
-        // TODO: Buttons
-        // --button-primary-default: var(--brand-red-coral);
-        // --button-secondary-default: transparent;
-        // TODO: update hover colors until comment resolved
+        --button-primary-default: var(--brand-red-coral);
+        --button-secondary-default: var(--color-grey-7);
+        --button-tertiary-default: transparent;
+        --button-primary-hover: var(--color-red-5);
+        --button-secondary-hover: var(--color-black-10);
+        --button-tertiary-hover: var(--color-red-6);
         // Overlay
         --overlay-outside-dialog: var(--color-black-7);
         --overlay-inside-dialog: var(--color-black-9);

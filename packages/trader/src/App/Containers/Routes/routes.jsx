@@ -18,13 +18,20 @@ const Routes = (props) => {
         );
     }
 
-    return <BinaryRoutes is_logged_in={props.is_logged_in} />;
+    return (
+        <BinaryRoutes
+            is_logged_in={props.is_logged_in}
+            passthrough={props.passthrough}
+            is_virtual={props.is_virtual}
+        />
+    );
 };
 
 Routes.propTypes = {
     error       : MobxPropTypes.objectOrObservableObject,
     has_error   : PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_virtual  : PropTypes.bool,
 };
 
 // need to wrap withRouter around connect
@@ -32,6 +39,7 @@ Routes.propTypes = {
 export default withRouter(connect(
     ({ client, common }) => ({
         is_logged_in: client.is_logged_in,
+        is_virtual  : client.is_virtual,
         error       : common.error,
         has_error   : common.has_error,
     })

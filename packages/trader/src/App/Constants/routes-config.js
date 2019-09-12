@@ -22,6 +22,7 @@ const ProofOfIdentity     = lazy(() => import(/* webpackChunkName: "proof_of_ide
 const ProofOfAddress      = lazy(() => import(/* webpackChunkName: "proof_of_address" */     'Modules/Account/Sections/Verification/ProofOfAddress'));
 const DerivPassword       = lazy(() => import(/* webpackChunkName: "deriv_password" */       'Modules/Account/Sections/Security/DerivPassword'));
 const AccountLimits       = lazy(() => import(/* webpackChunkName: "account_limits" */       'Modules/Account/Sections/Security/AccountLimits'));
+const DemoMessage         = lazy(() => import(/* webpackChunkName: "demo_message" */         'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -47,29 +48,30 @@ const initRoutesConfig = () => ([
         title           : localize('Accounts management'),
         routes          : [
             {
-                title: localize('Profile'),
-                icon: 'IconUser',
+                title    : localize('Profile'),
+                icon     : 'IconUser',
                 subroutes: [
                     { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
-                    { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
+                    { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment'), is_virtual: true },
                 ],
             },
             {
-                title: localize('Verification'),
-                icon: 'IconVerification',
-                subroutes: [
+                title     : localize('Verification'),
+                icon      : 'IconVerification',
+                is_virtual: true,
+                subroutes : [
                     { path: routes.proof_of_identity, component: ProofOfIdentity, title: localize('Proof of identity') },
                     { path: routes.proof_of_address,  component: ProofOfAddress,  title: localize('Proof of address') },
-                ]
+                ],
             },
             {
-                title: localize('Security and safety'),
-                icon: 'IconSecurity',
+                title    : localize('Security and safety'),
+                icon     : 'IconSecurity',
                 subroutes: [
                     { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
-                    { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },
+                    { path: routes.account_limits, component: AccountLimits, title: localize('Account limits'), is_virtual: true },
                 ],
-            }
+            },
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),    exact: true },

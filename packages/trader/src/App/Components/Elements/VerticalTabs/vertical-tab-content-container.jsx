@@ -16,6 +16,7 @@ class VerticalTabContentContainer extends React.PureComponent {
         } = this.props;
         const selected_item = items.find(item => item.label === selected.label);
         const TabContent    = selected_item.value;
+        console.warn(items);
 
         return (
             <div className='vertical-tab__content'>

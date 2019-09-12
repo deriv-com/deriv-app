@@ -1,5 +1,9 @@
 export const experience_list = [
     {
+      text: 'Please select',
+      value: ''
+    },
+    {
         text       : '0-1 year',
         value      : '0-1 year',
     },
@@ -14,6 +18,10 @@ export const experience_list = [
 ];
 
 export const income_source_list = [
+    {
+      text: 'Please select',
+      value: ''
+    },
     {
         text: 'Salaried Employee',
         value: 'Salaried Employee'
@@ -195,6 +203,10 @@ export const occupation_list = [
 
 export const source_of_wealth_list = [
     {
+      text: 'Please select',
+      value: ''
+    },
+    {
       text: 'Accumulation of Income/Savings',
       value: 'Accumulation of Income/Savings'
     },
@@ -245,6 +257,10 @@ export const education_level_list = [
 
 export const net_income_list = [
     {
+      text: 'Please select',
+      value: ''
+    },
+    {
       text: 'Less than $25,000',
       value: 'Less than $25,000'
     },
@@ -268,6 +284,10 @@ export const net_income_list = [
 
 export const estimated_worth_list = [
     {
+      text: 'Please select',
+      value: ''
+    },
+    {
       text: 'Less than $100,000',
       value: 'Less than $100,000'
     },
@@ -290,6 +310,10 @@ export const estimated_worth_list = [
 ];
 
 export const account_turnover_list = [
+  {
+    text: 'Please select',
+    value: ''
+  },
   {
     text: 'Less than $25,000',
     value: 'Less than $25,000'

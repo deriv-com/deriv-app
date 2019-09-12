@@ -1,7 +1,6 @@
 // import PropTypes        from 'prop-types';
 import classNames           from 'classnames';
 import React                from 'react';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { Popover }          from 'deriv-components';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
@@ -10,6 +9,7 @@ import { WS }               from 'Services';
 import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import Loading              from '../../../../../templates/app/components/loading.jsx';
 import {
+    ScrollbarsContainer,
     TextContainer,
     Text }                  from '../../../Components/layout-components.jsx';
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
@@ -82,7 +82,7 @@ class AccountLimits extends React.Component {
 
         return (
             <section className='account-limit-container'>
-                <Scrollbars>
+                <ScrollbarsContainer>
                     <Text className='account-limit-container__main-text'>
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
@@ -205,7 +205,7 @@ class AccountLimits extends React.Component {
                     <TextContainer>
                         <Text size='small' color='grey'>{localize('Stated limits are subject to change without prior notice.')}</Text>
                     </TextContainer>
-                </Scrollbars>
+                </ScrollbarsContainer>
             </section>
         );
     }

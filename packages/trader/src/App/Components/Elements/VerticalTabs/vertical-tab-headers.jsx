@@ -1,17 +1,16 @@
 import React                  from 'react';
 import { VerticalTabWrapper } from './vertical-tab-wrapper.jsx';
-import { VerticalTabHeader }  from './vertical-tab-header.jsx';
+import {
+    VerticalTabHeader,
+    VerticalTabHeaderTitle }  from './vertical-tab-header.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
     render() {
         return (
             <VerticalTabWrapper>
                 {this.props.header_title &&
-                    <div className='vertical-tab__header-title'>
-                        <p>{ this.props.header_title }</p>
-                    </div>
+                    <VerticalTabHeaderTitle header_title={this.props.header_title} />
                 }
-
                 {this.props.items.map((item, idx) => (
                     <VerticalTabHeader
                         item={item}

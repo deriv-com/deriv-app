@@ -2,6 +2,14 @@
 .menu-accordion {
     overflow: hidden;
 
+    &-heading {
+        padding: 20px 16px;
+    }
+    &-title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-right: 8px;
+    }
     &__subtab {
         opacity: 0;
         max-height: 0;

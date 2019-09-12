@@ -1,10 +1,10 @@
-import classNames       from 'classnames';
-import React            from 'react';
-import Icon             from 'Assets/icon.jsx';
+import classNames         from 'classnames';
+import React              from 'react';
+import Icon               from 'Assets/icon.jsx';
 import {
     VerticalTabHeaders,
     VerticalTabWrapper,
-    VerticalTabHeader } from '../VerticalTabs';
+    VerticalTabHeader }   from '../VerticalTabs';
 
 class MenuAccordionHeaders extends React.PureComponent {
     state = {
@@ -18,10 +18,15 @@ class MenuAccordionHeaders extends React.PureComponent {
     }
 
     render() {
-        const { onChange, selected, items } = this.props;
+        const { onChange, selected, items, header_title } = this.props;
 
         return (
             <VerticalTabWrapper>
+                {header_title && 
+                    <div className='menu-accordion-heading'>
+                        <h1 className='menu-accordion-title'>{header_title}</h1>
+                    </div>
+                }
                 {items.map((item, idx) => {
                     const show_sub_tab_list = this.state[item.title];
 

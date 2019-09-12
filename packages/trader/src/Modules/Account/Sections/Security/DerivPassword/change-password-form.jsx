@@ -58,17 +58,17 @@ class ChangePasswordForm extends React.Component {
                         validateField,
                     }) => (
                         <form className='account-management-form' onSubmit={handleSubmit}>
-                            <div className='account-management-form-header'>
-                                <h1 className='account-management-form-header-text'>
-                                    {localize('Change your Deriv password')}
-                                </h1>
-                            </div>
                             {this.state.is_loading ?
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
                                 </FormBody>
                                 :
-                                <FormBody scroll_offset='90px'>
+                                <FormBody scroll_offset='55px'>
+                                    <div className='account-management-form-header'>
+                                        <h1 className='account-management-form-header-text'>
+                                            {localize('Change your Deriv password')}
+                                        </h1>
+                                    </div>
                                     {/** TODO: replace with Input */}
                                     <Label>Current password</Label>
                                     <Input type='password' name='old_password' value={values.old_password} onChange={handleChange} />

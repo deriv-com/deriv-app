@@ -55,8 +55,20 @@ class TransitionBlocker extends React.Component {
                             icon={<IconUnsavedChanges />}
                         >
                             <div className='account-management-flex-wrapper'>
-                                <Button type='button' onClick={this.back}>{localize('Cancel')}</Button>
-                                <Button type='button' onClick={this.leave}>{localize('Leave')}</Button>
+                                <Button
+                                    className='btn--secondary'
+                                    type='button'
+                                    has_effect
+                                    onClick={this.back}
+                                    text={localize('Cancel')}
+                                />
+                                <Button
+                                    className='btn--primary'
+                                    type='button'
+                                    has_effect
+                                    onClick={this.leave}
+                                    text={localize('Leave')}
+                                />
                             </div>
                         </IconMessageContent>
                     </>

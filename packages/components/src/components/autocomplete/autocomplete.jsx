@@ -106,7 +106,7 @@ class Autocomplete extends React.PureComponent {
                 <DropdownList
                     style={ {
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',
-                        marginTop: 'calc(4px - 18px)', // 4px is the standard margin. In case of error, the list should overlap the error
+                        marginTop: 'calc(4px - 32px)', // 4px is the standard margin. In case of error, the list should overlap the error
                         // TODO confirm placement of dropdown list and positioning of error
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
                     } }

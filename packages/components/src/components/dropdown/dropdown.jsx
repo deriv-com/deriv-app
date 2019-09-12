@@ -277,6 +277,9 @@ class Dropdown extends React.PureComponent {
                             })}
                         />
                     }
+                    {this.props.error &&
+                        <p className='dc-field-error'>{this.props.error}</p>
+                    }
                     <CSSTransition
                         in={this.state.is_list_visible}
                         timeout={100}

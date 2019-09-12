@@ -31,7 +31,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     // }
 
     if (!values.amount) {
-        errors.amount = true;
+        errors.amount = localize('This field is required.');
     } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: payment_agent.min_withdrawal, max: payment_agent.max_withdrawal })) {
         errors.amount = getPreBuildDVRs().number.message;
     } else if (+balance < +values.amount) {
@@ -161,7 +161,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                     className='payment-agent__input-long dc-input--no-placeholder'
                                                                     type='number'
                                                                     label={localize('Amount')}
-                                                                    error_message={ touched.amount && errors.amount }
+                                                                    error={ touched.amount && errors.amount }
                                                                     required
                                                                     leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
                                                                     autoComplete='off'

@@ -139,7 +139,7 @@ class AccountSignup extends React.Component {
                                                         className='account-signup__password-field'
                                                         type='password'
                                                         label={localize('Create a password')}
-                                                        error_message={ touched.password && errors.password }
+                                                        error={ touched.password && errors.password }
                                                         required
                                                     />
                                                 )}

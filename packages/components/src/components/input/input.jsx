@@ -25,8 +25,8 @@ const Input = (props, ref) => (
                 {props.label}
             </label>
         }
-        { props.error_message &&
-            <FieldError className={props.classNameError} message={props.error_message} />
+        { props.error &&
+            <FieldError className={props.classNameError} message={props.error} />
         }
     </div>
 );

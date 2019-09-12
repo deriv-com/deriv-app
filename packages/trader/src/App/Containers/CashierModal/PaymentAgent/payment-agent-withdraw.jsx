@@ -75,7 +75,7 @@ class PaymentAgentWithdraw extends React.Component {
                         {this.props.error.button_text ?
                             <Error error={this.props.error} />
                             :
-                            <div className='payment-agent__wrapper'>
+                            <div className='cashier__wrapper--align-left'>
                                 {this.props.is_withdraw_successful ?
                                     <PaymentAgentReceipt />
                                     :
@@ -158,7 +158,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                             {({ field }) => (
                                                                 <Input
                                                                     { ...field }
-                                                                    className='payment-agent__input-long dc-input--no-placeholder'
+                                                                    className='cashier__input-long dc-input--no-placeholder'
                                                                     type='number'
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
@@ -169,25 +169,18 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 />
                                                             )}
                                                         </Field>
-                                                        <div className='payment-agent__submit'>
+                                                        <div className='cashier__form-submit'>
                                                             {this.props.error.message &&
                                                             <React.Fragment>
-                                                                <Icon icon='IconEmergency' className='payment-agent__error-icon' />
-                                                                <Icon icon='IconError' className='payment-agent__error-small-icon' />
-                                                                <p className='payment-agent__error'>
+                                                                <Icon icon='IconEmergency' className='cashier__form-error-icon' />
+                                                                <Icon icon='IconError' className='cashier__form-error-small-icon' />
+                                                                <p className='cashier__form-error'>
                                                                     {this.props.error.message}
                                                                 </p>
                                                             </React.Fragment>
                                                             }
                                                             <Button
-                                                                className={
-                                                                    classNames(
-                                                                        'payment-agent__withdraw-button',
-                                                                        'btn--primary',
-                                                                        'btn--primary--orange',
-                                                                        { 'payment-agent__withdraw-button--disabled': !values.payment_method || !isValid || isSubmitting },
-                                                                    )
-                                                                }
+                                                                className='cashier__form-submit-button btn--primary btn--primary--orange'
                                                                 type='submit'
                                                                 is_disabled={
                                                                     !values.payment_method || !isValid || isSubmitting

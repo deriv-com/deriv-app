@@ -29,7 +29,7 @@ class PaymentAgentList extends React.Component {
                         resend_timeout={this.props.resend_timeout}
                     />
                     :
-                    <div className='payment-agent__wrapper'>
+                    <div className='cashier__wrapper--align-left'>
                         <Scrollbars
                             style={{ width: '100%', height: '100%' }}
                             autoHide

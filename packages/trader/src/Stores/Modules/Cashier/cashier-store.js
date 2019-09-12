@@ -63,7 +63,9 @@ export default class CashierStore extends BaseStore {
 
     @observable config = {
         account_transfer: {
-            container: 'account_transfer',
+            container             : 'account_transfer',
+            error                 : new ConfigError(),
+            is_transfer_successful: false,
         },
         deposit: {
             ...(toJS(new Config({ container: 'deposit' }))),
@@ -580,6 +582,12 @@ export default class CashierStore extends BaseStore {
             this.config.payment_agent = new ConfigPaymentAgent();
         }
     };
+
+    @action.bound
+    onMountAccountTransfer() {
+        this.setLoading(true);
+        this.setLoading(false);
+    }
 
     onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {

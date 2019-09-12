@@ -4,9 +4,62 @@
         width: 100%;
     }
     &__wrapper {
-        width: 100%;
-        height: 100%;
         text-align: center;
+
+        &, &--align-left {
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            width: 100%;
+            height: 100%;
+            font-size: 1.4rem;
+            line-height: 1.43;
+        }
+        &--align-left {
+            text-align: left;
+        }
+    }
+    &__form {
+        &-submit {
+            display: flex;
+            justify-content: flex-end;
+            box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
+            width: 72%;
+            margin-left: -2.4rem;
+            position: absolute;
+            bottom: 0;
+            height: 8rem;
+        }
+        &-error {
+            flex: 1;
+            margin: 2rem 5.6rem 4.4rem 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.33;
+
+            &-icon {
+                position: absolute;
+                left: 0;
+            }
+            &-small-icon {
+                margin: 2rem 1.6rem 4.4rem 2.4rem;
+            }
+        }
+        &-submit-button {
+            width: 9.8rem;
+            min-width: 9.8rem;
+            display: inline-block;
+            height: 4rem;
+            font-size: 1.4rem;
+            padding: 1rem 1.6rem;
+            font-weight: bold;
+            color: $COLOR_WHITE;
+            margin: 1.6rem 2.4rem 2.4rem;
+        }
+    }
+    &__input-long {
+        display: inline-block !important;
+        margin-bottom: 0 !important;
     }
     /** @define cashier-error */
     &-error {
@@ -108,16 +161,6 @@
 
 /** @define payment-agent */
 .payment-agent {
-    &__wrapper {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-        font-size: 1.4rem;
-        line-height: 1.43;
-        height: 100%;
-        width: 100%;
-        text-align: left;
-    }
     &__header {
         font-size: 1.6rem;
         line-height: 1.5;
@@ -276,52 +319,14 @@
     &__input {
         width: 12.6rem !important;
         margin-left: 8px;
+        display: inline-block !important;
+        margin-bottom: 0 !important;
 
         &-field {
             text-align: left;
             font-size: 1.4rem;
             padding: 10px 12px !important;
             height: 4rem;
-        }
-        &, &-long {
-            display: inline-block !important;
-            margin-bottom: 0 !important;
-        }
-    }
-    &__withdraw-button {
-        width: 9.8rem;
-        min-width: 9.8rem;
-        display: inline-block;
-        height: 4rem;
-        font-size: 1.4rem;
-        padding: 1rem 1.6rem;
-        font-weight: bold;
-        color: $COLOR_WHITE;
-        margin: 1.6rem 2.4rem 2.4rem;
-    }
-    &__submit {
-        display: flex;
-        justify-content: flex-end;
-        box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
-        width: 72%;
-        margin-left: -2.4rem;
-        position: absolute;
-        bottom: 0;
-        height: 8rem;
-    }
-    &__error {
-        flex: 1;
-        margin: 2rem 5.6rem 4.4rem 0;
-        font-size: 1.2rem;
-        font-weight: 500;
-        line-height: 1.33;
-
-        &-icon {
-            position: absolute;
-            left: 0;
-        }
-        &-small-icon {
-            margin: 2rem 1.6rem 4.4rem 2.4rem;
         }
     }
 }

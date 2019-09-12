@@ -1,6 +1,7 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { connect }          from 'Stores/connect';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { connect }         from 'Stores/connect';
+import AccountTransferForm from './AccountTransfer/account-transfer-form.jsx';
 
 class AccountTransfer extends React.Component {
     componentDidMount() {
@@ -10,6 +11,7 @@ class AccountTransfer extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <AccountTransferForm />
             </React.Fragment>
         );
     }

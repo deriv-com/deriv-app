@@ -18,7 +18,7 @@ import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-
 
 const getResidence = (residence_list, value, type) => residence_list.find(location => location[type === 'text' ? 'value' : 'text'] === value)[type];
 
-const makeSettingsRequest = ({...settings}, residence_list) => {
+const makeSettingsRequest = ({ ...settings }, residence_list) => {
     let { email_consent, tax_residence_text, citizen_text } = settings;
 
     email_consent = +email_consent; // checkbox is boolean but api expects number (1 or 0)
@@ -30,14 +30,14 @@ const makeSettingsRequest = ({...settings}, residence_list) => {
     settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
 
     return { ...settings, citizen, tax_residence, email_consent };
-}
+};
 
 const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_number);
 
 const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
 
 const validateFields = values => {
-    let errors = {};
+    const errors = {};
     const required_fields = ['first_name', 'last_name', 'tax_residence_text', 'tax_identification_number', 'phone' ];
     required_fields.forEach(required => {
         if (!values[required]) errors[required] = localize('This field is required');
@@ -50,11 +50,11 @@ const validateFields = values => {
     }
 
     return errors;
-}
+};
 
 const InputGroup = ({ children }) => (
     <fieldset className='account-management-form-fieldset'>
-        <div style={{display: 'flex'}}>{children}</div>
+        <div style={{ display: 'flex' }}>{children}</div>
     </fieldset>
 );
 
@@ -69,7 +69,7 @@ class PersonalDetailsForm extends React.Component {
             setSubmitting(false);
             // force request to update settings cache since settings have been updated
             WS.getSettings({ forced: true });
-        })
+        });
     }
 
     showForm = show_form => this.setState({ show_form });
@@ -112,7 +112,7 @@ class PersonalDetailsForm extends React.Component {
                     phone,
                     email,
                     email_consent,
-                    tax_identification_number
+                    tax_identification_number,
                 }}
                 onSubmit={this.onSubmit}
                 validate={validateFields}
@@ -268,7 +268,7 @@ class PersonalDetailsForm extends React.Component {
                 </>
             )}
             </Formik>
-        )
+        );
     }
 
     componentDidMount() {
@@ -278,11 +278,11 @@ class PersonalDetailsForm extends React.Component {
             this.setState({ ...data.get_settings, is_loading: false });
         });
     }
-};
+}
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        residence_list          : client.residence_list,
-        fetchResidenceList      : client.fetchResidenceList
+        residence_list    : client.residence_list,
+        fetchResidenceList: client.fetchResidenceList
     }),
 )(PersonalDetailsForm);

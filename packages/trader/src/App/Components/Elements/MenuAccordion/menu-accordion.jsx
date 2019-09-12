@@ -8,7 +8,9 @@ class MenuAccordion extends React.PureComponent {
     constructor(props) {
         super(props);
         const sub_tabs = getAllSubTabList(this.props.list);
-        this.state     = { selected_content: sub_tabs[props.selected_index || 0] };
+        this.state     = {
+            selected_content: sub_tabs[props.selected_index || 0],
+        };
     }
 
     changeSelectedContent = (selected_content) => {

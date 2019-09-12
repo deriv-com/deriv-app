@@ -25,7 +25,7 @@ class TransitionBlocker extends React.Component {
 
     }
 
-    Leave = () => {
+    leave = () => {
         const { pathname } = this.state.next_location;
         this.unblock();
         this.props.history.push(pathname);

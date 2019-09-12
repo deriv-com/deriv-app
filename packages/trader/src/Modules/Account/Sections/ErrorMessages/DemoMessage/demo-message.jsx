@@ -1,5 +1,4 @@
 import React              from 'react';
-import { Button }         from 'deriv-components';
 import IconLimitedAccess  from 'Assets/AccountManagement/icon-limited-access.svg';
 import { localize }       from 'App/i18n';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';

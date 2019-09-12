@@ -120,6 +120,7 @@
     "react-content-loader": "^4.2.1",
     "react-dom": "^16.8.6",
     "react-i18next": "^10.11.1",
+    "react-password-strength": "^2.4.0",
     "react-pose": "^4.0.8",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",

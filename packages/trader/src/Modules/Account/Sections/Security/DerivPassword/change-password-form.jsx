@@ -4,10 +4,10 @@ import React        from 'react';
 import { Formik }   from 'formik';
 import {
     Button,
-    Label,
     Input }         from 'deriv-components';
 import { localize } from 'App/i18n';
 import {
+    FormSubHeader,
     FormBody,
     FormFooter }    from '../../../Components/layout-components.jsx';
 import Loading  from '../../../../../templates/app/components/loading.jsx';
@@ -58,11 +58,7 @@ class ChangePasswordForm extends React.Component {
                         validateField,
                     }) => (
                         <form className='account-management-form' onSubmit={handleSubmit}>
-                            <div className='account-management-form-header'>
-                                <h1 className='account-management-form-header-text'>
-                                    {localize('Change your Deriv password')}
-                                </h1>
-                            </div>
+                            <FormSubHeader title={localize('Change your Deriv password')} />
                             {this.state.is_loading ?
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
@@ -70,13 +66,13 @@ class ChangePasswordForm extends React.Component {
                                 :
                                 <FormBody scroll_offset='90px'>
                                     {/** TODO: replace with Input */}
-                                    <Label>Current password</Label>
-                                    <Input type='password' name='old_password' value={values.old_password} onChange={handleChange} />
-                                    {errors.old_password || (touched.old_password && errors.old_password)}
+                                    <div className='account-management__password-content'>
+                                        <Input label='Current password' type='password' name='old_password' value={values.old_password} onChange={handleChange} />
+                                        {errors.old_password || (touched.old_password && errors.old_password)}
 
-                                    <Label>New password</Label>
-                                    <Input type='password' name='new_password' value={values.new_password} onChange={handleChange} />
-                                    {errors.new_password || (touched.new_password && errors.new_password)}
+                                        <Input label='New password' type='password' name='new_password' value={values.new_password} onChange={handleChange} />
+                                        {errors.new_password || (touched.new_password && errors.new_password)}
+                                    </div>
                                 </FormBody>
                             }
                             <FormFooter>

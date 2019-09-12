@@ -40,6 +40,8 @@
     --color-green-3: #00a79e;
     --color-green-4: #008079;
     --color-orange: #ff6444;
+    --color-yellow: #ffad3a;
+    --color-blue: #377cfc;
 
     // Text sizes
     --text-size-xs: 1.2rem;
@@ -108,6 +110,13 @@
         --fill-hover: var(--color-grey-1);
         --fill-active: var(--brand-secondary);
         --fill-disabled: var(--color-grey-3);
+        // Status
+        --status-default: var(--color-grey-3);
+        --status-danger: var(--color-red-2);
+        --status-warning: var(--color-yellow);
+        --status-success: var(--color-green-1);
+        --status-info: var(--color-blue);
+        --status-colored-background: var(--color-white);
 
     }
     .theme--dark {
@@ -159,6 +168,13 @@
         --fill-hover: var(--color-grey-7);
         --fill-active: var(--brand-secondary);
         --fill-disabled: var(--color-black-4);
+        // Status
+        --status-default: var(--color-grey-3);
+        --status-danger: var(--color-red-1);
+        --status-warning: var(--color-yellow);
+        --status-success: var(--color-green-3);
+        --status-info: var(--color-blue);
+        --status-colored-background: var(--color-white);
     }
 }
 

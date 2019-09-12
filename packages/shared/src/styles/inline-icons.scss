@@ -10,7 +10,7 @@
 
 %inline-icon {
     @include themify($themes) {
-        @include colorIcon(themed('text_primary_color'), none);
+        @include colorIcon(var(--text-prominent), none);
 
         &.active {
             @include colorIcon(themed('navbar_background_color'), themed('navbar_active_color'), themed('navbar_active_color'), none);

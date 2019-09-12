@@ -61,14 +61,15 @@
     }
     &--is-virtual {
         .acc-info__balance {
-            color: $COLOR_ORANGE;
+            color: var(--brand-secondary);
         }
         &:before {
             @include typeface(--small-left-normal-orange, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
             content: 'demo';
-            border: 1px solid $COLOR_ORANGE;
+            color: var(--brand-secondary);
+            border: 1px solid var(--brand-secondary);
             border-radius: 16px;
             pointer-events: none;
         }

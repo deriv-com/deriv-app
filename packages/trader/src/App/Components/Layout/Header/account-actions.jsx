@@ -15,13 +15,14 @@ const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info",
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
         return (
-            // nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
+            nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
             nextProps.balance !== this.props.balance ||
             nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            // nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid
@@ -38,6 +39,7 @@ export class AccountActions extends Component {
             is_acc_switcher_on,
             // is_cashier_modal_on,
             is_logged_in,
+            // is_payment_agent_visible,
             is_virtual,
             loginid,
             onClickUpgrade,
@@ -73,6 +75,7 @@ export class AccountActions extends Component {
                     {/*    className='acc-info__button' */}
                     {/*    toggleCashier={toggleCashierModal} */}
                     {/*    is_cashier_visible={is_cashier_modal_on} */}
+                    {/*    is_payment_agent_visible={is_payment_agent_visible} */}
                     {/* /> */}
                     {/* } */}
                     {!(
@@ -104,17 +107,18 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
-    // active_cashier_tab  : PropTypes.any,
-    balance             : PropTypes.any,
-    can_upgrade         : PropTypes.any,
-    can_upgrade_to      : PropTypes.any,
-    currency            : PropTypes.any,
-    is_acc_switcher_on  : PropTypes.any,
-    // is_cashier_modal_on : PropTypes.any,
-    is_logged_in        : PropTypes.any,
-    is_virtual          : PropTypes.any,
-    loginid             : PropTypes.any,
-    onClickUpgrade      : PropTypes.any,
-    toggleAccountsDialog: PropTypes.any,
-    // toggleCashierModal  : PropTypes.any,
+    active_cashier_tab      : PropTypes.any,
+    balance                 : PropTypes.any,
+    can_upgrade             : PropTypes.any,
+    can_upgrade_to          : PropTypes.any,
+    currency                : PropTypes.any,
+    is_acc_switcher_on      : PropTypes.any,
+    is_cashier_modal_on     : PropTypes.any,
+    is_logged_in            : PropTypes.any,
+    is_payment_agent_visible: PropTypes.any,
+    is_virtual              : PropTypes.any,
+    loginid                 : PropTypes.any,
+    onClickUpgrade          : PropTypes.any,
+    toggleAccountsDialog    : PropTypes.any,
+    toggleCashierModal      : PropTypes.any,
 };

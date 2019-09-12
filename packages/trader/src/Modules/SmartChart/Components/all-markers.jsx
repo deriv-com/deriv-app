@@ -174,7 +174,7 @@ const TickContract = RawMarkerMaker(({
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32); // eslint-disable-line
+        barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
     if (draw_start_line) {
         render_label({
@@ -343,7 +343,7 @@ const NonTickContract = RawMarkerMaker(({
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 8), canvas_height - 32); // eslint-disable-line
+        barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
 
     if (draw_start_line) {

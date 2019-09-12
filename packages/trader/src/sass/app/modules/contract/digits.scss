@@ -165,14 +165,14 @@
                 }
                 &--win {
                     @include themify($themes) {
-                        color: themed('text_color');
+                        color: themed('digit_widget_last_spot');
                         border-color: themed('digit_widget_win');
                         background: themed('digit_widget_win');
                     }
                 }
                 &--loss {
                     @include themify($themes) {
-                        color: themed('text_color');
+                        color: themed('digit_widget_last_spot');
                         border-color: themed('digit_widget_loss');
                         background: themed('digit_widget_loss');
                     }

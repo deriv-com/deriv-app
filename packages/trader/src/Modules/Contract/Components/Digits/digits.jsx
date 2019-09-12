@@ -59,6 +59,7 @@ class Digits extends React.PureComponent {
                     // dimension of a single digit widget including margin/padding (number)
                     // i.e - 40px + 6px left and 6px right padding/margin = 52
                     dimension={52}
+                    has_entry_spot={!!contract_info.entry_tick}
                     barrier={(!is_contract_elapsed && is_tick_ready) ? +contract_info.barrier : null}
                     contract_type={(!is_contract_elapsed && is_tick_ready) ? contract_info.contract_type : null}
                     digits={digits_array}

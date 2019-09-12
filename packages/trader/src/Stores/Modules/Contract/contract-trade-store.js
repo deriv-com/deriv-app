@@ -79,7 +79,7 @@ export default class ContractTradeStore extends BaseStore {
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
                 if (ok
                     && info.barrier
-                    && info.entry_spot
+                    && info.entry_tick
                     && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
                 ) {
                     const type = `${+info.entry_tick}` === `${+info.barrier}` ? 'rise_fall' : 'high_low';

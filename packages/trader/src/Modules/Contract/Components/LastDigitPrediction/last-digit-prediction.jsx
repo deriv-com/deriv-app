@@ -40,6 +40,7 @@ class LastDigitPrediction extends React.Component {
             digits,
             digits_info,
             is_digit_contract,
+            has_entry_spot,
             is_ended,
             is_trade_page,
             tick,
@@ -74,6 +75,7 @@ class LastDigitPrediction extends React.Component {
                 { display_array.map((idx) => (
                     <DigitDisplay
                         barrier={this.getBarrier(idx)}
+                        has_entry_spot={has_entry_spot}
                         is_digit_contract={is_digit_contract}
                         is_lost={is_lost}
                         is_trade_page={is_trade_page}

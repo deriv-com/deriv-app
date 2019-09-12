@@ -10,6 +10,7 @@ import LastDigitStat from './last-digit-stat.jsx';
 const DigitDisplay = ({
     barrier,
     is_digit_contract,
+    has_entry_spot,
     is_lost,
     is_max,
     is_min,
@@ -39,7 +40,9 @@ const DigitDisplay = ({
                 percentage={percentage}
             />
             <Bounce
-                is_visible={!!(is_digit_contract && is_latest && spot && status)}
+                is_visible={!!(
+                    is_digit_contract && is_latest && spot && status && has_entry_spot
+                )}
                 className='digits__digit-spot'
                 keyname='digits__digit-spot'
             >
@@ -64,11 +67,12 @@ const DigitDisplay = ({
 };
 
 DigitDisplay.propTypes = {
-    barrier     : PropTypes.number,
-    is_lost     : PropTypes.bool,
-    is_won      : PropTypes.bool,
-    latest_digit: PropTypes.object,
-    value       : PropTypes.number,
+    barrier       : PropTypes.number,
+    is_lost       : PropTypes.bool,
+    is_won        : PropTypes.bool,
+    latest_digit  : PropTypes.object,
+    has_entry_spot: PropTypes.bool,
+    value         : PropTypes.number,
 };
 
 export default observer(DigitDisplay);

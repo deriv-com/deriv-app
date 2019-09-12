@@ -1,5 +1,6 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
+import { Formik, Field }                       from 'formik';
 import { localize }                            from 'App/i18n';
 import { WS }                                  from 'Services';
 import { connect }                             from 'Stores/connect';
@@ -9,11 +10,11 @@ import {
     Button,
     Dropdown,
     Input }                                    from 'deriv-components';
-import { Formik, Field }                       from 'formik';
 // import { formatDate }                       from 'Utils/Date';
-import Loading                                 from '../../../../../templates/app/components/loading.jsx';
-import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 import { account_opening_reason_list }         from './constants';
+import Loading                                 from '../../../../../templates/app/components/loading.jsx';
+import { LeaveConfirm }                        from '../../../Components/leave-confirm'
+import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
 const getResidence = (residence_list, value, type) => residence_list.find(location => location[type === 'text' ? 'value' : 'text'] === value)[type];
 
@@ -58,7 +59,7 @@ const InputGroup = ({ children }) => (
 );
 
 class PersonalDetailsForm extends React.Component {
-    state = { is_loading: true }
+    state = { is_loading: true, show_form: true, }
 
     onSubmit = (values, { setSubmitting }) => {
         const request = makeSettingsRequest(values, this.props.residence_list);
@@ -70,6 +71,8 @@ class PersonalDetailsForm extends React.Component {
             WS.getSettings({ forced: true });
         })
     }
+
+    showForm = show_form => this.setState({ show_form });
 
     render() {
         const {
@@ -83,6 +86,7 @@ class PersonalDetailsForm extends React.Component {
             tax_identification_number,
             tax_residence,
             email_consent,
+            show_form,
             is_loading } = this.state;
 
         const { residence_list } = this.props;
@@ -123,140 +127,145 @@ class PersonalDetailsForm extends React.Component {
               isSubmitting,
               setFieldValue,
             }) => (
-                <form className='account-management-form' onSubmit={handleSubmit}>
-                    <FormSubHeader title={localize('Personal Details')} />
-                    <FormBody scroll_offset='90px'>
-                        <InputGroup>
-                            <Input
-                                data-lpignore='true'
-                                type='text'
-                                name='first_name'
-                                value={values.first_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                label='First name'
-                                required
-                            />
-                            {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
-                            <Input
-                                data-lpignore='true'
-                                type='text'
-                                name='last_name'
-                                label={localize('Last name')}
-                                value={values.last_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                required
-                            />
-                            {errors.last_name && touched.last_name && <div>{errors.last_name}</div>}
-                        </InputGroup>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Field name='citizen_text'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        { ...field }
+                <>
+                    <LeaveConfirm onDirty={this.showForm} />
+                    { show_form && (
+                        <form className='account-management-form' onSubmit={handleSubmit}>
+                            <FormSubHeader title={localize('Personal Details')} />
+                            <FormBody scroll_offset='90px'>
+                                <InputGroup>
+                                    <Input
                                         data-lpignore='true'
                                         type='text'
-                                        label={localize('Citizenship')}
-                                        error={touched.citizen_text && errors.citizen_text}
+                                        name='first_name'
+                                        value={values.first_name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        label='First name'
                                         required
-                                        list_items={this.props.residence_list}
-                                        onItemSelection={
-                                            (item) => setFieldValue('citizen_text', item.text, true)
-                                        }
                                     />
-                                )}
-                            </Field>
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='email'
-                                label={localize('Email')}
-                                value={values.email}
-                                required
-                                disabled
-                            />
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='phone'
-                                label={localize('Phone Number')}
-                                value={values.last_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.phone}
-                                required
-                            />
-                            {errors.phone && touched.phone && <div>{errors.phone}</div>}
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Dropdown
-                                placeholder={'Account opening reason'}
-                                is_align_text_left
-                                name='account_opening_reason'
-                                list={account_opening_reason_list}
-                                value={values.account_opening_reason}
-                                onChange={handleChange}
-                            />
-                            {(errors.account_opening_reason || (touched.account_opening_reason && errors.account_opening_reason)) &&
-                            <span className='fa-dropdown__error-message'>
-                                {errors.account_opening_reason}
-                            </span>
-                            }
-                        </fieldset>
-                        <FormSubHeader title={localize('Tax information')} />
-                        <fieldset className='account-management-form-fieldset'>
-                            <Field name='tax_residence_text'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        { ...field }
+                                    {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
+                                    <Input
                                         data-lpignore='true'
                                         type='text'
-                                        label={localize('Tax residence')}
-                                        error={touched.tax_residence_text && errors.tax_residence_text}
+                                        name='last_name'
+                                        label={localize('Last name')}
+                                        value={values.last_name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                         required
-                                        list_items={this.props.residence_list}
-                                        onItemSelection={
-                                            (item) => setFieldValue('tax_residence_text', item.text, true)
-                                        }
                                     />
-                                )}
-                            </Field>
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='tax_identification_number'
-                                label={localize('Tax identification number')}
-                                value={values.tax_identification_number}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                required
-                            />
-                        </fieldset>
-                        {errors.tax_identification_number && touched.tax_identification_number && <div>{errors.tax_identification_number}</div>}    
-                        <FormSubHeader title={localize('Email Preference')} />
-                        <fieldset className='account-management-form-fieldset'>
-                            <Checkbox
-                                name='email_consent'
-                                value={values.email_consent}
-                                onChange={handleChange}
-                                label={localize('Get updates about Deriv products, services and events.')}
-                                defaultChecked={!!values.email_consent}
-                            />
-                        </fieldset>
-                    </FormBody>
-                    <FormFooter>
-                        <Button type="submit" disabled={isSubmitting}>
-                            {localize('Submit')}
-                        </Button>
-                    </FormFooter>
-                </form>
+                                    {errors.last_name && touched.last_name && <div>{errors.last_name}</div>}
+                                </InputGroup>
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Field name='citizen_text'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                { ...field }
+                                                data-lpignore='true'
+                                                type='text'
+                                                label={localize('Citizenship')}
+                                                error={touched.citizen_text && errors.citizen_text}
+                                                required
+                                                list_items={this.props.residence_list}
+                                                onItemSelection={
+                                                    (item) => setFieldValue('citizen_text', item.text, true)
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </fieldset>
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Input
+                                        data-lpignore="true"
+                                        type='text'
+                                        name='email'
+                                        label={localize('Email')}
+                                        value={values.email}
+                                        required
+                                        disabled
+                                    />
+                                </fieldset>
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Input
+                                        data-lpignore="true"
+                                        type='text'
+                                        name='phone'
+                                        label={localize('Phone Number')}
+                                        value={values.last_name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.phone}
+                                        required
+                                    />
+                                    {errors.phone && touched.phone && <div>{errors.phone}</div>}
+                                </fieldset>
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Dropdown
+                                        placeholder={'Account opening reason'}
+                                        is_align_text_left
+                                        name='account_opening_reason'
+                                        list={account_opening_reason_list}
+                                        value={values.account_opening_reason}
+                                        onChange={handleChange}
+                                    />
+                                    {(errors.account_opening_reason || (touched.account_opening_reason && errors.account_opening_reason)) &&
+                                    <span className='fa-dropdown__error-message'>
+                                        {errors.account_opening_reason}
+                                    </span>
+                                    }
+                                </fieldset>
+                                <FormSubHeader title={localize('Tax information')} />
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Field name='tax_residence_text'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                { ...field }
+                                                data-lpignore='true'
+                                                type='text'
+                                                label={localize('Tax residence')}
+                                                error={touched.tax_residence_text && errors.tax_residence_text}
+                                                required
+                                                list_items={this.props.residence_list}
+                                                onItemSelection={
+                                                    (item) => setFieldValue('tax_residence_text', item.text, true)
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </fieldset>
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Input
+                                        data-lpignore="true"
+                                        type='text'
+                                        name='tax_identification_number'
+                                        label={localize('Tax identification number')}
+                                        value={values.tax_identification_number}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                    />
+                                </fieldset>
+                                {errors.tax_identification_number && touched.tax_identification_number && <div>{errors.tax_identification_number}</div>}    
+                                <FormSubHeader title={localize('Email Preference')} />
+                                <fieldset className='account-management-form-fieldset'>
+                                    <Checkbox
+                                        name='email_consent'
+                                        value={values.email_consent}
+                                        onChange={handleChange}
+                                        label={localize('Get updates about Deriv products, services and events.')}
+                                        defaultChecked={!!values.email_consent}
+                                    />
+                                </fieldset>
+                            </FormBody>
+                            <FormFooter>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {localize('Submit')}
+                                </Button>
+                            </FormFooter>
+                        </form>
+                    )}
+                </>
             )}
             </Formik>
         )

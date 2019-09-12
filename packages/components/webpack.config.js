@@ -1,7 +1,7 @@
-const StyleLintPlugin = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+const path                 = require('path');
 
 const is_serve = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';

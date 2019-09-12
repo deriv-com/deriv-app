@@ -6,19 +6,24 @@ class Drawer extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        this.state = { is_open: props.is_open };
+    }
 
-        this.state = {
-            is_open: props.is_open,
-        };
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            is_open: nextProps.is_open,
+        });
     }
 
     toggleDrawer = () => {
-this.setState(prev_state => ({
-    is_open: !prev_state.is_open
-}));
-        if (this.props.toggleDrawer) {
-            this.props.toggleDrawer(this.state.is_open);
+        this.setState((prev_state) => ({
+            is_open: !prev_state.is_open,
+        }), () => {
+            if (this.props.toggleDrawer) {
+                this.props.toggleDrawer(this.state.is_open);
+            }
         }
+        );
     };
 
     render() {
@@ -30,35 +35,30 @@ this.setState(prev_state => ({
         } = this.props;
 
         return (
-            <div className={classNames('dc-drawer',
-                this.state.is_open && `dc-drawer--${'open'}`)}
+            <div className={classNames(
+                'dc-drawer', {
+                    [`{dc-drawer--${className}`]: !!className,
+                    'dc-drawer--open'           : this.state.is_open,
+                })}
             >
-                <div className={classNames('dc-drawer__container',
-                    className && `dc-drawer__container--${className}`)}
-                >
+                <div className='dc-drawer__container'>
                     {header &&
-                        <div className={classNames('dc-drawer__header',
-                            className && `dc-drawer__header--${className}`)}
-                        >
+                        <div className='dc-drawer__header'>
                             {header}
                         </div>
                     }
-                    <div className={classNames('dc-drawer__content',
-                        className && `dc-drawer__content--${className}`)}
-                    >
+                    <div className='dc-drawer__content'>
                         {children}
                     </div>
                     {footer &&
-                        <div className={classNames('dc-drawer__footer',
-                            className && `dc-drawer__footer--${className}`)}
-                        >
+                        <div className='dc-drawer__footer'>
                             {footer}
                         </div>
                     }
                 </div>
                 <div
                     className={classNames('dc-drawer__toggle',
-                        this.state.is_open && 'dc-drawer__toggle--open')}
+                        { 'dc-drawer__toggle--open': this.state.is_open })}
                     onClick={this.toggleDrawer}
                 >
                     <div className='dc-drawer__toggle-icon-wraper'>

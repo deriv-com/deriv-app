@@ -123,7 +123,10 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, is_dark_theme, text, left, top }) => {
+const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
+    ctx.textAlign = 'center';
+    const size = Math.floor(scale * 6 + 8);
+    ctx.font = `bold ${size}px BinarySymbols, Roboto`;
     ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
     ctx.shadowBlur = 12;
     for (let i = 0; i < 5; ++i) {
@@ -183,7 +186,7 @@ const TickContract = RawMarkerMaker(({
         ctx.setLineDash([3, 3]);
         ctx.moveTo(start.left - 1 * scale, 0);
         if (ticks.length && barrier) {
-            ctx.lineTo(start.left - 1 * scale, barrier - 30 * scale);
+            ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);
             ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
         }
         ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
@@ -220,7 +223,7 @@ const TickContract = RawMarkerMaker(({
             .filter(tick => tick.visible)
             .forEach(tick => {
                 const clr = tick === exit ? color
-                    : get_color({ status: is_dark_theme ? 'bg' : 'fg', is_dark_theme });
+                    : get_color({ status: 'fg', is_dark_theme });
                 ctx.fillStyle = clr + opacity;
                 ctx.beginPath();
                 ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
@@ -257,15 +260,13 @@ const TickContract = RawMarkerMaker(({
     }
     // count down
     if (start.visible && !is_sold) {
-        ctx.textAlign = 'center';
-        const size = Math.floor(scale * 3 + 7);
-        ctx.font = `bold ${size}px Roboto`;
         shadowed_text({
             ctx,
+            scale,
             is_dark_theme,
             text: `${ticks.length - 1}/${tick_count}`,
             left: start.left,
-            top: barrier - 23 * scale,
+            top : barrier - 27 * scale,
         });
     }
     // start-time marker
@@ -359,7 +360,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.setLineDash([3, 3]);
         ctx.moveTo(start.left - 1 * scale, 0);
         if (barrier) {
-            ctx.lineTo(start.left - 1 * scale, barrier - (show_profit ? 35 : 20) * scale);
+            ctx.lineTo(start.left - 1 * scale, barrier - (show_profit ? 38 : 20) * scale);
             ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
         }
         ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
@@ -423,17 +424,15 @@ const NonTickContract = RawMarkerMaker(({
     }
     // show the profit
     if (show_profit) {
-        ctx.textAlign = 'center';
-        const size = Math.floor(scale * 6 + 7);
-        ctx.font = `bold ${size}px Roboto`;
         const symbol = currency_symbols[currency] || '';
         const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
         shadowed_text({
             ctx,
+            scale,
             is_dark_theme,
             text: `${sign}${symbol}${Math.abs(profit)}`,
             left: start.left,
-            top: barrier - 25 * scale,
+            top : barrier - 28 * scale,
         });
     }
     // status marker
@@ -488,7 +487,7 @@ const DigitContract = RawMarkerMaker(({
         ctx.setLineDash([3, 3]);
         ctx.moveTo(start.left - 1 * scale, 0);
         if (ticks.length) {
-            ctx.lineTo(start.left - 1 * scale, start.top - 30 * scale);
+            ctx.lineTo(start.left - 1 * scale, start.top - 34 * scale);
             ctx.moveTo(start.left - 1 * scale, start.top + 4 * scale);
         }
         ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
@@ -505,15 +504,13 @@ const DigitContract = RawMarkerMaker(({
 
     // count down
     if (start.visible && start.top && !is_sold) {
-        ctx.textAlign = 'center';
-        const size = Math.floor(scale * 6 + 7);
-        ctx.font = `bold ${size}px Roboto`;
         shadowed_text({
             ctx,
+            scale,
             is_dark_theme,
             text: `${ticks.length}/${tick_count}`,
             left: start.left - 1 * scale,
-            top: start.top - 23 * scale,
+            top : start.top - 27 * scale,
         });
     }
     // start-time marker
@@ -532,23 +529,24 @@ const DigitContract = RawMarkerMaker(({
         if (granularity !== 0 && tick !== expiry) { return; }
         if (granularity !== 0 && tick === expiry && !is_sold) { return; }
         const clr = tick !== expiry ?
-            get_color({ status: 'fg', is_dark_theme }) : color;
+            get_color({ status: is_dark_theme ? 'bg' : 'fg', is_dark_theme }) : color;
         ctx.beginPath();
         ctx.fillStyle = clr;
-        ctx.arc(tick.left, tick.top, 6 * scale, 0, Math.PI * 2);
+        ctx.arc(tick.left, tick.top, 7 * scale, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.fillStyle = get_color({ status: 'bg', is_dark_theme });
-        ctx.arc(tick.left, tick.top, 5 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = get_color({ status: is_dark_theme ? 'fg' : 'bg', is_dark_theme });
+        ctx.arc(tick.left, tick.top, 6 * scale, 0, Math.PI * 2);
         ctx.fill();
 
         const last_tick = tick_stream[idx];
         const last_digit = last_tick.tick_display_value.slice(-1);
         ctx.fillStyle = clr;
         ctx.textAlign = 'center';
-        ctx.font = `${10 * scale}px Roboto`;
-        ctx.fillText(last_digit, tick.left, tick.top + 1 * scale);
+        ctx.shadowBlur = 0;
+        ctx.font = `bold ${12 * scale}px BinarySymbols`;
+        ctx.fillText(last_digit, tick.left, tick.top);
     });
     // status marker
     if (expiry.visible && is_sold) {

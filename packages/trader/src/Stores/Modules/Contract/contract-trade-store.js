@@ -82,7 +82,7 @@ export default class ContractTradeStore extends BaseStore {
                     && info.entry_spot
                     && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
                 ) {
-                    const type = `${info.entry_spot}` === `${info.barrier}` ? 'rise_fall' : 'high_low';
+                    const type = `${+info.entry_tick}` === `${+info.barrier}` ? 'rise_fall' : 'high_low';
                     ok = trade_type === type;
                 }
                 return ok;

@@ -26,7 +26,7 @@ describe('ToggleFullScreen', () => {
         const wrapper = shallow(<ToggleFullScreen  />);
         expect(wrapper.find('.ic-fullscreen--active').exists()).to.be.false;
     });
-    it('should have .ic-fullscreen--active if it\'s true in state', () => {
+    it('should hdasave .ic-fullscreen--active if it\'s true in state', () => {
         const wrapper = shallow(<ToggleFullScreen  />);
         wrapper.setState({ is_full_screen: true });
         expect(wrapper.find('.ic-fullscreen--active').exists()).to.be.true;

@@ -1,3 +1,1 @@
-npx lerna run build:travis \
-    --scope deriv-shared \
-    --scope deriv-components
+npx lerna run build:travis --since HEAD~1

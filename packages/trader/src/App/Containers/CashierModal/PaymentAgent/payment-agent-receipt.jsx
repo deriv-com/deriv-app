@@ -30,6 +30,7 @@ class PaymentAgentReceipt extends React.Component {
                         <Localize
                             i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
                             values={{ payment_agent }}
+                            options={{ interpolation: { escapeValue: false } }}
                         />
                     </h2>
                     <div className='payment-agent__transferred-amount payment-agent__text--bold'>
@@ -55,7 +56,7 @@ class PaymentAgentReceipt extends React.Component {
                     <React.Fragment>
                         <h2 className='payment-agent__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
                         <p className='payment-agent__explanation'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
-                        <p><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} /></p>
+                        <p><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} options={{ interpolation: { escapeValue: false } }} /></p>
                         <PaymentAgentDetails
                             className='payment-agent__transferred-contact'
                             payment_agent_email={this.props.receipt.payment_agent_email}

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
+import PropTypes  from 'prop-types';
+import React      from 'react';
 
 class Drawer extends React.PureComponent {
 
@@ -8,7 +8,7 @@ class Drawer extends React.PureComponent {
         super(props);
 
         this.state = {
-            is_open: true,
+            is_open: props.is_open,
         };
     }
 

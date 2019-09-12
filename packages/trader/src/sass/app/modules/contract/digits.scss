@@ -19,8 +19,8 @@
     &__tooltip-container {
         position: absolute;
         z-index: 2;
-        top: 14px;
-        left: -18px;
+        top: -10px;
+        right: 10px;
     }
     &__digit {
         pointer-events: none;

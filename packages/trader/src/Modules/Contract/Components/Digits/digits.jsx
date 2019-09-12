@@ -47,7 +47,6 @@ class Digits extends React.PureComponent {
                         <Popover
                             alignment='top'
                             classNameBubble='digits__tooltip-bubble'
-                            disable_message_icon
                             icon='info'
                             id='dt_last_digits_info_tooltip'
                             margin={4}

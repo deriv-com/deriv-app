@@ -22,8 +22,8 @@
 //     is_dark_mode,
 //     is_purchase_confirmed,
 //     is_purchase_locked,
+//     setPurchaseLock,
 //     togglePurchaseConfirmation,
-//     togglePurchaseLock,
 // }) => (
 //     <div className='settings-modal__purchase'>
 //         <MediaItem>
@@ -57,9 +57,9 @@
 //                 />
 //                 <div className='media__form'>
 //                     <Checkbox
-//                         value={is_purchase_locked}
+//                         defaultChecked={is_purchase_locked}
 //                         label={localize('Lock contract purchase buttons')}
-//                         onClick={togglePurchaseLock}
+//                         onChange={(e) => { setPurchaseLock(e.target.checked); }}
 //                     />
 //                 </div>
 //             </MediaDescription>
@@ -81,6 +81,6 @@
 //         is_purchase_confirmed     : ui.is_purchase_confirm_on,
 //         is_purchase_locked        : ui.is_purchase_lock_on,
 //         togglePurchaseConfirmation: ui.togglePurchaseConfirmation,
-//         togglePurchaseLock        : ui.togglePurchaseLock,
+//         setPurchaseLock           : ui.setPurchaseLock,
 //     }
 // ))(PurchaseSettings);

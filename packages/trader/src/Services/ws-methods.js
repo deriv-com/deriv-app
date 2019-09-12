@@ -49,6 +49,19 @@ const WS = (() => {
     const oauthApps = () =>
         BinarySocket.send({ oauth_apps: 1 });
 
+    const paymentAgentList = (country, currency) =>
+        BinarySocket.send({ paymentagent_list: country, ...(currency && { currency }) });
+
+    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
+        BinarySocket.send({
+            amount,
+            currency,
+            verification_code,
+            paymentagent_withdraw: 1,
+            dry_run              : 0,
+            paymentagent_loginid : loginid,
+        });
+
     const payoutCurrencies = (options) =>
         BinarySocket.send({ payout_currencies: 1 }, { msg_type: 'payout_currencies', ...(options && options) });
 
@@ -133,6 +146,8 @@ const WS = (() => {
         newAccountVirtual,
         oauthApps,
         portfolio,
+        paymentAgentList,
+        paymentAgentWithdraw,
         payoutCurrencies,
         profitTable,
         proposalOpenContract,

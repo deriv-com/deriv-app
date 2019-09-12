@@ -1,23 +1,23 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
-import { localize }                            from 'App/i18n';
-import { WS }                                  from 'Services';
-import { connect }                             from 'Stores/connect';
+import { Formik, Field }                       from 'formik';
 import {
     Autocomplete,
     Checkbox,
     Button,
     Dropdown,
     Input }                                    from 'deriv-components';
-import { Formik, Field }                       from 'formik';
+import { localize }                            from 'App/i18n';
+import { WS }                                  from 'Services';
+import { connect }                             from 'Stores/connect';
 // import { formatDate }                       from 'Utils/Date';
+import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
-import { account_opening_reason_list }         from './constants';
 
 const getResidence = (residence_list, value, type) => residence_list.find(location => location[type === 'text' ? 'value' : 'text'] === value)[type];
 
-const makeSettingsRequest = ({...settings}, residence_list) => {
+const makeSettingsRequest = ({ ...settings }, residence_list) => {
     let { email_consent, tax_residence_text, citizen_text } = settings;
 
     email_consent = +email_consent; // checkbox is boolean but api expects number (1 or 0)
@@ -29,14 +29,14 @@ const makeSettingsRequest = ({...settings}, residence_list) => {
     settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
 
     return { ...settings, citizen, tax_residence, email_consent };
-}
+};
 
 const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_number);
 
 const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
 
 const validateFields = values => {
-    let errors = {};
+    const errors = {};
     const required_fields = ['first_name', 'last_name', 'tax_residence_text', 'tax_identification_number', 'phone' ];
     required_fields.forEach(required => {
         if (!values[required]) errors[required] = localize('This field is required');
@@ -49,11 +49,11 @@ const validateFields = values => {
     }
 
     return errors;
-}
+};
 
 const InputGroup = ({ children }) => (
     <fieldset className='account-management-form-fieldset'>
-        <div style={{display: 'flex'}}>{children}</div>
+        <div style={{ display: 'flex' }}>{children}</div>
     </fieldset>
 );
 
@@ -68,7 +68,7 @@ class PersonalDetailsForm extends React.Component {
             setSubmitting(false);
             // force request to update settings cache since settings have been updated
             WS.getSettings({ forced: true });
-        })
+        });
     }
 
     render() {
@@ -108,158 +108,159 @@ class PersonalDetailsForm extends React.Component {
                     phone,
                     email,
                     email_consent,
-                    tax_identification_number
+                    tax_identification_number,
                 }}
                 onSubmit={this.onSubmit}
                 validate={validateFields}
             >
                 {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              setFieldValue,
-            }) => (
-                <form className='account-management-form' onSubmit={handleSubmit}>
-                    <FormSubHeader title={localize('Personal Details')} />
-                    <FormBody scroll_offset='90px'>
-                        <InputGroup>
-                            <Input
-                                data-lpignore='true'
-                                type='text'
-                                name='first_name'
-                                value={values.first_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                label='First name'
-                                required
-                            />
-                            {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
-                            <Input
-                                data-lpignore='true'
-                                type='text'
-                                name='last_name'
-                                label={localize('Last name')}
-                                value={values.last_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                required
-                            />
-                            {errors.last_name && touched.last_name && <div>{errors.last_name}</div>}
-                        </InputGroup>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Field name='citizen_text'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        { ...field }
-                                        data-lpignore='true'
-                                        type='text'
-                                        label={localize('Citizenship')}
-                                        error={touched.citizen_text && errors.citizen_text}
-                                        required
-                                        list_items={this.props.residence_list}
-                                        onItemSelection={
-                                            (item) => setFieldValue('citizen_text', item.text, true)
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='email'
-                                label={localize('Email')}
-                                value={values.email}
-                                required
-                                disabled
-                            />
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='phone'
-                                label={localize('Phone Number')}
-                                value={values.last_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.phone}
-                                required
-                            />
-                            {errors.phone && touched.phone && <div>{errors.phone}</div>}
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Dropdown
-                                placeholder={'Account opening reason'}
-                                is_align_text_left
-                                name='account_opening_reason'
-                                list={account_opening_reason_list}
-                                value={values.account_opening_reason}
-                                onChange={handleChange}
-                            />
-                            {(errors.account_opening_reason || (touched.account_opening_reason && errors.account_opening_reason)) &&
-                            <span className='fa-dropdown__error-message'>
-                                {errors.account_opening_reason}
-                            </span>
-                            }
-                        </fieldset>
-                        <FormSubHeader title={localize('Tax information')} />
-                        <fieldset className='account-management-form-fieldset'>
-                            <Field name='tax_residence_text'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        { ...field }
-                                        data-lpignore='true'
-                                        type='text'
-                                        label={localize('Tax residence')}
-                                        error={touched.tax_residence_text && errors.tax_residence_text}
-                                        required
-                                        list_items={this.props.residence_list}
-                                        onItemSelection={
-                                            (item) => setFieldValue('tax_residence_text', item.text, true)
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </fieldset>
-                        <fieldset className='account-management-form-fieldset'>
-                            <Input
-                                data-lpignore="true"
-                                type='text'
-                                name='tax_identification_number'
-                                label={localize('Tax identification number')}
-                                value={values.tax_identification_number}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                required
-                            />
-                        </fieldset>
-                        {errors.tax_identification_number && touched.tax_identification_number && <div>{errors.tax_identification_number}</div>}    
-                        <FormSubHeader title={localize('Email Preference')} />
-                        <fieldset className='account-management-form-fieldset'>
-                            <Checkbox
-                                name='email_consent'
-                                value={values.email_consent}
-                                onChange={handleChange}
-                                label={localize('Get updates about Deriv products, services and events.')}
-                                defaultChecked={!!values.email_consent}
-                            />
-                        </fieldset>
-                    </FormBody>
-                    <FormFooter>
-                        <Button type="submit" disabled={isSubmitting}>
-                            {localize('Submit')}
-                        </Button>
-                    </FormFooter>
-                </form>
-            )}
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    setFieldValue,
+                }) => (
+                    <form className='account-management-form' onSubmit={handleSubmit}>
+                        <FormSubHeader title={localize('Personal Details')} />
+                        <FormBody scroll_offset='90px'>
+                            <InputGroup>
+                                <Input
+                                    data-lpignore='true'
+                                    type='text'
+                                    name='first_name'
+                                    value={values.first_name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    label='First name'
+                                    required
+                                />
+                                {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
+                                <Input
+                                    data-lpignore='true'
+                                    type='text'
+                                    name='last_name'
+                                    label={localize('Last name')}
+                                    value={values.last_name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    required
+                                />
+                                {errors.last_name && touched.last_name && <div>{errors.last_name}</div>}
+                            </InputGroup>
+                            <fieldset className='account-management-form-fieldset'>
+                                <Field name='citizen_text'>
+                                    {({ field }) => (
+                                        <Autocomplete
+                                            { ...field }
+                                            data-lpignore='true'
+                                            type='text'
+                                            label={localize('Citizenship')}
+                                            error={touched.citizen_text && errors.citizen_text}
+                                            required
+                                            list_items={this.props.residence_list}
+                                            onItemSelection={
+                                                (item) => setFieldValue('citizen_text', item.text, true)
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </fieldset>
+                            <fieldset className='account-management-form-fieldset'>
+                                <Input
+                                    data-lpignore='true'
+                                    type='text'
+                                    name='email'
+                                    label={localize('Email')}
+                                    value={values.email}
+                                    required
+                                    disabled
+                                />
+                            </fieldset>
+                            <fieldset className='account-management-form-fieldset'>
+                                <Input
+                                    data-lpignore='true'
+                                    type='text'
+                                    name='phone'
+                                    label={localize('Phone Number')}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.phone}
+                                    required
+                                />
+                                {errors.phone && touched.phone && <div>{errors.phone}</div>}
+                            </fieldset>
+                            <fieldset className='account-management-form-fieldset'>
+                                <Dropdown
+                                    placeholder={'Account opening reason'}
+                                    is_align_text_left
+                                    name='account_opening_reason'
+                                    list={account_opening_reason_list}
+                                    value={values.account_opening_reason}
+                                    onChange={handleChange}
+                                />
+                                {(errors.account_opening_reason ||
+                                      (touched.account_opening_reason && errors.account_opening_reason)) &&
+                                      <span className='fa-dropdown__error-message'>
+                                          {errors.account_opening_reason}
+                                      </span>
+                                }
+                            </fieldset>
+                            <FormSubHeader title={localize('Tax information')} />
+                            <fieldset className='account-management-form-fieldset'>
+                                <Field name='tax_residence_text'>
+                                    {({ field }) => (
+                                        <Autocomplete
+                                            { ...field }
+                                            data-lpignore='true'
+                                            type='text'
+                                            label={localize('Tax residence')}
+                                            error={touched.tax_residence_text && errors.tax_residence_text}
+                                            required
+                                            list_items={this.props.residence_list}
+                                            onItemSelection={
+                                                (item) => setFieldValue('tax_residence_text', item.text, true)
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </fieldset>
+                            <fieldset className='account-management-form-fieldset'>
+                                <Input
+                                    data-lpignore='true'
+                                    type='text'
+                                    name='tax_identification_number'
+                                    label={localize('Tax identification number')}
+                                    value={values.tax_identification_number}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    required
+                                />
+                            </fieldset>
+                            {errors.tax_identification_number && touched.tax_identification_number &&
+                                <div>{errors.tax_identification_number}</div>}
+                            <FormSubHeader title={localize('Email Preference')} />
+                            <fieldset className='account-management-form-fieldset'>
+                                <Checkbox
+                                    name='email_consent'
+                                    value={values.email_consent}
+                                    onChange={handleChange}
+                                    label={localize('Get updates about Deriv products, services and events.')}
+                                    defaultChecked={!!values.email_consent}
+                                />
+                            </fieldset>
+                        </FormBody>
+                        <FormFooter>
+                            <Button type='submit' disabled={isSubmitting}>
+                                {localize('Submit')}
+                            </Button>
+                        </FormFooter>
+                    </form>
+                )}
             </Formik>
-        )
+        );
     }
 
     componentDidMount() {
@@ -269,11 +270,11 @@ class PersonalDetailsForm extends React.Component {
             this.setState({ ...data.get_settings, is_loading: false });
         });
     }
-};
+}
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        residence_list          : client.residence_list,
-        fetchResidenceList      : client.fetchResidenceList
+        residence_list    : client.residence_list,
+        fetchResidenceList: client.fetchResidenceList
     }),
 )(PersonalDetailsForm);

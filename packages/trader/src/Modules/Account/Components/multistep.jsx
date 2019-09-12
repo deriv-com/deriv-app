@@ -1,3 +1,4 @@
+
 import React        from 'react';
 import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
@@ -26,10 +27,10 @@ class MultiStep extends React.Component {
 
     prevButton = () => (
         this.state.step !== 0 &&
-        <a onClick={this.prevStep} className='multistep-btn'>
-            <Icon icon='IconBack' className='multistep-btn__icon' />
-            {localize('Back')}
-        </a>
+            <a onClick={this.prevStep} className='multistep-btn'>
+                <Icon icon='IconBack' className='multistep-btn__icon' />
+                {localize('Back')}
+            </a>
     );
 
     render() {

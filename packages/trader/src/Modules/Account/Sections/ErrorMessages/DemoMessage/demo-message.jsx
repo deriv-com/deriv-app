@@ -9,7 +9,7 @@ const DemoMessage = () => (
         message={localize('This feature is not available for demo accounts.')}
         icon={<IconLimitedAccess />}
     >
-        <Button />
+        <Button text={localize('Switch account')} />
     </IconMessageContent>
 );
 

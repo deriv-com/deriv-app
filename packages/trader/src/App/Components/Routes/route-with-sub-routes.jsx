@@ -12,7 +12,6 @@ import { default_title }   from '../../Constants/app-config';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
-        console.warn(route);
         let result = null;
         if (route.component === Redirect) {
             let to = route.to;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const IconMessageContent = ({ children, icon, message }) => (
-    <div className='account-management__body'>
+    <div className='account-management__message-content'>
         <div className='account-management__message-icon'>
             {icon}
         </div>

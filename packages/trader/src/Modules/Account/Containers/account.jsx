@@ -1,11 +1,19 @@
 import PropTypes       from 'prop-types';
-import React           from 'react';
+import React, { lazy } from 'react';
 import { withRouter }  from 'react-router-dom';
 import { FadeWrapper } from 'App/Components/Animations';
 import MenuAccordion   from 'App/Components/Elements/MenuAccordion';
 import AppRoutes       from 'Constants/routes';
 import { connect }     from 'Stores/connect';
 import 'Sass/app/modules/account.scss';
+
+const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
+
+const fallback_content = {
+    'path'     : '/account/personal_details',
+    'component': DemoMessage,
+    'title'    : 'Personal details',
+};
 
 class Account extends React.Component {
     state = {
@@ -59,6 +67,7 @@ class Account extends React.Component {
                     <MenuAccordion
                         alignment='center'
                         classNameHeader='modal__tab-header'
+                        fallback_content={fallback_content}
                         is_routed={true}
                         list={this.props.routes}
                         onChangeHeader={this.onChangeHeader}

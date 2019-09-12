@@ -22,7 +22,6 @@ const Routes = (props) => {
         <BinaryRoutes
             is_logged_in={props.is_logged_in}
             passthrough={props.passthrough}
-            is_virtual={props.is_virtual}
         />
     );
 };
@@ -39,7 +38,6 @@ Routes.propTypes = {
 export default withRouter(connect(
     ({ client, common }) => ({
         is_logged_in: client.is_logged_in,
-        is_virtual  : client.is_virtual,
         error       : common.error,
         has_error   : common.has_error,
     })

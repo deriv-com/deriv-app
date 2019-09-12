@@ -37,11 +37,14 @@ class FinancialAssessment extends React.Component {
     state = { is_loading: true };
 
     componentDidMount() {
-        WS.getFinancialAssessment().then((data) => {
-            console.log(data);
-            this.setState({ ...data.get_financial_assessment, is_loading: false });
-        });
-        console.warn('------> is_virtual:', this.props.is_virtual);
+        if (this.props.is_virtual) {
+            this.setState({ is_loading: false });
+        } else {
+            WS.getFinancialAssessment().then((data) => {
+                console.log(data);
+                this.setState({ ...data.get_financial_assessment, is_loading: false });
+            });
+        }
     }
 
     onSubmit = values => {
@@ -50,7 +53,6 @@ class FinancialAssessment extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const {
             // financial information
             income_source,

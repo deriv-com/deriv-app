@@ -55,9 +55,13 @@ class AccountLimits extends React.Component {
     state = { is_loading: true }
 
     componentDidMount() {
-        WS.getAccountLimits().then((data) => {
-            this.setState({ ...data.get_limits, is_loading: false });
-        });
+        if (this.props.is_virtual) {
+            this.setState({ is_loading: false });
+        } else {
+            WS.getAccountLimits().then((data) => {
+                this.setState({ ...data.get_limits, is_loading: false });
+            });
+        }
     }
 
     render() {

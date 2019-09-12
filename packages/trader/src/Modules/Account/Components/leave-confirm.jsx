@@ -3,6 +3,8 @@ import { withRouter }         from 'react-router-dom';
 import { FormikConsumer }     from 'formik';
 import { Button }             from 'deriv-components';
 import { localize }           from 'App/i18n';
+import IconUnsavedChanges     from 'Assets/AccountManagement/icon-unsaved-changes.svg';
+import IconMessageContent     from '../Components/icon-message-content';
 
 /**
  * Blocks routing if Formik form is dirty
@@ -47,13 +49,16 @@ class TransitionBlocker extends React.Component {
             <>
                 {show &&
                     <>
-                        <h2>{localize('Unsaved changes')}</h2>
-                        <p>{localize('You have unsaved changes')}</p>
-                        <p>{localize('Are you sure you want to discard changes and leave this page?')}</p>
-                        <div className='account-management-flex-wrapper'>
-                            <Button type='button' onClick={this.back}>{localize('Cancel')}</Button>
-                            <Button type='button' onClick={this.leave}>{localize('Leave')}</Button>
-                        </div>
+                        <IconMessageContent
+                            message={localize('You have unsaved changes')}
+                            text={localize('Are you sure you want to discard changes and leave this page?')}
+                            icon={<IconUnsavedChanges />}
+                        >
+                            <div className='account-management-flex-wrapper'>
+                                <Button type='button' onClick={this.back}>{localize('Cancel')}</Button>
+                                <Button type='button' onClick={this.leave}>{localize('Leave')}</Button>
+                            </div>
+                        </IconMessageContent>
                     </>
                 }
             </>

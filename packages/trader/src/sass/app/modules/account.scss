@@ -156,6 +156,11 @@
             height: 128px;
         }
     }
+    .account-management__text {
+        margin-top: 10px;
+        margin-bottom: 16px;
+        @include typeface(--paragraph-left-normal-black, none);
+    }
     .account-management-flex-wrapper {
         display: flex;
     }

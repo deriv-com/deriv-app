@@ -19,17 +19,17 @@ const RawMarkerMaker = (draw_callback) => {
 
 function get_color({ status, profit, is_dark_theme }) {
     const colors = is_dark_theme ? {
-        open: '#1C5AE3',
+        open: '#377CFC',
         won : '#00A79E',
         lost: '#CC2E3D',
-        sold: '#1C5AE3',
+        sold: '#FFAD3A',
         fg  : '#FFFFFF',
         bg  : '#10131F',
     } : {
-        open: '#1C5AE3',
+        open: '#377CFC',
         won : '#4BB4B3',
         lost: '#EC3F3F',
-        sold: '#1C5AE3',
+        sold: '#FFAD3A',
         fg  : '#333333',
         bg  : '#FFFFFF',
     };
@@ -125,7 +125,7 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
 
 const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
-    const size = Math.floor(scale * 6 + 8);
+    const size = Math.floor(scale * 12);
     ctx.font = `bold ${size}px BinarySymbols, Roboto`;
     ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
     ctx.shadowBlur = 12;
@@ -529,23 +529,23 @@ const DigitContract = RawMarkerMaker(({
         if (granularity !== 0 && tick !== expiry) { return; }
         if (granularity !== 0 && tick === expiry && !is_sold) { return; }
         const clr = tick !== expiry ?
-            get_color({ status: is_dark_theme ? 'bg' : 'fg', is_dark_theme }) : color;
+            get_color({ status: 'fg', is_dark_theme }) : color;
         ctx.beginPath();
         ctx.fillStyle = clr;
         ctx.arc(tick.left, tick.top, 7 * scale, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.fillStyle = get_color({ status: is_dark_theme ? 'fg' : 'bg', is_dark_theme });
+        ctx.fillStyle = is_sold ? color : get_color({ status: 'bg', is_dark_theme });
         ctx.arc(tick.left, tick.top, 6 * scale, 0, Math.PI * 2);
         ctx.fill();
 
         const last_tick = tick_stream[idx];
         const last_digit = last_tick.tick_display_value.slice(-1);
-        ctx.fillStyle = clr;
+        ctx.fillStyle = is_sold ? 'white' : clr;
         ctx.textAlign = 'center';
         ctx.shadowBlur = 0;
-        ctx.font = `bold ${12 * scale}px BinarySymbols`;
+        ctx.font = `bold ${12 * scale}px BinarySymbols, Roboto`;
         ctx.fillText(last_digit, tick.left, tick.top);
     });
     // status marker

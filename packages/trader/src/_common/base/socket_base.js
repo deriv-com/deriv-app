@@ -143,9 +143,12 @@ const BinarySocketBase = (() => {
     const buyAndSubscribe = (request) => {
         return new Promise((resolve) => {
             let called = false;
-            subscribe(request, response => {
-                if (!called) return resolve(response);
-                return called = !called;
+            const subscriber = subscribe(request, response => {
+                if (!called) {
+                    called = true;
+                    subscriber.unsubscribe();
+                    resolve(response);
+                }
             });
         });
     };

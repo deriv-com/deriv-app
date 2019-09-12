@@ -3,13 +3,14 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const is_serve = process.env.BUILD_MODE === 'serve';
+const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
     // entry: path.join(__dirname, 'src', 'index.js'),
     entry: {
         // index: path.join(__dirname, 'src', 'index.js'),
+        accordion    : path.resolve(__dirname, 'src', 'components/accordion/index.js'),
         autocomplete : path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
         button       : path.resolve(__dirname, 'src', 'components/button/index.js'),
         checkbox     : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),

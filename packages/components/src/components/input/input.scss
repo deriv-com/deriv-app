@@ -105,12 +105,15 @@
         font-size: var(--text-size-s);
         padding: 1rem 1.2rem;
         width: 100%;
-        height: 4rem;
+        height: 3.8rem;
         display: block;
 
         &::placeholder {
             opacity: 0;
             transition: opacity 0.25s;
+        }
+        &--placeholder-visible::placeholder {
+            opacity: 0.7;
         }
         &:focus {
             outline: none;
@@ -127,7 +130,7 @@
                 opacity: 0.7;
             }
         }
-        &:not(:focus):valid {
+        &:not(.dc-input--no-placeholder):not(:focus):valid {
             & ~ label {
                 transform: translate(-1.6rem, -2.2rem) scale(0.75);
                 color: var(--text-color-3);
@@ -137,18 +140,49 @@
                 }
             }
         }
+        &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+    &__leading-icon {
+        margin-left: 1rem;
+        top: 0.7rem;
+        position: absolute;
+        left: 0;
+        pointer-events: none;
+        cursor: text;
+        font-size: var(--text-size-s);
+
+        + .dc-input__field {
+            padding-left: calc(1rem + 11px);
+        }
     }
     &__trailing-icon {
         margin: 0 1.2rem 0 0 !important;
     }
     &__label {
-        color: var(--color-grey);
         font-size: var(--text-size-s);
         position: absolute;
         pointer-events: none;
         left: 1rem;
         top: 1rem;
-        transition: 0.25s ease all;
-        transform: translateZ(0);
+    }
+    &:not(&--no-placeholder) {
+        &__label {
+            color: var(--color-grey);
+            transition: 0.25s ease all;
+            transform: translateZ(0);
+        }
+    }
+    &--no-placeholder {
+        label {
+            transform: translate(-1.6rem, -2.2rem) scale(0.75);
+            color: var(--color-green);
+            padding: 0 4px;
+            @include themify($themes) {
+                background-color: themed('container_secondary_color');
+            }
+        }
     }
 }

@@ -9,9 +9,10 @@ import UILoader          from '../../Elements/ui-loader.jsx';
 
 const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 
-const Deposit      = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal   = () => import('App/Containers/CashierModal/withdrawal.jsx');
-const PaymentAgent = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const Deposit         = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal      = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent    = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer = () => import('App/Containers/CashierModal/account-transfer.jsx');
 
 const modal_content = [
     {
@@ -46,6 +47,18 @@ const modal_content = [
         value    : () => (
             <Lazy
                 ctor={PaymentAgent}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    }, {
+        container: 'account_transfer',
+        icon     : 'IconAccountTransfer',
+        label    : localize('Transfer between accounts'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={AccountTransfer}
                 should_load={true}
                 has_progress={true}
             />

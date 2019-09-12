@@ -33,11 +33,12 @@ class ConfigError {
 }
 
 class ConfigPaymentAgent {
+    list = [];
+
     @observable agents                 = [];
     @observable container              = 'payment_agent';
     @observable error                  = new ConfigError();
     @observable filtered_list          = [];
-    @observable list                   = [];
     @observable is_name_selected       = true;
     @observable is_withdraw            = false;
     @observable is_withdraw_successful = false;
@@ -61,6 +62,9 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
     @observable config = {
+        account_transfer: {
+            container: 'account_transfer',
+        },
         deposit: {
             ...(toJS(new Config({ container: 'deposit' }))),
             error: new ConfigError(),
@@ -124,6 +128,7 @@ export default class CashierStore extends BaseStore {
         if (!this.config.payment_agent.list.length) {
             const payment_agent_list = await this.getPaymentAgentList();
             this.setPaymentAgentList(payment_agent_list);
+            this.filterPaymentAgentList();
         }
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);

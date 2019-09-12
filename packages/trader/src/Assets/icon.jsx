@@ -7,6 +7,7 @@ class Icon extends React.PureComponent {
         /* When adding a new icon, arrange it by following the ascending file system arrangement */
         this.icons = {
             // Common
+            IconAccountTransfer   : React.lazy(() => import('./Common/icon-account-transfer.jsx')),
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),
             IconArrow             : React.lazy(() => import('./Common/icon-arrow.jsx')),
             IconBack              : React.lazy(() => import('./Common/icon-back.jsx')),
@@ -32,6 +33,7 @@ class Icon extends React.PureComponent {
             IconInformation       : React.lazy(() => import('./Common/icon-information.jsx')),
             IconMinimize          : React.lazy(() => import('./Common/icon-minimize.jsx')),
             IconMinus             : React.lazy(() => import('./Common/icon-minus.jsx')),
+            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
             IconPlus              : React.lazy(() => import('./Common/icon-plus.jsx')),
             IconQuestion          : React.lazy(() => import('./Common/icon-question.jsx')),
             IconRedDot            : React.lazy(() => import('./Common/icon-red-dot.jsx')),
@@ -40,7 +42,6 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')), // TODO: update big when design is ready
             IconWithdrawalSmall   : React.lazy(() => import('./Common/icon-withdrawal-small.jsx')),
-            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
 
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),

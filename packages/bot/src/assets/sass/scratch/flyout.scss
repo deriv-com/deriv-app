@@ -1,5 +1,7 @@
 .flyout {
+    $flyout        : &;
     $default-margin: 15px;
+    $button-padding: 5px 20px;
 
     position: absolute;
     left: 250px;
@@ -11,10 +13,12 @@
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;
-    overflow: auto;
     box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
     min-width: 400px;
 
+    &__content {
+        overflow: auto;
+    }
     &__block-workspace {
         margin-bottom: $default-margin;
 
@@ -26,14 +30,43 @@
         }
     }
     &__button {
-        width: 100%;
-        font-size: 100%;
-        padding: $default-margin;
-        margin-bottom: $default-margin;
         border: none;
-        border-radius: 5px;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+        border-radius: $BORDER_RADIUS;
+        padding: $button-padding;
         cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        text-align: center;
+
+        &-new {
+            width: 100%;
+            font-size: 100%;
+            box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+            margin-bottom: $default-margin;
+        }
+        &-add {
+            background-color: $COLOR_CORAL_RED;
+            color: $COLOR_WHITE;
+        }
+        &-back {
+            align-self: center;
+            background-color: transparent;
+            color: $COLOR_BLACK;
+
+            &:focus {
+                outline: none;
+            }
+        }
+        &-next,
+        &-previous {
+            margin-left: 1em;
+            color: $COLOR_LIGHT_BLACK_1;
+            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+        }
     }
     &__item {
         &:not(:last-of-type) {
@@ -52,26 +85,52 @@
             display: flex;
             justify-content: flex-end;
         }
-        &-add {
-            padding: 5px 20px;
-            border: none;
-            font-size: 16px;
-            color: $COLOR_WHITE;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-left: $default-margin;
-            background-color: $COLOR_ORANGE;
-            cursor: pointer;
-        }
         &-info {
             cursor: pointer;
-            display: flex;
+            color: $COLOR_RED;
+            margin-left: 0.2em;
+        }
+        &-description {
+            font-size: 0.8em;
+            margin-bottom: 1em;
+        }
+    }
+    &__image {
+        width: 100%;
+        height: auto;
+        border-radius: 0.5em;
+    }
+    &__video {
+        width: 100%;
+        height: 20vh;
+        border-radius: 0.5em;
+    }
+    &__help {
+        padding: 0;
 
-            > .icon-info {
-                height: 20px;
-                width: 20px;
-                align-self: center;
+        &-header {
+            padding: 1.2em 1em;
+            display: flex;
+            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+        }
+        &-content {
+            padding: 1.5em;
+            overflow-y: auto;
+            height: calc(100vh - 300px);
+
+            #{$flyout}__item {
+                margin-bottom: 2em;
             }
+        }
+        &-title {
+            align-self: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        &-footer {
+            text-align: right;
+            padding: 1.2em 0.8em;
+            border-top: solid 0.1em $COLOR_LIGHT_BLACK_4_SOLID;
         }
     }
 }

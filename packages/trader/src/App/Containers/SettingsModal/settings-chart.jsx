@@ -1,3 +1,4 @@
+import { Checkbox, RadioGroup }          from 'deriv-components';
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
 import { localize }                      from 'App/i18n';
@@ -8,8 +9,6 @@ import MediaItem, {
     MediaIcon,
     MediaDescription,
 }                                        from 'App/Components/Elements/Media';
-import Checkbox                          from 'App/Components/Form/Checkbox';
-import RadioGroup                        from 'App/Components/Form/Radio';
 import ChartPositionEnabledLightIcon     from 'Assets/SvgComponents/settings/bottom.svg';
 
 // TODO: enable asset information
@@ -29,12 +28,12 @@ import ChartPositionDisabledLightIcon    from 'Assets/SvgComponents/settings/lef
 const ChartSettings = ({
     // TODO: enable asset information
     // is_asset_visible,
-    // toggleAsset,
+    // setAsset,
     is_countdown_visible,
     is_dark_mode,
     is_layout_default,
-    toggleCountdown,
-    toggleLayout,
+    setCountdown,
+    setChartLayout,
 }) => (
     <div className='settings-chart'>
         <MediaItem>
@@ -63,8 +62,12 @@ const ChartSettings = ({
                                 id   : 'dt_settings_left_radio',
                             },
                         ]}
+                        name='chart_layout_default'
                         selected={is_layout_default}
-                        onToggle={toggleLayout}
+                        onToggle={ (e) => {
+                            e.persist();
+                            setChartLayout(e.target.value === 'true');
+                        } }
                     />
                 </div>
             </MediaDescription>
@@ -85,9 +88,9 @@ const ChartSettings = ({
                 />
                 <div className='media__form'>
                     <Checkbox
-                        value={is_asset_visible}
+                        defaultChecked={is_asset_visible}
                         label={localize('Display open-high-low-close (OHLC) information for current chart')}
-                        onClick={toggleAsset}
+                        onChange={(e) => { setAsset(e.target.checked); }}
                     />
                 </div>
             </MediaDescription>
@@ -106,9 +109,9 @@ const ChartSettings = ({
                 <div className='media__form'>
                     <Checkbox
                         id='dt_settings_interval_checkbox'
-                        value={is_countdown_visible}
+                        defaultChecked={is_countdown_visible}
                         label={localize('Display remaining time for each interval')}
-                        onClick={toggleCountdown}
+                        onChange={(e) => { setCountdown(e.target.checked); } }
                     />
                 </div>
             </MediaDescription>
@@ -121,9 +124,9 @@ ChartSettings.propTypes = {
     is_countdown_visible: PropTypes.bool,
     is_dark_mode        : PropTypes.bool,
     is_layout_default   : PropTypes.bool,
+    setChartLayout      : PropTypes.func,
     toggleAsset         : PropTypes.func,
     toggleCountdown     : PropTypes.func,
-    toggleLayout        : PropTypes.func,
 };
 
 export default connect(({ ui }) => (
@@ -132,8 +135,8 @@ export default connect(({ ui }) => (
         is_countdown_visible: ui.is_chart_countdown_visible,
         is_dark_mode        : ui.is_dark_mode_on,
         is_layout_default   : ui.is_chart_layout_default,
-        toggleAsset         : ui.toggleChartAssetInfo,
-        toggleCountdown     : ui.toggleChartCountdown,
-        toggleLayout        : ui.toggleChartLayout,
+        setAsset            : ui.setChartAssetInfo,
+        setCountdown        : ui.setChartCountdown,
+        setChartLayout      : ui.setChartLayout,
     }
 ))(ChartSettings);

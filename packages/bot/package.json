@@ -20,7 +20,7 @@
     "test": "eslint ./src && jest -w 1 --coverage",
     "test:eslint": "eslint ./src",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
-    "test:mocha": "jest -w 10 --coverage",
+    "test:mocha": "jest -w 1 --coverage",
     "deploy": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**,CNAME}'",
     "deploy:clean": "echo \"Error: no deploy:staging specified\"",
     "deploy:folder": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**}' --dest",

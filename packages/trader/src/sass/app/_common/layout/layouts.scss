@@ -16,6 +16,7 @@
         }
     }
     &:after {
+        z-index: 1;
         position: absolute;
         opacity: 0;
         pointer-events: none;
@@ -162,6 +163,7 @@
     width: 100%;
     transition: width 0.15s ease-out, margin 0.15s ease-out;
     position: relative;
+    z-index: 1;
 
     &__loader {
         position: absolute;

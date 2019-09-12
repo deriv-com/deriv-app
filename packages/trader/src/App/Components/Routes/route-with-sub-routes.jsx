@@ -5,10 +5,10 @@ import {
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket        from '_common/base/socket_base';
 import Language            from '_common/language';
+import LoginPrompt         from 'App/Components/Elements/login-prompt.jsx';
+import { default_title }   from 'App/Constants/app-config';
 import routes              from 'Constants/routes';
 import { connect }         from 'Stores/connect';
-import LoginPrompt         from '../Elements/login-prompt.jsx';
-import { default_title }   from '../../Constants/app-config';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {

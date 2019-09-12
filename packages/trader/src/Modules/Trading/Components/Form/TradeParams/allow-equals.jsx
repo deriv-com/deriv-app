@@ -1,8 +1,7 @@
+import { Popover, Checkbox }    from 'deriv-components';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
 import { localize }             from 'App/i18n';
-import { Popover }              from 'App/Components/Elements/Popover';
-import InputField               from 'App/Components/Form/InputField';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
@@ -25,6 +24,7 @@ const AllowEquals = ({
             ((has_callputequal_duration || expiry_type === 'endtime') && has_callputequal);
 
     const changeValue = (e) => {
+        e.persist();
         const { name, checked } = e.target;
         onChange({ target: { name, value: Number(checked) } });
     };
@@ -32,17 +32,15 @@ const AllowEquals = ({
     return (
         has_allow_equals &&
             <div className='allow-equals'>
-                <InputField
+                <Checkbox
                     className='allow-equals__input-field'
-                    classNameInput='allow-equals__input trade-container__input'
-                    checked={value}
                     id='dt_allow_equals_input'
-                    name='is_equal'
                     onChange={changeValue}
-                    type='checkbox'
-                    value={value}
+                    defaultChecked={value}
+                    name='is_equal'
+                    label={localize('Allow equals')}
+                    classNameLabel='allow-equals__label'
                 />
-                <label className='allow-equals__label' htmlFor='allow_equals'>{localize('Allow equals')}</label>
                 <Popover
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'

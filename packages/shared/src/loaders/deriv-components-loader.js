@@ -1,5 +1,5 @@
 /* Using this loader you can import components from deriv-components without having to manually
-import the corresponding stylesheet. The deriv-components-loader will automatically import 
+import the corresponding stylesheet. The deriv-components-loader will automatically import
 stylesheets.
 
     import { Button } from 'deriv-components';
@@ -8,7 +8,11 @@ stylesheets.
     import 'deriv-components/lib/button.css';
 */
 
-module.exports = function(source) {
+function getKebabCase(str) {
+    return str.split(/(?=[A-Z])/).join('-').toLowerCase();
+}
+
+module.exports = function(source, map) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'deriv-components/.exec(line); // eslint-disable-line no-useless-escape
@@ -17,11 +21,12 @@ module.exports = function(source) {
         }
         const components = matches[1].replace(/\s+/g, '').split(',');
         const replace = components.map(c => `
-import ${c} from 'deriv-components/lib/${c.toLocaleLowerCase()}';
-import 'deriv-components/lib/${c.toLocaleLowerCase()}.css';
+import ${c} from 'deriv-components/lib/${getKebabCase(c)}';
+import 'deriv-components/lib/${getKebabCase(c)}.css';
         `).join('\n');
 
         return replace;
     });
-    return mapped_lines.join('\n');
+
+    return this.callback(null, mapped_lines.join('\n'), map);
 };

@@ -1,12 +1,5 @@
 /* eslint-disable func-names, no-underscore-dangle */
-
-Blockly.Block.prototype.getDisplayName = function() {
-    if (this.meta) {
-        const block_meta = this.meta();
-        return block_meta && block_meta.display_name;
-    }
-    return this.type;
-};
+import config from '../../constants';
 
 Blockly.Block.prototype.getDisplayName = function() {
     if (this.meta) {
@@ -111,4 +104,17 @@ Blockly.Block.getDimensions = function(block_node) {
     workspace.dispose();
 
     return block_hw;
+};
+
+Blockly.Block.prototype.isMainBlock = function() {
+    return config.mainBlocks.some(block_type => block_type === this.type);
+};
+
+Blockly.Block.prototype.isIndependentBlock = function() {
+    const { INDEPEDENT_BLOCKS } = config;
+    return INDEPEDENT_BLOCKS.some(block_type => block_type === this.type);
+};
+
+Blockly.Block.isDynamic = function(block_type) {
+    return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };

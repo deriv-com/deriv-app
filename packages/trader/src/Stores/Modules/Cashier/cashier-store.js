@@ -438,7 +438,6 @@ export default class CashierStore extends BaseStore {
             }
         }
 
-        this.setIsNameSelected(true);
         this.filterPaymentAgentList();
         this.setLoading(false);
     }
@@ -448,11 +447,6 @@ export default class CashierStore extends BaseStore {
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency  = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
-    }
-
-    @action.bound
-    setIsNameSelected(is_name_selected = !this.config.payment_agent.is_name_selected) {
-        this.config.payment_agent.is_name_selected = is_name_selected;
     }
 
     @action.bound

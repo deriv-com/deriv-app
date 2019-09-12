@@ -140,6 +140,7 @@ const Markers = ({
     markers_array,
     is_dark_theme,
     granularity,
+    currency,
 }) => (
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
@@ -148,17 +149,19 @@ const Markers = ({
                 key={marker.key}
                 is_dark_theme={is_dark_theme}
                 granularity={granularity}
+                currency={currency}
                 {...marker}
             />
         );
     })
 );
 const ChartMarkers = connect(
-    ({ modules, ui }) => ({
+    ({ modules, ui, client }) => ({
         markers_array    : modules.contract_trade.markers_array,
         is_digit_contract: modules.contract_trade.is_digit_contract,
         granularity      : modules.contract_trade.granularity,
         is_dark_theme    : ui.is_dark_mode_on,
+        currency         : client.currency,
     })
 )(Markers);
 

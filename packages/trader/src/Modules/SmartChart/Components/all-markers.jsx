@@ -46,7 +46,7 @@ const calc_scale = (zoom) => {
 const calc_opacity = (from, to) => {
     const opacity = Math.floor(
         Math.min(
-            Math.max(to - from - 8, 0) / 10,
+            Math.max(to - from - 10, 0) / 6,
             1
         ) * 255
     ).toString(16);
@@ -121,6 +121,18 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
         const w = Math.ceil(ctx.measureText(line).width);
         ctx.fillText(line, left - 5 - w , top + idx * size + 1);
     });
+};
+
+const shadowed_text = ({ ctx, is_dark_theme, text, left, top }) => {
+    ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
+    ctx.shadowBlur = 12;
+    for (let i = 0; i < 5; ++i) {
+        ctx.fillText(
+            text,
+            left,
+            top,
+        );
+    }
 };
 
 const TickContract = RawMarkerMaker(({
@@ -248,11 +260,13 @@ const TickContract = RawMarkerMaker(({
         ctx.textAlign = 'center';
         const size = Math.floor(scale * 3 + 7);
         ctx.font = `bold ${size}px Roboto`;
-        ctx.fillText(
-            `${ticks.length - 1}/${tick_count}`,
-            start.left,
-            barrier - 23 * scale,
-        );
+        shadowed_text({
+            ctx,
+            is_dark_theme,
+            text: `${ticks.length - 1}/${tick_count}`,
+            left: start.left,
+            top: barrier - 23 * scale,
+        });
     }
     // start-time marker
     if (start.visible) {
@@ -275,6 +289,20 @@ const TickContract = RawMarkerMaker(({
     ctx.restore();
 });
 
+const currency_symbols = {
+    AUD: '\u0041\u0024',
+    EUR: '\u20AC',
+    GBP: '\u00A3',
+    JPY: '\u00A5',
+    USD: '\u0024',
+    BTC: '\u0042',
+    BCH: '\ue901',
+    ETH: '\u0045',
+    ETC: '\ue900',
+    LTC: '\u004c',
+    UST: '\ue903',
+};
+
 const NonTickContract = RawMarkerMaker(({
     ctx: context,
     points: [start, expiry, entry, exit],
@@ -282,6 +310,7 @@ const NonTickContract = RawMarkerMaker(({
     prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
     is_dark_theme,
     granularity,
+    currency,
     contract_info: {
         // contract_type,
         // exit_tick_time,
@@ -307,6 +336,7 @@ const NonTickContract = RawMarkerMaker(({
     ctx.fillStyle = color;
 
     const draw_start_line = is_last_contract && start.visible && !is_sold;
+    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
     const scale = calc_scale(start.zoom);
     const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
@@ -329,7 +359,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.setLineDash([3, 3]);
         ctx.moveTo(start.left - 1 * scale, 0);
         if (barrier) {
-            ctx.lineTo(start.left - 1 * scale, barrier - 20 * scale);
+            ctx.lineTo(start.left - 1 * scale, barrier - (show_profit ? 35 : 20) * scale);
             ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
         }
         ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
@@ -389,6 +419,21 @@ const NonTickContract = RawMarkerMaker(({
             left: start.left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color + opacity),
+        });
+    }
+    // show the profit
+    if (show_profit) {
+        ctx.textAlign = 'center';
+        const size = Math.floor(scale * 6 + 7);
+        ctx.font = `bold ${size}px Roboto`;
+        const symbol = currency_symbols[currency] || '';
+        const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
+        shadowed_text({
+            ctx,
+            is_dark_theme,
+            text: `${sign}${symbol}${Math.abs(profit)}`,
+            left: start.left,
+            top: barrier - 25 * scale,
         });
     }
     // status marker
@@ -461,13 +506,15 @@ const DigitContract = RawMarkerMaker(({
     // count down
     if (start.visible && start.top && !is_sold) {
         ctx.textAlign = 'center';
-        const size = Math.floor(scale * 3 + 7);
+        const size = Math.floor(scale * 6 + 7);
         ctx.font = `bold ${size}px Roboto`;
-        ctx.fillText(
-            `${ticks.length}/${tick_count}`,
-            start.left - 1 * scale,
-            start.top - 23 * scale,
-        );
+        shadowed_text({
+            ctx,
+            is_dark_theme,
+            text: `${ticks.length}/${tick_count}`,
+            left: start.left - 1 * scale,
+            top: start.top - 23 * scale,
+        });
     }
     // start-time marker
     if (start.visible && (granularity === 0 || !is_sold)) {

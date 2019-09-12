@@ -67,7 +67,7 @@ class PaymentAgentWithdraw extends React.Component {
         return (
             <React.Fragment>
                 {this.props.is_loading ?
-                    <Loading className='payment-agent__loader' />
+                    <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
                         {/* for errors with CTA hide the form and show the error,

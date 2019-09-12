@@ -1,18 +1,19 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
+import classNames       from 'classnames';
+import PropTypes        from 'prop-types';
+import React            from 'react';
 import {
     Button,
-    Input }                 from 'deriv-components';
+    Input }             from 'deriv-components';
 import {
     Field,
     Formik,
-    Form }                  from 'formik';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
-import Icon                 from 'Assets/icon.jsx';
-import { connect }          from 'Stores/connect';
-import Loading              from '../../../../templates/_common/components/loading.jsx';
+    Form }              from 'formik';
+import Localize         from 'App/Components/Elements/localize.jsx';
+import { website_name } from 'App/Constants/app-config';
+import { localize }     from 'App/i18n';
+import Icon             from 'Assets/icon.jsx';
+import { connect }      from 'Stores/connect';
+import Loading          from '../../../../templates/_common/components/loading.jsx';
 
 class AccountTransferForm extends React.Component {
     componentDidMount() {
@@ -23,7 +24,7 @@ class AccountTransferForm extends React.Component {
         return (
             <React.Fragment>
                 {this.props.is_loading ?
-                    <Loading className='account-transfer__loader' />
+                    <Loading className='cashier__loader' />
                     :
                     <div className='cashier__wrapper--align-left'>
                         {this.props.is_transfer_successful ?
@@ -55,6 +56,27 @@ class AccountTransferForm extends React.Component {
                                                         />
                                                     )}
                                                 </Field>
+                                                <div>
+                                                    <div className='account-transfer__notes'>
+                                                        <div className='account-transfer__bullet-wrapper'>
+                                                            <div className='account-transfer__bullet' />
+                                                            <span><Localize i18n_default_text='Transfer limits may vary depending on changes in exchange rates.' /></span>
+                                                        </div>
+                                                        <div className='account-transfer__bullet-wrapper'>
+                                                            <div className='account-transfer__bullet' />
+                                                            {/* TODO: update values based on currency */}
+                                                            <span><Localize i18n_default_text='Transfers are subject to a 1% transfer fee or USD 0.01, whichever is higher.' /></span>
+                                                        </div>
+                                                        <div className='account-transfer__bullet-wrapper'>
+                                                            <div className='account-transfer__bullet' />
+                                                            <span><Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts (and vice versa), or between your {{website_name}} account and your {{website_name}} MT5 (DMT5) account (or vice versa).' values={{ website_name }} /></span>
+                                                        </div>
+                                                        <div className='account-transfer__bullet-wrapper'>
+                                                            <div className='account-transfer__bullet' />
+                                                            <span><Localize i18n_default_text='Transfers may be unavailable at times when the market is closed (weekends or holidays), periods of high volatility or because of technical issues.' /></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className='cashier__form-submit'>
                                                     {this.props.error.message &&
                                                     <React.Fragment>

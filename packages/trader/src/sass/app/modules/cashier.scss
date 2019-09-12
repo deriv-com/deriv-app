@@ -19,6 +19,9 @@
             text-align: left;
         }
     }
+    &__loader {
+        font-size: 1rem;
+    }
     &__form {
         &-submit {
             display: flex;
@@ -227,9 +230,6 @@
             padding-left: 12px;
         }
     }
-    &__loader {
-        font-size: 1rem;
-    }
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
@@ -327,6 +327,32 @@
             font-size: 1.4rem;
             padding: 10px 12px !important;
             height: 4rem;
+        }
+    }
+}
+
+/** @define account-transfer */
+.account-transfer {
+    &__notes {
+        @include themify($themes) {
+            color: themed('text_secondary_color');
+        }
+        padding-top: 3.2rem;
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
+    &__bullet {
+        background-color: var(--color-black-3);
+        border-radius: 100%;
+        margin-right: 1.3rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        flex: none;
+        margin-top: 0.6rem;
+
+        &-wrapper {
+            display: flex;
+            margin-bottom: 0.4rem;
         }
     }
 }

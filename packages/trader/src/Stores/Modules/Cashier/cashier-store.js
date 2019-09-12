@@ -33,7 +33,6 @@ class ConfigError {
 }
 
 class ConfigPaymentAgent {
-
     @observable agents                 = [];
     @observable container              = 'payment_agent';
     @observable error                  = new ConfigError();
@@ -491,11 +490,13 @@ export default class CashierStore extends BaseStore {
 
         await BinarySocket.wait('authorize');
 
-        const payment_agent_list = await this.getPaymentAgentList();
-        payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
-            this.addPaymentAgent(payment_agent);
-        });
-        this.onChangePaymentAgent({ target: { value: this.config.payment_agent.agents[0].value } });
+        if (!this.config.payment_agent.list.length) {
+            const payment_agent_list = await this.getPaymentAgentList();
+            payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
+                this.addPaymentAgent(payment_agent);
+            });
+            this.onChangePaymentAgent({ target: { value: this.config.payment_agent.agents[0].value } });
+        }
 
         this.setLoading(false);
     }

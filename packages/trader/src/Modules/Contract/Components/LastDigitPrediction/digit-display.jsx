@@ -68,10 +68,10 @@ const DigitDisplay = ({
 
 DigitDisplay.propTypes = {
     barrier       : PropTypes.number,
+    has_entry_spot: PropTypes.bool,
     is_lost       : PropTypes.bool,
     is_won        : PropTypes.bool,
     latest_digit  : PropTypes.object,
-    has_entry_spot: PropTypes.bool,
     value         : PropTypes.number,
 };
 

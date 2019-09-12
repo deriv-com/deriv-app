@@ -284,7 +284,7 @@ const TickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: exit.left + 8 * scale,
             zoom: exit.zoom,
-            icon: ICONS.END.with_color(color),
+            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
         });
     }
     ctx.restore();
@@ -441,8 +441,7 @@ const NonTickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: expiry.left + 8 * scale,
             zoom: expiry.zoom,
-            // icon: ICONS[status.toUpperCase()],
-            icon: ICONS.END.with_color(color),
+            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
         });
     }
     ctx.restore();
@@ -555,7 +554,7 @@ const DigitContract = RawMarkerMaker(({
             top : expiry.top - 16 * scale,
             left: expiry.left + 8 * scale,
             zoom: expiry.zoom,
-            icon: ICONS.END.with_color(color),
+            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
         });
     }
     ctx.restore();

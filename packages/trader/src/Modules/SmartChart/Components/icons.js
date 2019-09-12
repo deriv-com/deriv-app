@@ -24,7 +24,7 @@ const parse_svg = (markup) => {
             stroke: stroke && stroke.value,
         });
     });
-    function with_color(color) {
+    function with_color(color, bg_color = 'white') {
         return {
             width,
             height,
@@ -32,7 +32,7 @@ const parse_svg = (markup) => {
                 .map(({ points, fill, stroke }) => ({
                     points,
                     stroke,
-                    fill: fill !== 'white' ? color : fill,
+                    fill: fill !== 'white' ? color : bg_color,
                 })),
         };
     }

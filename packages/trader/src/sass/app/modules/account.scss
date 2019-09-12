@@ -134,6 +134,33 @@
             }
         }
     }
+    .account-management__message {
+        margin: 1em 0;
+        font-weight: bold;
+        font-size: 1.6em;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+
+        &-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            margin: 2em 16px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        &-icon {
+            width: 128px;
+            height: 128px;
+        }
+    }
+    .account-management__text {
+        margin-top: 10px;
+        margin-bottom: 16px;
+        @include typeface(--paragraph-left-normal-black, none);
+    }
     .account-management-flex-wrapper {
         display: flex;
     }

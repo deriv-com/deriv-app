@@ -1,14 +1,18 @@
 // import PropTypes        from 'prop-types';
-import classNames       from 'classnames';
-import React            from 'react';
-import { Scrollbars }   from 'tt-react-custom-scrollbars';
-import { Popover }     from 'deriv-components';
-import { localize }     from 'App/i18n';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { WS }           from 'Services';
+import classNames           from 'classnames';
+import React                from 'react';
+import { Scrollbars }       from 'tt-react-custom-scrollbars';
+import { Popover }          from 'deriv-components';
+import { connect }          from 'Stores/connect';
+import { localize }         from 'App/i18n';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import { WS }               from 'Services';
 import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
-import Loading          from '../../../../../templates/app/components/loading.jsx';
-import { TextContainer, Text } from '../../../Components/layout-components.jsx';
+import Loading              from '../../../../../templates/app/components/loading.jsx';
+import {
+    TextContainer,
+    Text }                  from '../../../Components/layout-components.jsx';
+import DemoMessage          from '../../ErrorMessages/DemoMessage';
 
 const display_decimals = 2;
 const makeTurnoverLimitRow = arr => (
@@ -51,12 +55,17 @@ class AccountLimits extends React.Component {
     state = { is_loading: true }
 
     componentDidMount() {
-        WS.getAccountLimits().then((data) => {
-            this.setState({ ...data.get_limits, is_loading: false });
-        });
+        if (this.props.is_virtual) {
+            this.setState({ is_loading: false });
+        } else {
+            WS.getAccountLimits().then((data) => {
+                this.setState({ ...data.get_limits, is_loading: false });
+            });
+        }
     }
 
     render() {
+        if (this.props.is_virtual) return <DemoMessage />;
         const {
             is_loading,
             open_positions,
@@ -204,4 +213,8 @@ class AccountLimits extends React.Component {
 
 // AccountLimits.propTypes = {};
 
-export default AccountLimits;
+export default connect(
+    ({ client }) => ({
+        is_virtual: client.is_virtual,
+    }),
+)(AccountLimits);

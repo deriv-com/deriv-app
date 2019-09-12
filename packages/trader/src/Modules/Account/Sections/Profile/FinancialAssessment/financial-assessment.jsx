@@ -4,8 +4,10 @@ import { Formik }   from 'formik';
 import {
     Button,
     Dropdown }      from 'deriv-components';
+import { connect }  from 'Stores/connect';
 import { localize } from 'App/i18n';
 import { WS }       from 'Services';
+import DemoMessage  from '../../ErrorMessages/DemoMessage';
 import {
     income_source_list,
     employment_status_list,
@@ -35,10 +37,14 @@ class FinancialAssessment extends React.Component {
     state = { is_loading: true };
 
     componentDidMount() {
-        WS.getFinancialAssessment().then((data) => {
-            console.log(data);
-            this.setState({ ...data.get_financial_assessment, is_loading: false });
-        });
+        if (this.props.is_virtual) {
+            this.setState({ is_loading: false });
+        } else {
+            WS.getFinancialAssessment().then((data) => {
+                console.log(data);
+                this.setState({ ...data.get_financial_assessment, is_loading: false });
+            });
+        }
     }
 
     onSubmit = values => {
@@ -47,7 +53,6 @@ class FinancialAssessment extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const {
             // financial information
             income_source,
@@ -61,8 +66,7 @@ class FinancialAssessment extends React.Component {
             account_turnover,
             is_loading } = this.state;
 
-        if (is_loading) return <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
-
+        if (this.props.is_virtual) return <DemoMessage />;
         return (
             <Formik
                 initialValues={{
@@ -91,7 +95,11 @@ class FinancialAssessment extends React.Component {
                 }) => (
                     <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
                         <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
-                        {
+                        {is_loading ?
+                            <FormBody>
+                                <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
+                            </FormBody>
+                            :
                             <FormBody scroll_offset='90px'>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Dropdown
@@ -237,7 +245,7 @@ class FinancialAssessment extends React.Component {
                             </FormBody>
                         }
                         <FormFooter>
-                            <Button type='submit' disabled={isSubmitting}>
+                            <Button type='submit' disabled={isSubmitting || this.state.is_loading}>
                               Submit
                             </Button>
                         </FormFooter>
@@ -249,5 +257,9 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-
-export default FinancialAssessment;
+// PersonalDetailsForm.propTypes = {};
+export default connect(
+    ({ client }) => ({
+        is_virtual: client.is_virtual,
+    }),
+)(FinancialAssessment);

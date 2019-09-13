@@ -1,7 +1,7 @@
 import React          from 'react';
 import ReactDOM       from 'react-dom';
 import { Arrow1Icon } from '../../components/Icons.jsx';
-import RootStore      from '../../stores';
+import ScratchStore   from '../../stores/scratch-store';
 import { translate }  from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
@@ -36,7 +36,7 @@ Blockly.Toolbox.prototype.init = function () {
         el_toolbox_search.addEventListener(e, () => {
             const toolbox = workspace.toolbox_;
     
-            RootStore.flyout.setVisibility(false);
+            ScratchStore.instance.flyout.setVisibility(false);
     
             toolbox.setSelectedItem('search');
         });
@@ -88,7 +88,7 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         const all_procedures = Blockly.Procedures.allProcedures(Blockly.derivWorkspace);
 
         if (search_term.length <= 1) {
-            RootStore.flyout.setVisibility(false);
+            ScratchStore.instance.flyout.setVisibility(false);
             return;
         }
 
@@ -201,7 +201,7 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content = this.getCategoryContents(selected_category);
     }
 
-    RootStore.flyout.setContents(flyout_content);
+    ScratchStore.instance.flyout.setContents(flyout_content);
 };
 
 Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
@@ -264,8 +264,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
             should_close_on_same_category
         ) {
             this.selectedItem_ = null;
-            if (RootStore.flyout.is_visible) {
-                RootStore.flyout.setVisibility(false);
+            if (ScratchStore.instance.flyout.is_visible) {
+                ScratchStore.instance.flyout.setVisibility(false);
             }
             return;
         }
@@ -274,7 +274,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
     this.selectedItem_ = item;
 
     if (!item) {
-        RootStore.flyout.setVisibility(false);
+        ScratchStore.instance.flyout.setVisibility(false);
     } else {
         const getCategoryTree = (parent_name, parent_id, colour, children) => {
             const xml_document = document.implementation.createDocument(null, null, null);
@@ -328,7 +328,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 const el_parent = selected_category.parentElement;
 
                 if (el_parent.tagName === 'xml') {
-                    RootStore.flyout.setVisibility(false);
+                    ScratchStore.instance.flyout.setVisibility(false);
                     this.workspace_.updateToolbox(initial_toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
@@ -338,7 +338,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                         el_parent.children,
                     );
 
-                    RootStore.flyout.setVisibility(false);
+                    ScratchStore.instance.flyout.setVisibility(false);
                     this.workspace_.updateToolbox(newTree);
                 }
             }
@@ -351,7 +351,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 this.selectedItem_.contents_,
             );
 
-            RootStore.flyout.setVisibility(false);
+            ScratchStore.instance.flyout.setVisibility(false);
             this.workspace_.updateToolbox(newTree);
         } else {
             // Show blocks that belong to this category.

@@ -99,11 +99,11 @@ class PersonalDetailsForm extends React.Component {
         }
 
         if (values.tax_residence_text && !getResidence(residence_list, values.tax_residence_text, 'value')) {
-            errors.tax_residence_text = localize('Tax residence not available');
+            errors.tax_residence_text = localize('Please enter a country or choose one from the dropdown menu');
         }
 
         if (values.citizen_text && !getResidence(residence_list, values.citizen_text, 'value')) {
-            errors.citizen_text = localize('Country not available');
+            errors.citizen_text = localize('Please enter a country or choose one from the dropdown menu');
         }
         console.log('errors: ', errors);
         return errors;

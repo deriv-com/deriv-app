@@ -1,6 +1,6 @@
 // import PropTypes from 'prop-types';
 import React        from 'react';
-// import { WS }    from 'Services';
+import { WS }       from 'Services';
 import { Formik }   from 'formik';
 import {
     Button,
@@ -12,21 +12,6 @@ import {
     FormBody,
     FormFooter }    from '../../../Components/layout-components.jsx';
 import Loading      from '../../../../../templates/app/components/loading.jsx';
-
-const validateFields = values => {
-    const errors = {};
-    const required_fields = ['old_password', 'new_password'];
-    required_fields.forEach(required => {
-        if (!values[required]) errors[required] = localize('This field is required');
-    });
-    if (values.old_password === values.new_password) {
-        errors.new_password = localize('Current password and new password cannot be the same.');
-    }
-    if (!/^[ -~]{6,25}$/.test(values.new_password)) {
-        errors.new_password = localize('Password length should be between 6 to 25 characters.');
-    }
-    return errors;
-};
 
 class ChangePasswordForm extends React.PureComponent {
     state = {
@@ -40,7 +25,28 @@ class ChangePasswordForm extends React.PureComponent {
 
     onSubmit = values => {
         console.log('on_submit: ', values);
+        WS.changePassword(values);
     }
+
+    validateFields = values => {
+        const errors = {};
+
+        const required_fields = ['old_password', 'new_password'];
+        required_fields.forEach(required => {
+            if (!values[required]) errors[required] = localize('This field is required');
+        });
+
+        if (values.new_password) {
+            if (!/^[ -~]{6,25}$/.test(values.new_password)) {
+                errors.new_password = localize('Password length should be between 6 to 25 characters.');
+            }
+            if (values.old_password === values.new_password) {
+                errors.new_password = localize('Current password and new password cannot be the same.');
+            }
+        }
+
+        return errors;
+    };
 
     render() {
         return (
@@ -50,7 +56,7 @@ class ChangePasswordForm extends React.PureComponent {
                         old_password: '',
                         new_password: '',
                     }}
-                    validate={validateFields}
+                    validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
                     {({
@@ -61,7 +67,6 @@ class ChangePasswordForm extends React.PureComponent {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
-                        validateField,
                     }) => (
                         <form className='account-management-form' onSubmit={handleSubmit}>
                             {this.state.is_loading ?
@@ -74,22 +79,23 @@ class ChangePasswordForm extends React.PureComponent {
                                     <div className='account-management__password-content'>
                                         <Input
                                             label={localize('Current password')}
-                                            classNameError='account-management__password-input--error'
-                                            error={errors.old_password || (touched.old_password && errors.old_password)}
+                                            error={touched.old_password && errors.old_password}
                                             type='password'
                                             name='old_password'
                                             value={values.old_password}
+                                            onBlur={handleBlur}
                                             onChange={handleChange}
                                         />
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
-                                            error={errors.new_password || (touched.new_password && errors.new_password)}
+                                            error={touched.new_password && errors.new_password}
                                         >
                                             <Input
                                                 label={localize('New password')}
                                                 type='password'
                                                 name='new_password'
                                                 value={values.new_password}
+                                                onBlur={handleBlur}
                                                 onChange={(e) => {
                                                     const input = e.target;
                                                     if (input) this.updateNewPassword(input.value);

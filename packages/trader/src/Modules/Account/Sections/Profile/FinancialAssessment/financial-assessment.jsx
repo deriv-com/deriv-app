@@ -243,6 +243,7 @@ class FinancialAssessment extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
+                                        className='btn--primary'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
@@ -256,9 +257,9 @@ class FinancialAssessment extends React.Component {
                                             (errors.estimated_worth || !values.estimated_worth) ||
                                             (errors.account_turnover || !values.account_turnover)
                                         }
-                                    >
-                                        {localize('Submit')}
-                                    </Button>
+                                        has_effect
+                                        text={localize('Submit')}
+                                    />
                                 </FormFooter>
                             </form>
                         )}
@@ -270,7 +271,6 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-// PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
         is_virtual: client.is_virtual,

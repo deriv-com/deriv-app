@@ -116,7 +116,10 @@ class ChangePasswordForm extends React.PureComponent {
                                 <Button
                                     className='btn--primary'
                                     type='submit'
-                                    disabled={isSubmitting}
+                                    is_disabled={isSubmitting ||
+                                        (errors.new_password || !values.new_password) ||
+                                        (errors.old_password || !values.old_password)
+                                    }
                                     has_effect
                                     text={localize('Submit')}
                                 />

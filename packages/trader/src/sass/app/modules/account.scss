@@ -42,7 +42,7 @@
             margin-bottom: 1em;
             font-size: 1.4em;
             font-weight: bold;
-            
+
             &:not(:first-child) {
                 margin-top: 2.4em;
             }
@@ -176,7 +176,6 @@
             }
         }
         &-input--error {
-            left: -1.2rem;
             top: 4.5rem;
             z-index: 2;
         }
@@ -262,7 +261,7 @@
     .account-limit-info {
         &__inset_header {
             display: flex;
-            align-items: center;    
+            align-items: center;
         }
 
         * {

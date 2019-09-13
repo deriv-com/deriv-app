@@ -1,10 +1,13 @@
-import PropTypes       from 'prop-types';
-import React, { lazy } from 'react';
-import { withRouter }  from 'react-router-dom';
-import { FadeWrapper } from 'App/Components/Animations';
-import MenuAccordion   from 'App/Components/Elements/MenuAccordion';
-import AppRoutes       from 'Constants/routes';
-import { connect }     from 'Stores/connect';
+import PropTypes        from 'prop-types';
+import React, { lazy }  from 'react';
+import { withRouter }   from 'react-router-dom';
+import { FadeWrapper }  from 'App/Components/Animations';
+import MenuAccordion    from 'App/Components/Elements/MenuAccordion';
+import { localize }     from 'App/i18n';
+import AppRoutes        from 'Constants/routes';
+import { connect }      from 'Stores/connect';
+import { flatten }      from '../Helpers/flatten';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
 
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
@@ -16,10 +19,6 @@ const fallback_content = {
 };
 
 class Account extends React.Component {
-    state = {
-        header: this.props.routes[0].subroutes[0].title,
-    };
-
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -41,10 +40,33 @@ class Account extends React.Component {
         this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
-
-    onChangeHeader = header => this.setState({ header });
-
+    
     render () {
+        const action_bar_items = [
+            {
+                onClick: () => {
+                    this.props.history.push(AppRoutes.trade);
+                    this.props.toggleAccount(false);
+                },
+                icon : 'ModalIconClose',
+                title: localize('Close'),
+            }
+        ];
+
+        const is_account_limits_route = /account_limits/.test(this.props.location.pathname);
+        if (is_account_limits_route) {
+            action_bar_items.push({
+                component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,
+            });
+        }
+
+        const subroutes        = flatten(this.props.routes);
+        let selected_content = subroutes.filter(subroutes => subroutes.path === this.props.location.pathname)[0];
+
+        if (!selected_content) { // fallback
+            selected_content = subroutes[0];
+            this.props.history.push(AppRoutes.personal_details);
+        }
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -52,25 +74,18 @@ class Account extends React.Component {
                 keyname='account-page-wrapper'
             >
                 <div className='account' ref={this.setWrapperRef}>
-                    {/* <VerticalTab
-                        header_title={localize('Settings')}
+                    <MenuAccordion
                         action_bar={action_bar_items}
                         action_bar_classname='account__inset_header'
                         alignment='center'
-                        id='account'
-                        classNameHeader='account__tab-header'
-                        current_path={this.props.location.pathname}
+                        fallback_content={fallback_content}
+                        header_title={localize('Settings')}
                         is_routed={true}
                         is_full_width={true}
-                        list={menu_options()}
-                    /> */}
-                    <MenuAccordion
-                        alignment='center'
-                        classNameHeader='modal__tab-header'
-                        fallback_content={fallback_content}
-                        is_routed={true}
                         list={this.props.routes}
-                        onChangeHeader={this.onChangeHeader}
+                        selected_content={selected_content}
+                        sub_list={subroutes}
+                        tab_container_classname='account__tab_container'
                     />
                 </div>
             </FadeWrapper>
@@ -89,7 +104,9 @@ Account.propTypes = {
 };
 
 export default connect(
-    ({ ui }) => ({
+    ({ client, ui }) => ({
+        currency        : client.currency,
+        is_virtual      : client.is_virtual,
         disableRouteMode: ui.disableRouteModal,
         enableRouteMode : ui.setRouteModal,
         is_visible      : ui.is_account_settings_visible,

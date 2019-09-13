@@ -97,7 +97,8 @@
     "react-dom": "^16.8.6",
     "react-pose": "^4.0.8",
     "react-transition-group": "^4.2.2",
-    "tt-react-custom-scrollbars": "^4.2.1-tt2"
+    "tt-react-custom-scrollbars": "^4.2.1-tt2",
+    "zxcvbn": "^4.4.2"
   },
   "peerDependencies": {
     "@babel/polyfill": "^7.0.0",

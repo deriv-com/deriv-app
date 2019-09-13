@@ -3,21 +3,21 @@ import React      from 'react';
 import FieldError from 'Components/field-error';
 import                 './input.scss';
 
-const Input = (props, ref) => (
-    <div className={ classNames('dc-input', props.className) }>
+const Input = ({ className, classNameError, error, trailing_icon, label, ...props }, ref) => (
+    <div className={ classNames('dc-input', className) }>
         <input ref={ ref } { ...props } className='dc-input__field' />
         {
-            props.trailing_icon &&
+            trailing_icon &&
             React.cloneElement(
-                props.trailing_icon,
-                { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
+                trailing_icon,
+                { className: classNames('dc-input__trailing-icon', trailing_icon.props.className) },
             )
         }
         <label className='dc-input__label' htmlFor={ props.id }>
-            { props.label || props.placeholder }
+            { label || props.placeholder }
         </label>
         { props.error &&
-            <FieldError className={props.classNameError} message={props.error} />
+            <FieldError className={classNameError} message={error} />
         }
     </div>
 );

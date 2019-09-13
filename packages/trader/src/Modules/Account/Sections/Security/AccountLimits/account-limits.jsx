@@ -1,7 +1,6 @@
 // import PropTypes        from 'prop-types';
 import classNames           from 'classnames';
 import React                from 'react';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { Popover }          from 'deriv-components';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
@@ -10,6 +9,7 @@ import { WS }               from 'Services';
 import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import Loading              from '../../../../../templates/app/components/loading.jsx';
 import {
+    ScrollbarsContainer,
     TextContainer,
     Text }                  from '../../../Components/layout-components.jsx';
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
@@ -89,7 +89,7 @@ class AccountLimits extends React.Component {
 
         return (
             <section className='account-limit-container'>
-                <Scrollbars>
+                <ScrollbarsContainer>
                     <Text className='account-limit-container__main-text'>
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
@@ -118,7 +118,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(open_positions, 0) }</Td>
@@ -132,7 +131,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(account_balance, display_decimals) }</Td>
@@ -146,7 +144,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(payout, display_decimals) }</Td>
@@ -168,7 +165,6 @@ class AccountLimits extends React.Component {
                                         icon='info'
                                         message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
                                         margin={0}
-                                        portal_container='modal_root'
                                     />
                                 </TableHeader>
                                 <TableHeader>{localize('Limit')}</TableHeader>
@@ -212,7 +208,7 @@ class AccountLimits extends React.Component {
                     <TextContainer>
                         <Text size='small' color='grey'>{localize('Stated limits are subject to change without prior notice.')}</Text>
                     </TextContainer>
-                </Scrollbars>
+                </ScrollbarsContainer>
             </section>
         );
     }

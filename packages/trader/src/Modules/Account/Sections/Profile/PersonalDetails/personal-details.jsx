@@ -45,9 +45,9 @@ const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_num
 const isValidLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
 
-const InputGroup = ({ children }) => (
+const InputGroup = ({ children, className }) => (
     <fieldset className='account-management-form-fieldset'>
-        <div style={{ display: 'flex' }}>{children}</div>
+        <div className={className}>{children}</div>
     </fieldset>
 );
 
@@ -168,9 +168,9 @@ class PersonalDetailsForm extends React.Component {
                     <LeaveConfirm onDirty={this.showForm} />
                     { show_form && (
                         <form className='account-management-form' onSubmit={handleSubmit}>
-                            <FormSubHeader title={localize('Personal Details')} />
-                            <FormBody scroll_offset='90px'>
-                                <InputGroup>
+                            <FormBody scroll_offset='55px'>
+                                <FormSubHeader title={localize('Details')} />
+                                <InputGroup className='grid-2-cols'>
                                     <Input
                                         data-lpignore='true'
                                         type='text'
@@ -180,8 +180,8 @@ class PersonalDetailsForm extends React.Component {
                                         onBlur={handleBlur}
                                         label={localize('First name')}
                                         required
+                                        error={(errors.first_name && touched.first_name) ? errors.first_name : undefined}
                                     />
-                                    {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
                                     <Input
                                         data-lpignore='true'
                                         type='text'
@@ -191,8 +191,8 @@ class PersonalDetailsForm extends React.Component {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         required
+                                        error={(errors.last_name && touched.last_name) ? errors.first_name : undefined}
                                     />
-                                    {errors.last_name && touched.last_name && <div>{errors.last_name}</div>}
                                 </InputGroup>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Field name='citizen_text'>
@@ -217,10 +217,11 @@ class PersonalDetailsForm extends React.Component {
                                         data-lpignore="true"
                                         type='text'
                                         name='email'
-                                        label={localize('Email')}
+                                        label={localize('Email address')}
                                         value={values.email}
                                         required
                                         disabled
+                                        error={(errors.email && touched.email) ? errors.first_name : undefined}
                                     />
                                 </fieldset>
                                 <fieldset className='account-management-form-fieldset'>
@@ -228,14 +229,14 @@ class PersonalDetailsForm extends React.Component {
                                         data-lpignore="true"
                                         type='text'
                                         name='phone'
-                                        label={localize('Phone Number')}
-                                        value={values.last_name}
+                                        label={localize('Phone number')}
+                                        value={values.phone}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.phone}
                                         required
+                                        error={(errors.phone && touched.phone )? errors.first_name : undefined}
                                     />
-                                    {errors.phone && touched.phone && <div>{errors.phone}</div>}
                                 </fieldset>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Dropdown
@@ -245,12 +246,12 @@ class PersonalDetailsForm extends React.Component {
                                         list={account_opening_reason_list}
                                         value={values.account_opening_reason}
                                         onChange={handleChange}
+                                        error={(errors.account_opening_reason ||
+                                            (touched.account_opening_reason && errors.account_opening_reason)) ?
+                                            errors.first_name
+                                            : undefined
+                                        }
                                     />
-                                    {(errors.account_opening_reason || (touched.account_opening_reason && errors.account_opening_reason)) &&
-                                    <span className='fa-dropdown__error-message'>
-                                        {errors.account_opening_reason}
-                                    </span>
-                                    }
                                 </fieldset>
                                 <FormSubHeader title={localize('Tax information')} />
                                 <fieldset className='account-management-form-fieldset'>
@@ -279,9 +280,9 @@ class PersonalDetailsForm extends React.Component {
                                         value={values.tax_identification_number}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        error={(errors.tax_identification_number && touched.tax_identification_number) ? errors.first_name : undefined}
                                     />
                                 </fieldset>
-                                {errors.tax_identification_number && touched.tax_identification_number && <div>{errors.tax_identification_number}</div>}    
                                 <FormSubHeader title={localize('Email Preference')} />
                                 <fieldset className='account-management-form-fieldset'>
                                     <Checkbox
@@ -295,9 +296,13 @@ class PersonalDetailsForm extends React.Component {
                             </FormBody>
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                <Button type="submit" disabled={isSubmitting}>
-                                    {localize('Submit')}
-                                </Button>
+                                <Button
+                                    className='btn--primary'
+                                    type='submit'
+                                    disabled={isSubmitting}
+                                    has_effect
+                                    text={localize('Submit')}
+                                />
                             </FormFooter>
                         </form>
                     )}

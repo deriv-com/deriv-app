@@ -1,7 +1,7 @@
 
-import React        from 'react';
-import { localize } from 'App/i18n';
-import Icon         from 'Assets/icon.jsx';
+import React                   from 'react';
+import { localize }            from 'App/i18n';
+import Icon                    from 'Assets/icon.jsx';
 
 class MultiStep extends React.Component {
     state = {

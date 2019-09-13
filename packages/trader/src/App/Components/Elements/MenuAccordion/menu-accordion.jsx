@@ -1,45 +1,52 @@
-import PropTypes                                          from 'prop-types';
-import React                                              from 'react';
-import { MenuAccordionHeaders }                           from './menu-accordion-headers.jsx';
-import { VerticalTabContentContainer, VerticalTabLayout } from '../VerticalTabs';
+import PropTypes                 from 'prop-types';
+import React                     from 'react';
+import { MenuAccordionHeaders }  from './menu-accordion-headers.jsx';
+import {
+    VerticalTabContentContainer,
+    VerticalTabLayout }          from '../VerticalTabs';
 
-const getAllSubTabList = list => list.map(item => item.subroutes).flat();
+const MenuAccordionTitle = ({ title }) => (<h1 className='menu-accordion-title'>{title}</h1>);
+
 class MenuAccordion extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        const sub_tabs = getAllSubTabList(this.props.list);
-        this.state     = {
-            selected_content: sub_tabs[props.selected_index || 0],
-        };
-    }
-
-    changeSelectedContent = (selected_content) => {
-        this.setState({ selected_content }, () => {
-            this.props.onChangeHeader(selected_content.label);
-        });
-    };
-
     render() {
-        const { list, action_bar, action_bar_classname, id, is_full_width, is_routed } = this.props;
-        const { selected_content } = this.state;
+        const {
+            action_bar,
+            action_bar_classname,
+            header_title,
+            id,
+            is_full_width,
+            is_routed,
+            list,
+            sub_list,
+            selected_content,
+            tab_container_classname,
+        } = this.props;
 
-        const sub_tabs = getAllSubTabList(list);
+        const Component = () => <MenuAccordionTitle title={selected_content.title} />;
+        const action_bar_items = [
+            ...action_bar,
+            {
+                component: Component,
+            },
+        ];
 
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
                 <MenuAccordionHeaders
+                    header_title={header_title}
                     items={list}
-                    onChange={this.changeSelectedContent}
                     selected={selected_content}
                     is_routed={is_routed}
+                    onChange={()=>{}}
                 />
                 <VerticalTabContentContainer
-                    action_bar={action_bar}
+                    action_bar={action_bar_items}
                     action_bar_classname={action_bar_classname}
                     id={id}
-                    items={sub_tabs}
+                    items={sub_list}
                     is_routed={is_routed}
                     selected={selected_content}
+                    tab_container_classname={tab_container_classname}
                 />
             </VerticalTabLayout>
         );
@@ -49,7 +56,7 @@ class MenuAccordion extends React.PureComponent {
 MenuAccordion.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
-            component: PropTypes.func,
+            component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
             icon     : PropTypes.string,
             onClick  : PropTypes.func,
             title    : PropTypes.string,
@@ -67,7 +74,7 @@ MenuAccordion.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
-    selected_index: PropTypes.number,
+    selected_content: PropTypes.object,
 };
 
 export default MenuAccordion;

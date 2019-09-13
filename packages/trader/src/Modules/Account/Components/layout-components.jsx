@@ -16,14 +16,17 @@ export const FormSubHeader = ({ title, subtitle }) => (
 );
 
 export const FormBody = ({ children, scroll_offset }) => (
-    <Scrollbars
-        autoHide
-        style={{
-            height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
-        }}
-    >
-        <div className='account-management-form-body'>{children}</div>
-    </Scrollbars>
+    <ScrollbarsContainer scroll_offset={scroll_offset}>
+        {children}
+    </ScrollbarsContainer>
+    // <Scrollbars
+    //     autoHide
+    //     style={{
+    //         height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
+    //     }}
+    // >
+    //     <div className='account-management-form-body'>{children}</div>
+    // </Scrollbars>
 );
 
 export const FormFooter = ({ children }) => (
@@ -44,4 +47,15 @@ export const Text = ({ children, size, color, className }) => (
     >
         {children}
     </p>
+);
+
+export const ScrollbarsContainer = ({ children, scroll_offset }) => (
+    <Scrollbars
+        autoHide
+        style={{
+            height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
+        }}
+    >
+        <div className='account-management-container'>{children}</div>
+    </Scrollbars>
 );

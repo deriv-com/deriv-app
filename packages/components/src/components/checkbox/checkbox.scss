@@ -23,4 +23,8 @@
             background-color: $COLOR_ORANGE;
         }
     }
+    &__label {
+        color: var(--text-color);
+        font-size: var(--text-size-xs);
+    }
 }

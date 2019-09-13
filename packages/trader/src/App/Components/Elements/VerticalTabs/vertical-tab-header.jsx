@@ -54,4 +54,10 @@ const VerticalTabHeader = ({ children, is_routed, item, onChange, selected }) =>
     );
 };
 
-export { VerticalTabHeader };
+const VerticalTabHeaderTitle = ({ header_title }) => (
+    <div className='vertical-tab__header-title'>
+        <p>{ header_title }</p>
+    </div>
+);
+
+export { VerticalTabHeader, VerticalTabHeaderTitle };

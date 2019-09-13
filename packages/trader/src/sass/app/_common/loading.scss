@@ -43,14 +43,12 @@
         margin: 5em auto;
 
         &--rect {
-            background-color: $COLOR_GREEN_3;
+            background-color: var(--brand-secondary);
         }
     }
     &__text {
         line-height: 44px;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         @include typeface(--paragraph-center-normal-black, none);
     }
 }

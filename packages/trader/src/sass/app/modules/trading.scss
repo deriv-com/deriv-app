@@ -45,19 +45,15 @@
 
 /** @define trade-container */
 .trade-container {
-    @include themify($themes) {
-        background: themed('container_color');
-    }
+    background: var(--general-main);
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
         padding: 0.8em;
         margin-bottom: 0.4em;
-        @include themify($themes) {
-            background-color: themed('background_container_color');
-            border: 1px solid themed('background_container_color');
-            color: themed('text_primary_color');
-        }
+        background-color: var(--general-section-1);
+        border-color: var(--general-section-1);
+        color: var(--text-prominent);
 
         &-header {
             height: 1.5rem;

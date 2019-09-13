@@ -130,6 +130,9 @@ class Dropdown extends React.PureComponent {
             this.wrapper_ref && !this.wrapper_ref.contains(event.target) &&
             this.state.is_list_visible
         ) {
+            if (typeof this.props.handleBlur === 'function') {
+                this.props.handleBlur({ target: { name: this.props.name } });
+            }
             this.setState({ is_list_visible: false });
         }
     };
@@ -248,6 +251,7 @@ class Dropdown extends React.PureComponent {
                     readOnly='readonly'
                     type='hidden'
                     value={this.props.value || 0}
+                    ref={this.input_ref}
                 />
                 <div
                     ref={this.setWrapperRef}

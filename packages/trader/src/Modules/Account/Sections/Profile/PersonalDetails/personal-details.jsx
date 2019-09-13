@@ -13,18 +13,25 @@ import {
 // import { formatDate }                       from 'Utils/Date';
 import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
+import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm'
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
-const getResidence = (residence_list, value, type) => residence_list.find(location => location[type === 'text' ? 'value' : 'text'] === value)[type];
+const getResidence = (residence_list, value, type) => {
+    const residence = residence_list.find(location =>
+        location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase());
+
+    if (residence) return residence[type];
+    return '';
+};
 
 const makeSettingsRequest = ({ ...settings }, residence_list) => {
     let { email_consent, tax_residence_text, citizen_text } = settings;
 
     email_consent = +email_consent; // checkbox is boolean but api expects number (1 or 0)
 
-    let tax_residence = getResidence(residence_list, tax_residence_text, 'value');
+    let tax_residence = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
     let citizen       = getResidence(residence_list, citizen_text, 'value');
 
     const settings_to_be_removed_for_api = ['email', 'tax_residence_text', 'citizen_text', 'email_consent'];
@@ -33,25 +40,10 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
     return { ...settings, citizen, tax_residence, email_consent };
 };
 
+// TODO: generalize validation and make it sharable
 const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_number);
-
+const isValidLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
-
-const validateFields = values => {
-    const errors = {};
-    const required_fields = ['first_name', 'last_name', 'tax_residence_text', 'tax_identification_number', 'phone' ];
-    required_fields.forEach(required => {
-        if (!values[required]) errors[required] = localize('This field is required');
-    });
-
-    if (values.phone && !isValidPhoneNumber(values.phone)) {
-        errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
-    }  else if (values.phone && !isValidLength(values.phone.trim(), 8, 35)) {
-        errors.phone = localize('You should enter 8-35 characters.');
-    }
-
-    return errors;
-};
 
 const InputGroup = ({ children }) => (
     <fieldset className='account-management-form-fieldset'>
@@ -62,16 +54,54 @@ const InputGroup = ({ children }) => (
 class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, show_form: true, }
 
-    onSubmit = (values, { setSubmitting }) => {
+    onSubmit = (values, { setStatus, setSubmitting }) => {
         const request = makeSettingsRequest(values, this.props.residence_list);
-        console.log('request: ', request);
-
-        WS.setSettings(request).then(() => {
+        WS.setSettings(request).then((data) => {
             setSubmitting(false);
-            // force request to update settings cache since settings have been updated
-            WS.getSettings({ forced: true });
+            if (data.error) {
+                setStatus({ msg: data.error.message });
+            } else {
+                // force request to update settings cache since settings have been updated
+                WS.getSettings({ forced: true });
+            }
         });
     }
+
+    validateFields = values => {
+        const errors = {};
+        const required_fields = ['first_name', 'last_name', 'phone' ];
+        const { residence_list } = this.props;
+
+        required_fields.forEach(required => {
+            if (!values[required]) errors[required] = localize('This field is required');
+        });
+
+        const min_phone_number_length = 8;
+        const max_phone_number_length = 35;
+        if (values.phone && !isValidPhoneNumber(values.phone)) {
+            errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
+        }  else if (values.phone && !isValidLength(values.phone.trim(), min_phone_number_length, max_phone_number_length)) {
+            errors.phone = localize('You should enter 8-35 characters.');
+        }
+
+        if (values.first_name && !isValidLetterSymbol(values.first_name)) {
+            errors.first_name = localize('Only alphabet is allowed');
+        }
+
+        if (values.last_name && !isValidLetterSymbol(values.last_name)) {
+            errors.last_name = localize('Only alphabet is allowed');
+        }
+
+        if (values.tax_residence_text && !getResidence(residence_list, values.tax_residence_text, 'value')) {
+            errors.tax_residence_text = localize('Tax residence not available');
+        }
+
+        if (values.citizen_text && !getResidence(residence_list, values.citizen_text, 'value')) {
+            errors.citizen_text = localize('Country not available');
+        }
+
+        return errors;
+    };
 
     showForm = show_form => this.setState({ show_form });
 
@@ -85,12 +115,12 @@ class PersonalDetailsForm extends React.Component {
             citizen,
             email,
             phone,
-            tax_identification_number,
-            tax_residence,
             email_consent,
             show_form,
             is_loading } = this.state;
-
+        let {
+            tax_identification_number,
+            tax_residence } = this.state;
         const { residence_list } = this.props;
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />
@@ -104,7 +134,9 @@ class PersonalDetailsForm extends React.Component {
             tax_residence_text = tax_residence ? getResidence(residence_list, tax_residence, 'text') : '';
         }
 
-        // const formatted_date_of_birth = formatDate(date_of_birth)
+        if (!tax_residence_text) tax_residence_text = '';
+        if (!tax_identification_number) tax_identification_number = '';
+
         return (
             <Formik
                 initialValues={{
@@ -119,11 +151,12 @@ class PersonalDetailsForm extends React.Component {
                     tax_identification_number,
                 }}
                 onSubmit={this.onSubmit}
-                validate={validateFields}
+                validate={this.validateFields}
             >
                 {({
               values,
               errors,
+              status,
               touched,
               handleChange,
               handleBlur,
@@ -145,7 +178,7 @@ class PersonalDetailsForm extends React.Component {
                                         value={values.first_name}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        label='First name'
+                                        label={localize('First name')}
                                         required
                                     />
                                     {errors.first_name && touched.first_name && <div>{errors.first_name}</div>}
@@ -229,7 +262,6 @@ class PersonalDetailsForm extends React.Component {
                                                 type='text'
                                                 label={localize('Tax residence')}
                                                 error={touched.tax_residence_text && errors.tax_residence_text}
-                                                required
                                                 list_items={this.props.residence_list}
                                                 onItemSelection={
                                                     (item) => setFieldValue('tax_residence_text', item.text, true)
@@ -247,7 +279,6 @@ class PersonalDetailsForm extends React.Component {
                                         value={values.tax_identification_number}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        required
                                     />
                                 </fieldset>
                                 {errors.tax_identification_number && touched.tax_identification_number && <div>{errors.tax_identification_number}</div>}    
@@ -263,6 +294,7 @@ class PersonalDetailsForm extends React.Component {
                                 </fieldset>
                             </FormBody>
                             <FormFooter>
+                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button type="submit" disabled={isSubmitting}>
                                     {localize('Submit')}
                                 </Button>
@@ -278,6 +310,7 @@ class PersonalDetailsForm extends React.Component {
     componentDidMount() {
         this.props.fetchResidenceList();
         WS.getSettings().then((data) => {
+            console.log(data);
             if (data.error) {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;

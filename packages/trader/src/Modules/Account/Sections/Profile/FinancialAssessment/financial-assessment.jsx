@@ -52,8 +52,10 @@ class FinancialAssessment extends React.Component {
     }
 
     onSubmit = (values, { setSubmitting })  => {
-        console.log('on_submit: ', values);
-        WS.setFinancialAssessment(values).then(() =>{
+        WS.setFinancialAssessment(values).then((data) => {
+            if (data.error) {
+                setStatus({ msg: data.error.message });
+            }
             setSubmitting(false);
         });
     }
@@ -98,6 +100,7 @@ class FinancialAssessment extends React.Component {
                 {({
                     values,
                     errors,
+                    status,
                     touched,
                     handleChange,
                     // handleBlur,
@@ -254,6 +257,7 @@ class FinancialAssessment extends React.Component {
                                         </fieldset>
                                     </FormBody>
                                 <FormFooter>
+                                    {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button type='submit' disabled={isSubmitting}>
                                         {localize('Submit')}
                                     </Button>

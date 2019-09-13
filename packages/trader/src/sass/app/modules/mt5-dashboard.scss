@@ -26,6 +26,12 @@
                 color: themed('text_primary_color');
             }
         }
+        &--hint {
+            @include typeface(--xsmall-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
         &--button {
             margin: 0;
             background-color: transparent;
@@ -34,6 +40,25 @@
             height: 4em;
             @include themify($themes) {
                 color: themed('text_active_color');
+            }
+        }
+    }
+    &__accounts-display {
+        margin-bottom: 2.4em;
+    }
+    &__download-center {
+        border-radius: 4px;
+        border: solid 1px #d6dadb;
+
+        &-options {
+            display: flex;
+            justify-content: space-between;
+
+            &--desktop,
+            &--mobile {
+                display: flex;
+                flex-flow: column nowrap;
+                align-items: center;
             }
         }
     }

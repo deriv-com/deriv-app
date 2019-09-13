@@ -406,9 +406,7 @@
     }
     &:hover {
         cursor: pointer;
-        @include themify($themes) {
-            background-color: themed('toggle_button_hover_background');
-        }
+        background-color: var(--general-hover);
     }
     &:focus {
         outline: none;

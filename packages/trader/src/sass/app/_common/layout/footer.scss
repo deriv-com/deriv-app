@@ -25,9 +25,7 @@
         width: 100%;
         height: 100%;
         content: '';
-        @include themify($themes) {
-            background-color: themed('background_modal_overlay');
-        }
+        background-color: var(--overlay-outside-dialog);
     }
     &--is-disabled:after {
         opacity: 1;

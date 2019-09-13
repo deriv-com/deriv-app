@@ -73,15 +73,13 @@
         border-radius: $BORDER_RADIUS;
         background: var(--fill-normal);
         color: var(--text-prominent);
-        border-color: var(--border-normal);
+        border: 1px solid var(--border-normal);
 
         &:hover {
             border-color: var(--border-hover);
-            background: var(--fill-hover);
         }
         &:active, &:focus {
             border-color: var(--border-active);
-            background: var(--fill-active);
         }
     }
     &__error {
@@ -115,9 +113,7 @@
         background: transparent;
         border-color: transparent;
         z-index: 2;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
 
         &--symbol {
             font-size: 1.4em;

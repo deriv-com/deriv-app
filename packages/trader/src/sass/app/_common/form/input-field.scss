@@ -107,25 +107,22 @@
             border-color: var(--brand-red-coral);
         }
         &:hover {
-            @include themify($themes) {
-                border-color: themed('text_color');
-                border-radius: 0;
-                box-shadow: none;
-            }
+            border-color: var(--border-hover);
         }
         &:focus {
             border-radius: 0;
             box-shadow: none;
+            border-color: var(--border-active);
         }
         &:checked {
-            background: var(--brand-red-coral);;
-            border-color: var(--brand-red-coral);;
+            background: var(--brand-red-coral);
+            border-color: var(--brand-red-coral);
 
             &:after {
                 display: inline-block;
             }
             &:hover {
-                border-color: var(--brand-red-coral);;
+                border-color: var(--brand-red-coral);
             }
         }
         &::-ms-check { // IE/EDGE support
@@ -150,23 +147,17 @@
         cursor: pointer;
     }
     &::placeholder {
-        @include themify($themes) {
-            border-color: themed('text_primary_color');
-        }
+        border-color: var(--border-normal);
     }
     &:hover {
-        @include themify($themes) {
-            border-color: themed('border_hover_color');
-        }
+        border-color: var(--border-hover);
     }
     &:active, &:focus {
         outline: 0;
         border-radius: $BORDER_RADIUS;
         box-shadow: 0 0 0 2px $COLOR_DARK_BLUE_8;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-
+        border-color: var(--border-active);
+        color: var(--text-prominent);
     }
     &--has-inline-prefix {
         padding-left: 50px !important;

@@ -7,7 +7,7 @@ $side-padding: 1.2em;
 /** @define reports; weak */
 .reports {
     margin: 16px;
-    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+    box-shadow: 18px 8px 8px var(--shadow-menu);
     border-radius: 4px;
 
     &__meta {

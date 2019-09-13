@@ -17,6 +17,7 @@
     --color-black-8: #323738;
     --color-black-9: #0e0e0ef5;
     --color-black-10: #00000014;
+    --color-black-11: #000000;
     --color-white: #ffffff;
     --color-white-1: #fffffff5;
     --color-red: #ff444f;
@@ -93,7 +94,8 @@
         // Overlay
         --overlay-outside-dialog: var(--color-black-7);
         --overlay-inside-dialog: var(--color-white-1);
-        // TODO: Shadow
+        // Shadow
+        --shadow-menu: var(--color-black-11);
         // States
         --state-normal: var(--color-white);
         --state-hover: var(--color-grey-4);
@@ -151,7 +153,8 @@
         // Overlay
         --overlay-outside-dialog: var(--color-black-7);
         --overlay-inside-dialog: var(--color-black-9);
-        // TODO: Shadow
+        // Shadow
+        --shadow-menu: var(--color-black-11);
         // States
         --state-normal: var(--color-black);
         --state-hover: var(--color-black-5);

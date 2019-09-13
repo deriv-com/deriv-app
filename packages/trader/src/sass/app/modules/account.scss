@@ -295,6 +295,21 @@
             }
         }
     }
+
+    .form-submit-error-message {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        p {
+            padding-left: 16px;
+        }
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
 }
 
 .grid-2-cols {

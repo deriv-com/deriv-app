@@ -13,6 +13,7 @@ import {
     TextContainer,
     Text }                  from '../../../Components/layout-components.jsx';
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
+import LoadErrorMessage     from '../../ErrorMessages/LoadErrorMessage';
 
 const display_decimals = 2;
 const makeTurnoverLimitRow = arr => (
@@ -59,6 +60,10 @@ class AccountLimits extends React.Component {
             this.setState({ is_loading: false });
         } else {
             WS.getAccountLimits().then((data) => {
+                if (data.error) {
+                    this.setState({ api_initial_load_error: data.error.message });
+                    return;
+                }
                 this.setState({ ...data.get_limits, is_loading: false });
             });
         }
@@ -67,6 +72,7 @@ class AccountLimits extends React.Component {
     render() {
         if (this.props.is_virtual) return <DemoMessage />;
         const {
+            api_initial_load_error,
             is_loading,
             open_positions,
             account_balance,
@@ -76,6 +82,7 @@ class AccountLimits extends React.Component {
             remainder,
             withdrawal_since_inception_monetary } = this.state;
 
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (is_loading) return <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />;
 
         const { commodities, forex, indices, volidx } = market_specific;

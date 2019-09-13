@@ -28,7 +28,7 @@ const validateFields = values => {
     return errors;
 };
 
-class ChangePasswordForm extends React.Component {
+class ChangePasswordForm extends React.PureComponent {
     state = {
         is_loading  : false,
         new_pw_input: '',

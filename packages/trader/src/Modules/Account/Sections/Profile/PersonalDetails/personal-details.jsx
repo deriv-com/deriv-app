@@ -99,7 +99,7 @@ class PersonalDetailsForm extends React.Component {
         if (values.citizen_text && !getResidence(residence_list, values.citizen_text, 'value')) {
             errors.citizen_text = localize('Country not available');
         }
-
+        console.log('errors: ', errors);
         return errors;
     };
 
@@ -191,7 +191,7 @@ class PersonalDetailsForm extends React.Component {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         required
-                                        error={(errors.last_name && touched.last_name) ? errors.first_name : undefined}
+                                        error={(errors.last_name && touched.last_name) ? errors.last_name : undefined}
                                     />
                                 </InputGroup>
                                 <fieldset className='account-management-form-fieldset'>
@@ -221,7 +221,7 @@ class PersonalDetailsForm extends React.Component {
                                         value={values.email}
                                         required
                                         disabled
-                                        error={(errors.email && touched.email) ? errors.first_name : undefined}
+                                        error={(errors.email && touched.email) ? errors.email : undefined}
                                     />
                                 </fieldset>
                                 <fieldset className='account-management-form-fieldset'>
@@ -235,7 +235,7 @@ class PersonalDetailsForm extends React.Component {
                                         onBlur={handleBlur}
                                         value={values.phone}
                                         required
-                                        error={(errors.phone && touched.phone )? errors.first_name : undefined}
+                                        error={(errors.phone && touched.phone )? errors.phone : undefined}
                                     />
                                 </fieldset>
                                 <fieldset className='account-management-form-fieldset'>
@@ -248,7 +248,7 @@ class PersonalDetailsForm extends React.Component {
                                         onChange={handleChange}
                                         error={(errors.account_opening_reason ||
                                             (touched.account_opening_reason && errors.account_opening_reason)) ?
-                                            errors.first_name
+                                            errors.account_opening_reason
                                             : undefined
                                         }
                                     />
@@ -280,7 +280,7 @@ class PersonalDetailsForm extends React.Component {
                                         value={values.tax_identification_number}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        error={(errors.tax_identification_number && touched.tax_identification_number) ? errors.first_name : undefined}
+                                        error={(errors.tax_identification_number && touched.tax_identification_number) ? errors.tax_identification_number : undefined}
                                     />
                                 </fieldset>
                                 <FormSubHeader title={localize('Email Preference')} />

@@ -13,6 +13,7 @@ import {
 // import { formatDate }                       from 'Utils/Date';
 import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
+import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm'
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
@@ -76,6 +77,7 @@ class PersonalDetailsForm extends React.Component {
 
     render() {
         const {
+            api_initial_load_error,
             account_opening_reason,
             // date_of_birth,
             first_name,
@@ -90,6 +92,8 @@ class PersonalDetailsForm extends React.Component {
             is_loading } = this.state;
 
         const { residence_list } = this.props;
+
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />
 
         if (is_loading || !residence_list.length) return <Loading is_fullscreen={false}  className='initial-loader--accounts-modal' />;
 
@@ -274,7 +278,10 @@ class PersonalDetailsForm extends React.Component {
     componentDidMount() {
         this.props.fetchResidenceList();
         WS.getSettings().then((data) => {
-            console.log('getSettings response: ', data.get_settings);
+            if (data.error) {
+                this.setState({ api_initial_load_error: data.error.message });
+                return;
+            }
             this.setState({ ...data.get_settings, is_loading: false });
         });
     }

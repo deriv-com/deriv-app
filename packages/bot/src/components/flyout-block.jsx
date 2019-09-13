@@ -12,8 +12,6 @@ class FlyoutBlock extends React.PureComponent {
 
     componentDidMount() {
         const { initBlockWorkspace, block_node, should_center_block } = this.props;
-        console.log(this.el_block_workspace);
-        
         initBlockWorkspace(this.el_block_workspace, block_node, should_center_block);
     }
 }

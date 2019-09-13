@@ -50,6 +50,10 @@ export const income_source_list = [
 
 export const employment_status_list = [
     {
+      text: 'Please select',
+      value: ''
+    },
+    {
       text: 'Employed',
       value: 'Employed'
     },
@@ -72,6 +76,10 @@ export const employment_status_list = [
 ];
 
 export const employment_industry_list = [
+    {
+      text: 'Please select',
+      value: ''
+    },
     {
       text: 'Construction',
       value: 'Construction'
@@ -131,6 +139,10 @@ export const employment_industry_list = [
 ];
 
 export const occupation_list = [
+    {
+      text: 'Please select',
+      value: ''
+    },
     {
       text: 'Chief Executives, Senior Officials and Legislators',
       value: 'Chief Executives, Senior Officials and Legislators'
@@ -225,6 +237,10 @@ export const source_of_wealth_list = [
 ];
 
 export const education_level_list = [
+    {
+      text: 'Please select',
+      value: ''
+    },
     {
       text: 'Primary',
       value: 'Primary'

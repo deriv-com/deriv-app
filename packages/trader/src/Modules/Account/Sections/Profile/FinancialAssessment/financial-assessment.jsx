@@ -113,8 +113,8 @@ class FinancialAssessment extends React.Component {
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
                             <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
-                            <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
                                 <FormBody scroll_offset='55px'>
+                                     <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
                                     <fieldset className='account-management-form-fieldset'>
                                         <Dropdown
                                             placeholder={localize('Source of income')}
@@ -123,12 +123,8 @@ class FinancialAssessment extends React.Component {
                                             list={income_source_list}
                                             value={values.income_source}
                                             onChange={handleChange}
+                                            error={(errors.income_source || (touched.income_source && errors.income_source))}
                                         />
-                                        {(errors.income_source || (touched.income_source && errors.income_source)) &&
-                                        <span className='fa-dropdown__error-message'>
-                                            {errors.income_source}
-                                        </span>
-                                        }
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
                                         <Dropdown

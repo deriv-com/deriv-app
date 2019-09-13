@@ -394,6 +394,7 @@ export default class TradeStore extends BaseStore {
                         this.proposal_info = {};
                         WS.forgetAll('proposal');
                         this.purchase_info = response;
+                        this.proposal_requests = {};
                         this.debouncedProposal();
                         this.root_store.gtm.pushPurchaseData(contract_data);
                         return;
@@ -545,10 +546,8 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    requestProposal(options = {}) {
-        const requests = options.reuse
-            ? this.proposal_requests
-            : createProposalRequests(this);
+    requestProposal() {
+        const requests = createProposalRequests(this);
 
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};

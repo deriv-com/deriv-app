@@ -1,16 +1,17 @@
-// import PropTypes        from 'prop-types';
+// import PropTypes from 'prop-types';
 import React        from 'react';
-// import { WS }     from 'Services';
+// import { WS }    from 'Services';
 import { Formik }   from 'formik';
 import {
     Button,
-    Label,
-    Input }         from 'deriv-components';
+    Input,
+    PasswordMeter } from 'deriv-components';
 import { localize } from 'App/i18n';
 import {
+    FormSubHeader,
     FormBody,
     FormFooter }    from '../../../Components/layout-components.jsx';
-import Loading  from '../../../../../templates/app/components/loading.jsx';
+import Loading      from '../../../../../templates/app/components/loading.jsx';
 
 const validateFields = values => {
     const errors = {};
@@ -21,15 +22,20 @@ const validateFields = values => {
     if (values.old_password === values.new_password) {
         errors.new_password = localize('Current password and new password cannot be the same.');
     }
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(values.new_password)) {
-        errors.new_password = localize('Password should have lower and uppercase letters with numbers.');
+    if (!/^[ -~]{6,25}$/.test(values.new_password)) {
+        errors.new_password = localize('Password length should be between 6 to 25 characters.');
     }
     return errors;
 };
 
 class ChangePasswordForm extends React.Component {
     state = {
-        is_loading: false,
+        is_loading  : false,
+        new_pw_input: '',
+    }
+
+    updateNewPassword = (string) => {
+        this.setState({ new_pw_input: string });
     }
 
     onSubmit = values => {
@@ -64,19 +70,34 @@ class ChangePasswordForm extends React.Component {
                                 </FormBody>
                                 :
                                 <FormBody scroll_offset='55px'>
-                                    <div className='account-management-form-header'>
-                                        <h1 className='account-management-form-header-text'>
-                                            {localize('Change your Deriv password')}
-                                        </h1>
+                                    <FormSubHeader title={localize('Change your Deriv password')} />
+                                    <div className='account-management__password-content'>
+                                        <Input
+                                            label={localize('Current password')}
+                                            classNameError='account-management__password-input--error'
+                                            error={errors.old_password || (touched.old_password && errors.old_password)}
+                                            type='password'
+                                            name='old_password'
+                                            value={values.old_password}
+                                            onChange={handleChange}
+                                        />
+                                        <PasswordMeter
+                                            input={this.state.new_pw_input}
+                                            error={errors.new_password || (touched.new_password && errors.new_password)}
+                                        >
+                                            <Input
+                                                label={localize('New password')}
+                                                type='password'
+                                                name='new_password'
+                                                value={values.new_password}
+                                                onChange={(e) => {
+                                                    const input = e.target;
+                                                    if (input) this.updateNewPassword(input.value);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </PasswordMeter>
                                     </div>
-                                    {/** TODO: replace with Input */}
-                                    <Label>Current password</Label>
-                                    <Input type='password' name='old_password' value={values.old_password} onChange={handleChange} />
-                                    {errors.old_password || (touched.old_password && errors.old_password)}
-
-                                    <Label>New password</Label>
-                                    <Input type='password' name='new_password' value={values.new_password} onChange={handleChange} />
-                                    {errors.new_password || (touched.new_password && errors.new_password)}
                                 </FormBody>
                             }
                             <FormFooter>

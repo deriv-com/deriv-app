@@ -163,6 +163,24 @@
             height: 128px;
         }
     }
+    .account-management__password {
+        &-content {
+            margin-top: 2em;
+
+            .dc-input {
+                margin-top: 2em;
+
+                &:first-child {
+                    margin-bottom: 3.5em;
+                }
+            }
+        }
+        &-input--error {
+            left: -1.2rem;
+            top: 4.5rem;
+            z-index: 2;
+        }
+    }
     .account-management__text {
         margin-top: 10px;
         margin-bottom: 16px;

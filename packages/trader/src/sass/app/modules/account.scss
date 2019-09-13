@@ -162,7 +162,16 @@
 
             .dc-input {
                 margin-top: 2em;
+
+                &:first-child {
+                    margin-bottom: 3.5em;
+                }
             }
+        }
+        &-input--error {
+            left: -1.2rem;
+            top: 4.5rem;
+            z-index: 2;
         }
     }
     .account-management__text {

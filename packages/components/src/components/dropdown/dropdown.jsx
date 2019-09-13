@@ -251,7 +251,6 @@ class Dropdown extends React.PureComponent {
                     readOnly='readonly'
                     type='hidden'
                     value={this.props.value || 0}
-                    ref={this.input_ref}
                 />
                 <div
                     ref={this.setWrapperRef}

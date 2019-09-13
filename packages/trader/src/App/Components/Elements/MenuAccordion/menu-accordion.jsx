@@ -8,23 +8,6 @@ import {
 const MenuAccordionTitle = ({ title }) => (<h1 className='menu-accordion-title'>{title}</h1>);
 
 class MenuAccordion extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        const selected = this.props.selected_content;
-        this.state     = {
-            action_bar_component: () => <MenuAccordionTitle title={selected ? selected.title : ''} />,
-            selected,
-        };
-    }
-
-    changeSelectedContent = (selected) => {
-        this.setState({ selected }, () => {
-            const Component = () => <MenuAccordionTitle title={this.state.selected.title} />;
-            this.setState({ action_bar_component: Component });
-        });
-    };
-
-
     render() {
         const {
             action_bar,
@@ -35,25 +18,26 @@ class MenuAccordion extends React.PureComponent {
             is_routed,
             list,
             sub_list,
+            selected_content,
             tab_container_classname,
         } = this.props;
 
+        const Component = () => <MenuAccordionTitle title={selected_content.title} />;
         const action_bar_items = [
             ...action_bar,
             {
-                component: this.state.action_bar_component,
+                component: Component,
             },
         ];
 
-        const selected = this.state.selected || this.props.sub_list ? this.props.sub_list[0] : this.props.list[0];
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
                 <MenuAccordionHeaders
                     header_title={header_title}
                     items={list}
-                    onChange={this.changeSelectedContent}
-                    selected={selected}
+                    selected={selected_content}
                     is_routed={is_routed}
+                    onChange={()=>{}}
                 />
                 <VerticalTabContentContainer
                     action_bar={action_bar_items}
@@ -61,7 +45,7 @@ class MenuAccordion extends React.PureComponent {
                     id={id}
                     items={sub_list}
                     is_routed={is_routed}
-                    selected={selected}
+                    selected={selected_content}
                     tab_container_classname={tab_container_classname}
                 />
             </VerticalTabLayout>

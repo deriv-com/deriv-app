@@ -61,8 +61,12 @@ class Account extends React.Component {
         }
 
         const subroutes        = flatten(this.props.routes);
-        const selected_content = subroutes.filter(subroutes => subroutes.path === this.props.location.pathname)[0];
+        let selected_content = subroutes.filter(subroutes => subroutes.path === this.props.location.pathname)[0];
 
+        if (!selected_content) { // fallback
+            selected_content = subroutes[0];
+            this.props.history.push(AppRoutes.personal_details);
+        }
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}

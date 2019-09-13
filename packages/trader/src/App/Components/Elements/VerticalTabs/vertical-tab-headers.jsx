@@ -14,7 +14,7 @@ class VerticalTabHeaders extends React.PureComponent {
                 {this.props.items.map((item, idx) => (
                     <VerticalTabHeader
                         item={item}
-                        onChange={this.props.onChange}
+                        onChange={this.props.onChange || undefined}
                         is_routed={this.props.is_routed}
                         selected={this.props.selected}
                         key={idx}

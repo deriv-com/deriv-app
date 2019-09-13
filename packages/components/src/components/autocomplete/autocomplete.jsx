@@ -82,6 +82,7 @@ class Autocomplete extends React.PureComponent {
                     <Input
                         { ...otherProps }
                         className='dc-autocomplete__field'
+                        autoComplete='off'
                         onFocus={ this.showDropdownList }
                         onInput={ this.filterList }
                         // Field's onBlur still needs to run to perform form functions such as validation

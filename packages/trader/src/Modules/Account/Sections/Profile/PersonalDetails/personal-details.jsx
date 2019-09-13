@@ -1,21 +1,21 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
 import { Formik, Field }                       from 'formik';
-import { localize }                            from 'App/i18n';
-import { WS }                                  from 'Services';
-import { connect }                             from 'Stores/connect';
 import {
     Autocomplete,
     Checkbox,
     Button,
     Dropdown,
     Input }                                    from 'deriv-components';
+import { localize }                            from 'App/i18n';
+import { WS }                                  from 'Services';
+import { connect }                             from 'Stores/connect';
 // import { formatDate }                       from 'Utils/Date';
 import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
-import { LeaveConfirm }                        from '../../../Components/leave-confirm'
+import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
 const getResidence = (residence_list, value, type) => {
@@ -52,10 +52,15 @@ const InputGroup = ({ children, className }) => (
 );
 
 class PersonalDetailsForm extends React.Component {
-    state = { is_loading: true, show_form: true, }
+    state = { is_loading: true, show_form: true }
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
-        const request = makeSettingsRequest(values, this.props.residence_list);
+        // TODO: Refactor requests for virtual and real accounts
+        const email_consent_value = values.email_consent ? 1 : 0;
+        const request = this.props.is_virtual ?
+            { 'email_consent': email_consent_value }
+            : makeSettingsRequest(values, this.props.residence_list);
+        console.warn(request);
         WS.setSettings(request).then((data) => {
             setSubmitting(false);
             if (data.error) {
@@ -69,6 +74,7 @@ class PersonalDetailsForm extends React.Component {
 
     validateFields = values => {
         const errors = {};
+        if (this.props.is_virtual) return errors;
         const required_fields = ['first_name', 'last_name', 'phone' ];
         const { residence_list } = this.props;
 
@@ -116,6 +122,7 @@ class PersonalDetailsForm extends React.Component {
             email,
             phone,
             email_consent,
+            residence,
             show_form,
             is_loading } = this.state;
         let {
@@ -148,6 +155,7 @@ class PersonalDetailsForm extends React.Component {
                     phone,
                     email,
                     email_consent,
+                    residence,
                     tax_identification_number,
                 }}
                 onSubmit={this.onSubmit}
@@ -170,51 +178,67 @@ class PersonalDetailsForm extends React.Component {
                         <form className='account-management-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset='55px'>
                                 <FormSubHeader title={localize('Details')} />
-                                <InputGroup className='grid-2-cols'>
-                                    <Input
-                                        data-lpignore='true'
-                                        type='text'
-                                        name='first_name'
-                                        value={values.first_name}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        label={localize('First name')}
-                                        required
-                                        error={(errors.first_name && touched.first_name) ? errors.first_name : undefined}
-                                    />
-                                    <Input
-                                        data-lpignore='true'
-                                        type='text'
-                                        name='last_name'
-                                        label={localize('Last name')}
-                                        value={values.last_name}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        required
-                                        error={(errors.last_name && touched.last_name) ? errors.last_name : undefined}
-                                    />
-                                </InputGroup>
+                                {!this.props.is_virtual &&
+                                <React.Fragment>
+                                    <InputGroup className='grid-2-cols'>
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='first_name'
+                                            value={values.first_name}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            label={localize('First name')}
+                                            required
+                                            error={(errors.first_name && touched.first_name) ? errors.first_name : undefined}
+                                        />
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='last_name'
+                                            label={localize('Last name')}
+                                            value={values.last_name}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            required
+                                            error={(errors.last_name && touched.last_name) ? errors.last_name : undefined}
+                                        />
+                                    </InputGroup>
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Field name='citizen_text'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    { ...field }
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    label={localize('Citizenship')}
+                                                    error={touched.citizen_text && errors.citizen_text}
+                                                    required
+                                                    list_items={this.props.residence_list}
+                                                    onItemSelection={
+                                                        (item) => setFieldValue('citizen_text', item.text, true)
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    </fieldset>
+                                </React.Fragment>
+                                }
                                 <fieldset className='account-management-form-fieldset'>
-                                    <Field name='citizen_text'>
-                                        {({ field }) => (
-                                            <Autocomplete
-                                                { ...field }
-                                                data-lpignore='true'
-                                                type='text'
-                                                label={localize('Citizenship')}
-                                                error={touched.citizen_text && errors.citizen_text}
-                                                required
-                                                list_items={this.props.residence_list}
-                                                onItemSelection={
-                                                    (item) => setFieldValue('citizen_text', item.text, true)
-                                                }
-                                            />
-                                        )}
-                                    </Field>
+                                    <Input
+                                        data-lpignore='true'
+                                        type='text'
+                                        name='residence'
+                                        label={localize('Country of residence')}
+                                        value={values.residence}
+                                        required
+                                        disabled
+                                        error={(errors.residence && touched.residence) ? errors.residence : undefined}
+                                    />
                                 </fieldset>
                                 <fieldset className='account-management-form-fieldset'>
                                     <Input
-                                        data-lpignore="true"
+                                        data-lpignore='true'
                                         type='text'
                                         name='email'
                                         label={localize('Email address')}
@@ -224,65 +248,68 @@ class PersonalDetailsForm extends React.Component {
                                         error={(errors.email && touched.email) ? errors.email : undefined}
                                     />
                                 </fieldset>
-                                <fieldset className='account-management-form-fieldset'>
-                                    <Input
-                                        data-lpignore="true"
-                                        type='text'
-                                        name='phone'
-                                        label={localize('Phone number')}
-                                        value={values.phone}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.phone}
-                                        required
-                                        error={(errors.phone && touched.phone )? errors.phone : undefined}
-                                    />
-                                </fieldset>
-                                <fieldset className='account-management-form-fieldset'>
-                                    <Dropdown
-                                        placeholder={'Account opening reason'}
-                                        is_align_text_left
-                                        name='account_opening_reason'
-                                        list={account_opening_reason_list}
-                                        value={values.account_opening_reason}
-                                        onChange={handleChange}
-                                        error={(errors.account_opening_reason ||
-                                            (touched.account_opening_reason && errors.account_opening_reason)) ?
-                                            errors.account_opening_reason
-                                            : undefined
-                                        }
-                                    />
-                                </fieldset>
-                                <FormSubHeader title={localize('Tax information')} />
-                                <fieldset className='account-management-form-fieldset'>
-                                    <Field name='tax_residence_text'>
-                                        {({ field }) => (
-                                            <Autocomplete
-                                                { ...field }
-                                                data-lpignore='true'
-                                                type='text'
-                                                label={localize('Tax residence')}
-                                                error={touched.tax_residence_text && errors.tax_residence_text}
-                                                list_items={this.props.residence_list}
-                                                onItemSelection={
-                                                    (item) => setFieldValue('tax_residence_text', item.text, true)
-                                                }
-                                            />
-                                        )}
-                                    </Field>
-                                </fieldset>
-                                <fieldset className='account-management-form-fieldset'>
-                                    <Input
-                                        data-lpignore="true"
-                                        type='text'
-                                        name='tax_identification_number'
-                                        label={localize('Tax identification number')}
-                                        value={values.tax_identification_number}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={(errors.tax_identification_number && touched.tax_identification_number) ? errors.tax_identification_number : undefined}
-                                    />
-                                </fieldset>
+                                {!this.props.is_virtual &&
+                                <React.Fragment>
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='phone'
+                                            label={localize('Phone number')}
+                                            value={values.phone}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            required
+                                            error={(errors.phone && touched.phone) ? errors.phone : undefined}
+                                        />
+                                    </fieldset>
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Dropdown
+                                            placeholder={'Account opening reason'}
+                                            is_align_text_left
+                                            name='account_opening_reason'
+                                            list={account_opening_reason_list}
+                                            value={values.account_opening_reason}
+                                            onChange={handleChange}
+                                            error={(errors.account_opening_reason ||
+                                                (touched.account_opening_reason && errors.account_opening_reason)) ?
+                                                errors.account_opening_reason
+                                                : undefined
+                                            }
+                                        />
+                                    </fieldset>
+                                    <FormSubHeader title={localize('Tax information')} />
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Field name='tax_residence_text'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    { ...field }
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    label={localize('Tax residence')}
+                                                    error={touched.tax_residence_text && errors.tax_residence_text}
+                                                    list_items={this.props.residence_list}
+                                                    onItemSelection={
+                                                        (item) => setFieldValue('tax_residence_text', item.text, true)
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    </fieldset>
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='tax_identification_number'
+                                            label={localize('Tax identification number')}
+                                            value={values.tax_identification_number}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={(errors.tax_identification_number && touched.tax_identification_number) ? errors.tax_identification_number : undefined}
+                                        />
+                                    </fieldset>
+                                </React.Fragment>
+                                }
                                 <FormSubHeader title={localize('Email Preference')} />
                                 <fieldset className='account-management-form-fieldset'>
                                     <Checkbox
@@ -327,6 +354,7 @@ class PersonalDetailsForm extends React.Component {
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
+        is_virtual        : client.is_virtual,
         residence_list    : client.residence_list,
         fetchResidenceList: client.fetchResidenceList
     }),

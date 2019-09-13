@@ -16,7 +16,7 @@ const Input = ({ className, classNameError, error, trailing_icon, label, ...prop
         <label className='dc-input__label' htmlFor={ props.id }>
             { label || props.placeholder }
         </label>
-        { props.error &&
+        { error &&
             <FieldError className={classNameError} message={error} />
         }
     </div>

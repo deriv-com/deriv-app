@@ -250,11 +250,11 @@ class FinancialAssessment extends React.Component {
                                             (errors.employment_status || !values.employment_status) ||
                                             (errors.employment_industry || !values.employment_industry) ||
                                             (errors.occupation || !values.occupation) ||
-                                            (errors.source_of_wealth || values.source_of_wealth) ||
-                                            (errors.education_level || values.education_level) ||
-                                            (errors.net_income || values.net_income) ||
-                                            (errors.estimated_worth || values.estimated_worth) ||
-                                            (errors.account_turnover || values.account_turnover)
+                                            (errors.source_of_wealth || !values.source_of_wealth) ||
+                                            (errors.education_level || !values.education_level) ||
+                                            (errors.net_income || !values.net_income) ||
+                                            (errors.estimated_worth || !values.estimated_worth) ||
+                                            (errors.account_turnover || !values.account_turnover)
                                         }
                                     >
                                         {localize('Submit')}

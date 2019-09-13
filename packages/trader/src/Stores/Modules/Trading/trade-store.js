@@ -45,6 +45,7 @@ import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 
 const store_name = 'trade_store';
+const g_subscribers_map = {}; // blame amin.m
 
 export default class TradeStore extends BaseStore {
     // Control values
@@ -124,8 +125,10 @@ export default class TradeStore extends BaseStore {
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
         await BinarySocket.wait('authorize', 'website_status');
-        action(async() => {
-            this.active_symbols = await WS.activeSymbols().active_symbols;
+        WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
+            runInAction(() => {
+                this.active_symbols = active_symbols;
+            });
         });
     };
 
@@ -214,8 +217,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        // TODO: doesn't need to be forced? ¯\_(ツ)_/¯
-        const { active_symbols, error } = await WS.activeSymbols({ forced: true });
+        const { active_symbols, error } = await WS.activeSymbols();
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
@@ -543,8 +545,10 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    requestProposal() {
-        const requests = createProposalRequests(this);
+    requestProposal(options = {}) {
+        const requests = options.reuse
+            ? this.proposal_requests
+            : createProposalRequests(this);
 
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
@@ -726,22 +730,34 @@ export default class TradeStore extends BaseStore {
     }
 
     // ---------- WS ----------
-    wsSubscribe = (request_object, callback) => {
-        if (request_object.subscribe === 1) {
-            WS.subscribeTicksHistory({ ...request_object }, callback);
+    wsSubscribe = (req, callback) => {
+        if (req.subscribe === 1) {
+            const key = JSON.stringify(req);
+            const subscriber = WS.subscribeTicksHistory(req, callback);
+            g_subscribers_map[key] = subscriber;
         }
     };
 
-    wsForget = (match_values, callback) => WS.forget('ticks_history', callback, match_values);
-    wsForgetStream = (stream_id) => WS.forgetStream(stream_id);
+    wsForget = (req) => {
+        const key = JSON.stringify(req);
+        if (g_subscribers_map[key]) {
+            g_subscribers_map[key].unsubscribe();
+            delete g_subscribers_map[key];
+        }
+        // WS.forget('ticks_history', callback, match);
+    }
 
-    wsSendRequest = (request_object) => {
-        if (request_object.time) {
+    wsForgetStream = (stream_id) => {
+        WS.forgetStream(stream_id);
+    }
+
+    wsSendRequest = (req) => {
+        if (req.time) {
             return ServerTime.timePromise.then(() => ({
                 msg_type: 'time',
                 time    : ServerTime.get().unix(),
             }));
         }
-        return WS.sendRequest(request_object);
+        return WS.send(req);
     };
 }

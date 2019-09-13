@@ -35,22 +35,26 @@ export default class ContractReplayStore extends BaseStore {
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
+    subscribers = {};
+
     // -------------------
     // ----- Actions -----
     // -------------------
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        const proposal_open_contract_request = [contract_id, cb, false];
-
         if (this.should_forget_first) {
             // TODO; don't forget all ever
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
-                WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+                WS.storage.proposalOpenContract({ contract_id }).then(cb);
+                this.subscribers[contract_id] =
+                    WS.subscribeProposalOpenContract(contract_id, cb);
             });
         } else {
-            WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            WS.storage.proposalOpenContract({ contract_id }).then(cb);
+            this.subscribers[contract_id]
+                = WS.subscribeProposalOpenContract(contract_id, cb);
         }
-    }
+    };
 
     @action.bound
     onMount(contract_id) {
@@ -60,7 +64,7 @@ export default class ContractReplayStore extends BaseStore {
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
-            WS.activeSymbols({ skip_cache_update: true });
+            WS.storage.activeSymbols('brief');
         }
     }
 
@@ -174,8 +178,10 @@ export default class ContractReplayStore extends BaseStore {
         }
     }
 
-    forgetProposalOpenContract = (contract_id, cb) => {
-        WS.forget('proposal_open_contract', cb, { contract_id });
+    forgetProposalOpenContract = (contract_id) => {
+        if (!(contract_id in this.subscribers)) return;
+        this.subscribers[contract_id].unsubscribe();
+        delete this.subscribers[contract_id];
     }
 
     @action.bound

@@ -25,6 +25,8 @@ export default class ContractTradeStore extends BaseStore {
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
+    subscribers = {};
+
     // -------------------
     // ----- Actions -----
     // -------------------
@@ -54,15 +56,15 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        const proposal_open_contract_request = [contract_id, cb, false];
-
         if (this.should_forget_first) {
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
-                WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+                this.subscribers[contract_id]
+                    = WS.subscribeProposalOpenContract(contract_id, cb);
             });
         } else {
-            WS.subscribeProposalOpenContract(...proposal_open_contract_request);
+            this.subscribers[contract_id]
+                = WS.subscribeProposalOpenContract(contract_id, cb);
         }
     }
 
@@ -193,8 +195,10 @@ export default class ContractTradeStore extends BaseStore {
         return length > 0 ? applicable_contracts[length - 1] : { };
     }
 
-    forgetProposalOpenContract = (contract_id, cb) => {
-        WS.forget('proposal_open_contract', cb, { contract_id });
+    forgetProposalOpenContract = (contract_id) => {
+        if (!(contract_id in this.subscribers)) return;
+        this.subscribers[contract_id].unsubscribe();
+        delete this.subscribers[contract_id];
     }
 
     @action.bound

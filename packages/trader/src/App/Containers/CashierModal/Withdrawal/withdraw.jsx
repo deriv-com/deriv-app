@@ -36,6 +36,6 @@ export default connect(
         iframe_height    : modules.cashier.config.withdraw.iframe_height,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         is_loading       : modules.cashier.is_loading,
-        onMount          : modules.cashier.onMountWithdraw,
+        onMount          : modules.cashier.onMount,
     })
 )(Withdraw);

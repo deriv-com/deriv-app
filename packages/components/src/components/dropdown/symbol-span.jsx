@@ -1,3 +1,4 @@
+import classNames                       from 'classnames';
 import PropTypes                        from 'prop-types';
 import React, { Component }             from 'react';
 import { getDisplayText, listPropType } from './dropdown';
@@ -9,7 +10,12 @@ class SymbolSpan extends Component {
                 <span
                     name={this.props.name}
                     value={this.props.value}
-                    className={`symbols dc-dropdown__display-symbol symbols--${(this.props.value || '').toLowerCase()}`}
+                    className={
+                        classNames('symbols', 'dc-dropdown__display-symbol',
+                            this.props.className,
+                            { [`symbols--${this.props.value.toLowerCase()}`]: this.props.value },
+                        )
+                    }
                 />
             );
         }
@@ -17,7 +23,7 @@ class SymbolSpan extends Component {
             <span
                 name={this.props.name}
                 value={this.props.value}
-                className='dc-dropdown__display-text'
+                className={classNames('dc-dropdown__display-text', this.props.className)}
             >
                 {getDisplayText(this.props.list, this.props.value)}
             </span>
@@ -27,6 +33,7 @@ class SymbolSpan extends Component {
 }
 
 SymbolSpan.propTypes = {
+    className : PropTypes.string,
     has_symbol: PropTypes.bool,
     list      : listPropType(),
     name      : PropTypes.string,

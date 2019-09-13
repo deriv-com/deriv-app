@@ -1,13 +1,15 @@
 // import PropTypes        from 'prop-types';
-import React               from 'react';
-import { Formik }          from 'formik';
+import React                  from 'react';
+import { Formik }             from 'formik';
 import {
     Button,
-    Dropdown }             from 'deriv-components';
-import { connect }         from 'Stores/connect';
-import { localize }        from 'App/i18n';
-import { WS }              from 'Services';
-import DemoMessage         from '../../ErrorMessages/DemoMessage';
+    Dropdown }                from 'deriv-components';
+import { connect }            from 'Stores/connect';
+import { localize }           from 'App/i18n';
+import { WS }                 from 'Services';
+import DemoMessage            from '../../ErrorMessages/DemoMessage';
+import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
+import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
 import {
     income_source_list,
     employment_status_list,
@@ -17,13 +19,13 @@ import {
     education_level_list,
     net_income_list,
     estimated_worth_list,
-    account_turnover_list } from '../../../Constants/constants-financial-information';
+    account_turnover_list }  from '../../../Constants/constants-financial-information';
 import {
     FormBody,
     FormSubHeader,
-    FormFooter }            from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }     from '../../../Components/leave-confirm.jsx'
-import Loading              from '../../../../../templates/app/components/loading.jsx';
+    FormFooter }             from '../../../Components/layout-components.jsx';
+import { LeaveConfirm }      from '../../../Components/leave-confirm.jsx'
+import Loading               from '../../../../../templates/app/components/loading.jsx';
 
 const validateFields = values => {
     const errors = {};
@@ -36,7 +38,19 @@ const validateFields = values => {
 };
 
 class FinancialAssessment extends React.Component {
-    state = { is_loading: true, show_form: true };
+    state = {
+        is_loading         : true,
+        show_form          : true,
+        income_source      : '',
+        employment_status  : '',
+        employment_industry: '',
+        occupation         : '',
+        source_of_wealth   : '',
+        education_level    : '',
+        net_income         : '',
+        estimated_worth    : '',
+        account_turnover   : '',
+    };
 
     componentDidMount() {
         if (this.props.is_virtual) {
@@ -52,7 +66,7 @@ class FinancialAssessment extends React.Component {
         }
     }
 
-    onSubmit = (values, { setSubmitting })  => {
+    onSubmit = (values, { setSubmitting, setStatus })  => {
         WS.setFinancialAssessment(values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -104,7 +118,7 @@ class FinancialAssessment extends React.Component {
                     status,
                     touched,
                     handleChange,
-                    // handleBlur,
+                    handleBlur,
                     handleSubmit,
                     isSubmitting,
                     // validateField,
@@ -114,7 +128,7 @@ class FinancialAssessment extends React.Component {
                         { show_form && (
                             <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
                                 <FormBody scroll_offset='55px'>
-                                     <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
+                                    <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
                                     <fieldset className='account-management-form-fieldset'>
                                         <Dropdown
                                             placeholder={localize('Source of income')}
@@ -123,7 +137,8 @@ class FinancialAssessment extends React.Component {
                                             list={income_source_list}
                                             value={values.income_source}
                                             onChange={handleChange}
-                                            error={(errors.income_source || (touched.income_source && errors.income_source))}
+                                            handleBlur={handleBlur}
+                                            error={touched.income_source && errors.income_source}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -134,7 +149,8 @@ class FinancialAssessment extends React.Component {
                                             list={employment_status_list}
                                             value={values.employment_status}
                                             onChange={handleChange}
-                                            error={(errors.employment_status || (touched.employment_status && errors.employment_status))}
+                                            handleBlur={handleBlur}
+                                            error={touched.employment_status && errors.employment_status}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -145,7 +161,8 @@ class FinancialAssessment extends React.Component {
                                             list={employment_industry_list}
                                             value={values.employment_industry}
                                             onChange={handleChange}
-                                            error={(errors.employment_industry || (touched.employment_industry && errors.employment_industry))}
+                                            handleBlur={handleBlur}
+                                            error={touched.employment_industry && errors.employment_industry}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -156,7 +173,8 @@ class FinancialAssessment extends React.Component {
                                             list={occupation_list}
                                             value={values.occupation}
                                             onChange={handleChange}
-                                            error={(errors.occupation || (touched.occupation && errors.occupation))}
+                                            handleBlur={handleBlur}
+                                            error={touched.occupation && errors.occupation}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -167,7 +185,8 @@ class FinancialAssessment extends React.Component {
                                             list={source_of_wealth_list}
                                             value={values.source_of_wealth}
                                             onChange={handleChange}
-                                            error={(errors.source_of_wealth || (touched.source_of_wealth && errors.source_of_wealth))}
+                                            handleBlur={handleBlur}
+                                            error={touched.source_of_wealth && errors.source_of_wealth}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -178,7 +197,8 @@ class FinancialAssessment extends React.Component {
                                             list={education_level_list}
                                             value={values.education_level}
                                             onChange={handleChange}
-                                            error={(errors.education_level || (touched.education_level && errors.education_level))}
+                                            handleBlur={handleBlur}
+                                            error={touched.education_level && errors.education_level}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -189,7 +209,8 @@ class FinancialAssessment extends React.Component {
                                             list={net_income_list}
                                             value={values.net_income}
                                             onChange={handleChange}
-                                            error={(errors.net_income || (touched.net_income && errors.net_income))}
+                                            handleBlur={handleBlur}
+                                            error={touched.net_income && errors.net_income}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -201,7 +222,8 @@ class FinancialAssessment extends React.Component {
                                             list={estimated_worth_list}
                                             value={values.estimated_worth}
                                             onChange={handleChange}
-                                            error={(errors.estimated_worth || (touched.estimated_worth && errors.estimated_worth))}
+                                            handleBlur={handleBlur}
+                                            error={touched.estimated_worth && errors.estimated_worth}
                                         />
                                     </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
@@ -213,17 +235,32 @@ class FinancialAssessment extends React.Component {
                                             list={account_turnover_list}
                                             value={values.account_turnover}
                                             onChange={handleChange}
-                                            error={(errors.account_turnover || (touched.account_turnover && errors.account_turnover))}
+                                            handleBlur={handleBlur}
+                                            error={touched.account_turnover && errors.account_turnover}
                                         />
                                     </fieldset>
                                 </FormBody>
-                            <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                <Button type='submit' disabled={isSubmitting}>
-                                    {localize('Submit')}
-                                </Button>
-                            </FormFooter>
-                         </form>
+                                <FormFooter>
+                                    {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    <Button
+                                        type='submit'
+                                        is_disabled={
+                                            isSubmitting ||
+                                            (errors.income_source || !values.income_source) ||
+                                            (errors.employment_status || !values.employment_status) ||
+                                            (errors.employment_industry || !values.employment_industry) ||
+                                            (errors.occupation || !values.occupation) ||
+                                            (errors.source_of_wealth || values.source_of_wealth) ||
+                                            (errors.education_level || values.education_level) ||
+                                            (errors.net_income || values.net_income) ||
+                                            (errors.estimated_worth || values.estimated_worth) ||
+                                            (errors.account_turnover || values.account_turnover)
+                                        }
+                                    >
+                                        {localize('Submit')}
+                                    </Button>
+                                </FormFooter>
+                            </form>
                         )}
                     </>
                 )}

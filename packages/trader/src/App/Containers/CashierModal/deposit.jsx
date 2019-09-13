@@ -6,7 +6,7 @@ import CashierContainer from './Layout/cashier-container.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab('deposit');
+        this.props.setActiveTab(this.props.container);
         this.props.onMount();
     }
 
@@ -16,7 +16,6 @@ class Deposit extends React.Component {
                 {this.props.error.message ?
                     <Error
                         error={this.props.error}
-                        container='deposit'
                     />
                     :
                     <CashierContainer
@@ -31,6 +30,7 @@ class Deposit extends React.Component {
 }
 
 Deposit.propTypes = {
+    container    : PropTypes.string,
     error        : PropTypes.object,
     iframe_height: PropTypes.oneOfType([
         PropTypes.number,
@@ -44,11 +44,12 @@ Deposit.propTypes = {
 
 export default connect(
     ({ modules }) => ({
+        container    : modules.cashier.config.deposit.container,
         error        : modules.cashier.config.deposit.error,
         iframe_height: modules.cashier.config.deposit.iframe_height,
         iframe_url   : modules.cashier.config.deposit.iframe_url,
         is_loading   : modules.cashier.is_loading,
-        onMount      : modules.cashier.onMountDeposit,
+        onMount      : modules.cashier.onMount,
         setActiveTab : modules.cashier.setActiveTab,
     })
 )(Deposit);

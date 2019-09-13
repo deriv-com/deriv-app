@@ -1,4 +1,40 @@
 /** @define mt5-dashboard; */
 .mt5-dashboard {
-    // Rule
+    margin: 4.8em 16em;
+
+    &__welcome-message {
+        margin-bottom: 3.2em;
+
+        &--content {
+            display: flex;
+            justify-content: space-between;
+
+            .mt5-dashboard__welcome-message--paragraph {
+                max-width: 835px;
+            }
+        }
+        &--heading {
+            @include typeface(--title-left-bold-black, none);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            line-height: 2.4em;
+        }
+        &--paragraph {
+            @include typeface(--paragraph-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &--button {
+            margin: 0;
+            background-color: transparent;
+            font-weight: bold;
+            border: solid 2px #999999;
+            height: 4em;
+            @include themify($themes) {
+                color: themed('text_active_color');
+            }
+        }
+    }
 }

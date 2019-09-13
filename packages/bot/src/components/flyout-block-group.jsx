@@ -15,21 +15,27 @@ const FlyoutBlockGroup = (props) => {
 
     return (
         <div className='flyout__item'>
-            <div className='flyout__item-header'>
-                <div className='flyout__item-label'>{display_name}</div>
-            </div>
-            <div className='flyout__item-description'>
-                {description}
-                {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a></p>}
-            </div>
             {
                 Object.keys(block_nodes).map(key => {
                     return (
-                        <FlyoutBlock
-                            key={key}
-                            should_center_block={true}
-                            block_node={block_nodes[key]}
-                        />
+                        <div key={key}>
+                            <div className='flyout__item-header'>
+                                <div className='flyout__item-label'>{display_name}</div>
+                                <div className='flyout__item-buttons'>
+                                    <button className='flyout__button flyout__button-add flyout__button-add-hide' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[key])}>
+                                        {translate('Add')}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className='flyout__item-description'>
+                                {description}
+                                {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a></p>}
+                            </div>
+                            <FlyoutBlock
+                                should_center_block={true}
+                                block_node={block_nodes[key]}
+                            />
+                        </div>
                     );
                 })
             }

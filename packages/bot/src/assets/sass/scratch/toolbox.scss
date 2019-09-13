@@ -1,5 +1,5 @@
 $category-colours: (
-    search          : #afffda,
+    search             : #afffda,
     trade_parameters   : #30409f,
     purchase_conditions: #00897b,
     sell_conditions    : #78909c,
@@ -21,7 +21,8 @@ $category-colours: (
     $white           : #fff;
     $lightgrey       : #ebebeb;
     $grey            : #f4f4f6;
-    $category-text-spacing: 15px;
+    $gray20          : #333;
+    $category-text-spacing: 10px;
 
     background-color: $white;
     border: 1px solid $lightgrey;
@@ -55,7 +56,7 @@ $category-colours: (
 
         &--back {
             margin-left: $category-text-spacing;
-            fill: $white;
+            fill: $gray20;
             transform: rotate(90deg);
         }
         &--open {
@@ -78,7 +79,9 @@ $category-colours: (
         &__category-return {
             #{$toolbox}__category {
                 &--#{$category} {
-                    background-color: $colour;
+                    background-color: $lightgrey;
+                    color: $gray20;
+                    max-height: 38px;
                 }
             }
         }
@@ -94,7 +97,6 @@ $category-colours: (
     }
     &__category-return {
         cursor: pointer;
-        color: $white;
         text-align: center;
 
         #{$toolbox}__label {
@@ -107,7 +109,8 @@ $category-colours: (
         width: 100%;
     }
     &__description {
-        font-size: 1.3em;
+        font-size: 12px;
+        line-height: 1.4;
     }
     &__icon {
         display: flex;
@@ -121,7 +124,8 @@ $category-colours: (
     }
     &__label {
         font-weight: bold;
-        font-size: 1.6em;
+        font-size: 14px;
+        line-height: 1.4;
     }
     &__row {
         cursor: pointer;
@@ -146,7 +150,7 @@ $category-colours: (
         }
     }
     &__separator {
-        padding: 20px 0;
+        padding: 10px 0;
         border-top: 1px solid $lightgrey;
     }
     #search_input {

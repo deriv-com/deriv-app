@@ -90,7 +90,7 @@
     <category 
         id="trade_results" 
         name="Trade again" 
-        description="Check your profit and trade again" 
+        description="Check your trade results and trade again" 
         iconURI="ic-stage-4"
     >
         <block type="after_purchase"></block>
@@ -101,7 +101,7 @@
     <category 
         id="contract_details" 
         name="Contract details" 
-        description="Statement, payout, purchase/sell price, etc." 
+        description="Statement, payout, purchase price, etc." 
     >
         <block type="contract_check_result"></block>
         <block type="read_details"></block>
@@ -418,7 +418,7 @@
         </category>
         <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
         <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
-        <category name="Loops" id="loops" description="arithmetical operations">
+        <category name="Loops" id="loops" description="Repeat instructions until condition is met">
             <block type="controls_repeat_ext"></block>
             <block type="controls_repeat"></block>
             <block type="controls_whileUntil"></block>

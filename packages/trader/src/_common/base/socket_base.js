@@ -177,6 +177,19 @@ const BinarySocketBase = (() => {
     const verifyEmail = (email, type) =>
         deriv_api.send({ verify_email: email, type });
 
+    const paymentAgentList = (country, currency) =>
+        deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
+
+    const paymentAgentWithdraw = ({ loginid, currency, amount, verification_code }) =>
+        deriv_api.send({
+            amount,
+            currency,
+            verification_code,
+            paymentagent_withdraw: 1,
+            dry_run              : 0,
+            paymentagent_loginid : loginid,
+        });
+
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -203,6 +216,8 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        paymentAgentList,
+        paymentAgentWithdraw,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

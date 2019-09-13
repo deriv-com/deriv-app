@@ -8,7 +8,7 @@ import { website_name } from '../../../../Constants/app-config';
 
 class UnsupportedContractModal extends React.Component {
     render() {
-        const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose} = this.props;
+        const { disableApp, enableApp, is_loading, is_visible, onConfirm, onClose } = this.props;
         return (
             <Dialog
                 title={localize('Whoops!')}

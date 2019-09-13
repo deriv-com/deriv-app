@@ -1,11 +1,12 @@
-import { Dialog }    from 'deriv-components';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { localize }  from 'App/i18n';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import { connect }   from 'Stores/connect';
+import { Dialog }       from 'deriv-components';
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { localize }     from 'App/i18n';
+import Localize         from 'App/Components/Elements/localize.jsx';
+import { connect }      from 'Stores/connect';
+import { website_name } from 'App/Constants/app-config';
 
-const DenialOfServiceModal = ({ 
+const DenialOfServiceModal = ({
     disableApp,
     enableApp,
     is_loading,
@@ -25,7 +26,7 @@ const DenialOfServiceModal = ({
         is_closed_on_cancel={false}
         is_visible={is_visible}
     >
-        <Localize i18n_default_text='You cannot use your real money account with Deriv at this time.' />
+        <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
     </Dialog>
 );
 

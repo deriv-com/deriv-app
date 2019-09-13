@@ -4,6 +4,7 @@ import React               from 'react';
 import Popover             from 'Components/popover';
 
 const Items = ({
+    className,
     index,
     handleSelect,
     has_symbol,
@@ -52,13 +53,14 @@ const Items = ({
             }
 
             {!has_symbol &&
-                <span className='dc-list__item-text'>{item.text}</span>
+                <span className={classNames('dc-list__item-text', className)}>{item.text}</span>
             }
         </div>
     );
 });
 
 Items.propTypes = {
+    className   : PropTypes.string,
     handleSelect: PropTypes.func,
     has_symbol  : PropTypes.bool,
     name        : PropTypes.string,

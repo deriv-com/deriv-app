@@ -111,7 +111,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(open_positions, 0) }</Td>
@@ -125,7 +124,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(account_balance, display_decimals) }</Td>
@@ -139,7 +137,6 @@ class AccountLimits extends React.Component {
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
                                         message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
-                                        portal_container='modal_root'
                                     />
                                 </Td>
                                 <Td>{ addCommaToNumber(payout, display_decimals) }</Td>
@@ -161,7 +158,6 @@ class AccountLimits extends React.Component {
                                         icon='info'
                                         message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
                                         margin={0}
-                                        portal_container='modal_root'
                                     />
                                 </TableHeader>
                                 <TableHeader>{localize('Limit')}</TableHeader>

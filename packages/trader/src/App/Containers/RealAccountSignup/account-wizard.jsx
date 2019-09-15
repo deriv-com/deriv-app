@@ -6,8 +6,6 @@ import CurrencySelector     from './currency-selector.jsx';
 import FormProgress         from './form-progress.jsx';
 import PersonalDetails      from './personal-details.jsx';
 import TermsOfUse           from './terms-of-use.jsx';
-import 'Sass/real-account-signup.scss';
-import 'Sass/account-wizard.scss';
 
 class AccountWizard extends React.Component {
     constructor(props) {

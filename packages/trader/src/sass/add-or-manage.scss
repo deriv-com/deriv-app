@@ -16,6 +16,11 @@
   }
 }
 .success-change {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
   &__icon-area {
     svg {
       width: 60px;
@@ -28,6 +33,9 @@
     }
     p {
       @include typeface(--paragraph-left-normal-black);
+      padding: 1rem;
+      text-align: center;
+      text-transform: none;
     }
   }
 }

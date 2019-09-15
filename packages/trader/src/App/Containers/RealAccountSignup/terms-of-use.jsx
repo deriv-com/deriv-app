@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import { Checkbox }         from 'deriv-components';
 import { Field, Formik }    from 'formik';
+import React, { Component } from 'react';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { Hr }               from './currency-selector.jsx';
 import 'Sass/terms-of-use.scss';
 import FormSubmitButton     from './form-submit-button.jsx';
-import Checkbox             from '../../Components/Form/Checkbox/checkbox.jsx';
 
 // Checkbox input
 const CheckboxField = ({

@@ -1,7 +1,6 @@
 @import 'app/_common/base/index';
 
 .change-currency {
-  margin:0 0 -30px;
   @include themify($themes) {
     background-color: themed('border_color');
   }

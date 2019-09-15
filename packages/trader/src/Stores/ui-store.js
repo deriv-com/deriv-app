@@ -263,6 +263,12 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    closeSignupAndOpenCashier() {
+        this.is_real_acc_signup_on = false;
+        setTimeout(this.toggleCashierModal, 300);
+    }
+
+    @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
     }

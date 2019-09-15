@@ -2,8 +2,14 @@ import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
 import IconArrowBold from 'Assets/Common/icon-arrow-bold.jsx';
 import Icon          from 'Assets/icon.jsx';
+import Button        from 'deriv-components/src/components/button';
 
-const FinishedSetCurrency = ({ prev, current }) => {
+const FinishedSetCurrency = ({
+    current,
+    onCancel,
+    onSubmit,
+    prev,
+}) => {
     const IconPrevCurrency = () => <Icon
         icon='IconAccountsCurrency'
         type={prev.toLowerCase()}
@@ -34,7 +40,22 @@ const FinishedSetCurrency = ({ prev, current }) => {
                     />
                 </p>
             </div>
-            <div className='success-change__btn-area' />
+            <div className='success-change__btn-area'>
+                <Button
+                    onClick={onCancel}
+                >
+                    <Localize
+                        i18n_default_text='Maybe later'
+                    />
+                </Button>
+                <Button
+                    onClick={onSubmit}
+                >
+                    <Localize
+                        i18n_default_text='Deposit now'
+                    />
+                </Button>
+            </div>
         </div>
     );
 };

@@ -40,17 +40,27 @@ class ModalElement extends React.PureComponent {
 
     render() {
         return ReactDOM.createPortal(
-            <div ref={this.setWrapperRef} id={this.props.id} className={classNames('dc-modal__container', this.props.className && `dc-modal__container_${this.props.className}`)}>
-                <div className={classNames('dc-modal-header', this.props.className && `dc-modal-header__${this.props.className}`)}>
+            <div
+                ref={this.setWrapperRef}
+                id={this.props.id}
+                className={classNames('dc-modal__container',
+                    this.props.className && `dc-modal__container_${this.props.className}`)}
+            >
+                <div className='dc-modal-header'>
                     {  this.props.title &&
-                    <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
+                    <h3 className='dc-modal-header__title'>
+                        {this.props.title}
+                    </h3>
                     }
                     { this.props.header &&
-                    <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
+                    <div className='dc-modal-header__title'>
                         {this.props.header}
                     </div>
                     }
-                    <div onClick={this.props.toggleModal} className={classNames('dc-modal-header__close', this.props.className && `dc-modal-header__close--${this.props.className}`)} >
+                    <div
+                        onClick={this.props.toggleModal}
+                        className='dc-modal-header__title'
+                    >
                         <IconClose />
                     </div>
                 </div>

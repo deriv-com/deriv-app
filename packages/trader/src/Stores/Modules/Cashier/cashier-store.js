@@ -673,11 +673,12 @@ export default class CashierStore extends BaseStore {
             }
             arr_accounts.push({
                 is_mt,
-                text       : is_mt ? group.display_text : account.currency.toUpperCase(),
-                value      : account.loginid,
-                balance    : account.balance,
-                currency   : account.currency,
-                is_selected: idx === 0,
+                text            : is_mt ? group.display_text : account.currency.toUpperCase(),
+                value           : account.loginid,
+                balance         : account.balance,
+                currency        : account.currency,
+                is_selected_from: idx === 0,
+                is_selected_to  : false,
                 ...(is_mt && { mt5_currency: group.value }),
             });
         });
@@ -686,8 +687,16 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangeTransferFrom({ target }) {
-        this.config.account_transfer.accounts_list.find(account => account.is_selected).is_selected = false;
-        this.config.account_transfer.find(account => account.value === target.value).is_selected = true;
+        const accounts = this.config.account_transfer.accounts_list;
+        accounts.find(account => account.is_selected_from).is_selected_from = false;
+        accounts.find(account => account.value === target.value).is_selected_from = true;
+    }
+
+    @action.bound
+    onChangeTransferTo({ target }) {
+        const accounts = this.config.account_transfer.accounts_list;
+        (accounts.find(account => account.is_selected_to) || {}).is_selected_to = false;
+        accounts.find(account => account.value === target.value).is_selected_to = true;
     }
 
     onAccountSwitch() {

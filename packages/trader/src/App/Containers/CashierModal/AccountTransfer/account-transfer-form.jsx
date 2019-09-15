@@ -24,7 +24,9 @@ class AccountTransferForm extends React.Component {
 
     render() {
         const selected_transfer_from = (this.props.accounts_list
-            .find(account => account.is_selected) || {}).value;
+            .find(account => account.is_selected_from) || {}).value;
+        const selected_transfer_to = (this.props.accounts_list
+            .find(account => account.is_selected_to) || {}).value;
         const accounts = [];
         const mt_accounts = [];
         this.props.accounts_list.forEach((account, idx) => {
@@ -74,6 +76,18 @@ class AccountTransferForm extends React.Component {
                                                     name='payment_agents'
                                                     value={selected_transfer_from}
                                                     onChange={this.props.onChangeTransferFrom}
+                                                />
+                                                <Dropdown
+                                                    id='transfer_to'
+                                                    className='cashier__drop-down account-transfer__drop-down'
+                                                    classNameDisplay='cashier__drop-down-display'
+                                                    classNameDisplaySpan='cashier__drop-down-display-span account-transfer__drop-down-display-span'
+                                                    classNameItems='cashier__drop-down-items'
+                                                    classNameLabel='cashier__drop-down-label'
+                                                    list={all_accounts}
+                                                    name='payment_agents'
+                                                    value={selected_transfer_to}
+                                                    onChange={this.props.onChangeTransferTo}
                                                 />
                                                 <Field name='amount'>
                                                     {({ field }) => (
@@ -157,6 +171,7 @@ AccountTransferForm.propTypes = {
     is_transfer_successful: PropTypes.bool,
     minimum_fee           : PropTypes.string,
     onChangeTransferFrom  : PropTypes.func,
+    onChangeTransferTo    : PropTypes.func,
     onMount               : PropTypes.func,
     transfer_fee          : PropTypes.number,
 };
@@ -170,6 +185,7 @@ export default connect(
         is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
         minimum_fee           : modules.cashier.config.account_transfer.minimum_fee,
         onChangeTransferFrom  : modules.cashier.onChangeTransferFrom,
+        onChangeTransferTo    : modules.cashier.onChangeTransferTo,
         onMount               : modules.cashier.onMountAccountTransfer,
         transfer_fee          : modules.cashier.config.account_transfer.transfer_fee,
     })

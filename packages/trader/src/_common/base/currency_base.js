@@ -97,17 +97,6 @@ const getTransferLimits = (currency, which) => {
     return transfer_limits.min ? transfer_limits.min.toFixed(decimals) : undefined;
 };
 
-const getTransferFee = (currency_from, currency_to) => {
-    const transfer_fee = getPropertyValue(currencies_config, [currency_from, 'transfer_between_accounts', 'fees', currency_to]);
-    return `${typeof transfer_fee === 'undefined' ? '1' : transfer_fee}%`;
-};
-
-// returns in a string format, e.g. '0.00000001'
-const getMinimumTransferFee = (currency) => {
-    const decimals = getDecimalPlaces(currency);
-    return `${currency} ${(1 / Math.pow(10, decimals)).toFixed(decimals)}`; // we need toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-};
-
 // @param {String} limit = max|min
 const getPaWithdrawalLimit = (currency, limit) => {
     if (isCryptocurrency(currency)) {
@@ -130,8 +119,6 @@ module.exports = {
     getCurrencyName,
     getMinWithdrawal,
     getTransferLimits,
-    getTransferFee,
-    getMinimumTransferFee,
     getTextFormat,
     getMinPayout,
     getPaWithdrawalLimit,

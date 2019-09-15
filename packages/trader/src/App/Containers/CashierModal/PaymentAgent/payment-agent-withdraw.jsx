@@ -97,10 +97,10 @@ class PaymentAgentWithdraw extends React.Component {
                                                     <Form>
                                                         <Dropdown
                                                             id='payment_agents'
-                                                            className='payment-agent__drop-down'
-                                                            classNameDisplay='payment-agent__drop-down-display'
-                                                            classNameDisplaySpan='payment-agent__drop-down-display-span'
-                                                            classNameItems='payment-agent__drop-down-items'
+                                                            className='cashier__drop-down'
+                                                            classNameDisplay='cashier__drop-down-display'
+                                                            classNameDisplaySpan='cashier__drop-down-display-span'
+                                                            classNameItems='cashier__drop-down-items'
                                                             list={this.props.payment_agent_list}
                                                             name='payment_agents'
                                                             value={this.props.selected_payment_agent.value}
@@ -118,10 +118,10 @@ class PaymentAgentWithdraw extends React.Component {
                                                         {/*                    <Localize i18n_default_text='By name' /> */}
                                                         {/*                    <Dropdown */}
                                                         {/*                        id='payment_agents' */}
-                                                        {/*                        className='payment-agent__drop-down' */}
-                                                        {/*                        classNameDisplay='payment-agent__drop-down-display' */}
-                                                        {/*                        classNameDisplaySpan='payment-agent__drop-down-display-span' */}
-                                                        {/*                        classNameItems='payment-agent__drop-down-items' */}
+                                                        {/*                        className='cashier__drop-down' */}
+                                                        {/*                        classNameDisplay='cashier__drop-down-display' */}
+                                                        {/*                        classNameDisplaySpan='cashier__drop-down-display-span' */}
+                                                        {/*                        classNameItems='cashier__drop-down-items' */}
                                                         {/*                        list={this.props.payment_agent_list} */}
                                                         {/*                        name='payment_agents' */}
                                                         {/*                        value={this.props.selected_payment_agent.value} */}

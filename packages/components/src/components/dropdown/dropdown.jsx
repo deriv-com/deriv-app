@@ -198,10 +198,10 @@ class Dropdown extends React.PureComponent {
         }
 
         // For char presses, we do a search for the item:
-        if (event.key.length === 1) {
+        if (event.key.length === 1 && this.props.list.length) {
             const char       = event.key.toLowerCase();
             const firstChars = this.props.list.map(
-                x => x.text[0].toLowerCase());
+                x => typeof x === 'string' && x.text[0].toLowerCase());
             let idx;
             // Tapping the same character again jumps to the next match:
             if (this.state.curr_index) {
@@ -300,8 +300,9 @@ class Dropdown extends React.PureComponent {
                                     /> :
                                     Object.keys(this.props.list).map(key => (
                                         <React.Fragment key={key}>
-                                            <div className='dc-list__label'>{key}</div>
+                                            <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
                                             <Items
+                                                className={this.props.classNameItems}
                                                 index={this.state.curr_index}
                                                 handleSelect={this.handleSelect}
                                                 has_symbol={this.props.has_symbol}
@@ -327,6 +328,7 @@ Dropdown.propTypes = {
     classNameDisplay    : PropTypes.string,
     classNameDisplaySpan: PropTypes.string,
     classNameItems      : PropTypes.string,
+    classNameLabel      : PropTypes.string,
     has_symbol          : PropTypes.bool,
     is_alignment_left   : PropTypes.bool,
     is_nativepicker     : PropTypes.bool,

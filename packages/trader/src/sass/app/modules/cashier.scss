@@ -64,6 +64,34 @@
         display: inline-block !important;
         margin-bottom: 0 !important;
     }
+    &__drop-down {
+        display: inline-block;
+        min-width: 20rem;
+        min-height: 4rem;
+        margin: 0 0 16px;
+        line-height: 1.43;
+
+        &-display {
+            justify-content: left;
+            min-height: 3.8rem;
+            height: auto;
+
+            &-span {
+                font-size: 1.4rem;
+                text-align: left;
+                padding: 9px 36px 9px 12px;
+                text-transform: none;
+                line-height: 1.43;
+            }
+        }
+        &-items, &-label {
+            text-transform: none !important;
+            text-align: left !important;
+            font-size: 1.4rem !important;
+            justify-content: left;
+            padding-left: 12px;
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -201,35 +229,6 @@
             }
         }
     }
-    &__drop-down {
-        display: inline-block;
-        min-width: 20rem;
-        min-height: 4rem;
-        //margin: 0 0 0 8px;
-        margin: 0 0 16px;
-        line-height: 1.43;
-
-        &-display {
-            justify-content: left;
-            min-height: 3.8rem;
-            height: auto;
-
-            &-span {
-                font-size: 1.4rem;
-                text-align: left;
-                padding: 9px 36px 9px 12px;
-                text-transform: none;
-                line-height: 1.43;
-            }
-        }
-        &-items {
-            text-transform: none !important;
-            text-align: left !important;
-            font-size: 1.4rem !important;
-            justify-content: left;
-            padding-left: 12px;
-        }
-    }
     &__accordion-content {
         &-line {
             margin-bottom: 8px;
@@ -353,6 +352,23 @@
         &-wrapper {
             display: flex;
             margin-bottom: 0.4rem;
+        }
+    }
+    &__drop-down {
+        min-width: 28rem;
+
+        &-display {
+            &-span {
+                display: flex;
+            }
+        }
+    }
+    &__currency {
+        margin: 0 0.4rem;
+    }
+    &__balance {
+        @include themify($themes) {
+            color: themed('text_secondary_color');
         }
     }
 }

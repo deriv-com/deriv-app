@@ -12,7 +12,7 @@ const Items = ({
     name,
     value,
 }) =>  items.map((item, idx) => {
-    const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
+    const symbol_type_class_name = item.text && typeof item.text === 'string' ? `symbols--${(item.text).toLowerCase()}` : '';
 
     return (
         <div

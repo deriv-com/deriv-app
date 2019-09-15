@@ -8,6 +8,7 @@ class AccountTransfer extends React.Component {
         this.props.setActiveTab(this.props.container);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     render() {
         return (
             <React.Fragment>

@@ -190,6 +190,8 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
+    const transferBetweenAccounts = () => deriv_api.send({ transfer_between_accounts: 1, accounts: 'all' });
+
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -225,6 +227,7 @@ const BinarySocketBase = (() => {
         subscribeTicksHistory,
         subscribeTransaction,
         subscribeWebsiteStatus,
+        transferBetweenAccounts,
     };
 })();
 

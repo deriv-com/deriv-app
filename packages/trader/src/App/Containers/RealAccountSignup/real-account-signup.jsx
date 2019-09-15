@@ -9,13 +9,17 @@ import FinishedSetCurrency  from './finished-set-currency.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
+const initialState = {
+    active_modal_index: -1,
+    previous_currency : '',
+    current_currency  : '',
+};
+
 class RealAccountSignup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            previous_currency : '',
-            current_currency  : '',
-            active_modal_index: -1,
+            ...initialState,
             modal_content     : [
                 {
                     icon : 'IconTheme',
@@ -43,12 +47,6 @@ class RealAccountSignup extends Component {
         };
     }
 
-    componentWillUnmount() {
-        this.setState({
-            active_modal_index: -1,
-        });
-    }
-
     closeSignupAndOpenCashier = () => {
         this.closeModal();
         setTimeout(this.props.toggleCashierModal, 300);
@@ -63,11 +61,10 @@ class RealAccountSignup extends Component {
     };
 
     closeModal = () => {
-        this.setState({
-            previous_currency : '',
-            current_currency  : '',
-            active_modal_index: -1,
-        }, this.props.closeRealAccountSignup);
+        this.props.closeRealAccountSignup();
+        setTimeout(() => {
+            this.setState(initialState);
+        }, 400)
     };
 
     get active_modal_index() {

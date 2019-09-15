@@ -7,6 +7,7 @@ import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import { requestLogout } from 'Services/index';
 import { connect }       from 'Stores/connect';
+import Localize          from 'App/Components/Elements/localize.jsx';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -93,9 +94,15 @@ class AccountSwitcher extends React.Component {
                             this.props.upgrade_info.can_open_multi) &&
                             <UpgradeButton
                                 onClick={this.props.openRealAccountSignup}
-                                text={localize('Add/manage account')}
                                 outlined
-                            />
+                            >
+                                <Icon icon='IconAdd' />
+                                <span className='btn__text'>
+                                    <Localize
+                                        i18n_default_text='Add/manage account'
+                                    />
+                                </span>
+                            </UpgradeButton>
                         }
                     </div>
                 }

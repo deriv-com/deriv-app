@@ -144,6 +144,17 @@ $DERIV_RED: #ff444f;
                 color: $DERIV_RED;
             }
 
+            .btn {
+                background-color: transparent;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+
+                & > * {
+                    display: block;
+                }
+            }
+
             &:hover {
                 background-color: $DERIV_RED !important;
 

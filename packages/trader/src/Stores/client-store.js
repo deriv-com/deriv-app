@@ -401,8 +401,8 @@ export default class ClientStore extends BaseStore {
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
-        this.responseLandingCompany(await WS.authorized.storage.landingCompany());
-        this.responseWebsiteStatus(await BinarySocket.wait('website_status'));
+        this.responseLandingCompany(await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence));
+        this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
     }

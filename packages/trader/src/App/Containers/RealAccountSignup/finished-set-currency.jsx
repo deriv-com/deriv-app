@@ -1,6 +1,5 @@
 import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
-import IconArrowBold from 'Assets/Common/icon-arrow-bold.jsx';
 import Icon          from 'Assets/icon.jsx';
 import Button        from 'deriv-components/src/components/button';
 
@@ -18,7 +17,15 @@ const FinishedSetCurrency = ({
         icon='IconAccountsCurrency'
         type={current.toLowerCase()}
     />;
-    const IconArrow        = () => <IconArrowBold />;
+    const IconArrow        = () => <Icon
+        icon='IconRedArrow'
+    />;
+
+    const IconWon          = ({className}) => <Icon
+        className={className}
+        icon='IconWon'
+    />
+
 
     return (
         <div className='success-change'>
@@ -26,6 +33,7 @@ const FinishedSetCurrency = ({
                 <IconPrevCurrency />
                 <IconArrow />
                 <IconNextCurrency />
+                <IconWon className='bottom-right-overlay'/>
             </div>
             <div className='success-change__body-area'>
                 <h2>

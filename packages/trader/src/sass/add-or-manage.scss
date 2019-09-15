@@ -15,6 +15,7 @@
     justify-content: center;
   }
 }
+
 .success-change {
   display: flex;
   align-items: center;
@@ -22,15 +23,35 @@
   flex-direction: column;
 
   &__icon-area {
-    svg {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    justify-content: space-evenly;
+    position: relative;
+
+    svg.inline-icon {
       width: 60px;
       height: 60px;
     }
+
+    svg {
+      display: block;
+    }
+
+    .bottom-right-overlay {
+      position: absolute;
+      bottom: 0;
+      right: 1rem;
+      width: 3rem;
+      height: 3rem;
+    }
   }
+
   &__body-area {
     h2 {
       @include typeface(--title-center-bold-black);
     }
+
     p {
       @include typeface(--paragraph-left-normal-black);
       padding: 1rem;

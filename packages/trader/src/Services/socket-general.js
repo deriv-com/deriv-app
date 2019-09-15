@@ -137,10 +137,12 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = (response) => {
         client_store.responseAuthorize(response);
-        WS.subscribeBalance(ResponseHandlers.balance, true);
-        WS.getSettings({ forced: true });
+        WS.forgetAll('balance').then(() => {
+            WS.subscribeBalance(ResponseHandlers.balance);
+        });
+        WS.getSettings();
         WS.getAccountStatus();
-        WS.payoutCurrencies();
+        WS.storage.payoutCurrencies();
         WS.mt5LoginList();
         setResidence(
             response.authorize.country ||

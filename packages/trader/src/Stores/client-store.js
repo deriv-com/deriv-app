@@ -8,8 +8,7 @@ import {
 import moment                        from 'moment';
 import {
     requestLogout,
-    WS,
-}                                    from 'Services';
+    WS }                             from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
@@ -17,8 +16,7 @@ import { isEmptyObject }             from '_common/utility';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
-    State,
-}                                    from '_common/storage';
+    State }                          from '_common/storage';
 import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
@@ -382,7 +380,7 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.send({ authorize: client.token }, { forced: true });
+                await BinarySocket.authorize(client.token);
             }
         }
 
@@ -402,9 +400,10 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await WS.payoutCurrencies());
-        this.responseLandingCompany(await WS.landingCompany());
+        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+        this.responseLandingCompany(await WS.authorized.storage.landingCompany());
         this.responseWebsiteStatus(await BinarySocket.wait('website_status'));
+
         this.registerReactions();
     }
 
@@ -520,7 +519,8 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
-        await BinarySocket.send({ 'authorize': this.getToken() }, { forced: true });
+        WS.forgetAll('balance');
+        await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
     }

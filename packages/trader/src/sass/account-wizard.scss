@@ -1,127 +1,128 @@
 @import 'app/_common/base/index';
 
 .dc-modal__container_real-account-signup-modal {
-  height: 688px;
-  width: 900px;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 688px;
+    transition: all 0.3s ease-in-out;
+    width: 900px;
 
-  &--success {
-    width: 400px;
-    height: 300px;
-  }
-
-  .dc-modal-header__title {
-    @include themify($themes) {
-      background-color: themed('container_color');
+    &--success {
+        height: 300px;
+        width: 400px;
     }
-  }
+    .dc-modal-header__title {
+        @include themify($themes) {
+            background-color: themed('container_color');
+        }
+    }
 }
+
 .dc-modal-header__real-account-signup-modal {
-  @include themify($themes) {
-    border-bottom: 1px solid themed('border_outline_color');
-  }
+    @include themify($themes) {
+        border-bottom: 1px solid themed('border_outline_color');
+    }
 }
 
 .account-wizard {
-  width: 100%;
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-
-  h1 {
-    @include typeface(--paragraph-center-bold-black);
-  }
-  h2 {
-    @include typeface(--paragraph-center-bold-black);
-    @include themify($themes) {
-      color: themed('tick_step_marked');
-    }
-  }
-  h3 {
-    @include typeface(--small-center-normal-black);
-    @include themify($themes) {
-      color: themed('tick_step_marked');
-    }
-  }
-  form {
-    width: 100%;
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
-  &__body {
-    width: 100%;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  // This is taken from account-signup.scss
-  // TODO remove this when deriv color changes is done
-  &__btn {
-    align-self: flex-end;
-    margin: 0;
-    background-color: rgb(255, 68, 79);
-    font-weight: bold;
-    @include themify($themes) {
-      color: themed('text_active_color');
+    flex-grow: 1;
+    width: 100%;
+
+    h1 {
+        @include typeface(--paragraph-center-bold-black);
+    }
+    h2 {
+        @include typeface(--paragraph-center-bold-black);
+        @include themify($themes) {
+            color: themed('tick_step_marked');
+        }
+    }
+    h3 {
+        @include typeface(--small-center-normal-black);
+        @include themify($themes) {
+            color: themed('tick_step_marked');
+        }
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    &__body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-start;
+        width: 100%;
     }
 
-    &--disabled {
-      background-color: #eaeced;
-      cursor: initial;
-      color: #d6d6d6;
-    }
-    &--cancel {
-      @include themify($themes) {
-        background-color: themed('text_active_color')
-      }
-      margin-right: 1rem;
-      color: rgb(255, 68, 79)!important;
-      border: 1px solid rgb(255, 68, 79);
-    }
-  }
-  &__btn-area {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    align-self: flex-end;
+    // This is taken from account-signup.scss
+    // TODO remove this when deriv color changes is done
+    &__btn {
+        align-self: flex-end;
+        background-color: rgb(255, 68, 79);
+        font-weight: bold;
+        margin: 0;
+        @include themify($themes) {
+            color: themed('text_active_color');
+        }
 
+        /* stylelint-disable color-no-hex */
+        &--disabled {
+            background-color: #eaeced;
+            color: #d6d6d6;
+            cursor: initial;
+        }
+        /* stylelint-enable color-no-hex */
+        &--cancel {
+            border: 1px solid rgb(255, 68, 79);
+            color: rgb(255, 68, 79) !important;
+            margin-right: 1rem;
+            @include themify($themes) {
+                background-color: themed('text_active_color');
+            }
+        }
+    }
+    &__btn-area {
+        align-items: center;
+        align-self: flex-end;
+        display: flex;
+        justify-content: flex-end;
 
-    &--absolute {
-      position: absolute;
-      bottom: 16px;
-      right: 16px;
+        &--absolute {
+            bottom: 16px;
+            position: absolute;
+            right: 16px;
+        }
+        &--relative {
+            margin: 2rem;
+        }
+        &--center {
+            justify-content: center;
+        }
+        &--error {
+            @include typeface(--paragraph-left-normal-black);
+            color: rgb(255, 68, 79) !important;
+        }
     }
-    &--relative {
-      margin: 2rem 2rem;
-    }
-    &--center {
-      justify-content: center;
-    }
-    &--error {
-      @include typeface(--paragraph-left-normal-black);
-      color: rgb(255, 68, 79) !important;
-    }
-  }
+    .checkbox {
+        align-items: center;
+        margin: 1rem 0 0;
 
-  .checkbox {
-    margin: 1rem 0 0;
-    align-items: center;
-
-    &__box--active {
-      background-color: rgb(255, 68, 79);
+        &__box--active {
+            background-color: rgb(255, 68, 79);
+        }
+        &__box--active:after {
+            font-size: 1.3rem;
+            line-height: 20px;
+        }
+        &__label {
+            @include typeface(--paragraph-left-normal-black);
+        }
     }
-    &__box--active:after {
-      font-size: 1.3rem;
-      line-height: 20px;
-    }
-    &__label {
-      @include typeface(--paragraph-left-normal-black);
-    }
-  }
 }

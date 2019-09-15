@@ -1,11 +1,10 @@
-@import "app/_common/base/index";
+@import 'app/_common/base/index';
 
 .personal-details-form {
-  width: 50%;
-  margin:auto;
+    margin: auto;
+    width: 50%;
 
-  & .datepicker {
-    max-width: initial
-  ;
-  }
+    & .datepicker {
+        max-width: initial;
+    }
 }

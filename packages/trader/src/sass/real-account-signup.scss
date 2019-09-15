@@ -1,108 +1,107 @@
 @import 'app/_common/base/index';
-$COLOR_DERIV_RED: #ff444f;
+
+/* stylelint-disable color-no-hex */
+$DERIV_RED: #ff444f;
+/* stylelint-enable color-no-hex */
 
 .form-progress {
-  width: 100%;
-  height: 100%;
-  max-height: 122px;
+    height: 100%;
+    max-height: 122px;
+    width: 100%;
 
-  &__header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-    margin: 0 -24px;
+    &__header {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 -24px;
+        padding-bottom: 20px;
 
-    & h2 {
-      @include typeface(--paragraph-center-bold-black);
-      @include themify($themes) {
-        color: themed('text_primary_color');
-      }
-    }
-  }
-
-  &__step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 6rem;
-    min-width: 120px;
-    z-index: 2;
-
-
-    & .identifier {
-      border-radius: 50%;
-      width: 24px;
-      display: block;
-      text-align: center;
-      color: $COLOR_DERIV_RED;
-      @include typeface(--paragraph-center-normal-black);
-      @include themify($themes) {
-        color: themed('background_button_color');
-        background-color: themed('container_color');
-        border: 1px solid themed('background_button_color');
-      }
-    }
-
-    &--active {
-      .identifier {
-        transition: all 0.3s ease;
-        background-color: $COLOR_DERIV_RED !important;
-        border: 1px solid $COLOR_DERIV_RED !important;;
-        @include typeface(--paragraph-center-normal-black);
-        @include themify($themes) {
-          color: themed('container_color');
+        & h2 {
+            @include typeface(--paragraph-center-bold-black);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
         }
-        font-weight: bold;
-      }
-
-      .title {
-        color: $COLOR_DERIV_RED;
-        font-weight: bold;
-      }
     }
-  }
+    &__step {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 6rem;
+        justify-content: space-around;
+        min-width: 120px;
+        z-index: 2;
 
-  &__steps {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+        & .identifier {
+            border-radius: 50%;
+            color: $COLOR_DERIV_RED;
+            display: block;
+            text-align: center;
+            width: 24px;
+            @include typeface(--paragraph-center-normal-black);
+            @include themify($themes) {
+                background-color: themed('container_color');
+                border: 1px solid themed('background_button_color');
+                color: themed('background_button_color');
+            }
+        }
+        &--active {
+            .identifier {
+                background-color: $COLOR_DERIV_RED !important;
+                border: 1px solid $COLOR_DERIV_RED !important;
+                font-weight: bold;
+                @include typeface(--paragraph-center-normal-black);
+                transition: all 0.3s ease;
+                @include themify($themes) {
+                    color: themed('container_color');
+                }
+            }
+            .title {
+                color: $COLOR_DERIV_RED;
+                font-weight: bold;
+            }
+        }
+    }
+    &__steps {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        position: relative;
 
-    &--before {
-      @include themify($themes) {
-        border-top: 2px solid themed('border_outline_color');
-      }
-      content: "";
-      margin: 0 auto; /* this centers the line to the full width specified */
-      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-      top: 18px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 67%;
+        &--before {
+            bottom: 0;
+            content: '';
+            left: 0;
+            margin: 0 auto; /* this centers the line to the full width specified */
+            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+            right: 0;
+            top: 18px;
+            width: 67%;
+            @include themify($themes) {
+                border-top: 2px solid themed('border_outline_color');
+            }
+        }
+        &--after {
+            border-top: 2px solid $COLOR_DERIV_RED;
+            bottom: 0;
+            content: '';
+            left: 0;
+            margin: 0 auto; /* this centers the line to the full width specified */
+            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+            top: 18px;
+            transition: width 0.3s ease;
+        }
     }
-    &--after {
-      border-top: 2px solid $COLOR_DERIV_RED;
-      content: "";
-      margin: 0 auto; /* this centers the line to the full width specified */
-      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-      top: 18px;
-      bottom: 0;
-      left:0;
-      transition: width 0.3s ease;
-    }
-  }
 }
-.modal__container.modal__real-account-signup-modal {
-  width: 900px;
 
-  .vertical-tab {
-    &__content {
-      padding: 0 !important;
+.modal__container.modal__real-account-signup-modal {
+    width: 900px;
+
+    .vertical-tab {
+        &__content {
+            padding: 0 !important;
+        }
     }
-  }
 }

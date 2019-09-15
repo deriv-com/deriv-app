@@ -1,104 +1,94 @@
-@import "app/_common/base/index";
+@import 'app/_common/base/index';
 
 .currency-list {
-  width: 100%;
-
-  form {
     width: 100%;
-  }
 
-  &__items {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  &__item {
-    border-radius: $BORDER_RADIUS;
-    display: inline-flex;
-    flex-direction: column;
-    width: 120px;
-    height: 120px;
-    justify-content: space-around;
-    align-items: center;
-    margin: $BORDER_RADIUS;
-    @include themify($themes) {
-      border: 1px solid themed('container_color');
+    form {
+        width: 100%;
     }
-
-    &:hover:not(&--selected) {
-      @include themify($themes) {
-        border: 1px solid themed('border_color');
-      }
+    &__items {
+        display: flex;
+        justify-content: space-around;
     }
+    &__item {
+        align-items: center;
+        border-radius: $BORDER_RADIUS;
+        display: inline-flex;
+        flex-direction: column;
+        height: 120px;
+        justify-content: space-around;
+        margin: $BORDER_RADIUS;
+        width: 120px;
+        @include themify($themes) {
+            border: 1px solid themed('container_color');
+        }
 
-    &--current {
-      opacity: 0.5;
+        &:hover:not(&--selected) {
+            @include themify($themes) {
+                border: 1px solid themed('border_color');
+            }
+        }
+        &--current {
+            opacity: 0.5;
+        }
+        &--selected {
+            @include themify($themes) {
+                border: 1px solid themed('border_outline_color');
+            }
+
+            & > p {
+                @include typeface(--paragraph-center-bold-black);
+            }
+        }
+        .change-currency &--selected {
+            @include themify($themes) {
+                background-color: $COLOR_WHITE;
+            }
+        }
+        .change-currency &:hover {
+            @include themify($themes) {
+                background-color: themed('border_outline_color');
+            }
+        }
+        .change-currency & {
+            @include themify($themes) {
+                border: 1px solid themed('border_color');
+            }
+        }
+        svg {
+            height: 48px;
+            width: 48px;
+        }
+        p {
+            text-align: center;
+            @include typeface(--paragraph-center-normal-black);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
     }
-
-    &--selected {
-      @include themify($themes) {
-        border: 1px solid themed('border_outline_color');
-      }
-
-      & > p {
-        @include typeface(--paragraph-center-bold-black);
-      }
+    &__radio-button {
+        display: none;
     }
-
-    .change-currency &--selected {
-      @include themify($themes) {
-        background-color: $COLOR_WHITE;
-      }
-    }
-
-    .change-currency &:hover {
-      @include themify($themes) {
-        background-color: themed('border_outline_color');
-      }
-    }
-
-    .change-currency & {
-      @include themify($themes) {
-        border: 1px solid themed('border_color');
-      }
-    }
-
-    svg {
-      width: 48px;
-      height: 48px;
-    }
-
-    p {
-      text-align: center;
-      @include typeface(--paragraph-center-normal-black);
-      @include themify($themes) {
-        color: themed('text_primary_color')
-      }
-    }
-  }
-
-  &__radio-button {
-    display: none;
-  }
 }
 
 .currency-hr {
-  height: 2px;
-  width: 100%;
-  margin: 1rem 0 0;
-  @include themify($themes) {
-    border-top: 1px solid themed('border_color');
-  }
+    height: 2px;
+    margin: 1rem 0 0;
+    width: 100%;
+    @include themify($themes) {
+        border-top: 1px solid themed('border_color');
+    }
 }
 
 .currency-selector {
-  display: flex;
-  flex-direction: column;
-
-  &__radio-group {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-  }
+
+    &__radio-group {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-around;
+    }
 }

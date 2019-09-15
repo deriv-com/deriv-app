@@ -1,7 +1,7 @@
 @import 'app/_common/base/index';
 
 .change-currency {
-  @include themify($themes) {
-    background-color: themed('border_color');
-  }
+    @include themify($themes) {
+        background-color: themed('border_color');
+    }
 }

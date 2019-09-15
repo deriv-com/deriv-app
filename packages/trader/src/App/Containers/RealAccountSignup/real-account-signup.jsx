@@ -1,11 +1,12 @@
-import classNames           from 'classnames';
-import { Modal }            from 'deriv-components';
-import React, { Component } from 'react';
-import { localize }         from 'App/i18n';
-import { connect }          from 'Stores/connect';
-import AccountWizard        from './account-wizard.jsx';
-import AddOrManageAccounts  from './add-or-manage-accounts.jsx';
-import FinishedSetCurrency  from './finished-set-currency.jsx';
+import classNames            from 'classnames';
+import { Modal }             from 'deriv-components';
+import React, { Component }  from 'react';
+import { localize }          from 'App/i18n';
+import { connect }           from 'Stores/connect';
+import AccountWizard         from './account-wizard.jsx';
+import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
+import FinishedSetCurrency   from './finished-set-currency.jsx';
+import SuccessCurrencyDialog from './success-currency-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -13,6 +14,7 @@ const initialState = {
     active_modal_index: -1,
     previous_currency : '',
     current_currency  : '',
+    success_message   : '',
 };
 
 class RealAccountSignup extends Component {
@@ -24,12 +26,17 @@ class RealAccountSignup extends Component {
                 {
                     icon : 'IconTheme',
                     label: localize('Add an account'),
-                    value: AccountWizard,
+                    value: () => <AccountWizard
+                        onSuccessAddCurrency={this.showAddCurrencySuccess}
+                    />,
                 },
                 {
                     icon : 'IconTheme',
                     label: localize('Add or manage account'),
-                    value: () => <AddOrManageAccounts onSuccessSetAccountCurrency={this.showSetCurrencySuccess} />,
+                    value: () => <AddOrManageAccounts
+                        onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                        onSuccessAddCurrency={this.showAddCurrencySuccess}
+                    />,
                 },
                 {
                     label: false,
@@ -43,6 +50,17 @@ class RealAccountSignup extends Component {
                     ),
                     title: false,
                 },
+                {
+                    label: false,
+                    value: () => (
+                        <SuccessCurrencyDialog
+                            current={this.state.current_currency}
+                            onCancel={this.closeModal}
+                            onSubmit={this.props.closeSignupAndOpenCashier}
+                            success_message={this.state.success_message}
+                        />
+                    )
+                }
             ],
         };
     }
@@ -59,6 +77,14 @@ class RealAccountSignup extends Component {
             active_modal_index: 2,
         });
     };
+
+    showAddCurrencySuccess = (currency) => {
+        this.setState({
+            current_currency: currency,
+            active_modal_index: 3,
+            success_message: localize(`You have added a ${currency} account. Make a deposit now to start trading.`)
+        })
+    }
 
     closeModal = () => {
         this.props.closeRealAccountSignup();
@@ -83,9 +109,10 @@ class RealAccountSignup extends Component {
             <Modal
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index === 2,
+                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2,
                 })}
                 is_open={is_real_acc_signup_on}
+                has_close_icon={ this.active_modal_index < 2}
                 title={title}
                 toggleModal={this.closeModal}
             >

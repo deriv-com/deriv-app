@@ -1,3 +1,4 @@
+import PropTypes            from 'prop-types';
 import React                from 'react';
 import { localize }         from 'App/i18n';
 import { connect }          from 'Stores/connect';
@@ -77,6 +78,10 @@ class AccountWizard extends React.Component {
         });
     };
 
+    getCurrent = (key) => {
+        return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
+    };
+
     getFinishedComponent = () => {
         return this.state.finished;
     };
@@ -110,13 +115,14 @@ class AccountWizard extends React.Component {
         }, () => this.nextStep(setSubmitting));
     };
 
-    getCurrent = (key) => {
-        return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
-    };
-
     createRealAccount(setSubmitting) {
         this.submitForm()
-            .then(() => setSubmitting(false))
+            .then((response) => {
+                setSubmitting(false);
+                this.props.onSuccessAddCurrency(
+                    response.new_account_real.currency
+                );
+            })
             .catch(error_message => {
                 this.setState({
                     form_error: error_message,
@@ -145,9 +151,6 @@ class AccountWizard extends React.Component {
                     />
                     <div
                         className='account-wizard__body'
-                        style={{
-                            height: 'calc(100% - 112px)',
-                        }}
                     >
                         <BodyComponent
                             value={this.getCurrent('form_value')}
@@ -167,6 +170,10 @@ class AccountWizard extends React.Component {
         );
     }
 }
+
+AccountWizard.propTypes = {
+    onSuccessAddCurrency: PropTypes.func,
+};
 
 export default connect(({ client }) => ({
     realAccountSignup: client.realAccountSignup,

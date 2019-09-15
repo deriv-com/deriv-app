@@ -97,11 +97,11 @@ class AccountSwitcher extends React.Component {
                                 outlined
                             >
                                 <Icon icon='IconAdd' />
-                                <span className='btn__text'>
+                                <div className='btn__text'>
                                     <Localize
                                         i18n_default_text='Add/manage account'
                                     />
-                                </span>
+                                </div>
                             </UpgradeButton>
                         }
                     </div>
@@ -127,11 +127,18 @@ class AccountSwitcher extends React.Component {
                         </div>
                     </div>
                 }
-                { !!(this.props.is_upgrade_enabled && this.props.is_virtual) &&
-                    <UpgradeButton
-                        text={localize('Upgrade to Real Account')}
-                        onClick={this.props.openRealAccountSignup}
-                    />
+                { !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to) &&
+                <UpgradeButton
+                    onClick={this.props.openRealAccountSignup}
+                    outlined
+                >
+                    <Icon icon='IconAdd' />
+                    <div className='btn__text'>
+                        <Localize
+                            i18n_default_text='Upgrade to real account'
+                        />
+                    </div>
+                </UpgradeButton>
                 }
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
@@ -163,6 +170,8 @@ AccountSwitcher.propTypes = {
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
         account_list          : client.account_list,
+        can_upgrade           : client.can_upgrade,
+        can_upgrade_to        : client.can_upgrade_to,
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
         is_virtual            : client.is_virtual,

@@ -27,14 +27,6 @@ class AddOrManageAccounts extends Component {
         });
     };
 
-    goSuccessCryptoChange = (response) => {
-        // remove account wizard
-    };
-
-    getFinishedComponent = () => {
-        return this.state.finished;
-    };
-
     manageOrChangeAccount = (obj, setSubmitting) => {
         Object.entries(obj)
             .map(([key, value]) => {
@@ -42,7 +34,7 @@ class AddOrManageAccounts extends Component {
                     this.props.setCurrency(value)
                         .then(response => {
                             setSubmitting(false);
-                            this.props.onSuccessSetAccountCurrency(
+                            this.props.onSuccessAddCurrency(
                                 response.passthrough.previous_currency,
                                 response.echo_req.set_account_currency,
                             );
@@ -60,9 +52,11 @@ class AddOrManageAccounts extends Component {
                 } else {
                     // Add Crypto Account
                     this.props.createCryptoAccount(value)
-                        .then(response => {
+                        .then(() => {
+                            this.props.onSuccessAddCurrency(
+                                value,
+                            );
                             setSubmitting(false);
-                            this.goSuccessCrypto(response);
                         })
                         .catch(e => {
                             this.setState({
@@ -108,6 +102,7 @@ class AddOrManageAccounts extends Component {
 
 AddOrManageAccounts.propTypes = {
     onSuccessSetAccountCurrency: PropTypes.func,
+    onSuccessAddCurrency       : PropTypes.func,
 };
 
 export default connect(({ client }) => ({

@@ -2,13 +2,14 @@ import { Checkbox }         from 'deriv-components';
 import { Field, Formik }    from 'formik';
 import React, { Component } from 'react';
 import Localize             from 'App/Components/Elements/localize.jsx';
+import { localize }         from 'App/i18n';
 import { Hr }               from './currency-selector.jsx';
 import 'Sass/terms-of-use.scss';
 import FormSubmitButton     from './form-submit-button.jsx';
 
 // Checkbox input
 const CheckboxField = ({
-    field: { name, value, onChange, onBlur },
+    field: { name, value, onChange },
     form : { setFieldValue },
     id,
     label,
@@ -16,27 +17,15 @@ const CheckboxField = ({
     ...props
 }) => {
     return (
-        <div>
-            <input
-                name={name}
-                id={id}
-                type='checkbox'
+        <div className={className}>
+            <Checkbox
                 value={value}
-                checked={value}
+                name={name}
+
+                label={label}
                 onChange={onChange}
-                onBlur={onBlur}
-                className='checkbox'
+                {...props}
             />
-            <label htmlFor={id}>
-                <Checkbox
-                    onClick={setFieldValue}
-                    id={id}
-                    name={name}
-                    label={label}
-                    value={value}
-                    {...props}
-                />
-            </label>
         </div>
     );
 };
@@ -100,16 +89,18 @@ class TermsOfUse extends Component {
                             </p>
                             <Field
                                 component={CheckboxField}
+                                className='terms-of-use__checkbox'
                                 name='agreed_tnc'
                                 id='agreed_tnc'
-                                label='I have read and agree to the terms and conditions of the Deriv website.'
+                                label={localize('I have read and agree to the terms and conditions of the Deriv website.')}
                             />
                             <Hr />
                             <Field
                                 component={CheckboxField}
+                                className='terms-of-use__checkbox'
                                 name='agreed_tos'
                                 id='agreed_tos'
-                                label='I am not a PEP, and I have not been a PEP in the last 12 months.'
+                                label={localize('I am not a PEP, and I have not been a PEP in the last 12 months.')}
                             />
                         </div>
                         <FormSubmitButton

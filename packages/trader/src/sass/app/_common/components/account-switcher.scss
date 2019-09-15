@@ -149,9 +149,13 @@ $DERIV_RED: #ff444f;
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
+                width: 100%;
+                padding: 0 0 0 1rem;
+                margin: 0;
 
                 & > * {
                     display: block;
+                    margin-right: 1rem;
                 }
             }
 

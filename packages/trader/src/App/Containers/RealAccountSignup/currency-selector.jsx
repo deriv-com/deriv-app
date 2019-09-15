@@ -144,25 +144,29 @@ class CurrencySelector extends React.Component {
                                 />
                             ))}
                         </RadioButtonGroup>
-                        <Hr />
-                        <RadioButtonGroup
-                            id='currency'
-                            className='currency-selector__radio-group'
-                            label={localize('Crypto currencies')}
-                            value={values.currency}
-                            error={errors.currency}
-                            touched={touched.currency}
-                        >
-                            {this.state.crypto_currencies.map(currency => (
-                                <Field
-                                    key={currency.value}
-                                    component={RadioButton}
-                                    name='currency'
-                                    id={currency.value}
-                                    label={currency.name}
-                                />
-                            ))}
-                        </RadioButtonGroup>
+                        {this.state.crypto_currencies.length > 0 &&
+                        <React.Fragment>
+                            <Hr />
+                            <RadioButtonGroup
+                                id='currency'
+                                className='currency-selector__radio-group'
+                                label={localize('Crypto currencies')}
+                                value={values.currency}
+                                error={errors.currency}
+                                touched={touched.currency}
+                            >
+                                {this.state.crypto_currencies.map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={RadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                    />
+                                ))}
+                            </RadioButtonGroup>
+                        </React.Fragment>
+                        }
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
                             label='Next' // Localization will be handled by component

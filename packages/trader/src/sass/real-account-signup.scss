@@ -1,4 +1,5 @@
 @import 'app/_common/base/index';
+$COLOR_DERIV_RED: #ff444f;
 
 .form-progress {
   width: 100%;
@@ -12,9 +13,6 @@
     align-items: center;
     padding-bottom: 20px;
     margin: 0 -24px;
-    @include themify($themes) {
-      border-bottom: 1px solid themed('label_default_color');
-    }
 
     & h2 {
       @include typeface(--paragraph-center-bold-black);
@@ -34,11 +32,12 @@
     z-index: 2;
 
 
-    .identifier {
+    & .identifier {
       border-radius: 50%;
       width: 24px;
       display: block;
       text-align: center;
+      color: $COLOR_DERIV_RED;
       @include typeface(--paragraph-center-normal-black);
       @include themify($themes) {
         color: themed('background_button_color');
@@ -50,20 +49,18 @@
     &--active {
       .identifier {
         transition: all 0.3s ease;
+        background-color: $COLOR_DERIV_RED !important;
+        border: 1px solid $COLOR_DERIV_RED !important;;
         @include typeface(--paragraph-center-normal-black);
         @include themify($themes) {
           color: themed('container_color');
-          background-color: themed('label_success_color');
-          border: 1px solid themed('label_success_color');
         }
         font-weight: bold;
       }
 
       .title {
-        @include themify($themes) {
-          font-weight: bold;
-          color: themed('label_success_color');
-        }
+        color: $COLOR_DERIV_RED;
+        font-weight: bold;
       }
     }
   }
@@ -89,9 +86,7 @@
       width: 67%;
     }
     &--after {
-      @include themify($themes) {
-        border-top: 2px solid themed('label_success_color');
-      }
+      border-top: 2px solid $COLOR_DERIV_RED;
       content: "";
       margin: 0 auto; /* this centers the line to the full width specified */
       position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */

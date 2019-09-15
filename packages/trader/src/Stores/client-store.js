@@ -82,8 +82,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get legal_allowed_currencies () {
         if (!this.landing_companies) return [];
-        return this.landing_companies.gaming_company.legal_allowed_currencies ||
-            this.landing_companies.financial_company.legal_allowed_currencies;
+        if (this.landing_companies.gaming_company) {
+            return this.landing_companies.gaming_company.legal_allowed_currencies;
+        }
+        if (this.landing_companies.financial_company) {
+            return this.landing_companies.financial_company.legal_allowed_currencies;
+        }
+        return [];
     }
 
     @computed
@@ -92,7 +97,7 @@ export default class ClientStore extends BaseStore {
         return this.legal_allowed_currencies.map(currency => (
             {
                 value: currency,
-                ...this.website_status.currencies_config[currency]
+                ...this.website_status.currencies_config[currency],
             }
         ));
     }
@@ -263,14 +268,48 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    async accountRealReaction(response) {
+        const client_accounts                      = JSON.parse(LocalStore.get(storage_key));
+        const {
+            oauth_token,
+            currency,
+            client_id,
+            landing_company_shortcode,
+            landing_company_name,
+        } = response.new_account_real;
+
+        const new_data                     = {};
+        new_data.token                     = oauth_token;
+        new_data.residence                 = this.accounts[this.loginid].residence;
+        new_data.currency                  = currency;
+        new_data.is_virtual                = 0;
+        new_data.is_disabled               = 0;
+        new_data.landing_company_name      = landing_company_name;
+        new_data.landing_company_shortcode = landing_company_shortcode;
+
+        client_accounts[client_id] = new_data;
+        runInAction(() => {
+            this.accounts = client_accounts;
+            this.loginid = client_id;
+            localStorage.setItem(storage_key, JSON.stringify(client_accounts));
+            localStorage.setItem('active_loginid', client_id);
+        });
+        await BinarySocket.authorize(this.getToken());
+        await this.init();
+        this.responseLandingCompany(
+            await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+        );
+        await this.root_store.modules.trade.initAccountCurrency(currency);
+    }
+
+    @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             form_values.residence = this.accounts[this.loginid].residence;
             form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
-                const { client_id, oauth_token } = response.new_account_real;
-                await this.switchToNewlyCreatedAccount(client_id, oauth_token, form_values.currency);
+                this.accountRealReaction(response);
                 resolve(response);
             } else {
                 reject(response.error.message);
@@ -300,7 +339,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    createCryptoAccount(currency) {
+    createCryptoAccount(crr) {
         const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
         const residence = this.accounts[this.loginid].residence;
 
@@ -310,12 +349,11 @@ export default class ClientStore extends BaseStore {
                 last_name,
                 salutation,
                 residence,
-                currency,
+                currency     : crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
             });
             if (!response.error) {
-                const { client_id, oauth_token } = response.new_account_real;
-                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+                this.accountRealReaction(response);
                 resolve(response);
             } else {
                 reject(response.error.message);
@@ -401,7 +439,11 @@ export default class ClientStore extends BaseStore {
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
-        this.responseLandingCompany(await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence));
+        if (this.is_logged_in) {
+            this.responseLandingCompany(
+                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+            );
+        }
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
@@ -669,11 +711,7 @@ export default class ClientStore extends BaseStore {
 
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
-            const authorize_response        = await BinarySocket.send({
-                authorize: login_new_user
-                    ? login_new_user.token1
-                    : obj_params.token1,
-            });
+            const authorize_response        = await BinarySocket.authorize(is_client_logging_in);
             this.is_populating_account_list = false;
 
             if (login_new_user) { // overwrite obj_params if login is for new virtual account

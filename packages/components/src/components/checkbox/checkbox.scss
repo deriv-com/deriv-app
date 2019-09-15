@@ -1,3 +1,5 @@
+$DERIV_RED: #ff444f;
+
 .dc-checkbox {
     display: flex;
     justify-content: flex-start;
@@ -20,7 +22,7 @@
 
         &--active {
             border: none;
-            background-color: $COLOR_ORANGE;
+            background-color: $DERIV_RED;
         }
     }
 }

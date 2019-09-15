@@ -8,14 +8,19 @@ import { CSSTransition } from 'react-transition-group';
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconClose = ({ className, onClick }) => (
     <svg onClick={onClick} className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <path className='color1-fill' fill='#2A3052' fillRule='nonzero' d='M8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293z' />
+        <path
+            className='color1-fill'
+            fill='#2A3052'
+            fillRule='nonzero'
+            d='M8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293z'
+        />
     </svg>
 );
 
 class ModalElement extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.el = document.createElement('div');
+        this.el    = document.createElement('div');
         this.state = {
             modal_root: document.getElementById('modal_root'),
         };
@@ -43,16 +48,18 @@ class ModalElement extends React.PureComponent {
             <div
                 ref={this.setWrapperRef}
                 id={this.props.id}
-                className={classNames('dc-modal__container',
-                    this.props.className && `dc-modal__container_${this.props.className}`)}
+                className={classNames(
+                    'dc-modal__container',
+                    this.props.className && `dc-modal__container_${this.props.className}`,
+                )}
             >
                 <div className='dc-modal-header'>
-                    {  this.props.title &&
+                    {this.props.title &&
                     <h3 className='dc-modal-header__title'>
                         {this.props.title}
                     </h3>
                     }
-                    { this.props.header &&
+                    {this.props.header &&
                     <div className='dc-modal-header__title'>
                         {this.props.header}
                     </div>
@@ -61,12 +68,12 @@ class ModalElement extends React.PureComponent {
                         onClick={this.props.toggleModal}
                         className='dc-modal-header__title'
                     >
-                        <IconClose />
+                        {this.props.has_close_icon && <IconClose />}
                     </div>
                 </div>
                 {this.props.children}
             </div>,
-            this.el
+            this.el,
         );
     }
 
@@ -75,14 +82,19 @@ class ModalElement extends React.PureComponent {
     };
 }
 
+ModalElement.defaultProps = {
+    has_close_icon: true,
+};
+
 ModalElement.propTypes = {
-    children   : PropTypes.node,
-    className  : PropTypes.string,
-    header     : PropTypes.node,
-    id         : PropTypes.string,
-    is_open    : PropTypes.bool,
-    title      : PropTypes.string,
-    toggleModal: PropTypes.func,
+    children      : PropTypes.node,
+    className     : PropTypes.string,
+    has_close_icon: PropTypes.bool,
+    header        : PropTypes.node,
+    id            : PropTypes.string,
+    is_open       : PropTypes.bool,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 const Modal = ({
@@ -93,6 +105,7 @@ const Modal = ({
     is_open,
     title,
     toggleModal,
+    has_close_icon,
 }) => (
     <CSSTransition
         appear
@@ -113,20 +126,26 @@ const Modal = ({
             is_open={is_open}
             title={title}
             toggleModal={toggleModal}
+            has_close_icon={has_close_icon}
         >
             {children}
         </ModalElement>
     </CSSTransition>
 );
 
+Modal.defaultProps = {
+    has_close_icon: false,
+};
+
 Modal.propTypes = {
-    children   : PropTypes.node,
-    className  : PropTypes.string,
-    header     : PropTypes.node,
-    id         : PropTypes.string,
-    is_open    : PropTypes.bool,
-    title      : PropTypes.string,
-    toggleModal: PropTypes.func,
+    children      : PropTypes.node,
+    className     : PropTypes.string,
+    has_close_icon: PropTypes.bool,
+    header        : PropTypes.node,
+    id            : PropTypes.string,
+    is_open       : PropTypes.bool,
+    title         : PropTypes.string,
+    toggleModal   : PropTypes.func,
 };
 
 export default Modal;

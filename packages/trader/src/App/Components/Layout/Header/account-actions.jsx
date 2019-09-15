@@ -61,14 +61,6 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!!(
-                        can_upgrade_to && is_virtual
-                    ) && <UpgradeButton
-                        className='acc-info__button'
-                        onClick={() => {
-                            window.open(urlFor('user/accounts', undefined, undefined, true));
-                        }}
-                    />}
                     {/* {!is_virtual && */}
                     {/* <ToggleCashier */}
                     {/*    active_tab={active_cashier_tab} */}

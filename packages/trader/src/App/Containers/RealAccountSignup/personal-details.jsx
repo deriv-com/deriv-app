@@ -62,7 +62,7 @@ class DateOfBirth extends Component {
                     <div className='datepicker'>
                         <Input
                             name={name}
-                            className={className}
+                            className={classNames(className, 'dc-input--no-placeholder')}
                             id={id}
                             label={label}
                             placeholder={this.props.label}

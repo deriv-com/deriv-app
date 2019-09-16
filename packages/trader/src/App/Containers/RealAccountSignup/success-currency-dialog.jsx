@@ -24,7 +24,8 @@ const SuccessCurrencyDialog = ({
         <div className='success-change'>
             <div className={
                 classNames('success-change__icon-area', 'success-change__icon-area--big')
-            }>
+            }
+            >
                 <IconNextCurrency />
                 <IconWon className='bottom-right-overlay' />
             </div>

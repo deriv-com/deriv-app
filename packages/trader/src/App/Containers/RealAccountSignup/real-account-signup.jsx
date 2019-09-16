@@ -1,6 +1,7 @@
 import classNames            from 'classnames';
 import { Modal }             from 'deriv-components';
 import React, { Component }  from 'react';
+import { urlFor }            from '_common/url';
 import { localize }          from 'App/i18n';
 import { connect }           from 'Stores/connect';
 import AccountWizard         from './account-wizard.jsx';
@@ -64,11 +65,6 @@ class RealAccountSignup extends Component {
             ],
         };
     }
-
-    closeSignupAndOpenCashier = () => {
-        this.closeModal();
-        setTimeout(this.props.toggleCashierModal, 300);
-    };
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
         this.setState({

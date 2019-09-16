@@ -7,8 +7,9 @@ import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import { unique }            from '_common/utility';
+import { urlFor }            from '_common/url';
+import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import BaseStore             from './base-store';
-import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -265,7 +266,13 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeSignupAndOpenCashier() {
         this.is_real_acc_signup_on = false;
-        setTimeout(this.toggleCashierModal, 300);
+        window.open(urlFor('cashier', undefined, undefined, true),
+            '_blank',
+            'noopener',
+            'noreferrer',
+        );
+        // TODO enable this one cashier is active
+        // setTimeout(this.toggleCashierModal, 300);
     }
 
     @action.bound

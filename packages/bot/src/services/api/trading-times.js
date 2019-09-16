@@ -1,4 +1,4 @@
-import PendingPromise from '../../../utils/pending-promise';
+import PendingPromise from '../../utils/pending-promise';
 
 export default class TradingTimes {
     constructor(root_store) {

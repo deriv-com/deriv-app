@@ -1,4 +1,4 @@
-import ApiHelpers from '../../../../services/api/helpers';
+import ApiHelpers from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_market = {
     init() {

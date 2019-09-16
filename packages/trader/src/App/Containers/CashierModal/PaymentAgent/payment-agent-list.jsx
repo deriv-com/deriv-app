@@ -85,7 +85,7 @@ class PaymentAgentList extends React.Component {
                                 </React.Fragment>
                             }
                             <div className='payment-agent__disclaimer'>
-                                <span className='payment-agent__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
+                                <span className='cashier__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
                                 <Localize i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.' values={{ website_name }} />
                             </div>
                         </Scrollbars>

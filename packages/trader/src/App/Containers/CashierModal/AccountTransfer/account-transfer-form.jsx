@@ -60,10 +60,13 @@ class AccountTransferForm extends React.Component {
         })
     );
 
-    onTransferPassthrough = (values) => {
-        this.props.requestTransferBetweenAccounts({
+    onTransferPassthrough = async (values, actions) => {
+        const transfer_between_accounts = await this.props.requestTransferBetweenAccounts({
             amount: values.amount,
         });
+        if (transfer_between_accounts.error) {
+            actions.setSubmitting(false);
+        }
     };
 
     render() {

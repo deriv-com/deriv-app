@@ -70,6 +70,7 @@ class ConfigAccountTransfer {
     @observable accounts_list          = [];
     @observable selected_from          = {};
     @observable selected_to            = {};
+    @observable receipt                = {};
 }
 
 class ConfigVerification {
@@ -734,6 +735,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setReceiptTransfer(amount) {
+        this.config.account_transfer.receipt = {
+            amount_transferred: amount,
+        };
+    }
+
+    @action.bound
     onChangeTransferFrom({ target }) {
         const accounts      = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -766,8 +774,10 @@ export default class CashierStore extends BaseStore {
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
+            this.setReceiptTransfer({ amount });
             this.setIsTransferSuccessful(true);
         }
+        return transfer_between_accounts;
     };
 
     onAccountSwitch() {

@@ -12,7 +12,6 @@ class AccountTransfer extends React.Component {
         this.props.onMount();
     }
 
-    // eslint-disable-next-line class-methods-use-this
     render() {
         return (
             <React.Fragment>

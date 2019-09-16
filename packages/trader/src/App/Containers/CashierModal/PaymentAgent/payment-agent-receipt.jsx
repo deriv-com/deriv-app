@@ -33,7 +33,7 @@ class PaymentAgentReceipt extends React.Component {
                             options={{ interpolation: { escapeValue: false } }}
                         />
                     </h2>
-                    <div className='payment-agent__transferred-amount payment-agent__text--bold'>
+                    <div className='cashier__transferred-amount cashier__text--bold'>
                         <span
                             className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}
                         />
@@ -42,12 +42,12 @@ class PaymentAgentReceipt extends React.Component {
                     <div className='payment-agent__transferred-details-wrapper'>
                         <Icon icon='IconAccountsCurrency' type={this.props.currency.toLowerCase()} />
                         <span className='payment-agent__transferred-details'>
-                            <span className='payment-agent__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
+                            <span className='cashier__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
                         </span>
                         <Icon className='payment-agent__transferred-icon' icon='IconBack' />
                         <Icon icon='IconPaymentAgent' />
                         <span className='payment-agent__transferred-details'>
-                            {this.props.receipt.payment_agent_name && <span className='payment-agent__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
+                            {this.props.receipt.payment_agent_name && <span className='cashier__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
                         </span>
                     </div>
                 </div>

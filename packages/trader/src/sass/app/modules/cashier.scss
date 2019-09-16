@@ -101,6 +101,17 @@
             align-items: center;
         }
     }
+    &__transferred {
+        &-amount {
+            color: $COLOR_GREEN_1;
+            font-size: 3.2rem;
+            line-height: 0.75;
+            margin-bottom: 16px;
+        }
+    }
+    &__text--bold {
+        font-weight: bold;
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -250,9 +261,6 @@
         font-size: 1.2rem;
         line-height: 1.42;
     }
-    &__text--bold {
-        font-weight: bold;
-    }
     &__radio {
         margin-bottom: 16px;
 
@@ -264,12 +272,6 @@
         text-align: center;
     }
     &__transferred {
-        &-amount {
-            color: $COLOR_GREEN_1;
-            font-size: 3.2rem;
-            line-height: 0.75;
-            margin-bottom: 16px;
-        }
         &-details {
             margin-left: 8px;
             vertical-align: super;
@@ -366,6 +368,11 @@
     &__balance {
         @include themify($themes) {
             color: themed('text_secondary_color');
+        }
+    }
+    &__receipt {
+        &-icon {
+            margin: 5.6rem 0 1.6rem;
         }
     }
 }

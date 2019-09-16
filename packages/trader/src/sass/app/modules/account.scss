@@ -1,5 +1,6 @@
 @import '../_common/base/index';
 
+/** @define account; weak */
 .account {
     margin: 0 16px;
 
@@ -105,16 +106,6 @@
     .initial-loader--accounts-modal {
         height: calc(100vh - 240px);
     }
-    .initial-loader--btn {
-        // height: 200px;
-
-        .initial-loader__barspinner--rect {
-            background-color: white;
-        }
-        .barspinner {
-            margin: 0 4px 0 -4px;
-        }
-    }
     .account-management-modal-header {
         display: flex;
 
@@ -209,6 +200,7 @@
 
         thead {
             position: relative;
+
             tr {
                 padding-bottom: 8px;
             }
@@ -273,57 +265,59 @@
             display: flex;
             align-items: center;
         }
-
         * {
             padding-left: 8px;
         }
     }
-    /**
-     * Deriv password
-     */
-    /** @define forgot-password */
-    .forgot-password {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-row-gap: 16px;
-        grid-column-gap: 24px;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
-        font-size: 1.2rem;
-        line-height: 1.5;
-
-        &__content {
-            display: grid;
-            grid-template-columns: 32px auto;
-            grid-gap: 8px;
-
-            .inline-icon {
-                width: 32px;
-                height: 32px;
-                margin-right: 8px;
-            }
-        }
-    }
-
-    .form-submit-error-message {
-        display: flex;
-        align-items: center;
-        margin-right: auto;
-        font-size: 1.2rem;
-        font-weight: bold;
-
-        p {
-            padding-left: 16px;
-        }
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
-    }
 }
 
+/** @define grid-2-cols; weak */
 .grid-2-cols {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 8px;
+}
+
+/**
+ * Deriv password
+ */
+/** @define forgot-password; weak */
+.forgot-password {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 16px;
+    grid-column-gap: 24px;
+    @include themify($themes) {
+        color: themed('text_primary_color');
+    }
+    font-size: 1.2rem;
+    line-height: 1.5;
+
+    &__content {
+        display: grid;
+        grid-template-columns: 32px auto;
+        grid-gap: 8px;
+
+        .inline-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+    }
+}
+
+/** @define form-submit-error-message; weak */
+.form-submit-error-message {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    p {
+        padding-left: 16px;
+    }
+    @include themify($themes) {
+        color: themed('text_primary_color');
+    }
 }

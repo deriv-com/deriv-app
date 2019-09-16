@@ -1,6 +1,6 @@
-/** @define multistep */
+/** @define multistep; weak */
 .multistep {
-    &-btn {
+    &__btn {
         display: flex;
         align-items: center;
         font-size: 1.4rem;
@@ -8,15 +8,17 @@
         padding-top: 24px;
         cursor: pointer;
 
-        &__icon {
+        &-icon {
             margin-right: 8px;
 
             .color1-fill {
-                fill: black;   
+                @include themify($themes) {
+                    color: themed('text_color');
+                }
             }
         }
     }
-    &-component {
+    &__component {
         width: 100%;
         height: 100%;
     }

@@ -205,6 +205,7 @@ class PersonalDetails extends Component {
                         isSubmitting,
                         errors,
                         touched,
+                        values,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='personal-details-form'>
@@ -234,8 +235,7 @@ class PersonalDetails extends Component {
                             <FormSubmitButton
                                 is_disabled={
                                     isSubmitting ||
-                                    Object.keys(errors).length > 0 ||
-                                    Object.keys(touched).length === 0
+                                    Object.keys(errors).length > 0
                                 }
                                 label='Next'
                                 has_cancel

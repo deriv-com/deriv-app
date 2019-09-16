@@ -10,10 +10,8 @@
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        @include themify($themes) {
-            background-color: themed('container_color');
-            color: themed('text_color');
-        }
+        background-color: var(--general-main-1);
+        color: var(--text-prominent);
 
         &--is-open {
             opacity: 1;
@@ -26,9 +24,7 @@
         padding: 8px 8px 4px;
 
         &:not(:first-child) {
-            @include themify($themes) {
-                border-top: 1px solid themed('background_container_color');
-            }
+            border-top: 1px solid var(--general-section-2);
         }
     }
     &__icon {
@@ -45,9 +41,7 @@
         font-size: 1em;
         white-space: nowrap;
         max-width: 90px;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
     }
     &__value-wrapper {
         display: flex;
@@ -58,8 +52,6 @@
         line-height: 1.5;
         font-size: 1.2em;
         font-weight: bold;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
 }

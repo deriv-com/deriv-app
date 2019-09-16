@@ -4,9 +4,7 @@
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         margin-bottom: 0.6em;
     }
     &:last-child {
@@ -27,9 +25,7 @@
             border-radius: 4px;
         }
         &:hover:not(.selected) {
-            @include themify($themes) {
-                background: themed('tab_hover_color');
-            }
+            background: var(--state-hover);
         }
     }
 }
@@ -45,15 +41,11 @@
     box-sizing: border-box;
     margin-bottom: 0.1em;
     transition: transform 0.3s opacity 0.3s;
-    @include themify($themes) {
-        background-color: themed('container_color');
-        color: themed('text_primary_color');
-    }
+    background-color: var(--state-normal);
+    color: var(--text-less-prominent);
 
     &:hover {
-        @include themify($themes) {
-            background-color: themed('tab_hover_color');
-        }
+        background-color: var(--state-hover);
 
         .contract-type-item__icon {
             display: block;
@@ -61,9 +53,7 @@
     }
     &__title {
         @include typeface(--paragraph-left-normal-black);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
         padding-left: 0.4em;
     }
     &__icon {
@@ -89,26 +79,24 @@
         display: none;
     }
     &--selected {
-        @include themify($themes) {
-            color: themed('text_active_color');
-            background: themed('active_color') !important;
+        background: var(--state-active);
+        color: var(--text-prominent);
+
+        &:hover {
+            background: var(--state-active);
         }
         /* postcss-bem-linter: ignore */
         span {
             font-weight: bold;
-            @include themify($themes) {
-                color: themed('text_active_color');
-            }
+            color: var(--text-prominent);
         }
         .contract-type-item__icon {
             /* postcss-bem-linter: ignore */
             svg {
                 pointer-events: none;
-
+                //stylelint-disable-next-line
                 .color1-fill {
-                    @include themify($themes) {
-                        fill: themed('icon_active_color');
-                    }
+                    fill: var(--text-prominent);
                 }
             }
             &:hover {
@@ -117,9 +105,7 @@
                     pointer-events: none;
 
                     .color1-fill {
-                        @include themify($themes) {
-                            fill: themed('text_active_color') !important;
-                        }
+                        fill: var(--text-prominent) !important;
                     }
                 }
             }
@@ -139,16 +125,16 @@
                 path, rect {
                     /* postcss-bem-linter: ignore */
                     &:not(.important) {
-                        fill: themed('icon_color');
+                        fill: var(--brand-red-coral);
                     }
                     /* postcss-bem-linter: ignore */
                     &.transparent {
-                        fill: themed('background_icon_color');
+                        fill: var(--general-main-2);
                     }
                 }
                 /* postcss-bem-linter: ignore */
                 .stroke-active {
-                    stroke: themed('icon_color');
+                    stroke: var(--brand-red-coral);
                 }
             }
         }

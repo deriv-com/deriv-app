@@ -161,9 +161,7 @@
     box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
 
     &:hover {
-        @include themify($themes) {
-            box-shadow: 0 0 0 0.5em themed('slider_hover_color');
-        }
+        box-shadow: 0 0 0 0.5em var(--state-hover);
     }
 }
 

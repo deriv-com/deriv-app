@@ -8,10 +8,8 @@
     z-index: 999;
     box-sizing: border-box;
     font-size: 1em;
-    @include themify($themes) {
-        background: themed('container_secondary_color');
-        box-shadow: 0 4px 6px 0 rgba($COLOR_BLACK, 0.24);
-    }
+    background: var(--general-main-2);
+    box-shadow: 0 2px 8px 0 var(--shadow-menu);
 
     &__header, &__footer {
         position: relative;
@@ -25,10 +23,8 @@
         justify-content: center;
     }
     &__body {
-        @include themify($themes) {
-            border-top: 0.1em solid themed('background_color');
-            border-bottom: 0.1em solid themed('background_color');
-        }
+        border-top: 0.1em solid var(--general-section-2);
+        border-bottom: 0.1em solid var(--general-section-2);
 
         &--date, &--month, &--year, &--decade {
             display: grid;
@@ -121,16 +117,12 @@
         }
         &--select {
             @include typeface(--paragraph-left-bold-black);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
     }
     &__text {
         @include typeface(--small-center-normal-black, unset);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &--bold {
             font-weight: bold;
@@ -142,15 +134,12 @@
         justify-self: center;
         position: relative;
         cursor: pointer;
-        @include themify($themes) {
-            color: themed('text_primary_color');
+        color: var(--text-prominent);
 
-            &:hover {
-                cursor: pointer;
-                background: themed('cell_hover_color');
-            }
+        &:hover {
+            color: var(--text-prominent);
+            background: var(--state-hover);
         }
-
         &:nth-child(7n) {
             &:before {
                 padding: 0;
@@ -168,17 +157,15 @@
         }
         &--bold {
             @include typeface(--paragraph-left-bold-black);
+            color: var(--text-prominent);
         }
         &--disabled:hover {
-            @include themify($themes) {
-                cursor: default;
-                background: themed('container_secondary_color');
-            }
+            cursor: default;
+            background: var(--state-hover);
+            color: var(--text-disabled);
         }
         &--disabled, &--other {
-            @include themify($themes) {
-                color: themed('disabled_color');
-            }
+            color: var(--text-disabled);
             transition: none;
         }
         &--is-hidden {
@@ -189,43 +176,37 @@
             font-weight: 400;
 
             &-duration {
-                @include themify($themes) {
-                    background: themed('active_color') !important;
-                }
+                background: var(--state-active) !important;
             }
         }
         &--active {
             font-weight: bold;
-            @include themify($themes) {
-                color: themed('text_active_color');
-                background: themed('active_color');
+            color: var(--text-prominent);
+            background: var(--state-active);
 
-                &:hover {
-                    background: themed('active_color');
-                }
-                &-duration {
-                    background: themed('active_color');
+            &:hover {
+                background: var(--state-active);
+            }
+            &-duration {
+                background: var(--state-active);
 
-                    &:after {
-                        position: absolute;
-                        content: '';
-                        width: 100%;
-                        top: 0;
-                        right: 50%;
-                        z-index: -1;
-                        height: 100%;
-                        padding-left: 10px;
-                        background: themed('active_color');
-                    }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 100%;
+                    top: 0;
+                    right: 50%;
+                    z-index: -1;
+                    height: 100%;
+                    padding-left: 10px;
+                    background: var(--state-active);
                 }
             }
         }
         &--between {
             font-weight: bold;
-            @include themify($themes) {
-                color: themed('text_active_color');
-                background: themed('active_color');
-            }
+            color: var(--text-prominent);
+            background: var(--state-active);
 
             &-hover {
                 &:before {
@@ -235,15 +216,11 @@
                     z-index: -2;
                     height: 100%;
                     padding-left: 32px;
-                    @include themify($themes) {
-                        background: themed('cell_hover_color');
-                    }
+                    background: var(--state-hover);
                 }
             }
             &:hover {
-                @include themify($themes) {
-                    background: themed('active_color');
-                }
+                background: var(--state-active);
             }
             &:before {
                 position: absolute;
@@ -252,9 +229,7 @@
                 z-index: -1;
                 height: 100%;
                 padding-left: 32px;
-                @include themify($themes) {
-                    background: themed('active_color');
-                }
+                background: var(--state-active);
             }
         }
         &-tooltip {

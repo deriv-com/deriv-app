@@ -47,7 +47,7 @@ class FinancialAssessment extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.getFinancialAssessment().then((data) => {
+            WS.authorized.storage.getFinancialAssessment().then((data) => {
                 if (data.error) {
                     this.setState({ api_initial_load_error: data.error.message });
                     return;

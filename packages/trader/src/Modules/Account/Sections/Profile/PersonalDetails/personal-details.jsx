@@ -78,7 +78,7 @@ class PersonalDetailsForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.getSettings({ forced: true });
+                WS.authorized.storage.getSettings();
                 this.setState({ is_submit_success: true });
             }
         });
@@ -390,7 +390,7 @@ class PersonalDetailsForm extends React.Component {
 
     componentDidMount() {
         this.props.fetchResidenceList();
-        WS.getSettings().then((data) => {
+        WS.authorized.storage.getSettings().then((data) => {
             if (data.error) {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;

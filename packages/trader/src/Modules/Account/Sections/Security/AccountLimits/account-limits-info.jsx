@@ -8,9 +8,7 @@ const AccountLimitsInfo = ({
     is_virtual,
 }) => (
     <>
-        {is_virtual ?
-            <Localize i18n_default_text='Demo account' />
-            :
+        {!is_virtual &&
             <>
                 <Icon
                     icon='IconAccountsCurrency'

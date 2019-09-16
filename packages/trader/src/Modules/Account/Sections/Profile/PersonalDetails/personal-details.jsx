@@ -1,6 +1,6 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
-import { Formik, Field, Form }                       from 'formik';
+import { Formik, Field }                       from 'formik';
 import {
     Autocomplete,
     Checkbox,
@@ -196,7 +196,7 @@ class PersonalDetailsForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
-                            <Form className='account-management-form' onSubmit={handleSubmit}>
+                            <form className='account-management-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset='55px'>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual &&
@@ -381,7 +381,7 @@ class PersonalDetailsForm extends React.Component {
                                         text={localize('Submit')}
                                     />
                                 </FormFooter>
-                            </Form>
+                            </form>
                         )}
                     </>
                 )}

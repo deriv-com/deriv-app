@@ -46,7 +46,6 @@ class Account extends React.Component {
             {
                 onClick: () => {
                     this.props.history.push(AppRoutes.trade);
-                    this.props.toggleAccount(false);
                 },
                 icon : 'ModalIconClose',
                 title: localize('Close'),

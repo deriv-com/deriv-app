@@ -4,6 +4,7 @@
 // 3- Please read contract-store.js & trade.jsx carefully
 import React         from 'react';
 import { RawMarker } from 'Modules/SmartChart';
+import { getDecimalPlaces } from '_common/base/currency_base';
 import * as ICONS    from './icons';
 
 const RawMarkerMaker = (draw_callback) => {
@@ -425,12 +426,14 @@ const NonTickContract = RawMarkerMaker(({
     // show the profit
     if (show_profit) {
         const symbol = currency_symbols[currency] || '';
+        const decimal_places = getDecimalPlaces(currency);
         const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
+        const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
         shadowed_text({
             ctx,
             scale,
+            text,
             is_dark_theme,
-            text: `${sign}${symbol}${Math.abs(profit)}`,
             left: start.left,
             top : barrier - 28 * scale,
         });

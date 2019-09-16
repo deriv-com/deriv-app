@@ -93,8 +93,11 @@ ModalElement.propTypes = {
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    title         : PropTypes.string,
-    toggleModal   : PropTypes.func,
+    title         : PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
+    toggleModal: PropTypes.func,
 };
 
 const Modal = ({
@@ -144,8 +147,11 @@ Modal.propTypes = {
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    title         : PropTypes.string,
-    toggleModal   : PropTypes.func,
+    title         : PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
+    toggleModal: PropTypes.func,
 };
 
 export default Modal;

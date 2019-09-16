@@ -85,8 +85,8 @@
     padding-left: 0.8em;
     border-radius: $BORDER_RADIUS;
     transition: transform 0.3s;
-    border: var(--border-normal);
     background-color: var(--fill-normal);
+    border: 1px solid var(--fill-normal);
     color: var(--text-prominent);
 
     &[type=checkbox] {
@@ -155,7 +155,7 @@
     &:active, &:focus {
         outline: 0;
         border-radius: $BORDER_RADIUS;
-        box-shadow: 0 0 0 2px $COLOR_DARK_BLUE_8;
+        box-shadow: 0 0 0 2px var(--shadow-menu);
         border-color: var(--border-active);
         color: var(--text-prominent);
     }

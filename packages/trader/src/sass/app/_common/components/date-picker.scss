@@ -10,15 +10,16 @@
         margin-top: 0.8em;
     }
     &__input {
-        @include themify($themes) {
-            background: themed('background_container_color');
-            color: themed('text_color');
+        background: var(--fill-normal);
+        border: 1px solid var(--border-normal);
 
-            &:hover, &:focus, &:active {
-                border-color: themed('border_hover_color');
-            }
+        &:hover {
+            border-color: var(--border-hover);
         }
-
+        &:focus, &:active {
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 2px var(--shadow-menu);
+        }
         &::-ms-clear { // Edge: hide clear icon for increment input
             display: none;
         }

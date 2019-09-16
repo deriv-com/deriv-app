@@ -73,7 +73,7 @@
         border-radius: $BORDER_RADIUS;
         background: var(--fill-normal);
         color: var(--text-prominent);
-        border: 1px solid var(--border-normal);
+        border: 1px solid var(--fill-normal);
 
         &:hover {
             border-color: var(--border-hover);

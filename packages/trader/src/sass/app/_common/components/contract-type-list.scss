@@ -120,21 +120,19 @@
         /* postcss-bem-linter: ignore */
         .category-wrapper {
             margin: 0 0.2em;
-            @include themify($themes) {
+
+            svg {
                 /* postcss-bem-linter: ignore */
-                path, rect {
-                    /* postcss-bem-linter: ignore */
-                    &:not(.important) {
-                        fill: var(--brand-red-coral);
-                    }
-                    /* postcss-bem-linter: ignore */
-                    &.transparent {
-                        fill: var(--general-main-2);
-                    }
+                .transparent {
+                    fill: var(--general-main-2);
                 }
                 /* postcss-bem-linter: ignore */
-                .stroke-active {
-                    stroke: var(--brand-red-coral);
+                .color1-fill {
+                    fill: var(--brand-red-coral);
+                }
+                /* postcss-bem-linter: ignore */
+                .color2-fill {
+                    fill: var(--brand-secondary);
                 }
             }
         }

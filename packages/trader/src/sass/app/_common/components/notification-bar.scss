@@ -15,7 +15,7 @@
     @include toEm(padding, 16px);
     transition: transform 0.7s, visibility 0s linear 0.7s, opacity 0.7s;
     border-radius: $BORDER_RADIUS;
-    box-shadow: 0 2px 8px $COLOR_LIGHT_BLACK_3;
+    box-shadow: 0 2px 8px var(--shadow-menu);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,9 +25,7 @@
         align-items: center;
         justify-content: space-between;
         @include typeface(--small-center-normal-active, unset);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
     &__button {
         margin: 0 0 0 1.6em;
@@ -36,7 +34,7 @@
         cursor: pointer;
     }
     &__icon path {
-        fill: $COLOR_WHITE;
+        fill: var(--color-white);
     }
     &--is-active {
         transform: translate(-50%, 0);
@@ -45,8 +43,6 @@
         transition-delay: 0s;
     }
     &--info {
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-        }
+        background-color: var(--general-section-1);
     }
 }

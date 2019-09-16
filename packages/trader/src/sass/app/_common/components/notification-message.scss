@@ -19,19 +19,19 @@
     border-radius: 4px;
     max-width: 348px;
     padding: 16px;
-    color: $COLOR_WHITE;
+    color: var(--color-white);
 
     &--danger {
-        background-color: $COLOR_RED;
+        background-color: var(--status-danger);
     }
     &--info {
-        background-color: $COLOR_SKY_BLUE;
+        background-color: var(--status-info);
     }
     &--success {
-        background-color: $COLOR_GREEN_1;
+        background-color: var(--status-success);
     }
     &--warning {
-        background-color: $COLOR_ORANGE;
+        background-color: var(--status-warning);
     }
     &--small {
         max-width: 240px;
@@ -67,7 +67,7 @@
             content: '\0000D7';
             font-size: 30px;
             font-weight: 300;
-            color: $COLOR_WHITE;
+            color: var(--color-white);
         }
     }
     &__icon {

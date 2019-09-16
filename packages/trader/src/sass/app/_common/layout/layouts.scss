@@ -420,9 +420,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    @include themify($themes) {
-        background: themed('background_icon_color');
-    }
+    background: var(--general-main-2);
 }
 
 /** @define category-wrapper */

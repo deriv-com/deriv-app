@@ -24,19 +24,19 @@
             &__track[type=range] {
                 // Range Handle Thumb - Chrome / Webkit based browsers
                 &::-webkit-slider-thumb {
-                    background: $COLOR_RED;
+                    background: var(--text-loss-danger);
                 }
                 // Range Handle Thumb - Firefox / Gecko based browsers
                 &::-moz-range-thumb {
-                    background: $COLOR_RED;
+                    background: var(--text-loss-danger);
                 }
             }
             &__line {
-                background: $COLOR_RED !important;
+                background: var(--text-loss-danger) !important;
             }
             &__ticks-step--marked {
-                background: $COLOR_RED !important;
-                border-color: $COLOR_RED !important;
+                background: var(--text-loss-danger) !important;
+                border-color: var(--text-loss-danger) !important;
             }
         }
     }
@@ -51,10 +51,8 @@
         padding: 0;
         margin: 0;
         cursor: pointer;
-        @include themify($themes) {
-            background: themed('container_color');
-            border: none;
-        }
+        background: var(--state-normal);
+        border: none;
 
         // Handles Track - MS Edge and IE
         @supports (-ms-ime-align:auto) {
@@ -65,23 +63,17 @@
         // Range Handle Thumb - Chrome / Webkit based browsers
         &::-webkit-slider-thumb {
             @include thumbStyle();
-            @include themify($themes) {
-                background: themed('slider_icon_color');
-            }
+            background: var(--state-active);
         }
         // Range Handle Thumb - Firefox / Gecko based browsers
         &::-moz-range-thumb {
             @include thumbStyle();
-            @include themify($themes) {
-                background: themed('slider_icon_color');
-            }
+            background: var(--state-active);
         }
         // Range Handle Thumb - Microsoft Edge
         &::-ms-thumb {
             @include thumbStyle();
-            @include themify($themes) {
-                background: themed('slider_icon_color');
-            }
+            background: var(--state-active);
         }
         &:hover, &:focus, &:active {
             border: 0;
@@ -91,9 +83,7 @@
             box-shadow: none !important;
         }
         &::-moz-range-track {
-            @include themify($themes) {
-                background: themed('container_color');
-            }
+            background: var(--state-active);
         }
         &::-ms-tooltip {
             display: none;
@@ -103,23 +93,17 @@
             width: 100%;
             height: 2px;
             border-width: 6px 0;
-            @include themify($themes) {
-                background: themed('container_color');
-                border-color: themed('background_container_color');
-                color: themed('background_container_color');
-            }
+            background: var(--state-actice);
+            border-color: var(--general-section-1);
+            color: var(--state-active);
         }
         &[type=range]::-ms-fill-upper {
             height: 2px;
-            @include themify($themes) {
-                background: themed('container_color');
-            }
+            background: var(--state-active);
         }
         &[type=range]::-ms-fill-lower {
             height: 2px;
-            @include themify($themes) {
-                background: themed('container_color');
-            }
+            background: var(--state-active);
         }
     }
     &__ticks {
@@ -137,21 +121,16 @@
             border-radius: 50%;
             transition: box-shadow 0.2s;
             cursor: pointer;
-            @include themify($themes) {
-                border: 4px solid themed('container_color');
-                background: themed('container_color');
-            }
+            border: 4px solid var(--state-normal);
+            background: var(--state-normal);
 
             &--active, &--marked {
-                @include themify($themes) {
-                    background: themed('slider_icon_color');
-                    border-color: themed('slider_icon_color');
-                }
+                background: var(--state-active);
+                border-color: var(--state-active);
             }
             &--marked-hover {
-                @include themify($themes) {
-                    border-color: themed('slider_hover_color');
-                }
+                background: var(--state-hover);
+                border-color: var(--state-hover);
             }
             &--active {
                 visibility: hidden;
@@ -165,17 +144,13 @@
                     display: block;
                     top: 0;
                     border-radius: 50%;
-                    @include themify($themes) {
-                        background: themed('slider_icon_color');
-                    }
+                    background: var(--state-active);
                 }
             }
             &:hover:not(&--active) {
-                @include themify($themes) {
-                    background: themed('slider_icon_color');
-                    border-color: themed('slider_icon_color');
-                    box-shadow: 0 0 0 6px themed('slider_hover_color');
-                }
+                background: var(--state-hover);
+                border-color: var(--state-hover);
+                box-shadow: 0 0 0 5px var(--shadow-menu);
             }
             &:first-child {
                 margin-left: 0;
@@ -191,14 +166,10 @@
         left: 0;
         height: 2px;
         pointer-events: none;
-        @include themify($themes) {
-            background: themed('slider_icon_color');
-        }
+        background: var(--state-active);
 
         &--fill {
-            @include themify($themes) {
-                background: themed('slider_hover_color');
-            }
+            background: var(--state-active);
         }
     }
     &__caption {
@@ -212,9 +183,7 @@
         }
         /* postcss-bem-linter: ignore */
         span {
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
     }
 }

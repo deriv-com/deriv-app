@@ -1,5 +1,6 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
+import { toJS }                from 'mobx';
 import { Popover }             from 'deriv-components';
 import { localize }            from 'App/i18n';
 import { isContractElapsed }   from 'Stores/Modules/Contract/Helpers/logic';
@@ -28,13 +29,30 @@ class Digits extends React.PureComponent {
             is_ended,
             is_trade_page,
             underlying,
-            tick,
         } = this.props;
+
+        const has_contract = contract_info.date_start;
+        let tick = this.props.tick;
 
         const is_tick_ready       = is_trade_page ? !!(tick) : true;
         const is_contract_elapsed = (is_trade_page) ?
             isContractElapsed(contract_info, tick) : false;
 
+        // tick from contract_info.tick_stream has totally different
+        // format from the tick from tick_history api call.
+        if (has_contract && !is_contract_elapsed) {
+            tick = null;
+            const tick_stream = contract_info.tick_stream;
+            if (tick_stream && tick_stream.length) {
+                const t = toJS(tick_stream.slice(-1)[0]);
+                tick = {
+                    ask     : t.tick,
+                    bid     : t.tick,
+                    epoch   : t.epoch,
+                    pip_size: t.tick_display_value.split('.')[1].length,
+                };
+            }
+        }
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}

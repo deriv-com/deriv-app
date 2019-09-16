@@ -114,12 +114,16 @@ class Icon extends React.PureComponent {
             className    : this.props.className,
             classNamePath: this.props.classNamePath,
             classNameRect: this.props.classNameRect,
+            height       : this.props.height,
             is_dark_theme: this.props.is_dark_theme,
             is_disabled  : this.props.is_disabled,
             onClick      : this.props.onClick,
             onMouseEnter : this.props.onMouseEnter,
             onMouseLeave : this.props.onMouseLeave,
             type         : this.props.type,
+            vb_height    : this.props.vb_height,
+            vb_width     : this.props.vb_width,
+            width        : this.props.width,
         };
 
         const IconLazy = this.icons[this.props.icon];

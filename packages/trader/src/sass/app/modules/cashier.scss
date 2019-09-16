@@ -82,6 +82,8 @@
                 padding: 9px 36px 9px 12px;
                 text-transform: none;
                 line-height: 1.43;
+                display: flex;
+                align-items: center;
             }
         }
         &-items, &-label {
@@ -90,6 +92,7 @@
             font-size: 1.4rem !important;
             justify-content: left;
             padding-left: 12px;
+            align-items: center;
         }
     }
     /** @define cashier-error */
@@ -356,12 +359,6 @@
     }
     &__drop-down {
         min-width: 28rem;
-
-        &-display {
-            &-span {
-                display: flex;
-            }
-        }
     }
     &__currency {
         margin: 0 0.4rem;

@@ -1,29 +1,54 @@
-import classNames       from 'classnames';
-import PropTypes        from 'prop-types';
-import React            from 'react';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
 import {
     Button,
     Dropdown,
-    Input }             from 'deriv-components';
+    Input }                 from 'deriv-components';
 import {
     Field,
     Formik,
-    Form }              from 'formik';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import Money            from 'App/Components/Elements/money.jsx';
-import { website_name } from 'App/Constants/app-config';
-import { localize }     from 'App/i18n';
-import Icon             from 'Assets/icon.jsx';
-import { connect }      from 'Stores/connect';
-import Error            from '../error.jsx';
-import Loading          from '../../../../templates/_common/components/loading.jsx';
+    Form }                  from 'formik';
+import { getDecimalPlaces } from '_common/base/currency_base';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import Money                from 'App/Components/Elements/money.jsx';
+import { website_name }     from 'App/Constants/app-config';
+import { localize }         from 'App/i18n';
+import Icon                 from 'Assets/icon.jsx';
+import { connect }          from 'Stores/connect';
+import {
+    getPreBuildDVRs,
+    validNumber }           from 'Utils/Validator/declarative-validation-rules';
+import Error                from '../error.jsx';
+import Loading              from '../../../../templates/_common/components/loading.jsx';
+
+const validateTransfer = (values, { balance, currency, transfer_limit }) => {
+    const errors = {};
+
+    if (!values.amount) {
+        errors.amount = localize('This field is required.');
+    } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
+        errors.amount = getPreBuildDVRs().number.message;
+    } else if (+balance < +values.amount) {
+        errors.amount = localize('Insufficient balance.');
+    }
+
+    return errors;
+};
 
 const AccountOption = ({
     idx,
     account,
 }) => (
     <React.Fragment key={idx}>
-        <Icon icon='IconAccountsCurrency' type={account.mt_icon || account.currency.toLowerCase()} />
+        <Icon
+            icon='IconAccountsCurrency'
+            type={account.mt_icon ? account.mt_icon.value : account.currency.toLowerCase()}
+            height={16}
+            width={16}
+            vb_height={account.mt_icon ? account.mt_icon.vb_height : undefined}
+            vb_width={account.mt_icon ? account.mt_icon.vb_width : undefined}
+        />
         <span className='account-transfer__currency'>{account.text}</span>
         <span className='account-transfer__balance'>(<Money amount={account.balance} currency={account.currency} />)</span>
     </React.Fragment>
@@ -33,6 +58,14 @@ class AccountTransferForm extends React.Component {
     componentDidMount() {
         this.props.onMount();
     }
+
+    validateTransferPassthrough = (values) => (
+        validateTransfer(values, {
+            balance       : this.props.balance,
+            currency      : this.props.selected_from.currency,
+            transfer_limit: this.props.transfer_limit,
+        })
+    );
 
     render() {
         const accounts_from    = [];
@@ -89,7 +122,7 @@ class AccountTransferForm extends React.Component {
                                             initialValues={{
                                                 amount: '',
                                             }}
-                                            // validate={this.validateWithdrawalPassthrough}
+                                            validate={this.validateTransferPassthrough}
                                             // onSubmit={this.onWithdrawalPassthrough}
                                         >
                                             {
@@ -99,11 +132,11 @@ class AccountTransferForm extends React.Component {
                                                             id='transfer_from'
                                                             className='cashier__drop-down account-transfer__drop-down'
                                                             classNameDisplay='cashier__drop-down-display'
-                                                            classNameDisplaySpan='cashier__drop-down-display-span account-transfer__drop-down-display-span'
+                                                            classNameDisplaySpan='cashier__drop-down-display-span'
                                                             classNameItems='cashier__drop-down-items'
                                                             classNameLabel='cashier__drop-down-label'
                                                             list={from_accounts}
-                                                            name='payment_agents'
+                                                            name='transfer_from'
                                                             value={this.props.selected_from.value}
                                                             onChange={this.props.onChangeTransferFrom}
                                                         />
@@ -111,13 +144,11 @@ class AccountTransferForm extends React.Component {
                                                             id='transfer_to'
                                                             className='cashier__drop-down account-transfer__drop-down'
                                                             classNameDisplay='cashier__drop-down-display'
-                                                            eslint-disable-next-line
-                                                            max-len
-                                                            classNameDisplaySpan='cashier__drop-down-display-span account-transfer__drop-down-display-span'
+                                                            classNameDisplaySpan='cashier__drop-down-display-span'
                                                             classNameItems='cashier__drop-down-items'
                                                             classNameLabel='cashier__drop-down-label'
                                                             list={to_accounts}
-                                                            name='payment_agents'
+                                                            name='transfer_to'
                                                             value={this.props.selected_to.value}
                                                             onChange={this.props.onChangeTransferTo}
                                                         />
@@ -134,13 +165,13 @@ class AccountTransferForm extends React.Component {
                                                                     autoComplete='off'
                                                                     maxLength='30'
                                                                     hint={
-                                                                        this.props.transfer_limit &&
+                                                                        this.props.transfer_limit.max &&
                                                                         <Localize
                                                                             i18n_default_text='Transfer limit: <0 />'
                                                                             components={[
                                                                                 <Money
                                                                                     key={0}
-                                                                                    amount={this.props.transfer_limit}
+                                                                                    amount={this.props.transfer_limit.max} // eslint-disable-line max-len
                                                                                     currency={this.props.selected_from.currency} // eslint-disable-line max-len
                                                                                 />,
                                                                             ]}
@@ -213,6 +244,7 @@ class AccountTransferForm extends React.Component {
 
 AccountTransferForm.propTypes = {
     accounts_list         : PropTypes.array,
+    balance               : PropTypes.string,
     error                 : PropTypes.object,
     is_loading            : PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
@@ -223,11 +255,12 @@ AccountTransferForm.propTypes = {
     selected_from         : PropTypes.object,
     selected_to           : PropTypes.object,
     transfer_fee          : PropTypes.number,
-    transfer_limit        : PropTypes.string,
+    transfer_limit        : PropTypes.object,
 };
 
 export default connect(
     ({ client, modules }) => ({
+        balance               : client.balance,
         accounts_list         : modules.cashier.config.account_transfer.accounts_list,
         error                 : modules.cashier.config.account_transfer.error,
         is_loading            : modules.cashier.is_loading,

@@ -16,6 +16,12 @@ import BaseStore            from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: '' }];
 
+const mt_icon_settings = {
+    real_labuan_advanced : { vb_height: 46, vb_width: 60 },
+    real_svg             : { vb_height: 53, vb_width: 56 },
+    real_vanuatu_standard: { vb_height: 52, vb_width: 54 },
+};
+
 class Config {
     container          = '';
     is_session_timeout = true;
@@ -59,7 +65,7 @@ class ConfigAccountTransfer {
     @observable error                  = new ConfigError();
     @observable is_transfer_successful = false;
     @observable transfer_fee           = null;
-    @observable transfer_limit         = null;
+    @observable transfer_limit         = {};
     @observable minimum_fee            = null;
     @observable accounts_list          = [];
     @observable selected_from          = {};
@@ -592,7 +598,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetPaymentAgent = (should_clear_list) => {
+    resetPaymentAgent = () => {
         this.setIsWithdraw(false);
         this.clearVerification();
     };
@@ -636,11 +642,13 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferLimit() {
-        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits', 'max']);
+        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.config.account_transfer.transfer_limit = transfer_limit ?
-            transfer_limit.toFixed(decimal_places) : null;
+        this.config.account_transfer.transfer_limit = {
+            max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
+            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+        };
     }
 
     getMT5AccountType = (group) => {
@@ -699,7 +707,11 @@ export default class CashierStore extends BaseStore {
                 value   : account.loginid,
                 balance : account.balance,
                 currency: account.currency,
-                ...(is_mt && { mt_icon: group.value }),
+                ...(is_mt && { mt_icon: {
+                    value    : group.value,
+                    vb_height: mt_icon_settings[group.value].vb_height,
+                    vb_width : mt_icon_settings[group.value].vb_width,
+                } }),
             };
             if (idx === 0) {
                 this.config.account_transfer.selected_from = obj_values;

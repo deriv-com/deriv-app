@@ -4,7 +4,7 @@ import { FormikConsumer }     from 'formik';
 import { Button }             from 'deriv-components';
 import { localize }           from 'App/i18n';
 import IconUnsavedChanges     from 'Assets/AccountManagement/icon-unsaved-changes.svg';
-import IconMessageContent     from '../Components/icon-message-content';
+import IconMessageContent     from './icon-message-content.jsx';
 
 /**
  * Blocks routing if Formik form is dirty
@@ -13,7 +13,7 @@ import IconMessageContent     from '../Components/icon-message-content';
 class TransitionBlocker extends React.Component {
     state = { show: false }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.unblock = this.props.history.block(next_location => {
             if (this.props.dirty) {
                 this.props.onDirty(false);
@@ -74,13 +74,13 @@ class TransitionBlocker extends React.Component {
                     </>
                 }
             </>
-        )
+        );
     }
 }
 const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
 export const LeaveConfirm = ({ onDirty }) => (
     <FormikConsumer>
-        {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0}/>}
+        {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );

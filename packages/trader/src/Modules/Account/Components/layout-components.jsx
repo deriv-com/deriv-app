@@ -19,14 +19,6 @@ export const FormBody = ({ children, scroll_offset }) => (
     <ScrollbarsContainer scroll_offset={scroll_offset}>
         {children}
     </ScrollbarsContainer>
-    // <Scrollbars
-    //     autoHide
-    //     style={{
-    //         height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
-    //     }}
-    // >
-    //     <div className='account-management-form-body'>{children}</div>
-    // </Scrollbars>
 );
 
 export const FormFooter = ({ children }) => (

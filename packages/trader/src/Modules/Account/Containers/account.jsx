@@ -50,7 +50,7 @@ class Account extends React.Component {
                 },
                 icon : 'ModalIconClose',
                 title: localize('Close'),
-            }
+            },
         ];
 
         const is_account_limits_route = /account_limits/.test(this.props.location.pathname);
@@ -61,7 +61,7 @@ class Account extends React.Component {
         }
 
         const subroutes        = flatten(this.props.routes);
-        let selected_content = subroutes.filter(subroutes => subroutes.path === this.props.location.pathname)[0];
+        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
 
         if (!selected_content) { // fallback
             selected_content = subroutes[0];

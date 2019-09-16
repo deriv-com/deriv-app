@@ -27,7 +27,7 @@ class SendEmailTemplate extends React.Component {
 
     startCountdownTimer = () => {
         this.setState(prevState => ({
-            resend_timeout: prevState.resend_timeout - 1
+            resend_timeout: prevState.resend_timeout - 1,
         }), () => {
             this.resend_interval = setInterval(() => {
                 if (this.state.resend_timeout === 1) {
@@ -53,7 +53,7 @@ class SendEmailTemplate extends React.Component {
         return (
             <div className='send-email-template'>
                 <div className='send-email-template__sent'>
-                    <Icon icon='IconEmailSent' className='send-email-template__icon'/>
+                    <Icon icon='IconEmailSent' className='send-email-template__icon' />
                     <h1 className='send-email-template__title'>{localize('We\'ve sent you an email')}</h1>
                     <p className='send-email-template__subtitle'>{this.props.subtitle}</p>
                     <Button
@@ -66,7 +66,7 @@ class SendEmailTemplate extends React.Component {
                     this.state.is_email_not_received_clicked &&
                     <>
                         <div className={`send-email-template__resend ${this.props.className}`}>
-                            {this.props.children}  
+                            {this.props.children}
                         </div>
                         <div className='send-email-template__cta'>
                             <Button
@@ -80,7 +80,7 @@ class SendEmailTemplate extends React.Component {
                     </>
                 }
             </div>
-        )
+        );
     }
 }
 

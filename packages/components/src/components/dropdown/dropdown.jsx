@@ -313,6 +313,7 @@ class Dropdown extends React.PureComponent {
                                 >
                                     {Array.isArray(this.props.list) ?
                                         <Items
+                                            className={this.props.classNameItems}
                                             index={this.state.curr_index}
                                             handleSelect={this.handleSelect}
                                             has_symbol={this.props.has_symbol}
@@ -350,6 +351,7 @@ class Dropdown extends React.PureComponent {
 Dropdown.propTypes = {
     className        : PropTypes.string,
     classNameDisplay : PropTypes.string,
+    classNameItems   : PropTypes.string,
     has_symbol       : PropTypes.bool,
     is_alignment_left: PropTypes.bool,
     is_nativepicker  : PropTypes.bool,

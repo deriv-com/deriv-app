@@ -11,6 +11,8 @@ const ticksCallback = (response) => {
 
 export const getTicks = function({ symbol }, callback) {
     cb = callback;
-    WS.subscribeTicks(symbol, ticksCallback, true);
+    WS.forgetAll('ticks').then(() => {
+        WS.subscribeTicks(symbol, ticksCallback);
+    });
     return { };
 };

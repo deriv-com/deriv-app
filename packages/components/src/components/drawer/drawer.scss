@@ -1,0 +1,95 @@
+/** @define dc-drawer */
+.dc-drawer {
+    position: absolute;
+    top: 1px;
+    left: calc(100vw - 18px);
+    width: 366px;
+    height: calc(100vh - 82px);
+    z-index: 99;
+    will-change: transform;
+    transition: transform 0.3s ease;
+    @include themify($themes) {
+        background: themed('container_color');
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0.5em;
+        height: 100%;
+    }
+    &__header {
+        @include themify($themes) {
+            border-bottom: 1px solid themed('border_color');
+        }
+        line-height: 40px;
+        font-weight: 700;
+        font-size: 1.6em;
+        padding-left: 1em;
+    }
+    &__content {
+        flex-grow: 1;
+        padding: 1.6em;
+    }
+    &__footer {
+        @include themify($themes) {
+            border-top: 1px solid themed('border_color');
+        }
+        line-height: 40px;
+        font-weight: 700;
+        font-size: 1.6em;
+        align-items: center;
+        padding-left: 1em;
+    }
+    &__toggle {
+        position: absolute;
+        top: 0;
+        width: 18px;
+        height: 100vh;
+        @include themify($themes) {
+            background-color: themed('background_color');
+        }
+        display: table-cell;
+        vertical-align: middle;
+        cursor: pointer;
+
+        &--open {
+            width: 5px;
+        }
+        &-icon-wraper {
+            height: 11px;
+            position: relative;
+            top: 50%;
+            justify-content: center;
+            display: flex;
+        }
+        &-icon {
+            position: relative;
+            width: 3px;
+            height: 3px;
+            @include themify($themes) {
+                background-color: themed('btn_purchase_disabled_bg');
+            }
+
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                background-color: inherit;
+                border-radius: inherit;
+            }
+            &:before {
+                top: 4px;
+            }
+            &:after {
+                top: 8px;
+            }
+        }
+    }
+    &--open {
+        transform: translateX(-366px);
+        left: 100vw;
+    }
+}

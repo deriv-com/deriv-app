@@ -79,7 +79,7 @@ class PersonalDetailsForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.getSettings({ forced: true });
+                WS.authorized.storage.getSettings();
                 this.setState({ is_submit_success: true });
             }
         });
@@ -118,7 +118,6 @@ class PersonalDetailsForm extends React.Component {
                 errors[field] = localize('Please enter a country or choose one from the dropdown menu');
             }
         });
-
         return errors;
     };
 
@@ -370,7 +369,7 @@ class PersonalDetailsForm extends React.Component {
                                             this.props.is_virtual ?
                                                 true
                                                 :
-                                                ((errors.first_name || !values.first_name) ||
+                                                !!((errors.first_name || !values.first_name) ||
                                                 (errors.last_name || !values.last_name) ||
                                                 (errors.phone || !values.phone) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text))
@@ -391,7 +390,7 @@ class PersonalDetailsForm extends React.Component {
 
     componentDidMount() {
         this.props.fetchResidenceList();
-        WS.getSettings().then((data) => {
+        WS.authorized.storage.getSettings().then((data) => {
             if (data.error) {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;

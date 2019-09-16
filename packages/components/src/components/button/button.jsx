@@ -63,7 +63,7 @@ Button.propTypes = {
     has_effect       : PropTypes.bool,
     id               : PropTypes.string,
     is_disabled      : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    is_loading       : PropTypes.bool,
+    is_loading       : PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     is_submit_success: PropTypes.bool,
     onClick          : PropTypes.func,
     text             : PropTypes.string,

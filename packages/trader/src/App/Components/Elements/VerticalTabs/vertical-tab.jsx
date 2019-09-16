@@ -44,6 +44,7 @@ class VerticalTab extends React.PureComponent {
                     selected={this.state.selected}
                     is_routed={this.props.is_routed}
                     header_title={this.props.header_title}
+                    visible_items={this.props.visible_items}
                 />
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
@@ -83,6 +84,7 @@ VerticalTab.propTypes = {
         })
     ).isRequired,
     selected_index: PropTypes.number,
+    visible_items : PropTypes.array,
 };
 
 export default VerticalTab;

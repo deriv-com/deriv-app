@@ -28,7 +28,7 @@ class ChangePasswordForm extends React.PureComponent {
     onSubmit = (values, { setSubmitting, setStatus })  => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.changePassword(values).then((data) => {
+        WS.authorized.storage.changePassword(values).then((data) => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });

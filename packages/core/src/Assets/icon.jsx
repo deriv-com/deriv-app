@@ -9,7 +9,6 @@ class Icon extends React.PureComponent {
             // Common
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),
             IconArrow             : React.lazy(() => import('./Common/icon-arrow.jsx')),
-            IconAdd               : React.lazy(() => import('./Signup/ic-add.svg')),
             IconBack              : React.lazy(() => import('./Common/icon-back.jsx')),
             IconCalendarToday     : React.lazy(() => import('./Common/icon-calendar-today.jsx')),
             IconCalendar          : React.lazy(() => import('./Common/icon-calendar.jsx')),

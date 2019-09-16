@@ -190,7 +190,17 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
-    const transferBetweenAccounts = () => deriv_api.send({ transfer_between_accounts: 1, accounts: 'all' });
+    const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
+        deriv_api.send({
+            transfer_between_accounts: 1,
+            accounts                 : 'all',
+            ...(account_from && {
+                account_from,
+                account_to,
+                currency,
+                amount,
+            }),
+        });
 
     const forgetStream = (id) =>
         deriv_api.forget(id);

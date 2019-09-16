@@ -60,6 +60,12 @@ class AccountTransferForm extends React.Component {
         })
     );
 
+    onTransferPassthrough = (values) => {
+        this.props.requestTransferBetweenAccounts({
+            amount: values.amount,
+        });
+    };
+
     render() {
         const accounts_from    = [];
         const mt_accounts_from = [];
@@ -103,7 +109,7 @@ class AccountTransferForm extends React.Component {
                             amount: '',
                         }}
                         validate={this.validateTransferPassthrough}
-                        // onSubmit={this.onWithdrawalPassthrough}
+                        onSubmit={this.onTransferPassthrough}
                     >
                         {
                             ({ errors, isSubmitting, isValid, touched }) => (
@@ -141,7 +147,11 @@ class AccountTransferForm extends React.Component {
                                                 label={localize('Amount')}
                                                 error={ touched.amount && errors.amount }
                                                 required
-                                                leading_icon={this.props.selected_from.currency ? <span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} /> : undefined}
+                                                leading_icon={
+                                                    this.props.selected_from.currency ?
+                                                        <span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
+                                                        : undefined
+                                                }
                                                 autoComplete='off'
                                                 maxLength='30'
                                                 hint={
@@ -218,28 +228,30 @@ class AccountTransferForm extends React.Component {
 }
 
 AccountTransferForm.propTypes = {
-    accounts_list       : PropTypes.array,
-    balance             : PropTypes.string,
-    error               : PropTypes.object,
-    minimum_fee         : PropTypes.string,
-    onChangeTransferFrom: PropTypes.func,
-    onChangeTransferTo  : PropTypes.func,
-    selected_from       : PropTypes.object,
-    selected_to         : PropTypes.object,
-    transfer_fee        : PropTypes.number,
-    transfer_limit      : PropTypes.object,
+    accounts_list                 : PropTypes.array,
+    balance                       : PropTypes.string,
+    error                         : PropTypes.object,
+    minimum_fee                   : PropTypes.string,
+    onChangeTransferFrom          : PropTypes.func,
+    onChangeTransferTo            : PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
+    selected_from                 : PropTypes.object,
+    selected_to                   : PropTypes.object,
+    transfer_fee                  : PropTypes.number,
+    transfer_limit                : PropTypes.object,
 };
 
 export default connect(
     ({ client, modules }) => ({
-        balance             : client.balance,
-        accounts_list       : modules.cashier.config.account_transfer.accounts_list,
-        minimum_fee         : modules.cashier.config.account_transfer.minimum_fee,
-        onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
-        onChangeTransferTo  : modules.cashier.onChangeTransferTo,
-        selected_from       : modules.cashier.config.account_transfer.selected_from,
-        selected_to         : modules.cashier.config.account_transfer.selected_to,
-        transfer_fee        : modules.cashier.config.account_transfer.transfer_fee,
-        transfer_limit      : modules.cashier.config.account_transfer.transfer_limit,
+        balance                       : client.balance,
+        accounts_list                 : modules.cashier.config.account_transfer.accounts_list,
+        minimum_fee                   : modules.cashier.config.account_transfer.minimum_fee,
+        onChangeTransferFrom          : modules.cashier.onChangeTransferFrom,
+        onChangeTransferTo            : modules.cashier.onChangeTransferTo,
+        requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
+        selected_from                 : modules.cashier.config.account_transfer.selected_from,
+        selected_to                   : modules.cashier.config.account_transfer.selected_to,
+        transfer_fee                  : modules.cashier.config.account_transfer.transfer_fee,
+        transfer_limit                : modules.cashier.config.account_transfer.transfer_limit,
     })
 )(AccountTransferForm);

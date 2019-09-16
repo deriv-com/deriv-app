@@ -154,6 +154,11 @@ export default class CashierStore extends BaseStore {
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
+        // if tab changed while waiting for response, ignore it
+        if (this.containers.indexOf(this.active_container) === -1) {
+            return;
+        }
+
         if (response_cashier.error) {
             this.setLoading(false);
             this.setErrorMessage(response_cashier.error);
@@ -724,6 +729,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTransferSuccessful(is_transfer_successful) {
+        this.config.account_transfer.is_transfer_successful = is_transfer_successful;
+    }
+
+    @action.bound
     onChangeTransferFrom({ target }) {
         const accounts      = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -745,6 +755,20 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
         this.setTransferFee();
     }
+
+    requestTransferBetweenAccounts = async ({ amount }) => {
+        const transfer_between_accounts = await WS.transferBetweenAccounts(
+            this.config.account_transfer.selected_from.value,
+            this.config.account_transfer.selected_to.value,
+            this.config.account_transfer.selected_from.currency,
+            amount,
+        );
+        if (transfer_between_accounts.error) {
+            this.setErrorMessage(transfer_between_accounts.error);
+        } else {
+            this.setIsTransferSuccessful(true);
+        }
+    };
 
     onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {

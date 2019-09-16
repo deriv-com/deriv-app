@@ -260,7 +260,7 @@ const ContractType = (() => {
         }
 
         if (!(date in trading_times)) {
-            const trading_times_response = await WS.getTradingTimes(date);
+            const trading_times_response = await WS.tradingTimes(date);
 
             if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {

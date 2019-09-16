@@ -74,6 +74,7 @@ class ChangePasswordForm extends React.PureComponent {
                         values,
                         errors,
                         touched,
+                        status,
                         handleChange,
                         handleBlur,
                         handleSubmit,

@@ -146,10 +146,12 @@ class PersonalDetails extends Component {
             first_name: [
                 v => !!v,
                 v => v.length > 2 && v.length < 50,
+                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
                 v => v.length > 2 && v.length < 50,
+                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
         };
 
@@ -157,12 +159,18 @@ class PersonalDetails extends Component {
             first_name: localize('First name'),
             last_name : localize('Last name'),
         };
-        const errors    = {};
+        const messages = [
+            '%s is required',
+            '%s is too short',
+            '%s is not in a proper format.',
+        ];
+        const errors = {};
 
         Object.entries(validations)
             .forEach(([key, rules]) => {
-                if (rules.some(v => !v(values[key]))) {
-                    errors[key] = localize(`${mappedKey[key]} is required`);
+                const error_index = rules.findIndex(v => !v(values[key]));
+                if (error_index !== -1) {
+                    errors[key] = localize(messages[error_index].replace('%s', mappedKey[key]));
                 }
             });
 

@@ -1,5 +1,7 @@
 .dc-tab__list {
-    border-bottom: 1px solid #ccc;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('border_color');
+    }
     padding-left: 0;
 
     &__item {
@@ -9,8 +11,9 @@
         padding: 0.5rem 0.75rem;
     }
     &__active {
-        background-color: white;
-        border: solid #ccc;
-        border-width: 1px 1px 0;
+        @include themify($themes) {
+            background-color: themed('background_color');
+            border: 1px 1px 0 solid themed('border_color');
+        }
     }
 }

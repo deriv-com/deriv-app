@@ -83,7 +83,8 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : 'babel-loader',
+                loader : ['deriv-shared/utils/deriv-components-loader.js',
+                'babel-loader'],
             },
         ],
     },

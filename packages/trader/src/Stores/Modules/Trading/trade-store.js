@@ -465,6 +465,12 @@ export default class TradeStore extends BaseStore {
         obj_old_values = {},
         should_forget_first = true,
     ) {
+        if (/\bduration\b/.test(Object.keys(obj_new_values))) {
+            // TODO: fix this in input-field.jsx
+            if (typeof obj_new_values.duration === 'string') {
+                obj_new_values.duration = +obj_new_values.duration;
+            }
+        }
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
         if (should_forget_first) WS.forgetAll('proposal');

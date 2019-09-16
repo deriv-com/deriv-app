@@ -38,7 +38,7 @@ const validLength   = (value, options) => (
     (options.max ? value.length <= options.max : true)
 );
 
-const validNumber = (value, opts) => {
+export const validNumber = (value, opts) => {
     const options = cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {

@@ -1,9 +1,12 @@
-.radio-group {
+.dc-radio-group {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-top: 16px;
 
+    &__input {
+        display: none;
+    }
     &__item {
         display: flex;
         cursor: pointer;
@@ -19,6 +22,7 @@
         height: 16px;
         transition: all 0.3s ease-in-out;
         margin-right: 8px;
+        align-self: center;
 
         &--selected {
             border-width: 4px;

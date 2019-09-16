@@ -1,9 +1,10 @@
-import { Dialog }     from 'deriv-components';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { localize }   from 'App/i18n';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { connect }    from 'Stores/connect';
+import { Dialog }       from 'deriv-components';
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { localize }     from 'App/i18n';
+import Localize         from 'App/Components/Elements/localize.jsx';
+import { connect }      from 'Stores/connect';
+import { website_name } from 'App/Constants/app-config';
 
 const MarketUnavailableModal = ({
     disableApp,
@@ -11,11 +12,11 @@ const MarketUnavailableModal = ({
     is_loading,
     is_visible,
     onCancel,
-    onConfirm
+    onConfirm,
 }) => (
     <Dialog
         cancel_button_text={localize('Go to SmartTrader')}
-        confirm_button_text={localize('No, stay on Deriv')}
+        confirm_button_text={localize('No, stay on {{website_name}}', { website_name })}
         is_visible={is_visible}
         onCancel={onCancel}
         onConfirm={onConfirm}
@@ -24,7 +25,7 @@ const MarketUnavailableModal = ({
         is_loading={is_loading}
         title={localize('Market is unavailable')}
     >
-        <Localize i18n_default_text='Sorry, but this market is not supported yet on Deriv. Do you want to trade this market on SmartTrader?' />
+        <Localize i18n_default_text='Sorry, but this market is not supported yet on {{website_name}}. Do you want to trade this market on SmartTrader?' values={{ website_name }} />
     </Dialog>
 );
 

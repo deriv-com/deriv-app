@@ -1,7 +1,7 @@
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import config                from '../../../../constants';
-import ApiHelpers            from '../../../../services/api/helpers';
+import ApiHelpers            from '../../../../services/api/api-helpers';
 import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition = {

@@ -204,6 +204,7 @@ class FinancialAssessment extends React.Component {
                                     <fieldset className='account-management-form-fieldset'>
                                         <Dropdown
                                             placeholder={localize('Net annual income')}
+                                            is_alignment_top
                                             is_align_text_left
                                             name='net_income'
                                             list={net_income_list}

@@ -37,11 +37,11 @@ class PaymentAgentList extends React.Component {
                             <p><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
                             <div className='payment-agent__instructions'>
                                 <div className='payment-agent__instructions-section'>
-                                    <h2 className='payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
+                                    <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
                                     <p><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
                                 </div>
                                 <div className='payment-agent__instructions-section'>
-                                    <h2 className='payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
+                                    <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
                                     <Button
                                         className='btn--primary btn--primary--orange payment-agent__button'
                                         has_effect
@@ -50,7 +50,7 @@ class PaymentAgentList extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <h2 className='payment-agent__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
+                            <h2 className='cashier__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
                             {this.props.is_loading ?
                                 <Loading className='payment-agent__loader' />
                                 :

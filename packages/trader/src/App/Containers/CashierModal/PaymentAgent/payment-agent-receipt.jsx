@@ -26,7 +26,7 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <React.Fragment>
                 <div className='payment-agent__receipt'>
-                    <h2 className='payment-agent__header'>
+                    <h2 className='cashier__header'>
                         <Localize
                             i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
                             values={{ payment_agent }}
@@ -54,7 +54,7 @@ class PaymentAgentReceipt extends React.Component {
                 <div className='payment-agent__separator' />
                 {this.props.receipt.payment_agent_name ?
                     <React.Fragment>
-                        <h2 className='payment-agent__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
+                        <h2 className='cashier__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
                         <p className='payment-agent__explanation'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
                         <p><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} options={{ interpolation: { escapeValue: false } }} /></p>
                         <PaymentAgentDetails

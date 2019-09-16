@@ -26,12 +26,12 @@ const Input = (props, ref) => (
                     {props.label}
                 </label>
             }
-            { props.error &&
-                <FieldError className={props.classNameError} message={props.error} />
-            }
         </div>
+        { props.error &&
+            <FieldError className={props.classNameError} message={props.error} />
+        }
         {
-            props.hint &&
+            !props.error && props.hint &&
             <p className='dc-input__hint'>
                 {props.hint}
             </p>

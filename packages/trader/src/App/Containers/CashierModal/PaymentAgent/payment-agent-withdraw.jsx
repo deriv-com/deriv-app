@@ -80,7 +80,7 @@ class PaymentAgentWithdraw extends React.Component {
                                     <PaymentAgentReceipt />
                                     :
                                     <React.Fragment>
-                                        <h2 className='payment-agent__header'>
+                                        <h2 className='cashier__header'>
                                             <Localize i18n_default_text='Payment agent withdrawal' />
                                         </h2>
                                         <Formik

@@ -22,6 +22,12 @@
     &__loader {
         font-size: 1rem;
     }
+    &__header {
+        font-size: 1.6rem;
+        line-height: 1.5;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
     &__form {
         &-submit {
             display: flex;
@@ -195,12 +201,6 @@
 
 /** @define payment-agent */
 .payment-agent {
-    &__header {
-        font-size: 1.6rem;
-        line-height: 1.5;
-        font-weight: bold;
-        margin-bottom: 16px;
-    }
     &__instructions {
         margin-top: 24px;
         display: flex;
@@ -339,7 +339,7 @@
         @include themify($themes) {
             color: themed('text_secondary_color');
         }
-        padding-top: 3.2rem;
+        margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
     }

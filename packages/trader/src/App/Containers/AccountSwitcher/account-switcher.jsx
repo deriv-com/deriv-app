@@ -2,6 +2,7 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { isEmptyObject } from '_common/utility';
+import { urlFor }        from '_common/url';
 import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
@@ -129,7 +130,13 @@ class AccountSwitcher extends React.Component {
                 }
                 { !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to) &&
                 <UpgradeButton
-                    onClick={this.props.openRealAccountSignup}
+                    onClick={() => {
+                        if (this.props.can_upgrade_to === 'svg') {
+                            this.props.openRealAccountSignup();
+                        } else {
+                            window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
+                        }
+                    }}
                     outlined
                 >
                     <Icon icon='IconAdd' />

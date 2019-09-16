@@ -118,6 +118,7 @@ class PersonalDetailsForm extends React.Component {
                 errors[field] = localize('Please enter a country or choose one from the dropdown menu');
             }
         });
+
         return errors;
     };
 
@@ -205,9 +206,10 @@ class PersonalDetailsForm extends React.Component {
                                                 data-lpignore='true'
                                                 type='text'
                                                 name='first_name'
+                                                label={localize('First name')}
                                                 value={values.first_name}
                                                 onChange={handleChange}
-                                                label={localize('First name')}
+                                                onBlur={handleBlur}
                                                 required
                                                 error={touched.first_name && errors.first_name}
                                             />

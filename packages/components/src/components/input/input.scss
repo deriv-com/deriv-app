@@ -121,7 +121,7 @@
             outline: none;
 
             & ~ label {
-                transform: translate(-0.8rem, -1.9rem)  scale(0.75);
+                transform: translate(-1.6rem, -1.7rem) scale(0.75);
                 padding: 0 4px;
                 @include themify($themes) {
                     background-color: themed('container_secondary_color');
@@ -174,11 +174,11 @@
     &__label {
         color: var(--color-grey);
         font-size: var(--text-size-xs);
-        font-size: var(--text-size-s);
         position: absolute;
         pointer-events: none;
         left: 1rem;
         top: 1rem;
+        transition: 0.25s ease all;
     }
     &:not(&--no-placeholder) {
         &__label {

@@ -6,6 +6,7 @@ export default class FlyoutStore {
     block_listeners = [];
     block_workspaces = [];
     flyout_min_width = 400;
+    startScale = 0.7;
 
     @observable is_help_content = false;
     @observable block_nodes = [];
@@ -80,6 +81,7 @@ export default class FlyoutStore {
             css   : false,
             media: `${__webpack_public_path__}media/`, // eslint-disable-line
             move  : { scrollbars: false, drag: true, wheel: false },
+            zoom  : { startScale: this.startScale },
             sounds: false,
         });
 
@@ -92,11 +94,12 @@ export default class FlyoutStore {
 
         // Some blocks have hats, consider their height.
         const extra_spacing = (block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
-        const block_workspace_height = Number.parseInt(block_node.getAttribute('height')) + extra_spacing + 10;
+        const block_workspace_height = Number.parseInt(block_node.getAttribute('height')) * this.startScale + extra_spacing + 10;
 
         // Update block workspace widths to accommodate block widths.
         el_block_workspace.style.height = `${block_workspace_height}px`;
-        el_block_workspace.style.width = `${this.flyout_width - 55}px`;
+        // el_block_workspace.style.width = `${this.flyout_width - 55}px`;
+        el_block_workspace.style.width = `${this.flyout_width * this.startScale}px`;
 
         // Move block away from side so it's displayed completely.
         const dx = 1;

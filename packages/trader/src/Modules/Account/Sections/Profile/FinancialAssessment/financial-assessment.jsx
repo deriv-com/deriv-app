@@ -58,6 +58,7 @@ class FinancialAssessment extends React.Component {
     }
 
     onSubmit = (values, { setSubmitting, setStatus })  => {
+        setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
         WS.setFinancialAssessment(values).then((data) => {
             this.setState({ is_btn_loading: false });

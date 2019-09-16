@@ -65,6 +65,7 @@ class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, show_form: true }
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
+        setStatus({ msg: '' });
         // TODO: Refactor requests for virtual and real accounts
         const email_consent_value = values.email_consent ? 1 : 0;
         const request = this.props.is_virtual ?

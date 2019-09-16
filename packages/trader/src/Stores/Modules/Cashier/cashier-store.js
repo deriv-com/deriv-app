@@ -59,6 +59,7 @@ class ConfigAccountTransfer {
     @observable error                  = new ConfigError();
     @observable is_transfer_successful = false;
     @observable transfer_fee           = null;
+    @observable transfer_limit         = null;
     @observable minimum_fee            = null;
     @observable accounts_list          = [];
     @observable selected_from          = {};
@@ -282,6 +283,10 @@ export default class CashierStore extends BaseStore {
             case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
                 error_message = localize('Please set your 30-day turnover limit to access the cashier.');
                 error_link    = 'user/security/self_exclusionws';
+                break;
+            case 'WrongResponse':
+                error_message = error.message;
+                error_button_text = localize('Try again');
                 break;
             default:
                 error_message = error.message;
@@ -590,9 +595,6 @@ export default class CashierStore extends BaseStore {
     resetPaymentAgent = (should_clear_list) => {
         this.setIsWithdraw(false);
         this.clearVerification();
-        if (should_clear_list) {
-            this.config.payment_agent = new ConfigPaymentAgent();
-        }
     };
 
     // possible transfers:
@@ -613,21 +615,32 @@ export default class CashierStore extends BaseStore {
             }
             this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
         }
+        this.setTransferFee();
         this.setMinimumFee();
+        this.setTransferLimit();
         this.setLoading(false);
     }
 
     @action.bound
     setTransferFee() {
-        const transfer_fee = getPropertyValue(getCurrencies(), [this.root_store.client.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
+        const transfer_fee = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
         this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
     }
 
     @action.bound
     setMinimumFee() {
-        const decimals = getDecimalPlaces(this.root_store.client.currency);
+        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
+    }
+
+    @action.bound
+    setTransferLimit() {
+        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits', 'max']);
+        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
+        this.config.account_transfer.transfer_limit = transfer_limit ?
+            transfer_limit.toFixed(decimal_places) : null;
     }
 
     getMT5AccountType = (group) => {
@@ -710,6 +723,8 @@ export default class CashierStore extends BaseStore {
         }
 
         this.config.account_transfer.selected_from = selected_from;
+        this.setMinimumFee();
+        this.setTransferLimit();
     }
 
     @action.bound
@@ -717,11 +732,6 @@ export default class CashierStore extends BaseStore {
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
         this.setTransferFee();
-    }
-
-    @action.bound
-    resetAccountTransfer() {
-        this.config.account_transfer = new ConfigAccountTransfer();
     }
 
     onAccountSwitch() {
@@ -733,8 +743,8 @@ export default class CashierStore extends BaseStore {
             this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
-        this.resetPaymentAgent(true);
-        this.resetAccountTransfer();
+        this.config.payment_agent = new ConfigPaymentAgent();
+        this.config.account_transfer = new ConfigAccountTransfer();
     }
 
     accountSwitcherListener() {

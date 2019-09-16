@@ -81,22 +81,6 @@ const CryptoConfig = (() => {
 
 const getMinWithdrawal = currency => (isCryptocurrency(currency) ? (getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002) : 1);
 
-/**
- * Returns the transfer limits for the account.
- * @param currency
- * @param {string} max|undefined
- * @returns numeric|undefined
- */
-const getTransferLimits = (currency, which) => {
-    const transfer_limits = getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) || getMinWithdrawal(currency);
-    const decimals        = getDecimalPlaces(currency);
-    if (which === 'max') {
-        return transfer_limits.max ? transfer_limits.max.toFixed(decimals) : undefined;
-    }
-
-    return transfer_limits.min ? transfer_limits.min.toFixed(decimals) : undefined;
-};
-
 // @param {String} limit = max|min
 const getPaWithdrawalLimit = (currency, limit) => {
     if (isCryptocurrency(currency)) {
@@ -118,7 +102,6 @@ module.exports = {
     isCryptocurrency,
     getCurrencyName,
     getMinWithdrawal,
-    getTransferLimits,
     getTextFormat,
     getMinPayout,
     getPaWithdrawalLimit,

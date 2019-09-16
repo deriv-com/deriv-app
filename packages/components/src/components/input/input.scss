@@ -90,14 +90,16 @@
 .dc-input {
     position: relative;
     width: 100%;
-    border-radius: 4px;
-    border: 1px solid var(--color-grey-2);
     display: flex;
     align-items: center;
     margin-bottom: 1.8rem;
 
     &:focus-within {
         border-color: var(--color-green);
+    }
+    &__wrapper {
+        border-radius: 4px;
+        border: 1px solid var(--color-grey-2);
     }
     &__field {
         background: none;
@@ -184,5 +186,12 @@
                 background-color: themed('container_secondary_color');
             }
         }
+    }
+    &__hint {
+        @include themify($themes) {
+            color: themed('text_secondary_color');
+        }
+        font-size: 1.2rem;
+        margin-left: 1.2rem;
     }
 }

@@ -130,9 +130,22 @@ class AccountTransferForm extends React.Component {
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
                                                                     required
-                                                                    leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                                                    leading_icon={<span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />}
                                                                     autoComplete='off'
                                                                     maxLength='30'
+                                                                    hint={
+                                                                        this.props.transfer_limit &&
+                                                                        <Localize
+                                                                            i18n_default_text='Transfer limit: <0 />'
+                                                                            components={[
+                                                                                <Money
+                                                                                    key={0}
+                                                                                    amount={this.props.transfer_limit}
+                                                                                    currency={this.props.selected_from.currency} // eslint-disable-line max-len
+                                                                                />,
+                                                                            ]}
+                                                                        />
+                                                                    }
                                                                 />
                                                             )}
                                                         </Field>
@@ -149,7 +162,7 @@ class AccountTransferForm extends React.Component {
                                                                             i18n_default_text='Transfers are subject to a {{transfer_fee}}% transfer fee or {{currency}} {{minimum_fee}}, whichever is higher.'
                                                                             values={{
                                                                                 transfer_fee: this.props.transfer_fee,
-                                                                                currency    : this.props.currency,
+                                                                                currency    : this.props.selected_from.currency, // eslint-disable-line max-len
                                                                                 minimum_fee : this.props.minimum_fee,
                                                                             }}
                                                                         />
@@ -200,7 +213,6 @@ class AccountTransferForm extends React.Component {
 
 AccountTransferForm.propTypes = {
     accounts_list         : PropTypes.array,
-    currency              : PropTypes.string,
     error                 : PropTypes.object,
     is_loading            : PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
@@ -211,11 +223,11 @@ AccountTransferForm.propTypes = {
     selected_from         : PropTypes.object,
     selected_to           : PropTypes.object,
     transfer_fee          : PropTypes.number,
+    transfer_limit        : PropTypes.string,
 };
 
 export default connect(
     ({ client, modules }) => ({
-        currency              : client.currency,
         accounts_list         : modules.cashier.config.account_transfer.accounts_list,
         error                 : modules.cashier.config.account_transfer.error,
         is_loading            : modules.cashier.is_loading,
@@ -227,5 +239,6 @@ export default connect(
         selected_from         : modules.cashier.config.account_transfer.selected_from,
         selected_to           : modules.cashier.config.account_transfer.selected_to,
         transfer_fee          : modules.cashier.config.account_transfer.transfer_fee,
+        transfer_limit        : modules.cashier.config.account_transfer.transfer_limit,
     })
 )(AccountTransferForm);

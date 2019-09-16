@@ -71,23 +71,31 @@ export default class ContractTradeStore extends BaseStore {
     applicable_contracts = () => {
         const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
         if (!trade_type || !underlying) { return []; }
-        const { trade_types } = getContractTypesConfig()[trade_type];
+        let { trade_types } = getContractTypesConfig()[trade_type];
+        const is_call_put = (trade_type === 'rise_fall') || (trade_type === 'rise_fall_equal') || (trade_type === 'high_low');
+        if (is_call_put) {
+            // treat CALLE/PUTE and CALL/PUT the same
+            trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+        }
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
             .filter(c => {
                 const info = c.contract_info;
-                let ok = trade_types.indexOf(info.contract_type) !== -1;
+
+                const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
-                if (ok
+                if (trade_type_is_supported
                     && info.barrier
                     && info.entry_tick
-                    && (info.contract_type === 'CALL' || info.contract_type === 'PUT')
+                    && is_call_put
                 ) {
-                    const type = `${+info.entry_tick}` === `${+info.barrier}` ? 'rise_fall' : 'high_low';
-                    ok = trade_type === type;
+                    if (`${+info.entry_tick}` === `${+info.barrier}`) {
+                        return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
+                    }
+                    return trade_type === 'high_low';
                 }
-                return ok;
+                return trade_type_is_supported;
             });
     }
 

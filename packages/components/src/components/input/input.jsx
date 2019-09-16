@@ -35,7 +35,7 @@ const Input = ({
             </label>
         }
         { error &&
-            <FieldError className={classNameError} message={props.error} />
+            <FieldError className={classNameError} message={error} />
         }
     </div>
 );

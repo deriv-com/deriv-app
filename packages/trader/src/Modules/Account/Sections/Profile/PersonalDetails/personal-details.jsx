@@ -118,7 +118,6 @@ class PersonalDetailsForm extends React.Component {
                 errors[field] = localize('Please enter a country or choose one from the dropdown menu');
             }
         });
-
         return errors;
     };
 
@@ -370,7 +369,7 @@ class PersonalDetailsForm extends React.Component {
                                             this.props.is_virtual ?
                                                 true
                                                 :
-                                                ((errors.first_name || !values.first_name) ||
+                                                !!((errors.first_name || !values.first_name) ||
                                                 (errors.last_name || !values.last_name) ||
                                                 (errors.phone || !values.phone) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text))

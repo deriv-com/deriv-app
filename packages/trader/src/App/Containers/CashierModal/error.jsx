@@ -7,10 +7,12 @@ import { connect }  from 'Stores/connect';
 
 class Error extends React.Component {
     onClickButton = () => {
-        if (this.props.link) {
-            window.open(urlFor(this.props.link, undefined, undefined, true));
+        if (this.props.error.link) {
+            window.open(urlFor(this.props.error.link, undefined, undefined, true));
+        } else if (typeof this.props.error.onClickButton === 'function') {
+            this.props.error.onClickButton();
         }
-        this.props.setErrorMessage('', this.props.container);
+        this.props.setErrorMessage('');
     };
 
     render() {
@@ -38,7 +40,6 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-    container      : PropTypes.string,
     error          : PropTypes.object,
     setErrorMessage: PropTypes.func,
 };

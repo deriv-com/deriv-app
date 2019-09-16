@@ -5,7 +5,7 @@ import {
     VerticalTabContentContainer,
     VerticalTabLayout }          from '../VerticalTabs';
 
-const MenuAccordionTitle = ({ title }) => (<h1 className='menu-accordion-title'>{title}</h1>);
+const MenuAccordionTitle = ({ title }) => (<h1 className='menu-accordion__title'>{title}</h1>);
 
 class MenuAccordion extends React.PureComponent {
     render() {

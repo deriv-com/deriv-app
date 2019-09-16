@@ -23,8 +23,8 @@ class MenuAccordionHeaders extends React.PureComponent {
         return (
             <VerticalTabWrapper>
                 {header_title &&
-                    <div className='menu-accordion-heading'>
-                        <h1 className='menu-accordion-title'>{header_title}</h1>
+                    <div className='menu-accordion__heading'>
+                        <h1 className='menu-accordion__title'>{header_title}</h1>
                     </div>
                 }
                 {items.map((item, idx) => {

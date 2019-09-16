@@ -4,6 +4,7 @@ import React               from 'react';
 import Popover             from 'Components/popover';
 
 const Items = ({
+    className,
     index,
     handleSelect,
     has_symbol,
@@ -65,6 +66,7 @@ const Items = ({
 });
 
 Items.propTypes = {
+    className   : PropTypes.string,
     handleSelect: PropTypes.func,
     has_symbol  : PropTypes.bool,
     name        : PropTypes.string,

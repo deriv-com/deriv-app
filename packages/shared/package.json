@@ -16,17 +16,18 @@
     "build": "rimraf utils && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "rimraf utils && webpack --mode=production --optimize-minimize",
     "test": "jest --all",
-    "deploy": "echo \"Error: no deploy specified\"",
-    "deploy:clean": "echo \"Error: no deploy:clean specified\"",
-    "deploy:folder": "echo \"Error: no deploy:folder specified\"",
-    "deploy:staging": "echo \"Error: no deploy:staging specified\"",
-    "deploy:production": "echo \"Error: no deploy:production specified\""
+    "deploy": "echo \"No deploy specified\"",
+    "deploy:clean": "echo \"No deploy:clean specified\"",
+    "deploy:folder": "echo \"No deploy:folder specified\"",
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\""
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
@@ -59,9 +60,5 @@
     "stylelint-webpack-plugin": "^0.10.5",
     "webpack": "^4.37.0",
     "webpack-cli": "^3.3.6"
-  },
-  "peerDependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "moment": "^2.24.0"
   }
 }

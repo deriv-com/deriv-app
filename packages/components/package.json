@@ -20,11 +20,11 @@
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "test": "jest --all",
-    "deploy": "echo \"Error: no deploy specified\"",
-    "deploy:clean": "echo \"Error: no deploy:clean specified\"",
-    "deploy:folder": "echo \"Error: no deploy:folder specified\"",
-    "deploy:staging": "echo \"Error: no deploy:staging specified\"",
-    "deploy:production": "echo \"Error: no deploy:production specified\"",
+    "deploy": "echo \"No deploy specified\"",
+    "deploy:clean": "echo \"No deploy:clean specified\"",
+    "deploy:folder": "echo \"No deploy:folder specified\"",
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\"",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook --output-dir .out",
     "storybook:deploy": "exit 0; # TODO rm -fr .out && npm run build-storybook && cp scripts/CNAME .out/ && storybook-to-ghpages -- --existing-output-dir .out"
@@ -88,24 +88,17 @@
     "webpack-cli": "^3.3.4"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@wapps/storybook-addon-state": "0.0.4",
     "classnames": "^2.2.6",
     "deriv-shared": "^1.0.0",
-    "extract-text-webpack-plugin": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-pose": "^4.0.8",
     "react-transition-group": "^4.2.2",
     "tt-react-custom-scrollbars": "^4.2.1-tt2",
-    "zxcvbn": "^4.4.2"
-  },
-  "peerDependencies": {
-    "@babel/polyfill": "^7.0.0",
     "formik": "^1.5.8",
-    "mobx": "^5.0.3",
-    "mobx-react": "^5.1.2",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "zxcvbn": "^4.4.2"
   }
 }

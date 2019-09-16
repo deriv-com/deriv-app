@@ -27,17 +27,25 @@ const getResidence = (residence_list, value, type) => {
 };
 
 const makeSettingsRequest = ({ ...settings }, residence_list) => {
-    let { email_consent, tax_residence_text, citizen_text } = settings;
+    let { email_consent, tax_residence_text, citizen_text, place_of_birth_text } = settings;
 
     email_consent = +email_consent; // checkbox is boolean but api expects number (1 or 0)
 
-    let tax_residence = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
-    let citizen       = getResidence(residence_list, citizen_text, 'value');
+    let tax_residence  = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
+    let citizen        = getResidence(residence_list, citizen_text, 'value');
+    let place_of_birth = getResidence(residence_list, place_of_birth_text, 'value');
 
-    const settings_to_be_removed_for_api = ['email', 'tax_residence_text', 'citizen_text', 'email_consent'];
+    const settings_to_be_removed_for_api = [
+        'email',
+        'email_consent',
+        'citizen_text',
+        'place_of_birth_text',
+        'tax_residence_text',
+        'residence'
+    ];
     settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
 
-    return { ...settings, citizen, tax_residence, email_consent };
+    return { ...settings, citizen, tax_residence, email_consent, place_of_birth };
 };
 
 // TODO: generalize validation and make it sharable
@@ -75,7 +83,7 @@ class PersonalDetailsForm extends React.Component {
     validateFields = values => {
         const errors = {};
         if (this.props.is_virtual) return errors;
-        const required_fields = ['first_name', 'last_name', 'phone' ];
+        const required_fields = ['first_name', 'last_name', 'phone', 'account_opening_reason', 'place_of_birth_text'];
         const { residence_list } = this.props;
 
         required_fields.forEach(required => {
@@ -120,6 +128,7 @@ class PersonalDetailsForm extends React.Component {
             last_name,
             citizen,
             email,
+            place_of_birth,
             phone,
             email_consent,
             residence,
@@ -136,9 +145,11 @@ class PersonalDetailsForm extends React.Component {
 
         let citizen_text = '';
         let tax_residence_text = '';
+        let place_of_birth_text = '';
         if (this.props.residence_list.length) {
             citizen_text = citizen ? getResidence(residence_list, citizen, 'text') : '';
             tax_residence_text = tax_residence ? getResidence(residence_list, tax_residence, 'text') : '';
+            place_of_birth_text = place_of_birth ? getResidence(residence_list, place_of_birth, 'text') : '';
         }
 
         if (!tax_residence_text) tax_residence_text = '';
@@ -152,6 +163,7 @@ class PersonalDetailsForm extends React.Component {
                     last_name,
                     citizen_text,
                     tax_residence_text,
+                    place_of_birth_text,
                     phone,
                     email,
                     email_consent,
@@ -204,6 +216,24 @@ class PersonalDetailsForm extends React.Component {
                                             error={(errors.last_name && touched.last_name) ? errors.last_name : undefined}
                                         />
                                     </InputGroup>
+                                    <fieldset className='account-management-form-fieldset'>
+                                        <Field name='place_of_birth_text'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    { ...field }
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    label={localize('Place of birth')}
+                                                    error={touched.place_of_birth_text && errors.place_of_birth_text}
+                                                    required
+                                                    list_items={this.props.residence_list}
+                                                    onItemSelection={
+                                                        (item) => setFieldValue('place_of_birth_text', item.text, true)
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    </fieldset>
                                     <fieldset className='account-management-form-fieldset'>
                                         <Field name='citizen_text'>
                                             {({ field }) => (
@@ -326,7 +356,15 @@ class PersonalDetailsForm extends React.Component {
                                 <Button
                                     className='btn--primary'
                                     type='submit'
-                                    disabled={isSubmitting}
+                                    is_disabled={isSubmitting || (
+                                        this.props.is_virtual ?
+                                            true
+                                            :
+                                            ((errors.first_name || !values.first_name) ||
+                                            (errors.last_name || !values.last_name) ||
+                                            (errors.phone || !values.phone) ||
+                                            (errors.place_of_birth_text || !values.place_of_birth_text))
+                                    )}
                                     has_effect
                                     text={localize('Submit')}
                                 />

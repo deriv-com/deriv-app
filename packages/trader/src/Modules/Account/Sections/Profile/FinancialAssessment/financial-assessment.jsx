@@ -20,22 +20,13 @@ import {
     net_income_list,
     estimated_worth_list,
     account_turnover_list }  from '../../../Constants/constants-financial-information';
+import ButtonLoading         from '../../../Components/button-loading.jsx';
 import {
     FormBody,
     FormSubHeader,
     FormFooter }             from '../../../Components/layout-components.jsx';
 import { LeaveConfirm }      from '../../../Components/leave-confirm.jsx';
 import Loading               from '../../../../../templates/app/components/loading.jsx';
-
-const validateFields = values => {
-    const errors = {};
-    Object.keys(values).forEach(field => {
-        if (values[field] !== undefined && !values[field]) {
-            errors[field] = localize('This field is required');
-        }
-    });
-    return errors;
-};
 
 class FinancialAssessment extends React.Component {
     state = {
@@ -67,14 +58,29 @@ class FinancialAssessment extends React.Component {
     }
 
     onSubmit = (values, { setSubmitting, setStatus })  => {
+        this.setState({ is_btn_loading: true });
         WS.setFinancialAssessment(values).then((data) => {
+            this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
+            } else {
+                this.setState({ is_submit_success: true });
             }
             setSubmitting(false);
         });
     }
 
+    validateFields = values => {
+        this.setState({ is_submit_success: false });
+        const errors = {};
+        Object.keys(values).forEach(field => {
+            if (values[field] !== undefined && !values[field]) {
+                errors[field] = localize('This field is required');
+            }
+        });
+        return errors;
+    };
+    
     showForm = show_form => this.setState({ show_form });
 
     render() {
@@ -90,7 +96,10 @@ class FinancialAssessment extends React.Component {
             estimated_worth,
             account_turnover,
             show_form,
-            is_loading } = this.state;
+            is_loading,
+            is_btn_loading,
+            is_submit_success,
+        } = this.state;
 
         if (is_loading) return  <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
@@ -109,7 +118,7 @@ class FinancialAssessment extends React.Component {
                     estimated_worth,
                     account_turnover,
                 }}
-                validate={validateFields}
+                validate={this.validateFields}
                 onSubmit={this.onSubmit}
             >
                 {({
@@ -259,6 +268,8 @@ class FinancialAssessment extends React.Component {
                                             (errors.account_turnover || !values.account_turnover)
                                         }
                                         has_effect
+                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />
                                 </FormFooter>

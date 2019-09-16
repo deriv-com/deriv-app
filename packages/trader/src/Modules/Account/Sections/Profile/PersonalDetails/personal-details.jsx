@@ -15,6 +15,7 @@ import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
+import ButtonLoading                           from '../../../Components/button-loading.jsx';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
@@ -69,19 +70,22 @@ class PersonalDetailsForm extends React.Component {
         const request = this.props.is_virtual ?
             { 'email_consent': email_consent_value }
             : makeSettingsRequest(values, this.props.residence_list);
-
+        this.setState({ is_btn_loading: true });
         WS.setSettings(request).then((data) => {
+            this.setState({ is_btn_loading: false });
             setSubmitting(false);
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.getSettings({ forced: true });
+                this.setState({ is_submit_success: true });
             }
         });
     }
 
-    validateFields = values => {
+    validateFields = (values) => {
+        this.setState({ is_submit_success: false });
         const errors = {};
 
         if (this.props.is_virtual) return errors;
@@ -134,13 +138,16 @@ class PersonalDetailsForm extends React.Component {
             residence,
             tax_residence,
             show_form,
-            is_loading } = this.state;
+            is_loading,
+            is_btn_loading,
+            is_submit_success,
+        } = this.state;
 
         let { tax_identification_number } = this.state;
 
         const { residence_list } = this.props;
 
-        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
         if (is_loading || !residence_list.length) return <Loading is_fullscreen={false}  className='initial-loader--accounts-modal' />;
 
@@ -200,7 +207,6 @@ class PersonalDetailsForm extends React.Component {
                                                 name='first_name'
                                                 value={values.first_name}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                                 label={localize('First name')}
                                                 required
                                                 error={touched.first_name && errors.first_name}
@@ -336,7 +342,9 @@ class PersonalDetailsForm extends React.Component {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={
-                                                    touched.tax_identification_number && errors.tax_identification_number}
+                                                    touched.tax_identification_number &&
+                                                    errors.tax_identification_number
+                                                }
                                             />
                                         </fieldset>
                                     </React.Fragment>
@@ -367,6 +375,8 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.place_of_birth_text || !values.place_of_birth_text))
                                         )}
                                         has_effect
+                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />
                                 </FormFooter>

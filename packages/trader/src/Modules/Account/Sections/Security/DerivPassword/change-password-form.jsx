@@ -7,6 +7,8 @@ import {
     PasswordMeter } from 'deriv-components';
 import { WS }       from 'Services';
 import { localize } from 'App/i18n';
+import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
+import ButtonLoading from '../../../Components/button-loading.jsx';
 import {
     FormSubHeader,
     FormBody,
@@ -23,11 +25,21 @@ class ChangePasswordForm extends React.PureComponent {
         this.setState({ new_pw_input: string });
     }
 
-    onSubmit = values => {
-        WS.changePassword(values);
+    onSubmit = (values, { setSubmitting, setStatus })  => {
+        this.setState({ is_btn_loading: true });
+        WS.changePassword(values).then((data) => {
+            this.setState({ is_btn_loading: false });
+            if (data.error) {
+                setStatus({ msg: data.error.message });
+            } else {
+                this.setState({ is_submit_success: true });
+            }
+            setSubmitting(false);
+        });
     }
 
     validateFields = values => {
+        this.setState({ is_submit_success: false });
         const errors = {};
 
         const required_fields = ['old_password', 'new_password'];
@@ -106,6 +118,7 @@ class ChangePasswordForm extends React.PureComponent {
                                 </FormBody>
                             }
                             <FormFooter>
+                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
                                     className='btn--secondary'
                                     type='button'
@@ -119,6 +132,8 @@ class ChangePasswordForm extends React.PureComponent {
                                         (errors.new_password || !values.new_password) ||
                                         (errors.old_password || !values.old_password)
                                     }
+                                    is_loading={this.state.is_btn_loading && <ButtonLoading />}
+                                    is_submit_success={this.state.is_submit_success}
                                     has_effect
                                     text={localize('Submit')}
                                 />

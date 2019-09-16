@@ -105,6 +105,16 @@
     .initial-loader--accounts-modal {
         height: calc(100vh - 240px);
     }
+    .initial-loader--btn {
+        // height: 200px;
+
+        .initial-loader__barspinner--rect {
+            background-color: white;
+        }
+        .barspinner {
+            margin: 0 4px 0 -4px;
+        }
+    }
     .account-management-modal-header {
         display: flex;
 

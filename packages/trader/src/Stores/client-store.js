@@ -269,23 +269,22 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async accountRealReaction(response) {
-        const client_accounts                      = JSON.parse(LocalStore.get(storage_key));
+        const client_accounts = JSON.parse(LocalStore.get(storage_key));
         const {
             oauth_token,
             currency,
             client_id,
-            landing_company_shortcode,
-            landing_company_name,
         } = response.new_account_real;
+        this.is_populating_account_list = true;
+        const authorize_response = await BinarySocket.authorize(oauth_token);
 
         const new_data                     = {};
         new_data.token                     = oauth_token;
-        new_data.residence                 = this.accounts[this.loginid].residence;
-        new_data.currency                  = currency;
-        new_data.is_virtual                = 0;
-        new_data.is_disabled               = 0;
-        new_data.landing_company_name      = landing_company_name;
-        new_data.landing_company_shortcode = landing_company_shortcode;
+        new_data.residence                 = authorize_response.authorize.country;
+        new_data.currency                  = authorize_response.authorize.currency;
+        new_data.is_virtual                = authorize_response.authorize.is_virtual;
+        new_data.landing_company_name      = authorize_response.authorize.landing_company_fullname;
+        new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
 
         client_accounts[client_id] = new_data;
         runInAction(() => {
@@ -293,11 +292,16 @@ export default class ClientStore extends BaseStore {
             this.loginid = client_id;
             localStorage.setItem(storage_key, JSON.stringify(client_accounts));
             localStorage.setItem('active_loginid', client_id);
+            this.is_populating_account_list = false;
+            this.upgrade_info = this.getBasicUpgradeInfo();
         });
-        await BinarySocket.authorize(this.getToken());
         await this.init();
         this.responseLandingCompany(
             await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+        );
+        this.setAccountSettings(
+            (await WS.authorized.storage.getSettings())
+                .get_settings
         );
         await this.root_store.modules.trade.initAccountCurrency(currency);
     }

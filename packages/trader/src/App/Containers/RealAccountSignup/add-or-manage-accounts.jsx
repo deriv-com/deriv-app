@@ -6,7 +6,7 @@ import ChangeAccountCurrency from './change-account-currency.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
-const CLEAR_ERROR_TIMEOUT = 5000;
+const CLEAR_ERROR_TIMEOUT = 3000;
 
 class AddOrManageAccounts extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class AddOrManageAccounts extends Component {
                     this.props.setCurrency(value)
                         .then(response => {
                             setSubmitting(false);
-                            this.props.onSuccessAddCurrency(
+                            this.props.onSuccessSetAccountCurrency(
                                 response.passthrough.previous_currency,
                                 response.echo_req.set_account_currency,
                             );
@@ -101,8 +101,8 @@ class AddOrManageAccounts extends Component {
 }
 
 AddOrManageAccounts.propTypes = {
-    onSuccessSetAccountCurrency: PropTypes.func,
     onSuccessAddCurrency       : PropTypes.func,
+    onSuccessSetAccountCurrency: PropTypes.func,
 };
 
 export default connect(({ client }) => ({

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
+import { Button } from 'deriv-components';
 import React      from 'react';
 import Localize   from 'App/Components/Elements/localize.jsx';
 import Icon       from 'Assets/icon.jsx';
-import Button     from 'deriv-components/src/components/button';
 
 const SuccessCurrencyDialog = ({
     current,

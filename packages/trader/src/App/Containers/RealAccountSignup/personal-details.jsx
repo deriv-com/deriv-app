@@ -187,27 +187,28 @@ class PersonalDetails extends Component {
                         handleSubmit,
                         isSubmitting,
                         errors,
-                        values,
                         touched,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='personal-details-form'>
-                                <Input
-                                    name='first_name'
-                                    label={localize('First name')}
-                                    placeholder={localize('John')}
-                                />
-                                <Input
-                                    name='last_name'
-                                    label={localize('Last name')}
-                                    placeholder={localize('Doe')}
-                                />
-                                <DateOfBirth
-                                    name='date_of_birth'
-                                    label={localize('Date of birth')}
-                                    placeholder={localize('1999-07-01')}
-                                />
-                                <p>
+                                <div className='personal-details-form__elements'>
+                                    <Input
+                                        name='first_name'
+                                        label={localize('First name')}
+                                        placeholder={localize('John')}
+                                    />
+                                    <Input
+                                        name='last_name'
+                                        label={localize('Last name')}
+                                        placeholder={localize('Doe')}
+                                    />
+                                    <DateOfBirth
+                                        name='date_of_birth'
+                                        label={localize('Date of birth')}
+                                        placeholder={localize('1999-07-01')}
+                                    />
+                                </div>
+                                <p className='personal-details-form__description'>
                                     <Localize
                                         i18n_default_text={'Any information you provide is confidential and will be used for verification purposes only.'}
                                     />

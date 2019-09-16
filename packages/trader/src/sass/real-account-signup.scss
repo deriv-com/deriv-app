@@ -33,6 +33,9 @@ $COLOR_DERIV_RED: #ff444f;
         min-width: 120px;
         z-index: 2;
 
+        & .title {
+            font-size: 1.2rem;
+        }
         & .identifier {
             border-radius: 50%;
             color: $COLOR_DERIV_RED;

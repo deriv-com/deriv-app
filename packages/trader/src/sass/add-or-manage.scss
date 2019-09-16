@@ -34,19 +34,6 @@ $COLOR_DERIV_RED: #ff444f;
         justify-content: space-evenly;
         position: relative;
 
-        &--big {
-            width: auto;
-
-            svg.inline-icon {
-                width: 120px;
-                height: 120px;
-            }
-            .bottom-right-overlay {
-                width: 48px;
-                height: 48px;
-                right: 0;
-            }
-        }
         .bottom-right-overlay {
             position: absolute;
             bottom: 0;
@@ -60,6 +47,19 @@ $COLOR_DERIV_RED: #ff444f;
         }
         svg {
             display: block;
+        }
+        &--big {
+            width: auto;
+
+            svg.inline-icon {
+                width: 120px;
+                height: 120px;
+            }
+            .bottom-right-overlay {
+                width: 48px;
+                height: 48px;
+                right: 0;
+            }
         }
     }
     &__body-area {

@@ -1,11 +1,11 @@
 // import PropTypes from 'prop-types';
 import React        from 'react';
-import { WS }       from 'Services';
 import { Formik }   from 'formik';
 import {
     Button,
     Input,
     PasswordMeter } from 'deriv-components';
+import { WS }       from 'Services';
 import { localize } from 'App/i18n';
 import {
     FormSubHeader,
@@ -24,7 +24,6 @@ class ChangePasswordForm extends React.PureComponent {
     }
 
     onSubmit = values => {
-        console.log('on_submit: ', values);
         WS.changePassword(values);
     }
 

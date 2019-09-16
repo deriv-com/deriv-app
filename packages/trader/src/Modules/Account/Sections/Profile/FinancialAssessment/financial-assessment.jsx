@@ -24,7 +24,7 @@ import {
     FormBody,
     FormSubHeader,
     FormFooter }             from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }      from '../../../Components/leave-confirm.jsx'
+import { LeaveConfirm }      from '../../../Components/leave-confirm.jsx';
 import Loading               from '../../../../../templates/app/components/loading.jsx';
 
 const validateFields = values => {

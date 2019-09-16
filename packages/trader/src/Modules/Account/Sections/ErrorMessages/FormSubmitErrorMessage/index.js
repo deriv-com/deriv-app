@@ -1,1 +1,1 @@
-export default from './form-submit-error-message';
+export default from './form-submit-error-message.jsx';

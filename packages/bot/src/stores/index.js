@@ -1,14 +1,13 @@
-import BotStore    from './bot-store';
-import FlyoutStore from './flyout-store';
-
-// Single instance so we can use it outside React.
-export const flyout = new FlyoutStore();
+import FlyoutStore  from './flyout-store';
+import ScratchStore from './scratch-store';
 
 export default class RootStore {
     constructor(core, ws) {
-        this.bot = new BotStore(this);
         this.core = core;
-        this.flyout = flyout;
         this.ws = ws;
+        this.flyout = new FlyoutStore();
+
+        // Create a singleton class to share rootStore with scratch
+        ScratchStore.setInstance(this);
     }
 }

@@ -4,6 +4,7 @@ import React                            from 'react';
 import { getDisplayText, listPropType } from './dropdown';
 
 const DisplayText = ({
+    className,
     has_symbol,
     list,
     is_align_text_left,
@@ -19,13 +20,14 @@ const DisplayText = ({
                     className={classNames(
                         'symbols dc-dropdown__display-symbol',
                         symbol_value_class,
+                        className,
                     )}
                     name={name}
                     value={value}
                 />
                 :
                 <span
-                    className='dc-dropdown__display-text'
+                    className={classNames('dc-dropdown__display-text', className)}
                     name={name}
                     value={value}
                 >
@@ -49,6 +51,7 @@ const DisplayText = ({
 };
 
 DisplayText.propTypes = {
+    className  : PropTypes.string,
     has_symbol : PropTypes.bool,
     is_title   : PropTypes.bool,
     list       : listPropType(),

@@ -56,6 +56,7 @@ const Items = ({
             {!has_symbol &&
                 <span className={classNames('dc-list__item-text',
                     { 'dc-list__item-text--left': is_align_text_left },
+                    className,
                 )}
                 >
                     {item.text}

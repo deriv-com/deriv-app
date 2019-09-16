@@ -37,6 +37,12 @@ class DateOfBirth extends Component {
         }
     }
 
+    closeDatePicker = () => {
+        this.setState({
+            should_show_calendar: false,
+        });
+    }
+
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClick);
     }
@@ -89,7 +95,10 @@ class DateOfBirth extends Component {
                                     max_date={this.state.max_date}
                                     min_date={this.state.min_date}
                                     date={this.state.date}
-                                    onChange={(val) => setFieldValue(name, val, true)}
+                                    onChange={(val) => {
+                                        setFieldValue(name, val, true);
+                                        this.closeDatePicker();
+                                    }}
                                     value={value}
                                 />
                             </div>

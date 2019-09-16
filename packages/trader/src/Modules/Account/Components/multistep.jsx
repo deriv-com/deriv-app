@@ -27,8 +27,8 @@ class MultiStep extends React.Component {
 
     prevButton = () => (
         this.state.step !== 0 &&
-            <a onClick={this.prevStep} className='multistep-btn'>
-                <Icon icon='IconBack' className='multistep-btn__icon' />
+            <a onClick={this.prevStep} className='multistep__btn'>
+                <Icon icon='IconBack' className='multistep__btn-icon' />
                 {localize('Back')}
             </a>
     );
@@ -37,7 +37,7 @@ class MultiStep extends React.Component {
         return (
             <>
                 {this.prevButton()}
-                <div className='multistep-component'>
+                <div className='multistep__component'>
                     {this.state.component}
                 </div>
             </>

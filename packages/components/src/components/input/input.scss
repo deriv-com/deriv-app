@@ -121,7 +121,7 @@
             outline: none;
 
             & ~ label {
-                transform: translate(-1.6rem, -1.7rem) scale(0.75);
+                transform: translate(-1.4rem, -1.8rem) scale(0.75);
                 padding: 0 4px;
                 @include themify($themes) {
                     background-color: themed('container_secondary_color');

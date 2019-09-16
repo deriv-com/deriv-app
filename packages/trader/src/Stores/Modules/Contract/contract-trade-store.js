@@ -7,10 +7,11 @@ import BinarySocket      from '_common/base/socket_base';
 import { isEmptyObject } from '_common/utility';
 import { localize }      from 'App/i18n';
 import { WS }            from 'Services';
+import { LocalStore }    from '_common/storage';
 import ContractStore     from './contract-store';
 import BaseStore         from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
-import { clientNotifications }         from '../../Helpers/client-notifications.js';
+import { clientNotifications }    from '../../Helpers/client-notifications';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -19,8 +20,8 @@ export default class ContractTradeStore extends BaseStore {
     @observable error_message = '';
 
     // Chart specific observables
-    @observable granularity;
-    @observable chart_type;
+    @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
+    @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
@@ -32,6 +33,7 @@ export default class ContractTradeStore extends BaseStore {
     // -------------------
     @action.bound
     updateChartType(type) {
+        LocalStore.set('contract_trade.chart_type', type);
         this.chart_type = type;
     }
 
@@ -41,14 +43,15 @@ export default class ContractTradeStore extends BaseStore {
         // TODO: fix this in smartcharts
         if (granularity === 0
             && tick_chart_types.indexOf(this.chart_type) === -1) {
-                this.chart_type = 'mountain';
+            this.chart_type = 'mountain';
         }
         if (granularity !== 0
             && tick_chart_types.indexOf(this.chart_type) !== -1) {
-                this.chart_type = 'candle';
+            this.chart_type = 'candle';
         }
+        LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
-        if(this.granularity === 0) {
+        if (this.granularity === 0) {
             this.root_store.ui.removeNotification(
                 clientNotifications.switch_to_tick_chart
             );
@@ -134,7 +137,8 @@ export default class ContractTradeStore extends BaseStore {
             this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);
         });
 
-        if(is_tick_contract && this.granularity !== 0) {
+        if (is_tick_contract && this.granularity !== 0) {
+            console.warn({ granularity: this.granularity });
             this.root_store.ui.addNotification(
                 clientNotifications.switch_to_tick_chart
             );

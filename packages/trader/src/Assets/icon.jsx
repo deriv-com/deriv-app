@@ -9,7 +9,7 @@ class Icon extends React.PureComponent {
             // AccountManagement
             IconSecurity    : React.lazy(() => import('./AccountManagement/icon-security.jsx')),
             IconVerification: React.lazy(() => import('./AccountManagement/icon-verification.jsx')),
-            IconError       : React.lazy(() => import('./AccountManagement/icon-error.jsx')),
+            IconAPIError    : React.lazy(() => import('./AccountManagement/icon-error.jsx')),
 
             // Common
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),

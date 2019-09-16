@@ -321,3 +321,13 @@
         color: themed('text_primary_color');
     }
 }
+
+/** @define initial-loader; weak */
+.initial-loader--btn {
+    .initial-loader__barspinner--rect {
+        background-color: $COLOR_WHITE;
+    }
+    .barspinner {
+        margin: 0 4px 0 -4px;
+    }
+}

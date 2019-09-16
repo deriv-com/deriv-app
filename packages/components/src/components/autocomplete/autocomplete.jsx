@@ -25,7 +25,16 @@ class Autocomplete extends React.PureComponent {
 
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
+    // TODO: Prevent form submission when user is finished typing and keys in Enter
+    onKeyPressed = (event) => {
+        if (this.state.should_show_list) {
+            // keycode == 13 is Enter key
+            if (event.keyCode === 13) event.preventDefault();
+        }
+    };
+
     onBlur = (e) => {
+        event.preventDefault();
         this.hideDropdownList();
 
         if (typeof this.props.onBlur === 'function') {
@@ -83,7 +92,8 @@ class Autocomplete extends React.PureComponent {
                         { ...otherProps }
                         className='dc-autocomplete__field'
                         autoComplete='off'
-                        onFocus={ this.showDropdownList }
+                        onKeyDown={this.onKeyPressed}
+                        onFocus={(e) => this.showDropdownList(e) }
                         onInput={ this.filterList }
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={ this.onBlur }

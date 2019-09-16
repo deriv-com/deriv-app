@@ -61,6 +61,8 @@ class ConfigAccountTransfer {
     @observable transfer_fee           = null;
     @observable minimum_fee            = null;
     @observable accounts_list          = [];
+    @observable selected_from          = {};
+    @observable selected_to            = {};
 }
 
 class ConfigVerification {
@@ -593,6 +595,10 @@ export default class CashierStore extends BaseStore {
         }
     };
 
+    // possible transfers:
+    // 1. fiat to crypto & vice versa
+    // 2. fiat to mt & vice versa
+    // 3. crypto to mt & vice versa
     @action.bound
     async onMountAccountTransfer() {
         this.setLoading(true);
@@ -600,17 +606,20 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
             const mt5_login_list = await BinarySocket.wait('mt5_login_list');
-            this.setTransferFrom(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
+            if (mt5_login_list.error) {
+                this.setErrorMessage(mt5_login_list.error);
+                this.setLoading(false);
+                return;
+            }
+            this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
         }
-        this.setTransferFee();
         this.setMinimumFee();
         this.setLoading(false);
     }
 
     @action.bound
     setTransferFee() {
-        // TODO: also pass currency_to
-        const transfer_fee = getPropertyValue(getCurrencies(), [this.root_store.client.currency, 'transfer_between_accounts', 'fees', 'currency_to']);
+        const transfer_fee = getPropertyValue(getCurrencies(), [this.root_store.client.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
         this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
     }
 
@@ -637,7 +646,7 @@ export default class CashierStore extends BaseStore {
     };
 
     @action.bound
-    setTransferFrom(accounts, mt5_login_list) {
+    setAccounts(accounts, mt5_login_list) {
         // sort accounts as follows:
         // for non-MT5, top is fiat, then crypto, alphabetically by currency
         // for MT5, standard, advanced, then synthetic indices
@@ -671,32 +680,48 @@ export default class CashierStore extends BaseStore {
             if (is_mt) {
                 group = this.getMT5AccountType(mt5_login_list.find(mt5_account => mt5_account.login === account.loginid.split('MT')[1]).group);
             }
-            arr_accounts.push({
+            const obj_values = {
                 is_mt,
-                text            : is_mt ? group.display_text : account.currency.toUpperCase(),
-                value           : account.loginid,
-                balance         : account.balance,
-                currency        : account.currency,
-                is_selected_from: idx === 0,
-                is_selected_to  : false,
-                ...(is_mt && { mt5_currency: group.value }),
-            });
+                text    : is_mt ? group.display_text : account.currency.toUpperCase(),
+                value   : account.loginid,
+                balance : account.balance,
+                currency: account.currency,
+                ...(is_mt && { mt_icon: group.value }),
+            };
+            if (idx === 0) {
+                this.config.account_transfer.selected_from = obj_values;
+            } else if (idx === 1) {
+                this.config.account_transfer.selected_to = obj_values;
+            }
+            arr_accounts.push(obj_values);
         });
         this.config.account_transfer.accounts_list = arr_accounts;
     }
 
     @action.bound
     onChangeTransferFrom({ target }) {
-        const accounts = this.config.account_transfer.accounts_list;
-        accounts.find(account => account.is_selected_from).is_selected_from = false;
-        accounts.find(account => account.value === target.value).is_selected_from = true;
+        const accounts      = this.config.account_transfer.accounts_list;
+        const selected_from = accounts.find(account => account.value === target.value);
+
+        // if new value of selected_from is the same as the current selected_to
+        // switch the value of selected_from and selected_to
+        if (selected_from.value === this.config.account_transfer.selected_to.value) {
+            this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
+        }
+
+        this.config.account_transfer.selected_from = selected_from;
     }
 
     @action.bound
     onChangeTransferTo({ target }) {
         const accounts = this.config.account_transfer.accounts_list;
-        (accounts.find(account => account.is_selected_to) || {}).is_selected_to = false;
-        accounts.find(account => account.value === target.value).is_selected_to = true;
+        this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
+        this.setTransferFee();
+    }
+
+    @action.bound
+    resetAccountTransfer() {
+        this.config.account_transfer = new ConfigAccountTransfer();
     }
 
     onAccountSwitch() {
@@ -709,7 +734,7 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(true, container);
         });
         this.resetPaymentAgent(true);
-        this.config.account_transfer = new ConfigAccountTransfer();
+        this.resetAccountTransfer();
     }
 
     accountSwitcherListener() {

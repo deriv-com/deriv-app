@@ -16,6 +16,8 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
 
     const is_string_array = list_items.length && typeof list_items[0] === 'string';
 
+    const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
+
     return (
         <div style={style} className='dc-dropdown-list'>
             <Scrollbars
@@ -25,8 +27,24 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
                 renderTrackHorizontal={trackHorizontal}
                 renderThumbHorizontal={thumbHorizontal}
             >
+                {is_object &&
+                    Object.keys(list_items).map((items) => (
+                        list_items[items].map((item, idx) => (
+                            <div
+                                key={idx}
+                                // onMouseDown ensures the click handler runs before the onBlur event of Input
+                                onMouseDown={() => onItemSelection(item)}
+                                className='dc-dropdown-list__item'
+                                value={item.value}
+                            >
+                                { item.text }
+                            </div>
+                        ))
+                    ))
+                }
                 {
-                    is_string_array ?
+                    !is_object &&
+                    (is_string_array ?
                         list_items.map((item, idx) => (
                             <div
                                 key={idx}
@@ -47,7 +65,7 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
                             >
                                 { item.text }
                             </div>
-                        ))
+                        )))
                 }
             </Scrollbars>
         </div>

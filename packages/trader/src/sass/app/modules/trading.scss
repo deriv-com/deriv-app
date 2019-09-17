@@ -262,6 +262,7 @@
             margin-top: 0.8em;
             min-width: unset;
 
+            /* postcss-bem-linter: ignore */
             .dc-dropdown__select-arrow {
                 top: 9px;
             }

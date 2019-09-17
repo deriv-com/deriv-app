@@ -349,7 +349,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 this.selectedItem_.contents_,
             );
 
-            flyout.setVisibility(false);
+            ScratchStore.instance.flyout.setVisibility(false);
             this.workspace_.updateToolbox(newTree);
         } else {
             // Show blocks that belong to this category.

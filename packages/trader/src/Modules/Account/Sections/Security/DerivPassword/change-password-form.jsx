@@ -1,21 +1,26 @@
 // import PropTypes from 'prop-types';
-import React        from 'react';
-import { Formik }   from 'formik';
+import React                  from 'react';
+import { Formik }             from 'formik';
 import {
     Button,
     Input,
-    PasswordMeter } from 'deriv-components';
-import { WS }       from 'Services';
-import { localize } from 'App/i18n';
+    PasswordMeter }           from 'deriv-components';
+import { withRouter }         from 'react-router-dom';
+import { connect }            from 'Stores/connect';
+import {
+    WS,
+    requestLogout }           from 'Services';
+import { localize }           from 'App/i18n';
+import AppRoutes              from 'Constants/routes';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import ButtonLoading from '../../../Components/button-loading.jsx';
+import ButtonLoading          from '../../../Components/button-loading.jsx';
 import {
     FormSubHeader,
     FormBody,
-    FormFooter }    from '../../../Components/layout-components.jsx';
-import Loading      from '../../../../../templates/app/components/loading.jsx';
+    FormFooter }              from '../../../Components/layout-components.jsx';
+import Loading                from '../../../../../templates/app/components/loading.jsx';
 
-class ChangePasswordForm extends React.PureComponent {
+class ChangePasswordForm extends React.Component {
     state = {
         is_loading  : false,
         new_pw_input: '',
@@ -23,6 +28,11 @@ class ChangePasswordForm extends React.PureComponent {
 
     updateNewPassword = (string) => {
         this.setState({ new_pw_input: string });
+    }
+
+    handlePasswordChange = () => {
+        this.props.cleanUp();
+        this.props.history.push(AppRoutes.trade);
     }
 
     onSubmit = (values, { setSubmitting, setStatus })  => {
@@ -34,6 +44,7 @@ class ChangePasswordForm extends React.PureComponent {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
+                requestLogout().then(this.handlePasswordChange);
             }
             setSubmitting(false);
         });
@@ -149,5 +160,8 @@ class ChangePasswordForm extends React.PureComponent {
 }
 
 // ChangePasswordForm.propTypes = {};
-
-export default ChangePasswordForm;
+export default connect(
+    ({ client }) => ({
+        cleanUp: client.cleanUp,
+    })
+)(withRouter(ChangePasswordForm));

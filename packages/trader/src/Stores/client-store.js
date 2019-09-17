@@ -466,9 +466,9 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         runInAction(async () => {
-            this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
+            this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();

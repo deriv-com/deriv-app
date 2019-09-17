@@ -13,7 +13,7 @@ const Items = ({
     is_align_text_left,
     value,
 }) =>  items.map((item, idx) => {
-    const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
+    const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : null;
 
     return (
         <div
@@ -31,7 +31,7 @@ const Items = ({
             {!!has_symbol && item.has_tooltip &&
                 <Popover
                     alignment='left'
-                    message={item.tooltip}
+                    message={item.text}
                 >
                     <span
                         className={classNames(

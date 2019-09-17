@@ -654,16 +654,14 @@ export default class TradeStore extends BaseStore {
     accountSwitcherListener() {
         this.clearContracts();
         this.resetErrorServices();
-        return new Promise(async (resolve) => {
-            this.processNewValuesAsync(
-                { currency: this.root_store.client.currency },
-                true,
-                { currency: this.currency },
-                false,
-            );
-            this.refresh();
-            resolve(this.debouncedProposal());
-        });
+        this.processNewValuesAsync(
+            { currency: this.root_store.client.currency },
+            true,
+            { currency: this.currency },
+            false,
+        )
+            .then(this.refresh)
+            .then(this.requestProposal);
     }
 
     @action.bound

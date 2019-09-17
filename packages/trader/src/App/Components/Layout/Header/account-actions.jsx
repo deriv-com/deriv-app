@@ -21,6 +21,7 @@ export class AccountActions extends Component {
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
+            nextProps.is_account_transfer_visible !== this.props.is_account_transfer_visible ||
             nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
             nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
@@ -37,6 +38,7 @@ export class AccountActions extends Component {
             can_upgrade_to,
             currency,
             is_acc_switcher_on,
+            is_account_transfer_visible,
             is_cashier_modal_on,
             is_logged_in,
             is_payment_agent_visible,
@@ -75,6 +77,7 @@ export class AccountActions extends Component {
                         className='acc-info__button'
                         toggleCashier={toggleCashierModal}
                         is_cashier_visible={is_cashier_modal_on}
+                        is_account_transfer_visible={is_account_transfer_visible}
                         is_payment_agent_visible={is_payment_agent_visible}
                     />
                     }

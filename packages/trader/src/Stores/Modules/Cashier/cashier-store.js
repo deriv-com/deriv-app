@@ -154,6 +154,17 @@ export default class CashierStore extends BaseStore {
             this.filterPaymentAgentList();
         }
 
+        if (!this.config.account_transfer.accounts_list.length) {
+            const transfer_between_accounts = await WS.transferBetweenAccounts();
+            const mt5_login_list = await BinarySocket.wait('mt5_login_list');
+            if (!mt5_login_list.error && !transfer_between_accounts.error) {
+                // should have more than one account
+                if (transfer_between_accounts.accounts.length > 1) {
+                    this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
+                }
+            }
+        }
+
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
         // if tab changed while waiting for response, ignore it
@@ -636,6 +647,10 @@ export default class CashierStore extends BaseStore {
                 return;
             }
             this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
+        } else if (!this.config.account_transfer.accounts_list.find(account => +account.balance > 0)) {
+            this.setHasNoBalance(true);
+            this.setLoading(false);
+            return;
         }
         this.setTransferFee();
         this.setMinimumFee();
@@ -780,6 +795,7 @@ export default class CashierStore extends BaseStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {
+        this.setErrorMessage('');
         const transfer_between_accounts = await WS.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,

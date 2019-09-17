@@ -17,6 +17,7 @@ const Header = ({
     currency,
     enableApp,
     is_acc_switcher_on,
+    is_account_transfer_visible,
     is_cashier_modal_on,
     is_app_disabled,
     is_logged_in,
@@ -57,6 +58,7 @@ const Header = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         is_acc_switcher_on={is_acc_switcher_on}
+                        is_account_transfer_visible={is_account_transfer_visible}
                         is_cashier_modal_on={is_cashier_modal_on}
                         is_payment_agent_visible={is_payment_agent_visible}
                         is_logged_in={is_logged_in}
@@ -73,45 +75,47 @@ const Header = ({
 );
 
 Header.propTypes = {
-    active_cashier_tab      : PropTypes.string,
-    balance                 : PropTypes.string,
-    can_upgrade             : PropTypes.bool,
-    can_upgrade_to          : PropTypes.string,
-    currency                : PropTypes.string,
-    disableApp              : PropTypes.func,
-    enableApp               : PropTypes.func,
-    is_acc_switcher_on      : PropTypes.bool,
-    is_app_disabled         : PropTypes.bool,
-    is_cashier_modal_on     : PropTypes.bool,
-    is_dark_mode            : PropTypes.bool,
-    is_logged_in            : PropTypes.bool,
-    is_mobile               : PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_route_modal_on       : PropTypes.bool,
-    is_virtual              : PropTypes.bool,
-    loginid                 : PropTypes.string,
-    onClickUpgrade          : PropTypes.func,
-    toggleAccountsDialog    : PropTypes.func,
-    toggleCashierModal      : PropTypes.func,
+    active_cashier_tab         : PropTypes.string,
+    balance                    : PropTypes.string,
+    can_upgrade                : PropTypes.bool,
+    can_upgrade_to             : PropTypes.string,
+    currency                   : PropTypes.string,
+    disableApp                 : PropTypes.func,
+    enableApp                  : PropTypes.func,
+    is_acc_switcher_on         : PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
+    is_app_disabled            : PropTypes.bool,
+    is_cashier_modal_on        : PropTypes.bool,
+    is_dark_mode               : PropTypes.bool,
+    is_logged_in               : PropTypes.bool,
+    is_mobile                  : PropTypes.bool,
+    is_payment_agent_visible   : PropTypes.bool,
+    is_route_modal_on          : PropTypes.bool,
+    is_virtual                 : PropTypes.bool,
+    loginid                    : PropTypes.string,
+    onClickUpgrade             : PropTypes.func,
+    toggleAccountsDialog       : PropTypes.func,
+    toggleCashierModal         : PropTypes.func,
 };
 
 export default connect(
     ({ client, modules, ui }) => ({
-        active_cashier_tab      : ui.active_cashier_tab,
-        balance                 : client.balance,
-        can_upgrade             : client.can_upgrade,
-        can_upgrade_to          : client.can_upgrade_to,
-        currency                : client.currency,
-        is_logged_in            : client.is_logged_in,
-        is_virtual              : client.is_virtual,
-        loginid                 : client.loginid,
-        enableApp               : ui.enableApp,
-        is_acc_switcher_on      : ui.is_accounts_switcher_on,
-        is_cashier_modal_on     : ui.is_cashier_modal_on,
-        is_dark_mode            : ui.is_dark_mode_on,
-        is_app_disabled         : ui.is_app_disabled,
-        is_loading              : ui.is_loading,
-        is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
+        active_cashier_tab         : ui.active_cashier_tab,
+        balance                    : client.balance,
+        can_upgrade                : client.can_upgrade,
+        can_upgrade_to             : client.can_upgrade_to,
+        currency                   : client.currency,
+        is_logged_in               : client.is_logged_in,
+        is_virtual                 : client.is_virtual,
+        loginid                    : client.loginid,
+        enableApp                  : ui.enableApp,
+        is_acc_switcher_on         : ui.is_accounts_switcher_on,
+        is_account_transfer_visible: !!modules.cashier.config.account_transfer.accounts_list.length,
+        is_cashier_modal_on        : ui.is_cashier_modal_on,
+        is_dark_mode               : ui.is_dark_mode_on,
+        is_app_disabled            : ui.is_app_disabled,
+        is_loading                 : ui.is_loading,
+        is_payment_agent_visible   : !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),
         is_route_modal_on   : ui.is_route_modal_on,
         is_mobile           : ui.is_mobile,

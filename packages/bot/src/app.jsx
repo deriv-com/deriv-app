@@ -10,15 +10,9 @@ import './assets/sass/app.scss';
 const drawerContent = () => {
     return (
         <Tabs>
-            <div label='Summary'>
-                Summary goes hear!
-            </div>
-            <div label='Transations'>
-                Transations goes hear!
-            </div>
-            <div label='Journal'>
-                Journal goes hear!
-            </div>
+            <div label='Summary' />
+            <div label='Transations' />
+            <div label='Journal' />
         </Tabs>
     );
 };

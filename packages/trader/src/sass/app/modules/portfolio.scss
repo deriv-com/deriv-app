@@ -5,7 +5,7 @@
     height: 100%;
 
     &--card-view {
-        background: $COLOR_LIGHT_BLACK_4_SOLID;
+        background: var(--general-main-2);
     }
     &__table {
         height: 100%;
@@ -18,9 +18,7 @@
         justify-content: flex-end;
     }
     .container {
-        @include themify($themes) {
-            background: themed('background_container_color');
-        }
+        background: var(--general-section-1);
     }
     .contract-type {
         flex-grow: 1;
@@ -38,9 +36,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            @include themify($themes) {
-                background: themed('background_icon_color');
-            }
+            background: var(--state-normal);
         }
     }
     .reference a {
@@ -54,13 +50,13 @@
         text-align: right;
 
         &--price-moved-up {
-            color: $COLOR_GREEN_1;
+            color: var(--text-profit-success);
         }
         &--price-moved-down {
-            color: $COLOR_RED;
+            color: var(--text-loss-danger);
         }
         &--no-resale {
-            color: $COLOR_LIGHT_GRAY_2;
+            color: var(--text-less-prominent);
         }
         &__no-resale-msg {
             font-size: 1em;
@@ -88,18 +84,15 @@
         height: 4.8em;
         width: 4.8em;
         margin-bottom: 1.6em;
-        @include themify($themes) {
-            /* postcss-bem-linter: ignore */
-            path {
-                fill: themed('slider_hover_color') !important;
-            }
+
+        /* postcss-bem-linter: ignore */
+        path {
+            fill: var(--text-general) !important;
         }
     }
     &__text {
         font-size: 1.4em;
-        @include themify($themes) {
-            color: themed('disabled_color');
-        }
+        color: var(--text-disabled);
     }
 }
 
@@ -110,13 +103,13 @@
     &__header {
         font-size: 1em;
         padding: 0.5em;
-        border-bottom: 1px solid $COLOR_LIGHT_BLACK_4;
+        border-bottom: 1px solid var(--general-section-1);
         display: flex;
         justify-content: space-between;
     }
     /* postcss-bem-linter: ignore */
     &__refid a {
-        color: $COLOR_SKY_BLUE;
+        color: var(--status-info);
         text-decoration: none;
     }
     &__body {

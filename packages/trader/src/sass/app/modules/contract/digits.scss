@@ -88,8 +88,7 @@
             transition: background-color 0.2s ease-out, transform 0.1s ease-out;
 
             &--selected {
-                background-color: var(--text-profit-success);
-                opacity: 0.08;
+                background-color: var(--transparent-success);
             }
             &--win {
                 background-color: var(--text-profit-success);
@@ -130,7 +129,7 @@
                 transform: scale(0.95);
                 display: inline-block;
                 @include typeface(--paragraph-center-bold-black);
-                color: var(--text-colored-background);
+                color: var(--text-general);
             }
             &-last {
                 @include typeface(--paragraph-center-bold-black);
@@ -145,7 +144,7 @@
                     color: var(--text-profit-success);
                 }
                 &--win {
-                    color: var(--text-prominent);
+                    color: var(--text-colored-background);
                     border-color: var(--text-profit-success);
                     background: var(--text-profit-success);
                 }

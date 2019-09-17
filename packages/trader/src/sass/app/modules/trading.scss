@@ -88,15 +88,13 @@
         display: flex;
 
         &-info {
-            @include themify($themes) {
-                color: themed('text_color');
-            }
             @include typeface(--small-left-light-black, none);
             @include toEm(padding, 5px 5px 5px 8px, 1.2em);
             @include toEm(margin-bottom, 10px, 1.2em);
-            background-color: rgba($COLOR_ORANGE, 0.16);
+            color: var(--text-prominent);
+            background-color: rgba($color-red, 0.16);
             display: block;
-            border: 1px solid $COLOR_ORANGE;
+            border: 1px solid var(--brand-red-coral);
             border-radius: $BORDER_RADIUS;
         }
     }
@@ -131,9 +129,7 @@
         display: flex;
         justify-content: space-between;
         position: relative;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &-info {
             display: flex;
@@ -142,9 +138,7 @@
 
             &--disabled {
                 .trade-container__price-info-value, .trade-container__price-info-basis {
-                    @include themify($themes) {
-                        color: themed('disabled_color');
-                    }
+                    color: var(--text-disabled);
                 }
             }
             &--slide {
@@ -172,9 +166,7 @@
                 text-align: left;
                 line-height: 1.25;
                 margin-left: 0.1em;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
             }
@@ -182,9 +174,7 @@
                 margin-left: 0;
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-prominent);
             }
             &-currency {
                 margin-left: 4px;
@@ -237,10 +227,9 @@
         }
     }
     &__allow-equals {
+        /* postcss-bem-linter: ignore */
         &__label {
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
     }
     &__currency-options {

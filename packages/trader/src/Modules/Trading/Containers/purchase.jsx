@@ -9,7 +9,6 @@ const Purchase = ({
     basis,
     contract_type,
     currency,
-    is_contract_mode,
     is_client_allowed_to_visit,
     // is_purchase_confirm_on,
     purchased_states_arr,
@@ -39,8 +38,7 @@ const Purchase = ({
             return index;
         };
         const info              = proposal_info[type] || {};
-        const is_disabled       = is_contract_mode
-            || !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
+        const is_disabled       = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
         const is_proposal_error = info.has_error && !info.has_error_details;
         const purchase_fieldset = (
             <PurchaseFieldset
@@ -50,7 +48,6 @@ const Purchase = ({
                 info={info}
                 key={index}
                 index={getSortedIndex()}
-                is_contract_mode={is_contract_mode}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
@@ -87,7 +84,6 @@ Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
-    is_contract_mode          : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
     is_trade_enabled          : PropTypes.bool,
@@ -106,7 +102,6 @@ export default connect(
     ({ client, modules, ui }) => ({
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
-        is_contract_mode          : modules.smart_chart.is_contract_mode,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
         is_trade_enabled          : modules.trade.is_trade_enabled,

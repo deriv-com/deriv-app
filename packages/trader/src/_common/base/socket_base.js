@@ -190,6 +190,8 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
+    const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
+
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -216,6 +218,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
         subscribeBalance,

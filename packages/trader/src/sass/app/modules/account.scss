@@ -1,6 +1,5 @@
 @import '../_common/base/index';
 
-/** @define account; weak */
 .account {
     margin: 0 16px;
 
@@ -26,45 +25,47 @@
         height: 24px;
     }
     &__tab_container {
-        padding: 0 24px 24px;
+        padding: 0 8px;
         height: 100%;
         width: 100%;
     }
-    .account-management-container {
+    &__scrollbars_container {
         height: 100%;
         padding-top: 24px;
         padding-bottom: 64px; // allow empty space when scroll below
+        padding-left: 16px;
+        padding-right: 16px;
+
+        &--grid-layout {
+            display: grid;
+            grid-gap: 4px;
+
+            .dc-input {
+                margin-bottom: 0;
+            }
+            .dc-dropdown-container {
+                margin-top: 0;
+
+                .dc-dropdown__display-text, .dc-list__item-text {
+                    text-transform: unset;
+                }
+            }
+        }
     }
-    .account-management-form {
+    &-form {
         overflow: hidden;
         height: 100%;
         min-height: 500px;
         width: 100%;
 
-        &-header {
+        &__header {
             position: relative;
-            height: 1.4em;
-            margin-bottom: 1em;
             font-size: 1.4em;
             font-weight: bold;
+            margin-bottom: 1.6em;
 
             &:not(:first-child) {
-                margin-top: 2.4em;
-            }
-            &-text {
-                position: absolute;
-                padding-right: 8px;
-                @include themify($themes) {
-                    background: themed('navbar_background_color');
-                    color: themed('text_color');
-                }
-            }
-            &-subheader {
-                padding-left: 8px;
-                font-weight: normal;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                margin-top: 1.6em;
             }
             &:before {
                 content: '';
@@ -78,11 +79,34 @@
                 }
             }
         }
-        &-fieldset {
+        &__title {
+            position: absolute;
+            padding-right: 8px;
+            @include themify($themes) {
+                background: themed('navbar_background_color');
+                color: themed('text_color');
+            }
+        }
+        &__subtitle {
+            padding-left: 8px;
+            font-weight: normal;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+        &__fieldset {
             position: relative;
             max-width: 400px;
+            margin-top: 9px;
+            margin-bottom: 18px;
+
+            &--2-cols {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 8px;
+            }
         }
-        &-footer {
+        &__footer {
             height: 80px;
             position: absolute;
             bottom: 0;
@@ -100,35 +124,17 @@
                 background-color: themed('navbar_background_color');
             }
 
-            .btn {
+            &-btn {
                 margin-top: 0;
                 margin-bottom: 0;
                 margin-right: 0;
             }
         }
     }
-    .initial-loader--accounts-modal {
+    &__intial-loader {
         height: calc(100vh - 240px);
     }
-    .account-management-modal-header {
-        display: flex;
-
-        &__icon-wrapper {
-            display: flex;
-            align-content: center;
-            font-size: 12px;
-            font-weight: normal;
-
-            span {
-                padding: 0 8px;
-            }
-            svg {
-                height: 24px;
-                width: 24px;
-            }
-        }
-    }
-    .account-management-text {
+    &__text {
         @include typeface(--paragraph-left-normal-black, none);
         @include themify($themes) {
             color: themed('text_primary_color');
@@ -168,23 +174,6 @@
             height: 128px;
         }
     }
-    .account-management__password {
-        &-content {
-            margin-top: 2em;
-
-            .dc-input {
-                margin-top: 2em;
-
-                &:first-child {
-                    margin-bottom: 3.5em;
-                }
-            }
-        }
-        &-input--error {
-            top: 4.5rem;
-            z-index: 2;
-        }
-    }
     .account-management__text {
         margin-top: 10px;
         margin-bottom: 16px;
@@ -197,7 +186,7 @@
             justify-content: space-between;
         }
     }
-    .account-management-text-container {
+    .account__text_container {
         margin-top: 12px;
         margin-bottom: 24px;
     }
@@ -249,14 +238,8 @@
         }
     }
     .account-limit-container {
-        // margin-top: -24px;
         height: 100%;
         width: 100%;
-        // overflow: scroll;
-
-        // &__main-text {
-        //     margin: 16px 0;
-        // }
     }
     .account-limit-popover {
         display: flex;
@@ -279,16 +262,6 @@
     }
 }
 
-/** @define grid-2-cols; weak */
-.grid-2-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 8px;
-}
-
-/**
- * Deriv password
- */
 /** @define forgot-password; weak */
 .forgot-password {
     display: grid;

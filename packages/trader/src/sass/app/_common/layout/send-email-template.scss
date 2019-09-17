@@ -1,5 +1,7 @@
 /** @define send-email-template */
 .send-email-template {
+    padding: 0 16px;
+
     &__title {
         @include themify($themes) {
             color: themed('text_primary_color');

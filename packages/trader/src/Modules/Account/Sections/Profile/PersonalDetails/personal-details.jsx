@@ -57,8 +57,10 @@ const isValidLength = (value, min, max) =>  value.length > min && value.length <
 const isValidTaxId = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
 
 const InputGroup = ({ children, className }) => (
-    <fieldset className='account-management-form-fieldset'>
-        <div className={className}>{children}</div>
+    <fieldset className='account-form__fieldset'>
+        <div className={className}>
+            {children}
+        </div>
     </fieldset>
 );
 
@@ -156,7 +158,7 @@ class PersonalDetailsForm extends React.Component {
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
-        if (is_loading || !residence_list.length) return <Loading is_fullscreen={false}  className='initial-loader--accounts-modal' />;
+        if (is_loading || !residence_list.length) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         let citizen_text = '';
         let tax_residence_text = '';
@@ -202,12 +204,12 @@ class PersonalDetailsForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
-                            <form className='account-management-form' onSubmit={handleSubmit}>
-                                <FormBody scroll_offset='55px'>
+                            <form className='account-form' onSubmit={handleSubmit}>
+                                <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual &&
                                     <React.Fragment>
-                                        <InputGroup className='grid-2-cols'>
+                                        <InputGroup className='account-form__fieldset--2-cols'>
                                             <Input
                                                 data-lpignore='true'
                                                 type='text'
@@ -233,7 +235,7 @@ class PersonalDetailsForm extends React.Component {
                                                 error={touched.last_name && errors.last_name}
                                             />
                                         </InputGroup>
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Field name='place_of_birth_text'>
                                                 {({ field }) => (
                                                     <Autocomplete
@@ -255,7 +257,7 @@ class PersonalDetailsForm extends React.Component {
                                                 )}
                                             </Field>
                                         </fieldset>
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Field name='citizen_text'>
                                                 {({ field }) => (
                                                     <Autocomplete
@@ -276,7 +278,7 @@ class PersonalDetailsForm extends React.Component {
                                         </fieldset>
                                     </React.Fragment>
                                     }
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Input
                                             data-lpignore='true'
                                             type='text'
@@ -288,7 +290,7 @@ class PersonalDetailsForm extends React.Component {
                                             error={touched.residence && errors.residence}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Input
                                             data-lpignore='true'
                                             type='text'
@@ -302,7 +304,7 @@ class PersonalDetailsForm extends React.Component {
                                     </fieldset>
                                     {!this.props.is_virtual &&
                                     <React.Fragment>
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Input
                                                 data-lpignore='true'
                                                 type='text'
@@ -315,7 +317,7 @@ class PersonalDetailsForm extends React.Component {
                                                 error={touched.phone && errors.phone}
                                             />
                                         </fieldset>
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             {is_account_authenticated ?
                                                 <Input
                                                     data-lpignore='true'
@@ -342,7 +344,7 @@ class PersonalDetailsForm extends React.Component {
                                             }
                                         </fieldset>
                                         <FormSubHeader title={localize('Tax information')} />
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Field name='tax_residence_text'>
                                                 {({ field }) => (
                                                     <Autocomplete
@@ -361,7 +363,7 @@ class PersonalDetailsForm extends React.Component {
                                                 )}
                                             </Field>
                                         </fieldset>
-                                        <fieldset className='account-management-form-fieldset'>
+                                        <fieldset className='account-form__fieldset'>
                                             <Input
                                                 data-lpignore='true'
                                                 type='text'
@@ -379,7 +381,7 @@ class PersonalDetailsForm extends React.Component {
                                     </React.Fragment>
                                     }
                                     <FormSubHeader title={localize('Email Preference')} />
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}
@@ -392,7 +394,7 @@ class PersonalDetailsForm extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='btn--primary'
+                                        className='account-form__footer-btn btn--primary'
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?

@@ -6,7 +6,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2.4em;
         @include themify($themes) {
             background: themed('container_color');
             border: 1px solid themed('container_color');

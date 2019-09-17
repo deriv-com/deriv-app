@@ -43,7 +43,7 @@ const Row = ({ children }) => (
 
 const Td = ({ children, is_flex }) => (
     <td
-        className={classNames('account-management-text', {
+        className={classNames('account__text', {
             'account-management-flex-wrapper': is_flex,
         })}
     >
@@ -82,7 +82,7 @@ class AccountLimits extends React.Component {
             withdrawal_since_inception_monetary } = this.state;
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-        if (is_loading) return <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         const { commodities, forex, indices, volidx } = market_specific;
         const { currency } = this.props;

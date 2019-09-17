@@ -102,7 +102,7 @@ class FinancialAssessment extends React.Component {
             is_submit_success,
         } = this.state;
 
-        if (is_loading) return  <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
 
@@ -136,10 +136,10 @@ class FinancialAssessment extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
-                            <form className='account-management-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
-                                <FormBody scroll_offset='55px'>
+                            <form className='account-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
+                                <FormBody scroll_offset='100px'>
                                     <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Source of income')}
                                             is_align_text_left
@@ -151,7 +151,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.income_source && errors.income_source}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Employment status')}
                                             is_align_text_left
@@ -163,7 +163,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.employment_status && errors.employment_status}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Industry of employment')}
                                             is_align_text_left
@@ -175,7 +175,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.employment_industry && errors.employment_industry}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Occupation')}
                                             is_align_text_left
@@ -187,7 +187,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.occupation && errors.occupation}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Source of wealth')}
                                             is_align_text_left
@@ -199,7 +199,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.source_of_wealth && errors.source_of_wealth}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Level of education')}
                                             is_align_text_left
@@ -211,7 +211,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.education_level && errors.education_level}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Net annual income')}
                                             is_alignment_top
@@ -224,7 +224,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.net_income && errors.net_income}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Estimated net worth')}
                                             is_alignment_top
@@ -237,7 +237,7 @@ class FinancialAssessment extends React.Component {
                                             error={touched.estimated_worth && errors.estimated_worth}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-management-form-fieldset'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Anticipated account turnover')}
                                             is_alignment_top
@@ -254,7 +254,7 @@ class FinancialAssessment extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='btn--primary'
+                                        className='account-form__footer-btn btn--primary'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||

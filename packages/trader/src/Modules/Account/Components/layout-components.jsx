@@ -3,11 +3,11 @@ import React          from 'react';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
 
 export const FormSubHeader = ({ title, subtitle }) => (
-    <div className='account-management-form-header'>
-        <h1 className='account-management-form-header-text'>
+    <div className='account-form__header'>
+        <h1 className='account-form__title'>
             {title}
             {subtitle &&
-                <i className='account-management-form-header-subheader'>
+                <i className='account-form__subtitle'>
                     {subtitle}
                 </i>
             }
@@ -16,38 +16,41 @@ export const FormSubHeader = ({ title, subtitle }) => (
 );
 
 export const FormBody = ({ children, scroll_offset }) => (
-    <ScrollbarsContainer scroll_offset={scroll_offset}>
+    <ScrollbarsContainer
+        className='account__scrollbars_container--grid-layout'
+        scroll_offset={scroll_offset}
+    >
         {children}
     </ScrollbarsContainer>
 );
 
 export const FormFooter = ({ children }) => (
-    <div className='account-management-form-footer'>{children}</div>
+    <div className='account-form__footer'>{children}</div>
 );
 
 export const TextContainer = ({ children }) => (
-    <div className='account-management-text-container'>{children}</div>
+    <div className='account__text_container'>{children}</div>
 );
 
 export const Text = ({ children, size, color, className }) => (
     <p
-        className={classNames('account-management-text', className, {
-            'account-management-text--xsmall': size === 'xsmall',
-            'account-management-text--small' : size === 'small',
-            'account-management-text--grey'  : color === 'grey',
+        className={classNames('account__text', className, {
+            'account__text--xsmall': size === 'xsmall',
+            'account__text--small' : size === 'small',
+            'account__text--grey'  : color === 'grey',
         })}
     >
         {children}
     </p>
 );
 
-export const ScrollbarsContainer = ({ children, scroll_offset }) => (
+export const ScrollbarsContainer = ({ children, className, scroll_offset }) => (
     <Scrollbars
         autoHide
         style={{
             height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
         }}
     >
-        <div className='account-management-container'>{children}</div>
+        <div className={classNames('account__scrollbars_container', className)}>{children}</div>
     </Scrollbars>
 );

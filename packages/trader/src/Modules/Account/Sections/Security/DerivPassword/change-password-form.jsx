@@ -93,15 +93,15 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-management-form' onSubmit={handleSubmit}>
+                        <form className='account-form' onSubmit={handleSubmit}>
                             {this.state.is_loading ?
                                 <FormBody>
-                                    <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />
+                                    <Loading is_fullscreen={false} className='account___intial-loader' />;
                                 </FormBody>
                                 :
                                 <FormBody scroll_offset='55px'>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
-                                    <div className='account-management__password-content'>
+                                    <fieldset className='account-form__fieldset'>
                                         <Input
                                             label={localize('Current password')}
                                             error={touched.old_password && errors.old_password}
@@ -111,6 +111,8 @@ class ChangePasswordForm extends React.Component {
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                         />
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
                                             error={touched.new_password && errors.new_password}
@@ -129,19 +131,19 @@ class ChangePasswordForm extends React.Component {
                                                 }}
                                             />
                                         </PasswordMeter>
-                                    </div>
+                                    </fieldset>
                                 </FormBody>
                             }
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
-                                    className='btn--secondary'
+                                    className='account-form__footer-btn btn--secondary'
                                     type='button'
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}
                                 />
                                 <Button
-                                    className='btn--primary'
+                                    className='account-form__footer-btn btn--primary'
                                     type='submit'
                                     is_disabled={isSubmitting ||
                                         !!((errors.new_password || !values.new_password) ||

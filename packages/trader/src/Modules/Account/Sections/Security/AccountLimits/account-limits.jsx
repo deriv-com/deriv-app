@@ -143,7 +143,7 @@ class AccountLimits extends React.Component {
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
-                                        message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
+                                        message={localize('Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
                                     />
                                 </Td>
                                 <Td>{ formatMoney(currency, payout, true) }</Td>

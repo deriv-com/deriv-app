@@ -139,6 +139,7 @@ class PersonalDetailsForm extends React.Component {
             residence,
             tax_residence,
             show_form,
+            is_account_authenticated,
             is_loading,
             is_btn_loading,
             is_submit_success,
@@ -211,6 +212,7 @@ class PersonalDetailsForm extends React.Component {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 required
+                                                disabled={is_account_authenticated}
                                                 error={touched.first_name && errors.first_name}
                                             />
                                             <Input
@@ -222,6 +224,7 @@ class PersonalDetailsForm extends React.Component {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 required
+                                                disabled={is_account_authenticated}
                                                 error={touched.last_name && errors.last_name}
                                             />
                                         </InputGroup>
@@ -238,6 +241,7 @@ class PersonalDetailsForm extends React.Component {
                                                             touched.place_of_birth_text && errors.place_of_birth_text
                                                         }
                                                         required
+                                                        disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             (item) => setFieldValue('place_of_birth_text', item.text, true)
@@ -257,6 +261,7 @@ class PersonalDetailsForm extends React.Component {
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
                                                         required
+                                                        disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             (item) => setFieldValue('citizen_text', item.text, true)
@@ -307,16 +312,30 @@ class PersonalDetailsForm extends React.Component {
                                             />
                                         </fieldset>
                                         <fieldset className='account-management-form-fieldset'>
-                                            <Dropdown
-                                                placeholder={'Account opening reason'}
-                                                is_align_text_left
-                                                name='account_opening_reason'
-                                                list={account_opening_reason_list}
-                                                value={values.account_opening_reason}
-                                                onChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                error={touched.account_opening_reason && errors.account_opening_reason}
-                                            />
+                                            {is_account_authenticated ?
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='account_opening_reason'
+                                                    label={localize('Account opening reason')}
+                                                    value={values.account_opening_reason}
+                                                    disabled
+                                                />
+                                                :
+                                                <Dropdown
+                                                    placeholder={'Account opening reason'}
+                                                    is_align_text_left
+                                                    name='account_opening_reason'
+                                                    list={account_opening_reason_list}
+                                                    value={values.account_opening_reason}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={
+                                                        touched.account_opening_reason &&
+                                                        errors.account_opening_reason
+                                                    }
+                                                />
+                                            }
                                         </fieldset>
                                         <FormSubHeader title={localize('Tax information')} />
                                         <fieldset className='account-management-form-fieldset'>
@@ -401,6 +420,13 @@ class PersonalDetailsForm extends React.Component {
                 return;
             }
             this.setState({ ...data.get_settings, is_loading: false });
+        });
+        WS.authorized.storage.getAccountStatus().then((data) => {
+            if (data.get_account_status.status &&
+                data.get_account_status.status.some(state => state === 'authenticated')
+            ) {
+                this.setState({ is_account_authenticated: true });
+            }
         });
     }
 }

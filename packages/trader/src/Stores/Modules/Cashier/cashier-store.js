@@ -735,7 +735,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setReceiptTransfer(amount) {
+    setReceiptTransfer({ amount }) {
         this.config.account_transfer.receipt = {
             amount_transferred: amount,
         };
@@ -775,9 +775,23 @@ export default class CashierStore extends BaseStore {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
             this.setReceiptTransfer({ amount });
+            transfer_between_accounts.accounts.forEach((account) => {
+                this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value)
+                    .balance = account.balance;
+                if (account.loginid === this.config.account_transfer.selected_from.value) {
+                    this.config.account_transfer.selected_from.balance = account.balance;
+                } else if (account.loginid === this.config.account_transfer.selected_to.value) {
+                    this.config.account_transfer.selected_from.balance = account.balance;
+                }
+            });
             this.setIsTransferSuccessful(true);
         }
         return transfer_between_accounts;
+    };
+
+    @action.bound
+    resetAccountTransfer = () => {
+        this.setIsTransferSuccessful(false);
     };
 
     onAccountSwitch() {

@@ -21,6 +21,11 @@
     }
     &__loader {
         font-size: 1rem;
+
+        &-wrapper {
+            display: flex;
+            height: 100%;
+        }
     }
     &__header {
         font-size: 1.6rem;
@@ -106,7 +111,23 @@
             color: $COLOR_GREEN_1;
             font-size: 3.2rem;
             line-height: 0.75;
-            margin-bottom: 16px;
+            margin-bottom: 1.6rem;
+        }
+        &-details {
+            margin-left: 8px;
+            vertical-align: super;
+
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        &-icon {
+            @extend %inline-icon;
+            transform: scale(-1, 1);
+            vertical-align: middle;
+            margin: 0 1.6rem;
         }
     }
     &__text--bold {
@@ -272,22 +293,6 @@
         text-align: center;
     }
     &__transferred {
-        &-details {
-            margin-left: 8px;
-            vertical-align: super;
-
-            &-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-        &-icon {
-            @extend %inline-icon;
-            transform: scale(-1, 1);
-            vertical-align: middle;
-            margin: 0 16px;
-        }
         &-contact {
             margin-top: 16px;
             margin-bottom: 8px;
@@ -374,6 +379,29 @@
         &-icon {
             margin: 5.6rem 0 1.6rem;
         }
+    }
+    &__transfer {
+        &-icon {
+            vertical-align: initial;
+        }
+        &-details {
+            &-from, &-to {
+                width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
+                display: flex;
+                align-items: center;
+            }
+            &-from {
+                justify-content: flex-end;
+            }
+            &-to {
+                justify-content: flex-start;
+            }
+        }
+    }
+    &__button-done {
+        margin-top: 3.2rem;
+        min-width: 6.5rem;
+        height: 4rem;
     }
 }
 

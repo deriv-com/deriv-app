@@ -51,9 +51,7 @@
         position: relative;
 
         &:hover {
-            @include themify($themes) {
-                background: themed('hover_color');
-            }
+            background: var(--general-hover);
 
             .footer__icon {
                 @extend %inline-icon;
@@ -82,16 +80,13 @@
         width: 0.2em;
         height: 0.2em;
         border-radius: 50%;
-        background-color: $COLOR_LIGHT_BLACK_1;
         position: absolute;
         margin-top: 1em;
         right: 1.5em;
         display: block;
         transition: transform 0.25s ease;
         transform: translate3d(0, 0, 0);
-        @include themify($themes) {
-            background-color: themed('text_color');
-        }
+        background-color: var(--text-prominent);
     }
     &--active {
         background: none !important;
@@ -115,8 +110,8 @@
         justify-content: center;
         top: 2px;
         right: 0;
-        background-color: $COLOR_RED;
-        color: $COLOR_WHITE;
+        background-color: var(--brand-red-coral);
+        color: var(--color-white);
     }
 }
 
@@ -132,22 +127,20 @@
         text-decoration-line: none;
     }
     &__circle {
-        background: $COLOR_LIGHT_BLACK_3;
+        background: var(--general-section-1);
         width: 1em;
         height: 1em;
         margin: 0.2em 1.6em;
         border-radius: 50%;
 
         &--online {
-            background: $COLOR_GREEN_1;
+            background: var(--brand-secondary);
         }
         &--offline {
-            background: $COLOR_RED;
+            background: var(--brand-red-coral);
         }
         &--blinker {
-            @include themify($themes) {
-                background: themed('disabled_color');
-            }
+            background: var(--general-disabled);
         }
     }
 }
@@ -159,18 +152,14 @@
     margin-right: 1em;
     padding: 0 1em;
     @include typeface(--small-left-normal-black);
-    @include themify($themes) {
-        color: themed('text_color');
-    }
+    color: var(--text-prominent);
 }
 
 /** @define ic-settings */
 .ic-settings {
     &--active {
         position: relative;
-        @include themify($themes) {
-            background: themed('hover_color');
-        }
+        background: var(--state-hover);
 
         &:after {
             content: '';
@@ -179,9 +168,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            @include themify($themes) {
-                background: themed('navbar_active_color');
-            }
+            background: var(--text-prominent);
         }
         .ic-settings__icon {
             @extend %inline-icon.active;

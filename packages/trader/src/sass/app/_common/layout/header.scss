@@ -8,6 +8,8 @@
     top: 0;
     transition: opacity 0.3s;
     backface-visibility: hidden;
+    background-color: var(--general-main-1);
+    border-bottom: 1px solid var(--general-section-1);
 
     &:after {
         position: absolute;
@@ -18,17 +20,8 @@
         width: 100%;
         height: calc(100% + 2px);
         content: '';
-        @include themify($themes) {
-            background-color: themed('background_modal_overlay');
-        }
+        background-color: var(--overlay-outside-dialog);
     }
-    background-color: var(--general-main-1);
-    border-bottom: 1px solid var(--general-section-1);
-    // @include themify($themes) {
-    //     background-color: themed('background_color');
-    //     border-bottom: 1px solid themed('background_color');
-    // }
-
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
@@ -112,19 +105,15 @@
             }
         }
         &:hover:not(&--active) {
-            @include themify($themes) {
-                background-color: themed('hover_color');
-            }
+            background-color: var(--general-hover);
         }
         &--active {
             & > .header__menu-link-text[title] {
                 font-weight: bold;
-                @include themify($themes) {
-                    color: themed('navbar_active_color');
+                color: var(--text-prominent);
 
-                    &:after {
-                        color: themed('navbar_active_color');
-                    }
+                &:after {
+                    color: var(--text-prominent);
                 }
             }
             .header__icon {

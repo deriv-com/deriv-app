@@ -167,9 +167,7 @@
         align-items: center;
         justify-content: center;
         border-radius: $BORDER_RADIUS;
-        @include themify($themes) {
-            background-color: themed('background_container_color');
-        }
+        background-color: var(--general-main-1);
 
         .barspinner {
             display: flex;
@@ -186,9 +184,6 @@
             .chart-marker-line__wrapper, .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets, .cq-inchart-subholder {
                 display: none;
             }
-        }
-        @include themify($themes) {
-            background-color: themed('container_color');
         }
     }
     // smartchart library style fixes
@@ -334,9 +329,7 @@
             height: 100%;
             z-index: 999;
             content: '';
-            @include themify($themes) {
-                background-color: themed('market_overlay_background');
-            }
+            background-color: var(--overlay-outside-dialog);
         }
         &--is-disabled:after {
             opacity: 1;
@@ -432,10 +425,13 @@
 .type-wrapper {
     @include contract_type_icon_wrapper;
 
+    /* postcss-bem-linter: ignore */
     .color1-fill {
-        @include themify($themes) {
-            fill: themed('text_color');
-        }
+        fill: var(--brand-red-coral);
+    }
+    /* postcss-bem-linter: ignore */
+    .color2-fill {
+        fill: var(--brand-secondary);
     }
 }
 
@@ -471,9 +467,7 @@
     }
     &__message {
         @include interpolate(font-size, 320px, 1440px, 14px, 20px);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
     }
 }
 

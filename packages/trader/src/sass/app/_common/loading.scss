@@ -14,9 +14,7 @@
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
     &--dark .barspinner__rect {
-        @include themify($themes) {
-            background-color: themed('spinner_background_color');
-        }
+        background-color: var(--brand-red-coral);
     }
 }
 

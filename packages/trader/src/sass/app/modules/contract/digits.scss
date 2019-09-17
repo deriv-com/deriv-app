@@ -16,10 +16,8 @@
             @include typeface(--paragraph-center-bold-black);
             @include toEm(width, 40px, 1em);
             @include toEm(height, 40px, 1em);
-            @include themify($themes) {
-                background-color: themed('background_icon_color');
-                color: themed('text_color');
-            }
+            background-color: var(--general-section-1);
+            color: var(--text-prominent);
             margin-bottom: 0.5em;
             border-radius: 50%;
             display: flex;
@@ -28,19 +26,15 @@
             transition: background-color 0.2s ease-out, transform 0.1s ease-out;
 
             &--selected {
-                @include themify($themes) {
-                    background-color: themed('container_color');
-                }
-                border: 2px solid $COLOR_GREEN_1;
+                background-color: var(--general-main-1);
+                border: 2px solid var(--brand-secondary);
             }
             &--latest {
                 transform: translateY(-8px);
             }
             &--win {
-                @include themify($themes) {
-                    background-color: themed('won_color');
-                    color: themed('text_active_color');
-                }
+                background-color: var(--text-profit-success);
+                color: var(--color-white);
             }
             &--blink {
                 @include themify($themes) {
@@ -51,10 +45,8 @@
                 animation-timing-function: step-end;
             }
             &--loss {
-                @include themify($themes) {
-                    background-color: themed('loss_color');
-                    color: themed('text_active_color');
-                }
+                background-color: var(--text-loss-danger);
+                color: var(--color-white);
                 border: none !important;
             }
         }
@@ -67,21 +59,17 @@
 
             &-value {
                 @include typeface(--paragraph-center-bold-black);
-                @include themify($themes) {
-                    color: themed('text_secondary_color');
-                }
+                color: var(--text-general);
             }
             &-last {
                 @include typeface(--paragraph-center-bold-black);
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-prominent);
 
                 &--win {
-                    color: $COLOR_GREEN_1;
+                    color: var(--text-profit-success);
                 }
                 &--loss {
-                    color: $COLOR_RED;
+                    color: var(--text-loss-danger);
                 }
             }
         }
@@ -104,7 +92,7 @@
         opacity: 0;
 
         &-particle {
-            background: $COLOR_GREEN_1;
+            background: var(--brand-secondary);
             opacity: 0.7;
             border-radius: 50%;
             display: block;
@@ -148,26 +136,26 @@
     }
     &__icon {
         &-color {
-            fill: $COLOR_ORANGE;
+            fill: var(--brand-orange);
         }
         &--win .digits__icon-color {
-            fill: $COLOR_GREEN_1;
+            fill: var(--text-profit-success);
         }
         &--loss .digits__icon-color {
-            fill: $COLOR_RED;
+            fill: var(--text-loss-danger);
         }
     }
 }
 
 @keyframes blinking-white {
     50% {
-        background-color: $COLOR_WHITE;
-        color: $COLOR_LIGHT_BLACK_1;
+        background-color: var(--color-white);
+        color: var(--color-black);
     }
 }
 
 @keyframes blinking-dark-blue-2 {
     50% {
-        background-color: $COLOR_DARK_BLUE_2;
+        background-color: var(--color-grey-3);
     }
 }

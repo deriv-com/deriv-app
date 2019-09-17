@@ -55,9 +55,7 @@
             left: 2px;
         }
         &:hover {
-            @include themify($themes) {
-                background: themed('tab_hover_color');
-            }
+            background: var(--fill-hover);
             cursor: pointer;
 
             & ~ .input-wrapper__input {

@@ -11,7 +11,6 @@ import {
     fixCollapsedBlocks,
     backwardCompatibility,
     fixArgumentAttribute,
-    cleanBeforeExport,
     addDomAsBlock,
 }                                       from '../scratch/utils';
 import { translate }                    from '../utils/tools';
@@ -128,7 +127,6 @@ export default class ToolbarStore {
             const file_name = this.file_name;
             const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
             xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
-            cleanBeforeExport(xml);
 
             const data = Blockly.Xml.domToPrettyText(xml);
             const blob = new Blob([data], { type: 'text/xml;charset=utf-8' });

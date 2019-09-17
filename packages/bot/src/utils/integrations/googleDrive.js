@@ -4,6 +4,7 @@ import { translate, trackAndEmitError } from '../tools';
 import config                           from '../../constants';
 import { loadWorkspace, loadBlocks }    from '../../scratch';
 
+/* eslint-disable */
 class GoogleDrive {
     constructor() {
         this.botFolderName = `Binary Bot - ${translate('Strategies')}`;
@@ -16,16 +17,16 @@ class GoogleDrive {
     }
 
     getScript(source, callback) {
-        var script = document.createElement('script');
-        var prior = document.getElementsByTagName('script')[0];
+        let script = document.createElement('script');
+        const prior = document.getElementsByTagName('script')[0];
+
         script.async = 1;
-    
-        script.onload = script.onreadystatechange = function( _, isAbort ) {
-            if(isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
+        script.onload = script.onreadystatechange = function(_, isAbort) {
+            if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
                 script.onload = script.onreadystatechange = null;
                 script = undefined;
     
-                if(!isAbort && callback) setTimeout(callback, 0);
+                if (!isAbort && callback) setTimeout(callback, 0);
             }
         };
     

@@ -1,5 +1,4 @@
 import { saveAs }                   from './shared';
-import { translate }                from '../utils/lang/i18n';
 import config                       from '../constants';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
@@ -20,9 +19,9 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     const blocklyTop = document.body.offsetHeight - blocklyMetrics.viewHeight - blocklyMetrics.viewTop;
     const cursorX = clientX ? (clientX - blocklyLeft) * scaleCancellation : 0;
     let cursorY = clientY ? (clientY - blocklyTop) * scaleCancellation : 0;
-    const toolbar_height = document.getElementById('toolbar').clientHeight
+    const toolbar_height = document.getElementById('toolbar').clientHeight;
     blocksToClean.forEach(block => {
-        block.moveBy(cursorX, cursorY-toolbar_height);
+        block.moveBy(cursorX, cursorY - toolbar_height);
         block.snapToGrid();
         cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
     });
@@ -126,26 +125,6 @@ export const fixArgumentAttribute = xml => {
     });
 };
 
-export const removeUnavailableMarkets = block => {
-    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
-        field =>
-            field.getAttribute('name') === 'MARKET_LIST' &&
-            !fieldGeneratorMapping
-                .MARKET_LIST()
-                .map(markets => markets[1])
-                .includes(field.innerText)
-    );
-    if (containsUnavailableMarket) {
-        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
-        Array.from(block.getElementsByTagName('field')).forEach(field => {
-            if (nodesToRemove.includes(field.getAttribute('name'))) {
-                block.removeChild(field);
-            }
-        });
-    }
-    return containsUnavailableMarket;
-};
-
 export const backwardCompatibility = block => {
     if (block.getAttribute('type') === 'on_strategy') {
         block.setAttribute('type', 'before_purchase');
@@ -176,11 +155,4 @@ export const addDomAsBlock = blockXml => {
             .forEach(b => b.dispose());
     }
     return Blockly.Xml.domToBlock(blockXml, Blockly.derivWorkspace);
-};
-
-export const cleanBeforeExport = xml => {
-    Array.from(xml.children).forEach(blockDom => {
-        const blockId = blockDom.getAttribute('id');
-        if (!blockId) return;
-    });
 };

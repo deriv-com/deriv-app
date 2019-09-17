@@ -15,12 +15,12 @@ import {
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage     from '../../ErrorMessages/LoadErrorMessage';
 
-const makeTurnoverLimitRow = (currency, arr) => (
+const makeTurnoverLimitRow = (currency, arr, title) => (
     <>
         { arr &&
             arr.map(item =>
                 <Row key={item.name}>
-                    <Td>{item.name}</Td>
+                    <Td>{title && `${title} - `}{item.name}</Td>
                     <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
                 </Row>
             )
@@ -175,7 +175,7 @@ class AccountLimits extends React.Component {
                         </thead>
                         <tbody>
                             { makeTurnoverLimitRow(currency, commodities) }
-                            { makeTurnoverLimitRow(currency, forex) }
+                            { makeTurnoverLimitRow(currency, forex, localize('Forex')) }
                             { makeTurnoverLimitRow(currency, indices) }
                             { makeTurnoverLimitRow(currency, volidx) }
                         </tbody>

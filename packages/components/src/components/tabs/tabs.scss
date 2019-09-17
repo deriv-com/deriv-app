@@ -1,19 +1,22 @@
-.dc-tab__list {
-    @include themify($themes) {
-        border-bottom: 1px solid themed('border_color');
+.dc-tabs {
+    &__list {
+        @include themify($themes) {
+            border-bottom: 1px solid themed('border_color');
+        }
+        display: table;
+        width: 100%;
+        line-height: 40px;
     }
-    padding-left: 0;
-
     &__item {
-        display: inline-block;
+        display: table-cell;
         list-style: none;
-        margin-bottom: -1px;
-        padding: 0.5rem 0.75rem;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
     }
     &__active {
         @include themify($themes) {
-            background-color: themed('background_color');
-            border: 1px 1px 0 solid themed('border_color');
+            border-bottom: 2px solid themed('error_color');
         }
     }
 }

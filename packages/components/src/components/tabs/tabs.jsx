@@ -11,43 +11,45 @@ class Tabs extends Component {
         };
     }
 
-  onClickTabItem = (tab) => {
-      this.setState({ activeTab: tab });
-  }
+    onClickTabItem = tab => {
+        this.setState({ activeTab: tab });
+    };
 
-  render() {
-      const {
-          children,
-      } = this.props;
+    render() {
+        const {
+            onClickTabItem,
+            props: { children },
+            state: { activeTab },
+        } = this;
+  
+        return (
+            <div className='dc-tabs'>
+                <ol className='dc-tabs__list'>
+                    {children.map((child) => {
+                        const { label } = child.props;
 
-      return (
-          <div className='dc-tabs'>
-              <ol className='dc-tabs__list'>
-                  {children.map((child) => {
-                      const { label } = child.props;
-
-                      return (
-                          <Tab
-                              activeTab={this.state.activeTab}
-                              key={label}
-                              label={label}
-                              onClick={this.onClickTabItem}
-                          />
-                      );
-                  })}
-              </ol>
-              <div className='dc-tabs__content'>
-                  {children.map((child) => {
-                      if (child.props.label !== this.state.activeTab) return undefined;
-                      return child.props.children;
-                  })}
-              </div>
-          </div>
-      );
-  }
+                        return (
+                            <Tab
+                                activeTab={activeTab}
+                                key={label}
+                                label={label}
+                                onClick={onClickTabItem}
+                            />
+                        );
+                    })}
+                </ol>
+                <div className='dc-tabs__content'>
+                    {children.map((child) => {
+                        if (child.props.label !== activeTab) return undefined;
+                        return child.props.children;
+                    })}
+                </div>
+            </div>
+        );
+    }
 }
 
-Tabs.PropTypes = {
+Tabs.propTypes = {
     children: PropTypes.instanceOf(Array),
 };
 

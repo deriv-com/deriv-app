@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,16 +11,16 @@ class Tab extends Component {
     render() {
         const {
             activeTab,
-            className,
             label,
-            onClick,
         } = this.props;
 
         return (
             <li
-                className={`dc-tab-list__item dc-tab-list__item--${className}
-                ${activeTab === label || 'dc-tab-list__active'}`}
-                onClick={onClick}
+                className={classNames(
+                    'dc-tabs__item',
+                    { 'dc-tabs__active': activeTab === label }
+                )}
+                onClick={this.onClick}
             >
                 {label}
             </li>
@@ -27,8 +28,7 @@ class Tab extends Component {
     }
 }
 
-Tab.PropTypes = {
-    activeTab: PropTypes.string,
+Tab.propTypes = {
     className: PropTypes.string,
     label    : PropTypes.string,
     onClick  : PropTypes.func,

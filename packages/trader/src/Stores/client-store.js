@@ -392,7 +392,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
-                this.root_store.modules.trade.clearContract();
+                this.root_store.modules.trade.clearContracts();
                 return;
             }
 
@@ -469,6 +469,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
         });
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();
         this.root_store.modules.trade.refresh();

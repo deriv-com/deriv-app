@@ -30,6 +30,8 @@ Blockly.FieldDropdown.prototype.updateOptions = function(
     
     if (should_trigger_event) {
         const event = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
+        event.recordUndo = false;
         Blockly.Events.fire(event);
+        
     }
 };

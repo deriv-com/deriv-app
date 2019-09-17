@@ -185,8 +185,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     }
                 }
             }
-
-            Blockly.derivWorkspace.clearUndo();
         });
     },
     updateBarrierInputs(should_use_default_types) {

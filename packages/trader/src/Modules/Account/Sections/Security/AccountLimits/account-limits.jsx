@@ -6,7 +6,7 @@ import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { WS }               from 'Services';
-import { addCommaToNumber } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
+import { formatMoney }      from '_common/base/currency_base';
 import Loading              from '../../../../../templates/app/components/loading.jsx';
 import {
     ScrollbarsContainer,
@@ -15,14 +15,13 @@ import {
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage     from '../../ErrorMessages/LoadErrorMessage';
 
-const display_decimals = 2;
-const makeTurnoverLimitRow = arr => (
+const makeTurnoverLimitRow = (currency, arr) => (
     <>
         { arr &&
             arr.map(item =>
                 <Row key={item.name}>
                     <Td>{item.name}</Td>
-                    <Td>{addCommaToNumber(item.turnover_limit, display_decimals)}</Td>
+                    <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
                 </Row>
             )
         }
@@ -37,7 +36,7 @@ const TableHeader = ({ children, is_flex }) => (
 );
 
 const Row = ({ children }) => (
-    <tr style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <tr className='account-management-flex-wrapper account-management-flex-wrapper--space-between'>
         {children}
     </tr>
 );
@@ -86,6 +85,7 @@ class AccountLimits extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='initial-loader--accounts-modal' />;
 
         const { commodities, forex, indices, volidx } = market_specific;
+        const { currency } = this.props;
 
         return (
             <section className='account-limit-container'>
@@ -120,7 +120,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.')}
                                     />
                                 </Td>
-                                <Td>{ addCommaToNumber(open_positions, 0) }</Td>
+                                <Td>{ formatMoney(currency, open_positions, true) }</Td>
                             </Row>
                             <Row>
                                 <Td is_flex>
@@ -133,7 +133,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.')}
                                     />
                                 </Td>
-                                <Td>{ addCommaToNumber(account_balance, display_decimals) }</Td>
+                                <Td>{ formatMoney(currency, account_balance, true) }</Td>
                             </Row>
                             <Row>
                                 <Td is_flex>
@@ -146,7 +146,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
                                     />
                                 </Td>
-                                <Td>{ addCommaToNumber(payout, display_decimals) }</Td>
+                                <Td>{ formatMoney(currency, payout, true) }</Td>
                             </Row>
                         </tbody>
                     </table>
@@ -174,10 +174,10 @@ class AccountLimits extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            { makeTurnoverLimitRow(commodities) }
-                            { makeTurnoverLimitRow(forex) }
-                            { makeTurnoverLimitRow(indices) }
-                            { makeTurnoverLimitRow(volidx) }
+                            { makeTurnoverLimitRow(currency, commodities) }
+                            { makeTurnoverLimitRow(currency, forex) }
+                            { makeTurnoverLimitRow(currency, indices) }
+                            { makeTurnoverLimitRow(currency, volidx) }
                         </tbody>
                     </table>
                     <table className='account-management-table account-management-table--last'>
@@ -193,15 +193,15 @@ class AccountLimits extends React.Component {
                         <tbody>
                             <Row>
                                 <Td>{localize('Total withdrawal allowed')}</Td>
-                                <Td>{addCommaToNumber(num_of_days_limit, display_decimals)}</Td>
+                                <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
                             </Row>
                             <Row>
                                 <Td>{localize('Total withdrawn')}</Td>
-                                <Td>{addCommaToNumber(withdrawal_since_inception_monetary, display_decimals)}</Td>
+                                <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
                             </Row>
                             <Row>
                                 <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                <Td>{addCommaToNumber(remainder, display_decimals)}</Td>
+                                <Td>{formatMoney(currency, remainder, true)}</Td>
                             </Row>
                         </tbody>
                     </table>
@@ -219,5 +219,6 @@ class AccountLimits extends React.Component {
 export default connect(
     ({ client }) => ({
         is_virtual: client.is_virtual,
+        currency  : client.currency,
     }),
 )(AccountLimits);

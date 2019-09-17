@@ -188,6 +188,10 @@
     }
     .account-management-flex-wrapper {
         display: flex;
+
+        &--space-between {
+            justify-content: space-between;
+        }
     }
     .account-management-text-container {
         margin-top: 12px;

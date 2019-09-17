@@ -260,6 +260,11 @@
 
         &-dropdown {
             margin-top: 0.8em;
+            min-width: unset;
+
+            .dc-dropdown__select-arrow {
+                top: 9px;
+            }
         }
         &--display {
             border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;

@@ -59,6 +59,7 @@ export default class TradeStore extends BaseStore {
     @observable is_market_closed = false;
     @observable previous_symbol = '';
     @observable active_symbols = [];
+    @observable should_refresh_active_symbols = false;
 
     // Contract Type
     @observable contract_expiry_type = '';
@@ -217,7 +218,11 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async setActiveSymbols() {
-        const { active_symbols, error } = await WS.activeSymbols();
+        const { active_symbols, error } = this.should_refresh_active_symbols ?
+            // if SmartCharts has requested active_symbols, we wait for the response
+            await BinarySocket.wait('active_symbols')
+            : // else requests new active_symbols
+            await WS.activeSymbols();
 
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
@@ -762,6 +767,12 @@ export default class TradeStore extends BaseStore {
                 time    : ServerTime.get().unix(),
             }));
         }
-        return WS.send(req);
+        if (req.active_symbols) {
+            if (this.should_refresh_active_symbols) {
+                return WS.activeSymbols(req);
+            }
+            return BinarySocket.wait('active_symbols');
+        }
+        return WS.storage.send(req);
     };
 }

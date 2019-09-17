@@ -164,6 +164,16 @@ export const clientNotifications = {
         ),
         type: 'info',
     },
+    password_changed: {
+        key    : 'password_changed',
+        header : localize('Password updated.'),
+        message: (
+            <Localize
+                i18n_default_text='Please log in with your updated password.'
+            />
+        ),
+        type: 'info',
+    },
 };
 
 const hasMissingRequiredField = (account_settings, client) => {

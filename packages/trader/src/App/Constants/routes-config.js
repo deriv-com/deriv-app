@@ -4,24 +4,26 @@ import { Redirect }                   from 'App/Containers/Redirect';
 import { localize }                   from 'App/i18n';
 import { routes }                     from 'Constants';
 
+// TODO: Find a workaround for black flash when on initial load for page route modules
+import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';
+import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
+import ProofOfIdentity     from 'Modules/Account/Sections/Verification/ProofOfIdentity';
+import ProofOfAddress      from 'Modules/Account/Sections/Verification/ProofOfAddress';
+import DerivPassword       from 'Modules/Account/Sections/Security/DerivPassword';
+import AccountLimits       from 'Modules/Account/Sections/Security/AccountLimits';
+import OpenPositions       from 'Modules/Reports/Containers/open-positions.jsx';
+import ProfitTable         from 'Modules/Reports/Containers/profit-table.jsx';
+import Statement           from  'Modules/Reports/Containers/statement.jsx';
+
 import Trade from 'Modules/Trading';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
 
 // Reports Routes
 const Reports       = lazy(() => import(/* webpackChunkName: "reports" */        'Modules/Reports'));
-const OpenPositions = lazy(() => import(/* webpackChunkName: "open_positions" */ 'Modules/Reports/Containers/open-positions.jsx'));
-const ProfitTable   = lazy(() => import(/* webpackChunkName: "profit_table" */   'Modules/Reports/Containers/profit-table.jsx'));
-const Statement     = lazy(() => import(/* webpackChunkName: "statement" */      'Modules/Reports/Containers/statement.jsx'));
 
 // Account Management Routes
-const Account             = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
-const PersonalDetails     = lazy(() => import(/* webpackChunkName: "personal_details" */     'Modules/Account/Sections/Profile/PersonalDetails'));
-const FinancialAssessment = lazy(() => import(/* webpackChunkName: "financial_assessment" */ 'Modules/Account/Sections/Profile/FinancialAssessment'));
-const ProofOfIdentity     = lazy(() => import(/* webpackChunkName: "proof_of_identity" */    'Modules/Account/Sections/Verification/ProofOfIdentity'));
-const ProofOfAddress      = lazy(() => import(/* webpackChunkName: "proof_of_address" */     'Modules/Account/Sections/Verification/ProofOfAddress'));
-const DerivPassword       = lazy(() => import(/* webpackChunkName: "deriv_password" */       'Modules/Account/Sections/Security/DerivPassword'));
-const AccountLimits       = lazy(() => import(/* webpackChunkName: "account_limits" */       'Modules/Account/Sections/Security/AccountLimits'));
+const Account = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

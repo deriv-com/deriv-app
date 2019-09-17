@@ -25,6 +25,7 @@ import {
     ZoomInIcon,
     ZoomOutIcon,
 }                           from './Icons.jsx';
+import AnimateTrade       from './animation-trade.jsx';
 import SaveLoadModal        from './save-load-modal.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
@@ -46,6 +47,7 @@ const Toolbar = ({
     onZoomInOutClick,
     onSortClick,
     onRunClick,
+    getContractStatus,
 }) => {
 
     // const toolbar_element = [
@@ -169,11 +171,17 @@ const Toolbar = ({
                 </div>
             </div>
             <SaveLoadModal />
+            <div className='toolbar__section'>
+                <div className=' toolbar__group'>
+                    <AnimateTrade status={getContractStatus} />
+                </div>
+            </div>
         </div>
     );
 };
 
 Toolbar.propTypes = {
+    getContractStatus  : PropTypes.number,
     onGoogleDriveClick : PropTypes.func,
     onRedoClick        : PropTypes.func,
     onResetClick       : PropTypes.func,
@@ -188,7 +196,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal: PropTypes.func,
 };
 
-export default connect(({ toolbar }) => ({
+export default connect(({ toolbar, animation }) => ({
     onStartClick       : toolbar.onStartClick,
     onRunClick         : toolbar.onRunClick,
     toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
@@ -202,4 +210,5 @@ export default connect(({ toolbar }) => ({
     onRedoClick        : toolbar.onRedoClick,
     onZoomInOutClick   : toolbar.onZoomInOutClick,
     onSortClick        : toolbar.onSortClick,
+    getContractStatus  : animation.getContractStatus,
 }))(Toolbar);

@@ -4,6 +4,7 @@ import               '../assets/sass/scratch/workspace.scss';
 import               '../assets/sass/scratch/toolbox.scss';
 import               '../assets/sass/scratch/flyout.scss';
 import               '../assets/sass/scratch/toolbar.scss';
+import               '../assets/sass/scratch/animation.scss';
 
 const Workspace = () => (
     <React.Fragment>

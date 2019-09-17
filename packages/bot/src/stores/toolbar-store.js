@@ -17,8 +17,8 @@ import { translate }                    from '../utils/tools';
 import googleDrive                      from '../utils/integrations/googleDrive';
 
 export default class ToolbarStore {
-    constructor(flyout) {
-        this.flyout = flyout;
+    constructor(animation) {
+        this.animation = animation;
     }
 
     @observable is_toolbox_open = false;
@@ -29,7 +29,12 @@ export default class ToolbarStore {
     @observable is_google_drive_connected = false;
 
     @action.bound onRunClick = () => {
-        // TODO
+        // Temp logic to show animation
+        let current_status = this.animation.contract_status;
+
+        if (current_status < 4) {current_status += 1;} else { current_status = 0;}
+
+        this.animation.setContractStatus(current_status);
     }
 
     @action.bound onStartClick = () => {

@@ -286,7 +286,7 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.send({ authorize: client.token }, { forced: true });
+                await BinarySocket.authorize(client.token);
             }
         }
 
@@ -306,7 +306,7 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await WS.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
 
         this.registerReactions();
     }
@@ -392,7 +392,7 @@ export default class ClientStore extends BaseStore {
                 });
                 // request a logout
                 requestLogout();
-                this.root_store.modules.trade.clearContract();
+                this.root_store.modules.trade.clearContracts();
                 return;
             }
 
@@ -413,7 +413,8 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
-        await BinarySocket.send({ 'authorize': this.getToken() }, { forced: true });
+        WS.forgetAll('balance');
+        await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
     }
@@ -468,6 +469,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
         });
         this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();
         this.root_store.modules.trade.refresh();

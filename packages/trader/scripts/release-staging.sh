@@ -32,7 +32,7 @@ if [[ -z $(command -v lerna) ]]; then
 fi
 
 message "Creating CNAME" &&
-echo "staging.deriv.app" > ./scripts/CNAME &&
+echo "staging.deriv.app" > ./packages/trader/scripts/CNAME &&
 
 message "Checking npm production value" &&
 if [[ $(npm config get production) =~ ^true$ ]]
@@ -54,4 +54,5 @@ export NODE_ENV=staging &&
 
 message "Running build and deploy" &&
 cd packages/trader/ && npm run deploy:clean &&
+cd ../bot/ && npm run build
 cd ../core/ && npm run deploy:folder bot

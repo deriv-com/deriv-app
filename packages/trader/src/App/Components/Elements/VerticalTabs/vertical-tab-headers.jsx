@@ -17,6 +17,10 @@ class VerticalTabHeaders extends React.PureComponent {
                     // Capitalize only the first letter of the label and make the rest lowercase
                     const label = item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
 
+                    if (item.container && this.props.visible_items.indexOf(item.container) === -1) {
+                        return null;
+                    }
+
                     return (
                         this.props.is_routed ?
                             <NavLink

@@ -1,11 +1,4 @@
-import {
-    fieldGeneratorMapping,
-    pollForContracts,
-    getPredictionForContracts,
-    getBarriersForContracts,
-    getDurationsForContracts,
-}                    from '../../../shared';
-import config        from '../../../../constants/const';
+import ApiHelpers    from '../../../../services/api/api-helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradetype = {
@@ -34,185 +27,37 @@ Blockly.Blocks.trade_definition_tradetype = {
         this.setDeletable(false);
     },
     onchange(event) {
-        const allowedEvents = [Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE, Blockly.Events.END_DRAG];
-        if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        const topParentBlock = this.getTopParent();
-        if (!topParentBlock || topParentBlock.type !== 'trade_definition') {
-            this.enforceParent();
-            return;
-        }
-        const marketBlock = topParentBlock.getChildByType('trade_definition_market');
-        if (!marketBlock) {
-            return;
-        }
-        const symbol = marketBlock.getFieldValue('SYMBOL_LIST');
-        if (!symbol) {
-            return;
-        }
-
-        const updateTradeTypeCatList = (useDefault = false) => {
-            const tradeTypeCatList = this.getField('TRADETYPECAT_LIST');
-            const tradeTypeCatArgs = [fieldGeneratorMapping.TRADETYPECAT_LIST(marketBlock)()];
-            if (useDefault) {
-                tradeTypeCatArgs.push(tradeTypeCatList.getValue());
-            }
-            tradeTypeCatList.updateOptions(...tradeTypeCatArgs);
-        };
-
-        const updateTradeTypeList = (useDefault = false) => {
-            const tradeTypeList = this.getField('TRADETYPE_LIST');
-            const tradeTypeArgs = [fieldGeneratorMapping.TRADETYPE_LIST(this)()];
-            if (useDefault) {
-                tradeTypeArgs.push(tradeTypeList.getValue());
-            }
-            tradeTypeList.updateOptions(...tradeTypeArgs);
-        };
+        this.enforceLimitations();
 
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            if (event.name === 'MARKET_LIST' || event.name === 'SUBMARKET_LIST' || event.name === 'SYMBOL_LIST') {
-                updateTradeTypeCatList();
-            } else if (event.name === 'TRADETYPECAT_LIST') {
-                updateTradeTypeList();
-            } else if (event.name === 'TRADETYPE_LIST') {
-                pollForContracts(symbol).then(contracts => {
-                    this.updatePredictionInputs(contracts);
-                    this.updateBarrierInputs(contracts);
-                    this.updateDurationInputs(contracts);
-                });
-            }
-        } else if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids.includes(this.id)) {
-                updateTradeTypeCatList(true);
-                updateTradeTypeList(true);
-                pollForContracts(symbol).then(contracts => {
-                    this.updateDurationInputs(contracts);
+            if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
+                const { contracts_for } = ApiHelpers.instance;
+                const top_parent_block  = this.getTopParent();
+                const market_block      = top_parent_block.getChildByType('trade_definition_market');
+                const market            = market_block.getFieldValue('MARKET_LIST');
+                const submarket         = market_block.getFieldValue('SUBMARKET_LIST');
+                const symbol            = market_block.getFieldValue('SYMBOL_LIST');
+                const trade_type_cat    = this.getFieldValue('TRADETYPECAT_LIST');
+
+                if (symbol && event.name === 'SYMBOL_LIST') {
+                    contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
+                        const trade_type_cat_block = this.getField('TRADETYPECAT_LIST');
+                        trade_type_cat_block.updateOptions(categories);
+                    });
+                }
+
+                contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
+                    const trade_type_block = this.getField('TRADETYPE_LIST');
+                    trade_type_block.updateOptions(trade_types);
                 });
             }
         }
     },
-    updateBarrierInputs(contracts) {
-        const topParentBlock = this.getTopParent();
-        this.workspace
-            .getAllBlocks()
-            .filter(block => block.type === 'trade_definition_tradeoptions')
-            .forEach(tradeOptionsBlock => {
-                const barrierOffsetNames = ['BARRIER', 'SECONDBARRIER'];
-                const barrierLabels = [translate('High barrier'), translate('Low barrier')];
-
-                const tradeType = topParentBlock.getChildFieldValue('trade_definition_tradetype', 'TRADETYPE_LIST');
-                const durationUnit = tradeOptionsBlock.getFieldValue('DURATIONTYPE_LIST');
-
-                const firstBarrierType =
-                    tradeOptionsBlock.getFieldValue('BARRIERTYPE_LIST') || config.barrierTypes[0][1];
-                const secondBarrierType =
-                    tradeOptionsBlock.getFieldValue('SECONDBARRIERTYPE_LIST') || config.barrierTypes[1][1];
-                const selectedBarrierTypes = [firstBarrierType, secondBarrierType];
-                const barriers = getBarriersForContracts(contracts, tradeType, durationUnit, selectedBarrierTypes);
-
-                if (barriers.values.length === 0) {
-                    tradeOptionsBlock.removeInput('BARRIER', true);
-                    tradeOptionsBlock.removeInput('SECONDBARRIER', true);
-                } else {
-                    Blockly.Events.disable();
-
-                    const firstBarrierInput = tradeOptionsBlock.getInput('BARRIER');
-                    const secondBarrierInput = tradeOptionsBlock.getInput('SECONDBARRIER');
-
-                    if (barriers.values.length > 0) {
-                        if (!firstBarrierInput) {
-                            tradeOptionsBlock.createBarrierInput(barriers);
-                        }
-
-                        if (barriers.values.length === 1 && secondBarrierInput) {
-                            tradeOptionsBlock.removeInput('SECONDBARRIER');
-                        } else if (barriers.values.length === 2 && !secondBarrierInput) {
-                            tradeOptionsBlock.createBarrierInput(barriers, 1);
-                            // Ensure barrier inputs are displayed together
-                            tradeOptionsBlock.moveInputBefore('BARRIER', 'SECONDBARRIER');
-                        }
-
-                        barriers.values.forEach((barrierValue, index) => {
-                            const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
-                            const typeInput = tradeOptionsBlock.getInput(barrierOffsetNames[index]);
-                            const absoluteType = [[translate('Absolute'), 'absolute']];
-
-                            if (durationUnit === 'd') {
-                                typeList.updateOptions(absoluteType);
-                            } else if (barriers.allowBothTypes || barriers.allowAbsoluteType) {
-                                typeList.updateOptions([...config.barrierTypes, ...absoluteType]);
-                            } else {
-                                typeList.updateOptions(config.barrierTypes);
-                            }
-
-                            if (barriers.values.length === 1) {
-                                typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
-                            } else {
-                                typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
-                            }
-                        });
-
-                        // Updates Shadow Block values
-                        const barrierInputArgs = [
-                            contracts,
-                            tradeType,
-                            tradeOptionsBlock.getFieldValue('DURATIONTYPE_LIST'),
-                        ];
-                        tradeOptionsBlock.updateBarrierInputs(...barrierInputArgs);
-                    }
-
-                    tradeOptionsBlock.initSvg();
-                    tradeOptionsBlock.render();
-
-                    Blockly.Events.enable();
-                }
-            });
-    },
-    updatePredictionInputs(contracts) {
-        const topParentBlock = this.getTopParent();
-        const tradeType = topParentBlock.getChildFieldValue('trade_definition_tradetype', 'TRADETYPE_LIST');
-        const predictionRange = getPredictionForContracts(contracts, tradeType);
-
-        this.workspace
-            .getAllBlocks()
-            .filter(block => block.type === 'trade_definition_tradeoptions')
-            .forEach(tradeOptionsBlock => {
-                if (predictionRange.length === 0) {
-                    tradeOptionsBlock.removeInput('PREDICTION_LABEL');
-                    tradeOptionsBlock.removeInput('PREDICTION');
-                } else {
-                    const predictionInput = tradeOptionsBlock.getInput('PREDICTION');
-                    if (predictionInput) {
-                        // TODO: Set new suggested value from API, i.e. first value in prediction range
-                    } else {
-                        tradeOptionsBlock.createPredictionInput(predictionRange);
-                    }
-                }
-                tradeOptionsBlock.initSvg();
-                tradeOptionsBlock.render(true);
-            });
-    },
-    updateDurationInputs(contracts) {
-        const topParentBlock = this.getTopParent();
-        const tradeType = topParentBlock.getChildFieldValue('trade_definition_tradetype', 'TRADETYPE_LIST');
-        const durations = getDurationsForContracts(contracts, tradeType);
-
-        this.workspace
-            .getAllBlocks()
-            .filter(block => block.type === 'trade_definition_tradeoptions')
-            .forEach(tradeOptionsBlock => {
-                const durationUnits = durations.map(duration => [duration.label, duration.unit]);
-                const durationList = tradeOptionsBlock.getField('DURATIONTYPE_LIST');
-                durationList.updateOptions(durationUnits);
-
-                const minDuration = durations.find(duration => duration.unit === durationList.getValue());
-                if (minDuration) {
-                    tradeOptionsBlock.updateDurationInput(durations, minDuration.minimum);
-                }
-            });
-    },
-    enforceParent: Blockly.Blocks.trade_definition_market.enforceParent,
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-Blockly.JavaScript.trade_definition_tradetype = () => '';
+
+Blockly.JavaScript.trade_definition_tradetype = () => {};

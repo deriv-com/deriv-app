@@ -11,12 +11,12 @@
         display: table-cell;
         list-style: none;
         font-size: 14px;
-        font-weight: 700;
         text-align: center;
     }
     &__active {
         @include themify($themes) {
             border-bottom: 2px solid themed('error_color');
+            font-weight: 700;
         }
     }
 }

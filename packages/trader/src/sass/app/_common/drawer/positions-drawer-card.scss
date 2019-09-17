@@ -68,17 +68,6 @@
             background: themed('container_color');
         }
 
-        &--active:before {
-            content: '';
-            top: -1px;
-            left: -1px;
-            width: calc(100% + 2px);
-            height: calc(100% + 2px);
-            position: absolute;
-            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
-            border-radius: $BORDER_RADIUS;
-            pointer-events: none;
-        }
         &:first-child {
             margin-top: 2px;
         }
@@ -96,9 +85,6 @@
             opacity: 0;
             transform: translateY(-16px);
         }
-    }
-    &--active {
-        cursor: default;
     }
     &--green:before {
         background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));

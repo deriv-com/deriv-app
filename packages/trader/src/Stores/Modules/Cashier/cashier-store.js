@@ -585,7 +585,8 @@ export default class CashierStore extends BaseStore {
             this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
-        this.resetPaymentAgent(true);
+        this.config.payment_agent = new ConfigPaymentAgent();
+        // this.resetPaymentAgent(true);
     }
 
     accountSwitcherListener() {

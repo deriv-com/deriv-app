@@ -200,6 +200,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_upgrade() {
+        console.log(this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi));
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
@@ -257,6 +258,7 @@ export default class ClientStore extends BaseStore {
             }
         }
 
+        console.log(can_open_multi);
         return {
             type,
             can_upgrade: !!can_upgrade_to,
@@ -338,7 +340,7 @@ export default class ClientStore extends BaseStore {
             form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
-                this.accountRealReaction(response);
+                await this.accountRealReaction(response);
                 resolve(response);
             } else {
                 reject(response.error.message);
@@ -421,7 +423,7 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.root_store.ui.removeAllNotifications();
         this.setSwitched(loginid);
-        this.responsePayoutCurrencies(await WS.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
 
     @action.bound

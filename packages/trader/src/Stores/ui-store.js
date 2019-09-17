@@ -306,7 +306,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        if (this.notification_messages.indexOf(notification) === -1) {
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
         }
     }

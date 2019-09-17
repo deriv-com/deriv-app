@@ -14,7 +14,6 @@ class AddCryptoCurrency extends Component {
     render() {
         if (this.props.available_crypto_currencies.length === 0) {
             return null;
-
         }
         return (
             <Formik

@@ -76,6 +76,7 @@ class ChangePasswordForm extends React.PureComponent {
                         errors,
                         touched,
                         status,
+                        setFieldTouched,
                         handleChange,
                         handleBlur,
                         handleSubmit,
@@ -101,7 +102,7 @@ class ChangePasswordForm extends React.PureComponent {
                                         />
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
-                                            error={errors.new_password}
+                                            error={touched.new_password && errors.new_password}
                                         >
                                             <Input
                                                 label={localize('New password')}
@@ -111,6 +112,7 @@ class ChangePasswordForm extends React.PureComponent {
                                                 onBlur={handleBlur}
                                                 onChange={(e) => {
                                                     const input = e.target;
+                                                    setFieldTouched('new_password', true);
                                                     if (input) this.updateNewPassword(input.value);
                                                     handleChange(e);
                                                 }}
@@ -137,7 +139,7 @@ class ChangePasswordForm extends React.PureComponent {
                                     is_loading={this.state.is_btn_loading && <ButtonLoading />}
                                     is_submit_success={this.state.is_submit_success}
                                     has_effect
-                                    text={localize('Submit')}
+                                    text={localize('Change Password')}
                                 />
                             </FormFooter>
                         </form>

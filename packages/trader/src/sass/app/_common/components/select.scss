@@ -22,15 +22,15 @@
         align-self: center;
         appearance: none;
         box-sizing: border-box;
-        background: $COLOR_WHITE;
+        background: var(--color-white);
 
         &:hover {
-            border-color: $COLOR_DARK_BLUE_5;
+            border-color: var(--general-hover);
         }
         &:active, &:focus {
             outline: 0;
-            border-color: $COLOR_DARK_BLUE_5;
-            box-shadow: 0 0 0 2px rgba(42, 48, 82, 0.2);
+            border-color: var(--general-active);
+            box-shadow: 0 0 0 2px var(--shadow-menu);
         }
     }
 }

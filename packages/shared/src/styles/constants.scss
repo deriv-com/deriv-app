@@ -20,6 +20,7 @@
     --color-black-11: #00000029;
     --color-white: #ffffff;
     --color-white-1: #fffffff5;
+    --color-white-2: #ffffff29;
     --color-red: #ff444f;
     --color-red-1: #ec3f3f;
     --color-red-2: #cc2e3d;
@@ -154,7 +155,7 @@
         --overlay-outside-dialog: var(--color-black-7);
         --overlay-inside-dialog: var(--color-black-9);
         // Shadow
-        --shadow-menu: var(--color-black-11);
+        --shadow-menu: var(--color-white-2);
         // States
         --state-normal: var(--color-black);
         --state-hover: var(--color-black-5);

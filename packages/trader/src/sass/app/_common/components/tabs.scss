@@ -32,9 +32,7 @@
     &__header {
         @include typeface(--paragraph-left-light-black);
         @include toEm(padding, 16px, 1.2em);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
         cursor: pointer;
 
         &:after {
@@ -58,9 +56,7 @@
     &:hover, &--active {
         .tab__header {
             font-weight: 400;
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
     }
 }
@@ -71,14 +67,14 @@
     bottom: -0.1em;
     left: 0;
     right: 0;
-    @include themify($themes) {
-        border-bottom: 2px solid themed('text_color');
-    }
+    border-bottom: 2px solid var(--text-prominent);
 }
 
 /** @define tab-content */
 .tab-content {
+    /* postcss-bem-linter: ignore */
     p {
         @include typeface(--paragraph-left-normal-black);
+        color: var(--text-prominent);
     }
 }

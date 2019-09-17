@@ -260,7 +260,6 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
-                                                        required
                                                         disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={

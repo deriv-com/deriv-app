@@ -8,13 +8,6 @@
         background-color: themed('container_color');
     }
 
-    &--contract-mode {
-        .trade-container {
-            .chart-container {
-                max-width: calc(100% - #{$SIDEBAR_WIDTH} - 16px);
-            }
-        }
-    }
     &:after {
         z-index: 1;
         position: absolute;
@@ -58,9 +51,6 @@
                 }
             }
         }
-        & + &.app-contents--contract-mode {
-            max-width: unset;
-        }
         .statement {
             &.container {
                 max-width: calc(100% - 252px);
@@ -102,9 +92,14 @@
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 4));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
+            z-index: 1;
+            overflow: hidden;
 
             &-wrapper {
                 z-index: 4;
+            }
+            .contract-card__sell-button--exit {
+                display: none;
             }
         }
         .replay-chart__container {
@@ -179,6 +174,9 @@
             background-color: themed('background_container_color');
         }
 
+        .initial-loader {
+            pointer-events: none;
+        }
         .barspinner {
             display: flex;
             justify-content: center;
@@ -346,11 +344,7 @@
                 background-color: themed('market_overlay_background');
             }
         }
-        &--is-disabled:after {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        &--is-disabled, &--market-closed {
+        &--market-closed {
             & .tooltip--with-label {
                 display: none;
             }

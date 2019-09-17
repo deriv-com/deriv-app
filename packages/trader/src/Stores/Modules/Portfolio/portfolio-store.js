@@ -135,7 +135,7 @@ export default class PortfolioStore extends BaseStore {
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         const { bid_price } = this.positions[i].contract_info;
-        this.positions[i].is_sell_requested = false;
+        this.positions[i].is_sell_requested = true;
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
@@ -208,15 +208,10 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     removePositionById(contract_id) {
-        const { is_contract_mode } = this.root_store.modules.smart_chart;
-        const contract_idx         = this.getPositionIndexById(contract_id);
+        const contract_idx = this.getPositionIndexById(contract_id);
 
         this.positions.splice(contract_idx, 1);
-
-        // check if contract is in view in contract_mode before removing contract details from chart
-        if (is_contract_mode && (+this.root_store.modules.contract_trade.contract_id === +contract_id)) {
-            this.root_store.modules.contract_trade.onCloseContract();
-        }
+        this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
     @action.bound

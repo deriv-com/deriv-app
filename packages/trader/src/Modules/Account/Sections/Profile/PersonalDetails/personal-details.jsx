@@ -54,6 +54,7 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
 const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_number);
 const isValidLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
+const isValidTaxId = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
 
 const InputGroup = ({ children, className }) => (
     <fieldset className='account-management-form-fieldset'>
@@ -118,6 +119,10 @@ class PersonalDetailsForm extends React.Component {
                 errors[field] = localize('Please enter a country or choose one from the dropdown menu');
             }
         });
+
+        if (values.tax_identification_number && !isValidTaxId(values.tax_identification_number)) {
+            errors.tax_identification_number = localize('Should start with letter or number, and may contain hyphen and underscore.');
+        }
 
         return errors;
     };
@@ -260,7 +265,6 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
-                                                        required
                                                         disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={

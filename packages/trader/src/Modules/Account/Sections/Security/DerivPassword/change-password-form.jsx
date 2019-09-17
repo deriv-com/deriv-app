@@ -139,7 +139,7 @@ class ChangePasswordForm extends React.PureComponent {
                                     is_loading={this.state.is_btn_loading && <ButtonLoading />}
                                     is_submit_success={this.state.is_submit_success}
                                     has_effect
-                                    text={localize('Submit')}
+                                    text={localize('Change Password')}
                                 />
                             </FormFooter>
                         </form>

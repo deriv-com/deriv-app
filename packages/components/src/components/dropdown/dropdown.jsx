@@ -298,13 +298,11 @@ class Dropdown extends React.PureComponent {
                                         name={this.props.name}
                                         value={this.props.value}
                                     /> :
-                                    Object.keys(this.props.list).map((key, idx) => (
+                                    Object.keys(this.props.list).map(key => (
                                         <React.Fragment key={key}>
                                             <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
                                             <Items
                                                 className={this.props.classNameItems}
-                                                index={this.state.curr_index}
-                                                index_offset={idx}
                                                 handleSelect={this.handleSelect}
                                                 has_symbol={this.props.has_symbol}
                                                 items={this.props.list[key]}

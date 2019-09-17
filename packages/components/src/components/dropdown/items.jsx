@@ -8,26 +8,24 @@ const Items = ({
     index,
     handleSelect,
     has_symbol,
-    index_offset,
     items,
     name,
     value,
 }) =>  items.map((item, idx) => {
     const symbol_type_class_name = item.text && typeof item.text === 'string' ? `symbols--${(item.text).toLowerCase()}` : '';
-    const item_index = idx + index_offset;
 
     return (
         <div
             className={classNames(
                 'dc-list__item',
-                { 'dc-list__item--highlighted': item_index === index },
+                { 'dc-list__item--highlighted': idx === index },
                 { 'dc-list__item--selected': value === item.value },
                 { 'dc-list__item--disabled': item.disabled }
             )}
             name={name}
             value={item.value}
             onClick={item.disabled ? null : handleSelect.bind(null, item)}
-            key={item_index}
+            key={idx}
         >
             {!!has_symbol && item.has_tooltip &&
                 <Popover

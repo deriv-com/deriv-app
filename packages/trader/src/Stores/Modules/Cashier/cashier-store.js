@@ -780,6 +780,8 @@ export default class CashierStore extends BaseStore {
         // switch the value of selected_from and selected_to
         if (selected_from.value === this.config.account_transfer.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
+        } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) { // not allowed to transfer from MT to MT
+            this.onChangeTransferTo({ target: { value: this.config.account_transfer.accounts_list[0].value } });
         }
 
         this.config.account_transfer.selected_from = selected_from;

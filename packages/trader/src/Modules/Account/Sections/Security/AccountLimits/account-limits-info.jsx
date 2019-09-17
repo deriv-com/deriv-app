@@ -11,6 +11,7 @@ const AccountLimitsInfo = ({
         {!is_virtual &&
             <>
                 <Icon
+                    className='account__inset_header-icon'
                     icon='IconAccountsCurrency'
                     type={currency.toLowerCase()}
                 />

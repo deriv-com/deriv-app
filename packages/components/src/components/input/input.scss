@@ -3,17 +3,17 @@
     position: relative;
     width: 100%;
     border-radius: 4px;
-    border: 1px solid var(--color-grey-2);
+    border: 1px solid var(--border-normal);
     display: flex;
     align-items: center;
     margin-bottom: 1.8rem;
 
     &:focus-within {
-        border-color: var(--color-green);
+        border-color: var(--brand-secondary);
     }
     &__field {
         background: none;
-        color: var(--text-color);
+        color: var(--text-prominent);
         font-size: var(--text-size-s);
         padding: 1rem 1.2rem;
         width: 100%;
@@ -34,9 +34,7 @@
                 transform: translate(-1.6rem, -2.2rem) scale(0.75);
                 color: var(--color-green);
                 padding: 0 4px;
-                @include themify($themes) {
-                    background-color: themed('container_secondary_color');
-                }
+                background-color: var(--fill-normal);
             }
             &::placeholder {
                 opacity: 0.7;
@@ -47,9 +45,7 @@
                 transform: translate(-1.6rem, -2.2rem) scale(0.75);
                 color: var(--text-color-3);
                 padding: 0 4px;
-                @include themify($themes) {
-                    background-color: themed('container_secondary_color');
-                }
+                background-color: var(--fill-normal);
             }
         }
         &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
@@ -82,7 +78,7 @@
     }
     &:not(&--no-placeholder) {
         &__label {
-            color: var(--color-grey);
+            color: var(--text-less-prominent);
             transition: 0.25s ease all;
             transform: translateZ(0);
         }
@@ -90,11 +86,9 @@
     &--no-placeholder {
         label {
             transform: translate(-1.6rem, -2.2rem) scale(0.75);
-            color: var(--color-green);
+            color: var(--brand-secondary);
             padding: 0 4px;
-            @include themify($themes) {
-                background-color: themed('container_secondary_color');
-            }
+            background-color: var(--fill-normal);
         }
     }
 }

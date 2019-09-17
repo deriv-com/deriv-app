@@ -43,24 +43,18 @@
         justify-content: space-around;
         flex-direction: column;
         align-items: flex-start;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-        }
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        background-color: var(--general-main-2);
     }
     &__header {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
         @include typeface(--title-left-bold-black, none);
         @include toEm(margin-bottom, 16px, 1.6em);
+        color: var(--text-prominent);
     }
     &__content {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
         @include typeface(--paragraph-left-normal-black, unset);
         @include toEm(margin-bottom, 32px, 1.4em);
+        color: var(--text-general);
         max-width: 448px;
     }
     &__footer {

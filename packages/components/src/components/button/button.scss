@@ -14,10 +14,11 @@
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
-    background: $COLOR_GREEN_1;
+    background: var(--button-primary-default);
 
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);
+        color: var(--text-general);
     }
     &--link {
         max-width: 220px;
@@ -45,12 +46,12 @@
                 cursor: not-allowed !important;
             }
             .btn__text {
-                color: var(--color-white);
+                color: $color-white;
             }
         }
         // TODO: (colors) remove this line after colors migration complete
         .btn__text {
-            color: $COLOR_WHITE;
+            color: $color-white;
         }
         &--orange {
             background: $COLOR_ORANGE;
@@ -184,6 +185,7 @@
             }
         }
     }
+    // TODO: (colors) remove this line after colors migration complete
     &--flat {
         background: $COLOR_WHITE;
 
@@ -210,6 +212,7 @@
             }
         }
     }
+    // TODO: (colors) remove this line after colors migration complete
     &--alternate {
         background: $COLOR_LIGHT_GRAY_2;
         border-color: $COLOR_LIGHT_GRAY_2;

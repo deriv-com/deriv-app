@@ -6,48 +6,29 @@
     border-radius: $BORDER_RADIUS * 3;
     padding: 2px 8px;
     margin: 0 2px;
+    color: var(--text-prominent);
 
     &--default {
-        @include themify($themes) {
-            color: themed('label_default_color');
-            background-color: themed('label_default_background');
-        }
+        color: $color-black;
+        background-color: var(--status-default);
     }
     &--danger {
-        @include themify($themes) {
-            color: themed('label_danger_color');
-            background-color: themed('label_danger_background');
-        }
+        background-color: var(--status-danger);
     }
     &--warn {
-        @include themify($themes) {
-            color: themed('label_warn_color');
-            background-color: themed('label_warn_background');
-        }
+        background-color: var(--status-warning);
     }
     &--success {
-        @include themify($themes) {
-            color: themed('label_success_color');
-            background-color: themed('label_success_background');
-        }
+        background-color: var(--status-success);
     }
     &--success-invert {
-        @include themify($themes) {
-            color: themed('label_default_color');
-            background-color: themed('label_success_color');
-        }
+        background-color: var(--status-success);
     }
     &--warn-invert {
-        @include themify($themes) {
-            color: themed('label_default_color');
-            background-color: themed('label_warn_color');
-        }
+        background-color: var(--status-warning);
     }
     &--info {
-        @include themify($themes) {
-            color: themed('label_info_color');
-            background-color: themed('label_info_background');
-        }
+        background-color: var(--status-info);
     }
     &--large {
         height: 28px;

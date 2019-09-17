@@ -8,9 +8,7 @@
     z-index: 99;
     will-change: transform;
     transition: transform 0.3s ease;
-    @include themify($themes) {
-        background: themed('container_color');
-    }
+    background: var(--general-main-2);
 
     &__container {
         display: flex;
@@ -19,9 +17,7 @@
         height: 100%;
     }
     &__header {
-        @include themify($themes) {
-            border-bottom: 1px solid themed('border_color');
-        }
+        border-bottom: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
         font-size: 1.6em;
@@ -32,9 +28,7 @@
         padding: 1.6em;
     }
     &__footer {
-        @include themify($themes) {
-            border-top: 1px solid themed('border_color');
-        }
+        border-top: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
         font-size: 1.6em;
@@ -46,9 +40,7 @@
         top: 0;
         width: 18px;
         height: 100vh;
-        @include themify($themes) {
-            background-color: themed('background_color');
-        }
+        background-color: var(--general-section-1);
         display: table-cell;
         vertical-align: middle;
         cursor: pointer;
@@ -67,9 +59,7 @@
             position: relative;
             width: 3px;
             height: 3px;
-            @include themify($themes) {
-                background-color: themed('btn_purchase_disabled_bg');
-            }
+            background-color: var(--text-general);
 
             &:before, &:after {
                 content: '';

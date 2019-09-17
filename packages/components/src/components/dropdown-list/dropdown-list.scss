@@ -5,9 +5,7 @@
     z-index: 1;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
     cursor: pointer;
-    @include themify($themes) {
-        background-color: themed('container_color');
-    }
+    background-color: var(--state-normal);
 
     &__item {
         height: 40px;
@@ -16,9 +14,7 @@
         padding: 1rem 1.6rem;
 
         &:hover {
-            @include themify($themes) {
-                background-color: themed('hover_color');
-            }
+            background-color: var(--state-hover);
         }
     }
 }

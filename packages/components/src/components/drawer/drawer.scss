@@ -29,7 +29,6 @@
     }
     &__content {
         flex-grow: 1;
-        padding: 1.6em;
     }
     &__footer {
         @include themify($themes) {

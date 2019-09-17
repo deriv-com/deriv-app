@@ -104,7 +104,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get current_currency_type () {
-        return this.website_status.currencies_config[this.currency].type;
+        if (this.website_status &&
+            this.website_status.currencies_config &&
+            this.website_status.currencies_config[this.currency]
+        ) {
+            return this.website_status.currencies_config[this.currency].type;
+        }
+
+        return 'virtual';
     }
 
     @computed

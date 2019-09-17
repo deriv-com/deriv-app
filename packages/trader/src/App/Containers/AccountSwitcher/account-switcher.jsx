@@ -91,8 +91,10 @@ class AccountSwitcher extends React.Component {
                             }
                         </div>
 
-                        {!!(this.props.is_upgrade_enabled &&
-                            this.props.upgrade_info.can_open_multi) &&
+                        {(!!(this.props.is_upgrade_enabled &&
+                            this.props.upgrade_info.can_open_multi))
+                        || (!this.props.is_virtual && this.props.current_currency_type === 'fiat')
+                        &&
                             <UpgradeButton
                                 onClick={this.props.openRealAccountSignup}
                                 outlined
@@ -176,6 +178,7 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
+        current_currency_type : client.current_currency_type,
         account_list          : client.account_list,
         can_upgrade           : client.can_upgrade,
         can_upgrade_to        : client.can_upgrade_to,

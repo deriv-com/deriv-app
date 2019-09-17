@@ -271,6 +271,7 @@ export default class UIStore extends BaseStore {
             'noopener',
             'noreferrer',
         );
+        this.closeRealAccountSignup();
         // TODO enable this one cashier is active
         // setTimeout(this.toggleCashierModal, 300);
     }

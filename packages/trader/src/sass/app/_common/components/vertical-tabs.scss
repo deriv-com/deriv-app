@@ -10,6 +10,14 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         background-color: themed('tab_background_color');
     }
 
+    &__content-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+    }
     &--full-screen {
         min-height: $MIN_HEIGHT;
 
@@ -52,7 +60,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     }
     &__tab {
         display: flex;
-        min-width: 28%;
+        min-width: 240px;
         height: 100%;
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;

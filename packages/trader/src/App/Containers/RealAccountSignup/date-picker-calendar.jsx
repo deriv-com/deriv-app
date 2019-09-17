@@ -10,7 +10,9 @@ class DatePickerCalendar extends Component {
 
         this.state = {
             date: toMoment(props.value).unix(),
-            view: 'date',
+            view: 'year',
+            year: undefined,
+            month: undefined,
         };
     }
 
@@ -36,8 +38,11 @@ class DatePickerCalendar extends Component {
             year  : 'month',
             decade: 'year',
         };
+        if (type === 'year') {
+            this.props.onChange(moment.utc(e.currentTarget.dataset.year, 'YYYY').unix());
+        }
         if (type === 'day') {
-            this.props.onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD').unix());
+            this.props.onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD').unix(), 'day');
         } else {
             const date = toMoment(this.props.value)[type === 'decade'
                 ? 'year'

@@ -95,9 +95,11 @@ class DateOfBirth extends Component {
                                     max_date={this.state.max_date}
                                     min_date={this.state.min_date}
                                     date={this.state.date}
-                                    onChange={(val) => {
+                                    onChange={(val, type) => {
                                         setFieldValue(name, val, true);
-                                        this.closeDatePicker();
+                                        if (type === 'day') {
+                                            this.closeDatePicker();
+                                        }
                                     }}
                                     value={value}
                                 />
@@ -154,12 +156,10 @@ class PersonalDetails extends Component {
         const validations = {
             first_name: [
                 v => !!v,
-                v => v.length > 2 && v.length < 50,
                 v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
-                v => v.length > 2 && v.length < 50,
                 v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
         };
@@ -170,7 +170,6 @@ class PersonalDetails extends Component {
         };
         const messages = [
             '%s is required',
-            '%s is too short',
             '%s is not in a proper format.',
         ];
         const errors = {};
@@ -204,8 +203,6 @@ class PersonalDetails extends Component {
                         handleSubmit,
                         isSubmitting,
                         errors,
-                        touched,
-                        values,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='personal-details-form'>

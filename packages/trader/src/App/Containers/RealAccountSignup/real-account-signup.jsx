@@ -45,7 +45,7 @@ class RealAccountSignup extends Component {
                             prev={this.state.previous_currency}
                             current={this.state.current_currency}
                             onCancel={this.closeModal}
-                            onSubmit={this.props.closeSignupAndOpenCashier}
+                            onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
                     title: false,
@@ -56,7 +56,7 @@ class RealAccountSignup extends Component {
                         <SuccessCurrencyDialog
                             current={this.state.current_currency}
                             onCancel={this.closeModal}
-                            onSubmit={this.props.closeSignupAndOpenCashier}
+                            onSubmit={this.closeModalThenOpenCashier}
                             success_message={this.state.success_message}
                         />
                     )
@@ -65,6 +65,12 @@ class RealAccountSignup extends Component {
         };
     }
 
+    closeModalThenOpenCashier = (e) => {
+        this.props.closeSignupAndOpenCashier();
+        setTimeout(() => {
+            this.setState(initialState);
+        }, 400)
+    }
     showSetCurrencySuccess = (previous_currency, current_currency) => {
         this.setState({
             previous_currency,

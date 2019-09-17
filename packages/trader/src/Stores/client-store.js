@@ -200,7 +200,6 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_upgrade() {
-        console.log(this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi));
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
@@ -258,7 +257,6 @@ export default class ClientStore extends BaseStore {
             }
         }
 
-        console.log(can_open_multi);
         return {
             type,
             can_upgrade: !!can_upgrade_to,
@@ -294,43 +292,51 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async accountRealReaction(response) {
-        const client_accounts = JSON.parse(LocalStore.get(storage_key));
-        const {
-            oauth_token,
-            currency,
-            client_id,
-        } = response.new_account_real;
-        this.is_populating_account_list = true;
-        const authorize_response = await BinarySocket.authorize(oauth_token);
+    accountRealReaction(response) {
+        return new Promise(async (resolve) => {
+            runInAction(() => {
+                this.is_populating_account_list = true;
+            });
+            const client_accounts           = JSON.parse(LocalStore.get(storage_key));
+            const {
+                oauth_token,
+                currency,
+                client_id,
+            }                               = response.new_account_real;
+            const authorize_response        = await BinarySocket.authorize(oauth_token);
 
-        const new_data                     = {};
-        new_data.token                     = oauth_token;
-        new_data.residence                 = authorize_response.authorize.country;
-        new_data.currency                  = authorize_response.authorize.currency;
-        new_data.is_virtual                = authorize_response.authorize.is_virtual;
-        new_data.landing_company_name      = authorize_response.authorize.landing_company_fullname;
-        new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+            const new_data                     = {};
+            new_data.token                     = oauth_token;
+            new_data.residence                 = authorize_response.authorize.country;
+            new_data.currency                  = authorize_response.authorize.currency;
+            new_data.is_virtual                = authorize_response.authorize.is_virtual;
+            new_data.landing_company_name      = authorize_response.authorize.landing_company_fullname;
+            new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
 
-        client_accounts[client_id] = new_data;
-        runInAction(() => {
-            this.accounts = client_accounts;
-            this.loginid = client_id;
-            localStorage.setItem(storage_key, JSON.stringify(client_accounts));
-            localStorage.setItem('active_loginid', client_id);
-            this.is_populating_account_list = false;
-            this.upgrade_info = this.getBasicUpgradeInfo();
+            runInAction(() => client_accounts[client_id] = new_data);
+            this.setLoginInformation(client_accounts, client_id);
+            this.root_store.ui.removeAllNotifications();
+            await this.init();
+            this.responseLandingCompany(
+                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence),
+            );
+            this.setAccountSettings(
+                (await WS.authorized.storage.getSettings())
+                    .get_settings,
+            );
+            await this.root_store.modules.trade.initAccountCurrency(currency);
+            resolve();
         });
-        this.root_store.ui.removeAllNotifications();
-        await this.init();
-        this.responseLandingCompany(
-            await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
-        );
-        this.setAccountSettings(
-            (await WS.authorized.storage.getSettings())
-                .get_settings
-        );
-        await this.root_store.modules.trade.initAccountCurrency(currency);
+    }
+
+    @action.bound
+    setLoginInformation(client_accounts, client_id) {
+        this.accounts = client_accounts;
+        this.loginid  = client_id;
+        localStorage.setItem(storage_key, JSON.stringify(client_accounts));
+        localStorage.setItem('active_loginid', client_id);
+        this.is_populating_account_list = false;
+        this.upgrade_info               = this.getBasicUpgradeInfo();
     }
 
     @action.bound
@@ -357,9 +363,7 @@ export default class ClientStore extends BaseStore {
             if (!response.error) {
                 this.selectCurrency(currency);
                 ClientBase.set('currency', currency);
-                const clonedAccounts = Object.assign({}, this.accounts);
-                clonedAccounts[this.loginid].currency = currency;
-                this.setAccounts(clonedAccounts);
+                runInAction(() => this.accounts[this.loginid].currency = currency);
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);

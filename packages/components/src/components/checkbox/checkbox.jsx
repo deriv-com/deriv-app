@@ -41,7 +41,6 @@ class Checkbox extends React.PureComponent {
         return (
             <label htmlFor={ id } className={ classNames('dc-checkbox', className) }>
                 <input
-                    ref={ this.props.input_ref }
                     className='dc-checkbox__input'
                     type='checkbox'
                     id={ id }
@@ -72,6 +71,4 @@ Checkbox.propTypes = {
     label         : PropTypes.string,
 };
 
-export default React.forwardRef((props, ref) => <Checkbox 
-    input_ref={ref} {...props}
-/>);
+export default Checkbox;

@@ -16,14 +16,14 @@ const i18n_config = {
             return crc32(defaultValue);
         },
     },
-    lng: window.location.search ?
-        window.location.search.includes('lang=') ?
-            window.location.search
-                .substr(1).split('&')
-                .find(query => query.includes('lang='))
-                .split('=')[1]
-                .toUpperCase()
-            : undefined
+    lng: (
+        window.location.search
+        && window.location.search.includes('lang=')
+    ) ? window.location.search
+            .substr(1).split('&')
+            .find(query => query.includes('lang='))
+            .split('=')[1]
+            .toUpperCase()
         : undefined,
     fallbackLng: 'EN',
 };

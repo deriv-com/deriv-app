@@ -2,11 +2,7 @@ import moment            from 'moment';
 import { isEmptyObject } from '_common/utility';
 import ServerTime        from '_common/base/server_time';
 
-export const getChartConfig = (
-    contract_info,
-    is_digit_contract,
-    is_from_purchase,
-) => {
+export const getChartConfig = (contract_info) => {
     if (isEmptyObject(contract_info)) return null;
     const start       = contract_info.date_start;
     const end         = getEndTime(contract_info);
@@ -14,12 +10,11 @@ export const getChartConfig = (
     const chart_type  = getChartType(start, end || null);
 
     return {
-        chart_type                : contract_info.tick_count ? 'mountain' : chart_type,
-        granularity               : contract_info.tick_count ? 0 : granularity,
-        end_epoch                 : end,
-        start_epoch               : !is_from_purchase ? start : null,
-        scroll_to_epoch           : contract_info.purchase_time,
-        should_show_bottom_widgets: is_digit_contract,
+        chart_type     : contract_info.tick_count ? 'mountain' : chart_type,
+        granularity    : contract_info.tick_count ? 0 : granularity,
+        end_epoch      : end,
+        start_epoch    : start,
+        scroll_to_epoch: contract_info.purchase_time,
     };
 };
 
@@ -52,6 +47,18 @@ export const getDisplayStatus = (contract_info) => {
         status = contract_info.profit >= 0 ? 'won' : 'lost';
     }
     return status;
+};
+
+export const isContractElapsed = (contract_info, tick) => {
+    if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
+    const end_time = getEndTime(contract_info);
+    if (end_time && tick.epoch) {
+        const seconds = moment.duration(
+            moment.unix(tick.epoch).diff(moment.unix(end_time))
+        ).asSeconds();
+        return (seconds >= 2);
+    }
+    return false;
 };
 
 export const getFinalPrice = (contract_info) => (

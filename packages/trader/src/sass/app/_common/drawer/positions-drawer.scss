@@ -27,39 +27,6 @@ $header-height: 3.6em;
         color: themed('text_color');
     }
 
-    &--contract-mode {
-        &:before {
-            @include themify($themes) {
-                background: themed('background_container_color');
-            }
-            content: '';
-            position: absolute;
-            top: 38px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 38px);
-        }
-        .positions-drawer-card__wrapper:not(.positions-drawer-card__wrapper--active) {
-            &:after {
-                position: absolute;
-                opacity: 1;
-                pointer-events: none;
-                top: -1px;
-                left: -1px;
-                width: calc(100% + 2px);
-                height: calc(100% + 2px);
-                transition: opacity 0.15s linear;
-                border-radius: $BORDER_RADIUS;
-                content: '';
-                @include themify($themes) {
-                    background-color: rgba(themed('container_color'), 0.76);
-                }
-            }
-            &:hover:after {
-                opacity: 0;
-            }
-        }
-    }
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
         opacity: 1;

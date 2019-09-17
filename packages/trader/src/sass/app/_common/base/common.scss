@@ -79,7 +79,7 @@ html {
 /** @define theme */
 .theme {
     &--light {
-        background: var(--color-white);
+        background: $color-white;
     }
     &--dark {
         background: var(--color-black);
@@ -119,7 +119,7 @@ html {
         text-decoration: underline;
     }
     &--white {
-        color: var(--color-white);
+        color: $color-white;
     }
 }
 

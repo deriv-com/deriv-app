@@ -6,13 +6,6 @@
     backface-visibility: hidden;
     background-color: var(--general-main-1);
 
-    &--contract-mode {
-        .trade-container {
-            .chart-container {
-                max-width: calc(100% - #{$SIDEBAR_WIDTH} - 16px);
-            }
-        }
-    }
     &:after {
         z-index: 1;
         position: absolute;
@@ -51,9 +44,6 @@
                     }
                 }
             }
-        }
-        & + &.app-contents--contract-mode {
-            max-width: unset;
         }
         .statement {
             &.container {
@@ -169,6 +159,9 @@
         border-radius: $BORDER_RADIUS;
         background-color: var(--general-main-1);
 
+        .initial-loader {
+            pointer-events: none;
+        }
         .barspinner {
             display: flex;
             justify-content: center;
@@ -331,11 +324,7 @@
             content: '';
             background-color: var(--overlay-outside-dialog);
         }
-        &--is-disabled:after {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        &--is-disabled, &--market-closed {
+        &--market-closed {
             & .tooltip--with-label {
                 display: none;
             }

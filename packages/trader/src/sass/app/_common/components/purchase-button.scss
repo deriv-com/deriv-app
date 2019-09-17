@@ -16,7 +16,7 @@
         @include typeface(--paragraph-left-bold-active);
     }
     &__info {
-        color: var(--color-white);
+        color: $color-white;
         text-align: left;
         position: relative;
         display: flex;

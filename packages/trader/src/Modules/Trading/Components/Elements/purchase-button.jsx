@@ -10,7 +10,6 @@ const PurchaseButton = ({
     buy_info,
     index,
     info,
-    is_contract_mode,
     is_disabled,
     is_high_low,
     is_loading,
@@ -25,11 +24,11 @@ const PurchaseButton = ({
         if (!should_fade && is_loading) return '';
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-    const is_button_disabled = ((is_contract_mode || is_disabled) && !is_loading) || is_proposal_empty;
+    const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
     return (
         <Button
-            is_disabled={is_contract_mode || is_disabled}
+            is_disabled={is_disabled}
             id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames(
                 'btn-purchase',
@@ -80,7 +79,6 @@ PurchaseButton.propTypes = {
     currency            : PropTypes.string,
     index               : PropTypes.number,
     info                : PropTypes.object,
-    is_contract_mode    : PropTypes.bool,
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,

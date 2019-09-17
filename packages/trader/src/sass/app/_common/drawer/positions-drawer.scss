@@ -24,35 +24,6 @@ $header-height: 3.6em;
     background-color: var(--general-section-1);
     color: var(--text-prominent);
 
-    &--contract-mode {
-        &:before {
-            background: var(--general-section-1);
-            content: '';
-            position: absolute;
-            top: 38px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 38px);
-        }
-        .positions-drawer-card__wrapper:not(.positions-drawer-card__wrapper--active) {
-            &:after {
-                position: absolute;
-                opacity: 1;
-                pointer-events: none;
-                top: -1px;
-                left: -1px;
-                width: calc(100% + 2px);
-                height: calc(100% + 2px);
-                transition: opacity 0.15s linear;
-                border-radius: $BORDER_RADIUS;
-                content: '';
-                background: var(--overlay-inside-dialog);
-            }
-            &:hover:after {
-                opacity: 0;
-            }
-        }
-    }
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
         opacity: 1;

@@ -15,7 +15,7 @@
         width: inherit;
         height: inherit;
         animation: slide 1s cubic-bezier(1, 0, 0.5, 0) infinite;
-        background-image: linear-gradient(to left, rgba(255, 255, 255, 0), var(--color-white) 10%, rgba(255, 255, 255, 0));
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0), $color-white 10%, rgba(255, 255, 255, 0));
         opacity: 0.32;
     }
 }

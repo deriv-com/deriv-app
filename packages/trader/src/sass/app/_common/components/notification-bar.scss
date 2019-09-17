@@ -34,7 +34,7 @@
         cursor: pointer;
     }
     &__icon path {
-        fill: var(--color-white);
+        fill: $color-white;
     }
     &--is-active {
         transform: translate(-50%, 0);

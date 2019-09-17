@@ -1,12 +1,10 @@
-import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-import { localize }         from 'App/i18n';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
-// import ToggleCashier        from './toggle-cashier.jsx';
+import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
@@ -31,20 +29,20 @@ export class AccountActions extends Component {
 
     render() {
         const {
-            // active_cashier_tab,
+            active_cashier_tab,
             balance,
             can_upgrade,
             can_upgrade_to,
             currency,
             is_acc_switcher_on,
-            // is_cashier_modal_on,
+            is_cashier_modal_on,
             is_logged_in,
-            // is_payment_agent_visible,
+            is_payment_agent_visible,
             is_virtual,
             loginid,
             onClickUpgrade,
             toggleAccountsDialog,
-            // toggleCashierModal,
+            toggleCashierModal,
         } = this.props;
         if (is_logged_in) {
             return (
@@ -69,31 +67,15 @@ export class AccountActions extends Component {
                             window.open(urlFor('user/accounts', undefined, undefined, true));
                         }}
                     />}
-                    {/* {!is_virtual && */}
-                    {/* <ToggleCashier */}
-                    {/*    active_tab={active_cashier_tab} */}
-                    {/*    className='acc-info__button' */}
-                    {/*    toggleCashier={toggleCashierModal} */}
-                    {/*    is_cashier_visible={is_cashier_modal_on} */}
-                    {/*    is_payment_agent_visible={is_payment_agent_visible} */}
-                    {/* /> */}
-                    {/* } */}
-                    {!(
-                        is_virtual
-                    ) && // TODO: remove this when cashier pop up is ready
-                    <Button
-                        id='dt_deposit_button'
-                        className='btn--primary btn--primary--orange acc-info__button'
-                        has_effect
-                        text={localize('Deposit')}
-                        onClick={() => {
-                            window.open(urlFor('cashier', undefined, undefined, true),
-                                '_blank',
-                                'noopener',
-                                'noreferrer',
-                            );
-                        }}
-                    />}
+                    {!is_virtual &&
+                    <ToggleCashier
+                        active_tab={active_cashier_tab}
+                        className='acc-info__button'
+                        toggleCashier={toggleCashierModal}
+                        is_cashier_visible={is_cashier_modal_on}
+                        is_payment_agent_visible={is_payment_agent_visible}
+                    />
+                    }
                 </React.Fragment>
             );
         }

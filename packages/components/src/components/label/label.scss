@@ -22,6 +22,7 @@
         background-color: var(--status-success);
     }
     &--success-invert {
+        color: var(--text-colored-background);
         background-color: var(--status-success);
     }
     &--warn-invert {

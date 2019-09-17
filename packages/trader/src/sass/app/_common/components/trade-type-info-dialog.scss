@@ -57,7 +57,7 @@
         p {
             @include typeface(--paragraph-left-normal-black, none);
             @include toEm(margin-bottom, 8px, 1.4em);
-            color: var(--text-less-prominent);
+            color: var(--text-general);
         }
     }
     &__gif {
@@ -65,7 +65,7 @@
         height: 140px;
         border-radius: 4px;
         background-color: var(--general-section-2);
-        color: var(--text-less-prominent);
+        color: var(--text-general);
 
         &-image {
             width: 270px;

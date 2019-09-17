@@ -42,7 +42,7 @@
     margin-bottom: 0.1em;
     transition: transform 0.3s opacity 0.3s;
     background-color: var(--state-normal);
-    color: var(--text-less-prominent);
+    color: var(--text-general);
 
     &:hover {
         background-color: var(--state-hover);

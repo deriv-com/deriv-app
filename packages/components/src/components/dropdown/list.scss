@@ -54,7 +54,7 @@
             color: var(--text-general);
         }
         &--disabled {
-            color: var(--text-less-prominent);
+            color: var(--text-disabled);
         }
         &-symbol {
             @include typeface(--paragraph-left-normal-black);

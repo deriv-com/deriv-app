@@ -15,7 +15,7 @@
         align-items: center;
         @include typeface(--paragraph-left-normal-black);
         background-color: var(--state-normal);
-        color: var(--text-less-prominent);
+        color: var(--text-general);
 
         &:not(:first-child) {
             margin-left: 5px;

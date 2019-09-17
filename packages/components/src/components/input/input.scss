@@ -78,7 +78,7 @@
     }
     &:not(&--no-placeholder) {
         &__label {
-            color: var(--text-less-prominent);
+            color: var(--text-general);
             transition: 0.25s ease all;
             transform: translateZ(0);
         }

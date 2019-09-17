@@ -8,7 +8,7 @@
         overflow: hidden;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-        background-color: var(--general-main-2);
+        background-color: var(--general-section-1);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
 
         &--hide {

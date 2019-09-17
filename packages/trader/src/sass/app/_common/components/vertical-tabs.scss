@@ -6,7 +6,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     align-items: flex-start;
     justify-content: flex-start;
     border-radius: $BORDER_RADIUS;
-    background-color: var(--general-main-1);
+    background-color: var(--general-section-1);
 
     &--full-screen {
         min-height: $MIN_HEIGHT;
@@ -48,14 +48,13 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         height: 100%;
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
-        background-color: var(--state-normal);
+        background-color: var(--general-section-1);
     }
     &__header-title {
-        @include typeface(--paragraph-center-bold-black, none);
+        @include typeface(--title-center-bold-black, none);
         @include toEm(line-height, 20px);
         color: var(--text-general);
         padding: 16px;
-        height: 40px;
         display: flex;
         align-items: center;
         transition: background-color 0.1s ease-in;
@@ -66,7 +65,6 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         @include toEm(line-height, 20px);
         color: var(--text-general);
         padding: 10px 16px;
-        height: 40px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -78,7 +76,8 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
         &--active {
             @include typeface(--paragraph-left-bold-active, none);
-            background-color: var(--state-active);
+            color: var(--text-prominent);
+            background-color: var(--state-normal);
             border-left: 4px solid var(--brand-red-coral);
         }
         &__link {

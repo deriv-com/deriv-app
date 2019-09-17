@@ -118,19 +118,19 @@
             border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
-            color: var(--text-less-prominent);
+            color: var(--text-general);
             border: 1px dashed var(--button-secondary-default);
 
             &:before {
                 content: '\002B';
-                color: var(--text-less-prominent);
+                color: var(--text-general);
                 float: left;
             }
             &:hover {
                 background: var(--button-secondary-hover);
             }
             &:visited, &:active {
-                color: var(--text-less-prominent);
+                color: var(--text-general);
             }
         }
     }
@@ -163,7 +163,7 @@
                 background-color: var(--state-hover);
             }
             .acc-switcher__id {
-                color: var(--text-less-prominent);
+                color: var(--text-general);
             }
             &--selected {
                 background: var(--state-active);

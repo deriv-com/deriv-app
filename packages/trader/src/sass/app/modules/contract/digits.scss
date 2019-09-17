@@ -72,7 +72,7 @@
             position: absolute;
             font-size: 0.65em;
             font-weight: 400;
-            color: var(--text-less-prominent);
+            color: var(--text-general);
         }
         &-value {
             @include typeface(--paragraph-center-bold-black);

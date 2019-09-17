@@ -1,0 +1,22 @@
+.dc-tabs {
+    &__list {
+        @include themify($themes) {
+            border-bottom: 1px solid themed('border_color');
+        }
+        display: table;
+        width: 100%;
+        line-height: 40px;
+    }
+    &__item {
+        display: table-cell;
+        list-style: none;
+        font-size: 14px;
+        text-align: center;
+    }
+    &__active {
+        @include themify($themes) {
+            border-bottom: 2px solid themed('error_color');
+            font-weight: 700;
+        }
+    }
+}

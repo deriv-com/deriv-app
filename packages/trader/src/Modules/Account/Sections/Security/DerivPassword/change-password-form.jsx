@@ -101,7 +101,7 @@ class ChangePasswordForm extends React.PureComponent {
                                         />
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
-                                            error={touched.new_password && errors.new_password}
+                                            error={errors.new_password}
                                         >
                                             <Input
                                                 label={localize('New password')}
@@ -131,8 +131,8 @@ class ChangePasswordForm extends React.PureComponent {
                                     className='btn--primary'
                                     type='submit'
                                     is_disabled={isSubmitting ||
-                                        (errors.new_password || !values.new_password) ||
-                                        (errors.old_password || !values.old_password)
+                                        !!((errors.new_password || !values.new_password) ||
+                                        (errors.old_password || !values.old_password))
                                     }
                                     is_loading={this.state.is_btn_loading && <ButtonLoading />}
                                     is_submit_success={this.state.is_submit_success}

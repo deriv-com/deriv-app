@@ -10,7 +10,7 @@
             justify-content: space-between;
 
             .mt5-dashboard__welcome-message--paragraph {
-                max-width: 835px;
+                max-width: 59.7em;
             }
         }
         &--heading {
@@ -49,17 +49,63 @@
     &__download-center {
         border-radius: 4px;
         border: solid 1px #d6dadb;
+        padding-top: 1.6em;
+        padding-bottom: 1.6em;
 
         &-options {
             display: flex;
             justify-content: space-between;
 
-            &--desktop,
-            &--mobile {
+            &--desktop, &--mobile {
                 display: flex;
                 flex-flow: column nowrap;
                 align-items: center;
             }
+            &--desktop {
+                margin-left: 7em;
+
+                &-devices {
+                    width: 24em;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    margin-bottom: 1.6em;
+                }
+                &-links {
+                    width: 43em;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+            &--mobile {
+                margin-right: 7em;
+
+                &-devices {
+                    margin-bottom: 1.6em;
+                }
+                &-links {
+                    width: 27.1em;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+        &--heading {
+            @include typeface(--title-left-bold-black, none);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            line-height: 1.5em;
+            margin-left: 1.3em;
+            margin-bottom: 1.5em;
+        }
+        &--hint {
+            @include typeface(--xsmall-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+            margin-top: 1.6em;
+            margin-left: 7.05em;
         }
     }
 }

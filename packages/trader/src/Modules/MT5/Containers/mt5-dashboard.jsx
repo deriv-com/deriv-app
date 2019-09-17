@@ -11,6 +11,7 @@ import IconInstallationGoogle  from 'Assets/SvgComponents/mt5/icon-installation-
 import IconInstallationLinux   from 'Assets/SvgComponents/mt5/icon-installation-linux.svg';
 import IconInstallationMac     from 'Assets/SvgComponents/mt5/icon-installation-mac.svg';
 import IconInstallationWindows from 'Assets/SvgComponents/mt5/icon-installation-windows.svg';
+import { connect }             from 'Stores/connect';
 import 'Sass/app/modules/mt5-dashboard.scss';
 
 const RealDisplay = () => (
@@ -30,26 +31,28 @@ class MT5Dashboard extends React.Component {
     }
 
     render() {
-        const { location } = this.props;
+        const { is_first_time } = this.props;
 
         return (
             <div className='mt5-dashboard'>
 
-                <div className='mt5-dashboard__welcome-message'>
-                    <h1 className='mt5-dashboard__welcome-message--heading'>
-                        <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
-                    </h1>
-                    <div className='mt5-dashboard__welcome-message--content'>
-                        <p className='mt5-dashboard__welcome-message--paragraph'>
-                            <Localize i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.' />
-                        </p>
-                        <Button className='mt5-dashboard__welcome-message--button' type='button'>
+                { is_first_time &&
+                    <div className='mt5-dashboard__welcome-message'>
+                        <h1 className='mt5-dashboard__welcome-message--heading'>
+                            <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
+                        </h1>
+                        <div className='mt5-dashboard__welcome-message--content'>
                             <p className='mt5-dashboard__welcome-message--paragraph'>
-                                <Localize i18n_default_text='Learn more' />
+                                <Localize i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.' />
                             </p>
-                        </Button>
+                            <Button className='mt5-dashboard__welcome-message--button' type='button'>
+                                <p className='mt5-dashboard__welcome-message--paragraph'>
+                                    <Localize i18n_default_text='Learn more' />
+                                </p>
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div className='mt5-dashboard__accounts-display'>
                     {/* TODO: Add MT5 accounts display component */}
@@ -57,33 +60,33 @@ class MT5Dashboard extends React.Component {
                 </div>
 
                 <div className='mt5-dashboard__download-center'>
-                    <h1 className='mt5-dashboard__welcome-message--heading'>
+                    <h1 className='mt5-dashboard__download-center--heading'>
                         <Localize i18n_default_text='After creating your account, download MT5 for your desktop or mobile' />
                     </h1>
 
                     <div className='mt5-dashboard__download-center-options'>
                         <div className='mt5-dashboard__download-center-options--desktop'>
-                            <div>
+                            <div className='mt5-dashboard__download-center-options--desktop-devices'>
                                 <IconDeviceMac />
                                 <IconDeviceLaptop />
                             </div>
-                            <div>
+                            <div className='mt5-dashboard__download-center-options--desktop-links'>
                                 <IconInstallationWindows />
                                 <IconInstallationMac />
                                 <IconInstallationLinux />
                             </div>
                         </div>
                         <div className='mt5-dashboard__download-center-options--mobile'>
-                            <div>
+                            <div className='mt5-dashboard__download-center-options--mobile-devices'>
                                 <IconDeviceMobile />
                             </div>
-                            <div>
+                            <div className='mt5-dashboard__download-center-options--mobile-links'>
                                 <IconInstallationApple />
                                 <IconInstallationGoogle />
                             </div>
                         </div>
                     </div>
-                    <p className='mt5-dashboard__welcome-message--hint'>
+                    <p className='mt5-dashboard__download-center--hint'>
                         <Localize i18n_default_text='The MT5 platform does not support Windows XP, Windows 2003 and Windows Vista.' />
                     </p>
                 </div>
@@ -92,4 +95,6 @@ class MT5Dashboard extends React.Component {
     }
 }
 
-export default MT5Dashboard;
+export default connect(({ client }) => ({
+    is_first_time: client.is_logged_in, // TODO: this is a dummy observable, to be changed when MT5 related data available
+}))(MT5Dashboard);

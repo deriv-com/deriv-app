@@ -369,7 +369,7 @@ class PersonalDetailsForm extends React.Component {
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?
-                                                true
+                                                false
                                                 :
                                                 !!((errors.first_name || !values.first_name) ||
                                                 (errors.last_name || !values.last_name) ||

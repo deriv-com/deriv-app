@@ -7,9 +7,7 @@
     cursor: pointer;
     text-decoration: none;
     position: relative;
-    @include themify($themes) {
-        color: themed('navbar_active_color');
-    }
+    color: var(--text-general);
 
     &__result {
         position: absolute;
@@ -23,7 +21,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background-color: var(--overlay-inside-dialog);
 
+        &--won, &--won:after {
+            // TODO: [color] change to css var when the color is ready
+            @include themify($themes) {
+                background-image: themed('won_gradient_color');
+            }
+        }
+        &--lost, &--lost:after {
+            // TODO: [color] change to css var when the color is ready
+            @include themify($themes) {
+                background-image: themed('lost_gradient_color');
+            }
+        }
         &:hover {
             background: 0 !important;
 
@@ -39,17 +50,6 @@
             border-radius: $BORDER_RADIUS;
             z-index: 2;
         }
-        @include themify($themes) {
-            background-color: rgba(themed('container_color'), 0.8);
-
-            &--won, &--won:after {
-                background-image: themed('won_gradient_color');
-            }
-            &--lost, &--lost:after {
-                background-image: themed('lost_gradient_color');
-            }
-        }
-
         &--enter, &--exit {
             opacity: 0;
         }
@@ -64,9 +64,7 @@
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
-        @include themify($themes) {
-            background: themed('container_color');
-        }
+        background: var(--general-section-2);
 
         &--active:before {
             content: '';
@@ -142,9 +140,7 @@
             font-weight: normal;
             white-space: nowrap;
             max-width: 90px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
         &-value {
             font-size: 1.2em;
@@ -171,9 +167,10 @@
         /* postcss-bem-linter: ignore */
         .category-type {
             .color1-fill {
-                @include themify($themes) {
-                    fill: themed('icon_color');
-                }
+                fill: var(--brand-red-coral);
+            }
+            .color2-fill {
+                fill: var(--brand-secondary);
             }
         }
     }
@@ -189,9 +186,7 @@
         justify-content: flex-start;
         margin-left: 4px;
         align-items: center;
-        @include themify($themes) {
-            color: themed('navbar_active_color');
-        }
+        color: var(--text-less-prominent);
 
         &-label {
             font-size: 1em;
@@ -199,9 +194,7 @@
             margin-bottom: 4px;
             white-space: nowrap;
             max-width: 90px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
         &--movement {
             margin-left: 2px;
@@ -219,9 +212,7 @@
     }
     &__remaining-time {
         font-size: 1em;
-        @include themify($themes) {
-            color: themed('text_secondary_color');
-        }
+        color: var(--text-less-prominent);
     }
     &__profit-loss {
         font-size: 1.2em;
@@ -237,15 +228,13 @@
             font-weight: normal;
             white-space: nowrap;
             max-width: 90px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
         &--is-crypto {
             margin-left: -6px;
         }
         &--negative {
-            color: $COLOR_RED;
+            color: var(--text-loss-danger);
 
             &:before {
                 content: '-';
@@ -253,7 +242,7 @@
             }
         }
         &--positive {
-            color: $COLOR_GREEN_2;
+            color: var(--text-profit-success);
 
             &:before {
                 content: '+';
@@ -274,9 +263,7 @@
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
         margin: 4px -4px -4px;
-        @include themify($themes) {
-            border-top: 1px solid themed('background_container_color');
-        }
+        border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
             opacity: 1;

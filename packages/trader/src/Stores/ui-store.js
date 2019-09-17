@@ -217,20 +217,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showPositionsFooterToggle() {
-        this.show_positions_toggle = true;
-    }
-
-    @action.bound
-    hidePositionsFooterToggle() {
-        this.show_positions_toggle = false;
-    }
-
-    @action.bound
-    toggleCashierModal(active_tab) {
-        if (/^(deposit|withdraw)$/.test(active_tab)) {
-            this.setCashierActiveTab(active_tab);
-        }
+    toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
@@ -292,15 +279,15 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        if (this.notification_messages.indexOf(notification) === -1) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        }
     }
 
     @action.bound
-    removeNotification(notification) {
-        const index = this.notification_messages.indexOf(notification);
-        if (index > -1) {
-            this.notification_messages.splice(index, 1);
-        }
+    removeNotification({key}) {
+        this.notification_messages = this.notification_messages
+            .filter(n => n.key !== key);
     }
 
     @action.bound

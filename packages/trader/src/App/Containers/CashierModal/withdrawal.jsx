@@ -15,20 +15,16 @@ class Withdrawal extends React.Component {
     }
 
     render() {
+        if (!this.props.error.message) {
+            return ((this.props.verification_code || this.props.iframe_url) ?
+                <Withdraw /> : <SendEmail />
+            );
+        }
         return (
-            <React.Fragment>
-                {this.props.error.message ?
-                    <Error
-                        error={this.props.error}
-                    />
-                    :
-                    ((this.props.verification_code || this.props.iframe_url) ?
-                        <Withdraw />
-                        :
-                        <SendEmail />
-                    )
-                }
-            </React.Fragment>
+            <Error
+                error={this.props.error}
+                container='withdraw'
+            />
         );
     }
 }

@@ -1,7 +1,7 @@
 import { toJS }       from 'mobx';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { FastMarker } from 'smartcharts-beta';
+import { FastMarker } from 'Modules/SmartChart';
 
 const ChartMarker = ({
     marker_config,

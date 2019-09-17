@@ -66,7 +66,7 @@ export default connect(({ ui, modules, gtm }) => (
     {
         is_dark_mode      : ui.is_dark_mode_on,
         toggleDarkMode    : ui.toggleDarkMode,
-        updateBarrierColor: modules.smart_chart.updateBarrierColor,
+        updateBarrierColor: modules.trade.updateBarrierColor,
         pushDataLayer     : gtm.pushDataLayer,
     }
 ))(ThemeSelectSettings);

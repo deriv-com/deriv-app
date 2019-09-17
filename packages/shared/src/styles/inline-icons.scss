@@ -18,10 +18,10 @@
         @include colorIcon(var(--text-disabled), none);
     }
     &.white {
-        @include colorIcon(var(--text-colored-background));
+        @include colorIcon(var(--text-prominent));
     }
     &.border_hover_color {
-        @include colorIcon(var(--text-general));
+        @include colorIcon(var(--text-prominent));
     }
     &.secondary {
         @include colorIcon(var(--text-less-prominent));

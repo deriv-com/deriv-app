@@ -258,7 +258,7 @@ class FinancialAssessment extends React.Component {
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
-                                            (!!(errors.income_source || !values.income_source) ||
+                                            !!((errors.income_source || !values.income_source) ||
                                             (errors.employment_status || !values.employment_status) ||
                                             (errors.employment_industry || !values.employment_industry) ||
                                             (errors.occupation || !values.occupation) ||

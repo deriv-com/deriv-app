@@ -67,6 +67,7 @@ export default class UIStore extends BaseStore {
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
+    @observable modal_index        = 0;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -227,6 +228,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    setModalIndex(index = 0) {
+        this.modal_index = index;
+    }
+
+    @action.bound
     toggleSettingsModal() {
         this.is_settings_modal_on = !this.is_settings_modal_on;
     }
@@ -285,7 +291,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotification({key}) {
+    removeNotification({ key }) {
         this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
     }

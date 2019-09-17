@@ -1,37 +1,44 @@
 import classNames                      from 'classnames';
 import PropTypes                       from 'prop-types';
 import React                           from 'react';
+import { connect }                     from 'Stores/connect';
 import { VerticalTabContentContainer } from './vertical-tab-content-container.jsx';
 import { VerticalTabHeaders }          from './vertical-tab-headers.jsx';
 
-class VerticalTab extends React.PureComponent {
+class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
-        if (props.is_routed) {
-            const applicable_routes = props.list.filter(item => (
-                item.path === props.current_path || item.default
-            ));
-            const selected = applicable_routes.length > 1
-                ? applicable_routes[applicable_routes.length - 1]
-                : applicable_routes[0];
-
-            this.state = {
-                selected,
-            };
-        } else {
-            this.state = {
-                selected: props.list[props.selected_index || 0],
-            };
-        }
+        this.setSelectedIndex(props);
     }
 
+    setSelectedIndex = ({ is_routed, list, selected_index, current_path }) => {
+        let index;
+        if (is_routed) {
+            const applicable_routes = list.filter(item => (
+                item.path === current_path || item.default
+            ));
+            const selected = applicable_routes.length > 1
+                ? applicable_routes.length - 1
+                : 0;
+
+            index = typeof selected_index === 'object' ? applicable_routes.indexOf(selected) : selected;
+        } else {
+            index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
+        }
+        this.props.setModalIndex(index);
+    };
+
     changeSelected = (e) => {
-        this.setState({
-            selected: e,
+        this.setSelectedIndex({
+            current_path  : this.props.current_path,
+            is_routed     : this.props.is_routed,
+            list          : this.props.list,
+            selected_index: e,
         });
     };
 
     render() {
+        const selected = this.props.list[this.props.modal_index];
         return (
             <div
                 className={classNames('vertical-tab', {
@@ -41,7 +48,7 @@ class VerticalTab extends React.PureComponent {
                 <VerticalTabHeaders
                     items={this.props.list}
                     onChange={this.changeSelected}
-                    selected={this.state.selected}
+                    selected={selected}
                     is_routed={this.props.is_routed}
                     header_title={this.props.header_title}
                     visible_items={this.props.visible_items}
@@ -51,7 +58,7 @@ class VerticalTab extends React.PureComponent {
                     action_bar_classname={this.props.action_bar_classname}
                     id={this.props.id}
                     items={this.props.list}
-                    selected={this.state.selected}
+                    selected={selected}
                     is_routed={this.props.is_routed}
                 />
             </div>
@@ -83,8 +90,15 @@ VerticalTab.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
+    modal_index   : PropTypes.number,
     selected_index: PropTypes.number,
+    setModalIndex : PropTypes.func,
     visible_items : PropTypes.array,
 };
 
-export default VerticalTab;
+export default connect(
+    ({ ui }) => ({
+        setModalIndex: ui.setModalIndex,
+        modal_index  : ui.modal_index,
+    })
+)(VerticalTab);

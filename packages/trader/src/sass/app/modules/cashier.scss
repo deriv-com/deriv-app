@@ -130,8 +130,16 @@
             margin: 0 1.6rem;
         }
     }
-    &__text--bold {
-        font-weight: bold;
+    &__text {
+        font-size: 1.4rem;
+        line-height: 1.43;
+        max-width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+
+        &--bold {
+            font-weight: bold;
+        }
     }
     /** @define cashier-error */
     &-error {
@@ -168,13 +176,6 @@
         @include themify($themes) {
             color: themed('text_primary_color');
         }
-    }
-    &__text {
-        font-size: 1.4rem;
-        line-height: 1.43;
-        max-width: 70%;
-        margin-left: auto;
-        margin-right: auto;
     }
     &__verify-button {
         margin-top: 3.2rem;
@@ -386,6 +387,9 @@
         }
         &-details {
             &-from, &-to {
+                // 16px is the width of the -> arrow
+                // 3.2rem is the margin around the -> arrow
+                // divide by two since we have two elements: from and to
                 width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
                 display: flex;
                 align-items: center;
@@ -402,6 +406,15 @@
         margin-top: 3.2rem;
         min-width: 6.5rem;
         height: 4rem;
+    }
+    &__no-balance {
+        &-icon {
+            margin: 10.7rem 0 1.6rem;
+        }
+        &-button {
+            height: 4rem;
+            margin-top: 3.2rem;
+        }
     }
 }
 

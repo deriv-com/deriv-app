@@ -1,10 +1,11 @@
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { connect }            from 'Stores/connect';
-import AccountTransferForm    from './AccountTransfer/account-transfer-form.jsx';
-import AccountTransferReceipt from './AccountTransfer/account-transfer-receipt.jsx';
-import Error                  from './error.jsx';
-import Loading                from '../../../templates/_common/components/loading.jsx';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { connect }              from 'Stores/connect';
+import AccountTransferForm      from './AccountTransfer/account-transfer-form.jsx';
+import AccountTransferNoBalance from './AccountTransfer/account-transfer-no-balance.jsx';
+import AccountTransferReceipt   from './AccountTransfer/account-transfer-receipt.jsx';
+import Error                    from './error.jsx';
+import Loading                  from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
     componentDidMount() {
@@ -24,10 +25,15 @@ class AccountTransfer extends React.Component {
                         {this.props.error.button_text ?
                             <Error error={this.props.error} />
                             :
-                            (this.props.is_transfer_successful ?
-                                <AccountTransferReceipt />
+                            (this.props.has_no_balance ?
+                                <AccountTransferNoBalance setModalIndex={this.props.setModalIndex} />
                                 :
-                                <AccountTransferForm error={this.props.error} />)
+                                (this.props.is_transfer_successful ?
+                                    <AccountTransferReceipt />
+                                    :
+                                    <AccountTransferForm error={this.props.error} />
+                                )
+                            )
                         }
                     </React.Fragment>
                 }
@@ -39,19 +45,23 @@ class AccountTransfer extends React.Component {
 AccountTransfer.propTypes = {
     container             : PropTypes.string,
     error                 : PropTypes.object,
+    has_no_balance        : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
     onMount               : PropTypes.func,
     setActiveTab          : PropTypes.func,
+    setModalIndex         : PropTypes.func,
 };
 
 export default connect(
-    ({ modules }) => ({
+    ({ modules, ui }) => ({
         container             : modules.cashier.config.account_transfer.container,
         error                 : modules.cashier.config.account_transfer.error,
-        onMount               : modules.cashier.onMountAccountTransfer,
+        has_no_balance        : modules.cashier.config.account_transfer.has_no_balance,
         is_loading            : modules.cashier.is_loading,
         is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
+        onMount               : modules.cashier.onMountAccountTransfer,
         setActiveTab          : modules.cashier.setActiveTab,
+        setModalIndex         : ui.setModalIndex,
     })
 )(AccountTransfer);

@@ -231,6 +231,7 @@ class PersonalDetailsForm extends React.Component {
                                                     <Autocomplete
                                                         { ...field }
                                                         data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
                                                         type='text'
                                                         label={localize('Place of birth')}
                                                         error={
@@ -251,6 +252,7 @@ class PersonalDetailsForm extends React.Component {
                                                     <Autocomplete
                                                         { ...field }
                                                         data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
@@ -323,6 +325,7 @@ class PersonalDetailsForm extends React.Component {
                                                     <Autocomplete
                                                         { ...field }
                                                         data-lpignore='true'
+                                                        autoComplete='new-password' // prevent chrome autocomplete
                                                         type='text'
                                                         label={localize('Tax residence')}
                                                         error={touched.tax_residence_text && errors.tax_residence_text}

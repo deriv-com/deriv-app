@@ -82,6 +82,7 @@ class Autocomplete extends React.PureComponent {
             onItemSelection,
             value,
             list_items,
+            autoComplete,
             ...otherProps
         } = this.props;
 
@@ -91,7 +92,7 @@ class Autocomplete extends React.PureComponent {
                     <Input
                         { ...otherProps }
                         className='dc-autocomplete__field'
-                        autoComplete='off'
+                        autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onFocus={(e) => this.showDropdownList(e) }
                         onInput={ this.filterList }

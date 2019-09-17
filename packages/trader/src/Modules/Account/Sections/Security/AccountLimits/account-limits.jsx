@@ -101,7 +101,7 @@ class AccountLimits extends React.Component {
                     <table className='account-management-table'>
                         <thead>
                             <Row>
-                                <TableHeader>{localize('Trading limits - item')}</TableHeader>
+                                <TableHeader>{localize('Trading limits - Item')}</TableHeader>
                                 <TableHeader>{localize('Limit')}</TableHeader>
                             </Row>
                             <tr className='account-management-table__divider'>

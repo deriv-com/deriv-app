@@ -352,6 +352,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Tax residence')}
                                                         error={touched.tax_residence_text && errors.tax_residence_text}
+                                                        disabled={values.tax_residence_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             (item) => setFieldValue('tax_residence_text', item.text, true)

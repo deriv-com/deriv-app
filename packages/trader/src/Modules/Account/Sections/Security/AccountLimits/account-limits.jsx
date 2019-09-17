@@ -15,12 +15,12 @@ import {
 import DemoMessage          from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage     from '../../ErrorMessages/LoadErrorMessage';
 
-const makeTurnoverLimitRow = (currency, arr) => (
+const makeTurnoverLimitRow = (currency, arr, title) => (
     <>
         { arr &&
             arr.map(item =>
                 <Row key={item.name}>
-                    <Td>{item.name}</Td>
+                    <Td>{title && `${title} - `}{item.name}</Td>
                     <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
                 </Row>
             )
@@ -120,7 +120,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.')}
                                     />
                                 </Td>
-                                <Td>{ formatMoney(currency, open_positions, true) }</Td>
+                                <Td>{ open_positions }</Td>
                             </Row>
                             <Row>
                                 <Td is_flex>
@@ -163,7 +163,7 @@ class AccountLimits extends React.Component {
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'
                                         icon='info'
-                                        message={localize('Presents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
+                                        message={localize('Represents the maximum volume of contracts that you may purchase in any given trading day.')}
                                         margin={0}
                                     />
                                 </TableHeader>
@@ -175,7 +175,7 @@ class AccountLimits extends React.Component {
                         </thead>
                         <tbody>
                             { makeTurnoverLimitRow(currency, commodities) }
-                            { makeTurnoverLimitRow(currency, forex) }
+                            { makeTurnoverLimitRow(currency, forex, localize('Forex')) }
                             { makeTurnoverLimitRow(currency, indices) }
                             { makeTurnoverLimitRow(currency, volidx) }
                         </tbody>

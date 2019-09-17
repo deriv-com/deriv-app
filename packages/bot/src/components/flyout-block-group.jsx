@@ -14,32 +14,29 @@ const FlyoutBlockGroup = (props) => {
     const { display_name, description } = block_meta;
 
     return (
-        <div className='flyout__item'>
-            {
-                Object.keys(block_nodes).map(key => {
-                    return (
-                        <div key={key}>
-                            <div className='flyout__item-header'>
-                                <div className='flyout__item-label'>{display_name}</div>
-                                <div className='flyout__item-buttons'>
-                                    <button className='flyout__button flyout__button-add flyout__button-add-hide' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[key])}>
-                                        {translate('Add')}
-                                    </button>
-                                </div>
-                            </div>
-                            <div className='flyout__item-description'>
-                                {description}
-                                {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a></p>}
-                            </div>
-                            <FlyoutBlock
-                                should_center_block={true}
-                                block_node={block_nodes[key]}
-                            />
+        Object.keys(block_nodes).map(key => {
+            return (
+                <div className='flyout__item' key={key}>
+                    <div className='flyout__item-header'>
+                        <div className='flyout__item-label'>{display_name}</div>
+                        <div className='flyout__item-buttons'>
+                            <button className='flyout__button flyout__button-add flyout__button-add-hide' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[key])}>
+                                {translate('Add')}
+                            </button>
                         </div>
-                    );
-                })
-            }
-        </div>
+                    </div>
+                    <div className='flyout__item-description'>
+                        {description}
+                        {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more.')}</a></p>}
+                    </div>
+                    <FlyoutBlock
+                        should_center_block={true}
+                        block_node={block_nodes[key]}
+                    />
+                </div>
+            );
+        })
+       
     );
 };
 

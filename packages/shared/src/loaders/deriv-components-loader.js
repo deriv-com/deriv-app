@@ -8,6 +8,10 @@ stylesheets.
     import 'deriv-components/lib/button.css';
 */
 
+function getKebabCase(str) {
+    return str.split(/(?=[A-Z])/).join('-').toLowerCase();
+}
+
 module.exports = function(source, map) {
     const lines  = source.split(/\n/);
     const mapped_lines = lines.map(line => {
@@ -17,12 +21,12 @@ module.exports = function(source, map) {
         }
         const components = matches[1].replace(/\s+/g, '').split(',');
         const replace = components.map(c => `
-import ${c} from 'deriv-components/lib/${c.toLocaleLowerCase()}';
-import 'deriv-components/lib/${c.toLocaleLowerCase()}.css';
+import ${c} from 'deriv-components/lib/${getKebabCase(c)}';
+import 'deriv-components/lib/${getKebabCase(c)}.css';
         `).join('\n');
 
         return replace;
     });
 
-    this.callback(null, mapped_lines.join('\n'), map);
+    return this.callback(null, mapped_lines.join('\n'), map);
 };

@@ -1,8 +1,13 @@
 /* eslint-disable func-names, no-underscore-dangle */
-Blockly.FieldDropdown.prototype.updateOptions = function(options, opt_default = null, should_trigger_event = true) {
+Blockly.FieldDropdown.prototype.updateOptions = function(
+    options,
+    opt_default = null,
+    should_trigger_event = true,
+    should_pretend_empty = false
+) {
     Blockly.Events.disable();
 
-    const previous_value    = this.getValue();
+    const previous_value    = !should_pretend_empty && this.getValue() || '';
     const has_default_value = opt_default && options.findIndex(item => item[1] === opt_default) !== -1;
 
     this.menuGenerator_ = options;
@@ -22,10 +27,9 @@ Blockly.FieldDropdown.prototype.updateOptions = function(options, opt_default = 
     if (Blockly.DropDownDiv.isVisible()) {
         Blockly.DropDownDiv.hideWithoutAnimation();
     }
-
+    
     if (should_trigger_event) {
         const event = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
-
         Blockly.Events.fire(event);
     }
 };

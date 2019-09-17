@@ -1,7 +1,7 @@
 import React            from 'react';
 import Workspace        from './workspace.jsx';
-import LoadModal        from './modal/load-modal.jsx';
-import SaveModal        from './modal/save-modal.jsx';
+import Toolbar          from './toolbar.jsx';
+import { connect }      from '../stores/connect';
 import                       '../assets/sass/bot.scss';
 
 class Bot extends React.Component {
@@ -17,8 +17,7 @@ class Bot extends React.Component {
         return (
             <React.Fragment>
                 <Workspace />
-                <LoadModal />
-                <SaveModal />
+                <Toolbar />
             </React.Fragment>
         );
     }

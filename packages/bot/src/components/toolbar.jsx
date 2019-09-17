@@ -1,10 +1,15 @@
-import React            from 'react';
-import PropTypes        from 'prop-types';
-import classNames       from 'classnames';
+import React                from 'react';
+import PropTypes            from 'prop-types';
+import classNames           from 'classnames';
 import {
     Button,
     Input,
-    Form }              from 'deriv-components';
+}                           from 'deriv-components';
+import {
+    Field,
+    Formik,
+    Form,
+}                           from 'formik';
 import {
     StartIcon,
     CloseIcon,
@@ -19,32 +24,29 @@ import {
     ReaarangeIcon,
     ZoomInIcon,
     ZoomOutIcon,
-} from './Icons.jsx';
-import StatusProgress   from './status-progress.jsx';
-import { connect }      from '../stores/connect';
-import { translate }    from '../utils/tools';
+}                           from './Icons.jsx';
+import SaveLoadModal        from './save-load-modal.jsx';
+import { connect }          from '../stores/connect';
+import { translate }        from '../utils/tools';
 
 const initial_search_value = { search: '' };
 const initial_botname_value = { botname: 'Untitled Bot' };
 
-const Toolbar = props => {
-    const {
-        onStartClick,
-        onSearch,
-        onSearchBlur,
-        onSearchClear,
-        onBotnameTyped,
-        onResetClick,
-        onBrowseClick,
-        onSaveClick,
-        // onGoogleDriveClick,
-        onUndoClick,
-        onRedoClick,
-        onZoomInOutClick,
-        onSortClick,
-        onRunClick,
-        contractStatus,
-    } = props;
+const Toolbar = ({
+    onStartClick,
+    onSearch,
+    onSearchBlur,
+    onSearchClear,
+    onBotnameTyped,
+    onResetClick,
+    toggleSaveLoadModal,
+    // onGoogleDriveClick,
+    onUndoClick,
+    onRedoClick,
+    onZoomInOutClick,
+    onSortClick,
+    onRunClick,
+}) => {
 
     // const toolbar_element = [
     //     { id: 'start', type: 'button', text: 'Start', action: onStartClick },
@@ -90,56 +92,72 @@ const Toolbar = props => {
                     </span>
                 </Button>
                 <div className='toolbar__form'>
-                    <Form
+                    <Formik
                         initialValues={initial_search_value}
                         onSubmit={values => onSearch(values)}
                     >
                         {
                             ({ submitForm, values: { search }, setValues }) => (
-                                <Input
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    name='search'
-                                    label={translate('Search block...')}
-                                    placeholder={translate('Search block...')}
-                                    onKeyUp={submitForm}
-                                    onFocus={submitForm}
-                                    onBlur={onSearchBlur}
-                                    trailing_icon={
-                                        search ?
-                                            <button className='toolbar__btn-icon' onClick={() => onSearchClear(setValues)}><CloseIcon /></button> :
-                                            <SearchIcon />
-                                    }
-                                />
+                                <Form>
+                                    <Field name='search'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='toolbar__form-field'
+                                                type='text'
+                                                name='search'
+                                                placeholder={translate('Search block...')}
+                                                onKeyUp={submitForm}
+                                                onFocus={submitForm}
+                                                onBlur={onSearchBlur}
+                                                trailing_icon={
+                                                    search ?
+                                                        <CloseIcon
+                                                            className='toolbar__btn-icon'
+                                                            onClick={() => onSearchClear(setValues)}
+                                                        />
+                                                        : <SearchIcon />
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </Form>
                             )
                         }
-                    </Form>
+                    </Formik>
                 </div>
                 <div className='toolbar__form'>
-                    <Form
+                    <Formik
                         initialValues={initial_botname_value}
                         onSubmit={values => onBotnameTyped(values)}
                     >
                         {
                             ({ submitForm }) => (
-                                <Input
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    name='botname'
-                                    onKeyUp={submitForm}
-                                    label={translate('Bot name')}
-                                    trailing_icon={
-                                        <RenameIcon />
-                                    }
-                                />
+                                <Form>
+                                    <Field name='botname'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='toolbar__form-field'
+                                                type='text'
+                                                name='botname'
+                                                onKeyUp={submitForm}
+                                                label={translate('Bot name')}
+                                                trailing_icon={
+                                                    <RenameIcon />
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </Form>
                             )
                         }
-                    </Form>
+                    </Formik>
                 </div>
                 <div className='toolbar__group toolbar__group-btn'>
-                    <button className='toolbar__btn-icon' onClick={onBrowseClick}><OpenIcon /></button>
+                    <button className='toolbar__btn-icon' onClick={() => toggleSaveLoadModal(false)}><OpenIcon /></button>
                     <button className='toolbar__btn-icon' onClick={onResetClick}><NewFileIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={onSaveClick}><SaveIcon /></button>
+                    <button className='toolbar__btn-icon' onClick={() => toggleSaveLoadModal(true)}><SaveIcon /></button>
                     <div className='vd' />
                     <button className='toolbar__btn-icon' onClick={onUndoClick}><UndoIcon />️</button>
                     <button className='toolbar__btn-icon' onClick={onRedoClick}><RedoIcon /></button>
@@ -150,48 +168,38 @@ const Toolbar = props => {
                     <button className='toolbar__btn-icon' onClick={() => onZoomInOutClick(false)}><ZoomOutIcon /></button>
                 </div>
             </div>
-            <div className='toolbar__section'>
-                <StatusProgress status={contractStatus} />
-            </div>
+            <SaveLoadModal />
         </div>
     );
 };
 
 Toolbar.propTypes = {
-    contractStatus    : PropTypes.string,
-    handleFileChange  : PropTypes.func,
-    onBrowseClick     : PropTypes.func,
-    onConfirmSave     : PropTypes.func,
-    onGoogleDriveClick: PropTypes.func,
-    onRedoClick       : PropTypes.func,
-    onResetClick      : PropTypes.func,
-    onRunClick        : PropTypes.func,
-    onSaveClick       : PropTypes.func,
-    onSearch          : PropTypes.func,
-    onSearchBlur      : PropTypes.func,
-    onSearchClear     : PropTypes.func,
-    onSortClick       : PropTypes.func,
-    onStartClick      : PropTypes.func,
-    onUndoClick       : PropTypes.func,
-    onZoomInOutClick  : PropTypes.func,
+    onGoogleDriveClick : PropTypes.func,
+    onRedoClick        : PropTypes.func,
+    onResetClick       : PropTypes.func,
+    onRunClick         : PropTypes.func,
+    onSearch           : PropTypes.func,
+    onSearchBlur       : PropTypes.func,
+    onSearchClear      : PropTypes.func,
+    onSortClick        : PropTypes.func,
+    onStartClick       : PropTypes.func,
+    onUndoClick        : PropTypes.func,
+    onZoomInOutClick   : PropTypes.func,
+    toggleSaveLoadModal: PropTypes.func,
 };
 
 export default connect(({ toolbar }) => ({
-    onStartClick      : toolbar.onStartClick,
-    onRunClick        : toolbar.onRunClick,
-    contractStatus    : toolbar.contractStatus,
-    onSearch          : toolbar.onSearch,
-    onSearchBlur      : toolbar.onSearchBlur,
-    onSearchClear     : toolbar.onSearchClear,
-    onBotnameTyped    : toolbar.onBotnameTyped,
-    onResetClick      : toolbar.onResetClick,
-    onBrowseClick     : toolbar.onBrowseClick,
-    onSaveClick       : toolbar.onSaveClick,
-    onGoogleDriveClick: toolbar.onGoogleDriveClick,
-    onUndoClick       : toolbar.onUndoClick,
-    onRedoClick       : toolbar.onRedoClick,
-    handleFileChange  : toolbar.handleFileChange,
-    onConfirmSave     : toolbar.onConfirmSave,
-    onZoomInOutClick  : toolbar.onZoomInOutClick,
-    onSortClick       : toolbar.onSortClick,
+    onStartClick       : toolbar.onStartClick,
+    onRunClick         : toolbar.onRunClick,
+    toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
+    onSearch           : toolbar.onSearch,
+    onSearchBlur       : toolbar.onSearchBlur,
+    onSearchClear      : toolbar.onSearchClear,
+    onBotnameTyped     : toolbar.onBotnameTyped,
+    onResetClick       : toolbar.onResetClick,
+    onGoogleDriveClick : toolbar.onGoogleDriveClick,
+    onUndoClick        : toolbar.onUndoClick,
+    onRedoClick        : toolbar.onRedoClick,
+    onZoomInOutClick   : toolbar.onZoomInOutClick,
+    onSortClick        : toolbar.onSortClick,
 }))(Toolbar);

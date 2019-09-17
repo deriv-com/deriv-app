@@ -1,4 +1,5 @@
 import React        from 'react';
+import drive        from '../assets/icons/google-drive-active.svg';
 import arrow1       from '../assets/icons/ic-arrow-1.svg';
 import arrow2       from '../assets/icons/ic-arrow-2.svg';
 import logo         from '../assets/icons/ic-logo.svg';
@@ -21,14 +22,15 @@ import performance  from '../assets/icons/performance-window.svg';
 import rearrange    from '../assets/icons/rearrange.svg';
 import zoomIn       from '../assets/icons/zoom-in.svg';
 import zoomOut      from '../assets/icons/zoom-out.svg';
+import local        from '../assets/icons/shape.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
-    const { className } = props;
+    const { className, onClick } = props;
     const vb = svgItem.viewBox.split(' ').slice(2);
 
     return (
-        <svg width={vb[0]} height={vb[1]} className={`icon ${className}`}>
+        <svg width={vb[0]} height={vb[1]} className={`icon ${className || ''}`} onClick={onClick}>
             { /* eslint-disable-next-line */ }
             <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>
@@ -57,3 +59,5 @@ export const PerformIcon  = Icon(performance);
 export const ReaarangeIcon = Icon(rearrange);
 export const ZoomInIcon   = Icon(zoomIn);
 export const ZoomOutIcon  = Icon(zoomOut);
+export const LocalIcon    = Icon(local);
+export const DriveIcon    = Icon(drive);

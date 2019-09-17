@@ -1,21 +1,11 @@
 import './blocks';
 import './hooks';
-import {
-    save,
-    addLoadersFirst,
-    cleanUpOnLoad,
-    addDomAsBlock,
-    cleanBeforeExport,
-}                                     from './utils';
-import Interpreter                    from '../services/tradeEngine/utils/interpreter';
-import createError                    from '../utils/error';
-import { translate }                  from '../utils/lang/i18n';
-import { observer as globalObserver } from '../utils/observer';
 
-export const scratchWorkspaceInit = async () => {
+export const scratchWorkspaceInit = async handleFileChange => {
     try {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
+        const toolbar_heigh = document.getElementById('toolbar').clientHeight;
 
         // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
@@ -50,11 +40,14 @@ export const scratchWorkspaceInit = async () => {
 
         const onWorkspaceResize = () => {
             const x = 0;
-            const y = document.getElementById('toolbar').clientHeight;
+            const y = toolbar_heigh;
         
             // Position scratch_div over scratch_area.
             el_scratch_div.style.left   = `${x}px`;
             el_scratch_div.style.top    = `${y}px`;
+
+            // el_scratch_div.style.left   = '0px';
+            // el_scratch_div.style.top    = '0px';
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight}px`;
             
@@ -73,218 +66,28 @@ export const scratchWorkspaceInit = async () => {
 
         window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();
+
+        const handleDragOver = e => {
+            e.stopPropagation();
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+        };
+
+        const dropZone = document.body;
+
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', handleFileChange, false);
+
+        // resize run panel height
+        const run_drawer = document.getElementsByClassName('dc-drawer')[0];
+        const drawer_toggle = document.getElementsByClassName('dc-drawer__toggle')[0];
+        const drawer_height = `calc(100vh - ${   toolbar_heigh + 82  }px)`;
+        const drawer_top = `${toolbar_heigh + 2}px`;
+
+        run_drawer.style.height = drawer_toggle.style.height = drawer_height;
+        run_drawer.style.top = drawer_top;
     } catch (error) {
         // TODO: Handle error.
         throw error;
     }
 };
-
-const disableStrayBlocks = () => {
-    const top_blocks = Blockly.derivWorkspace.getTopBlocks();
-
-    top_blocks.forEach(block => {
-        if (block.isMainBlock() || !block.isIndependentBlock()) {
-            block.setDisabled(true);
-        }
-    });
-};
-
-export const loadWorkspace = xml => {
-    Blockly.Events.setGroup('load');
-    Blockly.mainWorkspace.clear();
-
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-    addLoadersFirst(xml).then(
-        () => {
-            Blockly.Events.setGroup(false);
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-        },
-        e => {
-            Blockly.Events.setGroup(false);
-            throw e;
-        }
-    );
-};
-
-export const loadBlocks = (xml, dropEvent = {}) => {
-    const variables = xml.getElementsByTagName('variables');
-    if (variables.length > 0) {
-        Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
-    }
-    Blockly.Events.setGroup('load');
-    addLoadersFirst(xml).then(
-        loaders => {
-            const addedBlocks = [
-                ...loaders,
-                ...Array.from(xml.children)
-                    .map(block => addDomAsBlock(block))
-                    .filter(b => b),
-            ];
-            cleanUpOnLoad(addedBlocks, dropEvent);
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-        },
-        e => {
-            throw e;
-        }
-    );
-};
-
-export default class _Blockly {
-    /* eslint-disable class-methods-use-this */
-    zoomOnPlusMinus(zoomIn) {
-        const metrics = Blockly.mainWorkspace.getMetrics();
-        if (zoomIn) {
-            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
-        } else {
-            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
-        }
-    }
-
-    resetWorkspace() {
-        Blockly.Events.setGroup('reset');
-        Blockly.mainWorkspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
-        Blockly.Events.setGroup(false);
-    }
-
-    /* eslint-disable class-methods-use-this */
-    cleanUp() {
-        Blockly.Events.setGroup(true);
-        const topBlocks = Blockly.mainWorkspace.getTopBlocks(true);
-        let cursorY = 0;
-        topBlocks.forEach(block => {
-            if (block.getSvgRoot().style.display !== 'none') {
-                const xy = block.getRelativeToSurfaceXY();
-                block.moveBy(-xy.x, cursorY - xy.y);
-                block.snapToGrid();
-                cursorY =
-                    block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-            }
-        });
-        Blockly.Events.setGroup(false);
-        // Fire an event to allow scrollbars to resize.
-        Blockly.mainWorkspace.resizeContents();
-    }
-
-    /* eslint-disable class-methods-use-this */
-    load(blockStr = '', dropEvent = {}) {
-        let xml;
-
-        try {
-            xml = Blockly.Xml.textToDom(blockStr);
-        } catch (e) {
-            throw createError('FileLoad', translate('Unrecognized file format'));
-        }
-
-        try {
-            if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-                loadBlocks(xml, dropEvent);
-            } else {
-                loadWorkspace(xml);
-            }
-        } catch (e) {
-            throw createError('FileLoad', translate('Unable to load the block file'));
-        }
-    }
-
-    /* eslint-disable class-methods-use-this */
-    save(arg) {
-        const { filename, collection } = arg;
-
-        const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-        cleanBeforeExport(xml);
-
-        save(filename, collection, xml);
-    }
-
-    run(limitations = {}) {
-        disableStrayBlocks();
-
-        let code;
-        try {
-            code = `
-var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
-var BinaryBotPrivateLastTickTime
-var BinaryBotPrivateTickAnalysisList = [];
-function BinaryBotPrivateRun(f, arg) {
- if (f) return f(arg);
- return false;
-}
-function BinaryBotPrivateTickAnalysis() {
- var currentTickTime = Bot.getLastTick(true).epoch
- if (currentTickTime === BinaryBotPrivateLastTickTime) {
-   return
- }
- BinaryBotPrivateLastTickTime = currentTickTime
- for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
-   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
- }
-}
-var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-BinaryBotPrivateRun(BinaryBotPrivateInit);
-while(true) {
- BinaryBotPrivateTickAnalysis();
- BinaryBotPrivateRun(BinaryBotPrivateStart)
- while(watch('before')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
- }
- while(watch('during')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
- }
- BinaryBotPrivateTickAnalysis();
- if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
-   break;
- }
-}
-       `;
-            this.generatedJs = code;
-            if (code) {
-                this.stop(true);
-                this.interpreter = new Interpreter();
-                this.interpreter.run(code).catch(e => {
-                    globalObserver.emit('Error', e);
-                    this.stop();
-                });
-            }
-        } catch (e) {
-            globalObserver.emit('Error', e);
-            this.stop();
-        }
-    }
-
-    stop(stopBeforeStart) {
-        if (!stopBeforeStart) {
-            const $runButtons = $('#runButton, #summaryRunButton');
-            const $stopButtons = $('#stopButton, #summaryStopButton');
-            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
-                $runButtons.show();
-                $stopButtons.hide();
-            }
-        }
-        if (this.interpreter) {
-            this.interpreter.stop();
-            this.interpreter = null;
-        }
-    }
-
-    /* eslint-disable class-methods-use-this */
-    undo() {
-        Blockly.Events.setGroup('undo');
-        Blockly.mainWorkspace.undo();
-        Blockly.Events.setGroup(false);
-    }
-
-    /* eslint-disable class-methods-use-this */
-    redo() {
-        Blockly.mainWorkspace.undo(true);
-    }
-
-    /* eslint-disable class-methods-use-this */
-    hasStarted() {
-        return this.interpreter && this.interpreter.hasStarted();
-    }
-    /* eslint-enable */
-}

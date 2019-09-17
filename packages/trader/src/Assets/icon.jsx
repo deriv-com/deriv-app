@@ -23,6 +23,8 @@ class Icon extends React.PureComponent {
             IconDanger            : React.lazy(() => import('./Common/icon-danger.jsx')),
             IconDeposit           : React.lazy(() => import('./Common/icon-deposit.jsx')), // TODO: update big when design is ready
             IconDepositSmall      : React.lazy(() => import('./Common/icon-deposit-small.jsx')),
+            IconEmergency         : React.lazy(() => import('./Common/icon-emergency.jsx')),
+            IconError             : React.lazy(() => import('./Common/icon-error.jsx')),
             IconExclamation       : React.lazy(() => import('./Common/icon-exclamation.jsx')),
             IconFlag              : React.lazy(() => import('./Common/icon-flag.jsx')),
             IconInfoBlue          : React.lazy(() => import('./Common/icon-info-blue.jsx')),
@@ -38,6 +40,7 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')), // TODO: update big when design is ready
             IconWithdrawalSmall   : React.lazy(() => import('./Common/icon-withdrawal-small.jsx')),
+            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
 
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
@@ -50,6 +53,9 @@ class Icon extends React.PureComponent {
             IconAuthenticateWithdrawals: React.lazy(() => import('./Cashier/icon-authenticate-withdrawals.jsx')),
             IconCashierError           : React.lazy(() => import('./Cashier/icon-cashier-error.jsx')),
             IconEmailSent              : React.lazy(() => import('./Cashier/icon-email-sent.jsx')),
+            IconPhone                  : React.lazy(() => import('./Cashier/icon-phone.jsx')),
+            IconWebsite                : React.lazy(() => import('./Cashier/icon-website.jsx')),
+            IconEmail                  : React.lazy(() => import('./Cashier/icon-email.jsx')),
 
             // Modal
             ModalIconClose: React.lazy(() => import('./Modal/icon-close.jsx')),

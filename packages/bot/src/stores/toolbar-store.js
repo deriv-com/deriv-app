@@ -1,18 +1,21 @@
-import filesaver from 'file-saver';
-import { observable, action, computed } from 'mobx';
-import { createErrorAndEmit } from '../utils/error';
-import { observer as globalObserver } from '../utils/observer';
+import filesaver                        from 'file-saver';
 import {
-    strategyHasValidTradeTypeCategory,
-    addLoadersFirst, cleanUpOnLoad,
+    observable,
+    action,
+    computed,
+}                                       from 'mobx';
+import { createErrorAndEmit }           from '../utils/error';
+import { observer as globalObserver }   from '../utils/observer';
+import {
+    cleanUpOnLoad,
     fixCollapsedBlocks,
-    addDomAsBlock,
     backwardCompatibility,
     fixArgumentAttribute,
-    removeUnavailableMarkets,
     cleanBeforeExport,
-} from '../scratch/utils';
-import { translate } from '../utils/tools';
+    addDomAsBlock,
+}                                       from '../scratch/utils';
+import { translate }                    from '../utils/tools';
+import googleDrive                      from '../utils/integrations/googleDrive';
 
 export default class ToolbarStore {
     constructor(flyout) {
@@ -20,20 +23,14 @@ export default class ToolbarStore {
     }
 
     @observable is_toolbox_open = false;
-    @observable load_modal_open = false;
-    @observable save_modal_open = false;
+    @observable is_saveload_modal_open = false;
+    @observable is_save_modal = true;
     @observable saveload_type = 'local';
     @observable file_name = 'Untitled Bot';
-    @observable contract_status = 'none';
+    @observable is_google_drive_connected = false;
 
     @action.bound onRunClick = () => {
-        const status = ['none', 'buy', 'succeed', 'closed'];
-        this.contract_status = status[status.indexOf(this.contract_status) + 1];
-    }
-
-    @computed
-    get contractStatus() {
-        return this.contract_status;
+        // TODO
     }
 
     @action.bound onStartClick = () => {
@@ -51,15 +48,14 @@ export default class ToolbarStore {
         this.on_search_focus = false;
     }
 
-    @action.bound onSearch = values => {
-        const search_term = values.search;
+    @action.bound onSearch = ({ search }) => {
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         if (this.is_toolbox_open) {
             this.onStartClick();
         }
 
-        toolbox.showSearch_(search_term);
+        toolbox.showSearch_(search);
     }
 
     @action.bound onSearchClear = setValues => {
@@ -74,11 +70,6 @@ export default class ToolbarStore {
         this.file_name = bot_name;
     }
 
-    @action.bound onSaveLoadTypeChange = e => {
-        const { target: { value } } = e;
-        this.saveload_type = value;
-    }
-
     @action.bound onResetClick = async () => {
         const workspace = Blockly.derivWorkspace;
         // eslint-disable-next-line
@@ -88,16 +79,23 @@ export default class ToolbarStore {
         Blockly.Events.setGroup(false);
     }
 
-    @action.bound onBrowseClick = () => {
-        this.load_modal_open = true;
+    @action.bound toggleSaveLoadModal = is_save => {
+        this.is_saveload_modal_open = !this.is_saveload_modal_open;
+        this.is_save_modal = is_save;
     }
 
-    @action.bound onLoadClick = () => {
-        if (this.saveload_type === 'google-drive') {
-            // TO DO
-        } else if (this.saveload_type === 'local') {
+    @action.bound onDriveConnect = () => {
+        googleDrive.authorise().then(() => {
+            // TODO
+        });
+    }
+
+    @action.bound onLoadClick = ({ is_local }) =>  {
+        if (is_local) {
             const upload = document.getElementById('files');
             upload.click();
+        } else {
+            // TO DO
         }
     }
 
@@ -111,6 +109,8 @@ export default class ToolbarStore {
             dropEvent = e;
         } else {
             ({ files } = e.target);
+
+            this.toggleSaveLoadModal();
         }
         files = Array.from(files);
         files.forEach(file => {
@@ -121,54 +121,34 @@ export default class ToolbarStore {
             }
         });
         e.target.value = '';
-
-        this.closeLoadModal();
     }
 
-    @action.bound closeLoadModal = () => {
-        this.load_modal_open = false;
-    }
-
-    @action.bound onSaveClick = () => {
-        this.save_modal_open = true;
-    }
-
-    @action.bound onConfirmSave = () => {
-        if (this.saveload_type === 'google-drive') {
-            // TO DO
-        } else if (this.saveload_type === 'local') {
+    @action.bound onConfirmSave = ({ is_local, save_as_collection }) => {
+        if (is_local) {
             const file_name = this.file_name;
-            const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+            const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
+            xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
             cleanBeforeExport(xml);
 
             const data = Blockly.Xml.domToPrettyText(xml);
             const blob = new Blob([data], { type: 'text/xml;charset=utf-8' });
 
             filesaver.saveAs(blob, file_name);
+        } else {
+            // TO DO
         }
 
-        this.closeSaveModal();
-    }
-
-    @action.bound closeSaveModal = () => {
-        this.save_modal_open = false;
-    }
-
-    @action.bound onGoogleDriveClick = () => {
-        const symbol = this.ws.activeSymbols({ skip_cache_update: true });
-
-        // eslint-disable-next-line
-        console.log(symbol);
+        this.toggleSaveLoadModal();
     }
 
     @action.bound onUndoClick = () => {
         Blockly.Events.setGroup('undo');
-        Blockly.mainWorkspace.undo();
+        Blockly.derivWorkspace.undo();
         Blockly.Events.setGroup(false);
     }
 
     @action.bound onRedoClick = () => {
-        Blockly.mainWorkspace.undo(true);
+        Blockly.derivWorkspace.undo(true);
     }
 
     @action.bound onZoomInOutClick = is_zoom_in => {
@@ -199,13 +179,18 @@ export default class ToolbarStore {
     }
 
     @computed
-    get openLoadModal() {
-        return this.load_modal_open;
+    get isModalOpen() {
+        return this.is_saveload_modal_open;
     }
 
     @computed
-    get openSaveModal() {
-        return this.save_modal_open;
+    get isGoogleDriveConnected() {
+        return this.is_google_drive_connected;
+    }
+
+    @computed
+    get isSaveModal () {
+        return this.is_save_modal;
     }
 
     /* eslint-disable class-methods-use-this */
@@ -256,72 +241,40 @@ export default class ToolbarStore {
                 this.loadWorkspace(xml);
             }
         } catch (e) {
+            console.error(e); // eslint-disable-line
             throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
         }
     }
 
     loadBlocks = (xml, dropEvent = {}) => {
-        if (!strategyHasValidTradeTypeCategory(xml)) return;
-        if (this.marketsWereRemoved(xml)) return;
-
+        const workspace = Blockly.derivWorkspace;
         const variables = xml.getElementsByTagName('variables');
-        if (variables.length > 0) {
-            Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
+        if (variables.length) {
+            Blockly.Xml.domToVariables(variables[0], workspace);
         }
         Blockly.Events.setGroup('load');
-        addLoadersFirst(xml).then(
-            loaders => {
-                const addedBlocks = [
-                    ...loaders,
-                    ...Array.from(xml.children)
-                        .map(block => addDomAsBlock(block))
-                        .filter(b => b),
-                ];
-                cleanUpOnLoad(addedBlocks, dropEvent);
-                fixCollapsedBlocks();
-                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-            },
-            e => {
-                throw e;
-            }
-        );
+        const addedBlocks =
+            Array.from(xml.children)
+                .map(block => addDomAsBlock(block))
+                .filter(b => b);
+        cleanUpOnLoad(addedBlocks, dropEvent);
+
+        fixCollapsedBlocks();
+        Blockly.Events.setGroup(false);
     };
 
     loadWorkspace = xml => {
-        if (!strategyHasValidTradeTypeCategory(xml)) return;
-        if (this.marketsWereRemoved(xml)) return;
-
         Blockly.Events.setGroup('load');
-        Blockly.mainWorkspace.clear();
+        Blockly.derivWorkspace.clear();
 
         Array.from(xml.children).forEach(block => {
             backwardCompatibility(block);
         });
 
         fixArgumentAttribute(xml);
-        Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-        addLoadersFirst(xml).then(
-            () => {
-                fixCollapsedBlocks();
-                Blockly.Events.setGroup(false);
-                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-            },
-            e => {
-                Blockly.Events.setGroup(false);
-                throw e;
-            }
-        );
-    };
-
-    marketsWereRemoved = xml => {
-        if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-            if (window.trackJs) {
-                trackJs.track('Invalid financial market');
-            }
-            alert('This strategy is not available in your country');
-            return true;
-        }
-        return false;
+        Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
+        fixCollapsedBlocks();
+        Blockly.Events.setGroup(false);
     };
 
     readFile = (f, dropEvent = {}) => {

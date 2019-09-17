@@ -3,7 +3,7 @@
  */
 .dc-modal {
     &__container {
-        width: 736px;
+        min-width: 400px;
         position: relative;
         overflow: hidden;
         border-radius: $BORDER_RADIUS;
@@ -40,7 +40,7 @@
         &__title {
             @include typeface(--title-left-bold-black);
             @include themify($themes) {
-                background-color: themed('background_cover');
+                // background-color: themed('background_cover');
                 color: themed('text_color');
             }
             line-height: 24px;

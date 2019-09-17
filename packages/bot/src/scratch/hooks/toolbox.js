@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React          from 'react';
+import ReactDOM       from 'react-dom';
 import { Arrow1Icon } from '../../components/Icons.jsx';
-import { flyout } from '../../stores';
-import { translate } from '../../utils/lang/i18n';
+import ScratchStore   from '../../stores/scratch-store';
+import { translate }  from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -24,7 +24,7 @@ Blockly.Toolbox.prototype.init = function () {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = translate('Blocks Library');
+    el_toolbox_title.textContent = translate('Blocks Menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
@@ -66,6 +66,7 @@ Blockly.Toolbox.prototype.showSearch_ = function (search) {
     const search_term = search.toUpperCase();
     const all_variables = Blockly.derivWorkspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(Blockly.derivWorkspace);
+    const { instance: { flyout } } = ScratchStore;
 
     flyout.setVisibility(false);
 
@@ -206,6 +207,7 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content = fnToApply(this.workspace_);
     }
 
+    const { instance: { flyout } } = ScratchStore;
     flyout.setIsSearchFlyout(false);
     flyout.setContents(flyout_content);
 };
@@ -247,6 +249,7 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * @param {boolean} should_close_on_same_category Close when select the same category
  */
 Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
+    const { instance: { flyout } } = ScratchStore;
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
@@ -564,7 +567,7 @@ Blockly.Toolbox.prototype.close = function () {
     this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.initial_toolbox_xml));
     this.addStyle('hidden');
 
-    flyout.setVisibility(false);
+    ScratchStore.instance.flyout.setVisibility(false);
 
     if (this.selectedItem_) {
         this.selectedItem_.setSelected(false);
@@ -573,7 +576,7 @@ Blockly.Toolbox.prototype.close = function () {
 };
 
 Blockly.Toolbox.prototype.open = function () {
-    flyout.setVisibility(false);
+    ScratchStore.instance.flyout.setVisibility(false);
 
     this.removeStyle('hidden');
 };

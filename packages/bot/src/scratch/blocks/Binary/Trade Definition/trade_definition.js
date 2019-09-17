@@ -1,7 +1,7 @@
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import config                from '../../../../constants';
-import ApiHelpers            from '../../../../services/api/helpers';
+import ApiHelpers            from '../../../../services/api/api-helpers';
 import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition = {
@@ -85,13 +85,6 @@ Blockly.Blocks.trade_definition = {
                     top_block.dispose(false);
                 }
             });
-
-            const market_block    = this.getChildByType('trade_definition_market');
-            const selected_market = market_block.getFieldValue('MARKET_LIST');
-            const change_event    = new Blockly.Events.BlockChange(market_block, 'field', 'MARKET_LIST', '', selected_market);
-
-            // Trigger change event on MARKET_LIST to populate all dropdowns.
-            Blockly.Events.fire(change_event);
 
         } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.

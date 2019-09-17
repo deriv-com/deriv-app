@@ -1,5 +1,5 @@
 import config        from '../../../../constants';
-import ApiHelpers    from '../../../../services/api/helpers';
+import ApiHelpers    from '../../../../services/api/api-helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
@@ -180,11 +180,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 if (target_block && target_block.isShadow()) {
                     const min_duration = durations.find(d => d.unit === this.selected_duration);
 
-                    if (min_duration) {
+                    if (min_duration && target_block.getFieldValue('NUM') === null) {
                         target_block.setFieldValue(min_duration.min, 'NUM');
                     }
                 }
             }
+
+            Blockly.derivWorkspace.clearUndo();
         });
     },
     updateBarrierInputs(should_use_default_types) {

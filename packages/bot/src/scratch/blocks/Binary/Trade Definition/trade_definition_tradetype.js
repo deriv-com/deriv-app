@@ -1,4 +1,4 @@
-import ApiHelpers    from '../../../../services/api/helpers';
+import ApiHelpers    from '../../../../services/api/api-helpers';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradetype = {
@@ -42,17 +42,18 @@ Blockly.Blocks.trade_definition_tradetype = {
                 const submarket         = market_block.getFieldValue('SUBMARKET_LIST');
                 const symbol            = market_block.getFieldValue('SYMBOL_LIST');
                 const trade_type_cat    = this.getFieldValue('TRADETYPECAT_LIST');
+                const trade_type        = this.getFieldValue('TRADETYPE_LIST');
 
                 if (symbol && event.name === 'SYMBOL_LIST') {
                     contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                         const trade_type_cat_block = this.getField('TRADETYPECAT_LIST');
-                        trade_type_cat_block.updateOptions(categories);
+                        trade_type_cat_block.updateOptions(categories, trade_type_cat);
                     });
                 }
 
                 contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
                     const trade_type_block = this.getField('TRADETYPE_LIST');
-                    trade_type_block.updateOptions(trade_types);
+                    trade_type_block.updateOptions(trade_types, trade_type);
                 });
             }
         }

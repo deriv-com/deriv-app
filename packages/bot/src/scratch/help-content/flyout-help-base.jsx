@@ -1,7 +1,7 @@
 import React            from 'react';
 import PropTypes        from 'prop-types';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
-import FlyoutText       from './help-components/flyout-text.jsx';
+// import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
 import { config }       from './help-content.config';
 import FlyoutBlock      from '../../components/flyout-block.jsx';
@@ -80,7 +80,8 @@ class HelpBase extends React.PureComponent {
                             switch (type) {
                                 case constant.help.TEXT:
                                     return (
-                                        <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
+                                        // <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
+                                        <div dangerouslySetInnerHTML={{ __html: text[text_count++] }} />
                                     );
                                 case constant.help.VIDEO:
                                     return (

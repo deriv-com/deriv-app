@@ -14,7 +14,7 @@ module.exports = function (env, argv) {
         context     : path.resolve(__dirname, '../src'),
         devServer   : {
             open              : openChromeBasedOnPlatform(process.platform),
-            host              : 'localhost.binary.sx',
+            host              : 'localbot.binary.sx',
             https             : true,
             port              : 443,
             historyApiFallback: true,

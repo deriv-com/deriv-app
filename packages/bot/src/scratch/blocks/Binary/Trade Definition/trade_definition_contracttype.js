@@ -41,6 +41,7 @@ Blockly.Blocks.trade_definition_contracttype = {
         const trade_type_block    = top_parent_block.getChildByType('trade_definition_tradetype');
         const trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
         const contract_type_field = this.getField('TYPE_LIST');
+        const contract_type       = contract_type_field.getValue();
 
         let contract_types;
 
@@ -54,7 +55,7 @@ Blockly.Blocks.trade_definition_contracttype = {
             contract_types = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
 
-        contract_type_field.updateOptions(contract_types);
+        contract_type_field.updateOptions(contract_types, contract_type);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

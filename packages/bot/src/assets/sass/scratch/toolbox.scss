@@ -24,11 +24,8 @@ $category-colours: (
 
     background-color: $white;
     border: 1px solid $lightgrey;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     max-height: calc(100% - 40px);
     overflow: hidden;
     position: absolute;
@@ -37,7 +34,8 @@ $category-colours: (
     width: 250px;
 
     &__header {
-        padding: 0.5em;
+        @include toEm(padding, 8px);
+        @include toEm(margin-bottom, 10px);
         position: relative;
         font-weight: bold;
         font-size: 1.6em;

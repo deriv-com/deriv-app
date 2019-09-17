@@ -654,7 +654,7 @@ export default class TradeStore extends BaseStore {
     accountSwitcherListener() {
         this.clearContracts();
         this.resetErrorServices();
-        this.processNewValuesAsync(
+        return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
             true,
             { currency: this.currency },
@@ -667,6 +667,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
+
     }
 
     @action.bound

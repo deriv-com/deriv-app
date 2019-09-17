@@ -3,7 +3,6 @@
 .dc-modal__container_real-account-signup-modal {
     display: flex;
     flex-direction: column;
-    height: 688px;
     transition: all 0.3s ease-in-out;
     width: 900px;
 
@@ -31,7 +30,8 @@
     width: 100%;
 
     h1 {
-        @include typeface(--paragraph-center-bold-black);
+        @include typeface(--title-center-bold-black);
+        margin-top: 3rem;
     }
     h2 {
         @include typeface(--paragraph-center-bold-black);
@@ -44,6 +44,7 @@
         @include themify($themes) {
             color: themed('tick_step_marked');
         }
+        margin-bottom: 3rem;
     }
     form {
         display: flex;

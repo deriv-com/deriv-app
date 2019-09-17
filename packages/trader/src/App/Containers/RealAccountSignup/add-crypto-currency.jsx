@@ -11,16 +11,6 @@ import {
 import FormSubmitButton     from './form-submit-button.jsx';
 
 class AddCryptoCurrency extends Component {
-    state = {
-        selectable_currencies: [],
-    };
-
-    static getDerivedStateFromProps(props) {
-        return {
-            selectable_currencies: props.legal_allowed_currencies.filter(currency => currency.type === 'crypto'),
-        };
-    }
-
     render() {
         return (
             <Formik
@@ -54,7 +44,7 @@ class AddCryptoCurrency extends Component {
                             touched={touched.crypto}
                             is_title_enabled={false}
                         >
-                            {this.state.selectable_currencies.map(currency => (
+                            {this.props.available_crypto_currencies.map(currency => (
                                 <Field
                                     key={currency.value}
                                     component={RadioButton}
@@ -78,12 +68,15 @@ class AddCryptoCurrency extends Component {
 }
 
 AddCryptoCurrency.propTypes = {
-    currencies              : PropTypes.object,
-    legal_allowed_currencies: PropTypes.array,
-    selectable_currencies   : PropTypes.array,
+    accounts                   : PropTypes.object,
+    available_crypto_currencies: PropTypes.array,
+    currencies                 : PropTypes.object,
+    legal_allowed_currencies   : PropTypes.array,
+    selectable_currencies      : PropTypes.array,
 };
 export default connect(({ client }) => ({
-    currencies              : client.currencies_list,
-    legal_allowed_currencies: client.upgradeable_currencies,
-    selectable_currencies   : client.selectable_currencies,
+    available_crypto_currencies: client.available_crypto_currencies,
+    accounts                   : client.accounts,
+    currencies                 : client.currencies_list,
+    legal_allowed_currencies   : client.upgradeable_currencies,
 }))(AddCryptoCurrency);

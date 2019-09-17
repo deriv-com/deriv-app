@@ -86,6 +86,7 @@ class AddOrManageAccounts extends Component {
                     form_error={this.state.form_error}
                     {...this.props}
                 />
+                {this.props.current_currency_type === 'fiat' &&
                 <div className='change-currency'>
                     <ChangeAccountCurrency
                         className='account-wizard__body'
@@ -95,6 +96,7 @@ class AddOrManageAccounts extends Component {
                         {...this.props}
                     />
                 </div>
+                }
             </div>
         );
     }
@@ -106,8 +108,9 @@ AddOrManageAccounts.propTypes = {
 };
 
 export default connect(({ client }) => ({
-    has_real_account   : client.has_real_account,
-    realAccountSignup  : client.realAccountSignup,
-    setCurrency        : client.setAccountCurrency,
-    createCryptoAccount: client.createCryptoAccount,
+    current_currency_type: client.current_currency_type,
+    has_real_account     : client.has_real_account,
+    realAccountSignup    : client.realAccountSignup,
+    setCurrency          : client.setAccountCurrency,
+    createCryptoAccount  : client.createCryptoAccount,
 }))(AddOrManageAccounts);

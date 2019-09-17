@@ -103,6 +103,23 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get current_currency_type () {
+        return this.website_status.currencies_config[this.currency].type;
+    }
+
+    @computed
+    get available_crypto_currencies () {
+        const values = Object.values(this.accounts)
+            .reduce((acc, item) => {
+                acc.push(item.currency);
+                return acc;
+            }, []);
+
+        return this.upgradeable_currencies
+            .filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
+    }
+
+    @computed
     get account_list() {
         return this.all_loginids.map(id => (
             !this.isDisabled(id) &&
@@ -295,6 +312,7 @@ export default class ClientStore extends BaseStore {
             this.is_populating_account_list = false;
             this.upgrade_info = this.getBasicUpgradeInfo();
         });
+        this.root_store.ui.removeAllNotifications();
         await this.init();
         this.responseLandingCompany(
             await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)

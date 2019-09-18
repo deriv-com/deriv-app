@@ -1,11 +1,12 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-import Workspace                from './components/workspace.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
 import RunPanel                 from './components/run-panel.jsx';
-import './assets/sass/app.scss';
+import Summary                  from './components/summary.jsx';
+import Workspace                from './components/workspace.jsx';
+import                               './assets/sass/app.scss';
 
 class App extends React.Component {
     constructor(props) {
@@ -21,6 +22,17 @@ class App extends React.Component {
                 <React.Fragment>
                     <Workspace />
                     <RunPanel />
+                    <Drawer
+                        is_open={true}
+                        header='Summary'
+                        footer=''
+                    >
+                        <Summary />
+                        <div className='temp-button'>
+                            <button onClick={() => { window.BlocklyClass.run(); }}>Run</button>
+                            <button onClick={() => { window.BlocklyClass.stop(); }}>Stop</button>
+                        </div>
+                    </Drawer>
                 </React.Fragment>
             </Provider>
         );

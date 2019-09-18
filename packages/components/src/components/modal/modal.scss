@@ -61,12 +61,6 @@
             flex-grow: 1;
             padding: 16px;
             line-height: 24px;
-
-            &--account-management {
-                font-size: 1.6rem;
-                font-weight: bold;
-                @include modal_box_shadow;
-            }
         }
         &__close {
             position: absolute;

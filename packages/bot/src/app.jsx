@@ -1,9 +1,9 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
+import Workspace                from './components/workspace.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
-import Workspace                from './components/workspace.jsx';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import './assets/sass/app.scss';

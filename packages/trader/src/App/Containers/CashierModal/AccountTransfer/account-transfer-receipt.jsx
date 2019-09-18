@@ -36,12 +36,9 @@ class AccountTransferReceipt extends React.Component {
                     <span className='account-transfer__transfer-details-from'>
                         <Icon
                             icon='IconAccountsCurrency'
-                            type={selected_from.mt_icon ?
-                                selected_from.mt_icon.value : selected_from.currency.toLowerCase()}
+                            type={selected_from.mt_icon || selected_from.currency.toLowerCase()}
                             height={16}
                             width={16}
-                            vb_height={selected_from.mt_icon ? selected_from.mt_icon.vb_height : undefined}
-                            vb_width={selected_from.mt_icon ? selected_from.mt_icon.vb_width : undefined}
                         />
                         <span className='cashier__transferred-details'>
                             <span className='cashier__text--bold'>{selected_from.text}</span>
@@ -51,11 +48,9 @@ class AccountTransferReceipt extends React.Component {
                     <span className='account-transfer__transfer-details-to'>
                         <Icon
                             icon='IconAccountsCurrency'
-                            type={selected_to.mt_icon ? selected_to.mt_icon.value : selected_to.currency.toLowerCase()}
+                            type={selected_to.mt_icon || selected_to.currency.toLowerCase()}
                             height={16}
                             width={16}
-                            vb_height={selected_to.mt_icon ? selected_to.mt_icon.vb_height : undefined}
-                            vb_width={selected_to.mt_icon ? selected_to.mt_icon.vb_width : undefined}
                         />
                         <span className='cashier__transferred-details'>
                             <span className='cashier__text--bold'>{selected_to.text}</span>

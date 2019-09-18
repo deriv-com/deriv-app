@@ -387,18 +387,8 @@
         }
         &-details {
             &-from, &-to {
-                // 16px is the width of the -> arrow
-                // 3.2rem is the margin around the -> arrow
-                // divide by two since we have two elements: from and to
-                width: calc(calc(100% - calc(16px + 3.2rem)) / 2);
                 display: flex;
                 align-items: center;
-            }
-            &-from {
-                justify-content: flex-end;
-            }
-            &-to {
-                justify-content: flex-start;
             }
         }
     }

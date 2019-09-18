@@ -63,7 +63,6 @@ Items.propTypes = {
     className   : PropTypes.string,
     handleSelect: PropTypes.func,
     has_symbol  : PropTypes.bool,
-    index_offset: PropTypes.number,
     name        : PropTypes.string,
     value       : PropTypes.oneOfType([
         PropTypes.number,

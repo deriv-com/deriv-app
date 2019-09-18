@@ -16,12 +16,6 @@ import BaseStore            from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: '' }];
 
-const mt_icon_settings = {
-    real_labuan_advanced : { vb_height: 46, vb_width: 60 },
-    real_svg             : { vb_height: 53, vb_width: 56 },
-    real_vanuatu_standard: { vb_height: 52, vb_width: 54 },
-};
-
 class Config {
     container          = '';
     is_session_timeout = true;
@@ -681,13 +675,13 @@ export default class CashierStore extends BaseStore {
         const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
         let display_text = localize('MT5');
         if (/svg/.test(value)) {
-            display_text = localize('DMT5 Synthetic indices real');
+            display_text = localize('DMT5 Synthetic indices');
         }
         if (/vanuatu/.test(value)) {
-            display_text = localize('DMT5 Standard real');
+            display_text = localize('DMT5 Standard');
         }
         if (/labuan/.test(value)) {
-            display_text = localize('DMT5 Advanced real');
+            display_text = localize('DMT5 Advanced');
         }
         return { display_text, value };
     };
@@ -744,11 +738,7 @@ export default class CashierStore extends BaseStore {
                 value   : account.loginid,
                 balance : account.balance,
                 currency: account.currency,
-                ...(is_mt && { mt_icon: {
-                    value    : group.value,
-                    vb_height: mt_icon_settings[group.value].vb_height,
-                    vb_width : mt_icon_settings[group.value].vb_width,
-                } }),
+                ...(is_mt && { mt_icon: group.value }),
             };
             if (idx === 0) {
                 this.config.account_transfer.selected_from = obj_values;

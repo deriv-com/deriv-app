@@ -8,6 +8,7 @@ import { localize }     from 'App/i18n';
 
 class AccountTransferNoBalance extends React.Component {
     onClickDeposit = () => {
+        // index of deposit tab in the cashier modal is 0
         this.props.setModalIndex(0);
     };
 

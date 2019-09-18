@@ -123,8 +123,6 @@ class Icon extends React.PureComponent {
             onMouseEnter : this.props.onMouseEnter,
             onMouseLeave : this.props.onMouseLeave,
             type         : this.props.type,
-            vb_height    : this.props.vb_height,
-            vb_width     : this.props.vb_width,
             width        : this.props.width,
         };
 

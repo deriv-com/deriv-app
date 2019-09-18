@@ -40,11 +40,9 @@ const AccountOption = ({ account, idx }) => (
         {(account.currency || account.mt_icon) &&
             <Icon
                 icon='IconAccountsCurrency'
-                type={account.mt_icon ? account.mt_icon.value : account.currency.toLowerCase()}
+                type={account.mt_icon || account.currency.toLowerCase()}
                 height={16}
                 width={16}
-                vb_height={account.mt_icon ? account.mt_icon.vb_height : undefined}
-                vb_width={account.mt_icon ? account.mt_icon.vb_width : undefined}
             />
         }
         <span className='account-transfer__currency'>{account.text}</span>
@@ -154,7 +152,7 @@ class AccountTransferForm extends React.Component {
                                                     <Input
                                                         { ...field }
                                                         className='cashier__input-long dc-input--no-placeholder'
-                                                        type='number'
+                                                        type='text'
                                                         label={localize('Amount')}
                                                         error={ touched.amount && errors.amount }
                                                         required

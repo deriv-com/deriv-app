@@ -10,7 +10,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const Bot = (() => {
     const el_head = document.querySelector('head');
     const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = '/js/bot/scratch.min.js';
+    el_scratch_js.src = './js/bot/scratch.min.js';
     el_head.appendChild(el_scratch_js);
     return lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
 })();

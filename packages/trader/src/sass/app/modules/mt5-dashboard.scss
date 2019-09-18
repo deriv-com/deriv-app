@@ -1,6 +1,7 @@
 /** @define mt5-dashboard; */
 .mt5-dashboard {
-    margin: 4.8em 16em;
+    margin: 4.8em auto;
+    max-width: 960px;
 
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);

@@ -267,7 +267,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
-                                                        disabled={is_account_authenticated}
+                                                        disabled={values.citizen_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             (item) => setFieldValue('citizen_text', item.text, true)
@@ -376,6 +376,7 @@ class PersonalDetailsForm extends React.Component {
                                                     touched.tax_identification_number &&
                                                     errors.tax_identification_number
                                                 }
+                                                disabled={values.tax_identification_number && is_account_authenticated}
                                             />
                                         </fieldset>
                                     </React.Fragment>

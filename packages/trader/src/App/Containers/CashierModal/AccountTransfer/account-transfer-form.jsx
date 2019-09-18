@@ -95,12 +95,12 @@ class AccountTransferForm extends React.Component {
 
         const from_accounts = {
             [localize('Deriv accounts')]: accounts_from,
-            [localize('DMT5 accounts')] : mt_accounts_from,
+            ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
         };
 
         const to_accounts = {
             [localize('Deriv accounts')]: accounts_to,
-            [localize('DMT5 accounts')] : mt_accounts_to,
+            ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
         };
 
         return (

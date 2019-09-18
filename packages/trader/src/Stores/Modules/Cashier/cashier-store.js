@@ -810,7 +810,7 @@ export default class CashierStore extends BaseStore {
                 if (account.loginid === this.config.account_transfer.selected_from.value) {
                     this.config.account_transfer.selected_from.balance = account.balance;
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
-                    this.config.account_transfer.selected_from.balance = account.balance;
+                    this.config.account_transfer.selected_to.balance = account.balance;
                 }
             });
             this.setIsTransferSuccessful(true);

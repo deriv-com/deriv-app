@@ -58,6 +58,7 @@ class ConfigAccountTransfer {
     @observable accounts_list          = [];
     @observable container              = 'account_transfer';
     @observable error                  = new ConfigError();
+    @observable has_no_account         = false;
     @observable has_no_balance         = false;
     @observable is_transfer_successful = false;
     @observable minimum_fee            = null;
@@ -624,16 +625,11 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 return;
             }
-            // should have at least one account with balance
-            if (!transfer_between_accounts.accounts.find(account => +account.balance > 0)) {
-                this.setHasNoBalance(true);
-                this.setLoading(false);
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
             this.sortAccountsTransfer(transfer_between_accounts, mt5_login_list);
-        } else if (!this.config.account_transfer.accounts_list.find(account => +account.balance > 0)) {
-            this.setHasNoBalance(true);
-            this.setLoading(false);
+        } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
             return;
         }
         this.setTransferFee();
@@ -642,9 +638,32 @@ export default class CashierStore extends BaseStore {
         this.setLoading(false);
     }
 
+    canDoAccountTransfer(accounts) {
+        let can_transfer = true;
+        // should have at least one account with balance
+        if (!accounts.find(account => +account.balance > 0)) {
+            can_transfer = false;
+            this.setHasNoBalance(true);
+        }
+        // should have at least two real-money accounts
+        if (accounts.length <= 1) {
+            can_transfer = false;
+            this.setHasNoAccount(true);
+        }
+        if (!can_transfer) {
+            this.setLoading(false);
+        }
+        return can_transfer;
+    }
+
     @action.bound
     setHasNoBalance(has_no_balance) {
         this.config.account_transfer.has_no_balance = has_no_balance;
+    }
+
+    @action.bound
+    setHasNoAccount(has_no_account) {
+        this.config.account_transfer.has_no_account = has_no_account;
     }
 
     @action.bound

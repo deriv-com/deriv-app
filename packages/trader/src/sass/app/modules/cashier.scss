@@ -366,7 +366,7 @@
         }
     }
     &__drop-down {
-        min-width: 28rem;
+        min-width: calc(calc(100% - calc(16px + 1.2rem)) / 2);
     }
     &__currency {
         margin: 0 0.4rem;
@@ -384,6 +384,7 @@
     &__transfer {
         &-icon {
             vertical-align: initial;
+            margin: 0 0.6rem;
         }
         &-details {
             &-from, &-to {

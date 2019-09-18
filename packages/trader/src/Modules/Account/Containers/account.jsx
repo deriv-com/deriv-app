@@ -1,8 +1,8 @@
 import PropTypes        from 'prop-types';
 import React, { lazy }  from 'react';
 import { withRouter }   from 'react-router-dom';
+import SideMenu         from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }  from 'App/Components/Animations';
-import MenuAccordion    from 'App/Components/Elements/MenuAccordion';
 import { localize }     from 'App/i18n';
 import AppRoutes        from 'Constants/routes';
 import { connect }      from 'Stores/connect';
@@ -66,6 +66,11 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
+
+        const active_title = this.props.routes
+            .find(route => route.subroutes
+                .find((sub_route) => sub_route.title === selected_content.title)).title;
+
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -73,7 +78,8 @@ class Account extends React.Component {
                 keyname='account-page-wrapper'
             >
                 <div className='account' ref={this.setWrapperRef}>
-                    <MenuAccordion
+                    <SideMenu
+                        active_title={active_title}
                         action_bar={action_bar_items}
                         action_bar_classname='account__inset_header'
                         alignment='center'

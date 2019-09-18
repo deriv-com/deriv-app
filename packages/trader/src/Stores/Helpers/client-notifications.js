@@ -4,6 +4,7 @@ import { getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
+import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
 import {
     LocalStore,
@@ -116,7 +117,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/financial-assessment'
+                    />,
+                ]}
             />
         ),
         type: 'info',
@@ -127,7 +134,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/personal-details'
+                    />,
+                ]}
             />
         ),
         type: 'danger',
@@ -149,7 +162,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/personal-details'
+                    />,
+                ]}
             />
         ),
         type: 'danger',

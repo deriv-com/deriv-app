@@ -1,15 +1,16 @@
 import PropTypes                 from 'prop-types';
 import React                     from 'react';
-import { MenuAccordionHeaders }  from './menu-accordion-headers.jsx';
+import { SideMenuHeaders }       from './side-menu-headers.jsx';
 import {
     VerticalTabContentContainer,
     VerticalTabLayout }          from '../VerticalTabs';
 
-const MenuAccordionTitle = ({ title }) => (<h1 className='menu-accordion__title'>{title}</h1>);
+const SideMenuTitle = ({ title }) => (<h1 className='side-menu__title'>{title}</h1>);
 
-class MenuAccordion extends React.PureComponent {
+class SideMenu extends React.PureComponent {
     render() {
         const {
+            active_title,
             action_bar,
             action_bar_classname,
             header_title,
@@ -22,7 +23,7 @@ class MenuAccordion extends React.PureComponent {
             tab_container_classname,
         } = this.props;
 
-        const Component = () => <MenuAccordionTitle title={selected_content.title} />;
+        const Component = () => <SideMenuTitle title={selected_content.title} />;
         const action_bar_items = [
             ...action_bar,
             {
@@ -32,7 +33,8 @@ class MenuAccordion extends React.PureComponent {
 
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
-                <MenuAccordionHeaders
+                <SideMenuHeaders
+                    active_title={active_title}
                     header_title={header_title}
                     items={list}
                     selected={selected_content}
@@ -53,7 +55,7 @@ class MenuAccordion extends React.PureComponent {
     }
 }
 
-MenuAccordion.propTypes = {
+SideMenu.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
             component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -77,4 +79,4 @@ MenuAccordion.propTypes = {
     selected_content: PropTypes.object,
 };
 
-export default MenuAccordion;
+export default SideMenu;

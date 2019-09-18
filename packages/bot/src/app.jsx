@@ -1,10 +1,10 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-import { Drawer }               from 'deriv-components';
+import Workspace                from './components/workspace.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
-import Workspace                from './components/workspace.jsx';
+import RunPanel                 from './components/run-panel.jsx';
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -20,11 +20,7 @@ class App extends React.Component {
             <Provider {...this.rootStore}>
                 <React.Fragment>
                     <Workspace />
-                    <Drawer
-                        is_open={true}
-                        header='this is a drawer header'
-                        footer='this is a drawer footer'
-                    />
+                    <RunPanel />
                 </React.Fragment>
             </Provider>
         );

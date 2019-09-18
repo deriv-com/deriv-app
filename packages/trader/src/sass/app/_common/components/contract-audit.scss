@@ -2,22 +2,14 @@
 .contract-audit {
     &__wrapper {
         margin-top: 1em;
-        transition: max-height 0.2s ease, opacity 0.2s linear;
-        will-change: max-height, opacity;
         border-radius: $BORDER_RADIUS;
         padding: 2px 4px;
-        height: 100%;
-        max-height: 0;
-        opacity: 0;
+        opacity: 1;
+        height: calc(100vh - 32.6em);
+        max-height: calc(100vh - 32.6em);
         overflow: hidden;
-        background-color: var(--general-main-1);
+        background-color: var(--general-main-2);
         color: var(--text-prominent);
-
-        &--is-open {
-            opacity: 1;
-            height: calc(100vh - 32.6em);
-            max-height: calc(100vh - 32.6em);
-        }
     }
     &__grid {
         display: flex;

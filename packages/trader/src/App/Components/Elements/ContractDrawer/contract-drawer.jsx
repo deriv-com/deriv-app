@@ -165,6 +165,7 @@ class ContractDrawer extends Component {
                         </CSSTransition>
                     </ContractCardFooter>
                 </ContractCard>
+                {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={getEndTime(contract_info)}
@@ -175,7 +176,7 @@ class ContractDrawer extends Component {
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold)}
-                />
+                />}
             </React.Fragment>
         );
     }

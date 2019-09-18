@@ -1,9 +1,5 @@
-import BinarySocket   from './socket_base';
-import {
-    cloneObject,
-    getPropertyValue,
-    isDeepEqual,
-    isEmptyObject }   from '../utility';
+import ObjectUtils  from 'deriv-shared/utils/object';
+import BinarySocket from './socket_base';
 
 /**
  * A layer over BinarySocket to handle subscribing to streaming calls
@@ -42,14 +38,14 @@ const SubscriptionManager = (() => {
             return;
         }
 
-        let sub_id = Object.keys(subscriptions).find(id => isDeepEqual(request_obj, subscriptions[id].request));
+        let sub_id = Object.keys(subscriptions).find(id => ObjectUtils.isDeepEqual(request_obj, subscriptions[id].request));
 
         if (!sub_id) {
             sub_id = ++subscription_id;
 
             subscriptions[sub_id] = {
                 msg_type,
-                request    : cloneObject(request_obj),
+                request    : ObjectUtils.cloneObject(request_obj),
                 stream_id  : '',             // stream_id will be updated after receiving the response
                 subscribers: [fncCallback],
             };
@@ -95,7 +91,7 @@ const SubscriptionManager = (() => {
 
                         subscriptions[sub_id] = {
                             msg_type,
-                            request    : cloneObject(subscribe_request),
+                            request    : ObjectUtils.cloneObject(subscribe_request),
                             stream_id  : '',             // stream_id will be updated after receiving the response
                             subscribers: [],
                         };
@@ -108,7 +104,7 @@ const SubscriptionManager = (() => {
 
     // dispatches the response to subscribers of the specific subscription id (internal use only)
     const dispatch = (response, sub_id) => {
-        const stream_id = getPropertyValue(response, [response.msg_type, 'id']) || getPropertyValue(response.subscription, ['id']);
+        const stream_id = ObjectUtils.getPropertyValue(response, [response.msg_type, 'id']) || ObjectUtils.getPropertyValue(response.subscription, ['id']);
 
         if (!subscriptions[sub_id]) {
             if (!forget_requested[stream_id]) {
@@ -135,7 +131,7 @@ const SubscriptionManager = (() => {
                         || (
                             // not a subscription (i.e. subscribed proposal_open_contract for an expired contract)
                             // also to filter out streams with no stream id but later it will continue streaming (i.e. proposal_open_contract without contract id)
-                            !isEmptyObject(response[response.msg_type]) &&
+                            !ObjectUtils.isEmptyObject(response[response.msg_type]) &&
                             // check msg_type to filter out those calls which don't return stream `id` on first response (tick_history, ...)
                             response.msg_type === sub_info.msg_type
                         )
@@ -208,7 +204,7 @@ const SubscriptionManager = (() => {
         });
 
         return Promise.resolve(
-            !isEmptyObject(types_to_forget) ?
+            !ObjectUtils.isEmptyObject(types_to_forget) ?
                 BinarySocket.send({ forget_all: Object.keys(types_to_forget) }) :
                 {}
         );

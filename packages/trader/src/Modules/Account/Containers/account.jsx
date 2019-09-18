@@ -52,7 +52,7 @@ class Account extends React.Component {
             },
         ];
 
-        const is_account_limits_route = /account_limits/.test(this.props.location.pathname);
+        const is_account_limits_route = /account-limits/.test(this.props.location.pathname);
         if (is_account_limits_route) {
             action_bar_items.push({
                 component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,

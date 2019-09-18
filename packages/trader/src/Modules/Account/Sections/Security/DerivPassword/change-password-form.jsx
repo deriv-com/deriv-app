@@ -103,6 +103,7 @@ class ChangePasswordForm extends React.Component {
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <fieldset className='account-form__fieldset'>
                                         <Input
+                                            autoComplete='current-password'
                                             label={localize('Current password')}
                                             error={touched.old_password && errors.old_password}
                                             type='password'
@@ -118,6 +119,7 @@ class ChangePasswordForm extends React.Component {
                                             error={touched.new_password && errors.new_password}
                                         >
                                             <Input
+                                                autoComplete='new-password'
                                                 label={localize('New password')}
                                                 type='password'
                                                 name='new_password'

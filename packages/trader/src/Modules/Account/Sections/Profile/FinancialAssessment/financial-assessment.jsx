@@ -136,8 +136,8 @@ class FinancialAssessment extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
-                            <form className='account-form' onSubmit={handleSubmit} style={{ height: 'calc(100vh - 120px)' }}>
-                                <FormBody scroll_offset='100px'>
+                            <form className='account-form' onSubmit={handleSubmit}>
+                                <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
                                     <fieldset className='account-form__fieldset'>
                                         <Dropdown

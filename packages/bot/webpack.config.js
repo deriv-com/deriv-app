@@ -25,7 +25,7 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
-    devtool: 'source-map',
+    devtool: 'cheap-module-eval-source-map',
     target: 'web',
     module: {
         rules: [

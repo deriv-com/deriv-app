@@ -1,12 +1,11 @@
 import { Button, Drawer, Tabs } from 'deriv-components';
-import classNames               from 'classnames';
-import React                    from 'react';
-import { IconInfoOutline }      from './Icons.jsx';
-import '../assets/sass/run-panel.scss';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { IconInfoOutline } from './Icons.jsx';
+import { connect } from '../stores/connect';
 
-const onRunBotClick = () => {
-    console.log('run bot'); // eslint-disable-line no-console
-};
+import '../assets/sass/run-panel.scss';
 
 const drawerContent = () => {
     return (
@@ -19,6 +18,8 @@ const drawerContent = () => {
 };
 
 const drawerFooter = (props) => {
+    const { runBot , stopBot } = props;
+
     return (
         <div className='run-panel__footer'>
             <Button
@@ -27,7 +28,7 @@ const drawerFooter = (props) => {
                     'run-panel__button'
                 )}
                 text='Clear stat'
-                onClick={props.onClick}
+                onClick={stopBot}
                 has_effect
             />
 
@@ -37,18 +38,21 @@ const drawerFooter = (props) => {
                     'run-panel__button'
                 )}
                 text='Run bot'
-                onClick={props.onClick}
+                onClick={runBot}
                 has_effect
             />
-        
+
             <IconInfoOutline className='run-panel__icon-info' />
         </div>
     );
 };
 
-const RunPanel = () => {
+const RunPanel = ({
+    runBot,
+    stopBot,
+}) => {
     const content = drawerContent();
-    const footer = drawerFooter(onRunBotClick);
+    const footer = drawerFooter({ runBot, stopBot });
 
     return (
         <Drawer
@@ -61,4 +65,11 @@ const RunPanel = () => {
     );
 };
 
-export default RunPanel;
+RunPanel.propTypes = {
+    runBot : PropTypes.func,
+    stopBot: PropTypes.func,
+};
+export default connect(({ runPanel }) => ({
+    runBot : runPanel.runBot,
+    stopBot: runPanel.stopBot,
+}))(RunPanel);

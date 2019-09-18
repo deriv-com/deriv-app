@@ -98,6 +98,7 @@
     "classnames": "^2.2.6",
     "crc-32": "^1.2.0",
     "deriv-bot": "^1.0.0",
+    "deriv-shared": "^1.0.0",
     "event-source-polyfill": "^1.0.5",
     "i18next": "^17.0.3",
     "js-cookie": "^2.2.0",

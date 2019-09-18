@@ -74,7 +74,7 @@ class DateOfBirth extends Component {
                             placeholder={this.props.label}
                             onFocus={this.handleFocus}
                             onBlur={this.handleBlur}
-                            value={toMoment(value).format('YYYY-MM-DD')}
+                            value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
                             readOnly
                         />
                         <CSSTransition
@@ -153,6 +153,7 @@ const Input = (props) => {
 
 class PersonalDetails extends Component {
     validatePersonalDetails = (values) => {
+        const max_date = toMoment().subtract(18, 'days');
         const validations = {
             first_name: [
                 v => !!v,
@@ -161,6 +162,10 @@ class PersonalDetails extends Component {
             last_name: [
                 v => !!v,
                 v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
+            ],
+            date_of_birth: [
+                v => !!v,
+                v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
             ],
         };
 
@@ -191,7 +196,7 @@ class PersonalDetails extends Component {
                 initialValues={{
                     first_name   : this.props.value.first_name,
                     last_name    : this.props.value.last_name,
-                    date_of_birth: this.props.value.date_of_birth || toMoment().subtract(18, 'years').unix(),
+                    date_of_birth: this.props.value.date_of_birth,
                 }}
                 validate={this.validatePersonalDetails}
                 onSubmit={(values, actions) => {

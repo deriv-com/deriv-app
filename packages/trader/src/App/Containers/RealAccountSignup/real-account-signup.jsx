@@ -2,6 +2,7 @@ import classNames            from 'classnames';
 import { Modal }             from 'deriv-components';
 import React, { Component }  from 'react';
 import { localize }          from 'App/i18n';
+import Localize              from 'App/Components/Elements/localize.jsx';
 import { connect }           from 'Stores/connect';
 import AccountWizard         from './account-wizard.jsx';
 import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
@@ -25,7 +26,7 @@ class RealAccountSignup extends Component {
             modal_content     : [
                 {
                     icon : 'IconTheme',
-                    label: localize('Add an account'),
+                    label: localize('Add a real account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                     />,
@@ -83,7 +84,15 @@ class RealAccountSignup extends Component {
         this.setState({
             current_currency: currency,
             active_modal_index: 3,
-            success_message: localize(`You have added a ${currency} account. Make a deposit now to start trading.`)
+            success_message: <Localize
+                i18n_default_text='You have added a {{currency}} account.<0 />Make a deposit now to start trading.'
+                values={{
+                    currency: currency,
+                }}
+                components={[
+                    <br />
+                ]}
+            />
         })
     }
 

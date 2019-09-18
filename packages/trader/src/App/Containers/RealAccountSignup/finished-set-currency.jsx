@@ -43,7 +43,7 @@ const FinishedSetCurrency = ({
                 </h2>
                 <p>
                     <Localize
-                        i18n_default_text={`You have successfully changed your currency to ${current}. Make a deposit now to start trading.`}
+                        i18n_default_text={`You have successfully changed your currency to ${current}.<br />Make a deposit now to start trading.`}
                     />
                 </p>
             </div>

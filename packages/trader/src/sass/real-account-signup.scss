@@ -22,6 +22,7 @@ $COLOR_DERIV_RED: #ff444f;
             @include themify($themes) {
                 color: themed('text_primary_color');
             }
+            text-transform: none;
         }
     }
     &__step {

@@ -24,6 +24,7 @@
         }
 
         &:hover:not(&--selected) {
+            cursor: pointer;
             @include themify($themes) {
                 border: 1px solid themed('border_color');
             }

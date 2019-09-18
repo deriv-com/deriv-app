@@ -67,6 +67,7 @@ $COLOR_DERIV_RED: #ff444f;
 
         h2 {
             @include typeface(--title-center-bold-black);
+            margin-top: 2rem;
         }
         p {
             @include typeface(--paragraph-left-normal-black);

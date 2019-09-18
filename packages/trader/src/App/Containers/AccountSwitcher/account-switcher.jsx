@@ -91,8 +91,8 @@ class AccountSwitcher extends React.Component {
                             }
                         </div>
 
-                        {(this.props.available_crypto_currencies.length > 0 ||
-                            this.props.current_currency_type === 'fiat') &&
+                        {!this.props.is_virtual &&
+                        this.props.can_change_currency &&
                             <UpgradeButton
                                 onClick={this.props.openRealAccountSignup}
                                 outlined
@@ -142,7 +142,7 @@ class AccountSwitcher extends React.Component {
                     <Icon icon='IconAdd' />
                     <div className='btn__text'>
                         <Localize
-                            i18n_default_text='Upgrade to real account'
+                            i18n_default_text='Add a real account'
                         />
                     </div>
                 </UpgradeButton>
@@ -157,43 +157,41 @@ class AccountSwitcher extends React.Component {
 }
 
 AccountSwitcher.propTypes = {
-    account_list               : PropTypes.array,
-    account_loginid            : PropTypes.string,
-    available_crypto_currencies: PropTypes.array,
-    cleanUp                    : PropTypes.func,
-    clearError                 : PropTypes.func,
-    has_error                  : PropTypes.bool,
-    is_logged_in               : PropTypes.bool,
-    is_positions_drawer_on     : PropTypes.bool,
-    is_upgrade_enabled         : PropTypes.bool,
-    is_virtual                 : PropTypes.bool,
-    is_visible                 : PropTypes.bool,
-    onClickUpgrade             : PropTypes.func,
-    toggle                     : PropTypes.func,
-    togglePositionsDrawer      : PropTypes.func,
-    upgrade_info               : PropTypes.object,
-    virtual_loginid            : PropTypes.string,
+    account_list          : PropTypes.array,
+    account_loginid       : PropTypes.string,
+    cleanUp               : PropTypes.func,
+    clearError            : PropTypes.func,
+    has_error             : PropTypes.bool,
+    is_logged_in          : PropTypes.bool,
+    is_positions_drawer_on: PropTypes.bool,
+    is_upgrade_enabled    : PropTypes.bool,
+    is_virtual            : PropTypes.bool,
+    is_visible            : PropTypes.bool,
+    onClickUpgrade        : PropTypes.func,
+    toggle                : PropTypes.func,
+    togglePositionsDrawer : PropTypes.func,
+    upgrade_info          : PropTypes.object,
+    virtual_loginid       : PropTypes.string,
 };
 
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
-        available_crypto_currencies: client.available_crypto_currencies,
-        current_currency_type      : client.current_currency_type,
-        account_list               : client.account_list,
-        can_upgrade                : client.can_upgrade,
-        can_upgrade_to             : client.can_upgrade_to,
-        account_loginid            : client.loginid,
-        is_logged_in               : client.is_logged_in,
-        is_virtual                 : client.is_virtual,
-        switchAccount              : client.switchAccount,
-        upgrade_info               : client.upgrade_info,
-        cleanUp                    : client.cleanUp,
-        virtual_loginid            : client.virtual_account_loginid,
-        clearError                 : modules.contract_trade.clearError,
-        has_error                  : modules.contract_trade.has_error,
-        is_positions_drawer_on     : ui.is_positions_drawer_on,
-        openRealAccountSignup      : ui.openRealAccountSignup,
-        togglePositionsDrawer      : ui.togglePositionsDrawer,
+        can_change_currency   : client.can_change_currency,
+        account_list          : client.account_list,
+        can_upgrade           : client.can_upgrade,
+        can_upgrade_to        : client.can_upgrade_to,
+        account_loginid       : client.loginid,
+        is_logged_in          : client.is_logged_in,
+        is_virtual            : client.is_virtual,
+        switchAccount         : client.switchAccount,
+        upgrade_info          : client.upgrade_info,
+        cleanUp               : client.cleanUp,
+        virtual_loginid       : client.virtual_account_loginid,
+        clearError            : modules.contract_trade.clearError,
+        has_error             : modules.contract_trade.has_error,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        openRealAccountSignup : ui.openRealAccountSignup,
+        togglePositionsDrawer : ui.togglePositionsDrawer,
     }),
 )(AccountSwitcher);
 

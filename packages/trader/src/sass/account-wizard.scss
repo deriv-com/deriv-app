@@ -8,13 +8,13 @@
     overflow: unset;
 
     &--success {
-        height: 300px;
         width: 400px;
     }
     .dc-modal-header__title {
         @include themify($themes) {
             background-color: themed('container_color');
         }
+        text-transform: none;
     }
 }
 
@@ -36,12 +36,14 @@
     }
     h2 {
         @include typeface(--paragraph-center-bold-black);
+        text-transform: none;
         @include themify($themes) {
             color: themed('tick_step_marked');
         }
     }
     h3 {
         @include typeface(--small-center-normal-black);
+        text-transform: none;
         @include themify($themes) {
             color: themed('tick_step_marked');
         }
@@ -109,6 +111,7 @@
         }
         &--error {
             @include typeface(--paragraph-left-normal-black);
+            text-transform: none;
             color: rgb(255, 68, 79) !important;
         }
     }

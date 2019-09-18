@@ -92,7 +92,18 @@ class TermsOfUse extends Component {
                                 className='terms-of-use__checkbox'
                                 name='agreed_tnc'
                                 id='agreed_tnc'
-                                label={localize('I have read and agree to the terms and conditions of the Deriv website.')}
+                                label={<Localize
+                                    i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                    components={[ (
+                                        <a
+                                            key={0}
+                                            className='link'
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            href='https://www.deriv.com/terms-and-conditions/#general'
+                                        />
+                                    ) ]}
+                                />}
                             />
                             <Hr />
                             <Field

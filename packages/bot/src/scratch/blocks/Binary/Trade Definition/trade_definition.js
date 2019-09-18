@@ -1,8 +1,8 @@
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import config                from '../../../../constants';
-import ApiHelpers            from '../../../../services/api/api-helpers';
 import { translate }         from '../../../../utils/lang/i18n';
+import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -109,7 +109,7 @@ Blockly.Blocks.trade_definition = {
 };
 
 Blockly.JavaScript.trade_definition = block => {
-    const { client } = ApiHelpers.instance.root_store.core;
+    const { client } = ScratchStore.instance.root_store;
     
     if (!client.is_logged_in) {
         throw new Error('Please login'); // TEMP.

@@ -6,8 +6,10 @@ import {
     VerticalTabHeaders,
     VerticalTabHeader }   from '../VerticalTabs';
 
-const MainHeaderLayout = ({ children }) => <div style={{ width: '535px' }}>{children}</div>;
-const SubHeaderLayout = ({ children }) => <div style={{ paddingTop: '56px', height: '100%', borderLeft: '2px solid white' }}>{children}</div>;
+const MainHeaderLayout = ({ children }) => <div className='side-menu__main-header-layout'>{children}</div>;
+
+const SubHeaderLayout = ({ children }) => <div className='side-menu__sub-header-layout'>{children}</div>;
+
 const MainHeaders = ({ items, handleSubroute, active_title }) => (
     <>
         {items.map(item => (
@@ -28,6 +30,7 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
         ))}
     </>
 );
+
 const SubHeaders = ({ items, onChange, selected, is_routed }) => (
     <VerticalTabHeaders
         items={items}

@@ -5,6 +5,17 @@
     &__heading {
         padding: 20px 16px;
     }
+    &__main-header-layout {
+        width: 535px;
+    }
+    &__sub-header-layout {
+        padding-top: 56px;
+        height: 100%;
+        @include themify($themes) {
+            border-left: 2px solid themed('tab_active_background_color');
+
+        }
+    }
     &__title {
         font-size: 1.6rem;
         font-weight: bold;

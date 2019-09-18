@@ -1,8 +1,6 @@
 const moment           = require('moment');
+const ObjectUtils      = require('deriv-shared/utils/object');
 const LocalStore       = require('../storage').LocalStore;
-const getPropertyValue = require('../utility').getPropertyValue;
-const getStaticHash    = require('../utility').getStaticHash;
-const isEmptyObject    = require('../utility').isEmptyObject;
 
 /*
  * Caches WS responses to reduce delay time and number of requests
@@ -65,8 +63,8 @@ const SocketCache = (() => {
 
         const active_symbols_obj = curr_lang ? `active_symbols___${curr_lang}` : null;
 
-        if (!isEmptyObject(ws_cache)) {
-            if (msg_type === 'ticks_history' && !isEmptyObject(ws_cache[active_symbols_obj])) {
+        if (!ObjectUtils.ObjectUtils.isEmptyObject(ws_cache)) {
+            if (msg_type === 'ticks_history' && !ObjectUtils.ObjectUtils.isEmptyObject(ws_cache[active_symbols_obj])) {
                 const active_symbols = ws_cache[active_symbols_obj].value.active_symbols;
                 const curr_symbol    = response.echo_req.ticks_history;
                 if (isMarketClosed(active_symbols, curr_symbol)) {
@@ -99,7 +97,7 @@ const SocketCache = (() => {
         const expires  = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
-            data_obj.static_hash = getStaticHash();
+            data_obj.static_hash = ObjectUtils.getStaticHash();
         }
 
         data_obj[key] = { value: response, expires, msg_type  };
@@ -121,17 +119,17 @@ const SocketCache = (() => {
     };
 
     const reloadDataObj = () => {
-        if (isEmptyObject(data_obj)) {
+        if (ObjectUtils.isEmptyObject(data_obj)) {
             data_obj = LocalStore.getObject(storage_key);
-            if (isEmptyObject(data_obj)) return;
+            if (ObjectUtils.isEmptyObject(data_obj)) return;
         }
 
-        if (data_obj.static_hash !== getStaticHash()) { // new release
+        if (data_obj.static_hash !== ObjectUtils.getStaticHash()) { // new release
             clear();
         }
     };
 
-    const getData = key => (getPropertyValue(data_obj, key) || {});
+    const getData = key => (ObjectUtils.getPropertyValue(data_obj, key) || {});
 
     const get = (key) => {
         reloadDataObj();

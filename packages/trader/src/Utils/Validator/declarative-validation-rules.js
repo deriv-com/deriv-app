@@ -1,11 +1,9 @@
 import Client                    from '_common/base/client_base';
-import {
-    addComma,
-    getDecimalPlaces }           from '_common/base/currency_base';
 import { getElementById }        from '_common/common_functions';
-import { localize }              from 'App/i18n';
 import { compareBigUnsignedInt } from '_common/string_util';
-import { cloneObject }           from '_common/utility';
+import { localize }              from 'App/i18n';
+import CurrencyUtils             from 'deriv-shared/utils/currency';
+import ObjectUtils               from 'deriv-shared/utils/object';
 
 // ------------------------------
 // ----- Validation Methods -----
@@ -39,7 +37,7 @@ export const validLength   = (value, options) => (
 );
 
 export const validNumber = (value, opts) => {
-    const options = cloneObject(opts);
+    const options = ObjectUtils.cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {
         return true;
@@ -62,22 +60,22 @@ export const validNumber = (value, opts) => {
         message = localize('Up to {{decimal_count}} decimal places are allowed.', { decimal_count: options.decimals });
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok   = false;
-        message = localize('Should be {{value}}', { value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be {{value}}', { value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
         is_ok   = false;
         message = localize(
             'Should be between {{min_value}} and {{max_value}}',
             {
-                min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
-                max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
+                min_value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined),
+                max_value: CurrencyUtils.addComma(options.max, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined),
             }
         );
     } else if ('min' in options && +value < +options.min) {
         is_ok   = false;
-        message = localize('Should be more than {{min_value}}', { min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be more than {{min_value}}', { min_value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('max' in options && isMoreThanMax(value, options)) {
         is_ok   = false;
-        message = localize('Should be less than {{max_value}}', { max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be less than {{max_value}}', { max_value: CurrencyUtils.addComma(options.max, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     }
 
     getPreBuildDVRs().number.message = message;

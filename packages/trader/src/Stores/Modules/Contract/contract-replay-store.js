@@ -1,8 +1,8 @@
+import ObjectUtils           from 'deriv-shared/utils/object';
 import {
     action,
     observable }              from 'mobx';
 import BinarySocket           from '_common/base/socket_base';
-import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
 import { localize }           from 'App/i18n';
 import ContractStore          from './contract-store';
@@ -87,7 +87,7 @@ export default class ContractReplayStore extends BaseStore {
             this.is_chart_loading = false;
             return;
         }
-        if (isEmptyObject(response.proposal_open_contract)) {
+        if (ObjectUtils.isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;

@@ -1,4 +1,4 @@
-import { unique }              from '_common/utility';
+import ObjectUtils            from 'deriv-shared/utils/object';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,
@@ -68,7 +68,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 };
 
 const createTickMarkers = (contract_info) => {
-    const tick_stream = unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
+    const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
     const result = [];
 
     tick_stream.forEach((tick, idx) => {

@@ -3,12 +3,14 @@ import PropTypes               from 'prop-types';
 import React, { Component }    from 'react';
 import { withRouter }          from 'react-router';
 import { CSSTransition }       from 'react-transition-group';
-import { Button }              from 'deriv-components';
+import {
+    Button,
+    Money,
+    UnderlyingIcon }           from 'deriv-components';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
 import Localize                from 'App/Components/Elements/localize.jsx';
-import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
@@ -29,7 +31,6 @@ import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
 import ContractCard            from './contract-card.jsx';
-import Money                   from '../money.jsx';
 
 class ContractDrawer extends Component {
     state = {

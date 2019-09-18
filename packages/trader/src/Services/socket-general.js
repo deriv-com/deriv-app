@@ -1,12 +1,12 @@
-import { action, flow }     from 'mobx';
-import Login                from '_common/base/login';
-import ServerTime           from '_common/base/server_time';
-import BinarySocket         from '_common/base/socket_base';
-import { State }            from '_common/storage';
-import { getPropertyValue } from '_common/utility';
-import { localize }         from 'App/i18n';
-import { requestLogout }    from './logout';
-import WS                   from './ws-methods';
+import { action, flow }  from 'mobx';
+import Login             from '_common/base/login';
+import ServerTime        from '_common/base/server_time';
+import BinarySocket      from '_common/base/socket_base';
+import { State }         from '_common/storage';
+import { localize }      from 'App/i18n';
+import ObjectUtils       from 'deriv-shared/utils/object';
+import { requestLogout } from './logout';
+import WS                from './ws-methods';
 
 let client_store,
     common_store,
@@ -40,7 +40,7 @@ const BinarySocketGeneral = (() => {
             case 'authorize':
                 if (response.error) {
                     const is_active_tab = sessionStorage.getItem('active_tab') === '1';
-                    if (getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
+                    if (ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
                         sessionStorage.removeItem('active_tab');
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
@@ -98,7 +98,7 @@ const BinarySocketGeneral = (() => {
 
     const handleError = (response) => {
         const msg_type   = response.msg_type;
-        const error_code = getPropertyValue(response, ['error', 'code']);
+        const error_code = ObjectUtils.getPropertyValue(response, ['error', 'code']);
         switch (error_code) {
             case 'WrongResponse':
             case 'InternalServerError':

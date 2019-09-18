@@ -1,14 +1,14 @@
+import ObjectUtils     from 'deriv-shared/utils/object';
 import {
     action,
     intercept,
     observable,
     reaction,
     toJS,
-    when }               from 'mobx';
-import BinarySocket      from '_common/base/socket_base';
-import { isEmptyObject } from '_common/utility';
-import Validator         from 'Utils/Validator';
-import { isProduction }  from '../config';
+    when }              from 'mobx';
+import BinarySocket     from '_common/base/socket_base';
+import Validator        from 'Utils/Validator';
+import { isProduction } from '../config';
 
 /**
  * BaseStore class is the base class for all defined stores in the application. It handles some stuff such as:
@@ -103,7 +103,7 @@ export default class BaseStore {
     getSnapshot(properties) {
         let snapshot = toJS(this);
 
-        if (!isEmptyObject(this.root_store)) {
+        if (!ObjectUtils.isEmptyObject(this.root_store)) {
             snapshot.root_store = this.root_store;
         }
 

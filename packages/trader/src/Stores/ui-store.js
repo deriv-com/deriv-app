@@ -6,7 +6,7 @@ import {
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
-import { unique }            from '_common/utility';
+import ObjectUtils           from 'deriv-shared/utils/object';
 import BaseStore             from './base-store';
 import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
@@ -310,7 +310,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
-        this.push_notifications = unique(this.push_notifications, 'msg_type');
+        this.push_notifications = ObjectUtils.unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound

@@ -1,8 +1,8 @@
 import React                  from 'react';
 import { expect }             from 'chai';
+import {Money}                from 'deriv-components'
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import Money                  from '../money.jsx';
 
 configure({ adapter: new Adapter() });
 

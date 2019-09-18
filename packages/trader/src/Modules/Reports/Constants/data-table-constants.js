@@ -1,9 +1,8 @@
 import classNames           from 'classnames';
-import { Label }            from 'deriv-components';
+import { Label, Money }     from 'deriv-components';
 import React                from 'react';
 import Icon                 from 'Assets/icon.jsx';
 import { localize }         from 'App/i18n';
-import Money                from 'App/Components/Elements/money.jsx';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell       from '../Components/indicative-cell.jsx';

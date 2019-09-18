@@ -9,7 +9,7 @@ import {
     Field,
     Formik,
     Form }                  from 'formik';
-import { getDecimalPlaces } from '_common/base/currency_base';
+import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
 // import RadioGroup           from 'App/Components/Form/Radio';
 import { localize }         from 'App/i18n';
@@ -32,7 +32,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: payment_agent.min_withdrawal, max: payment_agent.max_withdrawal })) {
+    } else if (!validNumber(values.amount, { type: 'float', decimals: CurrencyUtils.getDecimalPlaces(currency), min: payment_agent.min_withdrawal, max: payment_agent.max_withdrawal })) {
         errors.amount = getPreBuildDVRs().number.message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');

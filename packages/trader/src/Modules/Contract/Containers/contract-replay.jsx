@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
-import { isEmptyObject } from '_common/utility';
+import ObjectUtils       from 'deriv-shared/utils/object';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
 import Digits            from 'Modules/Contract/Components/Digits';
@@ -66,7 +66,8 @@ class ContractReplay extends React.Component {
             indicative_status,
         } = this.props;
 
-        const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
+        const is_from_table_row = !ObjectUtils.isEmptyObject(location.state) ? location.state.from_table_row : false;
+
         return (
             <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer

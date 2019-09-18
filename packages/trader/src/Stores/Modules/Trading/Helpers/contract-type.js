@@ -1,24 +1,22 @@
-import ServerTime               from '_common/base/server_time';
-import { localize }             from 'App/i18n';
-import {
-    cloneObject,
-    getPropertyValue }          from '_common/utility';
-import { WS }                   from 'Services';
+import ServerTime              from '_common/base/server_time';
+import { localize }            from 'App/i18n';
+import ObjectUtils             from 'deriv-shared/utils/object';
+import { WS }                  from 'Services';
 import {
     isTimeValid,
     minDate,
     toMoment }                  from 'Utils/Date';
-import { buildBarriersConfig }  from './barrier';
+import { buildBarriersConfig } from './barrier';
 import {
     buildDurationConfig,
-    hasIntradayDurationUnit }   from './duration';
+    hasIntradayDurationUnit }  from './duration';
 import {
     buildForwardStartingConfig,
-    isSessionAvailable }        from './start-date';
+    isSessionAvailable }       from './start-date';
 import {
     getContractCategoriesConfig,
     getContractTypesConfig,
-    getLocalizedBasis }         from '../Constants/contract';
+    getLocalizedBasis }        from '../Constants/contract';
 
 const ContractType = (() => {
     let available_contract_types = {};
@@ -28,14 +26,14 @@ const ContractType = (() => {
     let has_only_forward_starting_contracts = false;
 
     const buildContractTypesConfig = (symbol) => WS.contractsFor(symbol).then(r => {
-        const has_contracts = getPropertyValue(r, ['contracts_for']);
+        const has_contracts = ObjectUtils.getPropertyValue(r, ['contracts_for']);
         has_only_forward_starting_contracts = has_contracts && !r.contracts_for.available.find((contract) => contract.start_type !== 'forward');
         if (!has_contracts || has_only_forward_starting_contracts) return;
         const contract_categories = getContractCategoriesConfig();
         contract_types = getContractTypesConfig();
 
         available_contract_types = {};
-        available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
+        available_categories = ObjectUtils.cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
         r.contracts_for.available.forEach((contract) => {
             const type = Object.keys(contract_types).find(key => (
@@ -102,7 +100,7 @@ const ContractType = (() => {
                 sub_cats[sub_cats.indexOf(type)] = { value: type, text: contract_types[type].title };
 
                 // populate available contract types
-                available_contract_types[type] = cloneObject(contract_types[type]);
+                available_contract_types[type] = ObjectUtils.cloneObject(contract_types[type]);
             }
             const config = available_contract_types[type].config || {};
 
@@ -171,11 +169,11 @@ const ContractType = (() => {
     const getComponents = (c_type) => ({ form_components: ['duration', 'amount', ...contract_types[c_type].components] });
 
     const getDurationUnitsList = (contract_type, contract_start_type) => ({
-        duration_units_list: getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'units_display', contract_start_type]) || [],
+        duration_units_list: ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'units_display', contract_start_type]) || [],
     });
 
     const getDurationUnit = (duration_unit, contract_type, contract_start_type) => {
-        const duration_units = getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'units_display', contract_start_type]) || [];
+        const duration_units = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'units_display', contract_start_type]) || [];
         const arr_units = [];
         duration_units.forEach(obj => {
             arr_units.push(obj.value);
@@ -187,7 +185,7 @@ const ContractType = (() => {
     };
 
     const getDurationMinMax = (contract_type, contract_start_type, contract_expiry_type) => {
-        let duration_min_max = getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'min_max', contract_start_type]) || {};
+        let duration_min_max = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'min_max', contract_start_type]) || {};
 
         if (contract_expiry_type) {
             duration_min_max = duration_min_max[contract_expiry_type] || {};
@@ -204,7 +202,7 @@ const ContractType = (() => {
     });
 
     const getStartDates = (contract_type, current_start_date) => {
-        const config           = getPropertyValue(available_contract_types, [contract_type, 'config']);
+        const config           = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config']);
         const start_dates_list = [];
 
         if (config.has_spot) {
@@ -222,7 +220,7 @@ const ContractType = (() => {
     };
 
     const getSessions = (contract_type, start_date) => {
-        const config   = getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
+        const config   = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
         const sessions =
                   ((config.forward_starting_dates || []).find(option => option.value === start_date) || {}).sessions;
         return { sessions };
@@ -262,7 +260,7 @@ const ContractType = (() => {
         if (!(date in trading_times)) {
             const trading_times_response = await WS.tradingTimes(date);
 
-            if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
+            if (ObjectUtils.getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {
                     const submarkets = trading_times_response.trading_times.markets[i].submarkets;
                     if (submarkets) {
@@ -378,11 +376,11 @@ const ContractType = (() => {
     );
 
     const getTradeTypes = (contract_type) => ({
-        trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
+        trade_types: ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
     const getBarriers = (contract_type, expiry_type) => {
-        const barriers       = getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
+        const barriers       = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
         const barrier_values = barriers[expiry_type] || {};
         const barrier_1      = barrier_values.barrier || barrier_values.high_barrier || '';
         const barrier_2      = barrier_values.low_barrier || '';
@@ -394,7 +392,7 @@ const ContractType = (() => {
     };
 
     const getBasis = (contract_type, basis) => {
-        const arr_basis  = getPropertyValue(available_contract_types, [contract_type, 'basis']) || {};
+        const arr_basis  = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || {};
         const localized_basis = getLocalizedBasis();
         const basis_list = arr_basis.reduce((cur, bas) => (
             [...cur, { text: localized_basis[bas], value: bas }]

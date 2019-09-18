@@ -1,9 +1,15 @@
+import BinarySocket                   from '_common/base/socket_base';
+import { localize }                   from 'App/i18n';
+import CurrencyUtils                       from 'deriv-shared/utils/currency';
+import ObjectUtils                    from 'deriv-shared/utils/object';
 import debounce                       from 'lodash.debounce';
+import { WS }                         from 'Services';
 import {
     action,
     computed,
     observable,
     reaction,
+<<<<<<< HEAD
     runInAction,
     toJS,
 }                     from 'mobx';
@@ -22,6 +28,10 @@ import {
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
+=======
+    runInAction }                     from 'mobx';
+import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
+>>>>>>> Update references to currency_base + utility
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -438,7 +448,7 @@ export default class TradeStore extends BaseStore {
      */
     @action.bound
     updateStore(new_state) {
-        Object.keys(cloneObject(new_state)).forEach((key) => {
+        Object.keys(ObjectUtils.cloneObject(new_state)).forEach((key) => {
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -483,11 +493,11 @@ export default class TradeStore extends BaseStore {
             /\bcurrency\b/.test(Object.keys(obj_new_values))
         ) {
             const prev_currency = obj_old_values &&
-            !isEmptyObject(obj_old_values) &&
+            !ObjectUtils.isEmptyObject(obj_old_values) &&
             obj_old_values.currency ? obj_old_values.currency : this.currency;
-            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
+            if (CurrencyUtils.isCryptocurrency(obj_new_values.currency) !== CurrencyUtils.isCryptocurrency(prev_currency)) {
                 obj_new_values.amount = is_changed_by_user && obj_new_values.amount ?
-                    obj_new_values.amount : getMinPayout(obj_new_values.currency);
+                    obj_new_values.amount : CurrencyUtils.getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -506,7 +516,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
         if (has_only_forward_starting_contracts) return;
 
-        const new_state = this.updateStore(cloneObject(obj_new_values));
+        const new_state = this.updateStore(ObjectUtils.cloneObject(obj_new_values));
 
         if (is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state))) {
             this.updateStore({ // disable purchase button(s), clear contract info
@@ -567,7 +577,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!isEmptyObject(requests)) {
+        if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
@@ -587,8 +597,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onProposalResponse(response) {
         const contract_type           = response.echo_req.contract_type;
-        const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
-        const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+        const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
+        const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         this.proposal_info  = {
             ...this.proposal_info,

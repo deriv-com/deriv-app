@@ -1,6 +1,6 @@
 
-import { WS }               from 'Services';
-import { getPropertyValue } from '_common/utility';
+import { WS }      from 'Services';
+import ObjectUtils from 'deriv-shared/utils/object';
 
 const trading_events = {};
 export const getTradingEvents = async (date, underlying = null) => {
@@ -11,7 +11,7 @@ export const getTradingEvents = async (date, underlying = null) => {
     if (!(date in trading_events)) {
         const trading_times_response = await WS.tradingTimes(date);
 
-        if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
+        if (ObjectUtils.getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
             for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {
                 const submarkets = trading_times_response.trading_times.markets[i].submarkets;
                 if (submarkets) {

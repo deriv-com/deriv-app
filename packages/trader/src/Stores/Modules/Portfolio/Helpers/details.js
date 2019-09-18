@@ -1,5 +1,5 @@
 import { localize }        from 'App/i18n';
-import { unique }          from '_common/utility';
+import ObjectUtils         from 'deriv-shared/utils/object';
 import {
     epochToMoment,
     formatMiliseconds,
@@ -7,7 +7,7 @@ import {
 import { isDigitContract } from '../../Contract/Helpers/digits';
 
 export const getCurrentTick = (contract_info) => {
-    const tick_stream = unique(contract_info.tick_stream, 'epoch');
+    const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
     const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
     return (!current_tick || current_tick < 0) ? 0 : current_tick;
 };

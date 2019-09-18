@@ -1,12 +1,12 @@
-import { isCryptocurrency } from '_common/base/currency_base';
-import { localize }         from 'App/i18n';
+import { localize }  from 'App/i18n';
+import CurrencyUtils from 'deriv-shared/utils/currency';
 
 export const buildCurrenciesList = (payout_currencies) => {
     const fiat   = [];
     const crypto = [];
 
     payout_currencies.forEach((cur) => {
-        const isCrypto = isCryptocurrency(cur);
+        const isCrypto = CurrencyUtils.isCryptocurrency(cur);
         (isCrypto ? crypto : fiat).push({ text: cur, value: cur, has_tooltip: isCrypto });
     });
 

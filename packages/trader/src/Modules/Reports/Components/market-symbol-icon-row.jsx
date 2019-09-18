@@ -1,12 +1,13 @@
-import { Popover }        from 'deriv-components';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { UnderlyingIcon } from 'App/Components/Elements/underlying-icon.jsx';
-import Icon               from 'Assets/icon.jsx';
+import {
+    Popover,
+    UnderlyingIcon }   from 'deriv-components';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import Icon            from 'Assets/icon.jsx';
 import {
     getMarketName,
-    getTradeTypeName }    from '../Helpers/market-underlying';
-import Shortcode          from '../Helpers/shortcode';
+    getTradeTypeName } from '../Helpers/market-underlying';
+import Shortcode       from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';

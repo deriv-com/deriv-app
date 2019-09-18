@@ -1,6 +1,6 @@
+import CurrencyUtils        from 'deriv-shared/utils/currency';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
 import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
@@ -54,7 +54,7 @@ export class AccountActions extends Component {
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
-                            balance={formatMoney(currency, balance, true)}
+                            balance={CurrencyUtils.formatMoney(currency, balance, true)}
                             is_upgrade_enabled={can_upgrade}
                             is_virtual={is_virtual}
                             onClickUpgrade={onClickUpgrade}

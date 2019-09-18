@@ -69,14 +69,25 @@ class Autocomplete extends React.PureComponent {
 
         const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
 
+        const get_filtered_items = () => {
+            const list = this.props.list_items.filter(item => (
+                is_string_array ?
+                    item.toLowerCase().includes(val)
+                    : item.text.toLowerCase().includes(val)
+            ));
+            if (!list.length) {
+                list.push({
+                    text: 'No results found',
+                    val : '',
+                });
+            }
+            return list;
+        };
+
         this.setState(
             {
                 filtered_items: val ?
-                    this.props.list_items.filter(item => (
-                        is_string_array ?
-                            item.toLowerCase().includes(val)
-                            : item.text.toLowerCase().includes(val)
-                    ))
+                    get_filtered_items()
                     : null,
             }
         );

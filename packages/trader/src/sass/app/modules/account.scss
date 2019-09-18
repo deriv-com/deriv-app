@@ -224,16 +224,11 @@
                 @include themify($themes) {
                     border-bottom: 1px solid themed('tab_background_color');
                 }
+                padding: 8px 0;
 
-                &:not(:first-child):not(:last-child) {
-                    padding: 8px 0;
-                }
                 &:first-child {
                     padding-top: 0;
                     padding-bottom: 4px;
-                }
-                &:last-child {
-                    padding-top: 4px;
                 }
             }
         }

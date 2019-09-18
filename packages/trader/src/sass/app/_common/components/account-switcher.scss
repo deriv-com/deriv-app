@@ -140,7 +140,7 @@
         padding: 1.6em;
         display: flex;
         flex-flow: column nowrap;
-        background: var(--general-main-2);
+        background: var(--general-section-1);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
@@ -205,7 +205,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: var(--text-prominent);
+        background-color: var(--state-normal);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);

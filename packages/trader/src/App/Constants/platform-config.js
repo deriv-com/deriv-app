@@ -4,7 +4,7 @@ const platform_config = [
     {
         'icon'       : 'IconDTrader',
         'title'      : localize('DTrader'),
-        'description': localize('Everything you need to trade the market you want'),
+        'description': localize('Everything you need to trade the markets you want'),
     },
     {
         'icon'       : 'IconDBot',

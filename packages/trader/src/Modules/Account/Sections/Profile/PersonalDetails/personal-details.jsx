@@ -118,7 +118,7 @@ class PersonalDetailsForm extends React.Component {
         const country_dropdown_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
         country_dropdown_fields.forEach(field => {
             if (values[field] && !getResidence(residence_list, values[field], 'value')) {
-                errors[field] = localize('Please enter a country or choose one from the dropdown menu');
+                errors[field] = true;
             }
         });
 
@@ -251,7 +251,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('place_of_birth_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('place_of_birth_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -270,7 +270,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={values.citizen_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('citizen_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('citizen_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -357,7 +357,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={values.tax_residence_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('tax_residence_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}

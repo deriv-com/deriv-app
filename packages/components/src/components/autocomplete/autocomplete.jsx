@@ -37,6 +37,10 @@ class Autocomplete extends React.PureComponent {
         event.preventDefault();
         this.hideDropdownList();
 
+        this.setState({
+            no_results_error: this.state.input_value === 'NaN',
+            filtered_items  : this.props.list_items,
+        });
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur(e);
         }
@@ -44,7 +48,7 @@ class Autocomplete extends React.PureComponent {
 
     onItemSelection = (item) => {
         this.setState({
-            input_value: (item.text ? item.text : item),
+            input_value: item.text ? item.text : item,
         }, () => {
             this.setState({
                 filtered_items: this.props.list_items.filter(i => i.text === this.state.input_value),
@@ -77,9 +81,10 @@ class Autocomplete extends React.PureComponent {
             ));
             if (!list.length) {
                 list.push({
-                    text: 'No results found',
-                    val : '',
+                    text : 'No results found', // TODO: add localize
+                    value: '',
                 });
+                this.setState({ input_value: 'NaN' });
             }
             return list;
         };
@@ -108,7 +113,9 @@ class Autocomplete extends React.PureComponent {
                 <div ref={ this.setInputWrapperRef } className='dc-autocomplete__input-field'>
                     <Input
                         { ...otherProps }
-                        className='dc-autocomplete__field'
+                        className={ classNames('dc-autocomplete__field', {
+                            'dc-autocomplete__field--error': this.state.no_results_error,
+                        })}
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onFocus={(e) => this.showDropdownList(e) }

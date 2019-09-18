@@ -92,9 +92,14 @@
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 4));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
+            z-index: 1;
+            overflow: hidden;
 
             &-wrapper {
                 z-index: 4;
+            }
+            .contract-card__sell-button--exit {
+                display: none;
             }
         }
         .replay-chart__container {

@@ -32,12 +32,12 @@ class ContractReplay extends React.Component {
     }
 
     componentWillUnmount() {
-        // this.props.disableRouteMode();
         this.props.onUnmount();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
     handleClickOutside = (event) => {
+        if (this.props.has_service_error) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             const classname_string = event.target.classList[0];
             if (/^.*(modal|btn|notification)/.test(classname_string)) {
@@ -130,9 +130,7 @@ ContractReplay.propTypes = {
     contract_id      : PropTypes.number,
     contract_info    : PropTypes.object,
     digits_info      : PropTypes.object,
-    disableRouteMode : PropTypes.func,
     display_status   : PropTypes.string,
-    enableRouteMode  : PropTypes.func,
     error_message    : PropTypes.string,
     history          : PropTypes.object,
     indicative_status: PropTypes.string,
@@ -167,6 +165,7 @@ export default withRouter(connect(
             indicative_status: contract_replay.indicative_status,
             is_chart_loading : contract_replay.is_chart_loading,
             is_dark_theme    : ui.is_dark_mode_on,
+            has_service_error: ui.is_services_error_visible,
         });
     }
 )(ContractReplay));

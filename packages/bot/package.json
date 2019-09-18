@@ -95,6 +95,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@binary-com/smartcharts": "^0.3.9",
+    "classnames": "^2.2.6",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",

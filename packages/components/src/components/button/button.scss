@@ -117,16 +117,19 @@
         }
     }
     &--flat {
-        background: $COLOR_WHITE;
+        background-color: transparent;
+        font-weight: bold;
+        border: solid 1px #999999; /* stylelint-disable-line color-no-hex */
+        height: 3.2em;
 
         .btn__text {
-            color: #4c5794; /* stylelint-disable-line color-no-hex */
+            color: #333333;  /* stylelint-disable-line color-no-hex */
         }
         &:hover:not([disabled]) {
-            background: #f2f3f8; /* stylelint-disable-line color-no-hex */
+            background: transparent;
         }
         &:active:not([disabled]) span {
-            color: #4c5794; /* stylelint-disable-line color-no-hex */
+            color: transparent;
         }
         /* postcss-bem-linter: ignore */
         &.effect:focus:not(:active):after {

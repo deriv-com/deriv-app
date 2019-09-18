@@ -1,13 +1,15 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import classNames      from 'classnames';
+import PropTypes       from 'prop-types';
+import React           from 'react';
 import {
     AccountActions,
     MenuLinks,
-}                     from 'App/Components/Layout/Header';
-import header_links   from 'App/Constants/header-links';
-import Lazy           from 'App/Containers/Lazy';
-import { connect }    from 'Stores/connect';
+    PlatformSwitcher,
+}                      from 'App/Components/Layout/Header';
+import platform_config from 'App/Constants/platform-config';
+import header_links    from 'App/Constants/header-links';
+import Lazy            from 'App/Containers/Lazy';
+import { connect }     from 'Stores/connect';
 
 const Header = ({
     active_cashier_tab,
@@ -36,6 +38,7 @@ const Header = ({
     >
         <div className='header__menu-items'>
             <div className='header__menu-left'>
+                <PlatformSwitcher platform_config={platform_config} />
                 <Lazy
                     has_progress={false}
                     ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}

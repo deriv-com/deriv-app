@@ -7,8 +7,10 @@ const isServe = process.env.BUILD_MODE === 'serve';
 module.exports = {
   target: 'web',
   entry: {
-    date: path.resolve(__dirname, 'src', 'utils/date/index.js'),
-    events: path.resolve(__dirname, 'src', 'utils/events/index.js'),
+    date         : path.resolve(__dirname, 'src', 'utils/date/index.js'),
+    events       : path.resolve(__dirname, 'src', 'utils/events/index.js'),
+    currency     : path.resolve(__dirname, 'src', 'utils/currency/index.js'),
+    object       : path.resolve(__dirname, 'src', 'utils/object/index.js')
   },
   output: {
     path: path.resolve(__dirname, 'utils'),
@@ -18,7 +20,7 @@ module.exports = {
     libraryTarget: 'umd',
   },
   optimization: {
-    minimize: true,
+    minimize: false,
   },
   module: {
     rules: [

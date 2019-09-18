@@ -91,7 +91,6 @@ class ToggleCashier extends React.Component {
             className,
             disableApp,
             enableApp,
-            is_account_transfer_visible,
             is_cashier_visible,
             is_payment_agent_visible,
             toggleCashier,
@@ -100,8 +99,7 @@ class ToggleCashier extends React.Component {
         const visible_items = [];
 
         modal_content.forEach(content => {
-            if ((content.container !== 'payment_agent' || is_payment_agent_visible) &&
-                content.container !== 'account_transfer' || is_account_transfer_visible) {
+            if ((content.container !== 'payment_agent' || is_payment_agent_visible)) {
                 visible_items.push(content.container);
             }
         });
@@ -139,14 +137,13 @@ class ToggleCashier extends React.Component {
 }
 
 ToggleCashier.propTypes = {
-    active_tab                 : PropTypes.string,
-    className                  : PropTypes.string,
-    disableApp                 : PropTypes.func,
-    enableApp                  : PropTypes.func,
-    is_account_transfer_visible: PropTypes.bool,
-    is_open                    : PropTypes.bool,
-    is_payment_agent_visible   : PropTypes.bool,
-    toggleModal                : PropTypes.func,
+    active_tab              : PropTypes.string,
+    className               : PropTypes.string,
+    disableApp              : PropTypes.func,
+    enableApp               : PropTypes.func,
+    is_open                 : PropTypes.bool,
+    is_payment_agent_visible: PropTypes.bool,
+    toggleModal             : PropTypes.func,
 };
 
 export default ToggleCashier;

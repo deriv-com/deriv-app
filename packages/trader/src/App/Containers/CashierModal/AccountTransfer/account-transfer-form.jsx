@@ -55,7 +55,7 @@ const AccountOption = ({ account, idx }) => (
 class AccountTransferForm extends React.Component {
     validateTransferPassthrough = (values) => (
         validateTransfer(values, {
-            balance       : this.props.balance,
+            balance       : this.props.selected_from.balance,
             currency      : this.props.selected_from.currency,
             transfer_limit: this.props.transfer_limit,
         })
@@ -242,7 +242,6 @@ class AccountTransferForm extends React.Component {
 
 AccountTransferForm.propTypes = {
     accounts_list                 : PropTypes.array,
-    balance                       : PropTypes.string,
     error                         : PropTypes.object,
     minimum_fee                   : PropTypes.string,
     onChangeTransferFrom          : PropTypes.func,
@@ -255,8 +254,7 @@ AccountTransferForm.propTypes = {
 };
 
 export default connect(
-    ({ client, modules }) => ({
-        balance                       : client.balance,
+    ({ modules }) => ({
         accounts_list                 : modules.cashier.config.account_transfer.accounts_list,
         minimum_fee                   : modules.cashier.config.account_transfer.minimum_fee,
         onChangeTransferFrom          : modules.cashier.onChangeTransferFrom,

@@ -149,21 +149,10 @@ export default class CashierStore extends BaseStore {
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
         if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await this.getPaymentAgentList();
-            this.setPaymentAgentList(payment_agent_list);
-            this.filterPaymentAgentList();
+            this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
-        if (!this.config.account_transfer.accounts_list.length) {
-            const transfer_between_accounts = await WS.transferBetweenAccounts();
-            const mt5_login_list = await BinarySocket.wait('mt5_login_list');
-            if (!mt5_login_list.error && !transfer_between_accounts.error) {
-                // should have more than one account
-                if (transfer_between_accounts.accounts.length > 1) {
-                    this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
-                }
-            }
-        }
+        this.sortAccountsTransfer();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
@@ -483,7 +472,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setPaymentAgentList(payment_agent_list) {
+    async setPaymentAgentList(pa_list) {
+        const payment_agent_list = pa_list || await this.getPaymentAgentList();
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -646,7 +636,7 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 return;
             }
-            this.setAccounts(transfer_between_accounts.accounts, mt5_login_list.mt5_login_list);
+            this.sortAccountsTransfer(transfer_between_accounts, mt5_login_list);
         } else if (!this.config.account_transfer.accounts_list.find(account => +account.balance > 0)) {
             this.setHasNoBalance(true);
             this.setLoading(false);
@@ -703,7 +693,18 @@ export default class CashierStore extends BaseStore {
     };
 
     @action.bound
-    setAccounts(accounts, mt5_login_list) {
+    async sortAccountsTransfer(response_accounts, response_mt5_accounts) {
+        const transfer_between_accounts = response_accounts || await WS.transferBetweenAccounts();
+        const mt5_login_list = response_mt5_accounts || await BinarySocket.wait('mt5_login_list');
+        if (!this.config.account_transfer.accounts_list.length) {
+            // should have more than one account
+            if (mt5_login_list.error || transfer_between_accounts.error ||
+                transfer_between_accounts.accounts.length <= 1) {
+                return;
+            }
+        }
+        const accounts     = transfer_between_accounts.accounts;
+        const mt5_accounts = mt5_login_list.mt5_login_list;
         // sort accounts as follows:
         // for non-MT5, top is fiat, then crypto, alphabetically by currency
         // for MT5, standard, advanced, then synthetic indices
@@ -715,7 +716,7 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                const a_group = mt5_login_list.find(account => account.login === a.loginid.split('MT')[1]).group;
+                const a_group = mt5_accounts.find(account => account.login === a.loginid.split('MT')[1]).group;
                 if (/vanuatu/.test(a_group)) {
                     return -1;
                 }
@@ -735,7 +736,7 @@ export default class CashierStore extends BaseStore {
             const is_mt = /MT/.test(account.loginid);
             let group;
             if (is_mt) {
-                group = this.getMT5AccountType(mt5_login_list.find(mt5_account => mt5_account.login === account.loginid.split('MT')[1]).group);
+                group = this.getMT5AccountType(mt5_accounts.find(mt5_account => mt5_account.login === account.loginid.split('MT')[1]).group);
             }
             const obj_values = {
                 is_mt,
@@ -756,6 +757,11 @@ export default class CashierStore extends BaseStore {
             }
             arr_accounts.push(obj_values);
         });
+        this.setAccounts(arr_accounts);
+    }
+
+    @action.bound
+    setAccounts(arr_accounts) {
         this.config.account_transfer.accounts_list = arr_accounts;
     }
 

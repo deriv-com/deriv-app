@@ -2,19 +2,8 @@ import PropTypes from 'prop-types';
 import React     from 'react';
 
 const IconTransferDone = ({ className }) => (
-    <svg className={className} width='132' height='121' viewBox='0 0 132 121'>
-        <defs>
-            <filter id='a' width='104.4%' height='106.5%' x='-2.2%' y='-3.2%' filterUnits='objectBoundingBox'>
-                <feOffset dy='2' in='SourceAlpha' result='shadowOffsetOuter1' />
-                <feGaussianBlur in='shadowOffsetOuter1' result='shadowBlurOuter1' stdDeviation='4' />
-                <feColorMatrix in='shadowBlurOuter1' result='shadowMatrixOuter1' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0' />
-                <feMerge>
-                    <feMergeNode in='shadowMatrixOuter1' />
-                    <feMergeNode in='SourceGraphic' />
-                </feMerge>
-            </filter>
-        </defs>
-        <g fill='none' fillRule='evenodd' filter='url(#a)' transform='translate(2 -6)'>
+    <svg className={className} width='116' height='105' viewBox='0 0 116 105'>
+        <g fill='none' fillRule='evenodd' transform='translate(-6 -12)'>
             <path fill='#C7E5E5' d='M16.08 99.14h82.39c5.511-.027 9.973-4.489 10-10V22.78c0-5.523-4.477-10-10-10H16.08c-5.523 0-10 4.477-10 10v66.31a10 10 0 0 0 10 10.05z' />
             <path fill='#84ABAE' d='M111.37 43H96.06c-6.35 0-11.5 4.61-11.5 10.3v3c0 5.69 5.15 10.3 11.5 10.3h15.31a4.93 4.93 0 0 0 5.18-4.6V47.63a4.92 4.92 0 0 0-5.18-4.63' />
             <path fill='#C7E5E5' d='M101.8 54.81a5.5 5.5 0 1 1-5.5-5.49 5.49 5.49 0 0 1 5.5 5.49' />

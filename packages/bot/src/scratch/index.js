@@ -32,7 +32,7 @@ export const scratchWorkspaceInit = async () => {
         });
 
         Blockly.derivWorkspace = workspace;
-        
+
         // TODO: Remove this.
         Blockly.BLOCKLY_CLASS_OLD = new _Blockly();
 
@@ -89,6 +89,7 @@ export const scratchWorkspaceInit = async () => {
     }
 };
 
+// eslint-disable-next-line no-unused-vars
 const disableStrayBlocks = () => {
     const top_blocks = Blockly.derivWorkspace.getTopBlocks();
 

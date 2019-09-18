@@ -2,6 +2,7 @@ const StyleLintPlugin      = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
+const shared_utils         = require('deriv-shared/utils/index.js');
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
@@ -24,6 +25,7 @@ module.exports = {
         'password-meter': path.resolve(__dirname, 'src', 'components/password-meter/index.js'),
         popover         : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group'   : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
+        tabs            : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -66,7 +68,7 @@ module.exports = {
                     {
                         loader : 'sass-resources-loader',
                         options: {
-                            resources: require('deriv-shared/utils/index.js'),
+                            resources: shared_utils,
                         },
                     },
                 ],

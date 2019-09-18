@@ -1,0 +1,14 @@
+/**
+* @define -panel
+**/
+.run-panel {
+    &__footer {
+        text-align: center;
+    }
+    &__button {
+        margin-left: 0 !important;
+    }
+    &__icon-info {
+        vertical-align: middle;
+    }
+}

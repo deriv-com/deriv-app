@@ -48,7 +48,7 @@
         width: 2px;
         height: 2px;
         margin-left: -2px;
-        margin-bottom: -1px;
+        margin-top: -2px;
         @include themify($themes) {
             background-color: themed('tick_step_marked');
             border: 2px solid themed('tick_step_marked');

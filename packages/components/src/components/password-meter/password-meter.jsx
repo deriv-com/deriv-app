@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React      from 'react';
-import zxcvbn     from 'zxcvbn';
+import zxcvbn     from '@contentpass/zxcvbn';
 import PropTypes  from 'prop-types';
 import FieldError from 'Components/field-error';
 

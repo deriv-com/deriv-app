@@ -16,6 +16,7 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
     //     4: 'Strong',
     // };
     // const strength = strength_map[score] || strength_map[1];
+    // TODO: Add localization support for suggestion strings
 
     return (
         <React.Fragment>

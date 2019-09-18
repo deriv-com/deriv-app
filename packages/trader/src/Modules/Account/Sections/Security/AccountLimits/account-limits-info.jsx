@@ -1,7 +1,23 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Icon              from 'Assets/icon.jsx';
-import Localize          from 'App/Components/Elements/localize.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import Icon         from 'Assets/icon.jsx';
+import Localize     from 'App/Components/Elements/localize.jsx';
+import { localize } from 'App/i18n';
+
+const currency_name_map = {
+    BTC: localize('Bitcoin'),
+    BCH: localize('Bitcoin Cash'),
+    ETH: localize('Ether'),
+    ETC: localize('Ether Classic'),
+    LTC: localize('Litecoin'),
+    UST: localize('Tether'),
+    USB: localize('Binary Coin'),
+    USD: localize('US Dollar'),
+    AUD: localize('Australian Dollar'),
+    EUR: localize('Euro'),
+    GBP: localize('Pound Sterling'),
+
+};
 
 const AccountLimitsInfo = ({
     currency,
@@ -17,8 +33,11 @@ const AccountLimitsInfo = ({
                 />
                 <p className='account__inset_header-subheading'>
                     <Localize
-                        i18n_default_text='For your {{currency}} account'
-                        values={{ currency: currency.toUpperCase() }}
+                        i18n_default_text='For your {{currency_name}} ({{currency}}) account'
+                        values={{
+                            currency_name: currency_name_map[currency.toUpperCase()],
+                            currency     : currency.toUpperCase(),
+                        }}
                     />
                 </p>
 

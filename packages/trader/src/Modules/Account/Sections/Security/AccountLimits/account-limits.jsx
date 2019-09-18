@@ -111,7 +111,7 @@ class AccountLimits extends React.Component {
                         <tbody>
                             <Row>
                                 <Td is_flex>
-                                    {localize('*Maximum number of open positions')}
+                                    {localize('Maximum number of open positions')}
                                     <Popover
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
@@ -124,7 +124,7 @@ class AccountLimits extends React.Component {
                             </Row>
                             <Row>
                                 <Td is_flex>
-                                    {localize('*Maximum account cash balance')}
+                                    {localize('Maximum account cash balance')}
                                     <Popover
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
@@ -151,7 +151,7 @@ class AccountLimits extends React.Component {
                         </tbody>
                     </table>
                     <TextContainer>
-                        <Text size='xsmall'>{localize('*Any limits in your Self-exclusion settings will override these default limits.')}</Text>
+                        <Text size='small' color='grey'>{localize('*Any limits in your Self-exclusion settings will override these default limits.')}</Text>
                     </TextContainer>
                     <table className='account-management-table'>
                         <thead>

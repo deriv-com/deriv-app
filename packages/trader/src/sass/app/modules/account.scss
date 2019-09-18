@@ -12,7 +12,7 @@
         }
 
         &-subheading {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             line-height: 1.5;
             margin-right: 8px;
             @include themify($themes) {
@@ -215,21 +215,20 @@
                 height: 1px;
                 left: 0px;
                 @include themify($themes) {
-                    border-bottom: 1px solid themed('tab_background_color');
+                    border-bottom: 2px solid themed('tab_background_color');
                 }
             }
         }
         tbody {
             tr {
-                &:not(:first-child):not(:last-child) {
-                    padding: 8px 0;
+                @include themify($themes) {
+                    border-bottom: 1px solid themed('tab_background_color');
                 }
+                padding: 8px 0;
+
                 &:first-child {
-                    padding-top: 8px;
+                    padding-top: 0;
                     padding-bottom: 4px;
-                }
-                &:last-child {
-                    padding-top: 4px;
                 }
             }
         }

@@ -43,7 +43,13 @@ class Autocomplete extends React.PureComponent {
     };
 
     onItemSelection = (item) => {
-        this.setState({ input_value: (item.text ? item.text : item) });
+        this.setState({
+            input_value: (item.text ? item.text : item),
+        }, () => {
+            this.setState({
+                filtered_items: this.props.list_items.filter(i => i.text === this.state.input_value),
+            });
+        });
 
         if (typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection(item);

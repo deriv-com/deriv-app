@@ -370,6 +370,7 @@
     }
     &__drop-down {
         min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
+        margin-bottom: 3.4rem;
     }
     &__currency {
         margin: 0 0.4rem;

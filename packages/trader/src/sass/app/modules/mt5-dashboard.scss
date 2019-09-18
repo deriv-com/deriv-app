@@ -2,6 +2,13 @@
 .mt5-dashboard {
     margin: 4.8em 16em;
 
+    &--hint {
+        //@include typeface(--xsmall-left-normal-black, none);
+        font-size: 10px;
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
     &__welcome-message {
         margin-bottom: 3.2em;
 
@@ -18,7 +25,7 @@
             @include themify($themes) {
                 color: themed('text_color');
             }
-            line-height: 2.4em;
+            line-height: 1.5em;
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
@@ -106,6 +113,92 @@
             }
             margin-top: 1.6em;
             margin-left: 7.05em;
+        }
+    }
+}
+
+.mt5-real-accounts-display {
+    margin-top: 2.4em;
+    padding: 1em;
+}
+
+.mt5-account-card {
+    height: 32em;
+    width: 30.4em;
+    border-radius: 4px;
+
+    &:not(:hover) {
+        border: solid 1px #d6dadb;
+    }
+    &:hover {
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    }
+    &--heading {
+        @include typeface(--title-left-bold-black, none);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        line-height: 1.5em;
+    }
+    &--paragraph {
+        @include typeface(--paragraph-left-normal-black, none);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        line-height: 1.45em;
+    }
+    &__type {
+        padding: 1.6em;
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin-right: 1.6em;
+        }
+        &--description {
+            max-width: 16em;
+            display: inline-block;
+
+            .mt5-account-card--heading {
+                margin-bottom: 0.5em;
+            }
+        }
+    }
+    &__specs {
+        margin: 2.8em 1.6em 1.6em;
+    }
+    &__specs-table {
+        width: 100%;
+
+        &-attribute {
+            width: 14.8em;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        &-data {
+            .mt5-account-card--paragraph {
+                @include typeface(--paragraph-left-bold-black, none);
+                @include themify($themes) {
+                    color: themed('text_primary_color');
+                }
+                line-height: 1.45em;
+            }
+        }
+    }
+    &__commission {
+        text-align: center;
+        &.mt5-account-card--paragraph {
+            line-height: 1.4em;
+        }
+    }
+    &__account-selection {
+        height: 4em;
+        width: 27em;
+        padding: 0;
+        background-color: var(--brand-red-coral);
+        font-weight: bold;
+        @include themify($themes) {
+            color: themed('text_active_color');
         }
     }
 }

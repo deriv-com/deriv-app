@@ -1,9 +1,9 @@
-const CopyWebpackPlugin     = require('copy-webpack-plugin');
-const MiniCssExtractPlugin  = require("mini-css-extract-plugin");
-const path                  = require('path');
-const StyleLintPlugin       = require('stylelint-webpack-plugin');
-const SpriteLoaderPlugin    = require('svg-sprite-loader/plugin');
-const ProvidePlugin         = require('webpack').ProvidePlugin;
+const CopyWebpackPlugin         = require('copy-webpack-plugin');
+const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
+const path                      = require('path');
+const StyleLintPlugin           = require('stylelint-webpack-plugin');
+const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
@@ -96,10 +96,20 @@ module.exports = {
             { from: './node_modules/scratch-blocks/media', to: 'media' },
         ]),
         new SpriteLoaderPlugin(),
-        new ProvidePlugin({
-            goog                : 'expose-loader?goog!scratch-blocks/shim/blockly_compressed_vertical.goog',
-            Blockly             : 'expose-loader?Blockly!scratch-blocks/shim/blockly_compressed_vertical.Blockly',
-            'Blockly.JavaScript': 'expose-loader?Blockly.JavaScript!blockly/generators/javascript',
-        }),
+        new MergeIntoSingleFilePlugin({
+            files: {
+                'scratch.min.js': [
+                    'node_modules/scratch-blocks/blockly_compressed_vertical.js',
+                    'node_modules/scratch-blocks/msg/messages.js',
+                    'node_modules/blockly/generators/javascript.js',
+                ],
+            },
+            transform: {
+                'scratch.min.js': (code) => {
+                    const uglifyjs = require('uglify-js');
+                    return uglifyjs.minify(code).code;
+                }
+            }
+        })
     ],
 };

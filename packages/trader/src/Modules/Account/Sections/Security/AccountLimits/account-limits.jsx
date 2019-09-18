@@ -151,7 +151,7 @@ class AccountLimits extends React.Component {
                         </tbody>
                     </table>
                     <TextContainer>
-                        <Text size='xsmall'>{localize('*Any limits in your Self-exclusion settings will override these default limits.')}</Text>
+                        <Text size='small' color='grey'>{localize('*Any limits in your Self-exclusion settings will override these default limits.')}</Text>
                     </TextContainer>
                     <table className='account-management-table'>
                         <thead>

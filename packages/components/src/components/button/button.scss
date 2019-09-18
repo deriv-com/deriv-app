@@ -115,6 +115,24 @@
                 color: var(--text-prominent);
             }
         }
+        &--large {
+            background: transparent;
+            border: 2px solid var(--button-secondary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-secondary-hover);
+            }
+            &:active:not([disabled]) {
+                border: 2px solid var(--button-secondary-default);
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .btn__text {
+                color: var(--text-prominent);
+            }
+        }
         // TODO: (colors) remove this line after colors migration complete
         &--orange {
             .btn__text {

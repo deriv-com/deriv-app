@@ -62,12 +62,13 @@
         /* postcss-bem-linter: ignore */
         .category-wrapper {
             margin: 0 0.2em;
+            background-color: var(--general-section-1);
 
             /* postcss-bem-linter: ignore */
             .category-type {
                 /* postcss-bem-linter: ignore */
                 .transparent {
-                    fill: var(--general-main-2);
+                    fill: var(--general-section-1);
                 }
                 /* postcss-bem-linter: ignore */
                 .color1-fill {
@@ -87,6 +88,5 @@
         outline: none;
         border-radius: 4px;
         border-color: var(--border-active);
-        box-shadow: 0 0 0 2px var(--shadow-menu);
     }
 }

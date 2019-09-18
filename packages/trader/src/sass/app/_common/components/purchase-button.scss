@@ -39,7 +39,11 @@
             @extend %inline-icon.white;
             /* postcss-bem-linter: ignore */
             .color1-fill {
-                fill: var(--text-prominent);
+                fill: var(--text-colored-background);
+            }
+            /* postcss-bem-linter: ignore */
+            .color2-fill {
+                fill: var(--text-colored-background);
             }
         }
     }
@@ -104,9 +108,8 @@
             pointer-events: none;
         }
         &--disabled {
-            .btn-purchase__box-shadow {
-                opacity: 0;
-            }
+            pointer-events: none;
+
             &:hover {
                 transform: none;
             }
@@ -159,37 +162,6 @@
     }
     &--disabled, &[disabled] {
         cursor: default;
-        background-color: var(--purchase-disabled-section);
-        color: var(--text-disabled);
-
-        .btn-purchase__info--left {
-            background-color: var(--purchase-disabled-main);
-
-            svg {
-                @include colorIcon(var(--text-disabled), var(--text-disabled));
-            }
-            .btn-purchase__icon_wrapper {
-                /* postcss-bem-linter: ignore */
-                .color1-fill {
-                    fill: var(--text-disabled) !important;
-                }
-            }
-            .btn-purchase__text {
-                color: var(--text-disabled);
-            }
-        }
-        .btn-purchase__info--right {
-            .btn-purchase__text {
-                color: var(--text-disabled);
-            }
-        }
-        .btn-purchase__effect-detail {
-            background: var(--purchase-disabled-main);
-
-            &--arrow {
-                background: var(--purchase-disabled-main);
-            }
-        }
     }
     &--animated--slide {
         .btn-purchase__icon_wrapper, .btn-purchase__text_wrapper {

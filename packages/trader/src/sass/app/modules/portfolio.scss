@@ -80,15 +80,10 @@
         width: 100%;
     }
     &__icon {
-        @extend %inline-icon;
+        @extend %inline-icon.disabled;
         height: 4.8em;
         width: 4.8em;
         margin-bottom: 1.6em;
-
-        /* postcss-bem-linter: ignore */
-        path {
-            fill: var(--text-general) !important;
-        }
     }
     &__text {
         font-size: 1.4em;

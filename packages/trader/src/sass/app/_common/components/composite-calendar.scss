@@ -28,7 +28,14 @@
             & .input {
                 height: 32px;
                 background-color: var(--fill-normal);
+                border: 1px solid var(--border-normal);
 
+                &:hover {
+                    border-color: var(--border-hover);
+                }
+                &:focus, &:active {
+                    border-color: var(--border-active);
+                }
                 &::placeholder {
                     color: var(--text-general);
                 }

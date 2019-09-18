@@ -23,5 +23,9 @@
         display: inline-block;
         vertical-align: middle;
         margin: 0 8px;
+
+        .color1-fill {
+            fill: var(--text-profit-success);
+        }
     }
 }

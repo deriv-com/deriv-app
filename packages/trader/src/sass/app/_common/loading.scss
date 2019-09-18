@@ -14,7 +14,7 @@
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
     &--dark .barspinner__rect {
-        background-color: var(--brand-red-coral);
+        background-color: var(--brand-secondary);
     }
 }
 

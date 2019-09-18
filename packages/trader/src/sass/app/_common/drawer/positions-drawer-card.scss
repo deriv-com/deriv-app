@@ -64,7 +64,7 @@
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
-        background: var(--general-section-2);
+        background: var(--general-main-1);
 
         &--active:before {
             content: '';

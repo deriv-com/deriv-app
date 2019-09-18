@@ -122,7 +122,7 @@
     }
     &__text {
         @include typeface(--small-center-normal-black, unset);
-        color: var(--text-prominent);
+        color: var(--text-general);
 
         &--bold {
             font-weight: bold;
@@ -134,10 +134,10 @@
         justify-self: center;
         position: relative;
         cursor: pointer;
-        color: var(--text-prominent);
+        color: var(--text-general);
 
-        &:hover {
-            color: var(--text-prominent);
+        &:hover:not(.calendar__cell--disabled) {
+            color: var(--text-general);
             background: var(--state-hover);
         }
         &:nth-child(7n) {
@@ -161,8 +161,6 @@
         }
         &--disabled:hover {
             cursor: default;
-            background: var(--state-hover);
-            color: var(--text-disabled);
         }
         &--disabled, &--other {
             color: var(--text-disabled);

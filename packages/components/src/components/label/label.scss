@@ -6,30 +6,91 @@
     border-radius: $BORDER_RADIUS * 3;
     padding: 2px 8px;
     margin: 0 2px;
-    color: var(--text-prominent);
+    position: relative;
 
+    /* TODO: change all :after to normal background color once styleguide ready */
     &--default {
-        color: $color-black;
-        background-color: var(--status-default);
+        color: var(--status-default);
+
+        &:after {
+            background-color: var(--status-default);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
     }
     &--danger {
-        background-color: var(--status-danger);
+        color: var(--status-danger);
+
+        &:after {
+            background-color: var(--status-danger);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
     }
     &--warn {
-        background-color: var(--status-warning);
+        color: var(--status-warning);
+
+        &:after {
+            background-color: var(--status-warning);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
     }
     &--success {
-        background-color: var(--status-success);
+        color: var(--status-success);
+
+        &:after {
+            background-color: var(--status-success);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
     }
     &--success-invert {
         color: var(--text-colored-background);
         background-color: var(--status-success);
     }
     &--warn-invert {
+        color: var(--text-colored-background);
         background-color: var(--status-warning);
     }
     &--info {
-        background-color: var(--status-info);
+        color: var(--status-info);
+
+        &:after {
+            background-color: var(--status-info);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
     }
     &--large {
         height: 28px;

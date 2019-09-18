@@ -134,13 +134,13 @@
         border-radius: 50%;
 
         &--online {
-            background: var(--brand-secondary);
+            background: var(--text-profit-success);
         }
         &--offline {
-            background: var(--brand-red-coral);
+            background: var(--text-loss-danger);
         }
         &--blinker {
-            background: var(--general-disabled);
+            background: var(--text-disabled);
         }
     }
 }

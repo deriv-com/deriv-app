@@ -15,7 +15,7 @@
     }
     & .inline-icon {
         position: absolute;
-        top: 6px;
+        top: 8px;
         left: 8px;
         z-index: 99;
         cursor: pointer;
@@ -55,7 +55,7 @@
             left: 2px;
         }
         &:hover {
-            background: var(--fill-hover);
+            background: var(--state-hover);
             cursor: pointer;
 
             & ~ .input-wrapper__input {
@@ -97,7 +97,7 @@
         border-radius: 0;
         padding: 0;
         background-color: var(--general-section-1);
-        border: 1px solid var(--border-normal);
+        border: 1px solid var(--text-less-prominent);
 
         &:active {
             border-radius: 0;
@@ -153,7 +153,6 @@
     &:active, &:focus {
         outline: 0;
         border-radius: $BORDER_RADIUS;
-        box-shadow: 0 0 0 2px var(--shadow-menu);
         border-color: var(--border-active);
         color: var(--text-prominent);
     }
@@ -164,6 +163,5 @@
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
-        box-shadow: 0 0 0 2px rgba(227, 28, 75, 0.32) !important;
     }
 }

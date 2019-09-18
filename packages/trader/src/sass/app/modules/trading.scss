@@ -51,7 +51,7 @@
         margin-bottom: 0.4em;
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
-        color: var(--text-prominent);
+        color: var(--text-general);
 
         &-header {
             height: 1.5rem;
@@ -59,10 +59,15 @@
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
-            color: var(--text-prominent);
+            color: var(--text-less-prominent);
 
             &--left {
                 left: 5px;
+            }
+        }
+        &-wrapper {
+            &--disabled {
+                opacity: 0.32;
             }
         }
     }
@@ -91,7 +96,7 @@
             @include typeface(--small-left-light-black, none);
             @include toEm(padding, 5px 5px 5px 8px, 1.2em);
             @include toEm(margin-bottom, 10px, 1.2em);
-            color: var(--text-prominent);
+            color: var(--text-general);
             background-color: rgba($color-red, 0.16);
             display: block;
             border: 1px solid var(--brand-red-coral);
@@ -136,11 +141,6 @@
             justify-self: left;
             align-items: center;
 
-            &--disabled {
-                .trade-container__price-info-value, .trade-container__price-info-basis {
-                    color: var(--text-disabled);
-                }
-            }
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -174,7 +174,7 @@
                 margin-left: 0;
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
-                color: var(--text-prominent);
+                color: var(--text-less-prominent);
             }
             &-currency {
                 margin-left: 4px;

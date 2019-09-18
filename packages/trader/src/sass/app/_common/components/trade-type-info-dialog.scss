@@ -40,13 +40,14 @@
         background: var(--general-section-1);
     }
     &__choose-button {
-        background: var(--button-primary-default);
         margin: 1.6em 0;
         width: 100%;
 
+        /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-center-bold-active);
         }
+
     }
     &__content {
         margin-top: 1.5em;
@@ -132,7 +133,7 @@
         display: inline-block;
         margin: 0 0.4em;
         cursor: pointer;
-        background-color: var(--text-less-prominent);
+        background-color: var(--text-disabled);
 
         &--active {
             position: absolute;
@@ -140,7 +141,7 @@
             left: 0;
             cursor: initial;
             transition: transform 0.3s linear;
-            background-color: var(--text-prominent);
+            background-color: var(--brand-red-coral);
         }
     }
     &__icon {

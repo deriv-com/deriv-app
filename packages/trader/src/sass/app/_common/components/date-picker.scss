@@ -18,7 +18,6 @@
         }
         &:focus, &:active {
             border-color: var(--border-active);
-            box-shadow: 0 0 0 2px var(--shadow-menu);
         }
         &::-ms-clear { // Edge: hide clear icon for increment input
             display: none;

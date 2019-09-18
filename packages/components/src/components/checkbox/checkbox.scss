@@ -13,10 +13,10 @@
         height: 16px;
         transition: 0.3s ease-in-out;
         flex-shrink: 0;
-        margin: 2px 8px 0 0;
+        margin-top: 2px;
         border-radius: 2px;
         align-self: flex-start;
-        border: 2px solid var(--border-normal);
+        border: 2px solid var(--text-less-prominent);
 
         &--active {
             border: none;

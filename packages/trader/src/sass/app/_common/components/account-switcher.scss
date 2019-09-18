@@ -39,7 +39,7 @@
     &__balance {
         @include typeface(--title-center-bold-green, default);
         @include toEm(padding, 8px, 1.6em);
-        color: var(--brand-secondary);
+        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
@@ -58,15 +58,15 @@
     }
     &--is-virtual {
         .acc-info__balance {
-            color: var(--brand-secondary);
+            color: var(--text-profit-success);
         }
         &:before {
-            @include typeface(--small-left-normal-orange, uppercase);
+            @include typeface(--small-left-normal-green, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
             content: 'demo';
-            color: var(--brand-secondary);
-            border: 1px solid var(--brand-secondary);
+            color: var(--text-profit-success);
+            border: 1px solid var(--text-profit-success);
             border-radius: 16px;
             pointer-events: none;
         }

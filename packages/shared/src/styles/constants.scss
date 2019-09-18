@@ -117,7 +117,6 @@ $color-blue: #377cfc;
         --status-default: #{$color-grey-3};
         --status-danger: #{$color-red-2};
         --status-warning: #{$color-yellow};
-        --status-success: #{$color-green-1};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Transparentize
@@ -181,7 +180,7 @@ $color-blue: #377cfc;
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Transparentize
-        --transparent-success: transparentize(#{$color-green-1}, 0.92);
+        --transparent-success: transparentize(#{$color-green-3}, 0.92);
     }
 }
 

@@ -6,7 +6,7 @@ $header-height: 52px;
     flex-direction: column;
     box-sizing: border-box;
     @include typeface(--paragraph-center-normal-black, default);
-    color: var(--text-prominent);
+    color: var(--text-general);
 
     &__cell {
         padding: 0.75em;
@@ -28,7 +28,7 @@ $header-height: 52px;
         text-decoration: none;
 
         &, &:active, &:visited {
-            color: var(--text-prominent);
+            color: var(--text-general);
         }
     }
     &__head {
@@ -59,7 +59,7 @@ $header-height: 52px;
         white-space: nowrap;
     }
     &__foot &__row {
-        color: var(--text-prominent);
+        color: var(--text-general);
         border-top: var(--general-section-1);
         border-bottom: none;
     }

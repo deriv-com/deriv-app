@@ -96,7 +96,7 @@ class PositionsDrawer extends React.Component {
                     </Scrollbars>
                 </div>
                 <div className='positions-drawer__footer'>
-                    <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary--default btn--link' to={routes.reports}>
+                    <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary--large btn--link' to={routes.reports}>
                         <span className='btn__text'>
                             {localize('Go to Reports')}
                         </span>

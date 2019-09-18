@@ -112,11 +112,15 @@
             right: unset;
         }
     }
-    &--show > .dc-dropdown__select-arrow {
-        transform: rotate(-180deg);
+    &--show {
+        border: 1px solid var(--border-active) !important;
 
-        &--left {
-            transform: rotate(-90deg);
+        & > .dc-dropdown__select-arrow {
+            transform: rotate(-180deg);
+
+            &--left {
+                transform: rotate(-90deg);
+            }
         }
     }
     &--disabled {
@@ -125,5 +129,11 @@
     &-container {
         position: relative;
         margin-top: 8px;
+        border: 1px solid var(--fill-normal);
+        border-radius: $BORDER_RADIUS;
+
+        &:hover {
+            border-color: var(--border-hover);
+        }
     }
 }

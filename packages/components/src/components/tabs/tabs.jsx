@@ -24,7 +24,7 @@ class Tabs extends Component {
   
         return (
             <div className='dc-tabs'>
-                <ol className='dc-tabs__list'>
+                <ul className='dc-tabs__list'>
                     {children.map((child) => {
                         const { label } = child.props;
 
@@ -37,7 +37,8 @@ class Tabs extends Component {
                             />
                         );
                     })}
-                </ol>
+                    <span class="dc-tabs__active-line"></span>
+                </ul>
                 <div className='dc-tabs__content'>
                     {children.map((child) => {
                         if (child.props.label !== activeTab) return undefined;

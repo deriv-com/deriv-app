@@ -1,4 +1,11 @@
 .dc-tabs {
+    position: relative;
+    @for $i from 1 through 4 {
+        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
+            left: 33.33%*$i - 33.33%;
+        }
+    }
+
     &__list {
         @include themify($themes) {
             border-bottom: 1px solid themed('border_color');
@@ -14,9 +21,18 @@
         text-align: center;
     }
     &__active {
+        font-weight: 700;
+    }
+    &__active-line {
+        display: block;
+        position: absolute;
+        top: 41px;
+        left: 0;
+        width: 33.33%;
+        height: 2px;
         @include themify($themes) {
-            border-bottom: 2px solid themed('error_color');
-            font-weight: 700;
+            background: themed('error_color');
         }
+        transition: all ease-in-out 0.5s;
     }
 }

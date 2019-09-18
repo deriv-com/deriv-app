@@ -31,6 +31,7 @@ class VerticalTab extends React.Component {
                 })}
             >
                 <VerticalTabHeaders
+                    className={this.props.classNameHeader}
                     items={this.props.list}
                     onChange={this.changeSelected}
                     selected={selected}
@@ -61,6 +62,7 @@ VerticalTab.propTypes = {
         })
     ),
     action_bar_classname: PropTypes.string,
+    classNameHeader     : PropTypes.string,
     header_title        : PropTypes.string,
     id                  : PropTypes.string,
     is_full_width       : PropTypes.bool,

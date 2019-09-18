@@ -73,7 +73,7 @@ const ModalContent = ({
     return (
         <VerticalTab
             alignment='center'
-            classNameHeader='modal__tab-header'
+            classNameHeader='cashier__modal-tab'
             id='modal'
             list={modal_content}
             selected_index={selected_index}

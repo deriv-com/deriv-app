@@ -141,6 +141,9 @@
             font-weight: bold;
         }
     }
+    &__modal-tab {
+        min-width: 24rem;
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -366,7 +369,7 @@
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 1.2rem)) / 2);
+        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
     }
     &__currency {
         margin: 0 0.4rem;
@@ -384,7 +387,7 @@
     &__transfer {
         &-icon {
             vertical-align: initial;
-            margin: 0 0.6rem;
+            margin: 0 0.8rem;
         }
         &-details {
             &-from, &-to {
@@ -413,7 +416,7 @@
 .dc-modal {
     &__container {
         &_modal-cashier {
-            width: 915px;
+            width: 904px;
         }
     }
 }
@@ -427,7 +430,7 @@
     }
     &__title {
         &--modal-cashier {
-            min-width: 28%;
+            min-width: 24rem;
         }
     }
 }

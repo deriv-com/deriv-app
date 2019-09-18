@@ -6,7 +6,7 @@ import Icon        from 'Assets/icon.jsx';
 class VerticalTabHeaders extends React.PureComponent {
     render() {
         return (
-            <div className='vertical-tab__tab'>
+            <div className={classNames('vertical-tab__tab', this.props.className)}>
                 {this.props.header_title &&
                     <div className='vertical-tab__header-title'>
                         <p>{ this.props.header_title }</p>

@@ -306,7 +306,7 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
 
         this.registerReactions();
     }

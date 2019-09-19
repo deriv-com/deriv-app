@@ -108,7 +108,7 @@ export default class Interpreter {
 
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
-                    $('#stopButton').trigger('click');
+                    // $('#stopButton').trigger('click');
                     this.stop();
                     return;
                 }

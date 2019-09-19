@@ -10,6 +10,11 @@ import {
 import { localize }                            from 'App/i18n';
 import { WS }                                  from 'Services';
 import { connect }                             from 'Stores/connect';
+import {
+    validTaxID,
+    validPhone,
+    validLetterSymbol,
+    validLength }                              from 'Utils/Validator/declarative-validation-rules';
 // import { formatDate }                       from 'Utils/Date';
 import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
@@ -50,12 +55,6 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
     return { ...settings, citizen, tax_residence, email_consent, place_of_birth };
 };
 
-// TODO: generalize validation and make it sharable
-const isValidPhoneNumber = phone_number => /^\+?((-|\s)*[0-9])*$/.test(phone_number);
-const isValidLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
-const isValidLength = (value, min, max) =>  value.length > min && value.length < max;
-const isValidTaxId = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-
 const InputGroup = ({ children, className }) => (
     <fieldset className='account-form__fieldset'>
         <div className={className}>
@@ -63,6 +62,13 @@ const InputGroup = ({ children, className }) => (
         </div>
     </fieldset>
 );
+
+const validate = (errors, values) => (fn, arr, err_msg) => {
+    arr.forEach(field => {
+        const value = values[field];
+        if (!fn(value)) errors[field] = err_msg;
+    });
+};
 
 class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, show_form: true }
@@ -91,39 +97,44 @@ class PersonalDetailsForm extends React.Component {
     validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
+        const validateFields = validate(errors, values);
 
         if (this.props.is_virtual) return errors;
 
         const required_fields = ['first_name', 'last_name', 'phone', 'account_opening_reason', 'place_of_birth_text'];
-        required_fields.forEach(field => {
-            if (!values[field]) errors[field] = localize('This field is required');
-        });
-
-        const min_phone_number = 8;
-        const max_phone_number = 35;
-        if (values.phone && !isValidPhoneNumber(values.phone)) {
-            errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
-        }  else if (values.phone && !isValidLength(values.phone.trim(), min_phone_number, max_phone_number)) {
-            errors.phone = localize('You should enter 8-35 characters.');
-        }
+        validateFields(val => val, required_fields, localize('This field is required'));
 
         const only_alphabet_fields = ['first_name', 'last_name'];
-        only_alphabet_fields.forEach(field => {
-            if (values[field] && !isValidLetterSymbol(values[field])) {
-                errors[field] = localize('Only alphabet is allowed');
-            }
-        });
+        validateFields(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
-        const country_dropdown_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
-        country_dropdown_fields.forEach(field => {
-            if (values[field] && !getResidence(residence_list, values[field], 'value')) {
-                errors[field] = localize('Please enter a country or choose one from the dropdown menu');
-            }
-        });
+        const residence_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
+        const validateResidence = val => getResidence(residence_list, val, 'value');
+        validateFields(validateResidence, residence_fields, localize('Please enter a country or choose one from the dropdown menu'));
 
-        if (values.tax_identification_number && !isValidTaxId(values.tax_identification_number)) {
+        if (values.tax_identification_number && !validTaxID(values.tax_identification_number)) {
             errors.tax_identification_number = localize('Should start with letter or number, and may contain hyphen and underscore.');
+        }
+
+        const min_name = 2;
+        const max_name = 50;
+        if (values.first_name && !validLength(values.first_name.trim(), { min: min_name, max: max_name })) {
+            errors.first_name = localize('You should enter 2-50 characters.');
+        }
+        if (values.last_name && !validLength(values.last_name.trim(), { min: min_name, max: max_name })) {
+            errors.last_name = localize('You should enter 2-50 characters.');
+        }
+
+        if (values.phone) {
+            const min_phone_number = 8;
+            const max_phone_number = 35;
+            const phone_trim =  values.phone.replace(/\D/g,'');
+
+            if (!validPhone(values.phone)) {
+                errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
+            }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
+                errors.phone = localize('You should enter 8-35 characters.');
+            }
         }
 
         return errors;

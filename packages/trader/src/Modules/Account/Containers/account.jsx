@@ -59,7 +59,7 @@ class Account extends React.Component {
             });
         }
 
-        const subroutes        = flatten(this.props.routes);
+        const subroutes      = flatten(this.props.routes);
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
 
         if (!selected_content) { // fallback
@@ -67,9 +67,9 @@ class Account extends React.Component {
             this.props.history.push(AppRoutes.personal_details);
         }
 
-        const active_title = this.props.routes
+        const { title: active_title } = this.props.routes
             .find(route => route.subroutes
-                .find((sub_route) => sub_route.title === selected_content.title)).title;
+                .find((sub_route) => sub_route.title === selected_content.title));
 
         return (
             <FadeWrapper

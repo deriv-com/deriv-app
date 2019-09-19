@@ -46,6 +46,10 @@ class AddCryptoCurrency extends Component {
     }
 
     render() {
+        console.log(
+            this.can_add_fiat,
+            this.props.available_crypto_currencies.length !== 0,
+        );
         return (
             <Formik
                 initialValues={{
@@ -116,13 +120,14 @@ class AddCryptoCurrency extends Component {
                             </RadioButtonGroup>
                         </React.Fragment>
                         }
-                        {this.can_add_fiat || this.props.available_crypto_currencies.length !== 0 &&
-                        <FormSubmitButton
-                            is_disabled={isSubmitting || !values.currency}
-                            label='Next' // Localization will be handled by component
-                            is_absolute={false}
-                            form_error={this.props.form_error}
-                        />
+                        {(this.can_add_fiat ||
+                          this.props.available_crypto_currencies.length !== 0) &&
+                          <FormSubmitButton
+                              is_disabled={isSubmitting || !values.currency}
+                              label='Next' // Localization will be handled by component
+                              is_absolute={false}
+                              form_error={this.props.form_error}
+                          />
                         }
                     </form>
                 )}

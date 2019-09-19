@@ -1,6 +1,8 @@
-import ScratchStore from '../stores/scratch-store';
-import                   './blocks';
-import                   './hooks';
+import                                    './blocks';
+import                                    './hooks';
+import Interpreter                    from '../services/tradeEngine/utils/interpreter';
+import ScratchStore                   from '../stores/scratch-store';
+import { observer as globalObserver } from '../utils/observer';
 
 export const scratchWorkspaceInit = async () => {
     try {
@@ -22,6 +24,9 @@ export const scratchWorkspaceInit = async () => {
 
         Blockly.derivWorkspace = workspace;
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
+
+        // TODO: Remove this.
+        Blockly.BLOCKLY_CLASS_OLD = new _Blockly();
 
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
@@ -82,3 +87,96 @@ export const scratchWorkspaceInit = async () => {
         throw error;
     }
 };
+
+// eslint-disable-next-line no-unused-vars
+const disableStrayBlocks = () => {
+    const top_blocks = Blockly.derivWorkspace.getTopBlocks();
+
+    top_blocks.forEach(block => {
+        if (block.isMainBlock() || !block.isIndependentBlock()) {
+            block.setDisabled(true);
+        }
+    });
+};
+
+export default class _Blockly {
+
+    run(limitations = {}) {
+        // disableStrayBlocks();
+
+        let code;
+        try {
+            code = `
+var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
+var BinaryBotPrivateLastTickTime
+var BinaryBotPrivateTickAnalysisList = [];
+function BinaryBotPrivateRun(f, arg) {
+ if (f) return f(arg);
+ return false;
+}
+function BinaryBotPrivateTickAnalysis() {
+ var currentTickTime = Bot.getLastTick(true).epoch
+ if (currentTickTime === BinaryBotPrivateLastTickTime) {
+   return
+ }
+ BinaryBotPrivateLastTickTime = currentTickTime
+ for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
+   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
+ }
+}
+var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
+${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+BinaryBotPrivateRun(BinaryBotPrivateInit);
+while(true) {
+ BinaryBotPrivateTickAnalysis();
+ BinaryBotPrivateRun(BinaryBotPrivateStart)
+ while(watch('before')) {
+   BinaryBotPrivateTickAnalysis();
+   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
+ }
+ while(watch('during')) {
+   BinaryBotPrivateTickAnalysis();
+   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
+ }
+ BinaryBotPrivateTickAnalysis();
+ if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
+   break;
+ }
+}
+       `;
+            this.generatedJs = code;
+            if (code) {
+                this.stop(true);
+                this.interpreter = new Interpreter();
+                this.interpreter.run(code).catch(e => {
+                    globalObserver.emit('Error', e);
+                    this.stop();
+                });
+            }
+        } catch (e) {
+            globalObserver.emit('Error', e);
+            this.stop();
+        }
+    }
+
+    stop(stopBeforeStart) {
+        if (!stopBeforeStart) {
+            // const $runButtons = $('#runButton, #summaryRunButton');
+            // const $stopButtons = $('#stopButton, #summaryStopButton');
+            // if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+            //     $runButtons.show();
+            //     $stopButtons.hide();
+            // }
+        }
+        if (this.interpreter) {
+            this.interpreter.stop();
+            this.interpreter = null;
+        }
+    }
+
+    /* eslint-disable class-methods-use-this */
+    hasStarted() {
+        return this.interpreter && this.interpreter.hasStarted();
+    }
+    /* eslint-enable */
+}

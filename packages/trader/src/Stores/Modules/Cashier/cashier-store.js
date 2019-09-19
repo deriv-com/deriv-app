@@ -753,10 +753,11 @@ export default class CashierStore extends BaseStore {
             }
             const obj_values = {
                 is_mt,
-                text    : is_mt ? group.display_text : account.currency.toUpperCase(),
-                value   : account.loginid,
-                balance : account.balance,
-                currency: account.currency,
+                text     : is_mt ? group.display_text : account.currency.toUpperCase(),
+                value    : account.loginid,
+                balance  : account.balance,
+                currency : account.currency,
+                is_crypto: isCryptocurrency(account.currency),
                 ...(is_mt && { mt_icon: group.value }),
             };
             if (idx === 0) {
@@ -788,6 +789,8 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangeTransferFrom({ target }) {
+        this.setErrorMessage('');
+
         const accounts      = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
 
@@ -797,6 +800,9 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
         } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) { // not allowed to transfer from MT to MT
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.accounts_list[0].value } });
+        } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) { // not allowed to transfer crypto to crypto
+            const first_fiat = this.config.account_transfer.accounts_list.find((account) => !account.is_crypto);
+            this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
         this.config.account_transfer.selected_from = selected_from;
@@ -806,6 +812,8 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onChangeTransferTo({ target }) {
+        this.setErrorMessage('');
+
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
         this.setTransferFee();

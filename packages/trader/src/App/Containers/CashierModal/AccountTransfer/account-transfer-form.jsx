@@ -81,11 +81,13 @@ class AccountTransferForm extends React.Component {
                 text,
                 value,
             });
-            const is_selected_from    = account.value === this.props.selected_from.value;
-            const is_selected_from_mt = this.props.selected_from.is_mt && account.is_mt;
+            const is_selected_from        = account.value === this.props.selected_from.value;
+            const is_selected_from_mt     = this.props.selected_from.is_mt && account.is_mt;
+            const is_selected_from_crypto = this.props.selected_from.is_crypto && account.is_crypto;
             // account from and to cannot be the same
             // cannot transfer to MT account from MT
-            const is_disabled = is_selected_from_mt || is_selected_from;
+            // cannot transfer to crypto account from crypto
+            const is_disabled = is_selected_from_mt || is_selected_from || is_selected_from_crypto;
             (account.is_mt ? mt_accounts_to : accounts_to).push({
                 text,
                 value,
@@ -114,7 +116,7 @@ class AccountTransferForm extends React.Component {
                         onSubmit={this.onTransferPassthrough}
                     >
                         {
-                            ({ errors, isSubmitting, isValid, touched }) => (
+                            ({ errors, isSubmitting, isValid, touched, handleChange }) => (
                                 <React.Fragment>
                                     {isSubmitting ?
                                         <div className='cashier__loader-wrapper'>
@@ -151,6 +153,10 @@ class AccountTransferForm extends React.Component {
                                                 {({ field }) => (
                                                     <Input
                                                         { ...field }
+                                                        onChange={(e) => {
+                                                            this.props.setErrorMessage('');
+                                                            handleChange(e);
+                                                        }}
                                                         className='cashier__input-long dc-input--no-placeholder'
                                                         type='text'
                                                         label={localize('Amount')}
@@ -247,6 +253,7 @@ AccountTransferForm.propTypes = {
     requestTransferBetweenAccounts: PropTypes.func,
     selected_from                 : PropTypes.object,
     selected_to                   : PropTypes.object,
+    setErrorMessage               : PropTypes.func,
     transfer_fee                  : PropTypes.number,
     transfer_limit                : PropTypes.object,
 };
@@ -260,6 +267,7 @@ export default connect(
         requestTransferBetweenAccounts: modules.cashier.requestTransferBetweenAccounts,
         selected_from                 : modules.cashier.config.account_transfer.selected_from,
         selected_to                   : modules.cashier.config.account_transfer.selected_to,
+        setErrorMessage               : modules.cashier.setErrorMessage,
         transfer_fee                  : modules.cashier.config.account_transfer.transfer_fee,
         transfer_limit                : modules.cashier.config.account_transfer.transfer_limit,
     })

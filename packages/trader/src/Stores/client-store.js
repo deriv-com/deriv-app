@@ -12,8 +12,8 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { isEmptyObject }                   from '_common/utility';
-import { localize }                        from 'App/i18n';
+import { isEmptyObject }             from '_common/utility';
+import { localize }                  from 'App/i18n';
 import {
     LocalStore,
     State }                                from '_common/storage';
@@ -510,7 +510,7 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             this.responseMt5LoginList(
                 await WS.authorized.storage.mt5LoginList(),

@@ -568,12 +568,9 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetPaymentAgent = (should_clear_list) => {
+    resetPaymentAgent = () => {
         this.setIsWithdraw(false);
         this.clearVerification();
-        if (should_clear_list) {
-            this.config.payment_agent = new ConfigPaymentAgent();
-        }
     };
 
     onAccountSwitch() {
@@ -586,7 +583,6 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(true, container);
         });
         this.config.payment_agent = new ConfigPaymentAgent();
-        // this.resetPaymentAgent(true);
     }
 
     accountSwitcherListener() {

@@ -1,5 +1,6 @@
 .dc-tabs {
     position: relative;
+    //TODO send the tab count from outside
     @for $i from 1 through 5 {
         .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
             left: calc(var(--tab-width) * #{$i} - var(--tab-width));

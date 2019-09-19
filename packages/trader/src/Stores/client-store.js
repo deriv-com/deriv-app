@@ -147,6 +147,19 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_fiat () {
+        const values = Object.values(this.accounts)
+            .reduce((acc, item) => {
+                acc.push(item.currency);
+                return acc;
+            }, []);
+
+        return !!this.upgradeable_currencies
+            .filter(acc => !values.includes(acc.value) && acc.type === 'fiat')
+            .length;
+    }
+
+    @computed
     get account_list() {
         return this.all_loginids.map(id => (
             !this.isDisabled(id) &&

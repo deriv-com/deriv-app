@@ -37,6 +37,7 @@
     h2 {
         @include typeface(--paragraph-center-bold-black);
         text-transform: none;
+        margin-top: 2rem;
         @include themify($themes) {
             color: themed('tick_step_marked');
         }

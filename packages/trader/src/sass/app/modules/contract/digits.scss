@@ -20,10 +20,6 @@
     position: relative;
     margin: 0 2.5em 0 1em;
 
-    /* postcss-bem-linter: ignore */
-    &-container {
-        position: relative;
-    }
     &__tooltip-container {
         position: absolute;
         z-index: 2;
@@ -67,6 +63,9 @@
                     border: 3px solid themed('digit_widget_loss');
                 }
             }
+        }
+        &-container {
+            position: relative;
         }
         &-display-value {
             transition: transform 0.25s linear;

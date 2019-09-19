@@ -1,5 +1,5 @@
-import React            from 'react';
 import PropTypes        from 'prop-types';
+import React            from 'react';
 import posed            from 'react-pose';
 import { PlatformList } from './platform-list.jsx';
 

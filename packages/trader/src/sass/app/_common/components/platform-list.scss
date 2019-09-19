@@ -12,7 +12,6 @@
         position: absolute;
         background-color: $COLOR_WHITE;
         width: 100%;
-        height: 172px;
         top: 48px;
 
         &__platform {
@@ -22,6 +21,8 @@
             width: 302px;
             height: 124px;
             color: #333333;
+            text-decoration: none;
+            border-radius: 8px;
 
             
             &__icon {
@@ -41,9 +42,11 @@
                 letter-spacing: 0;
             }
         }
-        &__platform--active {
+        &__platform.active  {
             border: solid 2px #85acb0;
-            border-radius: 8px;
+        }
+        &__platform:hover {
+            background-color: #dedede;
         }
     }
 }

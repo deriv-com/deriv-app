@@ -162,7 +162,7 @@
         &--disabled:hover {
             cursor: default;
         }
-        &--disabled, &--other {
+        &--disabled:not(.calendar__cell--today), &--other:not(.calendar__cell--today) {
             color: var(--text-disabled);
             transition: none;
         }

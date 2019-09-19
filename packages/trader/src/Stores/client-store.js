@@ -150,12 +150,14 @@ export default class ClientStore extends BaseStore {
     get has_fiat () {
         const values = Object.values(this.accounts)
             .reduce((acc, item) => {
-                acc.push(item.currency);
+                if (!item.is_virtual) {
+                    acc.push(item.currency);
+                }
                 return acc;
             }, []);
 
         return !!this.upgradeable_currencies
-            .filter(acc => !values.includes(acc.value) && acc.type === 'fiat')
+            .filter(acc => values.includes(acc.value) && acc.type === 'fiat')
             .length;
     }
 

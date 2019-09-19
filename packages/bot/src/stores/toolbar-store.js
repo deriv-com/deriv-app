@@ -13,7 +13,7 @@ import {
 import googleDrive                      from '../utils/integrations/googleDrive';
 
 export default class ToolbarStore {
-    @observable is_toolbox_open = false;
+    @observable is_toolbox_open = true;
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
     @observable saveload_type = 'local';
@@ -25,10 +25,10 @@ export default class ToolbarStore {
     }
 
     @action.bound onToolboxToggle = () => {
-        this.is_toolbox_open = !this.is_toolbox_open;
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         toolbox.toggle();
+        this.is_toolbox_open = !this.is_toolbox_open;
     }
 
     @action.bound onSearchBlur = () => {
@@ -47,7 +47,7 @@ export default class ToolbarStore {
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         setValues({ search: '' });
-        toolbox.showSearch_('');
+        toolbox.showSearch('');
     }
 
     @action.bound onBotNameTyped = values => {

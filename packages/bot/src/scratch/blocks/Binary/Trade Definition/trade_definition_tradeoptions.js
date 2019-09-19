@@ -82,7 +82,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.updatePredictionInput();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'DURATIONTYPE_LIST') {
-                console.log(event); // eslint-disable-line
                 // Update barrier suggested values when changing duration unit.
                 this.updateBarrierInputs(true, event.group);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);

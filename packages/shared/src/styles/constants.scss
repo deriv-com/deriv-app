@@ -115,7 +115,8 @@ $color-blue: #377cfc;
         --fill-disabled: #{$color-grey-3};
         // Status
         --status-default: #{$color-grey-3};
-        --status-danger: #{$color-red-2};
+        --status-danger: #{$color-red-1};
+        --status-success: #{$color-green-1};
         --status-warning: #{$color-yellow};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
@@ -174,7 +175,7 @@ $color-blue: #377cfc;
         --fill-disabled: #{$color-black-4};
         // Status
         --status-default: #{$color-grey-3};
-        --status-danger: #{$color-red-1};
+        --status-danger: #{$color-red-2};
         --status-warning: #{$color-yellow};
         --status-success: #{$color-green-3};
         --status-info: #{$color-blue};

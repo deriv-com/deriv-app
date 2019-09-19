@@ -13,7 +13,7 @@
         font-weight: bold;
         color: var(--text-prominent);
         background-color: var(--general-main-1);
-        border: var(--general-section-1);
+        border: 2px solid var(--text-less-prominent);
 
         &--lost {
             border-color: var(--text-loss-danger);
@@ -21,7 +21,7 @@
         }
         &--won {
             background-color: var(--text-profit-success);
-            border: 2px solid var(--text-profit-success);
+            border-color: var(--text-profit-success);
         }
         &--won, &--lost {
             color: $COLOR_WHITE;
@@ -100,7 +100,7 @@
         margin-right: 2px;
     }
     &__value-container {
-        background: var(--state-active);
+        background: var(--text-less-prominent);
         font-size: 14px;
         padding: 4px 8px;
         border-radius: 11px;
@@ -135,7 +135,7 @@
         border-left-width: 2px;
         padding-left: 0.5em;
         height: 100%;
-        border-color: var(--text-general);
+        border-color: var(--text-less-prominent);
     }
     &__icon {
         position: absolute;
@@ -146,7 +146,7 @@
         &--time {
             /* postcss-bem-linter: ignore */
             path {
-                fill: var(--text-general);
+                fill: var(--text-less-prominent);
             }
         }
         &--won {

@@ -260,7 +260,7 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.root_store.ui.removeAllNotifications();
         this.setSwitched(loginid);
-        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.payoutCurrencies());
     }
 
     @action.bound
@@ -466,7 +466,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         runInAction(async () => {
-            this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+            this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();

@@ -66,7 +66,7 @@ const InputGroup = ({ children, className }) => (
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (!fn(value)) errors[field] = err_msg;
+        if (!fn(value) && !errors[field]) errors[field] = err_msg;
     });
 };
 
@@ -94,23 +94,24 @@ class PersonalDetailsForm extends React.Component {
         });
     }
 
+    // TODO: refactor this
     validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
-        const validateFields = validate(errors, values);
+        const validateValues = validate(errors, values);
 
         if (this.props.is_virtual) return errors;
 
         const required_fields = ['first_name', 'last_name', 'phone', 'account_opening_reason', 'place_of_birth_text'];
-        validateFields(val => val, required_fields, localize('This field is required'));
+        validateValues(val => val, required_fields, localize('This field is required'));
 
         const only_alphabet_fields = ['first_name', 'last_name'];
-        validateFields(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
+        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
         const residence_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
         const validateResidence = val => getResidence(residence_list, val, 'value');
-        validateFields(validateResidence, residence_fields, localize('Please enter a country or choose one from the dropdown menu'));
+        validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 20;
@@ -269,7 +270,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('place_of_birth_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('place_of_birth_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -288,7 +289,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={values.citizen_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('citizen_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('citizen_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -375,7 +376,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={values.tax_residence_text && is_account_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('tax_residence_text', item.text, true)
+                                                            ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
                                                         }
                                                     />
                                                 )}

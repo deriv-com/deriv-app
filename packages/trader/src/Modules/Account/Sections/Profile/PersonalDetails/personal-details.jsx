@@ -112,8 +112,15 @@ class PersonalDetailsForm extends React.Component {
         const validateResidence = val => getResidence(residence_list, val, 'value');
         validateFields(validateResidence, residence_fields, localize('Please enter a country or choose one from the dropdown menu'));
 
-        if (values.tax_identification_number && !validTaxID(values.tax_identification_number)) {
-            errors.tax_identification_number = localize('Should start with letter or number, and may contain hyphen and underscore.');
+        const min_tax_identification_number = 0;
+        const max_tax_identification_number = 20;
+        if (values.tax_identification_number) {
+            if (!validTaxID(values.tax_identification_number)) {
+                errors.tax_identification_number = localize('Should start with letter or number, and may contain hyphen and underscore.');
+            } else if (!validLength(values.tax_identification_number.trim(),
+                { min: min_tax_identification_number, max: max_tax_identification_number })) {
+                errors.tax_identification_number = localize('You should enter 0-20 characters.');
+            }
         }
 
         const min_name = 2;
@@ -415,6 +422,7 @@ class PersonalDetailsForm extends React.Component {
                                                 !!((errors.first_name || !values.first_name) ||
                                                 (errors.last_name || !values.last_name) ||
                                                 (errors.phone || !values.phone) ||
+                                                (errors.tax_identification_number) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text))
                                         )}
                                         has_effect

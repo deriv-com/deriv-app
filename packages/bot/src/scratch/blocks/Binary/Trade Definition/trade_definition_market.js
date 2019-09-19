@@ -48,7 +48,6 @@ Blockly.Blocks.trade_definition_market = {
         const symbol             = symbol_field.getValue();
 
         if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
-            console.log('market', event); // eslint-disable-line
             active_symbols.getMarketDropdownOptions().then(market_options => {
                 market_field.updateOptions(market_options, event.group, market, true, true);
             });

@@ -29,10 +29,10 @@ import iconInfoOutline  from '../assets/icons/icon-info-outline.svg';
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
     const { className, onClick } = props;
-    const vb = svgItem.viewBox.split(' ').slice(2);
+    const [width, height] = svgItem.viewBox.split(' ').slice(2);
 
     return (
-        <svg width={vb[0]} height={vb[1]} className={classNames('icon', { [className]: !!className }) } onClick={onClick}>
+        <svg width={width} height={height} className={classNames('icon', { [className]: !!className }) } onClick={onClick}>
             { /* eslint-disable-next-line */ }
             <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>

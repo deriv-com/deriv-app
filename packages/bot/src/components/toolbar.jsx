@@ -1,6 +1,3 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
 import {
     Button,
     Input,
@@ -10,6 +7,8 @@ import {
     Formik,
     Form,
 }                           from 'formik';
+import PropTypes            from 'prop-types';
+import React                from 'react';
 import {
     StartIcon,
     CloseIcon,
@@ -33,40 +32,114 @@ import                           '../assets/sass/scratch/toolbar.scss';
 const initial_search_value = { search: '' };
 const initial_botname_value = { botname: 'Untitled Bot' };
 
+const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
+    <div className='toolbar__form'>
+        <Formik
+            initialValues={initial_search_value}
+            onSubmit={values => onSearch(values)}
+        >
+            {
+                ({ submitForm, values: { search }, setValues }) => (
+                    <Form>
+                        <Field name='search'>
+                            {({ field }) => (
+                                <Input
+                                    {...field}
+                                    className='toolbar__form-field'
+                                    type='text'
+                                    name='search'
+                                    placeholder={translate('Search block...')}
+                                    onKeyUp={submitForm}
+                                    onFocus={submitForm}
+                                    onBlur={onSearchBlur}
+                                    trailing_icon={
+                                        search ?
+                                            <CloseIcon
+                                                className='toolbar__btn-icon'
+                                                onClick={() => onSearchClear(setValues)}
+                                            />
+                                            : <SearchIcon />
+                                    }
+                                />
+                            )}
+                        </Field>
+                    </Form>
+                )
+            }
+        </Formik>
+    </div>
+);
+
+const BotNameBox = ({ onBotNameTyped }) => (
+    <div className='toolbar__form'>
+        <Formik
+            initialValues={initial_botname_value}
+            onSubmit={values => onBotNameTyped(values)}
+        >
+            {
+                ({ submitForm }) => (
+                    <Form>
+                        <Field name='botname'>
+                            {({ field }) => (
+                                <Input
+                                    {...field}
+                                    className='toolbar__form-field'
+                                    type='text'
+                                    name='botname'
+                                    onKeyUp={submitForm}
+                                    label={translate('Bot name')}
+                                    trailing_icon={
+                                        <RenameIcon />
+                                    }
+                                />
+                            )}
+                        </Field>
+                    </Form>
+                )
+            }
+        </Formik>
+    </div>
+);
+
+const ButtonGroup = ({
+    toggleSaveLoadModal,
+    onResetClick,
+    onUndoClick,
+    onRedoClick,
+    onRunClick,
+    onSortClick,
+    onZoomInOutClick,
+}) => (
+    <div className='toolbar__group toolbar__group-btn'>
+        <OpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+        <NewFileIcon className='toolbar__icon' onClick={onResetClick} />
+        <SaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+        <div className='vertical-divider' />
+        <UndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
+        <RedoIcon className='toolbar__icon' onClick={onRedoClick} />
+        <div className='vertical-divider' />
+        <PerformIcon className='toolbar__icon' onClick={onRunClick} />
+        <ReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+        <ZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+        <ZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+    </div>
+);
+
 const Toolbar = ({
     onToolboxToggle,
     onSearch,
     onSearchBlur,
     onSearchClear,
     onBotNameTyped,
-    onResetClick,
     toggleSaveLoadModal,
     // onGoogleDriveClick,
+    onResetClick,
     onUndoClick,
     onRedoClick,
     onZoomInOutClick,
     onSortClick,
     onRunClick,
 }) => {
-
-    // const toolbar_element = [
-    //     { id: 'start', type: 'button', text: 'Start', action: onToolboxToggle },
-    //     {
-    //         id      : 'toolbar-action', type    : 'button-group', children: [
-    //             { id: 'reset-button', text: 'reset', action: onResetClick },
-    //             { id: 'load-xml', text: 'browse', action: onBrowseClick },
-    //             { id: 'save-xml', text: 'save', action: onSaveClick },
-    //             { id: 'integration', text: 'google drive', action: onGoogleDriveClick },
-    //             { type: 'divider' },
-    //             { id: 'undo', text: 'undo', action: onUndoClick },
-    //             { id: 'redo', text: 'redo', action: onRedoClick },
-    //             { type: 'divider' },
-    //             { id: 'zoomIn', text: 'zoom in', action: onZoomInClick },
-    //             { id: 'zoomOut', text: 'zoom out', action: onZoomOutClick },
-    //             { id: 'sort', text: 'sort', action: onSortClick },
-    //         ],
-    //     },
-    // ];
 
     return (
         <div
@@ -75,10 +148,7 @@ const Toolbar = ({
             <div className='toolbar__section'>
                 <Button
                     id='start'
-                    className={classNames(
-                        'btn--primary',
-                        'toolbar__btn-icon',
-                    )}
+                    className= 'btn--primary toolbar__btn-icon'
                     has_effect
                     onClick={onToolboxToggle}
                 >
@@ -88,82 +158,23 @@ const Toolbar = ({
                     >{translate('Start')}
                     </span>
                 </Button>
-                <div className='toolbar__form'>
-                    <Formik
-                        initialValues={initial_search_value}
-                        onSubmit={values => onSearch(values)}
-                    >
-                        {
-                            ({ submitForm, values: { search }, setValues }) => (
-                                <Form>
-                                    <Field name='search'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                className='toolbar__form-field'
-                                                type='text'
-                                                name='search'
-                                                placeholder={translate('Search block...')}
-                                                onKeyUp={submitForm}
-                                                onFocus={submitForm}
-                                                onBlur={onSearchBlur}
-                                                trailing_icon={
-                                                    search ?
-                                                        <CloseIcon
-                                                            className='toolbar__btn-icon'
-                                                            onClick={() => onSearchClear(setValues)}
-                                                        />
-                                                        : <SearchIcon />
-                                                }
-                                            />
-                                        )}
-                                    </Field>
-                                </Form>
-                            )
-                        }
-                    </Formik>
-                </div>
-                <div className='toolbar__form'>
-                    <Formik
-                        initialValues={initial_botname_value}
-                        onSubmit={values => onBotNameTyped(values)}
-                    >
-                        {
-                            ({ submitForm }) => (
-                                <Form>
-                                    <Field name='botname'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                className='toolbar__form-field'
-                                                type='text'
-                                                name='botname'
-                                                onKeyUp={submitForm}
-                                                label={translate('Bot name')}
-                                                trailing_icon={
-                                                    <RenameIcon />
-                                                }
-                                            />
-                                        )}
-                                    </Field>
-                                </Form>
-                            )
-                        }
-                    </Formik>
-                </div>
-                <div className='toolbar__group toolbar__group-btn'>
-                    <OpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-                    <NewFileIcon className='toolbar__icon' onClick={onResetClick} />
-                    <SaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
-                    <div className='vertical-divider' />
-                    <UndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
-                    <RedoIcon className='toolbar__icon' onClick={onRedoClick} />
-                    <div className='vertical-divider' />
-                    <PerformIcon className='toolbar__icon' onClick={onRunClick} />
-                    <ReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-                    <ZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-                    <ZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
-                </div>
+                <SearchBox
+                    onSearch={onSearch}
+                    onSearchClear={onSearchClear}
+                    onSearchBlur={onSearchBlur}
+                />
+                <BotNameBox
+                    onBotNameTyped={onBotNameTyped}
+                />
+                <ButtonGroup
+                    toggleSaveLoadModal={toggleSaveLoadModal}
+                    onResetClick={onResetClick}
+                    onUndoClick={onUndoClick}
+                    onRedoClick={onRedoClick}
+                    onZoomInOutClick={onZoomInOutClick}
+                    onSortClick={onSortClick}
+                    onRunClick={onRunClick}
+                />
             </div>
             <SaveLoadModal />
         </div>

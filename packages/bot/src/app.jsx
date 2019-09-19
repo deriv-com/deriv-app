@@ -29,10 +29,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const { instance } = ApiHelpers;
-                
         scratchWorkspaceInit();
-        instance.registerAccountSwitcherListener();
+        ApiHelpers.instance.registerAccountSwitcherListener();
     }
 
     componentWillUnmount() {

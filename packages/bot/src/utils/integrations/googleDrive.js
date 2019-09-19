@@ -23,7 +23,8 @@ class GoogleDrive {
         script.async = 1;
         script.onload = script.onreadystatechange = function(_, isAbort) {
             if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
-                script.onload = script.onreadystatechange = null;
+                script.onload = null;
+                script.onreadystatechange = null;
                 script = undefined;
     
                 if (!isAbort && callback) setTimeout(callback, 0);

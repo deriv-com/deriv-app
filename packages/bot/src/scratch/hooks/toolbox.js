@@ -565,7 +565,7 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 
 Blockly.Toolbox.prototype.toggle = function () {
     const { toolbar, flyout } = ScratchStore.instance;
-    if (toolbar.isToolboxOpen) {
+    if (toolbar.is_toolbox_open) {
         this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.initial_toolbox_xml));
         this.addStyle('hidden');
     

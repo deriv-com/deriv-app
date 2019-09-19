@@ -1,7 +1,7 @@
 .toolbar {
     $toolbar: &;
-    $toolbar_buttons_height: 76px;
-    height: $toolbar_buttons_height;
+
+    height: 76px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

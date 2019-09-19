@@ -20,9 +20,12 @@ const Flyout = ({
         <div
             className={
                 classNames(
-                    `flyout${!is_visible ? ' hidden' : ''}`,
-                    `${is_search_flyout ? ' flyout__search' : ''}`,
-                    `${is_help_content ? ' flyout__help' : ' flyout__content'}`
+                    'flyout',
+                    {
+                        'hidden'        : !is_visible,
+                        'flyout__search': is_search_flyout,
+                    },
+                    is_help_content ? 'flyout__help' : 'flyout__content'
                 )
             }
             style={{ width: `${flyout_width}px` }}

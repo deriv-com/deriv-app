@@ -2,7 +2,6 @@ import filesaver                        from 'file-saver';
 import {
     observable,
     action,
-    computed,
 }                                       from 'mobx';
 import {
     cleanUpOnLoad,
@@ -11,13 +10,14 @@ import {
     addDomAsBlock,
 }                                       from '../scratch/utils';
 import googleDrive                      from '../utils/integrations/googleDrive';
+import { translate }                    from '../utils/lang/i18n';
 
 export default class ToolbarStore {
     @observable is_toolbox_open = true;
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
     @observable saveload_type = 'local';
-    @observable file_name = 'Untitled Bot';
+    @observable file_name = translate('Untitled Bot');
     @observable is_google_drive_connected = false;
 
     @action.bound onRunClick = () => {
@@ -163,26 +163,6 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.resizeContents();
     }
 
-    @computed
-    get isModalOpen() {
-        return this.is_saveload_modal_open;
-    }
-
-    @computed
-    get isGoogleDriveConnected() {
-        return this.is_google_drive_connected;
-    }
-
-    @computed
-    get isSaveModal () {
-        return this.is_save_modal;
-    }
-
-    @computed
-    get isToolboxOpen () {
-        return this.is_toolbox_open;
-    }
-
     /* eslint-disable class-methods-use-this */
     load(blockStr = '', drop_event = {}) {
         try {
@@ -204,13 +184,13 @@ export default class ToolbarStore {
             console.error(e);  // eslint-disable-line
         }
 
-        const blocklyXml = xml.querySelectorAll('block');
+        const blockly_xml = xml.querySelectorAll('block');
 
-        if (!blocklyXml.length) {
+        if (!blockly_xml.length) {
             console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
         }
 
-        blocklyXml.forEach(block => {
+        blockly_xml.forEach(block => {
             const blockType = block.getAttribute('type');
 
             if (!Object.keys(Blockly.Blocks).includes(blockType)) {

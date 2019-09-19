@@ -123,6 +123,13 @@
     }
 }
 
+/** @define dc-modal; */
+.dc-modal {
+    &__container_modal-settings {
+        width:736px;
+    }
+}
+
 /** @define dc-modal-header; */
 .dc-modal-header {
     &__title {

@@ -2,23 +2,30 @@
     position: relative;
     @for $i from 1 through 4 {
         .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
-            left: 33.33%*$i - 33.33%;
+            left: calc(var(--tab-width) * #{$i} - var(--tab-width));
         }
     }
 
     &__list {
-        @include themify($themes) {
-            border-bottom: 1px solid themed('border_color');
-        }
-        display: table;
         width: 100%;
         line-height: 40px;
+        display: flex;
+        justify-content: center;
     }
     &__item {
-        display: table-cell;
         list-style: none;
         font-size: 14px;
         text-align: center;
+        padding-left: 24px;
+        padding-right: 24px;
+        width: var(--tab-width);
+
+        &:not(.dc-tabs__active) {
+            @include themify($themes) {
+                border-bottom: 1px solid themed('border_color');
+            }
+            cursor: pointer;
+        }
     }
     &__active {
         font-weight: 700;
@@ -28,11 +35,9 @@
         position: absolute;
         top: 41px;
         left: 0;
-        width: 33.33%;
+        width: var(--tab-width);
         height: 2px;
-        @include themify($themes) {
-            background: themed('error_color');
-        }
-        transition: all ease-in-out 0.5s;
+        background: #ff444f; /* stylelint-disable-line color-no-hex */
+        transition: all ease-in-out 0.3s;
     }
 }

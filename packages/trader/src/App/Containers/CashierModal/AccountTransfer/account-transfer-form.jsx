@@ -210,7 +210,7 @@ class AccountTransferForm extends React.Component {
                                                     </div>
                                                     <div className='account-transfer__bullet-wrapper'>
                                                         <div className='account-transfer__bullet' />
-                                                        <span><Localize i18n_default_text='Transfers may be unavailable at times when the market is closed (weekends or holidays), periods of high volatility or because of technical issues.' /></span>
+                                                        <span><Localize i18n_default_text='Transfers may be unavailable at times such as when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' /></span>
                                                     </div>
                                                 </div>
                                             </div>

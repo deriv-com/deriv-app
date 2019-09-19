@@ -85,7 +85,7 @@ class AccountLimits extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         const { commodities, forex, indices, volidx } = market_specific;
-        const { currency } = this.props;
+        const { currency, is_fully_authenticated } = this.props;
 
         return (
             <section className='account-limit-container'>
@@ -184,30 +184,38 @@ class AccountLimits extends React.Component {
                         <thead>
                             <Row>
                                 <TableHeader>{localize('Withdrawal limits')}</TableHeader>
-                                <TableHeader>{localize('Limit')}</TableHeader>
+                                {!is_fully_authenticated && <TableHeader>{localize('Limit')}</TableHeader>}
                             </Row>
-                            <tr  className='account-management-table__divider'>
+                            <tr className='account-management-table__divider'>
                                 <th />
                             </tr>
                         </thead>
-                        <tbody>
-                            <Row>
-                                <Td>{localize('Total withdrawal allowed')}</Td>
-                                <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
-                            </Row>
-                            <Row>
-                                <Td>{localize('Total withdrawn')}</Td>
-                                <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
-                            </Row>
-                            <Row>
-                                <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                <Td>{formatMoney(currency, remainder, true)}</Td>
-                            </Row>
-                        </tbody>
+                        {!is_fully_authenticated &&
+                            <tbody>
+                                <Row>
+                                    <Td>{localize('Total withdrawal allowed')}</Td>
+                                    <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
+                                </Row>
+                                <Row>
+                                    <Td>{localize('Total withdrawn')}</Td>
+                                    <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
+                                </Row>
+                                <Row>
+                                    <Td>{localize('Maximum withdrawal remaining')}</Td>
+                                    <Td>{formatMoney(currency, remainder, true)}</Td>
+                                </Row>
+                            </tbody>
+                        }
                     </table>
-                    <TextContainer>
-                        <Text size='small' color='grey'>{localize('Stated limits are subject to change without prior notice.')}</Text>
-                    </TextContainer>
+                    {!is_fully_authenticated ?
+                        <TextContainer>
+                            <Text size='small' color='grey'>{localize('Stated limits are subject to change without prior notice.')}</Text>
+                        </TextContainer>
+                        :
+                        <TextContainer>
+                            <Text>{localize('Your account is fully authenticated and your withdrawal limits have been lifted.')}</Text>
+                        </TextContainer>
+                    }
                 </ScrollbarsContainer>
             </section>
         );
@@ -218,7 +226,8 @@ class AccountLimits extends React.Component {
 
 export default connect(
     ({ client }) => ({
-        is_virtual: client.is_virtual,
-        currency  : client.currency,
+        is_fully_authenticated: client.is_fully_authenticated,
+        is_virtual            : client.is_virtual,
+        currency              : client.currency,
     }),
 )(AccountLimits);

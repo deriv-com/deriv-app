@@ -7,6 +7,7 @@ import {
     Button,
     Dropdown,
     Input }                                    from 'deriv-components';
+import BinarySocket                            from '_common/base/socket_base';
 import { localize }                            from 'App/i18n';
 import { WS }                                  from 'Services';
 import { connect }                             from 'Stores/connect';
@@ -66,7 +67,7 @@ const InputGroup = ({ children, className }) => (
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (!fn(value) && !errors[field]) errors[field] = err_msg;
+        if (value && !fn(value) && !errors[field]) errors[field] = err_msg;
     });
 };
 
@@ -88,7 +89,13 @@ class PersonalDetailsForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.authorized.storage.getSettings();
+                WS.authorized.storage.getSettings().then((response) => {
+                    if (response.error) {
+                        this.setState({ api_initial_load_error: response.error.message });
+                        return;
+                    }
+                    this.setState({ ...response.get_settings, is_loading: false });
+                });
                 this.setState({ is_submit_success: true });
             }
         });
@@ -150,6 +157,10 @@ class PersonalDetailsForm extends React.Component {
 
     showForm = show_form => this.setState({ show_form });
 
+    isChangeableField(name) {
+        return !this.state.changeable_fields.some(field => field === name);
+    }
+
     render() {
         const {
             api_initial_load_error,
@@ -165,7 +176,6 @@ class PersonalDetailsForm extends React.Component {
             residence,
             tax_residence,
             show_form,
-            is_account_authenticated,
             is_loading,
             is_btn_loading,
             is_submit_success,
@@ -173,7 +183,7 @@ class PersonalDetailsForm extends React.Component {
 
         let { tax_identification_number } = this.state;
 
-        const { residence_list } = this.props;
+        const { is_fully_authenticated, residence_list } = this.props;
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
@@ -238,7 +248,7 @@ class PersonalDetailsForm extends React.Component {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 required
-                                                disabled={is_account_authenticated}
+                                                disabled={this.isChangeableField('first_name')}
                                                 error={touched.first_name && errors.first_name}
                                             />
                                             <Input
@@ -250,7 +260,7 @@ class PersonalDetailsForm extends React.Component {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 required
-                                                disabled={is_account_authenticated}
+                                                disabled={this.isChangeableField('last_name')}
                                                 error={touched.last_name && errors.last_name}
                                             />
                                         </InputGroup>
@@ -267,7 +277,7 @@ class PersonalDetailsForm extends React.Component {
                                                             touched.place_of_birth_text && errors.place_of_birth_text
                                                         }
                                                         required
-                                                        disabled={is_account_authenticated}
+                                                        disabled={this.isChangeableField('place_of_birth')}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('place_of_birth_text', value ? text : '', true)
@@ -286,7 +296,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen_text && errors.citizen_text}
-                                                        disabled={values.citizen_text && is_account_authenticated}
+                                                        disabled={citizen && is_fully_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('citizen_text', value ? text : '', true)
@@ -305,7 +315,7 @@ class PersonalDetailsForm extends React.Component {
                                             label={localize('Country of residence')}
                                             value={values.residence}
                                             required
-                                            disabled
+                                            disabled={this.isChangeableField('residence')}
                                             error={touched.residence && errors.residence}
                                         />
                                     </fieldset>
@@ -317,7 +327,7 @@ class PersonalDetailsForm extends React.Component {
                                             label={localize('Email address')}
                                             value={values.email}
                                             required
-                                            disabled
+                                            disabled={this.isChangeableField('email')}
                                             error={touched.email && errors.email}
                                         />
                                     </fieldset>
@@ -337,7 +347,7 @@ class PersonalDetailsForm extends React.Component {
                                             />
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            {is_account_authenticated ?
+                                            {is_fully_authenticated ?
                                                 <Input
                                                     data-lpignore='true'
                                                     type='text'
@@ -373,7 +383,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Tax residence')}
                                                         error={touched.tax_residence_text && errors.tax_residence_text}
-                                                        disabled={values.tax_residence_text && is_account_authenticated}
+                                                        disabled={tax_residence && is_fully_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
@@ -395,7 +405,7 @@ class PersonalDetailsForm extends React.Component {
                                                     touched.tax_identification_number &&
                                                     errors.tax_identification_number
                                                 }
-                                                disabled={values.tax_identification_number && is_account_authenticated}
+                                                disabled={tax_identification_number && is_fully_authenticated}
                                             />
                                         </fieldset>
                                     </React.Fragment>
@@ -442,18 +452,17 @@ class PersonalDetailsForm extends React.Component {
 
     componentDidMount() {
         this.props.fetchResidenceList();
-        WS.authorized.storage.getSettings().then((data) => {
-            if (data.error) {
-                this.setState({ api_initial_load_error: data.error.message });
-                return;
-            }
-            this.setState({ ...data.get_settings, is_loading: false });
-        });
-        WS.authorized.storage.getAccountStatus().then((data) => {
-            if (data.get_account_status.status &&
-                data.get_account_status.status.some(state => state === 'authenticated')
-            ) {
-                this.setState({ is_account_authenticated: true });
+        BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
+            const { account_settings, getChangeableFields } = this.props;
+
+            if (account_settings.error) {
+                this.setState({ api_initial_load_error: account_settings.error.message });
+            } else {
+                this.setState({
+                    changeable_fields: getChangeableFields(),
+                    is_loading       : false,
+                    ...account_settings,
+                });
             }
         });
     }
@@ -461,8 +470,11 @@ class PersonalDetailsForm extends React.Component {
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        is_virtual        : client.is_virtual,
-        residence_list    : client.residence_list,
-        fetchResidenceList: client.fetchResidenceList,
+        account_settings      : client.account_settings,
+        getChangeableFields   : client.getChangeableFields,
+        is_fully_authenticated: client.is_fully_authenticated,
+        is_virtual            : client.is_virtual,
+        residence_list        : client.residence_list,
+        fetchResidenceList    : client.fetchResidenceList,
     }),
 )(PersonalDetailsForm);

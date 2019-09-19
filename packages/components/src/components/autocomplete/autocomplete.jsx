@@ -38,9 +38,15 @@ class Autocomplete extends React.PureComponent {
         this.hideDropdownList();
 
         this.setState({
-            no_results_error: this.state.input_value === 'NaN',
+            no_results_error: this.state.input_value === 'NaN' && this.props.required,
             filtered_items  : this.props.list_items,
         });
+        if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
+            this.props.onItemSelection({
+                text : 'No results found', // TODO: add localize
+                value: '',
+            });
+        }
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur(e);
         }

@@ -1,143 +1,82 @@
 .toolbar {
     $toolbar: &;
-    $toolbar_buttons_height: 5em;
+    $toolbar_buttons_height: 76px;
+    height: $toolbar_buttons_height;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    box-shadow: inset 0 1px 0 0 #f2f3f4, inset 0 -1px 0 0 #f2f3f4; // TODO color
+    padding: 5px 16px;
 
+    #{$toolbar}__btn {
+        &-icon {
+            display: flex;
+            justify-content: center;
+
+            > * {
+                align-self: center;
+            }
+            &-text {
+                @include typeface(--title-center-bold-active, none);
+                margin-left: 8px;
+            }
+        }
+    }
     &__section {
         display: flex;
-        flex-wrap: wrap;
 
         > * {
             align-self: center;
-            margin: 1em;
+            margin: 3px 10px;
         }
-        > #{$toolbar}__btn,
+        #{$toolbar}__btn {
+            margin: 3px 10px;
+        }
+        > #{$toolbar}__btn-icon,
         #{$toolbar}__group {
-            height: calc(#{$toolbar_buttons_height} - 0.6em);
+            height: 50px;
         }
         > #{$toolbar}__form {
-            height: $toolbar_buttons_height;
+            .dc-input__field {
+                height: 50px;
+            }
+            .dc-input {
+                margin-bottom: 3px;
+            }
         }
     }
-    &__btn {
-        &-icon {
-            cursor: pointer;
-            border: none;
-        }
+    &__icon {
+        cursor: pointer;
+        border: none;
+        margin: 12px;
     }
     &__group {
         display: flex;
         border-radius: $BORDER_RADIUS;
-        border: solid 1px $COLOR_LIGHT_GRAY_2;
+        border: solid 1px #d6dadb; // TODO color
 
         &-btn {
+            padding: 0px 8px;
+
             > * {
                 align-self: center;
-                margin: 0.5em;
             }
         }
     }
     &__form {
         width: 18%;
-        min-width: 16em;
+        min-width: 160px;
 
         &-field {
             margin-bottom: 0;
-            margin-top: 0.5em;
+            margin-top: 5px;
         }
     }
 }
 
-.dc-modal {
-    $saveload-modal : '&__modal--saveload';
-
-    &__container {
-        width: 450px;
-    }
-    &-header {
-        #{$saveload-modal} {
-            border-bottom: solid 1px;
-
-            @include themify($themes) {
-                border-color: themed('border_line');
-            }
-        }
-    }
-    &-content {
-        #{$saveload-modal} {
-            @include toEm(padding, 45px 24px 20px 24px);
-        }
-    }
-    &-row {
-        #{$saveload-modal} {
-            display: flex;
-            justify-content: center;
-        }
-    }
-    &-footer {
-        #{$saveload-modal} {
-            text-align: right;
-        }
-    }
-}
-
-.saveload-type {
-    $saveload: &;
-
-    &__checkbox {
-        border: solid 1px;
-        border-radius: $BORDER_RADIUS;
-        text-align: center;
-        cursor: pointer;
-        @include toEm(padding, 5px);
-
-        @include themify($themes) {
-            border-color: themed('border_line');
-        }
-
-        &-text {
-            @include typeface(--title-left-bold-black, none);
-        }
-        &-description {
-            @include toEm(margin-left, 22px);
-            @include typeface(--paragraph-left-normal-black, none);
-        }
-        &-disable {
-            @include themify($themes) {
-                border-color: themed('disable_color');
-            }
-
-            #{$saveload}__text {
-                @include themify($themes) {
-                    color: themed('disable_color');
-                }
-            }
-            .dc-checkbox__box {
-                @include themify($themes) {
-                    border-color: themed('disable_color');
-                }
-            }
-        }
-    }
-    &__container {
-        @include toEm(margin, 20px);
-        text-align: center;
-    }
-    &__icon {
-        @include toEm(margin, 0px 20px);
-    }
-    &__text {
-        @include typeface(--small-center-normal-black, capitalize);
-        font-weight: bold;
-        @include toEm(margin, 10px 0px);
-    }
-    &__drive-status {
-        @include themify($themes) {
-            color: themed('error_color');
-        }
-        cursor: pointer;
-        @include toEm(margin-top, 10px);
-    }
+.vertical-divider {
+    width: 1px;
+    height: 17px;
+    margin: 8px;
+    background-color: #f2f3f4; // TODO color
 }

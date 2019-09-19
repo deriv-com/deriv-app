@@ -4,23 +4,15 @@ import {
     action,
     computed,
 }                                       from 'mobx';
-import { createErrorAndEmit }           from '../utils/error';
-import { observer as globalObserver }   from '../utils/observer';
 import {
     cleanUpOnLoad,
     fixCollapsedBlocks,
     backwardCompatibility,
-    fixArgumentAttribute,
     addDomAsBlock,
 }                                       from '../scratch/utils';
-import { translate }                    from '../utils/tools';
 import googleDrive                      from '../utils/integrations/googleDrive';
 
 export default class ToolbarStore {
-    constructor(flyout) {
-        this.flyout = flyout;
-    }
-
     @observable is_toolbox_open = false;
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
@@ -32,15 +24,11 @@ export default class ToolbarStore {
         // TODO
     }
 
-    @action.bound onStartClick = () => {
+    @action.bound onToolboxToggle = () => {
         this.is_toolbox_open = !this.is_toolbox_open;
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
-        if (this.is_toolbox_open) {
-            toolbox.open();
-        } else {
-            toolbox.close();
-        }
+        toolbox.toggle();
     }
 
     @action.bound onSearchBlur = () => {
@@ -48,13 +36,11 @@ export default class ToolbarStore {
     }
 
     @action.bound onSearch = ({ search }) => {
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-
         if (this.is_toolbox_open) {
-            this.onStartClick();
+            this.onToolboxToggle();
         }
 
-        toolbox.showSearch_(search);
+        Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
     @action.bound onSearchClear = setValues => {
@@ -64,7 +50,7 @@ export default class ToolbarStore {
         toolbox.showSearch_('');
     }
 
-    @action.bound onBotnameTyped = values => {
+    @action.bound onBotNameTyped = values => {
         const bot_name = values.botname;
         this.file_name = bot_name;
     }
@@ -100,12 +86,12 @@ export default class ToolbarStore {
 
     @action.bound handleFileChange = e => {
         let files,
-            dropEvent;
+            drop_event;
         if (e.type === 'drop') {
             e.stopPropagation();
             e.preventDefault();
             ({ files } = e.dataTransfer);
-            dropEvent = e;
+            drop_event = e;
         } else {
             ({ files } = e.target);
 
@@ -114,15 +100,18 @@ export default class ToolbarStore {
         files = Array.from(files);
         files.forEach(file => {
             if (file.type.match('text/xml')) {
-                this.readFile(file, dropEvent);
+                this.readFile(file, drop_event);
             } else {
-                globalObserver.emit('ui.log.info', `${translate('File is not supported:')} ${file.name}`);
+                // TODO
+                console.error('File Type not matched'); // eslint-disable-line
             }
         });
         e.target.value = '';
     }
 
-    @action.bound onConfirmSave = ({ is_local, save_as_collection }) => {
+    @action.bound onConfirmSave = values => {
+        const { is_local, save_as_collection } = values;
+
         if (is_local) {
             const file_name = this.file_name;
             const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
@@ -151,11 +140,9 @@ export default class ToolbarStore {
 
     @action.bound onZoomInOutClick = is_zoom_in => {
         const metrics = Blockly.derivWorkspace.getMetrics();
-        if (is_zoom_in) {
-            Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
-        } else {
-            Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
-        }
+        const addition = is_zoom_in ? 1 : -1;
+
+        Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 
     @action.bound onSortClick = () => {
@@ -191,60 +178,58 @@ export default class ToolbarStore {
         return this.is_save_modal;
     }
 
-    /* eslint-disable class-methods-use-this */
-    load(blockStr = '', dropEvent = {}) {
-        const unrecognisedMsg = () => translate('Unrecognized file format');
+    @computed
+    get isToolboxOpen () {
+        return this.is_toolbox_open;
+    }
 
+    /* eslint-disable class-methods-use-this */
+    load(blockStr = '', drop_event = {}) {
         try {
             const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
 
             if (xmlDoc.getElementsByTagName('parsererror').length) {
                 throw new Error();
             }
-        } catch (err) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+        } catch (e) {
+            // TODO
+            console.error(e);  // eslint-disable-line
         }
 
         let xml;
         try {
             xml = Blockly.Xml.textToDom(blockStr);
         } catch (e) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+            // TODO
+            console.error(e);  // eslint-disable-line
         }
 
         const blocklyXml = xml.querySelectorAll('block');
 
         if (!blocklyXml.length) {
-            throw createErrorAndEmit(
-                'FileLoad',
-                'XML file contains unsupported elements. Please check or modify file.'
-            );
+            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
         }
 
         blocklyXml.forEach(block => {
             const blockType = block.getAttribute('type');
 
             if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-                throw createErrorAndEmit(
-                    'FileLoad',
-                    'XML file contains unsupported elements. Please check or modify file'
-                );
+                console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
             }
         });
 
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-                this.loadBlocks(xml, dropEvent);
+                this.loadBlocks(xml, drop_event);
             } else {
                 this.loadWorkspace(xml);
             }
         } catch (e) {
-            console.error(e); // eslint-disable-line
-            throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
+            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
         }
     }
 
-    loadBlocks = (xml, dropEvent = {}) => {
+    loadBlocks = (xml, drop_event = {}) => {
         const workspace = Blockly.derivWorkspace;
         const variables = xml.getElementsByTagName('variables');
         if (variables.length) {
@@ -255,7 +240,7 @@ export default class ToolbarStore {
             Array.from(xml.children)
                 .map(block => addDomAsBlock(block))
                 .filter(b => b);
-        cleanUpOnLoad(addedBlocks, dropEvent);
+        cleanUpOnLoad(addedBlocks, drop_event);
 
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
@@ -269,15 +254,14 @@ export default class ToolbarStore {
             backwardCompatibility(block);
         });
 
-        fixArgumentAttribute(xml);
         Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
     };
 
-    readFile = (f, dropEvent = {}) => {
+    readFile = (f, drop_event = {}) => {
         const reader = new FileReader();
-        reader.onload = e => this.load(e.target.result, dropEvent);
+        reader.onload = e => this.load(e.target.result, drop_event);
         reader.readAsText(f);
     };
 }

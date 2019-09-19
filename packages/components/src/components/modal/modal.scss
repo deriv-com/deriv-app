@@ -40,7 +40,6 @@
         &__title {
             @include typeface(--title-left-bold-black);
             @include themify($themes) {
-                // background-color: themed('background_cover');
                 color: themed('text_color');
             }
             line-height: 24px;

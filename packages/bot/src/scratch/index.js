@@ -1,11 +1,11 @@
-import './blocks';
-import './hooks';
+import ScratchStore from '../stores/scratch-store';
+import                   './blocks';
+import                   './hooks';
 
-export const scratchWorkspaceInit = async handleFileChange => {
+export const scratchWorkspaceInit = async () => {
     try {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
-        const toolbar_heigh = document.getElementById('toolbar').clientHeight;
 
         // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
@@ -22,7 +22,6 @@ export const scratchWorkspaceInit = async handleFileChange => {
 
         Blockly.derivWorkspace = workspace;
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
-        Blockly.derivWorkspace.toolbox_.addStyle('hidden');
 
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
@@ -40,7 +39,7 @@ export const scratchWorkspaceInit = async handleFileChange => {
 
         const onWorkspaceResize = () => {
             const x = 0;
-            const y = toolbar_heigh;
+            const y = 76;
         
             // Position scratch_div over scratch_area.
             el_scratch_div.style.left   = `${x}px`;
@@ -73,19 +72,11 @@ export const scratchWorkspaceInit = async handleFileChange => {
             e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
         };
 
-        const dropZone = document.body;
+        const drop_zone = document.body;
+        const { instance : { toolbar } } = ScratchStore;
 
-        dropZone.addEventListener('dragover', handleDragOver, false);
-        dropZone.addEventListener('drop', handleFileChange, false);
-
-        // resize run panel height
-        const run_drawer = document.getElementsByClassName('dc-drawer')[0];
-        const drawer_toggle = document.getElementsByClassName('dc-drawer__toggle')[0];
-        const drawer_height = `calc(100vh - ${   toolbar_heigh + 82  }px)`;
-        const drawer_top = `${toolbar_heigh + 2}px`;
-
-        run_drawer.style.height = drawer_toggle.style.height = drawer_height;
-        run_drawer.style.top = drawer_top;
+        drop_zone.addEventListener('dragover', handleDragOver, false);
+        drop_zone.addEventListener('drop', e => toolbar.handleFileChange(e), false);
     } catch (error) {
         // TODO: Handle error.
         throw error;

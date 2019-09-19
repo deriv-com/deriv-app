@@ -10,8 +10,7 @@ export const oppositesToDropdownOptions = opposite_name => {
     });
 };
 
-export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-    console.log(dropEvent); // eslint-disable-line
+export const cleanUpOnLoad = (blocks_to_clean, dropEvent) => {
     const { clientX = 0, clientY = 0 } = dropEvent || {};
     const blocklyMetrics = Blockly.derivWorkspace.getMetrics();
     const scaleCancellation = 1 / Blockly.derivWorkspace.scale;
@@ -19,8 +18,8 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     const blocklyTop = document.body.offsetHeight - blocklyMetrics.viewHeight - blocklyMetrics.viewTop;
     const cursorX = clientX ? (clientX - blocklyLeft) * scaleCancellation : 0;
     let cursorY = clientY ? (clientY - blocklyTop) * scaleCancellation : 0;
-    const toolbar_height = document.getElementById('toolbar').clientHeight;
-    blocksToClean.forEach(block => {
+    const toolbar_height = 76;
+    blocks_to_clean.forEach(block => {
         block.moveBy(cursorX, cursorY - toolbar_height);
         block.snapToGrid();
         cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
@@ -117,30 +116,6 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
         }
     });
     Blockly.Events.setGroup(false);
-};
-
-export const fixArgumentAttribute = xml => {
-    Array.from(xml.getElementsByTagName('arg')).forEach(o => {
-        if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
-    });
-};
-
-export const backwardCompatibility = block => {
-    if (block.getAttribute('type') === 'on_strategy') {
-        block.setAttribute('type', 'before_purchase');
-    } else if (block.getAttribute('type') === 'on_finish') {
-        block.setAttribute('type', 'after_purchase');
-    }
-    Array.from(block.getElementsByTagName('statement')).forEach(statement => {
-        if (statement.getAttribute('name') === 'STRATEGY_STACK') {
-            statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
-        } else if (statement.getAttribute('name') === 'FINISH_STACK') {
-            statement.setAttribute('name', 'AFTERPURCHASE_STACK');
-        }
-    });
-    if (isMainBlock(block.getAttribute('type'))) {
-        block.removeAttribute('deletable');
-    }
 };
 
 export const addDomAsBlock = blockXml => {

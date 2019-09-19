@@ -1,6 +1,6 @@
-import React                from 'react';
-import PropTypes            from 'prop-types';
 import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
 import {
     Button,
     Input,
@@ -28,16 +28,17 @@ import {
 import SaveLoadModal        from './save-load-modal.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
+import                           '../assets/sass/scratch/toolbar.scss';
 
 const initial_search_value = { search: '' };
 const initial_botname_value = { botname: 'Untitled Bot' };
 
 const Toolbar = ({
-    onStartClick,
+    onToolboxToggle,
     onSearch,
     onSearchBlur,
     onSearchClear,
-    onBotnameTyped,
+    onBotNameTyped,
     onResetClick,
     toggleSaveLoadModal,
     // onGoogleDriveClick,
@@ -49,7 +50,7 @@ const Toolbar = ({
 }) => {
 
     // const toolbar_element = [
-    //     { id: 'start', type: 'button', text: 'Start', action: onStartClick },
+    //     { id: 'start', type: 'button', text: 'Start', action: onToolboxToggle },
     //     {
     //         id      : 'toolbar-action', type    : 'button-group', children: [
     //             { id: 'reset-button', text: 'reset', action: onResetClick },
@@ -69,25 +70,21 @@ const Toolbar = ({
 
     return (
         <div
-            id='toolbar'
             className='toolbar'
         >
             <div className='toolbar__section'>
                 <Button
-                    id={'start'}
+                    id='start'
                     className={classNames(
-                        'toolbar__btn',
                         'btn--primary',
-                        'btn--icon',
+                        'toolbar__btn-icon',
                     )}
                     has_effect
-                    onClick={onStartClick}
+                    onClick={onToolboxToggle}
                 >
                     <StartIcon />
                     <span
-                        className={classNames(
-                            'btn--icon-text'
-                        )}
+                        className='toolbar__btn-icon-text'
                     >{translate('Start')}
                     </span>
                 </Button>
@@ -129,7 +126,7 @@ const Toolbar = ({
                 <div className='toolbar__form'>
                     <Formik
                         initialValues={initial_botname_value}
-                        onSubmit={values => onBotnameTyped(values)}
+                        onSubmit={values => onBotNameTyped(values)}
                     >
                         {
                             ({ submitForm }) => (
@@ -155,17 +152,17 @@ const Toolbar = ({
                     </Formik>
                 </div>
                 <div className='toolbar__group toolbar__group-btn'>
-                    <button className='toolbar__btn-icon' onClick={() => toggleSaveLoadModal(false)}><OpenIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={onResetClick}><NewFileIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={() => toggleSaveLoadModal(true)}><SaveIcon /></button>
-                    <div className='vd' />
-                    <button className='toolbar__btn-icon' onClick={onUndoClick}><UndoIcon />️</button>
-                    <button className='toolbar__btn-icon' onClick={onRedoClick}><RedoIcon /></button>
-                    <div className='vd' />
-                    <button className='toolbar__btn-icon' onClick={onRunClick}><PerformIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={onSortClick}><ReaarangeIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={() => onZoomInOutClick(true)}><ZoomInIcon /></button>
-                    <button className='toolbar__btn-icon' onClick={() => onZoomInOutClick(false)}><ZoomOutIcon /></button>
+                    <OpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+                    <NewFileIcon className='toolbar__icon' onClick={onResetClick} />
+                    <SaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+                    <div className='vertical-divider' />
+                    <UndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
+                    <RedoIcon className='toolbar__icon' onClick={onRedoClick} />
+                    <div className='vertical-divider' />
+                    <PerformIcon className='toolbar__icon' onClick={onRunClick} />
+                    <ReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+                    <ZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+                    <ZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
                 </div>
             </div>
             <SaveLoadModal />
@@ -174,6 +171,7 @@ const Toolbar = ({
 };
 
 Toolbar.propTypes = {
+    onBotNameTyped     : PropTypes.func,
     onGoogleDriveClick : PropTypes.func,
     onRedoClick        : PropTypes.func,
     onResetClick       : PropTypes.func,
@@ -182,20 +180,20 @@ Toolbar.propTypes = {
     onSearchBlur       : PropTypes.func,
     onSearchClear      : PropTypes.func,
     onSortClick        : PropTypes.func,
-    onStartClick       : PropTypes.func,
+    onToolboxToggle    : PropTypes.func,
     onUndoClick        : PropTypes.func,
     onZoomInOutClick   : PropTypes.func,
     toggleSaveLoadModal: PropTypes.func,
 };
 
 export default connect(({ toolbar }) => ({
-    onStartClick       : toolbar.onStartClick,
+    onToolboxToggle    : toolbar.onToolboxToggle,
     onRunClick         : toolbar.onRunClick,
     toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
     onSearch           : toolbar.onSearch,
     onSearchBlur       : toolbar.onSearchBlur,
     onSearchClear      : toolbar.onSearchClear,
-    onBotnameTyped     : toolbar.onBotnameTyped,
+    onBotNameTyped     : toolbar.onBotNameTyped,
     onResetClick       : toolbar.onResetClick,
     onGoogleDriveClick : toolbar.onGoogleDriveClick,
     onUndoClick        : toolbar.onUndoClick,

@@ -29,10 +29,9 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const { toolbar: { handleFileChange } } = this.rootStore;
         const { instance } = ApiHelpers;
                 
-        scratchWorkspaceInit(handleFileChange);
+        scratchWorkspaceInit();
         instance.registerAccountSwitcherListener();
     }
 

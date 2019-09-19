@@ -28,16 +28,7 @@ Blockly.Blocks.trade_definition_market = {
             previousStatement: null,
             nextStatement    : null,
         });
-
-        // this
-        // .appendDummyInput('MARKETDEFINITION')
-        // .appendField(`${translate('Market')}:`)
-        // .appendField(new Blockly.FieldDropdown(ApiHelpers.instance.active_symbols.getMarketDropdownOptions()), 'MARKET_LIST')
-        // .appendField('>')
-        // .appendField(new Blockly.FieldDropdown(ApiHelpers.instance.active_symbols.getSubmarketDropdownOptions(this.getFieldValue('MARKET_LIST'))), 'SUBMARKET_LIST')
-        // .appendField('>')
-        // .appendField(new Blockly.FieldDropdown(ApiHelpers.instance.active_symbols.getSymbolDropdownOptions(this.getFieldValue('SUBMARKET_LIST'))), 'SYMBOL_LIST');
-
+        
         this.setMovable(false);
         this.setDeletable(false);
     },
@@ -57,18 +48,19 @@ Blockly.Blocks.trade_definition_market = {
         const symbol             = symbol_field.getValue();
 
         if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
+            console.log('market', event); // eslint-disable-line
             active_symbols.getMarketDropdownOptions().then(market_options => {
-                market_field.updateOptions(market_options, market, true, true);
+                market_field.updateOptions(market_options, event.group, market, true, true);
             });
         } else if (event.type === Blockly.Events.CHANGE) {
             if (event.name === 'MARKET_LIST') {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
-                    submarket_field.updateOptions(submarket_options, submarket, true, true);
+                    submarket_field.updateOptions(submarket_options, event.group, submarket, true, true);
                 });
             }
             if (event.name === 'SUBMARKET_LIST') {
                 active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
-                    symbol_field.updateOptions(symbol_options, symbol, true, true);
+                    symbol_field.updateOptions(symbol_options, event.group, symbol, true, true);
                 });
             }
         }

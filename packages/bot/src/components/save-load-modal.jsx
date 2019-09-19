@@ -1,6 +1,6 @@
-import React            from 'react';
-import PropTypes        from 'prop-types';
 import classNames       from 'classnames';
+import PropTypes        from 'prop-types';
+import React            from 'react';
 import {
     Button,
     Checkbox,
@@ -16,26 +16,25 @@ import {
 // }                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
+import                       '../assets/sass/saveload-modal.scss';
 
 const initial_option = { is_local: true, save_as_collection: true };
 
 const SaveLoadModal = ({
     onLoadClick,
     onConfirmSave,
+    handleFileChange,
     isSaveModal,
     isModalOpen,
     toggleSaveLoadModal,
     // isGoogleDriveConnected,
     // onDriveConnect,
-    handleFileChange,
 }) => {
-    const modal_id = isSaveModal ? 'save-modal' : 'load-modal';
     const title = isSaveModal ? 'Save Bot' : 'Load Bot';
 
     return (
         <Modal
-            id={modal_id}
-            title={title}
+            title={translate(title)}
             className='modal--saveload'
             is_open={isModalOpen}
             toggleModal={toggleSaveLoadModal}
@@ -51,8 +50,8 @@ const SaveLoadModal = ({
                 {
                     ({ values: { is_local, save_as_collection }, setValues }) => (
                         <Form>
-                            <div className='dc-modal-content__modal--saveload'>
-                                {/* TODO <div className='dc-modal-row__modal--saveload'>
+                            <div className='modal--content'>
+                                {/* TODO <div className='modal--row'>
                                     <IconCheckbox
                                         onClick={() => setValues({ is_local: true, save_as_collection })}
                                         is_selected={is_local}
@@ -90,7 +89,7 @@ const SaveLoadModal = ({
                                         <input type='file' id='files' style={{ display: 'none' }} onChange={e => handleFileChange(e)} />
                                 }
                             </div>
-                            <div className='dc-modal-footer__modal--saveload'>
+                            <div className='modal--footer'>
                                 <Button
                                     type='button'
                                     className={classNames(

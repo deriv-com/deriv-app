@@ -344,9 +344,6 @@
     }
     &__title {
         &--modal-cashier {
-            @include themify($themes) {
-                background-color: themed('background_cover');
-            }
             min-width: 28%;
         }
     }

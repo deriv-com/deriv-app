@@ -1,6 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../utils/tools';
+import React            from 'react';
+import PropTypes        from 'prop-types';
+import { translate }    from '../utils/tools';
+import                       '../assets/sass/scratch/animation.scss';
 
 const CONTRACT_STATUS = [
     'Bot is not running',

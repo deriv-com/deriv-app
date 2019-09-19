@@ -1,0 +1,18 @@
+/**
+* @define -panel
+**/
+.run-panel {
+    $toolbar_height: 76px;
+    height: calc(100vh - 158px);
+    top: 78px;
+
+    &__footer {
+        text-align: center;
+    }
+    &__button {
+        margin-left: 0 !important;
+    }
+    &__icon-info {
+        vertical-align: middle;
+    }
+}

@@ -552,10 +552,8 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    requestProposal(options = {}) {
-        const requests = options.reuse
-            ? this.proposal_requests
-            : createProposalRequests(this);
+    requestProposal() {
+        const requests = createProposalRequests(this);
 
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};

@@ -1,3 +1,4 @@
+import classNames           from 'classnames';
 import React                from 'react';
 import PropTypes            from 'prop-types';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
@@ -17,7 +18,13 @@ const Flyout = ({
 }) => {
     return (
         <div
-            className={`flyout${!is_visible ? ' hidden' : ''}${is_search_flyout ? ' flyout__search' : ''}${is_help_content ? ' flyout__help' : ' flyout__content'}`}
+            className={
+                classNames(
+                    `flyout${!is_visible ? ' hidden' : ''}`,
+                    `${is_search_flyout ? ' flyout__search' : ''}`,
+                    `${is_help_content ? ' flyout__help' : ' flyout__content'}`
+                )
+            }
             style={{ width: `${flyout_width}px` }}
         >
             {
@@ -60,7 +67,12 @@ const Flyout = ({
                                 return (
                                     <button
                                         key={`${callback_key}${index}`}
-                                        className='flyout__button flyout__button-new'
+                                        className={
+                                            classNames(
+                                                'flyout__button',
+                                                'flyout__button-new'
+                                            )
+                                        }
                                         onClick={(button) => {
                                             const flyout_button = button;
 

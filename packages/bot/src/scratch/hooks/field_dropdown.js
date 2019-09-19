@@ -1,9 +1,10 @@
 /* eslint-disable func-names, no-underscore-dangle */
 Blockly.FieldDropdown.prototype.updateOptions = function(
     options,
+    group_type,
     opt_default = null,
     should_trigger_event = true,
-    should_pretend_empty = false
+    should_pretend_empty = false,
 ) {
     Blockly.Events.disable();
 
@@ -31,6 +32,7 @@ Blockly.FieldDropdown.prototype.updateOptions = function(
     if (should_trigger_event) {
         const event = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
         event.recordUndo = false;
+        event.group = group_type;
         Blockly.Events.fire(event);
         
     }

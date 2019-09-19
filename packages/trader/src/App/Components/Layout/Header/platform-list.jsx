@@ -13,7 +13,7 @@ const PlatformList = ({
     <React.Fragment>
         <div className='platform_switcher__list'>
             {platform_config.map((platform, idx) => (
-                <BinaryLink to={platform.link_to} key={idx} onClick={handleClick} className='platform_switcher__list__platform'>
+                <BinaryLink to={platform.link_to} href={platform.href} key={idx} onClick={handleClick} className='platform_switcher__list__platform'>
                     <Icon className='platform_switcher__list__platform__icon' icon={platform.icon} />
                     <div className='platform_switcher__list__platform__details'>
                         <p className='platform_switcher__list__platform__title'>{platform.title}</p>

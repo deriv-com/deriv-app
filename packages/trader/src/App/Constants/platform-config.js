@@ -12,13 +12,13 @@ const platform_config = [
         icon       : 'IconDBot',
         title      : localize('DBot'),
         description: localize('A powerful robot builder to automate your trading strategies'),
-        link_to    : routes.index,
+        href       : '/bot',
     },
     {
         icon       : 'IconMT5',
         title      : localize('MetaTrader 5'),
         description: localize('An all-in-one platform for FX and CFD Trading'),
-        link_to    : routes.error404,
+        link_to    : routes.error404, // TODO: Change this when MT5 is merged. e.g routes.mt5
     },
 ];
 

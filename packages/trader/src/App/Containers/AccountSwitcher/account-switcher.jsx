@@ -49,6 +49,11 @@ class AccountSwitcher extends React.Component {
         }
     }
 
+    get can_manage_currency () {
+        return this.props.can_change_currency ||
+            (!this.props.is_virtual && !this.props.has_fiat);
+    }
+
     render() {
         if (!this.props.is_logged_in) return false;
         // TODO: Once we allow other real accounts (apart from CR), assign correct title and group accounts into list with correct account title/types
@@ -91,8 +96,7 @@ class AccountSwitcher extends React.Component {
                             }
                         </div>
 
-                        {!this.props.is_virtual &&
-                        this.props.can_change_currency &&
+                        {this.can_manage_currency &&
                             <UpgradeButton
                                 onClick={this.props.openRealAccountSignup}
                                 outlined
@@ -162,6 +166,7 @@ AccountSwitcher.propTypes = {
     cleanUp               : PropTypes.func,
     clearError            : PropTypes.func,
     has_error             : PropTypes.bool,
+    has_fiat              : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
@@ -176,6 +181,7 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
+        has_fiat              : client.has_fiat,
         can_change_currency   : client.can_change_currency,
         account_list          : client.account_list,
         can_upgrade           : client.can_upgrade,

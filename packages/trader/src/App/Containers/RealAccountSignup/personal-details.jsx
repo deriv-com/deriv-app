@@ -172,6 +172,7 @@ class PersonalDetails extends Component {
         const mappedKey = {
             first_name: localize('First name'),
             last_name : localize('Last name'),
+            date_of_birth: localize('Date of birth'),
         };
         const messages = [
             '%s is required',
@@ -207,6 +208,7 @@ class PersonalDetails extends Component {
                     ({
                         handleSubmit,
                         isSubmitting,
+                        touched,
                         errors,
                     }) => (
                         <form onSubmit={handleSubmit}>
@@ -236,6 +238,8 @@ class PersonalDetails extends Component {
                             </div>
                             <FormSubmitButton
                                 is_disabled={
+                                    // eslint-disable-next-line no-unused-vars
+                                    !Object.entries(touched).filter(([key, value]) => value).length ||
                                     isSubmitting ||
                                     Object.keys(errors).length > 0
                                 }

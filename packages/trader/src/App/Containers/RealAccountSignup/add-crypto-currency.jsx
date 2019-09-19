@@ -46,9 +46,6 @@ class AddCryptoCurrency extends Component {
     }
 
     render() {
-        if (this.props.available_crypto_currencies.length === 0) {
-            return null;
-        }
         return (
             <Formik
                 initialValues={{
@@ -68,12 +65,13 @@ class AddCryptoCurrency extends Component {
                 }) => (
                     <form onSubmit={handleSubmit}>
 
-                        {!this.can_add_fiat &&
+                        {!this.can_add_fiat && this.props.available_crypto_currencies.length !== 0 &&
                         <Headers heading={messages[0]} subheading={messages[1]} />
                         }
                         {this.can_add_fiat &&
                         <Headers heading={messages[2]} subheading={messages[3]} />
                         }
+                        {this.props.available_crypto_currencies.length !== 0 &&
                         <RadioButtonGroup
                             id='crypto_currency'
                             className='currency-selector__radio-group'
@@ -93,6 +91,7 @@ class AddCryptoCurrency extends Component {
                                 />
                             ))}
                         </RadioButtonGroup>
+                        }
                         {this.can_add_fiat &&
                         <React.Fragment>
                             <Hr />
@@ -117,12 +116,14 @@ class AddCryptoCurrency extends Component {
                             </RadioButtonGroup>
                         </React.Fragment>
                         }
+                        {this.can_add_fiat || this.props.available_crypto_currencies.length !== 0 &&
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
                             label='Next' // Localization will be handled by component
                             is_absolute={false}
                             form_error={this.props.form_error}
                         />
+                        }
                     </form>
                 )}
             />

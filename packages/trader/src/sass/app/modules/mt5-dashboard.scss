@@ -118,15 +118,19 @@
     }
 }
 
-.mt5-real-accounts-display {
+.mt5-real-accounts-display, .mt5-demo-accounts-display {
     margin-top: 2.4em;
-    padding: 1em;
+    display: flex;
+    justify-content: space-between;
 }
 
 .mt5-account-card {
     height: 32em;
     width: 30.4em;
     border-radius: 4px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
 
     &:not(:hover) {
         border: solid 1px #d6dadb;
@@ -149,7 +153,7 @@
         line-height: 1.45em;
     }
     &__type {
-        padding: 1.6em;
+        padding: 1.6em 1.6em 0;
         display: flex;
         align-items: center;
 
@@ -157,7 +161,7 @@
             margin-right: 1.6em;
         }
         &--description {
-            max-width: 16em;
+            max-width: 19.2em;
             display: inline-block;
 
             .mt5-account-card--heading {
@@ -166,7 +170,7 @@
         }
     }
     &__specs {
-        margin: 2.8em 1.6em 1.6em;
+        margin: 0 1.6em 1.6em;
     }
     &__specs-table {
         width: 100%;

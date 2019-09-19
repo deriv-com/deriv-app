@@ -2,9 +2,9 @@ import { Button, Tabs }        from 'deriv-components';
 import React                   from 'react';
 import Localize                from 'App/Components/Elements/localize.jsx';
 import { localize }            from 'App/i18n';
-// import IconMT5Advanced         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg.svg';
+import IconMT5Advanced         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
-// import IconMT5Synthetic        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg.svg';
+import IconMT5Synthetic        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
 import IconDeviceLaptop        from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
 import IconDeviceMac           from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
 import IconDeviceMobile        from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
@@ -20,16 +20,11 @@ const MT5AccountCard = ({
     commission_message,
     descriptor,
     icon,
+    specs,
     title,
     onSelectAccount,
 }) => {
     const IconComponent = icon || (() => null);
-    const specs = {
-        [localize('Leverage')]        : localize('Up to 1:1000'),
-        [localize('Margin call')]     : localize('150%'),
-        [localize('Stop out level')]  : localize('75%'),
-        [localize('Number of assets')]: localize('50+'),
-    };
 
     return (
         <div className='mt5-account-card'>
@@ -47,47 +42,49 @@ const MT5AccountCard = ({
                 </div>
             </div>
 
-            <div className='mt5-account-card__specs'>
-                <table className='mt5-account-card__specs-table'>
-                    <tbody>
-                        {
-                            Object.keys(specs).map((spec_attribute, idx) => (
-                                <tr key={ idx } className='mt5-account-card__specs-table-row'>
-                                    <td className='mt5-account-card__specs-table-attribute'>
-                                        <p className='mt5-account-card--paragraph'>
-                                            { spec_attribute }
-                                        </p>
-                                    </td>
-                                    <td className='mt5-account-card__specs-table-data'>
-                                        <p className='mt5-account-card--paragraph'>
-                                            { specs[spec_attribute] }
-                                        </p>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <div className='mt5-account-card__cta'>
+                <div className='mt5-account-card__specs'>
+                    <table className='mt5-account-card__specs-table'>
+                        <tbody>
+                            {
+                                Object.keys(specs).map((spec_attribute, idx) => (
+                                    <tr key={ idx } className='mt5-account-card__specs-table-row'>
+                                        <td className='mt5-account-card__specs-table-attribute'>
+                                            <p className='mt5-account-card--paragraph'>
+                                                { spec_attribute }
+                                            </p>
+                                        </td>
+                                        <td className='mt5-account-card__specs-table-data'>
+                                            <p className='mt5-account-card--paragraph'>
+                                                { specs[spec_attribute] }
+                                            </p>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-            { commission_message &&
+                { commission_message &&
                 <p className='mt5-account-card__commission mt5-account-card--paragraph'>
                     { commission_message }
                 </p>
-            }
+                }
 
-            <Button
-                className='mt5-account-card__account-selection'
-                onClick={ () => { onSelectAccount(title); } }
-                type='button'
-            >
-                <Localize i18n_default_text='Select' />
-            </Button>
+                <Button
+                    className='mt5-account-card__account-selection'
+                    onClick={ () => { onSelectAccount(title); } }
+                    type='button'
+                >
+                    <Localize i18n_default_text='Select' />
+                </Button>
+            </div>
         </div>
     );
 };
 
-const RealDisplay = () => (
+const RealAccountsDisplay = () => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
@@ -100,12 +97,89 @@ const RealDisplay = () => (
             }
             onSelectAccount={ (e) => console.log('Selected', e) }
             descriptor={ localize('Suitable for both new and experienced traders.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:1000'),
+                [localize('Margin call')]     : localize('150%'),
+                [localize('Stop out level')]  : localize('75%'),
+                [localize('Number of assets')]: localize('50+'),
+            }}
+        />
+        <MT5AccountCard
+            icon={() => (<IconMT5Advanced />) }
+            title={ localize('Real Advanced') }
+            commission_message={ <Localize i18n_default_text='No commission' /> }
+            onSelectAccount={ (e) => console.log('Selected', e) }
+            descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:100'),
+                [localize('Margin call')]     : localize('150%'),
+                [localize('Stop out level')]  : localize('75%'),
+                [localize('Number of assets')]: localize('50+'),
+            }}
+        />
+        <MT5AccountCard
+            icon={() => (<IconMT5Synthetic />) }
+            title={ localize('Real Synthetic Indices') }
+            commission_message={ <Localize i18n_default_text='No commission' /> }
+            onSelectAccount={ (e) => console.log('Selected', e) }
+            descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:1000'),
+                [localize('Margin call')]     : localize('100%'),
+                [localize('Stop out level')]  : localize('50%'),
+                [localize('Number of assets')]: localize('10+'),
+            }}
         />
     </div>
 );
 
-const VirtualDisplay = () => (
-    <p>Hi I am in Virtual</p>
+const DemoAccountsDisplay = () => (
+    <div className='mt5-demo-accounts-display'>
+        <MT5AccountCard
+            icon={() => (<IconMT5Standard />) }
+            title={ localize('Demo Standard') }
+            commission_message={
+                <Localize
+                    i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
+                    components={[ <span key={0} className='mt5-dashboard--hint' /> ]}
+                />
+            }
+            onSelectAccount={ (e) => console.log('Selected', e) }
+            descriptor={ localize('Suitable for both new and experienced traders.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:1000'),
+                [localize('Margin call')]     : localize('150%'),
+                [localize('Stop out level')]  : localize('75%'),
+                [localize('Number of assets')]: localize('50+'),
+            }}
+        />
+        <MT5AccountCard
+            icon={() => (<IconMT5Advanced />) }
+            title={ localize('Demo Advanced') }
+            commission_message={ <Localize i18n_default_text='No commission' /> }
+            onSelectAccount={ (e) => console.log('Selected', e) }
+            descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:100'),
+                [localize('Margin call')]     : localize('150%'),
+                [localize('Stop out level')]  : localize('75%'),
+                [localize('Number of assets')]: localize('50+'),
+            }}
+        />
+        <MT5AccountCard
+            icon={() => (<IconMT5Synthetic />) }
+            title={ localize('Demo Synthetic Indices') }
+            commission_message={ <Localize i18n_default_text='No commission' /> }
+            onSelectAccount={ (e) => console.log('Selected', e) }
+            descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:1000'),
+                [localize('Margin call')]     : localize('100%'),
+                [localize('Stop out level')]  : localize('50%'),
+                [localize('Number of assets')]: localize('10+'),
+            }}
+        />
+    </div>
 );
 
 class MT5Dashboard extends React.Component {
@@ -138,10 +212,10 @@ class MT5Dashboard extends React.Component {
                     {/* <Tabs alignment='center' list={ MT5Dashboard.dashboard_tabs } /> */}
                     <Tabs>
                         <div label={ localize('Real account') }>
-                            <RealDisplay />
+                            <RealAccountsDisplay />
                         </div>
-                        <div label={ localize('Virtual account') }>
-                            <VirtualDisplay />
+                        <div label={ localize('Demo account') }>
+                            <DemoAccountsDisplay />
                         </div>
                     </Tabs>
                 </div>

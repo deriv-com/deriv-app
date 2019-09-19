@@ -1,11 +1,9 @@
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
-import { urlFor }           from '_common/url';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
-import { UpgradeButton }    from './upgrade-button.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
@@ -59,14 +57,6 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!!(
-                        can_upgrade_to && is_virtual
-                    ) && <UpgradeButton
-                        className='acc-info__button'
-                        onClick={() => {
-                            window.open(urlFor('user/accounts', undefined, undefined, true));
-                        }}
-                    />}
                     {!is_virtual &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}

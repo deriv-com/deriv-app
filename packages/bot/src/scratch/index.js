@@ -33,6 +33,9 @@ export const scratchWorkspaceInit = async () => {
 
         Blockly.derivWorkspace = workspace;
 
+        // TODO: Remove this.
+        Blockly.BLOCKLY_CLASS_OLD = new _Blockly();
+
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
         document.addEventListener('click', (event) => {
@@ -86,6 +89,7 @@ export const scratchWorkspaceInit = async () => {
     }
 };
 
+// eslint-disable-next-line no-unused-vars
 const disableStrayBlocks = () => {
     const top_blocks = Blockly.derivWorkspace.getTopBlocks();
 
@@ -205,7 +209,7 @@ export default class _Blockly {
     }
 
     run(limitations = {}) {
-        disableStrayBlocks();
+        // disableStrayBlocks();
 
         let code;
         try {
@@ -264,12 +268,12 @@ while(true) {
 
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            const $runButtons = $('#runButton, #summaryRunButton');
-            const $stopButtons = $('#stopButton, #summaryStopButton');
-            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
-                $runButtons.show();
-                $stopButtons.hide();
-            }
+            // const $runButtons = $('#runButton, #summaryRunButton');
+            // const $stopButtons = $('#stopButton, #summaryStopButton');
+            // if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+            //     $runButtons.show();
+            //     $stopButtons.hide();
+            // }
         }
         if (this.interpreter) {
             this.interpreter.stop();

@@ -3,6 +3,8 @@
 /** @define cq-bottom-ui-widgets; weak */
 .cq-bottom-ui-widgets {
     z-index: 4;
+    overflow: visible;
+    height: 0;
 
     .bottom-widgets {
         left: -3.5em;
@@ -16,6 +18,9 @@
     position: relative;
     margin: 0 2.5em 0 1em;
 
+    &-container {
+        position: relative;
+    }
     &__tooltip-container {
         position: absolute;
         z-index: 2;

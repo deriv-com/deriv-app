@@ -6,20 +6,25 @@ import { BinaryLink } from 'App/Components/Routes';
 import Icon           from 'Assets/icon.jsx';
 import 'Sass/app/_common/components/platform-list.scss';
 
-const SlideFromTop = posed.span({
+const Container = posed.div({
+    enter: {
+        opacity   : 1,
+        transition: { duration: 200 },
+    },
+    exit: {
+        opacity   : 0,
+        transition: { duration: 200 },
+    },
+});
+
+const SlideFromTop = posed.div({
     enter: {
         top       : 48,
-        opacity   : 1,
-        transition: {
-            duration: 300,
-        },
+        transition: { duration: 200 },
     },
     exit: {
         top       : 0,
-        opacity   : 0,
-        transition: {
-            duration: 300,
-        },
+        transition: { duration: 200 },
     },
 });
 
@@ -30,20 +35,19 @@ const PlatformList = ({
 }) => ReactDOM.createPortal(
     <PoseGroup>
         { is_open &&
-        <SlideFromTop key='slide_from_top' initialPose='exit' style={{ position: 'fixed', zIndex: 5 }}>
-            <div className='platform_switcher__list'>
-                {platform_config.map((platform, idx) => (
-                    <BinaryLink to={platform.link_to} href={platform.href} key={idx} onClick={handleClick} className='platform_switcher__list__platform'>
-                        <Icon className='platform_switcher__list__platform__icon' icon={platform.icon} />
-                        <div className='platform_switcher__list__platform__details'>
-                            <p className='platform_switcher__list__platform__title'>{platform.title}</p>
-                            <p className='platform_switcher__list__platform__description'>{platform.description}</p>
-                        </div>
-                    </BinaryLink>
-                ))}
-            </div>
-            <div className='platform_switcher__dark' onClick={handleClick} />
-        </SlideFromTop>
+            <Container key='container' className='platform_switcher__container' onClick={handleClick}>
+                <SlideFromTop key='slide_from_top' initialPose='exit' className='platform_switcher__list'>
+                    {platform_config.map((platform, idx) => (
+                        <BinaryLink to={platform.link_to} href={platform.href} key={idx} onClick={handleClick} className='platform_switcher__list__platform'>
+                            <Icon className='platform_switcher__list__platform__icon' icon={platform.icon} />
+                            <div className='platform_switcher__list__platform__details'>
+                                <p className='platform_switcher__list__platform__title'>{platform.title}</p>
+                                <p className='platform_switcher__list__platform__description'>{platform.description}</p>
+                            </div>
+                        </BinaryLink>
+                    ))}
+                </SlideFromTop>
+            </Container>
         }
     </PoseGroup>,
     document.getElementById('deriv_app')

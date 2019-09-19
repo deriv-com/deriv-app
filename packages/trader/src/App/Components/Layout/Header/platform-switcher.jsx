@@ -13,10 +13,11 @@ class PlatformSwitcher extends React.PureComponent {
     render = () => (
         <React.Fragment>
             <button onClick={this.handleClick} />
-
-            { this.state.is_open &&
-                <PlatformList platform_config={this.props.platform_config} handleClick={this.handleClick} />
-            }
+            <PlatformList
+                platform_config={this.props.platform_config}
+                handleClick={this.handleClick}
+                is_open={this.state.is_open}
+            />
         </React.Fragment>
     );
 }

@@ -90,6 +90,14 @@ class TermsOfUse extends Component {
                             <Field
                                 component={CheckboxField}
                                 className='terms-of-use__checkbox'
+                                name='agreed_tos'
+                                id='agreed_tos'
+                                label={localize('I am not a PEP, and I have not been a PEP in the last 12 months.')}
+                            />
+                            <Hr />
+                            <Field
+                                component={CheckboxField}
+                                className='terms-of-use__checkbox'
                                 name='agreed_tnc'
                                 id='agreed_tnc'
                                 label={<Localize
@@ -104,14 +112,6 @@ class TermsOfUse extends Component {
                                         />
                                     ) ]}
                                 />}
-                            />
-                            <Hr />
-                            <Field
-                                component={CheckboxField}
-                                className='terms-of-use__checkbox'
-                                name='agreed_tos'
-                                id='agreed_tos'
-                                label={localize('I am not a PEP, and I have not been a PEP in the last 12 months.')}
                             />
                         </div>
                         <FormSubmitButton

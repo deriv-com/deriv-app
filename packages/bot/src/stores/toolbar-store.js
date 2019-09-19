@@ -84,9 +84,14 @@ export default class ToolbarStore {
     }
 
     @action.bound onDriveConnect = () => {
-        googleDrive.authorise().then(() => {
-            // TODO
-        });
+        this.is_google_drive_connected = true;
+        if (googleDrive.isAuthorised) {
+            googleDrive.signOut();
+        } else {
+            googleDrive.authorise().then(() => {
+                // TODO
+            }).catch(console.error); // eslint-disable-line
+        }
     }
 
     @action.bound onLoadClick = ({ is_local }) =>  {

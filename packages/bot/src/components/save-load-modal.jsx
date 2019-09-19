@@ -5,15 +5,17 @@ import {
     Button,
     Checkbox,
     Modal,
+    RadioGroup,
 }                       from 'deriv-components';
 import {
     Formik,
     Form,
+    Field,
 }                       from 'formik';
-// import {
-//     LocalIcon,
-//     DriveIcon,
-// }                       from './Icons.jsx';
+import {
+    LocalIcon,
+    DriveIcon,
+}                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
 
@@ -25,8 +27,8 @@ const SaveLoadModal = ({
     isSaveModal,
     isModalOpen,
     toggleSaveLoadModal,
-    // isGoogleDriveConnected,
-    // onDriveConnect,
+    isGoogleDriveConnected,
+    onDriveConnect,
     handleFileChange,
 }) => {
     const modal_id = isSaveModal ? 'save-modal' : 'load-modal';
@@ -52,42 +54,62 @@ const SaveLoadModal = ({
                     ({ values: { is_local, save_as_collection }, setValues }) => (
                         <Form>
                             <div className='dc-modal-content__modal--saveload'>
-                                {/* TODO <div className='dc-modal-row__modal--saveload'>
-                                    <IconCheckbox
-                                        onClick={() => setValues({ is_local: true, save_as_collection })}
-                                        is_selected={is_local}
-                                        icon={<LocalIcon />}
-                                        text={translate('Local')}
+                                <div className='dc-modal-row__modal--saveload'>
+                                    <RadioGroup
+                                        name='is_local'
+                                        items={[
+                                            {
+                                                label: <IconRadio
+                                                    text={translate('Local')}
+                                                    icon={<LocalIcon />}
+                                                    is_selected={is_local}
+                                                />,
+                                                value: true,
+                                            },
+                                            {
+                                                label: <IconRadio
+                                                    text={translate('Google Drive')}
+                                                    icon={<DriveIcon />}
+                                                    is_selected={!is_local}
+                                                    google_drive_connected={isGoogleDriveConnected}
+                                                    onDriveConnect={onDriveConnect}
+                                                />,
+                                                value    : false,
+                                                disabled : !isGoogleDriveConnected,
+                                                className: isGoogleDriveConnected ? '' : 'dc-radio-group__item-disabled',
+                                            },
+                                        ]}
+                                        selected={is_local}
+                                        onToggle={() => setValues({ is_local: !is_local, save_as_collection })}
                                     />
-                                    <IconCheckbox
-                                        onClick={
-                                            () => isGoogleDriveConnected
-                                            && setValues({ is_local: false, save_as_collection })
-                                        }
-                                        is_selected={!is_local}
-                                        icon={<DriveIcon />}
-                                        text={translate('Google Drive')}
-                                        google_drive_connected={isGoogleDriveConnected}
-                                        onDriveConnect={onDriveConnect}
-                                    />
-                                </div> */}
+                                </div>
                                 {
                                     isSaveModal ?
                                         <>
-                                            <Checkbox
-                                                onChange={() => setValues({
-                                                    save_as_collection: !save_as_collection,
-                                                    is_local,
-                                                })}
-                                                defaultChecked={save_as_collection}
-                                                label={translate('Save as collection')}
-                                                classNameLabel='saveload-type__checkbox-text'
-                                            />
+                                            <Field name='save_as_collection'>
+                                                {({ field }) => (
+                                                    <Checkbox
+                                                        {...field}
+                                                        onChange={() => setValues({
+                                                            save_as_collection: !save_as_collection,
+                                                            is_local,
+                                                        })}
+                                                        defaultChecked={save_as_collection}
+                                                        label={translate('Save as collection')}
+                                                        classNameLabel='saveload-type__checkbox-text'
+                                                    />
+                                                )}
+                                            </Field>
                                             <div className='saveload-type__checkbox-description'>
                                                 {translate('A collection allow you to save block as an individual part which can be add into other bot')}
                                             </div>
-                                        </> :
-                                        <input type='file' id='files' style={{ display: 'none' }} onChange={e => handleFileChange(e)} />
+                                        </>
+                                        :   <input
+                                            type='file'
+                                            id='files'
+                                            style={{ display: 'none' }}
+                                            onChange={e => handleFileChange(e)}
+                                        />
                                 }
                             </div>
                             <div className='dc-modal-footer__modal--saveload'>
@@ -119,51 +141,33 @@ const SaveLoadModal = ({
     );
 };
 
-// const IconCheckbox = props => {
-//     const { onClick, is_selected, icon, text, google_drive_connected, onDriveConnect } = props;
-//     const is_drive_checkbox = text === 'Google Drive';
+const IconRadio = props => {
+    const { is_selected, icon, text, google_drive_connected, onDriveConnect } = props;
+    const is_drive_radio = text === 'Google Drive';
 
-//     return (
-//         <div className='saveload-type__container'>
-//             <div
-//                 className={
-//                     classNames(
-//                         'saveload-type__checkbox',
-//                         is_drive_checkbox && !google_drive_connected ? 'saveload-type__checkbox-disable' : ''
-//                     )
-//                 }
-//                 onClick={() => {
-//                     const checkbox = document.getElementById(`saveload-type__checkbox-${is_drive_checkbox ? 'drive' : 'local'}`);
-//                     checkbox.click();
-//                 }}
-//             >
-//                 <Checkbox
-//                     disabled={is_drive_checkbox && !google_drive_connected}
-//                     id={`saveload-type__checkbox-${is_drive_checkbox ? 'drive' : 'local'}`}
-//                     onChange={onClick}
-//                     defaultChecked={is_selected}
-//                     ref={ ref => {
-//                         console.log(ref); // eslint-disable-line
-//                         ref.checked = is_selected;
-//                     }
-//                     }
-//                 />
-//                 {
-//                     icon &&
-//                     React.cloneElement(
-//                         icon,
-//                         { className: classNames('saveload-type__icon', icon.props.className) },
-//                     )
-//                 }
-//                 <p className='saveload-type__text'>{translate(text)}</p>
-//             </div>
-//             {
-//                 is_drive_checkbox &&
-//                 <p className='saveload-type__drive-status' onClick={onDriveConnect}>{google_drive_connected ? 'Disconnect' : 'Connect'}</p>
-//             }
-//         </div>
-//     );
-// };
+    return (
+        <div className={classNames(
+            'saveload-type__container',
+            is_selected ? 'saveload-type__container-selected' : ''
+        )}
+        >
+            <div className='saveload-type__radio'>
+                {
+                    icon &&
+                    React.cloneElement(
+                        icon,
+                        { className: classNames('saveload-type__icon', icon.props.className) },
+                    )
+                }
+                <p className='saveload-type__text'>{translate(text)}</p>
+            </div>
+            {
+                is_drive_radio &&
+                <p className='saveload-type__drive-status' onClick={onDriveConnect}>{google_drive_connected ? 'Disconnect' : 'Connect'}</p>
+            }
+        </div>
+    );
+};
 
 SaveLoadModal.propTypes = {
     handleFileChange      : PropTypes.func,

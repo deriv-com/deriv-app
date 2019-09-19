@@ -253,14 +253,9 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeSignupAndOpenCashier() {
         this.is_real_acc_signup_on = false;
-        window.open(urlFor('cashier', undefined, undefined, true),
-            '_blank',
-            'noopener',
-            'noreferrer',
-        );
         this.closeRealAccountSignup();
         // TODO enable this one cashier is active
-        // setTimeout(this.toggleCashierModal, 300);
+        setTimeout(this.toggleCashierModal, 300);
     }
 
     @action.bound

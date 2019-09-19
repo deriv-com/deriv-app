@@ -167,8 +167,8 @@ const SaveLoadModal = ({
 SaveLoadModal.propTypes = {
     handleFileChange         : PropTypes.func,
     is_google_drive_connected: PropTypes.bool,
-    is_save_modal            : PropTypes.any,
-    isModalOpen              : PropTypes.bool,
+    is_save_modal            : PropTypes.bool,
+    is_saveload_modal_open   : PropTypes.bool,
     onConfirmSave            : PropTypes.func,
     onDriveConnect           : PropTypes.func,
     onLoadClick              : PropTypes.func,
@@ -176,12 +176,11 @@ SaveLoadModal.propTypes = {
 };
 
 export default connect(({ toolbar }) => ({
-    onLoadClick              : toolbar.onLoadClick,
-    onConfirmSave            : toolbar.onConfirmSave,
-    onDriveConnect           : toolbar.onDriveConnect,
+    handleFileChange         : toolbar.handleFileChange,
     is_google_drive_connected: toolbar.is_google_drive_connected,
     is_save_modal            : toolbar.is_save_modal,
     is_saveload_modal_open   : toolbar.is_saveload_modal_open,
+    onConfirmSave            : toolbar.onConfirmSave,
+    onLoadClick              : toolbar.onLoadClick,
     toggleSaveLoadModal      : toolbar.toggleSaveLoadModal,
-    handleFileChange         : toolbar.handleFileChange,
 }))(SaveLoadModal);

@@ -198,17 +198,17 @@ Toolbar.propTypes = {
 };
 
 export default connect(({ toolbar }) => ({
-    onToolboxToggle    : toolbar.onToolboxToggle,
+    onBotNameTyped     : toolbar.onBotNameTyped,
+    onGoogleDriveClick : toolbar.onGoogleDriveClick,
+    onRedoClick        : toolbar.onRedoClick,
+    onResetClick       : toolbar.onResetClick,
     onRunClick         : toolbar.onRunClick,
-    toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
     onSearch           : toolbar.onSearch,
     onSearchBlur       : toolbar.onSearchBlur,
     onSearchClear      : toolbar.onSearchClear,
-    onBotNameTyped     : toolbar.onBotNameTyped,
-    onResetClick       : toolbar.onResetClick,
-    onGoogleDriveClick : toolbar.onGoogleDriveClick,
-    onUndoClick        : toolbar.onUndoClick,
-    onRedoClick        : toolbar.onRedoClick,
-    onZoomInOutClick   : toolbar.onZoomInOutClick,
     onSortClick        : toolbar.onSortClick,
+    onToolboxToggle    : toolbar.onToolboxToggle,
+    onUndoClick        : toolbar.onUndoClick,
+    onZoomInOutClick   : toolbar.onZoomInOutClick,
+    toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
 }))(Toolbar);

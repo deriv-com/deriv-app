@@ -54,19 +54,17 @@ class ModalElement extends React.PureComponent {
                 )}
             >
                 <div className='dc-modal-header'>
-                    {this.props.title &&
-                    <h3 className='dc-modal-header__title'>
-                        {this.props.title}
-                    </h3>
+                    {  this.props.title &&
+                    <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
                     }
-                    {this.props.header &&
-                    <div className='dc-modal-header__title'>
+                    { this.props.header &&
+                    <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
                         {this.props.header}
                     </div>
                     }
                     <div
                         onClick={this.props.toggleModal}
-                        className='dc-modal-header__title'
+                        className='dc-modal-header__close'
                     >
                         {this.props.has_close_icon && <IconClose />}
                     </div>
@@ -137,7 +135,7 @@ const Modal = ({
 );
 
 Modal.defaultProps = {
-    has_close_icon: false,
+    has_close_icon: true,
 };
 
 Modal.propTypes = {

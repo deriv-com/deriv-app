@@ -261,6 +261,19 @@
     }
 }
 
+/** @define account-poa; weak */
+.account-poa {
+    &__upload {
+        &-section {
+          display: flex;
+          flex-grow: 1;
+        }
+        &-list {
+            min-width: 311px;
+        }
+    }
+}
+
 /** @define forgot-password; weak */
 .forgot-password {
     display: grid;

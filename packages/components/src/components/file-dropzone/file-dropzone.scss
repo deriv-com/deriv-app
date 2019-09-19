@@ -71,8 +71,9 @@
         }
         &__filename {
             font-size: 12px;
+            max-width: 186px;
             color: var(--text-color);
-            font-weight: 400;
+            font-weight: bold;
         }
         &:hover, &:focus {
             outline: 0;

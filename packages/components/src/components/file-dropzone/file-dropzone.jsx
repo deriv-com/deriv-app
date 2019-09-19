@@ -41,7 +41,7 @@ const FileDropzone = ({ className, ...props }) => (
                     {...getRootProps()}
                     className={classNames('dc-file-dropzone', className, {
                         'dc-file-dropzone--is-active': isDragActive,
-                        'dc-file-dropzone--has-file' : (acceptedFiles > 0),
+                        'dc-file-dropzone--has-file' : (acceptedFiles.length > 0),
                     })}
                 >
                     <input {...getInputProps()} />
@@ -76,7 +76,7 @@ const FileDropzone = ({ className, ...props }) => (
                                 {props.error_message}
                             </div>
                         </FadeInMessage>
-                        {props.multiple && (acceptedFiles > 0) ?
+                        {props.multiple && (acceptedFiles.length > 0) ?
                             acceptedFiles.map((item, idx) =>
                                 <span key={idx} className='dc-file-dropzone__filename'>{item.name}</span>
                             )

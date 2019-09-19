@@ -6,6 +6,7 @@ import 'Sass/app/_common/components/platform-switcher.scss';
 
 const PlatformList = ({
     platform_config,
+    onClickOutside,
 }) => ReactDOM.createPortal(
     <React.Fragment>
         <div className='platform_switcher__list'>
@@ -19,7 +20,7 @@ const PlatformList = ({
                 </div>
             ))}
         </div>
-        <div className='platform_switcher__dark' />
+        <div className='platform_switcher__dark' onClick={onClickOutside} />
     </React.Fragment>,
     document.getElementById('deriv_app')
 );

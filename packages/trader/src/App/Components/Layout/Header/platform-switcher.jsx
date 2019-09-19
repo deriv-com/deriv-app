@@ -28,7 +28,7 @@ class PlatformSwitcher extends React.Component {
 
                 { this.state.is_open &&
                 <FadeInFromTop pose='popped'>
-                    <PlatformList platform_config={this.props.platform_config} />
+                    <PlatformList platform_config={this.props.platform_config} onClickOutside={this.handleClick} />
                 </FadeInFromTop>
                 }
             </React.Fragment>

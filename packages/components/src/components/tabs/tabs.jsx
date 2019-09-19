@@ -25,7 +25,7 @@ class Tabs extends Component {
         const tab_width = (100 / children.length).toFixed(2);
 
         return (
-            <div className='dc-tabs' style={{'--tab-width' : `${tab_width}%`}}>
+            <div className='dc-tabs' style={{ '--tab-width': `${tab_width}%` }}>
                 <ul className='dc-tabs__list'>
                     {children.map((child) => {
                         const { label } = child.props;
@@ -39,7 +39,7 @@ class Tabs extends Component {
                             />
                         );
                     })}
-                    <span className="dc-tabs__active-line"></span>
+                    <span className='dc-tabs__active-line' />
                 </ul>
                 <div className='dc-tabs__content'>
                     {children.map((child) => {

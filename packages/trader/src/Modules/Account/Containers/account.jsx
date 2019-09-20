@@ -59,7 +59,7 @@ class Account extends React.Component {
             });
         }
 
-        const subroutes      = flatten(this.props.routes);
+        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
 
         if (!selected_content) { // fallback

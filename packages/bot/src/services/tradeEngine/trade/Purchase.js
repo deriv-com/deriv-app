@@ -19,8 +19,8 @@ export default Engine =>
             const onSuccess = r => {
                 const { buy } = r;
                 contractStatus({
-                    id  : 'contract.purchase_recieved',
-                    data: buy.transaction_id,
+                    id: 'contract.purchase_recieved',
+                    buy,
                 });
 
                 this.subscribeToOpenContract(buy.contract_id);

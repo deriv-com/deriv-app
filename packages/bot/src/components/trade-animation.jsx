@@ -12,6 +12,17 @@ const CONTRACT_STATUS = [
     'Contract Closed',
 ];
 
+const CircularWrapper = ({ className }) => (
+    <div className={classNames(
+        'circular-wrapper',
+        { [className]: !!className }
+    )}
+    >
+        <span className='static-circle' />
+        <span className='dynamic-circle' />
+    </div>
+);
+
 class TradeAnimation extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -32,7 +43,10 @@ class TradeAnimation extends React.PureComponent {
         const status_string = CONTRACT_STATUS[status];
         const status_class = ['', '', ''];
 
-        status_class[progress_status] = status === 0 ? '' : 'active';
+        if (progress_status >= 0 && progress_status < 3) {
+            status_class[progress_status] = 'active';
+        }
+
         for (let i = 0; i < progress_status; i++) {
             status_class[i] = 'completed';
         }
@@ -61,7 +75,7 @@ class TradeAnimation extends React.PureComponent {
             status_string,
             status_class,
         } = this.state;
-
+        
         return (
             <div className={classNames(
                 'animation__container',
@@ -78,18 +92,11 @@ class TradeAnimation extends React.PureComponent {
                     <div className='animation__progress-line' >
                         <div className={`animation__progress-bar animation__progress-${status}`} />
                     </div>
-                    <div className={`circular-wrapper ${status_class[0]}`} >
-                        <span className='static-circle' />
-                        <span className='dynamic-circle' />
-                    </div>
-                    <div className={`circular-wrapper ${status_class[1]}`} >
-                        <span className='static-circle' />
-                        <span className='dynamic-circle' />
-                    </div>
-                    <div className={`circular-wrapper ${status_class[2]}`} >
-                        <span className='static-circle' />
-                        <span className='dynamic-circle' />
-                    </div>
+                    {
+                        status_class.map((status_c, index) => {
+                            return <CircularWrapper key={index} className={status_c} />;
+                        })
+                    }
                 </div>
             </div>
         );

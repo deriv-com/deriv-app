@@ -58,6 +58,11 @@
             height: $static-circle-diameter;
             display: flex;
 
+            &.completed, &.active {
+                .static-circle, .dynamic-circle {
+                    transform: scale(1.2);
+                }
+            }
             &.completed {
                 .static-circle {
                     background-color: #4bb4b3; // TODO color
@@ -71,8 +76,8 @@
                     background-color: #4bb4b3; // TODO color
                     border-radius: 100%;
                     opacity: 0.32;
-                    margin-left: -1.55px;
-                    margin-top: -1.55px;
+                    margin-left: -2px;
+                    margin-top: -2px;
                     animation: animate-circle 0.8s infinite;
                     // transform: translate(-50%, -50%);
                     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -96,7 +101,7 @@
             background-color: #f4f4f6;
             height: 2.5px;
             width: 100%;
-            top: 40%;
+            top: 38%;
             position: absolute;
         }
         &-bar {
@@ -109,10 +114,13 @@
             animation-fill-mode: forwards;
         }
         &-3 {
+            width: calc(50% - 3.5px);
+        }
+        &-4 {
             animation: animate-progress-complete 0.5s 1;
             animation-fill-mode: forwards;
         }
-        &-4 {
+        &-5 {
             width: 100%;
         }
     }

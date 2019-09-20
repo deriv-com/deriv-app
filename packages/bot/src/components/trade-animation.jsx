@@ -8,6 +8,7 @@ const CONTRACT_STATUS = [
     'Bot is not running',
     'Attempting to Buy',
     'Buy Succeeded',
+    'Bot is stopping',
     'Closing Contract',
     'Contract Closed',
 ];
@@ -38,13 +39,14 @@ class TradeAnimation extends React.PureComponent {
     }
 
     getStatusDetail = status => {
-        const progress_status = status - 1;
+        console.log('Props "status" pass in :', status); // eslint-disable-line
+        const progress_status = status > 2 ? status - 2 : status - 1;
 
         const status_string = CONTRACT_STATUS[status];
         const status_class = ['', '', ''];
 
         if (progress_status >= 0 && progress_status < 3) {
-            status_class[progress_status] = 'active';
+            status_class[progress_status] =  'active';
         }
 
         for (let i = 0; i < progress_status; i++) {

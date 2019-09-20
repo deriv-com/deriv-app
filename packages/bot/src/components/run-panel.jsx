@@ -61,7 +61,7 @@ class RunPanel extends React.PureComponent {
     componentDidMount () {
         setInterval(() => {
             let next_status;
-            if (this.state.contract_status >= 4) {
+            if (this.state.contract_status >= 5) {
                 next_status = 0;
             } else {
                 next_status = this.state.contract_status + 1;

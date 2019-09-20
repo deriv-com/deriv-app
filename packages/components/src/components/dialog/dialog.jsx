@@ -83,7 +83,7 @@ class Dialog extends React.Component {
                                         className={classNames(
                                             'dc-dialog__button',
                                             'btn--primary',
-                                            'btn--primary--orange',
+                                            'btn--primary--default',
                                         )}
                                         has_effect
                                         text={confirm_button_text}

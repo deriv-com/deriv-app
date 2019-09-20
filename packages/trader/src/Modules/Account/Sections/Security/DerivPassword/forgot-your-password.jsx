@@ -2,7 +2,6 @@ import React             from 'react';
 import { localize }      from 'App/i18n';
 import IconFirewall      from 'Assets/AccountManagement/icon-firewall.svg';
 import IconSpamEmail     from 'Assets/AccountManagement/icon-spam-email.svg';
-import IconTypo          from 'Assets/AccountManagement/icon-typo.svg';
 import IconWorkEmail     from 'Assets/AccountManagement/icon-work-email.svg';
 import SendEmailTemplate from 'App/Containers/Layout/send-email.jsx';
 import { ScrollbarsContainer } from '../../../Components/layout-components.jsx';
@@ -17,10 +16,6 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
             <div className='forgot-password__content'>
                 <IconSpamEmail />
                 <p>{localize('The email is in your spam folder (Sometimes things get lost there).')}</p>
-            </div>
-            <div className='forgot-password__content'>
-                <IconTypo />
-                <p>{localize('The email address you entered had a mistake or typo (happens to the best of us).')}</p>
             </div>
             <div className='forgot-password__content'>
                 <IconWorkEmail />

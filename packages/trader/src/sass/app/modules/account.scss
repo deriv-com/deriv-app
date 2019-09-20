@@ -28,6 +28,7 @@
         padding: 0 8px;
         height: 100%;
         width: 100%;
+        overflow: hidden;
     }
     &__scrollbars_container {
         height: 100%;
@@ -265,11 +266,58 @@
 .account-poa {
     &__upload {
         &-section {
+          margin-top: 1em;
           display: flex;
-          flex-grow: 1;
+          flex-wrap: wrap;
         }
         &-list {
-            min-width: 311px;
+            width: 100%;
+            flex: 1;
+        }
+        &-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+        }
+        &-box {
+            display: flex;
+            margin-bottom: 2em;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-item {
+            max-width: 238px;
+            width: 100%;
+            margin-left: 1em;
+            font-size: 10px;
+            line-height: 1.5;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+    }
+    &__details {
+        &-section {
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        &-description {
+            width: 100%;
+            margin-right: 0.5em;
+            flex: 1;
+        }
+        &-text {
+            font-size: 14px;
+            line-height: 1.5;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+        &-fields {
+            width: 100%;
+            min-width: 400px;
+            flex: 1;
         }
     }
 }

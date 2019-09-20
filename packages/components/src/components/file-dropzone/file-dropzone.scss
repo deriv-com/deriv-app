@@ -2,6 +2,8 @@
     /* stylelint-disable color-no-hex */
     --color-black-1: #000000; // black-1
     --color-grey-3: #d6dadb; // grey-3
+    --color-green: #4bb4b3; // green
+    --color-red: #ec3f3f; // red
     /* stylelint-enable color-no-hex */
 
     .theme--dark {
@@ -74,6 +76,18 @@
             max-width: 186px;
             color: var(--text-color);
             font-weight: bold;
+        }
+        &--has-file {
+            border-style: solid;
+            border-color: var(--color-green);
+        }
+        &--has-error {
+            border-style: solid;
+            border-color: var(--color-red);
+
+            .dc-file-dropzone__filename {
+                margin-top: -3em;
+            }
         }
         &:hover, &:focus {
             outline: 0;

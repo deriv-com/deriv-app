@@ -2,7 +2,9 @@
 import React                  from 'react';
 import {
     Button,
-    FileDropzone }            from 'deriv-components';
+    FileDropzone,
+    Input }                   from 'deriv-components';
+import { Formik }             from 'formik';
 import IconClearPhoto         from 'Assets/AccountManagement/ProofOfAddress/icon-clear-photo.svg';
 import IconCloudUpload        from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
 import IconIssuedUnder        from 'Assets/AccountManagement/ProofOfAddress/icon-issued-under.svg';
@@ -48,65 +50,196 @@ class ProofOfAddress extends React.Component {
     }
 
     render() {
-        if (this.state.api_initial_load_error) {
-            return <LoadErrorMessage error_message={this.state.api_initial_load_error} />;
+        const {
+            api_initial_load_error,
+            address_line_1,
+            address_line_2,
+            address_city,
+            address_state,
+            address_postcode,
+            show_form,
+            is_account_authenticated,
+            is_loading,
+            is_btn_loading,
+            is_submit_success,
+        } = this.state;
+
+        if (api_initial_load_error) {
+            return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
         if (this.props.is_virtual) return <DemoMessage />;
-        if (this.state.is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         return (
-            <>
-                <LeaveConfirm onDirty={this.showForm} />
-                {this.state.show_form && (
-                    <form className='account-form' onSubmit={this.onSubmit}>
-                        <FormBody scroll_offset='80px'>
-                            <FormSubHeader title={localize('Details')} />
-                            <FormSubHeader title={localize('Please upload one of the following:')} />
-                            <div className='account-poa__upload-section'>
-                                <ul className='account-poa__upload-list'>
-                                    <li className='account-poa__upload-box'>
-                                        <IconRecentUtility className='account-poa__upload-icon' />
-                                    </li>
-                                    <li className='account-poa__upload-box'>
-                                        <IconRecentBank className='account-poa__upload-icon' />
-                                    </li>
-                                    <li className='account-poa__upload-box'>
-                                        <IconIssuedUnder className='account-poa__upload-icon' />
-                                    </li>
-                                    <li className='account-poa__upload-box'>
-                                        <IconLessThanEight className='account-poa__upload-icon' />
-                                    </li>
-                                    <li className='account-poa__upload-box'>
-                                        <IconOneToSixMonths className='account-poa__upload-icon' />
-                                    </li>
-                                    <li className='account-poa__upload-box'>
-                                        <IconClearPhoto className='account-poa__upload-icon' />
-                                    </li>
-                                </ul>
-                                <div className='account-poa__upload-file'>
-                                    <FileDropzone
-                                        onDrop={this.onDrop = (files) => this.handleDrop(files)}
-                                        accept='image/png, image/jpeg, image/jpg, image/gif, application/pdf'
-                                        max_size={8e+6}
-                                        multiple={false}
-                                        message={upload_message}
-                                        hover_message={localize('Drop files here..')}
-                                        error_message={localize('Please choose only one supported file type')}
+            <Formik
+                initialValues={{
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
+                }}
+                onSubmit={this.onSubmit}
+                validate={this.validateFields}
+            >
+                {({
+                    values,
+                    errors,
+                    status,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    setFieldValue,
+                }) => (
+                    <>
+                        <LeaveConfirm onDirty={this.showForm} />
+                        {show_form && (
+                            <form className='account-form' onSubmit={this.onSubmit}>
+                                <FormBody scroll_offset='80px'>
+                                    <FormSubHeader title={localize('Details')} />
+                                    <div className='account-poa__details-section'>
+                                        <div className='account-poa__details-description'>
+                                            <span className='account-poa__details-text'>
+                                                {localize('Please ensure that this address is the same as in your proof of address')}
+                                            </span>
+                                        </div>
+                                        <div className='account-poa__details-fields'>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_line_1'
+                                                    label={localize('First line of address')}
+                                                    value={values.address_line_1}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_line_2'
+                                                    label={localize('Second line of address (optional)')}
+                                                    value={values.address_line_2}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_city'
+                                                    label={localize('Town/City')}
+                                                    value={values.address_city}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_state'
+                                                    label={localize('State/Province')}
+                                                    value={values.address_state}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_postcode'
+                                                    label={localize('Postal/ZIP Code')}
+                                                    value={values.address_postcode}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <FormSubHeader title={localize('Please upload one of the following:')} />
+                                    <div className='account-poa__upload-section'>
+                                        <ul className='account-poa__upload-list'>
+                                            <li className='account-poa__upload-box'>
+                                                <IconRecentUtility className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('A recent utility bill (e.g. electricity, water, gas, phone or internet)')}
+                                                </div>
+                                            </li>
+                                            <li className='account-poa__upload-box'>
+                                                <IconRecentBank className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('A recent bank statement or government-issued letter with your name and address')}
+                                                </div>
+                                            </li>
+                                            <li className='account-poa__upload-box'>
+                                                <IconIssuedUnder className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('Issued under your name with your current address')}
+                                                </div>
+                                            </li>
+                                            <li className='account-poa__upload-box'>
+                                                <IconLessThanEight className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('Less than 8MB')}
+                                                </div>
+                                            </li>
+                                            <li className='account-poa__upload-box'>
+                                                <IconOneToSixMonths className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('1 - 6 months old')}
+                                                </div>
+                                            </li>
+                                            <li className='account-poa__upload-box'>
+                                                <IconClearPhoto className='account-poa__upload-icon' />
+                                                <div className='account-poa__upload-item'>
+                                                    {localize('A clear colour photo or scanned image')}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div className='account-poa__upload-file'>
+                                            <FileDropzone
+                                                onDrop={this.onDrop = (files) => this.handleDrop(files)}
+                                                accept='image/png, image/jpeg, image/jpg, image/gif, application/pdf'
+                                                max_size={8388608}
+                                                multiple={false}
+                                                message={upload_message}
+                                                hover_message={localize('Drop files here..')}
+                                                error_message_type={localize('File type not accepted')}
+                                                error_message_size={localize('File size should be 8MB or less')}
+                                            />
+                                        </div>
+                                    </div>
+                                </FormBody>
+                                <FormFooter>
+                                    {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    <Button
+                                        className='account-form__footer-btn btn--primary'
+                                        type='submit'
+                                        has_effect
+                                        text={localize('Save and submit')}
                                     />
-                                </div>
-                            </div>
-                        </FormBody>
-                        <FormFooter>
-                            {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                            <Button
-                                className='account-form__footer-btn btn--primary'
-                                type='submit'
-                                has_effect
-                                text={localize('Save and submit')}
-                            />
-                        </FormFooter>
-                    </form>
+                                </FormFooter>
+                            </form>
+                        )}
+                    </>
                 )}
-            </>
+            </Formik>
         );
     }
 
@@ -117,6 +250,7 @@ class ProofOfAddress extends React.Component {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;
             }
+            console.warn(data.get_settings);
             this.setState({ ...data.get_settings, is_loading: false });
         });
         WS.authorized.storage.getAccountStatus().then((data) => {

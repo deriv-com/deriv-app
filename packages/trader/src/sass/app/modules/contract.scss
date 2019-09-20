@@ -1,0 +1,318 @@
+.contract-container {
+    font-size: 1.4em;
+    border-radius: $BORDER_RADIUS;
+    position: relative;
+
+    .contract-header {
+        max-height: 32px;
+        overflow: hidden;
+        border-radius: 4px 4px 0 0;
+
+        .header-wrapper {
+            transition: transform 0.4s ease;
+            transform: translateY(-32px);
+
+            .header-result, .header-purchased {
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                color: $COLOR_WHITE;
+                font-weight: bold;
+                line-height: 1.5;
+
+                svg {
+                    display: inline-block;
+                    margin-right: 0.7em;
+                }
+            }
+        }
+        &.purchased {
+            .header-wrapper .header-purchased {
+                color: $COLOR_GREEN_1;
+                background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+                opacity: 1;
+                transition: opacity 0.4s linear;
+            }
+        }
+        &.won {
+            .header-wrapper {
+                transform: none;
+
+                .header-result {
+                    background-color: $COLOR_GREEN_1;
+                }
+                .header-purchased {
+                    opacity: 0;
+                }
+            }
+        }
+        &.lost {
+            .header-wrapper {
+                transform: none;
+
+                .header-result {
+                    background-color: $COLOR_RED;
+                }
+                .header-purchased {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+    .btn {
+        margin: 0.8em;
+
+        span {
+            font-size: 1em;
+        }
+    }
+    .contract-contents {
+        padding: 1em;
+        background: $COLOR_LIGHT_BLACK_4_SOLID;
+        font-size: 1em;
+        border-top-width: 0;
+        border-radius: 0 0 4px 4px;
+
+        .longcode {
+            font-weight: 300;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .ref-number, .info-header {
+            margin-top: 0.6em;
+            font-weight: 300;
+            text-align: center;
+            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+            line-height: 1.5;
+            padding: 4px;
+        }
+        .info-header {
+            font-weight: bold;
+        }
+        .info-item {
+            display: flex;
+            padding: 0.7em 0;
+
+            > div {
+                align-self: center;
+
+                &:first-child {
+                    font-weight: 300;
+                    flex-grow: 1;
+                    color: $COLOR_LIGHT_BLACK_1;
+                }
+                &:last-child {
+                    width: 50%;
+                }
+            }
+        }
+    }
+}
+
+$CONTRACT_INFO_BOX_PADDING: 1.6em;
+
+.info-box-container {
+    position: absolute;
+    z-index: 10;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-button:hover {
+        cursor: pointer;
+    }
+    &-icon {
+        width: 32px;
+        height: 32px;
+    }
+    .info-box {
+        position: relative;
+        border-radius: $BORDER_RADIUS;
+        padding: $CONTRACT_INFO_BOX_PADDING;
+        background: rgba(42, 48, 82, 0.04);
+        font-weight: 300;
+
+        &-longcode {
+            display: flex;
+
+            &-icon {
+                @extend .info-box-container-icon;
+                margin-right: 1.6em;
+                padding: 0.4em;
+            }
+            &-text {
+                @include typeface(--paragraph-left-normal-black, unset);
+                max-width: 360px;
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                background: rgba(42, 48, 82, 0.02);
+                filter: blur(2px);
+                z-index: 0;
+                top: -2px;
+                left: -2px;
+                width: calc(100% + 4px);
+                height: calc(100% + 4px);
+            }
+        }
+        .expired {
+            display: flex;
+            align-items: center;
+
+            svg {
+                width: 2.4em;
+                height: 2.4em;
+                margin-right: 1em;
+
+                .color1-fill {
+                    fill: $COLOR_GREEN_1;
+                }
+            }
+            .pl-value {
+                color: $COLOR_GREEN_1;
+                font-weight: bold;
+                font-size: 1.6em;
+                line-height: 1.5em;
+
+                .percentage {
+                    display: inline-block;
+                    margin-left: 0.7em;
+                }
+            }
+            &.lost {
+                .pl-value {
+                    color: $COLOR_RED;
+                }
+                svg .color1-fill {
+                    fill: $COLOR_RED;
+                }
+            }
+            .sell-info {
+                margin-right: 2em;
+                text-align: center;
+                line-height: 1.2em;
+            }
+        }
+        .general {
+            display: flex;
+            align-items: center;
+            line-height: 1.4em;
+
+            .values {
+                margin-left: 1em;
+                margin-right: 2em;
+                text-align: right;
+                font-weight: bold;
+
+                .profit {
+                    color: $COLOR_GREEN_1;
+                }
+                .loss {
+                    color: $COLOR_RED;
+                }
+            }
+            .sell {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin: -$CONTRACT_INFO_BOX_PADDING;
+                margin-left: $CONTRACT_INFO_BOX_PADDING;
+                padding: $CONTRACT_INFO_BOX_PADDING;
+
+                .tooltip {
+                    position: absolute;
+                    bottom: 0.5em;
+                    right: 0.5em;
+                    line-height: 0;
+
+                    &:before {
+                        width: 350px;
+                        white-space: normal;
+                    }
+                }
+            }
+        }
+    }
+    .message {
+        margin-top: 0.5em;
+        border: 1px solid $COLOR_RED;
+        border-radius: $BORDER_RADIUS;
+        padding: 1em;
+        background-color: rgba(244, 67, 54, 0.16);
+        display: flex;
+        align-items: center;
+
+        .message-icon {
+            margin-right: 1em;
+        }
+        .message-text {
+            flex-grow: 1;
+        }
+        .message-close {
+            cursor: pointer;
+        }
+    }
+    .chart-close-btn {
+        position: absolute;
+        cursor: pointer;
+        z-index: 11;
+        right: 0;
+        top: 0;
+    }
+}
+// TODO: THEMIFY
+// Dark Theme
+.theme--dark {
+    .contract-container {
+        color: $COLOR_DARK_BLUE_7;
+
+        .contract-header {
+            &.purchased {
+                .header-wrapper .header-purchased {
+                    background-color: $COLOR_DARK_BLUE_2;
+                }
+            }
+        }
+        .contract-contents {
+            background: $COLOR_DARK_BLUE_3;
+
+            .ref-number, .info-header {
+                background: $COLOR_DARK_BLUE_2;
+            }
+            .info-item {
+                > div {
+                    &:first-child {
+                        color: $COLOR_DARK_BLUE_7;
+                    }
+                    &:last-child {
+                        color: $COLOR_WHITE;
+                    }
+                }
+            }
+        }
+    }
+    .info-box-container {
+        .info-box {
+            background: rgba(16, 19, 32, 0.6); // this is color dark blue 2 with 0.6 opacity
+
+            &-longcode {
+                &:before {
+                    background: rgba(16, 19, 32, 0.25);
+                }
+                &-text {
+                    color: $COLOR_WHITE;
+                }
+            }
+            .general .sell {
+                .btn:disabled {
+                    background: $COLOR_DARK_BLUE_8;
+                    color: $COLOR_DARK_BLUE_7 !important;
+                }
+            }
+        }
+    }
+}

@@ -5,7 +5,10 @@
     width: 100%;
 
     .color1-fill {
-        fill: var(--text-prominent);
+        fill: var(--brand-red-coral);
+    }
+    .color2-fill {
+        fill: var(--brand-secondary);
     }
     &-name, &-category {
         display: flex;

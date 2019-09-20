@@ -24,7 +24,7 @@ class Account extends React.Component {
     };
 
     handleClickOutside = (event) => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
+        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && !event.target.classList.contains('dc-dropdown-list__item')) {
             this.props.history.push(AppRoutes.trade);
         }
     };

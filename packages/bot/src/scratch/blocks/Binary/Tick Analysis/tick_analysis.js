@@ -1,4 +1,5 @@
 import { translate } from '../../../../utils/lang/i18n';
+import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.tick_analysis = {
     init() {
@@ -17,9 +18,9 @@ Blockly.Blocks.tick_analysis = {
                     check: null,
                 },
             ],
-            colour         : '#fef1cf',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate('You can use this block to analyze the ticks, regardless of your trades'),
             category       : Blockly.Categories.Tick_Analysis,
         };
@@ -29,6 +30,9 @@ Blockly.Blocks.tick_analysis = {
             'display_name': translate('Run on every tick'),
             'description' : translate('The content of this block is called on every tick. This blocks should be placed outside of any root block.'),
         };
+    },
+    onchange() {
+        setBlockTextColor(this);
     },
 };
 

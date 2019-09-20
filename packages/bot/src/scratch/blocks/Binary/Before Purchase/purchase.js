@@ -19,9 +19,9 @@ Blockly.Blocks.purchase = {
                 },
             ],
             previousStatement: null,
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             tooltip          : translate('This block purchases contract of a specified type.'),
             category         : Blockly.Categories.Before_Purchase,
         };

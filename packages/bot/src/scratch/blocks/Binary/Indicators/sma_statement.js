@@ -31,13 +31,13 @@ Blockly.Blocks.sma_statement = {
             colourTertiary   : Blockly.Colours.Binary.colourTertiary,
             tooltip          : translate('Calculates Simple Moving Average (SMA) from a list with a period'),
             previousStatement: null,
-            nextStatement    : null,
+            // nextStatement    : null,
             category         : Blockly.Categories.Indicators,
         };
     },
     meta(){
         return {
-            'display_name': translate('SImple Moving Average Statement'),
+            'display_name': translate('Simple Moving Average Statement'),
             'description' : translate('Simple Moving Average Statement Description'),
         };
     },

@@ -31,17 +31,17 @@ Blockly.Blocks.balance = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Balance Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('This block returns current account balance'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
             'display_name': translate('Balance'),
-            'description' : translate('Balance Description'),
+            'description' : translate('This block returns current account balance.'),
         };
     },
 };

@@ -22,19 +22,19 @@ Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('List Repeat Tooltip'),
+            tooltip          : translate('Creates a list by repeating a given string or number'),
             category         : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List Repeat'),
-            'description' : translate('List Repeat Description'),
+            'display_name': translate('Repeat an item'),
+            'description' : translate('Creates a list with a given item repeated for a specific number of times.'),
         };
     },
 };

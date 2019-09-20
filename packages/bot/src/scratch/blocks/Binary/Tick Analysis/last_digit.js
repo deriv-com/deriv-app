@@ -9,9 +9,9 @@ Blockly.Blocks.last_digit = {
             message0       : translate('Last Digit'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
             tooltip        : translate('Returns the last digit of the latest tick'),
             category       : Blockly.Categories.Tick_Analysis,
         };

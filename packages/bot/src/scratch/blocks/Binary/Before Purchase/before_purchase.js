@@ -8,7 +8,7 @@ Blockly.Blocks.before_purchase = {
     },
     definition() {
         return {
-            message0: translate('%1 (2) Purchase conditions %2'),
+            message0: translate('%1 2. Purchase conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,9 +29,9 @@ Blockly.Blocks.before_purchase = {
                     check: 'Purchase',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate('Specify contract type and purchase conditions.'),
             category       : Blockly.Categories.Before_Purchase,
         };

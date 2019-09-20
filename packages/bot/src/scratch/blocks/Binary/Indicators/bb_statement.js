@@ -44,7 +44,7 @@ Blockly.Blocks.bb_statement = {
     meta(){
         return {
             'display_name': translate('BB Statement'),
-            'descriptionL': translate('BB Statement Description'),
+            'description' : translate('BB Statement Description'),
         };
     },
     onchange(event) {

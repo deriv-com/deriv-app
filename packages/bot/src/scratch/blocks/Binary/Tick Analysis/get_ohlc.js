@@ -25,17 +25,17 @@ Blockly.Blocks.get_ohlc = {
             ],
             output         : 'Candle',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Get the nth recent candle'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Reads Nth recent candle from a given candle list'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Nth recent Candle'),
-            'description' : translate('Nth recent Candle Description'),
+            'display_name': translate('Get candle'),
+            'description' : translate('This block returns specified candle for the selected time interval.'),
         };
     },
 };

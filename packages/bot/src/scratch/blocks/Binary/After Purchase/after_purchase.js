@@ -8,7 +8,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 (4) Restart trading conditions %2'),
+            message0: translate('%1 4. Restart trading conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,9 +29,9 @@ Blockly.Blocks.after_purchase = {
                     check: 'TradeAgain',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate(
                 'Get the last trade information and result, then trade again.'
             ),

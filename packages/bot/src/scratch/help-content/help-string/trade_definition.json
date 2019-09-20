@@ -15,7 +15,7 @@
         "Repeats the previous trade when an error is encountered.",        
         "7. Run Once at Start",
         "Place blocks here to perform tasks once when your bot starts running.",        
-        "8. Define Trade Options",
+        "8. Trade Options",
         "The desired duration, stake, prediction, and/or barrier(s) for the contract is defined here."
     ]
 }

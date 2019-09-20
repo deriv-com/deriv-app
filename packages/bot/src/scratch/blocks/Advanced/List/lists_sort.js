@@ -25,17 +25,17 @@ Blockly.Blocks.lists_sort = {
             ],
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('List Sort Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Sorts the items in a given list'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List Sort'),
-            'description' : translate('List Sort Description'),
+            'display_name': translate('Sort list'),
+            'description' : translate('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
         };
     },
 };

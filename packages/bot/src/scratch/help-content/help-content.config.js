@@ -1,58 +1,183 @@
 import constant from '../../constants/const';
 
-const { help: { TEXT, VIDEO, IMAGE, BLOCK } } = constant;
+const { help: { TEXT, IMAGE, BLOCK } } = constant;
 
 export const config = {
-    math_change: [
-        { type: TEXT },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: TEXT },
-        { type: BLOCK },
-    ],
+//= ================= Math ==================
     math_arithmetic: [
-        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
         { type: TEXT },
-        { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: BLOCK },
-    ],
-    math_number: [
-        { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
-        { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-    ],
-    math_random_float: [
         { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], math_single: [
+        { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-    ],
-    math_random_int: [
         { type: TEXT },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], math_constrain: [
+        { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
-    ],
-    variables_get: [
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
         { type: TEXT },
-        { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+    ],
+    // math_number: [
+    //     { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
+    //     { type: TEXT },
+    //     { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    //     { type: VIDEO, url: 'https://www.youtube.com/embed/mi18spqE7R4?controls=0' },
+    //     { type: BLOCK },
+    //     { type: TEXT },
+    //     { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    // ],
+    //= ================= Text ==================
+    text_print: [
+        { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
+    ], text_prompt_ext: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
     ],
+    //= ================= Tick analysis ==================
+    tick_analysis: [
+        { type: TEXT },
+        { type: BLOCK },
+    ], read_details: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    last_digit: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+    ], read_ohlc: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+    ], read_ohlc_obj: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], check_direction: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], get_ohlc: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], ohlc: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        // { type: IMAGE, url: '/js/bot/media/get_candle_list.png' },
+        { type: TEXT },
+    ], ohlc_values: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], is_candle_black: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], ohlc_values_in_list: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    //= ================= Variables ==================
+    variables_gets: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], variables_set: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    // =============== Time blocks ============
+    epoch: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    // =============== Misc blocks ============
+    balance: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    // =============== Root blocks ============
     trade_definition: [
         { type: TEXT },
         { type: TEXT },
@@ -76,12 +201,6 @@ export const config = {
     trade_definition_tradeoptions: [
         { type: TEXT },
         { type: BLOCK },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
     ],
     before_purchase: [
         { type: TEXT },
@@ -97,6 +216,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, url: '/js/bot/media/sell_available.png' },
     ],
     after_purchase: [
         { type: TEXT },
@@ -107,19 +227,43 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, url: '/js/bot/media/trade_again.png' },
     ],
+    // =============== Contract ============
     contract_check_result: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-    ],
-    tick_analysis: [
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ], sell_price: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: TEXT },
     ],
-    read_details: [
+    // =============== Logic ============
+    controls_if: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    logic_operation: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    // =============== Logic ============
+    controls_whileUntil: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -127,17 +271,31 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
+    ],
+    controls_for: [
         { type: TEXT },
+        { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
     ],
-    last_digit: [
+    controls_forEach: [
         { type: TEXT },
         { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    controls_flow_statements: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
     ],
 };
+

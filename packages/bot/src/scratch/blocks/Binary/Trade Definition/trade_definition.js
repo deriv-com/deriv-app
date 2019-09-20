@@ -9,11 +9,11 @@ Blockly.Blocks.trade_definition = {
     },
     definition() {
         return {
-            message0: translate('%1 (1) Trade parameters %2'),
+            message0: translate('%1 1. Trade parameters %2'),
             message1: '%1',
-            message2: translate('Run Once at Start: %1'),
+            message2: translate('%1Run Once at Start: %2'),
             message3: '%1',
-            message4: translate('Trade Options: %1'),
+            message4: translate('%1Trade Options: %2'),
             message5: '%1',
             args0   : [
                 {
@@ -35,6 +35,12 @@ Blockly.Blocks.trade_definition = {
             ],
             args2: [
                 {
+                    type  : 'field_image',
+                    src   : '', // this is here to add extra padding
+                    width : 4,
+                    height: 25,
+                },
+                {
                     type: 'input_dummy',
                 },
             ],
@@ -47,6 +53,12 @@ Blockly.Blocks.trade_definition = {
             ],
             args4: [
                 {
+                    type  : 'field_image',
+                    src   : '', // this is here to add extra padding
+                    width : 4,
+                    height: 25,
+                },
+                {
                     type: 'input_dummy',
                 },
             ],
@@ -56,9 +68,9 @@ Blockly.Blocks.trade_definition = {
                     name: 'SUBMARKET',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate('Here is where you define the parameters of your desired contract.'),
             category       : Blockly.Categories.Trade_Definition,
         };

@@ -8,7 +8,7 @@ Blockly.Blocks.during_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 (3) Sell conditions %2'),
+            message0: translate('%1 3. Sell conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,9 +29,9 @@ Blockly.Blocks.during_purchase = {
                     check: 'SellAtMarket',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate(
                 'Sell your active contract if needed (optional)'
             ),

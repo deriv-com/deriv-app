@@ -17,17 +17,17 @@ Blockly.Blocks.payout = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Payout for selected proposal'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('This block returns the potential payout for the selected trade type'),
             category       : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Payout'),
-            'description' : translate('Payout Description'),
+            'display_name': translate('Potential payout'),
+            'description' : translate('This block returns the potential payout for the selected trade type. This block can be used only in the "Purchase conditions" root block.'),
         };
     },
     onchange(event) {

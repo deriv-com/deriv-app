@@ -26,9 +26,14 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
 
 const FileDropzone = ({ className, ...props }) => (
     <Dropzone
+        // callback to get action on onDrop
+        // It only send files array as passed back value if its in acceptedFiles
         onDrop={props.onDrop}
-        multiple={props.multiple}
+        // allow multiple uploads
+        multiple={props.multiple || false}
+        // accept prop is same as native HTML5 input accept - e.g - 'image/png'
         accept={props.accept}
+        // set maximum size limit for file, in bytes (binary)
         maxSize={props.max_size}
     >
         {({ getRootProps, getInputProps, isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {

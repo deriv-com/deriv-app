@@ -254,6 +254,7 @@ class ProofOfAddress extends React.Component {
             this.setState({ ...data.get_settings, is_loading: false });
         });
         WS.authorized.storage.getAccountStatus().then((data) => {
+            console.warn(data.get_account_status.status);
             if (data.get_account_status.status &&
                 data.get_account_status.status.some(state => state === 'authenticated')
             ) {

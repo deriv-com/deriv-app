@@ -1,4 +1,4 @@
-$BOTTOM_SPACING_REQUIRED: 32px; // Spacing between end of the container and Footer (including shadow)
+$BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
 $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
 
 .vertical-tab {

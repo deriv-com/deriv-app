@@ -27,9 +27,13 @@
         content: '';
         background-color: var(--overlay-outside-dialog);
     }
-    &--is-disabled:after {
-        opacity: 1;
-        pointer-events: auto;
+    &--is-disabled {
+        border-top: none;
+
+        &:after {
+            opacity: 1;
+            pointer-events: auto;
+        }
     }
     &__links {
         display: flex;

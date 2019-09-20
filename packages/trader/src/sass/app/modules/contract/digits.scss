@@ -185,11 +185,11 @@
 
         /* postcss-bem-linter: ignore */
         .progress__bg {
-            stroke: var(--general-section-1);
+            stroke: var(--general-disabled);
         }
         /* postcss-bem-linter: ignore */
         .progress__value {
-            stroke: var(--fill-hover);
+            stroke: var(--text-less-prominent);
 
             /* postcss-bem-linter: ignore */
             &--is-max {

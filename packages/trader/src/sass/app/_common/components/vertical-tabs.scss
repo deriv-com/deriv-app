@@ -10,12 +10,20 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         background-color: themed('tab_background_color');
     }
 
+    &__content-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+    }
     &--full-screen {
         min-height: $MIN_HEIGHT;
 
-        .vertical-tab__tab {
-            min-width: 15%;
-        }
+        // .vertical-tab__tab {
+        //     min-width: 15%;
+        // }
     }
     &:not(.vertical-tab--full-screen) {
         height: 600px;
@@ -29,6 +37,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         display: flex;
         flex-flow: row-reverse nowrap;
         justify-content: space-between;
+        align-items: center;
         padding: 16px;
 
         &--icon {
@@ -38,8 +47,9 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
         &-wrapper {
             cursor: pointer;
-            padding: 8px 8px 6px;
+            padding: 4px 4px 2px;
             border-radius: $BORDER_RADIUS;
+            margin-left: auto;
 
             &:hover {
                 @include themify($themes) {
@@ -124,6 +134,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         justify-content: flex-start;
         align-items: flex-start;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+        position: relative;
         @include themify($themes) {
             background-color: themed('container_secondary_color');
         }

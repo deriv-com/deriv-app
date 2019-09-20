@@ -38,8 +38,7 @@ class Autocomplete extends React.PureComponent {
         this.hideDropdownList();
 
         this.setState({
-            no_results_error: this.state.input_value === 'NaN' && this.props.required,
-            filtered_items  : this.props.list_items,
+            filtered_items: this.props.list_items,
         });
         if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection({
@@ -119,9 +118,7 @@ class Autocomplete extends React.PureComponent {
                 <div ref={ this.setInputWrapperRef } className='dc-autocomplete__input-field'>
                     <Input
                         { ...otherProps }
-                        className={ classNames('dc-autocomplete__field', {
-                            'dc-autocomplete__field--error': this.state.no_results_error,
-                        })}
+                        className='dc-autocomplete__field'
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onFocus={(e) => this.showDropdownList(e) }

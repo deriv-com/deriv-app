@@ -83,7 +83,7 @@ const InputGroup = ({ children, className }) => (
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (value && !fn(value) && !errors[field]) errors[field] = err_msg;
+        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
 };
 
@@ -293,7 +293,7 @@ class PersonalDetailsForm extends React.Component {
                                                             touched.place_of_birth_text && errors.place_of_birth_text
                                                         }
                                                         required
-                                                        disabled={this.isChangeableField('place_of_birth')}
+                                                        disabled={place_of_birth && this.isChangeableField('place_of_birth')}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('place_of_birth_text', value ? text : '', true)
@@ -363,7 +363,7 @@ class PersonalDetailsForm extends React.Component {
                                             />
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
-                                            {is_fully_authenticated ?
+                                            {account_opening_reason && is_fully_authenticated ?
                                                 <Input
                                                     data-lpignore='true'
                                                     type='text'
@@ -450,7 +450,8 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.last_name || !values.last_name) ||
                                                 (errors.phone || !values.phone) ||
                                                 (errors.tax_identification_number) ||
-                                                (errors.place_of_birth_text || !values.place_of_birth_text))
+                                                (errors.place_of_birth_text || !values.place_of_birth_text) ||
+                                                (errors.account_opening_reason || !values.account_opening_reason))
                                         )}
                                         has_effect
                                         is_loading={is_btn_loading && <ButtonLoading />}
@@ -469,13 +470,13 @@ class PersonalDetailsForm extends React.Component {
     componentDidMount() {
         this.props.fetchResidenceList();
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
-            const { account_settings, getChangeableFields } = this.props;
+            const { account_settings, getChangeableFields, is_virtual } = this.props;
 
             if (account_settings.error) {
                 this.setState({ api_initial_load_error: account_settings.error.message });
             } else {
                 this.setState({
-                    changeable_fields: getChangeableFields(),
+                    changeable_fields: is_virtual ? [] : getChangeableFields(),
                     is_loading       : false,
                     ...account_settings,
                 });

@@ -656,7 +656,7 @@ export default class ClientStore extends BaseStore {
             if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {
-                changeable_fields = changeable_fields.concat(changeable.only_before_auth);
+                changeable_fields = [...changeable.only_before_auth];
             }
             return changeable_fields;
         }

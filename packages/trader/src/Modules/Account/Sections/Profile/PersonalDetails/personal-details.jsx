@@ -453,13 +453,13 @@ class PersonalDetailsForm extends React.Component {
     componentDidMount() {
         this.props.fetchResidenceList();
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
-            const { account_settings, getChangeableFields } = this.props;
+            const { account_settings, getChangeableFields, is_virtual } = this.props;
 
             if (account_settings.error) {
                 this.setState({ api_initial_load_error: account_settings.error.message });
             } else {
                 this.setState({
-                    changeable_fields: getChangeableFields(),
+                    changeable_fields: is_virtual ? [] : getChangeableFields(),
                     is_loading       : false,
                     ...account_settings,
                 });

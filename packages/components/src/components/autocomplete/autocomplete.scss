@@ -17,11 +17,4 @@
             transform: rotate(-180deg);
         }
     }
-    &__field--error {
-        border: 1px solid var(--color-red) !important;
-
-        .dc-input__label {
-            color: var(--color-red) !important;
-        }
-    }
 }

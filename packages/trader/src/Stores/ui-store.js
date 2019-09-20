@@ -13,10 +13,11 @@ import { sortNotifications } from '../App/Components/Elements/NotificationMessag
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_main_drawer_on          = false;
-    @observable is_notifications_drawer_on = false;
-    @observable is_positions_drawer_on     = false;
-    @observable is_reports_visible         = false;
+    @observable is_main_drawer_on           = false;
+    @observable is_notifications_drawer_on  = false;
+    @observable is_positions_drawer_on      = false;
+    @observable is_account_settings_visible = false;
+    @observable is_reports_visible          = false;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -81,6 +82,7 @@ export default class UIStore extends BaseStore {
             'duration_m',
             'duration_h',
             'duration_d',
+            'is_account_settings_visible',
             'is_chart_asset_info_visible',
             'is_chart_countdown_visible',
             'is_chart_layout_default',
@@ -242,6 +244,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleAccountSettings(is_visible) {
+        this.is_account_settings_visible = is_visible;
+    }
+
+    @action.bound
     toggleReports(is_visible) {
         this.is_reports_visible = is_visible;
     }
@@ -285,7 +292,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotification({key}) {
+    removeNotification({ key }) {
         this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
     }

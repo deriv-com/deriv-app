@@ -1,4 +1,3 @@
-
 .dc-input {
     position: relative;
     width: 100%;
@@ -6,7 +5,7 @@
     border: 1px solid var(--border-normal);
     display: flex;
     align-items: center;
-    margin-bottom: 1.8rem;
+    margin-bottom: 3.2rem;
 
     &:focus-within {
         border-color: var(--brand-secondary);
@@ -14,27 +13,47 @@
     &__field {
         background: none;
         color: var(--text-prominent);
-        font-size: var(--text-size-s);
+        font-size: var(--text-size-xs);
         padding: 1rem 1.2rem;
         width: 100%;
         height: 3.8rem;
         display: block;
 
         &::placeholder {
+            line-height: 1.5;
             opacity: 0;
             transition: opacity 0.25s;
         }
         &--placeholder-visible::placeholder {
             opacity: 0.7;
         }
+        &:focus, &:disabled, &:not(:focus):valid {
+            outline: none;
+
+            & ~ label {
+                transform: translate(0, -1.6rem) scale(0.75);
+                padding: 0 4px;
+                background-color: var(--fill-normal);
+            }
+        }
+        &:disabled {
+            background: var(--general-section-1);
+            color: var(--text-disabled);
+
+            & ~ label {
+                color: var(--text-disabled);
+            }
+            & ~ svg {
+                .color1-fill {
+                    fill: var(--text-disabled);
+                }
+            }
+        }
         &:focus {
             outline: none;
 
             & ~ label {
-                transform: translate(-1.6rem, -2.2rem) scale(0.75);
-                color: var(--color-green);
-                padding: 0 4px;
-                background-color: var(--fill-normal);
+                color: var(--brand-secondary);
             }
             &::placeholder {
                 opacity: 0.7;
@@ -42,10 +61,7 @@
         }
         &:not(.dc-input--no-placeholder):not(:focus):valid {
             & ~ label {
-                transform: translate(-1.6rem, -2.2rem) scale(0.75);
-                color: var(--text-color-3);
-                padding: 0 4px;
-                background-color: var(--fill-normal);
+                color: var(--text-general);
             }
         }
         &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
@@ -70,11 +86,14 @@
         margin: 0 1.2rem 0 0 !important;
     }
     &__label {
-        font-size: var(--text-size-s);
+        color: var(--text-less-prominent);
+        font-size: var(--text-size-xs);
         position: absolute;
         pointer-events: none;
         left: 1rem;
         top: 1rem;
+        transition: 0.25s ease all;
+        transform-origin: top left;
     }
     &:not(&--no-placeholder) {
         &__label {

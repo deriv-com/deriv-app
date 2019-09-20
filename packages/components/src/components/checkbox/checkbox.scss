@@ -23,4 +23,8 @@
             background-color: var(--brand-red-coral);
         }
     }
+    &__label {
+        color: var(--text-color);
+        font-size: var(--text-size-xs);
+    }
 }

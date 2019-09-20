@@ -109,7 +109,7 @@ Blockly.Blocks.trade_definition = {
 };
 
 Blockly.JavaScript.trade_definition = block => {
-    const { client } = ScratchStore.instance.root_store;
+    const { client } = ScratchStore.instance.root_store.core;
     
     if (!client.is_logged_in) {
         throw new Error('Please login'); // TEMP.

@@ -24,7 +24,7 @@ export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+
 const validGeneral             = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validAddress             = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 const validPostCode            = value => /^[a-zA-Z\d-\s]*$/.test(value);
-export const validPhone        = value => /^\+?[0-9\s]*$/.test(value);
+export const validPhone        = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 const validRegular             = (value, options) => options.regex.test(value);
 const validEmailToken          = value => value.trim().length === 8;
 export const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);

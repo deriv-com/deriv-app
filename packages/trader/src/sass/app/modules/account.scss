@@ -5,6 +5,10 @@
 
     .vertical-tab {
         height: calc(100vh - 83px);
+
+        &__tab {
+            min-width: 240px;
+        }
     }
     &__inset_header {
         @include themify($themes) {

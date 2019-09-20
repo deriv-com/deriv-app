@@ -9,8 +9,10 @@
     top: 0px !important;
 }
 
-.blocklyText {
-    fill: #000 !important;
+.blocklyTextRootBlockHeader {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
 }
 
 .blocklyMainWorkspaceScrollbar {

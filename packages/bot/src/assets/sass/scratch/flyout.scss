@@ -20,19 +20,14 @@
         .flyout__button-add-hide {
             display: block;
         }
-        .flyout__item-info {
-            text-decoration: underline;
-        }
     }
     &__content {
         overflow: auto;
+        height: 100%;
     }
     &__block-workspace {
         margin-bottom: $default-margin;
 
-        * .blocklySvg {
-            background-color: inherit !important;
-        }
         * .blocklyMainBackground {
             stroke: none !important;
         }
@@ -117,6 +112,7 @@
         width: 100%;
         height: auto;
         border-radius: 0.5em;
+
     }
     &__video {
         width: 100%;
@@ -125,9 +121,10 @@
     }
     &__help {
         padding: 0;
+        height: 100%;
 
         &-header {
-            padding: 1.2em 1em;
+            padding: 0.5em 1em;
             display: flex;
             background-color: $COLOR_LIGHT_BLACK_4_SOLID;
         }
@@ -135,7 +132,7 @@
             padding: 1.5em;
             font-size: 0.8em;
             overflow-y: auto;
-            height: calc(100vh - 300px);
+            height: calc(100vh - 230px);
 
             #{$flyout}__item {
                 margin-bottom: 0.8em;
@@ -143,12 +140,12 @@
         }
         &-title {
             align-self: center;
-            font-size: 25px;
+            font-size: 20px;
             font-weight: bold;
         }
         &-footer {
             text-align: right;
-            padding: 1.2em 0.8em;
+            padding: 0.5em 0.8em;
             border-top: solid 0.1em $COLOR_LIGHT_BLACK_4_SOLID;
         }
     }

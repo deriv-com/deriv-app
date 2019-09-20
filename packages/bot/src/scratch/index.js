@@ -34,7 +34,7 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
 
         const workspace = Blockly.inject(el_scratch_div, {
-            grid    : { spacing: 40, length: 11, colour: '#ebebed' },
+            grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
             media   : `${__webpack_public_path__}media/`, // eslint-disable-line
             toolbox : toolbox_xml,
             trashcan: true,

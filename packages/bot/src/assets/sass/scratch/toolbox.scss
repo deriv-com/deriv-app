@@ -1,19 +1,28 @@
 $category-colours: (
     search             : #afffda,
-    trade_parameters   : #30409f,
-    purchase_conditions: #00897b,
-    sell_conditions    : #78909c,
-    trade_results      : #d81a60,
-    contract_details   : #d81a60,
-    technical_analysis : #689e38,
-    utility            : #8e25aa,
-    math               : #fc8b01,
-    text               : #5d4037,
-    logic              : #1876d2,
-    lists              : #e53836,
-    custom_functions   : #00acc1,
-    variables          : #616161,
-    loops              : #afb42b,
+
+    trade_parameters   : #f3f3f3,
+    purchase_conditions: #f3f3f3,
+    sell_conditions    : #f3f3f3,
+    trade_results      : #f3f3f3,
+
+    contract_details   : #f3f3f3,
+    analysis           : #f3f3f3,
+    tick_analysis      : #f3f3f3,
+    indicators         : #f3f3f3,
+    stats              : #f3f3f3,
+
+    utility            : #f3f3f3,
+    math               : #f3f3f3,
+    text               : #f3f3f3,
+    logic              : #f3f3f3,
+    lists              : #f3f3f3,
+    custom_functions   : #f3f3f3,
+    variables          : #f3f3f3,
+    loops              : #f3f3f3,
+    time               : #f3f3f3,
+    misc               : #f3f3f3,
+    notifications      : #f3f3f3
 );
 
 .toolbox {

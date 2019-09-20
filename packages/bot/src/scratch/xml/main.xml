@@ -1,8 +1,5 @@
 ﻿<xml
     xmlns="http://www.w3.org/1999/xhtml">
-    <variables>
-        <variable type="" islocal="false" iscloud="false">bb</variable>
-    </variables>
     <block type="trade_definition" x="0" y="0">
         <statement name="TRADE_OPTIONS">
             <block type="trade_definition_market" deletable="false" movable="false">
@@ -45,6 +42,25 @@
                 </next>
             </block>
         </statement>
+        <statement name="INITIALIZATION"></statement>
+        <statement name="SUBMARKET">
+            <block type="trade_definition_tradeoptions">
+                <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
+                <field name="DURATIONTYPE_LIST"></field>
+                <field name="CURRENCY_LIST">USD</field>
+                <value name="DURATION">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+                <value name="AMOUNT">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+            </block>
+        </statement>
+
     </block>
     <block type="before_purchase" x="0" y="528">
         <statement name="BEFOREPURCHASE_STACK">

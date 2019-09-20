@@ -14,9 +14,7 @@
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
     &--dark .barspinner__rect {
-        @include themify($themes) {
-            background-color: themed('spinner_background_color');
-        }
+        background-color: var(--brand-secondary);
     }
 }
 
@@ -47,14 +45,12 @@
         margin: 5em auto;
 
         &--rect {
-            background-color: $COLOR_GREEN_3;
+            background-color: var(--brand-secondary);
         }
     }
     &__text {
         line-height: 44px;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         @include typeface(--paragraph-center-normal-black, none);
     }
 }

@@ -4,11 +4,9 @@
     z-index: 2;
     border-radius: 4px;
     transition: transform 0.3s, opacity 0.3s;
-    @include themify($themes) {
-        color: themed('text_primary_color');
-        background: themed('container_color');
-        border: solid 1px themed('container_color');
-    }
+    color: var(--text-prominent);
+    background: var(--fill-normal);
+    border: 1px solid var(--fill-normal);
 
     &__display {
         cursor: pointer;
@@ -21,18 +19,16 @@
         /* postcss-bem-linter: ignore */
         span[name=contract_type] {
             @include typeface(--paragraph-left-normal-black);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             vertical-align: middle;
             padding-left: 0.4em;
         }
         &:hover, &:focus {
-            border-color: $COLOR_DARK_BLUE_5;
+            border-color: var(--border-hover);
             outline: none;
         }
         &--clicked {
-            border-color: $COLOR_DARK_BLUE_5;
+            border-color: var(--border-active);
 
             .contract-type-widget__select-arrow {
                 transform: rotate(-90deg);
@@ -54,7 +50,7 @@
         transition: transform 0.25s ease;
         transform: rotate(90deg);
         transform-origin: 45% 45;
-        color: $COLOR_LIGHT_BLACK_4;
+        color: var(--text-prominent);
         @extend %inline-icon;
     }
     &__icon-wrapper {
@@ -66,40 +62,31 @@
         /* postcss-bem-linter: ignore */
         .category-wrapper {
             margin: 0 0.2em;
+            background-color: var(--general-section-1);
 
             /* postcss-bem-linter: ignore */
             .category-type {
-                @include themify($themes) {
-                    /* postcss-bem-linter: ignore */
-                    path, rect {
-                        /* postcss-bem-linter: ignore */
-                        &:not(.important) {
-                            fill: themed('icon_color');
-                        }
-                        /* postcss-bem-linter: ignore */
-                        &.transparent {
-                            fill: themed('background_icon_color');
-                        }
-                    }
-                    /* postcss-bem-linter: ignore */
-                    .stroke-active {
-                        stroke: themed('icon_color');
-                    }
+                /* postcss-bem-linter: ignore */
+                .transparent {
+                    fill: var(--general-section-1);
+                }
+                /* postcss-bem-linter: ignore */
+                .color1-fill {
+                    fill: var(--brand-red-coral);
+                }
+                /* postcss-bem-linter: ignore */
+                .color2-fill {
+                    fill: var(--brand-secondary);
                 }
             }
         }
     }
     &:hover {
-        @include themify($themes) {
-            border-color: themed('border_hover_color');
-        }
+        border-color: var(--border-hover);
     }
     &:active, &:focus, &--show {
         outline: none;
         border-radius: 4px;
-        @include themify($themes) {
-            border-color: themed('border_hover_color');
-            box-shadow: 0 0 0 2px themed('border_outline_color');
-        }
+        border-color: var(--border-active);
     }
 }

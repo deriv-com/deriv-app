@@ -6,6 +6,7 @@ $header-height: 52px;
     flex-direction: column;
     box-sizing: border-box;
     @include typeface(--paragraph-center-normal-black, default);
+    color: var(--text-general);
 
     &__cell {
         padding: 0.75em;
@@ -27,21 +28,15 @@ $header-height: 52px;
         text-decoration: none;
 
         &, &:active, &:visited {
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
     }
     &__head {
-        @include themify($themes) {
-            border-bottom: 2px solid themed('border_color');
-        }
+        border-bottom: 2px solid var(--general-section-1);
         height: $header-height;
     }
     &__head &__row {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         height: 100%;
         border-bottom: none;
     }
@@ -52,9 +47,7 @@ $header-height: 52px;
         flex-direction: column;
 
         .table__row-link:hover {
-            @include themify($themes) {
-                background-color: themed('cell_hover_color');
-            }
+            background-color: var(--general-hover);
             cursor: pointer;
         }
         .table__row:last-child {
@@ -66,10 +59,8 @@ $header-height: 52px;
         white-space: nowrap;
     }
     &__foot &__row {
-        @include themify($themes) {
-            border-top: 2px solid themed('border_color');
-            color: themed(text_color);
-        }
+        color: var(--text-general);
+        border-top: var(--general-section-1);
         border-bottom: none;
     }
 }

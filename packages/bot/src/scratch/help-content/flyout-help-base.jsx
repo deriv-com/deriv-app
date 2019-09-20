@@ -6,7 +6,7 @@ import FlyoutImage      from './help-components/flyout-img.jsx';
 import { config }       from './help-content.config';
 import FlyoutBlock      from '../../components/flyout-block.jsx';
 import constant         from '../../constants';
-import { Arrow2Icon }   from '../../components/Icons.jsx';
+import { Arrow2Icon }   from '../../components/icons.jsx';
 import { connect }      from '../../stores/connect';
 import { translate }    from '../../utils/tools';
 

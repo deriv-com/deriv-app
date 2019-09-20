@@ -1,7 +1,6 @@
 /**
  * @define dc-modal
  */
-
 .dc-modal {
     &__container {
         width: 736px;
@@ -44,7 +43,6 @@
                 background-color: themed('background_cover');
                 color: themed('text_color');
             }
-            width: 28%;
             line-height: 24px;
             padding: 16px;
         }
@@ -54,9 +52,6 @@
             line-height: 24px;
         }
         &__close {
-            position: absolute;
-            right: 0;
-            top: 20px;
             display: block;
             cursor: pointer;
             padding-right: 16px;

@@ -4,6 +4,13 @@
     padding: 8px;
 
     &:hover {
+        .platform_switcher__arrow {
+            transform: rotate(180deg);
+            transition: transform 300ms;
+        }
+    }
+
+    &:hover {
         background-color: #dedede;
     }
     & svg:first-child, p {

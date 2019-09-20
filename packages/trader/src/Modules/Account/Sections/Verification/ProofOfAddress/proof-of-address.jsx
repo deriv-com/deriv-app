@@ -244,6 +244,12 @@ class ProofOfAddress extends React.Component {
     }
 
     componentDidMount() {
+        function getStatusValidations(status_arr) {
+            return status_arr.reduce((validations, stats) => {
+                validations[stats] = true;
+                return validations;
+            }, {});
+        }
         this.props.fetchResidenceList();
         WS.authorized.storage.getSettings().then((data) => {
             if (data.error) {
@@ -254,6 +260,27 @@ class ProofOfAddress extends React.Component {
             this.setState({ ...data.get_settings, is_loading: false });
         });
         WS.authorized.storage.getAccountStatus().then((data) => {
+            const { status } = data.get_account_status;
+            const {
+                document_under_review,
+                cashier_locked,
+                withdrawal_locked,
+                mt5_withdrawal_locked,
+                document_needs_action,
+                unwelcome,
+                ukrts_max_turnover_limit_not_set,
+                professional,
+            } = getStatusValidations(status);
+
+            console.warn(document_under_review);
+            console.warn(cashier_locked);
+            console.warn(withdrawal_locked);
+            console.warn(mt5_withdrawal_locked);
+            console.warn(document_needs_action);
+            console.warn(unwelcome);
+            console.warn(ukrts_max_turnover_limit_not_set);
+            console.warn(professional);
+
             console.warn(data.get_account_status.status);
             if (data.get_account_status.status &&
                 data.get_account_status.status.some(state => state === 'authenticated')

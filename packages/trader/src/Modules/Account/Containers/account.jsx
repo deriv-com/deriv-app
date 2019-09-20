@@ -13,7 +13,7 @@ import 'Sass/app/modules/account.scss';
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal_details',
+    'path'     : '/account/personal-details',
     'component': DemoMessage,
     'title'    : 'Personal details',
 };

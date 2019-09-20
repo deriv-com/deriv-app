@@ -49,7 +49,7 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <BinaryLink className='account-settings-toggle' to='/account/personal_details'>
+                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
                         <Icon icon='IconUser' />
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>

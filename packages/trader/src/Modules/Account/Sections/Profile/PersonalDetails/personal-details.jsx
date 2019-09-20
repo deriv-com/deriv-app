@@ -33,17 +33,24 @@ const getResidence = (residence_list, value, type) => {
     return '';
 };
 
+// TODO: standardize validations and refactor this
 const makeSettingsRequest = ({ ...settings }, residence_list) => {
-    let { email_consent }                                           = settings;
-    const { tax_residence_text, citizen_text, place_of_birth_text } = settings;
+    let { email_consent, first_name, last_name, tax_identification_number  } = settings;
+    email_consent             = +email_consent; // checkbox is boolean but api expects number (1 or 0)
+    first_name                = first_name.trim();
+    last_name                 = last_name.trim();
+    tax_identification_number = tax_identification_number.trim();
 
-    email_consent = +email_consent; // checkbox is boolean but api expects number (1 or 0)
+    const { tax_residence_text, citizen_text, place_of_birth_text }          = settings;
 
     const tax_residence  = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
     const citizen        = citizen_text ? getResidence(residence_list, citizen_text, 'value') : '';
     const place_of_birth = place_of_birth_text ? getResidence(residence_list, place_of_birth_text, 'value') : '';
 
     const settings_to_be_removed_for_api = [
+        'first_name',
+        'last_name',
+        'tax_identification_number',
         'email',
         'email_consent',
         'citizen_text',
@@ -51,9 +58,18 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
         'tax_residence_text',
         'residence',
     ];
+
     settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
 
-    return { ...settings, citizen, tax_residence, email_consent, place_of_birth };
+    return {
+        ...settings,
+        first_name,
+        last_name,
+        tax_identification_number,
+        citizen, tax_residence,
+        email_consent,
+        place_of_birth,
+    };
 };
 
 const InputGroup = ({ children, className }) => (
@@ -101,7 +117,7 @@ class PersonalDetailsForm extends React.Component {
         });
     }
 
-    // TODO: refactor this
+    // TODO: standardize validations and refactor this
     validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
@@ -123,7 +139,7 @@ class PersonalDetailsForm extends React.Component {
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 20;
         if (values.tax_identification_number) {
-            if (!validTaxID(values.tax_identification_number)) {
+            if (!validTaxID(values.tax_identification_number.trim())) {
                 errors.tax_identification_number = localize('Should start with letter or number, and may contain hyphen and underscore.');
             } else if (!validLength(values.tax_identification_number.trim(),
                 { min: min_tax_identification_number, max: max_tax_identification_number })) {
@@ -145,7 +161,7 @@ class PersonalDetailsForm extends React.Component {
             const max_phone_number = 35;
             const phone_trim =  values.phone.replace(/\D/g,'');
 
-            if (!validPhone(values.phone)) {
+            if (!validPhone(values.phone.trim())) {
                 errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
             }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter 8-35 characters.');

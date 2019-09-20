@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { translate } from '../utils/lang/i18n';
 
 export default class FlyoutStore {
@@ -12,6 +12,28 @@ export default class FlyoutStore {
     @observable flyout_content = [];
     @observable flyout_width = this.flyout_min_width;
     @observable is_visible = false;
+
+    // TEMP
+    @observable contract_status = 0;
+    
+    // TEMP
+    constructor() {
+        this.runAnimation();
+    }
+
+    // TEMP
+    @action.bound runAnimation () {
+        setInterval(() => {
+            runInAction(() => {
+                if (this.contract_status >= 5) {
+                    this.contract_status = 0;
+                } else {
+                    this.contract_status += 1;
+                }
+                console.log(`Observable "contract_status" : ${this.contract_status}`); // eslint-disable-line
+            });
+        }, 2000);
+    }
 
     /**
      * Parses XML contents passed by Blockly.Toolbox. Supports all default

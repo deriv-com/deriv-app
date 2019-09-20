@@ -9,11 +9,11 @@ const onRunBotClick = () => {
     console.log('run bot'); // eslint-disable-line no-console
 };
 
-const drawerContent = contract_status => {
+const drawerContent = () => {
     return (
         <Tabs>
             <div label='Summary' >
-                <TradeAnimation status={contract_status}  />
+                <TradeAnimation className='test' />
             </div>
             <div label='Transations'  />
             <div label='Journal'  />
@@ -49,57 +49,19 @@ const drawerFooter = (props) => {
     );
 };
 
-// Temperarily change to state component to test animation
-class RunPanel extends React.PureComponent {
-    constructor() {
-        super();
-        this.state = {
-            contract_status: 0,
-        };
-    }
+const RunPanel = () => {
+    const content = drawerContent();
+    const footer = drawerFooter(onRunBotClick);
 
-    componentDidMount () {
-        setInterval(() => {
-            let next_status;
-            if (this.state.contract_status >= 5) {
-                next_status = 0;
-            } else {
-                next_status = this.state.contract_status + 1;
-            }
-
-            this.setState({ contract_status: next_status });
-        }, 2000);
-    }
-
-    render () {
-        const content = drawerContent(this.state.contract_status);
-        const footer = drawerFooter(onRunBotClick);
-    
-        return (
-            <Drawer
-                className='run-panel'
-                is_open={true}
-                footer={footer}
-            >
-                {content}
-            </Drawer>
-        );
-    }
-}
-
-// const RunPanel = () => {
-//     const content = drawerContent();
-//     const footer = drawerFooter(onRunBotClick);
-
-//     return (
-//         <Drawer
-//             className='run-panel'
-//             is_open={true}
-//             footer={footer}
-//         >
-//             {content}
-//         </Drawer>
-//     );
-// };
+    return (
+        <Drawer
+            className='run-panel'
+            is_open={true}
+            footer={footer}
+        >
+            {content}
+        </Drawer>
+    );
+};
 
 export default RunPanel;

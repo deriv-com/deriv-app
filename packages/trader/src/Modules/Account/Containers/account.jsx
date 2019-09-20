@@ -13,7 +13,7 @@ import 'Sass/app/modules/account.scss';
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal_details',
+    'path'     : '/account/personal-details',
     'component': DemoMessage,
     'title'    : 'Personal details',
 };
@@ -24,7 +24,7 @@ class Account extends React.Component {
     };
 
     handleClickOutside = (event) => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
+        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && !event.target.classList.contains('dc-dropdown-list__item')) {
             this.props.history.push(AppRoutes.trade);
         }
     };
@@ -59,7 +59,7 @@ class Account extends React.Component {
             });
         }
 
-        const subroutes        = flatten(this.props.routes);
+        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
 
         if (!selected_content) { // fallback
@@ -67,9 +67,9 @@ class Account extends React.Component {
             this.props.history.push(AppRoutes.personal_details);
         }
 
-        const active_title = this.props.routes
+        const { title: active_title } = this.props.routes
             .find(route => route.subroutes
-                .find((sub_route) => sub_route.title === selected_content.title)).title;
+                .find((sub_route) => sub_route.title === selected_content.title));
 
         return (
             <FadeWrapper

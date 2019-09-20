@@ -66,6 +66,9 @@ class ChangePasswordForm extends React.Component {
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
             }
+            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(values.new_password)) {
+                errors.new_password = localize('Password should have lower and uppercase letters with numbers.');
+            }
         }
 
         return errors;

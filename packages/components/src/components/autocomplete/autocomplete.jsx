@@ -37,13 +37,28 @@ class Autocomplete extends React.PureComponent {
         event.preventDefault();
         this.hideDropdownList();
 
+        this.setState({
+            filtered_items: this.props.list_items,
+        });
+        if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
+            this.props.onItemSelection({
+                text : 'No results found', // TODO: add localize
+                value: '',
+            });
+        }
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur(e);
         }
     };
 
     onItemSelection = (item) => {
-        this.setState({ input_value: (item.text ? item.text : item) });
+        this.setState({
+            input_value: item.text ? item.text : item,
+        }, () => {
+            this.setState({
+                filtered_items: this.props.list_items.filter(i => i.text === this.state.input_value),
+            });
+        });
 
         if (typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection(item);
@@ -63,14 +78,26 @@ class Autocomplete extends React.PureComponent {
 
         const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
 
+        const get_filtered_items = () => {
+            const list = this.props.list_items.filter(item => (
+                is_string_array ?
+                    item.toLowerCase().includes(val)
+                    : item.text.toLowerCase().includes(val)
+            ));
+            if (!list.length) {
+                list.push({
+                    text : 'No results found', // TODO: add localize
+                    value: '',
+                });
+                this.setState({ input_value: 'NaN' });
+            }
+            return list;
+        };
+
         this.setState(
             {
                 filtered_items: val ?
-                    this.props.list_items.filter(item => (
-                        is_string_array ?
-                            item.toLowerCase().includes(val)
-                            : item.text.toLowerCase().includes(val)
-                    ))
+                    get_filtered_items()
                     : null,
             }
         );

@@ -1,18 +1,21 @@
 import { Button, Drawer, Tabs } from 'deriv-components';
 import classNames               from 'classnames';
 import React                    from 'react';
-import { IconInfoOutline }      from './Icons.jsx';
-import '../assets/sass/run-panel.scss';
+import { IconInfoOutline }      from './icons.jsx';
+import Summary                  from './summary.jsx';
+import                               '../assets/sass/run-panel.scss';
 
 const onRunBotClick = () => {
-    console.log('run bot'); // eslint-disable-line no-console
+    Blockly.BLOCKLY_CLASS_OLD.run();
 };
 
 const drawerContent = () => {
     return (
         <Tabs>
-            <div label='Summary' />
-            <div label='Transations' />
+            <div label='Summary'>
+                <Summary />
+            </div>
+            <div label='Transactions' />
             <div label='Journal' />
         </Tabs>
     );
@@ -46,9 +49,9 @@ const drawerFooter = (props) => {
     );
 };
 
-const RunPanel = () => {
+const RunPanel = (props) => {
     const content = drawerContent();
-    const footer = drawerFooter(onRunBotClick);
+    const footer = drawerFooter({ onClick: onRunBotClick });
 
     return (
         <Drawer
@@ -57,6 +60,7 @@ const RunPanel = () => {
             footer={footer}
         >
             {content}
+            {props.children}
         </Drawer>
     );
 };

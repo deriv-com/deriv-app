@@ -18,7 +18,8 @@ export const getContractTypeName = (contract) => {
             if (contract_type_names[0] === contract.contract_type) {
                 // Extra check for CALL & PUT types to distinguish Rise/Fall & Higher/Lower.
                 if (['CALL', 'PUT'].includes(contract_type_names[0])) {
-                    const is_risefall       = (parseFloat(contract.barrier) === parseFloat(contract.barrier));
+                    const shortcode_suffix  = contract.shortcode.split('_').slice(-2)[0];
+                    const is_risefall       = /^S0P$/.test(shortcode_suffix);
                     const req_opposite_name = is_risefall ? 'CALLPUT' : 'HIGHERLOWER';
 
                     if (opposites_name !== req_opposite_name) {

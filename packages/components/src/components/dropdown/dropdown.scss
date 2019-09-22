@@ -18,9 +18,10 @@
             border-color: var(--border-active);
         }
         &-text {
-            padding-left: 1.6em;
+            padding-left: 1em;
             @include typeface(--paragraph-center-normal-black, capitalize);
             color: var(--text-prominent);
+            display: flex;
 
             &--placeholder:after {
                 content: attr(placeholder);
@@ -172,8 +173,9 @@
         }
     }
     &--show {
-        border: 1px solid var(--border-active) !important;
-
+        .dc-dropdown__display {
+            border: 1px solid var(--border-active);
+        }
         & > .dc-dropdown__select-arrow {
             transform: rotate(-180deg);
 

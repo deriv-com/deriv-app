@@ -50,7 +50,8 @@ class Dropdown extends React.PureComponent {
     get is_single_option() {
         return Array.isArray(this.props.list) ?
             (this.props.list.length < 2) :
-            (Object.keys(this.props.list).length < 2);
+            // object has less than two props or inner object has less than two props
+            (Object.keys(this.props.list).length < 2 && this.props.list[Object.keys(this.props.list)[0]].length < 2);
     }
 
     get container_class_name() {
@@ -202,10 +203,10 @@ class Dropdown extends React.PureComponent {
         }
 
         // For char presses, we do a search for the item:
-        if (event.key.length === 1) {
+        if (event.key.length === 1 && this.props.list.length) {
             const char       = event.key.toLowerCase();
             const firstChars = this.props.list.map(
-                x => x.text[0].toLowerCase());
+                x => typeof x === 'string' && x.text[0].toLowerCase());
             let idx;
             // Tapping the same character again jumps to the next match:
             if (this.state.curr_index) {
@@ -324,9 +325,9 @@ class Dropdown extends React.PureComponent {
                                         /> :
                                         Object.keys(this.props.list).map(key => (
                                             <React.Fragment key={key}>
-                                                <div className='dc-list__label'>{key}</div>
+                                                <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
                                                 <Items
-                                                    index={this.state.curr_index}
+                                                    className={this.props.classNameItems}
                                                     handleSelect={this.handleSelect}
                                                     has_symbol={this.props.has_symbol}
                                                     items={this.props.list[key]}
@@ -352,6 +353,7 @@ Dropdown.propTypes = {
     className        : PropTypes.string,
     classNameDisplay : PropTypes.string,
     classNameItems   : PropTypes.string,
+    classNameLabel   : PropTypes.string,
     has_symbol       : PropTypes.bool,
     is_alignment_left: PropTypes.bool,
     is_nativepicker  : PropTypes.bool,

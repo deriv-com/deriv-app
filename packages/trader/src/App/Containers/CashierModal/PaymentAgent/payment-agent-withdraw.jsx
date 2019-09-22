@@ -67,7 +67,7 @@ class PaymentAgentWithdraw extends React.Component {
         return (
             <React.Fragment>
                 {this.props.is_loading ?
-                    <Loading className='payment-agent__loader' />
+                    <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
                         {/* for errors with CTA hide the form and show the error,
@@ -75,12 +75,12 @@ class PaymentAgentWithdraw extends React.Component {
                         {this.props.error.button_text ?
                             <Error error={this.props.error} />
                             :
-                            <div className='payment-agent__wrapper'>
+                            <div className='cashier__wrapper--align-left'>
                                 {this.props.is_withdraw_successful ?
                                     <PaymentAgentReceipt />
                                     :
                                     <React.Fragment>
-                                        <h2 className='payment-agent__header'>
+                                        <h2 className='cashier__header'>
                                             <Localize i18n_default_text='Payment agent withdrawal' />
                                         </h2>
                                         <Formik
@@ -97,10 +97,10 @@ class PaymentAgentWithdraw extends React.Component {
                                                     <Form>
                                                         <Dropdown
                                                             id='payment_agents'
-                                                            className='payment-agent__drop-down'
-                                                            classNameDisplay='payment-agent__drop-down-display'
-                                                            classNameDisplaySpan='payment-agent__drop-down-display-span'
-                                                            classNameItems='payment-agent__drop-down-items'
+                                                            className='cashier__drop-down'
+                                                            classNameDisplay='cashier__drop-down-display'
+                                                            classNameDisplaySpan='cashier__drop-down-display-span'
+                                                            classNameItems='cashier__drop-down-items'
                                                             list={this.props.payment_agent_list}
                                                             name='payment_agents'
                                                             value={this.props.selected_payment_agent.value}
@@ -118,10 +118,10 @@ class PaymentAgentWithdraw extends React.Component {
                                                         {/*                    <Localize i18n_default_text='By name' /> */}
                                                         {/*                    <Dropdown */}
                                                         {/*                        id='payment_agents' */}
-                                                        {/*                        className='payment-agent__drop-down' */}
-                                                        {/*                        classNameDisplay='payment-agent__drop-down-display' */}
-                                                        {/*                        classNameDisplaySpan='payment-agent__drop-down-display-span' */}
-                                                        {/*                        classNameItems='payment-agent__drop-down-items' */}
+                                                        {/*                        className='cashier__drop-down' */}
+                                                        {/*                        classNameDisplay='cashier__drop-down-display' */}
+                                                        {/*                        classNameDisplaySpan='cashier__drop-down-display-span' */}
+                                                        {/*                        classNameItems='cashier__drop-down-items' */}
                                                         {/*                        list={this.props.payment_agent_list} */}
                                                         {/*                        name='payment_agents' */}
                                                         {/*                        value={this.props.selected_payment_agent.value} */}
@@ -158,8 +158,8 @@ class PaymentAgentWithdraw extends React.Component {
                                                             {({ field }) => (
                                                                 <Input
                                                                     { ...field }
-                                                                    className='payment-agent__input-long dc-input--no-placeholder'
-                                                                    type='number'
+                                                                    className='cashier__input-long dc-input--no-placeholder'
+                                                                    type='text'
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
                                                                     required
@@ -169,24 +169,18 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 />
                                                             )}
                                                         </Field>
-                                                        <div className='payment-agent__submit'>
+                                                        <div className='cashier__form-submit'>
                                                             {this.props.error.message &&
                                                             <React.Fragment>
-                                                                <Icon icon='IconEmergency' className='payment-agent__error-icon' />
-                                                                <Icon icon='IconError' className='payment-agent__error-small-icon' />
-                                                                <p className='payment-agent__error'>
+                                                                <Icon icon='IconEmergency' className='cashier__form-error-icon' />
+                                                                <Icon icon='IconError' className='cashier__form-error-small-icon' />
+                                                                <p className='cashier__form-error'>
                                                                     {this.props.error.message}
                                                                 </p>
                                                             </React.Fragment>
                                                             }
                                                             <Button
-                                                                className={
-                                                                    classNames(
-                                                                        'payment-agent__withdraw-button',
-                                                                        'btn--primary--default',
-                                                                        { 'payment-agent__withdraw-button--disabled': !values.payment_method || !isValid || isSubmitting },
-                                                                    )
-                                                                }
+                                                                className='cashier__form-submit-button btn--primary--default'
                                                                 type='submit'
                                                                 is_disabled={
                                                                     !values.payment_method || !isValid || isSubmitting

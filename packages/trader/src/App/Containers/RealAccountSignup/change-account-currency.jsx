@@ -69,6 +69,7 @@ class ChangeAccountCurrency extends Component {
                             is_disabled={isSubmitting || !values.fiat}
                             label='Next' // Localization will be handled by component
                             is_absolute={false}
+                            is_center
                             form_error={this.props.form_error}
                         />
                     </form>

@@ -65,7 +65,6 @@
             @include typeface(--small-left-normal-green, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
-            content: 'demo';
             color: var(--text-profit-success);
             border: 1px solid var(--text-profit-success);
             border-radius: 16px;
@@ -91,15 +90,12 @@
 .acc-switcher {
     &__wrapper {
         border-radius: $BORDER_RADIUS;
-        box-shadow: 0 2px 8px 0 var(--text-less-prominent);
         position: absolute;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
         width: 240px;
-        border-radius: $BORDER_RADIUS;
         background: var(--general-main-2);
 
         &--enter-done {
@@ -137,17 +133,17 @@
         }
         &--outlined {
             background-color: $COLOR_WHITE;
-            border: 1px solid $DERIV_RED;
+            border: 1px solid var(--brand-red-coral);
 
             &:hover {
-                background-color: $DERIV_RED !important;
+                background-color: var(--brand-red-coral) !important;
 
                 .btn__text {
                     color: $COLOR_WHITE;
                 }
             }
             .btn__text {
-                color: $DERIV_RED;
+                color: var(--brand-red-coral);
             }
             .btn {
                 align-items: center;
@@ -230,23 +226,18 @@
         }
     }
     &__account {
-        align-items: center;
-        background-color: $COLOR_WHITE;
-        cursor: pointer;
         display: flex;
+        align-items: center;
         justify-content: space-between;
+        cursor: pointer;
         padding: 0.8em 1.6em;
         position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         background-color: var(--state-normal);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
             align-items: center;
             display: flex;
-            align-items: center;
             color: var(--text-prominent);
 
             &-icon {
@@ -260,7 +251,6 @@
                 color: var(--brand-red-coral);
                 border: 1px solid var(--brand-red-coral);
                 border-radius: 16px;
-                content: 'demo';
             }
         }
         &:hover:not(.acc-switcher__account--selected) {

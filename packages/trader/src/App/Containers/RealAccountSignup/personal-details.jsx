@@ -152,6 +152,16 @@ const Input = (props) => {
 };
 
 class PersonalDetails extends Component {
+    constructor(props) {
+        super(props);
+
+        this.form = React.createRef();
+    }
+
+    componentDidMount() {
+        this.form.current.getFormikActions().validateForm();
+    }
+
     validatePersonalDetails = (values) => {
         const max_date = toMoment().subtract(18, 'days');
         const validations = {
@@ -170,8 +180,8 @@ class PersonalDetails extends Component {
         };
 
         const mappedKey = {
-            first_name: localize('First name'),
-            last_name : localize('Last name'),
+            first_name   : localize('First name'),
+            last_name    : localize('Last name'),
             date_of_birth: localize('Date of birth'),
         };
         const messages = [
@@ -203,6 +213,7 @@ class PersonalDetails extends Component {
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
+                ref={this.form}
             >
                 {
                     ({
@@ -239,7 +250,6 @@ class PersonalDetails extends Component {
                             <FormSubmitButton
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars
-                                    !Object.entries(touched).filter(([key, value]) => value).length ||
                                     isSubmitting ||
                                     Object.keys(errors).length > 0
                                 }

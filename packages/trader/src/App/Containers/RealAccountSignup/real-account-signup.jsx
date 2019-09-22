@@ -72,6 +72,7 @@ class RealAccountSignup extends Component {
             this.setState(initialState);
         }, 400)
     }
+
     showSetCurrencySuccess = (previous_currency, current_currency) => {
         this.setState({
             previous_currency,

@@ -1,9 +1,5 @@
 @import 'app/_common/base/index';
 
-/* stylelint-disable color-no-hex */
-$COLOR_DARK_GRAY: #999999;
-$COLOR_DERIV_RED: #ff444f;
-/* stylelint-enable color-no-hex */
 .add-or-manage {
     display: flex;
     width: 100%;
@@ -85,14 +81,14 @@ $COLOR_DERIV_RED: #ff444f;
             @include typeface(--title-left-bold-black);
             font-size: 1.4rem;
             text-align: center;
-            background: $COLOR_DERIV_RED;
-            color: $COLOR_WHITE;
+            background: var(--brand-red-coral);
+            color: var(--general-main-1);
             margin: 0 2rem;
 
             &--outline {
                 background: transparent;
-                border: 2px solid $COLOR_DARK_GRAY;
-                color: $COLOR_DARK_GRAY;
+                border: 2px solid var(--text-less-prominent);
+                color: var(--text-less-prominent);
             }
         }
     }

@@ -12,49 +12,30 @@
     }
     &__item {
         align-items: center;
-        border-radius: $BORDER_RADIUS;
+        border-radius: 8px;
         display: inline-flex;
         flex-direction: column;
-        height: 120px;
+        height: 128px;
         justify-content: space-around;
         margin: $BORDER_RADIUS;
-        width: 120px;
-        @include themify($themes) {
-            border: 1px solid themed('container_color');
-        }
+        width: 128px;
 
         &:hover:not(&--selected) {
             cursor: pointer;
-            @include themify($themes) {
-                border: 1px solid themed('border_color');
-            }
+            border: 1px solid var(--text-less-prominent);
         }
         &--current {
             opacity: 0.5;
         }
         &--selected {
-            @include themify($themes) {
-                border: 1px solid themed('border_outline_color');
-            }
+            border: 1px solid var(--brand-secondary);
 
-            & > p {
+            & p.label {
                 @include typeface(--paragraph-center-bold-black);
             }
         }
-        .change-currency &--selected {
-            @include themify($themes) {
-                background-color: $COLOR_WHITE;
-            }
-        }
-        .change-currency &:hover {
-            @include themify($themes) {
-                background-color: themed('border_outline_color');
-            }
-        }
-        .change-currency & {
-            @include themify($themes) {
-                border: 1px solid themed('border_color');
-            }
+        .change-currency &:hover:not(&--selected) {
+            background-color: 1px solid var(gray-2);
         }
         svg {
             height: 48px;
@@ -63,9 +44,7 @@
         p {
             text-align: center;
             @include typeface(--paragraph-center-normal-black);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
     }
     &__radio-button {
@@ -77,9 +56,7 @@
     height: 2px;
     margin: 1rem 0 0;
     width: 100%;
-    @include themify($themes) {
-        border-top: 1px solid themed('border_color');
-    }
+    border-top: 1px solid var(--button-secondary-hover);
 }
 
 .currency-selector {

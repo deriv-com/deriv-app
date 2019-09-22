@@ -1,9 +1,5 @@
 @import 'app/_common/base/index';
 
-/* stylelint-disable color-no-hex */
-$COLOR_DERIV_RED: #ff444f;
-/* stylelint-enable color-no-hex */
-
 .form-progress {
     height: 100%;
     max-height: 122px;
@@ -19,9 +15,7 @@ $COLOR_DERIV_RED: #ff444f;
 
         & h2 {
             @include typeface(--paragraph-center-bold-black);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
             text-transform: none;
         }
     }
@@ -31,7 +25,7 @@ $COLOR_DERIV_RED: #ff444f;
         flex-direction: column;
         height: 6rem;
         justify-content: space-around;
-        min-width: 120px;
+        min-width: 160px;
         z-index: 2;
 
         & .title {
@@ -39,30 +33,23 @@ $COLOR_DERIV_RED: #ff444f;
         }
         & .identifier {
             border-radius: 50%;
-            color: $COLOR_DERIV_RED;
             display: block;
-            text-align: center;
             width: 24px;
-            @include typeface(--paragraph-center-normal-black);
-            @include themify($themes) {
-                background-color: themed('container_color');
-                border: 1px solid themed('background_button_color');
-                color: themed('background_button_color');
-            }
+            @include typeface(--paragraph-center-bold-black);
+            background-color: var(--text-less-prominent);
+            border: 1px solid var(--button-secondary-default);
+            color: var(--general-section-1);
         }
         &--active {
             .identifier {
-                background-color: $COLOR_DERIV_RED !important;
-                border: 1px solid $COLOR_DERIV_RED !important;
-                font-weight: bold;
-                @include typeface(--paragraph-center-normal-black);
+                @include typeface(--paragraph-center-bold-black);
+                background-color: var(--brand-red-coral) !important;
+                border: 1px solid var(--brand-red-coral) !important;
+                color: var(--general-main-1);
                 transition: all 0.3s ease;
-                @include themify($themes) {
-                    color: themed('container_color');
-                }
             }
             .title {
-                color: $COLOR_DERIV_RED;
+                color: var(--brand-red-coral);
                 font-weight: bold;
             }
         }
@@ -81,20 +68,18 @@ $COLOR_DERIV_RED: #ff444f;
             margin: 0 auto; /* this centers the line to the full width specified */
             position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
             right: 0;
-            top: 18px;
+            top: 1.7em;
             width: 67%;
-            @include themify($themes) {
-                border-top: 2px solid themed('border_outline_color');
-            }
+            border-top: 2px solid var(--text-less-prominent);
         }
         &--after {
-            border-top: 2px solid $COLOR_DERIV_RED;
+            border-top: 2px solid var(--brand-red-coral);
             bottom: 0;
             content: '';
             left: 0;
             margin: 0 auto; /* this centers the line to the full width specified */
             position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-            top: 18px;
+            top: 1.7em;
             transition: width 0.3s ease;
         }
     }

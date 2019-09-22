@@ -2,11 +2,11 @@
 import classNames           from 'classnames';
 import React                from 'react';
 import { Popover }          from 'deriv-components';
+import { formatMoney }      from 'deriv-shared/utils/currency';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { WS }               from 'Services';
-import { formatMoney }      from '_common/base/currency_base';
 import Loading              from '../../../../../templates/app/components/loading.jsx';
 import {
     ScrollbarsContainer,

@@ -84,7 +84,7 @@ const MT5AccountCard = ({
     );
 };
 
-const RealAccountsDisplay = () => (
+const RealAccountsDisplay = ({ onSelectAccount }) => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
@@ -95,7 +95,7 @@ const RealAccountsDisplay = () => (
                     components={[ <span key={0} className='mt5-dashboard--hint' /> ]}
                 />
             }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Suitable for both new and experienced traders.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -108,7 +108,7 @@ const RealAccountsDisplay = () => (
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Real Advanced') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:100'),
@@ -121,7 +121,7 @@ const RealAccountsDisplay = () => (
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Real Synthetic Indices') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -133,7 +133,7 @@ const RealAccountsDisplay = () => (
     </div>
 );
 
-const DemoAccountsDisplay = () => (
+const DemoAccountsDisplay = ({ onSelectAccount }) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
@@ -144,7 +144,7 @@ const DemoAccountsDisplay = () => (
                     components={[ <span key={0} className='mt5-dashboard--hint' /> ]}
                 />
             }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Suitable for both new and experienced traders.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -157,7 +157,7 @@ const DemoAccountsDisplay = () => (
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Demo Advanced') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:100'),
@@ -170,7 +170,7 @@ const DemoAccountsDisplay = () => (
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Demo Synthetic Indices') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ (e) => console.log('Selected', e) }
+            onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -184,7 +184,10 @@ const DemoAccountsDisplay = () => (
 
 class MT5Dashboard extends React.Component {
     render() {
-        const { is_first_time } = this.props;
+        const {
+            createMT5Account,
+            is_first_time,
+        } = this.props;
 
         return (
             <div className='mt5-dashboard'>
@@ -212,10 +215,10 @@ class MT5Dashboard extends React.Component {
                     {/* <Tabs alignment='center' list={ MT5Dashboard.dashboard_tabs } /> */}
                     <Tabs>
                         <div label={ localize('Real account') }>
-                            <RealAccountsDisplay />
+                            <RealAccountsDisplay onSelectAccount={ createMT5Account } />
                         </div>
                         <div label={ localize('Demo account') }>
-                            <DemoAccountsDisplay />
+                            <DemoAccountsDisplay onSelectAccount={ createMT5Account } />
                         </div>
                     </Tabs>
                 </div>
@@ -256,6 +259,7 @@ class MT5Dashboard extends React.Component {
     }
 }
 
-export default connect(({ client }) => ({
-    is_first_time: client.is_logged_in, // TODO: this is a dummy observable, to be changed when MT5 related data available
+export default connect(({ client, modules }) => ({
+    createMT5Account: modules.mt5.createMT5Account,
+    is_first_time   : client.is_logged_in, // TODO: this is a dummy observable, to be changed when MT5 related data available
 }))(MT5Dashboard);

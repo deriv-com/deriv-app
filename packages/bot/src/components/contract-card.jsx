@@ -99,12 +99,7 @@ class ContractCard extends React.PureComponent {
                                         amount={contract.sell_price || getIndicativePrice(contract)}
                                         currency={contract.currency}
                                     />
-                                    <div className={classNames(
-                                        'db-contract-card__indicative--movement', {
-                                            'db-contract-card__indicative--movement-complete': isEnded(contract),
-                                        },
-                                    )}
-                                    >
+                                    <div className='db-contract-card__indicative-movement'>
                                         { indicative_movement === 'profit' && <ProfitMovementIcon /> ||
                                       indicative_movement === 'loss' && <LossMovementIcon /> ||
                                       <React.Fragment /> }

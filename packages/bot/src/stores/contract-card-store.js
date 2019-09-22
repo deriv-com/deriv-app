@@ -27,14 +27,17 @@ export default class ContractCardStore {
 
     @action.bound
     onBotContractEvent(contract) {
+        const { profit } = contract;
+        const indicative = getIndicativePrice(contract);
+
         if (this.contract_id !== contract.id) {
             this.reset(false);
             this.contract_id = contract.id;
-            this.is_loading = false;
+            this.profit      = profit;
+            this.indicative  = indicative;
+            this.is_loading  = false;
         }
 
-        const { profit } = contract;
-        const indicative = getIndicativePrice(contract);
         const movements  = { profit, indicative };
 
         Object.keys(movements).forEach(name => {

@@ -1,0 +1,95 @@
+@import 'app/_common/base/index';
+
+.add-or-manage {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    & > * {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.success-change {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-top: 3rem;
+
+    &__icon-area {
+        display: flex;
+        align-items: center;
+        width: 60%;
+        justify-content: space-between;
+        position: relative;
+
+        .bottom-right-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0rem;
+            width: 3rem;
+            height: 3rem;
+        }
+        svg.inline-icon {
+            width: 60px;
+            height: 60px;
+        }
+        svg {
+            display: block;
+        }
+        &--big {
+            width: auto;
+
+            svg.inline-icon {
+                width: 120px;
+                height: 120px;
+            }
+            .bottom-right-overlay {
+                width: 48px;
+                height: 48px;
+                right: 0;
+            }
+        }
+    }
+    &__body-area {
+        flex-grow: 1;
+
+        h2 {
+            @include typeface(--title-center-bold-black);
+            margin-top: 2rem;
+        }
+        p {
+            @include typeface(--paragraph-left-normal-black);
+            padding: 1rem;
+            text-align: center;
+            text-transform: none;
+        }
+    }
+    &__btn-area {
+        margin-bottom: 2rem;
+
+        & .btn {
+            height: 4rem;
+            @include typeface(--title-left-bold-black);
+            font-size: 1.4rem;
+            text-align: center;
+            background: var(--brand-red-coral);
+            color: var(--general-main-1);
+            margin: 0 2rem;
+
+            &--outline {
+                background: transparent;
+                border: 2px solid var(--text-less-prominent);
+                color: var(--text-less-prominent);
+            }
+        }
+    }
+}

@@ -47,6 +47,24 @@
             flex-grow: 1;
             padding: 16px;
             line-height: 24px;
+            display: flex;
+            align-items: center;
+        }
+        &__main--no-sidebar {
+            @include themify($themes) {
+                border-bottom: 1px solid themed('border_color');
+            }
+        }
+        &--no-sidebar {
+            @include typeface(--title-left-bold-black);
+            @include themify($themes) {
+                background-color: themed('container_color');
+                color: themed('text_color');
+                border-bottom: 1px solid themed('border_color');
+            }
+            width: 100%;
+            line-height: 24px;
+            padding: 16px;
         }
         &__close {
             display: block;

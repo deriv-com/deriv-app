@@ -6,7 +6,7 @@ import { VerticalTabContentContainer } from './vertical-tab-content-container.js
 import { VerticalTabHeaders }          from './vertical-tab-headers.jsx';
 
 class VerticalTab extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.setSelectedIndex(props);
     }
@@ -33,6 +33,7 @@ class VerticalTab extends React.Component {
                     'vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >
+                {this.props.is_sidebar_enabled &&
                 <VerticalTabHeaders
                     className={this.props.classNameHeader}
                     items={this.props.list}
@@ -42,10 +43,10 @@ class VerticalTab extends React.Component {
                     header_title={this.props.header_title}
                     visible_items={this.props.visible_items}
                 />
+                }
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}
-                    id={this.props.id}
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
@@ -55,6 +56,10 @@ class VerticalTab extends React.Component {
     }
 }
 
+VerticalTab.defaultProps = {
+    is_sidebar_enabled: true,
+};
+
 VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
@@ -62,15 +67,15 @@ VerticalTab.propTypes = {
             icon     : PropTypes.string,
             onClick  : PropTypes.func,
             title    : PropTypes.string,
-        })
+        }),
     ),
     action_bar_classname: PropTypes.string,
     classNameHeader     : PropTypes.string,
     current_path        : PropTypes.string,
     header_title        : PropTypes.string,
-    id                  : PropTypes.string,
     is_full_width       : PropTypes.bool,
     is_routed           : PropTypes.bool,
+    is_sidebar_enabled  : PropTypes.bool,
     list                : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
@@ -78,7 +83,7 @@ VerticalTab.propTypes = {
             label  : PropTypes.string,
             path   : PropTypes.string,
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-        })
+        }),
     ).isRequired,
     modal_index   : PropTypes.number,
     selected_index: PropTypes.number,

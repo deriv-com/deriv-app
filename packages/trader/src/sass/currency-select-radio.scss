@@ -1,0 +1,72 @@
+@import 'app/_common/base/index';
+
+.currency-list {
+    width: 100%;
+
+    form {
+        width: 100%;
+    }
+    &__items {
+        display: flex;
+        justify-content: space-around;
+    }
+    &__item {
+        align-items: center;
+        border-radius: 8px;
+        display: inline-flex;
+        flex-direction: column;
+        height: 128px;
+        justify-content: space-around;
+        margin: $BORDER_RADIUS;
+        width: 128px;
+
+        &:hover:not(&--selected) {
+            cursor: pointer;
+            border: 1px solid var(--text-less-prominent);
+        }
+        &--current {
+            opacity: 0.5;
+        }
+        &--selected {
+            border: 1px solid var(--brand-secondary);
+
+            & p.label {
+                @include typeface(--paragraph-center-bold-black);
+            }
+        }
+        .change-currency &:hover:not(&--selected) {
+            background-color: 1px solid var(gray-2);
+        }
+        svg {
+            height: 48px;
+            width: 48px;
+        }
+        p {
+            text-align: center;
+            @include typeface(--paragraph-center-normal-black);
+            color: var(--text-general);
+        }
+    }
+    &__radio-button {
+        display: none;
+    }
+}
+
+.currency-hr {
+    height: 2px;
+    margin: 1rem 0 0;
+    width: 100%;
+    border-top: 1px solid var(--button-secondary-hover);
+}
+
+.currency-selector {
+    display: flex;
+    flex-direction: column;
+
+    &__radio-group {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-around;
+    }
+}

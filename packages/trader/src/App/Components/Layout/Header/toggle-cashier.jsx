@@ -98,7 +98,7 @@ class ToggleCashier extends React.Component {
         const visible_items = [];
 
         modal_content.forEach(content => {
-            if ((content.container !== 'payment_agent' || is_payment_agent_visible)) {
+            if (content.container !== 'payment_agent' || is_payment_agent_visible) {
                 visible_items.push(content.container);
             }
         });

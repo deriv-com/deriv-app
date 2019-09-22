@@ -1,0 +1,39 @@
+@import 'app/_common/base/index';
+
+.dc-modal__container_mt5-password-modal {
+    max-width: 500px;
+    height: 400px;
+    padding: 2em;
+
+    h1 {
+        @include typeface(--title-center-bold-black);
+        text-transform: none;
+        margin-bottom: 3em;
+    }
+    form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    p {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+        text-transform: none;
+    }
+    &__body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .dc-modal-header {
+        display: none;
+    }
+    & .mt5-password-field {
+        margin-bottom: 1em;
+        width: 80%;
+    }
+}

@@ -74,6 +74,9 @@ export default class UIStore extends BaseStore {
     @observable active_cashier_tab = 'deposit';
     @observable modal_index        = 0;
 
+    // mt5
+    @observable is_mt5_password_modal_enabled = false;
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -350,5 +353,15 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    enableMt5PasswordModal () {
+        this.is_mt5_password_modal_enabled = true;
+    }
+
+    @action.bound
+    disableMt5PasswordModal () {
+        this.is_mt5_password_modal_enabled = false;
     }
 }

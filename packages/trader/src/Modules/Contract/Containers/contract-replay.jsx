@@ -67,7 +67,6 @@ class ContractReplay extends React.Component {
         } = this.props;
 
         const is_from_table_row = !ObjectUtils.isEmptyObject(location.state) ? location.state.from_table_row : false;
-
         return (
             <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer

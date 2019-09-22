@@ -23,7 +23,6 @@ const ContractCardLoader = () => (
         <rect x='200' y='115' rx='0' ry='0' width='100' height='8' />
         <rect x='200' y='130' rx='0' ry='0' width='60' height='8' />
     </ContentLoader>
-    
 );
 
 export default ContractCardLoader;

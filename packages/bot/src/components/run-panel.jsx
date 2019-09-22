@@ -60,7 +60,6 @@ const RunPanel = (props) => {
             footer={footer}
         >
             {content}
-            {props.children}
         </Drawer>
     );
 };

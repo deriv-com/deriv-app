@@ -1,4 +1,4 @@
-import Bot from './app.jsx';
+import Bot               from './app.jsx';
 import { preloadSprite } from './components/icons.jsx';
 
 const getUrlBase = (path = '') => {

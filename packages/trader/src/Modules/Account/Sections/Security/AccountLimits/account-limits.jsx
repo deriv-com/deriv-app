@@ -1,19 +1,19 @@
-// import PropTypes        from 'prop-types';
-import classNames           from 'classnames';
-import React                from 'react';
-import { Popover }          from 'deriv-components';
-import { formatMoney }      from 'deriv-shared/utils/currency';
-import { connect }          from 'Stores/connect';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { WS }               from 'Services';
-import Loading              from '../../../../../templates/app/components/loading.jsx';
+// import PropTypes      from 'prop-types';
+import classNames        from 'classnames';
+import React             from 'react';
+import { Popover }       from 'deriv-components';
+import CurrencyUtils     from 'deriv-shared/utils/currency';
+import { connect }       from 'Stores/connect';
+import { localize }      from 'App/i18n';
+import Localize          from 'App/Components/Elements/localize.jsx';
+import { WS }            from 'Services';
+import Loading           from '../../../../../templates/app/components/loading.jsx';
 import {
     ScrollbarsContainer,
     TextContainer,
-    Text }                  from '../../../Components/layout-components.jsx';
-import DemoMessage          from '../../ErrorMessages/DemoMessage';
-import LoadErrorMessage     from '../../ErrorMessages/LoadErrorMessage';
+    Text }               from '../../../Components/layout-components.jsx';
+import DemoMessage       from '../../ErrorMessages/DemoMessage';
+import LoadErrorMessage  from '../../ErrorMessages/LoadErrorMessage';
 
 const makeTurnoverLimitRow = (currency, arr, title) => (
     <>
@@ -21,7 +21,7 @@ const makeTurnoverLimitRow = (currency, arr, title) => (
             arr.map(item =>
                 <Row key={item.name}>
                     <Td>{title && `${title} - `}{item.name}</Td>
-                    <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
+                    <Td>{CurrencyUtils.formatMoney(currency, item.turnover_limit, true)}</Td>
                 </Row>
             )
         }
@@ -133,7 +133,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.')}
                                     />
                                 </Td>
-                                <Td>{ formatMoney(currency, account_balance, true) }</Td>
+                                <Td>{ CurrencyUtils.formatMoney(currency, account_balance, true) }</Td>
                             </Row>
                             <Row>
                                 <Td is_flex>
@@ -146,7 +146,7 @@ class AccountLimits extends React.Component {
                                         message={localize('Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.')}
                                     />
                                 </Td>
-                                <Td>{ formatMoney(currency, payout, true) }</Td>
+                                <Td>{ CurrencyUtils.formatMoney(currency, payout, true) }</Td>
                             </Row>
                         </tbody>
                     </table>
@@ -194,15 +194,17 @@ class AccountLimits extends React.Component {
                             <tbody>
                                 <Row>
                                     <Td>{localize('Total withdrawal allowed')}</Td>
-                                    <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
+                                    <Td>{CurrencyUtils.formatMoney(currency, num_of_days_limit, true)}</Td>
                                 </Row>
                                 <Row>
                                     <Td>{localize('Total withdrawn')}</Td>
-                                    <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
+                                    <Td>
+                                        {CurrencyUtils.formatMoney(currency, withdrawal_since_inception_monetary, true)}
+                                    </Td>
                                 </Row>
                                 <Row>
                                     <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                    <Td>{formatMoney(currency, remainder, true)}</Td>
+                                    <Td>{CurrencyUtils.formatMoney(currency, remainder, true)}</Td>
                                 </Row>
                             </tbody>
                         }

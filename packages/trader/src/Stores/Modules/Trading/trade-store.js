@@ -1,6 +1,6 @@
 import BinarySocket                   from '_common/base/socket_base';
 import { localize }                   from 'App/i18n';
-import CurrencyUtils                       from 'deriv-shared/utils/currency';
+import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
 import debounce                       from 'lodash.debounce';
 import { WS }                         from 'Services';
@@ -9,29 +9,14 @@ import {
     computed,
     observable,
     reaction,
-<<<<<<< HEAD
     runInAction,
     toJS,
-}                     from 'mobx';
-import BinarySocket                   from '_common/base/socket_base';
-import { localize }                   from 'App/i18n';
-import {
-    cloneObject,
-    isEmptyObject,
-    getPropertyValue }                from '_common/utility';
-import {
-    getMinPayout,
-    isCryptocurrency }                from '_common/base/currency_base';
-import { WS }                         from 'Services';
+}                                     from 'mobx';
 import {
     isDigitContractType,
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
-=======
-    runInAction }                     from 'mobx';
-import { isDigitTradeType }           from 'Modules/Trading/Helpers/digits';
->>>>>>> Update references to currency_base + utility
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -49,10 +34,10 @@ import {
     createProposalRequests,
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
-import BaseStore                      from '../../base-store';
 import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m

@@ -370,6 +370,10 @@
     }
     &__currency {
         margin: 0 0.4rem;
+
+        &-icon {
+            align-self: center;
+        }
     }
     &__balance {
         color: var(--text-less-prominent);

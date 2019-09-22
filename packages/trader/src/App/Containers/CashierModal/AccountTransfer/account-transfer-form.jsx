@@ -40,6 +40,7 @@ const AccountOption = ({ account, idx }) => (
         {(account.currency || account.mt_icon) &&
             <Icon
                 icon='IconAccountsCurrency'
+                className='account-transfer__currency-icon'
                 type={account.mt_icon || account.currency.toLowerCase()}
                 height={16}
                 width={16}

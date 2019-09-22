@@ -81,14 +81,17 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
 
 export default DropdownList;
 
+const list_items_shape = PropTypes.arrayOf(
+    PropTypes.shape({
+        text : PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+    })
+);
+
 DropdownList.propTypes = {
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
-        PropTypes.arrayOf(
-            PropTypes.shape({
-                text : PropTypes.string.isRequired,
-                value: PropTypes.string.isRequired,
-            })
-        ),
+        list_items_shape,
+        PropTypes.objectOf(list_items_shape),
     ]),
 };

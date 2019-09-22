@@ -21,6 +21,7 @@
             padding-left: 1em;
             @include typeface(--paragraph-center-normal-black, capitalize);
             color: var(--text-prominent);
+            display: flex;
 
             &--placeholder:after {
                 content: attr(placeholder);

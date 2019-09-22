@@ -14,7 +14,7 @@ import { localize }         from 'App/i18n';
 import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
-const bank_default_option = [{ text: localize('Any'), value: '' }];
+const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
 class Config {
     container          = '';

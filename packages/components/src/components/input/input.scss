@@ -71,15 +71,15 @@
     }
     &__leading-icon {
         margin-left: 1rem;
-        top: 0.9rem;
+        top: 1.1rem;
         position: absolute;
         left: 0;
         pointer-events: none;
         cursor: text;
-        font-size: var(--text-size-s);
+        font-size: var(--text-size-xs);
 
         + .dc-input__field {
-            padding-left: calc(1.6rem + 8px);
+            padding-left: calc(1.6rem + 6px);
         }
     }
     &__trailing-icon {
@@ -104,7 +104,7 @@
     }
     &--no-placeholder {
         label {
-            transform: translate(-1.6rem, -2.2rem) scale(0.75);
+            transform: translate(0, -1.6rem) scale(0.75);
             color: var(--brand-secondary);
             padding: 0 4px;
             background-color: var(--fill-normal);

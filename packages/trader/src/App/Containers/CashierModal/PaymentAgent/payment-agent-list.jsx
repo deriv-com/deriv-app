@@ -34,11 +34,11 @@ class PaymentAgentList extends React.Component {
                             style={{ width: '100%', height: '100%' }}
                             autoHide
                         >
-                            <p><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
+                            <p className='cashier__paragraph'><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
                             <div className='payment-agent__instructions'>
                                 <div className='payment-agent__instructions-section'>
                                     <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
-                                    <p><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
+                                    <p className='cashier__paragraph'><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
                                 </div>
                                 <div className='payment-agent__instructions-section'>
                                     <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
@@ -56,7 +56,7 @@ class PaymentAgentList extends React.Component {
                                 :
                                 <React.Fragment>
                                     <div className='payment-agent__available-selector'>
-                                        <Localize i18n_default_text='Deposit/withdrawal method' />
+                                        <p className='cashier__paragraph'><Localize i18n_default_text='Deposit/withdrawal method' /></p>
                                         <Dropdown
                                             id='payment_methods'
                                             className='cashier__drop-down payment-agent__drop-down'
@@ -104,7 +104,10 @@ PaymentAgentList.propTypes = {
     onMount              : PropTypes.func,
     payment_agent_list   : PropTypes.array,
     resend_timeout       : PropTypes.number,
-    selected_bank        : PropTypes.string,
+    selected_bank        : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
     sendVerificationEmail: PropTypes.func,
     supported_banks      : MobxPropTypes.arrayOrObservableArray,
 };

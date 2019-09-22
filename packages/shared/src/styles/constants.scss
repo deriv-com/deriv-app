@@ -122,6 +122,8 @@ $color-blue: #377cfc;
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: transparentize(#{$color-green-1}, 0.92);
+        // Bullet
+        --bullet: #{$color-black-1};
     }
     .theme--dark {
         // General
@@ -182,6 +184,8 @@ $color-blue: #377cfc;
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: transparentize(#{$color-green-3}, 0.92);
+        // Bullet
+        --bullet: #{$color-black-1};
     }
 }
 

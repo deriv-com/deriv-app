@@ -18,7 +18,7 @@
             border-color: var(--border-active);
         }
         &-text {
-            padding-left: 1.6em;
+            padding-left: 1em;
             @include typeface(--paragraph-center-normal-black, capitalize);
             color: var(--text-prominent);
 

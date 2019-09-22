@@ -695,11 +695,9 @@ export default class CashierStore extends BaseStore {
         let display_text = localize('MT5');
         if (/svg/.test(value)) {
             display_text = localize('DMT5 Synthetic indices');
-        }
-        if (/vanuatu/.test(value)) {
+        } else if (/vanuatu/.test(value)) {
             display_text = localize('DMT5 Standard');
-        }
-        if (/labuan/.test(value)) {
+        } else if (/labuan/.test(value)) {
             display_text = localize('DMT5 Advanced');
         }
         return { display_text, value };

@@ -1,7 +1,4 @@
 @import '../base/index';
-/* stylelint-disable color-no-hex */
-$DERIV_RED: #ff444f;
-/* stylelint-enable color-no-hex */
 
 /** @define acc-info */
 .acc-info {
@@ -29,9 +26,7 @@ $DERIV_RED: #ff444f;
     &__id {
         @include typeface(--title-center-bold-black, default);
         pointer-events: none;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &:after {
             content: attr(title);
@@ -45,6 +40,7 @@ $DERIV_RED: #ff444f;
     &__balance {
         @include typeface(--title-center-bold-green, default);
         @include toEm(padding, 8px, 1.6em);
+        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
@@ -55,23 +51,23 @@ $DERIV_RED: #ff444f;
         @extend %inline-icon;
     }
     &:hover:not(.show) {
-        @include themify($themes) {
-            background: themed('hover_color');
+        background: var(--state-hover);
 
-            .symbols {
-                background: transparent;
-            }
+        .symbols {
+            background: transparent;
         }
     }
     &--is-virtual {
         .acc-info__balance {
-            color: $COLOR_ORANGE;
+            color: var(--text-profit-success);
         }
         &:before {
-            @include typeface(--small-left-normal-orange, uppercase);
+            @include typeface(--small-left-normal-green, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
-            border: 1px solid $COLOR_ORANGE;
+            content: 'demo';
+            color: var(--text-profit-success);
+            border: 1px solid var(--text-profit-success);
             border-radius: 16px;
             content: 'demo';
             pointer-events: none;
@@ -95,15 +91,16 @@ $DERIV_RED: #ff444f;
 .acc-switcher {
     &__wrapper {
         border-radius: $BORDER_RADIUS;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+        box-shadow: 0 2px 8px 0 var(--text-less-prominent);
         position: absolute;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
         width: 240px;
-        @include themify($themes) {
-            background: themed('background_container_color');
-        }
+        border-radius: $BORDER_RADIUS;
+        background: var(--general-main-2);
 
         &--enter-done {
             opacity: 1;
@@ -116,7 +113,7 @@ $DERIV_RED: #ff444f;
     }
     &__new-account {
         align-items: center;
-        background-color: $DERIV_RED;
+        background-color: var(--brand-red-coral);
         border-radius: 4px;
         display: flex;
         height: 40px;
@@ -174,53 +171,44 @@ $DERIV_RED: #ff444f;
         flex-flow: column nowrap;
         height: 100%;
         padding: 1.6em;
-        @include themify($themes) {
-            background: themed('background_container_color');
-        }
+        background: var(--general-section-1);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
-            display: block;
             padding-bottom: 0.8em;
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            display: block;
+            color: var(--text-prominent);
         }
         &-group {
             padding-bottom: 16px;
         }
     }
     &__accounts {
-        border-radius: 4px;
-        @include themify($themes) {
-            background: themed('container_color');
-        }
+        border-radius: $BORDER_RADIUS;
+        background: var(--general-main-1);
 
         .acc-switcher__account {
-            @include themify($themes) {
-                background: themed('container_color');
+            background: var(--state-normal);
 
-                &:hover:not(.acc-switcher__account--selected) {
-                    background-color: themed('background_button_color');
-                }
+            &:hover:not(.acc-switcher__account--selected) {
+                background-color: var(--state-hover);
+            }
+            .acc-switcher__id {
+                color: var(--text-general);
+            }
+            &--selected {
+                background: var(--state-active);
+
                 .acc-switcher__id {
-                    color: themed('text_primary_color');
-                }
-                &--selected {
-                    background: themed('active_color');
+                    color: var(--text-prominent);
+                    font-weight: 700;
 
-                    .acc-switcher__id {
-                        color: themed('text_active_color');
-                        font-weight: 700;
-
-                        &--virtual:before {
-                            border: 1px solid themed('text_active_color');
-                            color: themed('text_active_color');
-                        }
+                    &--virtual:before {
+                        color: var(--text-prominent);
+                        border: 1px solid var(--text-prominent);
                     }
                 }
             }
-
             &:first-child {
                 border-bottom: none;
                 border-top-left-radius: 4px;
@@ -235,11 +223,9 @@ $DERIV_RED: #ff444f;
                 border-radius: 4px;
             }
             &:not(:last-child):not(:only-child) {
-                border-left: none;
+                border-bottom: 1px solid var(--general-main-2);
                 border-right: none;
-                @include themify($themes) {
-                    border-bottom: 1px solid themed('background_container_color');
-                }
+                border-left: none;
             }
         }
     }
@@ -251,11 +237,17 @@ $DERIV_RED: #ff444f;
         justify-content: space-between;
         padding: 0.8em 1.6em;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--state-normal);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
             align-items: center;
             display: flex;
+            align-items: center;
+            color: var(--text-prominent);
 
             &-icon {
                 @include toEm(margin-right, 16px, 1em);
@@ -264,23 +256,25 @@ $DERIV_RED: #ff444f;
                 @include typeface(--xxxsmall-left-normal-orange, uppercase);
                 @include toEm(padding, 1px 2px, 0.6em);
                 @include toEm(margin-right, 8px, 0.6em);
-                border: 1px solid $COLOR_ORANGE;
+                content: 'demo';
+                color: var(--brand-red-coral);
+                border: 1px solid var(--brand-red-coral);
                 border-radius: 16px;
                 content: 'demo';
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
-            background: $COLOR_LIGHT_BLACK_4;
+            background: var(--state-hover);
         }
         &--selected {
-            background: $COLOR_LIGHT_GRAY_1;
+            background: var(--state-active);
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
 
                 &--virtual:before {
-                    border: 1px solid $COLOR_WHITE;
-                    color: $COLOR_WHITE;
+                    color: var(--text-prominent);
+                    border: 1px solid var(--text-prominent);
                 }
             }
         }
@@ -296,9 +290,7 @@ $DERIV_RED: #ff444f;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
         }
         &-icon {
             height: auto;

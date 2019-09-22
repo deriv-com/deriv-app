@@ -183,8 +183,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 className={
                                                                     classNames(
                                                                         'payment-agent__withdraw-button',
-                                                                        'btn--primary',
-                                                                        'btn--primary--orange',
+                                                                        'btn--primary--default',
                                                                         { 'payment-agent__withdraw-button--disabled': !values.payment_method || !isValid || isSubmitting },
                                                                     )
                                                                 }

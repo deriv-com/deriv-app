@@ -1,6 +1,3 @@
-/* stylelint-disable color-no-hex */
-$DERIV_RED: #ff444f;
-/* stylelint-enable color-no-hex */
 .dc-checkbox {
     display: flex;
     justify-content: flex-start;
@@ -19,11 +16,19 @@ $DERIV_RED: #ff444f;
         margin: 2px 8px 0 0;
         border-radius: 2px;
         align-self: flex-start;
-        border: 2px solid $COLOR_DARK_BLUE_7;
+        border: 2px solid var(--text-less-prominent);
 
         &--active {
             border: none;
-            background-color: $DERIV_RED;
+            background-color: var(--brand-red-coral);
         }
+    }
+    &--active {
+        border: none;
+        background-color: var(--brand-red-coral);
+    }
+    &__label {
+        color: var(--text-color);
+        font-size: var(--text-size-xs);
     }
 }

@@ -1,10 +1,12 @@
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
+import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
+import { BinaryLink }       from '../../Routes';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
@@ -30,7 +32,6 @@ export class AccountActions extends Component {
             active_cashier_tab,
             balance,
             can_upgrade,
-            can_upgrade_to,
             currency,
             is_acc_switcher_on,
             is_cashier_modal_on,
@@ -45,6 +46,9 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
+                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
+                        <Icon icon='IconUser' />
+                    </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={formatMoney(currency, balance, true)}

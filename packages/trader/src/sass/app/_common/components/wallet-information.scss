@@ -1,9 +1,7 @@
 /** @define .wallet-information; weak; */
 .account-wallet {
     @include typeface(--paragraph-left-normal-black);
-    @include themify($themes) {
-        color: themed('text_color');
-    }
+    color: var(--text-prominent);
     text-transform: initial;
 
     .description {
@@ -25,5 +23,9 @@
         display: inline-block;
         vertical-align: middle;
         margin: 0 8px;
+
+        .color1-fill {
+            fill: var(--text-profit-success);
+        }
     }
 }

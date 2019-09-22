@@ -67,7 +67,7 @@ VerticalTab.defaultProps = {
 VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
-            component: PropTypes.func,
+            component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
             icon     : PropTypes.string,
             onClick  : PropTypes.func,
             title    : PropTypes.string,

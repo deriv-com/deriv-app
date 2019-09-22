@@ -10,15 +10,15 @@
         margin-top: 0.8em;
     }
     &__input {
-        @include themify($themes) {
-            background: themed('background_container_color');
-            color: themed('text_color');
+        background: var(--fill-normal);
+        border: 1px solid var(--border-normal);
 
-            &:hover, &:focus, &:active {
-                border-color: themed('border_hover_color');
-            }
+        &:hover {
+            border-color: var(--border-hover);
         }
-
+        &:focus, &:active {
+            border-color: var(--border-active);
+        }
         &::-ms-clear { // Edge: hide clear icon for increment input
             display: none;
         }
@@ -83,8 +83,8 @@
         position: absolute;
         top: 7px;
         z-index: 2;
-        transform: translate3d(-275px, 0, 0);
-        opacity: 0;
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
         transition: transform 0.25s ease, opacity 0.25s linear;
 
         &--left {
@@ -94,6 +94,16 @@
             }
             &-enter-done {
                 transform: translate3d(-295px, 0, 0);
+                opacity: 1;
+            }
+        }
+        &--bottom {
+            &-enter, &-exit {
+                transform: translate3d(0, 0, 0);
+                opacity: 0;
+            }
+            &-enter-done {
+                transform: translate3d(0, 33px, 0);
                 opacity: 1;
             }
         }

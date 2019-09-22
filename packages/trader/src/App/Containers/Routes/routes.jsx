@@ -18,13 +18,19 @@ const Routes = (props) => {
         );
     }
 
-    return <BinaryRoutes is_logged_in={props.is_logged_in} />;
+    return (
+        <BinaryRoutes
+            is_logged_in={props.is_logged_in}
+            passthrough={props.passthrough}
+        />
+    );
 };
 
 Routes.propTypes = {
     error       : MobxPropTypes.objectOrObservableObject,
     has_error   : PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_virtual  : PropTypes.bool,
 };
 
 // need to wrap withRouter around connect

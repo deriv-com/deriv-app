@@ -217,6 +217,22 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_fully_authenticated() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get landing_company_shortcode() {
+        return this.accounts[this.loginid].landing_company_shortcode;
+    }
+
+    @computed
+    get landing_company() {
+        return this.landing_companies;
+    }
+
+    @computed
     get is_valid_login() {
         if (!this.is_logged_in) return true;
         const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
@@ -340,7 +356,6 @@ export default class ClientStore extends BaseStore {
             const client_accounts           = JSON.parse(LocalStore.get(storage_key));
             const {
                 oauth_token,
-                currency,
                 client_id,
             }                               = response.new_account_real;
             const authorize_response        = await BinarySocket.authorize(oauth_token);
@@ -698,6 +713,7 @@ export default class ClientStore extends BaseStore {
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
+        this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();
@@ -858,6 +874,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.initAccountCurrency(currency);
     }
 
+    @action.bound
     fetchResidenceList() {
         WS.residenceList().then(response => {
             runInAction(() => {
@@ -878,6 +895,20 @@ export default class ClientStore extends BaseStore {
         if (!response.error) {
             this.statement = response.statement;
         }
+    }
+
+    @action.bound
+    getChangeableFields() {
+        const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
+        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, this.landing_company, 'changeable_fields');
+            if (has_changeable_field) {
+            let changeable_fields = [];
+            if (changeable && changeable.only_before_auth) {
+                changeable_fields = [...changeable.only_before_auth];
+            }
+            return changeable_fields;
+        }
+        return [];
     }
 }
 /* eslint-enable */

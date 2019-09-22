@@ -16,16 +16,13 @@ $header-height: 3.6em;
     left: 4px;
     box-sizing: border-box;
     opacity: 0;
-    color: $COLOR_LIGHT_BLACK_1;
     transform: translateX(-100%);
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;
     border-radius: $BORDER_RADIUS;
-    @include themify($themes) {
-        border: 1px solid themed('background_container_color');
-        background-color: themed('background_container_color');
-        color: themed('text_color');
-    }
+    border: 1px solid var(--general-section-1);
+    background-color: var(--general-section-1);
+    color: var(--text-prominent);
 
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
@@ -46,9 +43,7 @@ $header-height: 3.6em;
             left: 9px;
             top: 39px;
             z-index: 1;
-            @include themify($themes) {
-                box-shadow: 0 8px 2px -2px themed('background_container_color') inset;
-            }
+            box-shadow: 0 8px 2px -2px var(--general-section-1) inset;
         }
     }
     &__body {
@@ -57,9 +52,7 @@ $header-height: 3.6em;
         box-sizing: border-box;
         overflow: hidden;
         align-self: center;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-general);
     }
     &__footer {
         position: relative;
@@ -75,39 +68,23 @@ $header-height: 3.6em;
             width: calc(100% - 18px);
             left: 9px;
             top: -6px;
-            @include themify($themes) {
-                box-shadow: 0 -8px 2px -2px themed('background_container_color') inset;
-            }
+            box-shadow: 0 8px 2px -2px var(--general-section-1) inset;
         }
         .btn {
             width: 100%;
             margin: 8px;
             height: 40px;
-            @include themify($themes) {
-                background-color: themed('background_button_color');
-                border-color: themed('background_button_color');
-            }
 
-            &:hover {
-                @include themify($themes) {
-                    background-color: themed('tab_hover_color');
-                }
-            }
             .btn__text {
-                font-size: 1.2em;
+                font-size: 1.4em;
                 font-weight: bold;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
             }
         }
     }
     &__title {
         font-size: 1.4em;
         font-weight: bold;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
     &__icon-main {
         margin-right: 0.8em;

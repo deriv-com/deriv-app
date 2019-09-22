@@ -1,0 +1,61 @@
+.summary {
+    margin: 16px;
+
+    &__tiles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 24px 0;
+    }
+    &__tile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: $BORDER_RADIUS;
+        width: 32%;
+        max-width: 32%;
+        text-align: center;
+        background-color: $COLOR_LIGHT_GRAY_3;
+        padding: 8px 8px 0;
+        margin-bottom: 2%;
+        height: 56px;
+
+        &-title {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-bold-black, none);
+        }
+        &-content {
+            height: 18px;
+            margin-bottom: 4px;
+            @include typeface(--small-center-normal-black, none);
+
+            &.win {
+                @include themify($themes) {
+                    color: themed('won_color');
+                }
+            }
+            &.loss {
+                @include themify($themes) {
+                    color: themed('loss_color');
+                }
+            }
+        }
+    }
+    &__amount {
+        @include typeface(--small-center-normal-black, none);
+
+        &--positive {
+            @include themify($themes) {
+                font-weight: bold;
+                color: themed('won_color');
+            }
+        }
+        &--negative {
+            @include themify($themes) {
+                font-weight: bold;
+                color: themed('loss_color');
+            }
+        }
+    }
+}

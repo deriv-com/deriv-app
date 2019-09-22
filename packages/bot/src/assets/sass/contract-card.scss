@@ -1,0 +1,144 @@
+.db-contract-card {
+    $contract-card: &;
+
+    border: 1px solid $COLOR_LIGHT_GRAY_3;
+    border-radius: $BORDER_RADIUS;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 151px;
+    min-height: 151px;
+    position: relative;
+
+    &__underlying {
+        border-radius: $BORDER_RADIUS - 1px;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        padding: 11px 5px;
+
+        &-name,
+        &-type {
+            display: flex;
+            align-items: center;
+        }
+
+        &-type,
+        &-symbol {
+            margin-left: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        &-type {
+            &-icon {
+                display: flex;
+                align-self: center; 
+            }
+        }
+    }
+
+    &__separator {
+        margin: 0 8px;
+        height: 2px;
+        border-top: 1px solid #f2f3f4; // TODO update-colours
+    }
+    &__stats {
+        margin: auto 15px;
+        padding: 8px 0;
+    }
+    &__grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        padding: 2px 20px;
+    }
+    &__profit-loss,
+    &__indicative-price,
+    &__purchase-price,
+    &__potential-payout {
+        align-items: center;
+        display: flex;
+        text-align: center;
+        height: 16px;
+
+        &-label {
+            font-size: 10px;
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &-amount {
+            min-height: 16px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+    &__profit-loss {
+        &--positive {
+            @include themify($themes) {
+                color: themed('won_color');
+            }
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+        &--negative {
+            @include themify($themes) {
+                color: themed('loss_color');
+            }
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--is-crypto {
+            margin-left: -6px;
+        }
+    }
+    &__indicative-movement {
+        display: flex;
+        align-items: center;
+        width: 16px;
+        margin-left: 2px;
+    }
+    &--inactive {
+        background-image: linear-gradient(to bottom, rgb(245, 245, 245), $COLOR_WHITE);
+        @include themify($themes) {
+            border: 1px solid themed('container_color');
+        }
+        font-size: 14px;
+        justify-content: center;
+        margin: auto;
+        text-align: center;
+    }
+    &--is-winning {
+        #{$contract-card}__underlying {
+            @include themify($themes) {
+                background-image: themed('won_gradient_color');
+            }
+        }
+    }
+    &--is-losing {
+        #{$contract-card}__underlying {
+            @include themify($themes) {
+                background-image: themed('lost_gradient_color');
+            }
+        }
+    }
+    &--is-loading {
+        @include themify($themes) {
+            border: 1px solid themed('container_color');
+        }
+    }
+    &--completed {
+        @include themify($themes) {
+            border: 1px solid themed('container_color');
+        }
+
+        &:hover {
+            border: 1px solid $COLOR_LIGHT_GRAY_3;
+        }
+    }
+}

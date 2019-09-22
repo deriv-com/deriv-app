@@ -11,8 +11,11 @@ class VerticalTab extends React.Component {
         this.setSelectedIndex(props);
     }
 
-    setSelectedIndex = ({ list, selected_index }) => {
-        this.props.setModalIndex(typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index);
+    setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
+        const index = typeof selected_index === 'undefined'
+            ? (is_routed ? list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : '')
+            : selected_index;
+        this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
     };
 
     changeSelected = (e) => {
@@ -63,6 +66,7 @@ VerticalTab.propTypes = {
     ),
     action_bar_classname: PropTypes.string,
     classNameHeader     : PropTypes.string,
+    current_path        : PropTypes.string,
     header_title        : PropTypes.string,
     id                  : PropTypes.string,
     is_full_width       : PropTypes.bool,

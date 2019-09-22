@@ -173,8 +173,9 @@
         }
     }
     &--show {
-        border: 1px solid var(--border-active) !important;
-
+        .dc-dropdown__display {
+            border: 1px solid var(--border-active);
+        }
         & > .dc-dropdown__select-arrow {
             transform: rotate(-180deg);
 

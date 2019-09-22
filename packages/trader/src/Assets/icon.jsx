@@ -6,6 +6,11 @@ class Icon extends React.PureComponent {
         super(props);
         /* When adding a new icon, arrange it by following the ascending file system arrangement */
         this.icons = {
+            // AccountManagement
+            IconSecurity    : React.lazy(() => import('./AccountManagement/icon-security.jsx')),
+            IconVerification: React.lazy(() => import('./AccountManagement/icon-verification.jsx')),
+            IconAPIError    : React.lazy(() => import('./AccountManagement/icon-error.jsx')),
+
             // Common
             IconAccountTransfer   : React.lazy(() => import('./Common/icon-account-transfer.jsx')),
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),
@@ -78,6 +83,7 @@ class Icon extends React.PureComponent {
             IconPortfolio       : React.lazy(() => import('./Header/NavBar/icon-portfolio.jsx')),
             IconReports         : React.lazy(() => import('./Header/NavBar/icon-reports.jsx')),
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
+            IconUser            : React.lazy(() => import('./Header/NavBar/icon-user.jsx')),
 
             // Reports
             IconDemo                : React.lazy(() => import('./Reports/icon-demo.jsx')),

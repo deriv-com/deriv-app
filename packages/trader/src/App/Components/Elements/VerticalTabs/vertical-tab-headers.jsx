@@ -1,75 +1,27 @@
-import classNames  from 'classnames';
-import React       from 'react';
-import { NavLink } from 'react-router-dom';
-import Icon        from 'Assets/icon.jsx';
+import React                  from 'react';
+import { VerticalTabWrapper } from './vertical-tab-wrapper.jsx';
+import {
+    VerticalTabHeader,
+    VerticalTabHeaderTitle }  from './vertical-tab-header.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
     render() {
         return (
-            <div className={classNames('vertical-tab__tab', this.props.className)}>
+            <VerticalTabWrapper className={this.props.className}>
                 {this.props.header_title &&
-                    <div className='vertical-tab__header-title'>
-                        <p>{ this.props.header_title }</p>
-                    </div>
+                    <VerticalTabHeaderTitle header_title={this.props.header_title} />
                 }
-
-                {this.props.items.map(item => {
-                    // Capitalize only the first letter of the label and make the rest lowercase
-                    const label = item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
-
-                    if (item.container && this.props.visible_items.indexOf(item.container) === -1) {
-                        return null;
-                    }
-
-                    return (
-                        this.props.is_routed ?
-                            <NavLink
-                                id={`dt_${label}_link`}
-                                key={item.path}
-                                to={item.path}
-                                onClick={() => this.props.onChange(item)}
-                                className='vertical-tab__header'
-                                activeClassName={
-                                    classNames({
-                                        'vertical-tab__header--active': this.props.selected.label === item.label,
-                                    })
-                                }
-                            >
-                                <Icon
-                                    icon={item.icon}
-                                    className={classNames('vertical-tab__header__icon', {
-                                        'vertical-tab__header__icon--active': this.props.selected.label === item.label,
-                                    })}
-                                />
-                                <span className='vertical-tab__header__link'>{label}</span>
-                            </NavLink>
-                            :
-                            <div
-                                id={`dt_${label}_link`}
-                                className={
-                                    classNames('vertical-tab__header', {
-                                        'vertical-tab__header--active': this.props.selected.label === item.label,
-                                    })
-                                }
-                                key={item.label}
-                                onClick={() => this.props.onChange(item)}
-                            >
-                                <Icon
-                                    icon={item.icon}
-                                    className={classNames('vertical-tab__header__icon', {
-                                        'vertical-tab__header__icon--active': this.props.selected.label === item.label,
-                                    })}
-                                />
-                                <a
-                                    key={item.label}
-                                    className='vertical-tab__header__link'
-                                >
-                                    {label}
-                                </a>
-                            </div>
-                    );
-                })}
-            </div>
+                {this.props.items.map((item, idx) => (
+                    <VerticalTabHeader
+                        item={item}
+                        onChange={this.props.onChange || undefined}
+                        is_routed={this.props.is_routed}
+                        selected={this.props.selected}
+                        key={idx}
+                    />
+                )
+                )}
+            </VerticalTabWrapper>
         );
     }
 }

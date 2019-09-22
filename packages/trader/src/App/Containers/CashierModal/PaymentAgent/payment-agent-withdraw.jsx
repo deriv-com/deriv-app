@@ -180,7 +180,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                             </React.Fragment>
                                                             }
                                                             <Button
-                                                                className='cashier__form-submit-button btn--primary btn--primary--orange'
+                                                                className='cashier__form-submit-button btn--primary--default'
                                                                 type='submit'
                                                                 is_disabled={
                                                                     !values.payment_method || !isValid || isSubmitting

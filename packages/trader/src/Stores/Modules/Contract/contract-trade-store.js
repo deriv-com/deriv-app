@@ -138,7 +138,6 @@ export default class ContractTradeStore extends BaseStore {
         });
 
         if (is_tick_contract && this.granularity !== 0) {
-            console.warn({ granularity: this.granularity });
             this.root_store.ui.addNotification(
                 clientNotifications.switch_to_tick_chart
             );
@@ -190,7 +189,7 @@ export default class ContractTradeStore extends BaseStore {
             this.contracts.forEach(contract =>  {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
-                    if(response.proposal_open_contract.is_sold) {
+                    if (response.proposal_open_contract.is_sold) {
                         this.root_store.ui.removeNotification(
                             clientNotifications.switch_to_tick_chart
                         );

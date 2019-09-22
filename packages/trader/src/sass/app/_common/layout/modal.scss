@@ -12,9 +12,7 @@
     display: none;
     overflow: hidden;
     opacity: 0;
-    @include themify($themes) {
-        background-color: themed('background_modal_overlay');
-    }
+    background-color: var(--overlay-outside-dialog);
 
     &:not(:empty) {
         display: flex;

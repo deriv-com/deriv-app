@@ -1,13 +1,13 @@
-// import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
-// import { localize }         from 'App/i18n';
+import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
+import { BinaryLink }       from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
@@ -49,6 +49,9 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
+                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
+                        <Icon icon='IconUser' />
+                    </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={formatMoney(currency, balance, true)}
@@ -78,22 +81,6 @@ export class AccountActions extends Component {
                         is_payment_agent_visible={is_payment_agent_visible}
                     />
                     }
-                    {/* {!( */}
-                    {/*    is_virtual */}
-                    {/* ) && // TODO: remove this when cashier pop up is ready */}
-                    {/* <Button */}
-                    {/*    id='dt_deposit_button' */}
-                    {/*    className='btn--primary btn--primary--orange acc-info__button' */}
-                    {/*    has_effect */}
-                    {/*    text={localize('Deposit')} */}
-                    {/*    onClick={() => { */}
-                    {/*        window.open(urlFor('cashier', undefined, undefined, true), */}
-                    {/*            '_blank', */}
-                    {/*            'noopener', */}
-                    {/*            'noreferrer', */}
-                    {/*        ); */}
-                    {/*    }} */}
-                    {/* />} */}
                 </React.Fragment>
             );
         }

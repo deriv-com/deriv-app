@@ -43,7 +43,7 @@ class PaymentAgentList extends React.Component {
                                 <div className='payment-agent__instructions-section'>
                                     <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
                                     <Button
-                                        className='btn--primary btn--primary--orange payment-agent__button'
+                                        className='btn--primary--default payment-agent__button'
                                         has_effect
                                         text={localize('Request withdrawal form')}
                                         onClick={this.props.sendVerificationEmail}

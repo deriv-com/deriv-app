@@ -5,9 +5,8 @@ import { Button, Modal } from 'deriv-components';
 import { localize }      from 'App/i18n';
 import Lazy              from 'App/Containers/Lazy';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
+import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
-
-const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
 
 const Deposit         = () => import('App/Containers/CashierModal/deposit.jsx');
 const Withdrawal      = () => import('App/Containers/CashierModal/withdrawal.jsx');
@@ -109,7 +108,7 @@ class ToggleCashier extends React.Component {
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary btn--primary--orange')}
+                    className={classNames(className, 'btn--primary--default')}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}

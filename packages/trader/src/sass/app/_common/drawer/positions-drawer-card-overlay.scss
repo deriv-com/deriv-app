@@ -14,10 +14,10 @@
         height: calc(100% - 36px);
 
         &--won {
-            color: $COLOR_GREEN_1;
+            color: var(--text-profit-success);
         }
         &--lost {
-            color: $COLOR_RED;
+            color: var(--text-loss-danger);
         }
         &-wrapper {
             cursor: pointer;
@@ -38,9 +38,7 @@
             content: '\0000D7';
             font-size: 24px;
             font-weight: 300;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
     }
     &__icon {

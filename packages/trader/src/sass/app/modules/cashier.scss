@@ -1,5 +1,6 @@
 /** @define cashier */
 .cashier {
+    // TODO: until here
     &__content {
         width: 100%;
     }
@@ -7,9 +8,7 @@
         text-align: center;
 
         &, &--align-left {
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             width: 100%;
             height: 100%;
             font-size: 1.4rem;
@@ -108,7 +107,7 @@
     }
     &__transferred {
         &-amount {
-            color: $COLOR_GREEN_1;
+            color: var(--text-profit-success);
             font-size: 3.2rem;
             line-height: 0.75;
             margin-bottom: 1.6rem;
@@ -153,9 +152,7 @@
             margin-bottom: 1.6rem;
         }
         &__text {
-            @include themify($themes) {
-                color: themed('error_color');
-            }
+            color: var(--text-loss-danger);
             font-weight: bold;
             font-size: 1.6rem;
             line-height: 1.5;
@@ -176,9 +173,7 @@
         line-height: 1.5;
     }
     &__header, &__text {
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
     }
     &__verify-button {
         margin-top: 3.2rem;
@@ -198,9 +193,7 @@
             margin: auto;
 
             &-title {
-                @include themify($themes) {
-                    color: themed('text_primary_color');
-                }
+                color: var(--text-general);
                 font-size: 1.6rem;
                 font-weight: bold;
                 margin-bottom: 0.8rem;
@@ -211,9 +204,7 @@
                 }
             }
             &-text {
-                @include themify($themes) {
-                    color: themed('text_primary_color');
-                }
+                color: var(--text-general);
             }
         }
         &-resend, &-sent {
@@ -278,9 +269,7 @@
         }
     }
     &__disclaimer {
-        @include themify($themes) {
-            background-color: themed('background_color');
-        }
+        background-color: var(--general-section-1);
         margin-top: 24px;
         padding: 8px 16px;
         font-size: 1.2rem;
@@ -304,12 +293,10 @@
     }
     &__contact {
         text-decoration: none;
-        color: var(--color-red);
+        color: var(--brand-red-coral);
     }
     &__separator {
-        @include themify($themes) {
-            border-bottom: 1px solid themed('background_container_color');
-        }
+        border-bottom: var(--general-section-2);
         margin-top: 32px;
         margin-bottom: 16px;
         // cover the whole container instead of within the container's padding
@@ -347,9 +334,7 @@
 /** @define account-transfer */
 .account-transfer {
     &__notes {
-        @include themify($themes) {
-            color: themed('text_secondary_color');
-        }
+        color: var(--text-less-prominent);
         margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
@@ -376,9 +361,7 @@
         margin: 0 0.4rem;
     }
     &__balance {
-        @include themify($themes) {
-            color: themed('text_secondary_color');
-        }
+        color: var(--text-less-prominent);
     }
     &__receipt {
         &-icon {
@@ -425,9 +408,7 @@
 /** @define dc-modal-header; */
 .dc-modal-header {
     &__modal-cashier {
-        @include themify($themes) {
-            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
-        }
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__title {
         &--modal-cashier {

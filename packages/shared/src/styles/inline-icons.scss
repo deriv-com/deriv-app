@@ -9,23 +9,21 @@
 */
 
 %inline-icon {
-    @include themify($themes) {
-        @include colorIcon(themed('text_primary_color'), none);
+    @include colorIcon(var(--text-general), none);
 
-        &.active {
-            @include colorIcon(themed('navbar_background_color'), themed('navbar_active_color'), themed('navbar_active_color'), none);
-        }
-        &.disabled {
-            @include colorIcon(themed('disabled_color'), none);
-        }
-        &.white {
-            @include colorIcon(themed('text_color'));
-        }
-        &.border_hover_color {
-            @include colorIcon(themed('border_hover_color'));
-        }
-        &.secondary {
-            @include colorIcon(themed('text_secondary_color'));
-        }
+    &.active {
+        @include colorIcon(var(--state-active), var(--text-prominent), var(--text-prominent), none);
+    }
+    &.disabled {
+        @include colorIcon(var(--text-disabled), none);
+    }
+    &.white {
+        @include colorIcon(var(--text-prominent));
+    }
+    &.border_hover_color {
+        @include colorIcon(var(--text-prominent));
+    }
+    &.secondary {
+        @include colorIcon(var(--text-less-prominent));
     }
 }

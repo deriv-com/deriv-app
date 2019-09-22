@@ -219,7 +219,6 @@ class PersonalDetails extends Component {
                     ({
                         handleSubmit,
                         isSubmitting,
-                        touched,
                         errors,
                     }) => (
                         <form onSubmit={handleSubmit}>

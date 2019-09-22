@@ -1,4 +1,5 @@
 import PropTypes            from 'prop-types';
+import fromEntries          from 'object.fromentries';
 import React                from 'react';
 import { localize }         from 'App/i18n';
 import { connect }          from 'Stores/connect';
@@ -56,7 +57,7 @@ class AccountWizard extends React.Component {
     get form_values() {
         return this.state.items.map(item => item.form_value)
             .reduce((obj, item) => {
-                const values = Object.fromEntries(new Map(Object.entries(item)));
+                const values = fromEntries(new Map(Object.entries(item)));
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
                 }
@@ -96,7 +97,7 @@ class AccountWizard extends React.Component {
         }
     };
 
-    prevStep = () => {
+    prevStep = (e) => {
         this.setState({
             step      : this.state.step - 1,
             form_error: '',

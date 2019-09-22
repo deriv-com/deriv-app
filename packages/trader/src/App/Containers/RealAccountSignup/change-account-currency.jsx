@@ -39,7 +39,11 @@ class ChangeAccountCurrency extends Component {
                     touched,
                     isSubmitting,
                 }) => (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+                    }}
+                    >
                         <h1>
                             <Localize i18n_default_text='Change your currency' />
                         </h1>

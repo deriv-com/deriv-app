@@ -30,6 +30,7 @@ const FormSubmitButton = ({
             <Button
                 className={'account-wizard__btn account-wizard__btn--cancel'}
                 onClick={onCancel}
+                type='button'
             >
                 <Localize i18n_default_text={cancel_label} />
             </Button>

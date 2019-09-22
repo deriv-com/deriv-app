@@ -1,0 +1,60 @@
+.db-contract-card__result {
+    $contract_result: &;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $BORDER_RADIUS;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-sizing: border-box;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include themify($themes) {
+        background-color: rgba(themed('container_color'), 0.8);
+    }
+
+    &:hover {
+        background: 0 !important;
+
+        #{$contract_result}-caption {
+            opacity: 0;
+        }
+    }
+    &-caption {
+        display: flex;
+        align-items: center;
+        transition: opacity 0.25s linear;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    &-icon {
+        margin-left: 10px;
+    }
+    &--won {
+        > #{$contract_result}-caption {
+            @include themify($themes) {
+                color: themed('won_color');
+            }
+        }
+
+        @include themify($themes) {
+            background-image: themed('won_gradient_color');
+        }
+    }
+    &--lost {
+        > #{$contract_result}-caption {
+            @include themify($themes) {
+                color: themed('loss_color');
+            }
+        }
+
+        @include themify($themes) {
+            background-image: themed('lost_gradient_color');
+        }
+    }
+}

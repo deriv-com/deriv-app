@@ -69,7 +69,10 @@ const ModalContent = ({
 };
 
 class ToggleCashier extends React.Component {
-    onClickDeposit = () => { this.props.toggleCashier('deposit'); };
+    onClickDeposit = () => {
+        this.props.setCashierActiveTab('deposit');
+        this.props.toggleCashier();
+    };
 
     render() {
         const {
@@ -129,6 +132,8 @@ ToggleCashier.propTypes = {
     enableApp               : PropTypes.func,
     is_open                 : PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    setCashierActiveTab     : PropTypes.func,
+    toggleCashier           : PropTypes.func,
     toggleModal             : PropTypes.func,
 };
 

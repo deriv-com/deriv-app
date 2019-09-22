@@ -28,6 +28,7 @@ const Header = ({
     loginid,
     onClickUpgrade,
     disableApp,
+    setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
 }) => (
@@ -64,6 +65,7 @@ const Header = ({
                         is_virtual={is_virtual}
                         loginid={loginid}
                         onClickUpgrade={onClickUpgrade}
+                        setCashierActiveTab={setCashierActiveTab}
                         toggleAccountsDialog={toggleAccountsDialog}
                         toggleCashierModal={toggleCashierModal}
                     />
@@ -93,6 +95,7 @@ Header.propTypes = {
     is_virtual              : PropTypes.bool,
     loginid                 : PropTypes.string,
     onClickUpgrade          : PropTypes.func,
+    setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.func,
     toggleCashierModal      : PropTypes.func,
 };
@@ -118,6 +121,7 @@ export default connect(
         is_route_modal_on   : ui.is_route_modal_on,
         is_mobile           : ui.is_mobile,
         disableApp          : ui.disableApp,
+        setCashierActiveTab : ui.setCashierActiveTab,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleCashierModal  : ui.toggleCashierModal,
     })

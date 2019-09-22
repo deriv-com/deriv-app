@@ -40,6 +40,7 @@ export class AccountActions extends Component {
             is_virtual,
             loginid,
             onClickUpgrade,
+            setCashierActiveTab,
             toggleAccountsDialog,
             toggleCashierModal,
         } = this.props;
@@ -68,6 +69,7 @@ export class AccountActions extends Component {
                         toggleCashier={toggleCashierModal}
                         is_cashier_visible={is_cashier_modal_on}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        setCashierActiveTab={setCashierActiveTab}
                     />
                     }
                 </React.Fragment>
@@ -95,6 +97,7 @@ AccountActions.propTypes = {
     is_virtual              : PropTypes.any,
     loginid                 : PropTypes.any,
     onClickUpgrade          : PropTypes.any,
+    setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.any,
     toggleCashierModal      : PropTypes.any,
 };

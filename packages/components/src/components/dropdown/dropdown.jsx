@@ -51,7 +51,8 @@ class Dropdown extends React.PureComponent {
         return Array.isArray(this.props.list) ?
             (this.props.list.length < 2) :
             // object has less than two props or inner object has less than two props
-            (Object.keys(this.props.list).length < 2 && this.props.list[Object.keys(this.props.list)[0]].length < 2);
+            (Object.keys(this.props.list).length &&
+                Object.keys(this.props.list).length < 2 && this.props.list[Object.keys(this.props.list)[0]].length < 2);
     }
 
     get container_class_name() {

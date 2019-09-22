@@ -62,6 +62,11 @@ export const Icon = svgItem => (props) => {
     );
 };
 
+export const preloadSprite = () => {
+    const sprite = new Image();
+    sprite.src = `${__webpack_public_path__}bot-sprite.svg`;
+};
+
 // General
 export const LogoIcon              = Icon(logo);
 export const TradeActive           = Icon(tradeActive);

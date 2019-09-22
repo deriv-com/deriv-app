@@ -1,4 +1,5 @@
 import Bot from './app.jsx';
+import { preloadSprite } from './components/icons.jsx';
 
 const getUrlBase = (path = '') => {
     const l = window.location;
@@ -13,5 +14,6 @@ export function setBotPublicPath(path) {
 }
 
 setBotPublicPath(getUrlBase('/js/bot/'));
+preloadSprite();
 
 export default Bot;

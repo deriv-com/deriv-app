@@ -64,7 +64,7 @@ export const Icon = svgItem => (props) => {
 
 export const preloadSprite = () => {
     const sprite = new Image();
-    sprite.src = `${__webpack_public_path__}bot-sprite.svg`;
+    sprite.src = `${__webpack_public_path__}bot-sprite.svg`; // eslint-disable-line
 };
 
 // General

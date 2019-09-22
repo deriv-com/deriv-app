@@ -16,27 +16,30 @@
         grid-template-columns: 1fr 1.5fr;
         padding: 11px 5px;
 
-        &-name,
-        &-type {
+        &-name {
             display: flex;
             align-items: center;
         }
-
-        &-type,
         &-symbol {
             margin-left: 8px;
             font-size: 12px;
             font-weight: bold;
         }
-
         &-type {
+            display: flex;
+            align-items: center;
+
+            &-label {
+                margin-left: 8px;
+                font-size: 12px;
+                font-weight: bold;
+            }
             &-icon {
                 display: flex;
-                align-self: center; 
+                align-self: center;
             }
         }
     }
-
     &__separator {
         margin: 0 8px;
         height: 2px;

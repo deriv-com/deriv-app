@@ -49,7 +49,7 @@ const drawerFooter = (props) => {
     );
 };
 
-const RunPanel = (props) => {
+const RunPanel = () => {
     const content = drawerContent();
     const footer = drawerFooter({ onClick: onRunBotClick });
 

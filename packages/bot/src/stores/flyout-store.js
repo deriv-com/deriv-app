@@ -25,7 +25,7 @@ export default class FlyoutStore {
     @action.bound runAnimation () {
         setInterval(() => {
             runInAction(() => {
-                if (this.contract_status >= 5) {
+                if (this.contract_status >= 4) {
                     this.contract_status = 0;
                 } else {
                     this.contract_status += 1;

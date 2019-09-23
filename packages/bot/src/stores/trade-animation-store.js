@@ -5,7 +5,7 @@ const CONTRACT_STATUS = [
     'Attempting to Buy',
     'Buy Succeeded',
     'Bot is stopping',
-    'Closing Contract',
+    // 'Closing Contract',
     'Contract Closed',
 ];
 
@@ -20,17 +20,19 @@ export default class TradeAnimationStore {
     @action.bound onMount () {
         reaction(() => this.root_store.flyout.contract_status, () => {
             const { flyout: { contract_status } } = this.root_store;
-            const progress_status = contract_status > 2 ? contract_status - 2 : contract_status - 1;
+            const progress_status = contract_status - (contract_status === 3 ? 2 : 1);
 
             this.status_title = CONTRACT_STATUS[contract_status];
 
             const status_class_temp = observable(['', '', '']);
-            if (progress_status >= 0 && progress_status < 3) {
+            if (progress_status >= 0 && progress_status < status_class_temp.length) {
                 status_class_temp[progress_status] =  'active';
             }
 
-            for (let i = 0; i < progress_status; i++) {
-                status_class_temp[i] = 'completed';
+            if (progress_status) {
+                for (let i = 0; i < progress_status; i++) {
+                    status_class_temp[i] = 'completed';
+                }
             }
             this.status_class = status_class_temp;
         });

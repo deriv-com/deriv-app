@@ -124,6 +124,11 @@
     }
 }
 
+@keyframes blinking-network-status {
+    40% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
 /** @define network-status */
 .network-status {
     &__wrapper {
@@ -149,9 +154,8 @@
             background: $COLOR_RED;
         }
         &--blinker {
-            @include themify($themes) {
-                background: themed('disabled_color');
-            }
+            animation: blinking-network-status .4s alternate infinite;
+            background: $COLOR_GREEN_1;
         }
     }
 }

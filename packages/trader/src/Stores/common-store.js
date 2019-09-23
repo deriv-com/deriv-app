@@ -4,8 +4,13 @@ import {
 import moment              from 'moment';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore           from './base-store';
+import { clientNotifications }    from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
+    constructor(root_store) {
+        super({ root_store });
+    }
+
     @observable server_time      = moment.utc();
     @observable current_language = currentLanguage;
     @observable has_error        = false;
@@ -32,12 +37,19 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setNetworkStatus(status, is_online) {
         if (this.network_status.class) {
-            this.network_status.class   = status.class;
+            this.network_status.class = status.class;
             this.network_status.tooltip = status.tooltip;
         } else {
             this.network_status = status;
         }
         this.is_network_online = is_online;
+
+        const ui = this.root_store.ui;
+        if (!is_online) {
+            ui.addNotification(clientNotifications.you_are_offline);
+        } else {
+            ui.removeNotification(clientNotifications.you_are_offline);
+        }
     }
 
     @action.bound

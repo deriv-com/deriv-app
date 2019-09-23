@@ -7,47 +7,35 @@ const localize     = require('../../App/i18n').localize;
  * 2. offline: it is offline
  */
 const NetworkMonitorBase = (() => {
-    const StatusConfig = (() => {
-        let status_config;
-
-        const initStatusConfig = () => ({
-            online  : { class: 'online',  tooltip: localize('Online') },
-            offline : { class: 'offline', tooltip: localize('Offline') },
-            blinking: { class: 'blinker', tooltip: localize('Connecting to server') },
-        });
-
-        return {
-            get: (status) => {
-                if (!status_config) {
-                    status_config = initStatusConfig();
-                }
-                return status_config[status];
-            },
-        };
-    })();
-
-    const pendings = {};
-    const pending_keys = {
-        ws_init   : 'ws_init',
-        ws_request: 'ws_request',
-    };
-    const pending_timeouts = {
-        [pending_keys.ws_init]   : 5000,
-        [pending_keys.ws_request]: 10000,
+    const status_config = {
+        online  : { class: 'online',  tooltip: localize('Online') },
+        offline : { class: 'offline', tooltip: localize('Offline') },
+        blinking: { class: 'blinker', tooltip: localize('Connecting to server') },
     };
 
-    let ws_config,
-        network_status,
-        updateUI;
+    let ws_config, setNetworkStatus;
 
     const init = (socket_general_functions, fncUpdateUI) => {
-        updateUI  = fncUpdateUI;
+        let last_status, last_is_online;
+        setNetworkStatus = (status) => {
+            const is_online = isOnline();
+            if (status !== last_status || is_online !== last_is_online) {
+                last_status = status;
+                last_is_online = is_online;
+                fncUpdateUI(status_config[status], is_online);
+            }
+        };
+
         ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
 
         if ('onLine' in navigator) {
-            window.addEventListener('online',  setStatus);
-            window.addEventListener('offline', setStatus);
-        } else { // if not supported, default to online and fallback to WS checks
+            window.addEventListener('online',  () => {
+                setNetworkStatus('blinking');
+                reconnect_after(500);
+            });
+            window.addEventListener('offline', () => setNetworkStatus('offline'));
+        } else {
+            // default to always online and fallback to WS checks
             navigator.onLine = true;
         }
 
@@ -55,71 +43,40 @@ const NetworkMonitorBase = (() => {
             BinarySocket.init(ws_config);
         }
 
-        setStatus(isOnline() ? 'online' : 'offline');
+        setNetworkStatus(isOnline() ? 'blinking' : 'offline');
     };
 
     const isOnline = () => navigator.onLine;
 
-    const wsReconnect = () => {
-        if (isOnline() && BinarySocket.hasReadyState(2, 3)) { // CLOSING or CLOSED
-            BinarySocket.init(ws_config);
-        } else {
-            BinarySocket.send({ ping: 1 }); // trigger a request to get stable status sooner
-        }
-    };
+    // reconnect after timout,
+    // if the network status is online
+    // and the connection is closed or closing.
+    let reconnect_timeout = null;
+    function reconnect_after(timeout) {
+        clearTimeout(reconnect_timeout);
+        reconnect_timeout = setTimeout(() => {
+            reconnect_timeout = null;
+            if (isOnline() && BinarySocket.hasReadyState(2, 3)) {
+                BinarySocket.init(ws_config);
+            } else {
+                BinarySocket.send({ ping: 1 }); // get stable status sooner
+            }
+        }, timeout);
 
-    const setStatus = (status) => {
-        if (!isOnline()) {
-            network_status = 'offline';
-        } else if (pending_keys[status] || network_status === 'offline') {
-            network_status = 'blinking';
-            wsReconnect();
-        } else {
-            network_status = 'online';
-        }
-
-        if (typeof updateUI === 'function') {
-            updateUI(StatusConfig.get(network_status), isOnline());
-        }
-    };
-
-    const ws_events_map = {
-        init   : () => setPending(pending_keys.ws_init),
-        open   : () => clearPendings(pending_keys.ws_init),
-        send   : () => setPending(pending_keys.ws_request),
-        message: () => clearPendings(),
-        close  : () => setPending(pending_keys.ws_init),
+    }
+    const events = {
+        init   : () => setNetworkStatus(isOnline() ? 'blinking' : 'offline'),
+        open   : () => setNetworkStatus(isOnline() ? 'online' : 'offline'),
+        send   : () => {},
+        message: () => setNetworkStatus('online'),
+        close  : () => {
+            setNetworkStatus(isOnline() ? 'blinking' : 'offline');
+            reconnect_after(5000);
+        },
     };
 
     const wsEvent = (event) => {
-        if (typeof ws_events_map[event] === 'function') {
-            ws_events_map[event]();
-        }
-    };
-
-    const setPending = (key) => {
-        if (!pendings[key]) {
-            pendings[key] = setTimeout(() => {
-                pendings[key] = undefined;
-                setStatus(key);
-            }, pending_timeouts[key]);
-        }
-    };
-
-    const clearPendings = (key) => {
-        const clear = (k) => {
-            clearTimeout(pendings[k]);
-            pendings[k] = undefined;
-            if (k === pending_keys.ws_request) {
-                setStatus('online');
-            }
-        };
-
-        if (key) {
-            clear(key);
-        } else {
-            Object.keys(pendings).forEach(clear);
-        }
+        events[event] && events[event](); // eslint-disable-line
     };
 
     return {

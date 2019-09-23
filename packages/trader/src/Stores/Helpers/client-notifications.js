@@ -164,6 +164,14 @@ export const clientNotifications = {
         ),
         type: 'info',
     },
+    you_are_offline: {
+        key    : 'you_are_offline',
+        header : localize('You are offline'),
+        message: (
+            <Localize i18n_default_text='Check your connection.' />
+        ),
+        type: 'danger',
+    },
 };
 
 const hasMissingRequiredField = (account_settings, client) => {

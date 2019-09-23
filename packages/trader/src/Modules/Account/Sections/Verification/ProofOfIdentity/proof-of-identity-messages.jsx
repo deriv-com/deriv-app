@@ -9,6 +9,7 @@ import IconPassport           from 'Assets/AccountManagement/icon-passport.svg';
 import IconPoiSubmitComplete  from 'Assets/AccountManagement/icon-poi-submit-complete.svg';
 import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-expired.svg';
 import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.svg';
+import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
 
 const IconRow = () => (
@@ -80,14 +81,13 @@ export const UploadComplete = ({ has_poa }) => {
     );
 };
 
-// TODO: check if this really matches unverified
-// export const Unverified = () => (
-//     <IconMessageContent
-//         message={localize('We could not verify your proof of identity')}
-//         text={localize('As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Centre.')}
-//         icon={}
-//     />
-// );
+export const Unverified = () => (
+    <IconMessageContent
+        message={localize('We could not verify your proof of identity')}
+        text={localize('As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our Help Centre.')}
+        icon={<IconPoiUnverified />}
+    />
+);
 
 export const Expired = () => (
     <IconMessageContent

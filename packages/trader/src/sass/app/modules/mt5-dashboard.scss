@@ -197,11 +197,12 @@
         }
     }
     &__account-selection {
-        height: 4em;
-        width: 27em;
+        height: 4rem;
+        width: 27rem;
         padding: 0;
+        margin: 1.6rem;
         background-color: var(--brand-red-coral);
-        font-weight: bold;
+        @include typeface(--paragraph-center-bold-black, none);
         @include themify($themes) {
             color: themed('text_active_color');
         }

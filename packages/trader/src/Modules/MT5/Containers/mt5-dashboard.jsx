@@ -79,7 +79,7 @@ const MT5AccountCard = ({
                 }
 
                 <Button
-                    className='mt5-account-card__account-selection'
+                    className='btn--primary--default mt5-account-card__account-selection'
                     onClick={ () => { onSelectAccount(title); } }
                     type='button'
                 >
@@ -207,7 +207,7 @@ class MT5Dashboard extends React.Component {
                             <p className='mt5-dashboard__welcome-message--paragraph'>
                                 <Localize i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.' />
                             </p>
-                            <Button className='mt5-dashboard__welcome-message--button' type='button'>
+                            <Button className='btn--secondary--large mt5-dashboard__welcome-message--button' type='button'>
                                 <p className='mt5-dashboard__welcome-message--paragraph'>
                                     <Localize i18n_default_text='Learn more' />
                                 </p>

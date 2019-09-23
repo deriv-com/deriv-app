@@ -18,7 +18,8 @@ class PlatformSwitcher extends React.PureComponent {
         <React.Fragment>
             <CSSTransition
                 in={this.state.is_open}
-                classNames='platform_switcher'
+                classNames={'platform_switcher'}
+                timeout={0}
             >
                 <div className='platform_switcher' onClick={this.handleClick}>
                     <Icon className='platform_switcher__icon' icon='IconDeriv' />
@@ -27,11 +28,19 @@ class PlatformSwitcher extends React.PureComponent {
                     <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
                 </div>
             </CSSTransition>
-            <PlatformDropdown
-                platform_config={this.props.platform_config}
-                handleClick={this.handleClick}
-                is_open={this.state.is_open}
-            />
+            <CSSTransition
+                mountOnEnter
+                in={this.state.is_open}
+                classNames='platform_dropdown'
+                timeout={this.state.is_open ? 0 : 250}
+                unmountOnExit
+            >
+                <PlatformDropdown
+                    platform_config={this.props.platform_config}
+                    handleClick={this.handleClick}
+                    is_open={this.state.is_open}
+                />
+            </CSSTransition>
         </React.Fragment>
     );
 }

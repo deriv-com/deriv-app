@@ -1,7 +1,7 @@
 /** @define btn-purchase */
 .btn-purchase {
     position: relative;
-    background-color: $COLOR_GREEN_2;
+    background-color: var(--purchase-section-1);
     overflow: hidden;
     height: 5.6em;
     width: 100%;
@@ -16,7 +16,7 @@
         @include typeface(--paragraph-left-bold-active);
     }
     &__info {
-        color: $COLOR_WHITE;
+        color: $color-white;
         text-align: left;
         position: relative;
         display: flex;
@@ -26,7 +26,7 @@
         height: 56px;
     }
     &__info--left {
-        background-color: $COLOR_GREEN_1;
+        background-color: var(--purchase-main-1);
         width: 40%;
         transition: transform linear 0.25s;
         z-index: 2;
@@ -39,9 +39,11 @@
             @extend %inline-icon.white;
             /* postcss-bem-linter: ignore */
             .color1-fill {
-                @include themify($themes) {
-                    fill: themed('text_active_color') !important;
-                }
+                fill: var(--text-colored-background);
+            }
+            /* postcss-bem-linter: ignore */
+            .color2-fill {
+                fill: var(--text-colored-background);
             }
         }
     }
@@ -59,7 +61,7 @@
     }
     &__effect-detail {
         position: absolute;
-        background-color: $COLOR_GREEN_1;
+        background-color: var(--purchase-main-1);
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         width: 116px;
         height: 100%;
@@ -71,7 +73,7 @@
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         transform: rotate(45deg);
         height: 100%;
-        background: $COLOR_GREEN_1;
+        background: var(--purchase-main-1);
         left: 80px;
         position: absolute;
         top: 0;
@@ -101,14 +103,13 @@
             height: 50%;
             z-index: 0;
             opacity: 0.9;
-            box-shadow: 0 16px 14px 0 rgba(0, 0, 0, 0.24);
+            box-shadow: 0 16px 14px 0 var(--shadow-menu);
             transition: opacity 0.25s linear;
             pointer-events: none;
         }
         &--disabled {
-            .btn-purchase__box-shadow {
-                opacity: 0;
-            }
+            pointer-events: none;
+
             &:hover {
                 transform: none;
             }
@@ -131,42 +132,36 @@
             }
         }
     }
-    &--disabled, &[disabled] {
-        cursor: default;
+    &--1 {
+        background-color: var(--purchase-section-1);
 
-        @include themify($themes) {
-            background-color: themed('btn_purchase_disabled_bg');
-            color: themed('disabled_color');
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-1);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-1);
 
-            .btn-purchase__info--left {
-                background-color: themed('btn_purchase_disabled_accent');
-
-                svg {
-                    @include colorIcon(themed('disabled_color'), themed('disabled_color'));
-                }
-                .btn-purchase__icon_wrapper {
-                    /* postcss-bem-linter: ignore */
-                    .color1-fill {
-                        fill: themed('disabled_color') !important;
-                    }
-                }
-                .btn-purchase__text {
-                    color: themed('disabled_color');
-                }
-            }
-            .btn-purchase__info--right {
-                .btn-purchase__text {
-                    color: themed('disabled_color');
-                }
-            }
-            .btn-purchase__effect-detail {
-                background: themed('btn_purchase_disabled_accent');
-
-                &--arrow {
-                    background: themed('btn_purchase_disabled_accent');
-                }
+            &--arrow {
+                background: var(--purchase-main-1);
             }
         }
+    }
+    &--2 {
+        background-color: var(--purchase-section-2);
+
+        .btn-purchase__info--left {
+            background-color: var(--purchase-main-2);
+        }
+        .btn-purchase__effect-detail {
+            background: var(--purchase-main-2);
+
+            &--arrow {
+                background: var(--purchase-main-2);
+            }
+        }
+    }
+    &--disabled, &[disabled] {
+        cursor: default;
     }
     &--animated--slide {
         .btn-purchase__icon_wrapper, .btn-purchase__text_wrapper {

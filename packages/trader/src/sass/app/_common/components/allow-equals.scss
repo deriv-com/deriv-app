@@ -10,9 +10,7 @@
     &__label {
         @include typeface(--paragraph-left-normal-black, none);
         @include toEm(padding, 0 8px, 1.2em);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         cursor: pointer;
     }
     &__tooltip {

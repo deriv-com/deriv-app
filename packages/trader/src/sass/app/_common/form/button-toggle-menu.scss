@@ -17,31 +17,24 @@
         margin: 0;
         border-radius: 0px;
         width: 50%;
-        @include themify($themes) {
-            background-color: themed('container_color');
+        background-color: var(--state-normal);
 
-            &:hover:not(.button-menu__button--active) {
-                background-color: themed('tab_hover_color');
-            }
+        &:hover:not(.button-menu__button--active) {
+            background-color: var(--state-hover) !important;
         }
-
+        // stylelint-disable-next-line
         span {
             @include typeface(--paragraph-left-normal-black, unset);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
         }
         &--active {
             cursor: initial;
-            @include themify($themes) {
-                background-color: themed('active_color') !important;
-            }
+            background-color: var(--state-active) !important;
 
+            // stylelint-disable-next-line
             span {
                 @include typeface(--paragraph-left-bold-active, unset);
-                @include themify($themes) {
-                    color: themed('text_active_color');
-                }
+                color: var(--text-prominent);
             }
         }
     }
@@ -49,9 +42,7 @@
         position: relative;
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        @include themify($themes) {
-            background-color: themed('container_color');
-        }
+        background-color: var(--state-normal);
 
         .button-menu {
             &__button, &__button--active {
@@ -74,8 +65,6 @@
         z-index: 0;
         transition: transform 0.25s ease;
         pointer-events: none;
-        @include themify($themes) {
-            background-color: themed('active_color') !important;
-        }
+        background-color: var(--state-active) !important;
     }
 }

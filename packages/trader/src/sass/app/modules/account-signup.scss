@@ -32,18 +32,13 @@
     &__btn {
         align-self: flex-end;
         margin: 0;
-        background-color: rgb(255, 68, 79);
+        background-color: var(--button-primary-default);
         font-weight: bold;
-        @include themify($themes) {
-            color: themed('text_active_color');
-        }
+        color: var(--text-prominent);
 
         &--disabled {
-            background-color: rgba(255, 68, 79, 0.32);
-            cursor: initial;
-            @include themify($themes) {
-                color: themed('phase2_button_text');
-            }
+            opacity: 0.32;
+            cursor: not-allowed !important;
         }
     }
     &__residence-field {

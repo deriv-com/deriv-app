@@ -1,4 +1,4 @@
-$BOTTOM_SPACING_REQUIRED: 32px; // Spacing between end of the container and Footer (including shadow)
+$BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
 $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
 
 .vertical-tab {
@@ -6,16 +6,22 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     align-items: flex-start;
     justify-content: flex-start;
     border-radius: $BORDER_RADIUS;
-    @include themify($themes) {
-        background-color: themed('tab_background_color');
-    }
+    background-color: var(--general-section-1);
 
+    &__content-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+    }
     &--full-screen {
         min-height: $MIN_HEIGHT;
 
-        .vertical-tab__tab {
-            min-width: 15%;
-        }
+        // .vertical-tab__tab {
+        //     min-width: 15%;
+        // }
     }
     &:not(.vertical-tab--full-screen) {
         height: 600px;
@@ -29,22 +35,20 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         display: flex;
         flex-flow: row-reverse nowrap;
         justify-content: space-between;
+        align-items: center;
         padding: 16px;
 
         &--icon {
-            @include themify($themes) {
-                @include colorIcon(themed('text_primary_color'));
-            }
+            @include colorIcon(var(--text-general));
         }
         &-wrapper {
             cursor: pointer;
-            padding: 8px 8px 6px;
+            padding: 4px 4px 2px;
             border-radius: $BORDER_RADIUS;
+            margin-left: auto;
 
             &:hover {
-                @include themify($themes) {
-                    background: themed('tab_hover_color');
-                }
+                background: var(--general-hover);
             }
         }
     }
@@ -54,18 +58,13 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         height: 100%;
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
-        @include themify($themes) {
-            background-color: themed('tab_background_color');
-        }
+        background-color: var(--general-section-1);
     }
     &__header-title {
-        @include typeface(--paragraph-center-bold-black, none);
+        @include typeface(--title-center-bold-black, none);
         @include toEm(line-height, 20px);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
         padding: 16px;
-        height: 40px;
         display: flex;
         align-items: center;
         transition: background-color 0.1s ease-in;
@@ -73,12 +72,9 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     }
     &__header {
         @include typeface(--paragraph-center-bold-black, none);
-        @include toEm(line-height, 20px);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        line-height: 1.5;
+        color: var(--text-general);
         padding: 10px 16px;
-        height: 40px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -86,16 +82,13 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         text-decoration: none;
 
         &:hover:not(.vertical-tab__header--active) {
-            @include themify($themes) {
-                background-color: themed('tab_hover_color');
-            }
+            background-color: var(--state-hover);
         }
         &--active {
             @include typeface(--paragraph-left-bold-active, none);
-            @include themify($themes) {
-                background-color: themed('tab_active_background_color');
-            }
-            border-left: 4px solid $COLOR_ORANGE;
+            color: var(--text-prominent);
+            background-color: var(--state-normal);
+            border-left: 4px solid var(--brand-red-coral);
         }
         &__link {
             font-weight: normal;
@@ -105,9 +98,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
         &__icon {
             margin-right: 16px;
-            @include themify($themes) {
-                @include colorIcon(themed('text_primary_color'));
-            }
+            @include colorIcon(var(--text-general));
 
             &--active {
                 // make up for the border being 4px
@@ -124,9 +115,8 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         justify-content: flex-start;
         align-items: flex-start;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-        }
+        position: relative;
+        background-color: var(--general-main-1);
 
         &.vertical-tab:not(.vertical-tab--full-screen) {
             @include toEm(padding, 24px);

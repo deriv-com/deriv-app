@@ -23,8 +23,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "bash ./hooks/pre-push.sh",
-      "post-merge": "npm run build:travis"
+      "post-merge": "bash ./hooks/post-merge.sh"
     }
   }
 }

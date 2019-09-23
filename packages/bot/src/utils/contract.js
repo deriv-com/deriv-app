@@ -1,0 +1,38 @@
+import config from "../constants";
+import { translate } from "./lang/i18n";
+
+// TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.
+export const isEnded = (contract) => (contract.status !== 'open' || !!contract.is_expired || !!contract.is_settleable);
+export const getFinalPrice = (contract) => +(contract.sell_price || contract.bid_price);
+export const getIndicativePrice = (contract) => getFinalPrice(contract) || null;
+
+export const getContractTypeName = (contract) => {
+    const { opposites } = config;
+    let name = translate('Unknown');
+
+    Object.keys(opposites).forEach(opposites_name => {
+        const contract_type_objs = opposites[opposites_name];
+
+        contract_type_objs.forEach(contract_type_obj => {
+            const contract_type_names = Object.entries(contract_type_obj)[0]; // ['CALL', 'Rise']
+
+            if (contract_type_names[0] === contract.contract_type) {
+                // Extra check for CALL & PUT types to distinguish Rise/Fall & Higher/Lower.
+                if (['CALL', 'PUT'].includes(contract_type_names[0])) {
+                    const is_risefall = (parseFloat(contract.barrier) === parseFloat(contract.barrier));
+                    const req_opposite_name = is_risefall ? 'CALLPUT' : 'HIGHERLOWER';
+
+                    console.log({ contract, is_risefall, req_opposite_name });
+
+                    if (opposites_name !== req_opposite_name) {
+                        return;
+                    }
+                }
+
+                name = contract_type_names[1];
+            }
+        });
+    });
+
+    return name;
+}

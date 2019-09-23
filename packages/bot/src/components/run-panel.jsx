@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { IconInfoOutline } from './Icons.jsx';
 import { connect } from '../stores/connect';
-
+import { translate } from '../utils/tools';
 import '../assets/sass/run-panel.scss';
 
 const drawerContent = () => {
     return (
         <Tabs>
-            <div label='Summary' />
-            <div label='Transations' />
-            <div label='Journal' />
+            <div label={translate('Summary')} />
+            <div label={translate('Transations')} />
+            <div label={translate('Journal')} />
         </Tabs>
     );
 };
 
 const drawerFooter = (props) => {
-    const { runBot , stopBot } = props;
+    const { is_running, onRunButtonClick } = props;
 
     return (
         <div className='run-panel__footer'>
@@ -27,8 +27,7 @@ const drawerFooter = (props) => {
                     'btn--flat',
                     'run-panel__button'
                 )}
-                text='Clear stat'
-                onClick={stopBot}
+                text={translate('Clear stat')}
                 has_effect
             />
 
@@ -37,10 +36,21 @@ const drawerFooter = (props) => {
                     'btn--primary',
                     'run-panel__button'
                 )}
-                text='Run bot'
-                onClick={runBot}
+                onClick={onRunButtonClick}
                 has_effect
-            />
+            >
+                {is_running ?
+                    <div>
+                        <IconInfoOutline />
+                        <span>{translate('Stop bot')}</span>
+                    </div>
+                    :
+                    <div>
+                        <IconInfoOutline />
+                        <span>{translate('Run bot')}</span>
+                    </div>
+                }
+            </Button>
 
             <IconInfoOutline className='run-panel__icon-info' />
         </div>
@@ -48,11 +58,11 @@ const drawerFooter = (props) => {
 };
 
 const RunPanel = ({
-    runBot,
-    stopBot,
+    is_running,
+    onRunButtonClick,
 }) => {
     const content = drawerContent();
-    const footer = drawerFooter({ runBot, stopBot });
+    const footer = drawerFooter({ is_running, onRunButtonClick });
 
     return (
         <Drawer
@@ -66,10 +76,11 @@ const RunPanel = ({
 };
 
 RunPanel.propTypes = {
-    runBot : PropTypes.func,
-    stopBot: PropTypes.func,
+    contract_stage  : PropTypes.string,
+    is_running      : PropTypes.bool,
+    onRunButtonClick: PropTypes.func,
 };
 export default connect(({ runPanel }) => ({
-    runBot : runPanel.runBot,
-    stopBot: runPanel.stopBot,
+    is_running      : runPanel.is_running,
+    onRunButtonClick: runPanel.onRunButtonClick,
 }))(RunPanel);

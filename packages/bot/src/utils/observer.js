@@ -1,4 +1,38 @@
 import { Map, List } from 'immutable';
+/**
+ * Below are the list of events we can register to listen to :
+ * 
+ * bot.running           : Emitted in trade/index.js, in old Binary Bot this is only used 
+ *                         to set the label to is running.
+ * 
+ * bot.stop              : Bot was stopped by the user
+ * 
+ * bot.contract          : Called in TradeEngine/OpenContract.js, object consisting of 
+ *                         accountID and a proposal_open_contract response, this will 
+ *                         be emitted on each POC message from the server.
+ * 
+ * bot.info              : Emitted in trade/Balance.js, it announces account ID and balance,
+ *                         we don't need this in DerivBot. Can also be emitted during running 
+ *                         contract, it then announces an object consisting of accountID, 
+ *                         total_runs, transaction_ids, contract_type, and buy_price.
+ * 
+ * contract.status       :  First emitted in trade/Purchase.js with an idea that's more 
+ *                          of a flag e.g. contract_purchase_sent (when buy was sent to 
+ *                          API, or contract_purchase_recieved (when buy was acknowledged 
+ *                          by API), or contract.sold (when a contract was sold/expired).
+ * 
+ * contract.settled      : Confusing name, but this event was emitted to initiate a "settlement"
+ *                         of a contract, i.e. it would call proposal_open_contract to retrieve 
+ *                         latest values for contract, not required atm by DerivBot
+ * 
+ * googledrive.authorise : event to start auturize google flow
+ * 
+ * ui.log.success        : comming from server or notification by users from notify block , green 
+ * ui.log.error          : red
+ * ui.log.warn           : yellow
+ * Error                 : coming from server , red messages 
+ * Notify                : coming from server , info messages 
+ */
 
 export default class Observer {
     constructor() {

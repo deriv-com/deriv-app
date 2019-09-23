@@ -10,10 +10,11 @@
         pointer-events: none;
         cursor: text;
         transition: transform 0.2s ease;
-        stroke: var(--icon-general);
+        transform: rotate(0deg);
+        transform-origin: 50% 45%;
 
         &--opened {
-            transform: rotate(180deg);
+            transform: rotate(-180deg);
         }
     }
 }

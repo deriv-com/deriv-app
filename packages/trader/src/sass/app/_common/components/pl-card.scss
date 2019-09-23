@@ -11,37 +11,33 @@
             padding-left: 4px;
         }
         &__header {
+            @include typeface(--xsmall-left-normal-black, none);
             margin-bottom: 4px;
             align-self: flex-start;
             white-space: nowrap;
             max-width: 90px;
-            @include themify($themes) {
-                @include typeface(--xsmall-left-normal-black, none);
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
         }
         &__body {
+            @include typeface(--small-left-bold-black);
             display: flex;
             align-items: center;
             align-self: flex-start;
+            color: var(--text-prominent);
 
             &--is-crypto {
                 margin-left: -6px;
             }
-            @include themify($themes) {
-                @include typeface(--small-left-bold-black);
-                color: themed('text_color');
-            }
         }
         &__body--loss {
-            color: $COLOR_RED !important;
+            color: var(--text-loss-danger) !important;
 
             &:before {
                 content: '-';
             }
         }
         &__body--profit {
-            color: $COLOR_GREEN_1 !important;
+            color: var(--text-profit-success) !important;
 
             &:before {
                 content: '+';

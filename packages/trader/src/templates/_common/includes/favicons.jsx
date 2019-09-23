@@ -18,7 +18,7 @@ const Favicons = () => {
         { is_image: 1, size: '32' },
     ];
     return favicons.map((fav, idx) => {
-        const sizes = `${fav.size}x${fav.size}`;
+        const sizes = fav.size;
         const rel = fav.is_image ? 'icon' : 'apple-touch-icon';
         const url = `images/favicons/${fav.is_image ? 'fav' : 'apple-touch-'}icon-${sizes}.png`;
 

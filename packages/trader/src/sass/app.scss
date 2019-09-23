@@ -17,6 +17,8 @@
 @import 'app/_common/layout/header';
 @import 'app/_common/layout/footer';
 @import 'app/_common/layout/modal';
+@import 'app/_common/layout/multistep';
+@import 'app/_common/layout/send-email-template';
 
 // Drawer
 @import 'app/_common/drawer/drawer';
@@ -32,6 +34,7 @@
 @import 'app/_common/form/time-picker';
 
 // Components
+@import 'app/_common/components/account-settings-toggle';
 @import 'app/_common/components/amount';
 @import 'app/_common/components/allow-equals';
 @import 'app/_common/components/calendar';
@@ -47,6 +50,7 @@
 @import 'app/_common/components/market-is-closed-overlay';
 @import 'app/_common/components/market-symbol-icon';
 @import 'app/_common/components/media-item';
+@import 'app/_common/components/side-menu';
 @import 'app/_common/components/number-selector';
 @import 'app/_common/components/popconfirm';
 @import 'app/_common/components/pl-card';

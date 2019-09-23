@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-const IconAccountsCurrency = ({ type, className }) => {
+const IconAccountsCurrency = ({ type, className, height = 20, width = 20 }) => {
     let IconCurrency;
     if (type) {
         switch (type) {
@@ -123,21 +123,68 @@ const IconAccountsCurrency = ({ type, className }) => {
                     </g>
                 );
                 break;
+            case 'real_labuan_advanced':
+                IconCurrency = (
+                    <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
+                        <g>
+                            <circle fill='#C7E5E5' fillRule='nonzero' cx='10' cy='10' r='10' />
+                            <path d='M11.625,9.3 C11.8370955,8.95854742 12.2105368,8.75089221 12.6125,8.75089221 C13.0144632,8.75089221 13.3879045,8.95854742 13.6,9.3 L14.85,11.3875 L16.1,13.4875 C16.1041283,13.5248864 16.1041283,13.5626136 16.1,13.6 C16.2403933,14.0209005 16.1044579,14.4847244 15.7590779,14.7632566 C15.413698,15.0417888 14.9316038,15.0763759 14.55,14.85 L13.3,14.125 C12.8487689,13.8758728 12.3012311,13.8758728 11.85,14.125' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <path d='M8.5125,9.2875 C8.27869845,8.95254283 7.89598436,8.7529544 7.4875,8.7529544 C7.07901564,8.7529544 6.69630155,8.95254283 6.4625,9.2875 L5.2125,11.3875 L3.9625,13.4875 L3.9625,13.5875 C3.5375,14.4875 4.6625,15.3375 5.5625,14.8375 L6.875,14.1125 C7.34676908,13.8568926 7.91573092,13.8568926 8.3875,14.1125' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <path d='M10.425,2.6125 C10.2946192,2.54092328 10.1487181,2.50230243 10,2.5 C9.85545934,2.50382009 9.71396677,2.54240898 9.5875,2.6125 C8.35,3.2 6.25,6.0375 6.25,9.4625 C6.19092883,11.4127016 6.70365173,13.337585 7.725,15 L12.275,15 C13.3039077,13.3408407 13.8172485,11.4136377 13.75,9.4625 C13.75,6.0375 11.6625,3.2 10.425,2.6125 Z' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <ellipse fill='#C7E5E5' fillRule='nonzero' cx='10' cy='7.425' rx='1.25' ry='1.2875' />
+                            <path d='M9.6,17.225 L8.75,15.4375 C8.67146588,15.2668646 8.70086416,15.0659763 8.825,14.925 L9.625,13.9125 C9.70810956,13.8117433 9.83188947,13.7533882 9.9625,13.7533882 C10.0931105,13.7533882 10.2168904,13.8117433 10.3,13.9125 L11.1,14.925 C11.2241358,15.0659763 11.2535341,15.2668646 11.175,15.4375 L10.3625,17.225 C10.2909613,17.3702202 10.1431348,17.4621878 9.98125,17.4621878 C9.81936521,17.4621878 9.67153869,17.3702202 9.6,17.225 L9.6,17.225 Z' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <rect x='0' y='0' width='20' height='20' />
+                        </g>
+                    </g>
+                );
+                break;
+            case 'real_svg':
+                IconCurrency = (
+                    <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
+                        <g>
+                            <circle fill='#C6E4E4' fillRule='nonzero' cx='10' cy='10' r='10' />
+                            <path d='M17.5,12.8 C17.5,12.8 17.2875,8.75 17.2875,8.4 L17.2875,8.4 C17.3153643,6.55456299 15.84533,5.03422337 14,5 L6.1625,5 C5.27728948,5.01642171 4.43487698,5.38389913 3.82066232,6.02155709 C3.20644767,6.65921506 2.87076786,7.5147953 2.8875,8.4 L2.8875,8.4 C2.8875,8.6125 2.5125,12.8 2.5125,12.8 C2.325,15.0125 4.7875,15.7875 6.4,14.05 L8.4125,11.8125 L11.5875,11.8125 L13.6,14.0125 C15.2125,15.7875 17.675,15 17.5,12.8 Z' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <rect fill='#C6E4E4' fillRule='nonzero' x='6.25' y='6.25' width='1.25' height='3.75' rx='0.5' />
+                            <path d='M6.75,6.25 L7,6.25 C7.27614237,6.25 7.5,6.47385763 7.5,6.75 L7.5,9.5 C7.5,9.77614237 7.27614237,10 7,10 L6.75,10 C6.47385763,10 6.25,9.77614237 6.25,9.5 L6.25,6.75 C6.25,6.47385763 6.47385763,6.25 6.75,6.25 Z' id='Rectangle' fill='#C6E4E4' fillRule='nonzero' transform='translate(6.875000, 8.125000) rotate(90.000000) translate(-6.875000, -8.125000) ' />
+                            <rect x='0' y='0' width='20' height='20' />
+                            <rect fill='#C6E4E4' fillRule='nonzero' x='12.5' y='8.75' width='1.25' height='1.25' rx='0.25' />
+                            <rect fill='#C6E4E4' fillRule='nonzero' x='13.75' y='7.5' width='1.25' height='1.25' rx='0.25' />
+                            <rect fill='#C6E4E4' fillRule='nonzero' x='12.5' y='6.25' width='1.25' height='1.25' rx='0.26' />
+                            <path d='M11.51,7.5 L12.24,7.5 C12.383594,7.5 12.5,7.61640597 12.5,7.76 L12.5,8.49 C12.5,8.63359403 12.383594,8.75 12.24,8.75 L11.51,8.75 C11.366406,8.75 11.25,8.63359403 11.25,8.49 L11.25,7.76 C11.25,7.61640597 11.366406,7.5 11.51,7.5 Z' id='Rectangle' fill='#C6E4E4' fillRule='nonzero' transform='translate(11.875000, 8.125000) rotate(90.000000) translate(-11.875000, -8.125000) ' />
+                            <circle fill='#84ABAE' fillRule='nonzero' cx='8.5125' cy='11.4875' r='1.0125' />
+                            <ellipse fill='#84ABAE' fillRule='nonzero' cx='11.475' cy='11.5125' rx='1.025' ry='1' />
+                        </g>
+                    </g>
+                );
+                break;
+            case 'real_vanuatu_standard':
+                IconCurrency = (
+                    <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
+                        <g>
+                            <circle fill='#C6E4E4' fillRule='nonzero' cx='10' cy='10' r='10' />
+                            <path d='M11.25,11.25 L12.5,11.25 L17.5,12.5 L17.5,11.25 L11.25,7.5 L11.25,5 C11.110101,4.05484485 10.6721847,3.17901232 10,2.5 C9.33747601,3.18589357 8.90120046,4.05844467 8.75,5 L8.75,7.5 L2.5,11.25 L2.5,12.4125 L7.5,11.25 L8.75,11.25 L8.75,15 L6.25,16.425 L6.25,17.5 L10,16.25 L10,16.25 L13.75,17.5 L13.75,16.425 L11.25,15 L11.25,11.25 Z' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <path d='M10.9375,4.65 L10.9375,4.425 C10.9375,4.2375 10.725,3.825 10.525,3.7875 C10.206616,3.73143522 9.88088404,3.73143522 9.5625,3.7875 C9.3625,3.7875 9.1875,4.2375 9.15,4.4125 C9.14416197,4.49155904 9.14416197,4.57094096 9.15,4.65 C9.7160915,4.38375819 10.3714085,4.38375819 10.9375,4.65 Z' id='Path' fill='#C6E4E4' fillRule='nonzero' />
+                            <rect x='0' y='0' width='20' height='20' />
+                        </g>
+                    </g>
+                );
+                break;
             default:
                 break;
         }
     }
     return (
-        <svg className={classNames('inline-icon', className)} width='20' height='20' viewBox='0 0 20 20'>
+        <svg className={classNames('inline-icon', className)} width={width} height={height} viewBox='0 0 20 20'>
             {IconCurrency}
         </svg>
-
     );
 };
 
 IconAccountsCurrency.propTypes = {
     className: PropTypes.string,
+    height   : PropTypes.number,
     type     : PropTypes.string,
+    width    : PropTypes.number,
 };
 
 export default IconAccountsCurrency;

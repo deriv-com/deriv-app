@@ -11,19 +11,17 @@
         justify-content: center;
         align-items: center;
         font-weight: bold;
-        @include themify($themes) {
-            color: themed('text_color');
-            background-color: themed('container_color');
-            border: 2px solid $COLOR_LIGHT_GRAY_1;
-        }
+        color: var(--text-prominent);
+        background-color: var(--general-main-1);
+        border: 2px solid var(--text-less-prominent);
 
         &--lost {
-            border-color: $COLOR_RED;
-            background: $COLOR_RED;
+            border-color: var(--text-loss-danger);
+            background: var(--text-loss-danger);
         }
         &--won {
-            background-color: $COLOR_GREEN_1;
-            border: 2px solid $COLOR_GREEN_1;
+            background-color: var(--text-profit-success);
+            border-color: var(--text-profit-success);
         }
         &--won, &--lost {
             color: $COLOR_WHITE;
@@ -33,10 +31,8 @@
         left: -12px;
         top: -12px;
         position: relative;
-        border: 6px solid $COLOR_ORANGE;
-        @include themify($themes) {
-            background-color: themed('container_color');
-        }
+        border: 6px solid var(--brand-red-coral);
+        background-color: var(--general-main-2);
     }
     &__spot, &__entry {
         width: 24px;
@@ -49,10 +45,8 @@
         height: 2px;
         margin-left: -2px;
         margin-top: -2px;
-        @include themify($themes) {
-            background-color: themed('tick_step_marked');
-            border: 2px solid themed('tick_step_marked');
-        }
+        background-color: var(--text-prominent);
+        border: 2px solid var(--text-prominent);
     }
 }
 
@@ -94,43 +88,37 @@
         svg {
             /* postcss-bem-linter: ignore */
             g {
-                @include themify($themes) {
-                    stroke: themed('text_color');
-                }
+                stroke: var(--text-prominent);
             }
         }
     }
     &__time {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         font-size: 10px;
     }
     &__time-icon {
         margin-right: 2px;
     }
     &__value-container {
-        @include themify($themes) {
-            background: themed('active_color');
-            font-size: 14px;
-            padding: 4px 8px;
-            border-radius: 11px;
+        background: var(--text-less-prominent);
+        font-size: 14px;
+        padding: 4px 8px;
+        border-radius: 11px;
 
-            /* postcss-bem-linter: ignore */
-            p {
-                font-weight: bold;
-                color: $COLOR_WHITE;
-                margin-top: 2px;
-            }
-            &--lost {
-                background-color: $COLOR_RED;
-            }
-            &--won {
-                background-color: $COLOR_GREEN_1;
-            }
-            &--won, &--lost {
-                color: $COLOR_WHITE;
-            }
+        /* postcss-bem-linter: ignore */
+        p {
+            font-weight: bold;
+            color: $color-white;
+            margin-top: 2px;
+        }
+        &--lost {
+            background-color: var(--text-loss-danger);
+        }
+        &--won {
+            background-color: var(--text-profit-success);
+        }
+        &--won, &--lost {
+            color: var(--text-colored-background);
         }
     }
 }
@@ -147,9 +135,7 @@
         border-left-width: 2px;
         padding-left: 0.5em;
         height: 100%;
-        @include themify($themes) {
-            border-color: themed('chart_line_color');
-        }
+        border-color: var(--text-less-prominent);
     }
     &__icon {
         position: absolute;
@@ -160,21 +146,19 @@
         &--time {
             /* postcss-bem-linter: ignore */
             path {
-                @include themify($themes) {
-                    fill: themed('icon_start_time');
-                }
+                fill: var(--text-less-prominent);
             }
         }
         &--won {
             /* postcss-bem-linter: ignore */
             circle {
-                fill: $COLOR_GREEN_1;
+                fill: var(--text-profit-success);
             }
         }
         &--lost {
             /* postcss-bem-linter: ignore */
             circle {
-                fill: $COLOR_RED;
+                fill: var(--text-loss-danger);
             }
         }
     }

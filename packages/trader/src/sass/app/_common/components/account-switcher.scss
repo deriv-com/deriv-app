@@ -6,6 +6,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin: 0 0 0 1.6em;
     padding: 0 1.6em;
     cursor: pointer;
 
@@ -25,9 +26,7 @@
     &__id {
         @include typeface(--title-center-bold-black, default);
         pointer-events: none;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &:after {
             display: block;
@@ -41,6 +40,7 @@
     &__balance {
         @include typeface(--title-center-bold-green, default);
         @include toEm(padding, 8px, 1.6em);
+        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
@@ -51,24 +51,23 @@
         @extend %inline-icon;
     }
     &:hover:not(.show) {
-        @include themify($themes) {
-            background: themed('hover_color');
+        background: var(--state-hover);
 
-            .symbols {
-                background: transparent;
-            }
+        .symbols {
+            background: transparent;
         }
     }
     &--is-virtual {
         .acc-info__balance {
-            color: $COLOR_ORANGE;
+            color: var(--text-profit-success);
         }
         &:before {
-            @include typeface(--small-left-normal-orange, uppercase);
+            @include typeface(--small-left-normal-green, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
             content: 'demo';
-            border: 1px solid $COLOR_ORANGE;
+            color: var(--text-profit-success);
+            border: 1px solid var(--text-profit-success);
             border-radius: 16px;
             pointer-events: none;
         }
@@ -79,7 +78,7 @@
         }
     }
     &__button {
-        margin: 0 1.4em 0 0;
+        margin: 0 1.6em;
 
         &:not(:last-child) {
             margin-right: 1em;
@@ -92,14 +91,12 @@
     &__wrapper {
         position: absolute;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
         width: 240px;
         border-radius: $BORDER_RADIUS;
-        @include themify($themes) {
-            background: themed('background_container_color');
-        }
+        background: var(--general-main-2);
 
         &--enter-done {
             opacity: 1;
@@ -122,21 +119,19 @@
             border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
-            @include themify($themes) {
-                color: themed('text_secondary_color');
-                border: 1px dashed themed('text_secondary_color');
+            color: var(--text-general);
+            border: 1px dashed var(--button-secondary-default);
 
-                &:before {
-                    content: '\002B';
-                    color: themed('text_secondary_color');
-                    float: left;
-                }
-                &:hover {
-                    background: themed('tab_hover_color');
-                }
-                &:visited, &:active {
-                    color: themed('text_secondary_color');
-                }
+            &:before {
+                content: '\002B';
+                color: var(--text-general);
+                float: left;
+            }
+            &:hover {
+                background: var(--button-secondary-hover);
+            }
+            &:visited, &:active {
+                color: var(--text-general);
             }
         }
     }
@@ -146,17 +141,13 @@
         padding: 1.6em;
         display: flex;
         flex-flow: column nowrap;
-        @include themify($themes) {
-            background: themed('background_container_color');
-        }
+        background: var(--general-section-1);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
             padding-bottom: 0.8em;
             display: block;
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
         &-group {
             padding-bottom: 16px;
@@ -164,35 +155,30 @@
     }
     &__accounts {
         border-radius: 4px;
-        @include themify($themes) {
-            background: themed('container_color');
-        }
+        background: var(--general-main-1);
 
         .acc-switcher__account {
-            @include themify($themes) {
-                background: themed('container_color');
+            background: var(--state-normal);
 
-                &:hover:not(.acc-switcher__account--selected) {
-                    background-color: themed('background_button_color');
-                }
+            &:hover:not(.acc-switcher__account--selected) {
+                background-color: var(--state-hover);
+            }
+            .acc-switcher__id {
+                color: var(--text-general);
+            }
+            &--selected {
+                background: var(--state-active);
+
                 .acc-switcher__id {
-                    color: themed('text_primary_color');
-                }
-                &--selected {
-                    background: themed('active_color');
+                    color: var(--text-prominent);
+                    font-weight: 700;
 
-                    .acc-switcher__id {
-                        color: themed('text_active_color');
-                        font-weight: 700;
-
-                        &--virtual:before {
-                            color: themed('text_active_color');
-                            border: 1px solid themed('text_active_color');
-                        }
+                    &--virtual:before {
+                        color: var(--text-prominent);
+                        border: 1px solid var(--text-prominent);
                     }
                 }
             }
-
             &:first-child {
                 border-top-left-radius: 4px;
                 border-top-right-radius: 4px;
@@ -207,9 +193,7 @@
                 border-radius: 4px;
             }
             &:not(:last-child):not(:only-child) {
-                @include themify($themes) {
-                    border-bottom: 1px solid themed('background_container_color');
-                }
+                border-bottom: 1px solid var(--general-main-2);
                 border-right: none;
                 border-left: none;
             }
@@ -222,19 +206,21 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: $COLOR_WHITE;
+        background-color: var(--state-normal);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
             display: flex;
             align-items: center;
+            color: var(--text-prominent);
 
             &--virtual:before {
                 @include typeface(--xxxsmall-left-normal-orange, uppercase);
                 @include toEm(padding, 1px 2px, 0.6em);
                 @include toEm(margin-right, 8px, 0.6em);
                 content: 'demo';
-                border: 1px solid $COLOR_ORANGE;
+                color: var(--brand-red-coral);
+                border: 1px solid var(--brand-red-coral);
                 border-radius: 16px;
             }
             &-icon {
@@ -242,17 +228,17 @@
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
-            background: $COLOR_LIGHT_BLACK_4;
+            background: var(--state-hover);
         }
         &--selected {
-            background: $COLOR_LIGHT_GRAY_1;
+            background: var(--state-active);
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
 
                 &--virtual:before {
-                    color: $COLOR_WHITE;
-                    border: 1px solid $COLOR_WHITE;
+                    color: var(--text-prominent);
+                    border: 1px solid var(--text-prominent);
                 }
             }
         }
@@ -268,9 +254,7 @@
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
         }
         &-icon {
             width: 1.6em;

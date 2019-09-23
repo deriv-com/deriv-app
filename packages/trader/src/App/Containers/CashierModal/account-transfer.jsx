@@ -21,9 +21,7 @@ class AccountTransfer extends React.Component {
                     <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
-                        {/* for errors with CTA hide the form and show the error,
-                         for others show them at the bottom of the form next to submit button */}
-                        {this.props.error.button_text ?
+                        {this.props.error.is_show_full_page ?
                             <Error error={this.props.error} />
                             :
                             (this.props.has_no_account ?

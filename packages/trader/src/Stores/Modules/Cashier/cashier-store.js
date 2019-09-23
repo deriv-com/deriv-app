@@ -26,10 +26,11 @@ class Config {
 }
 
 class ConfigError {
-    @observable message       = '';
-    @observable button_text   = '';
-    @observable link          = '';
-    @observable onClickButton = null;
+    @observable message           = '';
+    @observable code              = '';
+    @observable fields            = '';
+    @observable is_show_full_page = false;
+    @observable onClickButton     = null;
 }
 
 class ConfigPaymentAgent {
@@ -107,16 +108,6 @@ export default class CashierStore extends BaseStore {
         this.config.deposit.container,
         this.config.withdraw.container,
     ];
-
-    error_fields = {
-        address_city    : localize('Town/City'),
-        address_line_1  : localize('First line of home address'),
-        address_postcode: localize('Postal Code/ZIP'),
-        address_state   : localize('State/Province'),
-        email           : localize('Email address'),
-        phone           : localize('Telephone'),
-        residence       : localize('Country of Residence'),
-    };
 
     @action.bound
     resetValuesIfNeeded() {
@@ -232,93 +223,17 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setErrorMessage(error, onClickButton) {
-        const obj_error = this.getError(error) || {};
+        // for errors that need to show a button, reset the form
         this.config[this.active_container].error = {
             onClickButton,
-            message    : obj_error.error_message,
-            button_text: obj_error.error_button_text,
-            link       : obj_error.error_link,
+            code             : error.code,
+            message          : error.message,
+            is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
+            ...(ObjectUtils.getPropertyValue(error, ['details', 'fields']) && {
+                fields: error.details.fields,
+            }),
         };
     }
-
-    getError = (error) => {
-        if (!error || ObjectUtils.isEmptyObject(error)) {
-            return null;
-        }
-
-        let error_message,
-            error_button_text,
-            error_link;
-
-        switch (error.code) {
-            case 'ASK_EMAIL_VERIFY':
-            case 'InvalidToken':
-                error_message = [
-                    localize('Verification code is wrong.'),
-                    localize('Please use the link sent to your email.'),
-                ];
-                error_button_text = localize('Okay');
-                break;
-            case 'ASK_TNC_APPROVAL':
-                error_message = localize('Please accept the updated Terms and Conditions.');
-                error_link    = 'user/tnc_approvalws';
-                break;
-            case 'ASK_FIX_DETAILS':
-                error_message = [
-                    localize('There was a problem validating your personal details.'),
-                    (error.details.fields ?
-                        localize('Please update your {{details}}.', {
-                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
-                            interpolation: { escapeValue: false },
-                        })
-                        :
-                        localize('Please update your details.')
-                    ),
-                ];
-                break;
-            // TODO: handle ukgc after enabling different brokers on deriv
-            // case 'ASK_UK_FUNDS_PROTECTION':
-            //     error_message = [
-            //         localize(
-            //             'We are required by our license to inform you about what happens to funds which we hold on account for you, and the extent to which funds are protected in the event of insolvency {{gambling_link}}.',
-            //             { gambling_link: '<a href=\'%\' target=\'_blank\' rel=\'noopener noreferrer\'>%</a>'.replace(/%/g, 'http://www.gamblingcommission.gov.uk/for-the-public/Your-rights/Protection-of-customer-funds.aspx') }
-            //         ),
-            //         localize('The company holds customer funds in separate bank accounts to the operational accounts which would not, in the event of insolvency, form part of the Company\'s assets. This meets the Gambling Commission\'s requirements for the segregation of customer funds at the level: <strong>medium protection</strong>.'),
-            //     ];
-            //     error_button_text = localize('Proceed');
-            //     break;
-            case 'ASK_AUTHENTICATE':
-                error_message = localize('Please [_1]authenticate[_2] your account.');
-                error_link    = 'user/authenticate';
-                break;
-            case 'ASK_FINANCIAL_RISK_APPROVAL':
-                error_message = [
-                    localize('Financial Risk approval is required.'),
-                    localize('Please contact customer support for more information.'),
-                ];
-                error_link = 'contact';
-                break;
-            case 'ASK_AGE_VERIFICATION':
-                error_message = [
-                    localize('Account needs age verification.'),
-                    localize('Please contact customer support for more information.'),
-                ];
-                error_link = 'contact';
-                break;
-            case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
-                error_message = localize('Please set your 30-day turnover limit to access the cashier.');
-                error_link    = 'user/security/self_exclusionws';
-                break;
-            case 'WrongResponse':
-                error_message = error.message;
-                error_button_text = localize('Try again');
-                break;
-            default:
-                error_message = error.message;
-        }
-
-        return { error_message, error_link, error_button_text };
-    };
 
     @action.bound
     setLoading(is_loading) {

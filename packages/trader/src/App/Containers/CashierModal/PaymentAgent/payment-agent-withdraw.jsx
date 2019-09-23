@@ -168,9 +168,7 @@ class PaymentAgentWithdraw extends React.Component {
                     <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
-                        {/* for errors with CTA hide the form and show the error,
-                         for others show them at the bottom of the form next to submit button */}
-                        {this.props.error.button_text ?
+                        {this.props.error.message ?
                             <Error error={this.props.error} />
                             :
                             <div className='cashier__wrapper--align-left'>
@@ -229,15 +227,6 @@ class PaymentAgentWithdraw extends React.Component {
                                                             )}
                                                         </Field>
                                                         <div className='cashier__form-submit'>
-                                                            {this.props.error.message &&
-                                                            <React.Fragment>
-                                                                <Icon icon='IconEmergency' className='cashier__form-error-icon' />
-                                                                <Icon icon='IconError' className='cashier__form-error-small-icon' />
-                                                                <p className='cashier__form-error'>
-                                                                    {this.props.error.message}
-                                                                </p>
-                                                            </React.Fragment>
-                                                            }
                                                             <Button
                                                                 className='cashier__form-submit-button btn--primary--default'
                                                                 type='submit'

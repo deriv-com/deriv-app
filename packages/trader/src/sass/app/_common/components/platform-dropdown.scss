@@ -7,11 +7,11 @@
     top: 0;
     opacity: 0;
     transition: opacity 0.25s ease;
-
+    
     // Animations
     &-enter-done {
         opacity: 1;
-
+        
         .platform_dropdown__list {
             transform: translateY(48px);
         }
@@ -34,6 +34,7 @@
             color: var(--text-general);
             text-decoration: none;
             border-radius: 8px;
+            transition: background-color 0.3s;
 
             &.active {
                 border: solid 2px var(--brand-secondary);

@@ -11,15 +11,12 @@ $header-height: 4em;
     top: 0;
     left: 4px;
     box-sizing: border-box;
-    color: $COLOR_LIGHT_BLACK_1;
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;
     border-radius: $BORDER_RADIUS;
-    @include themify($themes) {
-        border: 1px solid themed('background_container_color');
-        background-color: themed('background_container_color');
-        color: themed('text_color');
-    }
+    border: 1px solid var(--general-section-1);
+    background: var(--general-section-1);
+    color: var(--text-prominent);
 
     svg {
         @extend %inline-icon;
@@ -27,15 +24,11 @@ $header-height: 4em;
     h2 {
         margin-left: 8px;
         text-transform: none;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
     &--contract-mode {
         &:before {
-            @include themify($themes) {
-                background: themed('background_container_color');
-            }
+            background: var(--general-section-1);
             content: '';
             position: absolute;
             top: 38px;
@@ -51,22 +44,19 @@ $header-height: 4em;
         align-items: center;
         padding: 0.5em;
         margin-left: -8px;
+        @include typeface(--title-left-bold-black);
+        color: var(--text-general);
 
         &-btn {
             padding: 4px 8px 0;
             margin-bottom: -4px;
             cursor: pointer;
             border-radius: $BORDER_RADIUS;
+            background: var(--general-section-1);
 
             &:hover {
-                @include themify($themes) {
-                    background: themed('tab_hover_color');
-                }
+                background: var(--general-hover);
             }
-        }
-        @include typeface(--title-left-bold-black);
-        @include themify($themes) {
-            color: themed('text_primary_color');
         }
     }
     &__icon {
@@ -83,12 +73,12 @@ $header-height: 4em;
     position: relative;
     border-radius: $BORDER_RADIUS;
     padding: 4px;
+    background-color: var(--general-main-1);
+    color: var(--text-prominent);
 
     .progress-slider, .progress-slider--completed {
         margin: 0;
-        @include themify($themes) {
-            border-bottom: 1px solid themed('background_container_color');
-        }
+        border-bottom: 1px solid var(--general-section-1);
     }
     &:before {
         content: '';
@@ -119,9 +109,7 @@ $header-height: 4em;
             border-radius: $BORDER_RADIUS;
             margin-left: -4px;
             margin-right: -4px;
-            @include themify($themes) {
-                background: themed('hover_color');
-            }
+            background: var(--general-hover);
         }
     }
     .purchase-price, .potential-payout {
@@ -158,9 +146,7 @@ $header-height: 4em;
     }
     &__separator {
         width: 100%;
-        @include themify($themes) {
-            border-top: 1px solid themed('background_container_color');
-        }
+        border-top: 1px solid var(--general-section-1);
     }
     &__underlying-name {
         display: flex;
@@ -179,12 +165,10 @@ $header-height: 4em;
         /* postcss-bem-linter: ignore */
         .category-type {
             .color1-fill {
-                @include themify($themes) {
-                    fill: themed('icon_color');
-                }
+                fill: var(--brand-red-coral) !important;
             }
             .color2-fill {
-                fill: $COLOR_ORANGE !important;
+                fill: var(--brand-secondary) !important;
             }
         }
     }
@@ -202,9 +186,7 @@ $header-height: 4em;
         border-radius: $BORDER_RADIUS;
         width: 100%;
         padding: 8px 12px 0;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
     &__footer {
         margin-bottom: 0.5em;
@@ -212,9 +194,7 @@ $header-height: 4em;
 
         &-wrapper {
             @include typeface(--small-center-normal-black);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             padding: 8px 8px 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -227,9 +207,7 @@ $header-height: 4em;
         width: 100%;
         margin: 8px 0 -4px;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        @include themify($themes) {
-            border-top: 1px solid themed('background_container_color');
-        }
+        border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
             opacity: 1;
@@ -263,9 +241,5 @@ $header-height: 4em;
             font-size: 1em;
             text-align: left;
         }
-    }
-    @include themify($themes) {
-        background-color: themed('container_color');
-        color: themed('text_color');
     }
 }

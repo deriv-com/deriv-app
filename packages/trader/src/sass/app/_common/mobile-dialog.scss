@@ -21,7 +21,7 @@ $content-index: 1;
     opacity: 0;
     pointer-events: none;
     transition: opacity $animation-duration;
-    background: $COLOR_WHITE;
+    background: $color-white;
     // transform here would break fixed header
 
     &--open {
@@ -41,7 +41,7 @@ $content-index: 1;
         padding-top: $shadow-cover-height;
         padding-bottom: 7em; // ios bottom bar fix
         z-index: $content-index;
-        background: $COLOR_WHITE;
+        background: $color-white;
         transform: scale(0);
         transition: all $animation-duration ease-out;
     }
@@ -57,7 +57,7 @@ $content-index: 1;
         padding: 1em;
         height: $header-height;
         z-index: $header-index;
-        background: $COLOR_WHITE;
+        background: $color-white;
         transform: translateY(-100%);
         transition: all $animation-duration ease-out;
         transition-delay: $animation-duration;
@@ -68,7 +68,7 @@ $content-index: 1;
         width: 100%;
         height: $shadow-cover-height;
         z-index: $shadow-cover-index;
-        background-color: $COLOR_WHITE;
+        background-color: $color-white;
     }
     &__header-shadow {
         position: fixed;
@@ -81,7 +81,7 @@ $content-index: 1;
     &__title {
         font-size: 1.3em;
         font-weight: 600;
-        color: $COLOR_LIGHT_BLACK_1;
+        color: var(--text-prominent);
         margin: 0;
     }
     &__close-btn-icon {
@@ -103,7 +103,7 @@ $content-index: 1;
             .title {
                 margin-left: 1.5em;
                 font-size: 1.4em;
-                color: $COLOR_LIGHT_BLACK_1;
+                color: var(--text-prominent);
             }
             span {
                 align-self: center;
@@ -114,7 +114,7 @@ $content-index: 1;
             width: 90%;
             width: calc(100% - 1.6em);
             height: fit-content;
-            background-color: $COLOR_WHITE;
+            background-color: $color-white;
             border-radius: 4px;
             margin: 0 auto;
         }
@@ -123,12 +123,12 @@ $content-index: 1;
             margin: 0 auto;
             font-size: 1.4em;
             line-height: 2em;
-            color: $COLOR_LIGHT_BLACK_1;
+            color: var(--text-prominent);
         }
         .info-choose {
             button {
-                background: $COLOR_ORANGE;
-                color: $COLOR_WHITE;
+                background: var(--button-primary-default);
+                color: $color-white;
                 font-weight: bold;
                 margin: 1.6em 0;
                 width: 100%;
@@ -150,11 +150,11 @@ $content-index: 1;
                     border-radius: 50%;
                     display: inline-block;
                     margin: 0 0.5em;
-                    background-color: $COLOR_LIGHT_BLACK_3;
+                    background-color: var(--text-general);
                     cursor: pointer;
 
                     &.active {
-                        background-color: $COLOR_LIGHT_BLACK_4;
+                        background-color: var(--text-prominent);
                     }
                 }
             }

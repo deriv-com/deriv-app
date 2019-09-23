@@ -9,9 +9,7 @@
     bottom: 0;
     width: calc(100% - 4px);
     height: 100%;
-    @include themify($themes) {
-        background: rgba(themed('container_color'), 0.6);
-    }
+    background: var(--overlay-inside-dialog);
 
     &__loading {
         position: absolute;
@@ -45,7 +43,7 @@
             &-path {
                 stroke-dasharray: 1, 200;
                 stroke-dashoffset: 0;
-                animation: dash 1.5s ease-in-out infinite, colorOrange 6s ease-in-out infinite;
+                animation: dash 1.5s ease-in-out infinite, colorRed 6s ease-in-out infinite;
                 stroke-linecap: round;
             }
         }
@@ -74,14 +72,8 @@
     }
 }
 
-@keyframes colorBlue {
+@keyframes colorRed {
     100%, 0% {
-        stroke: $COLOR_DARK_BLUE_5;
-    }
-}
-
-@keyframes colorOrange {
-    100%, 0% {
-        stroke: $COLOR_ORANGE;
+        stroke: var(--brand-red-coral);
     }
 }

@@ -2,10 +2,12 @@ import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { formatMoney }      from '_common/base/currency_base';
 import { urlFor }           from '_common/url';
+import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import { UpgradeButton }    from './upgrade-button.jsx';
+import { BinaryLink }       from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
@@ -47,6 +49,9 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
+                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
+                        <Icon icon='IconUser' />
+                    </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={formatMoney(currency, balance, true)}

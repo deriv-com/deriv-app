@@ -115,7 +115,7 @@ class AccountSwitcher extends React.Component {
                     !isEmptyObject(vrt_account) &&
                     <div className='acc-switcher__list--virtual'>
                         <span className='acc-switcher__list-title'>
-                            {localize('Virtual account')}
+                            {localize('Demo account')}
                         </span>
                         <div className='acc-switcher__accounts'>
                             <div

@@ -37,7 +37,7 @@
             transition: background-color 0.3s;
 
             &.active {
-                border: solid 2px var(--brand-secondary);
+                border: solid 2px var(--border-active);
             }
             &:not(.active):hover {
                 background-color: var(--general-hover);

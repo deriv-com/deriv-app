@@ -19,6 +19,7 @@ import { connect }             from 'Stores/connect';
 import {
     validAddress,
     validPostCode,
+    validLetterSymbol,
     validLength }              from 'Utils/Validator/declarative-validation-rules';
 import { localize }            from 'App/i18n';
 import BinarySocket            from '_common/base/socket_base';
@@ -68,6 +69,30 @@ class ProofOfAddress extends React.Component {
 
         const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
         validateValues(val => val, required_fields, localize('This field is required'));
+
+        const permitted_characters = '- . \' # ; : ( ) , @ /';
+        const address_validation_message = localize(`Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`);
+
+        if (values.address_line_1 && !validAddress(values.address_line_1)) {
+            errors.address_line_1 = address_validation_message;
+        }
+        if (values.address_line_2 && !validAddress(values.address_line_2)) {
+            errors.address_line_2 = address_validation_message;
+        }
+
+        const validation_letter_symbol_message = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
+
+        if (values.address_city && !validLetterSymbol(values.address_city)) {
+            errors.address_city = validation_letter_symbol_message;
+        }
+
+        if (values.address_state && !validLetterSymbol(values.address_state)) {
+            errors.address_state = validation_letter_symbol_message;
+        }
+
+        if (values.address_postcode && !validPostCode(values.address_postcode)) {
+            errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+        }
 
         return errors;
     };
@@ -173,8 +198,9 @@ class ProofOfAddress extends React.Component {
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
-                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
+                                                    maxLength={70}
                                                     name='address_line_1'
                                                     label={localize('First line of address')}
                                                     value={values.address_line_1}
@@ -187,8 +213,9 @@ class ProofOfAddress extends React.Component {
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
-                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
+                                                    maxLength={70}
                                                     name='address_line_2'
                                                     label={localize('Second line of address (optional)')}
                                                     value={values.address_line_2}
@@ -201,7 +228,7 @@ class ProofOfAddress extends React.Component {
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
-                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_city'
                                                     label={localize('Town/City')}
@@ -215,7 +242,7 @@ class ProofOfAddress extends React.Component {
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
-                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_state'
                                                     label={localize('State/Province')}
@@ -229,7 +256,7 @@ class ProofOfAddress extends React.Component {
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
-                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_postcode'
                                                     label={localize('Postal/ZIP Code')}

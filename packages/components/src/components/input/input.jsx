@@ -7,6 +7,7 @@ const Input = ({
     className,
     classNameError,
     error,
+    hint,
     leading_icon,
     trailing_icon,
     label,
@@ -36,6 +37,12 @@ const Input = ({
         }
         { error &&
             <FieldError className={classNameError} message={error} />
+        }
+        {
+            !error && hint &&
+            <p className='dc-input__hint'>
+                {hint}
+            </p>
         }
     </div>
 );

@@ -7,19 +7,25 @@ import {
 class VerticalTabHeaders extends React.PureComponent {
     render() {
         return (
-            <VerticalTabWrapper>
+            <VerticalTabWrapper className={this.props.className}>
                 {this.props.header_title &&
                     <VerticalTabHeaderTitle header_title={this.props.header_title} />
                 }
-                {this.props.items.map((item, idx) => (
-                    <VerticalTabHeader
-                        item={item}
-                        onChange={this.props.onChange || undefined}
-                        is_routed={this.props.is_routed}
-                        selected={this.props.selected}
-                        key={idx}
-                    />
-                )
+                {this.props.items.map((item, idx) => {
+                    if (!this.props.visible_items || !item.container ||
+                        this.props.visible_items.indexOf(item.container) !== -1) {
+                        return (
+                            <VerticalTabHeader
+                                item={item}
+                                onChange={this.props.onChange || undefined}
+                                is_routed={this.props.is_routed}
+                                selected={this.props.selected}
+                                key={idx}
+                            />
+                        );
+                    }
+                    return null;
+                }
                 )}
             </VerticalTabWrapper>
         );

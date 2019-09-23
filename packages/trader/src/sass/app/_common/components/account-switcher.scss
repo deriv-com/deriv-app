@@ -8,6 +8,7 @@
     flex-direction: row;
     height: 100%;
     justify-content: center;
+    margin: 0 0 0 1.6em;
     padding: 0 1.6em;
 
     &__container {
@@ -78,7 +79,7 @@
         }
     }
     &__button {
-        margin: 0 1.4em 0 0;
+        margin: 0 1.6em;
 
         &:not(:last-child) {
             margin-right: 1em;

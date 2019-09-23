@@ -26,14 +26,14 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <React.Fragment>
                 <div className='payment-agent__receipt'>
-                    <h2 className='payment-agent__header'>
+                    <h2 className='cashier__header'>
                         <Localize
                             i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
                             values={{ payment_agent }}
                             options={{ interpolation: { escapeValue: false } }}
                         />
                     </h2>
-                    <div className='payment-agent__transferred-amount payment-agent__text--bold'>
+                    <div className='cashier__transferred-amount cashier__text--bold'>
                         <span
                             className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}
                         />
@@ -42,19 +42,19 @@ class PaymentAgentReceipt extends React.Component {
                     <div className='payment-agent__transferred-details-wrapper'>
                         <Icon icon='IconAccountsCurrency' type={this.props.currency.toLowerCase()} />
                         <span className='payment-agent__transferred-details'>
-                            <span className='payment-agent__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
+                            <span className='cashier__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
                         </span>
                         <Icon className='payment-agent__transferred-icon' icon='IconBack' />
                         <Icon icon='IconPaymentAgent' />
                         <span className='payment-agent__transferred-details'>
-                            {this.props.receipt.payment_agent_name && <span className='payment-agent__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
+                            {this.props.receipt.payment_agent_name && <span className='cashier__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
                         </span>
                     </div>
                 </div>
                 <div className='payment-agent__separator' />
                 {this.props.receipt.payment_agent_name ?
                     <React.Fragment>
-                        <h2 className='payment-agent__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
+                        <h2 className='cashier__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
                         <p className='payment-agent__explanation'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
                         <p><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} options={{ interpolation: { escapeValue: false } }} /></p>
                         <PaymentAgentDetails

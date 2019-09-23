@@ -241,7 +241,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (loginid !== LocalStore.get('active_loginid')) return;
 
     const { prompt_client_to_authenticate, status } = account_status;
-
+    console.log(status);
     const {
         document_under_review,
         cashier_locked,

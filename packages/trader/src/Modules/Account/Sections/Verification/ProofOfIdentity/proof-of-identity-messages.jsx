@@ -47,10 +47,11 @@ export const Unsuported = () => (
 );
 
 export const UploadComplete = ({ has_poa }) => {
+    const message = localize('Your proof of identity was submitted successfully');
     if (has_poa) {
         return (
             <IconMessageContent
-                message={localize('Your proof of identity was submitted successfully')}
+                message={message}
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={<IconPoiSubmitComplete />}
             >
@@ -66,7 +67,7 @@ export const UploadComplete = ({ has_poa }) => {
     }
     return (
         <IconMessageContent
-            message={localize('Your proof of identity was submitted successfully')}
+            message={message}
             text={localize('Your document is being reviewed, please check back in 1-3 days. You must also submit a proof of address.')}
             icon={<IconPoiSubmitComplete />}
         >

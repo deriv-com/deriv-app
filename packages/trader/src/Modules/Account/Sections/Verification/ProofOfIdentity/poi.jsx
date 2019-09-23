@@ -1,3 +1,5 @@
+
+import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { init }               from 'onfido-sdk-ui';
 import { get as getLanguage } from '_common/language';
@@ -17,16 +19,16 @@ class POI extends React.Component {
     }
 
     // TODO: pass sdk_token here?
-    initOnfido = async (sdk_token) => {
+    initOnfido = async () => {
         try {
             const onfido = init({
                 containerId: 'onfido',
                 language   : {
                     locale: getLanguage().toLowerCase() || 'en',
                 },
-                token     : sdk_token,
+                token     : this.props.onfido_service_token,
                 useModal  : false,
-                onComplete: () => { console.log('onComplete '); },
+                onComplete: this.handleComplete,
                 steps     : [
                     'document',
                     'face',
@@ -38,9 +40,20 @@ class POI extends React.Component {
         }
     };
 
+    handleComplete = () => {
+        this.state.onfido.tearDown();
+        this.props.handleComplete();
+    }
+
     componentDidMount() {
         if (this.props.view === 'onfido') {
             this.initOnfido(this.props.onfido_service_token);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.state.onfido) {
+            this.state.onfido.tearDown();
         }
     }
 
@@ -66,4 +79,13 @@ class POI extends React.Component {
     }
 }
 
+POI.propTypes = {
+    handleComplete      : PropTypes.func,
+    has_poa             : PropTypes.bool,
+    onfido_service_token: PropTypes.string,
+    // TODO: change to enum
+    view                : PropTypes.string,
+};
+
 export default POI;
+// ProofOfIdentityForm.propTypes = {};

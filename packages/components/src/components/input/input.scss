@@ -37,7 +37,6 @@
             }
         }
         &:disabled {
-            background: var(--general-section-1);
             color: var(--text-disabled);
 
             & ~ label {

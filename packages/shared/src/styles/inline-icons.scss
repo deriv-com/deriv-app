@@ -12,7 +12,7 @@
     @include colorIcon(var(--text-general), none);
 
     &.active {
-        @include colorIcon(var(--state-active), var(--text-prominent), var(--text-prominent), none);
+        @include colorIcon(var(--text-prominent), none);
     }
     &.disabled {
         @include colorIcon(var(--text-disabled), none);

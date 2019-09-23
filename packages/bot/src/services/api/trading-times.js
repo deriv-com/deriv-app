@@ -41,7 +41,7 @@ export default class TradingTimes {
                     } else {
                         this.last_update_moment = next_update_moment.clone();
                     }
-                    
+
                     // Retain the current market open close status, because the trade times
                     // will now be the following day:
                     const is_open_map = {};
@@ -74,7 +74,7 @@ export default class TradingTimes {
 
     async updateTradingTimes() {
         const last_update_date = this.last_update_moment.format('YYYY-MM-DD');
-        const response         = await this.ws.getTradingTimes(last_update_date);
+        const response         = await this.ws.tradingTimes(last_update_date);
 
         if (response.error) {
             return;
@@ -100,7 +100,7 @@ export default class TradingTimes {
                     const is_closed_all_day = open.length === 1 && open[0] === '--' && close[0] === '--';
 
                     let processed_times;
-                        
+
                     if (!is_open_all_day && !is_closed_all_day) {
                         processed_times = open.map((open_time, index) => ({
                             open : getUTCDate(open_time),

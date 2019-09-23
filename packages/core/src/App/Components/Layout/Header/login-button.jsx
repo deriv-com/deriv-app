@@ -1,13 +1,14 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
+import { Button }          from 'deriv-components';
 import { redirectToLogin } from '_common/base/login';
 import { localize }        from 'App/i18n';
-import Button              from '../../Form/button.jsx';
 
 const LoginButton = ({ className }) => (
     <Button
-        className={classNames(className, 'btn--secondary btn--secondary--orange')}
+        id='dt_login_button'
+        className={classNames(className, 'btn--tertiary--default')}
         has_effect
         text={localize('Log in')}
         onClick={redirectToLogin}

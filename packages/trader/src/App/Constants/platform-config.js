@@ -3,7 +3,7 @@ import { routes }   from 'Constants/index';
 
 const platform_config = [
     {
-        icon       : 'IconDTrader',
+        icon       : 'IconDeriv',
         title      : localize('DTrader'),
         description: localize('Everything you need to trade the markets you want'),
         link_to    : routes.trade,

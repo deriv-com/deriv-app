@@ -1,5 +1,6 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
+import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import { BinaryLink }    from 'App/Components/Routes';
 import Icon              from 'Assets/icon.jsx';
@@ -9,7 +10,7 @@ const PlatformDropdown = ({
     platform_config,
     handleClick,
     is_open,
-}) => (
+}) => ReactDOM.createPortal(
     <CSSTransition
         mountOnEnter
         in={is_open}
@@ -29,7 +30,8 @@ const PlatformDropdown = ({
                 ))}
             </div>
         </div>
-    </CSSTransition>
+    </CSSTransition>,
+    document.getElementById('deriv_app'),
 );
 
 PlatformDropdown.propTypes = {

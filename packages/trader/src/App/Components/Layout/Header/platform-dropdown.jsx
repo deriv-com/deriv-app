@@ -1,9 +1,9 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import ReactDOM          from 'react-dom';
-import { BinaryLink }    from 'App/Components/Routes';
-import Icon              from 'Assets/icon.jsx';
+import classNames     from 'classnames';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import ReactDOM       from 'react-dom';
+import { BinaryLink } from 'App/Components/Routes';
+import Icon           from 'Assets/icon.jsx';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 const PlatformDropdown = ({

@@ -1,5 +1,4 @@
 .platform_dropdown {
-    z-index: 4;
     background-color: var(--overlay-outside-dialog);
     width: 100%;
     height: 100%;
@@ -8,7 +7,6 @@
     opacity: 0;
     transition: opacity 0.25s ease;
 
-    // Animations
     &-enter-done {
         opacity: 1;
 
@@ -17,7 +15,6 @@
         }
     }
     &__list {
-        z-index: 5;
         background-color: var(--general-main-1);
         width: 100%;
         position: fixed;
@@ -28,9 +25,8 @@
         &__platform {
             display: inline-flex;
             margin: 24px 16px;
-            padding: 24px 16px;
+            padding: 28px 16px;
             width: 302px;
-            height: 124px;
             color: var(--text-general);
             text-decoration: none;
             border-radius: 8px;
@@ -51,12 +47,10 @@
                 font-size: 16px;
                 font-weight: bold;
                 line-height: 24px;
-                letter-spacing: 0;
             }
             &__description {
                 font-size: 14px;
                 line-height: 20px;
-                letter-spacing: 0;
             }
         }
     }

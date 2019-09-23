@@ -43,17 +43,12 @@ export const scratchWorkspaceInit = async () => {
         Blockly.derivWorkspace.clearUndo();
 
         const onWorkspaceResize = () => {
-            const x = 0;
-            const y = 76;
-        
-            // Position scratch_div over scratch_area.
-            el_scratch_div.style.left   = `${x}px`;
-            el_scratch_div.style.top    = `${y}px`;
+            const toolbar_heigh = 76;
 
             // el_scratch_div.style.left   = '0px';
             // el_scratch_div.style.top    = '0px';
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
-            el_scratch_div.style.height = `${el_app_contents.offsetHeight}px`;
+            el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_heigh}px`;
             
             Blockly.svgResize(workspace);
 

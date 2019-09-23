@@ -113,14 +113,13 @@ export default class ToolbarStore {
         const { is_local, save_as_collection } = values;
 
         if (is_local) {
-            const file_name = this.file_name;
             const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
             xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
             const data = Blockly.Xml.domToPrettyText(xml);
             const blob = new Blob([data], { type: 'text/xml;charset=utf-8' });
 
-            filesaver.saveAs(blob, file_name);
+            filesaver.saveAs(blob, `${this.file_name}.xml`);
         } else {
             // TO DO
         }

@@ -98,7 +98,7 @@ const SaveLoadModal = ({
                                         'btn--secondary--orange',
                                     )}
                                     text={translate('Cancel')}
-                                    onClick={toggleSaveLoadModal}
+                                    onClick={() => toggleSaveLoadModal(is_save_modal)}
                                 />
                                 <Button
                                     type='submit'

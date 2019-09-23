@@ -44,7 +44,7 @@
         position: absolute;
         top: 0;
         width: 18px;
-        height: 100vh;
+        height: 100%;
         @include themify($themes) {
             background-color: themed('background_color');
         }

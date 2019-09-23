@@ -47,7 +47,8 @@ $color-blue: #377cfc;
 
 :root {
     // Text sizes
-    --text-size-xs: 1.2rem;
+    --text-size-xxs: 1.2rem;
+    --text-size-xs: 1.4rem;
     --text-size-s: 1.6rem;
     --text-size-sm: 2rem;
     --text-size-m: 2.4rem;
@@ -122,8 +123,6 @@ $color-blue: #377cfc;
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: transparentize(#{$color-green-1}, 0.92);
-        // Bullet
-        --bullet: #{$color-black-1};
     }
     .theme--dark {
         // General
@@ -184,8 +183,6 @@ $color-blue: #377cfc;
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: transparentize(#{$color-green-3}, 0.92);
-        // Bullet
-        --bullet: #{$color-black-1};
     }
 }
 

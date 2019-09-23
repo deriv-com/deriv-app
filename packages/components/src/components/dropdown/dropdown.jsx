@@ -71,6 +71,7 @@ class Dropdown extends React.PureComponent {
             this.props.classNameDisplay, {
                 'dc-dropdown__display--clicked'     : this.state.is_list_visible,
                 'dc-dropdown__display--has-symbol'  : this.props.has_symbol,
+                'dc-dropdown__display--no-border'   : this.props.no_border,
                 'dc-dropdown__display--is-left-text': this.props.is_align_text_left,
             },
         );
@@ -360,6 +361,7 @@ Dropdown.propTypes = {
     is_nativepicker  : PropTypes.bool,
     list             : listPropType(),
     name             : PropTypes.string,
+    no_border        : PropTypes.bool,
     onChange         : PropTypes.func,
     placeholder      : PropTypes.string,
     value            : PropTypes.oneOfType([

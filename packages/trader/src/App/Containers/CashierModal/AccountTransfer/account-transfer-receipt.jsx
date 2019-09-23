@@ -58,7 +58,7 @@ class AccountTransferReceipt extends React.Component {
                     </span>
                 </div>
                 <Button
-                    className='btn--primary btn--primary--orange account-transfer__button-done'
+                    className='btn--primary--default account-transfer__button-done'
                     has_effect
                     text={localize('Done')}
                     onClick={this.props.resetAccountTransfer}

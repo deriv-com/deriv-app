@@ -4,14 +4,12 @@
     padding: 8px;
 
     &:hover {
+        background-color: #dedede;
+
         .platform_switcher__arrow {
             transform: rotate(180deg);
             transition: transform 300ms;
         }
-    }
-
-    &:hover {
-        background-color: #dedede;
     }
     & svg:first-child, p {
         margin: 0 0 0 8px;
@@ -28,8 +26,8 @@
         font-size: 14px;
         line-height: 20px;
         border-radius: 10px;
-        background-color: #85acb0;
-        color: white;
+        background-color: $--brand-secondary;
+        color: $color-white;
         width: 50px;
         height: 20px;
         font-weight: 500;

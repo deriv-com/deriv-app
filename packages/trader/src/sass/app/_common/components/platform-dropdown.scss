@@ -34,9 +34,9 @@
             color: $COLOR_BLACK;
             text-decoration: none;
             border-radius: 8px;
-            
+
             &.active {
-                border: solid 2px #85acb0;
+                border: solid 2px $--brand-secondary;
             }
             &:not(.active):hover {
                 background-color: #dedede;

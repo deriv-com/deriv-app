@@ -24,8 +24,8 @@ $category-colours: (
     $gray20          : #333;
     $category-text-spacing: 10px;
 
-    background-color: $white;
-    border: 1px solid $lightgrey;
+    background-color: #fff; //To Do: color
+    border: 1px solid #ebebeb;  //To Do: color
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     display: flex;
@@ -43,7 +43,7 @@ $category-colours: (
         position: relative;
         font-weight: bold;
         font-size: 1.6em;
-        background-color: $grey;
+        background-color: #f4f4f6;  //To Do: color
         text-align: center;
     }
     &__item {
@@ -56,7 +56,7 @@ $category-colours: (
 
         &--back {
             margin-left: $category-text-spacing;
-            fill: $gray20;
+            fill: #333;  //To Do: color
             transform: rotate(90deg);
         }
         &--open {
@@ -79,8 +79,8 @@ $category-colours: (
         &__category-return {
             #{$toolbox}__category {
                 &--#{$category} {
-                    background-color: $lightgrey;
-                    color: $gray20;
+                    background-color: #ebebeb;  //To Do: color
+                    color: #333;  //To Do: color
                     max-height: 38px;
                 }
             }
@@ -129,17 +129,17 @@ $category-colours: (
     }
     &__row {
         cursor: pointer;
-        border-top: 1px solid $lightgrey;
+        border-top: 1px solid #ebebeb;  //To Do: color
 
         &:last-of-type {
-            border-bottom: 1px solid $lightgrey;
+            border-bottom: 1px solid #ebebeb;  //To Do: color
         }
 
         @each $category, $colour in $category-colours {
             #{$toolbox}__category {
                 &--#{$category} {
                     &:hover:not(#{$toolbox}__category--selected) {
-                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
+                        background-image: linear-gradient(to right, #fff 25%, transparentize($colour, 0.8) 100%); //To Do: color
                     }
                 }
                 &--#{$category}#{$toolbox}__category--selected {
@@ -151,12 +151,12 @@ $category-colours: (
     }
     &__separator {
         padding: 10px 0;
-        border-top: 1px solid $lightgrey;
+        border-top: 1px solid #ebebeb;  //To Do: color
     }
     #search_input {
         padding: 10px;
         border-radius: 5px;
-        border: solid $grey 1px;
+        border: solid #f4f4f6 1px;  //To Do: color
         margin: 3px;
         font-size: 14px;
         font-weight: 700;

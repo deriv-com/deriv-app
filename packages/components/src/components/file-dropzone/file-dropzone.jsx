@@ -26,9 +26,10 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
 
 const FileDropzone = ({ className, ...props }) => (
     <Dropzone
-        // callback to get action on onDrop
-        // It only send files array as passed back value if its in acceptedFiles
-        onDrop={props.onDrop}
+        // sends back accepted files array
+        onDropAccepted={props.onDropAccepted}
+        // sends back rejected files array
+        onDropRejected={props.onDropRejected}
         // allow multiple uploads
         multiple={props.multiple || false}
         // accept prop is same as native HTML5 input accept - e.g - 'image/png'
@@ -36,15 +37,14 @@ const FileDropzone = ({ className, ...props }) => (
         // set maximum size limit for file, in bytes (binary)
         maxSize={props.max_size}
     >
-        {({ getRootProps, getInputProps, isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
-            const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > props.max_size;
+        {({ getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject }) => {
             return (
                 <div
                     {...getRootProps()}
                     className={classNames('dc-file-dropzone', className, {
                         'dc-file-dropzone--is-active': isDragActive,
-                        'dc-file-dropzone--has-file' : (acceptedFiles.length > 0),
-                        'dc-file-dropzone--has-error': (isDragReject || (rejectedFiles.length > 0)),
+                        'dc-file-dropzone--has-file' : (isDragActive || props.value.length > 0),
+                        'dc-file-dropzone--has-error': ((isDragReject || !!props.validation_error_message) && !isDragAccept),
                     })}
                 >
                     <input {...getInputProps()} />
@@ -52,8 +52,8 @@ const FileDropzone = ({ className, ...props }) => (
                         <FadeInMessage
                             // default message when not on hover or onDrag
                             is_visible={
-                                (!isDragActive && props.message &&
-                                  (acceptedFiles.length < 1) && (rejectedFiles.length < 1))
+                                (!isDragActive && !!props.message) && (props.value.length < 1) &&
+                                !props.validation_error_message
                             }
                             timeout={150}
                         >
@@ -70,42 +70,41 @@ const FileDropzone = ({ className, ...props }) => (
                                 {props.hover_message}
                             </div>
                         </FadeInMessage>
-                        {props.multiple && (acceptedFiles.length > 0) ?
-                            acceptedFiles.map((item, idx) =>
-                                <span key={idx} className='dc-file-dropzone__filename'>{item.name}</span>
-                            )
-                            :
-                            (acceptedFiles[0] && !isDragActive) &&
-                                <span className='dc-file-dropzone__filename'>
-                                    {acceptedFiles[0].name}
+                        {/* Handle cases for displaying multiple files and single filenames */}
+                        {props.multiple && (props.value.length > 0 && !props.validation_error_message) ?
+                            props.value.map((file, idx) =>
+                                <span key={idx} className='dc-file-dropzone__filename'>
+                                    {file.name}
                                 </span>
-                        }
-                        {props.multiple && (rejectedFiles.length > 0) ?
-                            rejectedFiles.map((item, idx) =>
-                                <span key={idx} className='dc-file-dropzone__filename'>{item.name}</span>
                             )
                             :
-                            (rejectedFiles[0] && !isDragActive) &&
+                            (props.value[0] && !isDragActive) &&
                                 <span className='dc-file-dropzone__filename'>
-                                    {rejectedFiles[0].name}
+                                    {props.value[0].name}
                                 </span>
                         }
                         <FadeInMessage
-                            // message shown on hover if files are rejected onDrag
-                            is_visible={(isDragReject || ((rejectedFiles.length > 0) && !isFileTooLarge))}
+                            // message shown if there are errors with the dragged file
+                            is_visible={isDragReject}
                             timeout={150}
                         >
-                            <div className='dc-file-dropzone__message'>
-                                {props.error_message_type}
+                            <div className={classNames(
+                                'dc-file-dropzone__message',
+                                'dc-file-dropzone__message--error')}
+                            >
+                                {props.error_message}
                             </div>
                         </FadeInMessage>
                         <FadeInMessage
-                            // message shown on hover if files are rejected onDrag
-                            is_visible={isFileTooLarge}
+                            // message shown on if there are validation errors with file uploaded
+                            is_visible={!!(props.validation_error_message) && !isDragActive}
                             timeout={150}
                         >
-                            <div className='dc-file-dropzone__message'>
-                                {props.error_message_size}
+                            <div className={classNames(
+                                'dc-file-dropzone__message',
+                                'dc-file-dropzone__message--error')}
+                            >
+                                {props.validation_error_message}
                             </div>
                         </FadeInMessage>
                     </div>

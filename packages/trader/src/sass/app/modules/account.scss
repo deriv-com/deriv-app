@@ -282,6 +282,34 @@
             width: 100%;
             flex: 1;
             height: 240px;
+            position: relative;
+        }
+        &-remove-btn {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            transition: transform 0.25s linear;
+
+            &:hover {
+                transform: scale(1.25, 1.25);
+            }
+            &--error {
+                circle {
+                    @include themify($themes) {
+                        fill: themed('error_color');
+                    }
+                }
+            }
+            &-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
         }
         &-box {
             display: flex;

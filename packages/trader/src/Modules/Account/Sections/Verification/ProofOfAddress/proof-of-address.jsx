@@ -1,29 +1,39 @@
-// import PropTypes           from 'prop-types';
-import React                  from 'react';
+// import PropTypes            from 'prop-types';
+import DocumentUploader        from '@binary-com/binary-document-uploader';
+import classNames              from 'classnames';
+import React                   from 'react';
 import {
     Button,
     FileDropzone,
-    Input }                   from 'deriv-components';
-import { Formik }             from 'formik';
-import IconClearPhoto         from 'Assets/AccountManagement/ProofOfAddress/icon-clear-photo.svg';
-import IconCloudUpload        from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
-import IconIssuedUnder        from 'Assets/AccountManagement/ProofOfAddress/icon-issued-under.svg';
-import IconLessThanEight      from 'Assets/AccountManagement/ProofOfAddress/icon-less-than-8.svg';
-import IconOneToSixMonths     from 'Assets/AccountManagement/ProofOfAddress/icon-one-to-six-months.svg';
-import IconRecentBank         from 'Assets/AccountManagement/ProofOfAddress/icon-recent-bank.svg';
-import IconRecentUtility      from 'Assets/AccountManagement/ProofOfAddress/icon-recent-utility.svg';
-import { connect }            from 'Stores/connect';
-import { localize }           from 'App/i18n';
-import { WS }                 from 'Services';
+    Input }                    from 'deriv-components';
+import { Formik }              from 'formik';
+import IconClearPhoto          from 'Assets/AccountManagement/ProofOfAddress/icon-clear-photo.svg';
+import IconCloudUpload         from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
+import IconIssuedUnder         from 'Assets/AccountManagement/ProofOfAddress/icon-issued-under.svg';
+import IconLessThanEight       from 'Assets/AccountManagement/ProofOfAddress/icon-less-than-8.svg';
+import IconOneToSixMonths      from 'Assets/AccountManagement/ProofOfAddress/icon-one-to-six-months.svg';
+import IconRecentBank          from 'Assets/AccountManagement/ProofOfAddress/icon-recent-bank.svg';
+import IconRecentUtility       from 'Assets/AccountManagement/ProofOfAddress/icon-recent-utility.svg';
+import IconRemoveFile          from 'Assets/AccountManagement/icon-remove-file.svg';
+import { connect }             from 'Stores/connect';
+import { localize }            from 'App/i18n';
+import BinarySocket            from '_common/base/socket_base';
+import { WS }                  from 'Services';
+import {
+    filesize_error_message,
+    getSupportedFiles,
+    max_document_size,
+    supported_filetypes,
+    unsupported_file_message } from './constants';
 import {
     FormFooter,
     FormBody,
-    FormSubHeader }           from '../../../Components/layout-components.jsx';
-import Loading                from '../../../../../templates/app/components/loading.jsx';
-import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
-import DemoMessage            from '../../ErrorMessages/DemoMessage';
-import { LeaveConfirm }       from '../../../Components/leave-confirm.jsx';
+    FormSubHeader }            from '../../../Components/layout-components.jsx';
+import Loading                 from '../../../../../templates/app/components/loading.jsx';
+import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
+import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
+import DemoMessage             from '../../ErrorMessages/DemoMessage';
+import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
 
 const upload_message = (
     <>
@@ -35,18 +45,46 @@ const upload_message = (
 );
 
 class ProofOfAddress extends React.Component {
-    state = { files: [], is_loading: true, show_form: true }
+    state = { document_file: [], is_loading: true, show_form: true }
 
-    showForm = show_form => this.setState({ show_form });
+    showForm = show_form => this.setState({ show_form, file_error_message: null });
 
-    handleDrop = (files) => {
+    handleAcceptedFiles = (files) => {
         if (files.length > 0) {
             console.log(files);
-            this.setState({ files });
+            this.setState({ file_error_message: null, document_file: files });
         }
     }
 
+    handleRejectedFiles = (files) => {
+        const isFileTooLarge    = files.length > 0 && files[0].size > max_document_size;
+        const hasSupportedFiles = files.filter((file) => getSupportedFiles(file.name));
+        if (isFileTooLarge && (hasSupportedFiles.length > 0)) {
+            this.setState({
+                document_file     : files,
+                file_error_message: filesize_error_message,
+            });
+        } else {
+            this.setState({
+                document_file     : files,
+                file_error_message: unsupported_file_message,
+            });
+        }
+    }
+
+    removeFile = () => {
+        this.setState({ file_error_message: null, document_file: [] });
+    }
+
     onSubmit = () => {
+        if (!!this.state.file_error_message || (this.state.document_file.length < 1)) return;
+        const uploader = new DocumentUploader({ connection: BinarySocket.get() }); // send 'debug: true' here for debugging
+        uploader.upload(this.state.document_file).then((api_response) => {
+            console.warn(api_response);
+        }).catch((error) => {
+            this.setState({ upload_error: error });
+            console.warn(error);
+        });
     }
 
     render() {
@@ -57,6 +95,8 @@ class ProofOfAddress extends React.Component {
             address_city,
             address_state,
             address_postcode,
+            document_file,
+            file_error_message,
             show_form,
             is_account_authenticated,
             is_loading,
@@ -77,6 +117,7 @@ class ProofOfAddress extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
+                    document_file,
                 }}
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
@@ -95,7 +136,7 @@ class ProofOfAddress extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
-                            <form className='account-form' onSubmit={this.onSubmit}>
+                            <form className='account-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
@@ -214,15 +255,31 @@ class ProofOfAddress extends React.Component {
                                         </ul>
                                         <div className='account-poa__upload-file'>
                                             <FileDropzone
-                                                onDrop={this.onDrop = (files) => this.handleDrop(files)}
-                                                accept='image/png, image/jpeg, image/jpg, image/gif, application/pdf'
-                                                max_size={8388608}
+                                                onDropAccepted={
+                                                    this.onDropAccepted = (files) => this.handleAcceptedFiles(files)
+                                                }
+                                                onDropRejected={
+                                                    this.onDropRejected = (files) => this.handleRejectedFiles(files)
+                                                }
+                                                accept={supported_filetypes}
+                                                max_size={max_document_size}
                                                 multiple={false}
                                                 message={upload_message}
                                                 hover_message={localize('Drop files here..')}
-                                                error_message_type={localize('File type not accepted')}
-                                                error_message_size={localize('File size should be 8MB or less')}
+                                                error_message={localize('Please upload supported file type.')}
+                                                validation_error_message={file_error_message}
+                                                value={document_file}
                                             />
+                                            {(document_file.length > 0 || !!file_error_message) &&
+                                            <div className='account-poa__upload-remove-btn-container'>
+                                                <IconRemoveFile
+                                                    className={classNames('account-poa__upload-remove-btn', {
+                                                        'account-poa__upload-remove-btn--error': !!file_error_message,
+                                                    })}
+                                                    onClick={this.removeFile}
+                                                />
+                                            </div>
+                                            }
                                         </div>
                                     </div>
                                 </FormBody>

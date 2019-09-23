@@ -98,6 +98,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@binary-com/binary-document-uploader": "^2.4.4",
     "@deriv/deriv-api": "^1.0.1",
     "acorn": "^6.1.1",
     "babel-polyfill": "^6.26.0",

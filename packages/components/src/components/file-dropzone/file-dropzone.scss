@@ -70,10 +70,14 @@
                 opacity: 0;
                 transform: translate3d(0, -16px, 0);
             }
+            &--error {
+                color: var(--color-red);
+            }
         }
         &__filename {
             font-size: 12px;
-            max-width: 186px;
+            width: 100%;
+            max-width: 240px;
             color: var(--text-color);
             font-weight: bold;
         }

@@ -21,6 +21,10 @@ class TradeAnimation extends React.PureComponent {
         this.props.onMount();
     }
 
+    componentWillUnmount() {
+        this.props.onUnMount();
+    }
+
     render() {
         const {
             className,
@@ -60,13 +64,15 @@ TradeAnimation.propTypes = {
     className      : PropTypes.string,
     contract_status: PropTypes.number,
     onMount        : PropTypes.func,
+    onUnMount      : PropTypes.func,
     status_class   : PropTypes.array,
     status_title   : PropTypes.string,
 };
 
 export default connect(({ animation, flyout }) => ({
-    onMount        : animation.onMount,
     contract_status: flyout.contract_status,
+    onMount        : animation.onMount,
+    onUnMount      : animation.onUnMount,
     status_class   : animation.status_class,
     status_title   : animation.status_title,
 }))(TradeAnimation);

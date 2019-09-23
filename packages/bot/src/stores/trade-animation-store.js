@@ -16,10 +16,10 @@ export default class TradeAnimationStore {
 
     @observable status_class = ['', '', ''];
     @observable status_title = CONTRACT_STATUS[0];
+    @observable reactions = [];
 
     @action.bound onMount () {
-        reaction(() => this.root_store.flyout.contract_status, () => {
-            const { flyout: { contract_status } } = this.root_store;
+        const contract_status_reaction = reaction(() => this.root_store.flyout.contract_status, contract_status => {
             const progress_status = contract_status - (contract_status === 3 ? 2 : 1);
 
             this.status_title = CONTRACT_STATUS[contract_status];
@@ -35,6 +35,14 @@ export default class TradeAnimationStore {
                 }
             }
             this.status_class = status_class_temp;
+        });
+
+        this.reactions.push(contract_status_reaction);
+    }
+
+    @action.bound onUnMount() {
+        this.reactions.forEach(react => {
+            react.dispose();
         });
     }
 }

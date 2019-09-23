@@ -768,11 +768,14 @@ export default class TradeStore extends BaseStore {
             }));
         }
         if (req.active_symbols) {
-            if (this.should_refresh_active_symbols) {
-                return WS.activeSymbols(req);
-            }
             return BinarySocket.wait('active_symbols');
         }
         return WS.storage.send(req);
     };
+
+    @action.bound
+    resetRefresh() {
+        WS.activeSymbols(); // reset active symbols
+        this.should_refresh_active_symbols = false;
+    }
 }

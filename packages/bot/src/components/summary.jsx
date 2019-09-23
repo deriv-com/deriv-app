@@ -83,6 +83,8 @@ Summary.propTypes = {
     contract               : PropTypes.object,
     currency               : PropTypes.string,
     dispose                : PropTypes.func,
+    disposeObserverListener: PropTypes.func,
+    disposeOnAccountSwitch : PropTypes.func,
     lost_contracts         : PropTypes.number,
     number_of_runs         : PropTypes.number,
     registerOnAccountSwitch: PropTypes.func,

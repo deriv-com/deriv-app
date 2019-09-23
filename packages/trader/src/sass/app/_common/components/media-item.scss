@@ -3,9 +3,7 @@
 
     &__heading {
         @include typeface(--paragraph-left-bold-black);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         margin: 0 0 16px;
         text-transform: none;
     }
@@ -16,7 +14,7 @@
         min-width: 160px;
 
         &:empty {
-            background-color: $COLOR_LIGHT_BLACK_3;
+            background-color: var(--general-disabled);
         }
     }
     &__description {
@@ -24,9 +22,7 @@
         justify-content: flex-start;
         align-items: flex-start;
         @include typeface(--paragraph-left-normal-black);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
     }
     &__form {
         display: flex;
@@ -34,8 +30,6 @@
         justify-content: flex-start;
         align-items: flex-start;
         text-transform: initial;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
     }
 }

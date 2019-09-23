@@ -115,6 +115,22 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_fully_authenticated() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'authenticated');
+    }
+
+    @computed
+    get landing_company_shortcode() {
+        return ClientBase.get('landing_company_shortcode');
+    }
+
+    @computed
+    get landing_company() {
+        return State.getResponse('landing_company');
+    }
+
+    @computed
     get is_valid_login() {
         if (!this.is_logged_in) return true;
         const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
@@ -306,7 +322,7 @@ export default class ClientStore extends BaseStore {
 
         this.selectCurrency('');
 
-        this.responsePayoutCurrencies(await WS.authorized.storage.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
 
         this.registerReactions();
     }
@@ -466,9 +482,9 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = undefined;
         this.accounts = {};
         runInAction(async () => {
-            this.responsePayoutCurrencies(await WS.payoutCurrencies({ forced: true }));
+            this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.modules.smart_chart.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotifications();
@@ -624,12 +640,27 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    @action.bound
     fetchResidenceList() {
         WS.residenceList().then(response => {
             runInAction(() => {
                 this.residence_list = response.residence_list || [];
             })
         });
+    }
+
+    @action.bound
+    getChangeableFields() {
+        const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
+        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, this.landing_company, 'changeable_fields');
+            if (has_changeable_field) {
+            let changeable_fields = [];
+            if (changeable && changeable.only_before_auth) {
+                changeable_fields = [...changeable.only_before_auth];
+            }
+            return changeable_fields;
+        }
+        return [];
     }
 }
 /* eslint-enable */

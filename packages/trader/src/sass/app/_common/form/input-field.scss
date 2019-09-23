@@ -15,7 +15,7 @@
     }
     & .inline-icon {
         position: absolute;
-        top: 6px;
+        top: 8px;
         left: 8px;
         z-index: 99;
         cursor: pointer;
@@ -55,9 +55,7 @@
             left: 2px;
         }
         &:hover {
-            @include themify($themes) {
-                background: themed('tab_hover_color');
-            }
+            background: var(--state-hover);
             cursor: pointer;
 
             & ~ .input-wrapper__input {
@@ -85,10 +83,9 @@
     padding-left: 0.8em;
     border-radius: $BORDER_RADIUS;
     transition: transform 0.3s;
-    @include themify($themes) {
-        border: 1px solid themed('container_color');
-        background-color: themed('container_color');
-    }
+    background-color: var(--fill-normal);
+    border: 1px solid var(--fill-normal);
+    color: var(--text-prominent);
 
     &[type=checkbox] {
         font-size: 1.2em;
@@ -99,40 +96,31 @@
         height: 16px;
         border-radius: 0;
         padding: 0;
-        @include themify($themes) {
-            background-color: themed('background_container_color');
-            border: 1px solid themed('text_secondary_color');
-        }
+        background-color: var(--general-section-1);
+        border: 1px solid var(--text-less-prominent);
 
         &:active {
-            @include themify($themes) {
-                border-color: $COLOR_ORANGE;
-                border-radius: 0;
-                box-shadow: none;
-            }
+            border-radius: 0;
+            box-shadow: none;
+            border-color: var(--brand-red-coral);
         }
         &:hover {
-            @include themify($themes) {
-                border-color: themed('text_color');
-                border-radius: 0;
-                box-shadow: none;
-            }
+            border-color: var(--border-hover);
         }
         &:focus {
             border-radius: 0;
             box-shadow: none;
+            border-color: var(--border-active);
         }
         &:checked {
-            background: $COLOR_ORANGE;
-            border-color: $COLOR_ORANGE;
+            background: var(--brand-red-coral);
+            border-color: var(--brand-red-coral);
 
             &:after {
                 display: inline-block;
             }
             &:hover {
-                @include themify($themes) {
-                    border-color: $COLOR_ORANGE;
-                }
+                border-color: var(--brand-red-coral);
             }
         }
         &::-ms-check { // IE/EDGE support
@@ -157,23 +145,16 @@
         cursor: pointer;
     }
     &::placeholder {
-        @include themify($themes) {
-            border-color: themed('text_primary_color');
-        }
+        border-color: var(--border-normal);
     }
     &:hover {
-        @include themify($themes) {
-            border-color: themed('border_hover_color');
-        }
+        border-color: var(--border-hover);
     }
     &:active, &:focus {
         outline: 0;
         border-radius: $BORDER_RADIUS;
-        box-shadow: 0 0 0 2px $COLOR_DARK_BLUE_8;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-
+        border-color: var(--border-active);
+        color: var(--text-prominent);
     }
     &--has-inline-prefix {
         padding-left: 50px !important;
@@ -182,6 +163,5 @@
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
-        box-shadow: 0 0 0 2px rgba(227, 28, 75, 0.32) !important;
     }
 }

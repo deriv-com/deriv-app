@@ -2,13 +2,13 @@ import ContentLoader from 'react-content-loader';
 import React         from 'react';
 import PropTypes     from 'prop-types';
 
-const TradeParamsLoader = ({ is_dark_theme, speed }) => (
+const TradeParamsLoader = ({ speed }) => (
     <ContentLoader
         height={548}
         width={240}
         speed={speed}
-        primaryColor={is_dark_theme ? '#191c31' : '#f4f4f6'}
-        secondaryColor={is_dark_theme ? '#202641' : '#eaeaec'}
+        primaryColor={'var(--general-section-1)'}
+        secondaryColor={'var(--general-hover)'}
     >
         <rect x='0' y='0' rx='4' ry='4' width='240' height='76' />
         <rect x='0' y='84' rx='4' ry='4' width='240' height='132' />
@@ -18,8 +18,7 @@ const TradeParamsLoader = ({ is_dark_theme, speed }) => (
 );
 
 TradeParamsLoader.propTypes = {
-    is_dark_theme: PropTypes.bool,
-    speed        : PropTypes.number,
+    speed: PropTypes.number,
 };
 
 export { TradeParamsLoader };

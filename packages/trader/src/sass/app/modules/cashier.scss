@@ -4,9 +4,151 @@
         width: 100%;
     }
     &__wrapper {
-        width: 100%;
-        height: 100%;
         text-align: center;
+
+        &, &--align-left {
+            color: var(--text-prominent);
+            width: 100%;
+            height: 100%;
+            line-height: 1.43;
+        }
+        &--align-left {
+            text-align: left;
+        }
+    }
+    &__loader {
+        font-size: 1rem;
+
+        &-wrapper {
+            display: flex;
+            height: 100%;
+        }
+    }
+    &__header {
+        font-size: 1.6rem;
+        line-height: 1.5;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+    &__form {
+        &-submit {
+            display: flex;
+            justify-content: flex-end;
+            box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
+            width: calc(100% + 4.8rem);
+            margin-left: -2.4rem;
+            position: absolute;
+            bottom: -2.4rem;
+            height: 8rem;
+        }
+        &-error {
+            flex: 1;
+            margin: 2rem 5.6rem 4.4rem 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.33;
+
+            &-icon {
+                position: absolute;
+                left: 0;
+            }
+            &-small-icon {
+                margin: 2rem 1.6rem 4.4rem 2.4rem;
+            }
+        }
+        &-submit-button {
+            width: 9.8rem;
+            min-width: 9.8rem;
+            display: inline-block;
+            height: 4rem;
+            font-size: 1.4rem;
+            padding: 1rem 1.6rem;
+            font-weight: bold;
+            color: $COLOR_WHITE;
+            margin: 1.6rem 2.4rem 2.4rem;
+        }
+    }
+    &__input-long {
+        display: inline-block !important;
+        margin-bottom: 0 !important;
+    }
+    &__drop-down {
+        display: inline-block;
+        min-width: 20rem;
+        min-height: 4rem;
+        margin: 0 0 16px;
+        line-height: 1.43;
+
+        &-display {
+            justify-content: left;
+            min-height: 3.8rem;
+            height: auto;
+
+            &-span {
+                font-size: 1.4rem;
+                text-align: left;
+                padding: 9px 36px 9px 12px;
+                text-transform: none;
+                line-height: 1.43;
+                display: flex;
+                align-items: center;
+            }
+        }
+        &-items, &-label {
+            text-transform: none !important;
+            text-align: left !important;
+            font-size: 1.4rem !important;
+            justify-content: left;
+            padding-left: 1.4rem;
+            align-items: center;
+        }
+    }
+    &__transferred {
+        &-amount {
+            color: var(--text-profit-success);
+            font-size: 3.2rem;
+            line-height: 0.75;
+            margin-bottom: 1.6rem;
+        }
+        &-details {
+            margin-left: 8px;
+            vertical-align: super;
+            font-size: 1.4rem;
+            text-align: left;
+            line-height: 1.43;
+            max-width: 18rem;
+
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        &-icon {
+            @extend %inline-icon;
+            transform: scale(-1, 1);
+            vertical-align: middle;
+            margin: 0 1.6rem;
+        }
+    }
+    &__paragraph {
+        font-size: 1.4rem;
+        align-self: center;
+        line-height: 1.43;
+    }
+    &__text {
+        font-size: 1.4rem;
+        line-height: 1.43;
+        max-width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+
+        &--bold {
+            font-weight: bold;
+        }
+    }
+    &__modal-tab {
+        min-width: 24rem;
     }
     /** @define cashier-error */
     &-error {
@@ -17,9 +159,7 @@
             margin-bottom: 1.6rem;
         }
         &__text {
-            @include themify($themes) {
-                color: themed('error_color');
-            }
+            color: var(--text-loss-danger);
             font-weight: bold;
             font-size: 1.6rem;
             line-height: 1.5;
@@ -40,16 +180,10 @@
         line-height: 1.5;
     }
     &__header, &__text {
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
     }
     &__text {
         font-size: 1.4rem;
-        line-height: 1.43;
-        max-width: 70%;
-        margin-left: auto;
-        margin-right: auto;
     }
     &__verify-button {
         margin-top: 3.2rem;
@@ -69,9 +203,7 @@
             margin: auto;
 
             &-title {
-                @include themify($themes) {
-                    color: themed('text_primary_color');
-                }
+                color: var(--text-general);
                 font-size: 1.6rem;
                 font-weight: bold;
                 margin-bottom: 0.8rem;
@@ -82,9 +214,7 @@
                 }
             }
             &-text {
-                @include themify($themes) {
-                    color: themed('text_primary_color');
-                }
+                color: var(--text-general);
             }
         }
         &-resend, &-sent {
@@ -108,22 +238,6 @@
 
 /** @define payment-agent */
 .payment-agent {
-    &__wrapper {
-        @include themify($themes) {
-            color: themed('text_color');
-        }
-        font-size: 1.4rem;
-        line-height: 1.43;
-        height: 100%;
-        width: 100%;
-        text-align: left;
-    }
-    &__header {
-        font-size: 1.6rem;
-        line-height: 1.5;
-        font-weight: bold;
-        margin-bottom: 16px;
-    }
     &__instructions {
         margin-top: 24px;
         display: flex;
@@ -149,43 +263,15 @@
         }
         &-selector {
             margin-bottom: 16px;
+            display: flex;
 
             .payment-agent__drop-down {
                 margin-left: 8px;
+                margin-bottom: 0;
+                min-width: 19.6rem;
+                width: auto;
             }
         }
-    }
-    &__drop-down {
-        display: inline-block;
-        min-width: 20rem;
-        min-height: 4rem;
-        //margin: 0 0 0 8px;
-        margin: 0 0 16px;
-        line-height: 1.43;
-
-        &-display {
-            justify-content: left;
-            min-height: 3.8rem;
-            height: auto;
-
-            &-span {
-                font-size: 1.4rem;
-                text-align: left;
-                padding: 9px 36px 9px 12px;
-                text-transform: none;
-                line-height: 1.43;
-            }
-        }
-        &-items {
-            text-transform: none !important;
-            text-align: left !important;
-            font-size: 1.4rem !important;
-            justify-content: left;
-            padding-left: 12px;
-        }
-    }
-    &__loader {
-        font-size: 1rem;
     }
     &__accordion-content {
         &-line {
@@ -197,16 +283,11 @@
         }
     }
     &__disclaimer {
-        @include themify($themes) {
-            background-color: themed('background_color');
-        }
+        background-color: var(--general-section-1);
         margin-top: 24px;
         padding: 8px 16px;
         font-size: 1.2rem;
         line-height: 1.42;
-    }
-    &__text--bold {
-        font-weight: bold;
     }
     &__radio {
         margin-bottom: 16px;
@@ -219,28 +300,6 @@
         text-align: center;
     }
     &__transferred {
-        &-amount {
-            color: $COLOR_GREEN_1;
-            font-size: 3.2rem;
-            line-height: 0.75;
-            margin-bottom: 16px;
-        }
-        &-details {
-            margin-left: 8px;
-            vertical-align: super;
-
-            &-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-        &-icon {
-            @extend %inline-icon;
-            transform: scale(-1, 1);
-            vertical-align: middle;
-            margin: 0 16px;
-        }
         &-contact {
             margin-top: 16px;
             margin-bottom: 8px;
@@ -248,12 +307,10 @@
     }
     &__contact {
         text-decoration: none;
-        color: var(--color-red);
+        color: var(--brand-red-coral);
     }
     &__separator {
-        @include themify($themes) {
-            border-bottom: 1px solid themed('background_container_color');
-        }
+        border-bottom: var(--general-section-2);
         margin-top: 32px;
         margin-bottom: 16px;
         // cover the whole container instead of within the container's padding
@@ -265,7 +322,8 @@
         margin-bottom: 24px;
     }
     &__buttons {
-        float: right;
+        justify-content: flex-end;
+        display: flex;
     }
     &__statement-button, &__done-button {
         margin: 0;
@@ -276,6 +334,8 @@
     &__input {
         width: 12.6rem !important;
         margin-left: 8px;
+        display: inline-block !important;
+        margin-bottom: 0 !important;
 
         &-field {
             text-align: left;
@@ -283,45 +343,78 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
-        &, &-long {
-            display: inline-block !important;
-            margin-bottom: 0 !important;
+    }
+    &__paragraph {
+        align-self: flex-start;
+    }
+}
+
+/** @define account-transfer */
+.account-transfer {
+    &__notes {
+        color: var(--text-less-prominent);
+        margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
+    &__bullet {
+        background-color: var(--text-general);
+        border-radius: 100%;
+        margin-right: 1.3rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        flex: none;
+        margin-top: 0.6rem;
+
+        &-wrapper {
+            display: flex;
+            margin-bottom: 0.4rem;
         }
     }
-    &__withdraw-button {
-        width: 9.8rem;
-        min-width: 9.8rem;
-        display: inline-block;
-        height: 4rem;
-        font-size: 1.4rem;
-        padding: 1rem 1.6rem;
-        font-weight: bold;
-        color: $COLOR_WHITE;
-        margin: 1.6rem 2.4rem 2.4rem;
+    &__drop-down {
+        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
+        width: auto;
+        margin-bottom: 3.4rem;
     }
-    &__submit {
-        display: flex;
-        justify-content: flex-end;
-        box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
-        width: 72%;
-        margin-left: -2.4rem;
-        position: absolute;
-        bottom: 0;
-        height: 8rem;
-    }
-    &__error {
-        flex: 1;
-        margin: 2rem 5.6rem 4.4rem 0;
-        font-size: 1.2rem;
-        font-weight: 500;
-        line-height: 1.33;
+    &__currency {
+        margin: 0 0.4rem;
 
         &-icon {
-            position: absolute;
-            left: 0;
+            align-self: center;
         }
-        &-small-icon {
-            margin: 2rem 1.6rem 4.4rem 2.4rem;
+    }
+    &__balance {
+        color: var(--text-less-prominent);
+    }
+    &__receipt {
+        &-icon {
+            margin: 5.6rem 0 1.6rem;
+        }
+    }
+    &__transfer {
+        &-icon {
+            vertical-align: initial;
+            margin: 0 0.8rem;
+        }
+        &-details {
+            &-from, &-to {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    &__button-done {
+        margin-top: 3.2rem;
+        min-width: 6.5rem;
+        height: 4rem;
+    }
+    &__no-balance {
+        &-icon {
+            margin: 10.7rem 0 1.6rem;
+        }
+        &-button {
+            height: 4rem;
+            margin-top: 3.2rem;
         }
     }
 }
@@ -330,7 +423,7 @@
 .dc-modal {
     &__container {
         &_modal-cashier {
-            width: 915px;
+            width: 904px;
         }
     }
 }
@@ -338,13 +431,12 @@
 /** @define dc-modal-header; */
 .dc-modal-header {
     &__modal-cashier {
-        @include themify($themes) {
-            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
-        }
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__title {
         &--modal-cashier {
-            min-width: 28%;
+            min-width: 24rem;
+            border-bottom: 1px solid var(--general-section-1);
         }
     }
 }

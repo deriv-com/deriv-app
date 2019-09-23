@@ -13,7 +13,7 @@ const drawerContent = () => {
     return (
         <Tabs>
             <div label='Summary' >
-                <TradeAnimation className='test' />
+                <TradeAnimation />
             </div>
             <div label='Transations'  />
             <div label='Journal'  />

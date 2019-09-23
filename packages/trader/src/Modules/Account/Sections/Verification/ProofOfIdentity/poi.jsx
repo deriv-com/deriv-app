@@ -18,7 +18,6 @@ class POI extends React.Component {
         onfido_init_error: false,
     }
 
-    // TODO: pass sdk_token here?
     initOnfido = async () => {
         try {
             const onfido = init({
@@ -74,7 +73,7 @@ class POI extends React.Component {
             case 'suspected':
                 return <Unverified />;
             default:
-                return <div id='onfido' />;
+                return <div style={{ marginTop: '20px' }}><div id='onfido' /></div>;
         }
     }
 }

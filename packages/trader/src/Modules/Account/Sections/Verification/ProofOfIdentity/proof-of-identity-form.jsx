@@ -1,14 +1,17 @@
-import * as Cookies           from 'js-cookie';
-import React                  from 'react';
-import { connect }            from 'Stores/connect';
-import { WS }                 from 'Services';
-import BinarySocket           from '_common/base/socket_base';
-import POI                     from './poi.jsx';
-import Loading                 from '../../../../../templates/app/components/loading.jsx';
+import * as Cookies     from 'js-cookie';
+import React            from 'react';
+import { localize }     from 'App/i18n';
+import { connect }      from 'Stores/connect';
+import { WS }           from 'Services';
+import BinarySocket     from '_common/base/socket_base';
+import POI              from './poi.jsx';
+import Loading          from '../../../../../templates/app/components/loading.jsx';
+import ApiErrorMessage  from '../../ErrorMessages/LoadErrorMessage';
 
 class ProofOfIdentityForm extends React.Component {
     state = {
         is_loading        : true,
+        api_error         : false,
         onfido_unsupported: false,
         view              : '',
     };
@@ -24,8 +27,9 @@ class ProofOfIdentityForm extends React.Component {
                 if (response.error || !response.service_token) {
                     if (response.error.code === 'UnsupportedCountry') {
                         this.setState({ onfido_unsupported: true });
+                    } else {
+                        this.setState({ api_error: true, is_loading: false });
                     }
-                    // TODO: API error:
                     resolve();
                     return;
                 }
@@ -49,9 +53,8 @@ class ProofOfIdentityForm extends React.Component {
             category          : 'authentication',
             event             : 'poi_documents_uploaded',
         }).then((data) => {
-            console.log('handleComplete response ', data);
             if (data.error) {
-                // TODO: API error:
+                this.setState({ api_error: true });
                 return;
             }
             this.setState({ view: 'pending' });
@@ -104,20 +107,24 @@ class ProofOfIdentityForm extends React.Component {
     }
 
     render() {
-        const { is_loading, view, onfido_service_token, has_poa } = this.state;
+        const {
+            is_loading,
+            view,
+            onfido_service_token,
+            has_poa,
+            api_error,
+        } = this.state;
+
+        if (api_error) return <ApiErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         return (
-            <>
-                {is_loading ?
-                    <Loading is_fullscreen={false} className='account___intial-loader' /> :
-                    <POI
-                        view={view}
-                        onfido_service_token={onfido_service_token}
-                        has_poa={has_poa}
-                        handleComplete={this.handleComplete}
-                    />
-                }
-            </>
+            <POI
+                view={view}
+                onfido_service_token={onfido_service_token}
+                has_poa={has_poa}
+                handleComplete={this.handleComplete}
+            />
         );
     }
 }

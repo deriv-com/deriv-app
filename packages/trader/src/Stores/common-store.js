@@ -23,6 +23,7 @@ export default class CommonStore extends BaseStore {
     @observable network_status    = {};
     @observable is_network_online = false;
     @observable is_socket_opened  = false;
+    @observable was_socket_opened = false;
 
     @observable services_error = {};
 
@@ -31,7 +32,18 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
+        const should_broadcast_account_change =
+            this.was_socket_opened
+            && !this.is_socket_opened
+            && is_socket_opened;
+
         this.is_socket_opened = is_socket_opened;
+        this.was_socket_opened = this.was_socket_opened || is_socket_opened;
+
+        if (should_broadcast_account_change) {
+            this.root_store.client.broadcastAccountChange();
+            console.warn('broadcast account change');
+        }
     }
 
     @action.bound

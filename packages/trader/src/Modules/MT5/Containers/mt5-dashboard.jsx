@@ -16,6 +16,12 @@ import IconInstallationWindows from 'Assets/SvgComponents/mt5/download-center/ic
 import { connect }             from 'Stores/connect';
 import 'Sass/app/modules/mt5-dashboard.scss';
 
+/*
+*  [Work In Progress]
+*  This file is a WIP and will be broken down into different files for different components before the module is enabled
+*  Class names might change, component structures might change, and content and icons will definitely change
+* */
+
 const MT5AccountCard = ({
     commission_message,
     descriptor,

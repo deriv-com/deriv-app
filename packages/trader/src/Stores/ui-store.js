@@ -23,7 +23,6 @@ export default class UIStore extends BaseStore {
     @observable is_dark_mode_on         = false;
     @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
-    @observable is_account_management_modal_on = false;
 
     @observable has_only_forward_starting_contracts = false;
 
@@ -69,6 +68,7 @@ export default class UIStore extends BaseStore {
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
+    @observable modal_index        = 0;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -225,13 +225,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountManagementModal() {
-        this.is_account_management_modal_on = !this.is_account_management_modal_on;
+    setCashierActiveTab(tab = 'deposit') {
+        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
     }
 
     @action.bound
-    setCashierActiveTab(tab = 'deposit') {
-        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
+    setModalIndex(index = 0) {
+        this.modal_index = index;
     }
 
     @action.bound

@@ -20,7 +20,7 @@ const SellButton = ({
         <React.Fragment>
             <Popover alignment='left' icon='question' message={sell_message} />
             <Button
-                className='btn--secondary btn--secondary--green'
+                className='btn--secondary--default'
                 is_disabled={!is_valid_to_sell || is_sell_requested}
                 text={localize('Sell')}
                 onClick={onClickSell}

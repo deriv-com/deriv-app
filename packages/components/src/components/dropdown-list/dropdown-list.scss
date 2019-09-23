@@ -8,9 +8,7 @@
     transition: transform 0.25s ease, opacity 0.25s linear;
     transform: scale(1, 0);
     cursor: pointer;
-    @include themify($themes) {
-        background-color: themed('container_color');
-    }
+    background-color: var(--state-normal);
 
     &--enter, &--exit {
         transform: scale(1, 0);
@@ -31,9 +29,7 @@
         }
 
         &:hover {
-            @include themify($themes) {
-                background-color: themed('hover_color');
-            }
+            background-color: var(--state-hover);
         }
     }
 }

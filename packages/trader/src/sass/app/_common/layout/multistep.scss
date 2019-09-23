@@ -1,13 +1,16 @@
 /** @define multistep; weak */
 .multistep {
-    &__btn {
+    &__header {
         display: flex;
         align-items: center;
-        font-size: 1.4rem;
-        font-weight: bold;
         padding-top: 24px;
         padding-left: 16px;
         padding-right: 16px;
+    }
+    &__btn {
+        display: flex;
+        font-size: 1.4rem;
+        font-weight: bold;
         cursor: pointer;
 
         &-icon {

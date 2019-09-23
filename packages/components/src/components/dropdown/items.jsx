@@ -13,7 +13,7 @@ const Items = ({
     is_align_text_left,
     value,
 }) =>  items.map((item, idx) => {
-    const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : null;
+    const symbol_type_class_name = item.text && typeof item.text === 'string' ? `symbols--${(item.text).toLowerCase()}` : null;
 
     return (
         <div

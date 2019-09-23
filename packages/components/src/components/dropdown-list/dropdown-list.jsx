@@ -11,7 +11,9 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
         throw Error('Dropdown received wrong data structure');
     }
 
-    const is_string_array = list_items.length && typeof list_items[0] === 'string';
+    const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
+
+    const is_string_array = !is_object && list_items.length && typeof list_items[0] === 'string';
 
     return (
         <CSSTransition
@@ -32,6 +34,21 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
                     renderTrackHorizontal={trackHorizontal}
                     renderThumbHorizontal={thumbHorizontal}
                 >
+                    {is_object &&
+                        Object.keys(list_items).map((items) => (
+                            list_items[items].map((item, idx) => (
+                                <div
+                                    key={idx}
+                                    // onMouseDown ensures the click handler runs before the onBlur event of Input
+                                    onMouseDown={() => onItemSelection(item)}
+                                    className='dc-dropdown-list__item'
+                                    value={item.value}
+                                >
+                                    { item.text }
+                                </div>
+                            ))
+                        ))
+                    }
                     {
                         is_string_array ?
                             list_items.map((item, idx) => (
@@ -64,14 +81,17 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
 
 export default DropdownList;
 
+const list_items_shape = PropTypes.arrayOf(
+    PropTypes.shape({
+        text : PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+    })
+);
+
 DropdownList.propTypes = {
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
-        PropTypes.arrayOf(
-            PropTypes.shape({
-                text : PropTypes.string.isRequired,
-                value: PropTypes.string.isRequired,
-            })
-        ),
+        list_items_shape,
+        PropTypes.objectOf(list_items_shape),
     ]),
 };

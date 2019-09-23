@@ -13,7 +13,7 @@ import 'Sass/app/modules/account.scss';
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal_details',
+    'path'     : '/account/personal-details',
     'component': DemoMessage,
     'title'    : 'Personal details',
 };
@@ -59,7 +59,7 @@ class Account extends React.Component {
             });
         }
 
-        const subroutes      = flatten(this.props.routes);
+        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
 
         if (!selected_content) { // fallback

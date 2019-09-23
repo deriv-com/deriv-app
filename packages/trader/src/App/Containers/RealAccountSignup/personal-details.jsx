@@ -112,6 +112,7 @@ class DateOfBirth extends Component {
     }
 }
 
+// TODO remove this and use deriv-components
 const Input = (props) => {
     const ref = React.createRef();
     return (

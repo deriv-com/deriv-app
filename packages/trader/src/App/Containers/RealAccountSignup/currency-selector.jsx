@@ -100,7 +100,7 @@ class CurrencySelector extends React.Component {
         const errors = {};
 
         if (!values.currency) {
-            errors.currency = 'Select an item';
+            errors.currency = localize('Select an item');
         }
 
         return errors;

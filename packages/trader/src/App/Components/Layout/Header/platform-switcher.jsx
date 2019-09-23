@@ -1,5 +1,6 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
+import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
 import Icon                 from 'Assets/icon.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
@@ -15,12 +16,17 @@ class PlatformSwitcher extends React.PureComponent {
 
     render = () => (
         <React.Fragment>
-            <div className='platform_switcher' onClick={this.handleClick}>
-                <Icon icon='IconDeriv' className='platform_switcher__icon' />
-                <p className='platform_switcher__header'>{localize('DTrader')}</p>
-                <p className='platform_switcher__label'>{localize('BETA')}</p>
-                <Icon icon='IconArrowBold' className='platform_switcher__arrow' />
-            </div>
+            <CSSTransition
+                in={this.state.is_open}
+                classNames='platform_switcher'
+            >
+                <div className='platform_switcher' onClick={this.handleClick}>
+                    <Icon className='platform_switcher__icon' icon='IconDeriv' />
+                    <p className='platform_switcher__header'>{localize('DTrader')}</p>
+                    <p className='platform_switcher__label'>{localize('BETA')}</p>
+                    <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
+                </div>
+            </CSSTransition>
             <PlatformDropdown
                 platform_config={this.props.platform_config}
                 handleClick={this.handleClick}

@@ -3,13 +3,15 @@
     align-items: center;
     padding: 8px;
 
+    &__arrow {
+        transition: transform 0.25s ease;
+        transform: rotate(0deg);
+    }
+    &-enter-done &__arrow {
+        transform: rotate(180deg);
+    }
     &:hover {
         background-color: #dedede;
-
-        .platform_switcher__arrow {
-            transform: rotate(180deg);
-            transition: transform 300ms;
-        }
     }
     & svg:first-child, p {
         margin: 0 0 0 8px;

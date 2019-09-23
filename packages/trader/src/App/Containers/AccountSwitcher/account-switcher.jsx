@@ -51,7 +51,7 @@ class AccountSwitcher extends React.Component {
 
     get can_manage_currency () {
         return this.props.can_change_currency ||
-            (!this.props.is_virtual && !this.props.has_fiat);
+            (!this.props.is_virtual && !this.props.has_fiat && this.props.can_upgrade_to);
     }
 
     render() {

@@ -41,8 +41,7 @@ export default class CommonStore extends BaseStore {
         this.was_socket_opened = this.was_socket_opened || is_socket_opened;
 
         if (should_broadcast_account_change) {
-            this.root_store.client.broadcastAccountChange();
-            console.warn('broadcast account change');
+            this.root_store.client.broadcastAccountChangeAfterAuthorize();
         }
     }
 

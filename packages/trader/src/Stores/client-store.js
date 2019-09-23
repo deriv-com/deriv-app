@@ -397,6 +397,12 @@ export default class ClientStore extends BaseStore {
         this.switch_broadcast = true;
     }
 
+    broadcastAccountChangeAfterAuthorize() {
+        return BinarySocket.wait('authorize').then(() => {
+            this.broadcastAccountChange();
+        });
+    }
+
     @action.bound
     async switchAccountHandler () {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {

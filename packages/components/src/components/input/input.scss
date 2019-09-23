@@ -10,6 +10,9 @@
     &:focus-within {
         border-color: var(--brand-secondary);
     }
+    &:hover:not(.dc-input__disabled) {
+        border-color: var(--border-hover);
+    }
     &__field {
         background: none;
         color: var(--text-prominent);

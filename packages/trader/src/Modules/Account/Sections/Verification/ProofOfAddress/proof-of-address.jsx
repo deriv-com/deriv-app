@@ -19,8 +19,7 @@ import { connect }             from 'Stores/connect';
 import {
     validAddress,
     validPostCode,
-    validLetterSymbol,
-    validLength }              from 'Utils/Validator/declarative-validation-rules';
+    validLetterSymbol }        from 'Utils/Validator/declarative-validation-rules';
 import { localize }            from 'App/i18n';
 import BinarySocket            from '_common/base/socket_base';
 import { WS }                  from 'Services';
@@ -30,6 +29,7 @@ import {
     max_document_size,
     supported_filetypes,
     unsupported_file_message } from './constants';
+import ButtonLoading           from '../../../Components/button-loading.jsx';
 import {
     FormFooter,
     FormBody,
@@ -128,7 +128,7 @@ class ProofOfAddress extends React.Component {
 
     onSubmit = () => {
         if (!!this.state.file_error_message || (this.state.document_file.length < 1)) return;
-        const uploader = new DocumentUploader({ connection: BinarySocket.get() }); // send 'debug: true' here for debugging
+        const uploader = new DocumentUploader({ connection: BinarySocket.get().connection }); // send 'debug: true' here for debugging
         uploader.upload(this.state.document_file[0]).then((api_response) => {
             console.warn(api_response);
         }).catch((error) => {
@@ -344,7 +344,20 @@ class ProofOfAddress extends React.Component {
                                     <Button
                                         className='account-form__footer-btn btn--primary'
                                         type='submit'
+                                        is_disabled={isSubmitting || (
+                                            this.props.is_virtual ?
+                                                false
+                                                :
+                                                !!((errors.address_line_1 || !values.address_line_1) ||
+                                                (errors.address_line_2) ||
+                                                (errors.address_city || !values.address_city) ||
+                                                (errors.address_state || !values.address_state) ||
+                                                (errors.address_postcode || !values.address_postcode)) ||
+                                                ((this.state.document_file.length < 1) ||
+                                                !!this.state.file_error_message)
+                                        )}
                                         has_effect
+                                        is_loading={is_btn_loading && <ButtonLoading />}
                                         text={localize('Save and submit')}
                                     />
                                 </FormFooter>

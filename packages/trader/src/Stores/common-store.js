@@ -1,9 +1,9 @@
 import {
     action,
-    observable }           from 'mobx';
-import moment              from 'moment';
-import { currentLanguage } from 'Utils/Language/index';
-import BaseStore           from './base-store';
+    observable }                  from 'mobx';
+import moment                     from 'moment';
+import { currentLanguage }        from 'Utils/Language/index';
+import BaseStore                  from './base-store';
 import { clientNotifications }    from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
@@ -32,6 +32,8 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
+        // note that it's not for account switch that we're doing this,
+        // but rather to reset account related stores like portfolio and contract-trade
         const should_broadcast_account_change =
             this.was_socket_opened
             && !this.is_socket_opened
@@ -48,7 +50,7 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setNetworkStatus(status, is_online) {
         if (this.network_status.class) {
-            this.network_status.class = status.class;
+            this.network_status.class   = status.class;
             this.network_status.tooltip = status.tooltip;
         } else {
             this.network_status = status;

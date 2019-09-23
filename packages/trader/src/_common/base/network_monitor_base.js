@@ -31,7 +31,7 @@ const NetworkMonitorBase = (() => {
         if ('onLine' in navigator) {
             window.addEventListener('online',  () => {
                 setNetworkStatus('blinking');
-                reconnect_after(500);
+                reconnectAfter({ timeout: 500 });
             });
             window.addEventListener('offline', () => setNetworkStatus('offline'));
         } else {
@@ -52,7 +52,7 @@ const NetworkMonitorBase = (() => {
     // if the network status is online
     // and the connection is closed or closing.
     let reconnect_timeout = null;
-    function reconnect_after(timeout) {
+    function reconnectAfter({ timeout }) {
         clearTimeout(reconnect_timeout);
         reconnect_timeout = setTimeout(() => {
             reconnect_timeout = null;
@@ -71,7 +71,7 @@ const NetworkMonitorBase = (() => {
         message: () => setNetworkStatus('online'),
         close  : () => {
             setNetworkStatus(isOnline() ? 'blinking' : 'offline');
-            reconnect_after(5000);
+            reconnectAfter({ timeout: 5000 });
         },
     };
 

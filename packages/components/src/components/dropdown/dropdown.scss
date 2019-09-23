@@ -45,6 +45,8 @@
         }
         &--has-symbol {
             justify-content: unset;
+        }
+        &--no-border {
             border-color: var(--fill-normal);
         }
         &-placeholder {

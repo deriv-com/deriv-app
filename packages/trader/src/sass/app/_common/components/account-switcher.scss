@@ -219,8 +219,8 @@
                 @include toEm(padding, 1px 2px, 0.6em);
                 @include toEm(margin-right, 8px, 0.6em);
                 content: 'demo';
-                color: var(--brand-red-coral);
-                border: 1px solid var(--brand-red-coral);
+                color: var(--text-profit-success);
+                border: 1px solid var(--text-profit-success);
                 border-radius: 16px;
             }
             &-icon {

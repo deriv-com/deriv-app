@@ -1,6 +1,5 @@
 /** @define cashier */
 .cashier {
-    // TODO: until here
     &__content {
         width: 100%;
     }
@@ -114,6 +113,10 @@
         &-details {
             margin-left: 8px;
             vertical-align: super;
+            font-size: 1.4rem;
+            text-align: left;
+            line-height: 1.43;
+            max-width: 18rem;
 
             &-wrapper {
                 display: flex;
@@ -129,8 +132,9 @@
         }
     }
     &__paragraph {
-        font-size: 1.4em;
+        font-size: 1.4rem;
         align-self: center;
+        line-height: 1.43;
     }
     &__text {
         font-size: 1.4rem;
@@ -318,7 +322,8 @@
         margin-bottom: 24px;
     }
     &__buttons {
-        float: right;
+        justify-content: flex-end;
+        display: flex;
     }
     &__statement-button, &__done-button {
         margin: 0;
@@ -338,6 +343,9 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
+    }
+    &__paragraph {
+        align-self: flex-start;
     }
 }
 

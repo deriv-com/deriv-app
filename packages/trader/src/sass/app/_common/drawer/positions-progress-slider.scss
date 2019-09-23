@@ -13,7 +13,7 @@
         border-bottom: 1px solid var(--general-section-1);
     }
     &__track {
-        background: var(--state-hover);
+        background: var(--text-disabled);
         position: relative;
         margin: 2px 0 8px;
         height: 6px;
@@ -49,7 +49,7 @@
                 top: 0;
                 height: 6px;
                 width: 100%;
-                background-color: var(--state-active);
+                background-color: var(--text-less-prominent);
             }
             &--marked:before {
                 transform: scale3d(1, 1, 1);

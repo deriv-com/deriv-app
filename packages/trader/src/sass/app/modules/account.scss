@@ -11,17 +11,13 @@
         }
     }
     &__inset_header {
-        @include themify($themes) {
-            box-shadow: inset 0 -1px 0 0 themed('tab_background_color');
-        }
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
         &-subheading {
             font-size: 1.4rem;
             line-height: 1.5;
             margin-right: 8px;
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
     }
     &__inset_header-icon {
@@ -79,25 +75,19 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                @include themify($themes) {
-                    border-top: 1px solid themed('tab_background_color');
-                }
+                border-top: 1px solid var(--general-section-1);
             }
         }
         &__title {
             position: absolute;
             padding-right: 8px;
-            @include themify($themes) {
-                background: themed('navbar_background_color');
-                color: themed('text_color');
-            }
+            background: var(--general-main-1);
+            color: var(--text-prominent);
         }
         &__subtitle {
             padding-left: 8px;
             font-weight: normal;
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
         &__fieldset {
             position: relative;
@@ -123,11 +113,8 @@
             justify-content: flex-end;
             z-index: 999;
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
-            @include themify($themes) {
-                border-width: 1px;
-                border-top: 1px solid themed('tab_background_color');
-                background-color: themed('navbar_background_color');
-            }
+            border-top: 2px solid var(--general-section-1);
+            background-color: var(--general-main-1);
 
             &-btn {
                 margin-top: 0;
@@ -141,29 +128,25 @@
     }
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
 
         &--small {
             @include typeface(--small-left-normal-black, none);
+            color: var(--text-general);
         }
         &--xsmall {
             @include typeface(--xsmall-left-normal-black, none);
+            color: var(--text-general);
         }
         &--grey {
-            @include themify($themes) {
-                color: themed('active_color');
-            }
+            color: var(--text-prominent);
         }
     }
     .account-management__message {
         margin: 1em 0;
         font-weight: bold;
         font-size: 1.6em;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &-content {
             display: flex;
@@ -183,6 +166,7 @@
         margin-top: 10px;
         margin-bottom: 16px;
         @include typeface(--paragraph-left-normal-black, none);
+        color: var(--text-general);
     }
     .account-management-flex-wrapper {
         display: flex;
@@ -208,6 +192,7 @@
             }
             th {
                 @include typeface(--paragraph-left-bold-black, none);
+                color: var(--text-general);
             }
         }
         &__divider {
@@ -219,16 +204,12 @@
                 width: 100%;
                 height: 1px;
                 left: 0px;
-                @include themify($themes) {
-                    border-bottom: 2px solid themed('tab_background_color');
-                }
+                border-bottom: 2px solid var(--general-section-1);
             }
         }
         tbody {
             tr {
-                @include themify($themes) {
-                    border-bottom: 1px solid themed('tab_background_color');
-                }
+                border-bottom: 1px solid var(--general-section-1);
                 padding: 8px 0;
 
                 &:first-child {
@@ -365,9 +346,7 @@
     grid-row-gap: 16px;
     max-width: 400px;
     margin: 24px auto 0;
-    @include themify($themes) {
-        color: themed('text_primary_color');
-    }
+    color: var(--text-general);
     font-size: 1.2rem;
     line-height: 1.5;
 
@@ -392,19 +371,17 @@
     font-size: 1.2rem;
     font-weight: bold;
     flex: 1;
+    color: var(--text-general);
 
     p {
         padding-left: 16px;
-    }
-    @include themify($themes) {
-        color: themed('text_primary_color');
     }
 }
 
 /** @define initial-loader; weak */
 .initial-loader--btn {
     .initial-loader__barspinner--rect {
-        background-color: $COLOR_WHITE;
+        background-color: var(--general-main-1);
     }
     .barspinner {
         margin: 0 4px 0 -4px;

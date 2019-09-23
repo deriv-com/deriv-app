@@ -7,8 +7,9 @@ import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import { unique }            from '_common/utility';
+import { urlFor }            from '_common/url';
+import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import BaseStore             from './base-store';
-import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -63,6 +64,9 @@ export default class UIStore extends BaseStore {
     // app states for modal
     @observable is_app_disabled   = false;
     @observable is_route_modal_on = false;
+
+    // real account signup
+    @observable is_real_acc_signup_on = false;
 
     // position states
     @observable show_positions_toggle = true;
@@ -245,6 +249,25 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    openRealAccountSignup() {
+        this.is_real_acc_signup_on = true;
+    }
+
+    @action.bound
+    closeRealAccountSignup() {
+        this.is_real_acc_signup_on = false;
+    }
+
+    @action.bound
+    closeSignupAndOpenCashier() {
+        this.is_real_acc_signup_on = false;
+        this.setCashierActiveTab('deposit');
+        this.closeRealAccountSignup();
+        // TODO enable this one cashier is active
+        setTimeout(this.toggleCashierModal, 300);
+    }
+
+    @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
     }
@@ -292,7 +315,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        if (this.notification_messages.indexOf(notification) === -1) {
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
         }
     }

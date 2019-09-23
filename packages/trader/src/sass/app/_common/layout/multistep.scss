@@ -1,0 +1,30 @@
+/** @define multistep; weak */
+.multistep {
+    &__header {
+        display: flex;
+        align-items: center;
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    &__btn {
+        display: flex;
+        font-size: 1.4rem;
+        font-weight: bold;
+        cursor: pointer;
+
+        &-icon {
+            margin-right: 8px;
+
+            .color1-fill {
+                @include themify($themes) {
+                    color: themed('text_color');
+                }
+            }
+        }
+    }
+    &__component {
+        width: 100%;
+        height: 100%;
+    }
+}

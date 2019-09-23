@@ -9,10 +9,8 @@
     border-radius: $BORDER_RADIUS;
     display: flex;
     align-items: center;
-    @include themify($themes) {
-        background: themed('background_container_color');
-        color: themed('text_primary_color');
-    }
+    background-color: var(--general-main-2);
+    color: var(--text-prominent);
 
     &__close-btn {
         position: absolute;
@@ -36,9 +34,7 @@
         max-height: 187px;
         height: 100%;
         width: 100%;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
 
         &-header {
             margin-bottom: 0.5rem;
@@ -47,9 +43,7 @@
         &-label {
             margin-right: 4px;
             font-size: 10px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
         }
         &-currency {
             position: relative;
@@ -63,9 +57,7 @@
         justify-content: center;
         height: 100%;
         width: 100%;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &-btn {
             margin: 0 auto;
@@ -86,20 +78,16 @@
         }
         &-link {
             text-decoration: none;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
 
             &-info {
                 padding: 5px 10px 10px;
                 font-weight: 500;
-                color: $COLOR_SKY_BLUE;
+                color: var(--status-info);
             }
             &:hover, &:focus, &:active {
                 text-decoration: underline;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-prominent);
             }
         }
     }

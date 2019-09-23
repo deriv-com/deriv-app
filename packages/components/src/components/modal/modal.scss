@@ -8,10 +8,8 @@
         overflow: hidden;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-            box-shadow: 0 4px 6px 0 themed('background_modal_shadow');
-        }
+        background-color: var(--general-main-1);
+        box-shadow: 0 4px 6px 0 var(--shadow-menu);
 
         &--hide {
             display: none;
@@ -36,12 +34,12 @@
         width: 100%;
         line-height: 24px;
         align-items: center;
+        border-bottom: 1px solid var(--general-section-1);
 
         &__title {
             @include typeface(--title-left-bold-black);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            background-color: var(--general-section-1);
+            color: var(--text-prominent);
             line-height: 24px;
             padding: 16px;
         }

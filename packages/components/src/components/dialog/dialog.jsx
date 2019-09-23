@@ -70,8 +70,7 @@ class Dialog extends React.Component {
                                     <Button
                                         className={classNames(
                                             'dc-dialog__button',
-                                            'btn--secondary',
-                                            'btn--secondary--orange',
+                                            'btn--tertiary--default',
                                         )}
                                         has_effect
                                         text={cancel_button_text}
@@ -83,7 +82,7 @@ class Dialog extends React.Component {
                                         className={classNames(
                                             'dc-dialog__button',
                                             'btn--primary',
-                                            'btn--primary--orange',
+                                            'btn--primary--default',
                                         )}
                                         has_effect
                                         text={confirm_button_text}

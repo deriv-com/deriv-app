@@ -36,7 +36,7 @@
             border-radius: 8px;
 
             &.active {
-                border: solid 2px $--brand-secondary;
+                border: solid 2px var(--brand-secondary);
             }
             &:not(.active):hover {
                 background-color: #dedede;

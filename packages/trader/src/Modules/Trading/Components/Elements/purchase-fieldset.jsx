@@ -64,7 +64,13 @@ class PurchaseFieldset extends React.PureComponent {
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}
-                <React.Fragment>
+                <div
+                    className={classNames(
+                        'trade-container__fieldset-wrapper', {
+                            'trade-container__fieldset-wrapper--disabled': (is_proposal_error || is_disabled),
+                        },
+                    )}
+                >
                     <ContractInfo
                         basis={basis}
                         currency={currency}
@@ -117,7 +123,7 @@ class PurchaseFieldset extends React.PureComponent {
                             //     purchase_button
                         }
                     </div>
-                </React.Fragment>
+                </div>
             </Fieldset>
         );
     }

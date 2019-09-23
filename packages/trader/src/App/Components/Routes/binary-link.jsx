@@ -34,6 +34,7 @@ BinaryLink.propTypes = {
     children    : PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array,
+        PropTypes.string,
     ]),
     to: PropTypes.string,
 };

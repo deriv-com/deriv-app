@@ -141,6 +141,7 @@ export default class ContractReplayStore extends BaseStore {
             !granularity ?  (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity
         );
     }
+
     @action.bound
     setIsChartReady(v) {
         // SmartChart has a bug with scroll_to_epoch

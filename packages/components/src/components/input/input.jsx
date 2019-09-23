@@ -3,30 +3,46 @@ import React      from 'react';
 import FieldError from 'Components/field-error';
 import                 './input.scss';
 
-const Input = (props, ref) => (
-    <div className={ classNames('dc-input', props.className) }>
+const Input = ({
+    className,
+    classNameError,
+    error,
+    hint,
+    leading_icon,
+    trailing_icon,
+    label,
+    placeholder,
+    ...props
+}, ref) => (
+    <div className={ classNames('dc-input', className) }>
         {
-            props.leading_icon &&
+            leading_icon &&
             React.cloneElement(
-                props.leading_icon,
-                { className: classNames('dc-input__leading-icon', props.leading_icon.props.className) },
+                leading_icon,
+                { className: classNames('dc-input__leading-icon', leading_icon.props.className) },
             )
         }
-        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !props.label && props.placeholder })} />
+        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && placeholder })} />
         {
-            props.trailing_icon &&
+            trailing_icon &&
             React.cloneElement(
-                props.trailing_icon,
-                { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
+                trailing_icon,
+                { className: classNames('dc-input__trailing-icon', trailing_icon.props.className) },
             )
         }
-        {props.label &&
+        { label &&
             <label className='dc-input__label' htmlFor={props.id}>
-                {props.label}
+                {label}
             </label>
         }
-        { props.error &&
-            <FieldError className={props.classNameError} message={props.error} />
+        { error &&
+            <FieldError className={classNameError} message={error} />
+        }
+        {
+            !error && hint &&
+            <p className='dc-input__hint'>
+                {hint}
+            </p>
         }
     </div>
 );

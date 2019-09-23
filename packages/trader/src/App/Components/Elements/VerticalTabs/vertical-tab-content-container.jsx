@@ -13,6 +13,7 @@ class VerticalTabContentContainer extends React.PureComponent {
             is_routed,
             items,
             selected,
+            tab_container_classname,
         } = this.props;
         const selected_item = items.find(item => item.label === selected.label);
         const TabContent    = selected_item.value;
@@ -25,16 +26,16 @@ class VerticalTabContentContainer extends React.PureComponent {
                     })}
                     >
                         {
-                            action_bar.map(({ component, icon, onClick, title }) => {
+                            action_bar.map(({ component, icon, onClick }, idx) => {
                                 const Component = component;
                                 return (
                                     component ?
-                                        <Component key={title} />
+                                        <Component key={idx} />
                                         :
                                         <div
                                             id={`dt_${id}_close_icon`}
                                             className='vertical-tab__action-bar-wrapper'
-                                            key={title}
+                                            key={idx}
                                             onClick={onClick}
                                         >
                                             <Icon
@@ -47,28 +48,31 @@ class VerticalTabContentContainer extends React.PureComponent {
                         }
                     </div>
                 }
-                { is_routed ?
-                    <Switch>
-                        <Redirect exact from={routes.reports} to={routes.positions} />
-                        {
-                            items.map(({ value, path, icon }) => {
-                                const Component = value;
-                                return (
-                                    <Route
-                                        key={path}
-                                        path={path}
-                                        render={() => <Component component_icon={icon} />}
-                                    />
-                                );
-                            })
-                        }
-                    </Switch>
-                    :
-                    <TabContent
-                        key={selected_item.label}
-                        className='item-id'
-                    />
-                }
+                <div className={classNames('vertical-tab__content-container', tab_container_classname)}>
+                    { is_routed ?
+                        <Switch>
+                            <Redirect exact from={routes.reports} to={routes.positions} />
+                            {
+                                items.map(({ value, component, path, icon }, idx) => {
+                                    const Component = value || component;
+                                    return (
+                                        <Route
+                                            key={idx}
+                                            path={path}
+                                            render={() => <Component component_icon={icon} />}
+                                        />
+                                    );
+                                })
+                            }
+                        </Switch>
+                        :
+                        <TabContent
+                            key={selected_item.label}
+                            className='item-id'
+                        />
+                    }
+                </div>
+         
             </div>
         );
     }

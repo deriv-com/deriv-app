@@ -34,8 +34,11 @@
         margin: 0;
         background-color: var(--button-primary-default);
         font-weight: bold;
-        color: var(--text-prominent);
+        color: var(--text-colored-background);
 
+        &:hover:not(.account-signup__btn--disabled) {
+            background-color: var(--button-primary-hover);
+        }
         &--disabled {
             opacity: 0.32;
             cursor: not-allowed !important;

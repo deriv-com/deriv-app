@@ -69,8 +69,6 @@ class ProofOfAddress extends React.Component {
         const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        validateValues(validAddress, localize('Only alphabet is allowed'));
-
         return errors;
     };
 
@@ -106,7 +104,7 @@ class ProofOfAddress extends React.Component {
     onSubmit = () => {
         if (!!this.state.file_error_message || (this.state.document_file.length < 1)) return;
         const uploader = new DocumentUploader({ connection: BinarySocket.get() }); // send 'debug: true' here for debugging
-        uploader.upload(this.state.document_file).then((api_response) => {
+        uploader.upload(this.state.document_file[0]).then((api_response) => {
             console.warn(api_response);
         }).catch((error) => {
             this.setState({ upload_error: error });
@@ -182,6 +180,7 @@ class ProofOfAddress extends React.Component {
                                                     value={values.address_line_1}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    error={touched.address_line_1 && errors.address_line_1}
                                                     required
                                                 />
                                             </fieldset>
@@ -193,6 +192,7 @@ class ProofOfAddress extends React.Component {
                                                     name='address_line_2'
                                                     label={localize('Second line of address (optional)')}
                                                     value={values.address_line_2}
+                                                    error={touched.address_line_2 && errors.address_line_2}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     required
@@ -206,6 +206,7 @@ class ProofOfAddress extends React.Component {
                                                     name='address_city'
                                                     label={localize('Town/City')}
                                                     value={values.address_city}
+                                                    error={touched.address_city && errors.address_city}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     required
@@ -219,6 +220,7 @@ class ProofOfAddress extends React.Component {
                                                     name='address_state'
                                                     label={localize('State/Province')}
                                                     value={values.address_state}
+                                                    error={touched.address_state && errors.address_state}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     required
@@ -232,6 +234,7 @@ class ProofOfAddress extends React.Component {
                                                     name='address_postcode'
                                                     label={localize('Postal/ZIP Code')}
                                                     value={values.address_postcode}
+                                                    error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     required

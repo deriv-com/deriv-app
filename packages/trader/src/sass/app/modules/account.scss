@@ -350,6 +350,10 @@
             width: 100%;
             min-width: 400px;
             flex: 1;
+
+            .account-form__fieldset {
+                margin-bottom: 3em;
+            }
         }
     }
 }

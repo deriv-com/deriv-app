@@ -16,6 +16,10 @@ import IconRecentBank          from 'Assets/AccountManagement/ProofOfAddress/ico
 import IconRecentUtility       from 'Assets/AccountManagement/ProofOfAddress/icon-recent-utility.svg';
 import IconRemoveFile          from 'Assets/AccountManagement/icon-remove-file.svg';
 import { connect }             from 'Stores/connect';
+import {
+    validAddress,
+    validPostCode,
+    validLength }              from 'Utils/Validator/declarative-validation-rules';
 import { localize }            from 'App/i18n';
 import BinarySocket            from '_common/base/socket_base';
 import { WS }                  from 'Services';
@@ -44,8 +48,31 @@ const upload_message = (
     </>
 );
 
+const validate = (errors, values) => (fn, arr, err_msg) => {
+    arr.forEach(field => {
+        const value = values[field];
+        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
+    });
+};
+
 class ProofOfAddress extends React.Component {
     state = { document_file: [], is_loading: true, show_form: true }
+
+    // TODO: standardize validations and refactor this
+    validateFields = (values) => {
+        this.setState({ is_submit_success: false });
+        const errors = {};
+        const validateValues = validate(errors, values);
+
+        if (this.props.is_virtual) return errors;
+
+        const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
+        validateValues(val => val, required_fields, localize('This field is required'));
+
+        validateValues(validAddress, localize('Only alphabet is allowed'));
+
+        return errors;
+    };
 
     showForm = show_form => this.setState({ show_form, file_error_message: null });
 
@@ -131,7 +158,6 @@ class ProofOfAddress extends React.Component {
                     handleBlur,
                     handleSubmit,
                     isSubmitting,
-                    setFieldValue,
                 }) => (
                     <>
                         <LeaveConfirm onDirty={this.showForm} />

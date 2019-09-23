@@ -22,8 +22,8 @@ const validEmail               = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-
 export const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral             = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
-const validAddress             = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-const validPostCode            = value => /^[a-zA-Z\d-\s]*$/.test(value);
+export const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
 export const validPhone        = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 const validRegular             = (value, options) => options.regex.test(value);
 const validEmailToken          = value => value.trim().length === 8;

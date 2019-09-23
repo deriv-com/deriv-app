@@ -82,7 +82,6 @@ class Summary extends React.PureComponent {
 Summary.propTypes = {
     contract               : PropTypes.object,
     currency               : PropTypes.string,
-    dispose                : PropTypes.func,
     disposeObserverListener: PropTypes.func,
     disposeOnAccountSwitch : PropTypes.func,
     lost_contracts         : PropTypes.number,
@@ -97,7 +96,8 @@ Summary.propTypes = {
 export default connect(({ summary }) => ({
     contract               : summary.contract,
     currency               : summary.currency,
-    dispose                : summary.dispose,
+    disposeOnAccountSwitch : summary.disposeOnAccountSwitch,
+    disposeObserverListener: summary.disposeObserverListener,
     lost_contracts         : summary.lost_contracts,
     number_of_runs         : summary.number_of_runs,
     registerOnAccountSwitch: summary.registerOnAccountSwitch,
@@ -105,6 +105,4 @@ export default connect(({ summary }) => ({
     total_profit           : summary.total_profit,
     total_stake            : summary.total_stake,
     won_contracts          : summary.won_contracts,
-    disposeOnAccountSwitch : summary.disposeOnAccountSwitch,
-    disposeObserverListener: summary.disposeObserverListener,
 }))(Summary);

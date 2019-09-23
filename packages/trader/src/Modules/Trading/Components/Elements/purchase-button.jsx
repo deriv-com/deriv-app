@@ -37,6 +37,8 @@ const PurchaseButton = ({
                     'btn-purchase--animated--slide': is_loading && !should_fade,
                     'btn-purchase--animated--fade' : is_loading && should_fade,
                     'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),
+                    'btn-purchase--1'              : index === 0,
+                    'btn-purchase--2'              : index === 1,
                 })}
             onClick={() => {
                 setPurchaseState(index);

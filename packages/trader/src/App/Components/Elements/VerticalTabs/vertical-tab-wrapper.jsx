@@ -1,7 +1,8 @@
-import React from 'react';
+import classNames from 'classnames';
+import React      from 'react';
 
-const VerticalTabWrapper = ({ children }) => (
-    <div className='vertical-tab__tab'>
+const VerticalTabWrapper = ({ children, className }) => (
+    <div className={classNames('vertical-tab__tab', className)}>
         {children}
     </div>
 );

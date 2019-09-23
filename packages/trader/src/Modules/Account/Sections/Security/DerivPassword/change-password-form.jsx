@@ -142,13 +142,13 @@ class ChangePasswordForm extends React.Component {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
-                                    className='account-form__footer-btn btn--secondary'
+                                    className='account-form__footer-btn btn--tertiary--default'
                                     type='button'
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}
                                 />
                                 <Button
-                                    className='account-form__footer-btn btn--primary'
+                                    className='account-form__footer-btn btn--primary--default'
                                     type='submit'
                                     is_disabled={isSubmitting ||
                                         !!((errors.new_password || !values.new_password) ||

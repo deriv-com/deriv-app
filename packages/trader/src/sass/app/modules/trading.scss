@@ -9,15 +9,13 @@
 
 .loader {
     overflow: hidden;
-    @include themify($themes) {
-        background-color: rgba(themed('loader_background'), 0.16);
-    }
+    background-color: rgba(var(--general-main-1), 0.16);
 
     &--loading {
         width: inherit;
         height: inherit;
         animation: slide 1s cubic-bezier(1, 0, 0.5, 0) infinite;
-        background-image: linear-gradient(to left, rgba(255, 255, 255, 0), $COLOR_WHITE 10%, rgba(255, 255, 255, 0));
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0), $color-white 10%, rgba(255, 255, 255, 0));
         opacity: 0.32;
     }
 }
@@ -45,19 +43,15 @@
 
 /** @define trade-container */
 .trade-container {
-    @include themify($themes) {
-        background: themed('container_color');
-    }
+    background: var(--general-main-1);
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
         padding: 0.8em;
         margin-bottom: 0.4em;
-        @include themify($themes) {
-            background-color: themed('background_container_color');
-            border: 1px solid themed('background_container_color');
-            color: themed('text_primary_color');
-        }
+        background-color: var(--general-section-1);
+        border-color: var(--general-section-1);
+        color: var(--text-general);
 
         &-header {
             height: 1.5rem;
@@ -65,12 +59,15 @@
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-less-prominent);
 
             &--left {
                 left: 5px;
+            }
+        }
+        &-wrapper {
+            &--disabled {
+                opacity: 0.32;
             }
         }
     }
@@ -79,13 +76,15 @@
         appearance: none;
         box-sizing: border-box;
         border-radius: $BORDER_RADIUS;
-        @include themify($themes) {
-            background: themed('container_color');
-            color: themed('text_color');
+        background: var(--fill-normal);
+        color: var(--text-prominent);
+        border: 1px solid var(--fill-normal);
 
-            &:hover {
-                border-color: themed('border_hover_color');
-            }
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:active, &:focus {
+            border-color: var(--border-active);
         }
     }
     &__error {
@@ -94,15 +93,13 @@
         display: flex;
 
         &-info {
-            @include themify($themes) {
-                color: themed('text_color');
-            }
             @include typeface(--small-left-light-black, none);
             @include toEm(padding, 5px 5px 5px 8px, 1.2em);
             @include toEm(margin-bottom, 10px, 1.2em);
-            background-color: rgba($COLOR_ORANGE, 0.16);
+            color: var(--text-general);
+            background-color: rgba($color-red, 0.16);
             display: block;
-            border: 1px solid $COLOR_ORANGE;
+            border: 1px solid var(--brand-red-coral);
             border-radius: $BORDER_RADIUS;
         }
     }
@@ -119,9 +116,7 @@
         background: transparent;
         border-color: transparent;
         z-index: 2;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-prominent);
 
         &--symbol {
             font-size: 1.4em;
@@ -139,22 +134,13 @@
         display: flex;
         justify-content: space-between;
         position: relative;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         &-info {
             display: flex;
             justify-self: left;
             align-items: center;
 
-            &--disabled {
-                .trade-container__price-info-value, .trade-container__price-info-basis {
-                    @include themify($themes) {
-                        color: themed('disabled_color');
-                    }
-                }
-            }
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -180,9 +166,7 @@
                 text-align: left;
                 line-height: 1.25;
                 margin-left: 0.1em;
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
             }
@@ -190,9 +174,7 @@
                 margin-left: 0;
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                color: var(--text-less-prominent);
             }
             &-currency {
                 margin-left: 4px;
@@ -245,10 +227,9 @@
         }
     }
     &__allow-equals {
+        /* postcss-bem-linter: ignore */
         &__label {
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
     }
     &__currency-options {

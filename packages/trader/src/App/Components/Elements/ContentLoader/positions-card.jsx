@@ -2,13 +2,13 @@ import ContentLoader from 'react-content-loader';
 import React         from 'react';
 import PropTypes     from 'prop-types';
 
-const PositionsCardLoader = ({ is_dark_theme, speed }) => (
+const PositionsCardLoader = ({ speed }) => (
     <ContentLoader
         height={173}
         width={218}
         speed={speed}
-        primaryColor={is_dark_theme ? 'rgba(127, 131, 151, 0.16)' : '#f4f4f6'}
-        secondaryColor={is_dark_theme ? '#303342' : '#eaeaec'}
+        primaryColor={'var(--general-section-1)'}
+        secondaryColor={'var(--general-hover)'}
     >
         <rect x='43'  y='19'  rx='0' ry='0' width='56'  height='8' />
         <rect x='147' y='19'  rx='0' ry='0' width='56'  height='8' />
@@ -29,8 +29,7 @@ const PositionsCardLoader = ({ is_dark_theme, speed }) => (
 );
 
 PositionsCardLoader.propTypes = {
-    is_dark_theme: PropTypes.bool,
-    speed        : PropTypes.number,
+    speed: PropTypes.number,
 };
 
 export { PositionsCardLoader };

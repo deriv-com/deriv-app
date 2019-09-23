@@ -1,37 +1,27 @@
 import {
     action,
     computed,
-    extendObservable,
-    observable }              from 'mobx';
-import BinarySocket           from '_common/base/socket_base';
-import { isEmptyObject }      from '_common/utility';
-import { localize }           from 'App/i18n';
-import { WS }                 from 'Services';
-import { createChartBarrier } from './Helpers/chart-barriers';
-import { createChartMarkers } from './Helpers/chart-markers';
-import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartGranularity,
-    getChartType,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
-import BaseStore              from '../../base-store';
+    observable,
+    toJS }               from 'mobx';
+import BinarySocket      from '_common/base/socket_base';
+import { isEmptyObject } from '_common/utility';
+import { localize }      from 'App/i18n';
+import { WS }            from 'Services';
+import { LocalStore }    from '_common/storage';
+import ContractStore     from './contract-store';
+import BaseStore         from '../../base-store';
+import { getContractTypesConfig } from '../Trading/Constants/contract';
+import { clientNotifications }    from '../../Helpers/client-notifications';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
-    @observable contract_id;
-    @observable contract_info = observable.object({});
-    @observable digits_info   = observable.object({});
-
+    @observable contracts = [];
     @observable has_error     = false;
     @observable error_message = '';
 
-    // ---- Normal properties ---
-    is_from_positions   = false;
-    is_ongoing_contract = false;
+    // Chart specific observables
+    @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
+    @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
@@ -42,47 +32,29 @@ export default class ContractTradeStore extends BaseStore {
     // ----- Actions -----
     // -------------------
     @action.bound
-    drawChart() {
-        const {
-            date_expiry,
-            date_start,
-            tick_count,
-        } = this.contract_info;
+    updateChartType(type) {
+        LocalStore.set('contract_trade.chart_type', type);
+        this.chart_type = type;
+    }
 
-        const end_time = getEndTime(this.contract_info);
-
-        if (!end_time) this.is_ongoing_contract = true;
-
-        // finish contracts if end_time exists
-        if (end_time) {
-            const is_one_tick_contract = (tick_count < 2);
-            if (!this.is_ongoing_contract && !is_one_tick_contract) {
-                // set to static chart to true for non one tick contract
-                // to avoid chart from reloading
-                this.smart_chart.setStaticChart(true);
-            } else {
-                this.smart_chart.setStaticChart(false);
-            }
-            this.smart_chart.setContractStart(date_start);
-            this.smart_chart.setContractEnd(end_time);
-
-            // Clear chart loading status once ChartListener returns ready for completed contract
-            if (!this.is_ongoing_contract) {
-                this.smart_chart.setIsChartLoading(false);
-            }
-
-        // setters for ongoing contracts, will only init once onMount after left_epoch is set
-        } else if (this.is_from_positions) {
-            this.smart_chart.setContractStart(date_start);
+    @action.bound
+    updateGranularity(granularity) {
+        const tick_chart_types = ['mountain','line', 'colored_line', 'spline', 'baseline'];
+        // TODO: fix this in smartcharts
+        if (granularity === 0
+            && tick_chart_types.indexOf(this.chart_type) === -1) {
+            this.chart_type = 'mountain';
         }
-
-        this.smart_chart.updateMargin((end_time || date_expiry) - date_start);
-
-        createChartBarrier(this.smart_chart, this.contract_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.contract_info);
-
-        if (this.smart_chart.is_chart_ready) {
-            this.smart_chart.setIsChartLoading(false);
+        if (granularity !== 0
+            && tick_chart_types.indexOf(this.chart_type) !== -1) {
+            this.chart_type = 'candle';
+        }
+        LocalStore.set('contract_trade.granularity', granularity);
+        this.granularity = granularity;
+        if (this.granularity === 0) {
+            this.root_store.ui.removeNotification(
+                clientNotifications.switch_to_tick_chart
+            );
         }
     }
 
@@ -99,75 +71,100 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
-    @action.bound
-    drawContractStartTime(date_start, longcode, contract_id) {
-        this.contract_info.longcode = longcode;
-        createChartMarkers(this.root_store.modules.smart_chart, { date_start });
-        this.onMountBuy(contract_id);
-    }
+    applicable_contracts = () => {
+        const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
+        if (!trade_type || !underlying) { return []; }
+        let { trade_types } = getContractTypesConfig()[trade_type];
+        const is_call_put = (trade_type === 'rise_fall') || (trade_type === 'rise_fall_equal') || (trade_type === 'high_low');
+        if (is_call_put) {
+            // treat CALLE/PUTE and CALL/PUT the same
+            trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+        }
+        return this.contracts
+            .filter(c => c.contract_info.underlying === underlying)
+            .filter(c => {
+                const info = c.contract_info;
 
-    @action.bound
-    onMountBuy(contract_id) {
-        if (contract_id === this.contract_id) return;
-        this.contract_id = contract_id;
-        // clear proposal and purchase info once contract is mounted
-        this.root_store.modules.trade.proposal_info = {};
-        this.root_store.modules.trade.purchase_info = {};
-        BinarySocket.wait('authorize').then(() => {
-            this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
-        });
-    }
-
-    @action.bound
-    onMount(contract_id, is_from_positions) {
-        if (contract_id === this.contract_id) return;
-        this.smart_chart       = this.root_store.modules.smart_chart;
-        const has_existing_id  = this.smart_chart.is_contract_mode && !!(this.contract_id);
-        if (has_existing_id) this.resetValues(this.smart_chart);
-        this.has_error         = false;
-        this.error_message     = '';
-        this.contract_id       = contract_id;
-        this.is_from_positions = is_from_positions;
-
-        // clear proposal and purchase info once contract is mounted
-        this.root_store.modules.trade.proposal_info = {};
-        this.root_store.modules.trade.purchase_info = {};
-
-        if (contract_id) {
-            if (this.is_from_positions) {
-                this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode(true, has_existing_id);
-            }
-            BinarySocket.wait('authorize').then(() => {
-                this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
+                const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
+                // both high_low & rise_fall have the same contract_types in POC response
+                // entry_spot=barrier means it is rise_fall contract (blame the api)
+                if (trade_type_is_supported
+                    && info.barrier
+                    && info.entry_tick
+                    && is_call_put
+                ) {
+                    if (`${+info.entry_tick}` === `${+info.barrier}`) {
+                        return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
+                    }
+                    return trade_type === 'high_low';
+                }
+                return trade_type_is_supported;
             });
+    }
+
+    @computed
+    get markers_array() {
+        const markers = this.applicable_contracts()
+            .map(c => c.marker)
+            .filter(m => m)
+            .map(m => toJS(m));
+        if (markers.length) {
+            markers[markers.length - 1].is_last_contract = true;
+        }
+        return markers;
+    }
+
+    @action.bound
+    addContract({
+        barrier,
+        contract_id,
+        contract_type,
+        start_time,
+        longcode,
+        underlying,
+        is_tick_contract,
+    }) {
+        const contract = new ContractStore(this.root_store, { contract_id });
+        contract.populateConfig({
+            date_start: start_time,
+            barrier,
+            contract_type,
+            longcode,
+            underlying,
+        });
+        this.contracts.push(contract);
+        BinarySocket.wait('authorize').then(() => {
+            this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);
+        });
+
+        if (is_tick_contract && this.granularity !== 0) {
+            this.root_store.ui.addNotification(
+                clientNotifications.switch_to_tick_chart
+            );
         }
     }
 
     @action.bound
-    resetValues(SmartChartStore) {
-        this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
-        this.contract_id         = null;
-        this.contract_info       = {};
-        this.digits_info         = {};
-        this.error_message       = '';
-        this.has_error           = false;
-        this.is_from_positions   = false;
-        this.is_ongoing_contract = false;
-        SmartChartStore.cleanupContractChartView();
-    }
-
-    @action.bound
-    onCloseContract() {
-        if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
-        this.resetValues(this.smart_chart);
-        this.smart_chart.applySavedTradeChartLayout();
+    removeContract({ contract_id }) {
+        this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        this.forgetProposalOpenContract(contract_id, this.updateProposal);
     }
 
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
-        this.onCloseContract();
+        // TODO: don't forget the tick history when switching to contract-replay-store
+        // TODO: don't forget the POC when switching to contract-replay-store
+        if (this.contracts.length > 0) {
+            this.contracts.forEach(contract =>  {
+                const { contract_id, is_forgotten, is_ended } = contract;
+                if (contract_id && !is_forgotten && is_ended) {
+                    this.forgetProposalOpenContract(contract_id, this.updateProposal);
+                    // once contract for the id is forgotten, add flag to indicate it's already forgotten
+                    contract.is_forgotten = true;
+                }
+            });
+        }
     }
 
     @action.bound
@@ -175,61 +172,38 @@ export default class ContractTradeStore extends BaseStore {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
-            this.contract_info = {};
-            this.smart_chart.setIsChartLoading(false);
             return;
         }
+        // Empty response means the contract belongs to a different account
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.contract_info       = {};
-            this.contract_id         = null;
-            this.smart_chart.setContractMode(false);
-            this.smart_chart.setIsChartLoading(false);
+            // If contract does not belong to this account
+            this.contracts           = [];
             return;
         }
-        if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
-
-        this.contract_info = response.proposal_open_contract;
-
-        // Set chart granularity and chart_type
-        this.handleChartType(this.contract_info.date_start, getEndTime(this.contract_info) || null);
-
-        // Set chart view to date_start
-        if (this.is_from_positions) {
-            if (this.smart_chart.granularity !== 0) {
-                this.smart_chart.setChartView(this.contract_info.date_start);
-            }
-        }
-
-        // Set contract symbol if trade_symbol and contract_symbol don't match
-        if (this.root_store.modules.trade.symbol !== this.contract_info.underlying) {
-            this.root_store.modules.trade.symbol = this.contract_info.underlying;
-        }
-
-        this.drawChart(this.contract_info);
-
-        this.handleDigits(this.contract_info);
-    }
-
-    @action.bound
-    handleDigits(contract_info) {
-        if (this.is_digit_contract) {
-            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
+        // Update the contract-store corresponding to this POC
+        if (response.proposal_open_contract) {
+            const contract_id = +response.proposal_open_contract.contract_id;
+            this.contracts.forEach(contract =>  {
+                if (contract.contract_id === contract_id) {
+                    contract.populateConfig(response.proposal_open_contract);
+                    if (response.proposal_open_contract.is_sold) {
+                        this.root_store.ui.removeNotification(
+                            clientNotifications.switch_to_tick_chart
+                        );
+                    }
+                }
+            });
         }
     }
 
-    handleChartType(start, expiry) {
-        if (!this.smart_chart) {
-            this.smart_chart = this.root_store.modules.smart_chart;
-        }
-
-        const chart_type  = getChartType(start, expiry);
-        const granularity = getChartGranularity(start, expiry);
-
-        this.smart_chart.updateChartType(chart_type);
-        this.smart_chart.updateGranularity(granularity);
+    @computed
+    get last_contract() {
+        const applicable_contracts = this.applicable_contracts();
+        const length = applicable_contracts.length;
+        return length > 0 ? applicable_contracts[length - 1] : { };
     }
 
     forgetProposalOpenContract = (contract_id) => {
@@ -242,29 +216,5 @@ export default class ContractTradeStore extends BaseStore {
     clearError() {
         this.error_message = '';
         this.has_error = false;
-    }
-
-    @action.bound
-    setIsDigitContract(contract_type) {
-        this.contract_info.contract_type = contract_type;
-    }
-    // ---------------------------
-    // ----- Computed values -----
-    // ---------------------------
-    // TODO: currently this runs on each response, even if contract_info is deep equal previous one
-
-    @computed
-    get display_status() {
-        return getDisplayStatus(this.contract_info);
-    }
-
-    @computed
-    get is_ended() {
-        return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_digit_contract() {
-        return isDigitContract(this.contract_info.contract_type);
     }
 }

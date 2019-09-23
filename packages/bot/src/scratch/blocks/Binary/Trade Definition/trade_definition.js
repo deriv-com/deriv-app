@@ -1,8 +1,8 @@
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import config                from '../../../../constants';
-import ApiHelpers            from '../../../../services/api/helpers';
 import { translate }         from '../../../../utils/lang/i18n';
+import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -109,14 +109,14 @@ Blockly.Blocks.trade_definition = {
 };
 
 Blockly.JavaScript.trade_definition = block => {
-    const { client: client_store } = ApiHelpers.instance.root_store;
+    const { client } = ScratchStore.instance.root_store;
     
-    if (!client_store.is_logged_in) {
+    if (!client.is_logged_in) {
         throw new Error('Please login'); // TEMP.
     }
 
-    const { loginid }               = client_store.loginid;
-    const account                   = client_store.getToken(loginid);
+    const { loginid }               = client;
+    const account                   = client.getToken(loginid);
 
     const market_block              = block.getChildByType('trade_definition_market');
     const trade_type_block          = block.getChildByType('trade_definition_tradetype');
@@ -126,7 +126,7 @@ Blockly.JavaScript.trade_definition = block => {
     const restart_on_buy_sell_block = block.getChildByType('trade_definition_restartbuysell');
 
     const symbol                    = market_block.getFieldValue('SYMBOL_LIST');
-    const trade_type                = trade_type_block.getFieldValue('TRADETTYPE_LIST');
+    const trade_type                = trade_type_block.getFieldValue('TRADETYPE_LIST');
     const contract_type             = contract_type_block.getFieldValue('TYPE_LIST');
     const candle_interval           = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
     const should_restart_on_error   = Blockly.JavaScript.valueToCode(restart_on_error_block, 'RESTARTONERROR', Blockly.JavaScript.ORDER_ATOMIC);

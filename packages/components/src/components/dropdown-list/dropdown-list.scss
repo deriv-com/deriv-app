@@ -4,21 +4,32 @@
     border-radius: 4px;
     z-index: 1;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
+    transform-origin: top;
+    transition: transform 0.25s ease, opacity 0.25s linear;
+    transform: scale(1, 0);
     cursor: pointer;
-    @include themify($themes) {
-        background-color: themed('container_color');
-    }
+    background-color: var(--state-normal);
 
+    &--enter, &--exit {
+        transform: scale(1, 0);
+        opacity: 0;
+    }
+    &--enter-done {
+        transform: scale(1, 1);
+        opacity: 1;
+    }
     &__item {
         height: 40px;
         display: flex;
         align-items: center;
         padding: 1rem 1.6rem;
+        font-size: 1.4rem;
+        @include themify($themes) {
+            color: themed('text_color');
+        }
 
         &:hover {
-            @include themify($themes) {
-                background-color: themed('hover_color');
-            }
+            background-color: var(--state-hover);
         }
     }
 }

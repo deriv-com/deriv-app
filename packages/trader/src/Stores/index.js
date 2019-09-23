@@ -11,5 +11,6 @@ export default class RootStore {
         this.modules = new ModulesStore(this);
         this.ui      = new UIStore();
         this.gtm     = new GTMStore(this);
+        window.rr = this;
     }
 }

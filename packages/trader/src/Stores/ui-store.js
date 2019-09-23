@@ -13,10 +13,11 @@ import { sortNotifications } from '../App/Components/Elements/NotificationMessag
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_main_drawer_on          = false;
-    @observable is_notifications_drawer_on = false;
-    @observable is_positions_drawer_on     = false;
-    @observable is_reports_visible         = false;
+    @observable is_main_drawer_on           = false;
+    @observable is_notifications_drawer_on  = false;
+    @observable is_positions_drawer_on      = false;
+    @observable is_account_settings_visible = false;
+    @observable is_reports_visible          = false;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -67,6 +68,7 @@ export default class UIStore extends BaseStore {
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
+    @observable modal_index        = 0;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -81,6 +83,7 @@ export default class UIStore extends BaseStore {
             'duration_m',
             'duration_h',
             'duration_d',
+            'is_account_settings_visible',
             'is_chart_asset_info_visible',
             'is_chart_countdown_visible',
             'is_chart_layout_default',
@@ -217,26 +220,18 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showPositionsFooterToggle() {
-        this.show_positions_toggle = true;
-    }
-
-    @action.bound
-    hidePositionsFooterToggle() {
-        this.show_positions_toggle = false;
-    }
-
-    @action.bound
-    toggleCashierModal(active_tab) {
-        if (/^(deposit|withdraw)$/.test(active_tab)) {
-            this.setCashierActiveTab(active_tab);
-        }
+    toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
     @action.bound
     setCashierActiveTab(tab = 'deposit') {
         if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
+    }
+
+    @action.bound
+    setModalIndex(index = 0) {
+        this.modal_index = index;
     }
 
     @action.bound
@@ -252,6 +247,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
+    }
+
+    @action.bound
+    toggleAccountSettings(is_visible) {
+        this.is_account_settings_visible = is_visible;
     }
 
     @action.bound
@@ -292,15 +292,15 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        if (this.notification_messages.indexOf(notification) === -1) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        }
     }
 
     @action.bound
-    removeNotification(notification) {
-        const index = this.notification_messages.indexOf(notification);
-        if (index > -1) {
-            this.notification_messages.splice(index, 1);
-        }
+    removeNotification({ key }) {
+        this.notification_messages = this.notification_messages
+            .filter(n => n.key !== key);
     }
 
     @action.bound

@@ -3,9 +3,9 @@ const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
 const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
-const ProvidePlugin             = require('webpack').ProvidePlugin;
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
-const output =  {
+const output = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bot.js',
     chunkFilename: '[name]-[chunkhash:6].bot.js',
@@ -16,9 +16,9 @@ const output =  {
 };
 
 module.exports = {
-    entry : [
+    entry: [
         'core-js/fn/promise',
-        path.join(__dirname, 'src', 'app.js') 
+        path.join(__dirname, 'src', 'app.js')
     ],
     output,
     devServer: {
@@ -33,7 +33,7 @@ module.exports = {
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
-                     MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: { sourceMap: true },
@@ -45,12 +45,12 @@ module.exports = {
                     {
                         loader: "sass-resources-loader",
                         options: {
-                          resources: require(path.resolve(__dirname , 'node_modules/deriv-shared/utils/index.js')),
+                            resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
                         }
                     }
-               ]
-            },  
-            {  
+                ]
+            },
+            {
                 test: /\.svg$/,
                 use: [
                     {
@@ -83,22 +83,33 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : 'babel-loader',
+                loader : ['deriv-shared/utils/deriv-components-loader.js',
+                    'babel-loader'],
             },
         ],
     },
     plugins: [
         new MiniCssExtractPlugin({ filename: 'bot.css' }),
-        new StyleLintPlugin( { fix: true }),
+        new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml', to: 'xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
         ]),
         new SpriteLoaderPlugin(),
-        new ProvidePlugin({
-            goog                : 'expose-loader?goog!scratch-blocks/shim/blockly_compressed_vertical.goog',
-            Blockly             : 'expose-loader?Blockly!scratch-blocks/shim/blockly_compressed_vertical.Blockly',
-            'Blockly.JavaScript': 'expose-loader?Blockly.JavaScript!blockly/generators/javascript',
-        }),
+        new MergeIntoSingleFilePlugin({
+            files: {
+                'scratch.min.js': [
+                    'node_modules/scratch-blocks/blockly_compressed_vertical.js',
+                    'node_modules/scratch-blocks/msg/messages.js',
+                    'node_modules/blockly/generators/javascript.js',
+                ],
+            },
+            transform: {
+                'scratch.min.js': (code) => {
+                    const uglifyjs = require('uglify-js');
+                    return uglifyjs.minify(code).code;
+                }
+            }
+        })
     ],
 };

@@ -5,9 +5,10 @@
     width: 100%;
 
     .color1-fill {
-        @include themify($themes) {
-            fill: themed('text_color');
-        }
+        fill: var(--brand-red-coral);
+    }
+    .color2-fill {
+        fill: var(--brand-secondary);
     }
     &-name, &-category {
         display: flex;
@@ -15,9 +16,7 @@
         width: 50%;
         align-items: center;
         @include typeface(--paragraph-left-bold-active);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
 
         :first-child {
             margin-right: 4px;

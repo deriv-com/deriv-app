@@ -190,6 +190,20 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
+    const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
+
+    const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
+        deriv_api.send({
+            transfer_between_accounts: 1,
+            accounts                 : 'all',
+            ...(account_from && {
+                account_from,
+                account_to,
+                currency,
+                amount,
+            }),
+        });
+
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -216,6 +230,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
         subscribeBalance,
@@ -225,6 +240,7 @@ const BinarySocketBase = (() => {
         subscribeTicksHistory,
         subscribeTransaction,
         subscribeWebsiteStatus,
+        transferBetweenAccounts,
     };
 })();
 

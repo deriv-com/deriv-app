@@ -60,7 +60,6 @@ Footer.propTypes = {
     is_route_modal_on     : PropTypes.bool,
     is_settings_modal_on  : PropTypes.bool,
     location              : PropTypes.object,
-    show_positions_toggle : PropTypes.bool,
     togglePositionsDrawer : PropTypes.func,
     toggleSettingsModal   : PropTypes.func,
 };

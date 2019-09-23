@@ -161,9 +161,7 @@
     box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
 
     &:hover {
-        @include themify($themes) {
-            box-shadow: 0 0 0 0.5em themed('slider_hover_color');
-        }
+        box-shadow: 0 0 0 0.5em var(--state-hover);
     }
 }
 
@@ -285,5 +283,32 @@
             border-top-color: transparent;
             border-bottom-color: themed($color);
         }
+    }
+}
+
+/*
+ * Convert Tooltip colors
+ * @param $color - css color property
+ * Usage example:
+   @include convertTooltipColor(var(--status-default));
+ */
+@mixin convertTooltipColor($color) {
+    &:before {
+        background: $color;
+    }
+    &:after, &[data-tooltip-pos=top]:after {
+        border-top-color: $color;
+    }
+    &[data-tooltip-pos=right]:after {
+        border-top-color: transparent;
+        border-right-color: $color;
+    }
+    &[data-tooltip-pos=left]:after {
+        border-top-color: transparent;
+        border-left-color: $color;
+    }
+    &[data-tooltip-pos=bottom]:after {
+        border-top-color: transparent;
+        border-bottom-color: $color;
     }
 }

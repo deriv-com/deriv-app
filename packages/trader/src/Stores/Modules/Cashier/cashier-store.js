@@ -2,14 +2,19 @@ import {
     action,
     observable,
     toJS }                  from 'mobx';
-import { isCryptocurrency } from '_common/base/currency_base';
+import {
+    getCurrencies,
+    getDecimalPlaces,
+    isCryptocurrency }      from '_common/base/currency_base';
 import BinarySocket         from '_common/base/socket_base';
-import { isEmptyObject }    from '_common/utility';
+import {
+    getPropertyValue,
+    isEmptyObject }         from '_common/utility';
 import { localize }         from 'App/i18n';
 import { WS }               from 'Services';
 import BaseStore            from '../../base-store';
 
-const bank_default_option = [{ text: localize('Any'), value: '' }];
+const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
 class Config {
     container          = '';
@@ -33,11 +38,12 @@ class ConfigError {
 }
 
 class ConfigPaymentAgent {
+    list = [];
+
     @observable agents                 = [];
     @observable container              = 'payment_agent';
     @observable error                  = new ConfigError();
     @observable filtered_list          = [];
-    @observable list                   = [];
     @observable is_name_selected       = true;
     @observable is_withdraw            = false;
     @observable is_withdraw_successful = false;
@@ -46,6 +52,21 @@ class ConfigPaymentAgent {
     @observable selected_bank          = bank_default_option[0].value;
     @observable supported_banks        = bank_default_option;
     @observable verification           = new ConfigVerification();
+}
+
+class ConfigAccountTransfer {
+    @observable accounts_list          = [];
+    @observable container              = 'account_transfer';
+    @observable error                  = new ConfigError();
+    @observable has_no_account         = false;
+    @observable has_no_balance         = false;
+    @observable is_transfer_successful = false;
+    @observable minimum_fee            = null;
+    @observable receipt                = {};
+    @observable selected_from          = {};
+    @observable selected_to            = {};
+    @observable transfer_fee           = null;
+    @observable transfer_limit         = {};
 }
 
 class ConfigVerification {
@@ -61,7 +82,8 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
 
     @observable config = {
-        deposit: {
+        account_transfer: new ConfigAccountTransfer(),
+        deposit         : {
             ...(toJS(new Config({ container: 'deposit' }))),
             error: new ConfigError(),
         },
@@ -122,11 +144,17 @@ export default class CashierStore extends BaseStore {
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
         if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await this.getPaymentAgentList();
-            this.setPaymentAgentList(payment_agent_list);
+            this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
+        this.sortAccountsTransfer();
+
         const response_cashier = await WS.cashier(this.active_container, verification_code);
+
+        // if tab changed while waiting for response, ignore it
+        if (this.containers.indexOf(this.active_container) === -1) {
+            return;
+        }
 
         if (response_cashier.error) {
             this.setLoading(false);
@@ -263,6 +291,10 @@ export default class CashierStore extends BaseStore {
             case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
                 error_message = localize('Please set your 30-day turnover limit to access the cashier.');
                 error_link    = 'user/security/self_exclusionws';
+                break;
+            case 'WrongResponse':
+                error_message = error.message;
+                error_button_text = localize('Try again');
                 break;
             default:
                 error_message = error.message;
@@ -435,7 +467,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setPaymentAgentList(payment_agent_list) {
+    async setPaymentAgentList(pa_list) {
+        const payment_agent_list = pa_list || await this.getPaymentAgentList();
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -568,12 +601,251 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetPaymentAgent = (should_clear_list) => {
+    resetPaymentAgent = () => {
         this.setIsWithdraw(false);
         this.clearVerification();
-        if (should_clear_list) {
-            this.config.payment_agent = new ConfigPaymentAgent();
+    };
+
+    // possible transfers:
+    // 1. fiat to crypto & vice versa
+    // 2. fiat to mt & vice versa
+    // 3. crypto to mt & vice versa
+    @action.bound
+    async onMountAccountTransfer() {
+        this.setLoading(true);
+        await BinarySocket.wait('authorize', 'website_status');
+        if (!this.config.account_transfer.accounts_list.length) {
+            const transfer_between_accounts = await WS.transferBetweenAccounts();
+            const mt5_login_list = await BinarySocket.wait('mt5_login_list');
+            if (mt5_login_list.error || transfer_between_accounts.error) {
+                this.setErrorMessage(
+                    mt5_login_list.error || transfer_between_accounts.error,
+                    this.onMountAccountTransfer
+                );
+                this.setLoading(false);
+                return;
+            }
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+                return;
+            }
+            this.sortAccountsTransfer(transfer_between_accounts, mt5_login_list);
+        } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
+            return;
         }
+        this.setTransferFee();
+        this.setMinimumFee();
+        this.setTransferLimit();
+        this.setLoading(false);
+    }
+
+    canDoAccountTransfer(accounts) {
+        let can_transfer = true;
+        // should have at least one account with balance
+        if (!accounts.find(account => +account.balance > 0)) {
+            can_transfer = false;
+            this.setHasNoBalance(true);
+        }
+        // should have at least two real-money accounts
+        if (accounts.length <= 1) {
+            can_transfer = false;
+            this.setHasNoAccount(true);
+        }
+        if (!can_transfer) {
+            this.setLoading(false);
+        }
+        return can_transfer;
+    }
+
+    @action.bound
+    setHasNoBalance(has_no_balance) {
+        this.config.account_transfer.has_no_balance = has_no_balance;
+    }
+
+    @action.bound
+    setHasNoAccount(has_no_account) {
+        this.config.account_transfer.has_no_account = has_no_account;
+    }
+
+    @action.bound
+    setTransferFee() {
+        const transfer_fee = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
+        this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
+    }
+
+    @action.bound
+    setMinimumFee() {
+        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
+        this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
+    }
+
+    @action.bound
+    setTransferLimit() {
+        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
+        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
+        this.config.account_transfer.transfer_limit = {
+            max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
+            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+        };
+    }
+
+    getMT5AccountType = (group) => {
+        const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
+        let display_text = localize('MT5');
+        if (/svg/.test(value)) {
+            display_text = localize('DMT5 Synthetic indices');
+        } else if (/vanuatu/.test(value)) {
+            display_text = localize('DMT5 Standard');
+        } else if (/labuan/.test(value)) {
+            display_text = localize('DMT5 Advanced');
+        }
+        return { display_text, value };
+    };
+
+    @action.bound
+    async sortAccountsTransfer(response_accounts, response_mt5_accounts) {
+        const transfer_between_accounts = response_accounts || await WS.transferBetweenAccounts();
+        const mt5_login_list = response_mt5_accounts || await BinarySocket.wait('mt5_login_list');
+        if (!this.config.account_transfer.accounts_list.length) {
+            // should have more than one account
+            if (mt5_login_list.error || transfer_between_accounts.error ||
+                transfer_between_accounts.accounts.length <= 1) {
+                return;
+            }
+        }
+        const accounts     = transfer_between_accounts.accounts;
+        const mt5_accounts = mt5_login_list.mt5_login_list;
+        // sort accounts as follows:
+        // for non-MT5, top is fiat, then crypto, alphabetically by currency
+        // for MT5, standard, advanced, then synthetic indices
+        accounts.sort((a, b) => {
+            const a_is_mt = /MT/.test(a.loginid);
+            const b_is_mt = /MT/.test(b.loginid);
+            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
+            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+            const a_is_fiat = !a_is_mt && !a_is_crypto;
+            const b_is_fiat = !b_is_mt && !b_is_crypto;
+            if (a_is_mt && b_is_mt) {
+                const a_group = mt5_accounts.find(account => account.login === a.loginid.split('MT')[1]).group;
+                if (/vanuatu/.test(a_group)) {
+                    return -1;
+                }
+                if (/svg/.test(a_group)) {
+                    return 1;
+                }
+                return -1;
+            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                return a.currency < b.currency ? -1 : 1;
+            } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
+                return -1;
+            }
+            return 1;
+        });
+        const arr_accounts = [];
+        accounts.forEach((account, idx) => {
+            const is_mt = /MT/.test(account.loginid);
+            let group;
+            if (is_mt) {
+                group = this.getMT5AccountType(mt5_accounts.find(mt5_account => mt5_account.login === account.loginid.split('MT')[1]).group);
+            }
+            const obj_values = {
+                is_mt,
+                text     : is_mt ? group.display_text : account.currency.toUpperCase(),
+                value    : account.loginid,
+                balance  : account.balance,
+                currency : account.currency,
+                is_crypto: isCryptocurrency(account.currency),
+                ...(is_mt && { mt_icon: group.value }),
+            };
+            if (idx === 0) {
+                this.config.account_transfer.selected_from = obj_values;
+            } else if (idx === 1) {
+                this.config.account_transfer.selected_to = obj_values;
+            }
+            arr_accounts.push(obj_values);
+        });
+        this.setAccounts(arr_accounts);
+    }
+
+    @action.bound
+    setAccounts(arr_accounts) {
+        this.config.account_transfer.accounts_list = arr_accounts;
+    }
+
+    @action.bound
+    setIsTransferSuccessful(is_transfer_successful) {
+        this.config.account_transfer.is_transfer_successful = is_transfer_successful;
+    }
+
+    @action.bound
+    setReceiptTransfer({ amount }) {
+        this.config.account_transfer.receipt = {
+            amount_transferred: amount,
+        };
+    }
+
+    @action.bound
+    onChangeTransferFrom({ target }) {
+        this.setErrorMessage('');
+
+        const accounts      = this.config.account_transfer.accounts_list;
+        const selected_from = accounts.find(account => account.value === target.value);
+
+        // if new value of selected_from is the same as the current selected_to
+        // switch the value of selected_from and selected_to
+        if (selected_from.value === this.config.account_transfer.selected_to.value) {
+            this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
+        } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) { // not allowed to transfer from MT to MT
+            this.onChangeTransferTo({ target: { value: this.config.account_transfer.accounts_list[0].value } });
+        } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) { // not allowed to transfer crypto to crypto
+            const first_fiat = this.config.account_transfer.accounts_list.find((account) => !account.is_crypto);
+            this.onChangeTransferTo({ target: { value: first_fiat.value } });
+        }
+
+        this.config.account_transfer.selected_from = selected_from;
+        this.setMinimumFee();
+        this.setTransferLimit();
+    }
+
+    @action.bound
+    onChangeTransferTo({ target }) {
+        this.setErrorMessage('');
+
+        const accounts = this.config.account_transfer.accounts_list;
+        this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
+        this.setTransferFee();
+    }
+
+    requestTransferBetweenAccounts = async ({ amount }) => {
+        this.setErrorMessage('');
+        const transfer_between_accounts = await WS.transferBetweenAccounts(
+            this.config.account_transfer.selected_from.value,
+            this.config.account_transfer.selected_to.value,
+            this.config.account_transfer.selected_from.currency,
+            amount,
+        );
+        if (transfer_between_accounts.error) {
+            this.setErrorMessage(transfer_between_accounts.error);
+        } else {
+            this.setReceiptTransfer({ amount });
+            transfer_between_accounts.accounts.forEach((account) => {
+                this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value)
+                    .balance = account.balance;
+                if (account.loginid === this.config.account_transfer.selected_from.value) {
+                    this.config.account_transfer.selected_from.balance = account.balance;
+                } else if (account.loginid === this.config.account_transfer.selected_to.value) {
+                    this.config.account_transfer.selected_to.balance = account.balance;
+                }
+            });
+            this.setIsTransferSuccessful(true);
+        }
+        return transfer_between_accounts;
+    };
+
+    @action.bound
+    resetAccountTransfer = () => {
+        this.setIsTransferSuccessful(false);
     };
 
     onAccountSwitch() {
@@ -585,7 +857,8 @@ export default class CashierStore extends BaseStore {
             this.clearTimeoutCashierUrl(container);
             this.setSessionTimeout(true, container);
         });
-        this.resetPaymentAgent(true);
+        this.config.payment_agent = new ConfigPaymentAgent();
+        this.config.account_transfer = new ConfigAccountTransfer();
     }
 
     accountSwitcherListener() {

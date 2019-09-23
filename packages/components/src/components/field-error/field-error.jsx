@@ -13,6 +13,7 @@ FieldError.propTypes = {
     message  : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node,
+        PropTypes.bool,
     ]),
 };
 

@@ -1,33 +1,24 @@
 import {
     action,
-    computed,
-    extendObservable,
     observable }              from 'mobx';
-import { localize }           from 'App/i18n';
 import BinarySocket           from '_common/base/socket_base';
 import { isEmptyObject }      from '_common/utility';
 import { WS }                 from 'Services';
-import { createChartBarrier } from './Helpers/chart-barriers';
-import { createChartMarkers } from './Helpers/chart-markers';
-import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartConfig,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
+import { localize }           from 'App/i18n';
+import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
 import BaseStore              from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
+    @observable is_chart_ready = false;
+    @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
-    @observable digits_info = observable.object({});
-    @observable sell_info   = observable.object({});
-
+    @observable is_sell_requested = false;
     @observable has_error         = false;
     @observable error_message     = '';
-    @observable is_sell_requested = false;
+    @observable is_chart_loading  = true;
+    // ---- chart props
+    @observable margin;
 
     // ---- Replay Contract Config ----
     @observable contract_id;
@@ -36,13 +27,11 @@ export default class ContractReplayStore extends BaseStore {
     @observable is_static_chart = false;
 
     // ---- Normal properties ---
-    chart_type          = 'mountain';
     is_ongoing_contract = false;
-
-    // Replay Contract Indicative Movement
     prev_indicative = 0;
-    indicative      = 0;
 
+    // TODO: you view a contract and then share that link with another person,
+    // when the person opens, try to switch account they get the error
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
@@ -53,6 +42,7 @@ export default class ContractReplayStore extends BaseStore {
     // -------------------
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
         if (this.should_forget_first) {
+            // TODO; don't forget all ever
             WS.forgetAll('proposal_open_contract').then(() => {
                 this.should_forget_first = false;
                 WS.storage.proposalOpenContract({ contract_id }).then(cb);
@@ -69,9 +59,8 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     onMount(contract_id) {
         if (contract_id) {
-            this.smart_chart = this.root_store.modules.smart_chart;
-            this.smart_chart.setContractMode(true);
             this.contract_id = contract_id;
+            this.contract_store = new ContractStore(this.root_store, { contract_id });
             BinarySocket.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
@@ -83,32 +72,26 @@ export default class ContractReplayStore extends BaseStore {
     onUnmount() {
         this.forgetProposalOpenContract(this.contract_id, this.populateConfig);
         this.contract_id         = null;
-        this.digits_info         = {};
         this.is_ongoing_contract = false;
         this.is_static_chart     = false;
-        this.is_sell_requested   = false;
+        this.is_chart_loading    = true;
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
-        this.indicative          = 0;
-        this.sell_info           = {};
-        this.smart_chart.setContractMode(false);
-        this.smart_chart.cleanupContractChartView();
     }
 
     @action.bound
     populateConfig(response) {
         if ('error' in response) {
-            this.has_error       = true;
-            this.smart_chart.setIsChartLoading(false);
+            this.has_error        = true;
+            this.is_chart_loading = false;
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
             this.should_forget_first = true;
-            this.smart_chart.setContractMode(false);
-            this.smart_chart.setIsChartLoading(false);
+            this.is_chart_loading = false;
             return;
         }
         if (+response.proposal_open_contract.contract_id !== this.contract_id) return;
@@ -118,7 +101,6 @@ export default class ContractReplayStore extends BaseStore {
         // Add indicative status for contract
         const prev_indicative  = this.prev_indicative;
         const new_indicative   = +this.contract_info.bid_price;
-        this.indicative = new_indicative;
         if (new_indicative > prev_indicative) {
             this.indicative_status = 'profit';
         } else if (new_indicative < prev_indicative) {
@@ -126,12 +108,16 @@ export default class ContractReplayStore extends BaseStore {
         } else {
             this.indicative_status = null;
         }
-        this.prev_indicative = this.indicative;
+        this.prev_indicative = new_indicative;
 
-        const end_time = getEndTime(this.contract_info);
+        // update the contract_store here passing contract_info
+        this.contract_store.populateConfig(this.contract_info);
 
-        this.smart_chart.updateMargin(
-            (end_time || this.contract_info.date_expiry) - this.contract_info.date_start);
+        const end_time = this.contract_store.end_time;
+
+        this.updateMargin(
+            (end_time || this.contract_info.date_expiry) - this.contract_info.date_start
+        );
 
         if (!end_time) this.is_ongoing_contract = true;
 
@@ -144,18 +130,23 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        createChartBarrier(this.smart_chart, this.contract_info, this.root_store.ui.is_dark_mode_on);
-        createChartMarkers(this.smart_chart, this.contract_info);
-        this.handleDigits(this.contract_info);
-
-        this.smart_chart.setIsChartLoading(false);
+        this.is_chart_loading = false;
     }
 
     @action.bound
-    handleDigits(contract_info) {
-        if (this.is_digit_contract) {
-            extendObservable(this.digits_info, getDigitInfo(this.digits_info, contract_info));
-        }
+    updateMargin(duration) {
+        const granularity = this.contract_store.contract_config.granularity;
+
+        this.margin = Math.floor(
+            !granularity ?  (Math.max(300, (30 * duration) / (60 * 60) || 0)) : 3 * granularity
+        );
+    }
+
+    @action.bound
+    setIsChartReady(v) {
+        // SmartChart has a bug with scroll_to_epoch
+        // @morteza: It ignores the scroll_to_epoch if feed is not ready
+        setTimeout(action(() => { this.is_chart_ready = v; }), 200);
     }
 
     @action.bound
@@ -198,30 +189,5 @@ export default class ContractReplayStore extends BaseStore {
     removeErrorMessage() {
         this.error_message = '';
         this.has_error     = false;
-    }
-
-    // ---------------------------
-    // ----- Computed values -----
-    // ---------------------------
-    // TODO: currently this runs on each response, even if contract_info is deep equal previous one
-
-    @computed
-    get contract_config() {
-        return getChartConfig(this.contract_info, this.is_digit_contract, false);
-    }
-
-    @computed
-    get display_status() {
-        return getDisplayStatus(this.contract_info);
-    }
-
-    @computed
-    get is_ended() {
-        return isEnded(this.contract_info);
-    }
-
-    @computed
-    get is_digit_contract() {
-        return isDigitContract(this.contract_info.contract_type);
     }
 }

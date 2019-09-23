@@ -3,17 +3,213 @@
  *------------------------------------*/
 
 /* stylelint-disable color-no-hex */
+
+/* COLOR PALETTE */
+
+$color-black: #0e0e0e;
+$color-black-1: #333333;
+$color-black-3: #151717;
+$color-black-4: #1d1f20;
+$color-black-5: #242828;
+$color-black-6: #3e3e3e;
+$color-black-7: #000000b8;
+$color-black-8: #323738;
+$color-black-9: #0e0e0ef5;
+$color-black-10: #00000014;
+$color-black-11: #00000029;
+$color-black-12: #0000004d;
+$color-white: #ffffff;
+$color-white-1: #fffffff5;
+$color-white-2: #ffffff29;
+$color-red: #ff444f;
+$color-red-1: #ec3f3f;
+$color-red-2: #cc2e3d;
+$color-red-3: #a32430;
+$color-red-4: #d33636;
+$color-red-5: #eb3e48;
+$color-red-6: #ff444f14;
+$color-grey: #c2c2c2;
+$color-grey-1: #999999;
+$color-grey-2: #f2f3f4;
+$color-grey-3: #eaeced;
+$color-grey-4: #e6e9e9;
+$color-grey-5: #d6dadb;
+$color-grey-6: #d6d6d6;
+$color-grey-7: #6e6e6e;
+$color-green: #85acb0;
+$color-green-1: #4bb4b3;
+$color-green-2: #3d9494;
+$color-green-3: #00a79e;
+$color-green-4: #008079;
+$color-orange: #ff6444;
+$color-yellow: #ffad3a;
+$color-blue: #377cfc;
+
+:root {
+    // Text sizes
+    --text-size-xs: 1.2rem;
+    --text-size-s: 1.6rem;
+    --text-size-sm: 2rem;
+    --text-size-m: 2.4rem;
+    --text-size-l: 3.2rem;
+    --text-size-xl: 4.8rem;
+    --text-size-xxl: 6.4rem;
+
+    // Brand primary colors
+    --brand-dark-grey: #{$color-black};
+    --brand-red-coral: #{$color-red};
+    --brand-orange: #{$color-orange};
+    // Brand secondary colors
+    --brand-secondary: #{$color-green};
+
+    .theme--light {
+        // General
+        --general-main-1: #{$color-white};
+        --general-main-2: #{$color-white};
+        --general-section-1: #{$color-grey-2};
+        --general-section-2: #{$color-grey-2};
+        --general-disabled: #{$color-grey-3};
+        --general-hover: #{$color-grey-4};
+        --general-active: #{$color-grey-5};
+        // Icons and Texts
+        --text-prominent: #{$color-black-1};
+        --text-general: #{$color-black-1};
+        --text-less-prominent: #{$color-grey-1};
+        --text-disabled: #{$color-grey-6};
+        --text-profit-success: #{$color-green-1};
+        --text-loss-danger: #{$color-red-1};
+        --text-colored-background: #{$color-white};
+        // Purchase
+        --purchase-main-1: #{$color-green-1};
+        --purchase-section-1: #{$color-green-2};
+        --purchase-main-2: #{$color-red-1};
+        --purchase-section-2: #{$color-red-4};
+        --purchase-disabled-main: #{$color-grey-3};
+        --purchase-disabled-section: #{$color-grey-4};
+        // Buttons
+        --button-primary-default: var(--brand-red-coral);
+        --button-secondary-default: #{$color-grey-1};
+        --button-tertiary-default: transparent;
+        --button-primary-hover: #{$color-red-5};
+        --button-secondary-hover: #{$color-black-10};
+        --button-tertiary-hover: #{$color-red-6};
+        // Overlay
+        --overlay-outside-dialog: #{$color-black-7};
+        --overlay-inside-dialog: #{$color-white-1};
+        // Shadow
+        --shadow-menu: #{$color-black-11};
+        // States
+        --state-normal: #{$color-white};
+        --state-hover: #{$color-grey-4};
+        --state-active: #{$color-grey-5};
+        --state-disabled: #{$color-grey-3};
+        // Border
+        --border-normal: #{$color-grey-5};
+        --border-hover: #{$color-grey-1};
+        --border-active: var(--brand-secondary);
+        --border-disabled: #{$color-grey-3};
+        // Fill
+        --fill-normal: #{$color-white};
+        --fill-hover: #{$color-grey-1};
+        --fill-active: var(--brand-secondary);
+        --fill-disabled: #{$color-grey-3};
+        // Status
+        --status-default: #{$color-grey-3};
+        --status-danger: #{$color-red-1};
+        --status-success: #{$color-green-1};
+        --status-warning: #{$color-yellow};
+        --status-info: #{$color-blue};
+        --status-colored-background: #{$color-white};
+        // Transparentize
+        --transparent-success: transparentize(#{$color-green-1}, 0.92);
+        // Bullet
+        --bullet: #{$color-black-1};
+    }
+    .theme--dark {
+        // General
+        --general-main-1: #{$color-black};
+        --general-main-2: #{$color-black-3};
+        --general-section-1: #{$color-black-3};
+        --general-section-2: #{$color-black};
+        --general-disabled: #{$color-black-4};
+        --general-hover: #{$color-black-5};
+        --general-active: #{$color-black-8};
+        // Icons and Texts
+        --text-prominent: #{$color-white};
+        --text-general: #{$color-grey};
+        --text-less-prominent: #{$color-grey-7};
+        --text-disabled: #{$color-black-6};
+        --text-profit-success: #{$color-green-3};
+        --text-loss-danger: #{$color-red-2};
+        --text-colored-background: #{$color-white};
+        // Purchase
+        --purchase-main-1: #{$color-green-3};
+        --purchase-section-1: #{$color-green-4};
+        --purchase-main-2: #{$color-red-2};
+        --purchase-section-2: #{$color-red-3};
+        --purchase-disabled-main: #{$color-black-4};
+        --purchase-disabled-section: #{$color-black};
+        --button-primary-default: var(--brand-red-coral);
+        --button-secondary-default: #{$color-grey-7};
+        --button-tertiary-default: transparent;
+        --button-primary-hover: #{$color-red-5};
+        --button-secondary-hover: #{$color-black-10};
+        --button-tertiary-hover: #{$color-red-6};
+        // Overlay
+        --overlay-outside-dialog: #{$color-black-7};
+        --overlay-inside-dialog: #{$color-black-9};
+        // Shadow
+        --shadow-menu: #{$color-black-12};
+        // States
+        --state-normal: #{$color-black};
+        --state-hover: #{$color-black-5};
+        --state-active: #{$color-black-8};
+        --state-disabled: #{$color-black-4};
+        // Border
+        --border-normal: #{$color-black-8};
+        --border-hover: #{$color-grey-7};
+        --border-active: var(--brand-secondary);
+        --border-disabled: #{$color-black-4};
+        // Fill
+        --fill-normal: #{$color-black};
+        --fill-hover: #{$color-grey-7};
+        --fill-active: var(--brand-secondary);
+        --fill-disabled: #{$color-black-4};
+        // Status
+        --status-default: #{$color-grey-3};
+        --status-danger: #{$color-red-2};
+        --status-warning: #{$color-yellow};
+        --status-success: #{$color-green-3};
+        --status-info: #{$color-blue};
+        --status-colored-background: #{$color-white};
+        // Transparentize
+        --transparent-success: transparentize(#{$color-green-3}, 0.92);
+        // Bullet
+        --bullet: #{$color-black-1};
+    }
+}
+
+/* Preserve legacy variables */
+/* Primary */
+
 $COLOR_BLACK      : #000000;
+$COLOR_BLACK_2    : #1d1f20;
+$COLOR_BLACK_3    : #0e0e0e;
 $COLOR_GREEN_1    : #39b19d;
 $COLOR_GREEN_2    : #2d9f93;
 $COLOR_GREEN_3    : #21ce99;
+$COLOR_GREEN_4    : #00a79e;
+$COLOR_GREEN_5    : #4bb4b3;
 $COLOR_ORANGE     : #ff9933;
 $COLOR_DARK_ORANGE: #ff8802;
 $COLOR_PURPLE     : #4f60ae;
 $COLOR_RED        : #e31c4b;
+$COLOR_RED_2      : #cc2e3d;
+$COLOR_RED_3      : #ec3f3f;
 $COLOR_CORAL_RED  : #ff444f;
 $COLOR_SKY_BLUE   : #2196f3;
 $COLOR_WHITE      : #ffffff;
+$COLOR_BLUE       : #1c5ae3;
 // Light theme
 $COLOR_LIGHT_BLACK_1        : rgba(0, 0, 0, 0.8);
 $COLOR_LIGHT_BLACK_2        : rgba(0, 0, 0, 0.4);
@@ -24,6 +220,9 @@ $COLOR_LIGHT_BLACK_4        : rgba(0, 0, 0, 0.04);
 $COLOR_LIGHT_BLACK_4_SOLID  : #f4f4f6;
 $COLOR_LIGHT_GRAY_1         : #999cac;
 $COLOR_LIGHT_GRAY_2         : rgba(153, 156, 172, 0.32);
+$COLOR_LIGHT_GRAY_3         : #eaeced;
+$COLOR_LIGHT_GRAY_4         : #6e6e6e;
+$COLOR_LIGHT_GRAY_5         : #c2c2c2;
 $COLOR_LIGHT_GREEN_GRADIENT : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(0, 148, 117, 0.16));
 $COLOR_LIGHT_RED_GRADIENT   : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(227, 28, 75, 0.16));
 $COLOR_LIGHT_WHITE_GRADIENT : linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
@@ -37,13 +236,12 @@ $COLOR_DARK_BLUE_5         : #2a3052;
 $COLOR_DARK_BLUE_6         : #555975;
 $COLOR_DARK_BLUE_7         : #7f8397;
 $COLOR_DARK_BLUE_8         : rgba(127, 131, 151, 0.3);
-$COLOR_DARK_GRAY_1         : #282a37;
-$COLOR_DARK_GRAY_2         : #303342;
 $COLOR_DARK_GREEN_GRADIENT : linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
 $COLOR_DARK_RED_GRADIENT   : linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
 $COLOR_DARK_GRAY_1         : #282a37;
 $COLOR_DARK_GRAY_2         : #303342;
 $COLOR_DARK_GRAY_3         : #555975;
+$COLOR_DARK_GRAY_4         : #999999;
 /* stylelint-enable color-no-hex */
 
 $BORDER_RADIUS: 4px;
@@ -54,6 +252,6 @@ $POSITIONS_DRAWER_WIDTH  : 240px;
 $POSITIONS_DRAWER_MARGIN : 8px;
 
 $HEADER_HEIGHT: 48px;
-$FOOTER_HEIGHT: 35px;
+$FOOTER_HEIGHT: 36px;
 
 $SIDEBAR_WIDTH: 240px;

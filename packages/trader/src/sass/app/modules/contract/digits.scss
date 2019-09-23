@@ -1,25 +1,92 @@
 @import '../../_common/base/index';
 
-/** @define digits */
+/** @define cq-bottom-ui-widgets; weak */
+.cq-bottom-ui-widgets {
+    z-index: 4;
+    overflow: visible;
+    height: 0;
+    top: unset !important;
+    bottom: 80px !important;
+
+    .bottom-widgets {
+        left: -3.5em;
+    }
+}
+
+/** @define digits; weak */
 .digits {
     display: flex;
     align-items: center;
     position: relative;
     margin: 0 2.5em 0 1em;
 
+    &__tooltip-container {
+        position: absolute;
+        z-index: 2;
+        top: -10px;
+        right: 10px;
+    }
     &__digit {
-        margin: 0 0.4em;
+        pointer-events: none;
+        margin: 0 0.6em;
         text-align: center;
         position: relative;
+        transition: transform 0.25s linear;
 
+        &--latest {
+            z-index: 1;
+            transform: scale(1.2);
+
+            .digits__digit-spot {
+                font-size: 0.9em;
+            }
+        }
+        &--win {
+            z-index: 1;
+            transform: scale(1.25);
+
+            .digits__pie-container:before {
+                box-shadow: 0px 1px 18px var(--text-profit-success);
+            }
+        }
+        &--loss {
+            z-index: 1;
+            transform: scale(1.25);
+
+            .digits__pie-container:before {
+                top: -2px;
+                left: -2px;
+                box-shadow: 0px 1px 18px var(--text-loss-danger);
+                border: 3px solid var(--text-loss-danger);
+            }
+        }
+        &-container {
+            position: relative;
+        }
+        &-display-value {
+            transition: transform 0.25s linear;
+            position: absolute;
+            transform: scale(0.9);
+            top: 4px;
+            color: var(--text-prominent);
+
+            &--no-stats {
+                transform: scale(1) translateY(5px);
+            }
+        }
+        &-display-percentage {
+            top: 20px;
+            position: absolute;
+            font-size: 0.65em;
+            font-weight: 400;
+            color: var(--text-general);
+        }
         &-value {
             @include typeface(--paragraph-center-bold-black);
             @include toEm(width, 40px, 1em);
             @include toEm(height, 40px, 1em);
-            @include themify($themes) {
-                background-color: themed('background_icon_color');
-                color: themed('text_color');
-            }
+            background-color: var(--general-main-1);
+            color: var(--text-prominent);
             margin-bottom: 0.5em;
             border-radius: 50%;
             display: flex;
@@ -28,73 +95,124 @@
             transition: background-color 0.2s ease-out, transform 0.1s ease-out;
 
             &--selected {
-                @include themify($themes) {
-                    background-color: themed('container_color');
-                }
-                border: 2px solid $COLOR_GREEN_1;
-            }
-            &--latest {
-                transform: translateY(-8px);
+                background-color: var(--transparent-success);
             }
             &--win {
-                @include themify($themes) {
-                    background-color: themed('won_color');
-                    color: themed('text_active_color');
+                background-color: var(--text-profit-success);
+                color: var(--text-prominent);
+
+                .digits__digit-display-value, .digits__digit-display-percentage {
+                    color: $color-white;
                 }
             }
             &--blink {
-                @include themify($themes) {
-                    animation-name: themed('animation_blink_name');
-                }
                 animation-duration: 500ms;
                 animation-iteration-count: 4;
                 animation-timing-function: step-end;
+                // TODO: [colors] change when naming for animation is ready
+                @include themify($themes) {
+                    animation-name: themed('animation_blink_name');
+                }
             }
             &--loss {
-                @include themify($themes) {
-                    background-color: themed('loss_color');
-                    color: themed('text_active_color');
-                }
                 border: none !important;
+                background-color: var(--text-loss-danger);
+                color: var(--text-prominent);
+
+                .digits__digit-display-value, .digits__digit-display-percentage {
+                    color: $color-white;
+                }
             }
         }
         &-spot {
             position: absolute;
-            top: -35px;
+            top: -25px;
             left: -50%;
             right: -50%;
             width: auto;
+            white-space: nowrap;
 
             &-value {
+                transform: scale(0.95);
+                display: inline-block;
                 @include typeface(--paragraph-center-bold-black);
-                @include themify($themes) {
-                    color: themed('text_secondary_color');
-                }
+                color: var(--text-general);
             }
             &-last {
                 @include typeface(--paragraph-center-bold-black);
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                padding: 0 4px;
+                margin-left: 1px;
+                border-radius: 50%;
+                border: 1px solid var(--color-blue);
+                color: var(--text-prominent);
+                background: var(--general-main-2);
 
+                &--selected-win {
+                    color: var(--text-profit-success);
+                }
                 &--win {
-                    color: $COLOR_GREEN_1;
+                    color: var(--text-colored-background);
+                    border-color: var(--text-profit-success);
+                    background: var(--text-profit-success);
                 }
                 &--loss {
-                    color: $COLOR_RED;
+                    color: var(--text-prominent);
+                    border-color: var(--text-loss-danger);
+                    background: var(--text-loss-danger);
                 }
             }
         }
-        &--loss {
-            transform: translateY(8px);
-            transition: transform 0.2s ease-out 1s;
+    }
+    &__pie-container {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+
+        &:before {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            content: '';
+        }
+        &--selected:before {
+            top: -2px;
+            left: -2px;
+            width: 42px;
+            height: 42px;
+            border: 2px solid var(--text-profit-success);
+        }
+    }
+    &__pie-progress {
+        transform: rotate(-90deg);
+        width: 42px;
+        height: 42px;
+
+        /* postcss-bem-linter: ignore */
+        .progress__bg {
+            stroke: var(--general-disabled);
+        }
+        /* postcss-bem-linter: ignore */
+        .progress__value {
+            stroke: var(--text-less-prominent);
+
+            /* postcss-bem-linter: ignore */
+            &--is-max {
+                stroke: var(--text-profit-success);
+            }
+            /* postcss-bem-linter: ignore */
+            &--is-min {
+                stroke: var(--text-loss-danger);
+            }
         }
     }
     &__pointer {
         position: absolute;
         bottom: -12px;
         padding: 0 12px;
-        transition: margin-left 0.25s ease;
+        transition: transform 0.25s ease;
     }
     &__particles {
         position: absolute;
@@ -104,7 +222,7 @@
         opacity: 0;
 
         &-particle {
-            background: $COLOR_GREEN_1;
+            background: var(--brand-secondary);
             opacity: 0.7;
             border-radius: 50%;
             display: block;
@@ -148,26 +266,26 @@
     }
     &__icon {
         &-color {
-            fill: $COLOR_ORANGE;
+            fill: var(--brand-orange);
         }
         &--win .digits__icon-color {
-            fill: $COLOR_GREEN_1;
+            fill: var(--text-profit-success);
         }
         &--loss .digits__icon-color {
-            fill: $COLOR_RED;
+            fill: var(--text-loss-danger);
         }
     }
 }
 
 @keyframes blinking-white {
     50% {
-        background-color: $COLOR_WHITE;
-        color: $COLOR_LIGHT_BLACK_1;
+        background-color: $color-white;
+        color: var(--color-black);
     }
 }
 
 @keyframes blinking-dark-blue-2 {
     50% {
-        background-color: $COLOR_DARK_BLUE_2;
+        background-color: var(--color-grey-3);
     }
 }

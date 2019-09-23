@@ -1,7 +1,7 @@
 import { Button, Drawer, Tabs } from 'deriv-components';
 import classNames               from 'classnames';
 import React                    from 'react';
-import { IconInfoOutline }      from './icons.jsx';
+import { IconInfoOutline }      from './Icons.jsx';
 import Summary                  from './summary.jsx';
 import                               '../assets/sass/run-panel.scss';
 

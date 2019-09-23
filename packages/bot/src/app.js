@@ -1,5 +1,5 @@
 import Bot               from './app.jsx';
-import { preloadSprite } from './components/icons.jsx';
+import { preloadSprite } from './components/Icons.jsx';
 
 const getUrlBase = (path = '') => {
     const l = window.location;

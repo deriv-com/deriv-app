@@ -1,6 +1,6 @@
 import React          from 'react';
 import ReactDOM       from 'react-dom';
-import { Arrow1Icon } from '../../components/icons.jsx';
+import { Arrow1Icon } from '../../components/Icons.jsx';
 import ScratchStore   from '../../stores/scratch-store';
 import { translate }  from '../../utils/lang/i18n';
 

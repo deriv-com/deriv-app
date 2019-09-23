@@ -9,7 +9,7 @@ import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import {
     ProfitMovementIcon,
-    LossMovementIcon }       from './icons.jsx';
+    LossMovementIcon }       from './Icons.jsx';
 import IconTradeType         from './icon-trade-types.jsx';
 import { connect }           from '../stores/connect';
 import {

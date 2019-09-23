@@ -3,7 +3,7 @@ import PropTypes     from 'prop-types';
 import React         from 'react';
 import {
     CheckIcon,
-    CrossIcon }      from './icons.jsx';
+    CrossIcon }      from './Icons.jsx';
 import { translate } from '../utils/lang/i18n';
 import                    '../assets/sass/contract-result-overlay.scss';
 

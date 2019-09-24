@@ -19,7 +19,7 @@ const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
     {
-        from: path.resolve(__dirname, '../src/root_files/manifest.json'),
+        from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
         to: 'manifest.json',
         toType: 'file',
         transform(content, path) {
@@ -74,7 +74,7 @@ const htmlInjectConfig = () => ({
         //     }
         // }
     ],
-    append: true
+    append: false
 });
 
 const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });

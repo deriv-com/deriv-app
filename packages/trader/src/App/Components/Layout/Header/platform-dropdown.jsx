@@ -5,12 +5,13 @@ import ReactDOM       from 'react-dom';
 import { BinaryLink } from 'App/Components/Routes';
 import Icon           from 'Assets/icon.jsx';
 import 'Sass/app/_common/components/platform-dropdown.scss';
+import { isBot }      from 'Utils/PlatformSwitcher';
 
 const PlatformDropdown = ({
     platform_config,
     handleClick,
 }) => {
-    const is_bot = /^\/bot/.test(location.pathname);
+    const is_bot = isBot();
     return ReactDOM.createPortal(
         <div className='platform_dropdown' onClick={handleClick}>
             <div className='platform_dropdown__list'>

@@ -1,8 +1,8 @@
 import { localize } from 'App/i18n';
 import { routes }   from 'Constants/index';
+import { isBot }    from 'Utils/PlatformSwitcher';
 
-const is_bot = /^\/bot/.test(location.pathname);
-const key = is_bot ? 'href' : 'link_to';
+const key = isBot() ? 'href' : 'link_to';
 
 const platform_config = [
     {

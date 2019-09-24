@@ -1,12 +1,13 @@
 .toolbar {
     $toolbar: &;
+    $toolbar_height: 56px;
 
-    height: 76px;
+    height: $toolbar_height;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     box-shadow: inset 0 1px 0 0 #f2f3f4, inset 0 -1px 0 0 #f2f3f4; // TODO color
-    padding: 5px 16px;
+    padding: 5px 12px;
 
     #{$toolbar}__btn {
         &-icon {
@@ -27,18 +28,18 @@
 
         > * {
             align-self: center;
-            margin: 3px 10px;
-        }
-        #{$toolbar}__btn {
-            margin: 3px 10px;
+            margin: 4px;
         }
         > #{$toolbar}__btn-icon,
         #{$toolbar}__group {
-            height: 50px;
+            height: 40px;
         }
         > #{$toolbar}__form {
+            margin-top: 0;
+            margin-bottom: 0;
+
             .dc-input__field {
-                height: 50px;
+                height: 40px;
             }
             .dc-input {
                 margin-bottom: 3px;

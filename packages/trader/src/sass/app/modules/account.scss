@@ -192,8 +192,9 @@
         margin-top: 10px;
         margin-bottom: 16px;
         max-width: 467px;
+        text-align: center;
 
-        @include typeface(--paragraph-left-normal-black, none);
+        @include typeface(--paragraph-center-normal-black, none);
     }
     .account-management-flex-wrapper {
         display: flex;
@@ -274,6 +275,9 @@
         * {
             padding-left: 8px;
         }
+    }
+    .btn__text {
+        color: $COLOR_WHITE !important;
     }
 }
 
@@ -422,7 +426,6 @@
     }
 }
 
-// TODO move to POI.scss
 /** @define poi-icon-row; weak */
 .poi-icon-row {
     display: flex;

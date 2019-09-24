@@ -1,5 +1,5 @@
 import React                  from 'react';
-import { Button }             from 'deriv-components';
+import ButtonLink             from 'App/Components/Routes/button-link.jsx';
 import { localize }           from 'App/i18n';
 import Localize               from 'App/Components/Elements/localize.jsx';
 import IconPoiPersonalDetails from 'Assets/AccountManagement/icon-poi-missing-details.svg';
@@ -32,6 +32,24 @@ const UnsupportedIconRow = () => (
     </div>
 );
 
+const ContinueTradingButton = () => (
+    <ButtonLink
+        className='btn--primary'
+        to='/'
+    >
+        {localize('Continue trading')}
+    </ButtonLink>
+);
+
+const PoaButton = () => (
+    <ButtonLink
+        className='btn--primary btn__text'
+        to='/account/proof-of-address'
+    >
+        {localize('Submit proof of address')}
+    </ButtonLink>
+);
+
 export const Unsuported = () => (
     <IconMessageContent
         message={localize('Verify your identity')}
@@ -55,13 +73,7 @@ export const UploadComplete = ({ has_poa }) => {
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={<IconPoiSubmitComplete />}
             >
-                <Button
-                    className='btn--primary'
-                    type='button'
-                    has_effect
-                    onClick={() => {}}
-                    text={localize('Continue trading')}
-                />
+                <ContinueTradingButton />
             </IconMessageContent>
         );
     }
@@ -71,13 +83,7 @@ export const UploadComplete = ({ has_poa }) => {
             text={localize('Your document is being reviewed, please check back in 1-3 days. You must also submit a proof of address.')}
             icon={<IconPoiSubmitComplete />}
         >
-            <Button
-                className='btn--primary'
-                type='button'
-                has_effect
-                onClick={() => {}}
-                text={localize('Submit proof of address')}
-            />
+            <PoaButton />
         </IconMessageContent>
     );
 };
@@ -112,13 +118,7 @@ export const Verified = ({ has_poa }) => {
                 message={message}
                 icon={<IconPoiVerified />}
             >
-                <Button
-                    className='btn--primary'
-                    type='button'
-                    has_effect
-                    onClick={() => {}}
-                    text={localize('Continue trading')}
-                />
+                <ContinueTradingButton />
             </IconMessageContent>
         );
     }
@@ -128,13 +128,7 @@ export const Verified = ({ has_poa }) => {
             icon={<IconPoiVerified />}
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
-            <Button
-                className='btn--primary'
-                type='button'
-                has_effect
-                onClick={() => {}}
-                text={localize('Submit proof of address')}
-            />
+            <PoaButton />
         </IconMessageContent>
     );
 };

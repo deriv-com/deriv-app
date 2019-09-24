@@ -34,7 +34,7 @@ const UnsupportedIconRow = () => (
 
 const ContinueTradingButton = () => (
     <ButtonLink
-        className='btn--primary'
+        className='btn--primary btn__text'
         to='/'
     >
         {localize('Continue trading')}

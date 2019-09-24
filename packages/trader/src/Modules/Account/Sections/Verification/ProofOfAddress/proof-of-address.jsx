@@ -32,6 +32,7 @@ import DocumentsSubmitted      from '../VerificationMessages/DocumentsSubmitted'
 import DocumentsExpired        from '../VerificationMessages/DocumentsExpired';
 import DocumentsVerified       from '../VerificationMessages/DocumentsVerified';
 import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
+import { Unverified }          from '../ProofOfIdentity/proof-of-identity-messages.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -75,10 +76,12 @@ class ProofOfAddress extends React.Component {
         super(props);
         this.document_uploader_ref = React.createRef();
         this.state = {
-            is_loading : true,
-            is_resubmit: false,
-            needs_poi  : true,
-            show_form  : true,
+            is_loading        : true,
+            is_resubmit       : false,
+            needs_poi         : true,
+            show_form         : true,
+            document_file     : [],
+            file_error_message: null,
         };
     }
 
@@ -182,6 +185,7 @@ class ProofOfAddress extends React.Component {
             address_state,
             address_postcode,
             document_file,
+            document_is_suspect,
             document_expired,
             document_verified,
             document_under_review,
@@ -202,6 +206,8 @@ class ProofOfAddress extends React.Component {
         if (document_verified) return <DocumentsVerified needs_poi={needs_poi} />;
         if (document_expired) return <DocumentsExpired onClick={this.handleResubmit} />;
         if (is_submit_success) return <DocumentsSubmitted needs_poi={needs_poi} />;
+        if (document_is_suspect) return <Unverified />;
+
         return (
             <Formik
                 initialValues={{

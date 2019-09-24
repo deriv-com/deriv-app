@@ -1,12 +1,23 @@
-@import '../_common/base/index';
-@import '../_common/components/theme-select';
-@import '../_common/components/settings-language';
+@import "../_common/base/index";
+@import "../_common/components/theme-select";
+@import "../_common/components/settings-language";
 
 /** @define dc-modal-header; */
-.dc-modal-header {
-    &__title {
-        &--modal-settings {
-            min-width: 28%;
+.dc-modal {
+    $modal: &;
+
+    &__container {
+        &_modal-settings {
+            width: 736px;
+            #{$modal}-header {
+                border-bottom: none;
+                &__title {
+                    &--modal-settings {
+                        min-width: 28%;
+                        background-color: var(--general-section-1);
+                    }
+                }
+            }
         }
     }
 }

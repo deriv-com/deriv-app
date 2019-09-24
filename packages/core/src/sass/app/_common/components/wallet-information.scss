@@ -1,0 +1,31 @@
+/** @define .wallet-information; weak; */
+.account-wallet {
+    @include typeface(--paragraph-left-normal-black);
+    color: var(--text-prominent);
+    text-transform: initial;
+
+    .description {
+        font-weight: bold;
+
+        &__currency {
+            font-size: 1.6rem;
+        }
+    }
+    .current-loginid, .symbols {
+        margin-left: 4px;
+    }
+    &__label {
+        margin-left: 16px !important;
+    }
+    .inline-icon {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 8px;
+
+        .color1-fill {
+            fill: var(--text-profit-success);
+        }
+    }
+}

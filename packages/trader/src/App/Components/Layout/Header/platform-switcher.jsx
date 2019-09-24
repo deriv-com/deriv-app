@@ -23,7 +23,7 @@ class PlatformSwitcher extends React.PureComponent {
             >
                 <div className='platform_switcher' onClick={this.handleClick}>
                     <Icon className='platform_switcher__icon' icon='IconDeriv' />
-                    <p className='platform_switcher__header'>{localize('DTrader')}</p>
+                    <h1 className='platform_switcher__header'>{localize('DTrader')}</h1>
                     <p className='platform_switcher__label'>{localize('BETA')}</p>
                     <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
                 </div>

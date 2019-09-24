@@ -1,7 +1,7 @@
 import React              from 'react';
-import { Button }         from 'deriv-components';
-import IconChecked        from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-checked.svg';
+import ButtonLink         from 'App/Components/Routes/button-link.jsx';
 import { localize }       from 'App/i18n';
+import IconChecked        from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-checked.svg';
 import IconMessageContent from '../../../../Components/icon-message-content.jsx';
 
 const message = (
@@ -12,8 +12,12 @@ const message = (
         <p className='account-management__message-subtitle'>
             {localize('Your document is being reviewed, please check back in 1-3 days.')}
         </p>
-        {/* TODO: Make button link to trading */}
-        <Button className='btn--primary' has_effect text={localize('Continue trading')} />
+        <ButtonLink
+            to='/'
+            className='btn--primary--default'
+        >
+            <span className='btn__text'>{localize('Continue trading')}</span>
+        </ButtonLink>
     </div>
 );
 

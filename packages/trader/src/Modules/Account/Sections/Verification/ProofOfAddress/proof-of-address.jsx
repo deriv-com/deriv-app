@@ -175,7 +175,7 @@ class ProofOfAddress extends React.Component {
             document_file,
             // document_expired,
             // document_needs_action,
-            // document_under_review,
+            document_under_review,
             file_error_message,
             show_form,
             is_loading,
@@ -188,7 +188,7 @@ class ProofOfAddress extends React.Component {
         }
         if (this.props.is_virtual) return <DemoMessage />;
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        // if (document_under_review) return <DocumentNeedsReview />;
+        if (document_under_review) return <DocumentNeedsReview />;
         return (
             <Formik
                 initialValues={{

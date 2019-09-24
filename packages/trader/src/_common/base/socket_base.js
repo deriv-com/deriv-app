@@ -168,6 +168,18 @@ const BinarySocketBase = (() => {
             ...device_data,
         });
 
+    const setAccountCurrency = (currency, passthrough) =>
+        deriv_api.send({
+            set_account_currency: currency,
+            ...(passthrough && { passthrough }),
+        });
+
+    const newAccountReal = (values) =>
+        deriv_api.send({
+            new_account_real: 1,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -216,6 +228,7 @@ const BinarySocketBase = (() => {
         hasReadyState,
         clear             : () => {},
         sendBuffered      : () => {},
+        getSocket         : () => binary_socket,
         get               : () => deriv_api,
         setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
@@ -227,12 +240,14 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         newAccountVirtual,
+        newAccountReal,
         profitTable,
         statement,
         verifyEmail,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
+        setAccountCurrency,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

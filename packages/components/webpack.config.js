@@ -19,6 +19,7 @@ module.exports = {
         drawer          : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
         dropdown        : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         'field-error'   : path.resolve(__dirname, 'src', 'components/field-error/index.js'),
+        'file-dropzone' : path.resolve(__dirname, 'src', 'components/file-dropzone/index.js'),
         input           : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label           : path.resolve(__dirname, 'src', 'components/label/index.js'),
         modal           : path.resolve(__dirname, 'src', 'components/modal/index.js'),

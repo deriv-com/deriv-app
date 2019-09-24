@@ -32,6 +32,7 @@
         padding: 0 8px;
         height: 100%;
         width: 100%;
+        overflow: hidden;
     }
     &__scrollbars_container {
         height: 100%;
@@ -176,6 +177,16 @@
             width: 128px;
             height: 128px;
         }
+        &-title {
+            font-size: 1em;
+            margin-bottom: 1em;
+            text-align: center;
+        }
+        &-subtitle {
+            font-size: 0.875em;
+            font-weight: 400;
+            text-align: center;
+        }
     }
     .account-management__text {
         margin-top: 10px;
@@ -262,6 +273,98 @@
         }
         * {
             padding-left: 8px;
+        }
+    }
+}
+
+/** @define account-poa; weak */
+.account-poa {
+    &__upload {
+        &-section {
+          margin-top: 1em;
+          display: flex;
+          flex-wrap: wrap;
+        }
+        &-list {
+            width: 100%;
+            flex: 1;
+        }
+        &-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+            position: relative;
+        }
+        &-remove-btn {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            transition: transform 0.25s linear;
+
+            &:hover {
+                transform: scale(1.25, 1.25);
+            }
+            &--error {
+                circle {
+                    @include themify($themes) {
+                        fill: themed('error_color');
+                    }
+                }
+            }
+            &-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &-box {
+            display: flex;
+            margin-bottom: 2em;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-item {
+            max-width: 238px;
+            width: 100%;
+            margin-left: 1em;
+            font-size: 10px;
+            line-height: 1.5;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+    }
+    &__details {
+        &-section {
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        &-description {
+            width: 100%;
+            margin-right: 0.5em;
+            flex: 1;
+        }
+        &-text {
+            font-size: 14px;
+            line-height: 1.5;
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+        }
+        &-fields {
+            width: 100%;
+            min-width: 400px;
+            flex: 1;
+
+            .account-form__fieldset {
+                margin-bottom: 3em;
+            }
         }
     }
 }

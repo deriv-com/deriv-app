@@ -96,6 +96,7 @@ export default class PortfolioStore extends BaseStore {
         if ('error' in response) return;
 
         const proposal = response.proposal_open_contract;
+        this.root_store.modules.contract_trade.addContract(proposal);
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;

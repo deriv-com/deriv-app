@@ -61,7 +61,6 @@ class Onfido extends React.Component {
 
     render() {
         const { status, has_poa } = this.props;
-        return <UploadComplete has_poa={false} />;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
 

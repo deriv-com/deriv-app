@@ -43,7 +43,7 @@ export default class ToolbarStore {
         this.on_search_focus = false;
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    @action.bound
     onSearch({ search }) {
         if (this.is_toolbox_open) {
             this.onToolboxToggle();

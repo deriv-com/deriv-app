@@ -1,8 +1,8 @@
+import { Button }   from 'deriv-components';
 import React        from 'react';
 import BinarySocket from '_common/base/socket_base';
 import { urlFor }   from '_common/url';
 import Localize     from 'App/Components/Elements/localize.jsx';
-import Button       from 'App/Components/Form/button.jsx';
 import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';

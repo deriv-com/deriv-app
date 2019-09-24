@@ -17,10 +17,10 @@ const Bot = (() => {
 
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => ([
-    { path: routes.index,     component: RouterRedirect,  title: '',                   to: routes.root },
-    { path: routes.root,      component: Bot,             title: localize('Trade'),    exact: true },
-    { path: routes.error404,  component: Page404,         title: localize('Error 404') },
-    { path: routes.redirect,  component: Redirect,        title: localize('Redirect') },
+    { path: routes.index,     component: RouterRedirect, title: '',                          to: routes.root },
+    { path: routes.root,      component: Bot,            title: localize('Trade'),    exact: true },
+    { path: routes.error404,  component: Page404,        title: localize('Error 404') },
+    { path: routes.redirect,  component: Redirect,       title: localize('Redirect') },
 ]);
 
 let routesConfig;

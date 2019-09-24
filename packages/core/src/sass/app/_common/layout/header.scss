@@ -8,15 +8,23 @@
     top: 0;
     transition: opacity 0.3s;
     backface-visibility: hidden;
-    filter: blur(0);
-    @include themify($themes) {
-        background-color: themed('background_color');
-        border-bottom: 1px solid themed('background_color');
-    }
+    background-color: var(--general-main-1);
+    border-bottom: 1px solid var(--general-section-1);
 
-    &--is-blurred {
+    &:after {
+        position: absolute;
+        opacity: 0;
         pointer-events: none;
-        filter: blur(3px);
+        top: -1px;
+        left: 0;
+        width: 100%;
+        height: calc(100% + 2px);
+        content: '';
+        background-color: var(--overlay-outside-dialog);
+    }
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
     }
     &__menu-items {
         display: flex;
@@ -79,10 +87,8 @@
             @include typeface(--title-left-normal-black);
             padding: 0.5em 0;
             position: relative;
-            @include themify($themes) {
-                @include colorIcon(themed('text_primary_color'), none, themed('text_primary_color'));
-                color: themed('text_primary_color');
-            }
+            color: var(--text-prominent);
+            @include colorIcon(var(--text-prominent), none, var(--text-prominent));
 
             &:before {
                 position: absolute;
@@ -99,19 +105,15 @@
             }
         }
         &:hover:not(&--active) {
-            @include themify($themes) {
-                background-color: themed('hover_color');
-            }
+            background-color: var(--general-hover);
         }
         &--active {
             & > .header__menu-link-text[title] {
                 font-weight: bold;
-                @include themify($themes) {
-                    color: themed('navbar_active_color');
+                color: var(--text-prominent);
 
-                    &:after {
-                        color: themed('navbar_active_color');
-                    }
+                &:after {
+                    color: var(--text-prominent);
                 }
             }
             .header__icon {
@@ -120,9 +122,9 @@
         }
     }
     &__logo {
-        background-color: $COLOR_RED;
+        background-color: var(--brand-secondary);
         border-radius: 10px;
-        color: $COLOR_WHITE;
+        color: var(--text-colored-background);
         display: inline-block;
         font-size: 1.4rem;
         font-weight: normal;
@@ -130,6 +132,12 @@
         line-height: 1.43;
         text-align: center;
         width: 50px;
+        margin-left: 8px;
+    }
+    &__title {
+        display: inline-block;
+        font-weight: bold;
+        color: var(--text-prominent);
     }
     &__icon {
         margin-right: 0.8rem;

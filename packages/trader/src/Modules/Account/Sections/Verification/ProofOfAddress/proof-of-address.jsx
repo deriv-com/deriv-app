@@ -25,6 +25,7 @@ import BinarySocket            from '_common/base/socket_base';
 import { WS }                  from 'Services';
 import {
     filesize_error_message,
+    getFormatFromMIME,
     getSupportedFiles,
     max_document_size,
     supported_filetypes,
@@ -38,6 +39,7 @@ import Loading                 from '../../../../../templates/app/components/loa
 import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
 import DemoMessage             from '../../ErrorMessages/DemoMessage';
+import DocumentNeedsReview     from '../VerificationMessages/DocumentNeedsReview';
 import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
 
 const upload_message = (
@@ -54,6 +56,36 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
+};
+
+// TODO: standardize validations and refactor this
+const makeSettingsRequest = ({ ...settings }) => {
+    const {
+        address_line_1,
+        address_line_2,
+        address_city,
+        address_state,
+        address_postcode } = settings;
+
+    const settings_to_be_removed_for_api = [
+        'address_line_1',
+        'address_line_2',
+        'address_city',
+        'address_state',
+        'address_postcode',
+        'document_file',
+    ];
+
+    settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
+
+    return {
+        ...settings,
+        address_line_1,
+        address_line_2,
+        address_city,
+        address_state,
+        address_postcode,
+    };
 };
 
 class ProofOfAddress extends React.Component {
@@ -101,7 +133,6 @@ class ProofOfAddress extends React.Component {
 
     handleAcceptedFiles = (files) => {
         if (files.length > 0) {
-            console.log(files);
             this.setState({ file_error_message: null, document_file: files });
         }
     }
@@ -126,14 +157,51 @@ class ProofOfAddress extends React.Component {
         this.setState({ file_error_message: null, document_file: [] });
     }
 
-    onSubmit = () => {
-        if (!!this.state.file_error_message || (this.state.document_file.length < 1)) return;
-        const uploader = new DocumentUploader({ connection: BinarySocket.get().connection }); // send 'debug: true' here for debugging
-        uploader.upload(this.state.document_file[0]).then((api_response) => {
-            console.warn(api_response);
+    onSubmit = (values, { setStatus, setSubmitting }) => {
+        // Settings update is handled here
+        setStatus({ msg: '' });
+        const request = makeSettingsRequest(values);
+        this.setState({ is_btn_loading: true });
+        WS.setSettings(request).then((data) => {
+            this.setState({ is_btn_loading: false });
+            setSubmitting(false);
+            if (data.error) {
+                setStatus({ msg: data.error.message });
+            } else {
+                // force request to update settings cache since settings have been updated
+                WS.authorized.storage.getSettings().then((response) => {
+                    if (response.error) {
+                        this.setState({ api_initial_load_error: response.error.message });
+                        return;
+                    }
+                    this.setState({ ...response.get_settings, is_loading: false });
+                });
+            }
+        });
+
+        // Check if uploaded document is present after validation
+        if (!!this.state.file_error_message || (this.state.document_file.length < 1)) {
+            setStatus({ msg: localize('Error occured with document file. Please try again') });
+            return;
+        }
+        // Create file object for document uploader
+        const file_obj    = {
+            filename      : this.state.document_file[0].name,
+            buffer        : this.state.document_file[0],
+            documentType  : 'proofaddress',
+            documentFormat: getFormatFromMIME(this.state.document_file[0]),
+            file_size     : this.state.document_file[0].size,
+        };
+
+        // File uploader instance connected to binary_socket
+        const uploader = new DocumentUploader({ connection: BinarySocket.getSocket() });
+        uploader.upload(file_obj).then((api_response) => {
+            if (api_response.warning) setStatus({ msg: api_response.message });
+            else {
+                this.setState({ is_submit_success: true });
+            }
         }).catch((error) => {
-            this.setState({ upload_error: error });
-            console.warn(error);
+            setStatus({ msg: error.message });
         });
     }
 
@@ -146,9 +214,11 @@ class ProofOfAddress extends React.Component {
             address_state,
             address_postcode,
             document_file,
+            // document_expired,
+            // document_needs_action,
+            document_under_review,
             file_error_message,
             show_form,
-            is_account_authenticated,
             is_loading,
             is_btn_loading,
             is_submit_success,
@@ -159,6 +229,7 @@ class ProofOfAddress extends React.Component {
         }
         if (this.props.is_virtual) return <DemoMessage />;
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        // if (document_under_review) return <DocumentNeedsReview />;
         return (
             <Formik
                 initialValues={{
@@ -358,6 +429,7 @@ class ProofOfAddress extends React.Component {
                                         )}
                                         has_effect
                                         is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_submit_success={is_submit_success}
                                         text={localize('Save and submit')}
                                     />
                                 </FormFooter>
@@ -382,32 +454,23 @@ class ProofOfAddress extends React.Component {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;
             }
-            console.warn(data.get_settings);
             this.setState({ ...data.get_settings, is_loading: false });
         });
         WS.authorized.storage.getAccountStatus().then((data) => {
             const { status } = data.get_account_status;
             const {
+                // crs_tin_information,
                 document_under_review,
-                cashier_locked,
-                withdrawal_locked,
-                mt5_withdrawal_locked,
+                document_expired,
+                // financial_information_not_complete,
+                // trading_experience_not_complete,
                 document_needs_action,
-                unwelcome,
-                ukrts_max_turnover_limit_not_set,
-                professional,
             } = getStatusValidations(status);
 
-            console.warn(document_under_review);
-            console.warn(cashier_locked);
-            console.warn(withdrawal_locked);
-            console.warn(mt5_withdrawal_locked);
-            console.warn(document_needs_action);
-            console.warn(unwelcome);
-            console.warn(ukrts_max_turnover_limit_not_set);
-            console.warn(professional);
+            if (document_under_review) this.setState({ document_under_review });
+            if (document_needs_action) this.setState({ document_needs_action });
+            if (document_expired) this.setState({ document_expired });
 
-            console.warn(data.get_account_status.status);
             if (data.get_account_status.status &&
                 data.get_account_status.status.some(state => state === 'authenticated')
             ) {

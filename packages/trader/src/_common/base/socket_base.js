@@ -228,6 +228,7 @@ const BinarySocketBase = (() => {
         hasReadyState,
         clear             : () => {},
         sendBuffered      : () => {},
+        getSocket         : () => binary_socket,
         get               : () => deriv_api,
         setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },

@@ -62,14 +62,14 @@
     }
     &--is-virtual {
         .acc-info__balance {
-            color: $COLOR_ORANGE;
+            color: var(--text-profit-success);
         }
         &:before {
             @include typeface(--small-left-normal-orange, uppercase);
             @include toEm(padding, 2px 8px, 1.2em);
             @include toEm(margin-right, 8px, 1.2em);
             content: 'demo';
-            border: 1px solid $COLOR_ORANGE;
+            border: 1px solid var(--text-profit-success);
             border-radius: 16px;
             pointer-events: none;
         }
@@ -93,7 +93,7 @@
     &__wrapper {
         position: absolute;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
         width: 240px;
@@ -223,7 +223,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: $COLOR_WHITE;
+        background-color: var(--general-main-1);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
@@ -235,7 +235,7 @@
                 @include toEm(padding, 1px 2px, 0.6em);
                 @include toEm(margin-right, 8px, 0.6em);
                 content: 'demo';
-                border: 1px solid $COLOR_ORANGE;
+                border: 1px solid var(--text-profit-success);
                 border-radius: 16px;
             }
             &-icon {
@@ -243,17 +243,17 @@
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
-            background: $COLOR_LIGHT_BLACK_4;
+            background: var(--text-general);
         }
         &--selected {
-            background: $COLOR_LIGHT_GRAY_1;
+            background: var(--text-less-prominent);
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
 
                 &--virtual:before {
-                    color: $COLOR_WHITE;
-                    border: 1px solid $COLOR_WHITE;
+                    color: var(--general-main-1);
+                    border: 1px solid var(--general-main-1);
                 }
             }
         }

@@ -12,6 +12,7 @@ class Icon extends React.PureComponent {
             IconAPIError    : React.lazy(() => import('./AccountManagement/icon-error.jsx')),
 
             // Common
+            IconAccountTransfer   : React.lazy(() => import('./Common/icon-account-transfer.jsx')),
             IconArrowBold         : React.lazy(() => import('./Common/icon-arrow-bold.jsx')),
             IconArrow             : React.lazy(() => import('./Common/icon-arrow.jsx')),
             IconBack              : React.lazy(() => import('./Common/icon-back.jsx')),
@@ -37,6 +38,7 @@ class Icon extends React.PureComponent {
             IconInformation       : React.lazy(() => import('./Common/icon-information.jsx')),
             IconMinimize          : React.lazy(() => import('./Common/icon-minimize.jsx')),
             IconMinus             : React.lazy(() => import('./Common/icon-minus.jsx')),
+            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
             IconPlus              : React.lazy(() => import('./Common/icon-plus.jsx')),
             IconQuestion          : React.lazy(() => import('./Common/icon-question.jsx')),
             IconRedDot            : React.lazy(() => import('./Common/icon-red-dot.jsx')),
@@ -45,7 +47,6 @@ class Icon extends React.PureComponent {
             IconWip               : React.lazy(() => import('./Common/icon-wip.jsx')),
             IconWithdrawal        : React.lazy(() => import('./Common/icon-withdrawal.jsx')), // TODO: update big when design is ready
             IconWithdrawalSmall   : React.lazy(() => import('./Common/icon-withdrawal-small.jsx')),
-            IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
 
             // Contract
             ContractIconClose: React.lazy(() => import('./Contract/icon-close.jsx')),
@@ -58,9 +59,11 @@ class Icon extends React.PureComponent {
             IconAuthenticateWithdrawals: React.lazy(() => import('./Cashier/icon-authenticate-withdrawals.jsx')),
             IconCashierError           : React.lazy(() => import('./Cashier/icon-cashier-error.jsx')),
             IconEmailSent              : React.lazy(() => import('./Cashier/icon-email-sent.jsx')),
+            IconNoBalance              : React.lazy(() => import('./Cashier/icon-no-balance.jsx')),
             IconPhone                  : React.lazy(() => import('./Cashier/icon-phone.jsx')),
             IconWebsite                : React.lazy(() => import('./Cashier/icon-website.jsx')),
             IconEmail                  : React.lazy(() => import('./Cashier/icon-email.jsx')),
+            IconTransferDone           : React.lazy(() => import('./Cashier/icon-transfer-done.jsx')),
 
             // Modal
             ModalIconClose: React.lazy(() => import('./Modal/icon-close.jsx')),
@@ -101,6 +104,11 @@ class Icon extends React.PureComponent {
             IconSell  : React.lazy(() => import('./Statement/icon-sell.jsx')),
             IconWallet: React.lazy(() => import('./Statement/icon-wallet.jsx')),
 
+            // Signup
+            IconAdd     : React.lazy(() => import('./Signup/icon-add.jsx')),
+            IconRedArrow: React.lazy(() => import('./Signup/icon-red-arrow.jsx')),
+            IconWon     : React.lazy(() => import('./Signup/icon-won.jsx')),
+
             // Trading
             IconBarrierDown   : React.lazy(() => import('./Trading/Barriers/icon-barrier-down.jsx')),
             IconBarrierUp     : React.lazy(() => import('./Trading/Barriers/icon-barrier-up.jsx')),
@@ -119,12 +127,14 @@ class Icon extends React.PureComponent {
             className    : this.props.className,
             classNamePath: this.props.classNamePath,
             classNameRect: this.props.classNameRect,
+            height       : this.props.height,
             is_dark_theme: this.props.is_dark_theme,
             is_disabled  : this.props.is_disabled,
             onClick      : this.props.onClick,
             onMouseEnter : this.props.onMouseEnter,
             onMouseLeave : this.props.onMouseLeave,
             type         : this.props.type,
+            width        : this.props.width,
         };
 
         const IconLazy = this.icons[this.props.icon];

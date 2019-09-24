@@ -1,14 +1,12 @@
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import { urlFor }           from '_common/url';
 import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
-import { UpgradeButton }    from './upgrade-button.jsx';
-import { BinaryLink }       from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
+import { BinaryLink }       from '../../Routes';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
@@ -34,7 +32,6 @@ export class AccountActions extends Component {
             active_cashier_tab,
             balance,
             can_upgrade,
-            can_upgrade_to,
             currency,
             is_acc_switcher_on,
             is_cashier_modal_on,
@@ -43,6 +40,7 @@ export class AccountActions extends Component {
             is_virtual,
             loginid,
             onClickUpgrade,
+            setCashierActiveTab,
             toggleAccountsDialog,
             toggleCashierModal,
         } = this.props;
@@ -64,14 +62,6 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!!(
-                        can_upgrade_to && is_virtual
-                    ) && <UpgradeButton
-                        className='acc-info__button'
-                        onClick={() => {
-                            window.open(urlFor('user/accounts', undefined, undefined, true));
-                        }}
-                    />}
                     {!is_virtual &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
@@ -79,6 +69,7 @@ export class AccountActions extends Component {
                         toggleCashier={toggleCashierModal}
                         is_cashier_visible={is_cashier_modal_on}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        setCashierActiveTab={setCashierActiveTab}
                     />
                     }
                 </React.Fragment>
@@ -106,6 +97,7 @@ AccountActions.propTypes = {
     is_virtual              : PropTypes.any,
     loginid                 : PropTypes.any,
     onClickUpgrade          : PropTypes.any,
+    setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.any,
     toggleCashierModal      : PropTypes.any,
 };

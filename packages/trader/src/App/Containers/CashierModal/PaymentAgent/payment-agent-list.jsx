@@ -29,19 +29,19 @@ class PaymentAgentList extends React.Component {
                         resend_timeout={this.props.resend_timeout}
                     />
                     :
-                    <div className='payment-agent__wrapper'>
+                    <div className='cashier__wrapper--align-left'>
                         <Scrollbars
                             style={{ width: '100%', height: '100%' }}
                             autoHide
                         >
-                            <p><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
+                            <p className='cashier__paragraph'><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>
                             <div className='payment-agent__instructions'>
                                 <div className='payment-agent__instructions-section'>
-                                    <h2 className='payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
-                                    <p><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
+                                    <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Deposit' /></h2>
+                                    <p className='cashier__paragraph'><Localize i18n_default_text='Choose a payment agent and contact them for instructions.' /></p>
                                 </div>
                                 <div className='payment-agent__instructions-section'>
-                                    <h2 className='payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
+                                    <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
                                     <Button
                                         className='btn--primary--default payment-agent__button'
                                         has_effect
@@ -50,19 +50,19 @@ class PaymentAgentList extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <h2 className='payment-agent__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
+                            <h2 className='cashier__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
                             {this.props.is_loading ?
                                 <Loading className='payment-agent__loader' />
                                 :
                                 <React.Fragment>
                                     <div className='payment-agent__available-selector'>
-                                        <Localize i18n_default_text='Deposit/withdrawal method' />
+                                        <p className='cashier__paragraph'><Localize i18n_default_text='Deposit/withdrawal method' /></p>
                                         <Dropdown
                                             id='payment_methods'
-                                            className='payment-agent__drop-down'
-                                            classNameDisplay='payment-agent__drop-down-display'
-                                            classNameDisplaySpan='payment-agent__drop-down-display-span'
-                                            classNameItems='payment-agent__drop-down-items'
+                                            className='cashier__drop-down payment-agent__drop-down'
+                                            classNameDisplay='cashier__drop-down-display'
+                                            classNameDisplaySpan='cashier__drop-down-display-span'
+                                            classNameItems='cashier__drop-down-items'
                                             list={this.props.supported_banks}
                                             name='payment_methods'
                                             value={this.props.selected_bank}
@@ -85,7 +85,7 @@ class PaymentAgentList extends React.Component {
                                 </React.Fragment>
                             }
                             <div className='payment-agent__disclaimer'>
-                                <span className='payment-agent__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
+                                <span className='cashier__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
                                 <Localize i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.' values={{ website_name }} />
                             </div>
                         </Scrollbars>
@@ -104,7 +104,10 @@ PaymentAgentList.propTypes = {
     onMount              : PropTypes.func,
     payment_agent_list   : PropTypes.array,
     resend_timeout       : PropTypes.number,
-    selected_bank        : PropTypes.string,
+    selected_bank        : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
     sendVerificationEmail: PropTypes.func,
     supported_banks      : MobxPropTypes.arrayOrObservableArray,
 };

@@ -84,6 +84,7 @@ const Amount = ({
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
+                        no_border={true}
                         value={currency}
                         onChange={onChange}
                     />

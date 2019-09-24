@@ -1,0 +1,96 @@
+@import 'app/_common/base/index';
+
+.form-progress {
+    height: 100%;
+    max-height: 122px;
+    width: 100%;
+
+    &__header {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 -24px;
+        padding-bottom: 20px;
+
+        & h2 {
+            @include typeface(--paragraph-center-bold-black);
+            color: var(--text-general);
+            text-transform: none;
+        }
+    }
+    &__step {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 6rem;
+        justify-content: space-around;
+        min-width: 160px;
+        z-index: 2;
+
+        & .title {
+            font-size: 1.2rem;
+        }
+        & .identifier {
+            border-radius: 50%;
+            display: block;
+            width: 24px;
+            @include typeface(--paragraph-center-bold-black);
+            background-color: var(--text-less-prominent);
+            border: 1px solid var(--button-secondary-default);
+            color: var(--general-section-1);
+        }
+        &--active {
+            .identifier {
+                @include typeface(--paragraph-center-bold-black);
+                background-color: var(--brand-red-coral) !important;
+                border: 1px solid var(--brand-red-coral) !important;
+                color: var(--general-main-1);
+                transition: all 0.3s ease;
+            }
+            .title {
+                color: var(--brand-red-coral);
+                font-weight: bold;
+            }
+        }
+    }
+    &__steps {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        position: relative;
+
+        &--before {
+            bottom: 0;
+            content: '';
+            left: 0;
+            margin: 0 auto; /* this centers the line to the full width specified */
+            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+            right: 0;
+            top: 1.7em;
+            width: 67%;
+            border-top: 2px solid var(--text-less-prominent);
+        }
+        &--after {
+            border-top: 2px solid var(--brand-red-coral);
+            bottom: 0;
+            content: '';
+            left: 0;
+            margin: 0 auto; /* this centers the line to the full width specified */
+            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+            top: 1.7em;
+            transition: width 0.3s ease;
+        }
+    }
+}
+
+.modal__container.modal__real-account-signup-modal {
+    width: 900px;
+
+    .vertical-tab {
+        &__content {
+            padding: 0 !important;
+        }
+    }
+}

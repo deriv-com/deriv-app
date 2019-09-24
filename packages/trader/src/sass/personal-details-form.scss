@@ -1,0 +1,20 @@
+@import 'app/_common/base/index';
+
+.personal-details-form {
+    flex-grow: 1;
+    margin-top: 3rem;
+
+    & .datepicker {
+        max-width: initial;
+    }
+    &__elements {
+        flex-grow: 1;
+        margin: 0 auto;
+        width: 40%;
+    }
+    &__description {
+        @include typeface(--paragraph-center-normal-black);
+        text-transform: none;
+        margin-top: 3rem;
+    }
+}

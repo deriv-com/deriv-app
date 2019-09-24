@@ -20,7 +20,7 @@ class Detail extends React.Component {
                     className='payment-agent__accordion-content-icon'
                 />
                 <a
-                    className='payment-agent__contact'
+                    className='payment-agent__contact cashier__paragraph'
                     href={`${action ? `${action}:` : ''}${value}`}
                     {...rest}
                 >

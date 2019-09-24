@@ -1,55 +1,34 @@
 // import PropTypes            from 'prop-types';
-import DocumentUploader        from '@binary-com/binary-document-uploader';
-import classNames              from 'classnames';
 import React                   from 'react';
 import {
     Button,
-    FileDropzone,
     Input }                    from 'deriv-components';
 import { Formik }              from 'formik';
 import IconClearPhoto          from 'Assets/AccountManagement/ProofOfAddress/icon-clear-photo.svg';
-import IconCloudUpload         from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
 import IconIssuedUnder         from 'Assets/AccountManagement/ProofOfAddress/icon-issued-under.svg';
 import IconLessThanEight       from 'Assets/AccountManagement/ProofOfAddress/icon-less-than-8.svg';
 import IconOneToSixMonths      from 'Assets/AccountManagement/ProofOfAddress/icon-one-to-six-months.svg';
 import IconRecentBank          from 'Assets/AccountManagement/ProofOfAddress/icon-recent-bank.svg';
 import IconRecentUtility       from 'Assets/AccountManagement/ProofOfAddress/icon-recent-utility.svg';
-import IconRemoveFile          from 'Assets/AccountManagement/icon-remove-file.svg';
 import { connect }             from 'Stores/connect';
 import {
     validAddress,
     validPostCode,
     validLetterSymbol }        from 'Utils/Validator/declarative-validation-rules';
 import { localize }            from 'App/i18n';
-import BinarySocket            from '_common/base/socket_base';
 import { WS }                  from 'Services';
-import {
-    filesize_error_message,
-    getFormatFromMIME,
-    getSupportedFiles,
-    max_document_size,
-    supported_filetypes,
-    unsupported_file_message } from './constants';
-import ButtonLoading           from '../../../Components/button-loading.jsx';
+import UploadFile              from './upload-file.jsx';
 import {
     FormFooter,
     FormBody,
     FormSubHeader }            from '../../../Components/layout-components.jsx';
+import ButtonLoading           from '../../../Components/button-loading.jsx';
 import Loading                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
 import DemoMessage             from '../../ErrorMessages/DemoMessage';
 import DocumentNeedsReview     from '../VerificationMessages/DocumentNeedsReview';
 import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
-
-const upload_message = (
-    <>
-        <IconCloudUpload className='dc-file-dropzone__message-icon' />
-        <div className='dc-file-dropzone__message-subtitle' >
-            {localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
-        </div>
-    </>
-);
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -89,7 +68,14 @@ const makeSettingsRequest = ({ ...settings }) => {
 };
 
 class ProofOfAddress extends React.Component {
-    state = { document_file: [], is_loading: true, show_form: true }
+    constructor(props) {
+        super(props);
+        this.document_uploader_ref = React.createRef();
+        this.state = {
+            is_loading: true,
+            show_form : true,
+        };
+    }
 
     // TODO: standardize validations and refactor this
     validateFields = (values) => {
@@ -129,35 +115,15 @@ class ProofOfAddress extends React.Component {
         return errors;
     };
 
-    showForm = show_form => this.setState({ show_form, file_error_message: null });
+    showForm = show_form => this.setState({ show_form });
 
-    handleAcceptedFiles = (files) => {
-        if (files.length > 0) {
-            this.setState({ file_error_message: null, document_file: files });
-        }
-    }
-
-    handleRejectedFiles = (files) => {
-        const isFileTooLarge    = files.length > 0 && files[0].size > max_document_size;
-        const hasSupportedFiles = files.filter((file) => getSupportedFiles(file.name));
-        if (isFileTooLarge && (hasSupportedFiles.length > 0)) {
-            this.setState({
-                document_file     : files,
-                file_error_message: filesize_error_message,
-            });
-        } else {
-            this.setState({
-                document_file     : files,
-                file_error_message: unsupported_file_message,
-            });
-        }
-    }
-
-    removeFile = () => {
-        this.setState({ file_error_message: null, document_file: [] });
+    onFileDrop = ({ document_file, file_error_message }) => {
+        this.setState({ document_file, file_error_message });
     }
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
+        this.setState({ is_btn_loading: true });
+
         // Settings update is handled here
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
@@ -180,24 +146,17 @@ class ProofOfAddress extends React.Component {
         });
 
         // Check if uploaded document is present after validation
-        if (!!this.state.file_error_message || (this.state.document_file.length < 1)) {
+        if (!!this.state.file_error_message || (this.state.document_file && this.state.document_file.length < 1)) {
             setStatus({ msg: localize('Error occured with document file. Please try again') });
             return;
         }
-        // Create file object for document uploader
-        const file_obj    = {
-            filename      : this.state.document_file[0].name,
-            buffer        : this.state.document_file[0],
-            documentType  : 'proofaddress',
-            documentFormat: getFormatFromMIME(this.state.document_file[0]),
-            file_size     : this.state.document_file[0].size,
-        };
 
-        // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: BinarySocket.getSocket() });
-        uploader.upload(file_obj).then((api_response) => {
-            if (api_response.warning) setStatus({ msg: api_response.message });
-            else {
+        // Upload document
+        this.document_uploader_ref.current.upload().then((api_response) => {
+            this.setState({ is_btn_loading: false });
+            if (api_response.warning) {
+                setStatus({ msg: api_response.message });
+            } else {
                 this.setState({ is_submit_success: true });
             }
         }).catch((error) => {
@@ -216,7 +175,7 @@ class ProofOfAddress extends React.Component {
             document_file,
             // document_expired,
             // document_needs_action,
-            document_under_review,
+            // document_under_review,
             file_error_message,
             show_form,
             is_loading,
@@ -238,7 +197,6 @@ class ProofOfAddress extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
-                    document_file,
                 }}
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
@@ -381,32 +339,10 @@ class ProofOfAddress extends React.Component {
                                             </li>
                                         </ul>
                                         <div className='account-poa__upload-file'>
-                                            <FileDropzone
-                                                onDropAccepted={
-                                                    this.onDropAccepted = (files) => this.handleAcceptedFiles(files)
-                                                }
-                                                onDropRejected={
-                                                    this.onDropRejected = (files) => this.handleRejectedFiles(files)
-                                                }
-                                                accept={supported_filetypes}
-                                                max_size={max_document_size}
-                                                multiple={false}
-                                                message={upload_message}
-                                                hover_message={localize('Drop files here..')}
-                                                error_message={localize('Please upload supported file type.')}
-                                                validation_error_message={file_error_message}
-                                                value={document_file}
+                                            <UploadFile
+                                                ref={this.document_uploader_ref}
+                                                onFileDrop={this.onFileDrop}
                                             />
-                                            {(document_file.length > 0 || !!file_error_message) &&
-                                            <div className='account-poa__upload-remove-btn-container'>
-                                                <IconRemoveFile
-                                                    className={classNames('account-poa__upload-remove-btn', {
-                                                        'account-poa__upload-remove-btn--error': !!file_error_message,
-                                                    })}
-                                                    onClick={this.removeFile}
-                                                />
-                                            </div>
-                                            }
                                         </div>
                                     </div>
                                 </FormBody>
@@ -424,8 +360,8 @@ class ProofOfAddress extends React.Component {
                                                 (errors.address_city || !values.address_city) ||
                                                 (errors.address_state || !values.address_state) ||
                                                 (errors.address_postcode || !values.address_postcode)) ||
-                                                ((this.state.document_file.length < 1) ||
-                                                !!this.state.file_error_message)
+                                                ((document_file && document_file.length < 1) ||
+                                                !!file_error_message)
                                         )}
                                         has_effect
                                         is_loading={is_btn_loading && <ButtonLoading />}

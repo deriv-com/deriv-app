@@ -105,16 +105,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get default_currency() {
-        if (Object.keys(this.currencies_list).length > 0) {
-            const keys = Object.keys(this.currencies_list);
-            // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
-            if (this.currencies_list.Fiat.length < 1) return 'USD';
-            return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
-        } return 'USD';
-    }
-
-    @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');

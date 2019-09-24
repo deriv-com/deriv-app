@@ -7,16 +7,13 @@ import Icon       from 'Assets/icon.jsx';
 
 const SuccessDialog = ({
     icon,
-    icon_type,
     message,
     onCancel,
     onSubmit,
+    icon_size,
     text_submit,
 }) => {
-    const MainIcon = () => <Icon
-        icon={icon}
-        type={icon_type ? icon_type.toLowerCase() : undefined}
-    />;
+    const MainIcon = () => icon || null;
 
     const Checkmark = ({ className }) => <Icon
         className={className}
@@ -26,7 +23,10 @@ const SuccessDialog = ({
     return (
         <div className='success-change'>
             <div className={
-                classNames('success-change__icon-area', 'success-change__icon-area--big')
+                classNames('success-change__icon-area', {
+                    'success-change__icon-area--large' : icon_size === 'large',
+                    'success-change__icon-area--xlarge': icon_size === 'xlarge',
+                })
             }
             >
                 <MainIcon />
@@ -55,8 +55,13 @@ const SuccessDialog = ({
     );
 };
 
+SuccessDialog.defaultProps = {
+    icon_size: 'large',
+};
+
 SuccessDialog.propTypes = {
-    icon       : PropTypes.string,
+    icon       : PropTypes.object,
+    icon_size  : PropTypes.string,
     icon_type  : PropTypes.string,
     message    : PropTypes.string,
     onCancel   : PropTypes.func,

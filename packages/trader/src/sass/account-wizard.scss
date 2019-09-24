@@ -86,7 +86,11 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        align-self: flex-end;
 
+        .btn {
+            margin: initial;
+        }
         &--absolute {
             bottom: 16px;
             position: absolute;

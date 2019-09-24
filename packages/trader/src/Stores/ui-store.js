@@ -76,6 +76,7 @@ export default class UIStore extends BaseStore {
 
     // mt5
     @observable is_mt5_password_modal_enabled = false;
+    @observable is_mt5_success_dialog_enabled = false;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -262,11 +263,18 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    closeSignupAndOpenCashier() {
+    closeSignupAndOpenCashier(active_tab = 'deposit') {
         this.is_real_acc_signup_on = false;
-        this.setCashierActiveTab('deposit');
+        this.setCashierActiveTab(active_tab);
         this.closeRealAccountSignup();
         // TODO enable this one cashier is active
+        setTimeout(this.toggleCashierModal, 300);
+    }
+
+    @action.bound
+    closeMt5AndOpenCashier(active_tab = 'deposit') {
+        this.is_mt5_password_modal_enabled = false;
+        this.setCashierActiveTab(active_tab);
         setTimeout(this.toggleCashierModal, 300);
     }
 

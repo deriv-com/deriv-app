@@ -34,7 +34,7 @@ const UnsupportedIconRow = () => (
 
 const ContinueTradingButton = () => (
     <ButtonLink
-        className='btn--primary btn__text'
+        className='btn--primary--default btn__text'
         to='/'
     >
         {localize('Continue trading')}
@@ -43,7 +43,7 @@ const ContinueTradingButton = () => (
 
 const PoaButton = () => (
     <ButtonLink
-        className='btn--primary btn__text'
+        className='btn--primary--default btn__text'
         to='/account/proof-of-address'
     >
         {localize('Submit proof of address')}

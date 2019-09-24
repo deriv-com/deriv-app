@@ -110,6 +110,9 @@
                 grid-template-columns: 1fr 1fr;
                 grid-gap: 8px;
             }
+            .datepicker {
+                max-width: unset;
+            }
         }
         &__footer {
             height: 80px;
@@ -278,15 +281,18 @@
             padding-left: 8px;
         }
     }
+    .btn--link.btn__text {
+        color: $COLOR_WHITE !important;
+    }
 }
 
 /** @define account-poa; weak */
 .account-poa {
     &__upload {
         &-section {
-          margin-top: 1em;
-          display: flex;
-          flex-wrap: wrap;
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
         }
         &-list {
             width: 100%;

@@ -9,8 +9,8 @@ class DatePickerCalendar extends Component {
         super(props);
 
         this.state = {
-            date : toMoment(props.date).unix(),
-            view : 'year',
+            date : toMoment(props.value).format('YYYY-MM-DD'),
+            view : 'date',
             year : undefined,
             month: undefined,
         };

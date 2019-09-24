@@ -16,6 +16,7 @@ const routes = {
     history             : '/settings/history',
     index               : '/index',
     limits              : '/settings/limits',
+    mt5                 : '/mt5',
     personal            : '/settings/personal',
     positions           : '/reports/positions',
     profit              : '/reports/profit',

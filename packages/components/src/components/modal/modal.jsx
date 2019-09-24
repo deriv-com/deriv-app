@@ -53,7 +53,7 @@ class ModalElement extends React.PureComponent {
                     this.props.className && `dc-modal__container_${this.props.className}`,
                 )}
             >
-                <div className='dc-modal-header'>
+                <div className={classNames('dc-modal-header', this.props.className && `dc-modal-header--${this.props.className}`)}>
                     {  this.props.title &&
                     <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
                     }

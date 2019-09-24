@@ -2,12 +2,45 @@
  * @define journal
  */.journal {
     &__table {
-        tr:nth-child(even) {
-            background: var(--general-main-1);
-        }
+        display: block;
+        font-size: 10px;
 
-        tr:nth-child(odd) {
-            background: var(--general-main-1);
+        &--header {
+            display: table;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 40px;
+            width: 100%;
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &--th {
+            background-color: var(--general-main-1);
+            text-align: left;
+            padding-left: 16px;
+
+            &:nth-child(1) {
+                width: 30%;
+            }
+            &:nth-child(2) {
+                width: 70%;
+            }
+        }
+        &--tr {
+            &:nth-child(odd) {
+                background: var(--general-main-1);
+            }
+            &:nth-child(even) {
+                background: var(--general-section-1);
+            }
+        }
+        &--td {
+            height: 40px;
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 16px;
+        }
+        &--date, &--time {
+            line-height: 1.4em;
         }
     }
 }

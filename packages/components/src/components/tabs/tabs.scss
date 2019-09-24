@@ -33,11 +33,12 @@
     &__active-line {
         display: block;
         position: absolute;
-        top: 41px;
+        top: 39px;
         left: 0;
         width: var(--tab-width);
         height: 2px;
         background: #ff444f; /* stylelint-disable-line color-no-hex */
         transition: all ease-in-out 0.3s;
+        z-index: 1;
     }
 }

@@ -9,7 +9,7 @@
         margin-left: 0 !important;
 
         &--run {
-            background: #4bb4b3; //eslint-disable-line color-no-hex
+            background: var(--purchase-main-1);
         }
         &--loading {
             pointer-events: none;

@@ -1,16 +1,17 @@
-import proptypes from 'prop-types';
-import React from 'react';
+import proptypes      from 'prop-types';
+import React          from 'react';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
-import { connect } from '../stores/connect';
-import { translate } from '../utils/tools';
+import { connect }    from '../stores/connect';
+import { translate }  from '../utils/tools';
+import '../assets/sass/journal.scss';
 
 const DateItem = ({
     date, time,
 }) => {
     return (
         <div>
-            <span> {date} </span>
-            <span> {time} </span>
+            <span className='journal__table--date'> {date} </span>
+            <span className='journal__table--time'> {time} </span>
         </div>
     );
 };
@@ -33,16 +34,16 @@ const Journal = ({
             className='journal'
             autoHeight
             autoHide
-            autoHeightMax={450} // As specified by design spec
+            autoHeightMax={400} // As specified by design spec
         >
             <table className='journal__table'>
-                <thead>
+                <thead className='journal__table--header'>
                     <tr>
-                        <th> {translate('Date')} </th>
-                        <th> {translate('Message')} </th>
+                        <th className='journal__table--th'> {translate('Date')} </th>
+                        <th className='journal__table--th'> {translate('Message')} </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='journal__table--body'>
                     {
                         messages.map((item, index) => {
                             const { date, time, message } = item;
@@ -50,9 +51,9 @@ const Journal = ({
                             const messageEl = MessageItem({ message });
 
                             return (
-                                <tr key={`${item.date}-${index}`}>
-                                    <td>{dateEl}</td>
-                                    <td>{messageEl}</td>
+                                <tr className='journal__table--tr' key={`${item.date}-${index}`}>
+                                    <td className='journal__table--td'>{dateEl}</td>
+                                    <td className='journal__table--td'>{messageEl}</td>
                                 </tr>);
                         })
                     }

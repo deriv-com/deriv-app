@@ -7,7 +7,6 @@ export default class RootStore {
     constructor(core, ws) {
         this.core     = core;
         this.ui       = core.ui;
-        console.log(this.ui.disableApp); // eslint-disable-line no-console
         this.ws       = ws;
         this.flyout   = new FlyoutStore(this);
         this.runPanel = new RunPanelStore(this);

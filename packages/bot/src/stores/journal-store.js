@@ -47,7 +47,7 @@ export default class JournalStore {
 
     pushMessage(data) {
         const date = formatDate(this.serverTime.get());
-        const time = formatDate(this.serverTime.get());
+        const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         this.messages.push({ date, time , message: data.message });
         this.messages = this.messages.slice(0);  // force array update
     }

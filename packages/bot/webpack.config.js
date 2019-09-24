@@ -27,11 +27,7 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
-<<<<<<< HEAD
-    devtool: 'cheap-module-eval-source-map',
-=======
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
->>>>>>> upstream/dev
     target: 'web',
     module: {
         rules: [

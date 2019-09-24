@@ -50,7 +50,7 @@ const Button = ({
                 </span>
             }
             {is_loading &&
-                <ButtonLoading/>
+                <ButtonLoading />
             }
             {is_submit_success &&
                 <IconCheckmark />
@@ -64,18 +64,18 @@ const Button = ({
 };
 
 Button.propTypes = {
-    children : PropTypes.node,
-    className: PropTypes.string,
-    classNameSpan: PropTypes.string,
-    has_effect: PropTypes.bool,
-    Icon: PropTypes.node,
-    id: PropTypes.string,
-    is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    is_loading: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    is_submit_success: PropTypes.bool,
-    onClick: PropTypes.func,
-    text: PropTypes.string,
-    wrapperClassName: PropTypes.string,
+    children          : PropTypes.node,
+    className         : PropTypes.string,
+    classNameSpa      : PropTypes.string,
+    has_effect        : PropTypes.bool,
+    Icon              : PropTypes.node,
+    id                : PropTypes.string,
+    is_disabled       : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    is_loading        : PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    is_submit_success : PropTypes.bool,
+    onClick           : PropTypes.func,
+    text              : PropTypes.string,
+    wrapperClassName  : PropTypes.string,
 };
 
 export default Button;

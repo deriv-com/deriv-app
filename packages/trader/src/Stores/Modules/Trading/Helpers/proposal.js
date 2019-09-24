@@ -1,6 +1,6 @@
-import { isVisible } from '_common/common_functions';
 import ObjectUtils   from 'deriv-shared/utils/object';
 import CurrencyUtils from 'deriv-shared/utils/currency';
+import { isVisible } from '_common/common_functions';
 import {
     convertToUnix,
     toMoment }       from 'Utils/Date';

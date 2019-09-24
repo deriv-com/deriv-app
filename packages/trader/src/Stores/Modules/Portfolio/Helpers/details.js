@@ -1,5 +1,5 @@
-import { localize }        from 'App/i18n';
 import ObjectUtils         from 'deriv-shared/utils/object';
+import { localize }        from 'App/i18n';
 import {
     epochToMoment,
     formatMiliseconds,

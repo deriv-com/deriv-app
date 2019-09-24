@@ -1,5 +1,5 @@
-import { localize }  from 'App/i18n';
 import CurrencyUtils from 'deriv-shared/utils/currency';
+import { localize }  from 'App/i18n';
 
 export const buildCurrenciesList = (payout_currencies) => {
     const fiat   = [];

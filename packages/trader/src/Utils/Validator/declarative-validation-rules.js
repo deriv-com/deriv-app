@@ -1,9 +1,9 @@
+import CurrencyUtils             from 'deriv-shared/utils/currency';
+import ObjectUtils               from 'deriv-shared/utils/object';
 import Client                    from '_common/base/client_base';
 import { getElementById }        from '_common/common_functions';
 import { compareBigUnsignedInt } from '_common/string_util';
 import { localize }              from 'App/i18n';
-import CurrencyUtils             from 'deriv-shared/utils/currency';
-import ObjectUtils               from 'deriv-shared/utils/object';
 
 // ------------------------------
 // ----- Validation Methods -----

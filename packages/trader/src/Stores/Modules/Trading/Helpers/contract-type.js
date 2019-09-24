@@ -1,6 +1,6 @@
+import ObjectUtils             from 'deriv-shared/utils/object';
 import ServerTime              from '_common/base/server_time';
 import { localize }            from 'App/i18n';
-import ObjectUtils             from 'deriv-shared/utils/object';
 import { WS }                  from 'Services';
 import {
     isTimeValid,

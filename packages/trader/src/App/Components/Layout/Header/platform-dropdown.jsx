@@ -27,6 +27,7 @@ const PlatformDropdown = ({
                         )}
                     >
                         <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} />
+
                         <div className='platform_dropdown__list__platform__details'>
                             <p className='platform_dropdown__list__platform__title'>{platform.title}</p>
                             <p className='platform_dropdown__list__platform__description'>{platform.description}</p>

@@ -23,9 +23,8 @@ import Loading              from '../../../../templates/_common/components/loadi
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
-    const is_selected_pa = values.payment_method === 'payment_agents';
 
-    if (!is_selected_pa && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
+    if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
         errors.payment_agent = localize('Invalid ID.');
     }
 
@@ -36,7 +35,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
         {
             type    : 'float',
             decimals: getDecimalPlaces(currency),
-            ...(is_selected_pa && {
+            ...(payment_agent.min_withdrawal && {
                 min: payment_agent.min_withdrawal,
                 max: payment_agent.max_withdrawal,
             }),
@@ -79,23 +78,28 @@ const Radio = ({
 
 const RadioDropDown = ({
     field,
+    values,
     ...props
 }) => (
     <Radio field={field} props={props}>
         <span className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
         </span>
-        <Field
-            name='payment_agents'
-            component={Dropdown}
-            className='cashier__drop-down payment-agent__drop-down'
-            classNameDisplay='cashier__drop-down-display'
-            classNameDisplaySpan='cashier__drop-down-display-span'
-            classNameItems='cashier__drop-down-items'
-            list={props.payment_agent_list}
-            value={props.selected_payment_agent.value}
-            onChange={props.onChangePaymentAgent}
-        />
+        <Field name='payment_agents'>
+            {(params) => (
+                <Dropdown
+                    className='cashier__drop-down payment-agent__drop-down'
+                    classNameDisplay='cashier__drop-down-display'
+                    classNameDisplaySpan='cashier__drop-down-display-span'
+                    classNameItems='cashier__drop-down-items'
+                    list={props.payment_agent_list}
+                    value={values.payment_agents}
+                    onChange={(e) => {
+                        params.form.setFieldValue('payment_agents', e.target.value);
+                    }}
+                />
+            )}
+        </Field>
     </Radio>
 );
 
@@ -141,15 +145,15 @@ class PaymentAgentWithdraw extends React.Component {
         validateWithdrawal(values, {
             balance      : this.props.balance,
             currency     : this.props.currency,
-            payment_agent: this.props.selected_payment_agent,
+            payment_agent: values.payment_method === 'payment_agent'
+                ? {}
+                : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
         })
     );
 
     onWithdrawalPassthrough = (values) => {
-        const is_selected_pa = values.payment_method === 'payment_agents';
         this.props.requestPaymentAgentWithdraw({
-            is_selected_pa,
-            loginid          : is_selected_pa ? this.props.selected_payment_agent.value : values.payment_agent,
+            loginid          : values[values.payment_method],
             currency         : this.props.currency,
             amount           : values.amount,
             verification_code: this.props.verification_code,
@@ -180,7 +184,7 @@ class PaymentAgentWithdraw extends React.Component {
                                             initialValues={{
                                                 amount        : '',
                                                 payment_agent : '',
-                                                payment_agents: this.props.selected_payment_agent.value,
+                                                payment_agents: (this.props.payment_agent_list[0] || {}).value,
                                                 payment_method: 'payment_agents',
                                             }}
                                             validate={this.validateWithdrawalPassthrough}
@@ -194,11 +198,9 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 id='payment_agents'
                                                                 component={RadioDropDown}
                                                                 payment_agent_list={this.props.payment_agent_list}
-                                                                // eslint-disable-next-line max-len
-                                                                selected_payment_agent={this.props.selected_payment_agent}
-                                                                onChangePaymentAgent={this.props.onChangePaymentAgent}
                                                                 className='payment-agent__radio'
                                                                 name='payment_method'
+                                                                values={values}
                                                             />
                                                             <Field
                                                                 id='payment_agent'
@@ -264,11 +266,9 @@ PaymentAgentWithdraw.propTypes = {
     error_message_withdraw     : PropTypes.string,
     is_loading                 : PropTypes.bool,
     is_withdraw_successful     : PropTypes.bool,
-    onChangePaymentAgent       : PropTypes.func,
     onMount                    : PropTypes.func,
     payment_agent_list         : PropTypes.array,
     requestPaymentAgentWithdraw: PropTypes.func,
-    selected_payment_agent     : PropTypes.object,
     verification_code          : PropTypes.string,
 };
 
@@ -279,11 +279,8 @@ export default connect(
         error                      : modules.cashier.config.payment_agent.error,
         is_loading                 : modules.cashier.is_loading,
         is_withdraw_successful     : modules.cashier.config.payment_agent.is_withdraw_successful,
-        onChangePaymentAgent       : modules.cashier.onChangePaymentAgent,
-        onChangePaymentAgentID     : modules.cashier.onChangePaymentAgentID,
         onMount                    : modules.cashier.onMountPaymentAgentWithdraw,
         payment_agent_list         : modules.cashier.config.payment_agent.agents,
         requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
-        selected_payment_agent     : modules.cashier.config.payment_agent.selected_agent,
     })
 )(PaymentAgentWithdraw);

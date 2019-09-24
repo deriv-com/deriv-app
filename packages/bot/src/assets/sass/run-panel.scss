@@ -7,6 +7,13 @@
     }
     &__button {
         margin-left: 0 !important;
+
+        &--run {
+            background: #4bb4b3; //eslint-disable-line color-no-hex
+        }
+        &--loading {
+            pointer-events: none;
+        }
     }
     &__icon-info {
         vertical-align: middle;

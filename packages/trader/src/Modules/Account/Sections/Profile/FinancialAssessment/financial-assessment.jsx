@@ -269,7 +269,7 @@ class FinancialAssessment extends React.Component {
                                             (errors.account_turnover || !values.account_turnover))
                                         }
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />

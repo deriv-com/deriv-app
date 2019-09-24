@@ -1,7 +1,9 @@
 /** @define btn */
 .btn {
     font-size: 1rem;
-    display: inline-block;
+    display: inline-flex;
+    vertical-align: middle;
+    justify-content: center;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
@@ -27,6 +29,11 @@
         align-items: center;
         justify-content: center;
         text-decoration: none;
+    }
+    &__icon {
+        display: inline-flex;
+        padding-right: 6px;
+        margin-top: 2px;
     }
     &:not([disabled]):hover {
         text-decoration: none;
@@ -272,5 +279,17 @@
         bottom: -0.6em;
         right: -0.6em;
         border-width: 6px;
+    }
+}
+
+/** @define initial-loader; weak */
+.initial-loader--btn {
+    background-color: unset !important;
+
+    .initial-loader__barspinner--rect {
+        background-color: $COLOR_WHITE;
+    }
+    .barspinner {
+        margin: 0 4px 0 -4px;
     }
 }

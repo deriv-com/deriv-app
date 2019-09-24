@@ -454,7 +454,7 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.account_opening_reason || !values.account_opening_reason))
                                         )}
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />

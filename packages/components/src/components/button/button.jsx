@@ -1,6 +1,7 @@
-import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import classNames    from 'classnames';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import ButtonLoading from './buttonLoading.jsx';
 
 // TODO: use Icons from components
 const IconCheckmark = () => (
@@ -17,6 +18,7 @@ const Button = ({
     className = '',
     classNameSpan,
     has_effect,
+    icon,
     id,
     is_disabled,
     is_loading,
@@ -37,15 +39,20 @@ const Button = ({
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : (type || 'submit')}
         >
-            { text && !(is_loading || is_submit_success) &&
+            {icon &&
+                <div className='btn__icon'>
+                    {icon}
+                </div>
+            }
+            {text && !(is_loading || is_submit_success) &&
                 <span className={classNames('btn__text', classNameSpan)}>
                     {text}
                 </span>
             }
-            { is_loading &&
-                <>{is_loading}</>
+            {is_loading &&
+                <ButtonLoading/>
             }
-            { is_submit_success &&
+            {is_submit_success &&
                 <IconCheckmark />
             }
             {children}
@@ -57,17 +64,18 @@ const Button = ({
 };
 
 Button.propTypes = {
-    children         : PropTypes.node,
-    className        : PropTypes.string,
-    classNameSpan    : PropTypes.string,
-    has_effect       : PropTypes.bool,
-    id               : PropTypes.string,
-    is_disabled      : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    is_loading       : PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    children : PropTypes.node,
+    className: PropTypes.string,
+    classNameSpan: PropTypes.string,
+    has_effect: PropTypes.bool,
+    Icon: PropTypes.node,
+    id: PropTypes.string,
+    is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    is_loading: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     is_submit_success: PropTypes.bool,
-    onClick          : PropTypes.func,
-    text             : PropTypes.string,
-    wrapperClassName : PropTypes.string,
+    onClick: PropTypes.func,
+    text: PropTypes.string,
+    wrapperClassName: PropTypes.string,
 };
 
 export default Button;

@@ -46,6 +46,9 @@
         &--has-symbol {
             justify-content: unset;
         }
+        &--no-border {
+            border-color: var(--fill-normal);
+        }
         &-placeholder {
             position: absolute;
             top: 1.2rem;
@@ -70,7 +73,7 @@
                     padding: 0 4px;
 
                     .dc-dropdown__display-placeholder-text {
-                        color: var(--text-color-3) !important;
+                        color: var(--text-general) !important;
                     }
                 }
             }

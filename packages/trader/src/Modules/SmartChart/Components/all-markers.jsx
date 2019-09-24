@@ -20,19 +20,19 @@ const RawMarkerMaker = (draw_callback) => {
 
 function get_color({ status, profit, is_dark_theme }) {
     const colors = is_dark_theme ? {
-        open: '#377CFC',
-        won : '#00A79E',
-        lost: '#CC2E3D',
-        sold: '#FFAD3A',
-        fg  : '#FFFFFF',
-        bg  : '#10131F',
+        open: '#377cfc',
+        won : '#00a79e',
+        lost: '#cc2e3d',
+        sold: '#ffad3a',
+        fg  : '#ffffff',
+        bg  : '#0e0e0e',
     } : {
-        open: '#377CFC',
-        won : '#4BB4B3',
-        lost: '#EC3F3F',
-        sold: '#FFAD3A',
+        open: '#377cfc',
+        won : '#4bb4b3',
+        lost: '#ec3f3f',
+        sold: '#ffad3a',
         fg  : '#333333',
-        bg  : '#FFFFFF',
+        bg  : '#ffffff',
     };
     let color = colors[status || 'open'];
     if (status === 'open' && profit) {

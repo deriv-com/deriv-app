@@ -9,13 +9,12 @@ import 'Sass/app/_common/components/platform-dropdown.scss';
 const PlatformDropdown = ({
     platform_config,
     handleClick,
-}) => ReactDOM.createPortal(
-    <div className='platform_dropdown' onClick={handleClick}>
-        <div className='platform_dropdown__list'>
-            {platform_config.map((platform, idx) => {
-                const is_bot = /^\/bot/.test(location.pathname);
-
-                return (
+}) => {
+    const is_bot = /^\/bot/.test(location.pathname);
+    return ReactDOM.createPortal(
+        <div className='platform_dropdown' onClick={handleClick}>
+            <div className='platform_dropdown__list'>
+                {platform_config.map((platform, idx) => (
                     <BinaryLink
                         to={platform.link_to}
                         href={platform.href}
@@ -33,13 +32,12 @@ const PlatformDropdown = ({
                             <p className='platform_dropdown__list__platform__description'>{platform.description}</p>
                         </div>
                     </BinaryLink>
-                );
-            }
-            )}
-        </div>
-    </div>,
-    document.getElementById('deriv_app'),
-);
+                ))}
+            </div>
+        </div>,
+        document.getElementById('deriv_app'),
+    );
+};
 
 PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,

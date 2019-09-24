@@ -188,7 +188,6 @@ class ProofOfAddress extends React.Component {
             document_is_suspect,
             document_expired,
             document_verified,
-            // document_needs_action,
             document_under_review,
             file_error_message,
             needs_poi,
@@ -271,7 +270,6 @@ class ProofOfAddress extends React.Component {
                                                     error={touched.address_line_2 && errors.address_line_2}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>

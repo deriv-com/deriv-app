@@ -11,7 +11,6 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         const { passthrough: { WS, root_store } } = props;
-        console.log('Root', root_store); // eslint-disable-line no-console
         this.rootStore = new RootStore(root_store, WS);
         ApiHelpers.setInstance(this.rootStore);
     }

@@ -1,11 +1,11 @@
-import { Button, Drawer, Dialog, Tabs } from 'deriv-components';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
+import { Button, Drawer, Dialog, Tabs }       from 'deriv-components';
+import classNames                             from 'classnames';
+import PropTypes                              from 'prop-types';
+import React                                  from 'react';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
-import Journal from './journal.jsx';
-import { connect } from '../stores/connect';
-import { translate } from '../utils/tools';
+import Journal                                from './journal.jsx';
+import { connect }                            from '../stores/connect';
+import { translate }                          from '../utils/tools';
 import '../assets/sass/run-panel.scss';
 
 const drawerContent = () => {

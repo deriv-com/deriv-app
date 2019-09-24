@@ -13,7 +13,6 @@ import {
 import { localize }           from 'App/i18n';
 import AppRoutes              from 'Constants/routes';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import ButtonLoading          from '../../../Components/button-loading.jsx';
 import {
     FormSubHeader,
     FormBody,

@@ -184,8 +184,8 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
  * .viewLeft: Offset of left edge of visible rectangle from parent,
  * .contentTop: Offset of the top-most content from the y=0 coordinate,
  * .contentLeft: Offset of the left-most content from the x=0 coordinate.
- * .absoluteTop: Top-edge of view.
- * .absoluteLeft: Left-edge of view.
+ * .absolute_top: Top-edge of view.
+ * .absolute_left: Left-edge of view.
  * .toolboxWidth: Width of toolbox, if it exists.  Otherwise zero.
  * .toolboxHeight: Height of toolbox, if it exists.  Otherwise zero.
  * .flyoutWidth: Width of the flyout if it is always open.  Otherwise zero.
@@ -197,51 +197,51 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
  * @this Blockly.WorkspaceSvg
  */
 Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
-    const toolboxDimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
-    const flyoutDimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.flyout_);
+    const toolbox_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
+    const flyout_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.flyout_);
 
     // Contains height and width in CSS pixels.
-    // svgSize is equivalent to the size of the injectionDiv at this point.
-    const svgSize = Blockly.svgSize(this.getParentSvg());
+    // svg_size is equivalent to the size of the injectionDiv at this point.
+    const svg_size = Blockly.svg_size(this.getParentSvg());
 
     if (this.toolbox_) {
       if (this.toolboxPosition == Blockly.TOOLBOX_AT_TOP || this.toolboxPosition == Blockly.TOOLBOX_AT_BOTTOM) {
-        svgSize.height -= toolboxDimensions.height;
+        svg_size.height -= toolbox_dimensions.height;
       } else if (this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT || this.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
-        svgSize.width -= toolboxDimensions.width;
+        svg_size.width -= toolbox_dimensions.width;
       }
     }
 
-    // svgSize is now the space taken up by the Blockly workspace, not including the toolbox.
-    var contentDimensions = Blockly.WorkspaceSvg.getContentDimensions_(this, svgSize);
+    // svg_size is now the space taken up by the Blockly workspace, not including the toolbox.
+    var content_dimensions = Blockly.WorkspaceSvg.getcontent_dimensions_(this, svg_size);
 
-    let absoluteLeft = 0;
-    let absoluteTop = 0;
+    let absolute_left = 0;
+    let absolute_top = 0;
 
     if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT) {
-        absoluteTop = 50; // deriv-bot: Add some spacing for Core header.
-        absoluteLeft = toolboxDimensions.width;
+        absolute_top = 50; // deriv-bot: Add some spacing for Core header.
+        absolute_left = toolbox_dimensions.width;
     }
 
     if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_TOP) {
-      absoluteTop = toolboxDimensions.height + 50;
+      absolute_top = toolbox_dimensions.height + 50;
     }
 
     const metrics = {
-      contentHeight  : contentDimensions.height,
-      contentWidth   : contentDimensions.width,
-      contentTop     : contentDimensions.top,
-      contentLeft    : contentDimensions.left,
-      viewHeight     : svgSize.height,
-      viewWidth      : svgSize.width,
+      contentHeight  : content_dimensions.height,
+      contentWidth   : content_dimensions.width,
+      contentTop     : content_dimensions.top,
+      contentLeft    : content_dimensions.left,
+      viewHeight     : svg_size.height,
+      viewWidth      : svg_size.width,
       viewTop        : -this.scrollY,   // Must be in pixels, somehow.
       viewLeft       : -this.scrollX,  // Must be in pixels, somehow.
-      absoluteTop    : absoluteTop,
-      absoluteLeft   : absoluteLeft,
-      toolboxWidth   : toolboxDimensions.width,
-      toolboxHeight  : toolboxDimensions.height,
-      flyoutWidth    : flyoutDimensions.width,
-      flyoutHeight   : flyoutDimensions.height,
+      absoluteTop    : absolute_top,
+      absoluteLeft   : absolute_left,
+      toolboxWidth   : toolbox_dimensions.width,
+      toolboxHeight  : toolbox_dimensions.height,
+      flyoutWidth    : flyout_dimensions.width,
+      flyoutHeight   : flyout_dimensions.height,
       toolboxPosition: this.toolboxPosition
     };
 

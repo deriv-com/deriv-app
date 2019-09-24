@@ -1,3 +1,4 @@
+import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
@@ -16,18 +17,18 @@ class PlatformSwitcher extends React.PureComponent {
 
     render = () => (
         <React.Fragment>
-            <CSSTransition
-                in={this.state.is_open}
-                classNames={'platform_switcher'}
-                timeout={0}
+            <div
+                className={classNames(
+                    'platform_switcher',
+                    { 'platform_switcher--active': this.state.is_open }
+                )}
+                onClick={this.handleClick}
             >
-                <div className='platform_switcher' onClick={this.handleClick}>
-                    <Icon className='platform_switcher__icon' icon='IconDeriv' />
-                    <h1 className='platform_switcher__header'>{localize('DTrader')}</h1>
-                    <p className='platform_switcher__label'>{localize('BETA')}</p>
-                    <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
-                </div>
-            </CSSTransition>
+                <Icon className='platform_switcher__icon' icon='IconDeriv' />
+                <h1 className='platform_switcher__header'>{localize('DTrader')}</h1>
+                <p className='platform_switcher__label'>{localize('BETA')}</p>
+                <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
+            </div>
             <CSSTransition
                 mountOnEnter
                 in={this.state.is_open}

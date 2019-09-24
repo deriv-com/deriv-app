@@ -4,13 +4,6 @@
     padding: 8px;
     transition: background-color 0.3s;
 
-    &__arrow {
-        transition: transform 0.3s ease;
-        transform: rotate(0deg);
-    }
-    &-enter-done &__arrow {
-        transform: rotate(180deg);
-    }
     &:hover {
         background-color: var(--general-hover);
     }
@@ -37,7 +30,14 @@
         font-weight: bold;
         text-align: center;
     }
+    &__arrow {
+        transition: transform 0.3s ease;
+        transform: rotate(0deg);
+    }
     &__arrow .color1-fill {
         fill: var(--text-general);
+    }
+    &--active &__arrow {
+        transform: rotate(180deg);
     }
 }

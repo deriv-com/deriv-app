@@ -43,7 +43,7 @@ export const scratchWorkspaceInit = async () => {
         Blockly.derivWorkspace.clearUndo();
 
         const onWorkspaceResize = () => {
-            const toolbar_heigh = 76;
+            const toolbar_heigh = 56;
 
             // el_scratch_div.style.left   = '0px';
             // el_scratch_div.style.top    = '0px';

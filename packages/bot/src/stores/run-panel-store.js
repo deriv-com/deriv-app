@@ -49,6 +49,7 @@ export default class RunPanelStore {
         //     this.is_dialog_visible = true;
         //     return;
         // }
+        if (this.is_button_loading) return;
         this.is_button_loading = true;
         if (this.is_running) {
             Blockly.BLOCKLY_CLASS_OLD.stop();
@@ -76,6 +77,5 @@ export default class RunPanelStore {
                 this.contract_stage = CONTRACT_STAGES.not_running‌;
             }
         }
-        console.log('__________' , this.contract_stage); // eslint-disable-line no-console
     }
 }

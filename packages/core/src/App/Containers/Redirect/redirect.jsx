@@ -6,6 +6,7 @@ import routes         from '../../../Constants/routes';
 const Redirect = ({
     history,
     setCashierActiveTab,
+    setDeviceData,
     setVerificationCode,
     toggleAccountSignupModal,
     toggleCashierModal,
@@ -16,12 +17,28 @@ const Redirect = ({
 
     switch (url_params.get('action')) {
         case 'signup': {
+            const device_data = {
+                affiliate_token   : url_params.get('affiliate_token') || '',
+                date_first_contact: url_params.get('date_first_contact') || '',
+                gclid_url         : url_params.get('gclid_url') || '',
+                signup_device     : url_params.get('signup_device') || '',
+                utm_campaign      : url_params.get('utm_campaign') || '',
+                utm_medium        : url_params.get('utm_medium') || '',
+                utm_source        : url_params.get('utm_source') || '',
+            };
+
+            setDeviceData(device_data);
             toggleAccountSignupModal(true);
             break;
         }
         case 'payment_withdraw': {
             setCashierActiveTab('withdraw');
-            toggleCashierModal(true);
+            toggleCashierModal();
+            break;
+        }
+        case 'payment_agent_withdraw': {
+            setCashierActiveTab('payment_agent');
+            toggleCashierModal();
             break;
         }
         default: break;
@@ -36,6 +53,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     history                 : PropTypes.object,
+    setDeviceData           : PropTypes.func,
     setVerificationCode     : PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleCashierModal      : PropTypes.func,
@@ -44,6 +62,7 @@ Redirect.propTypes = {
 export default withRouter(connect(
     ({ client, ui }) => ({
         setCashierActiveTab     : ui.setCashierActiveTab,
+        setDeviceData           : client.setDeviceData,
         setVerificationCode     : client.setVerificationCode,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleCashierModal      : ui.toggleCashierModal,

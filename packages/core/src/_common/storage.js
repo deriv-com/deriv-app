@@ -115,6 +115,7 @@ State.prototype.getResponse = function (pathname) {
     }
     return this.get(path);
 };
+State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
 const CookieStorage = function (cookie_name, cookie_domain) {

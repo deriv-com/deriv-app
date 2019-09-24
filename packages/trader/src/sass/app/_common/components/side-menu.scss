@@ -12,21 +12,18 @@
     &__sub-header-layout {
         padding-top: 56px;
         height: 100%;
-        @include themify($themes) {
-            border-left: 2px solid themed('tab_active_background_color');
-
-        }
+        border-left: 2px solid var(--general-main-1);
     }
     &__title {
         font-size: 1.6rem;
         font-weight: bold;
         margin-right: 8px;
+        color: var(--text-prominent);
     }
     &__header {
         &--active {
-            @include themify($themes) {
-                background-color: themed('tab_active_background_color') !important;
-            }
+            background-color: var(--general-main-1);
+
             /* postcss-bem-linter: ignore */
             div {
                 font-weight: bold;
@@ -36,6 +33,7 @@
     &__icon {
         transform: rotate(360deg);
         margin-left: auto;
+        @extend %inline-icon;
     }
     /* postcss-bem-linter: ignore */
     .vertical-tab__tab .vertical-tab__header {

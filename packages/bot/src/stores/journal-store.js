@@ -1,5 +1,6 @@
 
 import { observable, action } from 'mobx';
+import { formatDate }         from 'deriv-shared/utils/date';
 import { observer } from '../utils/observer';
 
 export default class JournalStore {
@@ -12,33 +13,42 @@ export default class JournalStore {
         observer.register('Notify', this.onNotify);
     }
 
+    get serverTime () {
+        return this.rootstore.core.common.server_time;
+    }
+
     @observable messages = [];
 
     @action.bound
-    onLogSuccess() {
+    onLogSuccess(data) {
         if (this.rootstore.runPanel.is_running) {
-            // console.log(data); // eslint-disable-line no-console
+            console.log('onLogSuccess' , data); // eslint-disable-line no-console
         }
     }
 
     @action.bound
-    onLogError() {
+    onLogError(data) {
         if (this.rootstore.runPanel.is_running) {
-            // console.log(data); // eslint-disable-line no-console
+            console.log('onLogError' , data); // eslint-disable-line no-console
         }
     }
 
     @action.bound
-    onError() {
+    onError(data) {
         if (this.rootstore.runPanel.is_running) {
-            // console.log(data); // eslint-disable-line no-console
+            console.log('onError', data); // eslint-disable-line no-console
         }
     }
 
     @action.bound
-    onNotify() {
-        if (this.rootstore.runPanel.is_running) {
-            // console.log(data); // eslint-disable-line no-console
-        }
+    onNotify(data) {
+        this.pushMessage(data);
+    }
+
+    pushMessage(data) {
+        const date = formatDate(this.serverTime.get());
+        const time = formatDate(this.serverTime.get());
+        this.messages.push({ date, time , message: data.message });
+        this.messages = this.messages.slice(0);  // force array update
     }
 }

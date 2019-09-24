@@ -1,0 +1,13 @@
+/**
+ * @define journal
+ */.journal {
+    &__table {
+        tr:nth-child(even) {
+            background: var(--general-main-1);
+        }
+
+        tr:nth-child(odd) {
+            background: var(--general-main-1);
+        }
+    }
+}

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
+import Journal from './journal.jsx';
 import { connect } from '../stores/connect';
 import { translate } from '../utils/tools';
 import '../assets/sass/run-panel.scss';
@@ -11,8 +12,10 @@ const drawerContent = () => {
     return (
         <Tabs>
             <div label={translate('Summary')} />
-            <div label={translate('Transations')} />
-            <div label={translate('Journal')} />
+            <div label={translate('Transactions')} />
+            <div label={translate('Journal')}>
+                <Journal />
+            </div>
         </Tabs>
     );
 };

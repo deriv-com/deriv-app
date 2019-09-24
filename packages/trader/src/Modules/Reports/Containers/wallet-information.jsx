@@ -8,7 +8,7 @@ import { connect }       from 'Stores/connect';
 
 const Description = ({ currency, is_virtual }) => (
     is_virtual ?
-        <Localize i18n_default_text='Practice wallet' />
+        <Localize i18n_default_text='Demo account' />
         :
         <Localize i18n_default_text='{{currency}} wallet' values={{ currency: currency.toUpperCase() }} />
 

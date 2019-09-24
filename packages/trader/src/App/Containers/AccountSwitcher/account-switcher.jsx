@@ -1,12 +1,14 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from 'App/i18n';
-import { urlFor }        from '_common/url';
 import { isEmptyObject } from '_common/utility';
+import { urlFor }        from '_common/url';
+import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
+import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import { requestLogout } from 'Services/index';
 import { connect }       from 'Stores/connect';
+import Localize          from 'App/Components/Elements/localize.jsx';
 
 class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
@@ -47,6 +49,11 @@ class AccountSwitcher extends React.Component {
         }
     }
 
+    get can_manage_currency () {
+        return this.props.can_change_currency ||
+            (!this.props.is_virtual && !this.props.has_fiat && this.props.can_upgrade_to);
+    }
+
     render() {
         if (!this.props.is_logged_in) return false;
         // TODO: Once we allow other real accounts (apart from CR), assign correct title and group accounts into list with correct account title/types
@@ -55,19 +62,6 @@ class AccountSwitcher extends React.Component {
         const vrt_account   = this.props.account_list.find(acc => acc.is_virtual);
 
         const main_account_title = real_accounts.length > 1 ? localize('Real accounts') : localize('Real account');
-
-        const UpgradeButton = ({ text }) => (
-            <div className='acc-switcher__new-account'>
-                <a
-                    className='acc-switcher__new-account-link'
-                    href={urlFor('user/accounts', undefined, undefined, true)}
-                    rel='noopener noreferrer'
-                    target='_blank'
-                >
-                    {text}
-                </a>
-            </div>
-        );
 
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef}>
@@ -102,10 +96,18 @@ class AccountSwitcher extends React.Component {
                             }
                         </div>
 
-                        {   // TODO: Add link to account opening page for upgrade or multi account page for new account.
-                            // Update text below for handling types of account to create :- e.g - Investment
-                            !!(this.props.is_upgrade_enabled && this.props.upgrade_info.can_open_multi) &&
-                            <UpgradeButton text={localize('Add new account')} />
+                        {this.can_manage_currency &&
+                            <UpgradeButton
+                                onClick={this.props.openRealAccountSignup}
+                                outlined
+                            >
+                                <Icon icon='IconAdd' />
+                                <div className='btn__text'>
+                                    <Localize
+                                        i18n_default_text='Add/manage account'
+                                    />
+                                </div>
+                            </UpgradeButton>
                         }
                     </div>
                 }
@@ -113,7 +115,7 @@ class AccountSwitcher extends React.Component {
                     !isEmptyObject(vrt_account) &&
                     <div className='acc-switcher__list--virtual'>
                         <span className='acc-switcher__list-title'>
-                            {localize('Virtual account')}
+                            {localize('Demo account')}
                         </span>
                         <div className='acc-switcher__accounts'>
                             <div
@@ -130,8 +132,24 @@ class AccountSwitcher extends React.Component {
                         </div>
                     </div>
                 }
-                { !!(this.props.is_upgrade_enabled && this.props.is_virtual) &&
-                    <UpgradeButton text={localize('Upgrade to Real Account')} />
+                { !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to) &&
+                <UpgradeButton
+                    onClick={() => {
+                        if (this.props.can_upgrade_to === 'svg') {
+                            this.props.openRealAccountSignup();
+                        } else {
+                            window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
+                        }
+                    }}
+                    outlined
+                >
+                    <Icon icon='IconAdd' />
+                    <div className='btn__text'>
+                        <Localize
+                            i18n_default_text='Add a real account'
+                        />
+                    </div>
+                </UpgradeButton>
                 }
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
@@ -148,6 +166,7 @@ AccountSwitcher.propTypes = {
     cleanUp               : PropTypes.func,
     clearError            : PropTypes.func,
     has_error             : PropTypes.bool,
+    has_fiat              : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
@@ -162,7 +181,11 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
+        has_fiat              : client.has_fiat,
+        can_change_currency   : client.can_change_currency,
         account_list          : client.account_list,
+        can_upgrade           : client.can_upgrade,
+        can_upgrade_to        : client.can_upgrade_to,
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
         is_virtual            : client.is_virtual,
@@ -173,6 +196,7 @@ const account_switcher = connect(
         clearError            : modules.contract_trade.clearError,
         has_error             : modules.contract_trade.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,
+        openRealAccountSignup : ui.openRealAccountSignup,
         togglePositionsDrawer : ui.togglePositionsDrawer,
     }),
 )(AccountSwitcher);

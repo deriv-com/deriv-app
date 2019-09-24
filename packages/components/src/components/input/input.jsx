@@ -6,6 +6,7 @@ import                 './input.scss';
 const Input = ({
     className,
     classNameError,
+    disabled,
     error,
     hint,
     leading_icon,
@@ -14,7 +15,7 @@ const Input = ({
     placeholder,
     ...props
 }, ref) => (
-    <div className={ classNames('dc-input', className) }>
+    <div className={ classNames('dc-input', className, { 'dc-input__disabled': disabled }) }>
         {
             leading_icon &&
             React.cloneElement(
@@ -22,7 +23,7 @@ const Input = ({
                 { className: classNames('dc-input__leading-icon', leading_icon.props.className) },
             )
         }
-        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && placeholder })} />
+        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && placeholder })} disabled={disabled} />
         {
             trailing_icon &&
             React.cloneElement(

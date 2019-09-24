@@ -13,6 +13,10 @@ import googleDrive                      from '../utils/integrations/googleDrive'
 import { translate }                    from '../utils/lang/i18n';
 
 export default class ToolbarStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable is_toolbox_open = true;
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
@@ -20,22 +24,27 @@ export default class ToolbarStore {
     @observable file_name = translate('Untitled Bot');
     @observable is_google_drive_connected = false;
 
-    @action.bound onRunClick = () => {
+    @action.bound
+    // eslint-disable-next-line class-methods-use-this
+    onRunClick() {
         // TODO
     }
 
-    @action.bound onToolboxToggle = () => {
+    @action.bound
+    onToolboxToggle() {
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         toolbox.toggle();
         this.is_toolbox_open = !this.is_toolbox_open;
     }
 
-    @action.bound onSearchBlur = () => {
+    @action.bound
+    onSearchBlur() {
         this.on_search_focus = false;
     }
 
-    @action.bound onSearch = ({ search }) => {
+    // eslint-disable-next-line class-methods-use-this
+    onSearch({ search }) {
         if (this.is_toolbox_open) {
             this.onToolboxToggle();
         }
@@ -43,39 +52,44 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
-    @action.bound onSearchClear = setValues => {
+    // eslint-disable-next-line class-methods-use-this
+    onSearchClear(setValues) {
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         setValues({ search: '' });
         toolbox.showSearch('');
     }
 
-    @action.bound onBotNameTyped = values => {
+    @action.bound
+    onBotNameTyped(values) {
         const bot_name = values.botname;
         this.file_name = bot_name;
     }
 
-    @action.bound onResetClick = async () => {
+    // eslint-disable-next-line class-methods-use-this
+    onResetClick() {
         const workspace = Blockly.derivWorkspace;
-        // eslint-disable-next-line
         Blockly.Events.setGroup('reset');
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
     }
 
-    @action.bound toggleSaveLoadModal = is_save => {
+    @action.bound
+    toggleSaveLoadModal(is_save) {
         this.is_saveload_modal_open = !this.is_saveload_modal_open;
         this.is_save_modal = is_save;
     }
 
-    @action.bound onDriveConnect = () => {
+    // eslint-disable-next-line class-methods-use-this
+    onDriveConnect() {
         googleDrive.authorise().then(() => {
             // TODO
         });
     }
 
-    @action.bound onLoadClick = ({ is_local }) =>  {
+    // eslint-disable-next-line class-methods-use-this
+    onLoadClick({ is_local }) {
         if (is_local) {
             const upload = document.getElementById('files');
             upload.click();
@@ -84,7 +98,8 @@ export default class ToolbarStore {
         }
     }
 
-    @action.bound handleFileChange = e => {
+    @action.bound
+    handleFileChange(e) {
         let files,
             drop_event;
         if (e.type === 'drop') {
@@ -94,7 +109,6 @@ export default class ToolbarStore {
             drop_event = e;
         } else {
             ({ files } = e.target);
-
             this.toggleSaveLoadModal();
         }
         files = Array.from(files);
@@ -109,7 +123,8 @@ export default class ToolbarStore {
         e.target.value = '';
     }
 
-    @action.bound onConfirmSave = values => {
+    @action.bound
+    onConfirmSave(values) {
         const { is_local, save_as_collection } = values;
 
         if (is_local) {
@@ -127,24 +142,28 @@ export default class ToolbarStore {
         this.toggleSaveLoadModal();
     }
 
-    @action.bound onUndoClick = () => {
+    // eslint-disable-next-line class-methods-use-this
+    onUndoClick() {
         Blockly.Events.setGroup('undo');
         Blockly.derivWorkspace.undo();
         Blockly.Events.setGroup(false);
     }
 
-    @action.bound onRedoClick = () => {
+    // eslint-disable-next-line class-methods-use-this
+    onRedoClick() {
         Blockly.derivWorkspace.undo(true);
     }
 
-    @action.bound onZoomInOutClick = is_zoom_in => {
+    // eslint-disable-next-line class-methods-use-this
+    onZoomInOutClick(is_zoom_in) {
         const metrics = Blockly.derivWorkspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
 
         Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 
-    @action.bound onSortClick = () => {
+    // eslint-disable-next-line class-methods-use-this
+    onSortClick() {
         Blockly.Events.setGroup(true);
         const topBlocks = Blockly.derivWorkspace.getTopBlocks(true);
         let cursorY = 0;
@@ -162,7 +181,6 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.resizeContents();
     }
 
-    /* eslint-disable class-methods-use-this */
     load(blockStr = '', drop_event = {}) {
         try {
             const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
@@ -186,13 +204,15 @@ export default class ToolbarStore {
         const blockly_xml = xml.querySelectorAll('block');
 
         if (!blockly_xml.length) {
+            // TODO
             console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
         }
 
         blockly_xml.forEach(block => {
-            const blockType = block.getAttribute('type');
+            const block_type = block.getAttribute('type');
 
-            if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+            if (!Object.keys(Blockly.Blocks).includes(block_type)) {
+                // TODO
                 console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
             }
         });
@@ -204,11 +224,13 @@ export default class ToolbarStore {
                 this.loadWorkspace(xml);
             }
         } catch (e) {
+            // TODO
             console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
         }
     }
 
-    loadBlocks = (xml, drop_event = {}) => {
+    // eslint-disable-next-line class-methods-use-this
+    loadBlocks(xml, drop_event = {}) {
         const workspace = Blockly.derivWorkspace;
         const variables = xml.getElementsByTagName('variables');
         if (variables.length) {
@@ -223,9 +245,10 @@ export default class ToolbarStore {
 
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
-    };
+    }
 
-    loadWorkspace = xml => {
+    // eslint-disable-next-line class-methods-use-this
+    loadWorkspace(xml) {
         Blockly.Events.setGroup('load');
         Blockly.derivWorkspace.clear();
 
@@ -236,11 +259,11 @@ export default class ToolbarStore {
         Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
-    };
+    }
 
-    readFile = (f, drop_event = {}) => {
+    readFile(f, drop_event = {}) {
         const reader = new FileReader();
         reader.onload = e => this.load(e.target.result, drop_event);
         reader.readAsText(f);
-    };
+    }
 }

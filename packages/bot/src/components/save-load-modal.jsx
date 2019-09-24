@@ -86,7 +86,7 @@ const SaveLoadModal = ({
                                                 {translate('A collection allow you to save block as an individual part which can be add into other bot')}
                                             </div>
                                         </> :
-                                        <input type='file' id='files' style={{ display: 'none' }} onChange={e => handleFileChange(e)} />
+                                        <input type='file' id='files' style={{ display: 'none' }} onChange={handleFileChange} />
                                 }
                             </div>
                             <div className='modal--footer'>
@@ -170,7 +170,6 @@ SaveLoadModal.propTypes = {
     is_save_modal            : PropTypes.bool,
     is_saveload_modal_open   : PropTypes.bool,
     onConfirmSave            : PropTypes.func,
-    onDriveConnect           : PropTypes.func,
     onLoadClick              : PropTypes.func,
     toggleSaveLoadModal      : PropTypes.func,
 };

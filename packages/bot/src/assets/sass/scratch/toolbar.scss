@@ -28,21 +28,15 @@
 
         > * {
             align-self: center;
-            margin: 4px;
+            margin: 0 4px;
         }
-        > #{$toolbar}__btn-icon,
-        #{$toolbar}__group {
-            height: 40px;
+        > #{$toolbar}__btn-icon {
+            margin: 0;
+            height: calc(#{$toolbar_height} - 18px);
         }
         > #{$toolbar}__form {
-            margin-top: 0;
-            margin-bottom: 0;
-
-            .dc-input__field {
-                height: 40px;
-            }
             .dc-input {
-                margin-bottom: 3px;
+                margin-bottom: 5px;
             }
         }
     }

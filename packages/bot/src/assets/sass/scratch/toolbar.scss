@@ -31,7 +31,7 @@
             margin: 0 4px;
         }
         > #{$toolbar}__btn-icon {
-            margin: 0;
+            margin: 0 4px;
             height: calc(#{$toolbar_height} - 18px);
         }
         > #{$toolbar}__form {

@@ -76,10 +76,12 @@ class ProofOfAddress extends React.Component {
         super(props);
         this.document_uploader_ref = React.createRef();
         this.state = {
-            is_loading : true,
-            is_resubmit: false,
-            needs_poi  : true,
-            show_form  : true,
+            is_loading        : true,
+            is_resubmit       : false,
+            needs_poi         : true,
+            show_form         : true,
+            document_file     : [],
+            file_error_message: null,
         };
     }
 
@@ -206,6 +208,7 @@ class ProofOfAddress extends React.Component {
         if (document_expired) return <DocumentsExpired onClick={this.handleResubmit} />;
         if (is_submit_success) return <DocumentsSubmitted needs_poi={needs_poi} />;
         if (document_is_suspect) return <Unverified />;
+
         return (
             <Formik
                 initialValues={{

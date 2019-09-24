@@ -108,6 +108,11 @@ class Icon extends React.PureComponent {
             IconSell  : React.lazy(() => import('./Statement/icon-sell.jsx')),
             IconWallet: React.lazy(() => import('./Statement/icon-wallet.jsx')),
 
+            // Signup
+            IconAdd     : React.lazy(() => import('./Signup/icon-add.jsx')),
+            IconRedArrow: React.lazy(() => import('./Signup/icon-red-arrow.jsx')),
+            IconWon     : React.lazy(() => import('./Signup/icon-won.jsx')),
+
             // Trading
             IconBarrierDown   : React.lazy(() => import('./Trading/Barriers/icon-barrier-down.jsx')),
             IconBarrierUp     : React.lazy(() => import('./Trading/Barriers/icon-barrier-up.jsx')),

@@ -10,6 +10,9 @@
     &:focus-within {
         border-color: var(--brand-secondary);
     }
+    &:hover:not(.dc-input__disabled) {
+        border-color: var(--border-hover);
+    }
     &__field {
         background: none;
         color: var(--text-prominent);
@@ -37,7 +40,6 @@
             }
         }
         &:disabled {
-            background: var(--general-section-1);
             color: var(--text-disabled);
 
             & ~ label {

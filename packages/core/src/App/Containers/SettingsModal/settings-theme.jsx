@@ -28,7 +28,7 @@ const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColo
                     <Localize i18n_default_text='Select theme' />
                 </h4>
                 <div className='theme-select-settings__content'>
-                    <div className='theme-select-settings__option'>
+                    <div id='dt_settings_dark_button' className='theme-select-settings__option'>
                         <DarkModeIcon
                             className={classNames('theme-select-settings__option__icon', {
                                 'theme-select-settings__option__icon--active': is_dark_mode,
@@ -42,7 +42,7 @@ const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColo
                             <Localize i18n_default_text='Dark' />
                         </p>
                     </div>
-                    <div className='theme-select-settings__option'>
+                    <div id='dt_settings_light_button' className='theme-select-settings__option'>
                         <LightModeIcon
                             className={classNames('theme-select-settings__option__icon', {
                                 'theme-select-settings__option__icon--active': !is_dark_mode,

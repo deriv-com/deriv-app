@@ -1,15 +1,16 @@
-import classNames      from 'classnames';
-import PropTypes       from 'prop-types';
-import React           from 'react';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import {
     AccountActions,
     MenuLinks,
     PlatformSwitcher,
-}                      from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
-import header_links    from 'App/Constants/header-links';
-import Lazy            from 'App/Containers/Lazy';
-import { connect }     from 'Stores/connect';
+}                        from 'App/Components/Layout/Header';
+import platform_config   from 'App/Constants/platform-config';
+import header_links      from 'App/Constants/header-links';
+import Lazy              from 'App/Containers/Lazy';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import { connect }       from 'Stores/connect';
 
 const Header = ({
     active_cashier_tab,
@@ -29,6 +30,7 @@ const Header = ({
     loginid,
     onClickUpgrade,
     disableApp,
+    setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
 }) => (
@@ -66,12 +68,14 @@ const Header = ({
                         is_virtual={is_virtual}
                         loginid={loginid}
                         onClickUpgrade={onClickUpgrade}
+                        setCashierActiveTab={setCashierActiveTab}
                         toggleAccountsDialog={toggleAccountsDialog}
                         toggleCashierModal={toggleCashierModal}
                     />
                 </div>
             </div>
         </div>
+        <RealAccountSignup />
     </header>
 );
 
@@ -94,6 +98,7 @@ Header.propTypes = {
     is_virtual              : PropTypes.bool,
     loginid                 : PropTypes.string,
     onClickUpgrade          : PropTypes.func,
+    setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.func,
     toggleCashierModal      : PropTypes.func,
 };
@@ -119,6 +124,7 @@ export default connect(
         is_route_modal_on   : ui.is_route_modal_on,
         is_mobile           : ui.is_mobile,
         disableApp          : ui.disableApp,
+        setCashierActiveTab : ui.setCashierActiveTab,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleCashierModal  : ui.toggleCashierModal,
     })

@@ -89,7 +89,7 @@ const getSocketURL = () => {
 
         server_url = `${server}.binaryws.com`;
     }
-    return `wss://${server_url}/websockets/v3`;
+    return server_url;
 };
 
 module.exports = {

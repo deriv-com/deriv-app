@@ -28,6 +28,9 @@ import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage'
 import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
 import DemoMessage             from '../../ErrorMessages/DemoMessage';
 import DocumentNeedsReview     from '../VerificationMessages/DocumentNeedsReview';
+import DocumentsSubmitted      from '../VerificationMessages/DocumentsSubmitted';
+import DocumentsExpired        from '../VerificationMessages/DocumentsExpired';
+import DocumentsVerified       from '../VerificationMessages/DocumentsVerified';
 import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -72,9 +75,15 @@ class ProofOfAddress extends React.Component {
         super(props);
         this.document_uploader_ref = React.createRef();
         this.state = {
-            is_loading: true,
-            show_form : true,
+            is_loading : true,
+            is_resubmit: false,
+            needs_poi  : true,
+            show_form  : true,
         };
+    }
+
+    handleResubmit = () => {
+        this.setState({ is_resubmit: false });
     }
 
     // TODO: standardize validations and refactor this
@@ -173,10 +182,12 @@ class ProofOfAddress extends React.Component {
             address_state,
             address_postcode,
             document_file,
-            // document_expired,
+            document_expired,
+            document_verified,
             // document_needs_action,
             document_under_review,
             file_error_message,
+            needs_poi,
             show_form,
             is_loading,
             is_btn_loading,
@@ -189,6 +200,9 @@ class ProofOfAddress extends React.Component {
         if (this.props.is_virtual) return <DemoMessage />;
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (document_under_review) return <DocumentNeedsReview />;
+        if (document_verified) return <DocumentsVerified needs_poi={needs_poi} />;
+        if (document_expired) return <DocumentsExpired onClick={this.handleResubmit} />;
+        if (is_submit_success) return <DocumentsSubmitted needs_poi={needs_poi} />;
         return (
             <Formik
                 initialValues={{
@@ -378,12 +392,6 @@ class ProofOfAddress extends React.Component {
     }
 
     componentDidMount() {
-        function getStatusValidations(status_arr) {
-            return status_arr.reduce((validations, stats) => {
-                validations[stats] = true;
-                return validations;
-            }, {});
-        }
         WS.authorized.getSettings().then((data) => {
             if (data.error) {
                 this.setState({ api_initial_load_error: data.error.message });
@@ -392,19 +400,15 @@ class ProofOfAddress extends React.Component {
             this.setState({ ...data.get_settings, is_loading: false });
         });
         WS.authorized.getAccountStatus().then((data) => {
-            const { status } = data.get_account_status;
-            const {
-                // crs_tin_information,
-                document_under_review,
-                document_expired,
-                // financial_information_not_complete,
-                // trading_experience_not_complete,
-                document_needs_action,
-            } = getStatusValidations(status);
+            const { authentication } = data.get_account_status;
 
-            if (document_under_review) this.setState({ document_under_review });
-            if (document_needs_action) this.setState({ document_needs_action });
-            if (document_expired) this.setState({ document_expired });
+            const { identity, document } = authentication;
+
+            if (identity.status === 'none') this.setState({ needs_poi: false });
+            if (document.status === 'pending') this.setState({ document_under_review: true });
+            if (document.status === 'expired') this.setState({ document_is_expired: true, is_resubmit: true });
+            if (document.status === 'verified') this.setState({ document_is_verified: true });
+            if (document.status === 'suspected') this.setState({ document_is_suspect: true });
 
             if (data.get_account_status.status &&
                 data.get_account_status.status.some(state => state === 'authenticated')

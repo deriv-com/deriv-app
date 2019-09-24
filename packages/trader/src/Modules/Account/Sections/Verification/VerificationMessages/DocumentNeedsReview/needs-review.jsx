@@ -16,7 +16,9 @@ const message = (
             to='/'
             className='btn--primary--default'
         >
-            <span className='btn__text'>{localize('Continue trading')}</span>
+            <span className='btn__text'>
+                {localize('Continue trading')}
+            </span>
         </ButtonLink>
     </div>
 );

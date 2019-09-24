@@ -76,6 +76,7 @@ class ProofOfAddress extends React.Component {
         super(props);
         this.document_uploader_ref = React.createRef();
         this.state = {
+            is_loaded         : false,
             is_loading        : true,
             is_resubmit       : false,
             needs_poi         : true,
@@ -192,6 +193,7 @@ class ProofOfAddress extends React.Component {
             file_error_message,
             needs_poi,
             show_form,
+            is_loaded,
             is_loading,
             is_btn_loading,
             is_submit_success,
@@ -201,7 +203,7 @@ class ProofOfAddress extends React.Component {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
         if (this.props.is_virtual) return <DemoMessage />;
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || !is_loaded) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (document_under_review) return <DocumentNeedsReview />;
         if (document_verified) return <DocumentsVerified needs_poi={needs_poi} />;
         if (document_expired) return <DocumentsExpired onClick={this.handleResubmit} />;
@@ -419,6 +421,7 @@ class ProofOfAddress extends React.Component {
             ) {
                 this.setState({ is_account_authenticated: true });
             }
+            this.setState({ is_loaded: true });
         });
     }
 }

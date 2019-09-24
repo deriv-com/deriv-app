@@ -93,7 +93,13 @@ export const Unverified = () => (
 export const Expired = () => (
     <IconMessageContent
         message={localize('New proof of identity document needed')}
-        text={localize('Your proof of identity document has expired. You will need to submit a new one.')}
+        text={
+            <Localize
+                i18n_default_text='Kindly send a scan of a valid proof of identity to <0>support@deriv.com</0>'
+                components={[
+                    <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' />,
+                ]}
+            />}
         icon={<IconPoiExpired />}
     />
 );

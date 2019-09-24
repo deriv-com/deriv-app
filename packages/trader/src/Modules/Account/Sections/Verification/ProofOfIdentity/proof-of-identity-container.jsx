@@ -38,7 +38,7 @@ class ProofOfIdentityContainer extends React.Component {
                 }
 
                 const { token } = response.service_token;
-                const in_90_minutes = 1 / 16;
+                const in_90_minutes = (1 / 16);
                 Cookies.set(onfido_cookie_name, token, {
                     expires: in_90_minutes,
                     secure : true,
@@ -55,8 +55,8 @@ class ProofOfIdentityContainer extends React.Component {
             notification_event: 1,
             category          : 'authentication',
             event             : 'poi_documents_uploaded',
-        }).then((data) => {
-            if (data.error) {
+        }).then((response) => {
+            if (response.error) {
                 this.setState({ api_error: true });
                 return;
             }

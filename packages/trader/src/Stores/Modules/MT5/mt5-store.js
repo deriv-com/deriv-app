@@ -6,7 +6,7 @@ import {
 import { WS }             from 'Services';
 import {
     getMtCompanies,
-    getAccountTypeEnum,
+    getAccountTypeFields,
 } from './Helpers/metatrader-config';
 import BaseStore          from '../../base-store';
 
@@ -125,8 +125,8 @@ export default class MT5Store extends BaseStore {
         // TODO:
         //  1. Get current account type from this.account_type using utility [✓]
         //  2. Generate Fullname using first_name+"MT5"+account_type [✓]
-        //  3. Get leverage from configuration based on this.account_type using utility function
-        //  4. Send API request
+        //  3. Get leverage from configuration based on this.account_type using utility function [✓]
+        //  4. Send API request [✓]
         //  5. Find out what to do with the response based on design
 
         // "required" : [
@@ -138,17 +138,26 @@ export default class MT5Store extends BaseStore {
         //       "leverage"
         //    ]
         // TODO fetch from form.
+
+        this.openAccount(mt5_password).then((response) => {
+            // Open Success dialog
+        });
+        setSubmitting(false);
+    }
+
+    @action.bound
+    openAccount(mt5_password) {
         const name     = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
+        const type_request = getAccountTypeFields(this.account_type);
 
-        WS.mt5NewAccount({
+        return WS.mt5NewAccount({
             mainPassword: mt5_password,
-            account_type: getAccountTypeEnum(this.account_type),
             email       : this.root_store.client.email_address,
             leverage,
             name,
+            ...type_request,
         });
-        setSubmitting(false);
     }
 
     @action.bound

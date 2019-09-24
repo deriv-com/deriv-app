@@ -68,8 +68,35 @@ export const getMtCompanies = () => {
  * @param {string} type [standard, advanced, synthetic_indices]
  * @return {string}
  */
-export const getAccountTypeEnum = ({ category, type }) => {
-    if (category === 'demo') return 'gaming';
-    if (type === 'synthetic_indices') return 'gaming';
-    return 'financial';
+export const getAccountTypeFields = ({ category, type }) => {
+    const map_mode = {
+        real: {
+            standard: {
+                account_type    : 'financial',
+                mt5_account_type: 'standard',
+            },
+            advanced: {
+                account_type    : 'financial',
+                mt5_account_type: 'advanced',
+            },
+            synthetic_indices: {
+                account_type: 'gaming',
+            },
+        },
+        demo: {
+            standard: {
+                account_type    : 'demo',
+                mt5_account_type: 'standard',
+            },
+            advanced: {
+                account_type    : 'demo',
+                mt5_account_type: 'standard',
+            },
+            synthetic_indices: {
+                account_type: 'demo',
+            },
+        },
+    };
+
+    return map_mode[category][type];
 };

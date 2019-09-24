@@ -21,9 +21,7 @@
         width: var(--tab-width);
 
         &:not(.dc-tabs__active) {
-            @include themify($themes) {
-                border-bottom: 1px solid themed('border_color');
-            }
+            border-bottom: 1px solid var(--general-section-1);
             cursor: pointer;
         }
     }
@@ -37,8 +35,7 @@
         left: 0;
         width: var(--tab-width);
         height: 2px;
-        background: #ff444f; /* stylelint-disable-line color-no-hex */
+        background: var(--brand-red-coral);
         transition: all ease-in-out 0.3s;
-        z-index: 1;
     }
 }

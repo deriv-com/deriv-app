@@ -45,10 +45,10 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        // if (!this.rootstore.core.client.is_logged_in) {
-        //     this.is_dialog_visible = true;
-        //     return;
-        // }
+        if (!this.rootstore.core.client.is_logged_in) {
+            this.is_dialog_visible = true;
+            return;
+        }
         if (this.is_button_loading) return;
         this.is_button_loading = true;
         if (this.is_running) {
@@ -56,6 +56,11 @@ export default class RunPanelStore {
         } else {
             Blockly.BLOCKLY_CLASS_OLD.run();
         }
+    }
+
+    @action.bound
+    closeModal() {
+        this.is_dialog_visible = false;
     }
 
     getContractStage(data) {

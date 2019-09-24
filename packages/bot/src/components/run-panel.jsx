@@ -1,7 +1,8 @@
-import { Button, Drawer, Dialog, Tabs }       from 'deriv-components';
+import { Button, Drawer, Tabs }               from 'deriv-components';
 import classNames                             from 'classnames';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
+import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
 import { connect }                            from '../stores/connect';
@@ -20,9 +21,13 @@ const drawerContent = () => {
     );
 };
 
-const drawerFooter = (props) => {
-    const { disableApp, enableApp, is_dialog_visible, is_loading, is_running, onRunButtonClick } = props;
-
+const drawerFooter = ({
+    closeModal,
+    is_dialog_visible,
+    is_loading,
+    is_running,
+    onRunButtonClick,
+}) => {
     return (
         <div className='run-panel__footer'>
             <Button
@@ -51,27 +56,19 @@ const drawerFooter = (props) => {
             />
             <Dialog
                 title={translate('Run Error!')}
-                is_visible={is_dialog_visible}
-                enableApp={enableApp}
-                disableApp={disableApp}
+                is_open={is_dialog_visible}
+                closeModal={closeModal}
             >
-                <span>
-                    {translate('Please log in.')}
-                </span>
+                {translate('Please log in.')}
             </Dialog>
-            <InfoOutlineIcon className='run-panel__icon-info' />
+            <InfoOutlineIcon className='icon-info' />
         </div>
     );
 };
 
-const RunPanel = ({
-    is_dialog_visible,
-    is_loading,
-    is_running,
-    onRunButtonClick,
-}) => {
+const RunPanel = (props) => {
     const content = drawerContent();
-    const footer = drawerFooter({ is_dialog_visible, is_loading, is_running, onRunButtonClick });
+    const footer = drawerFooter(props);
 
     return (
         <Drawer
@@ -85,15 +82,16 @@ const RunPanel = ({
 };
 
 RunPanel.propTypes = {
+    closeModal       : PropTypes.func,
     contract_stage   : PropTypes.string,
     is_dialog_visible: PropTypes.bool,
     is_loading       : PropTypes.bool,
     is_running       : PropTypes.bool,
     onRunButtonClick : PropTypes.func,
 };
-export default connect(({ runPanel, ui }) => ({
-    disableApp       : ui.disableApp,
-    enableApp        : ui.enableApp,
+
+export default connect(({ runPanel }) => ({
+    closeModal       : runPanel.closeModal,
     is_dialog_visible: runPanel.is_dialog_visible,
     is_loading       : runPanel.is_button_loading,
     is_running       : runPanel.is_running,

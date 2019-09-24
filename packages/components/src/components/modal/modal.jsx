@@ -38,7 +38,7 @@ class ModalElement extends React.PureComponent {
     };
 
     handleClickOutside = (event) => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
+        if (this.props.has_close_icon && this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
             this.props.toggleModal();
         }
     };

@@ -53,7 +53,7 @@ const Radio = ({
     field,
     props,
 }) => (
-    <div className='payment-agent__radio-wrapper'>
+    <div>
         <input
             id={props.id}
             className={props.className}
@@ -63,12 +63,12 @@ const Radio = ({
             onChange={field.onChange}
             type='radio'
         />
-        <span
-            className={ classNames('payment-agent__radio-circle', {
-                'payment-agent__radio-circle--selected': field.value === props.id,
-            }) }
-        />
-        <label htmlFor={props.id}>
+        <label htmlFor={props.id} className='payment-agent__radio-wrapper'>
+            <span
+                className={ classNames('payment-agent__radio-circle', {
+                    'payment-agent__radio-circle--selected': field.value === props.id,
+                }) }
+            />
             {children}
         </label>
     </div>

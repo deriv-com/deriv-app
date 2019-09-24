@@ -37,9 +37,16 @@
         .change-currency &:hover:not(&--selected) {
             background-color: 1px solid var(gray-2);
         }
+        & > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
         svg {
             height: 48px;
             width: 48px;
+            margin-bottom: 1em;
         }
         p {
             text-align: center;

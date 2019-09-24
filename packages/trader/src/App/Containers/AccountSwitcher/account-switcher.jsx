@@ -51,7 +51,7 @@ class AccountSwitcher extends React.Component {
 
     get can_manage_currency () {
         return this.props.can_change_currency ||
-            (!this.props.is_virtual && !this.props.has_fiat);
+            (!this.props.is_virtual && !this.props.has_fiat && this.props.can_upgrade_to);
     }
 
     render() {
@@ -115,7 +115,7 @@ class AccountSwitcher extends React.Component {
                     !isEmptyObject(vrt_account) &&
                     <div className='acc-switcher__list--virtual'>
                         <span className='acc-switcher__list-title'>
-                            {localize('Virtual account')}
+                            {localize('Demo account')}
                         </span>
                         <div className='acc-switcher__accounts'>
                             <div

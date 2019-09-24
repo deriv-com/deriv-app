@@ -18,13 +18,6 @@ const header_links = [
         link_to   : routes.reports,
         login_only: true,
     },
-    { // TODO: Delete this, it's just for easy access
-        id        : 'dt_mt5_tab',
-        icon      : <Icon icon='IconReports' className='header__icon' />,
-        text      : localize('MT5'),
-        link_to   : routes.mt5,
-        login_only: true,
-    },
 ];
 
 export default header_links;

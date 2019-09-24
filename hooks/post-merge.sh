@@ -1,0 +1,1 @@
+npx lerna run build:travis --since HEAD~1

@@ -11,32 +11,31 @@ class Withdraw extends React.Component {
     render() {
         return (
             <CashierContainer
-                container_height={this.props.container_height}
-                container_url={this.props.withdraw_url}
+                iframe_height={this.props.iframe_height}
+                iframe_url={this.props.iframe_url}
                 is_loading={this.props.is_loading}
-                onMount={this.props.onMount}
             />
         );
     }
 }
 
 Withdraw.propTypes = {
-    container_height: PropTypes.oneOfType([
+    iframe_height: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
+    iframe_url       : PropTypes.string,
     is_loading       : PropTypes.bool,
     onMount          : PropTypes.func,
     verification_code: PropTypes.string,
-    withdraw_url     : PropTypes.string,
 };
 
 export default connect(
     ({ client, modules }) => ({
-        container_height : modules.cashier.container_height,
-        is_loading       : modules.cashier.is_loading,
-        onMount          : modules.cashier.onMountWithdraw,
         verification_code: client.verification_code,
-        withdraw_url     : modules.cashier.container_urls.withdraw,
+        iframe_height    : modules.cashier.config.withdraw.iframe_height,
+        iframe_url       : modules.cashier.config.withdraw.iframe_url,
+        is_loading       : modules.cashier.is_loading,
+        onMount          : modules.cashier.onMount,
     })
 )(Withdraw);

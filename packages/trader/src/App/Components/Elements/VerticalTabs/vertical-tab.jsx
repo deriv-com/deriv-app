@@ -6,7 +6,7 @@ import { VerticalTabContentContainer } from './vertical-tab-content-container.js
 import { VerticalTabHeaders }          from './vertical-tab-headers.jsx';
 
 class VerticalTab extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.setSelectedIndex(props);
     }

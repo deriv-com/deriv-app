@@ -72,7 +72,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     }
     &__header {
         @include typeface(--paragraph-center-bold-black, none);
-        @include toEm(line-height, 20px);
+        line-height: 1.5;
         color: var(--text-general);
         padding: 10px 16px;
         cursor: pointer;

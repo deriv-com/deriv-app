@@ -1,18 +1,21 @@
 
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { init }               from 'onfido-sdk-ui';
-import { get as getLanguage } from '_common/language';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { init }                from 'onfido-sdk-ui';
+import { get as getLanguage }  from '_common/language';
 import {
     Expired,
-    // MissingPersonalDetails,
     Verified,
     Unverified,
     UploadComplete,
     Unsuported,
 }                              from './proof-of-identity-messages.jsx';
+import { onfido_status_codes } from './proof-of-identity';
 
-class POI extends React.Component {
+const onfido_container_id = 'onfido';
+const OnfidoContainer = () => <div style={{ marginTop: '20px' }}><div id={onfido_container_id} /></div>;
+
+class Onfido extends React.Component {
     state = {
         onfido           : null,
         onfido_init_error: false,
@@ -21,7 +24,7 @@ class POI extends React.Component {
     initOnfido = async () => {
         try {
             const onfido = init({
-                containerId: 'onfido',
+                containerId: onfido_container_id,
                 language   : {
                     locale: getLanguage().toLowerCase() || 'en',
                 },
@@ -45,7 +48,7 @@ class POI extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.view === 'onfido') {
+        if (this.props.status === onfido_status_codes.onfido) {
             this.initOnfido(this.props.onfido_service_token);
         }
     }
@@ -57,34 +60,34 @@ class POI extends React.Component {
     }
 
     render() {
-        const { view, has_poa } = this.props;
+        const { status, has_poa } = this.props;
 
-        switch (view) {
-            case 'unsupported':
+        if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
+
+        switch (status) {
+            case onfido_status_codes.unsupported:
                 return <Unsuported />;
-            case 'pending':
+            case onfido_status_codes.pending:
                 return <UploadComplete has_poa={has_poa} />;
-            case 'rejected':
+            case onfido_status_codes.rejected:
                 return <Unverified />;
-            case 'verified':
+            case onfido_status_codes.verified:
                 return <Verified has_poa={has_poa} />;
-            case 'expired':
+            case onfido_status_codes.expired:
                 return <Expired />;
-            case 'suspected':
+            case onfido_status_codes.suspected:
                 return <Unverified />;
             default:
-                return <div style={{ marginTop: '20px' }}><div id='onfido' /></div>;
+                return null;
         }
     }
 }
 
-POI.propTypes = {
+Onfido.propTypes = {
     handleComplete      : PropTypes.func,
     has_poa             : PropTypes.bool,
     onfido_service_token: PropTypes.string,
-    // TODO: change to enum
-    view                : PropTypes.string,
+    status              : PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };
 
-export default POI;
-// ProofOfIdentityForm.propTypes = {};
+export default Onfido;

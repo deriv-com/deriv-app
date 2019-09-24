@@ -12,7 +12,7 @@ import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.s
 import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
 
-const IconRow = () => (
+const UnsupportedIconRow = () => (
     <div className='poi-icon-row'>
         <div className='poi-icon-row__icon-container'>
             <IconIdentityCard />
@@ -42,7 +42,7 @@ export const Unsuported = () => (
                     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='mailto:authentications@deriv.com' />,
                 ]}
             />}
-        icon_row={<IconRow />}
+        icon_row={<UnsupportedIconRow />}
     />
 );
 

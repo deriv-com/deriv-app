@@ -7,7 +7,7 @@ import IconIdentityCard       from 'Assets/AccountManagement/icon-identity-card.
 import IconDrivingLicense     from 'Assets/AccountManagement/icon-driving-licence.svg';
 import IconPassport           from 'Assets/AccountManagement/icon-passport.svg';
 import IconPoiSubmitComplete  from 'Assets/AccountManagement/icon-poi-submit-complete.svg';
-import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-expired.svg';
+import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-is-expired.svg';
 import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.svg';
 import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';

@@ -13,7 +13,7 @@ import {
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
-const OnfidoContainer = () => <div style={{ marginTop: '20px' }}><div id={onfido_container_id} /></div>;
+const OnfidoContainer = () => <div className='onfido-container'><div id={onfido_container_id} /></div>;
 
 class Onfido extends React.Component {
     state = {
@@ -61,7 +61,6 @@ class Onfido extends React.Component {
 
     render() {
         const { status, has_poa } = this.props;
-        return <UploadComplete has_poa={false} />;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
 

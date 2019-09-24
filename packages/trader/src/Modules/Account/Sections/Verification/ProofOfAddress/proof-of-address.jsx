@@ -384,15 +384,14 @@ class ProofOfAddress extends React.Component {
                 return validations;
             }, {});
         }
-        this.props.fetchResidenceList();
-        WS.authorized.storage.getSettings().then((data) => {
+        WS.authorized.getSettings().then((data) => {
             if (data.error) {
                 this.setState({ api_initial_load_error: data.error.message });
                 return;
             }
             this.setState({ ...data.get_settings, is_loading: false });
         });
-        WS.authorized.storage.getAccountStatus().then((data) => {
+        WS.authorized.getAccountStatus().then((data) => {
             const { status } = data.get_account_status;
             const {
                 // crs_tin_information,
@@ -420,8 +419,6 @@ class ProofOfAddress extends React.Component {
 
 export default connect(
     ({ client }) => ({
-        is_virtual        : client.is_virtual,
-        residence_list    : client.residence_list,
-        fetchResidenceList: client.fetchResidenceList,
+        is_virtual: client.is_virtual,
     }),
 )(ProofOfAddress);

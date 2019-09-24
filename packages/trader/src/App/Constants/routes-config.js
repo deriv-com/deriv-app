@@ -4,7 +4,6 @@ import { Redirect }                   from 'App/Containers/Redirect';
 import { localize }                   from 'App/i18n';
 import { routes }                     from 'Constants';
 
-// TODO: Find a workaround for black flash when on initial load for page route modules
 import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';
 import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
 import ProofOfIdentity     from 'Modules/Account/Sections/Verification/ProofOfIdentity';

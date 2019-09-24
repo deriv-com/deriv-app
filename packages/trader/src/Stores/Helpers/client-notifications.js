@@ -201,6 +201,60 @@ export const clientNotifications = {
         ),
         type: 'info',
     },
+    poa_expired: {
+        key    : 'poa_expired',
+        header : localize('Document expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-address'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
+    },
+    poa_rejected: {
+        key    : 'poa_rejected',
+        header : localize('We could not verify your proof of address'),
+        message: (
+            <Localize
+                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
+            />
+        ),
+        type: 'danger',
+    },
+    poi_expired: {
+        key    : 'poi_expired',
+        header : localize('Proof of identity expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
+    },
+    poi_rejected: {
+        key    : 'poi_rejected',
+        header : localize('We could not verify your proof of identity'),
+        message: (
+            <Localize
+                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
+            />
+        ),
+        type: 'danger',
+    },
 };
 
 const hasMissingRequiredField = (account_settings, client) => {
@@ -244,11 +298,32 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 };
 
+const getStatusValidations = status_arr =>
+    status_arr.reduce((validations, stats) => {
+        validations[stats] = true;
+        return validations;
+    }, {});
+
+const addVerificationNotifications = (identity, document, addNotification) => {
+    if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
+    if (identity.status === 'rejected' || identity.status === 'suspected') {
+        addNotification(clientNotifications.poi_rejected);
+    }
+
+    if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
+    if (document.status === 'rejected' || document.status === 'suspected') {
+        addNotification(clientNotifications.poa_rejected);
+    }
+};
+
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
     const { prompt_client_to_authenticate, status } = account_status;
+
+    const { identity, document } = account_status.authentication;
+    addVerificationNotifications(identity, document, addNotification);
 
     const {
         document_under_review,
@@ -277,13 +352,6 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
 
     if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
         addNotification(clientNotifications.authenticate);
-    }
-
-    function getStatusValidations(status_arr) {
-        return status_arr.reduce((validations, stats) => {
-            validations[stats] = true;
-            return validations;
-        }, {});
     }
 };
 

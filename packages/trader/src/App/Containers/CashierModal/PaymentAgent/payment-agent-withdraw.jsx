@@ -47,12 +47,13 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     return errors;
 };
 
+// TODO: refactor this to use the main radio component for forms too if possible
 const Radio = ({
     children,
     field,
     props,
 }) => (
-    <React.Fragment>
+    <div className='payment-agent__radio-wrapper'>
         <input
             id={props.id}
             className={props.className}
@@ -62,10 +63,15 @@ const Radio = ({
             onChange={field.onChange}
             type='radio'
         />
+        <span
+            className={ classNames('payment-agent__radio-circle', {
+                'payment-agent__radio-circle--selected': field.value === props.id,
+            }) }
+        />
         <label htmlFor={props.id}>
             {children}
         </label>
-    </React.Fragment>
+    </div>
 );
 
 const RadioDropDown = ({
@@ -73,14 +79,16 @@ const RadioDropDown = ({
     ...props
 }) => (
     <Radio field={field} props={props}>
-        <Localize i18n_default_text='By name' />
+        <span className='payment-agent__radio-label cashier__paragraph'>
+            <Localize i18n_default_text='By name' />
+        </span>
         <Field
             name='payment_agents'
             component={Dropdown}
-            className='payment-agent__drop-down'
-            classNameDisplay='payment-agent__drop-down-display'
-            classNameDisplaySpan='payment-agent__drop-down-display-span'
-            classNameItems='payment-agent__drop-down-items'
+            className='cashier__drop-down payment-agent__drop-down'
+            classNameDisplay='cashier__drop-down-display'
+            classNameDisplaySpan='cashier__drop-down-display-span'
+            classNameItems='cashier__drop-down-items'
             list={props.payment_agent_list}
             value={props.selected_payment_agent.value}
             onChange={props.onChangePaymentAgent}
@@ -92,10 +100,13 @@ const RadioInput = ({
     touched,
     errors,
     field,
+    values,
     ...props
 }) => (
     <Radio field={field} props={props}>
-        <Localize i18n_default_text='By payment agent ID' />
+        <span className='payment-agent__radio-label cashier__paragraph'>
+            <Localize i18n_default_text='By payment agent ID' />
+        </span>
         <Field>
             {(params) => (
                 <Input
@@ -103,9 +114,11 @@ const RadioInput = ({
                     className='payment-agent__input'
                     type='text'
                     placeholder='CR'
-                    error_message={touched.payment_agent && errors.payment_agent}
+                    error={ touched.payment_agent && errors.payment_agent }
                     autoComplete='off'
                     maxLength='20'
+                    value={values.payment_agent}
+                    onChange={params.field.onChange}
                     onFocus={() => {
                         params.form.setFieldValue('payment_method', props.id);
                     }}
@@ -131,7 +144,7 @@ class PaymentAgentWithdraw extends React.Component {
 
     onWithdrawalPassthrough = (values) => {
         this.props.requestPaymentAgentWithdraw({
-            loginid          : this.props.selected_payment_agent.value,
+            loginid          : values.payment_method === 'payment_agents' ? this.props.selected_payment_agent.value : values.payment_agent,
             currency         : this.props.currency,
             amount           : values.amount,
             verification_code: this.props.verification_code,
@@ -169,7 +182,7 @@ class PaymentAgentWithdraw extends React.Component {
                                             onSubmit={this.onWithdrawalPassthrough}
                                         >
                                             {
-                                                ({ errors, isSubmitting, isValid, touched }) => (
+                                                ({ errors, isSubmitting, isValid, values, touched }) => (
                                                     <Form>
                                                         <div className='payment-agent__radio-group'>
                                                             <Field
@@ -187,6 +200,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 component={RadioInput}
                                                                 touched={touched}
                                                                 errors={errors}
+                                                                values={values}
                                                                 className='payment-agent__radio'
                                                                 name='payment_method'
                                                             />
@@ -200,7 +214,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
                                                                     required
-                                                                    leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                                                    leading_icon={<span className={classNames('payment-agent__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
                                                                     autoComplete='off'
                                                                     maxLength='30'
                                                                 />

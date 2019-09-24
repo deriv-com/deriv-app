@@ -110,6 +110,9 @@
                 grid-template-columns: 1fr 1fr;
                 grid-gap: 8px;
             }
+            .datepicker {
+                max-width: unset;
+            }
         }
         &__footer {
             height: 80px;

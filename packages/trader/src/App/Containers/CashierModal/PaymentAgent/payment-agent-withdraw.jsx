@@ -23,8 +23,9 @@ import Loading              from '../../../../templates/_common/components/loadi
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
+    const is_selected_pa = values.payment_method === 'payment_agents';
 
-    if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
+    if (!is_selected_pa && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
         errors.payment_agent = localize('Invalid ID.');
     }
 
@@ -35,8 +36,10 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
         {
             type    : 'float',
             decimals: getDecimalPlaces(currency),
-            min     : payment_agent.min_withdrawal,
-            max     : payment_agent.max_withdrawal,
+            ...(is_selected_pa && {
+                min: payment_agent.min_withdrawal,
+                max: payment_agent.max_withdrawal,
+            }),
         },
     )) {
         errors.amount = getPreBuildDVRs().number.message;
@@ -143,8 +146,10 @@ class PaymentAgentWithdraw extends React.Component {
     );
 
     onWithdrawalPassthrough = (values) => {
+        const is_selected_pa = values.payment_method === 'payment_agents';
         this.props.requestPaymentAgentWithdraw({
-            loginid          : values.payment_method === 'payment_agents' ? this.props.selected_payment_agent.value : values.payment_agent,
+            is_selected_pa,
+            loginid          : is_selected_pa ? this.props.selected_payment_agent.value : values.payment_agent,
             currency         : this.props.currency,
             amount           : values.amount,
             verification_code: this.props.verification_code,

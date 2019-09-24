@@ -577,16 +577,21 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+    async requestPaymentAgentWithdraw({ is_selected_pa, loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             this.setReceipt({
-                amount_transferred : amount,
-                payment_agent_email: this.config.payment_agent.selected_agent.email,
-                payment_agent_id   : this.config.payment_agent.selected_agent.value,
-                payment_agent_name : this.config.payment_agent.selected_agent.text,
-                payment_agent_phone: this.config.payment_agent.selected_agent.phone,
-                payment_agent_url  : this.config.payment_agent.selected_agent.url,
+                amount_transferred: amount,
+                ...(is_selected_pa && {
+                    payment_agent_email: this.config.payment_agent.selected_agent.email,
+                    payment_agent_id   : this.config.payment_agent.selected_agent.value,
+                    payment_agent_name : this.config.payment_agent.selected_agent.text,
+                    payment_agent_phone: this.config.payment_agent.selected_agent.phone,
+                    payment_agent_url  : this.config.payment_agent.selected_agent.url,
+                }),
+                ...(!is_selected_pa && {
+                    payment_agent_id: loginid,
+                }),
             });
             this.setIsWithdrawSuccessful(true);
         } else {

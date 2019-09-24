@@ -17,20 +17,23 @@
         align-items: center;
         justify-content: space-between;
     }
-    p {
+    &__description {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
+        margin-top: 4em;
     }
     &__body {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
     }
     .dc-modal-header {
         display: none;
+    }
+    & .dc-password-meter__container {
+        flex-grow: 0;
     }
     & .mt5-password-field {
         margin-bottom: 1em;

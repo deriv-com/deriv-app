@@ -90,7 +90,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
             title={ localize('Real Standard') }
-            type='real_standard'
+            type={{
+                category: 'real',
+                type    : 'standard',
+            }}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -109,7 +112,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Real Advanced') }
-            type='real_advanced'
+            type={{
+                category: 'real',
+                type    : 'advanced',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
@@ -123,7 +129,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Real Synthetic Indices') }
-            type='real_synthetic_indices'
+            type={{
+                category: 'real',
+                type    : 'synthetic_indices',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
@@ -142,7 +151,10 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
             title={ localize('Demo Standard') }
-            type='demo_standard'
+            type={{
+                category: 'demo',
+                type    : 'standard',
+            }}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -161,7 +173,10 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Demo Advanced') }
-            type='demo_advanced'
+            type={{
+                category: 'demo',
+                type    : 'advanced',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
@@ -175,7 +190,10 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Demo Synthetic Indices') }
-            type='demo_synthetic_indices'
+            type={{
+                category: 'demo',
+                type    : 'synthetic_indices',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }

@@ -1,0 +1,75 @@
+import { localize } from 'App/i18n';
+
+export const getMtCompanies = () => {
+    const standard_config   = {
+        account_type: 'standard',
+        leverage    : 1000,
+        short_title : localize('Standard'),
+    };
+    const advanced_config   = {
+        account_type: 'advanced',
+        leverage    : 100,
+        short_title : localize('Advanced'),
+    };
+    const volatility_config = {
+        account_type: '',
+        leverage    : 500,
+        short_title : localize('Synthetic Indices'),
+    };
+
+    return ({
+        demo: {
+            standard: {
+                mt5_account_type: standard_config.account_type,
+                leverage        : standard_config.leverage,
+                title           : localize('Demo Standard'),
+                short_title     : standard_config.short_title,
+            },
+            advanced: {
+                mt5_account_type: advanced_config.account_type,
+                leverage        : advanced_config.leverage,
+                title           : localize('Demo Advanced'),
+                short_title     : advanced_config.short_title,
+            },
+            synthetic_indices: {
+                mt5_account_type: volatility_config.account_type,
+                leverage        : volatility_config.leverage,
+                title           : localize('Demo Synthetic Indices'),
+                short_title     : volatility_config.short_title,
+            },
+        },
+        real: {
+            standard: {
+                mt5_account_type: standard_config.account_type,
+                leverage        : standard_config.leverage,
+                title           : localize('Real Standard'),
+                short_title     : standard_config.short_title,
+            },
+            advanced: {
+                mt5_account_type: advanced_config.account_type,
+                leverage        : advanced_config.leverage,
+                title           : localize('Real Advanced'),
+                short_title     : advanced_config.short_title,
+            },
+            synthetic_indices: {
+                mt5_account_type: volatility_config.account_type,
+                leverage        : volatility_config.leverage,
+                title           : localize('Real Synthetic Indices'),
+                short_title     : volatility_config.short_title,
+            },
+        },
+    });
+};
+
+/**
+ * Generate the enum for API request.
+ *
+ * @param {string} category [real, demo]
+ * @param {string} type [standard, advanced, synthetic_indices]
+ * @return {string}
+ */
+export const getAccountTypeEnum = ({ category, type }) => {
+    if (category === 'demo') return 'gaming';
+    if (type === 'synthetic_indices') return 'gaming';
+    return 'financial';
+};

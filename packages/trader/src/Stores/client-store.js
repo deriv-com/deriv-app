@@ -451,6 +451,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get email_address() {
+        if (this.accounts && this.accounts[this.loginid]) {
+            return this.accounts[this.loginid].email;
+        }
+
+        return '';
+    }
+
+    @computed
     get is_website_status_ready() {
         return this.website_status &&
             this.website_status.site_status === 'up';

@@ -7,7 +7,7 @@ import { connect }           from 'Stores/connect';
 import AccountWizard         from './account-wizard.jsx';
 import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency   from './finished-set-currency.jsx';
-import SuccessCurrencyDialog from './success-currency-dialog.jsx';
+import SuccessDialog         from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -54,11 +54,13 @@ class RealAccountSignup extends Component {
                 {
                     label: false,
                     value: () => (
-                        <SuccessCurrencyDialog
-                            current={this.state.current_currency}
+                        <SuccessDialog
                             onCancel={this.closeModal}
                             onSubmit={this.closeModalThenOpenCashier}
                             success_message={this.state.success_message}
+                            icon_type={this.state.current_currency}
+                            icon='IconAccountsCurrency'
+                            text_submit={localize('Deposit now')}
                         />
                     )
                 }

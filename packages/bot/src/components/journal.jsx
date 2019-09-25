@@ -1,3 +1,4 @@
+import classnames     from 'classnames';
 import proptypes      from 'prop-types';
 import React          from 'react';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
@@ -16,13 +17,66 @@ const DateItem = ({
     );
 };
 
+const FormatMessage = ({
+    message,
+}) => {
+    const keyWords = ['Bought', 'Sold' , 'Profit amount', 'Loss amount'];
+    const messages = message.split(':');
+    if (messages.count < 2) {
+        return message;
+    }
+
+    let title_color,
+        value_color;
+    
+    switch (messages[0]) {
+        case (keyWords[0]) :{
+        // Bought
+            title_color = 'blue';
+            break;
+        }
+        case (keyWords[1]): {
+        // Sold
+            title_color = 'red';
+            break;
+        }
+        case (keyWords[2]): {
+        // Profit amount
+            value_color = 'green';
+            break;
+        }
+        case (keyWords[3]): {
+        // Loss amount
+            value_color = 'red';
+            break;
+        }
+        default: {
+            title_color = value_color = undefined;
+        }
+    }
+
+    return (
+        <p>
+            <span className= {classnames(
+                { [`journal__table--bold journal__table--${title_color}`]: title_color })}
+            >
+                {messages[0]}
+            </span>
+            <span>:</span>
+            <span className={classnames(
+                { [`journal__table--bold journal__table--${value_color}`]: value_color })}
+            >
+                {messages[1]}
+            </span>
+        </p>
+    );
+};
+
 const MessageItem = ({
     message,
 }) => {
     return (
-        <div>
-            <span> {message} </span>
-        </div>
+        <FormatMessage message={message} />
     );
 };
 

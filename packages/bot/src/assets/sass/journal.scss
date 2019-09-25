@@ -51,5 +51,17 @@
         &--date, &--time {
             line-height: 1.4em;
         }
+        &--bold {
+            font-weight: 700;
+        }
+        &--red {
+            color: var(--text-loss-danger);
+        }
+        &--green {
+            color: var(--text-profit-success);
+        }
+        &--blue {
+            color: var(--status-info);
+        }
     }
 }

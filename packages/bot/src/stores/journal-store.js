@@ -1,7 +1,7 @@
 
 import { observable, action } from 'mobx';
 import { formatDate }         from 'deriv-shared/utils/date';
-import { observer } from '../utils/observer';
+import { observer }           from '../utils/observer';
 
 export default class JournalStore {
     constructor(rootstore) {

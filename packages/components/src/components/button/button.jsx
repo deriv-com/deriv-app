@@ -1,7 +1,7 @@
 import classNames    from 'classnames';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import ButtonLoading from './buttonLoading.jsx';
+import ButtonLoading from './button_loading.jsx';
 
 // TODO: use Icons from components
 const IconCheckmark = () => (

@@ -1,8 +1,8 @@
 
-import { observable, action } from 'mobx';
-import { isEnded } from '../utils/contract';
-import { CONTRACT_STAGES } from '../constants/contract-stage';
-import { observer } from '../utils/observer';
+import { observable, action }  from 'mobx';
+import { isEnded }             from '../utils/contract';
+import { CONTRACT_STAGES }     from '../constants/contract-stage';
+import { observer }            from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(rootstore) {
@@ -49,8 +49,6 @@ export default class RunPanelStore {
         }
 
         this.is_run_button_clicked = true;
-        console.log('run'); // eslint-disable-line no-console
-
         Blockly.BLOCKLY_CLASS_OLD.run();
     }
 
@@ -62,7 +60,6 @@ export default class RunPanelStore {
         }
         if (this.is_run_button_clicked) {
             Blockly.BLOCKLY_CLASS_OLD.stop();
-            console.log('stop'); // eslint-disable-line no-console
         }
         this.is_run_button_clicked = false;
     }

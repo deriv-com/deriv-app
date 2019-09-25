@@ -21,7 +21,7 @@ const platform_config = [
         icon       : 'IconMT5',
         title      : localize('MetaTrader 5'),
         description: localize('An all-in-one platform for FX and CFD Trading'),
-        [key]      : routes.error404, // TODO: Change this when MT5 is merged. e.g routes.mt5
+        [key]      : routes.mt5,
     },
 ];
 

@@ -2,13 +2,13 @@ import {
     action,
     computed,
     observable, runInAction,
-} from 'mobx';
-import { WS }               from 'Services';
+}                from 'mobx';
+import { WS }    from 'Services';
 import {
     getAccountTypeFields,
     getMtCompanies,
-}                           from './Helpers/metatrader-config';
-import BaseStore            from '../../base-store';
+}                from './Helpers/metatrader-config';
+import BaseStore from '../../base-store';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;
@@ -43,14 +43,15 @@ export default class MT5Store extends BaseStore {
         return getMtCompanies();
     }
 
-    @action.bound
-    setAccountsList(new_list) {
-        this.accounts_list = new_list;
+    accountSwitcherListener() {
+        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
     }
 
     @action.bound
-    setMt5SuccessDialog(value) {
-        this.is_mt5_success_dialog_enabled = !!value;
+    clearMt5Error() {
+        this.error_message                 = '';
+        this.has_mt5_error                 = false;
+        this.is_mt5_password_modal_enabled = false;
     }
 
     @action.bound
@@ -72,18 +73,6 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    clearMt5Error () {
-        this.error_message = '';
-        this.has_mt5_error = false;
-        this.is_mt5_password_modal_enabled = false;
-    }
-
-    @action.bound
-    toggleCompareAccountsModal() {
-        this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
-    }
-
-    @action.bound
     createMT5Account({ category, type }) {
         this.setAccountType({
             category,
@@ -97,9 +86,28 @@ export default class MT5Store extends BaseStore {
         }
     }
 
+    demoMt5Signup() {
+        this.enableMt5PasswordModal();
+    }
+
     @action.bound
-    setAccountType(account_type) {
-        this.account_type = account_type;
+    disableMt5PasswordModal() {
+        this.is_mt5_password_modal_enabled = false;
+    }
+
+    @action.bound
+    enableMt5PasswordModal() {
+        this.is_mt5_password_modal_enabled = true;
+    }
+
+    @action.bound
+    getName() {
+        const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
+
+        return [
+            this.root_store.client.account_settings.first_name,
+            title,
+        ].join(' ');
     }
 
     onAccountSwitch() {
@@ -108,12 +116,19 @@ export default class MT5Store extends BaseStore {
         console.log('MT5 Accounts:', this.accounts_list);
     }
 
-    accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
-    }
+    @action.bound
+    openAccount(mt5_password) {
+        const name         = this.getName();
+        const leverage     = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
+        const type_request = getAccountTypeFields(this.account_type);
 
-    demoMt5Signup() {
-        this.enableMt5PasswordModal();
+        return WS.mt5NewAccount({
+            mainPassword: mt5_password,
+            email       : this.root_store.client.email_address,
+            leverage,
+            name,
+            ...type_request,
+        });
     }
 
     realMt5Signup() {
@@ -144,9 +159,29 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
+    setAccountType(account_type) {
+        this.account_type = account_type;
+    }
+
+    @action.bound
+    setAccountsList(new_list) {
+        this.accounts_list = new_list;
+    }
+
+    @action.bound
     setError(state, obj) {
         this.has_mt5_error = state;
         this.error_message = obj ? obj.message : '';
+    }
+
+    @action.bound
+    setMt5Account(mt5_new_account) {
+        this.new_account_response = mt5_new_account;
+    }
+
+    @action.bound
+    setMt5SuccessDialog(value) {
+        this.is_mt5_success_dialog_enabled = !!value;
     }
 
     @action.bound
@@ -168,42 +203,7 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    openAccount(mt5_password) {
-        const name         = this.getName();
-        const leverage     = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
-        const type_request = getAccountTypeFields(this.account_type);
-
-        return WS.mt5NewAccount({
-            mainPassword: mt5_password,
-            email       : this.root_store.client.email_address,
-            leverage,
-            name,
-            ...type_request,
-        });
-    }
-
-    @action.bound
-    getName() {
-        const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
-
-        return [
-            this.root_store.client.account_settings.first_name,
-            title,
-        ].join(' ');
-    }
-
-    @action.bound
-    setMt5Account(mt5_new_account) {
-        this.new_account_response = mt5_new_account;
-    }
-
-    @action.bound
-    enableMt5PasswordModal () {
-        this.is_mt5_password_modal_enabled = true;
-    }
-
-    @action.bound
-    disableMt5PasswordModal () {
-        this.is_mt5_password_modal_enabled = false;
+    toggleCompareAccountsModal() {
+        this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
     }
 }

@@ -4,7 +4,7 @@ Blockly.Blocks.block_holder = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: translate('Blocks inside are ignored %1 %2'),
             args0   : [
@@ -24,7 +24,7 @@ Blockly.Blocks.block_holder = {
             category       : Blockly.Categories.Miscellaneous,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Block Holder'),
             'description' : translate('Block Holder Description'),

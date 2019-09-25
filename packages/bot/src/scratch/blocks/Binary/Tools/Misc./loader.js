@@ -11,6 +11,7 @@ Blockly.Blocks.loader = {
         this.jsonInit(this.definition());
 
         const urlField = this.getField('URL');
+        
         // eslint-disable-next-line no-underscore-dangle
         urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
     },
@@ -30,7 +31,8 @@ Blockly.Blocks.loader = {
             tooltip        : translate('Load blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };
-    }, meta(){
+    },
+    meta(){
         return {
             'display_name': translate('Lodear'),
             'description' : translate('Loeder Description'),

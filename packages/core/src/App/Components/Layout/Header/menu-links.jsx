@@ -11,7 +11,7 @@ const MenuLinks = ({ is_logged_in, items }) => (
                     (item.login_only && (item.login_only !== is_logged_in)) ?
                         null
                         :
-                        <BinaryLink key={idx} to={item.link_to} className='header__menu-link' active_class='header__menu-link--active'>
+                        <BinaryLink id={item.id} key={idx} to={item.link_to} className='header__menu-link' active_class='header__menu-link--active'>
                             <React.Fragment>
                                 {item.text &&
                                     <span title={item.text} className='header__menu-link-text'>{item.icon}{item.text}{item.logo}</span>

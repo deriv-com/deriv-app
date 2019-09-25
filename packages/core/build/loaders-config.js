@@ -2,6 +2,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 
 const js_loaders = [
+    'deriv-shared/utils/deriv-components-loader.js',
     {
         loader : 'babel-loader',
         options: {
@@ -98,6 +99,12 @@ const css_loaders = [
             sourceMap: true,
         }
     },
+    {
+        loader: 'sass-resources-loader',
+        options: {
+            resources: require('deriv-shared/utils/index.js'),
+        }
+    }
 ];
 
 module.exports = {

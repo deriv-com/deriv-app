@@ -25,25 +25,25 @@ export default class ActiveSymbols {
 
         this.is_initialised = true;
 
-        const { active_symbols } = await this.ws.activeSymbols({ forced: is_forced_update });
+        const { active_symbols } = await this.ws.activeSymbols();
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
         this.trading_times.onMarketOpenCloseChanged = (changes) => {
             Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];
-    
+
                 if (symbol_obj) {
                     symbol_obj.exchange_is_open = changes[symbol_name];
                 }
             });
-    
+
             this.changes = changes;
             this.processActiveSymbols();
         };
 
         this.init_promise.resolve();
-        
+
         return this.active_symbols;
     }
 
@@ -93,7 +93,7 @@ export default class ActiveSymbols {
         await this.retrieveActiveSymbols();
 
         const market_options = [];
-        
+
         Object.keys(this.processed_symbols).forEach(market_name => {
             const market = this.processed_symbols[market_name];
             market_options.push([market.display_name, market_name]);

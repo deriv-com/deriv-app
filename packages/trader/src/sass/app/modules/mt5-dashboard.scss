@@ -52,7 +52,6 @@
             margin: 0;
             background-color: transparent;
             font-weight: bold;
-            border: solid 2px #999999;
             height: 4em;
             @include themify($themes) {
                 color: themed('text_active_color');
@@ -163,14 +162,11 @@
     &__type {
         padding: 1.6em 1.6em 0;
         display: flex;
-        align-items: center;
 
-        &--icon {
-            margin-right: 1.6em;
-        }
         &--description {
             max-width: 19.2em;
             display: inline-block;
+            margin-left: 1.6em;
 
             .mt5-account-card--heading {
                 margin-bottom: 0.5em;

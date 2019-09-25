@@ -1,20 +1,17 @@
-import DocumentUploader   from '@binary-com/binary-document-uploader';
-import classNames         from 'classnames';
-import React              from 'react';
-import { FileDropzone }   from 'deriv-components';
-import BinarySocket       from '_common/base/socket_base';
+import DocumentUploader from '@binary-com/binary-document-uploader';
+import classNames       from 'classnames';
+import React            from 'react';
+import { FileDropzone } from 'deriv-components';
+import BinarySocket     from '_common/base/socket_base';
+import { localize }     from 'App/i18n';
+import IconCloudUpload  from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
+import IconRemoveFile   from 'Assets/AccountManagement/icon-remove-file.svg';
 import {
-    compressImg,
-    convertToBase64,
-    isImageType }         from '_common/image_utility';
-import { localize }       from 'App/i18n';
-import IconCloudUpload    from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
-import IconRemoveFile     from 'Assets/AccountManagement/icon-remove-file.svg';
-import {
-    getFormatFromMIME,
+    compressImageFiles,
+    readFiles,
     getSupportedFiles,
     max_document_size,
-    supported_filetypes } from './constants';
+    supported_filetypes } from './file-uploader-utils';
 
 const UploadMessage = (
     <>
@@ -24,60 +21,6 @@ const UploadMessage = (
         </div>
     </>
 );
-
-const compressImageFiles = (files) => {
-    const promises = [];
-    files.forEach((f) => {
-        const promise = new Promise((resolve) => {
-            if (isImageType(f.type)) {
-                convertToBase64(f).then((img) => {
-                    compressImg(img).then((compressed_img) => {
-                        const file_arr = f;
-                        file_arr.file = compressed_img;
-                        resolve(file_arr);
-                    });
-                });
-            } else {
-                resolve(f);
-            }
-        });
-        promises.push(promise);
-    });
-
-    return Promise.all(promises);
-};
-
-const readFiles = (files) => {
-    const promises = [];
-    files.forEach((f) => {
-        const fr      = new FileReader();
-        const promise = new Promise((resolve) => {
-            fr.onload = () => {
-                const file_obj    = {
-                    filename      : f.file.name,
-                    buffer        : fr.result,
-                    documentType  : 'proofaddress',
-                    documentFormat: getFormatFromMIME(f),
-                    file_size     : f.file.size,
-                };
-                resolve(file_obj);
-            };
-
-            fr.onerror = () => {
-                resolve({
-                    message: localize('Unable to read file [_1]', f.file.name),
-                    class  : f.class,
-                });
-            };
-            // Reading file.
-            fr.readAsArrayBuffer(f.file);
-        });
-
-        promises.push(promise);
-    });
-
-    return Promise.all(promises);
-};
 
 class FileUploader extends React.PureComponent {
     state = {

@@ -46,8 +46,11 @@ const convertToBase64 = (file) => new Promise((resolve) => {
 
 const isImageType = filename => (/(gif|jpg|jpeg|tiff|png)$/i).test(filename);
 
+const getFormatFromMIME = file => (file.type.split('/')[1] || (file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
+
 module.exports = {
     compressImg,
     convertToBase64,
     isImageType,
+    getFormatFromMIME,
 };

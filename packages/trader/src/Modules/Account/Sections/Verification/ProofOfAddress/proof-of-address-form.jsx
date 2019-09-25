@@ -30,46 +30,14 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
     });
 };
 
-// TODO: standardize validations and refactor this
-const makeSettingsRequest = ({ ...settings }) => {
-    const {
-        address_line_1,
-        address_line_2,
-        address_city,
-        address_state,
-        address_postcode } = settings;
-
-    const settings_to_be_removed_for_api = [
-        'address_line_1',
-        'address_line_2',
-        'address_city',
-        'address_state',
-        'address_postcode',
-        'document_file',
-    ];
-
-    settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
-
-    return {
-        ...settings,
-        address_line_1,
-        address_line_2,
-        address_city,
-        address_state,
-        address_postcode,
-    };
-};
-
 class ProofOfAddressForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            is_loading        : true,
-            is_resubmit       : false,
-            needs_poi         : true,
-            show_form         : true,
             document_file     : [],
             file_error_message: null,
+            is_loading        : true,
+            show_form         : true,
         };
     }
 
@@ -94,17 +62,11 @@ class ProofOfAddressForm extends React.Component {
         });
     }
 
-    handleResubmit = () => {
-        this.setState({ is_resubmit: false });
-    }
-
     // TODO: standardize validations and refactor this
     validateFields = (values) => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
-
-        if (this.props.is_virtual) return errors;
 
         const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
         validateValues(val => val, required_fields, localize('This field is required'));
@@ -142,46 +104,68 @@ class ProofOfAddressForm extends React.Component {
         this.setState({ document_file, file_error_message });
     }
 
+    // Settings update is handled here
     onSubmit = (values, { setStatus, setSubmitting }) => {
+        setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
 
-        // Settings update is handled here
-        setStatus({ msg: '' });
-        const request = makeSettingsRequest(values);
-        this.setState({ is_btn_loading: true });
-        WS.setSettings(request).then((data) => {
-            this.setState({ is_btn_loading: false });
-            setSubmitting(false);
+        WS.setSettings(values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.authorized.storage.getSettings().then((response) => {
-                    if (response.error) {
-                        this.setState({ api_initial_load_error: response.error.message });
-                        return;
-                    }
-                    this.setState({ ...response.get_settings, is_loading: false });
-                });
-            }
-        });
+                WS.authorized.storage.getSettings()
+                    .then(({ error, get_settings }) => {
+                        if (error) {
+                            this.setState({ api_initial_load_error: error.message });
+                            return;
+                        }
+                        const {
+                            address_line_1,
+                            address_line_2,
+                            address_city,
+                            address_state,
+                            address_postcode,
+                        } = get_settings;
 
-        // Check if uploaded document is present after validation
-        if (!!this.state.file_error_message || (this.state.document_file && this.state.document_file.length < 1)) {
-            setStatus({ msg: localize('Error occured with document file. Please try again') });
-            return;
-        }
-
-        // Upload document
-        this.file_uploader_ref.current.upload().then((api_response) => {
-            this.setState({ is_btn_loading: false });
-            if (api_response.warning) {
-                setStatus({ msg: api_response.message });
-            } else {
-                this.setState({ is_submit_success: true });
+                        this.setState({
+                            address_line_1,
+                            address_line_2,
+                            address_city,
+                            address_state,
+                            address_postcode,
+                            is_loading: false,
+                        });
+                    })
+                    .then(() => {
+                        // upload files
+                        this.file_uploader_ref.current.upload().then((api_response) => {
+                            if (api_response.warning) {
+                                setStatus({ msg: api_response.message });
+                                this.setState({ is_btn_loading: false });
+                            } else {
+                                WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
+                                    if (error) {
+                                        this.setState({ api_initial_load_error: error.message });
+                                        return;
+                                    }
+                                    this.setState({
+                                        is_btn_loading   : false,
+                                        is_submit_success: true,
+                                    }, () => {
+                                        const { needs_verification } = get_account_status.authentication;
+                                        const needs_poi = !!(needs_verification.length && needs_verification[0] === 'identity');
+                                        this.props.onSubmit({ needs_poi });
+                                    });
+                                });
+                            }
+                        }).catch((error) => {
+                            setStatus({ msg: error.message });
+                        }).finally(() => {
+                            setSubmitting(false);
+                        });
+                    });
             }
-        }).catch((error) => {
-            setStatus({ msg: error.message });
         });
     }
 
@@ -204,7 +188,6 @@ class ProofOfAddressForm extends React.Component {
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
-
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         return (
@@ -327,16 +310,13 @@ class ProofOfAddressForm extends React.Component {
                                         className='account-form__footer-btn btn--primary'
                                         type='submit'
                                         is_disabled={isSubmitting || (
-                                            this.props.is_virtual ?
-                                                false
-                                                :
-                                                !!((errors.address_line_1 || !values.address_line_1) ||
-                                                (errors.address_line_2) ||
-                                                (errors.address_city || !values.address_city) ||
-                                                (errors.address_state || !values.address_state) ||
-                                                (errors.address_postcode || !values.address_postcode)) ||
-                                                ((document_file && document_file.length < 1) ||
-                                                !!file_error_message)
+                                            !!((errors.address_line_1 || !values.address_line_1) ||
+                                            (errors.address_line_2) ||
+                                            (errors.address_city || !values.address_city) ||
+                                            (errors.address_state || !values.address_state) ||
+                                            (errors.address_postcode || !values.address_postcode)) ||
+                                            ((document_file && document_file.length < 1) ||
+                                            !!file_error_message)
                                         )}
                                         has_effect
                                         is_loading={is_btn_loading && <ButtonLoading />}

@@ -29,6 +29,10 @@
                 font-weight: bold;
             }
         }
+        &--disabled {
+            opacity: 0.33;
+            pointer-events: none;
+        }
     }
     &__icon {
         transform: rotate(360deg);

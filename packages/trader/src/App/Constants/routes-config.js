@@ -16,13 +16,16 @@ import Statement           from  'Modules/Reports/Containers/statement.jsx';
 
 import Trade from 'Modules/Trading';
 
-const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
+const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
+
+// MT5 Routes
+const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
 
 // Reports Routes
-const Reports       = lazy(() => import(/* webpackChunkName: "reports" */        'Modules/Reports'));
+const Reports = lazy(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
 
 // Account Management Routes
-const Account = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
+const Account = lazy(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -30,6 +33,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: RouterRedirect,  title: '',                            to: routes.trade },
+    { path: routes.mt5,       component: MT5,             title: localize('MT5'),               is_authenticated: true },
     {
         path            : routes.reports,
         component       : Reports,

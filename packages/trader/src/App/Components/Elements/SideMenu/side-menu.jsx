@@ -4,6 +4,7 @@ import { SideMenuHeaders }       from './side-menu-headers.jsx';
 import {
     VerticalTabContentContainer,
     VerticalTabLayout }          from '../VerticalTabs';
+import Loading               from '../../../../templates/app/components/loading.jsx';
 
 const SideMenuTitle = ({ title }) => (<h1 className='side-menu__title'>{title}</h1>);
 
@@ -17,6 +18,7 @@ class SideMenu extends React.PureComponent {
             id,
             is_full_width,
             is_routed,
+            is_loading,
             list,
             sub_list,
             selected_content,
@@ -33,23 +35,28 @@ class SideMenu extends React.PureComponent {
 
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
-                <SideMenuHeaders
-                    active_title={active_title}
-                    header_title={header_title}
-                    items={list}
-                    selected={selected_content}
-                    is_routed={is_routed}
-                    onChange={()=>{}}
-                />
-                <VerticalTabContentContainer
-                    action_bar={action_bar_items}
-                    action_bar_classname={action_bar_classname}
-                    id={id}
-                    items={sub_list}
-                    is_routed={is_routed}
-                    selected={selected_content}
-                    tab_container_classname={tab_container_classname}
-                />
+                {is_loading ?
+                    <Loading /> :
+                    <>
+                        <SideMenuHeaders
+                            active_title={active_title}
+                            header_title={header_title}
+                            items={list}
+                            selected={selected_content}
+                            is_routed={is_routed}
+                            onChange={()=>{}}
+                        />
+                        <VerticalTabContentContainer
+                            action_bar={action_bar_items}
+                            action_bar_classname={action_bar_classname}
+                            id={id}
+                            items={sub_list}
+                            is_routed={is_routed}
+                            selected={selected_content}
+                            tab_container_classname={tab_container_classname}
+                        />
+                    </>
+                }
             </VerticalTabLayout>
         );
     }

@@ -161,7 +161,7 @@
         }
     }
     .account-management__message {
-        margin: 1em 0;
+        margin-top: 1em;
         font-weight: bold;
         font-size: 1.6em;
         @include themify($themes) {
@@ -431,4 +431,33 @@
     .barspinner {
         margin: 0 4px 0 -4px;
     }
+}
+
+/** @define poi-icon-row; weak */
+.poi-icon-row {
+    display: flex;
+    margin-bottom: 16px;
+
+    &__icon-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+
+        &:not(:first-child):not(:last-child) {
+            margin: 0 40px;
+        }
+        p {
+            font-size: 12px;
+        }
+        p:first-of-type {
+            line-height: 1.5;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+    }
+}
+
+/** @define onfido-container; weak */
+.onfido-container {
+    margin-top: 20px;
 }

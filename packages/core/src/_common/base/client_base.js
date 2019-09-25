@@ -1,4 +1,3 @@
-const moment           = require('moment');
 const isCryptocurrency = require('./currency_base').isCryptocurrency;
 const SocketCache      = require('./socket_cache');
 const localize         = require('../../App/i18n').localize;
@@ -139,31 +138,13 @@ const ClientBase = (() => {
 
     const responseAuthorize = (response) => {
         const authorize = response.authorize;
-        set('email',      authorize.email);
-        set('currency',   authorize.currency);
-        set('is_virtual', +authorize.is_virtual);
-        set('session_start', parseInt(moment().valueOf() / 1000));
-        set('landing_company_shortcode', authorize.landing_company_name);
-        updateAccountList(authorize.account_list);
+        set('loginid', authorize.loginid);
     };
 
-    const updateAccountList = (account_list) => {
-        account_list.forEach((account) => {
-            set('excluded_until', account.excluded_until || '', account.loginid);
-            Object.keys(account).forEach((param) => {
-                const param_to_set = param === 'country' ? 'residence' : param;
-                const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
-                if (param_to_set !== 'loginid') {
-                    set(param_to_set, value_to_set, account.loginid);
-                }
-            });
-        });
-    };
-
-    const shouldAcceptTnc = () => {
+    const shouldAcceptTnc = (account_settings = State.getResponse('get_settings')) => {
         if (get('is_virtual')) return false;
         const website_tnc_version = State.getResponse('website_status.terms_conditions_version');
-        const client_tnc_status   = State.getResponse('get_settings.client_tnc_status');
+        const client_tnc_status   = account_settings.client_tnc_status;
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== website_tnc_version;
     };
 
@@ -198,8 +179,8 @@ const ClientBase = (() => {
         return landing_company_response[landing_company_prop] || {};
     };
 
-    const shouldCompleteTax = () => isAccountOfType('financial') &&
-        !/crs_tin_information/.test((State.getResponse('get_account_status') || {}).status);
+    const shouldCompleteTax = (account_status = State.getResponse('get_account_status')) => isAccountOfType('financial') &&
+        !/crs_tin_information/.test((account_status || {}).status);
 
     // remove manager id or master distinction from group
     // remove EUR or GBP distinction from group
@@ -256,9 +237,9 @@ const ClientBase = (() => {
         return (landing_company_object || {})[key];
     };
 
-    const getRiskAssessment = () => {
-        const status       = State.getResponse('get_account_status.status');
-        const is_high_risk = /high/.test(State.getResponse('get_account_status.risk_classification'));
+    const getRiskAssessment = (account_status = State.getResponse('get_account_status')) => {
+        const status       = account_status.status;
+        const is_high_risk = /high/.test(account_status.risk_classification);
 
         return (
             isAccountOfType('financial') ?

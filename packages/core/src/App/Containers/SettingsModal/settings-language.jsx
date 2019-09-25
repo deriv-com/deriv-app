@@ -11,9 +11,11 @@ import {
 const isCurrentLanguage = (lang) => lang === currentLanguage;
 
 const NonClickableLink = ({ children, lang }) => (
-    <div className={classNames('settings-language__language-link', {
-        'settings-language__language-link--active': isCurrentLanguage(lang),
-    })}
+    <div
+        id={`dt_settings_${lang}_button`}
+        className={classNames('settings-language__language-link', {
+            'settings-language__language-link--active': isCurrentLanguage(lang),
+        })}
     >
         {children}
     </div>
@@ -52,6 +54,7 @@ const LanguageSettings = () => (
                         </NonClickableLink>
                         :
                         <a
+                            id={`dt_settings_${key}_button`}
                             key={key}
                             href={getURL(key)}
                             className={classNames('settings-language__language-link', {

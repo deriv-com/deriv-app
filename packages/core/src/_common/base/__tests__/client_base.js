@@ -13,8 +13,9 @@ describe('ClientBase', () => {
     const loginid_gaming    = 'MLT123';
     const loginid_financial = 'MF123';
 
-    const landing_company = { landing_company: { financial_company: { name: 'Binary Investments (Europe) Ltd', shortcode: 'maltainvest' }, gaming_company: { name: 'Binary (Europe) Ltd', shortcode: 'malta' } }, msg_type: 'landing_company' };
-    const authorize       = { authorize: { upgradeable_landing_companies: [] }};
+    const landing_company  = { landing_company: { financial_company: { name: 'Binary Investments (Europe) Ltd', shortcode: 'maltainvest' }, gaming_company: { name: 'Binary (Europe) Ltd', shortcode: 'malta' } }, msg_type: 'landing_company' };
+    const authorize        = { authorize: { upgradeable_landing_companies: [] }};
+    const account_settings = { client_tnc_status: 1 };
 
     describe('.validateLoginid()', () => {
         it('can detect a valid loginid', () => {
@@ -113,12 +114,11 @@ describe('ClientBase', () => {
     describe('.shouldAcceptTnc()', () => {
         it('doesn\'t ask to accept if same version', () => {
             State.set(['response', 'website_status', 'website_status', 'terms_conditions_version'], 1);
-            State.set(['response', 'get_settings', 'get_settings', 'client_tnc_status'], 1);
-            expect(Client.shouldAcceptTnc()).to.eq(false);
+            expect(Client.shouldAcceptTnc(account_settings)).to.eq(false);
         });
         it('asks to accept if different version', () => {
             State.set(['response', 'website_status', 'website_status', 'terms_conditions_version'], 2);
-            expect(Client.shouldAcceptTnc()).to.eq(true);
+            expect(Client.shouldAcceptTnc(account_settings)).to.eq(true);
         });
     });
 

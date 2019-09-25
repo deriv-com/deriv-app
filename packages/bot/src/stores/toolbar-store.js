@@ -65,13 +65,16 @@ export default class ToolbarStore {
         this.file_name = bot_name;
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    @action.bound
     onResetClick() {
         const workspace = Blockly.derivWorkspace;
+        
         Blockly.Events.setGroup('reset');
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
+
+        this.file_name = translate('Untitled Bot');
     }
 
     @action.bound

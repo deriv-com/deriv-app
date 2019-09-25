@@ -54,13 +54,6 @@ export const scratchWorkspaceInit = async () => {
 
             // eslint-disable-next-line no-underscore-dangle
             workspace.toolbox_.flyout_.position();
-            
-            // Center on first root block, if applicable.
-            const top_blocks = workspace.getTopBlocks(true);
-
-            if (top_blocks.length > 0) {
-                workspace.centerOnBlock(top_blocks[0].id);
-            }
         };
 
         window.addEventListener('resize', onWorkspaceResize);

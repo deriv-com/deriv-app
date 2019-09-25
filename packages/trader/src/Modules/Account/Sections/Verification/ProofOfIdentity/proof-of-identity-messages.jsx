@@ -37,7 +37,7 @@ const ContinueTradingButton = () => (
         className='btn--primary--default btn__text'
         to='/'
     >
-        {localize('Continue trading')}
+        <p>{localize('Continue trading')}</p>
     </ButtonLink>
 );
 
@@ -46,7 +46,7 @@ const PoaButton = () => (
         className='btn--primary--default btn__text'
         to='/account/proof-of-address'
     >
-        {localize('Submit proof of address')}
+        <p>{localize('Submit proof of address')}</p>
     </ButtonLink>
 );
 

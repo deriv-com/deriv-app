@@ -1,11 +1,14 @@
 import PropTypes        from 'prop-types';
 import React, { lazy }  from 'react';
-import { withRouter }   from 'react-router-dom';
+import {
+    withRouter,
+    Redirect }          from 'react-router-dom';
 import SideMenu         from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }  from 'App/Components/Animations';
 import { localize }     from 'App/i18n';
 import AppRoutes        from 'Constants/routes';
 import { connect }      from 'Stores/connect';
+import BinarySocket     from '_common/base/socket_base';
 import { flatten }      from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
@@ -19,6 +22,11 @@ const fallback_content = {
 };
 
 class Account extends React.Component {
+    state = {
+        is_high_risk_client: false,
+        is_loading         : true,
+    }
+
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -30,6 +38,11 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
+        BinarySocket.wait('authorize', 'get_account_status').then(() => {
+            const { identity, document, needs_verification } = this.props.account_status.authentication;
+            const is_high_risk_client = (identity.status === 'none' && document.status === 'none' && !!needs_verification.length);
+            this.setState({ is_high_risk_client, is_loading: false });
+        });
         this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
@@ -42,6 +55,24 @@ class Account extends React.Component {
     }
     
     render () {
+        const { is_high_risk_client, is_loading } = this.state;
+
+        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
+        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
+        if (!selected_content) { // fallback
+            selected_content = subroutes[0];
+            this.props.history.push(AppRoutes.personal_details);
+        }
+
+        if (!is_high_risk_client && /proof-of-identity|proof-of-address/.test(selected_content.path)) return <Redirect to='/' />;
+
+        // TODO: modify account route to support disabled
+        this.props.routes.forEach((menu_item) => {
+            if (menu_item.title === 'Verification') {
+                menu_item.is_disabled = !is_high_risk_client;
+            }
+        });
+
         const action_bar_items = [
             {
                 onClick: () => {
@@ -59,17 +90,9 @@ class Account extends React.Component {
             });
         }
 
-        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
-        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
-
-        if (!selected_content) { // fallback
-            selected_content = subroutes[0];
-            this.props.history.push(AppRoutes.personal_details);
-        }
-
         const { title: active_title } = this.props.routes
             .find(route => route.subroutes
-                .find((sub_route) => sub_route.title === selected_content.title));
+                .find(sub_route => sub_route.title === selected_content.title));
 
         return (
             <FadeWrapper
@@ -87,6 +110,7 @@ class Account extends React.Component {
                         header_title={localize('Settings')}
                         is_routed={true}
                         is_full_width={true}
+                        is_loading={is_loading}
                         list={this.props.routes}
                         selected_content={selected_content}
                         sub_list={subroutes}
@@ -110,6 +134,7 @@ Account.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
+        account_status  : client.account_status,
         currency        : client.currency,
         is_virtual      : client.is_virtual,
         disableRouteMode: ui.disableRouteModal,

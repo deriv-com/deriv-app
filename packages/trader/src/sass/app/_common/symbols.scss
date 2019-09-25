@@ -205,7 +205,7 @@
     &__ic-OTC_SPC:before {
         content: url('~Images/app/portfolio/underlying-icons/ic-OTC_SPC.svg');
     }
-    &__ic-R_10:before {
+    &__ic-R_10:before, &__ic-1HZ10V:before {
         content: url('~Images/app/portfolio/underlying-icons/ic-R_10.svg');
     }
     &__ic-R_25:before {
@@ -217,7 +217,7 @@
     &__ic-R_75:before {
         content: url('~Images/app/portfolio/underlying-icons/ic-R_75.svg');
     }
-    &__ic-R_100:before {
+    &__ic-R_100:before, &__ic-1HZ100V:before {
         content: url('~Images/app/portfolio/underlying-icons/ic-R_100.svg');
     }
     &__ic-RDBEAR:before {

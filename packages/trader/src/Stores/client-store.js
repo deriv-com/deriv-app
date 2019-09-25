@@ -868,6 +868,25 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    @action.bound
+    onResetPassword(password, onResetComplete, formik_actions) {
+        if (!this.verification_code || !password) return;
+
+        const api_request = {
+            reset_password: 1,
+            verification_code: this.verification_code,
+            new_password: password,
+        };
+
+        WS.resetPassword(api_request).then(async response => {
+            if (response.error) {
+                onResetComplete(response.error.message, formik_actions);
+            } else {
+                onResetComplete(null, formik_actions);
+            }
+        });
+    }
+
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {
         const new_user_login = {
             acct1 : client_id,

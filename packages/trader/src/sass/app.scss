@@ -65,6 +65,8 @@
 @import 'app/_common/mobile-dialog';
 
 // Modules
+@import 'app/modules/account-signup';
+@import 'app/modules/reset-password';
 @import 'app/modules/cashier';
 @import 'app/modules/contract';
 @import 'app/modules/contract/bottom-widgets';

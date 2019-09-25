@@ -7,11 +7,15 @@
     align-items: center;
     margin-bottom: 3.2rem;
 
-    &:focus-within {
-        border-color: var(--brand-secondary);
-    }
     &:hover:not(.dc-input__disabled) {
         border-color: var(--border-hover);
+    }
+    &:focus-within {
+        border-color: var(--brand-secondary);
+
+        &:hover {
+            border-color: var(--brand-secondary);
+        }
     }
     &__field {
         background: none;

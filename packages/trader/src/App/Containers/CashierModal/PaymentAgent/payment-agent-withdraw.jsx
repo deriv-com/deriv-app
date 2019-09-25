@@ -25,7 +25,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
 
     if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
-        errors.payment_agent = localize('Invalid ID.');
+        errors.payment_agent = localize('Please enter a valid payment agent ID.');
     }
 
     if (!values.amount) {

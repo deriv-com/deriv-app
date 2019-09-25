@@ -14,6 +14,7 @@ import {
     strategyHasValidTradeTypeCategory,
     cleanBeforeExport,
 }                                         from './utils';
+import config                             from '../constants/const';
 import { showDialog }                     from '../services/tradeEngine/utils/helpers';
 import Interpreter                        from '../services/tradeEngine/utils/interpreter';
 import GTM                                from '../utils/gtm';
@@ -38,7 +39,7 @@ export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) 
             media   : `${__webpack_public_path__}media/`, // eslint-disable-line
             toolbox : toolbox_xml,
             trashcan: true,
-            zoom    : { wheel: true, startScale: 0.9 },
+            zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
 
         Blockly.derivWorkspace = workspace;
@@ -299,7 +300,7 @@ export default class _Blockly {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
                     zoom   : {
                         wheel     : true,
-                        startScale: 1.1,
+                        startScale: config.workspaces.mainWorkspaceStartScale ,
                     },
                     trashcan  : true,
                     scrollbars: true,

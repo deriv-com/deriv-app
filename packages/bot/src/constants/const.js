@@ -239,6 +239,10 @@ const config = {
         IMAGE: 'image',
         BLOCK: 'block',
     },
+    workspaces: {
+        flyoutWorkspacesStartScale: 0.7,
+        mainWorkspaceStartScale   : 0.9,
+    },
 };
 
 export async function updateConfigCurrencies() {

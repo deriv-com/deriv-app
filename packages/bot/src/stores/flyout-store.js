@@ -1,12 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
+import config from '../constants/const';
 import { translate } from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_listeners = [];
     block_workspaces = [];
     flyout_min_width = 400;
-    startScale = 0.7;
+    options = {
+        css   : false,
+        media : `${__webpack_public_path__}media/`, // eslint-disable-line
+        move  : { scrollbars: false, drag: true, wheel: false },
+        zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
+        sounds: false,
+    };
 
     @observable is_help_content = false;
     @observable block_nodes = [];
@@ -55,6 +62,13 @@ export default class FlyoutStore {
         this.flyout_content = observable(xml_list_group);
         this.setFlyoutWidth(processed_xml);
         this.setVisibility(true);
+
+        // apparently setFlyoutWidth doesn't calculate blocks dimentions until they're visible
+        // using setTimeout is a workaround to solve this issue
+        const self = this;
+        setTimeout(function() {
+            self.setFlyoutWidth(processed_xml);
+        }, 50);
     }
 
     /**
@@ -77,35 +91,22 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound initBlockWorkspace(el_block_workspace, block_node) {
-        const workspace = Blockly.inject(el_block_workspace, {
-            css   : false,
-            media: `${__webpack_public_path__}media/`, // eslint-disable-line
-            move  : { scrollbars: false, drag: true, wheel: false },
-            zoom  : { startScale: this.startScale },
-            sounds: false,
-        });
+        const workspace = Blockly.inject(el_block_workspace, this.options);
 
         workspace.isFlyout = true;
         workspace.targetWorkspace = Blockly.derivWorkspace;
 
         const block = Blockly.Xml.domToBlock(block_node, workspace);
+        // Using block.getHeightWidth() here because getDimentions() also calls Blockly.Xml.domToBlock
+        const block_hw = block.getHeightWidth();
 
         block.isInFlyout = true;
 
-        // Some blocks have hats, consider their height.
-        const extra_spacing = (block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
-        const block_workspace_height = Number.parseInt(block_node.getAttribute('height')) * this.startScale + extra_spacing + 10;
-
         // Update block workspace widths to accommodate block widths.
-        el_block_workspace.style.height = `${block_workspace_height}px`;
-        // el_block_workspace.style.width = `${this.flyout_width - 55}px`;
-        el_block_workspace.style.width = `${this.flyout_width * this.startScale}px`;
-
-        // Move block away from side so it's displayed completely.
-        const dx = 1;
-        const dy = 5 + extra_spacing;
-
-        block.moveBy(dx, dy);
+        // addind 1px to highet and then moving the block 1px down to make block top border visible
+        el_block_workspace.style.height = `${Math.ceil(block_hw.height * this.options.zoom.startScale) + 1}px`;
+        el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale)}px`;
+        block.moveBy(0,1);
 
         // Use original Blockly flyout functionality to create block on drag.
         const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
@@ -131,20 +132,23 @@ export default class FlyoutStore {
 
         xmlList.forEach((node) => {
             const tag_name = node.tagName.toUpperCase();
-
+            
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
                 const block_hw = Blockly.Block.getDimensions(node);
 
-                node.setAttribute('width', block_hw.width);
-                node.setAttribute('height', block_hw.height);
-                longest_block_width = Math.max(longest_block_width, block_hw.width);
+                node.setAttribute('width', Math.ceil(block_hw.width * this.options.zoom.startScale));
+                node.setAttribute('height', Math.ceil(block_hw.height * this.options.zoom.startScale));
+                longest_block_width = Math.max(
+                    longest_block_width,
+                    Math.ceil(block_hw.width * this.options.zoom.startScale)
+                );
             }
         });
 
-        this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 60);
+        this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 65);
     }
 
-    @action.bound onSequenceClick(block_name, should_go_next) {
+    @action.bound async onSequenceClick(block_name, should_go_next) {
         const toolbox = Blockly.derivWorkspace.toolbox_;
         const selected_category = toolbox.getSelectedItem();
         const xml_list = toolbox.getCategoryContents(selected_category);
@@ -158,27 +162,27 @@ export default class FlyoutStore {
                 current_block_index = index;
             }
         });
-        const last_position = Object.keys(xml_list_group).length - 1;
 
-        const adjustIndexOutOfBounds = (current_index, last_index) => {
-            let current_pos = current_index;
-            if (current_pos < 0) {
-                current_pos = last_index;
-            } else if (current_pos > last_index) {
-                current_pos = 0;
+        const getNextBlock = async (xml, currentIndex, direction) => {
+            const nextIndex = currentIndex + (direction ? 1 : -1);
+            const block_type = Object.keys(xml).find((key, index) => nextIndex === index);
+            // eslint-disable-next-line consistent-return
+            if (!block_type) return;
+            try {
+                await import(`../scratch/help-content/help-string/${block_type}.json`);
+                // eslint-disable-next-line consistent-return
+                return block_type;
+            } catch (e) {
+                // eslint-disable-next-line consistent-return
+                return getNextBlock(xml,nextIndex,direction);
             }
-
-            return current_pos;
         };
 
-        const increment = should_go_next ? 1 : -1;
-
-        current_block_index = adjustIndexOutOfBounds(current_block_index + increment, last_position);
-
-        const block_type = Object.keys(xml_list_group).find((key, index) => current_block_index === index);
-        const target_blocks = xml_list_group[block_type];
-
-        this.showHelpContent(target_blocks);
+        const block_type = await getNextBlock(xml_list_group,current_block_index,should_go_next);
+        if (block_type) {
+            const target_blocks = xml_list_group[block_type];
+            this.showHelpContent(target_blocks);
+        }
     }
 
     @action.bound showHelpContent(block_node) {
@@ -186,8 +190,8 @@ export default class FlyoutStore {
             const node = block_node[key];
             const block_hw = Blockly.Block.getDimensions(node);
 
-            node.setAttribute('width', block_hw.width);
-            node.setAttribute('height', block_hw.height);
+            node.setAttribute('width', block_hw.width * this.options.zoom.startScale);
+            node.setAttribute('height', block_hw.height * this.options.zoom.startScale);
         });
 
         this.flyout_width = 650;

@@ -27,10 +27,6 @@
     }
     &__block-workspace {
         margin-bottom: $default-margin;
-
-        * .blocklyMainBackground {
-            stroke: none !important;
-        }
     }
     &__button {
         border: none;
@@ -74,6 +70,10 @@
             margin-left: 1em;
             color: $COLOR_LIGHT_BLACK_1;
             background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+
+            &:focus {
+                outline: none;
+            }
         }
     }
     &__item {

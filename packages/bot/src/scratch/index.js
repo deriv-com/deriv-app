@@ -9,12 +9,11 @@ import {
 }                                         from './utils';
 import config                             from '../constants';
 import Interpreter                        from '../services/tradeEngine/utils/interpreter';
-import GTM                                from '../utils/gtm';
 import createError                        from '../utils/error';
-import { translate, xml as translateXml } from '../utils/lang/i18n';
+import { translate }                      from '../utils/lang/i18n';
 import { observer as globalObserver }     from '../utils/observer';
 
-export const scratchWorkspaceInit = async (scratch_area_name, scratch_div_name) => {
+export const scratchWorkspaceInit = async () => {
     try {
         // const el_scratch_area = document.getElementById('scratch_area');
         const el_scratch_div = document.getElementById('scratch_div');

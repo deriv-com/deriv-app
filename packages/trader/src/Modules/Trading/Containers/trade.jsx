@@ -189,7 +189,7 @@ class ChartTradeClass extends React.Component {
         const barriers = main_barrier ? [main_barrier] : [];
         // smartcharts only way to refresh active-symbols is to reset the connection.
         const is_socket_opened = this.props.is_socket_opened && !should_refresh;
-        console.warn({is_socket_opened, should_refresh});
+
         if (should_refresh) {
             setImmediate(() => resetRefresh());
             // TODO: fix this in smartcharts, it should be possible to update

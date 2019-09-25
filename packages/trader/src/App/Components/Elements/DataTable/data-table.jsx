@@ -97,6 +97,7 @@ class DataTable extends React.PureComponent {
             data_source,
             footer,
             is_empty,
+            item_size,
             onScroll,
         } = this.props;
 
@@ -107,7 +108,7 @@ class DataTable extends React.PureComponent {
                     className={className}
                     height={this.state.height}
                     itemCount={data_source.length}
-                    itemSize={63}
+                    itemSize={item_size || 63}
                     width={this.state.width}
                 >
                     {this.rowRenderer.bind(this)}

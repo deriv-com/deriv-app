@@ -14,6 +14,15 @@
                 @extend %inline-icon.disabled;
             }
         }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
     }
     &__bubble {
         @include typeface(--small-center-normal-active, none);
@@ -58,19 +67,19 @@
             right: 100%;
             top: 50%;
             margin-top: -5px;
-            border-left-color: var(--status-default);
+            border-right-color: var(--status-default);
         }
         &[data-popover-pos=top] &__arrow {
             left: 50%;
             top: 100%;
             margin-left: -5px;
-            border-left-color: var(--status-default);
+            border-top-color: var(--status-default);
         }
         &[data-popover-pos=bottom] &__arrow {
             left: 50%;
             bottom: 100%;
             margin-left: -5px;
-            border-left-color: var(--status-default);
+            border-bottom-color: var(--status-default);
         }
         &--error {
             background-color: var(--status-danger);

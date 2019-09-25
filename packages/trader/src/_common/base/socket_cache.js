@@ -63,8 +63,8 @@ const SocketCache = (() => {
 
         const active_symbols_obj = curr_lang ? `active_symbols___${curr_lang}` : null;
 
-        if (!ObjectUtils.ObjectUtils.isEmptyObject(ws_cache)) {
-            if (msg_type === 'ticks_history' && !ObjectUtils.ObjectUtils.isEmptyObject(ws_cache[active_symbols_obj])) {
+        if (!ObjectUtils.isEmptyObject(ws_cache)) {
+            if (msg_type === 'ticks_history' && !ObjectUtils.isEmptyObject(ws_cache[active_symbols_obj])) {
                 const active_symbols = ws_cache[active_symbols_obj].value.active_symbols;
                 const curr_symbol    = response.echo_req.ticks_history;
                 if (isMarketClosed(active_symbols, curr_symbol)) {

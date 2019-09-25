@@ -9,7 +9,6 @@ export default class ContractCardStore {
     @observable contract            = null;
     @observable indicative_movement = '';
     @observable profit_movement     = '';
-    @observable currency            = '';
     @observable is_loading          = false;
 
     contract_id                     = null;
@@ -18,8 +17,6 @@ export default class ContractCardStore {
     
     constructor(root_store) {
         this.root_store  = root_store;
-        const { client } = this.root_store.core;
-        this.currency    = client.currency;
 
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('contract.status', this.onContractStatusEvent);
@@ -77,24 +74,4 @@ export default class ContractCardStore {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
     }
-
-    disposeOnAccountSwitch() {
-        if (typeof this.switchAccountDisposer === 'function') {
-            this.switchAccountDisposer();
-        }
-    }
-
-    registerOnAccountSwitch = () => {
-        const { client } = this.root_store.core;
-
-        this.switchAccountDisposer = reaction(
-            () => client.switch_broadcast,
-            action((switch_broadcast) => {
-                if (switch_broadcast) {
-                    this.currency = client.currency;
-                }
-            })
-        );
-    }
-    
 }

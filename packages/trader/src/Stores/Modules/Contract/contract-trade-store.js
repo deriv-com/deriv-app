@@ -173,6 +173,7 @@ export default class ContractTradeStore extends BaseStore {
             this.error_message = response.error.message;
             return;
         }
+        // Empty response means the contract belongs to a different account
         if (ObjectUtils.isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');

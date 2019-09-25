@@ -7,7 +7,6 @@ import ObjectUtils   from 'deriv-shared/utils/object';
 import BinarySocket  from '_common/base/socket_base';
 import { localize }  from 'App/i18n';
 import { WS }        from 'Services';
-import BinarySocket  from '_common/base/socket_base';
 import BaseStore     from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];

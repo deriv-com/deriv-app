@@ -5,7 +5,7 @@ import { WS }                  from 'Services';
 import {
     isTimeValid,
     minDate,
-    toMoment }                  from 'Utils/Date';
+    toMoment }                 from 'Utils/Date';
 import { buildBarriersConfig } from './barrier';
 import {
     buildDurationConfig,

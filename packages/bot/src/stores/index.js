@@ -7,7 +7,7 @@ export default class RootStore {
     constructor(core, ws) {
         this.core          = core;
         this.ws            = ws;
-        this.flyout        = new FlyoutStore();
+        this.flyout        = new FlyoutStore(this);
         this.summary       = new SummaryStore(this);
         this.contract_card = new ContractCardStore(this);
 

@@ -20,12 +20,7 @@ import { translate }         from '../utils/lang/i18n';
 import                            '../assets/sass/contract-card.scss';
 
 class ContractCard extends React.PureComponent {
-    componentDidMount() {
-        this.props.registerOnAccountSwitch();
-    }
-
     componentWillUnmount() {
-        this.props.disposeOnAccountSwitch();
         this.props.disposeObserverListener();
     }
 
@@ -149,9 +144,7 @@ ContractCard.propTypes = {
 export default connect(({ contract_card }) => ({
     contract               : contract_card.contract,
     disposeObserverListener: contract_card.disposeObserverListener,
-    disposeOnAccountSwitch : contract_card.disposeOnAccountSwitch,
     indicative_movement    : contract_card.indicative_movement,
     is_loading             : contract_card.is_loading,
     profit_movement        : contract_card.profit_movement,
-    registerOnAccountSwitch: contract_card.registerOnAccountSwitch,
 }))(ContractCard);

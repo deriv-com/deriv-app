@@ -232,7 +232,7 @@ function BinaryBotPrivateTickAnalysis() {
  }
 }
 var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+${Blockly.JavaScript.workspaceToCode(Blockly.derivWorkspace)}
 BinaryBotPrivateRun(BinaryBotPrivateInit);
 while(true) {
  BinaryBotPrivateTickAnalysis();

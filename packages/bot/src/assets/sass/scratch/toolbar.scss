@@ -6,7 +6,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    box-shadow: inset 0 1px 0 0 #f2f3f4, inset 0 -1px 0 0 #f2f3f4; // TODO color
+    box-shadow: inset 0 1px 0 0 var(--general-section-1), inset 0 -1px 0 0 var(--general-section-1);
     padding: 5px 12px;
 
     #{$toolbar}__btn {
@@ -48,7 +48,7 @@
     &__group {
         display: flex;
         border-radius: $BORDER_RADIUS;
-        border: solid 1px #d6dadb; // TODO color
+        border: solid 1px var(--border-normal);
 
         &-btn {
             padding: 0px 8px;
@@ -73,5 +73,5 @@
     width: 1px;
     height: 17px;
     margin: 8px;
-    background-color: #f2f3f4; // TODO color
+    background-color: var(--border-normal); // TODO color
 }

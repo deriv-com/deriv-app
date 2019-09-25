@@ -96,6 +96,7 @@ export default class PortfolioStore extends BaseStore {
         if ('error' in response) return;
 
         const proposal = response.proposal_open_contract;
+        this.root_store.modules.contract_trade.addContract(proposal);
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;
@@ -135,7 +136,7 @@ export default class PortfolioStore extends BaseStore {
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         const { bid_price } = this.positions[i].contract_info;
-        this.positions[i].is_sell_requested = false;
+        this.positions[i].is_sell_requested = true;
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }

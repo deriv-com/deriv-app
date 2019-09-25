@@ -168,6 +168,18 @@ const BinarySocketBase = (() => {
             ...device_data,
         });
 
+    const setAccountCurrency = (currency, passthrough) =>
+        deriv_api.send({
+            set_account_currency: currency,
+            ...(passthrough && { passthrough }),
+        });
+
+    const newAccountReal = (values) =>
+        deriv_api.send({
+            new_account_real: 1,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -192,6 +204,18 @@ const BinarySocketBase = (() => {
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
 
+    const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
+        deriv_api.send({
+            transfer_between_accounts: 1,
+            accounts                 : 'all',
+            ...(account_from && {
+                account_from,
+                account_to,
+                currency,
+                amount,
+            }),
+        });
+
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
@@ -215,12 +239,14 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         newAccountVirtual,
+        newAccountReal,
         profitTable,
         statement,
         verifyEmail,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
+        setAccountCurrency,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,
@@ -228,6 +254,7 @@ const BinarySocketBase = (() => {
         subscribeTicksHistory,
         subscribeTransaction,
         subscribeWebsiteStatus,
+        transferBetweenAccounts,
     };
 })();
 

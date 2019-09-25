@@ -30,11 +30,11 @@ export default class FlyoutStore {
         this.is_help_content = false;
 
         if (this.is_search_flyout) {
-            const no_result = !xml_list.length;
+            const has_result = xml_list.length;
 
             processed_xml = [];
 
-            if (no_result) {
+            if (!has_result) {
                 const label = document.createElement('label');
                 label.setAttribute('text', translate('No Blocks Found'));
 

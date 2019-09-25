@@ -14,10 +14,11 @@
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
-    background: $COLOR_GREEN_1;
+    background: var(--button-primary-default);
 
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);
+        color: var(--text-general);
     }
     &--link {
         max-width: 220px;
@@ -31,8 +32,26 @@
         text-decoration: none;
     }
     &--primary {
+        &--default {
+            background: var(--button-primary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-primary-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-primary-default);
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .btn__text {
+                color: $color-white;
+            }
+        }
+        // TODO: (colors) remove this line after colors migration complete
         .btn__text {
-            color: $COLOR_WHITE;
+            color: $color-white;
         }
         &--orange {
             background: $COLOR_ORANGE;
@@ -47,6 +66,9 @@
             &.effect:focus:not(:active):after {
                 border: 0 solid $COLOR_ORANGE;
             }
+        }
+        &--red {
+            background: var(--button-primary-default);
         }
         &--green {
             background: $COLOR_GREEN_1;
@@ -70,10 +92,48 @@
                 color: $COLOR_LIGHT_BLACK_4;
             }
         }
+        // TODO: (colors) remove this line after colors migration complete -- End here
     }
     &--secondary {
         background: transparent;
 
+        &--default {
+            background: transparent;
+            border: 1px solid var(--button-secondary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-secondary-hover);
+            }
+            &:active:not([disabled]) {
+                border: 1px solid var(--button-secondary-default);
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .btn__text {
+                color: var(--text-prominent);
+            }
+        }
+        &--large {
+            background: transparent;
+            border: 2px solid var(--button-secondary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-secondary-hover);
+            }
+            &:active:not([disabled]) {
+                border: 2px solid var(--button-secondary-default);
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .btn__text {
+                color: var(--text-prominent);
+            }
+        }
+        // TODO: (colors) remove this line after colors migration complete
         &--orange {
             .btn__text {
                 color: $COLOR_ORANGE;
@@ -87,6 +147,13 @@
             /* postcss-bem-linter: ignore */
             &.effect:focus:not(:active):after {
                 border: 0 solid $COLOR_ORANGE;
+            }
+        }
+        &--red {
+            border: 1px solid var(--button-primary-default);
+
+            .btn__text {
+                color: var(--brand-red-coral);
             }
         }
         &--green {
@@ -115,18 +182,42 @@
             color: $COLOR_LIGHT_BLACK_4 !important;
             cursor: not-allowed !important;
         }
+        // TODO: (colors) remove this line after colors migration complete -- End here
     }
+    &--tertiary {
+        &--default {
+            background: var(--button-tertiary-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-tertiary-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-tertiary-default);
+            }
+            .btn__text {
+                color: var(--brand-red-coral); /* stylelint-disable-line color-no-hex */
+            }
+            &:disabled, &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+        }
+    }
+    // TODO: (colors) remove this line after colors migration complete
     &--flat {
-        background: $COLOR_WHITE;
+        background-color: transparent;
+        font-weight: bold;
+        border: solid 1px #999999; /* stylelint-disable-line color-no-hex */
+        height: 3.2em;
 
         .btn__text {
-            color: #4c5794; /* stylelint-disable-line color-no-hex */
+            color: #333333;  /* stylelint-disable-line color-no-hex */
         }
         &:hover:not([disabled]) {
-            background: #f2f3f8; /* stylelint-disable-line color-no-hex */
+            background: transparent;
         }
         &:active:not([disabled]) span {
-            color: #4c5794; /* stylelint-disable-line color-no-hex */
+            color: transparent;
         }
         /* postcss-bem-linter: ignore */
         &.effect:focus:not(:active):after {
@@ -142,6 +233,7 @@
             }
         }
     }
+    // TODO: (colors) remove this line after colors migration complete
     &--alternate {
         background: $COLOR_LIGHT_GRAY_2;
         border-color: $COLOR_LIGHT_GRAY_2;

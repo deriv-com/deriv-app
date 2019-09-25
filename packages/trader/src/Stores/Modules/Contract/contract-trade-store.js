@@ -24,7 +24,8 @@ export default class ContractTradeStore extends BaseStore {
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
-    should_forget_first = false;
+    // TODO: figure out this later
+    // should_forget_first = false;
 
     subscribers = {};
 
@@ -59,16 +60,11 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        if (this.should_forget_first) {
-            WS.forgetAll('proposal_open_contract').then(() => {
-                this.should_forget_first = false;
-                this.subscribers[contract_id]
-                    = WS.subscribeProposalOpenContract(contract_id, cb);
-            });
-        } else {
-            this.subscribers[contract_id]
-                = WS.subscribeProposalOpenContract(contract_id, cb);
-        }
+        this.subscribers[contract_id]
+            = WS.subscribeProposalOpenContract(contract_id, cb);
+    }
+
+    handleSubscribeProposalOpenContractAll = () => {
     }
 
     applicable_contracts = () => {
@@ -124,6 +120,9 @@ export default class ContractTradeStore extends BaseStore {
         underlying,
         is_tick_contract,
     }) {
+        const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
+        if (contract_exists) { return; /* do nothing */ }
+
         const contract = new ContractStore(this.root_store, { contract_id });
         contract.populateConfig({
             date_start: start_time,
@@ -138,7 +137,6 @@ export default class ContractTradeStore extends BaseStore {
         });
 
         if (is_tick_contract && this.granularity !== 0) {
-            console.warn({ granularity: this.granularity });
             this.root_store.ui.addNotification(
                 clientNotifications.switch_to_tick_chart
             );
@@ -179,7 +177,6 @@ export default class ContractTradeStore extends BaseStore {
         if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error           = true;
             this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
-            this.should_forget_first = true;
             // If contract does not belong to this account
             this.contracts           = [];
             return;
@@ -190,7 +187,7 @@ export default class ContractTradeStore extends BaseStore {
             this.contracts.forEach(contract =>  {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
-                    if(response.proposal_open_contract.is_sold) {
+                    if (response.proposal_open_contract.is_sold) {
                         this.root_store.ui.removeNotification(
                             clientNotifications.switch_to_tick_chart
                         );

@@ -106,7 +106,7 @@ describe('declarative_validation_rules.js', () => {
 
     describe('.validPhone', () => {
         it('should return false if value contains characters that are not numerals', () => {
-            let non_numbers = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+-={}|[]\\:;"\'<>?,./'.split('');
+            let non_numbers = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+={}|[]\\:;"\'<>?,./'.split('');
             non_numbers.forEach((non_number) => {
                 let mockvalue = `000 000${non_number} 0000`;
                 expect(rules['phone'].func(mockvalue)).to.be.false;

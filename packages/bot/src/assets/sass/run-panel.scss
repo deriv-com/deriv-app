@@ -1,0 +1,17 @@
+/**
+* @define -panel
+**/
+.run-panel {
+    height: calc(100% - 56px);
+    top: 58px;
+
+    &__footer {
+        text-align: center;
+    }
+    &__button {
+        margin-left: 0 !important;
+    }
+    &__icon-info {
+        vertical-align: middle;
+    }
+}

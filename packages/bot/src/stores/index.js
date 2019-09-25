@@ -6,8 +6,8 @@ export default class RootStore {
     constructor(core, ws) {
         this.core = core;
         this.ws = ws;
-        this.flyout = new FlyoutStore();
-        this.toolbar = new ToolbarStore(this.flyout);
+        this.flyout = new FlyoutStore(this);
+        this.toolbar = new ToolbarStore(this);
 
         // Create a singleton class to share rootStore with scratch
         ScratchStore.setInstance(this);

@@ -1,7 +1,7 @@
 import { saveAs }                   from './shared';
 import config                       from '../constants';
 
-export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
+export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
 export const oppositesToDropdownOptions = opposite_name => {
     return opposite_name.map(contract_type => {
@@ -10,20 +10,19 @@ export const oppositesToDropdownOptions = opposite_name => {
     });
 };
 
-export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-    console.log(dropEvent); // eslint-disable-line
-    const { clientX = 0, clientY = 0 } = dropEvent || {};
-    const blocklyMetrics = Blockly.derivWorkspace.getMetrics();
-    const scaleCancellation = 1 / Blockly.derivWorkspace.scale;
-    const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft;
-    const blocklyTop = document.body.offsetHeight - blocklyMetrics.viewHeight - blocklyMetrics.viewTop;
-    const cursorX = clientX ? (clientX - blocklyLeft) * scaleCancellation : 0;
-    let cursorY = clientY ? (clientY - blocklyTop) * scaleCancellation : 0;
-    const toolbar_height = document.getElementById('toolbar').clientHeight;
-    blocksToClean.forEach(block => {
-        block.moveBy(cursorX, cursorY - toolbar_height);
+export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
+    const { clientX = 0, clientY = 0 } = drop_event || {};
+    const blockly_metrics = Blockly.derivWorkspace.getMetrics();
+    const scale_cancellation = 1 / Blockly.derivWorkspace.scale;
+    const blockly_left = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
+    const blockly_top = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
+    const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
+    let cursor_y = clientY ? (clientY - blockly_top) * scale_cancellation : 0;
+    const toolbar_height = 76;
+    blocks_to_clean.forEach(block => {
+        block.moveBy(cursor_x, cursor_y - toolbar_height);
         block.snapToGrid();
-        cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+        cursor_y += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
     });
     // Fire an event to allow scrollbars to resize.
     Blockly.derivWorkspace.resizeContents();
@@ -35,9 +34,9 @@ export const setBlockTextColor = block => {
         Array.from(block.inputList).forEach(inp =>
             inp.fieldRow.forEach(field => {
                 if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.style.setProperty('fill', 'white', 'important');
+                    const svg_element = field.getSvgRoot();
+                    if (svg_element) {
+                        svg_element.style.setProperty('fill', 'white', 'important');
                     }
                 }
             })
@@ -45,9 +44,9 @@ export const setBlockTextColor = block => {
     }
     const field = block.getField();
     if (field) {
-        const svgElement = field.getSvgRoot();
-        if (svgElement) {
-            svgElement.style.setProperty('fill', 'white', 'important');
+        const svg_element = field.getSvgRoot();
+        if (svg_element) {
+            svg_element.style.setProperty('fill', 'white', 'important');
         }
     }
     Blockly.Events.recordUndo = true;
@@ -103,8 +102,8 @@ class DeleteStray extends Blockly.Events.Abstract {
 }
 DeleteStray.prototype.type = 'deletestray';
 
-export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
-    Blockly.Events.setGroup(eventGroup);
+export const deleteBlocksLoadedBy = (id, event_group = true) => {
+    Blockly.Events.setGroup(event_group);
     Blockly.derivWorkspace.getTopBlocks().forEach(block => {
         if (block.loaderId === id) {
             if (isProcedure(block.type)) {
@@ -119,40 +118,16 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     Blockly.Events.setGroup(false);
 };
 
-export const fixArgumentAttribute = xml => {
-    Array.from(xml.getElementsByTagName('arg')).forEach(o => {
-        if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
-    });
-};
-
-export const backwardCompatibility = block => {
-    if (block.getAttribute('type') === 'on_strategy') {
-        block.setAttribute('type', 'before_purchase');
-    } else if (block.getAttribute('type') === 'on_finish') {
-        block.setAttribute('type', 'after_purchase');
+export const addDomAsBlock = block_xml => {
+    if (block_xml.tagName === 'variables') {
+        return Blockly.Xml.domToVariables(block_xml, Blockly.derivWorkspace);
     }
-    Array.from(block.getElementsByTagName('statement')).forEach(statement => {
-        if (statement.getAttribute('name') === 'STRATEGY_STACK') {
-            statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
-        } else if (statement.getAttribute('name') === 'FINISH_STACK') {
-            statement.setAttribute('name', 'AFTERPURCHASE_STACK');
-        }
-    });
-    if (isMainBlock(block.getAttribute('type'))) {
-        block.removeAttribute('deletable');
-    }
-};
-
-export const addDomAsBlock = blockXml => {
-    if (blockXml.tagName === 'variables') {
-        return Blockly.Xml.domToVariables(blockXml, Blockly.derivWorkspace);
-    }
-    const blockType = blockXml.getAttribute('type');
+    const blockType = block_xml.getAttribute('type');
     if (isMainBlock(blockType)) {
         Blockly.derivWorkspace
             .getTopBlocks()
             .filter(b => b.type === blockType)
             .forEach(b => b.dispose());
     }
-    return Blockly.Xml.domToBlock(blockXml, Blockly.derivWorkspace);
+    return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 };

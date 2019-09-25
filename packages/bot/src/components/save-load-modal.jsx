@@ -1,5 +1,3 @@
-import React            from 'react';
-import PropTypes        from 'prop-types';
 import classNames       from 'classnames';
 import {
     Button,
@@ -18,34 +16,34 @@ import {
 }                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
+import                       '../assets/sass/saveload-modal.scss';
 
 const initial_option = { is_local: true, save_as_collection: true };
 
 const SaveLoadModal = ({
     onLoadClick,
     onConfirmSave,
-    isSaveModal,
-    isModalOpen,
+    handleFileChange,
+    is_save_modal,
+    is_saveload_modal_open,
     toggleSaveLoadModal,
     isGoogleDriveConnected,
     onDriveConnect,
     handleFileChange,
 }) => {
-    const modal_id = isSaveModal ? 'save-modal' : 'load-modal';
-    const title = isSaveModal ? 'Save Bot' : 'Load Bot';
+    const title = is_save_modal ? 'Save Bot' : 'Load Bot';
 
     return (
         <Modal
-            id={modal_id}
-            title={title}
+            title={translate(title)}
             className='modal--saveload'
-            is_open={isModalOpen}
+            is_open={is_saveload_modal_open}
             toggleModal={toggleSaveLoadModal}
         >
             <Formik
                 initialValues={initial_option}
                 onSubmit={
-                    isSaveModal ?
+                    is_save_modal ?
                         (values => onConfirmSave(values)) :
                         (values => onLoadClick(values))
                 }
@@ -84,7 +82,7 @@ const SaveLoadModal = ({
                                     />
                                 </div>
                                 {
-                                    isSaveModal ?
+                                    is_save_modal ?
                                         <>
                                             <Field name='save_as_collection'>
                                                 {({ field }) => (
@@ -112,7 +110,7 @@ const SaveLoadModal = ({
                                         />
                                 }
                             </div>
-                            <div className='dc-modal-footer__modal--saveload'>
+                            <div className='modal--footer'>
                                 <Button
                                     type='button'
                                     className={classNames(
@@ -121,7 +119,7 @@ const SaveLoadModal = ({
                                         'btn--secondary--orange',
                                     )}
                                     text={translate('Cancel')}
-                                    onClick={toggleSaveLoadModal}
+                                    onClick={() => toggleSaveLoadModal(is_save_modal)}
                                 />
                                 <Button
                                     type='submit'
@@ -170,23 +168,21 @@ const IconRadio = props => {
 };
 
 SaveLoadModal.propTypes = {
-    handleFileChange      : PropTypes.func,
-    isGoogleDriveConnected: PropTypes.bool,
-    isModalOpen           : PropTypes.bool,
-    isSaveModal           : PropTypes.any,
-    onConfirmSave         : PropTypes.func,
-    onDriveConnect        : PropTypes.func,
-    onLoadClick           : PropTypes.func,
-    toggleSaveLoadModal   : PropTypes.func,
+    handleFileChange         : PropTypes.func,
+    is_google_drive_connected: PropTypes.bool,
+    is_save_modal            : PropTypes.bool,
+    is_saveload_modal_open   : PropTypes.bool,
+    onConfirmSave            : PropTypes.func,
+    onLoadClick              : PropTypes.func,
+    toggleSaveLoadModal      : PropTypes.func,
 };
 
 export default connect(({ toolbar }) => ({
-    onLoadClick           : toolbar.onLoadClick,
-    onConfirmSave         : toolbar.onConfirmSave,
-    onDriveConnect        : toolbar.onDriveConnect,
-    isGoogleDriveConnected: toolbar.isGoogleDriveConnected,
-    isSaveModal           : toolbar.isSaveModal,
-    isModalOpen           : toolbar.isModalOpen,
-    toggleSaveLoadModal   : toolbar.toggleSaveLoadModal,
-    handleFileChange      : toolbar.handleFileChange,
+    handleFileChange         : toolbar.handleFileChange,
+    is_google_drive_connected: toolbar.is_google_drive_connected,
+    is_save_modal            : toolbar.is_save_modal,
+    is_saveload_modal_open   : toolbar.is_saveload_modal_open,
+    onConfirmSave            : toolbar.onConfirmSave,
+    onLoadClick              : toolbar.onLoadClick,
+    toggleSaveLoadModal      : toolbar.toggleSaveLoadModal,
 }))(SaveLoadModal);

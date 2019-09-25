@@ -1,0 +1,28 @@
+.dc-modal {
+    $saveload-modal : '&__modal--saveload';
+
+    &__container {
+        width: 450px;
+    }
+    &-header {
+        #{$saveload-modal} {
+            border-bottom: solid 1px;
+            border-color: #d6dadb; // TODO color
+        }
+        &__title {
+            color: rgba(0, 0, 0, 0.8); // TODO color
+        }
+    }
+    #{$saveload-modal} {
+        .modal--content {
+            padding: 45px 76px 20px;
+        }
+        .modal--footer {
+            text-align: right;
+        }
+        .modal--content-row {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

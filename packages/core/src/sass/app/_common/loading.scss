@@ -14,9 +14,7 @@
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
     &--dark .barspinner__rect {
-        @include themify($themes) {
-            background-color: themed('spinner_background_color');
-        }
+        background-color: var(--brand-secondary);
     }
 }
 
@@ -31,28 +29,28 @@
 
 /** @define initial-loader */
 .initial-loader {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     display: flex;
-    @include themify($themes) {
-        background-color: themed('initial_loader_background');
-    }
+    background: transparent;
 
+    &--fullscreen {
+        width: 100vw;
+        height: 100vh;
+    }
     &__barspinner {
         margin: 5em auto;
 
         &--rect {
-            background-color: $COLOR_GREEN_3;
+            background-color: var(--brand-secondary);
         }
     }
     &__text {
         line-height: 44px;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         @include typeface(--paragraph-center-normal-black, none);
     }
 }

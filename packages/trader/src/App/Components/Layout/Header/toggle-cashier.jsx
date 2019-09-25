@@ -5,13 +5,13 @@ import { Button, Modal } from 'deriv-components';
 import { localize }      from 'App/i18n';
 import Lazy              from 'App/Containers/Lazy';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
+import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
 
-const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
-
-const Deposit      = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal   = () => import('App/Containers/CashierModal/withdrawal.jsx');
-const PaymentAgent = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const Deposit         = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal      = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent    = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer = () => import('App/Containers/CashierModal/account-transfer.jsx');
 
 const modal_content = [
     {
@@ -50,6 +50,18 @@ const modal_content = [
                 has_progress={true}
             />
         ),
+    }, {
+        container: 'account_transfer',
+        icon     : 'IconAccountTransfer',
+        label    : localize('Transfer between accounts'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={AccountTransfer}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
     },
 ];
 
@@ -60,7 +72,7 @@ const ModalContent = ({
     return (
         <VerticalTab
             alignment='center'
-            classNameHeader='modal__tab-header'
+            classNameHeader='cashier__modal-tab'
             id='modal'
             list={modal_content}
             selected_index={selected_index}
@@ -70,7 +82,10 @@ const ModalContent = ({
 };
 
 class ToggleCashier extends React.Component {
-    onClickDeposit = () => { this.props.toggleCashier('deposit'); };
+    onClickDeposit = () => {
+        this.props.setCashierActiveTab('deposit');
+        this.props.toggleCashier();
+    };
 
     render() {
         const {
@@ -96,7 +111,7 @@ class ToggleCashier extends React.Component {
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary btn--primary--orange')}
+                    className={classNames(className, 'btn--primary--default')}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}
@@ -130,6 +145,8 @@ ToggleCashier.propTypes = {
     enableApp               : PropTypes.func,
     is_open                 : PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    setCashierActiveTab     : PropTypes.func,
+    toggleCashier           : PropTypes.func,
     toggleModal             : PropTypes.func,
 };
 

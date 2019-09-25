@@ -25,16 +25,40 @@ class Autocomplete extends React.PureComponent {
 
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
+    // TODO: Prevent form submission when user is finished typing and keys in Enter
+    onKeyPressed = (event) => {
+        if (this.state.should_show_list) {
+            // keycode == 13 is Enter key
+            if (event.keyCode === 13) event.preventDefault();
+        }
+    };
+
     onBlur = (e) => {
+        event.preventDefault();
         this.hideDropdownList();
 
+        this.setState({
+            filtered_items: this.props.list_items,
+        });
+        if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
+            this.props.onItemSelection({
+                text : 'No results found', // TODO: add localize
+                value: '',
+            });
+        }
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur(e);
         }
     };
 
     onItemSelection = (item) => {
-        this.setState({ input_value: (item.text ? item.text : item) });
+        this.setState({
+            input_value: item.text ? item.text : item,
+        }, () => {
+            this.setState({
+                filtered_items: this.props.list_items.filter(i => i.text === this.state.input_value),
+            });
+        });
 
         if (typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection(item);
@@ -54,14 +78,26 @@ class Autocomplete extends React.PureComponent {
 
         const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
 
+        const get_filtered_items = () => {
+            const list = this.props.list_items.filter(item => (
+                is_string_array ?
+                    item.toLowerCase().includes(val)
+                    : item.text.toLowerCase().includes(val)
+            ));
+            if (!list.length) {
+                list.push({
+                    text : 'No results found', // TODO: add localize
+                    value: '',
+                });
+                this.setState({ input_value: 'NaN' });
+            }
+            return list;
+        };
+
         this.setState(
             {
                 filtered_items: val ?
-                    this.props.list_items.filter(item => (
-                        is_string_array ?
-                            item.toLowerCase().includes(val)
-                            : item.text.toLowerCase().includes(val)
-                    ))
+                    get_filtered_items()
                     : null,
             }
         );
@@ -73,6 +109,7 @@ class Autocomplete extends React.PureComponent {
             onItemSelection,
             value,
             list_items,
+            autoComplete,
             ...otherProps
         } = this.props;
 
@@ -82,7 +119,9 @@ class Autocomplete extends React.PureComponent {
                     <Input
                         { ...otherProps }
                         className='dc-autocomplete__field'
-                        onFocus={ this.showDropdownList }
+                        autoComplete={autoComplete}
+                        onKeyDown={this.onKeyPressed}
+                        onFocus={(e) => this.showDropdownList(e) }
                         onInput={ this.filterList }
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={ this.onBlur }
@@ -106,7 +145,7 @@ class Autocomplete extends React.PureComponent {
                 <DropdownList
                     style={ {
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',
-                        marginTop: 'calc(4px - 18px)', // 4px is the standard margin. In case of error, the list should overlap the error
+                        marginTop: 'calc(4px)', // 4px is the standard margin. In case of error, the list should overlap the error
                         // TODO confirm placement of dropdown list and positioning of error
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
                     } }

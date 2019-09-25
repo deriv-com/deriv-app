@@ -6,10 +6,8 @@
     z-index: 2;
     cursor: pointer;
     border-radius: $BORDER_RADIUS;
-    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_3;
-    @include themify($themes) {
-        background: themed('container_secondary_color');
-    }
+    box-shadow: 0 2px 8px 0 var(--shadow-menu);
+    background: var(--state-normal);
 
     &--left {
         width: unset;
@@ -25,9 +23,7 @@
     &__label {
         @include typeface(--paragraph-center-bold-black, capitalize);
         @include toEm(padding, 10px, 1.6em);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         display: block;
     }
     &__item {
@@ -35,9 +31,7 @@
 
         &-text, &-symbol {
             @include typeface(--paragraph-left-normal-black);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
             display: flex;
             width: 100%;
             justify-content: center;
@@ -46,29 +40,27 @@
             padding: 6.25px 0;
             padding-left: 1.6em;
         }
-        &:hover:not(&--disabled) {
-            @include themify($themes) {
-                background-color: themed('tab_hover_color');
-                color: themed('text_color');
-            }
+        &-text--left {
+            justify-content: flex-start;
+            padding-left: 1em;
+        }
+        &:not(&--disabled):hover {
+            background-color: var(--state-hover);
+            color: var(--text-general);
         }
         &--selected .dc-list__item-text, &--selected .dc-list__item-symbol, &--selected .dc-list__item-tooltip {
             @include typeface(--paragraph-left-bold-active);
-            @include themify($themes) {
-                color: themed('text_active_color');
-                background: themed('active_color');
-            }
+            color: var(--text-prominent);
+            background: var(--state-active);
         }
         &--highlighted:not(&--disabled) {
-            @include themify($themes) {
-                background-color: themed('tab_hover_color');
-                color: themed('text_color');
-            }
+            background-color: var(--state-hover);
+            color: var(--text-general);
         }
         &--disabled {
-            @include themify($themes) {
-                color: themed('text_secondary_color');
-            }
+            color: var(--text-disabled);
+            opacity: 0.3;
+            cursor: default;
         }
         &-symbol {
             @include typeface(--paragraph-left-normal-black);
@@ -78,9 +70,8 @@
             text-align: center;
             justify-content: center;
             display: flex;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
+
         }
     }
 

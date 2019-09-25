@@ -1,0 +1,52 @@
+/** @define side-menu */
+.side-menu {
+    overflow: hidden;
+
+    &__heading {
+        padding: 20px 16px;
+    }
+    &__main-header-layout {
+        height: 100%;
+        min-width: 270px;
+    }
+    &__sub-header-layout {
+        padding-top: 56px;
+        height: 100%;
+        border-left: 2px solid var(--general-main-1);
+    }
+    &__title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-right: 8px;
+        color: var(--text-prominent);
+    }
+    &__header {
+        &--active {
+            background-color: var(--general-main-1);
+
+            /* postcss-bem-linter: ignore */
+            div {
+                font-weight: bold;
+            }
+        }
+    }
+    &__icon {
+        transform: rotate(360deg);
+        margin-left: auto;
+        @extend %inline-icon;
+    }
+    /* postcss-bem-linter: ignore */
+    .vertical-tab__tab .vertical-tab__header {
+        /* postcss-bem-linter: ignore */
+        .vertical-tab__header__link {
+            text-align: left;
+            margin-left: 32px;
+        }
+        &--active {
+            /* postcss-bem-linter: ignore */
+            .vertical-tab__header__link {
+                margin-left: 28px;
+            }
+        }
+    }
+}

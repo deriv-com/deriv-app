@@ -28,6 +28,7 @@ const MT5AccountCard = ({
     icon,
     specs,
     title,
+    type,
     onSelectAccount,
 }) => {
     const IconComponent = icon || (() => null);
@@ -79,8 +80,8 @@ const MT5AccountCard = ({
                 }
 
                 <Button
-                    className='btn--primary--default mt5-account-card__account-selection'
-                    onClick={ () => { onSelectAccount(title); } }
+                    className='mt5-account-card__account-selection'
+                    onClick={ () => { onSelectAccount(type); } }
                     type='button'
                 >
                     <Localize i18n_default_text='Select' />
@@ -95,6 +96,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
             title={ localize('Standard') }
+            type={{
+                category: 'real',
+                type    : 'standard',
+            }}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -113,6 +118,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Advanced') }
+            type={{
+                category: 'real',
+                type    : 'advanced',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
@@ -126,6 +135,10 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         <MT5AccountCard
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Synthetic Indices') }
+            type={{
+                category: 'real',
+                type    : 'synthetic_indices',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
@@ -142,8 +155,12 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
 const DemoAccountsDisplay = ({ onSelectAccount }) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
-            icon={ () => (<IconMT5Standard />) }
+            icon={() => (<IconMT5Standard />) }
             title={ localize('Standard') }
+            type={{
+                category: 'demo',
+                type    : 'standard',
+            }}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -160,8 +177,12 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
             } }
         />
         <MT5AccountCard
-            icon={ () => (<IconMT5Advanced />) }
+            icon={() => (<IconMT5Advanced />) }
             title={ localize('Advanced') }
+            type={{
+                category: 'demo',
+                type    : 'advanced',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
@@ -173,8 +194,12 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
             } }
         />
         <MT5AccountCard
-            icon={ () => (<IconMT5Synthetic />) }
+            icon={() => (<IconMT5Synthetic />) }
             title={ localize('Synthetic Indices') }
+            type={{
+                category: 'demo',
+                type    : 'synthetic_indices',
+            }}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }

@@ -22,7 +22,7 @@
     justify-content: center;
     flex-direction: column;
     flex-grow: 1;
-    padding-top: 3rem;
+    //padding-top: 3rem;
 
     &__icon-area {
         display: flex;
@@ -45,17 +45,26 @@
         svg {
             display: block;
         }
-        &--big {
+        &--xlarge,
+        &--large {
             width: auto;
 
-            svg.inline-icon {
-                width: 120px;
-                height: 120px;
-            }
             .bottom-right-overlay {
                 width: 48px;
                 height: 48px;
                 right: 0;
+            }
+        }
+        &--xlarge {
+            svg:first-child {
+                width: 128px;
+                height: 128px;
+            }
+        }
+        &--large {
+            svg.inline-icon {
+                width: 120px;
+                height: 120px;
             }
         }
     }

@@ -180,6 +180,12 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const mt5NewAccount = (values) =>
+        deriv_api.send({
+            mt5_new_account: 1,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -238,6 +244,7 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        mt5NewAccount,
         newAccountVirtual,
         newAccountReal,
         profitTable,

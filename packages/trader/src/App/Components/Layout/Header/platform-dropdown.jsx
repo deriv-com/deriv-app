@@ -15,10 +15,12 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     componentWillMount() {
+        window.addEventListener('popstate', this.props.handleClick);
         document.addEventListener('click', this.handleClickOutside);
     }
 
     componentWillUnmount() {
+        window.removeEventListener('popstate', this.props.handleClick);
         document.removeEventListener('click', this.handleClickOutside);
     }
 

@@ -1,22 +1,20 @@
-import DocumentUploader from '@binary-com/binary-document-uploader';
-import classNames       from 'classnames';
-import React            from 'react';
-import { FileDropzone } from 'deriv-components';
-import BinarySocket     from '_common/base/socket_base';
+import DocumentUploader   from '@binary-com/binary-document-uploader';
+import classNames         from 'classnames';
+import React              from 'react';
+import { FileDropzone }   from 'deriv-components';
+import BinarySocket       from '_common/base/socket_base';
 import {
     compressImg,
     convertToBase64,
-    isImageType }       from '_common/image_utility';
-import { localize }     from 'App/i18n';
-import IconCloudUpload  from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
-import IconRemoveFile   from 'Assets/AccountManagement/icon-remove-file.svg';
+    isImageType }         from '_common/image_utility';
+import { localize }       from 'App/i18n';
+import IconCloudUpload    from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
+import IconRemoveFile     from 'Assets/AccountManagement/icon-remove-file.svg';
 import {
-    filesize_error_message,
     getFormatFromMIME,
     getSupportedFiles,
     max_document_size,
-    supported_filetypes,
-    unsupported_file_message } from './constants';
+    supported_filetypes } from './constants';
 
 const UploadMessage = (
     <>
@@ -81,11 +79,10 @@ const readFiles = (files) => {
     return Promise.all(promises);
 };
 
-class UploadFile extends React.PureComponent {
+class FileUploader extends React.PureComponent {
     state = {
-        document_file       : [],
-        file_error_message  : null,
-        is_any_upload_failed: false,
+        document_file     : [],
+        file_error_message: null,
     };
 
     handleAcceptedFiles = (files) => {
@@ -100,12 +97,12 @@ class UploadFile extends React.PureComponent {
     }
 
     handleRejectedFiles = (files) => {
-        const isFileTooLarge    = files.length > 0 && files[0].size > max_document_size;
-        const hasSupportedFiles = files.filter((file) => getSupportedFiles(file.name));
-        const file_error_message = ((isFileTooLarge && (hasSupportedFiles.length > 0)) ?
-            filesize_error_message
+        const is_file_too_large  = files.length > 0 && files[0].size > max_document_size;
+        const supported_files    = files.filter((file) => getSupportedFiles(file.name));
+        const file_error_message = ((is_file_too_large && (supported_files.length > 0)) ?
+            localize('File size should be 8MB or less')
             :
-            unsupported_file_message
+            localize('File uploaded is not supported')
         );
 
         this.setState({
@@ -172,18 +169,14 @@ class UploadFile extends React.PureComponent {
         return (
             <>
                 <FileDropzone
-                    onDropAccepted={
-                        this.onDropAccepted = (files) => this.handleAcceptedFiles(files)
-                    }
-                    onDropRejected={
-                        this.onDropRejected = (files) => this.handleRejectedFiles(files)
-                    }
                     accept={supported_filetypes}
-                    max_size={max_document_size}
-                    multiple={false}
-                    message={UploadMessage}
-                    hover_message={localize('Drop files here..')}
                     error_message={localize('Please upload supported file type.')}
+                    hover_message={localize('Drop files here..')}
+                    max_size={max_document_size}
+                    message={UploadMessage}
+                    multiple={false}
+                    onDropAccepted={this.handleAcceptedFiles.bind(this)}
+                    onDropRejected={this.handleRejectedFiles.bind(this)}
                     validation_error_message={file_error_message}
                     value={document_file}
                 />
@@ -202,4 +195,4 @@ class UploadFile extends React.PureComponent {
     }
 }
 
-export default UploadFile;
+export default FileUploader;

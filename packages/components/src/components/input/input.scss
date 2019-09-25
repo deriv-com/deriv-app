@@ -104,19 +104,26 @@
             transform: translateZ(0);
         }
     }
-    &--no-placeholder {
-        label {
-            transform: translate(0, -1.6rem) scale(0.75);
-            color: var(--brand-secondary);
-            padding: 0 4px;
-            background-color: var(--fill-normal);
-        }
-    }
     &__hint {
         color: var(--text-less-prominent);
         font-size: 1.2rem;
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
+    }
+    &--no-placeholder {
+        label {
+            transform: translate(0, -1.6rem) scale(0.75);
+            color: var(--text-less-prominent);
+            padding: 0 4px;
+            background-color: var(--fill-normal);
+        }
+    }
+    &--error {
+        border-color: var(--brand-red-coral) !important;
+
+        label {
+            color: var(--brand-red-coral) !important;
+        }
     }
 }

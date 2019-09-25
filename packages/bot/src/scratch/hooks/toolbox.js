@@ -7,6 +7,13 @@ import { translate }  from '../../utils/lang/i18n';
 /* eslint-disable func-names, no-underscore-dangle */
 
 /**
+ * Width of the toolbox, which changes only in vertical layout.
+ * This is the sum of the width of the flyout (250) and some extra padding (25).
+ * @type {number}
+ */
+Blockly.Toolbox.prototype.width = 275;
+
+/**
  * Initializes the toolbox.
  */
 Blockly.Toolbox.prototype.init = function () {

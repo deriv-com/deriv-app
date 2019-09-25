@@ -45,8 +45,7 @@
         svg {
             display: block;
         }
-        &--xlarge,
-        &--large {
+        &--xlarge, &--large {
             width: auto;
 
             .bottom-right-overlay {

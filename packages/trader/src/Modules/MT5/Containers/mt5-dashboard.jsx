@@ -36,7 +36,7 @@ const MT5AccountCard = ({
         <div className='mt5-account-card'>
             <div className='mt5-account-card__type'>
                 { icon &&
-                    <IconComponent className='mt5-account-card__type--icon' />
+                    <IconComponent />
                 }
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>
@@ -94,7 +94,7 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             icon={() => (<IconMT5Standard />) }
-            title={ localize('Real Standard') }
+            title={ localize('Standard') }
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -112,7 +112,7 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         />
         <MT5AccountCard
             icon={() => (<IconMT5Advanced />) }
-            title={ localize('Real Advanced') }
+            title={ localize('Advanced') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
@@ -125,7 +125,7 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
         />
         <MT5AccountCard
             icon={() => (<IconMT5Synthetic />) }
-            title={ localize('Real Synthetic Indices') }
+            title={ localize('Synthetic Indices') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
@@ -142,48 +142,48 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
 const DemoAccountsDisplay = ({ onSelectAccount }) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
-            icon={() => (<IconMT5Standard />) }
-            title={ localize('Demo Standard') }
+            icon={ () => (<IconMT5Standard />) }
+            title={ localize('Standard') }
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                    components={[ <span key={0} className='mt5-dashboard--hint' /> ]}
+                    components={ [<span key={ 0 } className='mt5-dashboard--hint' />] }
                 />
             }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Suitable for both new and experienced traders.') }
-            specs={{
+            specs={ {
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('150%'),
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
-            }}
+            } }
         />
         <MT5AccountCard
-            icon={() => (<IconMT5Advanced />) }
-            title={ localize('Demo Advanced') }
+            icon={ () => (<IconMT5Advanced />) }
+            title={ localize('Advanced') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
-            specs={{
+            specs={ {
                 [localize('Leverage')]        : localize('Up to 1:100'),
                 [localize('Margin call')]     : localize('150%'),
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
-            }}
+            } }
         />
         <MT5AccountCard
-            icon={() => (<IconMT5Synthetic />) }
-            title={ localize('Demo Synthetic Indices') }
+            icon={ () => (<IconMT5Synthetic />) }
+            title={ localize('Synthetic Indices') }
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
-            specs={{
+            specs={ {
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('100%'),
                 [localize('Stop out level')]  : localize('50%'),
                 [localize('Number of assets')]: localize('10+'),
-            }}
+            } }
         />
     </div>
 );

@@ -13,6 +13,7 @@ import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin } from '_common/base/login';
+import { requestLogout } from 'Services/index';
 
 const resetInitialValues = { password: '' };
 
@@ -30,9 +31,9 @@ class ResetPassword extends React.Component {
 
         actions.setStatus({ reset_complete: true });
 
-        setTimeout(() => {
+        requestLogout().then(() => {
             redirectToLogin();
-        }, 2000);
+        });
     };
 
     handleSubmit = (values, actions) => {

@@ -142,7 +142,7 @@ class ChangePasswordForm extends React.Component {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
-                                    className='account-form__footer-btn btn--tertiary--default'
+                                    className='btn btn--tertiary--default account-form__footer-btn'
                                     type='button'
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}

@@ -1,3 +1,5 @@
+import config from '../../constants';
+
 /* eslint-disable */
 
 /**
@@ -101,13 +103,10 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
   Blockly.Events.setGroup(true);
 
   const top_blocks = this.getTopBlocks(true);
-  const root_blocks = top_blocks.filter(block => block.isMainBlock())
-    // Sort from left to right rather than top to bottom to maintain user's order.
-    .sort((a, b) => {
-      const a_xy = a.getRelativeToSurfaceXY();
-      const b_xy = b.getRelativeToSurfaceXY();
-      return (a_xy.y + 90 * a_xy.x) - (b_xy.y + 90 * b_xy.x);
-    });
+  const root_blocks = top_blocks.filter(block => block.isMainBlock()).sort((a, b) => {
+    const blockIndex = (block) => config.mainBlocks.findIndex(b => b === block.type); 
+    return blockIndex(a) - blockIndex(b);
+  });
   const column_count = 2;
   const blocks_per_column = Math.ceil(root_blocks.length / column_count);
 

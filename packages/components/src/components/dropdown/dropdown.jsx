@@ -325,7 +325,7 @@ class Dropdown extends React.PureComponent {
                                             is_align_text_left={this.props.is_align_text_left}
                                             value={this.props.value}
                                         /> :
-                                        Object.keys(this.props.list).map(key => (
+                                        Object.keys(this.props.list).map((key, idx) => (
                                             <React.Fragment key={key}>
                                                 <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
                                                 <Items
@@ -337,6 +337,9 @@ class Dropdown extends React.PureComponent {
                                                     is_align_text_left={this.props.is_align_text_left}
                                                     value={this.props.value}
                                                 />
+                                                {idx !== Object.keys(this.props.list).length - 1 &&
+                                                    <span className='dc-list__separator' />
+                                                }
                                             </React.Fragment>
                                         ))
                                     }

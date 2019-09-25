@@ -10,3 +10,11 @@
         }
     }
 }
+
+/** @define dc-modal */
+.dc-modal__container_modal-settings {
+    /* postcss-bem-linter: ignore */
+    .dc-modal-header {
+        border-bottom-width: 0;
+    }
+}

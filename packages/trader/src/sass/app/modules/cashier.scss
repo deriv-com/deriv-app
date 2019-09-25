@@ -81,7 +81,7 @@
 
         &-display {
             justify-content: left;
-            min-height: 3.8rem;
+            min-height: 4rem;
             height: auto;
 
             &-span {
@@ -95,12 +95,10 @@
             }
         }
         &-items, &-label {
-            text-transform: none !important;
-            text-align: left !important;
-            font-size: 1.4rem !important;
             justify-content: left;
-            padding-left: 1.4rem;
-            align-items: center;
+        }
+        &-label {
+            margin-left: 1.6rem;
         }
     }
     &__transferred {
@@ -407,6 +405,9 @@
         width: auto;
         margin-bottom: 3.4rem;
     }
+    &__currency, &__balance {
+        line-height: 1.43;
+    }
     &__currency {
         margin: 0 0.4rem;
 
@@ -449,7 +450,7 @@
         }
     }
     &__amount-symbol {
-        top: 1.1rem;
+        top: 0.9rem;
     }
 }
 
@@ -468,6 +469,8 @@
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__title {
+        line-height: 1.65;
+
         &--modal-cashier {
             min-width: 24rem;
             border-bottom: 1px solid var(--general-section-1);

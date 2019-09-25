@@ -119,6 +119,7 @@ const RadioInput = ({
                 <Input
                     name='payment_agent'
                     className='payment-agent__input'
+                    classNameError='payment-agent__input-error'
                     type='text'
                     placeholder='CR'
                     error={ touched.payment_agent && errors.payment_agent }

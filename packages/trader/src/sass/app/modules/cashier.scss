@@ -368,6 +368,9 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
+        &-error {
+            white-space: nowrap;
+        }
     }
     &__paragraph {
         align-self: flex-start;

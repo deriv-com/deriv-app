@@ -6,7 +6,6 @@ import {
 import {
     cleanUpOnLoad,
     fixCollapsedBlocks,
-    backwardCompatibility,
     addDomAsBlock,
 }                                       from '../scratch/utils';
 import googleDrive                      from '../utils/integrations/googleDrive';
@@ -113,6 +112,8 @@ export default class ToolbarStore {
         }
         files = Array.from(files);
         files.forEach(file => {
+            this.file_name = file.name.replace(/\.[^/.]+$/, '');
+
             if (file.type.match('text/xml')) {
                 this.readFile(file, drop_event);
             } else {
@@ -225,7 +226,7 @@ export default class ToolbarStore {
             }
         } catch (e) {
             // TODO
-            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+            console.error(e);  // eslint-disable-line
         }
     }
 
@@ -251,10 +252,6 @@ export default class ToolbarStore {
     loadWorkspace(xml) {
         Blockly.Events.setGroup('load');
         Blockly.derivWorkspace.clear();
-
-        Array.from(xml.children).forEach(block => {
-            backwardCompatibility(block);
-        });
 
         Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
         fixCollapsedBlocks();

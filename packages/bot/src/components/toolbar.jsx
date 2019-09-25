@@ -30,7 +30,7 @@ import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
 const initial_search_value = { search: '' };
-const initial_botname_value = { botname: 'Untitled Bot' };
+const initial_botname_value = { botname: '' };
 
 const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
     <div className='toolbar__form'>
@@ -70,7 +70,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
     </div>
 );
 
-const BotNameBox = ({ onBotNameTyped }) => (
+const BotNameBox = ({ onBotNameTyped, file_name }) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={initial_botname_value}
@@ -88,6 +88,7 @@ const BotNameBox = ({ onBotNameTyped }) => (
                                     name='botname'
                                     onKeyUp={submitForm}
                                     label={translate('Bot name')}
+                                    value={file_name}
                                     trailing_icon={
                                         <RenameIcon />
                                     }
@@ -126,6 +127,7 @@ const ButtonGroup = ({
 );
 
 const Toolbar = ({
+    file_name,
     onToolboxToggle,
     onSearch,
     onSearchBlur,
@@ -165,6 +167,7 @@ const Toolbar = ({
                 />
                 <BotNameBox
                     onBotNameTyped={onBotNameTyped}
+                    file_name={file_name}
                 />
                 <ButtonGroup
                     toggleSaveLoadModal={toggleSaveLoadModal}
@@ -182,6 +185,7 @@ const Toolbar = ({
 };
 
 Toolbar.propTypes = {
+    file_name          : PropTypes.string,
     onBotNameTyped     : PropTypes.func,
     onGoogleDriveClick : PropTypes.func,
     onRedoClick        : PropTypes.func,
@@ -198,6 +202,7 @@ Toolbar.propTypes = {
 };
 
 export default connect(({ toolbar }) => ({
+    file_name          : toolbar.file_name,
     onBotNameTyped     : toolbar.onBotNameTyped,
     onGoogleDriveClick : toolbar.onGoogleDriveClick,
     onRedoClick        : toolbar.onRedoClick,

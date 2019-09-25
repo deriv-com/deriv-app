@@ -3,6 +3,7 @@ import {
     observable,
     toJS }                  from 'mobx';
 import {
+    formatMoney,
     getCurrencies,
     getDecimalPlaces,
     isCryptocurrency }      from '_common/base/currency_base';
@@ -574,7 +575,7 @@ export default class CashierStore extends BaseStore {
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find((agent) => agent.value === loginid);
             this.setReceipt({
-                amount_transferred: amount,
+                amount_transferred: formatMoney(currency, amount, true),
                 ...(selected_agent && {
                     payment_agent_email: selected_agent.email,
                     payment_agent_id   : selected_agent.value,
@@ -811,16 +812,17 @@ export default class CashierStore extends BaseStore {
 
     requestTransferBetweenAccounts = async ({ amount }) => {
         this.setErrorMessage('');
+        const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
-            this.config.account_transfer.selected_from.currency,
+            currency,
             amount,
         );
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount });
+            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach((account) => {
                 this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value)
                     .balance = account.balance;

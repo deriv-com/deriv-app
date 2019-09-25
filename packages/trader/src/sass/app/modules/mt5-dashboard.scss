@@ -1,3 +1,5 @@
+@import '../_common/base/index';
+@import '../_common/components/data-table';
 
 /*
 *  [Work In Progress]
@@ -122,6 +124,49 @@
             margin-top: 1.6em;
             margin-left: 7.05em;
         }
+    }
+}
+
+.mt5-attribute-describer {
+    @include typeface(--paragraph-left-bold-black, none);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.mt5-compare-accounts {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    &__data {
+    width: 632px;
+    //height: 50vh;
+
+        &__table {
+            //height: 50vh;
+            flex: 1;
+        }
+        &__row {
+            /*                     attribute   standard advanced synthetic */
+            grid-template-columns: 2.7fr       1fr      1fr      1fr;
+        }
+        .attribute {
+            justify-content: flex-start;
+        }
+        .standard, .advanced, .synthetic {
+            justify-content: flex-end;
+        }
+    }
+
+    .mt5-compare-account--hint {
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        font-size: 12px;
+        line-height: 1.5em;
+        width: 100%;
+        padding: 1.6em 6.4em 6.4em 6.4em;
+        border-top: solid 1px var(--border-normal);
     }
 }
 

@@ -20,10 +20,10 @@
             padding-left: 16px;
 
             &:nth-child(1) {
-                width: 30%;
+                width: 25%;
             }
             &:nth-child(2) {
-                width: 70%;
+                width: 75%;
             }
         }
         &--tr {
@@ -39,6 +39,14 @@
             display: table-cell;
             vertical-align: middle;
             padding-left: 16px;
+            line-height: 16px;
+
+            &:nth-child(1) {
+                width: 25%;
+            }
+            &:nth-child(2) {
+                width: 75%;
+            }
         }
         &--date, &--time {
             line-height: 1.4em;

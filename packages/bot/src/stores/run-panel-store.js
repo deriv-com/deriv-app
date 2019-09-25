@@ -1,8 +1,8 @@
 
 import { observable, action } from 'mobx';
-import { isEnded }            from '../utils/contract';
-import { CONTRACT_STAGES }    from '../constants/contract-stage';
-import { observer }           from '../utils/observer';
+import { isEnded } from '../utils/contract';
+import { CONTRACT_STAGES } from '../constants/contract-stage';
+import { observer } from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(rootstore) {
@@ -14,21 +14,19 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
     }
 
-    @observable is_running        = false;
-    @observable is_button_loading = false;
+    @observable contract_stage = CONTRACT_STAGES.not_running‌;
+    @observable is_run_button_clicked = false;
+    @observable is_running = false;
     @observable is_dialog_visible = false;
-    @observable contract_stage    = CONTRACT_STAGES.not_running‌;
 
     @action.bound
     onBotRunningEvent() {
         this.is_running = true;
-        this.is_button_loading = false;
     }
 
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        this.is_button_loading = false;
         this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
     }
 
@@ -40,7 +38,7 @@ export default class RunPanelStore {
     @action.bound
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
-        if (isClosed) this.getContractStage('contract.closed');
+        if (isClosed) this.getContractStage({ id: 'contract.closed' });
     }
 
     @action.bound
@@ -49,13 +47,29 @@ export default class RunPanelStore {
             this.is_dialog_visible = true;
             return;
         }
-        if (this.is_button_loading) return;
-        this.is_button_loading = true;
-        if (this.is_running) {
-            Blockly.BLOCKLY_CLASS_OLD.stop();
-        } else {
-            Blockly.BLOCKLY_CLASS_OLD.run();
+
+        this.is_run_button_clicked = true;
+        console.log('run'); // eslint-disable-line no-console
+
+        Blockly.BLOCKLY_CLASS_OLD.run();
+    }
+
+    @action.bound
+    onStopButtonClick() {
+        if (!this.rootstore.core.client.is_logged_in) {
+            this.is_dialog_visible = true;
+            return;
         }
+        if (this.is_run_button_clicked) {
+            Blockly.BLOCKLY_CLASS_OLD.stop();
+            console.log('stop'); // eslint-disable-line no-console
+        }
+        this.is_run_button_clicked = false;
+    }
+
+    @action.bound
+    onClearStatClick() {
+        this.rootstore.journal.clearMessages();
     }
 
     @action.bound
@@ -78,7 +92,7 @@ export default class RunPanelStore {
                 this.contract_stage = CONTRACT_STAGES.contract_closed;
                 break;
             }
-            default : {
+            default: {
                 this.contract_stage = CONTRACT_STAGES.not_running‌;
             }
         }

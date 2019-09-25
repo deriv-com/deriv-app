@@ -24,9 +24,11 @@ const drawerContent = () => {
 const drawerFooter = ({
     closeModal,
     is_dialog_visible,
-    is_loading,
     is_running,
+    is_run_button_clicked,
+    onClearStatClick,
     onRunButtonClick,
+    onStopButtonClick,
 }) => {
     return (
         <div className='run-panel__footer'>
@@ -36,24 +38,37 @@ const drawerFooter = ({
                     'run-panel__button'
                 )}
                 text={translate('Clear stat')}
+                onClick={onClearStatClick}
                 has_effect
             />
 
-            <Button
-                className={classNames(
-                    'btn--primary',
-                    'run-panel__button',
-                    {
-                        'run-panel__button--run'    : !is_running,
-                        'run-panel__button--loading': is_loading,
-                    }
-                )}
-                is_loading={is_loading}
-                text={is_running ? translate('Stop bot') : translate('Run bot')}
-                icon={!is_loading && (is_running ? <StopIcon /> : <RunIcon />)}
-                onClick={onRunButtonClick}
-                has_effect
-            />
+            {
+                (is_run_button_clicked || is_running) ?
+                    <Button
+                        className={classNames(
+                            'btn--primary',
+                            'run-panel__button',
+                            { 'run-panel__button--disable': !is_run_button_clicked }
+                        )}
+                        text={translate('Stop bot')}
+
+                        icon={<StopIcon />}
+                        onClick={onStopButtonClick}
+                        has_effect
+                    /> :
+                    <Button
+                        className={classNames(
+                            'btn--primary',
+                            'run-panel__button',
+                            'run-panel__button--run'
+                        )}
+                        text={translate('Run bot')}
+                        icon={<RunIcon />}
+                        onClick={onRunButtonClick}
+                        has_effect
+                    />
+            }
+
             <Dialog
                 title={translate('Run Error!')}
                 is_open={is_dialog_visible}
@@ -61,7 +76,7 @@ const drawerFooter = ({
             >
                 {translate('Please log in.')}
             </Dialog>
-            <InfoOutlineIcon className='icon-info' />
+            <InfoOutlineIcon className='run-panel__icon-info' />
         </div>
     );
 };
@@ -82,18 +97,22 @@ const RunPanel = (props) => {
 };
 
 RunPanel.propTypes = {
-    closeModal       : PropTypes.func,
-    contract_stage   : PropTypes.string,
-    is_dialog_visible: PropTypes.bool,
-    is_loading       : PropTypes.bool,
-    is_running       : PropTypes.bool,
-    onRunButtonClick : PropTypes.func,
+    closeModal           : PropTypes.func,
+    contract_stage       : PropTypes.string,
+    is_dialog_visible    : PropTypes.bool,
+    is_run_button_clicked: PropTypes.bool,
+    is_running           : PropTypes.bool,
+    onClearStatClick     : PropTypes.func,
+    onRunButtonClick     : PropTypes.func,
+    onStopButtonClick    : PropTypes.func,
 };
 
 export default connect(({ runPanel }) => ({
-    closeModal       : runPanel.closeModal,
-    is_dialog_visible: runPanel.is_dialog_visible,
-    is_loading       : runPanel.is_button_loading,
-    is_running       : runPanel.is_running,
-    onRunButtonClick : runPanel.onRunButtonClick,
+    closeModal           : runPanel.closeModal,
+    is_dialog_visible    : runPanel.is_dialog_visible,
+    is_running           : runPanel.is_running,
+    is_run_button_clicked: runPanel.is_run_button_clicked,
+    onClearStatClick     : runPanel.onClearStatClick,
+    onRunButtonClick     : runPanel.onRunButtonClick,
+    onStopButtonClick    : runPanel.onStopButtonClick,
 }))(RunPanel);

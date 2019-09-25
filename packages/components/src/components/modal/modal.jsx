@@ -38,7 +38,8 @@ class ModalElement extends React.PureComponent {
     };
 
     handleClickOutside = (event) => {
-        if (this.props.has_close_icon && this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
+        if (this.props.has_close_icon && this.wrapper_ref &&
+            !this.wrapper_ref.contains(event.target) && this.props.is_open) {
             this.props.toggleModal();
         }
     };
@@ -54,13 +55,13 @@ class ModalElement extends React.PureComponent {
                 )}
             >
                 <div className='dc-modal-header'>
-                    {  this.props.title &&
-                    <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
+                    {this.props.title &&
+                        <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
                     }
-                    { this.props.header &&
-                    <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
-                        {this.props.header}
-                    </div>
+                    {this.props.header &&
+                        <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
+                            {this.props.header}
+                        </div>
                     }
                     <div
                         onClick={this.props.toggleModal}

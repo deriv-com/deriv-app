@@ -14,14 +14,17 @@ import runIcon         from '../assets/icons/run-icon.svg';
 import stopIcon        from '../assets/icons/stop-icon.svg';
 
 /* eslint-disable react/display-name */
-export const Icon = svgItem => (props) => {
-    const { className } = props;
+export const Icon = svgItem => ({ className }) => {
     const [width, height] = svgItem.viewBox.split(' ').slice(2);
 
     return (
-        <svg width={width} height={height} className={classNames('icon', { className: !!className }) }>
-            { /* eslint-disable-next-line */ }
-            <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
+        <svg
+            width={width}
+            height={height}
+            className={classNames('icon',  className)}
+        >
+            { /* eslint-disable-next-line */}
+        <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>
     );
 };

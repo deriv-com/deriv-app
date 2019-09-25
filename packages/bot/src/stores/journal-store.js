@@ -21,23 +21,17 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(data) {
-        if (this.rootstore.runPanel.is_running) {
-            console.log('onLogSuccess' , data); // eslint-disable-line no-console
-        }
+        this.pushMessage(data);
     }
 
     @action.bound
     onLogError(data) {
-        if (this.rootstore.runPanel.is_running) {
-            console.log('onLogError' , data); // eslint-disable-line no-console
-        }
+        this.pushMessage(data);
     }
 
     @action.bound
     onError(data) {
-        if (this.rootstore.runPanel.is_running) {
-            console.log('onError', data); // eslint-disable-line no-console
-        }
+        this.pushMessage(data);
     }
 
     @action.bound
@@ -45,10 +39,21 @@ export default class JournalStore {
         this.pushMessage(data);
     }
 
+    @action.bound
+    clearMessages (){
+        this.messages = this.messages.slice(0,0);  // force array update
+    }
+    
     pushMessage(data) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
-        this.messages.push({ date, time , message: data.message });
+        let message;
+        if (typeof data === 'string') {
+            message = data;
+        } else {
+            message = data.message;
+        }
+        this.messages.push({ date, time , message });
         this.messages = this.messages.slice(0);  // force array update
     }
 }

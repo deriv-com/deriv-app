@@ -34,6 +34,7 @@ const Dialog = ({
                     onClick={closeModal}
                     has_effect
                 />
+                {/* Todo Add array to send more buttons if requierd */}
             </div>
         </Modal>
     );
@@ -42,7 +43,7 @@ const Dialog = ({
 Dialog.propTypes = {
     children  : PropTypes.node,
     closeModal: PropTypes.func,
-    is_open   : PropTypes.func,
+    is_open   : PropTypes.bool,
     title     : PropTypes.string,
 };
 

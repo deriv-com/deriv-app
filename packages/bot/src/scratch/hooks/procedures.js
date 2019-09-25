@@ -115,8 +115,8 @@ Blockly.Procedures.getDefinition = function(name, workspace) {
     // Assume that a procedure definition is a top block.
     const blocks = workspace.getTopBlocks(false);
     for (let i = 0; i < blocks.length; i++) {
-        if (blocks[i].getProcedureDef) {
-            const tuple = blocks[i].getProcedureDef();
+        if (blocks[i].getProcedureDefinition) {
+            const tuple = blocks[i].getProcedureDefinition();
             if (tuple && Blockly.Names.equals(tuple[0], name)) {
                 return blocks[i];
             }
@@ -131,8 +131,8 @@ Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
     const blocks = workspace.getAllBlocks(false);
     // Iterate through every block and check the name.
     return blocks.some(block => {
-        if (block !== optExclude && block.getProcedureDef) {
-            const procName = block.getProcedureDef();
+        if (block !== optExclude && block.getProcedureDefinition) {
+            const procName = block.getProcedureDefinition();
             return Blockly.Names.equals(procName[0], name);
         }
         return false;

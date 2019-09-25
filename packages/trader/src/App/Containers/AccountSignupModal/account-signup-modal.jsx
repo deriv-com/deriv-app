@@ -15,6 +15,7 @@ import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import { website_name }  from 'App/Constants/app-config';
+import 'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
 

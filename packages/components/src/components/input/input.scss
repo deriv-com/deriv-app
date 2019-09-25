@@ -40,7 +40,6 @@
             & ~ label {
                 transform: translate(0, -1.6rem) scale(0.75);
                 padding: 0 4px;
-                background-color: var(--fill-normal);
             }
         }
         &:disabled {
@@ -94,6 +93,7 @@
     &__label {
         color: var(--text-less-prominent);
         font-size: var(--text-size-xs);
+        background-color: var(--fill-normal);
         position: absolute;
         pointer-events: none;
         left: 1rem;

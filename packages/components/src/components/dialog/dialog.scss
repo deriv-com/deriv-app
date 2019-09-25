@@ -56,6 +56,11 @@
         @include toEm(margin-bottom, 32px, 1.4em);
         color: var(--text-general);
         max-width: 448px;
+
+        /* postcss-bem-linter: ignore */
+        .dc-input__label {
+            background-color: var(--general-main-2);
+        }
     }
     &__footer {
         display: flex;

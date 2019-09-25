@@ -6,7 +6,6 @@ import Button            from '../button/button.jsx';
 
 class Dialog extends React.Component {
     componentDidMount() {
-        console.log('hi')
         if (this.props.is_visible) {
             this.props.disableApp();
         }

@@ -39,7 +39,6 @@ class PlatformSwitcher extends React.PureComponent {
                 <PlatformDropdown
                     platform_config={this.props.platform_config}
                     handleClick={this.handleClick}
-                    is_open={this.state.is_open}
                 />
             </CSSTransition>
         </React.Fragment>

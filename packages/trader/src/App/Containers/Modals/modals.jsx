@@ -1,13 +1,14 @@
-import React       from 'react';
-import { connect } from 'Stores/connect';
-import { urlFor }  from '_common/url';
-import 'Sass/app/modules/modals.scss';
+import React                    from 'react';
+import { connect }              from 'Stores/connect';
+import { urlFor }               from '_common/url';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
+import { MT5ServerErrorDialog } from 'App/Containers/Mt5';
+import 'Sass/app/modules/modals.scss';
 
-const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
+const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
 
 const Modals = ({
     clearPurchaseInfo,
@@ -81,8 +82,8 @@ const Modals = ({
                 services_error={services_error}
                 is_visible={is_services_error_visible}
             />
-            {/* TODO: Enable AccountSignupModal once its UI component is ready */}
             <AccountSignupModal />
+            <MT5ServerErrorDialog />
         </React.Fragment>
     );
 };

@@ -90,7 +90,7 @@ export const getAccountTypeFields = ({ category, type }) => {
             },
             advanced: {
                 account_type    : 'demo',
-                mt5_account_type: 'standard',
+                mt5_account_type: 'advanced',
             },
             synthetic_indices: {
                 account_type: 'demo',

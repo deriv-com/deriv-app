@@ -82,6 +82,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get first_switchable_real_loginid () {
+        const result = this.active_accounts.find((acc) => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg');
+        return result.loginid || undefined;
+    }
+
+    @computed
     get can_change_fiat_currency () {
         const has_no_mt5           = !this.has_mt5_login;
         const has_no_transaction   = (this.statement.count === 0 && this.statement.transactions.length === 0);

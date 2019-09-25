@@ -53,7 +53,7 @@ export default class JournalStore {
         } else {
             message = data.message;
         }
-        this.messages.push({ date, time , message });
+        this.messages.unshift({ date, time , message });
         this.messages = this.messages.slice(0);  // force array update
     }
 }

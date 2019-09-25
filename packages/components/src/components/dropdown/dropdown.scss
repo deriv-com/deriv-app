@@ -1,4 +1,19 @@
 .dc-dropdown {
+    &__label {
+        position: absolute;
+        font-size: var(--text-size-xs);
+        transform: translate(0.5rem, -1rem) scale(0.75);
+        z-index: 2;
+        color: var(--text-less-prominent);
+        padding: 0 4px;
+        background-color: var(--fill-normal);
+        pointer-events: none;
+        transition: 0.25s ease all;
+
+        &--clicked {
+            color: var(--brand-secondary);
+        }
+    }
     &__display {
         cursor: pointer;
         border-radius: $BORDER_RADIUS;

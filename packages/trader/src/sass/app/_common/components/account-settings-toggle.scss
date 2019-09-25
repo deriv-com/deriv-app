@@ -1,0 +1,12 @@
+.account-settings-toggle {
+    svg {
+        height: 24px;
+        width: 24px;
+        @extend %inline-icon;
+    }
+    &:hover {
+        svg {
+            @extend %inline-icon.active;
+        }
+    }
+}

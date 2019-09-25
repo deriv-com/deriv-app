@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
-import config from '../constants/const';
+import config from '../constants';
 import { translate } from '../utils/lang/i18n';
 
 export default class FlyoutStore {

@@ -62,14 +62,14 @@
         </statement>
 
     </block>
-    <block type="before_purchase" x="0" y="528">
+    <block type="before_purchase" x="0" y="548">
         <statement name="BEFOREPURCHASE_STACK">
             <block type="purchase">
                 <field name="PURCHASE_LIST"></field>
             </block>
         </statement>
     </block>
-    <block type="during_purchase" x="0" y="704">
+    <block type="during_purchase" x="0" y="724">
         <statement name="DURING_PURCHASE_STACK">
             <block type="controls_if">
                 <value name="IF0">
@@ -81,7 +81,7 @@
             </block>
         </statement>
     </block>
-    <block type="after_purchase" x="0" y="960">
+    <block type="after_purchase" x="0" y="980">
         <statement name="AFTERPURCHASE_STACK">
             <block type="trade_again"></block>
         </statement>

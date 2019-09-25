@@ -1,37 +1,51 @@
-import classNames              from 'classnames';
-import React                   from 'react';
-import { ErrorMessage, Field } from 'formik';
-import                              './input.scss';
+import classNames from 'classnames';
+import React      from 'react';
+import FieldError from 'Components/field-error';
+import                 './input.scss';
 
-const Input = (props, ref) => (
-    <Field { ...props }>
+const Input = ({
+    className,
+    classNameError,
+    disabled,
+    error,
+    hint,
+    leading_icon,
+    trailing_icon,
+    label,
+    placeholder,
+    ...props
+}, ref) => (
+    <div className={ classNames('dc-input', className, { 'dc-input__disabled': disabled }) }>
         {
-            ({ field }) => (
-                <div className={ classNames('dc-input', props.className) }>
-                    <input ref={ ref } { ...field } { ...props } className='dc-input__field' />
-                    {
-                        props.trailing_icon &&
-                        React.cloneElement(
-                            props.trailing_icon,
-                            { className: classNames('dc-input__trailing-icon', props.trailing_icon.props.className) },
-                        )
-                    }
-                    <label className='dc-input__label' htmlFor={ field.id }>
-                        { props.label || props.placeholder }
-                    </label>
-                    <ErrorMessage name={ field.name }>
-                        {
-                            (msg) => (
-                                <p className='dc-input__error'>
-                                    { msg }
-                                </p>
-                            )
-                        }
-                    </ErrorMessage>
-                </div>
+            leading_icon &&
+            React.cloneElement(
+                leading_icon,
+                { className: classNames('dc-input__leading-icon', leading_icon.props.className) },
             )
         }
-    </Field>
+        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && placeholder })} disabled={disabled} />
+        {
+            trailing_icon &&
+            React.cloneElement(
+                trailing_icon,
+                { className: classNames('dc-input__trailing-icon', trailing_icon.props.className) },
+            )
+        }
+        { label &&
+            <label className='dc-input__label' htmlFor={props.id}>
+                {label}
+            </label>
+        }
+        { error &&
+            <FieldError className={classNameError} message={error} />
+        }
+        {
+            !error && hint &&
+            <p className='dc-input__hint'>
+                {hint}
+            </p>
+        }
+    </div>
 );
 
 export default React.forwardRef(Input);

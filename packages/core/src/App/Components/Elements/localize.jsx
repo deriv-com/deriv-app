@@ -2,8 +2,13 @@ import PropTypes        from 'prop-types';
 import React            from 'react';
 import { Trans }        from 'react-i18next';
 
-const Localize = ({ i18n_default_text, values, components }) => (
-    <Trans defaults={i18n_default_text} values={values} components={components} />
+const Localize = ({ i18n_default_text, values, components, options }) => (
+    <Trans
+        defaults={i18n_default_text}
+        values={values}
+        components={components}
+        tOptions={options}
+    />
 );
 
 Localize.propTypes = {

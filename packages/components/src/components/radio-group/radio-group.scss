@@ -1,0 +1,32 @@
+.dc-radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 16px;
+
+    &__input {
+        display: none;
+    }
+    &__item {
+        display: flex;
+        cursor: pointer;
+    }
+    &__item:not(:last-child) {
+        margin-right: 16px;
+    }
+    &__circle {
+        border: 2px solid var(--text-general);
+        border-radius: 50%;
+        box-shadow: 0 0 1px 0 $color-white;
+        width: 16px;
+        height: 16px;
+        transition: all 0.3s ease-in-out;
+        margin-right: 8px;
+        align-self: center;
+
+        &--selected {
+            border-width: 4px;
+            border-color: var(--brand-red-coral);
+        }
+    }
+}

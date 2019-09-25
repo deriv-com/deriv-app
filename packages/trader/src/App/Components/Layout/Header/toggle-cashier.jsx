@@ -5,55 +5,87 @@ import { Button, Modal } from 'deriv-components';
 import { localize }      from 'App/i18n';
 import Lazy              from 'App/Containers/Lazy';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
+import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
 
-const WalletInformation = React.lazy(() => import(/* webpackChunkName: "wallet-information" */'Modules/Reports/Containers/wallet-information.jsx'));
-const tabs = {
-    deposit : 0,
-    withdraw: 1,
-};
+const Deposit         = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal      = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent    = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer = () => import('App/Containers/CashierModal/account-transfer.jsx');
 
-const Deposit    = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const modal_content = [
+    {
+        container: 'deposit',
+        icon     : 'IconDepositSmall',
+        label    : localize('Deposit'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={Deposit}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    }, {
+        container: 'withdraw',
+        icon     : 'IconWithdrawalSmall',
+        label    : localize('Withdrawal'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={Withdrawal}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    }, {
+        container: 'payment_agent',
+        icon     : 'IconPaymentAgent',
+        label    : localize('Payment agent'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={PaymentAgent}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    }, {
+        container: 'account_transfer',
+        icon     : 'IconAccountTransfer',
+        label    : localize('Transfer between accounts'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={AccountTransfer}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
+    },
+];
 
-const ModalContent = () => {
-    const content = [
-        {
-            icon : 'IconDepositSmall',
-            label: localize('Deposit'),
-            // eslint-disable-next-line react/display-name
-            value: () => (
-                <Lazy
-                    ctor={Deposit}
-                    should_load={true}
-                    has_progress={true}
-                />
-            ),
-        }, {
-            icon : 'IconWithdrawalSmall',
-            label: localize('Withdrawal'),
-            // eslint-disable-next-line react/display-name
-            value: () => (
-                <Lazy
-                    ctor={Withdrawal}
-                    should_load={true}
-                    has_progress={true}
-                />
-            ),
-        },
-    ];
+const ModalContent = ({
+    selected_index,
+    visible_items,
+}) => {
     return (
         <VerticalTab
             alignment='center'
-            classNameHeader='modal__tab-header'
+            classNameHeader='cashier__modal-tab'
             id='modal'
-            list={content}
+            list={modal_content}
+            selected_index={selected_index}
+            visible_items={visible_items}
         />
     );
 };
 
-class ToggleCashier extends React.PureComponent {
-    onClickDeposit = () => { this.props.toggleCashier('deposit'); };
+class ToggleCashier extends React.Component {
+    onClickDeposit = () => {
+        this.props.setCashierActiveTab('deposit');
+        this.props.toggleCashier();
+    };
 
     render() {
         const {
@@ -62,13 +94,24 @@ class ToggleCashier extends React.PureComponent {
             disableApp,
             enableApp,
             is_cashier_visible,
+            is_payment_agent_visible,
             toggleCashier,
         } = this.props;
+
+        const visible_items = [];
+
+        modal_content.forEach(content => {
+            if (content.container !== 'payment_agent' || is_payment_agent_visible) {
+                visible_items.push(content.container);
+            }
+        });
+
+        const selected_tab = modal_content.find(tab => tab.container === active_tab) || {};
 
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary btn--primary--orange')}
+                    className={classNames(className, 'btn--primary--default')}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}
@@ -81,11 +124,13 @@ class ToggleCashier extends React.PureComponent {
                         enableApp={enableApp}
                         header={<WalletInformation />}
                         is_open={is_cashier_visible}
-                        selected_index={tabs[active_tab]}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
                     >
-                        <ModalContent />
+                        <ModalContent
+                            visible_items={visible_items}
+                            selected_index={modal_content.indexOf(selected_tab)}
+                        />
                     </Modal>
                 </React.Suspense>
             </React.Fragment>
@@ -94,12 +139,15 @@ class ToggleCashier extends React.PureComponent {
 }
 
 ToggleCashier.propTypes = {
-    active_tab : PropTypes.string,
-    className  : PropTypes.string,
-    disableApp : PropTypes.func,
-    enableApp  : PropTypes.func,
-    is_open    : PropTypes.bool,
-    toggleModal: PropTypes.func,
+    active_tab              : PropTypes.string,
+    className               : PropTypes.string,
+    disableApp              : PropTypes.func,
+    enableApp               : PropTypes.func,
+    is_open                 : PropTypes.bool,
+    is_payment_agent_visible: PropTypes.bool,
+    setCashierActiveTab     : PropTypes.func,
+    toggleCashier           : PropTypes.func,
+    toggleModal             : PropTypes.func,
 };
 
 export default ToggleCashier;

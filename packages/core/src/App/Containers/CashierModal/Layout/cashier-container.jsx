@@ -1,14 +1,14 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
-import Loading        from '../../../../templates/app/components/loading.jsx';
+import Loading        from '../../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     render() {
         return (
             <React.Fragment>
                 {this.props.is_loading && <Loading />}
-                {this.props.container_url &&
+                {this.props.iframe_url &&
                 <Scrollbars
                     autoHeight
                     autoHide
@@ -18,32 +18,26 @@ class CashierContainer extends React.Component {
                 >
                     <iframe
                         className='cashier__content'
-                        height={this.props.container_height}
-                        src={this.props.container_url}
+                        height={this.props.iframe_height}
+                        src={this.props.iframe_url}
                         frameBorder='0'
-                        scrolling='no'
+                        scrolling='auto'
                     />
                 </Scrollbars>
                 }
-                {/* TODO: uncomment this if cross origin issue is fixed */}
-                {/* <div */}
-                {/*     className={`${this.props.className}__content`} */}
-                {/*     dangerouslySetInnerHTML={{ __html: this.props.container_url }} */}
-                {/* /> */}
             </React.Fragment>
         );
     }
 }
 
 CashierContainer.propTypes = {
-    className       : PropTypes.string,
-    container_height: PropTypes.oneOfType([
+    className    : PropTypes.string,
+    iframe_height: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    container_url: PropTypes.string,
-    is_loading   : PropTypes.bool,
-    onMount      : PropTypes.func,
+    iframe_url: PropTypes.string,
+    is_loading: PropTypes.bool,
 };
 
 export default CashierContainer;

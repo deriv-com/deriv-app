@@ -1,4 +1,4 @@
-import config from '../../../../constants/const';
+import config from '../../../../constants';
 
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {
@@ -21,15 +21,13 @@ Blockly.Blocks.trade_definition_candleinterval = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange(event) {
+    onchange() {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
-            this.enforceParent();
-        }
+        this.enforceLimitations();
     },
-    enforceParent: Blockly.Blocks.trade_definition_market.enforceParent,
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 Blockly.JavaScript.trade_definition_candleinterval = () => {};

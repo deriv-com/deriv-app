@@ -13,19 +13,19 @@
     ]
   },
   "scripts": {
-    "start": "eslint ./src && rimraf dist &&  webpack-dev-server --mode=development --open 'Google Chrome' --hot --inline --port 80",
-    "serve": "webpack --mode=development --progress --watch --open 'Google Chrome' --hot --inline --port 80",
-    "build": "rimraf dist && cross-env NODE_ENV=production webpack --mode=production --optimize-minimize --progress",
-    "build:travis": "echo \"Error: no build:travis specified\"",
-    "test": "eslint ./src && jest -w 1 --coverage",
+    "start": "rimraf dist && npm run test && webpack --mode=development --progress --watch",
+    "serve": "rimraf dist && webpack --mode=development --progress --watch",
+    "build": "rimraf dist && npm run test && webpack --mode=production --optimize-minimize --progress",
+    "build:travis": "echo \"No build:travis specified\"",
+    "test": "npm run test:eslint && npm run test:mocha",
+    "test:mocha": "jest -w 1 --coverage",
     "test:eslint": "eslint ./src",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
-    "test:mocha": "jest -w 10 --coverage",
-    "deploy": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**,CNAME}'",
-    "deploy:clean": "echo \"Error: no deploy:staging specified\"",
-    "deploy:folder": "gh-pages --dist '.' --src '{index.html,manifest.json,dist/**}' --dest",
-    "deploy:staging": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
-    "deploy:production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d"
+    "deploy": "echo \"No deploy specified\"",
+    "deploy:clean": "echo \"No deploy:clean specified\"",
+    "deploy:folder": "echo \"No deploy:folder specified\"",
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\""
   },
   "author": "Binary.com",
   "license": "MIT",
@@ -37,7 +37,6 @@
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
@@ -94,7 +93,9 @@
     "webpack-merge-and-include-globally": "^2.1.16"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@binary-com/smartcharts": "^0.3.9",
+    "classnames": "^2.2.6",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",

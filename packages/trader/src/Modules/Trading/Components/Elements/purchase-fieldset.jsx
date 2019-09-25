@@ -24,7 +24,6 @@ class PurchaseFieldset extends React.PureComponent {
             // index,
             info,
             index,
-            is_contract_mode,
             is_disabled,
             is_high_low,
             is_loading,
@@ -46,7 +45,6 @@ class PurchaseFieldset extends React.PureComponent {
                 currency={currency}
                 info={info}
                 index={index}
-                is_contract_mode={is_contract_mode}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
@@ -66,7 +64,13 @@ class PurchaseFieldset extends React.PureComponent {
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}
-                <React.Fragment>
+                <div
+                    className={classNames(
+                        'trade-container__fieldset-wrapper', {
+                            'trade-container__fieldset-wrapper--disabled': (is_proposal_error || is_disabled),
+                        },
+                    )}
+                >
                     <ContractInfo
                         basis={basis}
                         currency={currency}
@@ -74,7 +78,6 @@ class PurchaseFieldset extends React.PureComponent {
                         has_increased={info.has_increased}
                         is_loading={is_loading}
                         should_fade={this.state.should_fade}
-                        is_visible={!is_contract_mode}
                         type={type}
                     />
                     <div
@@ -120,7 +123,7 @@ class PurchaseFieldset extends React.PureComponent {
                             //     purchase_button
                         }
                     </div>
-                </React.Fragment>
+                </div>
             </Fieldset>
         );
     }
@@ -132,7 +135,6 @@ PurchaseFieldset.propTypes = {
     currency            : PropTypes.string,
     index               : PropTypes.number,
     info                : PropTypes.object,
-    is_contract_mode    : PropTypes.bool,
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,

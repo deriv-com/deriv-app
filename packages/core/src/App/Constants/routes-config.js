@@ -7,14 +7,20 @@ import { routes }                     from 'Constants';
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Bot = lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
+const Bot = (() => {
+    const el_head = document.querySelector('head');
+    const el_scratch_js = document.createElement('script');
+    el_scratch_js.src = './js/bot/scratch.min.js';
+    el_head.appendChild(el_scratch_js);
+    return lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
+})();
 
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => ([
-    { path: routes.index,     component: RouterRedirect,  title: '',                   to: routes.root },
-    { path: routes.root,      component: Bot,             title: localize('Trade'),    exact: true },
-    { path: routes.error404,  component: Page404,         title: localize('Error 404') },
-    { path: routes.redirect,  component: Redirect,        title: localize('Redirect') },
+    { path: routes.index,     component: RouterRedirect, title: '',                          to: routes.root },
+    { path: routes.root,      component: Bot,            title: localize('Trade'),    exact: true },
+    { path: routes.error404,  component: Page404,        title: localize('Error 404') },
+    { path: routes.redirect,  component: Redirect,       title: localize('Redirect') },
 ]);
 
 let routesConfig;

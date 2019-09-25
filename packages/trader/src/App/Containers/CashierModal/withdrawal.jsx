@@ -2,35 +2,35 @@ import PropTypes   from 'prop-types';
 import React       from 'react';
 import { connect } from 'Stores/connect';
 import Error       from './error.jsx';
-import SendEmail   from './Withdrawal/send-email.jsx';
+import SendEmail   from './send-email.jsx';
 import Withdraw    from './Withdrawal/withdraw.jsx';
 
 class Withdrawal extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab('withdraw');
+        this.props.setActiveTab(this.props.container);
+    }
+
+    componentWillUnmount() {
+        this.props.setErrorMessage('');
     }
 
     render() {
+        if (!this.props.error.message) {
+            return ((this.props.verification_code || this.props.iframe_url) ?
+                <Withdraw /> : <SendEmail />
+            );
+        }
         return (
-            <React.Fragment>
-                {this.props.error.message ?
-                    <Error
-                        error={this.props.error}
-                        container='withdraw'
-                    />
-                    :
-                    ((this.props.verification_code || this.props.iframe_url) ?
-                        <Withdraw />
-                        :
-                        <SendEmail />
-                    )
-                }
-            </React.Fragment>
+            <Error
+                error={this.props.error}
+                container='withdraw'
+            />
         );
     }
 }
 
 Withdrawal.propTypes = {
+    container        : PropTypes.string,
     error            : PropTypes.object,
     iframe_url       : PropTypes.string,
     setActiveTab     : PropTypes.func,
@@ -40,8 +40,10 @@ Withdrawal.propTypes = {
 export default connect(
     ({ client, modules }) => ({
         verification_code: client.verification_code,
+        container        : modules.cashier.config.withdraw.container,
         error            : modules.cashier.config.withdraw.error,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         setActiveTab     : modules.cashier.setActiveTab,
+        setErrorMessage  : modules.cashier.setErrorMessage,
     })
 )(Withdrawal);

@@ -1,4 +1,4 @@
-import config        from '../../../../../constants/const';
+import config        from '../../../../../constants';
 import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.read_ohlc_obj = {

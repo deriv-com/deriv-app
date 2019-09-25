@@ -7,16 +7,18 @@ import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import { unique }            from '_common/utility';
+import { urlFor }            from '_common/url';
+import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import BaseStore             from './base-store';
-import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_main_drawer_on          = false;
-    @observable is_notifications_drawer_on = false;
-    @observable is_positions_drawer_on     = false;
-    @observable is_reports_visible         = false;
+    @observable is_main_drawer_on           = false;
+    @observable is_notifications_drawer_on  = false;
+    @observable is_positions_drawer_on      = false;
+    @observable is_account_settings_visible = false;
+    @observable is_reports_visible          = false;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -63,10 +65,14 @@ export default class UIStore extends BaseStore {
     @observable is_app_disabled   = false;
     @observable is_route_modal_on = false;
 
+    // real account signup
+    @observable is_real_acc_signup_on = false;
+
     // position states
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
+    @observable modal_index        = 0;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -81,6 +87,7 @@ export default class UIStore extends BaseStore {
             'duration_m',
             'duration_h',
             'duration_d',
+            'is_account_settings_visible',
             'is_chart_asset_info_visible',
             'is_chart_countdown_visible',
             'is_chart_layout_default',
@@ -180,24 +187,29 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleChartLayout() {
-        this.is_chart_layout_default = !this.is_chart_layout_default;
+    setChartLayout(is_default) {
+        this.is_chart_layout_default = is_default;
     }
 
     // TODO: enable asset information
     // @action.bound
-    // toggleChartAssetInfo() {
-    //     this.is_chart_asset_info_visible = !this.is_chart_asset_info_visible;
+    // setChartAssetInfo(is_visible) {
+    //     this.is_chart_asset_info_visible = is_visible;
     // }
 
     @action.bound
-    toggleChartCountdown() {
-        this.is_chart_countdown_visible = !this.is_chart_countdown_visible;
+    setChartCountdown(is_visible) {
+        this.is_chart_countdown_visible = is_visible;
     }
 
     // @action.bound
     // togglePurchaseLock() {
     //     this.is_purchase_lock_on = !this.is_purchase_lock_on;
+    // }
+
+    // @action.bound
+    // setPurchaseLock(is_locked) {
+    //     this.is_purchase_lock_on = is_locked;
     // }
 
     // @action.bound
@@ -212,26 +224,18 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showPositionsFooterToggle() {
-        this.show_positions_toggle = true;
-    }
-
-    @action.bound
-    hidePositionsFooterToggle() {
-        this.show_positions_toggle = false;
-    }
-
-    @action.bound
-    toggleCashierModal(active_tab) {
-        if (/^(deposit|withdraw)$/.test(active_tab)) {
-            this.setCashierActiveTab(active_tab);
-        }
+    toggleCashierModal() {
         this.is_cashier_modal_on = !this.is_cashier_modal_on;
     }
 
     @action.bound
     setCashierActiveTab(tab = 'deposit') {
         if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
+    }
+
+    @action.bound
+    setModalIndex(index = 0) {
+        this.modal_index = index;
     }
 
     @action.bound
@@ -245,8 +249,32 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    openRealAccountSignup() {
+        this.is_real_acc_signup_on = true;
+    }
+
+    @action.bound
+    closeRealAccountSignup() {
+        this.is_real_acc_signup_on = false;
+    }
+
+    @action.bound
+    closeSignupAndOpenCashier() {
+        this.is_real_acc_signup_on = false;
+        this.setCashierActiveTab('deposit');
+        this.closeRealAccountSignup();
+        // TODO enable this one cashier is active
+        setTimeout(this.toggleCashierModal, 300);
+    }
+
+    @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
+    }
+
+    @action.bound
+    toggleAccountSettings(is_visible) {
+        this.is_account_settings_visible = is_visible;
     }
 
     @action.bound
@@ -287,15 +315,15 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        }
     }
 
     @action.bound
-    removeNotification(notification) {
-        const index = this.notification_messages.indexOf(notification);
-        if (index > -1) {
-            this.notification_messages.splice(index, 1);
-        }
+    removeNotification({ key }) {
+        this.notification_messages = this.notification_messages
+            .filter(n => n.key !== key);
     }
 
     @action.bound

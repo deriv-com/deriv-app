@@ -4,14 +4,16 @@ import React               from 'react';
 import Popover             from 'Components/popover';
 
 const Items = ({
+    className,
     index,
     handleSelect,
     has_symbol,
     items,
     name,
+    is_align_text_left,
     value,
 }) =>  items.map((item, idx) => {
-    const symbol_type_class_name = item.text ? `symbols--${(item.text).toLowerCase()}` : '';
+    const symbol_type_class_name = item.text && typeof item.text === 'string' ? `symbols--${(item.text).toLowerCase()}` : null;
 
     return (
         <div
@@ -29,7 +31,7 @@ const Items = ({
             {!!has_symbol && item.has_tooltip &&
                 <Popover
                     alignment='left'
-                    message={item.tooltip}
+                    message={item.text}
                 >
                     <span
                         className={classNames(
@@ -52,13 +54,20 @@ const Items = ({
             }
 
             {!has_symbol &&
-                <span className='dc-list__item-text'>{item.text}</span>
+                <span className={classNames('dc-list__item-text',
+                    { 'dc-list__item-text--left': is_align_text_left },
+                    className,
+                )}
+                >
+                    {item.text}
+                </span>
             }
         </div>
     );
 });
 
 Items.propTypes = {
+    className   : PropTypes.string,
     handleSelect: PropTypes.func,
     has_symbol  : PropTypes.bool,
     name        : PropTypes.string,

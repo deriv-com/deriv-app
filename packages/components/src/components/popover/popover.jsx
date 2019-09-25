@@ -40,6 +40,7 @@ class Popover extends React.PureComponent {
             classNameTarget,
             classNameTargetIcon,
             disable_target_icon,
+            disable_message_icon,
             has_error,
             icon,
             id,
@@ -71,7 +72,7 @@ class Popover extends React.PureComponent {
                     alignment={alignment}
                     className={classNameBubble}
                     has_error={has_error}
-                    icon={icon}
+                    icon={!disable_message_icon && icon}
                     id={`${id}_bubble`}
                     is_open={this.state.is_open}
                     target_rectangle={this.state.target_rectangle}

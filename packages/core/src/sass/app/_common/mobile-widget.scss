@@ -2,7 +2,7 @@
 
 /** @define mobile-widget */
 .mobile-widget {
-    border: 1px solid $COLOR_LIGHT_BLACK_4;
+    border: 1px solid var(--border-normal);
     border-radius: 4px;
     padding: 1em 0.5em;
     display: grid;
@@ -13,7 +13,7 @@
 
     &:hover, &:focus, &:active {
         cursor: pointer;
-        border: solid 1px $COLOR_DARK_BLUE_5;
+        border: solid 1px var(--border-active);
     }
 }
 
@@ -42,6 +42,6 @@
     }
     &__basis {
         font-weight: bold;
-        color: $COLOR_DARK_BLUE_5;
+        color: var(--text-prominent);
     }
 }

@@ -1,7 +1,8 @@
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
-import config                from '../../../../constants/const';
+import config                from '../../../../constants';
 import { translate }         from '../../../../utils/lang/i18n';
+import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -83,97 +84,87 @@ Blockly.Blocks.trade_definition = {
     },
     onchange(event) {
         setBlockTextColor(this);
-        if (!this.workspace || this.isInFlyout) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
-            this.enforceTradeDefinitionType();
-        } else if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids && event.ids.includes(this.id)) {
-                // Maintain single instance of this block
-                this.workspace.getAllBlocks(true).forEach(block => {
-                    if (block.type === this.type && block.id !== this.id) {
-                        block.dispose();
-                    }
-                });
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            // Maintain single instance of this block, dispose of older ones.
+            const top_blocks = this.workspace.getTopBlocks(true);
 
-                const tradeDefinitionMarket = this.getChildByType('trade_definition_market');
-                if (!tradeDefinitionMarket) {
-                    return;
+            top_blocks.forEach(top_block => {
+                if (top_block.type === this.type && top_block.id !== this.id) {
+                    top_block.dispose(false);
                 }
+            });
 
-                const selectedMarket = tradeDefinitionMarket.getFieldValue('MARKET_LIST');
-                const eventArgs = [tradeDefinitionMarket, 'field', 'MARKET_LIST', '', selectedMarket];
-                const changeEvent = new Blockly.Events.BlockChange(...eventArgs);
-                Blockly.Events.fire(changeEvent);
-            }
+            const market_block    = this.getChildByType('trade_definition_market');
+            const selected_market = market_block.getFieldValue('MARKET_LIST');
+            const change_event    = new Blockly.Events.BlockChange(market_block, 'field', 'MARKET_LIST', '', selected_market);
+
+            // Trigger change event on MARKET_LIST to populate all dropdowns.
+            Blockly.Events.fire(change_event);
+
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
+            // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
+            const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
+
+            blocks_in_trade_options.forEach(block => {
+                if (!/^trade_definition_.+$/.test(block.type)) {
+                    Blockly.Events.disable();
+                    block.unplug(true);
+                    Blockly.Events.enable();
+                }
+            });
         }
     },
-    // Check if blocks within statement are valid, we enforce
-    // this statement to only allow `trade_definition` type blocks.
-    enforceTradeDefinitionType() {
-        const blocksInStatement = this.getBlocksInStatement('TRADE_OPTIONS');
-        blocksInStatement.forEach(block => {
-            if (!/^trade_definition_.+$/.test(block.type)) {
-                Blockly.Events.disable();
-                block.unplug(false);
-                Blockly.Events.enable();
-            }
-        });
-    },
-    requiredParamBlocks: [
-        'trade_definition_market',
-        'trade_definition_tradetype',
-        'trade_definition_contracttype',
-        'trade_definition_candleinterval',
-        'trade_definition_restartbuysell',
-        'trade_definition_restartonerror',
-    ],
 };
 
 Blockly.JavaScript.trade_definition = block => {
-    const account = $('.account-id')
-        .first()
-        .attr('value');
-    if (!account) {
-        throw Error('Please login');
+    const { client } = ScratchStore.instance.root_store;
+    
+    if (!client.is_logged_in) {
+        throw new Error('Please login'); // TEMP.
     }
 
-    const symbol = block.getChildFieldValue('trade_definition_market', 'SYMBOL_LIST') || '';
-    const tradeType = block.getChildFieldValue('trade_definition_tradetype', 'TRADETYPE_LIST') || '';
+    const { loginid }               = client;
+    const account                   = client.getToken(loginid);
 
-    // Contract Type (not referring the block)
-    const contractTypeBlock = block.getChildByType('trade_definition_contracttype');
-    const contractTypeSelector = contractTypeBlock.getFieldValue('TYPE_LIST');
-    const oppositesName = tradeType.toUpperCase();
-    const contractTypeList =
-        contractTypeSelector === 'both'
-            ? config.opposites[oppositesName].map(k => Object.keys(k)[0])
-            : [contractTypeSelector];
+    const market_block              = block.getChildByType('trade_definition_market');
+    const trade_type_block          = block.getChildByType('trade_definition_tradetype');
+    const contract_type_block       = block.getChildByType('trade_definition_contracttype');
+    const candle_interval_block     = block.getChildByType('trade_definition_candleinterval');
+    const restart_on_error_block    = block.getChildByType('trade_definition_restartonerror');
+    const restart_on_buy_sell_block = block.getChildByType('trade_definition_restartbuysell');
 
-    const candleIntervalValue =
-        block.getChildFieldValue('trade_definition_candleinterval', 'CANDLEINTERVAL_LIST') || 'default';
-    const shouldRestartOnError = block.childValueToCode('trade_definition_restartonerror', 'RESTARTONERROR') || 'FALSE';
-    const timeMachineEnabled =
-        block.childValueToCode('trade_definition_restartbuysell', 'TIME_MACHINE_ENABLED') || 'FALSE';
+    const symbol                    = market_block.getFieldValue('SYMBOL_LIST');
+    const trade_type                = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const contract_type             = contract_type_block.getFieldValue('TYPE_LIST');
+    const candle_interval           = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
+    const should_restart_on_error   = Blockly.JavaScript.valueToCode(restart_on_error_block, 'RESTARTONERROR', Blockly.JavaScript.ORDER_ATOMIC);
+    const should_restart_on_buysell = Blockly.JavaScript.valueToCode(restart_on_buy_sell_block, 'TIME_MACHINE_ENABLED', Blockly.JavaScript.ORDER_ATOMIC);
 
-    const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
-    const tradeOptionsStatement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const { opposites }             = config;
+    const contract_type_list        = contract_type === 'both'
+        ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
+        : [contract_type];
 
-    const code = `
+    const initialization            = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement   = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+
+    const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {
         Bot.init('${account}', {
-          symbol: '${symbol}',
-          contractTypes: ${JSON.stringify(contractTypeList)},
-          candleInterval: '${candleIntervalValue}',
-          shouldRestartOnError: ${shouldRestartOnError},
-          timeMachineEnabled: ${timeMachineEnabled},
+          symbol              : '${symbol}',
+          contractTypes       : ${JSON.stringify(contract_type_list)},
+          candleInterval      : '${candle_interval || 'FALSE'}',
+          shouldRestartOnError: ${should_restart_on_error || 'FALSE'},
+          timeMachineEnabled  : ${should_restart_on_buysell || 'FALSE'},
         });
         ${initialization.trim()}
     };
       BinaryBotPrivateStart = function BinaryBotPrivateStart() {
-        ${tradeOptionsStatement.trim()}
+        ${trade_options_statement.trim()}
       };\n`;
     return code;
 };

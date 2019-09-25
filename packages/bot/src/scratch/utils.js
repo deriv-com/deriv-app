@@ -1,122 +1,15 @@
-import { fieldGeneratorMapping, saveAs } from './shared';
-import config                            from '../constants/const';
-import { translate }                     from '../utils/lang/i18n';
-import { observer as globalObserver }    from '../utils/observer';
+import { saveAs }    from './shared';
+import config        from '../constants';
+import { translate } from '../utils/lang/i18n';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
-export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse());
-
-export const backwardCompatibility = block => {
-    if (block.getAttribute('type') === 'on_strategy') {
-        block.setAttribute('type', 'before_purchase');
-    } else if (block.getAttribute('type') === 'on_finish') {
-        block.setAttribute('type', 'after_purchase');
-    }
-    Array.from(block.getElementsByTagName('statement')).forEach(statement => {
-        if (statement.getAttribute('name') === 'STRATEGY_STACK') {
-            statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
-        } else if (statement.getAttribute('name') === 'FINISH_STACK') {
-            statement.setAttribute('name', 'AFTERPURCHASE_STACK');
-        }
+export const oppositesToDropdownOptions = opposite_name => {
+    return opposite_name.map(contract_type => {
+        // i.e. [['CALL', translate('Rise')]] becomes [[translate('Rise'), 'CALL']];
+        return Object.entries(contract_type)[0].reverse();
     });
-    if (isMainBlock(block.getAttribute('type'))) {
-        block.removeAttribute('deletable');
-    }
 };
-
-export const removeUnavailableMarkets = block => {
-    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
-        field =>
-            field.getAttribute('name') === 'MARKET_LIST' &&
-            !fieldGeneratorMapping
-                .MARKET_LIST()
-                .map(markets => markets[1])
-                .includes(field.innerText)
-    );
-    if (containsUnavailableMarket) {
-        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
-        Array.from(block.getElementsByTagName('field')).forEach(field => {
-            if (nodesToRemove.includes(field.getAttribute('name'))) {
-                block.removeChild(field);
-            }
-        });
-    }
-    return containsUnavailableMarket;
-};
-
-// Checks for a valid tradeTypeCategory, and attempts to fix if invalid
-// Some tradeTypes were moved to new tradeTypeCategories, this function allows older strategies to keep functioning
-export const strategyHasValidTradeTypeCategory = xml => {
-    const isTradeTypeListBlock = block =>
-        block.getAttribute('type') === 'trade' &&
-        Array.from(block.getElementsByTagName('field')).some(field => field.getAttribute('name') === 'TRADETYPE_LIST');
-    const xmlBlocks = Array.from(xml.children);
-    const containsTradeTypeBlock = xmlBlocks.some(block => isTradeTypeListBlock(block));
-    if (!containsTradeTypeBlock) {
-        return true;
-    }
-    const validTradeTypeCategory = xmlBlocks.some(block => {
-        if (isTradeTypeListBlock(block)) {
-            const xmlFields = Array.from(block.getElementsByTagName('field'));
-            return xmlFields.some(xmlField => {
-                if (xmlField.getAttribute('name') === 'TRADETYPE_LIST') {
-                    // Retrieves the correct TRADETYPECAT_LIST for this TRADETYPE_LIST e.g. 'risefallequals' = 'callputequal'
-                    const tradeTypeCategory = Object.keys(config.conditionsCategory).find(c =>
-                        config.conditionsCategory[c].includes(xmlField.innerText)
-                    );
-                    // Check if the current TRADETYPECAT_LIST is equal to the tradeTypeCategory
-                    const tradeTypeCategoryIsEqual = xmlFields.some(
-                        f => f.getAttribute('name') === 'TRADETYPECAT_LIST' && f.textContent === tradeTypeCategory
-                    );
-                    // If the Trade Type Category is invalid, try to fix it
-                    if (!tradeTypeCategoryIsEqual) {
-                        try {
-                            const tempWorkspace = new Blockly.Workspace({});
-                            const blocklyBlock = Blockly.Xml.domToBlock(block, tempWorkspace);
-                            const availableCategories = fieldGeneratorMapping.TRADETYPECAT_LIST(blocklyBlock)();
-                            return xmlFields.some(
-                                f =>
-                                    f.getAttribute('name') === 'TRADETYPECAT_LIST' &&
-                                    availableCategories.some(
-                                        category =>
-                                            category[1] === tradeTypeCategory &&
-                                            Object.assign(f, { textContent: tradeTypeCategory })
-                                    )
-                            );
-                        } catch (e) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            });
-        }
-        return false;
-    });
-    if (!validTradeTypeCategory) {
-        const errorMessage = translate('The strategy you tried to import is invalid.');
-        globalObserver.emit('ui.log.error', errorMessage);
-
-        if (window.trackJs) {
-            trackJs.track(errorMessage);
-        }
-    }
-    return validTradeTypeCategory;
-};
-
-const getCollapsedProcedures = () =>
-    Blockly.mainWorkspace
-        .getTopBlocks()
-        // eslint-disable-next-line no-underscore-dangle
-        .filter(block => !isMainBlock(block.type) && block.collapsed_ && block.type.indexOf('procedures_def') === 0);
-
-export const fixCollapsedBlocks = () =>
-    getCollapsedProcedures().forEach(block => {
-        block.setCollapsed(false);
-        block.setCollapsed(true);
-    });
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     const { clientX = 0, clientY = 0 } = dropEvent || {};
@@ -133,16 +26,6 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
     });
     // Fire an event to allow scrollbars to resize.
     Blockly.mainWorkspace.resizeContents();
-};
-
-export const deleteBlockIfExists = block => {
-    Blockly.Events.recordUndo = false;
-    const existed = Blockly.mainWorkspace
-        .getTopBlocks()
-        .filter(mainBlock => !block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type)
-        .map(b => b.dispose()).length;
-    Blockly.Events.recordUndo = true;
-    return existed;
 };
 
 export const setBlockTextColor = block => {
@@ -169,81 +52,15 @@ export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = true;
 };
 
-export const configMainBlock = (ev, type) => {
-    if (ev.type === 'create') {
-        ev.ids.forEach(blockId => {
-            const block = Blockly.mainWorkspace.getBlockById(blockId);
-            if (block && block.type === type) {
-                deleteBlockIfExists(block);
-            }
-        });
-    }
-};
-
 export const getBlockByType = type => Blockly.mainWorkspace.getAllBlocks().find(block => type === block.type);
 
-export const getBlocksByType = type => Blockly.mainWorkspace.getAllBlocks().filter(block => type === block.type);
-
 export const getTopBlocksByType = type => Blockly.mainWorkspace.getTopBlocks().filter(block => type === block.type);
-
-export const getMainBlocks = () => config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
-
-export const findTopParentBlock = b => {
-    let block = b;
-    // eslint-disable-next-line no-underscore-dangle
-    let pblock = block.parentBlock_;
-    if (pblock === null) {
-        return null;
-    }
-    while (pblock !== null) {
-        if (pblock.type === 'trade') {
-            return pblock;
-        }
-        block = pblock;
-        // eslint-disable-next-line no-underscore-dangle
-        pblock = block.parentBlock_;
-    }
-    return block;
-};
-
-export const insideMainBlocks = block => {
-    const parent = findTopParentBlock(block);
-    if (!parent) {
-        return false;
-    }
-    return parent.type && isMainBlock(parent.type);
-};
 
 export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
-
-export const disable = (blockObj, message) => {
-    if (!blockObj.disabled) {
-        if (message) {
-            globalObserver.emit('ui.log.warn', message);
-        }
-    }
-    Blockly.Events.recordUndo = false;
-    blockObj.setDisabled(true);
-    Blockly.Events.recordUndo = true;
-};
-
-export const enable = blockObj => {
-    Blockly.Events.recordUndo = false;
-    blockObj.setDisabled(false);
-    Blockly.Events.recordUndo = true;
-};
-
-export const expandDuration = duration =>
-    `${duration
-        .replace(/t/g, ' tick')
-        .replace(/s/g, ' second')
-        .replace(/m/g, ' minute')
-        .replace(/h/g, ' hour')
-        .replace(/d/g, ' day')}(s)`;
 
 const isProcedure = blockType => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0;
 
@@ -273,27 +90,6 @@ class DeleteStray extends Blockly.Events.Abstract {
 }
 DeleteStray.prototype.type = 'deletestray';
 
-// dummy event to hide the element after creation
-class Hide extends Blockly.Events.Abstract {
-    constructor(block, header) {
-        super(block);
-        this.sourceHeaderId = header.id;
-        this.run(true);
-    }
-    
-    run() {
-        const { recordUndo } = Blockly.Events;
-        Blockly.Events.recordUndo = false;
-        const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId);
-        const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId);
-        sourceBlock.loaderId = sourceHeader.id;
-        sourceHeader.loadedByMe.push(sourceBlock.id);
-        sourceBlock.getSvgRoot().style.display = 'none';
-        Blockly.Events.recordUndo = recordUndo;
-    }
-}
-Hide.prototype.type = 'hide';
-
 export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     Blockly.Events.setGroup(eventGroup);
     Blockly.mainWorkspace.getTopBlocks().forEach(block => {
@@ -310,17 +106,10 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     Blockly.Events.setGroup(false);
 };
 
-export const fixArgumentAttribute = xml => {
-    Array.from(xml.getElementsByTagName('arg')).forEach(o => {
-        if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
-    });
-};
-
 export const addDomAsBlock = blockXml => {
     if (blockXml.tagName === 'variables') {
         return Blockly.Xml.domToVariables(blockXml, Blockly.mainWorkspace);
     }
-    backwardCompatibility(blockXml);
     const blockType = blockXml.getAttribute('type');
     if (isMainBlock(blockType)) {
         Blockly.mainWorkspace
@@ -328,33 +117,7 @@ export const addDomAsBlock = blockXml => {
             .filter(b => b.type === blockType)
             .forEach(b => b.dispose());
     }
-    if (isProcedure(blockType)) {
-        fixArgumentAttribute(blockXml);
-    }
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-};
-
-/* const replaceDeletedBlock = block => {
-    const procedureName = block.getFieldValue('NAME');
-    const oldProcedure = Blockly.Procedures.getDefinition(`${procedureName} (deleted)`, Blockly.mainWorkspace);
-    if (oldProcedure) {
-        const { recordUndo } = Blockly.Events;
-        Blockly.Events.recordUndo = false;
-        const f = block.getField('NAME');
-        // eslint-disable-next-line no-underscore-dangle
-        f.text_ = `${procedureName} (deleted)`;
-        oldProcedure.dispose();
-        block.setFieldValue(`${procedureName}`, 'NAME');
-        Blockly.Events.recordUndo = recordUndo;
-    }
-}; */
-
-export const recoverDeletedBlock = block => {
-    const { recordUndo } = Blockly.Events;
-    Blockly.Events.recordUndo = false;
-    block.setFieldValue(block.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME');
-    block.setDisabled(false);
-    Blockly.Events.recordUndo = recordUndo;
 };
 
 const addDomAsBlockFromHeader = (blockXml /* , header = null */) => {
@@ -455,7 +218,7 @@ export const loadRemote = blockObj =>
                 }
             });
             if (!isNew) {
-                disable(blockObj);
+                blockObj.setDisabled(true);
                 reject(translate('This url is already loaded'));
             } else {
                 $.ajax({
@@ -484,7 +247,7 @@ export const loadRemote = blockObj =>
                     })
                     .done(xml => {
                         loadBlocksFromHeader(xml, blockObj).then(() => {
-                            enable(blockObj);
+                            blockObj.setDisabled(false);
                             blockObj.url = url; // eslint-disable-line no-param-reassign
                             resolve(blockObj);
                         }, reject);
@@ -492,12 +255,6 @@ export const loadRemote = blockObj =>
             }
         }
     });
-
-export const hideInteractionsFromBlockly = callback => {
-    Blockly.Events.recordUndo = false;
-    callback();
-    Blockly.Events.recordUndo = true;
-};
 
 export const cleanBeforeExport = xml => {
     Array.from(xml.children).forEach(blockDom => {

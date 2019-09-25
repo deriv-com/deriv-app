@@ -2,9 +2,13 @@
     display: flex;
     justify-content: flex-start;
     cursor: pointer;
-    align-items: flex-start;
+    align-items: center;
 
+    &__input {
+        display: none;
+    }
     &__box {
+        display: block;
         width: 16px;
         height: 16px;
         transition: 0.3s ease-in-out;
@@ -12,11 +16,19 @@
         margin: 2px 8px 0 0;
         border-radius: 2px;
         align-self: flex-start;
-        border: 2px solid $COLOR_DARK_BLUE_7;
+        border: 2px solid var(--text-less-prominent);
 
         &--active {
             border: none;
-            background-color: $COLOR_ORANGE;
+            background-color: var(--brand-red-coral);
         }
+    }
+    &--active {
+        border: none;
+        background-color: var(--brand-red-coral);
+    }
+    &__label {
+        color: var(--text-general);
+        font-size: var(--text-size-xs);
     }
 }

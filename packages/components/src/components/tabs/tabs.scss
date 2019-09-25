@@ -1,0 +1,43 @@
+.dc-tabs {
+    position: relative;
+    //TODO send the tab count from outside
+    @for $i from 1 through 5 {
+        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
+            left: calc(var(--tab-width) * #{$i} - var(--tab-width));
+        }
+    }
+
+    &__list {
+        width: 100%;
+        line-height: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    &__item {
+        list-style: none;
+        font-size: 14px;
+        text-align: center;
+        padding: 0 24px;
+        width: var(--tab-width);
+
+        &:not(.dc-tabs__active) {
+            @include themify($themes) {
+                border-bottom: 1px solid themed('border_color');
+            }
+            cursor: pointer;
+        }
+    }
+    &__active {
+        font-weight: 700;
+    }
+    &__active-line {
+        display: block;
+        position: absolute;
+        top: 41px;
+        left: 0;
+        width: var(--tab-width);
+        height: 2px;
+        background: #ff444f; /* stylelint-disable-line color-no-hex */
+        transition: all ease-in-out 0.3s;
+    }
+}

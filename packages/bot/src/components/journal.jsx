@@ -20,37 +20,37 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
-    const key_words = ['Bought', 'Sold' , 'Profit amount', 'Loss amount'];
+    const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
-    
+
     if (messages.count < 2) {
         return message;
     }
 
-    const title =  messages[0];
+    const title = messages[0];
     const value = messages.slice(1).join(':');
 
     let title_color,
         value_color;
-    
+
     switch (title) {
-        case (key_words[0]) :{
-        // Bought
+        case (key_words[0]): {
+            // Bought
             title_color = 'blue';
             break;
         }
         case (key_words[1]): {
-        // Sold
+            // Sold
             title_color = 'red';
             break;
         }
         case (key_words[2]): {
-        // Profit amount
+            // Profit amount
             value_color = 'green';
             break;
         }
         case (key_words[3]): {
-        // Loss amount
+            // Loss amount
             value_color = 'red';
             break;
         }
@@ -61,7 +61,7 @@ const FormatMessage = ({
 
     return (
         <p>
-            <span className= {classnames(
+            <span className={classnames(
                 { [`journal__table--bold journal__table--${title_color}`]: title_color })}
             >
                 {title}
@@ -101,8 +101,8 @@ class Journal extends React.PureComponent {
                 <table className='journal__table'>
                     <thead className='journal__table--header'>
                         <tr>
-                            <th className='journal__table--th'> {translate('Date')} </th>
-                            <th className='journal__table--th'> {translate('Message')} </th>
+                            <th className='journal__table--th'>{translate('Date')}</th>
+                            <th className='journal__table--th'>{translate('Message')}</th>
                         </tr>
                     </thead>
                     <tbody className='journal__table--body'>

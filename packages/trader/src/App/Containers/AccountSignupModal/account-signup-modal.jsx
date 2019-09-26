@@ -112,12 +112,6 @@ class AccountSignup extends React.Component {
                                                     />
                                                 )}
                                             </Field>
-                                            <p className='account-signup__subtext'>
-                                                <Localize
-                                                    i18n_default_text='We need this to make sure our service complies with laws and regulations in your country.'
-                                                />
-                                            </p>
-
                                             <Button
                                                 className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.residence || errors.residence })}
                                                 type='button'

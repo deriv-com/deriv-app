@@ -15,7 +15,7 @@
         width: 32%;
         max-width: 32%;
         text-align: center;
-        background-color: $COLOR_LIGHT_GRAY_3;
+        background-color: var(--general-section-1);
         padding: 8px 8px 0;
         margin-bottom: 2%;
         height: 56px;
@@ -29,33 +29,18 @@
             height: 18px;
             margin-bottom: 4px;
             @include typeface(--small-center-normal-black, none);
-
-            &.win {
-                @include themify($themes) {
-                    color: themed('won_color');
-                }
-            }
-            &.loss {
-                @include themify($themes) {
-                    color: themed('loss_color');
-                }
-            }
         }
     }
     &__amount {
         @include typeface(--small-center-normal-black, none);
 
         &--positive {
-            @include themify($themes) {
-                font-weight: bold;
-                color: themed('won_color');
-            }
+            font-weight: bold;
+            color: var(--text-profit-success);
         }
         &--negative {
-            @include themify($themes) {
-                font-weight: bold;
-                color: themed('loss_color');
-            }
+            font-weight: bold;
+            color: var(--text-loss-danger);
         }
     }
 }

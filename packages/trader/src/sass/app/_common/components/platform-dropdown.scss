@@ -24,21 +24,16 @@
         transition: transform 0.25s ease;
 
         &__platform {
+            position: relative;
             display: inline-flex;
+            background-color: transparent;
+            color: var(--text-general);
+            text-decoration: none;
             margin: 24px 16px;
             padding: 28px 16px;
             width: 302px;
-            color: var(--text-general);
-            text-decoration: none;
             border-radius: 8px;
-            transition: background-color 0.3s;
 
-            &.active {
-                border: solid 2px var(--border-active);
-            }
-            &:not(.active):hover {
-                background-color: var(--general-hover);
-            }
             &__icon {
                 min-height: 32px;
                 min-width: 32px;
@@ -52,6 +47,24 @@
             &__description {
                 font-size: 14px;
                 line-height: 20px;
+            }
+            &__background {
+                opacity: 0;
+                transition: opacity 0.25s ease;
+                background-color: var(--general-hover);
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: -1;
+                border-radius: inherit;
+            }
+            &.active {
+                border: solid 2px var(--border-active);
+            }
+            &:not(.active):hover &__background {
+                opacity: 1;
             }
         }
     }

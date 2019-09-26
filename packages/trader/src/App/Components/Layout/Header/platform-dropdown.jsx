@@ -45,6 +45,7 @@ class PlatformDropdown extends React.PureComponent {
                                 { 'active': is_bot && platform.href === '/bot' }
                             )}
                         >
+                            <div className='platform_dropdown__list__platform__background' />
                             <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} />
 
                             <div className='platform_dropdown__list__platform__details'>

@@ -22,20 +22,18 @@
 
         &:hover:not(&--selected) {
             cursor: pointer;
-            border: 1px solid var(--text-less-prominent);
+            border: 1px solid var(--border-hover);
         }
         &--current {
             opacity: 0.5;
         }
         &--selected {
-            border: 1px solid var(--brand-secondary);
+            border: 2px solid var(--border-active);
 
             & p.label {
                 @include typeface(--paragraph-center-bold-black);
+                color: var(--text-prominent);
             }
-        }
-        .change-currency &:hover:not(&--selected) {
-            background-color: 1px solid var(gray-2);
         }
         & > div {
             display: flex;

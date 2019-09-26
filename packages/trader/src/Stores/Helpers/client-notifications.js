@@ -79,7 +79,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'warning',

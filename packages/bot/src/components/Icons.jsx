@@ -55,7 +55,7 @@ export const Icon = svgItem => (props) => {
     const [width, height] = svgItem.viewBox.split(' ').slice(2);
 
     return (
-        <svg width={width} height={height} className={classNames('icon', { [className]: !!className }) }>
+        <svg width={width} height={height} className={classNames('icon', className) }>
             { /* eslint-disable-next-line */ }
             <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>

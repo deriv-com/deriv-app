@@ -10,10 +10,7 @@ import                    '../assets/sass/summary.scss';
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>
         <div className='summary__tile-title'>{props.title}</div>
-        <div className={classNames('summary__tile-content', {
-            [props.contentClassName]: !!props.contentClassName,
-        })}
-        >
+        <div className={classNames('summary__tile-content', props.contentClassName)}>
             { props.content }
         </div>
     </div>

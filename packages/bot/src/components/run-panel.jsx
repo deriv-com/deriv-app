@@ -51,7 +51,7 @@ const drawerFooter = (props) => {
 
 const RunPanel = () => {
     const content = drawerContent();
-    const footer = drawerFooter({ onClick: onRunBotClick });
+    const footer = drawerFooter({ onClick: onRunBotClick }); // TODO, bind correct function.
 
     return (
         <Drawer

@@ -24,6 +24,7 @@ export default class SummaryStore {
     @action.bound
     onContractStatusEvent(contract_status) {
         switch (contract_status.id) {
+            // TODO: Constants (coming from trade engine) for case labels below.
             case ('contract.purchase_recieved'): {
                 const { buy } = contract_status;
                 this.total_stake += buy.buy_price;

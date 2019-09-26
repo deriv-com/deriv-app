@@ -22,17 +22,17 @@ Blockly.Blocks.ohlc_values = {
             ],
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Returns a list of the selected candle values'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Returns a specific value from a candle list according to selected time interval'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Selected Candle Value'),
-            'description' : translate('Selected Candle Value Description'),
+            'display_name': translate('Get values from candles (1)'),
+            'description' : translate('This block extracts selected type of values from a candle list according to selected time interval.'),
         };
     },
 };

@@ -9,17 +9,17 @@ Blockly.Blocks.epoch = {
             message0       : translate('Seconds Since Epoch'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Returns the epoch time (seconds since epoch)'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns the number of seconds since January 1st, 1970'),
             category       : Blockly.Categories.Time,
         };
     },
     meta(){
         return {
             'display_name': translate('Second Since Epoch'),
-            'description' : translate('Seconds Since Epoch Decription'),
+            'description' : translate('This block returns the number of seconds since January 1st, 1970.'),
         };
     },
 };

@@ -39,17 +39,17 @@ Blockly.Blocks.text_charAt = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Char At Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns a specific character from a given string'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Char At'),
-            'description' : translate('Text Char At Description'),
+            'display_name': translate('Get character'),
+            'description' : translate('Returns the specific character from a given string of text according to the selected option. '),
         };
     },
     mutationToDom() {

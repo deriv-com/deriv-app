@@ -1,4 +1,3 @@
-import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.procedures_callnoreturn = {
@@ -29,12 +28,12 @@ Blockly.Blocks.procedures_callnoreturn = {
                     name: 'TOPROW',
                 },
             ],
-            colour           : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary  : Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryProcedures.colourTertiary,
+            colour           : Blockly.Colours.Special2.colour,
+            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Function with no return value tooltip'),
+            tooltip          : translate('Custom function'),
             category         : Blockly.Categories.Functions,
         };
     },
@@ -45,8 +44,8 @@ Blockly.Blocks.procedures_callnoreturn = {
      */
     meta() {
         return {
-            'display_name': translate('Function With no Return name'),
-            'description' : translate('Function with no return value description'),
+            'display_name': translate('Custom function'),
+            'description' : '',
         };
     },
     /**
@@ -56,8 +55,6 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     onchange(event) {
-        setBlockTextColor(this);
-
         if (!this.workspace || this.workspace.isFlyout) {
             // Block is deleted or is in a flyout.
             return;

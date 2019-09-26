@@ -14,3 +14,5 @@ import './variables';
 import './workspace_audio';
 import './workspace_svg';
 import './xml';
+import './block_render_svg_vertical';
+import './css';

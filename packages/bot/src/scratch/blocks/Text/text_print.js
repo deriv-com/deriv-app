@@ -13,19 +13,19 @@ Blockly.Blocks.text_print = {
                     name: 'TEXT',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special3.colour,
+            colourSecondary  : Blockly.Colours.Special3.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Text Print Tooltip'),
+            tooltip          : translate('Displays a dialog window with a message'),
             category         : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Print'),
-            'description' : translate('Text Print Description'),
+            'display_name': translate('Print'),
+            'description' : translate('This block displays a dialog window with a given message.'),
         };
     },
 };

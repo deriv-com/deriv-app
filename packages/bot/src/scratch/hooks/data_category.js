@@ -45,14 +45,14 @@ Blockly.DataCategory.search = function(variableModelList){
         }
 
         // Create 'Change `var` by `1`'-block
-        if (Blockly.Blocks.math_change) {
-            const gap = Blockly.Blocks.variables_get ? 20 : 8;
-            const changeBlockText = `<xml><block type="math_change" gap="${gap}">${generateVariableFieldXmlString(
-                firstVariable
-            )}<value name="DELTA"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></xml>`;
-            const changeBlock = Blockly.Xml.textToDom(changeBlockText).firstChild;
-            xmlList.push(changeBlock);
-        }
+        // if (Blockly.Blocks.math_change) {
+        //     const gap = Blockly.Blocks.variables_get ? 20 : 8;
+        //     const changeBlockText = `<xml><block type="math_change" gap="${gap}">${generateVariableFieldXmlString(
+        //         firstVariable
+        //     )}<value name="DELTA"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></xml>`;
+        //     const changeBlock = Blockly.Xml.textToDom(changeBlockText).firstChild;
+        //     xmlList.push(changeBlock);
+        // }
 
         // Create `variable_get` block for each variable
         if (Blockly.Blocks.variables_get) {

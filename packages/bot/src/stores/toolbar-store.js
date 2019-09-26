@@ -171,9 +171,9 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.cleanUp();
     }
 
-    load(blockStr = '', drop_event = {}) {
+    load(block_string = '', drop_event = {}) {
         try {
-            const xml_doc = new DOMParser().parseFromString(blockStr, 'application/xml');
+            const xml_doc = new DOMParser().parseFromString(block_string, 'application/xml');
 
             if (xml_doc.getElementsByTagName('parsererror').length) {
                 throw new Error();
@@ -185,7 +185,7 @@ export default class ToolbarStore {
 
         let xml;
         try {
-            xml = Blockly.Xml.textToDom(blockStr);
+            xml = Blockly.Xml.textToDom(block_string);
         } catch (e) {
             // TODO
             console.error(e);  // eslint-disable-line
@@ -227,11 +227,11 @@ export default class ToolbarStore {
             Blockly.Xml.domToVariables(variables[0], workspace);
         }
         Blockly.Events.setGroup('load');
-        const addedBlocks =
+        const added_blocks =
             Array.from(xml.children)
                 .map(block => addDomAsBlock(block))
                 .filter(b => b);
-        cleanUpOnLoad(addedBlocks, drop_event);
+        cleanUpOnLoad(added_blocks, drop_event);
 
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
@@ -247,9 +247,9 @@ export default class ToolbarStore {
         Blockly.Events.setGroup(false);
     }
 
-    readFile(f, drop_event = {}) {
+    readFile(file, drop_event = {}) {
         const reader = new FileReader();
         reader.onload = e => this.load(e.target.result, drop_event);
-        reader.readAsText(f);
+        reader.readAsText(file);
     }
 }

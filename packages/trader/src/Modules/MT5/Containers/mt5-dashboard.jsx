@@ -252,7 +252,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
 const compareAccountsData = [
     {
-        attribute: <MT5AttributeDescriber name={ localize('Account currency') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Account currency') } />,
         standard : localize('USD'),
         advanced : localize('USD'),
         synthetic: localize('USD'),
@@ -306,7 +306,7 @@ const compareAccountsData = [
         synthetic: localize('No'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') } />,
         standard : localize('No'),
         advanced : localize('No'),
         synthetic: localize('No'),
@@ -336,7 +336,7 @@ const compareAccountsData = [
         synthetic: localize('50%'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Number of assets') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Number of assets') } />,
         standard : localize('50+'),
         advanced : localize('50+'),
         synthetic: localize('10+'),

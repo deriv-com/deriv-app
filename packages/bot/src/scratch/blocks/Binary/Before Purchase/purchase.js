@@ -63,7 +63,7 @@ Blockly.Blocks.purchase = {
             const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
 
             if (opposite_name && opposite_name !== 'NA' && trade_type && contract_type) {
-                updatePurchaseChoices(contract_type, opposite_name);
+                updatePurchaseChoices(contract_type, event.group, opposite_name);
             }
         }
     },

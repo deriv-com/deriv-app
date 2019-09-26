@@ -98,13 +98,6 @@ Blockly.Blocks.trade_definition = {
                 }
             });
 
-            const market_block    = this.getChildByType('trade_definition_market');
-            const selected_market = market_block.getFieldValue('MARKET_LIST');
-            const change_event    = new Blockly.Events.BlockChange(market_block, 'field', 'MARKET_LIST', '', selected_market);
-
-            // Trigger change event on MARKET_LIST to populate all dropdowns.
-            Blockly.Events.fire(change_event);
-
         } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');

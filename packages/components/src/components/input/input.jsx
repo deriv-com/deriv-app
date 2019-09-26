@@ -14,7 +14,12 @@ const Input = ({
     label,
     ...props
 }, ref) => (
-    <div className={ classNames('dc-input', className, { 'dc-input__disabled': disabled }) }>
+    <div
+        className={ classNames('dc-input', className, {
+            'dc-input__disabled': disabled,
+            'dc-input--error'   : error,
+        })}
+    >
         {
             leading_icon &&
             React.cloneElement(

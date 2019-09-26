@@ -10,24 +10,24 @@ import 'Sass/app/_common/components/platform-dropdown.scss';
 class PlatformDropdown extends React.PureComponent {
     handleClickOutside = (event) => {
         if (!event.target.closest('.platform_dropdown__list') && !event.target.closest('.platform_switcher')) {
-            this.props.handleClick();
+            this.props.closeDrawer();
         }
     }
 
     componentWillMount() {
-        window.addEventListener('popstate', this.props.handleClick);
+        window.addEventListener('popstate', this.props.closeDrawer);
         document.addEventListener('click', this.handleClickOutside);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('popstate', this.props.handleClick);
+        window.removeEventListener('popstate', this.props.closeDrawer);
         document.removeEventListener('click', this.handleClickOutside);
     }
 
     render() {
         const {
             platform_config,
-            handleClick,
+            closeDrawer,
         } = this.props;
         const is_bot = isBot();
 
@@ -39,7 +39,7 @@ class PlatformDropdown extends React.PureComponent {
                             to={platform.link_to}
                             href={platform.href}
                             key={idx}
-                            onClick={handleClick}
+                            onClick={closeDrawer}
                             className={classNames(
                                 'platform_dropdown__list__platform',
                                 { 'active': is_bot && platform.href === '/bot' }

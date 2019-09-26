@@ -13,7 +13,8 @@ class PlatformSwitcher extends React.PureComponent {
         this.state = { is_open: false };
     }
 
-    handleClick = () => this.setState({ is_open: !this.state.is_open });
+    toggleDrawer = () => this.setState(state => ({ is_open: !state.is_open }));
+    closeDrawer = () => this.setState({ is_open: false });
 
     render = () => (
         <React.Fragment>
@@ -22,7 +23,7 @@ class PlatformSwitcher extends React.PureComponent {
                     'platform_switcher',
                     { 'platform_switcher--active': this.state.is_open }
                 )}
-                onClick={this.handleClick}
+                onClick={this.toggleDrawer}
             >
                 <Icon className='platform_switcher__icon' icon='IconDeriv' />
                 <h1 className='platform_switcher__header'>{localize('DTrader')}</h1>
@@ -38,7 +39,7 @@ class PlatformSwitcher extends React.PureComponent {
             >
                 <PlatformDropdown
                     platform_config={this.props.platform_config}
-                    handleClick={this.handleClick}
+                    closeDrawer={this.closeDrawer}
                 />
             </CSSTransition>
         </React.Fragment>

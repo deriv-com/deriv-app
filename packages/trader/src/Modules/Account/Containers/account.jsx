@@ -39,8 +39,9 @@ class Account extends React.Component {
 
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
-            const { identity, document, needs_verification } = this.props.account_status.authentication;
-            const is_high_risk_client = (identity.status === 'none' && document.status === 'none' && !!needs_verification.length);
+            const { needs_verification } = this.props.account_status.authentication;
+            const is_high_risk_client = (!!needs_verification.length);
+
             this.setState({ is_high_risk_client, is_loading: false });
         });
         this.props.enableRouteMode();

@@ -55,4 +55,11 @@ export default class JournalStore {
         this.messages.unshift({ date, time , message });
         this.messages = this.messages.slice(0);  // force array update
     }
+
+    onUnmount() {
+        observer.unregister('ui.log.success', this.onLogSuccess);
+        observer.unregister('ui.log.error', this.onLogError);
+        observer.unregister('Error', this.onLogError);
+        observer.unregister('Notify', this.onNotify);
+    }
 }

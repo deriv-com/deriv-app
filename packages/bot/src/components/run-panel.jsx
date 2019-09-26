@@ -80,20 +80,26 @@ const drawerFooter = ({
     );
 };
 
-const RunPanel = (props) => {
-    const content = drawerContent();
-    const footer = drawerFooter(props);
+class RunPanel extends React.PureComponent {
+    componentWillUnmount() {
+        this.props.onUnmount();
+    }
 
-    return (
-        <Drawer
-            className='run-panel'
-            is_open={true}
-            footer={footer}
-        >
-            {content}
-        </Drawer>
-    );
-};
+    render() {
+        const content = drawerContent();
+        const footer = drawerFooter(this.props);
+
+        return (
+            <Drawer
+                className='run-panel'
+                is_open={true}
+                footer={footer}
+            >
+                {content}
+            </Drawer>
+        );
+    }
+}
 
 RunPanel.propTypes = {
     closeModal           : PropTypes.func,
@@ -103,6 +109,7 @@ RunPanel.propTypes = {
     onClearStatClick     : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
+    onUnmount            : PropTypes.func,
 };
 
 export default connect(({ runPanel }) => ({
@@ -113,4 +120,5 @@ export default connect(({ runPanel }) => ({
     onClearStatClick     : runPanel.onClearStatClick,
     onRunButtonClick     : runPanel.onRunButtonClick,
     onStopButtonClick    : runPanel.onStopButtonClick,
+    onUnmount            : runPanel.onUnmount,
 }))(RunPanel);

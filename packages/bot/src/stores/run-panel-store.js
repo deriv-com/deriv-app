@@ -95,4 +95,11 @@ export default class RunPanelStore {
             }
         }
     }
+
+    onUnmount() {
+        observer.unregister('bot.running', this.onBotRunningEvent);
+        observer.unregister('bot.stop', this.onBotStopEvent);
+        observer.unregister('contract.status', this.onContractStatusEvent);
+        observer.unregister('bot.contract', this.onBotContractEvent);
+    }
 }

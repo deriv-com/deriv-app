@@ -6,7 +6,7 @@ import { translate } from '../utils/lang/i18n';
 export default class FlyoutStore {
     block_listeners = [];
     block_workspaces = [];
-    flyout_min_width = 400;
+    flyout_min_width = 500;
     options = {
         css   : false,
         media : `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -105,8 +105,8 @@ export default class FlyoutStore {
         // Update block workspace widths to accommodate block widths.
         // addind 1px to highet and then moving the block 1px down to make block top border visible
         el_block_workspace.style.height = `${Math.ceil(block_hw.height * this.options.zoom.startScale) + 1}px`;
-        el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale)}px`;
-        block.moveBy(0,1);
+        el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale) + 1}px`;
+        block.moveBy(1,1);
 
         // Use original Blockly flyout functionality to create block on drag.
         const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
@@ -194,7 +194,6 @@ export default class FlyoutStore {
             node.setAttribute('height', block_hw.height * this.options.zoom.startScale);
         });
 
-        this.flyout_width = 650;
         this.block_nodes = block_node;
         this.is_help_content = true;
     }

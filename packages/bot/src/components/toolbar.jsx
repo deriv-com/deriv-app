@@ -150,7 +150,7 @@ const Toolbar = ({
             <div className='toolbar__section'>
                 <Button
                     id='start'
-                    className= 'btn--primary toolbar__btn-icon'
+                    className= 'btn--primary--green toolbar__btn-icon'
                     has_effect
                     onClick={onToolboxToggle}
                 >

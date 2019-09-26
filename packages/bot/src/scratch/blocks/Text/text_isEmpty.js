@@ -16,17 +16,17 @@ Blockly.Blocks.text_isEmpty = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Is empty'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Tests if a given text string is empty'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
             'display_name': translate('Text Is empty'),
-            'description' : translate('Text Is empty'),
+            'description' : translate('Tests whether a string of text is empty. Returns a boolean value (true or false).'),
         };
     },
 };

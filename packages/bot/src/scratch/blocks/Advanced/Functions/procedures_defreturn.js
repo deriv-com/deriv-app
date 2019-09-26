@@ -46,17 +46,17 @@ Blockly.Blocks.procedures_defreturn = {
                     align: Blockly.ALIGN_RIGHT,
                 },
             ],
-            colour         : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-            tooltip        : translate('Function def with return value'),
+            colour         : Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary : Blockly.Colours.Special2.colourTertiary,
+            tooltip        : translate('Function that returns a value'),
             category       : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Function def with return value'),
-            'description' : translate('Function def with return value Description'),
+            'display_name': translate('Function that returns a value'),
+            'description' : translate('This block executes nested instructions (bloks) and can return a value which is typically the result of nested instructions execution.'),
         };
     },
     onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,

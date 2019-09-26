@@ -3,8 +3,8 @@
     <!-- Trade Parameters -->
     <category 
         id="trade_parameters" 
-        name="Trade parameters" 
-        description="Trade duration, barrier, stake"
+        name="Set up your trade" 
+        description="Choose market, contract-type, stake, duration, and barrier"
         iconURI="ic-stage-1"
     >
         <block type="trade_definition">
@@ -69,79 +69,123 @@
     <!-- Purchase Conditions -->
     <category 
         id="purchase_conditions" 
-        name="Purchase conditions" 
-        description="Purchase contract, get payout/price" 
+        name="Purchase contract" 
+        description="Define purchase conditions, select trade-type" 
         iconURI="ic-stage-2"
     >
         <block type="before_purchase"></block>
-        <block type="payout"></block>
-        <block type="ask_price"></block>
         <block type="purchase"></block>
     </category>
     <!-- Sell Conditions -->
     <category 
         id="sell_conditions" 
-        name="Sell conditions" 
-        description="Sell at market price if needed" 
+        name="Sell contract (optional)" 
+        description="Sell active contract at market price if you wish" 
         iconURI="ic-stage-3"
     >
         <block type="during_purchase"></block>
-        <block type="check_sell"></block>
-        <block type="sell_price"></block>
         <block type="sell_at_market"></block>
     </category>
     <!-- Trade Results -->
     <category 
         id="trade_results" 
-        name="Trade results" 
-        description="Expired contract details, stop loss" 
+        name="Trade again" 
+        description="Check your trade results and trade again" 
         iconURI="ic-stage-4"
     >
         <block type="after_purchase"></block>
-        <block type="contract_check_result"></block>
-        <block type="read_details"></block>
         <block type="trade_again"></block>
     </category>
     <sep />
-    <!-- Technical Analysis -->
-    <category 
-        id="technical_analysis" 
-        name="Technical analysis" 
-        description="Indicators, trend analysis, etc"
-    >
-        <block type="tick_analysis"></block>
-        <block type="tick"></block>
-        <block type="last_digit"></block>
-        <block type="read_ohlc" x="-270">
-            <field name="OHLCFIELD_LIST">open</field>
-            <field name="CANDLEINTERVAL_LIST">default</field>
-            <value name="CANDLEINDEX">
-                <shadow type="math_number">
-                    <field name="NUM">1</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="check_direction"></block>
-        <block type="get_ohlc" x="-46">
-            <field name="CANDLEINTERVAL_LIST">default</field>
-            <value name="CANDLEINDEX">
-                <shadow type="math_number">
-                    <field name="NUM">1</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="ticks"></block>
-        <block type="lastDigitList"></block>
-        <block type="ohlc"></block>
-        <block type="ohlc_values"></block>
+
+    <category id="analysis" name="Analysis" description="Indicators, ticks, stats, etc" iconURI="ic-arrow">
+
+        <category name="Tick and candle analysis" id="tick_analysis" description="Tools for tick analysis">
+            <block type="tick_analysis"></block>
+            <block type="tick"></block>
+            <block type="last_digit"></block>
+            <block type="read_ohlc">
+                <field name="OHLCFIELD_LIST">open</field>
+                <field name="CANDLEINTERVAL_LIST">default</field>
+                <value name="CANDLEINDEX">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="check_direction"></block>
+            <block type="get_ohlc">
+                <field name="CANDLEINTERVAL_LIST">default</field>
+                <value name="CANDLEINDEX">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="ticks"></block>
+            <block type="lastDigitList"></block>
+            <block type="ohlc"></block>
+            <block type="ohlc_values"></block>
+            <block type="is_candle_black"></block>
+            <block type="ohlc_values_in_list"></block>
+            <block type="read_ohlc_obj"></block>
+        </category>
+
+        <category name="Contract" id="contract_details" description="Contract details">
+            <block type="contract_check_result"></block>
+            <block type="read_details"></block>
+            <block type="sell_price"></block>
+            <block type="check_sell"></block>
+            <block type="payout"></block>
+            <block type="ask_price"></block>            
+        </category>
+
+        <category name="Stats" id="stats" description="Run time statistics">
+            <block type="balance"></block>
+            <block type="total_profit"></block>
+            <block type="total_runs"></block>
+        </category>
+
     </category>
+
     <!-- Utility -->
-    <category 
-        id="utility" 
-        name="Utility" 
-        description="Math, text, logic, lists, etc."
-        iconURI="ic-arrow"
-    >
+    <category id="utility" name="Utility" description="Math, text, logic, lists, etc." iconURI="ic-arrow">
+
+        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
+        
+        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
+
+        <category name="Notifications" id="notifications" description="Run time messages">
+            <block type="text_print">
+                <value name="TEXT">
+                    <shadow type="text">
+                        <field name="TEXT">abc</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="text_prompt_ext">
+                <field name="TYPE">TEXT</field>
+                <value name="TEXT">
+                    <shadow type="text">
+                        <field name="TEXT">abc</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="notify">
+                <field name="NOTIFICATION_TYPE">success</field>
+                <value name="MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">abc</field>
+                    </shadow>
+                </value>
+            </block>
+        </category>
+
+        <category name="Time" id="time" description="Arithmetical operations">
+            <block type="epoch" />
+            <block type="timeout" />
+        </category>
+
         <category name="Math" id="math" description="Arithmetical operations">
             <block type="math_number" />
             <block type="math_arithmetic">
@@ -243,6 +287,7 @@
             </block>
             <block type="math_random_float" />
         </category>
+
         <category name="Text" id="text" description="Operations with text strings">
             <block type="text">
                 <field name="TEXT">abc</field>
@@ -344,27 +389,10 @@
                     </shadow>
                 </value>
             </block>
-            <block type="text_print">
-                <value name="TEXT">
-                    <shadow type="text">
-                        <field name="TEXT">abc</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="text_prompt_ext">
-                <field name="TYPE">TEXT</field>
-                <value name="TEXT">
-                    <shadow type="text">
-                        <field name="TEXT">abc</field>
-                    </shadow>
-                </value>
-            </block>
         </category>
+
         <category name="Logic" id="logic" description="Comparison operations">
             <block type="controls_if"/>
-            <block type="controls_if">
-                <mutation else="1"></mutation>
-            </block>
             <block type="logic_compare" />
             <block type="logic_operation" />
             <block type="logic_negate" />
@@ -372,6 +400,7 @@
             <block type="logic_null" />
             <block type="logic_ternary" />
         </category>
+
         <category name="Lists" id="lists" description="Handling lists of text/numeric values">
             <block type="lists_create_with">
                 <field name="VARIABLE" variabletype="">list</field>
@@ -408,15 +437,19 @@
             </block>
             <block type="lists_sort"></block>
         </category>
-        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
-        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
-        <category name="Loops" id="loops" description="arithmetical operations">
-            <block type="controls_repeat_ext"></block>
+        
+        <category name="Loops" id="loops" description="Repeat instructions until condition is met">
             <block type="controls_repeat"></block>
+            <block type="controls_repeat_ext"></block>
             <block type="controls_whileUntil"></block>
             <block type="controls_for"></block>
             <block type="controls_forEach"></block>
             <block type="controls_flow_statements"></block>
+        </category>
+        
+        <category name="Misc." id="misc" description="Misc.">
+            <block type="loader"></block>
+            <block type="block_holder"></block>
         </category>
     </category>
 </xml>

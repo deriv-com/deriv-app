@@ -4,7 +4,7 @@ import { translate } from '../../../../utils/lang/i18n';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: translate('Trade Category: %1 Trade Type: %2'),
+            message0: translate('Trade Type: %1 > %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -17,9 +17,9 @@ Blockly.Blocks.trade_definition_tradetype = {
                     options: [['', '']],
                 },
             ],
-            colour           : Blockly.Colours.BinaryLessPurple.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });

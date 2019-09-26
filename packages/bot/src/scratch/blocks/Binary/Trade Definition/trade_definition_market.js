@@ -4,7 +4,7 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: 'Market: %1 Submarket: %2 Symbol: %3',
+            message0: 'Market: %1 > %2 > %3',
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -22,9 +22,9 @@ Blockly.Blocks.trade_definition_market = {
                     options: [['', '']],
                 },
             ],
-            colour           : Blockly.Colours.BinaryLessPurple.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });

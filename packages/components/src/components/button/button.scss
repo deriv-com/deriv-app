@@ -1,7 +1,7 @@
 /** @define btn */
 .btn {
     font-size: 1rem;
-    display: inline-flex;
+    display: inline-block;
     vertical-align: middle;
     justify-content: center;
     touch-action: manipulation;
@@ -21,6 +21,8 @@
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
+        display: inline-block;
+        vertical-align: middle;
     }
     &--link {
         max-width: 220px;
@@ -31,9 +33,9 @@
         text-decoration: none;
     }
     &__icon {
-        display: inline-flex;
+        display: inline-block;
+        vertical-align: middle;
         padding-right: 6px;
-        margin-top: 2px;
     }
     &:not([disabled]):hover {
         text-decoration: none;

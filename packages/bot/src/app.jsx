@@ -3,6 +3,7 @@ import React                    from 'react';
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
+import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
 import './assets/sass/app.scss';
@@ -19,6 +20,7 @@ class App extends React.Component {
         return (
             <Provider {...this.rootStore}>
                 <React.Fragment>
+                    <Toolbar />
                     <Workspace />
                     <RunPanel />
                 </React.Fragment>
@@ -38,5 +40,4 @@ class App extends React.Component {
         ApiHelpers.instance.disposeOnAccountSwitch();
     }
 }
-
 export default App;

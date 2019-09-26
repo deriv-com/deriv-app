@@ -55,9 +55,9 @@ const RunPanel = () => {
 
     return (
         <Drawer
-            className='run-panel'
             is_open={true}
             footer={footer}
+            className='run-panel'
         >
             {content}
         </Drawer>

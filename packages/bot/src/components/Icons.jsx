@@ -1,12 +1,31 @@
 import React                   from 'react';
 import classNames              from 'classnames';
+
 // General
-import logo                    from '../assets/icons/ic-logo.svg';
-import blueInfo                from '../assets/icons/icon-info-blue.svg';
-import check                   from '../assets/icons/ic-check.svg';
-import cross                   from '../assets/icons/ic-cross.svg';
-import tradeActive             from '../assets/icons/ic-trade-active.svg';
-import iconInfoOutline         from '../assets/icons/icon-info-outline.svg';
+import general_check           from '../assets/icons/ic-check.svg';
+import general_cross           from '../assets/icons/ic-cross.svg';
+import general_logo            from '../assets/icons/ic-logo.svg';
+import general_trade_active    from '../assets/icons/ic-trade-active.svg';
+import general_info_blue       from '../assets/icons/icon-info-blue.svg';
+import general_info_outline    from '../assets/icons/icon-info-outline.svg';
+
+// Toolbar
+import toolbar_drive           from '../assets/icons/google-drive-active.svg';
+import toolbar_close           from '../assets/icons/ic-close.svg';
+import toolbar_rename          from '../assets/icons/ic-rename.svg';
+import toolbar_start           from '../assets/icons/ic-start.svg';
+import toolbar_search          from '../assets/icons/ic-search.svg';
+import toolbar_newFile         from '../assets/icons/new-file.svg';
+import toolbar_open            from '../assets/icons/open.svg';
+import toolbar_performance     from '../assets/icons/performance-window.svg';
+import toolbar_rearrange       from '../assets/icons/rearrange.svg';
+import toolbar_redo            from '../assets/icons/redo.svg';
+import toolbar_save            from '../assets/icons/save.svg';
+import toolbar_local           from '../assets/icons/shape.svg';
+import toolbar_undo            from '../assets/icons/undo.svg';
+import toolbar_zoomIn          from '../assets/icons/zoom-in.svg';
+import toolbar_zoomOut         from '../assets/icons/zoom-out.svg';
+
 // Toolbox
 import toolbox_stage1          from '../assets/icons/ic-stage-1.svg';
 import toolbox_stage2          from '../assets/icons/ic-stage-2.svg';
@@ -14,10 +33,12 @@ import toolbox_stage3          from '../assets/icons/ic-stage-3.svg';
 import toolbox_stage4          from '../assets/icons/ic-stage-4.svg';
 import toolbox_arrow1          from '../assets/icons/ic-arrow-1.svg';
 import toolbox_arrow2          from '../assets/icons/ic-arrow-2.svg';
+
 // Contract
-import contract_plunkown       from '../assets/icons/ic-unknown.svg';
-import contract_profit         from '../assets/icons/ic-profit.svg';
 import contract_loss           from '../assets/icons/ic-loss.svg';
+import contract_profit         from '../assets/icons/ic-profit.svg';
+import contract_plunkown       from '../assets/icons/ic-unknown.svg';
+
 // Trade Types
 import trade_type_asiand       from '../assets/icons/trade-types/asiand.svg';
 import trade_type_asianu       from '../assets/icons/trade-types/asianu.svg';
@@ -51,11 +72,11 @@ import trade_type_upordown     from '../assets/icons/trade-types/upordown.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
-    const { className } = props;
+    const { className, onClick } = props;
     const [width, height] = svgItem.viewBox.split(' ').slice(2);
 
     return (
-        <svg width={width} height={height} className={classNames('icon', className) }>
+        <svg width={width} height={height} className={classNames('icon', className)} onClick={onClick}>
             { /* eslint-disable-next-line */ }
             <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>
@@ -68,12 +89,13 @@ export const preloadSprite = () => {
 };
 
 // General
-export const LogoIcon              = Icon(logo);
-export const TradeActive           = Icon(tradeActive);
-export const BlueInfoIcon          = Icon(blueInfo);
-export const IconInfoOutline       = Icon(iconInfoOutline);
-export const CheckIcon             = Icon(check);
-export const CrossIcon             = Icon(cross);
+export const LogoIcon              = Icon(general_logo);
+export const TradeActive           = Icon(general_trade_active);
+export const BlueInfoIcon          = Icon(general_info_blue);
+export const IconInfoOutline       = Icon(general_info_outline);
+export const CheckIcon             = Icon(general_check);
+export const CrossIcon             = Icon(general_cross);
+
 // Toolbox
 export const Stage1Icon            = Icon(toolbox_stage1);
 export const Stage2Icon            = Icon(toolbox_stage2);
@@ -81,10 +103,12 @@ export const Stage3Icon            = Icon(toolbox_stage3);
 export const Stage4Icon            = Icon(toolbox_stage4);
 export const Arrow1Icon            = Icon(toolbox_arrow1);
 export const Arrow2Icon            = Icon(toolbox_arrow2);
+
 // Contract
 export const ProfitMovementIcon    = Icon(contract_profit);
 export const LossMovementIcon      = Icon(contract_loss);
 export const UnknownMovementIcon   = Icon(contract_plunkown);
+
 // Trade Type
 export const TradeTypeAsianDown    = Icon(trade_type_asiand);
 export const TradeTypeAsianUp      = Icon(trade_type_asianu);
@@ -115,3 +139,20 @@ export const TradeTypeTickHigh     = Icon(trade_type_tickhigh);
 export const TradeTypeTickLow      = Icon(trade_type_ticklow);
 export const TradeTypeUnknown      = Icon(trade_type_unknown);
 export const TradeTypeUpOrDown     = Icon(trade_type_upordown);
+
+// Toolbar
+export const ToolboxStartIcon      = Icon(toolbar_start);
+export const ToolboxSearchIcon     = Icon(toolbar_search);
+export const ToolboxRenameIcon     = Icon(toolbar_rename);
+export const ToolboxCloseIcon      = Icon(toolbar_close);
+export const ToolboxOpenIcon       = Icon(toolbar_open);
+export const ToolboxNewFileIcon    = Icon(toolbar_newFile);
+export const ToolboxSaveIcon       = Icon(toolbar_save);
+export const ToolboxUndoIcon       = Icon(toolbar_undo);
+export const ToolboxRedoIcon       = Icon(toolbar_redo);
+export const ToolboxPerformIcon    = Icon(toolbar_performance);
+export const ToolboxReaarangeIcon  = Icon(toolbar_rearrange);
+export const ToolboxZoomInIcon     = Icon(toolbar_zoomIn);
+export const ToolboxZoomOutIcon    = Icon(toolbar_zoomOut);
+export const ToolboxLocalIcon      = Icon(toolbar_local);
+export const ToolboxDriveIcon      = Icon(toolbar_drive);

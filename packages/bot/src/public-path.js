@@ -10,4 +10,4 @@ export function setBotPublicPath(path) {
     __webpack_public_path__ = path; // eslint-disable-line
 }
 
-setBotPublicPath(getUrlBase('./js/bot/'));
+setBotPublicPath(getUrlBase('js/bot/'));

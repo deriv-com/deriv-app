@@ -1,7 +1,6 @@
 import {
     observable,
-    action,
-    reaction }                from 'mobx';
+    action }                  from 'mobx';
 import { getIndicativePrice } from '../utils/contract';
 import { observer }           from '../utils/observer';
 

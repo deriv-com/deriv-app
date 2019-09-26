@@ -14,12 +14,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    @include themify($themes) {
-        background-color: rgba(themed('container_color'), 0.8);
-    }
+    background-color: var(--overlay-inside-dialog);
 
     &:hover {
-        background: 0 !important;
+        background: 0;
 
         #{$contract_result}-caption {
             opacity: 0;
@@ -36,25 +34,17 @@
         margin-left: 10px;
     }
     &--won {
-        > #{$contract_result}-caption {
-            @include themify($themes) {
-                color: themed('won_color');
-            }
-        }
+        background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
 
-        @include themify($themes) {
-            background-image: themed('won_gradient_color');
+        > #{$contract_result}-caption {
+            color: var(--text-profit-success);
         }
     }
     &--lost {
-        > #{$contract_result}-caption {
-            @include themify($themes) {
-                color: themed('loss_color');
-            }
-        }
+        background-image: $COLOR_LIGHT_RED_GRADIENT; // TODO: Update when gradients are added.
 
-        @include themify($themes) {
-            background-image: themed('lost_gradient_color');
+        > #{$contract_result}-caption {
+            color: var(--text-loss-danger);
         }
     }
 }

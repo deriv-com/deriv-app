@@ -63,8 +63,7 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-
-        if (!is_high_risk_client && /proof-of-identity|proof-of-address/.test(selected_content.path)) return <Redirect to='/' />;
+        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address/.test(selected_content.path)) return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach((menu_item) => {

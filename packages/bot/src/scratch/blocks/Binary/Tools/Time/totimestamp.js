@@ -38,14 +38,14 @@ Blockly.Blocks.totimestamp = {
 
 Blockly.JavaScript.totimestamp = block => {
     const datetime_string = Blockly.JavaScript.valueToCode(block, 'DATETIME', Blockly.JavaScript.ORDER_ATOMIC);
-    const invalid_datetime = `${translate('Invalid date/time')}: ${datetime_string}`;
+    const invalid_datetime = `${translate('Invalid date/time')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('dateTimeStringToTimestamp', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(datetime_string) {
             if (typeof datetime_string !== 'string') {
-                return "${invalid_datetime}";
+                return "${invalid_datetime} " + datetime_string;
             }
 
             var datetime = datetime_string
@@ -74,7 +74,7 @@ Blockly.JavaScript.totimestamp = block => {
                 }
             }
 
-            return "${invalid_datetime}";
+            return "${invalid_datetime} " + datetime_string;
         }`,
     ]);
 

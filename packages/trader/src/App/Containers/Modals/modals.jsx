@@ -8,6 +8,7 @@ import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfSer
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
 
 const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
+const ResetPasswordModal       = React.lazy(() => import(/* webpackChunkName: "ResetPasswordModal" */'../ResetPasswordModal'));
 
 const Modals = ({
     clearPurchaseInfo,
@@ -83,6 +84,7 @@ const Modals = ({
             />
             {/* TODO: Enable AccountSignupModal once its UI component is ready */}
             <AccountSignupModal />
+            <ResetPasswordModal />
         </React.Fragment>
     );
 };

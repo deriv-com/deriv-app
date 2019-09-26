@@ -133,7 +133,7 @@
             }
         }
         &--outlined {
-            background-color: $COLOR_WHITE;
+            background-color: var(--general-main-1);
             border: 1px solid var(--brand-red-coral);
 
             &:hover {

@@ -172,11 +172,9 @@
             display: flex;
             width: 100%;
             height: 100%;
-            justify-content: center;
+            margin: 80px 16px 0;
             align-items: center;
             flex-direction: column;
-            max-width: 467px;
-            margin: auto;
 
             .btn--link {
                 margin-top: 2.5em;
@@ -201,6 +199,8 @@
     .account-management__text {
         margin-top: 10px;
         margin-bottom: 16px;
+        max-width: 467px;
+
         @include typeface(--paragraph-center-normal-black, none);
     }
     .account-management-flex-wrapper {

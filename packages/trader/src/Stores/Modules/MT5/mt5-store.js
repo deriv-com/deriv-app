@@ -5,6 +5,7 @@ import {
 }                from 'mobx';
 import { WS }    from 'Services';
 import {
+    getMt5GroupConfig,
     getAccountTypeFields,
     getMtCompanies,
 }                from './Helpers/metatrader-config';
@@ -39,8 +40,23 @@ export default class MT5Store extends BaseStore {
             : '';
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
         return getMtCompanies();
+    }
+
+    @computed
+    get mt5_current_accounts() {
+        const list = this.root_store.client.mt5_login_list;
+        if (!list.length) return {};
+
+        const output = {};
+        list.forEach(login => {
+            const { type, category } = getMt5GroupConfig(login.group);
+            output[`${category}.${type}`] = Object.assign({}, login);
+        });
+
+        return output;
     }
 
     accountSwitcherListener() {
@@ -98,6 +114,24 @@ export default class MT5Store extends BaseStore {
     @action.bound
     enableMt5PasswordModal() {
         this.is_mt5_password_modal_enabled = true;
+    }
+
+    @action.bound
+    getLoginDetails({ category, type }) {
+        let tmp_type = '';
+        switch (type) {
+            case 'synthetic_indices':
+                tmp_type = 'svg';
+                break;
+            case 'standard':
+                tmp_type = 'vanuatu_standard';
+                break;
+            default:
+                tmp_type = 'labuan_advanced';
+        }
+        const group = `${category}\\${tmp_type}`;
+
+        return this.mt5_current_accounts.filter(item => item.group === group);
     }
 
     @action.bound

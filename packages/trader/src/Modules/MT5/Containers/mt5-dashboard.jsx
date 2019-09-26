@@ -1,21 +1,24 @@
 import { Button, Tabs, Modal, Popover } from 'deriv-components';
-import React                   from 'react';
-import DataTable               from 'App/Components/Elements/DataTable';
-import Localize                from 'App/Components/Elements/localize.jsx';
-import UILoader                from 'App/Components/Elements/ui-loader.jsx';
-import { localize }            from 'App/i18n';
-import IconMT5Advanced         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
-import IconMT5Standard         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
-import IconMT5Synthetic        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
-import IconDeviceLaptop        from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
-import IconDeviceMac           from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
-import IconDeviceMobile        from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
-import IconInstallationApple   from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
-import IconInstallationGoogle  from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
-import IconInstallationLinux   from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
-import IconInstallationMac     from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
-import IconInstallationWindows from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
-import { connect }             from 'Stores/connect';
+import PopoverBubble                    from 'deriv-components/src/components/popover/popover-bubble.jsx';
+import React                            from 'react';
+import Money                            from 'App/Components/Elements/money.jsx';
+import DataTable                        from 'App/Components/Elements/DataTable';
+import Localize                         from 'App/Components/Elements/localize.jsx';
+import UILoader                         from 'App/Components/Elements/ui-loader.jsx';
+import { localize }                     from 'App/i18n';
+import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
+import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
+import IconMT5Standard                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
+import IconMT5Synthetic                 from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
+import IconDeviceLaptop                 from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
+import IconDeviceMac                    from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
+import IconDeviceMobile                 from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
+import IconInstallationApple            from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
+import IconInstallationGoogle           from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
+import IconInstallationLinux            from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
+import IconInstallationMac              from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
+import IconInstallationWindows          from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
+import { connect }                      from 'Stores/connect';
 import 'Sass/app/modules/mt5-dashboard.scss';
 
 /*
@@ -23,49 +26,126 @@ import 'Sass/app/modules/mt5-dashboard.scss';
 *  This file is a WIP and will be broken down into different files for different components before the module is enabled
 *  Class names might change, component structures might change, and content and icons will definitely change
 * */
+class ClipboardComponent extends React.PureComponent {
+    state = {
+        copied: false
+    }
+
+    copyToClipboard = (text) => {
+        const textField       = document.createElement('textarea');
+        textField.innerText = text;
+        document.body.appendChild(textField);
+        textField.select();
+        document.execCommand('copy');
+        textField.remove();
+    };
+
+    onClick = () => {
+        this.copyToClipboard(this.props.text);
+        this.setState({
+            copied: true,
+        })
+        setTimeout(() => {
+            this.setState({
+                copied: false
+            })
+        }, 2000)
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                {!this.state.copied &&
+                <IconClipboard
+                    className='mt5-account-card__clipboard'
+                    key='1'
+                    onClick={this.onClick}
+                />
+                }
+                {this.state.copied &&
+                <Popover
+                    alignment='left'
+                    classNameTarget='mt5-account-card__clipboard'
+                    icon='info'
+                    has_error={true}
+                    id='dt_allow_equals_info'
+                    message={localize('Clipboard populated')}
+                />
+                }
+            </React.Fragment>
+        );
+    }
+}
 
 const MT5AccountCard = ({
     commission_message,
     descriptor,
+    existing_data,
     icon,
+    is_first_time,
     specs,
     title,
     type,
     onSelectAccount,
+    onClickFund,
 }) => {
     const IconComponent = icon || (() => null);
 
     return (
         <div className='mt5-account-card'>
             <div className='mt5-account-card__type'>
-                { icon &&
-                    <IconComponent />
+                {icon &&
+                <IconComponent />
                 }
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>
-                        { title }
+                        {title}
                     </h1>
+                    {!existing_data &&
                     <p className='mt5-account-card--paragraph'>
-                        { descriptor }
+                        {descriptor}
                     </p>
+                    }
+                    {existing_data && existing_data.display_balance &&
+                    <p className='mt5-account-card--balance'>
+                        <Money
+                            amount={existing_data.display_balance}
+                            currency={existing_data.currency}
+                        />
+                    </p>
+                    }
                 </div>
             </div>
 
             <div className='mt5-account-card__cta'>
+                {existing_data && existing_data.login &&
+                <div className='mt5-account-card__login'>
+                    <Localize
+                        i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
+                        values={{
+                            login: existing_data.login,
+                        }}
+                        components={[
+                            <strong key='0' />,
+                        ]}
+                    />
+                    <ClipboardComponent text={existing_data.login} />
+                </div>
+                }
                 <div className='mt5-account-card__specs'>
                     <table className='mt5-account-card__specs-table'>
                         <tbody>
                             {
                                 Object.keys(specs).map((spec_attribute, idx) => (
-                                    <tr key={ idx } className='mt5-account-card__specs-table-row'>
+                                    <tr key={idx} className='mt5-account-card__specs-table-row'>
                                         <td className='mt5-account-card__specs-table-attribute'>
                                             <p className='mt5-account-card--paragraph'>
-                                                { spec_attribute }
+                                                {spec_attribute}
                                             </p>
                                         </td>
                                         <td className='mt5-account-card__specs-table-data'>
                                             <p className='mt5-account-card--paragraph'>
-                                                { specs[spec_attribute] }
+                                                {specs[spec_attribute]}
                                             </p>
                                         </td>
                                     </tr>
@@ -75,33 +155,81 @@ const MT5AccountCard = ({
                     </table>
                 </div>
 
-                { commission_message &&
+                {!existing_data && commission_message &&
                 <p className='mt5-account-card__commission mt5-account-card--paragraph'>
-                    { commission_message }
+                    {commission_message}
                 </p>
                 }
+                {existing_data &&
+                <div className='mt5-account-card__manage'>
+                    <Button
+                        onClick={onClickFund}
+                        className='btn--secondary--default'
+                        type='button'
+                    >
+                        {type.category === 'real' &&
+                        <Localize i18n_default_text='Fund transfer' />
+                        }
+                        {type.category === 'demo' &&
+                        <Localize i18n_default_text='Top up' />
+                        }
+                    </Button>
+                    <Button
+                        onClick={console.log}
+                        className='btn--secondary--default'
+                        type='button'
+                    >
+                        <Localize i18n_default_text='Password' />
+                    </Button>
+                </div>
+                }
 
+
+                {!existing_data && is_first_time &&
                 <Button
                     className='mt5-account-card__account-selection'
-                    onClick={ () => { onSelectAccount(type); } }
+                    onClick={() => { onSelectAccount(type); }}
                     type='button'
                 >
                     <Localize i18n_default_text='Select' />
                 </Button>
+                }
+                {existing_data &&
+                <a
+                    className='btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
+                    type='button'
+                    href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                >
+                    <Localize i18n_default_text='Trade now' />
+                </a>
+                }
+                {!existing_data && !is_first_time &&
+                <Button
+                    className='mt5-account-card__account-selection mt5-account-card__account-selection--secondary'
+                    onClick={() => { onSelectAccount(type); }}
+                    type='button'
+                >
+                    <Localize i18n_default_text='Create account' />
+                </Button>
+                }
             </div>
         </div>
     );
 };
 
-const RealAccountsDisplay = ({ onSelectAccount }) => (
+const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time }) => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Standard />) }
             title={ localize('Standard') }
             type={{
                 category: 'real',
                 type    : 'standard',
             }}
+            existing_data={current_list['real.standard']}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -109,6 +237,7 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
                 />
             }
             onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('real')}
             descriptor={ localize('Suitable for both new and experienced traders.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -118,14 +247,16 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
             }}
         />
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Advanced') }
             type={{
                 category: 'real',
                 type    : 'advanced',
             }}
+            existing_data={current_list['real.advanced']}
             commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('real')}
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:100'),
@@ -135,14 +266,17 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
             }}
         />
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Synthetic Indices') }
             type={{
                 category: 'real',
                 type    : 'synthetic_indices',
             }}
+            existing_data={current_list['real.synthetic_indices']}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('real')}
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -154,15 +288,17 @@ const RealAccountsDisplay = ({ onSelectAccount }) => (
     </div>
 );
 
-const DemoAccountsDisplay = ({ onSelectAccount }) => (
+const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time}) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Standard />) }
             title={ localize('Standard') }
             type={{
                 category: 'demo',
                 type    : 'standard',
             }}
+            existing_data={current_list['demo.standard']}
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
@@ -170,6 +306,7 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
                 />
             }
             onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('demo')}
             descriptor={ localize('Suitable for both new and experienced traders.') }
             specs={ {
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -179,14 +316,17 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
             } }
         />
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Advanced />) }
             title={ localize('Advanced') }
             type={{
                 category: 'demo',
                 type    : 'advanced',
             }}
+            existing_data={current_list['demo.advanced']}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('demo')}
             descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
             specs={ {
                 [localize('Leverage')]        : localize('Up to 1:100'),
@@ -196,14 +336,17 @@ const DemoAccountsDisplay = ({ onSelectAccount }) => (
             } }
         />
         <MT5AccountCard
+            is_first_time={is_first_time}
             icon={() => (<IconMT5Synthetic />) }
             title={ localize('Synthetic Indices') }
             type={{
                 category: 'demo',
                 type    : 'synthetic_indices',
             }}
+            existing_data={current_list['demo.synthetic_indices']}
             commission_message={ <Localize i18n_default_text='No commission' /> }
             onSelectAccount={ onSelectAccount }
+            onClickFund={() => openAccountTransfer('demo')}
             descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
             specs={ {
                 [localize('Leverage')]        : localize('Up to 1:1000'),
@@ -252,7 +395,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
 const compareAccountsData = [
     {
-        attribute: <MT5AttributeDescriber name={ localize('Account currency') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Account currency') } />,
         standard : localize('USD'),
         advanced : localize('USD'),
         synthetic: localize('USD'),
@@ -306,7 +449,7 @@ const compareAccountsData = [
         synthetic: localize('No'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') } />,
         standard : localize('No'),
         advanced : localize('No'),
         synthetic: localize('No'),
@@ -336,7 +479,7 @@ const compareAccountsData = [
         synthetic: localize('50%'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Number of assets') }/>,
+        attribute: <MT5AttributeDescriber name={ localize('Number of assets') } />,
         standard : localize('50+'),
         advanced : localize('50+'),
         synthetic: localize('10+'),
@@ -404,6 +547,14 @@ class MT5Dashboard extends React.Component {
             </div>
         );
 
+        const openAccountTransfer = (category) => {
+            if (category === 'real') {
+                this.props.toggleAccountTransferModal()
+            }
+            // TODO Implement top-up
+            // this.props.openTopUpModal();
+        };
+
         return (
             <div className='mt5-dashboard'>
 
@@ -426,14 +577,23 @@ class MT5Dashboard extends React.Component {
                     {/* <Tabs alignment='center' list={ MT5Dashboard.dashboard_tabs } /> */}
                     <Tabs>
                         <div label={ localize('Real account') }>
-                            <RealAccountsDisplay onSelectAccount={ createMT5Account } />
+                            <RealAccountsDisplay
+                                current_list={this.props.mt5_current_accounts}
+                                is_first_time={is_first_time}
+                                onSelectAccount={ createMT5Account }
+                                openAccountTransfer={openAccountTransfer}
+                            />
                         </div>
                         <div label={ localize('Demo account') }>
-                            <DemoAccountsDisplay onSelectAccount={ createMT5Account } />
+                            <DemoAccountsDisplay
+                                is_first_time={is_first_time}
+                                current_list={this.props.mt5_current_accounts}
+                                onSelectAccount={ createMT5Account }
+                                openAccountTransfer={openAccountTransfer}
+                            />
                         </div>
                     </Tabs>
                 </div>
-
                 <div className='mt5-dashboard__download-center'>
                     <h1 className='mt5-dashboard__download-center--heading'>
                         <Localize i18n_default_text='After creating your account, download MT5 for your desktop or mobile' />
@@ -474,7 +634,9 @@ export default connect(({ client, modules, ui }) => ({
     createMT5Account           : modules.mt5.createMT5Account,
     disableApp                 : ui.disableApp,
     enableApp                  : ui.enableApp,
+    mt5_current_accounts       : modules.mt5.mt5_current_accounts,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
-    is_first_time              : client.is_logged_in, // TODO: this is a dummy observable, to be changed when MT5 related data available
+    is_first_time              : !!modules.mt5.mt5_current_accounts.length, // TODO: this is a dummy observable, to be changed when MT5 related data available
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
+    toggleAccountTransferModal : ui.toggleAccountTransferModal,
 }))(MT5Dashboard);

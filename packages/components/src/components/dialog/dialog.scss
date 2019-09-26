@@ -42,7 +42,7 @@
         display: flex;
         justify-content: space-around;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         background-color: var(--general-main-2);
     }
@@ -56,6 +56,11 @@
         @include toEm(margin-bottom, 32px, 1.4em);
         color: var(--text-general);
         max-width: 448px;
+
+        /* postcss-bem-linter: ignore */
+        .dc-input__label {
+            background-color: var(--general-main-2);
+        }
     }
     &__footer {
         display: flex;

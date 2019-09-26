@@ -1,7 +1,7 @@
 .db-contract-card {
     $contract-card: &;
 
-    border: 1px solid $COLOR_LIGHT_GRAY_3;
+    border: 1px solid var(--border-disabled);
     border-radius: $BORDER_RADIUS;
     box-sizing: border-box;
     display: flex;
@@ -43,7 +43,7 @@
     &__separator {
         margin: 0 8px;
         height: 2px;
-        border-top: 1px solid #f2f3f4; // TODO update-colours
+        border-top: 1px solid var(--border-disabled);
     }
     &__stats {
         margin: auto 15px;
@@ -65,9 +65,7 @@
 
         &-label {
             font-size: 10px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
         &-amount {
             min-height: 16px;
@@ -77,9 +75,7 @@
     }
     &__profit-loss {
         &--positive {
-            @include themify($themes) {
-                color: themed('won_color');
-            }
+            color: var(--text-profit-success);
 
             &:before {
                 content: '+';
@@ -87,9 +83,7 @@
             }
         }
         &--negative {
-            @include themify($themes) {
-                color: themed('loss_color');
-            }
+            color: var(--text-loss-danger);
 
             &:before {
                 content: '-';
@@ -107,10 +101,8 @@
         margin-left: 2px;
     }
     &--inactive {
-        background-image: linear-gradient(to bottom, rgb(245, 245, 245), $COLOR_WHITE);
-        @include themify($themes) {
-            border: 1px solid themed('container_color');
-        }
+        background-color: var(--general-section-1);
+        border: 1px solid var(--general-main-1);
         font-size: 14px;
         justify-content: center;
         margin: auto;
@@ -118,30 +110,22 @@
     }
     &--is-winning {
         #{$contract-card}__underlying {
-            @include themify($themes) {
-                background-image: themed('won_gradient_color');
-            }
+            background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
         }
     }
     &--is-losing {
         #{$contract-card}__underlying {
-            @include themify($themes) {
-                background-image: themed('lost_gradient_color');
-            }
+            background-image: $COLOR_LIGHT_RED_GRADIENT // TODO: Update when gradients are added.
         }
     }
     &--is-loading {
-        @include themify($themes) {
-            border: 1px solid themed('container_color');
-        }
+        border: 1px solid var(--general-main-1);
     }
     &--completed {
-        @include themify($themes) {
-            border: 1px solid themed('container_color');
-        }
+        border: 1px solid var(--general-main-1);
 
         &:hover {
-            border: 1px solid $COLOR_LIGHT_GRAY_3;
+            border: 1px solid var(--border-disabled);
         }
     }
 }

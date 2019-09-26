@@ -123,4 +123,7 @@
         position: absolute;
         top: 4rem;
     }
+    &__error {
+        color: var(--text-loss-danger);
+    }
 }

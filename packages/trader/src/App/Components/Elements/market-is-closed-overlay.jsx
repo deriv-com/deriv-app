@@ -83,7 +83,7 @@ const MarketIsClosedOverlay = () => (
         <Button
             className='btn--primary--default market-is-closed-overlay__button'
             onClick={onClick}
-            text={localize('Try Volatility Indices')}
+            text={localize('Try Synthetic Indices')}
         />
     </div>
 );

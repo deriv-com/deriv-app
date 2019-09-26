@@ -1,3 +1,5 @@
+import config from '../../constants';
+
 /* eslint-disable */
 
 /**
@@ -90,3 +92,157 @@ Blockly.WorkspaceSvg.prototype.reshowFlyout = function () {
     const toolbox = this.toolbox_;
     toolbox.refreshCategory();
 }
+
+/**
+ * Clean up the workspace by ordering all the blocks in a column. For deriv-bot
+ * root-blocks are sorted in columns first, then all other blocks are positioned below 
+ * the lowest hanging root-block.
+ */
+Blockly.WorkspaceSvg.prototype.cleanUp = function() {
+  this.setResizesEnabled(false);
+  Blockly.Events.setGroup(true);
+
+  const top_blocks = this.getTopBlocks(true);
+  const root_blocks = top_blocks.filter(block => block.isMainBlock()).sort((a, b) => {
+    const blockIndex = (block) => config.mainBlocks.findIndex(b => b === block.type); 
+    return blockIndex(a) - blockIndex(b);
+  });
+  const column_count = 2;
+  const blocks_per_column = Math.ceil(root_blocks.length / column_count);
+
+  let cursor_y = 0;
+
+  if (root_blocks.length) {
+    let column_index = 0;
+
+    root_blocks.forEach((block, index) => {
+      if (index === (column_index + 1) * blocks_per_column) {
+        cursor_y = 0;
+        column_index++;
+      }
+
+      const xy = block.getRelativeToSurfaceXY();
+
+      if (column_index === 0) {
+        block.moveBy(-xy.x, cursor_y - xy.y);
+      } else {
+        const start = (column_index - 1) * blocks_per_column;
+        const fat_neighbour_block = root_blocks
+          .slice(start, start + blocks_per_column)
+          .reduce((a, b) => a.getHeightWidth().width > b.getHeightWidth().width ? a : b);
+        
+        block.moveBy(
+          -xy.x +
+            fat_neighbour_block.getRelativeToSurfaceXY().x +
+            fat_neighbour_block.getHeightWidth().width +
+            Blockly.BlockSvg.MIN_BLOCK_X,
+          cursor_y - xy.y
+        );
+      }
+
+      block.snapToGrid();
+      cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+    });
+
+    const lowest_root_block = root_blocks.reduce((a, b) => {
+      const a_metrics = a.getRelativeToSurfaceXY().y + a.getHeightWidth().height;
+      const b_metrics = b.getRelativeToSurfaceXY().y + b.getHeightWidth().height;
+      return a_metrics > b_metrics ? a : b;
+    });
+
+    cursor_y =
+      lowest_root_block.getRelativeToSurfaceXY().y +
+      lowest_root_block.getHeightWidth().height +
+      Blockly.BlockSvg.MIN_BLOCK_Y;
+  }
+
+  const filtered_top_blocks = top_blocks.filter(block => !block.isMainBlock());
+
+  filtered_top_blocks.forEach(block => {
+    const xy = block.getRelativeToSurfaceXY();
+
+    block.moveBy(-xy.x, cursor_y - xy.y);
+    block.snapToGrid();
+    cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+  });
+
+  Blockly.Events.setGroup(false);
+  this.setResizesEnabled(true);
+};
+
+
+/**
+ * Return an object with all the metrics required to size scrollbars for a
+ * top level workspace.  The following properties are computed:
+ * Coordinate system: pixel coordinates.
+ * .viewHeight: Height of the visible rectangle,
+ * .viewWidth: Width of the visible rectangle,
+ * .contentHeight: Height of the contents,
+ * .contentWidth: Width of the content,
+ * .viewTop: Offset of top edge of visible rectangle from parent,
+ * .viewLeft: Offset of left edge of visible rectangle from parent,
+ * .contentTop: Offset of the top-most content from the y=0 coordinate,
+ * .contentLeft: Offset of the left-most content from the x=0 coordinate.
+ * .absolute_top: Top-edge of view.
+ * .absolute_left: Left-edge of view.
+ * .toolboxWidth: Width of toolbox, if it exists.  Otherwise zero.
+ * .toolboxHeight: Height of toolbox, if it exists.  Otherwise zero.
+ * .flyoutWidth: Width of the flyout if it is always open.  Otherwise zero.
+ * .flyoutHeight: Height of flyout if it is always open.  Otherwise zero.
+ * .toolboxPosition: Top, bottom, left or right.
+ * @return {!Object} Contains size and position metrics of a top level
+ *   workspace.
+ * @private
+ * @this Blockly.WorkspaceSvg
+ */
+Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
+    const toolbox_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
+    const flyout_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.flyout_);
+
+    // Contains height and width in CSS pixels.
+    // svg_size is equivalent to the size of the injectionDiv at this point.
+    const svg_size = Blockly.svgSize(this.getParentSvg());
+
+    if (this.toolbox_) {
+      if (this.toolboxPosition == Blockly.TOOLBOX_AT_TOP || this.toolboxPosition == Blockly.TOOLBOX_AT_BOTTOM) {
+        svg_size.height -= toolbox_dimensions.height;
+      } else if (this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT || this.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+        svg_size.width -= toolbox_dimensions.width;
+      }
+    }
+
+    // svg_size is now the space taken up by the Blockly workspace, not including the toolbox.
+    var content_dimensions = Blockly.WorkspaceSvg.getContentDimensions_(this, svg_size);
+
+    let absolute_left = 0;
+    let absolute_top = 0;
+
+    if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT) {
+        absolute_top = 50; // deriv-bot: Add some spacing for Core header.
+        absolute_left = toolbox_dimensions.width;
+    }
+
+    if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_TOP) {
+      absolute_top = toolbox_dimensions.height + 50;
+    }
+
+    const metrics = {
+      contentHeight  : content_dimensions.height,
+      contentWidth   : content_dimensions.width,
+      contentTop     : content_dimensions.top,
+      contentLeft    : content_dimensions.left,
+      viewHeight     : svg_size.height,
+      viewWidth      : svg_size.width,
+      viewTop        : -this.scrollY,   // Must be in pixels, somehow.
+      viewLeft       : -this.scrollX,  // Must be in pixels, somehow.
+      absoluteTop    : absolute_top,
+      absoluteLeft   : absolute_left,
+      toolboxWidth   : toolbox_dimensions.width,
+      toolboxHeight  : toolbox_dimensions.height,
+      flyoutWidth    : flyout_dimensions.width,
+      flyoutHeight   : flyout_dimensions.height,
+      toolboxPosition: this.toolboxPosition
+    };
+
+    return metrics;
+  };

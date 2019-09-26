@@ -6,6 +6,7 @@ import Localize   from 'App/Components/Elements/localize.jsx';
 import Icon       from 'Assets/icon.jsx';
 
 const SuccessDialog = ({
+    has_cancel,
     icon,
     message,
     onCancel,
@@ -41,6 +42,7 @@ const SuccessDialog = ({
                 <p>{message}</p>
             </div>
             <div className='success-change__btn-area'>
+                {has_cancel &&
                 <Button
                     onClick={onCancel}
                     className='btn--outline'
@@ -49,6 +51,7 @@ const SuccessDialog = ({
                         i18n_default_text='Maybe later'
                     />
                 </Button>
+                }
                 <Button onClick={onSubmit}>{text_submit}</Button>
             </div>
         </div>
@@ -56,10 +59,12 @@ const SuccessDialog = ({
 };
 
 SuccessDialog.defaultProps = {
-    icon_size: 'large',
+    icon_size : 'large',
+    has_cancel: false,
 };
 
 SuccessDialog.propTypes = {
+    has_cancel : PropTypes.bool,
     icon       : PropTypes.object,
     icon_size  : PropTypes.string,
     icon_type  : PropTypes.string,

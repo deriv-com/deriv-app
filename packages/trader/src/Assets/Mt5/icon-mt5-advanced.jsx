@@ -10,7 +10,7 @@ const IconMt5Advanced = ({ className }) => (
         height='64'
         viewBox='0 0 64 64'
     >
-        <g fill='none' fillRule='evenodd'>
+        <g fill='none' fillRule='evenodd' transform='translate(8 4)'>
             <path
                 fill='#85ACB0'
                 fillRule='nonzero'

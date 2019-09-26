@@ -10,7 +10,7 @@ const IconMt5Synthetic = ({ className }) => (
         viewBox='0 0 64 64'
         className={classNames('inline-icon', className)}
     >
-        <g fill='none' fillRule='evenodd' transform='translate(-5 -13)'>
+        <g fill='none' fillRule='evenodd'>
             <path
                 fill='#C6E4E4'
                 fillRule='nonzero'

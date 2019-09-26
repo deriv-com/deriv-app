@@ -3,7 +3,9 @@
 .dc-modal__container_mt5-password-modal {
     max-width: 424px;
     min-height: 300px;
-    padding: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 
     h2 {
         @include typeface(--paragraph-center-bold-black);
@@ -11,11 +13,12 @@
         margin-bottom: 3em;
     }
     form {
-        height: 100%;
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
+        padding: 2em;
     }
     &__description {
         @include typeface(--small-center-normal-black);
@@ -32,6 +35,9 @@
     }
     .dc-modal-header {
         display: none;
+    }
+    .success-change {
+        margin-top: 3em;
     }
     & .dc-password-meter__container {
         flex-grow: 0;

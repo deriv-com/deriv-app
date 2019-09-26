@@ -168,28 +168,14 @@ export default class ToolbarStore {
 
     // eslint-disable-next-line class-methods-use-this
     onSortClick() {
-        Blockly.Events.setGroup(true);
-        const topBlocks = Blockly.derivWorkspace.getTopBlocks(true);
-        let cursorY = 0;
-        topBlocks.forEach(block => {
-            if (block.getSvgRoot().style.display !== 'none') {
-                const xy = block.getRelativeToSurfaceXY();
-                block.moveBy(-xy.x, cursorY - xy.y);
-                block.snapToGrid();
-                cursorY =
-                    block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-            }
-        });
-        Blockly.Events.setGroup(false);
-        // Fire an event to allow scrollbars to resize.
-        Blockly.derivWorkspace.resizeContents();
+        Blockly.derivWorkspace.cleanUp();
     }
 
     load(blockStr = '', drop_event = {}) {
         try {
-            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+            const xml_doc = new DOMParser().parseFromString(blockStr, 'application/xml');
 
-            if (xmlDoc.getElementsByTagName('parsererror').length) {
+            if (xml_doc.getElementsByTagName('parsererror').length) {
                 throw new Error();
             }
         } catch (e) {

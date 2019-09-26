@@ -2,7 +2,7 @@ import { Button, Drawer, Tabs } from 'deriv-components';
 import classNames               from 'classnames';
 import React                    from 'react';
 import { IconInfoOutline }      from './Icons.jsx';
-import '../assets/sass/run-panel.scss';
+import                               '../assets/sass/run-panel.scss';
 
 const onRunBotClick = () => {
     console.log('run bot'); // eslint-disable-line no-console
@@ -54,6 +54,7 @@ const RunPanel = () => {
         <Drawer
             is_open={true}
             footer={footer}
+            className='run-panel'
         >
             {content}
         </Drawer>

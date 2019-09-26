@@ -22,14 +22,18 @@ const FormatMessage = ({
 }) => {
     const keyWords = ['Bought', 'Sold' , 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
+    
     if (messages.count < 2) {
         return message;
     }
 
+    const title =  messages[0];
+    const value = messages.slice(1).join(':');
+
     let title_color,
         value_color;
     
-    switch (messages[0]) {
+    switch (title) {
         case (keyWords[0]) :{
         // Bought
             title_color = 'blue';
@@ -60,13 +64,13 @@ const FormatMessage = ({
             <span className= {classnames(
                 { [`journal__table--bold journal__table--${title_color}`]: title_color })}
             >
-                {messages[0]}
+                {title}
             </span>
             <span>:</span>
             <span className={classnames(
                 { [`journal__table--bold journal__table--${value_color}`]: value_color })}
             >
-                {messages[1]}
+                {value}
             </span>
         </p>
     );
@@ -86,9 +90,8 @@ const Journal = ({
     return (
         <Scrollbars
             className='journal'
-            autoHeight
             autoHide
-            autoHeightMax={400} // As specified by design spec
+            style={{ height: 'calc(100vh - 183px)' }}
         >
             <table className='journal__table'>
                 <thead className='journal__table--header'>

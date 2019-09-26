@@ -68,10 +68,10 @@ const onClick = () => {
     if (dropdown.classList.contains('open')) return;
     document.querySelector('.cq-symbol-select-btn').click();
     const left_panel = document.querySelector('.cq-filter-panel');
-    left_panel.querySelector('.ic-volidx').parentNode.click();
+    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
 
     const node = document
-        .querySelector('.category-volidx')
+        .querySelector('.category-synthetic_index')
         .querySelector('.category-content');
     setTimeout(startAnimation.bind(this, node), 600);
 };

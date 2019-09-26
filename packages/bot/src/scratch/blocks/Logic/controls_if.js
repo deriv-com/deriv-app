@@ -34,7 +34,6 @@ Blockly.Blocks.controls_if = {
             colour           : Blockly.Colours.Utility.colour,
             colourSecondary  : Blockly.Colours.Utility.colourSecondary,
             colourTertiary   : Blockly.Colours.Utility.colourTertiary,
-            // category         : Blockly.Categories.control,
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Conditional block'),
@@ -43,8 +42,8 @@ Blockly.Blocks.controls_if = {
     },
     meta(){
         return {
-            'display_name': 'Conditional block',
-            'description' : 'This block evaluates a statement and will perform an action only when the statement is true.',
+            'display_name': translate('Conditional block'),
+            'description' : translate('This block evaluates a statement and will perform an action only when the statement is true.'),
         };
     },
     /**

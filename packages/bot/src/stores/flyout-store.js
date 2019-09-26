@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action } from 'mobx';
-import config from '../constants';
-import { translate } from '../utils/lang/i18n';
+import { observable, action }   from 'mobx';
+import config                   from '../constants';
+import { translate }            from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -65,6 +65,7 @@ export default class FlyoutStore {
 
         // apparently setFlyoutWidth doesn't calculate blocks dimentions until they're visible
         // using setTimeout is a workaround to solve this issue
+        // TODO: Find a proper solution
         const self = this;
         setTimeout(function() {
             self.setFlyoutWidth(processed_xml);
@@ -163,9 +164,9 @@ export default class FlyoutStore {
             }
         });
 
-        const getNextBlock = async (xml, currentIndex, direction) => {
-            const nextIndex = currentIndex + (direction ? 1 : -1);
-            const block_type = Object.keys(xml).find((key, index) => nextIndex === index);
+        const getNextBlock = async (xml, current_index, direction) => {
+            const next_index = current_index + (direction ? 1 : -1);
+            const block_type = Object.keys(xml).find((key, index) => next_index === index);
             // eslint-disable-next-line consistent-return
             if (!block_type) return;
             try {
@@ -174,7 +175,7 @@ export default class FlyoutStore {
                 return block_type;
             } catch (e) {
                 // eslint-disable-next-line consistent-return
-                return getNextBlock(xml,nextIndex,direction);
+                return getNextBlock(xml,next_index,direction);
             }
         };
 

@@ -27,7 +27,7 @@ Blockly.Blocks.lists_repeat = {
             colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Creates a list by repeating a given string or number'),
+            tooltip          : translate('Creates a list by repeating a given item'),
             category         : Blockly.Categories.List,
         };
     },

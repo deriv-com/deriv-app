@@ -28,14 +28,14 @@ Blockly.Blocks.procedures_ifreturn = {
             colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('One liner function'),
+            tooltip          : translate('Prematurely returns a value within a function'),
             category         : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('One liner function'),
-            'description' : translate('This function returns specified value in case if the coditions is True.'),
+            'display_name': translate('Premature return'),
+            'description' : translate('This block is used within a function block, this block returns a value when a specific condition is true.'),
         };
     },
     /**

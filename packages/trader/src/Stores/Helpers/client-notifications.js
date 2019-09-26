@@ -44,7 +44,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'info',

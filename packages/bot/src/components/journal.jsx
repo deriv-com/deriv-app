@@ -20,7 +20,7 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
-    const keyWords = ['Bought', 'Sold' , 'Profit amount', 'Loss amount'];
+    const key_words = ['Bought', 'Sold' , 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
     
     if (messages.count < 2) {
@@ -34,22 +34,22 @@ const FormatMessage = ({
         value_color;
     
     switch (title) {
-        case (keyWords[0]) :{
+        case (key_words[0]) :{
         // Bought
             title_color = 'blue';
             break;
         }
-        case (keyWords[1]): {
+        case (key_words[1]): {
         // Sold
             title_color = 'red';
             break;
         }
-        case (keyWords[2]): {
+        case (key_words[2]): {
         // Profit amount
             value_color = 'green';
             break;
         }
-        case (keyWords[3]): {
+        case (key_words[3]): {
         // Loss amount
             value_color = 'red';
             break;
@@ -104,13 +104,13 @@ const Journal = ({
                     {
                         messages.map((item, index) => {
                             const { date, time, message } = item;
-                            const dateEl = DateItem({ date, time });
-                            const messageEl = MessageItem({ message });
+                            const date_el = DateItem({ date, time });
+                            const message_el = MessageItem({ message });
 
                             return (
                                 <tr className='journal__table--tr' key={`${item.date}-${index}`}>
-                                    <td className='journal__table--td'>{dateEl}</td>
-                                    <td className='journal__table--td'>{messageEl}</td>
+                                    <td className='journal__table--td'>{date_el}</td>
+                                    <td className='journal__table--td'>{message_el}</td>
                                 </tr>);
                         })
                     }

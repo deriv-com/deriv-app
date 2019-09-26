@@ -1,8 +1,7 @@
-
-import { observable, action }  from 'mobx';
-import { isEnded }             from '../utils/contract';
-import { CONTRACT_STAGES }     from '../constants/contract-stage';
-import { observer }            from '../utils/observer';
+import { observable, action } from 'mobx';
+import { isEnded }            from '../utils/contract';
+import { CONTRACT_STAGES }    from '../constants/contract-stage';
+import { observer }           from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(rootstore) {
@@ -38,7 +37,9 @@ export default class RunPanelStore {
     @action.bound
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
-        if (isClosed) this.getContractStage({ id: 'contract.closed' });
+        if (isClosed) {
+            this.getContractStage({ id: 'contract.closed' });
+        }
     }
 
     @action.bound

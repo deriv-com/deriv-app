@@ -51,7 +51,6 @@ const drawerFooter = ({
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
                         text={translate('Stop bot')}
-
                         icon={<StopIcon />}
                         onClick={onStopButtonClick}
                         has_effect
@@ -98,7 +97,6 @@ const RunPanel = (props) => {
 
 RunPanel.propTypes = {
     closeModal           : PropTypes.func,
-    contract_stage       : PropTypes.string,
     is_dialog_visible    : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,

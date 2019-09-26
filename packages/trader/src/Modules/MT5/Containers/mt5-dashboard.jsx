@@ -1,10 +1,10 @@
 import { Button, Tabs, Modal, Popover } from 'deriv-components';
-import PopoverBubble                    from 'deriv-components/src/components/popover/popover-bubble.jsx';
 import React                            from 'react';
 import Money                            from 'App/Components/Elements/money.jsx';
 import DataTable                        from 'App/Components/Elements/DataTable';
 import Localize                         from 'App/Components/Elements/localize.jsx';
 import UILoader                         from 'App/Components/Elements/ui-loader.jsx';
+import TopUpVirtualModal                from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
 import { localize }                     from 'App/i18n';
 import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
 import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
@@ -27,12 +27,8 @@ import 'Sass/app/modules/mt5-dashboard.scss';
 *  Class names might change, component structures might change, and content and icons will definitely change
 * */
 class ClipboardComponent extends React.PureComponent {
-    state = {
-        copied: false
-    }
-
     copyToClipboard = (text) => {
-        const textField       = document.createElement('textarea');
+        const textField     = document.createElement('textarea');
         textField.innerText = text;
         document.body.appendChild(textField);
         textField.select();
@@ -44,13 +40,13 @@ class ClipboardComponent extends React.PureComponent {
         this.copyToClipboard(this.props.text);
         this.setState({
             copied: true,
-        })
+        });
         setTimeout(() => {
             this.setState({
-                copied: false
-            })
-        }, 2000)
-    }
+                copied: false,
+            });
+        }, 2000);
+    };
 
     render() {
         return (
@@ -75,6 +71,10 @@ class ClipboardComponent extends React.PureComponent {
             </React.Fragment>
         );
     }
+
+    state = {
+        copied: false,
+    };
 }
 
 const MT5AccountCard = ({
@@ -184,7 +184,6 @@ const MT5AccountCard = ({
                 </div>
                 }
 
-
                 {!existing_data && is_first_time &&
                 <Button
                     className='mt5-account-card__account-selection'
@@ -223,8 +222,8 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Standard />) }
-            title={ localize('Standard') }
+            icon={() => (<IconMT5Standard />)}
+            title={localize('Standard')}
             type={{
                 category: 'real',
                 type    : 'standard',
@@ -233,12 +232,15 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                    components={[ <span key={0} className='mt5-dashboard--hint' /> ]}
+                    components={[<span key={0} className='mt5-dashboard--hint' />]}
                 />
             }
-            onSelectAccount={ onSelectAccount }
-            onClickFund={() => openAccountTransfer('real')}
-            descriptor={ localize('Suitable for both new and experienced traders.') }
+            onSelectAccount={onSelectAccount}
+            onClickFund={() => openAccountTransfer(current_list['real.standard'], {
+                category: 'real',
+                type    : 'standard',
+            })}
+            descriptor={localize('Suitable for both new and experienced traders.')}
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('150%'),
@@ -248,16 +250,19 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
         />
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Advanced />) }
-            title={ localize('Advanced') }
+            icon={() => (<IconMT5Advanced />)}
+            title={localize('Advanced')}
             type={{
                 category: 'real',
                 type    : 'advanced',
             }}
             existing_data={current_list['real.advanced']}
-            commission_message={ <Localize i18n_default_text='No commission' /> }
-            onClickFund={() => openAccountTransfer('real')}
-            descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
+            commission_message={<Localize i18n_default_text='No commission' />}
+            onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
+                category: 'real',
+                type    : 'advanced',
+            })}
+            descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:100'),
                 [localize('Margin call')]     : localize('150%'),
@@ -267,17 +272,20 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
         />
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Synthetic />) }
-            title={ localize('Synthetic Indices') }
+            icon={() => (<IconMT5Synthetic />)}
+            title={localize('Synthetic Indices')}
             type={{
                 category: 'real',
                 type    : 'synthetic_indices',
             }}
             existing_data={current_list['real.synthetic_indices']}
-            commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ onSelectAccount }
-            onClickFund={() => openAccountTransfer('real')}
-            descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
+            commission_message={<Localize i18n_default_text='No commission' />}
+            onSelectAccount={onSelectAccount}
+            onClickFund={() => openAccountTransfer(current_list['real.synthetic_indices'], {
+                category: 'real',
+                type    : 'synthetic_indices',
+            })}
+            descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
             specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('100%'),
@@ -288,12 +296,12 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
     </div>
 );
 
-const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time}) => (
+const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time }) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Standard />) }
-            title={ localize('Standard') }
+            icon={() => (<IconMT5Standard />)}
+            title={localize('Standard')}
             type={{
                 category: 'demo',
                 type    : 'standard',
@@ -302,58 +310,67 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             commission_message={
                 <Localize
                     i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                    components={ [<span key={ 0 } className='mt5-dashboard--hint' />] }
+                    components={[<span key={0} className='mt5-dashboard--hint' />]}
                 />
             }
-            onSelectAccount={ onSelectAccount }
-            onClickFund={() => openAccountTransfer('demo')}
-            descriptor={ localize('Suitable for both new and experienced traders.') }
-            specs={ {
+            onSelectAccount={onSelectAccount}
+            onClickFund={() => openAccountTransfer(current_list['demo.standard'], {
+                category: 'demo',
+                type    : 'standard',
+            })}
+            descriptor={localize('Suitable for both new and experienced traders.')}
+            specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('150%'),
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
-            } }
+            }}
         />
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Advanced />) }
-            title={ localize('Advanced') }
+            icon={() => (<IconMT5Advanced />)}
+            title={localize('Advanced')}
             type={{
                 category: 'demo',
                 type    : 'advanced',
             }}
             existing_data={current_list['demo.advanced']}
-            commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ onSelectAccount }
-            onClickFund={() => openAccountTransfer('demo')}
-            descriptor={ localize('Give you more products, tight spreads, and higher ticket size.') }
-            specs={ {
+            commission_message={<Localize i18n_default_text='No commission' />}
+            onSelectAccount={onSelectAccount}
+            onClickFund={() => openAccountTransfer(current_list['demo.advanced'], {
+                category: 'demo',
+                type    : 'advanced',
+            })}
+            descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
+            specs={{
                 [localize('Leverage')]        : localize('Up to 1:100'),
                 [localize('Margin call')]     : localize('150%'),
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
-            } }
+            }}
         />
         <MT5AccountCard
             is_first_time={is_first_time}
-            icon={() => (<IconMT5Synthetic />) }
-            title={ localize('Synthetic Indices') }
+            icon={() => (<IconMT5Synthetic />)}
+            title={localize('Synthetic Indices')}
             type={{
                 category: 'demo',
                 type    : 'synthetic_indices',
             }}
             existing_data={current_list['demo.synthetic_indices']}
-            commission_message={ <Localize i18n_default_text='No commission' /> }
-            onSelectAccount={ onSelectAccount }
-            onClickFund={() => openAccountTransfer('demo')}
-            descriptor={ localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.') }
-            specs={ {
+            commission_message={<Localize i18n_default_text='No commission' />}
+            onSelectAccount={onSelectAccount}
+            onClickFund={() => openAccountTransfer(current_list['demo.synthetic_indices'], {
+                category: 'demo',
+                type    : 'synthetic_indices',
+            })}
+            descriptor={localize('Trade CFDs on our Synthetic Indices that simulate real-world market movement.')}
+            specs={{
                 [localize('Leverage')]        : localize('Up to 1:1000'),
                 [localize('Margin call')]     : localize('100%'),
                 [localize('Stop out level')]  : localize('50%'),
                 [localize('Number of assets')]: localize('10+'),
-            } }
+            }}
         />
     </div>
 );
@@ -380,22 +397,22 @@ const compareAccountsColumns = [
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     return tooltip ? (
         <React.Fragment>
-            <p className='mt5-attribute-describer'>{ name }</p>
+            <p className='mt5-attribute-describer'>{name}</p>
             <Popover
                 alignment='right'
                 icon='counter'
-                counter={ counter }
-                message={ tooltip }
+                counter={counter}
+                message={tooltip}
             />
         </React.Fragment>
     ) : (
-        <p className='mt5-attribute-describer'>{ name }</p>
+        <p className='mt5-attribute-describer'>{name}</p>
     );
 };
 
 const compareAccountsData = [
     {
-        attribute: <MT5AttributeDescriber name={ localize('Account currency') } />,
+        attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
         standard : localize('USD'),
         advanced : localize('USD'),
         synthetic: localize('USD'),
@@ -403,9 +420,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Maximum leverage') }
-                counter={ 1 }
-                tooltip={ localize('Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.') }
+                name={localize('Maximum leverage')}
+                counter={1}
+                tooltip={localize(
+                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.')}
             />
         ),
         standard : localize('Up To 1:1000'),
@@ -415,9 +433,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Order execution') }
-                counter={ 2 }
-                tooltip={ localize('All 3 account types use market execution. This means you agree with the broker\'s price in advance and will place orders at the broker\'s price.') }
+                name={localize('Order execution')}
+                counter={2}
+                tooltip={localize(
+                    'All 3 account types use market execution. This means you agree with the broker\'s price in advance and will place orders at the broker\'s price.')}
             />
         ),
         standard : localize('Market'),
@@ -427,9 +446,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Spread') }
-                counter={ 3 }
-                tooltip={ localize('The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker\'s absolute discretion.') }
+                name={localize('Spread')}
+                counter={3}
+                tooltip={localize(
+                    'The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker\'s absolute discretion.')}
             />
         ),
         standard : localize('Variable'),
@@ -439,9 +459,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Commission') }
-                counter={ 4 }
-                tooltip={ localize('Deriv charges no commission across all account types, except cryptocurrency accounts.') }
+                name={localize('Commission')}
+                counter={4}
+                tooltip={localize(
+                    'Deriv charges no commission across all account types, except cryptocurrency accounts.')}
             />
         ),
         standard : localize('No'),
@@ -449,7 +470,7 @@ const compareAccountsData = [
         synthetic: localize('No'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') } />,
+        attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
         standard : localize('No'),
         advanced : localize('No'),
         synthetic: localize('No'),
@@ -457,9 +478,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Margin call') }
-                counter={ 5 }
-                tooltip={ localize('When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.') }
+                name={localize('Margin call')}
+                counter={5}
+                tooltip={localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.')}
             />
         ),
         standard : localize('150%'),
@@ -469,9 +491,10 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Stop out level') }
-                counter={ 6 }
-                tooltip={ localize('If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.') }
+                name={localize('Stop out level')}
+                counter={6}
+                tooltip={localize(
+                    'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.')}
             />
         ),
         standard : localize('75%'),
@@ -479,7 +502,7 @@ const compareAccountsData = [
         synthetic: localize('50%'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Number of assets') } />,
+        attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
         standard : localize('50+'),
         advanced : localize('50+'),
         synthetic: localize('10+'),
@@ -487,9 +510,9 @@ const compareAccountsData = [
     {
         attribute: (
             <MT5AttributeDescriber
-                name={ localize('Cryptocurrency trading') }
-                counter={ 7 }
-                tooltip={ localize('Indicates the availability of cryptocurrency trading on a particular account.') }
+                name={localize('Cryptocurrency trading')}
+                counter={7}
+                tooltip={localize('Indicates the availability of cryptocurrency trading on a particular account.')}
             />
         ),
         standard : localize('24/7'),
@@ -502,17 +525,28 @@ const ModalContent = () => (
     <div className='mt5-compare-accounts'>
         <DataTable
             className='mt5-compare-accounts__data'
-            data_source={ compareAccountsData }
-            columns={ compareAccountsColumns }
+            data_source={compareAccountsData}
+            columns={compareAccountsColumns}
             item_size={40}
         />
         <p className='mt5-compare-account--hint'>
-            <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+            <Localize
+                i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.'
+            />
         </p>
     </div>
 );
 
 class MT5Dashboard extends React.Component {
+    openAccountTransfer = (data, meta) => {
+        if (data.category === 'real') {
+            this.props.toggleAccountTransferModal();
+        } else {
+            this.props.setCurrentAccount(data, meta);
+            this.props.openTopUpModal();
+        }
+    };
+
     render() {
         const {
             createMT5Account,
@@ -528,17 +562,17 @@ class MT5Dashboard extends React.Component {
                 <Button
                     className='btn--tertiary--default mt5-dashboard__welcome-message--button'
                     has_effect
-                    text={ localize('Compare accounts') }
-                    onClick={ toggleCompareAccounts }
+                    text={localize('Compare accounts')}
+                    onClick={toggleCompareAccounts}
                 />
                 <React.Suspense fallback={<UILoader />}>
                     <Modal
                         className='mt5-dashboard__compare-accounts'
-                        disableApp={ disableApp }
-                        enableApp={ enableApp }
-                        is_open={ is_compare_accounts_visible }
-                        title={ localize('Compare accounts') }
-                        toggleModal={ toggleCompareAccounts }
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_compare_accounts_visible}
+                        title={localize('Compare accounts')}
+                        toggleModal={toggleCompareAccounts}
                         type='button'
                     >
                         <ModalContent />
@@ -547,56 +581,51 @@ class MT5Dashboard extends React.Component {
             </div>
         );
 
-        const openAccountTransfer = (category) => {
-            if (category === 'real') {
-                this.props.toggleAccountTransferModal()
-            }
-            // TODO Implement top-up
-            // this.props.openTopUpModal();
-        };
-
         return (
             <div className='mt5-dashboard'>
-
-                { is_first_time &&
-                    <div className='mt5-dashboard__welcome-message'>
-                        <h1 className='mt5-dashboard__welcome-message--heading'>
-                            <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
-                        </h1>
-                        <div className='mt5-dashboard__welcome-message--content'>
-                            <p className='mt5-dashboard__welcome-message--paragraph'>
-                                <Localize i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.' />
-                            </p>
-                            <CompareAccountsModal />
-                        </div>
+                {is_first_time &&
+                <div className='mt5-dashboard__welcome-message'>
+                    <h1 className='mt5-dashboard__welcome-message--heading'>
+                        <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
+                    </h1>
+                    <div className='mt5-dashboard__welcome-message--content'>
+                        <p className='mt5-dashboard__welcome-message--paragraph'>
+                            <Localize
+                                i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.'
+                            />
+                        </p>
+                        <CompareAccountsModal />
                     </div>
+                </div>
                 }
 
                 <div className='mt5-dashboard__accounts-display'>
                     {/* TODO: Add MT5 accounts display component */}
                     {/* <Tabs alignment='center' list={ MT5Dashboard.dashboard_tabs } /> */}
                     <Tabs>
-                        <div label={ localize('Real account') }>
+                        <div label={localize('Real account')}>
                             <RealAccountsDisplay
-                                current_list={this.props.mt5_current_accounts}
+                                current_list={this.props.current_list}
                                 is_first_time={is_first_time}
-                                onSelectAccount={ createMT5Account }
-                                openAccountTransfer={openAccountTransfer}
+                                onSelectAccount={createMT5Account}
+                                openAccountTransfer={this.openAccountTransfer}
                             />
                         </div>
-                        <div label={ localize('Demo account') }>
+                        <div label={localize('Demo account')}>
                             <DemoAccountsDisplay
                                 is_first_time={is_first_time}
-                                current_list={this.props.mt5_current_accounts}
-                                onSelectAccount={ createMT5Account }
-                                openAccountTransfer={openAccountTransfer}
+                                current_list={this.props.current_list}
+                                onSelectAccount={createMT5Account}
+                                openAccountTransfer={this.openAccountTransfer}
                             />
                         </div>
                     </Tabs>
                 </div>
                 <div className='mt5-dashboard__download-center'>
                     <h1 className='mt5-dashboard__download-center--heading'>
-                        <Localize i18n_default_text='After creating your account, download MT5 for your desktop or mobile' />
+                        <Localize
+                            i18n_default_text='After creating your account, download MT5 for your desktop or mobile'
+                        />
                     </h1>
 
                     <div className='mt5-dashboard__download-center-options'>
@@ -622,21 +651,26 @@ class MT5Dashboard extends React.Component {
                         </div>
                     </div>
                     <p className='mt5-dashboard__download-center--hint'>
-                        <Localize i18n_default_text='The MT5 platform does not support Windows XP, Windows 2003 and Windows Vista.' />
+                        <Localize
+                            i18n_default_text='The MT5 platform does not support Windows XP, Windows 2003 and Windows Vista.'
+                        />
                     </p>
                 </div>
+                <TopUpVirtualModal />
             </div>
         );
     }
 }
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ modules, ui }) => ({
     createMT5Account           : modules.mt5.createMT5Account,
     disableApp                 : ui.disableApp,
     enableApp                  : ui.enableApp,
-    mt5_current_accounts       : modules.mt5.mt5_current_accounts,
+    current_list               : modules.mt5.current_list,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
-    is_first_time              : !!modules.mt5.mt5_current_accounts.length, // TODO: this is a dummy observable, to be changed when MT5 related data available
+    is_first_time              : !!modules.mt5.current_list.length,
+    setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     toggleAccountTransferModal : ui.toggleAccountTransferModal,
+    openTopUpModal             : ui.openTopUpModal,
 }))(MT5Dashboard);

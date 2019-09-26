@@ -74,6 +74,10 @@ export default class UIStore extends BaseStore {
     @observable active_cashier_tab = 'deposit';
     @observable modal_index        = 0;
 
+    // Mt5 topup
+    @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_success = false;
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -356,5 +360,20 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    closeTopUpModal() {
+        this.is_top_up_virtual_open = false;
+    }
+
+    @action.bound
+    openTopUpModal() {
+        this.is_top_up_virtual_open = true;
+    }
+
+    @action.bound
+    closeSuccessTopUpModal () {
+        this.is_top_up_virtual_success = false;
     }
 }

@@ -133,8 +133,5 @@ export const getAccountTypeFields = ({ category, type }) => {
         },
     };
 
-    if (!key_map) {
-        delete map_mode[category][type].key_map;
-    }
     return map_mode[category][type];
 };

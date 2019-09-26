@@ -7,10 +7,12 @@ import Icon       from 'Assets/icon.jsx';
 
 const SuccessDialog = ({
     has_cancel,
+    has_submit,
     icon,
     message,
     onCancel,
     onSubmit,
+    heading,
     icon_size,
     text_submit,
 }) => {
@@ -34,12 +36,18 @@ const SuccessDialog = ({
                 <Checkmark className='bottom-right-overlay' />
             </div>
             <div className='success-change__body-area'>
+                {!heading &&
                 <h2>
                     <Localize
                         i18n_default_text='Success!'
                     />
                 </h2>
+                }
+                {heading && heading}
+                {React.isValidElement(message) && message }
+                {!React.isValidElement(message) &&
                 <p>{message}</p>
+                }
             </div>
             <div className='success-change__btn-area'>
                 {has_cancel &&
@@ -52,7 +60,9 @@ const SuccessDialog = ({
                     />
                 </Button>
                 }
+                {has_submit &&
                 <Button onClick={onSubmit}>{text_submit}</Button>
+                }
             </div>
         </div>
     );
@@ -61,14 +71,23 @@ const SuccessDialog = ({
 SuccessDialog.defaultProps = {
     icon_size : 'large',
     has_cancel: false,
+    has_submit: true,
 };
 
 SuccessDialog.propTypes = {
-    has_cancel : PropTypes.bool,
-    icon       : PropTypes.object,
-    icon_size  : PropTypes.string,
-    icon_type  : PropTypes.string,
-    message    : PropTypes.string,
+    has_cancel: PropTypes.bool,
+    has_submit: PropTypes.bool,
+    heading   : PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+    ]),
+    icon     : PropTypes.object,
+    icon_size: PropTypes.string,
+    icon_type: PropTypes.string,
+    message  : PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+    ]),
     onCancel   : PropTypes.func,
     onSubmit   : PropTypes.func,
     text_submit: PropTypes.string,

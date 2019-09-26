@@ -24,7 +24,6 @@
         @include typeface(--small-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin-top: 2em;
     }
     &__body {
         flex-grow: 1;
@@ -46,5 +45,88 @@
     & .mt5-password-field {
         margin-bottom: 1em;
         width: 80%;
+    }
+}
+.dc-modal__container_top-up-virtual {
+    width: 384px;
+    min-height: 367px;
+    display: flex;
+    flex-direction: column;
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        padding: 5em 3em 3em;
+        flex-grow: 1;
+        justify-content: space-around;
+        align-items: center;
+    }
+    &__description {
+        @include typeface(--small-center-normal-black);
+        text-transform: none;
+    }
+    &--h4 {
+        @include typeface(--small-center-bold-black);
+        text-transform: none;
+    }
+    &--balance {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-profit-success);
+    }
+    &--balance-descriptor {
+        @include typeface(--small-center-normal-black);
+    }
+    &--button {
+        height: 4rem;
+        width: 27rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 0;
+        margin: 1.6rem;
+
+        .btn {
+            @include typeface(--paragraph-center-bold-black, none);
+            background-color: var(--brand-red-coral);
+            @include themify($themes) {
+                color: themed('text_active_color');
+            }
+
+            &--disabled {
+                background-color: var(--brand-red-coral);
+                opacity: 0.32;
+                cursor: initial;
+            }
+        }
+    }
+    .success-change {
+        margin-top: 2em;
+
+        &__body-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            flex-grow: 1;
+        }
+    }
+}
+.dc-modal-header__section {
+    &--top-up-virtual {
+        @include typeface(--paragraph-center-bold-black);
+        text-transform: none;
+    }
+}
+.mt5-success-topup {
+    &__heading {
+        @include typeface(--small-center-bold-black);
+        text-transform: none;
+        margin-top: 2em;
+    }
+    &__description {
+        p {
+            @include typeface(--small-center-normal-black);
+            text-transform: none;
+        }
     }
 }

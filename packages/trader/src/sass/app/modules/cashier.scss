@@ -264,14 +264,13 @@
         &-selector {
             margin-bottom: 16px;
             display: flex;
-
-            .payment-agent__drop-down {
-                margin-left: 8px;
-                margin-bottom: 0;
-                min-width: 19.6rem;
-                width: auto;
-            }
         }
+    }
+    &__drop-down {
+        margin-left: 8px;
+        min-width: 20rem;
+        width: auto;
+        margin-bottom: 0;
     }
     &__accordion-content {
         &-line {
@@ -290,10 +289,36 @@
         line-height: 1.42;
     }
     &__radio {
-        margin-bottom: 16px;
+        display: none;
 
         &-group {
             display: block;
+        }
+        &-wrapper {
+            display: flex;
+
+            &:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+            &:last-child {
+                margin-bottom: 2.7rem;
+            }
+        }
+        &-circle {
+            border: 2px solid var(--text-general);
+            border-radius: 50%;
+            box-shadow: 0 0 1px 0 $color-white;
+            width: 16px;
+            height: 16px;
+            transition: all 0.3s ease-in-out;
+            margin-right: 8px;
+            align-self: center;
+            display: inline-flex;
+
+            &--selected {
+                border-width: 4px;
+                border-color: var(--brand-red-coral);
+            }
         }
     }
     &__receipt {
@@ -343,9 +368,15 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
+        &-error {
+            white-space: nowrap;
+        }
     }
     &__paragraph {
         align-self: flex-start;
+    }
+    &__amount-symbol {
+        top: 0.9rem;
     }
 }
 
@@ -416,6 +447,9 @@
             height: 4rem;
             margin-top: 3.2rem;
         }
+    }
+    &__amount-symbol {
+        top: 1.1rem;
     }
 }
 

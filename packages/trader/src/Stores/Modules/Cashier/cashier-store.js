@@ -48,7 +48,6 @@ class ConfigPaymentAgent {
     @observable is_withdraw            = false;
     @observable is_withdraw_successful = false;
     @observable receipt                = {};
-    @observable selected_agent         = {};
     @observable selected_bank          = bank_default_option[0].value;
     @observable supported_banks        = bank_default_option;
     @observable verification           = new ConfigVerification();
@@ -438,7 +437,6 @@ export default class CashierStore extends BaseStore {
             }
         }
 
-        this.setIsNameSelected(true);
         this.filterPaymentAgentList();
         this.setLoading(false);
     }
@@ -448,11 +446,6 @@ export default class CashierStore extends BaseStore {
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency  = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
-    }
-
-    @action.bound
-    setIsNameSelected(is_name_selected = !this.config.payment_agent.is_name_selected) {
-        this.config.payment_agent.is_name_selected = is_name_selected;
     }
 
     @action.bound
@@ -528,7 +521,6 @@ export default class CashierStore extends BaseStore {
             payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
                 this.addPaymentAgent(payment_agent);
             });
-            this.onChangePaymentAgent({ target: { value: this.config.payment_agent.agents[0].value } });
         }
 
         this.setLoading(false);
@@ -577,22 +569,22 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    onChangePaymentAgent({ target }) {
-        this.config.payment_agent.selected_agent =
-            this.config.payment_agent.agents.find((agent) => agent.value === target.value);
-    }
-
-    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
+            const selected_agent = this.config.payment_agent.agents.find((agent) => agent.value === loginid);
             this.setReceipt({
-                amount_transferred : amount,
-                payment_agent_email: this.config.payment_agent.selected_agent.email,
-                payment_agent_id   : this.config.payment_agent.selected_agent.value,
-                payment_agent_name : this.config.payment_agent.selected_agent.text,
-                payment_agent_phone: this.config.payment_agent.selected_agent.phone,
-                payment_agent_url  : this.config.payment_agent.selected_agent.url,
+                amount_transferred: amount,
+                ...(selected_agent && {
+                    payment_agent_email: selected_agent.email,
+                    payment_agent_id   : selected_agent.value,
+                    payment_agent_name : selected_agent.text,
+                    payment_agent_phone: selected_agent.phone,
+                    payment_agent_url  : selected_agent.url,
+                }),
+                ...(!selected_agent && {
+                    payment_agent_id: loginid,
+                }),
             });
             this.setIsWithdrawSuccessful(true);
         } else {

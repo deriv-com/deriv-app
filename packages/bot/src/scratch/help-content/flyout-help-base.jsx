@@ -69,6 +69,11 @@ class HelpBase extends React.PureComponent {
                         <Arrow2Icon />
                     </button>
                     <span className='flyout__help-title'>{title}</span>
+                    <div className='flyout__item-buttons'>
+                        <button className='flyout__button flyout__button-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[0])}>
+                            {translate('Add')}
+                        </button>
+                    </div>
                 </div>
                 <div className='flyout__help-content'>
                     {

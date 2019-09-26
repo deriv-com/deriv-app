@@ -17,17 +17,17 @@ Blockly.Blocks.variables_get = {
             ],
             output         : null,
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Get Variable Tooltip'),
+            colour         : Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary : Blockly.Colours.Special2.colourTertiary,
+            tooltip        : translate('Gets variable value'),
             category       : Blockly.Categories.Variables,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get Variable Value'),
-            'description' : translate('Get Variable Value Description'),
+            'display_name': translate('User-defined variable'),
+            'description' : translate(''),
         };
     },
 };

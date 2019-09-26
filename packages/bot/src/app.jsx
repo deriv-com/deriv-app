@@ -1,5 +1,6 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
+import                               './public-path'; // Leave this here!
 import Workspace                from './components/workspace.jsx';
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';

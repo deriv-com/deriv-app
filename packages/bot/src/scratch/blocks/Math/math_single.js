@@ -28,17 +28,17 @@ Blockly.Blocks.math_single = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Mathematical Single Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Operations on a given number'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Mathematical Single'),
-            'description' : translate('Mathematical Single Description'),
+            'display_name': translate('Operations on a given number'),
+            'description' : translate('This block performs the selected operations to a given number.'),
         };
     },
 };

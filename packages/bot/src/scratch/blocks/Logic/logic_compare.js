@@ -31,17 +31,17 @@ Blockly.Blocks.logic_compare = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Logic Compare Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Compares two values'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic Compare'),
-            'description' : translate('Logic Compare Description'),
+            'display_name': translate('Compare'),
+            'description' : translate('This block is to compare the values, and is used to build a conditional structures.'),
         };
     },
 };

@@ -24,17 +24,17 @@ Blockly.Blocks.text_changeCase = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Change Case Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Changes text case accordingly'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Change Case'),
-            'description' : translate('Text Change Case Description'),
+            'display_name': translate('Change text case'),
+            'description' : translate('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
         };
     },
 };

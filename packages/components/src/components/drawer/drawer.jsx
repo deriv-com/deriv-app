@@ -36,9 +36,8 @@ class Drawer extends React.PureComponent {
 
         return (
             <div className={classNames(
-                'dc-drawer', {
-                    [`{dc-drawer--${className}`]: !!className,
-                    'dc-drawer--open'           : this.state.is_open,
+                'dc-drawer', className, {
+                    'dc-drawer--open': this.state.is_open,
                 })}
             >
                 <div className='dc-drawer__container'>

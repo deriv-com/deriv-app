@@ -12,14 +12,13 @@
         font-size: 1.4rem;
         font-weight: bold;
         cursor: pointer;
+        color: var(--text-general);
 
         &-icon {
             margin-right: 8px;
 
             .color1-fill {
-                @include themify($themes) {
-                    color: themed('text_color');
-                }
+                fill: var(--text-general);
             }
         }
     }

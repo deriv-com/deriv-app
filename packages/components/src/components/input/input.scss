@@ -7,11 +7,15 @@
     align-items: center;
     margin-bottom: 3.2rem;
 
-    &:focus-within {
-        border-color: var(--brand-secondary);
-    }
     &:hover:not(.dc-input__disabled) {
         border-color: var(--border-hover);
+    }
+    &:focus-within {
+        border-color: var(--brand-secondary);
+
+        &:hover {
+            border-color: var(--brand-secondary);
+        }
     }
     &__field {
         background: none;
@@ -36,7 +40,6 @@
             & ~ label {
                 transform: translate(0, -1.6rem) scale(0.75);
                 padding: 0 4px;
-                background-color: var(--fill-normal);
             }
         }
         &:disabled {
@@ -90,6 +93,7 @@
     &__label {
         color: var(--text-less-prominent);
         font-size: var(--text-size-xs);
+        background-color: var(--fill-normal);
         position: absolute;
         pointer-events: none;
         left: 1rem;

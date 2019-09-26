@@ -6,6 +6,7 @@
     position: absolute;
     left: 250px;
     background-color: $COLOR_WHITE;
+    height: calc(100% - 40px);
     max-height: calc(100% - 40px);
     z-index: 1;
     border-radius: 10px;
@@ -23,7 +24,6 @@
     }
     &__content {
         overflow: auto;
-        height: 100%;
     }
     &__search {
         left: 0;
@@ -104,6 +104,7 @@
         &-info {
             cursor: pointer;
             font-weight: bold;
+            display: block;
             color: $COLOR_RED;
         }
         &-description {
@@ -136,7 +137,7 @@
             padding: 1.5em;
             font-size: 0.8em;
             overflow-y: auto;
-            height: calc(100vh - 230px);
+            height: calc(100vh - 290px);
 
             #{$flyout}__item {
                 margin-bottom: 0.8em;

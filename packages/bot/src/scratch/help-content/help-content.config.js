@@ -3,7 +3,14 @@ import constant from '../../constants';
 const { help: { TEXT, IMAGE, BLOCK } } = constant;
 
 export const config = {
-//= ================= Math ==================
+//= ================= Functions ==================
+    procedures_ifreturn: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+    ],
+    //= ================= Math ==================
     math_arithmetic: [
         { type: TEXT },
         { type: BLOCK },

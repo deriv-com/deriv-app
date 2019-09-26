@@ -27,7 +27,7 @@ const FlyoutBlockGroup = (props) => {
                     </div>
                     <div className='flyout__item-description'>
                         {description}
-                        {onInfoClick && <p><a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more')}</a></p>}
+                        {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more')}</a>}
                     </div>
                     <FlyoutBlock
                         should_center_block={true}

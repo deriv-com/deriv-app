@@ -3,7 +3,7 @@
  */
 .dc-modal {
     &__container {
-        width: 736px;
+        min-width: 400px;
         position: relative;
         overflow: hidden;
         border-radius: $BORDER_RADIUS;
@@ -38,7 +38,6 @@
 
         &__title {
             @include typeface(--title-left-bold-black);
-            background-color: var(--general-section-1);
             color: var(--text-prominent);
             line-height: 24px;
             padding: 16px;

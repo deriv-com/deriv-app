@@ -52,10 +52,10 @@ class PaymentAgentReceipt extends React.Component {
                     </div>
                 </div>
                 <div className='payment-agent__separator' />
-                {this.props.receipt.payment_agent_name ?
+                <h2 className='cashier__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
+                <p className='payment-agent__explanation cashier__paragraph'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
+                {this.props.receipt.payment_agent_name &&
                     <React.Fragment>
-                        <h2 className='cashier__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
-                        <p className='payment-agent__explanation cashier__paragraph'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
                         <p className='cashier__paragraph payment-agent__paragraph'><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} options={{ interpolation: { escapeValue: false } }} /></p>
                         <PaymentAgentDetails
                             className='payment-agent__transferred-contact'
@@ -64,8 +64,6 @@ class PaymentAgentReceipt extends React.Component {
                             payment_agent_url={this.props.receipt.payment_agent_url}
                         />
                     </React.Fragment>
-                    :
-                    <p className='payment-agent__transferred-contact'><Localize i18n_default_text='Please contact your payment agent to validate your withdrawal request.' /></p>
                 }
                 <div className='payment-agent__buttons'>
                     <Button

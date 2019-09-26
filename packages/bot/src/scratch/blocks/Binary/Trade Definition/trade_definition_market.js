@@ -1,5 +1,6 @@
 import ApiHelpers from '../../../../services/api/api-helpers';
 
+/* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
@@ -27,7 +28,7 @@ Blockly.Blocks.trade_definition_market = {
             previousStatement: null,
             nextStatement    : null,
         });
-
+        
         this.setMovable(false);
         this.setDeletable(false);
     },
@@ -41,24 +42,24 @@ Blockly.Blocks.trade_definition_market = {
         const { active_symbols } = ApiHelpers.instance;
         const market_field       = this.getField('MARKET_LIST');
         const submarket_field    = this.getField('SUBMARKET_LIST');
+        const symbol_field       = this.getField('SYMBOL_LIST');
+        const market             = market_field.getValue();
+        const submarket          = submarket_field.getValue();
+        const symbol             = symbol_field.getValue();
 
         if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
             active_symbols.getMarketDropdownOptions().then(market_options => {
-                market_field.updateOptions(market_options, null, true);
+                market_field.updateOptions(market_options, event.group, market, true, true);
             });
         } else if (event.type === Blockly.Events.CHANGE) {
             if (event.name === 'MARKET_LIST') {
-                const submarket = market_field.getValue();
-
-                active_symbols.getSubmarketDropdownOptions(submarket).then(submarket_options => {
-                    submarket_field.updateOptions(submarket_options, null, true);
+                active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
+                    submarket_field.updateOptions(submarket_options, event.group, submarket, true, true);
                 });
-            } else if (event.name === 'SUBMARKET_LIST') {
-                const symbol_field = this.getField('SYMBOL_LIST');
-                const symbol = submarket_field.getValue();
-
-                active_symbols.getSymbolDropdownOptions(symbol).then(symbol_options => {
-                    symbol_field.updateOptions(symbol_options, null, true);
+            }
+            if (event.name === 'SUBMARKET_LIST') {
+                active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
+                    symbol_field.updateOptions(symbol_options, event.group, symbol, true, true);
                 });
             }
         }

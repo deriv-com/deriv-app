@@ -28,7 +28,7 @@
             transition: opacity 0.25s;
         }
         &--placeholder-visible::placeholder {
-            opacity: 0.7;
+            opacity: 0.2;
         }
         &:focus, &:disabled, &:not(:focus):valid {
             outline: none;
@@ -58,7 +58,7 @@
                 color: var(--brand-secondary);
             }
             &::placeholder {
-                opacity: 0.7;
+                opacity: 0.4;
             }
         }
         &:not(.dc-input--no-placeholder):not(:focus):valid {
@@ -73,7 +73,7 @@
     }
     &__leading-icon {
         margin-left: 1rem;
-        top: 1.1rem;
+        top: 1rem;
         position: absolute;
         left: 0;
         pointer-events: none;

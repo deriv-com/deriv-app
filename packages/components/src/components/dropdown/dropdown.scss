@@ -34,6 +34,7 @@
         }
         &-text {
             padding-left: 1em;
+            padding-right: 2.5em;
             @include typeface(--paragraph-center-normal-black, capitalize);
             color: var(--text-prominent);
             display: flex;

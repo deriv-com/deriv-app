@@ -222,13 +222,13 @@ const compareAccountsColumns = [
         col_index: 'attribute',
     },
     {
-        title    : localize('Standard'),
+        title    : <Localize i18n_default_text='Standard' />,
         col_index: 'standard',
     }, {
-        title    : localize('Advanced'),
+        title    : <Localize i18n_default_text='Advanced' />,
         col_index: 'advanced',
     }, {
-        title    : localize('Synthetic Indices'),
+        title    : <Localize i18n_default_text='Synthetic Indices' />,
         col_index: 'synthetic',
     },
 ];

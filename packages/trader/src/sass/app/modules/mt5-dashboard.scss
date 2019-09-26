@@ -139,7 +139,7 @@
     align-items: center;
 
     &__data {
-    width: 632px;
+    width: 845px;
     //height: 50vh;
 
         &__table {
@@ -150,11 +150,8 @@
             /*                     attribute   standard advanced synthetic */
             grid-template-columns: 2.7fr       1fr      1fr      1fr;
         }
-        .attribute {
+        .attribute, .standard, .advanced, .synthetic {
             justify-content: flex-start;
-        }
-        .standard, .advanced, .synthetic {
-            justify-content: flex-end;
         }
     }
 
@@ -165,8 +162,7 @@
         font-size: 12px;
         line-height: 1.5em;
         width: 100%;
-        padding: 1.6em 6.4em 6.4em 6.4em;
-        border-top: solid 1px var(--border-normal);
+        padding: 1.6em 6.4em 2.4em 6.4em;
     }
 }
 
@@ -257,6 +253,14 @@
         @include typeface(--paragraph-center-bold-black, none);
         @include themify($themes) {
             color: themed('text_active_color');
+        }
+    }
+}
+
+.dc-modal {
+    &__container {
+        &_mt5-dashboard__compare-accounts {
+            width: 904px;
         }
     }
 }

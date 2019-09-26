@@ -15,9 +15,7 @@ const Redirect = ({
     const url_params = new URLSearchParams(window.location.search);
 
     setVerificationCode(url_params.get('code'));
-    
-    // eslint-disable-next-line no-console
-    console.log(url_params.get('action'));
+
     switch (url_params.get('action')) {
         case 'signup': {
             const device_data = {

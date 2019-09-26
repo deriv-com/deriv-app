@@ -1,25 +1,27 @@
-import classNames        from 'classnames';
+import React                 from 'react';
+import PropTypes             from 'prop-types';
+import classNames            from 'classnames';
+import {
+    Formik,
+    Form }                   from 'formik';
 import {
     Input,
     Button,
-    Dialog }             from 'deriv-components';
-import {
-    Formik,
-    Form }               from 'formik';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Localize          from 'App/Components/Elements/localize.jsx';
-import { localize }      from 'App/i18n';
-import { connect }       from 'Stores/connect';
-import { validPassword } from 'Utils/Validator/declarative-validation-rules';
-import { redirectToLogin } from '_common/base/login';
-import { requestLogout } from 'Services/index';
+    Dialog,
+    PasswordMeter }          from 'deriv-components';
+import Localize              from 'App/Components/Elements/localize.jsx';
+import { localize }          from 'App/i18n';
+import { connect }           from 'Stores/connect';
+import { validPassword }     from 'Utils/Validator/declarative-validation-rules';
+import { redirectToLogin }   from '_common/base/login';
+import { requestLogout, WS } from 'Services/index';
 
 const resetInitialValues = { password: '' };
 
 class ResetPassword extends React.Component {
     onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
+        actions.resetForm({ password: '' });
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
@@ -37,9 +39,20 @@ class ResetPassword extends React.Component {
     };
 
     handleSubmit = (values, actions) => {
-        const { onResetPassword } = this.props;
+        const { verification_code } = this.props;
+        const api_request = {
+            reset_password: 1,
+            new_password  : values.password,
+            verification_code,
+        };
 
-        onResetPassword(values.password, this.onResetComplete, actions);
+        WS.resetPassword(api_request).then(async response => {
+            if (response.error) {
+                this.onResetComplete(response.error.message, actions);
+            } else {
+                this.onResetComplete(null, actions);
+            }
+        });
     }
 
     validateReset = (values) => {
@@ -81,18 +94,25 @@ class ResetPassword extends React.Component {
                                         <p className='reset-password__heading'>
                                             <Localize i18n_default_text='Choose a new password' />
                                         </p>
-                                        <Input
-                                            className='reset-password__password-field'
-                                            name='password'
-                                            type='password'
-                                            label={localize('Create a password')}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={touched.password && errors.password}
-                                            value={values.password}
-                                            data-lpignore='true'
-                                            required
-                                        />
+                                        <fieldset className='reset-password__fieldset'>
+                                            <PasswordMeter
+                                                input={values.password}
+                                                error={touched.password && errors.password}
+                                            >
+                                                <Input
+                                                    className='reset-password__password-field'
+                                                    name='password'
+                                                    type='password'
+                                                    label={localize('Create a password')}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={touched.password && errors.password}
+                                                    value={values.password}
+                                                    data-lpignore='true'
+                                                    required
+                                                />
+                                            </PasswordMeter>
+                                        </fieldset>
                                         <p className='reset-password__subtext'>
                                             {status.error_msg ? (
                                                 <Localize
@@ -128,7 +148,6 @@ class ResetPassword extends React.Component {
 ResetPassword.propTypes = {
     enableApp        : PropTypes.func,
     isModalVisible   : PropTypes.func,
-    onResetPassword  : PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -137,7 +156,6 @@ const ResetPasswordModal = ({
     disableApp,
     is_loading,
     is_visible,
-    onResetPassword,
     verification_code,
     toggleResetPasswordModal,
 }) => {
@@ -152,7 +170,6 @@ const ResetPasswordModal = ({
                 verification_code={verification_code}
                 isModalVisible={toggleResetPasswordModal}
                 enableApp={enableApp}
-                onResetPassword={onResetPassword}
             />
         </Dialog>
     );
@@ -163,7 +180,6 @@ ResetPasswordModal.propTypes = {
     enableApp               : PropTypes.func,
     is_loading              : PropTypes.bool,
     is_visible              : PropTypes.bool,
-    onResetPassword         : PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
     verification_code       : PropTypes.string,
 };
@@ -176,6 +192,5 @@ export default connect(
         is_loading              : ui.is_loading,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
         verification_code       : client.verification_code,
-        onResetPassword         : client.onResetPassword,
     }),
 )(ResetPasswordModal);

@@ -13,11 +13,9 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
     ], math_single: [
         { type: TEXT },
         { type: BLOCK },
-        { type: TEXT },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
@@ -30,6 +28,7 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
+        { type: IMAGE, width: '60%', url: '/js/bot/media/constrain.png' },
     ],
     // math_number: [
     //     { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
@@ -77,13 +76,13 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/in_candle_list_read.png' },
     ], read_ohlc_obj: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/read_candle_value.png' },
     ], check_direction: [
         { type: TEXT },
         { type: BLOCK },
@@ -95,15 +94,14 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/get_candle.png' },
         { type: TEXT },
     ], ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        // { type: IMAGE, url: '/js/bot/media/get_candle_list.png' },
-        { type: TEXT },
+        { type: IMAGE, url: '/js/bot/media/get_candle_list.png' },
     ], ohlc_values: [
         { type: TEXT },
         { type: BLOCK },
@@ -122,9 +120,9 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/is_candle_black.jpeg' },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/is_candle_black_1.jpeg' },
         { type: TEXT },
     ], ohlc_values_in_list: [
         { type: TEXT },
@@ -132,8 +130,7 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, url: '/js/bot/media/get_candle_list.png' },
     ],
     //= ================= Variables ==================
     variables_gets: [
@@ -166,6 +163,7 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
+        { type: IMAGE, url: '/js/bot/media/epoch.png' },
     ],
     // =============== Misc blocks ============
     balance: [
@@ -211,12 +209,13 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/sell_available.png' },
     ],
     sell_at_market: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: '/js/bot/media/sell_available.png' },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/sell_available.png' },
     ],
     after_purchase: [
         { type: TEXT },
@@ -227,7 +226,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: '/js/bot/media/trade_again.png' },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/trade_again.png' },
     ],
     // =============== Contract ============
     contract_check_result: [
@@ -235,32 +234,28 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/check_result.png' },
     ], sell_price: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: '/js/bot/media/sell_pl.png' },
     ],
     // =============== Logic ============
     controls_if: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, width: '70%', url: '/js/bot/media/controls_if.png' },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '40%', url: '/js/bot/media/compare_logic.png' },
     ],
     logic_operation: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '40%', url: '/js/bot/media/logic.png' },
     ],
     // =============== Logic ============
     controls_whileUntil: [
@@ -268,15 +263,15 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/repeat_while.png' },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/repeat_until.png' },
     ],
     controls_for: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/controls_for.png' },
         { type: TEXT },
         { type: TEXT },
     ],
@@ -284,6 +279,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/controls_forEach.png' },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
@@ -293,9 +289,9 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/break_out.png' },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '80%', url: '/js/bot/media/continue.png' },
     ],
 };
 

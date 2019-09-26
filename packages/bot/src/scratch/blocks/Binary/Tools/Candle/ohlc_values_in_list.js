@@ -24,13 +24,13 @@ Blockly.Blocks.ohlc_values_in_list = {
             colour         : Blockly.Colours.Analysis.colour,
             colourSecondary: Blockly.Colours.Analysis.colourSecondary,
             colourTertiary : Blockly.Colours.Analysis.colourTertiary,
-            tooltip        : translate('Returns a specific value from a given candle list'),
+            tooltip        : translate('Returns a list of specific values from a given candle list'),
             category       : Blockly.Categories.Candle,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get values from candles (2)'),
+            'display_name': translate('Create a list of candle values (2)'),
             'description' : translate('This block extracts selected type of values from a given candle list'),
         };
     },

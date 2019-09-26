@@ -133,18 +133,18 @@
             }
         }
         &--outlined {
-            background-color: $COLOR_WHITE;
-            border: 1px solid var(--brand-red-coral);
+            background-color: transparent;
+            border: 1px solid var(--button-secondary-default);
 
             &:hover {
-                background-color: var(--brand-red-coral) !important;
+                background-color: var(--button-secondary-hover) !important;
 
                 .btn__text {
-                    color: $COLOR_WHITE;
+                    color: var(--text-general);
                 }
             }
             .btn__text {
-                color: var(--brand-red-coral);
+                color: var(--text-general);
             }
             .btn {
                 align-items: center;
@@ -158,6 +158,14 @@
                 & > * {
                     display: block;
                     margin-right: 1rem;
+                }
+                svg {
+                    circle {
+                        fill: transparent;
+                    }
+                    path {
+                        fill: var(--text-general);
+                    }
                 }
             }
         }

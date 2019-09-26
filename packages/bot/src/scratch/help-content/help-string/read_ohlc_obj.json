@@ -1,0 +1,9 @@
+{
+    "text": [
+        "This block returns specified candle value for given candle. Each candle has open price, close price, high price, low price, and open time.",
+        "This block requires a candle as an input parameter.",
+        "In the below example an open price is extracted from a candle into variable candle_open_price. The Candle data is provided by another block (Get candle).",
+        "<image>",
+        "In the above example it is assumed that variable candle_open_price is processed somewhere within other blocks."
+    ]
+}

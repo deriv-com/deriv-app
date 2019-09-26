@@ -1,18 +1,28 @@
 $category-colours: (
-    search          : #afffda,
-    trade_parameters   : #30409f,
-    purchase_conditions: #00897b,
-    sell_conditions    : #78909c,
-    trade_results      : #d81a60,
-    technical_analysis : #689e38,
-    utility            : #8e25aa,
-    math               : #fc8b01,
-    text               : #5d4037,
-    logic              : #1876d2,
-    lists              : #e53836,
-    custom_functions   : #00acc1,
-    variables          : #616161,
-    loops              : #afb42b,
+    search             : #afffda,
+
+    trade_parameters   : #f3f3f3,
+    purchase_conditions: #f3f3f3,
+    sell_conditions    : #f3f3f3,
+    trade_results      : #f3f3f3,
+
+    contract_details   : #f3f3f3,
+    analysis           : #f3f3f3,
+    tick_analysis      : #f3f3f3,
+    indicators         : #f3f3f3,
+    stats              : #f3f3f3,
+
+    utility            : #f3f3f3,
+    math               : #f3f3f3,
+    text               : #f3f3f3,
+    logic              : #f3f3f3,
+    lists              : #f3f3f3,
+    custom_functions   : #f3f3f3,
+    variables          : #f3f3f3,
+    loops              : #f3f3f3,
+    time               : #f3f3f3,
+    misc               : #f3f3f3,
+    notifications      : #f3f3f3
 );
 
 .toolbox {
@@ -20,7 +30,8 @@ $category-colours: (
     $white           : #fff;
     $lightgrey       : #ebebeb;
     $grey            : #f4f4f6;
-    $category-text-spacing: 15px;
+    $gray20          : #333;
+    $category-text-spacing: 10px;
 
     background-color: $white;
     border: 1px solid $lightgrey;
@@ -51,7 +62,7 @@ $category-colours: (
 
         &--back {
             margin-left: $category-text-spacing;
-            fill: $white;
+            fill: $gray20;
             transform: rotate(90deg);
         }
         &--open {
@@ -74,7 +85,9 @@ $category-colours: (
         &__category-return {
             #{$toolbox}__category {
                 &--#{$category} {
-                    background-color: $colour;
+                    background-color: $lightgrey;
+                    color: $gray20;
+                    max-height: 38px;
                 }
             }
         }
@@ -90,7 +103,6 @@ $category-colours: (
     }
     &__category-return {
         cursor: pointer;
-        color: $white;
         text-align: center;
 
         #{$toolbox}__label {
@@ -103,7 +115,8 @@ $category-colours: (
         width: 100%;
     }
     &__description {
-        font-size: 1.3em;
+        font-size: 12px;
+        line-height: 1.4;
     }
     &__icon {
         display: flex;
@@ -117,7 +130,8 @@ $category-colours: (
     }
     &__label {
         font-weight: bold;
-        font-size: 1.6em;
+        font-size: 14px;
+        line-height: 1.4;
     }
     &__row {
         cursor: pointer;
@@ -142,7 +156,7 @@ $category-colours: (
         }
     }
     &__separator {
-        padding: 20px 0;
+        padding: 10px 0;
         border-top: 1px solid $lightgrey;
     }
     #search_input {

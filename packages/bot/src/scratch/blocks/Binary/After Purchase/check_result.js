@@ -17,17 +17,17 @@ Blockly.Blocks.contract_check_result = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('True if the result matches the selection'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('True if the result of the last trade matches the selection'),
             category       : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Check Result'),
-            'description' : translate('Check Result Description'),
+            'display_name': translate('Last trade result'),
+            'description' : translate('This block checks the result of the last trade.'),
         };
     },
     onchange(event) {

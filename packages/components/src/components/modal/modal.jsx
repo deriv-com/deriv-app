@@ -44,7 +44,7 @@ class ModalElement extends React.PureComponent {
     };
 
     render() {
-        const {id, title, className, header, children, has_close_icon, toggleModal } = this.props;
+        const { id, title, className, header, children, has_close_icon, toggleModal } = this.props;
         
         return ReactDOM.createPortal(
             <div
@@ -52,25 +52,29 @@ class ModalElement extends React.PureComponent {
                 id={id}
                 className={classNames(
                     'dc-modal__container', {
-                        [`dc-modal__container_${className}`]: className
-                    } 
+                        [`dc-modal__container_${className}`]: className,
+                    }
                 )}
             >
-                <div className={classNames('dc-modal-header', { 
-                            [`dc-modal-header--${className}`]: className 
-                        }
-                    )}>
+                <div className={classNames('dc-modal-header', {
+                    [`dc-modal-header--${className}`]: className,
+                }
+                )}
+                >
                     {  title &&
-                    <h3 className={classNames('dc-modal-header__title', { 
-                            [`dc-modal-header__title--${className}`]: className 
-                        } 
-                    )}>{title}</h3>
+                    <h3 className={classNames('dc-modal-header__title', {
+                        [`dc-modal-header__title--${className}`]: className,
+                    }
+                    )}
+                    >{title}
+                    </h3>
                     }
                     { header &&
-                    <div className={classNames('dc-modal-header__section', { 
-                            [`dc-modal-header__section--${className}`]: className 
-                        }
-                    )}>
+                    <div className={classNames('dc-modal-header__section', {
+                        [`dc-modal-header__section--${className}`]: className,
+                    }
+                    )}
+                    >
                         {header}
                     </div>
                     }

@@ -1,0 +1,77 @@
+.toolbar {
+    $toolbar: &;
+    $toolbar_height: 56px;
+
+    height: $toolbar_height;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-shadow: inset 0 1px 0 0 var(--general-section-1), inset 0 -1px 0 0 var(--general-section-1);
+    padding: 5px 12px;
+
+    #{$toolbar}__btn {
+        &-icon {
+            display: flex;
+            justify-content: center;
+
+            > * {
+                align-self: center;
+            }
+            &-text {
+                @include typeface(--title-center-bold-active, none);
+                margin-left: 8px;
+            }
+        }
+    }
+    &__section {
+        display: flex;
+
+        > * {
+            align-self: center;
+            margin: 0 4px;
+        }
+        > #{$toolbar}__btn-icon {
+            margin: 0 4px;
+            height: calc(#{$toolbar_height} - 18px);
+        }
+        > #{$toolbar}__form {
+            .dc-input {
+                margin-bottom: 5px;
+            }
+        }
+    }
+    &__icon {
+        cursor: pointer;
+        border: none;
+        margin: 12px;
+    }
+    &__group {
+        display: flex;
+        border-radius: $BORDER_RADIUS;
+        border: solid 1px var(--border-normal);
+
+        &-btn {
+            padding: 0px 8px;
+
+            > * {
+                align-self: center;
+            }
+        }
+    }
+    &__form {
+        width: 18%;
+        min-width: 160px;
+
+        &-field {
+            margin-bottom: 0;
+            margin-top: 5px;
+        }
+    }
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 17px;
+    margin: 8px;
+    background-color: var(--border-normal); // TODO color
+}

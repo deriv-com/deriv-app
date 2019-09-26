@@ -29,8 +29,8 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
 };
 
 Loading.propTypes = {
-    className      : PropTypes.string,
-    id: PropTypes.oneOfType([
+    className: PropTypes.string,
+    id       : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
     ]),

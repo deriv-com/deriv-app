@@ -19,6 +19,9 @@
     &__content {
         overflow: auto;
     }
+    &__search {
+        left: 0;
+    }
     &__block-workspace {
         margin-bottom: $default-margin;
 

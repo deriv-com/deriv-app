@@ -126,7 +126,7 @@ class Journal extends React.PureComponent {
     }
 }
 
-Journal.Proptypes = {
+Journal.propTypes = {
     messages : proptypes.array,
     onUnmount: proptypes.func,
 };

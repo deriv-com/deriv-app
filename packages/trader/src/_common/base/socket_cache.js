@@ -1,6 +1,7 @@
-const moment           = require('moment');
-const ObjectUtils      = require('deriv-shared/utils/object');
-const LocalStore       = require('../storage').LocalStore;
+const moment        = require('moment');
+const ObjectUtils   = require('deriv-shared/utils/object');
+const getStaticHash = require('_common/utility.js').getStaticHash;
+const LocalStore    = require('../storage').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests
@@ -20,6 +21,9 @@ const LocalStore       = require('../storage').LocalStore;
  *    6.2. Detect a new release (static hash changed)
  */
 const SocketCache = (() => {
+
+    
+
     // keys are msg_type
     // expire: how long to keep the value (in minutes)
     const config = {
@@ -97,7 +101,7 @@ const SocketCache = (() => {
         const expires  = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
-            data_obj.static_hash = ObjectUtils.getStaticHash();
+            data_obj.static_hash = getStaticHash();
         }
 
         data_obj[key] = { value: response, expires, msg_type  };
@@ -124,7 +128,7 @@ const SocketCache = (() => {
             if (ObjectUtils.isEmptyObject(data_obj)) return;
         }
 
-        if (data_obj.static_hash !== ObjectUtils.getStaticHash()) { // new release
+        if (data_obj.static_hash !== getStaticHash()) { // new release
             clear();
         }
     };

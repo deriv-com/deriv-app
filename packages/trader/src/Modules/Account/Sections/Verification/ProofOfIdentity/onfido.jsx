@@ -1,6 +1,7 @@
 
 import PropTypes               from 'prop-types';
 import React                   from 'react';
+import { Scrollbars }          from 'tt-react-custom-scrollbars';
 import { init }                from 'onfido-sdk-ui';
 import { get as getLanguage }  from '_common/language';
 import {
@@ -13,7 +14,16 @@ import {
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
-const OnfidoContainer = () => <div className='onfido-container'><div id={onfido_container_id} /></div>;
+const OnfidoContainer = () => (
+    <Scrollbars
+        autoHide
+        style={{
+            height: '100%',
+        }}
+    >
+        <div className='onfido-container'><div id={onfido_container_id} /></div>
+    </Scrollbars>
+);
 
 class Onfido extends React.Component {
     state = {

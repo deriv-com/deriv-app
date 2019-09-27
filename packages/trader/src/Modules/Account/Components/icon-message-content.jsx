@@ -15,9 +15,11 @@ const IconMessageContent = ({ children, icon, icon_row, message, text }) => (
         <div className='account-management__message'>
             {message}
         </div>
-        <div className='account-management__text'>
-            {text}
-        </div>
+        {text &&
+            <div className='account-management__text-container'>
+                <p className='account-management__text'>{text}</p>
+            </div>
+        }
         {children}
     </div>
 );

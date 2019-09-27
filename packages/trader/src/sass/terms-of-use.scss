@@ -9,6 +9,7 @@
     & .dc-checkbox__label {
         @include typeface(--paragraph-left-normal-black);
         text-transform: none;
+        color: var(--text-general);
     }
     &__checkbox {
         margin-top: 2rem;
@@ -17,10 +18,12 @@
         @include typeface(--paragraph-left-bold-black);
         margin: 1rem 0;
         text-transform: none;
+        color: var(--text-general);
     }
     p {
         @include typeface(--paragraph-left-normal-black);
         text-transform: none;
+        color: var(--text-general);
     }
     input {
         display: none;

@@ -24,9 +24,9 @@ Blockly.Blocks.notify_telegram = {
                     name: 'TELEGRAM_MESSAGE',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special3.colour,
+            colourSecondary  : Blockly.Colours.Special3.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Sends a message to Telegram'),
@@ -36,7 +36,7 @@ Blockly.Blocks.notify_telegram = {
     meta() {
         return {
             'display_name': translate('Notify Telegram'),
-            'description' : translate('Sends a message to Telegram.'),
+            'description' : translate('This block sends a message to a Telegram channel.'),
         };
     },
 };

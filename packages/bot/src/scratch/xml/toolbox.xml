@@ -79,8 +79,219 @@
     <sep />
 
     <category id="analysis" name="Analysis" description="Indicators, ticks, stats, etc" iconURI="ic-arrow">
+        <category id="indicators" name="Indicators" description="Indicators">
+            <block type="sma_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST"></value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="smaa_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST"></value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="bb_statement">
+                <field name="BBRESULT_LIST">0</field>
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                                <next>
+                                    <block type="std_dev_multiplier_up" deletable="false" movable="false">
+                                        <value name="UPMULTIPLIER">
+                                            <shadow type="math_number">
+                                                <field name="NUM">5</field>
+                                            </shadow>
+                                        </value>
+                                        <next>
+                                            <block type="std_dev_multiplier_down">
+                                                <value name="DOWNMULTIPLIER">
+                                                    <shadow type="math_number">
+                                                        <field name="NUM">5</field>
+                                                    </shadow>
+                                                </value>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="bba_statement">
+                <field name="BBRESULT_LIST">0</field>
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                                <next>
+                                    <block type="std_dev_multiplier_up" deletable="false" movable="false">
+                                        <value name="UPMULTIPLIER">
+                                            <shadow type="math_number">
+                                                <field name="NUM">5</field>
+                                            </shadow>
+                                        </value>
+                                        <next>
+                                            <block type="std_dev_multiplier_down">
+                                                <value name="DOWNMULTIPLIER">
+                                                    <shadow type="math_number">
+                                                        <field name="NUM">5</field>
+                                                    </shadow>
+                                                </value>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="ema_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="emaa_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="rsi_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="rsia_statement">
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="period" deletable="false" movable="false">
+                                <value name="PERIOD">
+                                    <shadow type="math_number">
+                                        <field name="NUM">10</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="macda_statement">
+                <field name="MACDFIELDS_LIST">1</field>
+                <statement name="STATEMENT">
+                    <block type="input_list" deletable="false" movable="false">
+                        <value name="INPUT_LIST">
+                        </value>
+                        <next>
+                            <block type="fast_ema_period" deletable="false" movable="false">
+                                <value name="FAST_EMA_PERIOD">
+                                    <block type="math_number">
+                                        <field name="NUM">12</field>
+                                    </block>
+                                </value>
+                                <next>
+                                    <block type="slow_ema_period" deletable="false" movable="false">
+                                        <value name="SLOW_EMA_PERIOD">
+                                            <block type="math_number">
+                                                <field name="NUM">26</field>
+                                            </block>
+                                        </value>
+                                        <next>
+                                            <block type="signal_ema_period" deletable="false" movable="false">
+                                                <value name="SIGNAL_EMA_PERIOD">
+                                                    <block type="math_number">
+                                                        <field name="NUM">9</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+        </category>
 
         <category name="Tick and candle analysis" id="tick_analysis" description="Tools for tick analysis">
+            <!-- TODO: we need to come up with proper solution instead of adding new blocks -->
+            <!-- <block type="tick_string"></block>
+            <block type="ticks_string"></block> -->
             <block type="tick_analysis"></block>
             <block type="tick"></block>
             <block type="last_digit"></block>
@@ -124,6 +335,8 @@
             <block type="balance"></block>
             <block type="total_profit"></block>
             <block type="total_runs"></block>
+            <!-- TODO: we need to come up with proper solution instead of adding another block -->
+            <!-- <block type="total_profit_string"></block>        -->
         </category>
 
     </category>
@@ -159,11 +372,42 @@
                     </shadow>
                 </value>
             </block>
+            <block type="notify_telegram">
+                <value name="TELEGRAM_ACCESS_TOKEN">
+                    <shadow type="text">
+                        <field name="TEXT"></field>
+                    </shadow>
+                </value>
+                <value name="TELEGRAM_CHAT_ID">
+                    <shadow type="text">
+                        <field name="TEXT"></field>
+                    </shadow>
+                </value>
+                <value name="TELEGRAM_MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">abc</field>
+                    </shadow>
+                </value>
+            </block>
         </category>
 
         <category name="Time" id="time" description="Arithmetical operations">
             <block type="epoch" />
             <block type="timeout" />
+            <block type="totimestamp">
+                <value name="DATETIME">
+                    <shadow type="text">
+                        <field name="TEXT">yyyy-mm-dd hh:mm:ss</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="todatetime">
+                <value name="TIMESTAMP">
+                    <shadow type="math_number">
+                        <field name="NUM">0</field>
+                    </shadow>
+                </value>
+            </block>
         </category>
 
         <category name="Math" id="math" description="Arithmetical operations">
@@ -433,321 +677,4 @@
         </category>
     </category>
 
-    <!-- Lost & Found -->
-    <category id="lost" name="Lost + found" description="Return of the lost blocks.">
-        <category id="indicators_lost" name="Indicators" description="Indicators">
-            <block type="bb_statement">
-                <field name="BBRESULT_LIST">0</field>
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                                <next>
-                                    <block type="std_dev_multiplier_up" deletable="false" movable="false">
-                                        <value name="UPMULTIPLIER">
-                                            <shadow type="math_number">
-                                                <field name="NUM">5</field>
-                                            </shadow>
-                                        </value>
-                                        <next>
-                                            <block type="std_dev_multiplier_down">
-                                                <value name="DOWNMULTIPLIER">
-                                                    <shadow type="math_number">
-                                                        <field name="NUM">5</field>
-                                                    </shadow>
-                                                </value>
-                                            </block>
-                                        </next>
-                                    </block>
-                                </next>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="ema_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="rsi_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="sma_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="bba_statement">
-                <field name="BBRESULT_LIST">0</field>
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                                <next>
-                                    <block type="std_dev_multiplier_up" deletable="false" movable="false">
-                                        <value name="UPMULTIPLIER">
-                                            <shadow type="math_number">
-                                                <field name="NUM">5</field>
-                                            </shadow>
-                                        </value>
-                                        <next>
-                                            <block type="std_dev_multiplier_down">
-                                                <value name="DOWNMULTIPLIER">
-                                                    <shadow type="math_number">
-                                                        <field name="NUM">5</field>
-                                                    </shadow>
-                                                </value>
-                                            </block>
-                                        </next>
-                                    </block>
-                                </next>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="emaa_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="macda_statement">
-                <field name="MACDFIELDS_LIST">1</field>
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="fast_ema_period" deletable="false" movable="false">
-                                <value name="FAST_EMA_PERIOD">
-                                    <block type="math_number">
-                                        <field name="NUM">12</field>
-                                    </block>
-                                </value>
-                                <next>
-                                    <block type="slow_ema_period" deletable="false" movable="false">
-                                        <value name="SLOW_EMA_PERIOD">
-                                            <block type="math_number">
-                                                <field name="NUM">26</field>
-                                            </block>
-                                        </value>
-                                        <next>
-                                            <block type="signal_ema_period" deletable="false" movable="false">
-                                                <value name="SIGNAL_EMA_PERIOD">
-                                                    <block type="math_number">
-                                                        <field name="NUM">9</field>
-                                                    </block>
-                                                </value>
-                                            </block>
-                                        </next>
-                                    </block>
-                                </next>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="rsia_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-            <block type="smaa_statement">
-                <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
-                            <shadow type="ohlc_values">
-                                <field name="OHLCFIELD_LIST">open</field>
-                                <field name="CANDLEINTERVAL_LIST">default</field>
-                            </shadow>
-                        </value>
-                        <next>
-                            <block type="period" deletable="false" movable="false">
-                                <value name="PERIOD">
-                                    <shadow type="math_number">
-                                        <field name="NUM">10</field>
-                                    </shadow>
-                                </value>
-                            </block>
-                        </next>
-                    </block>
-                </statement>
-            </block>
-        </category>
-        <category id="time_lost" name="Time" description="Time">
-            <block type="epoch"></block>
-            <block type="totimestamp">
-                <value name="DATETIME">
-                    <shadow type="text">
-                        <field name="TEXT">yyyy-mm-dd hh:mm:ss</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="todatetime">
-                <value name="TIMESTAMP">
-                    <shadow type="math_number">
-                        <field name="NUM">0</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="timeout">
-                <value name="SECONDS">
-                    <shadow type="math_number">
-                        <field name="NUM">1</field>
-                    </shadow>
-                </value>
-            </block>
-        </category>
-        <category id="candle_lost" name="Candle" description="Candle">
-            <block type="is_candle_black"></block>
-            <block type="ohlc_values_in_list"></block>
-            <block type="read_ohlc_obj"></block>
-        </category>
-        <category id="tick_analysis_lost" name="Tick Analysis" description="Tick Analysis">
-            <block type="tick_string"></block>
-            <block type="ticks_string"></block>
-            <block type="total_profit"></block>
-            <block type="total_profit_string"></block>
-        </category>
-        <category id="misc_lost" name="Misc." description="Misc.">
-            <block type="balance"></block>
-            <block type="total_runs"></block>
-            <block type="notify">
-                <field name="NOTIFICATION_TYPE">success</field>
-                <value name="MESSAGE">
-                    <shadow type="text">
-                        <field name="TEXT">abc</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="notify_telegram">
-                <value name="TELEGRAM_ACCESS_TOKEN">
-                    <shadow type="text">
-                        <field name="TEXT"></field>
-                    </shadow>
-                </value>
-                <value name="TELEGRAM_CHAT_ID">
-                    <shadow type="text">
-                        <field name="TEXT"></field>
-                    </shadow>
-                </value>
-                <value name="TELEGRAM_MESSAGE">
-                    <shadow type="text">
-                        <field name="TEXT">abc</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="loader"></block>
-            <block type="block_holder"></block>
-        </category>
-    </category>
 </xml>

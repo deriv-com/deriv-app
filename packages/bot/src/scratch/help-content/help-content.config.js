@@ -170,7 +170,36 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, url: `${__webpack_public_path__}media/epoch.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/epoch.png` }, // eslint-disable-line
+    ],
+    todatetime: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/todatetime.png` }, // eslint-disable-line
+        { type: TEXT },
+    ],
+    totimestamp: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/totimestamp.png` }, // eslint-disable-line
+        { type: TEXT },
+    ],
+    // =============== Notifications blocks ============
+    notify_telegram: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, url: `${__webpack_public_path__}media/notify_telegram.png` }, // eslint-disable-line
     ],
     // =============== Misc blocks ============
     balance: [
@@ -181,6 +210,37 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
+    ],
+    // =============== Indicators blocks ============
+    sma_statement: [
+        { type: TEXT },
+        { type: BLOCK },
+        { type: TEXT },
+        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/sma_formula.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_1.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_2.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_block_example.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sma_block_example_1.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array.png` }, // eslint-disable-line
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array_explanation.jpeg` }, // eslint-disable-line
+
     ],
     // =============== Root blocks ============
     trade_definition: [

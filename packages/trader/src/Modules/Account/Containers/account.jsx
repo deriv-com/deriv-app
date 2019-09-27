@@ -1,16 +1,17 @@
-import PropTypes        from 'prop-types';
-import React, { lazy }  from 'react';
+import PropTypes         from 'prop-types';
+import React, { lazy }   from 'react';
 import {
     withRouter,
-    Redirect }          from 'react-router-dom';
-import SideMenu         from 'App/Components/Elements/SideMenu';
-import { FadeWrapper }  from 'App/Components/Animations';
-import { localize }     from 'App/i18n';
-import AppRoutes        from 'Constants/routes';
-import { connect }      from 'Stores/connect';
-import BinarySocket     from '_common/base/socket_base';
-import { flatten }      from '../Helpers/flatten';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+    Redirect }           from 'react-router-dom';
+import { isEmptyObject } from '_common/utility';
+import SideMenu          from 'App/Components/Elements/SideMenu';
+import { FadeWrapper }   from 'App/Components/Animations';
+import { localize }      from 'App/i18n';
+import AppRoutes         from 'Constants/routes';
+import { connect }       from 'Stores/connect';
+import BinarySocket      from '_common/base/socket_base';
+import { flatten }       from '../Helpers/flatten';
+import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
 
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
@@ -39,14 +40,27 @@ class Account extends React.Component {
 
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
-            const { needs_verification } = this.props.account_status.authentication;
-            const is_high_risk_client = (!!needs_verification.length);
+            if (this.props.account_status) {
+                const { needs_verification } = this.props.account_status.authentication;
+                const is_high_risk_client = (!!needs_verification.length);
 
-            this.setState({ is_high_risk_client, is_loading: false });
+                this.setState({ is_high_risk_client, is_loading: false });
+            }
         });
         this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
+    }
+
+    componentDidUpdate(prevProps) {
+        // on page refresh account_status is always undefined on first render and on didMount
+        // so we compare if prevProps and current props before setting state
+        if (!prevProps.account_status && !isEmptyObject(this.props.account_status)) {
+            const { needs_verification } = this.props.account_status.authentication;
+            const is_high_risk_client = (!!needs_verification.length);
+
+            this.setState({ is_high_risk_client, is_loading: false });
+        }
     }
 
     componentWillUnmount() {
@@ -54,7 +68,7 @@ class Account extends React.Component {
         this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
-    
+
     render () {
         const { is_high_risk_client, is_loading } = this.state;
 

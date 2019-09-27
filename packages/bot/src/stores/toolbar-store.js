@@ -24,9 +24,13 @@ export default class ToolbarStore {
     @observable is_google_drive_connected = false;
 
     @action.bound
-    // eslint-disable-next-line class-methods-use-this
     onRunClick() {
-        // TODO
+        this.root_store.run_panel.onRunButtonClick();
+    }
+
+    @action.bound
+    onStopClick() {
+        this.root_store.run_panel.onStopButtonClick();
     }
 
     @action.bound

@@ -17,6 +17,7 @@ export default class RunPanelStore {
     @observable is_run_button_clicked = false;
     @observable is_running = false;
     @observable is_dialog_visible = false;
+    @observable is_drawer_open = true;
 
     @action.bound
     onBotRunningEvent() {
@@ -49,6 +50,10 @@ export default class RunPanelStore {
             return;
         }
 
+        if (!this.is_drawer_open) {
+            this.is_drawer_open = true;
+        }
+
         this.is_run_button_clicked = true;
         Blockly.BLOCKLY_CLASS_OLD.run();
     }
@@ -71,6 +76,11 @@ export default class RunPanelStore {
         this.root_store.journal.clearMessages();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
+    }
+
+    @action.bound
+    toggleDrawer(is_open) {
+        this.is_drawer_open = is_open;
     }
 
     @action.bound

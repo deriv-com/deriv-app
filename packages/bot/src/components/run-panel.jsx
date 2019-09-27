@@ -95,7 +95,8 @@ class RunPanel extends React.PureComponent {
         return (
             <Drawer
                 className='run-panel'
-                is_open={true}
+                is_open={this.props.is_drawer_open}
+                toggleDrawer={this.props.toggleDrawer}
                 footer={footer}
             >
                 {content}
@@ -107,21 +108,25 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     closeModal           : PropTypes.func,
     is_dialog_visible    : PropTypes.bool,
+    is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onClearStatClick     : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
+    toggleDrawer         : PropTypes.func,
 };
 
 export default connect(({ run_panel }) => ({
     closeModal           : run_panel.closeModal,
     is_dialog_visible    : run_panel.is_dialog_visible,
-    is_running           : run_panel.is_running,
+    is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
+    is_running           : run_panel.is_running,
     onClearStatClick     : run_panel.onClearStatClick,
     onRunButtonClick     : run_panel.onRunButtonClick,
     onStopButtonClick    : run_panel.onStopButtonClick,
     onUnmount            : run_panel.onUnmount,
+    toggleDrawer         : run_panel.toggleDrawer,
 }))(RunPanel);

@@ -1,19 +1,13 @@
 import {
     action,
     observable,
-    toJS }                  from 'mobx';
-import {
-    formatMoney,
-    getCurrencies,
-    getDecimalPlaces,
-    isCryptocurrency }      from '_common/base/currency_base';
-import BinarySocket         from '_common/base/socket_base';
-import {
-    getPropertyValue,
-    isEmptyObject }         from '_common/utility';
-import { localize }         from 'App/i18n';
-import { WS }               from 'Services';
-import BaseStore            from '../../base-store';
+    toJS }           from 'mobx';
+import CurrencyUtils from 'deriv-shared/utils/currency';
+import ObjectUtils   from 'deriv-shared/utils/object';
+import BinarySocket  from '_common/base/socket_base';
+import { localize }  from 'App/i18n';
+import { WS }        from 'Services';
+import BaseStore     from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -165,7 +159,7 @@ export default class CashierStore extends BaseStore {
                 // clear verification code on error
                 this.clearVerification();
             }
-        } else if (isCryptocurrency(this.root_store.client.currency)) {
+        } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
             this.setContainerHeight('700');
             this.setIframeUrl(response_cashier.cashier);
@@ -228,7 +222,7 @@ export default class CashierStore extends BaseStore {
     }
 
     getError = (error) => {
-        if (!error || isEmptyObject(error)) {
+        if (!error || ObjectUtils.isEmptyObject(error)) {
             return null;
         }
 

@@ -1,7 +1,7 @@
-import classNames      from 'classnames';
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { formatMoney } from '_common/base/currency_base';
+import classNames    from 'classnames';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import CurrencyUtils from 'deriv-shared/utils/currency';
 
 const Money = ({
     amount,
@@ -16,7 +16,7 @@ const Money = ({
     }
 
     const abs_value = Math.abs(amount);
-    const final_amount = is_formatted ? formatMoney(currency, abs_value, true) : abs_value;
+    const final_amount = is_formatted ? CurrencyUtils.formatMoney(currency, abs_value, true) : abs_value;
 
     return (
         <React.Fragment>

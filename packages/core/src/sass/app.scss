@@ -1,6 +1,12 @@
 // Base
 @import 'app/_common/base/index';
 
+// Fonts
+@import 'deriv-shared/src/styles/google-fonts.scss';
+
+// Reset
+@import 'deriv-shared/src/styles/reset.scss';
+
 // General
 @import 'app/_common/symbols';
 @import 'app/_common/tooltip';
@@ -22,6 +28,7 @@
 @import 'app/_common/drawer/positions-progress-slider';
 
 // Components
+@import 'app/_common/components/account-settings-toggle';
 //@import 'app/_common/components/amount';
 //@import 'app/_common/components/allow-equals';
 //@import 'app/_common/components/calendar';

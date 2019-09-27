@@ -382,13 +382,13 @@ const compareAccountsColumns = [
         col_index: 'attribute',
     },
     {
-        title    : localize('Standard'),
+        title    : <Localize i18n_default_text='Standard' />,
         col_index: 'standard',
     }, {
-        title    : localize('Advanced'),
+        title    : <Localize i18n_default_text='Advanced' />,
         col_index: 'advanced',
     }, {
-        title    : localize('Synthetic Indices'),
+        title    : <Localize i18n_default_text='Synthetic Indices' />,
         col_index: 'synthetic',
     },
 ];
@@ -412,7 +412,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
 const compareAccountsData = [
     {
-        attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
+        attribute: <MT5AttributeDescriber name={ localize('Account currency') } />,
         standard : localize('USD'),
         advanced : localize('USD'),
         synthetic: localize('USD'),
@@ -470,7 +470,7 @@ const compareAccountsData = [
         synthetic: localize('No'),
     },
     {
-        attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
+        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') } />,
         standard : localize('No'),
         advanced : localize('No'),
         synthetic: localize('No'),
@@ -502,7 +502,7 @@ const compareAccountsData = [
         synthetic: localize('50%'),
     },
     {
-        attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
+        attribute: <MT5AttributeDescriber name={ localize('Number of assets') } />,
         standard : localize('50+'),
         advanced : localize('50+'),
         synthetic: localize('10+'),

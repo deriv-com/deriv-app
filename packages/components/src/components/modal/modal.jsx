@@ -12,7 +12,7 @@ const IconClose = ({ className, onClick }) => (
             className='color1-fill'
             fill='#2A3052'
             fillRule='nonzero'
-            d='M8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293z'
+            d='M8 6.587l4.293-4.294a1 1 0 0 1 1.414 1.414L9.414 8.002l4.293 4.294a1 1 0 0 1-1.414 1.414L8 9.416 3.707 13.71a1 1 0 1 1-1.414-1.414l4.293-4.294-4.293-4.295a1 1 0 1 1 1.414-1.414L8 6.587z'
         />
     </svg>
 );
@@ -38,38 +38,55 @@ class ModalElement extends React.PureComponent {
     };
 
     handleClickOutside = (event) => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.props.is_open) {
+        if (this.props.has_close_icon && this.wrapper_ref &&
+            !this.wrapper_ref.contains(event.target) && this.props.is_open) {
             this.props.toggleModal();
         }
     };
 
     render() {
+        const { id, title, className, header, children, has_close_icon, toggleModal } = this.props;
+        
         return ReactDOM.createPortal(
             <div
                 ref={this.setWrapperRef}
-                id={this.props.id}
+                id={id}
                 className={classNames(
-                    'dc-modal__container',
-                    this.props.className && `dc-modal__container_${this.props.className}`,
+                    'dc-modal__container', {
+                        [`dc-modal__container_${className}`]: className,
+                    }
                 )}
             >
-                <div className='dc-modal-header'>
-                    {  this.props.title &&
-                    <h3 className={classNames('dc-modal-header__title', this.props.className && `dc-modal-header__title--${this.props.className}`)}>{this.props.title}</h3>
+                <div className={classNames('dc-modal-header', {
+                    [`dc-modal-header--${className}`]: className,
+                }
+                )}
+                >
+                    {  title &&
+                    <h3 className={classNames('dc-modal-header__title', {
+                        [`dc-modal-header__title--${className}`]: className,
                     }
-                    { this.props.header &&
-                    <div className={classNames('dc-modal-header__section', this.props.className && `dc-modal-header__section--${this.props.className}`)}>
-                        {this.props.header}
+                    )}
+                    >{title}
+                    </h3>
+                    }
+                    { header &&
+                    <div className={classNames('dc-modal-header__section', {
+                        [`dc-modal-header__section--${className}`]: className,
+                    }
+                    )}
+                    >
+                        {header}
                     </div>
                     }
                     <div
-                        onClick={this.props.toggleModal}
+                        onClick={toggleModal}
                         className='dc-modal-header__close'
                     >
-                        {this.props.has_close_icon && <IconClose />}
+                        {has_close_icon && <IconClose />}
                     </div>
                 </div>
-                {this.props.children}
+                {children}
             </div>,
             this.el,
         );

@@ -16,19 +16,19 @@ Blockly.Blocks.is_candle_black = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
             tooltip        : translate(
-                'Checks if the given candle is black, returns true if close is less than open in the given candle.'
+                'Returns "True" if the given candle is black'
             ),
             category: Blockly.Categories.Candle,
         };
     },
     meta(){
         return {
-            'display_name': translate('Is Candle Block'),
-            'description' : translate('Is Candle Black Description'),
+            'display_name': translate('Is Candle Black?'),
+            'description' : translate('This block returns “True” in case the last candle was black. You can place this block anywhere except for the first root block (Trade Parameters).'),
         };
     },
 };

@@ -6,7 +6,20 @@
 .dc-modal-header {
     &__title {
         &--modal-settings {
+            background-color: var(--general-section-1);
             min-width: 28%;
+        }
+    }
+}
+
+/** @define dc-modal; */
+.dc-modal {
+    &__container_modal-settings {
+        width: 736px;
+
+        /* postcss-bem-linter: ignore */
+        .dc-modal-header {
+            border-bottom-width: 0;
         }
     }
 }

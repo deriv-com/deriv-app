@@ -4,7 +4,6 @@
     max-height: 200px;
     overflow-y: auto;
     z-index: 2;
-    cursor: pointer;
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 2px 8px 0 var(--shadow-menu);
     background: var(--state-normal);
@@ -21,13 +20,18 @@
         }
     }
     &__label {
-        @include typeface(--paragraph-center-bold-black, capitalize);
-        @include toEm(padding, 10px, 1.6em);
-        color: var(--text-prominent);
-        display: block;
+        padding: 0.6rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--brand-red-coral);
+        height: 3.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     &__item {
         width: 100%;
+        cursor: pointer;
 
         &-text, &-symbol {
             @include typeface(--paragraph-left-normal-black);
@@ -37,7 +41,7 @@
             justify-content: center;
             pointer-events: none;
             vertical-align: middle;
-            padding: 6.25px 0;
+            padding: 0.6rem 0;
             padding-left: 1.6em;
         }
         &-text--left {
@@ -65,7 +69,7 @@
         &-symbol {
             @include typeface(--paragraph-left-normal-black);
             width: 100%;
-            padding: 6.25px 0;
+            padding: 0.6rem 0;
             margin: 0;
             text-align: center;
             justify-content: center;
@@ -73,6 +77,12 @@
             color: var(--text-general);
 
         }
+    }
+    &__separator {
+        display: flex;
+        width: calc(100% - 3.2rem);
+        border-bottom: 1px solid var(--general-section-2);
+        margin: 1.6rem;
     }
 
     // fix for safari bug with overflow-x not working in dropdown

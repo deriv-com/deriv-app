@@ -1,8 +1,7 @@
-import React  from 'react';
-import Flyout from './flyout.jsx';
-import             '../assets/sass/scratch/workspace.scss';
-import             '../assets/sass/scratch/toolbox.scss';
-import             '../assets/sass/scratch/flyout.scss';
+import React    from 'react';
+import Flyout   from './flyout.jsx';
+import               '../assets/sass/scratch/workspace.scss';
+import               '../assets/sass/scratch/toolbox.scss';
 
 const Workspace = () => (
     <React.Fragment>

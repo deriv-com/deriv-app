@@ -29,7 +29,7 @@ const getPurchaseDropdownOptions = (contract_type, opposite_name) => {
     return oppositesToDropdownOptions(temp_purchase_choices);
 };
 
-export const updatePurchaseChoices = (contract_type, opposite_name) => {
+export const updatePurchaseChoices = (contract_type, event_group, opposite_name) => {
     Blockly.Events.disable();
 
     purchase_choices = getPurchaseDropdownOptions(contract_type, opposite_name);
@@ -42,7 +42,7 @@ export const updatePurchaseChoices = (contract_type, opposite_name) => {
         const purchase_list_field = purchase_block.getField('PURCHASE_LIST');
         const selected_value = purchase_list_field.getValue();
 
-        purchase_list_field.updateOptions(purchase_choices, selected_value, false);
+        purchase_list_field.updateOptions(purchase_choices, event_group, selected_value, false);
     });
 
     Blockly.Events.enable();

@@ -4,6 +4,7 @@ class ScratchStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.flyout     = root_store.flyout;
+        this.toolbar    = root_store.toolbar;
     }
 
     static setInstance(root_store) {

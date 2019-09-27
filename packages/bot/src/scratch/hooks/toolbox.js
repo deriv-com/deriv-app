@@ -1,7 +1,7 @@
 import React          from 'react';
 import ReactDOM       from 'react-dom';
-import { Arrow1Icon } from '../../components/Icons.jsx';
 import ScratchStore   from '../../stores/scratch-store';
+import { Arrow1Icon } from '../../components/Icons.jsx';
 import { translate }  from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
@@ -31,23 +31,9 @@ Blockly.Toolbox.prototype.init = function () {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = translate('Blocks Library');
+    el_toolbox_title.textContent = translate('Blocks Menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
-
-    const el_toolbox_search = goog.dom.createDom(goog.dom.TagName.INPUT, { 'id': 'search_input', 'placeholder': 'Search' });
-
-    this.HtmlDiv.appendChild(el_toolbox_search);
-
-    ['keyup', 'click'].forEach(e => {
-        el_toolbox_search.addEventListener(e, () => {
-            const toolbox = workspace.toolbox_;
-    
-            ScratchStore.instance.flyout.setVisibility(false);
-    
-            toolbox.setSelectedItem('search');
-        });
-    });
 
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
 
@@ -82,136 +68,158 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
     this.categoryMenu_.populate(newTree);
 };
 
+Blockly.Toolbox.prototype.showSearch = function (search) {
+    const flyout_content = [];
+    const workspace = Blockly.derivWorkspace;
+    const search_term = search.toUpperCase();
+    const all_variables = workspace.getVariablesOfType('');
+    const all_procedures = Blockly.Procedures.allProcedures(workspace);
+    const { flyout } = ScratchStore.instance;
+
+    flyout.setVisibility(false);
+
+    if (search_term.length <= 1) {
+        return;
+    }
+
+    const { derivWorkspace: { toolbox_: { categoryMenu_: { categories_ } } } } = Blockly;
+    const block_contents = categories_
+        .filter(category => !category.has_child_category_)
+        .map(category => {
+            let contents = category.getContents();
+
+            if (typeof contents === 'string') {
+                const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(contents);
+                contents = fnToApply(Blockly.derivWorkspace);
+            }
+
+            const only_block_contents = contents.filter(content => content.tagName.toUpperCase() === 'BLOCK');
+            return only_block_contents;
+        })
+        .flat();
+
+    block_contents.forEach(block_content => {
+        const block_type = block_content.getAttribute('type');
+        const block = Blockly.Blocks[block_type];
+        const block_meta = block.meta instanceof Function && block.meta();
+        const block_definitions = block.definition instanceof Function && block.definition();
+
+        if (!block_meta) {
+            return;
+        }
+
+        // block_name matched
+        if (block_type.toUpperCase().includes(search_term)) {
+            flyout_content.unshift(block_content);
+            return;
+        }
+
+        // block_meta matched
+        const matched_meta = Object.keys(block_meta)
+            .find(key => block_meta[key].toUpperCase().includes(search_term));
+        if (matched_meta && matched_meta.length) {
+            flyout_content.push(block_content);
+            return;
+        }
+
+        // block_definition matched
+        const definition_key_to_search = /^((message)|(tooltip))/;
+        // eslint-disable-next-line consistent-return
+        const matched_definition = Object.keys(block_definitions).filter(key => {
+            const definition = block_definitions[key];
+
+            if (definition_key_to_search.test(key) &&
+                definition.toUpperCase().includes(search_term)) {
+                return true;
+            }
+
+            if (definition instanceof Array) {
+                let has_dropdown_and_in_search = false;
+                // eslint-disable-next-line consistent-return
+                definition.forEach(def => {
+                    if (def.type === 'field_dropdown' &&
+                        JSON.stringify(def).toUpperCase().includes(search_term)) {
+                        has_dropdown_and_in_search = true;
+                    }
+                });
+
+                return has_dropdown_and_in_search;
+            }
+
+            return false;
+        });
+        if (matched_definition && matched_definition.length) {
+            flyout_content.push(block_content);
+
+        }
+    });
+
+    // block_variable_name matched
+    const matched_variables = all_variables
+        .filter(variable => variable.name.toUpperCase().includes(search_term));
+    const variables_blocks = Blockly.DataCategory.search(matched_variables);
+    // eslint-disable-next-line consistent-return
+    const unique_var_blocks = variables_blocks.filter(variable_block => {
+        return flyout_content.indexOf(variable_block) === -1;
+    });
+    if (unique_var_blocks && unique_var_blocks.length) {
+        flyout_content.push(...unique_var_blocks);
+    }
+
+    // block_procedure_name matched
+    const searched_procedures = { '0': [], '1': [] };
+    const procedures_callnoreturn = all_procedures[0];
+    const procedures_callreturn = all_procedures[1];
+    Object.keys(procedures_callnoreturn).forEach(key => {
+        const procedure = procedures_callnoreturn[key];
+
+        if (procedure[0].toUpperCase().includes(search_term)) {
+            searched_procedures['0'].push(procedure);
+        }
+    });
+
+    Object.keys(procedures_callreturn).forEach(key => {
+        const procedure = procedures_callreturn[key];
+
+        if (procedure[0].toUpperCase().includes(search_term)) {
+            searched_procedures['1'].push(procedure);
+        }
+    });
+
+    const procedures_blocks = Blockly.Procedures.populateDynamicProcedures(searched_procedures);
+    // eslint-disable-next-line consistent-return
+    const unique_proce_blocks = procedures_blocks.filter(procedure_block => {
+        return flyout_content.indexOf(procedure_block) === -1;
+    });
+    if (unique_proce_blocks.length) {
+        flyout_content.push(...unique_proce_blocks);
+
+    }
+
+    flyout.setIsSearchFlyout(true);
+    flyout.setContents(flyout_content, true);
+};
+
 /**
  * deriv-bot: Show blocks for a specific category in flyout
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
-    let flyout_content;
+    const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
+    let flyout_content = selected_category.getContents();
 
-    if (category_id === 'search') {
-        let search_term = document.getElementById('search_input').value;
-        const all_variables = this.flyout_.workspace_.getVariablesOfType('');
-        const all_procedures = Blockly.Procedures.allProcedures(Blockly.derivWorkspace);
-
-        if (search_term.length <= 1) {
-            ScratchStore.instance.flyout.setVisibility(false);
-            return;
-        }
-
-        flyout_content = {
-            type  : 'search',
-            blocks: [],
-        };
-
-        if (typeof search_term === 'string') {
-            search_term = search_term.trim().toLowerCase();
-            search_term = search_term.split(' ');
-        }
-
-        const blocks = Blockly.Blocks;
-        Object.keys(blocks).forEach(blockKey => {
-            let keywords = ` ${blockKey}`;
-            const block = blocks[blockKey];
-            const block_meta = block.meta instanceof Function && block.meta();
-            const block_definition = block.definition instanceof Function && block.definition();
-
-            if (!block_meta) {
-                return;
-            }
-
-            Object.keys(block_meta).forEach(key => {
-                const meta = block_meta[key];
-                keywords += ` ${meta}`;
-            });
-
-            Object.keys(block_definition).forEach(key => {
-                const definition = block_definition[key];
-
-                if (typeof definition === 'string') {
-                    keywords += ` ${definition}`;
-                } else if (definition instanceof Array) {
-                    definition.forEach(def => {
-                        if (def instanceof Object) {
-                            keywords += !def.type.includes('image') ? ` ${JSON.stringify(def)}` : '';
-                        } else {
-                            keywords += ` ${def}`;
-                        }
-                    });
-                }
-            });
-
-            const block_category = (block_definition && block_definition.category) ||
-                                    (block_meta && block_meta.category);
-            const category =
-                this.categoryMenu_.categories_
-                    .find(menuCategory => menuCategory.id_ === block_category);
-            let contents = category && category.getContents();
-
-            if (typeof contents === 'string') {
-                const fnToApply = this.workspace_.getToolboxCategoryCallback(contents);
-                contents = fnToApply(this.workspace_);
-            }
-
-            if (contents) {
-                search_term.forEach(term => {
-                    if (keywords.toLowerCase().includes(term)) {
-                        const blockContents = contents
-                            .filter(content => content.attributes[0].nodeValue === blockKey);
-
-                        if (blockContents.length && flyout_content.blocks.indexOf(blockContents[0]) === -1) {
-                            flyout_content.blocks.push(blockContents[0]);
-                        }
-
-                    }
-                });
-            }
-        });
-
-        const searched_variables = [];
-        all_variables.forEach(variable => {
-            search_term.forEach(term => {
-                if (variable.name.toLowerCase().includes(term)) {
-                    searched_variables.push(variable);
-                }
-            });
-        });
-
-        const variables_blocks = Blockly.DataCategory.search(searched_variables);
-        /* eslint-disable-next-line consistent-return */
-        const uniqueVarBlocks = variables_blocks.map(variableBlock => {
-            if (flyout_content.blocks.indexOf(variableBlock) === -1){
-                return variableBlock;
-            }
-        });
-        flyout_content.blocks = flyout_content.blocks.concat(uniqueVarBlocks);
-
-        const searched_procedures = {};
-        Object.keys(all_procedures).forEach(key => {
-            search_term.forEach(term => {
-                if (all_procedures[key].length && all_procedures[key][0][0].toLowerCase().includes(term)) {
-                    searched_procedures[key] = all_procedures[key];
-                }
-            });
-        });
-
-        const procedures_blocks = Blockly.Procedures.populateDynamicProcedures(searched_procedures);
-        /* eslint-disable-next-line consistent-return */
-        const uniqueProceBlocks = procedures_blocks.map(procedureBlock => {
-            if (flyout_content.blocks.indexOf(procedureBlock) === -1){
-                return procedureBlock;
-            }
-        });
-        flyout_content.blocks = flyout_content.blocks.concat(uniqueProceBlocks);
-    } else {
-        const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
-        flyout_content = this.getCategoryContents(selected_category);
+    // Dynamic categories
+    if (typeof flyout_content === 'string') {
+        const fnToApply = this.workspace_.getToolboxCategoryCallback(flyout_content);
+        flyout_content = fnToApply(this.workspace_);
     }
 
-    ScratchStore.instance.flyout.setContents(flyout_content);
+    const { instance: { flyout } } = ScratchStore;
+    flyout.setIsSearchFlyout(false);
+    flyout.setContents(flyout_content);
 };
 
-Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
+Blockly.Toolbox.prototype.getCategoryContents = function (selected_category) {
     let xml_list = selected_category.getContents();
 
     // Dynamic categories
@@ -248,16 +256,7 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * @param {boolean} should_close_on_same_category Close when select the same category
  */
 Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
-    const category_item = item;
-    if (category_item === 'search'){
-        if (this.selectedItem_) {
-            this.selectedItem_.setSelected(false);
-        }
-        this.selectedItem_ = null;
-        this.showCategory_('search');
-        return;
-    }
-
+    const { instance: { flyout } } = ScratchStore;
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
@@ -271,8 +270,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
             should_close_on_same_category
         ) {
             this.selectedItem_ = null;
-            if (ScratchStore.instance.flyout.is_visible) {
-                ScratchStore.instance.flyout.setVisibility(false);
+            if (flyout.is_visible) {
+                flyout.setVisibility(false);
             }
             return;
         }
@@ -281,7 +280,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
     this.selectedItem_ = item;
 
     if (!item) {
-        ScratchStore.instance.flyout.setVisibility(false);
+        flyout.setVisibility(false);
     } else {
         const getCategoryTree = (parent_name, parent_id, colour, children) => {
             const xml_document = document.implementation.createDocument(null, null, null);
@@ -334,8 +333,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
             if (selected_category) {
                 const el_parent = selected_category.parentElement;
 
+                flyout.setVisibility(false);
                 if (el_parent.tagName === 'xml') {
-                    ScratchStore.instance.flyout.setVisibility(false);
                     this.workspace_.updateToolbox(initial_toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
@@ -345,7 +344,6 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                         el_parent.children,
                     );
 
-                    ScratchStore.instance.flyout.setVisibility(false);
                     this.workspace_.updateToolbox(newTree);
                 }
             }
@@ -358,7 +356,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 this.selectedItem_.contents_,
             );
 
-            ScratchStore.instance.flyout.setVisibility(false);
+            flyout.setVisibility(false);
             this.workspace_.updateToolbox(newTree);
         } else {
             // Show blocks that belong to this category.
@@ -374,7 +372,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
  * procedures.
  * deriv-bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function () {};
+Blockly.Toolbox.prototype.refreshSelection = function () { };
 
 /**
  * Create the DOM for a category in the toolbox.
@@ -512,13 +510,13 @@ Blockly.Toolbox.CategoryMenu.prototype.createDom = function () {
  * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
  * @param {Node} domTree DOM tree of blocks, or null.
  */
-Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, isSubCategory = false) {
+Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, is_subcategory = false) {
     if (!domTree) {
         return;
     }
 
     // Remove old categories
-    if (!isSubCategory) {
+    if (!is_subcategory) {
         this.dispose();
         this.createDom();
     }
@@ -553,7 +551,7 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, isSubCatego
                 this.populate(childNode, true);
             }
 
-            if (!isSubCategory) {
+            if (!is_subcategory) {
                 this.table.appendChild(el_row);
             }
             this.categories_.push(toolbox_category);
@@ -566,8 +564,26 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, isSubCatego
     this.height_ = this.table.offsetHeight;
 };
 
-Blockly.Toolbox.prototype.refreshCategory = function() {
+Blockly.Toolbox.prototype.refreshCategory = function () {
     const category = this.getSelectedItem();
 
     this.setSelectedItem(category, false);
+};
+
+Blockly.Toolbox.prototype.toggle = function () {
+    const { toolbar, flyout } = ScratchStore.instance;
+    if (toolbar.is_toolbox_open) {
+        this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.initial_toolbox_xml));
+        this.addStyle('hidden');
+    
+        flyout.setVisibility(false);
+    
+        if (this.selectedItem_) {
+            this.selectedItem_.setSelected(false);
+            this.selectedItem_ = null;
+        }
+    } else {
+        flyout.setVisibility(false);
+        this.removeStyle('hidden');
+    }
 };

@@ -16,5 +16,6 @@
         @include typeface(--paragraph-center-normal-black);
         text-transform: none;
         margin-top: 3rem;
+        color: var(--text-general);
     }
 }

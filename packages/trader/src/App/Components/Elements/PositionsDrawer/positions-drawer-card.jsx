@@ -3,13 +3,14 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
 import { NavLink }             from 'react-router-dom';
-import { Button }              from 'deriv-components';
+import {
+    Button,
+    Money,
+    UnderlyingIcon }           from 'deriv-components';
+import CurrencyUtils           from 'deriv-shared/utils/currency';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
-import Money                   from 'App/Components/Elements/money.jsx';
-import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';
@@ -97,7 +98,7 @@ const PositionsDrawerCard = ({
                 </div>
                 <div className={classNames(
                     'positions-drawer-card__profit-loss', {
-                        'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                        'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
                         'positions-drawer-card__profit-loss--negative' : (profit_loss < 0),
                         'positions-drawer-card__profit-loss--positive' : (profit_loss > 0),
                     })}

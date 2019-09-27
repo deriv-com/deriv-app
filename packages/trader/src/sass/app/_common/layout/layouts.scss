@@ -136,6 +136,13 @@
                         padding: 0;
                         position: absolute;
                     }
+                    .cq-bottom-ui-widgets {
+                        bottom: 30px !important;
+
+                        .digits {
+                            margin-right: 0;
+                        }
+                    }
                 }
             }
         }

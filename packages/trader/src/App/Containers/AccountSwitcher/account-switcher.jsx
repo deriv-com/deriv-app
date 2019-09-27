@@ -1,10 +1,10 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { isEmptyObject } from '_common/utility';
+import ObjectUtils       from 'deriv-shared/utils/object';
+import { localize }      from 'App/i18n';
 import { urlFor }        from '_common/url';
 import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
-import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import { requestLogout } from 'Services/index';
 import { connect }       from 'Stores/connect';
@@ -112,7 +112,7 @@ class AccountSwitcher extends React.Component {
                     </div>
                 }
                 {
-                    !isEmptyObject(vrt_account) &&
+                    !ObjectUtils.isEmptyObject(vrt_account) &&
                     <div className='acc-switcher__list--virtual'>
                         <span className='acc-switcher__list-title'>
                             {localize('Demo account')}

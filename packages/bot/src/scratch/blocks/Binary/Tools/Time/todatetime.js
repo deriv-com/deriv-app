@@ -19,9 +19,9 @@ Blockly.Blocks.todatetime = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
             tooltip        : translate(
                 'Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'
             ),
@@ -30,8 +30,8 @@ Blockly.Blocks.todatetime = {
     },
     meta() {
         return {
-            'display_name': translate('To date/time'),
-            'description' : translate('Lorem ipsum dolor sit amet consectetur.'),
+            'display_name': translate('Convert to date/time'),
+            'description' : translate('Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'),
         };
     },
 };

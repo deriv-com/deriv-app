@@ -19,9 +19,9 @@ Blockly.Blocks.totimestamp = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
             tooltip        : translate(
                 'Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'
             ),
@@ -30,8 +30,8 @@ Blockly.Blocks.totimestamp = {
     },
     meta(){
         return {
-            'display_name': translate('To timestamp'),
-            'description' : translate('Lorem ipsum dolor sit amet consectetur.'),
+            'display_name': translate('Convetr to timestamp'),
+            'description' : translate('Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'),
         };
     },
 };

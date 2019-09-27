@@ -70,7 +70,7 @@ class SendEmailTemplate extends React.Component {
                         </div>
                         <div className='send-email-template__cta'>
                             <Button
-                                className='btn--primary send-email-template__cta-btn'
+                                className='btn--primary--default send-email-template__cta-btn'
                                 is_disabled={is_resend_btn_disabled}
                                 has_effect
                                 text={resend_email_btn_text}

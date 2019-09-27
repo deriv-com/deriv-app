@@ -8,7 +8,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 (4) Get your trade result and trade again %2'),
+            message0: translate('%1 4. Restart trading conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,19 +29,19 @@ Blockly.Blocks.after_purchase = {
                     check: 'TradeAgain',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate(
-                'Get the previous trade information and result, then trade again (Runs on trade finish)'
+                'Get the last trade information and result, then trade again.'
             ),
             category: Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('After Purchase'),
-            'description' : translate('After Purchase Description'),
+            'display_name': translate('Restart trading conditions'),
+            'description' : translate('This block is mandatory. It allows you to specify whether you want to continue trading or not.'),
         };
     },
     onchange(event) {

@@ -9,17 +9,17 @@ Blockly.Blocks.logic_null = {
             message0       : 'null',
             output         : null,
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Logic Null Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns the "null" value'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic Null'),
-            'description' : translate('Logic Null Description'),
+            'display_name': translate('Null'),
+            'description' : translate('This is used to assign a null value to an item or statement.'),
         };
     },
 };

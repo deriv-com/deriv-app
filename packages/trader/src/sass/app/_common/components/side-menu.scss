@@ -24,6 +24,9 @@
         &--active {
             background-color: var(--general-main-1);
 
+            &:hover {
+                background-color: var(--general-main-1) !important;
+            }
             /* postcss-bem-linter: ignore */
             div {
                 font-weight: bold;

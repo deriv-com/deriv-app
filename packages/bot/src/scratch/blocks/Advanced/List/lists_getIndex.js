@@ -26,9 +26,9 @@ Blockly.Blocks.lists_getIndex = {
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
-            Blockly.Colours.Binary.colour,
-            Blockly.Colours.Binary.colourSecondary,
-            Blockly.Colours.Binary.colourTertiary
+            Blockly.Colours.Utility.colour,
+            Blockly.Colours.Utility.colourSecondary,
+            Blockly.Colours.Utility.colourTertiary
         );
         this.setOutput(true, null);
 
@@ -36,8 +36,8 @@ Blockly.Blocks.lists_getIndex = {
     },
     meta(){
         return {
-            'display_name': translate('List Get Index'),
-            'description' : translate('List Get Index Description'),
+            'display_name': translate('Get list item'),
+            'description' : translate('This block extracts an item at given position from the list. It also can optionaly remove extracted item.'),
             'category'    : Blockly.Categories.List,
         };
     },

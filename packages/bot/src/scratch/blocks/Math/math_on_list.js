@@ -29,17 +29,17 @@ Blockly.Blocks.math_on_list = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Math On List'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Agregate functions'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math On List'),
-            'description' : translate('Math On List Description'),
+            'display_name': translate('Agregate functions'),
+            'description' : translate('This block performs the following operations on s given list: Sum, Minimum, Maximum, Average, Median, Modes, Standard deviation, Random item'),
         };
     },
 };

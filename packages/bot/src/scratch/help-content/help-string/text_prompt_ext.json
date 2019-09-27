@@ -1,0 +1,6 @@
+{
+    "text" : [
+        "Prompts for an input of either text or numbers with a specific display message.",
+        "User input is being passed to selected variable and can be used later."
+    ]
+}

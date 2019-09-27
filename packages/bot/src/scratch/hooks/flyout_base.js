@@ -78,21 +78,15 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, oldBlock) {
     // corner of the injection div.
     const mainOffsetPixels = targetWorkspace.getOriginOffsetInPixels();
   
-    // The offset in pixels between the flyout workspace's origin and the upper
-    // left corner of the injection div.
-    const flyoutOffsetPixels = this.workspace_.getOriginOffsetInPixels();
-  
     // The position of the old block in pixels relative to the flyout
     // workspace's origin.
-    const oldBlockPosPixels = new goog.math.Coordinate(event.clientX - 50 , event.clientY - 20);
-  
-    // The position of the old block in pixels relative to the upper left corner
-    // of the injection div.
-    const oldBlockOffsetPixels = goog.math.Coordinate.sum(flyoutOffsetPixels, oldBlockPosPixels);
+    const toolbar_height = 56;
+    const header_height = 48;
+    const oldBlockPosPixels = new goog.math.Coordinate(event.clientX, event.clientY - toolbar_height - header_height);
   
     // The position of the old block in pixels relative to the origin of the
     // main workspace.
-    const finalOffsetPixels = goog.math.Coordinate.difference(oldBlockOffsetPixels, mainOffsetPixels);
+    const finalOffsetPixels = goog.math.Coordinate.difference(oldBlockPosPixels, mainOffsetPixels);
   
     // The position of the old block in main workspace coordinates.
     const finalOffsetMainWs = finalOffsetPixels.scale(1 / targetWorkspace.scale);

@@ -27,7 +27,7 @@ const PurchaseButton = ({
 
     return (
         <button
-            is_disabled={is_disabled}
+            disabled={is_disabled}
             id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames(
                 'btn-purchase',

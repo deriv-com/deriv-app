@@ -6,7 +6,6 @@ import {
 import {
     cleanUpOnLoad,
     fixCollapsedBlocks,
-    backwardCompatibility,
     addDomAsBlock,
 }                                       from '../scratch/utils';
 import googleDrive                      from '../utils/integrations/googleDrive';
@@ -66,13 +65,16 @@ export default class ToolbarStore {
         this.file_name = bot_name;
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    @action.bound
     onResetClick() {
         const workspace = Blockly.derivWorkspace;
+        
         Blockly.Events.setGroup('reset');
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
+
+        this.file_name = translate('Untitled Bot');
     }
 
     @action.bound
@@ -117,6 +119,8 @@ export default class ToolbarStore {
         }
         files = Array.from(files);
         files.forEach(file => {
+            this.file_name = file.name.replace(/\.[^/.]+$/, '');
+
             if (file.type.match('text/xml')) {
                 this.readFile(file, drop_event);
             } else {
@@ -168,28 +172,14 @@ export default class ToolbarStore {
 
     // eslint-disable-next-line class-methods-use-this
     onSortClick() {
-        Blockly.Events.setGroup(true);
-        const topBlocks = Blockly.derivWorkspace.getTopBlocks(true);
-        let cursorY = 0;
-        topBlocks.forEach(block => {
-            if (block.getSvgRoot().style.display !== 'none') {
-                const xy = block.getRelativeToSurfaceXY();
-                block.moveBy(-xy.x, cursorY - xy.y);
-                block.snapToGrid();
-                cursorY =
-                    block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-            }
-        });
-        Blockly.Events.setGroup(false);
-        // Fire an event to allow scrollbars to resize.
-        Blockly.derivWorkspace.resizeContents();
+        Blockly.derivWorkspace.cleanUp();
     }
 
-    load(blockStr = '', drop_event = {}) {
+    load(block_string = '', drop_event = {}) {
         try {
-            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+            const xml_doc = new DOMParser().parseFromString(block_string, 'application/xml');
 
-            if (xmlDoc.getElementsByTagName('parsererror').length) {
+            if (xml_doc.getElementsByTagName('parsererror').length) {
                 throw new Error();
             }
         } catch (e) {
@@ -199,7 +189,7 @@ export default class ToolbarStore {
 
         let xml;
         try {
-            xml = Blockly.Xml.textToDom(blockStr);
+            xml = Blockly.Xml.textToDom(block_string);
         } catch (e) {
             // TODO
             console.error(e);  // eslint-disable-line
@@ -229,7 +219,7 @@ export default class ToolbarStore {
             }
         } catch (e) {
             // TODO
-            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+            console.error(e);  // eslint-disable-line
         }
     }
 
@@ -241,11 +231,11 @@ export default class ToolbarStore {
             Blockly.Xml.domToVariables(variables[0], workspace);
         }
         Blockly.Events.setGroup('load');
-        const addedBlocks =
+        const added_blocks =
             Array.from(xml.children)
                 .map(block => addDomAsBlock(block))
                 .filter(b => b);
-        cleanUpOnLoad(addedBlocks, drop_event);
+        cleanUpOnLoad(added_blocks, drop_event);
 
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
@@ -256,18 +246,14 @@ export default class ToolbarStore {
         Blockly.Events.setGroup('load');
         Blockly.derivWorkspace.clear();
 
-        Array.from(xml.children).forEach(block => {
-            backwardCompatibility(block);
-        });
-
         Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
         fixCollapsedBlocks();
         Blockly.Events.setGroup(false);
     }
 
-    readFile(f, drop_event = {}) {
+    readFile(file, drop_event = {}) {
         const reader = new FileReader();
         reader.onload = e => this.load(e.target.result, drop_event);
-        reader.readAsText(f);
+        reader.readAsText(file);
     }
 }

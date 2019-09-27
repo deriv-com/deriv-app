@@ -28,7 +28,7 @@ class Error extends React.Component {
                 }
                 {this.props.error.button_text &&
                 <Button
-                    className='btn--secondary--default cashier-error__button'
+                    className='btn--primary--default cashier-error__button'
                     has_effect
                     text={this.props.error.button_text}
                     onClick={this.onClickButton}

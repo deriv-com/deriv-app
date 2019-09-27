@@ -7,9 +7,19 @@
 
     &__footer {
         text-align: center;
+        height: 60px;
     }
     &__button {
         margin-left: 0 !important;
+        opacity: 1;
+
+        &--run {
+            background: var(--purchase-main-1) !important;
+        }
+        &--disable {
+            pointer-events: none;
+            opacity: 0.5;
+        }
     }
     &__icon-info {
         vertical-align: middle;

@@ -34,9 +34,9 @@ export const setBlockTextColor = block => {
         Array.from(block.inputList).forEach(inp =>
             inp.fieldRow.forEach(field => {
                 if (field instanceof Blockly.FieldLabel) {
-                    const svg_element = field.getSvgRoot();
-                    if (svg_element) {
-                        svg_element.style.setProperty('fill', 'white', 'important');
+                    const svgElement = field.getSvgRoot();
+                    if (svgElement) {
+                        svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
                     }
                 }
             })
@@ -44,9 +44,9 @@ export const setBlockTextColor = block => {
     }
     const field = block.getField();
     if (field) {
-        const svg_element = field.getSvgRoot();
-        if (svg_element) {
-            svg_element.style.setProperty('fill', 'white', 'important');
+        const svgElement = field.getSvgRoot();
+        if (svgElement) {
+            svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
         }
     }
     Blockly.Events.recordUndo = true;

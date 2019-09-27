@@ -7,10 +7,10 @@
     &-header {
         #{$saveload-modal} {
             border-bottom: solid 1px;
-            border-color: #d6dadb; // TODO color
+            border-color: var(--border-normal);
         }
         &__title {
-            color: rgba(0, 0, 0, 0.8); // TODO color
+            color: var(--text-general);
         }
     }
     #{$saveload-modal} {

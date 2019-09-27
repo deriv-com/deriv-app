@@ -87,8 +87,6 @@ $themes: (
         won_gradient_color               : $COLOR_LIGHT_GREEN_GRADIENT,
         won_color                        : $COLOR_GREEN_1,
         loss_color                       : $COLOR_RED,
-        border_line                      : $COLOR_LIGHT_GRAY_1,
-        disable_color                    : $COLOR_LIGHT_GRAY_1,
     ),
     dark: (
         active_color                     : $COLOR_DARK_BLUE_5,
@@ -177,7 +175,5 @@ $themes: (
         won_gradient_color               : $COLOR_DARK_GREEN_GRADIENT,
         won_color                        : $COLOR_GREEN_1,
         loss_color                       : $COLOR_RED,
-        border_line                      : $COLOR_WHITE,
-        disable_color                    : $COLOR_LIGHT_GRAY_1,
     ),
 );

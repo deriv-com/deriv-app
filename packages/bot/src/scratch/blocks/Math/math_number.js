@@ -19,17 +19,17 @@ Blockly.Blocks.math_number = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : '#dedede',
+            colour         : Blockly.Colours.Utility.colour,
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
-            tooltip        : translate('Math Number Tooltip'),
+            tooltip        : translate('Please use `.` as a decimal separator for fractional numbers.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math Number'),
-            'description' : translate('Math Number Decscription'),
+            'display_name': translate('Number block'),
+            'description' : translate('Enter integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
         };
     },
     numberValidator(input) {

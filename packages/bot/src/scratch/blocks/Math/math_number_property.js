@@ -35,17 +35,17 @@ Blockly.Blocks.math_number_property = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
             toolip         : translate('Math Number Tooltip'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math Number'),
-            'description' : translate('Math Number Description'),
+            'display_name': translate('Test a number'),
+            'description' : translate('Tests whether a given number is any of the following: Even, Odd, Prime, Whole, Positive, Negative, Divisible according to selection. Returns a boolean value (true or false).'),
         };
     },
     domToMutation(xmlElement) {

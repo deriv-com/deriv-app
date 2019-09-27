@@ -3,6 +3,7 @@ import                                    './hooks';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
+import config                         from '../constants';
 
 export const scratchWorkspaceInit = async () => {
     try {
@@ -15,11 +16,11 @@ export const scratchWorkspaceInit = async () => {
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
 
         const workspace = Blockly.inject(el_scratch_div, {
-            grid    : { spacing: 40, length: 11, colour: '#ebebeb' },
+            grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
             media   : `${__webpack_public_path__}media/`, // eslint-disable-line
             toolbox : toolbox_xml,
             trashcan: true,
-            zoom    : { wheel: true },
+            zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
 
         Blockly.derivWorkspace = workspace;
@@ -54,13 +55,6 @@ export const scratchWorkspaceInit = async () => {
 
             // eslint-disable-next-line no-underscore-dangle
             workspace.toolbox_.flyout_.position();
-            
-            // Center on first root block, if applicable.
-            const top_blocks = workspace.getTopBlocks(true);
-
-            if (top_blocks.length > 0) {
-                workspace.centerOnBlock(top_blocks[0].id);
-            }
         };
 
         window.addEventListener('resize', onWorkspaceResize);

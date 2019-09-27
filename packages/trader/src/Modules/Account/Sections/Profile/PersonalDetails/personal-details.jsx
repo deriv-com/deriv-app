@@ -21,7 +21,6 @@ import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
-import ButtonLoading                           from '../../../Components/button-loading.jsx';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
@@ -454,7 +453,7 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.account_opening_reason || !values.account_opening_reason))
                                         )}
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />

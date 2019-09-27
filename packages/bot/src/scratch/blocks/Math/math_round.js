@@ -26,17 +26,17 @@ Blockly.Blocks.math_round = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Math Round Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Rounds a given number to an integer'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math Round'),
-            'description' : translate('Math Round Description'),
+            'display_name': translate('Rounding operation'),
+            'description' : translate('Rounds a given number to an integer according to selection: Rounds up, Rounds down, Rounds.'),
         };
     },
 };

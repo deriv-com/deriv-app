@@ -81,7 +81,7 @@
 
         &-display {
             justify-content: left;
-            min-height: 3.8rem;
+            min-height: 4rem;
             height: auto;
 
             &-span {
@@ -95,12 +95,10 @@
             }
         }
         &-items, &-label {
-            text-transform: none !important;
-            text-align: left !important;
-            font-size: 1.4rem !important;
             justify-content: left;
-            padding-left: 1.4rem;
-            align-items: center;
+        }
+        &-label {
+            margin-left: 1.6rem;
         }
     }
     &__transferred {
@@ -227,7 +225,7 @@
             margin-top: 4rem;
 
             &-text {
-                color: $COLOR_ORANGE;
+                color: var(--brand-red-coral);
                 font-weight: bold;
                 text-decoration: none;
                 cursor: pointer;
@@ -264,14 +262,13 @@
         &-selector {
             margin-bottom: 16px;
             display: flex;
-
-            .payment-agent__drop-down {
-                margin-left: 8px;
-                margin-bottom: 0;
-                min-width: 19.6rem;
-                width: auto;
-            }
         }
+    }
+    &__drop-down {
+        margin-left: 8px;
+        min-width: 20rem;
+        width: auto;
+        margin-bottom: 0;
     }
     &__accordion-content {
         &-line {
@@ -290,10 +287,36 @@
         line-height: 1.42;
     }
     &__radio {
-        margin-bottom: 16px;
+        display: none;
 
         &-group {
             display: block;
+        }
+        &-wrapper {
+            display: flex;
+
+            &:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+            &:last-child {
+                margin-bottom: 2.7rem;
+            }
+        }
+        &-circle {
+            border: 2px solid var(--text-general);
+            border-radius: 50%;
+            box-shadow: 0 0 1px 0 $color-white;
+            width: 16px;
+            height: 16px;
+            transition: all 0.3s ease-in-out;
+            margin-right: 8px;
+            align-self: center;
+            display: inline-flex;
+
+            &--selected {
+                border-width: 4px;
+                border-color: var(--brand-red-coral);
+            }
         }
     }
     &__receipt {
@@ -343,9 +366,15 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
+        &-error {
+            white-space: nowrap;
+        }
     }
     &__paragraph {
         align-self: flex-start;
+    }
+    &__amount-symbol {
+        top: 0.9rem;
     }
 }
 
@@ -375,6 +404,9 @@
         min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
+    }
+    &__currency, &__balance {
+        line-height: 1.43;
     }
     &__currency {
         margin: 0 0.4rem;
@@ -417,6 +449,9 @@
             margin-top: 3.2rem;
         }
     }
+    &__amount-symbol {
+        top: 0.9rem;
+    }
 }
 
 /** @define dc-modal; */
@@ -434,6 +469,8 @@
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__title {
+        line-height: 1.65;
+
         &--modal-cashier {
             min-width: 24rem;
             border-bottom: 1px solid var(--general-section-1);

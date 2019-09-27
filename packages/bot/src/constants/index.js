@@ -13,15 +13,15 @@ const config = {
         ],
         CRYPTO_CURRENCIES,
         DETAILS: [
-            [translate('statement'), '1'],
-            [translate('ask price'), '2'],
+            [translate('deal reference id'), '1'],
+            [translate('purchase price'), '2'],
             [translate('payout'), '3'],
             [translate('profit'), '4'],
             [translate('contract type'), '5'],
-            [translate('entry spot'), '6'],
-            [translate('entry value'), '7'],
-            [translate('exit spot'), '8'],
-            [translate('exit value'), '9'],
+            [translate('entry spot time'), '6'],
+            [translate('entry spot price'), '7'],
+            [translate('exit spot time'), '8'],
+            [translate('exit spot price'), '9'],
             [translate('barrier'), '10'],
             [translate('result'), '11'],
         ],
@@ -187,7 +187,7 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks                             : ['trade_definition', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
         asian  : ['asians'],
@@ -250,6 +250,10 @@ const config = {
         VIDEO: 'video',
         IMAGE: 'image',
         BLOCK: 'block',
+    },
+    workspaces: {
+        flyoutWorkspacesStartScale: 0.7,
+        mainWorkspaceStartScale   : 0.9,
     },
 };
 

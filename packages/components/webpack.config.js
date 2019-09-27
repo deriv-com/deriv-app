@@ -20,6 +20,7 @@ module.exports = {
         'field-error'    : path.resolve(__dirname, 'src', 'components/field-error/index.js'),
         input            : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label            : path.resolve(__dirname, 'src', 'components/label/index.js'),
+        loading          : path.resolve(__dirname, 'src', 'components/loading/index.js'),
         modal            : path.resolve(__dirname, 'src', 'components/modal/index.js'),
         money            : path.resolve(__dirname, 'src', 'components/money/index.js'),
         'password-meter' : path.resolve(__dirname, 'src', 'components/password-meter/index.js'),

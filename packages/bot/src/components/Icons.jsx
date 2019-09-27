@@ -8,6 +8,8 @@ import general_logo            from '../assets/icons/ic-logo.svg';
 import general_trade_active    from '../assets/icons/ic-trade-active.svg';
 import general_info_blue       from '../assets/icons/icon-info-blue.svg';
 import general_info_outline    from '../assets/icons/icon-info-outline.svg';
+import general_run_icon        from '../assets/icons/run-icon.svg';
+import general_stop_icon       from '../assets/icons/stop-icon.svg';
 
 // Toolbar
 import toolbar_drive           from '../assets/icons/google-drive-active.svg';
@@ -92,9 +94,11 @@ export const preloadSprite = () => {
 export const LogoIcon              = Icon(general_logo);
 export const TradeActive           = Icon(general_trade_active);
 export const BlueInfoIcon          = Icon(general_info_blue);
-export const IconInfoOutline       = Icon(general_info_outline);
+export const InfoOutlineIcon       = Icon(general_info_outline);
 export const CheckIcon             = Icon(general_check);
 export const CrossIcon             = Icon(general_cross);
+export const RunIcon               = Icon(general_run_icon);
+export const StopIcon              = Icon(general_stop_icon);
 
 // Toolbox
 export const Stage1Icon            = Icon(toolbox_stage1);

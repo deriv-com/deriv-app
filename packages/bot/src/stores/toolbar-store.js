@@ -31,6 +31,7 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         toolbox.toggle();
@@ -48,11 +49,13 @@ export default class ToolbarStore {
             this.onToolboxToggle();
         }
 
+        // eslint-disable-next-line no-underscore-dangle
         Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
     // eslint-disable-next-line class-methods-use-this
     onSearchClear(setValues) {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         setValues({ search: '' });

@@ -26,17 +26,17 @@ Blockly.Blocks.math_constrain = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Math Constrain Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Constraints a given number to be within a set range'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math Constrain'),
-            'description' : translate('Math Constrain Description'),
+            'display_name': translate('Constrain within a range'),
+            'description' : translate('Constraints a given number to be within a set range.'),
         };
     },
 };

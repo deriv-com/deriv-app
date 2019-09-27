@@ -10,11 +10,11 @@ Blockly.Blocks.trade_definition = {
     },
     definition() {
         return {
-            message0: translate('%1 (1) Define your trade contract %2'),
+            message0: translate('%1 1. Trade parameters %2'),
             message1: '%1',
-            message2: translate('Run Once at Start: %1'),
+            message2: translate('%1Run Once at Start: %2'),
             message3: '%1',
-            message4: translate('Define Trade Options: %1'),
+            message4: translate('%1Trade Options: %2'),
             message5: '%1',
             args0   : [
                 {
@@ -36,6 +36,12 @@ Blockly.Blocks.trade_definition = {
             ],
             args2: [
                 {
+                    type  : 'field_image',
+                    src   : '', // this is here to add extra padding
+                    width : 4,
+                    height: 25,
+                },
+                {
                     type: 'input_dummy',
                 },
             ],
@@ -48,6 +54,12 @@ Blockly.Blocks.trade_definition = {
             ],
             args4: [
                 {
+                    type  : 'field_image',
+                    src   : '', // this is here to add extra padding
+                    width : 4,
+                    height: 25,
+                },
+                {
                     type: 'input_dummy',
                 },
             ],
@@ -57,17 +69,17 @@ Blockly.Blocks.trade_definition = {
                     name: 'SUBMARKET',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Trade Definition tooltip'),
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
+            tooltip        : translate('Here is where you define the parameters of your desired contract.'),
             category       : Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
-            'display_name': translate('Trade Definition'),
-            'description' : translate('Define market type, stake, trade type and duration in trade'),
+            'display_name': translate('Trade parameters'),
+            'description' : translate('Here is where you define the parameters of your desired contract.'),
         };
     },
     onchange(event) {
@@ -85,13 +97,6 @@ Blockly.Blocks.trade_definition = {
                     top_block.dispose(false);
                 }
             });
-
-            const market_block    = this.getChildByType('trade_definition_market');
-            const selected_market = market_block.getFieldValue('MARKET_LIST');
-            const change_event    = new Blockly.Events.BlockChange(market_block, 'field', 'MARKET_LIST', '', selected_market);
-
-            // Trigger change event on MARKET_LIST to populate all dropdowns.
-            Blockly.Events.fire(change_event);
 
         } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.

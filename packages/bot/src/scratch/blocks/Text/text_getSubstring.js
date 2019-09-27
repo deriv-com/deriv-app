@@ -47,17 +47,17 @@ Blockly.Blocks.text_getSubstring = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Substring tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns a specific portion of a given string of text.'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Substring'),
-            'description' : translate('Text Substring Description'),
+            'display_name': translate('Get substring'),
+            'description' : translate('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {

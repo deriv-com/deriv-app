@@ -200,7 +200,7 @@ Password.propTypes = {
     setMt5SuccessDialog          : PropTypes.func,
     submitMt5Password            : PropTypes.func,
 };
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules }) => ({
     account_title                : modules.mt5.account_title,
     account_type                 : modules.mt5.account_type,
     closeMt5AndOpenCashier       : modules.mt5.closeMt5AndOpenCashier,

@@ -1,10 +1,13 @@
 import {
     action,
     computed,
-    observable, runInAction,
+    observable,
+    reaction,
+    runInAction,
 }                from 'mobx';
 import { WS }    from 'Services';
 import {
+    getMt5GroupConfig,
     getAccountTypeFields,
     getMtCompanies,
 }                from './Helpers/metatrader-config';
@@ -26,10 +29,18 @@ export default class MT5Store extends BaseStore {
     @observable is_mt5_success_dialog_enabled = false;
     @observable is_mt5_password_modal_enabled = false;
 
+    @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
+    @observable current_list    = [];
+
     constructor({ root_store }) {
         super({ root_store });
 
         this.onSwitchAccount(this.accountSwitcherListener);
+
+        reaction(
+            () => this.root_store.client.mt5_login_list,
+            () => this.setCurrentList(),
+        );
     }
 
     @computed
@@ -39,6 +50,7 @@ export default class MT5Store extends BaseStore {
             : '';
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
         return getMtCompanies();
     }
@@ -98,6 +110,24 @@ export default class MT5Store extends BaseStore {
     @action.bound
     enableMt5PasswordModal() {
         this.is_mt5_password_modal_enabled = true;
+    }
+
+    @action.bound
+    getLoginDetails({ category, type }) {
+        let tmp_type = '';
+        switch (type) {
+            case 'synthetic_indices':
+                tmp_type = 'svg';
+                break;
+            case 'standard':
+                tmp_type = 'vanuatu_standard';
+                break;
+            default:
+                tmp_type = 'labuan_advanced';
+        }
+        const group = `${category}\\${tmp_type}`;
+
+        return this.current_list.filter(item => item.group === group);
     }
 
     @action.bound
@@ -169,6 +199,22 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
+    setCurrentAccount(data, meta) {
+        this.current_account = {
+            ...meta,
+            ...data,
+        };
+    }
+
+    @action.bound
+    setCurrentList() {
+        this.root_store.client.mt5_login_list.forEach(login => {
+            const { type, category }                 = getMt5GroupConfig(login.group);
+            this.current_list[`${category}.${type}`] = Object.assign({}, login);
+        });
+    }
+
+    @action.bound
     setError(state, obj) {
         this.has_mt5_error = state;
         this.error_message = obj ? obj.message : '';
@@ -188,6 +234,7 @@ export default class MT5Store extends BaseStore {
     async submitMt5Password(mt5_password, setSubmitting) {
         const response = await this.openAccount(mt5_password);
         if (!response.error) {
+            WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
                 this.root_store.ui.is_mt5_password_modal_enabled = false;
@@ -205,5 +252,28 @@ export default class MT5Store extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    async topUpVirtual() {
+        const response = await WS.authorized.mt5Deposit({
+            to_mt5: this.current_account.login,
+        });
+        if (!response.error) {
+            WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+            runInAction(() => {
+                // Get new current account
+                this.root_store.ui.is_top_up_virtual_open = false;
+                this.current_account.balance += 10000;
+            });
+            setTimeout(() => {
+                runInAction(() => {
+                    this.root_store.ui.is_top_up_virtual_success = true;
+                });
+            }, 250);
+        } else {
+            // eslint-disable-next-line no-console
+            console.error(response);
+        }
     }
 }

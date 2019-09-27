@@ -61,6 +61,41 @@ export const getMtCompanies = () => {
     });
 };
 
+export const getMt5GroupConfig = (group = undefined) => {
+    const map_mode = {
+        'real\\vanuatu_standard': {
+            type    : 'standard',
+            category: 'real',
+        },
+        'real\\labuan_advanced': {
+            type    : 'advanced',
+            category: 'real',
+        },
+        'real\\svg': {
+            type    : 'synthetic_indices',
+            category: 'real',
+        },
+        'demo\\labuan_advanced': {
+            type    : 'advanced',
+            category: 'demo',
+        },
+        'demo\\svg': {
+            type    : 'synthetic_indices',
+            category: 'demo',
+        },
+        'demo\\vanuatu_standard': {
+            type    : 'standard',
+            category: 'demo',
+        },
+    };
+
+    if (group !== undefined) {
+        return map_mode[group];
+    }
+
+    return map_mode;
+};
+
 /**
  * Generate the enum for API request.
  *

@@ -179,7 +179,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_mt5_login() {
-        return !!this.mt5_login_list.length;
+        return !!this.mt5_login_list.length > 0;
     }
 
     @computed

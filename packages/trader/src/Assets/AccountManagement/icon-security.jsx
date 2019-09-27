@@ -4,7 +4,7 @@ import React      from 'react';
 
 const IconSecurity = ({ className }) => (
     <svg className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <g fill='#333' fillRule='evenodd'>
+        <g className='color1-fill' fillRule='evenodd'>
             <path d='M7 6V5a1 1 0 1 1 2 0v1a.5.5 0 1 0 1 0V5a2 2 0 1 0-4 0v1a.5.5 0 1 0 1 0zM10 8v3H6V8h4zm0-1H6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z' />
             <circle cx='8' cy='9.001' r='1' />
             <rect width='1' height='1.08' x='7.75' y='9.181' rx='.25' />

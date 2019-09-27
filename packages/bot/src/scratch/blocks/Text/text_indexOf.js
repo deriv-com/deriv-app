@@ -26,17 +26,17 @@ Blockly.Blocks.text_indexOf = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Index of Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Search for a given string string'),
             cateogry       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Index of'),
-            'description' : translate('Text Index of Description'),
+            'display_name': translate('Search for string'),
+            'description' : translate('Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'),
         };
     },
 };

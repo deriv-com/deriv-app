@@ -35,17 +35,17 @@ Blockly.Blocks.text_prompt_ext = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Text Prompt Tooltip'),
+            colour         : Blockly.Colours.Special3.colour,
+            colourSecondary: Blockly.Colours.Special3.colourSecondary,
+            colourTertiary : Blockly.Colours.Special3.colourTertiary,
+            tooltip        : translate('Request user input'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'trade_name' : translate('Text Prompt'),
-            'description': translate('Text Prompt Description'),
+            'display_name': translate('Request user input'),
+            'description' : translate('Prompts for an input of either text or numbers with a specific display message.'),
         };
     },
 };

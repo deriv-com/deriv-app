@@ -7,7 +7,7 @@ Blockly.Blocks.read_details = {
     },
     definition(){
         return {
-            message0: translate('Contract Detail: %1'),
+            message0: translate('Contract Details: %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -16,17 +16,17 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Reads a selected option from contract details list'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Reads a selected property from contract details list'),
             category       : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Read Detail Block'),
-            'description' : translate('Read Detail Description'),
+            'display_name': translate('Contract Details'),
+            'description' : translate('Contract Details block returns one of properties of the last sold or expired contract.'),
 
         };
     },

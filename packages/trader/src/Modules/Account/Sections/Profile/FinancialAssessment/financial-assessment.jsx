@@ -20,7 +20,6 @@ import {
     net_income_list,
     estimated_worth_list,
     account_turnover_list }  from '../../../Constants/constants-financial-information';
-import ButtonLoading         from '../../../Components/button-loading.jsx';
 import {
     FormBody,
     FormSubHeader,
@@ -268,7 +267,7 @@ class FinancialAssessment extends React.Component {
                                             (errors.account_turnover || !values.account_turnover))
                                         }
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />

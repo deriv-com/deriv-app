@@ -15,17 +15,17 @@ Blockly.Blocks.lists_length = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('List Length Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns the total number of items in a given list'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
             'display_name': translate('List Length'),
-            'description' : translate('List Length Description'),
+            'description' : translate('Returns the total number of items in a given list.'),
         };
     },
 };

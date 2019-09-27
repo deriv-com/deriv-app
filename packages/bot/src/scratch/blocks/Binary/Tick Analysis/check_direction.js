@@ -17,17 +17,17 @@ Blockly.Blocks.check_direction = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('True if the direction matches the selection'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('True if the market direction matches the selection'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Check Direction'),
-            'description' : translate('Check Direction Description'),
+            'display_name': translate('Market direction'),
+            'description' : translate('This block returns “True” in case if market price goes in the selected direction since the last tick. '),
         };
     },
 };

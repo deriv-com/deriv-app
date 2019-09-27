@@ -16,17 +16,17 @@ Blockly.Blocks.logic_boolean = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Logic Boolean Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns either True or False'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic Boolean'),
-            'description' : translate('Logic Boolean Description'),
+            'display_name': translate('True-False'),
+            'description' : translate('This is a single block that returns a boolean value, either true or false.'),
         };
     },
 };

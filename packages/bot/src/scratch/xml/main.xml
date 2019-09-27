@@ -41,6 +41,7 @@
                 </next>
             </block>
         </statement>
+        <statement name="INITIALIZATION"></statement>
         <statement name="SUBMARKET">
             <block type="trade_definition_tradeoptions">
                 <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>

@@ -30,12 +30,12 @@ Blockly.Blocks.math_change = {
                     check: 'Number',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Change Number variable'),
+            tooltip          : translate('Adds a number to a variable'),
             category         : Blockly.Categories.Mathematical,
         };
     },
@@ -46,8 +46,8 @@ Blockly.Blocks.math_change = {
      */
     meta() {
         return {
-            'display_name': translate('Change Math'),
-            'description' : translate('Change Number Type Variable'),
+            'display_name': translate('Change variable'),
+            'description' : translate('Adds a given number to the selected variable.'),
         };
     },
 };

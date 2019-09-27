@@ -8,7 +8,8 @@ import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErr
 import { MT5ServerErrorDialog } from 'App/Containers/Mt5';
 import 'Sass/app/modules/modals.scss';
 
-const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
+const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
+const ResetPasswordModal       = React.lazy(() => import(/* webpackChunkName: "ResetPasswordModal" */'../ResetPasswordModal'));
 
 const Modals = ({
     clearPurchaseInfo,
@@ -84,6 +85,7 @@ const Modals = ({
             />
             <AccountSignupModal />
             <MT5ServerErrorDialog />
+            <ResetPasswordModal />
         </React.Fragment>
     );
 };

@@ -16,17 +16,17 @@ Blockly.Blocks.lists_isEmpty = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('List is Empty Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Checks if a given list is empty'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List is Empty'),
-            'description' : translate('List is empty Description'),
+            'display_name': translate('Is list empty?'),
+            'description' : translate('Checks if a given list is empty. Returns a Boolean value (True or False).'),
         };
     },
 };

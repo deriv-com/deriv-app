@@ -4,7 +4,7 @@ import { translate } from '../../../../utils/lang/i18n';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: translate('Trade Category: %1 Trade Type: %2'),
+            message0: translate('Trade Type: %1 > %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -17,9 +17,9 @@ Blockly.Blocks.trade_definition_tradetype = {
                     options: [['', '']],
                 },
             ],
-            colour           : Blockly.Colours.BinaryLessPurple.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });
@@ -42,17 +42,18 @@ Blockly.Blocks.trade_definition_tradetype = {
                 const submarket         = market_block.getFieldValue('SUBMARKET_LIST');
                 const symbol            = market_block.getFieldValue('SYMBOL_LIST');
                 const trade_type_cat    = this.getFieldValue('TRADETYPECAT_LIST');
+                const trade_type        = this.getFieldValue('TRADETYPE_LIST');
 
                 if (symbol && event.name === 'SYMBOL_LIST') {
                     contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                         const trade_type_cat_block = this.getField('TRADETYPECAT_LIST');
-                        trade_type_cat_block.updateOptions(categories);
+                        trade_type_cat_block.updateOptions(categories, event.group, trade_type_cat, event.group);
                     });
                 }
 
                 contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
                     const trade_type_block = this.getField('TRADETYPE_LIST');
-                    trade_type_block.updateOptions(trade_types);
+                    trade_type_block.updateOptions(trade_types, event.group, trade_type);
                 });
             }
         }

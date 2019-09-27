@@ -91,7 +91,6 @@ export default class ActiveSymbols {
 
     async getMarketDropdownOptions() {
         await this.retrieveActiveSymbols();
-
         const market_options = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {

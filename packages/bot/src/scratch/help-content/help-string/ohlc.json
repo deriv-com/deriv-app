@@ -1,0 +1,7 @@
+{
+    "text": [
+        "This block returns the list of candles. Each candle has 4 properties: high, low, open, close, and open time.",
+        "Example:",
+        "In this example open prices are extracted from the candle list into the variable \"cl\" with the help of another block."
+    ]
+}

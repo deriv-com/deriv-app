@@ -37,7 +37,7 @@ Blockly.Blocks.sma_statement = {
     },
     meta(){
         return {
-            'display_name': translate('SImple Moving Average Statement'),
+            'display_name': translate('Simple Moving Average Statement'),
             'description' : translate('Simple Moving Average Statement Description'),
         };
     },

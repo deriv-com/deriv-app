@@ -28,17 +28,17 @@ Blockly.Blocks.math_trig = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Mathematical Trig Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Trigonometric functions'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Mathematical Trig'),
-            'description' : translate('Mathematical Trig Description'),
+            'display_name': translate('Trigonometric functions'),
+            'description' : translate('This block performs trigonometric functions.'),
         };
     },
 };

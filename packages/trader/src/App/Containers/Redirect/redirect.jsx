@@ -10,6 +10,7 @@ const Redirect = ({
     setVerificationCode,
     toggleAccountSignupModal,
     toggleCashierModal,
+    toggleResetPasswordModal,
 }) => {
     const url_params = new URLSearchParams(window.location.search);
 
@@ -29,6 +30,10 @@ const Redirect = ({
 
             setDeviceData(device_data);
             toggleAccountSignupModal(true);
+            break;
+        }
+        case 'reset_password': {
+            toggleResetPasswordModal(true);
             break;
         }
         case 'payment_withdraw': {
@@ -57,6 +62,7 @@ Redirect.propTypes = {
     setVerificationCode     : PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleCashierModal      : PropTypes.func,
+    toggleResetPasswordModal: PropTypes.func,
 };
 
 export default withRouter(connect(
@@ -66,5 +72,6 @@ export default withRouter(connect(
         setVerificationCode     : client.setVerificationCode,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleCashierModal      : ui.toggleCashierModal,
+        toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }),
 )(Redirect));

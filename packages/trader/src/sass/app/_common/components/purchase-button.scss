@@ -3,7 +3,7 @@
     position: relative;
     background-color: var(--purchase-section-1);
     overflow: hidden;
-    height: 5.6em;
+    height: 56px;
     width: 100%;
     margin: 5px 0 0;
     padding: 0;
@@ -11,6 +11,13 @@
     transition: transform 0.25s ease;
     display: flex;
     z-index: 1;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 0;
+    border-radius: $BORDER_RADIUS;
+    outline: 0;
+    font-size: 1rem;
 
     &__text {
         @include typeface(--paragraph-left-bold-active);

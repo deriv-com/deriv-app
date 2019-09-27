@@ -28,7 +28,7 @@ class ApiHelpers {
     /**
      * Register a reaction to switchaccount
      */
-    registerAccountSwitcherListener = () => {
+    registerOnAccountSwitch = () => {
         const { client } = this.root_store.core;
 
         this.switchAccountDisposer = reaction(
@@ -58,7 +58,7 @@ class ApiHelpers {
     /**
      * Dispose the reaction that has been added to switchaccount broadcast
      */
-    disposeSwitchAccount() {
+    disposeOnAccountSwitch() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
         }

@@ -130,4 +130,7 @@
             color: var(--brand-red-coral) !important;
         }
     }
+    &__error {
+        color: var(--text-loss-danger);
+    }
 }

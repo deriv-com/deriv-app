@@ -131,8 +131,8 @@ Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
     const blocks = workspace.getAllBlocks(false);
     // Iterate through every block and check the name.
     return blocks.some(block => {
-        if (block !== optExclude && block.getProcedureDefinition) {
-            const procName = block.getProcedureDefinition();
+        if (block !== optExclude && block.getProcedureDef) {
+            const procName = block.getProcedureDef();
             return Blockly.Names.equals(procName[0], name);
         }
         return false;

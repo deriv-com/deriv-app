@@ -17,7 +17,7 @@ export default class RunPanelStore {
     @observable is_run_button_clicked = false;
     @observable is_running = false;
     @observable is_dialog_visible = false;
-    @observable is_drawer_open = true;
+    @observable is_drawer_open = false;
 
     @action.bound
     onBotRunningEvent() {

@@ -1,0 +1,25 @@
+/**
+* @define bot-dialog
+**/
+.bot-dialog {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        font-size: 16px;
+        padding: 16px;
+    }
+    &__header {
+        font-weight: 700;
+        text-align: left;
+        margin-bottom: 16px;
+    }
+    &__text {
+        text-align: left;
+        line-height: 40px;
+    }
+    &__ok-button {
+        align-self: flex-end;
+        width: 96px;
+    }
+}

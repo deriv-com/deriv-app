@@ -24,6 +24,8 @@ import rearrange        from '../assets/icons/rearrange.svg';
 import zoomIn           from '../assets/icons/zoom-in.svg';
 import zoomOut          from '../assets/icons/zoom-out.svg';
 import local            from '../assets/icons/shape.svg';
+import runIcon          from '../assets/icons/run-icon.svg';
+import stopIcon         from '../assets/icons/stop-icon.svg';
 import iconInfoOutline  from '../assets/icons/icon-info-outline.svg';
 
 /* eslint-disable react/display-name */
@@ -48,7 +50,9 @@ export const Stage2Icon         = Icon(stage2);
 export const Stage3Icon         = Icon(stage3);
 export const Stage4Icon         = Icon(stage4);
 export const BlueInfoIcon       = Icon(blueInfo);
-export const IconInfoOutline    = Icon(iconInfoOutline);
+export const StopIcon           = Icon(stopIcon);
+export const RunIcon            = Icon(runIcon);
+export const InfoOutlineIcon    = Icon(iconInfoOutline);
 // Toolbar
 export const StartIcon      = Icon(start);
 export const SearchIcon     = Icon(search);

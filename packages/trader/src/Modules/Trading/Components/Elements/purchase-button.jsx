@@ -1,7 +1,6 @@
 import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
-import Button                     from 'Modules/Trading/Components/Form/PurchaseButton';
 import { localize }               from 'App/i18n';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
@@ -27,7 +26,7 @@ const PurchaseButton = ({
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
     return (
-        <Button
+        <button
             is_disabled={is_disabled}
             id={`dt_purchase_${type.toLowerCase()}_button`}
             className={classNames(
@@ -70,7 +69,7 @@ const PurchaseButton = ({
                     </div>
                 </div>
             </React.Fragment>
-        </Button>
+        </button>
     );
 };
 

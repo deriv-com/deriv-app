@@ -47,6 +47,7 @@
         width: 80%;
     }
 }
+
 .dc-modal__container_top-up-virtual {
     width: 384px;
     min-height: 367px;
@@ -111,12 +112,14 @@
         }
     }
 }
+
 .dc-modal-header__section {
     &--top-up-virtual {
         @include typeface(--paragraph-center-bold-black);
         text-transform: none;
     }
 }
+
 .mt5-success-topup {
     &__heading {
         @include typeface(--small-center-bold-black);

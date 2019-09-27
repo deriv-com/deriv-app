@@ -175,7 +175,7 @@ const MT5AccountCard = ({
                         }
                     </Button>
                     <Button
-                        onClick={console.log}
+                        onClick={ console.log /* eslint-disable-line no-console */ }
                         className='btn--secondary--default'
                         type='button'
                     >

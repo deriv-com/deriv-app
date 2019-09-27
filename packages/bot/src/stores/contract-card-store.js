@@ -27,7 +27,7 @@ export default class ContractCardStore {
         const indicative = getIndicativePrice(contract);
 
         if (this.contract_id !== contract.id) {
-            this.reset(false);
+            this.clear(false);
             this.contract_id = contract.id;
             this.profit      = profit;
             this.indicative  = indicative;
@@ -57,7 +57,7 @@ export default class ContractCardStore {
     }
 
     @action.bound
-    reset(should_unset_contract = true) {
+    clear(should_unset_contract = true) {
         if (should_unset_contract) {
             this.contract = null;
         }

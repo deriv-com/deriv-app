@@ -65,7 +65,7 @@ export default class SummaryStore {
     }
 
     @action.bound
-    onClearClick() {
+    clear() {
         this.lost_contracts = 0;
         this.number_of_runs = 0;
         this.total_profit   = 0;

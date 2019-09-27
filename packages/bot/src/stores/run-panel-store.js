@@ -5,7 +5,7 @@ import { observer }           from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(rootstore) {
-        this.rootstore = rootstore;
+        this.root_store = rootstore;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -44,7 +44,7 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        if (!this.rootstore.core.client.is_logged_in) {
+        if (!this.root_store.core.client.is_logged_in) {
             this.is_dialog_visible = true;
             return;
         }
@@ -55,7 +55,7 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        if (!this.rootstore.core.client.is_logged_in) {
+        if (!this.root_store.core.client.is_logged_in) {
             this.is_dialog_visible = true;
             return;
         }
@@ -67,7 +67,10 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        this.rootstore.journal.clearMessages();
+        // TODO: Wait for bot to finish.
+        this.root_store.journal.clearMessages();
+        this.root_store.contract_card.clear();
+        this.root_store.summary.clear();
     }
 
     @action.bound

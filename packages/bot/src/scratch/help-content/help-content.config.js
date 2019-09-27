@@ -8,7 +8,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/if-return.png` }, // eslint-disable-line
     ],
     //= ================= Math ==================
     math_arithmetic: [
@@ -216,13 +216,13 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
     ],
     sell_at_market: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
     ],
     after_purchase: [
         { type: TEXT },
@@ -233,7 +233,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/trade_again.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/trade_again.png` }, // eslint-disable-line
     ],
     // =============== Contract ============
     contract_check_result: [
@@ -241,12 +241,12 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/check_result.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` }, // eslint-disable-line
     ], sell_price: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sell_pl.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_pl.png` }, // eslint-disable-line
     ],
     // =============== Logic ============
     controls_if: [

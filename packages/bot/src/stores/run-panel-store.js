@@ -4,8 +4,8 @@ import { CONTRACT_STAGES }    from '../constants/contract-stage';
 import { observer }           from '../utils/observer';
 
 export default class RunPanelStore {
-    constructor(rootstore) {
-        this.root_store = rootstore;
+    constructor(root_store) {
+        this.root_store = root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);

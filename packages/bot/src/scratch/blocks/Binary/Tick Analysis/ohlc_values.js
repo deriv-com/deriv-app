@@ -25,13 +25,13 @@ Blockly.Blocks.ohlc_values = {
             colour         : Blockly.Colours.Analysis.colour,
             colourSecondary: Blockly.Colours.Analysis.colourSecondary,
             colourTertiary : Blockly.Colours.Analysis.colourTertiary,
-            tooltip        : translate('Returns a specific value from a candle list according to selected time interval'),
+            tooltip        : translate('Returns a list of specific values from a candle list according to selected time interval'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get values from candles (1)'),
+            'display_name': translate('Create a list of candle values (1)'),
             'description' : translate('This block extracts selected type of values from a candle list according to selected time interval.'),
         };
     },

@@ -104,6 +104,10 @@
             <block type="tick_analysis"></block>
             <block type="tick"></block>
             <block type="last_digit"></block>
+            <block type="ticks"></block>
+            <block type="lastDigitList"></block>
+            <block type="check_direction"></block>
+            <block type="is_candle_black"></block>
             <block type="read_ohlc">
                 <field name="OHLCFIELD_LIST">open</field>
                 <field name="CANDLEINTERVAL_LIST">default</field>
@@ -113,7 +117,9 @@
                     </shadow>
                 </value>
             </block>
-            <block type="check_direction"></block>
+            <block type="read_ohlc_obj"></block>
+            <block type="ohlc_values"></block>
+            <block type="ohlc_values_in_list"></block>
             <block type="get_ohlc">
                 <field name="CANDLEINTERVAL_LIST">default</field>
                 <value name="CANDLEINDEX">
@@ -122,13 +128,7 @@
                     </shadow>
                 </value>
             </block>
-            <block type="ticks"></block>
-            <block type="lastDigitList"></block>
             <block type="ohlc"></block>
-            <block type="ohlc_values"></block>
-            <block type="is_candle_black"></block>
-            <block type="ohlc_values_in_list"></block>
-            <block type="read_ohlc_obj"></block>
         </category>
 
         <category name="Contract" id="contract_details" description="Contract details">

@@ -15,7 +15,6 @@ import {
 import FileUploaderContainer   from './file-uploader-container.jsx';
 import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
-import ButtonLoading           from '../../../Components/button-loading.jsx';
 import {
     FormFooter,
     FormBody,
@@ -319,7 +318,7 @@ class ProofOfAddressForm extends React.Component {
                                             !!file_error_message)
                                         )}
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Save and submit')}
                                     />

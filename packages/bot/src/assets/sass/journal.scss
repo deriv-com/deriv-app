@@ -1,0 +1,75 @@
+/**
+ * @define journal
+ */
+.journal {
+    &__table {
+        display: block;
+        font-size: 10px;
+
+        &--header {
+            position: fixed;
+            display: table;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 40px;
+            width: 100%;
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &--body {
+            &:before {
+                content: '';
+                display: block;
+                height: 40px;
+            }
+        }
+        &--th {
+            background-color: var(--general-main-1);
+            text-align: left;
+            padding-left: 16px;
+
+            &:nth-child(1) {
+                width: 25%;
+            }
+            &:nth-child(2) {
+                width: 75%;
+            }
+        }
+        &--tr {
+            &:nth-child(odd) {
+                background: var(--general-main-1);
+            }
+            &:nth-child(even) {
+                background: var(--general-section-1);
+            }
+        }
+        &--td {
+            height: 40px;
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 16px;
+            line-height: 16px;
+
+            &:nth-child(1) {
+                width: 25%;
+            }
+            &:nth-child(2) {
+                width: 75%;
+            }
+        }
+        &--date, &--time {
+            line-height: 1.4em;
+        }
+        &--bold {
+            font-weight: 700;
+        }
+        &--red {
+            color: var(--text-loss-danger);
+        }
+        &--green {
+            color: var(--text-profit-success);
+        }
+        &--blue {
+            color: var(--status-info);
+        }
+    }
+}

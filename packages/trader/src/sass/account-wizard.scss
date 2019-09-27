@@ -1,0 +1,123 @@
+@import 'app/_common/base/index';
+
+.dc-modal__container_real-account-signup-modal {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease-in-out;
+    width: 900px;
+    overflow: unset;
+
+    &--success {
+        width: 400px;
+    }
+    .dc-modal-header__title {
+        background-color: var(--general-main-1);
+        text-transform: none;
+    }
+}
+
+.dc-modal-header__real-account-signup-modal {
+    border-bottom: 1px solid var(--general-section-1);
+}
+
+.account-wizard {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+
+    h1 {
+        @include typeface(--title-center-bold-black);
+        margin-top: 3rem;
+    }
+    h2 {
+        @include typeface(--paragraph-center-bold-black);
+        text-transform: none;
+        margin-top: 2rem;
+        color: var(--text-less-prominent);
+    }
+    h3 {
+        @include typeface(--small-center-normal-black);
+        text-transform: none;
+        color: var(--text-less-prominent);
+        margin-bottom: 3rem;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    &__body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    // This is taken from account-signup.scss
+    // TODO remove this when deriv color changes is done
+    &__btn {
+        @include typeface(--paragraph-center-bold-black);
+        min-width: initial;
+        height: 40px;
+        border-radius: 4px;
+        background-color: var(--brand-red-coral);
+        color: var(--general-section-1);
+
+        /* stylelint-disable color-no-hex */
+        &--disabled {
+            background-color: #eaeced;
+            color: #d6d6d6;
+            cursor: initial;
+        }
+        /* stylelint-enable color-no-hex */
+        &--cancel {
+            border: 1px solid var(--brand-red-coral);
+            color: var(--brand-red-coral) !important;
+            margin-right: 1rem;
+            background-color: var(--general-main-1);
+        }
+    }
+    &__btn-area {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        &--absolute {
+            bottom: 16px;
+            position: absolute;
+            right: 16px;
+        }
+        &--center {
+            justify-content: center;
+
+            & .btn {
+                min-width: 9em;
+            }
+        }
+        &--error {
+            @include typeface(--paragraph-left-normal-black);
+            text-transform: none;
+            color: var(--brand-red-coral) !important;
+        }
+    }
+    .checkbox {
+        align-items: center;
+        margin: 1rem 0 0;
+
+        &__box--active {
+            background-color: var(--brand-red-coral);
+        }
+        &__box--active:after {
+            font-size: 1.3rem;
+            line-height: 20px;
+        }
+        &__label {
+            @include typeface(--paragraph-left-normal-black);
+        }
+    }
+}

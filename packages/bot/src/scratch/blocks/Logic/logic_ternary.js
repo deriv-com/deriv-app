@@ -30,17 +30,17 @@ Blockly.Blocks.logic_ternary = {
             ],
             output         : null,
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Logic Ternary Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Tests if a given value is True or false and returns respective item'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic Ternary'),
-            'description' : translate('Logic Ternary Description'),
+            'display_name': translate('Test value'),
+            'description' : translate('Tests if a given value is True or false and returns respective item.'),
         };
     },
 };

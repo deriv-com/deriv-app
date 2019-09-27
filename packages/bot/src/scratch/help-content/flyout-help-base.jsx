@@ -79,7 +79,7 @@ class HelpBase extends React.PureComponent {
                     {
                         block_help_component &&
                         block_help_component.map((component, index) => {
-                            const { type, url } = component;
+                            const { type, width, url } = component;
                             const { text } = help_string;
 
                             switch (type) {
@@ -93,19 +93,17 @@ class HelpBase extends React.PureComponent {
                                     );
                                 case constant.help.IMAGE:
                                     return (
-                                        <FlyoutImage key={`${block_type}_${index}`} url={url} />
+                                        <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />
                                     );
                                 case constant.help.BLOCK:
                                 {
-                                    return Object.keys(block_nodes).map(key => {
-                                        return (
-                                            <FlyoutBlock
-                                                key={key}
-                                                should_center_block={true}
-                                                block_node={block_nodes[key]}
-                                            />
-                                        );
-                                    });
+                                    return (
+                                        <FlyoutBlock
+                                            key={`${block_type}_${index}`}
+                                            should_center_block={true}
+                                            block_node={block_nodes[0]}
+                                        />
+                                    );
                                 }
                                 default:
                                     return null;

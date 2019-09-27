@@ -46,7 +46,7 @@ class Account extends React.Component {
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const is_high_risk_client = isHighRiskClient(this.props.account_status)
+                const is_high_risk_client = isHighRiskClient(this.props.account_status);
 
                 this.setState({ is_high_risk_client, is_loading: false });
             }

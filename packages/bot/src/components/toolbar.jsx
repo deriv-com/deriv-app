@@ -10,19 +10,19 @@ import {
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import {
-    ToolboxStartIcon,
-    ToolboxCloseIcon,
-    ToolboxSearchIcon,
-    ToolboxRenameIcon,
-    ToolboxOpenIcon,
-    ToolboxNewFileIcon,
-    ToolboxSaveIcon,
-    ToolboxUndoIcon,
-    ToolboxRedoIcon,
-    ToolboxPerformIcon,
-    ToolboxReaarangeIcon,
-    ToolboxZoomInIcon,
-    ToolboxZoomOutIcon,
+    ToolbarStartIcon,
+    ToolbarCloseIcon,
+    ToolbarSearchIcon,
+    ToolbarRenameIcon,
+    ToolbarOpenIcon,
+    ToolbarNewFileIcon,
+    ToolbarSaveIcon,
+    ToolbarUndoIcon,
+    ToolbarRedoIcon,
+    ToolbarPerformIcon,
+    ToolbarReaarangeIcon,
+    ToolbarZoomInIcon,
+    ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
 import SaveLoadModal        from './save-load-modal.jsx';
 import { connect }          from '../stores/connect';
@@ -54,11 +54,11 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         search ?
-                                            <ToolboxCloseIcon
+                                            <ToolbarCloseIcon
                                                 className='toolbar__btn-icon'
                                                 onClick={() => onSearchClear(setValues)}
                                             />
-                                            : <ToolboxSearchIcon />
+                                            : <ToolbarSearchIcon />
                                     }
                                 />
                             )}
@@ -90,7 +90,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                     label={translate('Bot name')}
                                     value={file_name}
                                     trailing_icon={
-                                        <ToolboxRenameIcon />
+                                        <ToolbarRenameIcon />
                                     }
                                 />
                             )}
@@ -112,17 +112,17 @@ const ButtonGroup = ({
     onZoomInOutClick,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
-        <ToolboxOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-        <ToolboxNewFileIcon className='toolbar__icon' onClick={onResetClick} />
-        <ToolboxSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+        <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+        <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
+        <ToolbarSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
         <div className='vertical-divider' />
-        <ToolboxUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
-        <ToolboxRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+        <ToolbarUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
+        <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         <div className='vertical-divider' />
-        <ToolboxPerformIcon className='toolbar__icon' onClick={onRunClick} />
-        <ToolboxReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-        <ToolboxZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-        <ToolboxZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+        <ToolbarPerformIcon className='toolbar__icon' onClick={onRunClick} />
+        <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+        <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+        <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
     </div>
 );
 
@@ -154,7 +154,7 @@ const Toolbar = ({
                     has_effect
                     onClick={onToolboxToggle}
                 >
-                    <ToolboxStartIcon />
+                    <ToolbarStartIcon />
                     <span
                         className='toolbar__btn-icon-text'
                     >{translate('Start')}

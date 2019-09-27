@@ -8,9 +8,7 @@
         "- Low price: the lowest price during a time interval.",
         "- Close price: the closing price of a time interval.",
         "Black (or Red) bar represents downward movement of the market price, i.e. open price is higher than close price.",
-        "<image>",
         "White (or Green) bar represents upward movement of the market price, i.e. open price is lower than close price.",
-        "<image>",
         "The time interval for each candle can be from 1 minute to 1 day. You can select it in the “Trade Parameters” root block."
     ]
 }

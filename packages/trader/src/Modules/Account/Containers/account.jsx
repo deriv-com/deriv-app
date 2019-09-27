@@ -22,6 +22,11 @@ const fallback_content = {
     'title'    : 'Personal details',
 };
 
+const isHighRiskClient = account_status => {
+    const { needs_verification, document, identity } = account_status.authentication;
+    return !!((needs_verification.length) || (document.status !== 'none' || identity.status !== 'none'));
+};
+
 class Account extends React.Component {
     state = {
         is_high_risk_client: false,
@@ -41,8 +46,7 @@ class Account extends React.Component {
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { needs_verification } = this.props.account_status.authentication;
-                const is_high_risk_client = (!!needs_verification.length);
+                const is_high_risk_client = isHighRiskClient(this.props.account_status)
 
                 this.setState({ is_high_risk_client, is_loading: false });
             }
@@ -56,9 +60,7 @@ class Account extends React.Component {
         // on page refresh account_status is always undefined on first render and on didMount
         // so we compare if prevProps and current props before setting state
         if (!prevProps.account_status && !isEmptyObject(this.props.account_status)) {
-            const { needs_verification } = this.props.account_status.authentication;
-            const is_high_risk_client = (!!needs_verification.length);
-
+            const is_high_risk_client = isHighRiskClient(this.props.account_status);
             this.setState({ is_high_risk_client, is_loading: false });
         }
     }

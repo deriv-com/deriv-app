@@ -115,8 +115,8 @@ Blockly.Procedures.getDefinition = function(name, workspace) {
     // Assume that a procedure definition is a top block.
     const blocks = workspace.getTopBlocks(false);
     for (let i = 0; i < blocks.length; i++) {
-        if (blocks[i].getProcedureDefinition) {
-            const tuple = blocks[i].getProcedureDefinition();
+        if (blocks[i].getProcedureDef) {
+            const tuple = blocks[i].getProcedureDef();
             if (tuple && Blockly.Names.equals(tuple[0], name)) {
                 return blocks[i];
             }

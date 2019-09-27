@@ -73,7 +73,7 @@ Blockly.Blocks.procedures_defreturn = {
      *     - that it DOES have a return value.
      * @this Blockly.Block
      */
-    getProcedureDefinition() {
+    getProcedureDef() {
         return [this.getFieldValue('NAME'), this.arguments, true];
     },
     getProcedureCallers      : Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,

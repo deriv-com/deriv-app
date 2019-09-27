@@ -59,9 +59,12 @@ export const Submitted = ({ needs_poi }) => {
         return (
             <IconMessageContent
                 message={message}
-                text={localize('Your document is being reviewed, please check back in 1-3 days. You must also submit a proof of identity.')}
                 icon={<IconChecked />}
             >
+                <div className='account-management__text-container'>
+                    <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
+                    <p className='account-management__text'>{localize('You must also submit a proof of identity.')}</p>
+                </div>
                 <PoiButton />
             </IconMessageContent>
         );

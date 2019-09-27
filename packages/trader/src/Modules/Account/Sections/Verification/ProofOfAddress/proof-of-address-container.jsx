@@ -30,8 +30,8 @@ class ProofOfAddressContainer extends React.Component {
 
     componentDidMount(){
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
-            const { document, needs_verification } = this.props.account_status.authentication;
-            const needs_poi = !!(needs_verification.length && needs_verification[0] === 'identity');
+            const { document, identity, needs_verification } = this.props.account_status.authentication;
+            const needs_poi = !!(needs_verification.length && identity.status === 'none');
             this.setState({ status: document.status, needs_poi, is_loading: false });
         });
     }

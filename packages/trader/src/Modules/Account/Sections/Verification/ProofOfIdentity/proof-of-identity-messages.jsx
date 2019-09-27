@@ -30,7 +30,7 @@ const PoaButton = () => (
     </ButtonLink>
 );
 
-export const Unsuported = () => {
+export const Unsupported = () => {
     const UnsupportedIconRow = () => (
         <div className='poi-icon-row'>
             <div className='poi-icon-row__icon-container'>
@@ -150,4 +150,3 @@ export const MissingPersonalDetails = () => (
         icon={<IconPoiPersonalDetails />}
     />
 );
-

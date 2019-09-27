@@ -30,22 +30,23 @@
 
         & .title {
             font-size: 1.2rem;
+            color: var(--text-general);
         }
         & .identifier {
             border-radius: 50%;
             display: block;
             width: 24px;
             @include typeface(--paragraph-center-bold-black);
-            background-color: var(--text-less-prominent);
-            border: 1px solid var(--button-secondary-default);
-            color: var(--general-section-1);
+            background-color: var(--state-active);
+            border: 1px solid var(--border-normal);
+            color: var(--text-general);
         }
         &--active {
             .identifier {
                 @include typeface(--paragraph-center-bold-black);
                 background-color: var(--brand-red-coral) !important;
                 border: 1px solid var(--brand-red-coral) !important;
-                color: var(--general-main-1);
+                color: var(--text-colored-background);
                 transition: all 0.3s ease;
             }
             .title {
@@ -70,7 +71,7 @@
             right: 0;
             top: 1.7em;
             width: 67%;
-            border-top: 2px solid var(--text-less-prominent);
+            border-top: 2px solid var(--state-active);
         }
         &--after {
             border-top: 2px solid var(--brand-red-coral);

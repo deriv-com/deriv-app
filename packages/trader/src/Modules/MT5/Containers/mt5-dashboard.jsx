@@ -258,6 +258,7 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             }}
             existing_data={current_list['real.advanced']}
             commission_message={<Localize i18n_default_text='No commission' />}
+            onSelectAccount={onSelectAccount}
             onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
                 category: 'real',
                 type    : 'advanced',

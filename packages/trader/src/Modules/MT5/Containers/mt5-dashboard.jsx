@@ -7,6 +7,7 @@ import UILoader                         from 'App/Components/Elements/ui-loader.
 import Tooltip                          from 'App/Containers/Mt5/tooltip.jsx';
 import TopUpVirtualModal                from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
 import { localize }                     from 'App/i18n';
+import IconInfoOutline                  from 'Assets/Common/icon-info-outline.jsx';
 import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
 import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
@@ -64,14 +65,11 @@ class ClipboardComponent extends React.PureComponent {
                 </Tooltip>
                 }
                 {this.state.copied &&
-                <Popover
-                    alignment='left'
-                    classNameTarget='mt5-account-card__clipboard'
-                    icon='info'
-                    has_error={true}
-                    id='dt_allow_equals_info'
-                    message={localize('Clipboard populated')}
-                />
+                <Tooltip
+                    message={localize('Account login number copied!')}
+                >
+                    <IconInfoOutline className='mt5-account-card__clipboard' />
+                </Tooltip>
                 }
             </React.Fragment>
         );

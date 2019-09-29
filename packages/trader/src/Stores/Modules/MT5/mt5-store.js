@@ -2,7 +2,6 @@ import {
     action,
     computed,
     observable,
-    reaction,
     runInAction,
 }                from 'mobx';
 import { WS }    from 'Services';
@@ -30,17 +29,11 @@ export default class MT5Store extends BaseStore {
     @observable is_mt5_password_modal_enabled = false;
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
-    @observable current_list    = [];
 
     constructor({ root_store }) {
         super({ root_store });
 
         this.onSwitchAccount(this.accountSwitcherListener);
-
-        reaction(
-            () => this.root_store.client.mt5_login_list,
-            () => this.setCurrentList(),
-        );
     }
 
     @computed
@@ -48,6 +41,18 @@ export default class MT5Store extends BaseStore {
         return this.account_type.category
             ? getMtCompanies()[this.account_type.category][this.account_type.type].title
             : '';
+    }
+
+    @computed
+    get current_list() {
+        const list = [];
+
+        this.root_store.client.mt5_login_list.forEach(login => {
+            const { type, category }    = getMt5GroupConfig(login.group);
+            list[`${category}.${type}`] = Object.assign({}, login);
+        });
+
+        return list;
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -64,6 +69,20 @@ export default class MT5Store extends BaseStore {
         this.error_message                 = '';
         this.has_mt5_error                 = false;
         this.is_mt5_password_modal_enabled = false;
+    }
+
+    @action.bound
+    async toggleAccountTransferModal () {
+        if (this.root_store.client.is_virtual &&
+            this.root_store.client.has_real_account &&
+            this.root_store.client.first_switchable_real_loginid) {
+            await this.root_store.client.switchAccount(
+                this.root_store.client.first_switchable_real_loginid,
+            );
+        }
+
+        this.root_store.ui.setCashierActiveTab('account_transfer');
+        setTimeout(this.root_store.ui.toggleCashierModal, 300);
     }
 
     @action.bound
@@ -120,7 +139,7 @@ export default class MT5Store extends BaseStore {
                 tmp_type = 'svg';
                 break;
             case 'standard':
-                tmp_type = 'vanuatu_standard';
+                tmp_type = 'svg_standard';
                 break;
             default:
                 tmp_type = 'labuan_advanced';
@@ -143,7 +162,7 @@ export default class MT5Store extends BaseStore {
     onAccountSwitch() {
         // Handle account type change
         // eslint-disable-next-line no-console
-        console.log('MT5 Accounts:', this.accounts_list);
+        // console.log('MT5 Accounts:', this.accounts_list);
     }
 
     @action.bound
@@ -163,10 +182,12 @@ export default class MT5Store extends BaseStore {
 
     realMt5Signup() {
         // Check if the user has real account
-        if (!this.root_store.client.has_real_account) {
-            // TODO: Set a sessionStorage/or alike flag to redirect user after
-            // Real account Signup to password modal.
-
+        if (!this.root_store.client.has_real_account
+            || !this.root_store.client.currency
+        ) {
+            sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
+            this.root_store.ui.is_real_acc_signup_on = true;
+            // TODO remove this when it is done.
             // eslint-disable-next-line no-console
             console.log('Redirect user to real account signup form');
         } else {
@@ -204,14 +225,6 @@ export default class MT5Store extends BaseStore {
             ...meta,
             ...data,
         };
-    }
-
-    @action.bound
-    setCurrentList() {
-        this.root_store.client.mt5_login_list.forEach(login => {
-            const { type, category }                 = getMt5GroupConfig(login.group);
-            this.current_list[`${category}.${type}`] = Object.assign({}, login);
-        });
     }
 
     @action.bound

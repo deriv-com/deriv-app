@@ -234,12 +234,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTransferModal () {
-        this.setCashierActiveTab('account_transfer');
-        this.toggleCashierModal();
-    }
-
-    @action.bound
     setCashierActiveTab(tab = 'deposit') {
         if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
     }

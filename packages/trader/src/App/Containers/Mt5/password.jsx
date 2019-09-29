@@ -26,7 +26,7 @@ const getSubmitText = (account_title, category) => {
         return localize(`You have created a ${account_title}. To start trading, transfer funds from your Deriv account into this account.`);
     }
 
-    return localize(`You have created a ${account_title}.`);
+    return localize(`You have created a Deriv ${account_title}.`);
 };
 
 const getIconFromType = (type) => {
@@ -83,7 +83,7 @@ class Password extends Component {
                     className='mt5-password-modal'
                     is_open={should_show_password}
                     toggleModal={this.closeModal}
-                    has_close_icon={false}
+                    has_close_icon
                 >
                     <Formik
                         initialValues={{
@@ -200,6 +200,7 @@ Password.propTypes = {
     setMt5SuccessDialog          : PropTypes.func,
     submitMt5Password            : PropTypes.func,
 };
+
 export default connect(({ modules }) => ({
     account_title                : modules.mt5.account_title,
     account_type                 : modules.mt5.account_type,

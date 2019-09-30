@@ -24,7 +24,7 @@ import {
     ZoomInIcon,
     ZoomOutIcon,
 }                           from './Icons.jsx';
-import SaveLoadModal        from './save-load-modal.jsx';
+import SaveLoadModal        from './saveload-modal.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
@@ -201,7 +201,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal: PropTypes.func,
 };
 
-export default connect(({ toolbar }) => ({
+export default connect(({ toolbar, saveload }) => ({
     file_name          : toolbar.file_name,
     onBotNameTyped     : toolbar.onBotNameTyped,
     onGoogleDriveClick : toolbar.onGoogleDriveClick,
@@ -215,5 +215,5 @@ export default connect(({ toolbar }) => ({
     onToolboxToggle    : toolbar.onToolboxToggle,
     onUndoClick        : toolbar.onUndoClick,
     onZoomInOutClick   : toolbar.onZoomInOutClick,
-    toggleSaveLoadModal: toolbar.toggleSaveLoadModal,
+    toggleSaveLoadModal: saveload.toggleSaveLoadModal,
 }))(Toolbar);

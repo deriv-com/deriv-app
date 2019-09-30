@@ -19,6 +19,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
     let cursor_y = clientY ? (clientY - blockly_top) * scale_cancellation : 0;
     const toolbar_height = 76;
+    
     blocks_to_clean.forEach(block => {
         block.moveBy(cursor_x, cursor_y - toolbar_height);
         block.snapToGrid();
@@ -131,3 +132,29 @@ export const addDomAsBlock = block_xml => {
     }
     return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 };
+
+export const loadBlocks = (xml, drop_event = {}) => {
+    const workspace = Blockly.derivWorkspace;
+    const variables = xml.getElementsByTagName('variables');
+    if (variables.length) {
+        Blockly.Xml.domToVariables(variables[0], workspace);
+    }
+    Blockly.Events.setGroup('load');
+    const addedBlocks =
+        Array.from(xml.children)
+            .map(block => addDomAsBlock(block))
+            .filter(b => b);
+    cleanUpOnLoad(addedBlocks, drop_event);
+
+    fixCollapsedBlocks();
+    Blockly.Events.setGroup(false);
+}
+
+export const loadWorkspace = (xml) => {
+    Blockly.Events.setGroup('load');
+    Blockly.derivWorkspace.clear();
+
+    Blockly.Xml.domToWorkspace(xml, Blockly.derivWorkspace);
+    fixCollapsedBlocks();
+    Blockly.Events.setGroup(false);
+}

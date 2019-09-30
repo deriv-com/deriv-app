@@ -1,6 +1,7 @@
-import RenderHTML                     from 'react-render-html';
-import { observer as globalObserver } from './observer';
-import { translate as i18nTranslate } from './lang/i18n';
+import RenderHTML                       from 'react-render-html';
+import { observer as globalObserver }   from './observer';
+import { translate as i18nTranslate }   from './lang/i18n';
+import { loadBlocks, loadWorkspace }    from '../scratch/utils';
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
@@ -73,3 +74,64 @@ export const trackAndEmitError = (message, object = {}) => {
         trackJs.track(`${message} - Error: ${JSON.stringify(object)}`);
     }
 };
+
+export const importExternal = url => {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = () => resolve(window['external_global_component']);
+        script.onerror = reject;
+
+        document.body.appendChild(script);
+    });
+}
+
+export const load = (block_string = '', drop_event = {}) => {
+    console.log(block_string); // eslint-disable-line
+    try {
+        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length) {
+            throw new Error();
+        }
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    let xml;
+    try {
+        xml = Blockly.Xml.textToDom(block_string);
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    const blockly_xml = xml.querySelectorAll('block');
+
+    if (!blockly_xml.length) {
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+
+    blockly_xml.forEach(block => {
+        const block_type = block.getAttribute('type');
+
+        if (!Object.keys(Blockly.Blocks).includes(block_type)) {
+            // TODO
+            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        }
+    });
+
+    try {
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            loadBlocks(xml, drop_event);
+        } else {
+            loadWorkspace(xml);
+        }
+    } catch (e) {
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+}

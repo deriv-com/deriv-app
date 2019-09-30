@@ -1,4 +1,6 @@
 import classNames       from 'classnames';
+import PropTypes        from 'prop-types';
+import React            from 'react';
 import {
     Button,
     Checkbox,
@@ -17,17 +19,17 @@ import {
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
 import                       '../assets/sass/saveload-modal.scss';
+import                       '../assets/sass/google-drive.scss';
 
 const initial_option = { is_local: true, save_as_collection: true };
 
 const SaveLoadModal = ({
     onLoadClick,
     onConfirmSave,
-    handleFileChange,
     is_save_modal,
     is_saveload_modal_open,
     toggleSaveLoadModal,
-    isGoogleDriveConnected,
+    is_authorised,
     onDriveConnect,
     handleFileChange,
 }) => {
@@ -51,34 +53,35 @@ const SaveLoadModal = ({
                 {
                     ({ values: { is_local, save_as_collection }, setValues }) => (
                         <Form>
-                            <div className='dc-modal-content__modal--saveload'>
-                                <div className='dc-modal-row__modal--saveload'>
+                            <div className='modal__content'>
+                                <div className='modal__content-row'>
                                     <RadioGroup
+                                        className='radio-group__saveload-type'
                                         name='is_local'
                                         items={[
                                             {
+                                                id   : 'local',
                                                 label: <IconRadio
                                                     text={translate('Local')}
                                                     icon={<LocalIcon />}
-                                                    is_selected={is_local}
                                                 />,
                                                 value: true,
                                             },
                                             {
+                                                id   : 'Drive',
                                                 label: <IconRadio
                                                     text={translate('Google Drive')}
                                                     icon={<DriveIcon />}
-                                                    is_selected={!is_local}
-                                                    google_drive_connected={isGoogleDriveConnected}
+                                                    google_drive_connected={is_authorised}
                                                     onDriveConnect={onDriveConnect}
                                                 />,
                                                 value    : false,
-                                                disabled : !isGoogleDriveConnected,
-                                                className: isGoogleDriveConnected ? '' : 'dc-radio-group__item-disabled',
+                                                disabled : !is_authorised,
+                                                className: is_authorised ? '' : 'dc-radio-group__item-disabled',
                                             },
                                         ]}
-                                        selected={is_local}
-                                        onToggle={() => setValues({ is_local: !is_local, save_as_collection })}
+                                        selected={is_authorised ? is_local : true}
+                                        onToggle={() => setValues({ is_local: !is_local })}
                                     />
                                 </div>
                                 {
@@ -110,7 +113,7 @@ const SaveLoadModal = ({
                                         />
                                 }
                             </div>
-                            <div className='modal--footer'>
+                            <div className='modal__footer'>
                                 <Button
                                     type='button'
                                     className={classNames(
@@ -140,15 +143,11 @@ const SaveLoadModal = ({
 };
 
 const IconRadio = props => {
-    const { is_selected, icon, text, google_drive_connected, onDriveConnect } = props;
+    const { icon, text, google_drive_connected, onDriveConnect } = props;
     const is_drive_radio = text === 'Google Drive';
 
     return (
-        <div className={classNames(
-            'saveload-type__container',
-            is_selected ? 'saveload-type__container-selected' : ''
-        )}
-        >
+        <div className='saveload-type__container'>
             <div className='saveload-type__radio'>
                 {
                     icon &&
@@ -168,21 +167,23 @@ const IconRadio = props => {
 };
 
 SaveLoadModal.propTypes = {
-    handleFileChange         : PropTypes.func,
-    is_google_drive_connected: PropTypes.bool,
-    is_save_modal            : PropTypes.bool,
-    is_saveload_modal_open   : PropTypes.bool,
-    onConfirmSave            : PropTypes.func,
-    onLoadClick              : PropTypes.func,
-    toggleSaveLoadModal      : PropTypes.func,
+    handleFileChange      : PropTypes.func,
+    is_authorised         : PropTypes.bool,
+    is_save_modal         : PropTypes.any,
+    is_saveload_modal_open: PropTypes.bool,
+    onConfirmSave         : PropTypes.func,
+    onDriveConnect        : PropTypes.func,
+    onLoadClick           : PropTypes.func,
+    toggleSaveLoadModal   : PropTypes.func,
 };
 
-export default connect(({ toolbar }) => ({
-    handleFileChange         : toolbar.handleFileChange,
-    is_google_drive_connected: toolbar.is_google_drive_connected,
-    is_save_modal            : toolbar.is_save_modal,
-    is_saveload_modal_open   : toolbar.is_saveload_modal_open,
-    onConfirmSave            : toolbar.onConfirmSave,
-    onLoadClick              : toolbar.onLoadClick,
-    toggleSaveLoadModal      : toolbar.toggleSaveLoadModal,
+export default connect(({ saveload, google_drive }) => ({
+    handleFileChange      : saveload.handleFileChange,
+    is_authorised         : google_drive.is_authorised,
+    is_save_modal         : saveload.is_save_modal,
+    is_saveload_modal_open: saveload.is_saveload_modal_open,
+    onConfirmSave         : saveload.onConfirmSave,
+    onDriveConnect        : saveload.onDriveConnect,
+    onLoadClick           : saveload.onLoadClick,
+    toggleSaveLoadModal   : saveload.toggleSaveLoadModal,
 }))(SaveLoadModal);

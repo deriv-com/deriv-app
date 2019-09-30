@@ -43,7 +43,7 @@
     &__icon {
         cursor: pointer;
         border: none;
-        margin: 12px;
+        margin: 11px;
     }
     &__group {
         display: flex;
@@ -65,104 +65,6 @@
         &-field {
             margin-bottom: 0;
             margin-top: 0.5em;
-        }
-    }
-}
-
-.dc-modal {
-    $saveload-modal : '&__modal--saveload';
-
-    &__container {
-        width: 450px;
-    }
-    &-header {
-        #{$saveload-modal} {
-            border-bottom: solid 1px;
-            border-color: #999cac;
-        }
-    }
-    &-content {
-        #{$saveload-modal} {
-            @include toEm(padding, 45px 24px 20px 24px);
-        }
-    }
-    &-row {
-        #{$saveload-modal} {
-            display: flex;
-            justify-content: center;
-            @include toEm(margin-bottom, 30px);
-
-            .dc-radio-group {
-                width: 100%;
-                justify-content: space-evenly;
-
-                &__item {
-                    display: flex;
-                    flex-direction: column;
-                    border: solid 1px;
-                    border-radius: $BORDER_RADIUS;
-                    border-color: #999cac;
-                    @include toEm(padding, 10px 10px 5px 10px);
-
-                    &-disabled {
-                        border-color: #b3b3b3;
-
-                        * {
-                            color: #b3b3b3;
-                            border-color: #b3b3b3;
-                        }
-                    }
-                }
-                &__circle {
-                    align-self: flex-start;
-                }
-            }
-        }
-    }
-    &-footer {
-        #{$saveload-modal} {
-            text-align: right;
-        }
-    }
-}
-
-.saveload-type {
-    $saveload: &;
-
-    &__checkbox {
-        border: solid 1px;
-        border-radius: $BORDER_RADIUS;
-        text-align: center;
-        cursor: pointer;
-        border-color: #999cac;
-        @include toEm(padding, 5px);
-
-        &-text {
-            @include typeface(--title-left-bold-black, none);
-        }
-        &-description {
-            @include toEm(margin-left, 22px);
-            @include typeface(--paragraph-left-normal-black, none);
-        }
-    }
-    &__container {
-        text-align: center;
-    }
-    &__icon {
-        @include toEm(margin, 0px 20px);
-    }
-    &__text {
-        @include typeface(--small-center-normal-black, capitalize);
-        font-weight: bold;
-        @include toEm(margin, 10px 0px);
-    }
-    &__drive-status {
-        cursor: pointer;
-        position: absolute;
-        @include toEm(margin-top, 15px);
-        @include toEm(margin-left, 25px);
-        @include themify($themes) {
-            color: themed('error_color');
         }
     }
 }

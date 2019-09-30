@@ -4,8 +4,10 @@ import Money                            from 'App/Components/Elements/money.jsx'
 import DataTable                        from 'App/Components/Elements/DataTable';
 import Localize                         from 'App/Components/Elements/localize.jsx';
 import UILoader                         from 'App/Components/Elements/ui-loader.jsx';
+import Tooltip                          from 'App/Containers/Mt5/tooltip.jsx';
 import TopUpVirtualModal                from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
 import { localize }                     from 'App/i18n';
+import IconInfoOutline                  from 'Assets/Common/icon-info-outline.jsx';
 import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
 import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
@@ -52,21 +54,22 @@ class ClipboardComponent extends React.PureComponent {
         return (
             <React.Fragment>
                 {!this.state.copied &&
-                <IconClipboard
-                    className='mt5-account-card__clipboard'
-                    key='1'
-                    onClick={this.onClick}
-                />
+                <Tooltip
+                    message={localize('Click here to copy account login number and paste into the login box in MT5 platform along with your password.')}
+                >
+                    <IconClipboard
+                        className='mt5-account-card__clipboard'
+                        key='1'
+                        onClick={this.onClick}
+                    />
+                </Tooltip>
                 }
                 {this.state.copied &&
-                <Popover
-                    alignment='left'
-                    classNameTarget='mt5-account-card__clipboard'
-                    icon='info'
-                    has_error={true}
-                    id='dt_allow_equals_info'
-                    message={localize('Clipboard populated')}
-                />
+                <Tooltip
+                    message={localize('Account login number copied!')}
+                >
+                    <IconInfoOutline className='mt5-account-card__clipboard' />
+                </Tooltip>
                 }
             </React.Fragment>
         );
@@ -248,28 +251,30 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
                 [localize('Number of assets')]: localize('50+'),
             }}
         />
-        <MT5AccountCard
-            is_first_time={is_first_time}
-            icon={() => (<IconMT5Advanced />)}
-            title={localize('Advanced')}
-            type={{
-                category: 'real',
-                type    : 'advanced',
-            }}
-            existing_data={current_list['real.advanced']}
-            commission_message={<Localize i18n_default_text='No commission' />}
-            onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
-                category: 'real',
-                type    : 'advanced',
-            })}
-            descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
-            specs={{
-                [localize('Leverage')]        : localize('Up to 1:100'),
-                [localize('Margin call')]     : localize('150%'),
-                [localize('Stop out level')]  : localize('75%'),
-                [localize('Number of assets')]: localize('50+'),
-            }}
-        />
+        {/* TODO Bring this back when Real Advanced is implemented */}
+        {/* <MT5AccountCard */}
+        {/*    is_first_time={is_first_time} */}
+        {/*    icon={() => (<IconMT5Advanced />)} */}
+        {/*    title={localize('Advanced')} */}
+        {/*    type={{ */}
+        {/*        category: 'real', */}
+        {/*        type    : 'advanced', */}
+        {/*    }} */}
+        {/*    existing_data={current_list['real.advanced']} */}
+        {/*    commission_message={<Localize i18n_default_text='No commission' />} */}
+        {/*    onSelectAccount={onSelectAccount} */}
+        {/*    onClickFund={() => openAccountTransfer(current_list['real.advanced'], { */}
+        {/*        category: 'real', */}
+        {/*        type    : 'advanced', */}
+        {/*    })} */}
+        {/*    descriptor={localize('Give you more products, tight spreads, and higher ticket size.')} */}
+        {/*    specs={{ */}
+        {/*        [localize('Leverage')]        : localize('Up to 1:100'), */}
+        {/*        [localize('Margin call')]     : localize('150%'), */}
+        {/*        [localize('Stop out level')]  : localize('75%'), */}
+        {/*        [localize('Number of assets')]: localize('50+'), */}
+        {/*    }} */}
+        {/* /> */}
         <MT5AccountCard
             is_first_time={is_first_time}
             icon={() => (<IconMT5Synthetic />)}
@@ -539,7 +544,7 @@ const ModalContent = () => (
 
 class MT5Dashboard extends React.Component {
     openAccountTransfer = (data, meta) => {
-        if (data.category === 'real') {
+        if (meta.category === 'real') {
             this.props.toggleAccountTransferModal();
         } else {
             this.props.setCurrentAccount(data, meta);
@@ -671,6 +676,6 @@ export default connect(({ modules, ui }) => ({
     is_first_time              : !!modules.mt5.current_list.length,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
-    toggleAccountTransferModal : ui.toggleAccountTransferModal,
+    toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,
     openTopUpModal             : ui.openTopUpModal,
 }))(MT5Dashboard);

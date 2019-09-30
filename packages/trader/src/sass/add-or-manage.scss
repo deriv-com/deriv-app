@@ -22,7 +22,6 @@
     justify-content: center;
     flex-direction: column;
     flex-grow: 1;
-    //padding-top: 3rem;
 
     &__icon-area {
         display: flex;
@@ -30,6 +29,7 @@
         width: 60%;
         justify-content: space-between;
         position: relative;
+        margin-top: 2em;
 
         .bottom-right-overlay {
             position: absolute;

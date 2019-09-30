@@ -63,7 +63,7 @@ export const getMtCompanies = () => {
 
 export const getMt5GroupConfig = (group = undefined) => {
     const map_mode = {
-        'real\\vanuatu_standard': {
+        'real\\svg_standard': {
             type    : 'standard',
             category: 'real',
         },
@@ -83,7 +83,7 @@ export const getMt5GroupConfig = (group = undefined) => {
             type    : 'synthetic_indices',
             category: 'demo',
         },
-        'demo\\vanuatu_standard': {
+        'demo\\svg_standard': {
             type    : 'standard',
             category: 'demo',
         },

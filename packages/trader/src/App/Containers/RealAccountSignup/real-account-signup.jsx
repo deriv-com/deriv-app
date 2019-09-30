@@ -30,6 +30,7 @@ class RealAccountSignup extends Component {
                     label: localize('Add a real account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
+                        onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                     />,
                 },
                 {
@@ -56,11 +57,13 @@ class RealAccountSignup extends Component {
                     label: false,
                     value: () => (
                         <SuccessDialog
-                            onCancel={this.closeModal}
+                            has_cancel
+                            onCancel={this.closeModalWithHooks}
                             onSubmit={this.closeModalThenOpenCashier}
                             message={this.state.success_message}
-                            icon={<Icon type={this.state.current_currency} icon='IconAccountsCurrency' />}
+                            icon={<Icon type={this.state.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
                             text_submit={localize('Deposit now')}
+                            text_cancel={this.text_cancel}
                         />
                     )
                 }
@@ -88,18 +91,32 @@ class RealAccountSignup extends Component {
             current_currency: currency,
             active_modal_index: 3,
             success_message: <Localize
-                i18n_default_text='You have added a {{currency}} account.<0 />Make a deposit now to start trading.'
+                i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                 values={{
-                    currency: currency,
+                    currency: currency.toUpperCase(),
                 }}
                 components={[
-                    <br />
+                    <p />
                 ]}
             />
         })
     }
 
+    closeModalWithHooks = () => {
+        this.closeModal();
+        setTimeout(() => {
+            const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
+            if (post_signup.category && post_signup.type) {
+                sessionStorage.removeItem('post_real_account_signup');
+                this.props.enableMt5PasswordModal();
+            }
+        }, 400);
+    }
+
     closeModal = () => {
+        if (this.active_modal_index !== 3) {
+            sessionStorage.removeItem('post_real_account_signup');
+        }
         this.props.closeRealAccountSignup();
         setTimeout(() => {
             this.setState(initialState);
@@ -107,11 +124,24 @@ class RealAccountSignup extends Component {
     };
 
     get active_modal_index() {
+        const ACCOUNT_WIZARD = 1;
+        const ADD_OR_MANAGE_ACCOUNT = 0;
+
         if (this.state.active_modal_index === -1) {
-            return this.props.has_real_account ? 1 : 0;
+            return (
+                this.props.has_real_account && this.props.has_currency
+            ) ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
         }
 
         return this.state.active_modal_index;
+    }
+
+    get text_cancel () {
+        const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
+        if (post_signup) {
+            return localize('Proceed to create MT5 password');
+        }
+        return localize('Maybe later');
     }
 
     render() {
@@ -135,9 +165,11 @@ class RealAccountSignup extends Component {
     }
 }
 
-export default connect(({ ui, client }) => ({
+export default connect(({ ui, client, modules }) => ({
     has_real_account         : client.has_real_account,
+    has_currency             : !!client.currency,
     is_real_acc_signup_on    : ui.is_real_acc_signup_on,
     closeRealAccountSignup   : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
+    enableMt5PasswordModal   : modules.mt5.enableMt5PasswordModal,
 }))(RealAccountSignup);

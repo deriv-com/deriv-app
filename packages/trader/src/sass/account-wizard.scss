@@ -9,6 +9,7 @@
 
     &--success {
         width: 400px;
+        max-width: 478px;
     }
     .dc-modal-header__title {
         text-transform: none;
@@ -47,6 +48,7 @@
         flex-grow: 1;
         justify-content: space-evenly;
         width: 100%;
+        padding: 2em;
     }
     &__body {
         align-items: center;
@@ -56,7 +58,17 @@
         justify-content: flex-start;
         width: 100%;
     }
-
+    &__set-currency {
+        p {
+            margin-top: 1em;
+            @include typeface(--small-center-normal-black);
+            text-transform: initial;
+            color: var(--text-prominent);
+        }
+        h2 {
+            color: var(--text-prominent);
+        }
+    }
     // This is taken from account-signup.scss
     // TODO remove this when deriv color changes is done
     &__btn {
@@ -64,6 +76,7 @@
         min-width: initial;
         height: 40px;
         border-radius: 4px;
+        margin-right: 1em;
         background-color: var(--brand-red-coral);
         color: var(--general-section-1);
 
@@ -86,9 +99,14 @@
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
+        margin-top: 2em;
+        width: 20em;
 
-        .btn {
-            margin: initial;
+        .btn:not(:last-child) {
+            margin: 0 1em 0;
+        }
+        .btn:last-child {
+            margin: 0;
         }
         &--absolute {
             bottom: 16px;
@@ -97,6 +115,7 @@
         }
         &--center {
             justify-content: center;
+            width: 100%;
 
             & .btn {
                 min-width: 9em;

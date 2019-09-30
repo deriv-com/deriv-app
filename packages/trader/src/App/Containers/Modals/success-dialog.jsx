@@ -15,6 +15,7 @@ const SuccessDialog = ({
     heading,
     icon_size,
     text_submit,
+    text_cancel,
 }) => {
     const MainIcon = () => icon || null;
 
@@ -55,9 +56,12 @@ const SuccessDialog = ({
                     onClick={onCancel}
                     className='btn--outline'
                 >
+                    {text_cancel && text_cancel}
+                    {!text_cancel &&
                     <Localize
                         i18n_default_text='Maybe later'
                     />
+                    }
                 </Button>
                 }
                 {has_submit &&

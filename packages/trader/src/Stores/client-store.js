@@ -514,13 +514,14 @@ export default class ClientStore extends BaseStore {
         if (client && !client.is_virtual) {
             await WS.getAccountStatus();
             BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                handleClientNotifications(
+                const { has_missing_required_field } = handleClientNotifications(
                     client,
                     this.account_settings,
                     this.account_status,
                     this.root_store.ui.addNotification,
                     this.loginid,
                 );
+                this.setHasMissingRequiredField(has_missing_required_field);
             });
         } else if (!client || client.is_virtual) {
             this.root_store.ui.removeAllNotifications();
@@ -570,6 +571,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setSwitched(switched) {
         this.switched = switched;
+    }
+
+    @action.bound
+    setHasMissingRequiredField(has_missing_required_field) {
+        this.has_missing_required_field = has_missing_required_field
     }
 
     /**

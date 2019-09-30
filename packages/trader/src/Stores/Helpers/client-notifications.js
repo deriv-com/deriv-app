@@ -282,6 +282,7 @@ const hasMissingRequiredField = (account_settings, client) => {
         required_fields = getRequiredFields();
     }
 
+
     return required_fields.some(field => !account_settings[field]);
 
     function getSVGRequiredFields() {
@@ -384,7 +385,12 @@ export const handleClientNotifications = (
 
     if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications.tnc);
 
-    if (hasMissingRequiredField(account_settings, client)) {
+    const has_missing_required_field = hasMissingRequiredField(account_settings, client);
+    if (has_missing_required_field) {
         addNotification(clientNotifications.required_fields);
+    }
+
+    return {
+        has_missing_required_field,
     }
 };

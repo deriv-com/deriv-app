@@ -10,8 +10,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         this.setNextStatement(false);
     },
     definition(){
+        const is_stake = this.type === 'trade_definition_tradeoptions';
+
         return {
-            message0: translate('Duration: %1 %2 Stake: %3 %4'),
+            message0: translate('Duration: %1 %2'),
+            message1: `${(is_stake ? translate('Stake') : translate('Payout'))}: %1 %2`,
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -22,6 +25,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     type: 'input_value',
                     name: 'DURATION',
                 },
+            ],
+            args1: [
                 {
                     type   : 'field_dropdown',
                     name   : 'CURRENCY_LIST',
@@ -295,6 +300,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
 };
 
+Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;
+
 Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const amount           = Blockly.JavaScript.valueToCode(block, 'AMOUNT') || '0';
     const currency         = block.getFieldValue('CURRENCY_LIST');
@@ -329,15 +336,19 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
 
     const code = `
         Bot.start({
-        limitations        : BinaryBotPrivateLimitations,
-        duration           : ${duration_value || '0'},
-        duration_unit      : '${duration_type || '0'}',
-        currency           : '${currency}',
-        amount             : ${amount || '0'},
-        prediction         : ${prediction_value || 'undefined'},
-        barrierOffset      : ${barrier_offset_value || 'undefined'},
-        secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
+            limitations        : BinaryBotPrivateLimitations,
+            duration           : ${duration_value || '0'},
+            duration_unit      : '${duration_type || '0'}',
+            currency           : '${currency}',
+            amount             : ${amount || '0'},
+            prediction         : ${prediction_value || 'undefined'},
+            barrierOffset      : ${barrier_offset_value || 'undefined'},
+            secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
+            basis              : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}',
         });
     `;
+
     return code;
 };
+
+Blockly.JavaScript.trade_definition_tradeoptions_payout = Blockly.JavaScript.trade_definition_tradeoptions;

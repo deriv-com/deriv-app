@@ -22,8 +22,6 @@ const LocalStore    = require('../storage').LocalStore;
  */
 const SocketCache = (() => {
 
-    
-
     // keys are msg_type
     // expire: how long to keep the value (in minutes)
     const config = {

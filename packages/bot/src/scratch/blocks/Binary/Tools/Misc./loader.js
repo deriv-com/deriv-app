@@ -11,6 +11,7 @@ Blockly.Blocks.loader = {
         this.jsonInit(this.definition());
 
         const urlField = this.getField('URL');
+        
         // eslint-disable-next-line no-underscore-dangle
         urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
     },
@@ -30,7 +31,8 @@ Blockly.Blocks.loader = {
             tooltip        : translate('Loads blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };
-    }, meta(){
+    },
+    meta(){
         return {
             'display_name': translate('Loads from URL'),
             'description' : translate('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),

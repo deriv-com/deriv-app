@@ -192,7 +192,7 @@ const MT5AccountCard = ({
                         }
                     </Button>
                     <Button
-                        onClick={ onPasswordManager }
+                        onClick={ () => { onPasswordManager(existing_data.login); } }
                         className='btn--secondary--default'
                         type='button'
                     >
@@ -577,7 +577,8 @@ const ModalContent = () => (
 
 class MT5Dashboard extends React.Component {
     state = {
-        is_password_manager_visible: false,
+        is_password_manager_visible    : false,
+        selected_login_password_manager: '',
     };
 
     openAccountTransfer = (data, meta) => {
@@ -589,8 +590,11 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = () => {
-        this.setState((prev_state) => ({ is_password_manager_visible: !prev_state.is_password_manager_visible }));
+    togglePasswordManagerModal = (login) => {
+        this.setState((prev_state) => ({
+            is_password_manager_visible    : !prev_state.is_password_manager_visible,
+            selected_login_password_manager: login,
+        }));
     };
 
     render() {
@@ -627,27 +631,30 @@ class MT5Dashboard extends React.Component {
             </div>
         );
 
+        const validatePassword = (values) => {
+            const is_valid = validPassword(values.new_password) &&
+                validLength(values.new_password, {
+                    min: 8,
+                    max: 25,
+                });
+            const errors = {};
+
+            if (!is_valid) {
+                errors.new_password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
+            }
+
+            if (!values.old_password && values.old_password !== undefined) {
+                errors.old_password = localize('This field is required');
+            }
+
+            return errors;
+        };
+
         const MainPasswordManager = () => {
             const initial_values = { old_password: '', new_password: '', password_type: 'main' };
-            const validatePassword = (values) => {
-                const is_valid = validPassword(values.new_password) &&
-                    validLength(values.new_password, {
-                        min: 8,
-                        max: 25,
-                    });
-                const errors = {};
-
-                if (!is_valid) {
-                    errors.new_password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
-                }
-
-                if (!values.old_password && values.old_password !== undefined) {
-                    errors.old_password = localize('This field is required');
-                }
-
-                return errors;
+            const onSubmit = (values) => {
+                console.log({ login: this.state.selected_login_password_manager, ...values });
             };
-            const onSubmit = (values) => { console.log(values); };
 
 
             return (
@@ -663,7 +670,7 @@ class MT5Dashboard extends React.Component {
                                     <Input
                                         { ...field }
                                         type='password'
-                                        label={localize('Create a password')}
+                                        label={localize('Current password')}
                                         error={ touched.old_password && errors.old_password }
                                         required
                                     />
@@ -678,7 +685,7 @@ class MT5Dashboard extends React.Component {
                                         <Input
                                             { ...field }
                                             autoComplete='password'
-                                            label={localize('MT5 Password')}
+                                            label={localize('New password')}
                                             type='password'
                                             onChange={(e) => {
                                                 setFieldTouched('new_password', true, true);
@@ -704,16 +711,70 @@ class MT5Dashboard extends React.Component {
             );
         };
 
-        const InvestorPasswordManager = () => (
-            <React.Fragment>
-                <p className='mt5-password-manager__modal'>
-                    <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
-                </p>
-                <p className='mt5-password-manager__modal'>
-                    <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
-                </p>
-            </React.Fragment>
-        );
+        const InvestorPasswordManager = () => {
+            const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
+            const onSubmit = (values) => {
+                console.log({ login: this.state.selected_login_password_manager, ...values });
+            };
+
+            return (
+                <div className='mt5-password-manager__investor-wrapper'>
+                    <p className='mt5-password-manager--paragraph'>
+                        <Localize i18n_default_text='Use this password to allow another user to access your account to view your trades. This user will not be able to trade or take any other actions.' />
+                    </p>
+                    <Formik
+                        initialValues={ initial_values }
+                        validate={ validatePassword }
+                        onSubmit={ onSubmit }
+                    >
+                        {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                            <Form className='mt5-password-manager__investor-form' noValidate>
+                                <Field name='old_password'>
+                                    {({ field }) => (
+                                        <Input
+                                            { ...field }
+                                            type='password'
+                                            label={localize('Current investor password')}
+                                            error={ touched.old_password && errors.old_password }
+                                            required
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='new_password'>
+                                    {({ field }) => (
+                                        <PasswordMeter
+                                            input={field.value}
+                                            error={touched.new_password && errors.new_password}
+                                        >
+                                            <Input
+                                                { ...field }
+                                                autoComplete='password'
+                                                label={localize('New investor password')}
+                                                type='password'
+                                                onChange={(e) => {
+                                                    setFieldTouched('new_password', true, true);
+                                                    field.onChange(e);
+                                                }}
+                                                required
+                                            />
+                                        </PasswordMeter>
+                                    )}
+                                </Field>
+                                <p className='mt5-password-manager--hint'><Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' /></p>
+                                <div className='mt5-password-manager__actions'>
+                                    <Button className='mt5-password-manager--button btn--primary--default' is_disabled={ isSubmitting }>
+                                        <span className='btn__text'><Localize i18n_default_text='Change investor password' /></span>
+                                    </Button>
+                                    <Button className='mt5-password-manager--button btn--tertiary--default' type='button'>
+                                        <span className='btn__text'><Localize i18n_default_text='Create or reset investor password' /></span>
+                                    </Button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            );
+        };
 
         const PasswordManagerModal = () => (
             <React.Suspense fallback={<UILoader />}>

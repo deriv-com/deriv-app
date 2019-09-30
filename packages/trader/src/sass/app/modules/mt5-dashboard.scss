@@ -317,6 +317,12 @@
     margin: 5.6rem auto 0;
     width: 400px;
 
+    &--paragraph {
+        @include typeface(--paragraph-left-normal-black, none);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
         font-size: 12px;
@@ -325,13 +331,25 @@
         }
         padding: 1.333em 0;
     }
-    &__main-form {
+    &__main-form, &__investor-wrapper {
         margin-top: 2.4rem;
+    }
+    &__investor-wrapper {
+        .mt5-password-manager--paragraph:first-child {
+            margin-bottom: 0.6em;
+        }
+    }
+    &__investor-form {
+        width: 300px;
+        margin: 2.4em auto 0;
     }
     &__actions {
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
+        .mt5-password-manager--button:last-child {
+            margin-top: 0;
+        }
     }
     &--button {
         height: 4em;

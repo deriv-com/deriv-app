@@ -24,15 +24,16 @@ import                       '../assets/sass/google-drive.scss';
 const initial_option = { is_local: true, save_as_collection: true };
 
 const SaveLoadModal = ({
-    onLoadClick,
-    onConfirmSave,
+    button_status,
+    clickedFileInput,
+    handleFileChange,
+    is_authorised,
     is_save_modal,
     is_saveload_modal_open,
-    toggleSaveLoadModal,
-    is_authorised,
+    onConfirmSave,
     onDriveConnect,
-    handleFileChange,
-    button_status,
+    onLoadClick,
+    toggleSaveLoadModal,
 }) => {
     const title = is_save_modal ? 'Save Bot' : 'Load Bot';
 
@@ -109,7 +110,8 @@ const SaveLoadModal = ({
                                             type='file'
                                             id='files'
                                             style={{ display: 'none' }}
-                                            onChange={e => handleFileChange(e)}
+                                            onChange={handleFileChange}
+                                            onClick={clickedFileInput}
                                         />
                                 }
                             </div>
@@ -170,6 +172,7 @@ const IconRadio = props => {
 
 SaveLoadModal.propTypes = {
     button_status         : PropTypes.number,
+    clickedFileInput      : PropTypes.func,
     handleFileChange      : PropTypes.func,
     is_authorised         : PropTypes.bool,
     is_save_modal         : PropTypes.any,
@@ -182,6 +185,7 @@ SaveLoadModal.propTypes = {
 
 export default connect(({ saveload, google_drive }) => ({
     button_status         : saveload.button_status,
+    clickedFileInput      : saveload.clickedFileInput,
     handleFileChange      : saveload.handleFileChange,
     is_authorised         : google_drive.is_authorised,
     is_save_modal         : saveload.is_save_modal,

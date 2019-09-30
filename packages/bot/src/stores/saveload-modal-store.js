@@ -116,6 +116,18 @@ export default class SaveLoadModalStore {
             }
         });
         event.target.value = '';
+        window.removeEventListener('focus', this.handleFocusBack);
+    }
+
+    @action.bound
+    clickedFileInput() {
+        window.addEventListener('focus', this.handleFocusBack);
+    }
+
+    @action.bound
+    handleFocusBack() {
+        this.setButtonStatus(0);
+        window.removeEventListener('focus', this.handleFocusBack);
     }
 
     // eslint-disable-next-line class-methods-use-this

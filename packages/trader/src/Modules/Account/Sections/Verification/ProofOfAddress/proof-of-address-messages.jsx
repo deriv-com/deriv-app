@@ -6,7 +6,6 @@ import Localize           from 'App/Components/Elements/localize.jsx';
 import IconChecked        from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-checked.svg';
 import IconExpired        from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-expired.svg';
 import IconSubmitted      from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-submitted.svg';
-import IconVerified       from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-verified.svg';
 import IconFailed         from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-failed.svg';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
@@ -87,7 +86,7 @@ export const Verified = ({ needs_poi }) => {
             <IconMessageContent
                 message={message}
                 text={localize('To continue trading, you must also submit a proof of identity.')}
-                icon={<IconVerified />}
+                icon={<IconChecked />}
             >
                 <PoiButton />
             </IconMessageContent>
@@ -96,7 +95,7 @@ export const Verified = ({ needs_poi }) => {
     return (
         <IconMessageContent
             message={message}
-            icon={<IconVerified />}
+            icon={<IconChecked />}
         >
             <ContinueTradingButton />
         </IconMessageContent>

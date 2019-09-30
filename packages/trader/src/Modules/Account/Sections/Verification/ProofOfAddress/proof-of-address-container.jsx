@@ -1,7 +1,6 @@
 // // import PropTypes            from 'prop-types';
 import React              from 'react';
-import BinarySocket       from '_common/base/socket_base';
-import { connect }        from 'Stores/connect';
+import { WS }             from 'Services';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import {
     Expired,
@@ -29,8 +28,9 @@ class ProofOfAddressContainer extends React.Component {
     };
 
     componentDidMount(){
-        BinarySocket.wait('authorize', 'get_account_status').then(() => {
-            const { document, identity, needs_verification } = this.props.account_status.authentication;
+        WS.authorized.getAccountStatus().then(response => {
+            const { get_account_status } = response;
+            const { document, identity, needs_verification } = get_account_status.authentication;
             const needs_poi = !!(needs_verification.length && identity.status === 'none');
             this.setState({ status: document.status, needs_poi, is_loading: false });
         });
@@ -76,8 +76,4 @@ class ProofOfAddressContainer extends React.Component {
     }
 }
 
-export default connect(
-    ({ client }) => ({
-        account_status: client.account_status,
-    }),
-)(ProofOfAddressContainer);
+export default ProofOfAddressContainer;

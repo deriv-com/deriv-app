@@ -1,9 +1,7 @@
 import * as Cookies          from 'js-cookie';
 import React                 from 'react';
 import { localize }          from 'App/i18n';
-import { connect }           from 'Stores/connect';
 import { WS }                from 'Services';
-import BinarySocket          from '_common/base/socket_base';
 import Onfido                from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
 import ErrorMessage          from '../../ErrorMessages/LoadErrorMessage';
@@ -65,9 +63,10 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     componentDidMount() {
-        BinarySocket.wait('authorize', 'get_account_status').then(() => {
+        WS.authorized.getAccountStatus().then(response => {
+            const { get_account_status } = response;
             this.getOnfidoServiceToken().then(onfido_service_token => {
-                const { identity, document } = this.props.account_status.authentication;
+                const { identity, document } = get_account_status.authentication;
                 const { onfido_unsupported } = this.state;
                 const has_poa                = !(document && document.status === 'none');
                 const status                 = getIdentityStatus(identity, onfido_unsupported);
@@ -100,8 +99,4 @@ class ProofOfIdentityContainer extends React.Component {
     }
 }
 
-export default connect(
-    ({ client }) => ({
-        account_status: client.account_status,
-    }),
-)(ProofOfIdentityContainer);
+export default ProofOfIdentityContainer;

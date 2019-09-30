@@ -214,7 +214,7 @@ class ProofOfAddressForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
-                            <form className='account-form' onSubmit={handleSubmit}>
+                            <form noValidate className='account-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
@@ -251,6 +251,7 @@ class ProofOfAddressForm extends React.Component {
                                                     error={touched.address_line_2 && errors.address_line_2}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    required
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
@@ -278,6 +279,7 @@ class ProofOfAddressForm extends React.Component {
                                                     error={touched.address_state && errors.address_state}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    required
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>

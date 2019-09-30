@@ -122,6 +122,7 @@ module.exports = {
     externals: {
         'formik'                    : 'formik',
         'classnames'                : 'classnames',
+        '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
         'react'                     : 'react',
         'react-dom'                 : 'react-dom',
         'react-pose'                : 'react-pose',

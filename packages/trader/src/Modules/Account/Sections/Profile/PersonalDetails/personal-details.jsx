@@ -126,6 +126,7 @@ class PersonalDetailsForm extends React.Component {
                         return;
                     }
                     this.setState({ ...response.get_settings, is_loading: false });
+                    this.props.refreshNotifications(response.get_settings);
                 });
                 this.setState({ is_submit_success: true });
             }
@@ -623,6 +624,7 @@ class PersonalDetailsForm extends React.Component {
         });
     }
 }
+
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
@@ -632,5 +634,6 @@ export default connect(
         is_virtual            : client.is_virtual,
         residence_list        : client.residence_list,
         fetchResidenceList    : client.fetchResidenceList,
+        refreshNotifications  : client.refreshNotifications,
     }),
 )(PersonalDetailsForm);

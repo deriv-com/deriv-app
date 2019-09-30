@@ -11,9 +11,9 @@ Blockly.Blocks.signal_ema_period = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.BinaryLessGray.colour,
-            colourSecondary  : Blockly.Colours.BinaryLessGray.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryLessGray.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });

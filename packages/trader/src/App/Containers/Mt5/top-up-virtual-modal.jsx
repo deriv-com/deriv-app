@@ -1,10 +1,12 @@
 import classNames        from 'classnames';
-import { Modal, Button } from 'deriv-components';
+import {
+    Modal,
+    Button,
+    Money }              from 'deriv-components';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { localize }      from 'App/i18n';
 import Localize          from 'App/Components/Elements/localize.jsx';
-import Money             from 'App/Components/Elements/money.jsx';
 import SuccessDialog     from 'App/Containers/Modals/success-dialog.jsx';
 import IconWallet        from 'Assets/Mt5/icon-wallet.jsx';
 import { connect }       from 'Stores/connect';
@@ -20,7 +22,7 @@ class TopUpVirtualModal extends React.Component {
 
     closeSuccess = () => {
         this.props.closeSuccessTopUpModal();
-    }
+    };
 
     render() {
         if (!this.props.mt5_companies || !this.props.current_account) return null;

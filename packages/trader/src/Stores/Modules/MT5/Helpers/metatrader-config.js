@@ -67,6 +67,10 @@ export const getMt5GroupConfig = (group = undefined) => {
             type    : 'standard',
             category: 'real',
         },
+        'real\\vanuatu_standard': {
+            type    : 'standard',
+            category: 'real',
+        },
         'real\\labuan_advanced': {
             type    : 'advanced',
             category: 'real',
@@ -84,6 +88,10 @@ export const getMt5GroupConfig = (group = undefined) => {
             category: 'demo',
         },
         'demo\\svg_standard': {
+            type    : 'standard',
+            category: 'demo',
+        },
+        'demo\\vanuatu_standard': {
             type    : 'standard',
             category: 'demo',
         },

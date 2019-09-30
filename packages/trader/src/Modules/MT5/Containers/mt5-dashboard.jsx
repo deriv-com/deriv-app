@@ -1,6 +1,10 @@
-import { Button, Tabs, Modal, Popover } from 'deriv-components';
+import {
+    Button,
+    Tabs,
+    Modal,
+    Popover,
+    Money }                             from 'deriv-components';
 import React                            from 'react';
-import Money                            from 'App/Components/Elements/money.jsx';
 import DataTable                        from 'App/Components/Elements/DataTable';
 import Localize                         from 'App/Components/Elements/localize.jsx';
 import UILoader                         from 'App/Components/Elements/ui-loader.jsx';
@@ -9,7 +13,7 @@ import TopUpVirtualModal                from 'App/Containers/Mt5/top-up-virtual-
 import { localize }                     from 'App/i18n';
 import IconInfoOutline                  from 'Assets/Common/icon-info-outline.jsx';
 import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
-import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
+// import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
 import IconMT5Synthetic                 from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
 import IconDeviceLaptop                 from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
@@ -85,7 +89,7 @@ const MT5AccountCard = ({
     descriptor,
     existing_data,
     icon,
-    is_first_time,
+    has_mt5_account,
     specs,
     title,
     type,
@@ -187,7 +191,7 @@ const MT5AccountCard = ({
                 </div>
                 }
 
-                {!existing_data && is_first_time &&
+                {!existing_data && has_mt5_account &&
                 <Button
                     className='mt5-account-card__account-selection'
                     onClick={() => { onSelectAccount(type); }}
@@ -207,7 +211,7 @@ const MT5AccountCard = ({
                     <Localize i18n_default_text='Trade now' />
                 </a>
                 }
-                {!existing_data && !is_first_time &&
+                {!existing_data && !has_mt5_account &&
                 <Button
                     className='mt5-account-card__account-selection mt5-account-card__account-selection--secondary'
                     onClick={() => { onSelectAccount(type); }}
@@ -221,10 +225,10 @@ const MT5AccountCard = ({
     );
 };
 
-const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time }) => (
+const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, has_mt5_account }) => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
-            is_first_time={is_first_time}
+            has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Standard />)}
             title={localize('Standard')}
             type={{
@@ -253,7 +257,7 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
         />
         {/* TODO Bring this back when Real Advanced is implemented */}
         {/* <MT5AccountCard */}
-        {/*    is_first_time={is_first_time} */}
+        {/*    has_mt5_account={has_mt5_account} */}
         {/*    icon={() => (<IconMT5Advanced />)} */}
         {/*    title={localize('Advanced')} */}
         {/*    type={{ */}
@@ -276,7 +280,7 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
         {/*    }} */}
         {/* /> */}
         <MT5AccountCard
-            is_first_time={is_first_time}
+            has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Synthetic />)}
             title={localize('Synthetic Indices')}
             type={{
@@ -301,10 +305,10 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
     </div>
 );
 
-const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, is_first_time }) => (
+const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, has_mt5_account }) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
-            is_first_time={is_first_time}
+            has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Standard />)}
             title={localize('Standard')}
             type={{
@@ -331,8 +335,9 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
                 [localize('Number of assets')]: localize('50+'),
             }}
         />
-        <MT5AccountCard
-            is_first_time={is_first_time}
+        {/* TODO Bring this back when Real Advanced is implemented */}
+        {/* <MT5AccountCard
+            has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Advanced />)}
             title={localize('Advanced')}
             type={{
@@ -353,9 +358,9 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
             }}
-        />
+        /> */}
         <MT5AccountCard
-            is_first_time={is_first_time}
+            has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Synthetic />)}
             title={localize('Synthetic Indices')}
             type={{
@@ -558,7 +563,7 @@ class MT5Dashboard extends React.Component {
             disableApp,
             enableApp,
             is_compare_accounts_visible,
-            is_first_time,
+            has_mt5_account,
             toggleCompareAccounts,
         } = this.props;
 
@@ -588,7 +593,7 @@ class MT5Dashboard extends React.Component {
 
         return (
             <div className='mt5-dashboard'>
-                {is_first_time &&
+                {!has_mt5_account &&
                 <div className='mt5-dashboard__welcome-message'>
                     <h1 className='mt5-dashboard__welcome-message--heading'>
                         <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
@@ -611,14 +616,14 @@ class MT5Dashboard extends React.Component {
                         <div label={localize('Real account')}>
                             <RealAccountsDisplay
                                 current_list={this.props.current_list}
-                                is_first_time={is_first_time}
+                                has_mt5_account={has_mt5_account}
                                 onSelectAccount={createMT5Account}
                                 openAccountTransfer={this.openAccountTransfer}
                             />
                         </div>
                         <div label={localize('Demo account')}>
                             <DemoAccountsDisplay
-                                is_first_time={is_first_time}
+                                has_mt5_account={has_mt5_account}
                                 current_list={this.props.current_list}
                                 onSelectAccount={createMT5Account}
                                 openAccountTransfer={this.openAccountTransfer}
@@ -673,7 +678,7 @@ export default connect(({ modules, ui }) => ({
     enableApp                  : ui.enableApp,
     current_list               : modules.mt5.current_list,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
-    is_first_time              : !!modules.mt5.current_list.length,
+    has_mt5_account            : !!modules.mt5.current_list.length,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,

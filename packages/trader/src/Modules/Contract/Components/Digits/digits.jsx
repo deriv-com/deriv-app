@@ -56,7 +56,7 @@ class Digits extends React.PureComponent {
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}
-                className='digits-container'
+                className='digits__container'
                 keyname='digits'
                 type='bottom'
             >

@@ -163,7 +163,6 @@ export default class Interpreter {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();
-                    globalObserver.unregisterAll('contract.status');
                 }
             });
         } else {

@@ -1,15 +1,15 @@
-import filesaver                        from 'file-saver';
+import filesaver        from 'file-saver';
 import {
     observable,
     action,
-}                                       from 'mobx';
+}                       from 'mobx';
 import {
     cleanUpOnLoad,
     fixCollapsedBlocks,
     addDomAsBlock,
-}                                       from '../scratch/utils';
-import googleDrive                      from '../utils/integrations/googleDrive';
-import { translate }                    from '../utils/lang/i18n';
+}                       from '../scratch/utils';
+import googleDrive      from '../utils/integrations/googleDrive';
+import { translate }    from '../utils/lang/i18n';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -24,13 +24,18 @@ export default class ToolbarStore {
     @observable is_google_drive_connected = false;
 
     @action.bound
-    // eslint-disable-next-line class-methods-use-this
     onRunClick() {
-        // TODO
+        this.root_store.run_panel.onRunButtonClick();
+    }
+
+    @action.bound
+    onStopClick() {
+        this.root_store.run_panel.onStopButtonClick();
     }
 
     @action.bound
     onToolboxToggle() {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         toolbox.toggle();
@@ -48,11 +53,13 @@ export default class ToolbarStore {
             this.onToolboxToggle();
         }
 
+        // eslint-disable-next-line no-underscore-dangle
         Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
     // eslint-disable-next-line class-methods-use-this
     onSearchClear(setValues) {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         setValues({ search: '' });

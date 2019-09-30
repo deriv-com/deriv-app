@@ -28,18 +28,19 @@
 
     h1 {
         @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
         margin-top: 3rem;
     }
     h2 {
         @include typeface(--paragraph-center-bold-black);
         text-transform: none;
         margin-top: 2rem;
-        color: var(--text-less-prominent);
+        color: var(--text-general);
     }
     h3 {
         @include typeface(--small-center-normal-black);
         text-transform: none;
-        color: var(--text-less-prominent);
+        color: var(--text-general);
         margin-bottom: 3rem;
     }
     form {
@@ -78,12 +79,11 @@
         border-radius: 4px;
         margin-right: 1em;
         background-color: var(--brand-red-coral);
-        color: var(--general-section-1);
+        color: var(--text-colored-background);
 
         /* stylelint-disable color-no-hex */
         &--disabled {
-            background-color: #eaeced;
-            color: #d6d6d6;
+            opacity: 0.32;
             cursor: initial;
         }
         /* stylelint-enable color-no-hex */

@@ -26,9 +26,9 @@ Blockly.Blocks.ema_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             tooltip          : translate('Calculates Exponential Moving Average (EMA) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -37,8 +37,8 @@ Blockly.Blocks.ema_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Exponential Moving Average Statement'),
-            'description' : translate('Exponential Moving Average Statement Description'),
+            'display_name': translate('Exponential Moving Average (EMA)'),
+            'description' : translate('An exponential moving average (EMA) is a type of moving average (MA) that places a greater weight and significance on the most recent data points. The exponential moving average is also referred to as the exponentially weighted moving average. An exponentially weighted moving average reacts more significantly to recent price changes than a simple moving average (SMA), which applies an equal weight to all observations in the period.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

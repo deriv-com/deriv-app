@@ -13,8 +13,8 @@ import {
     Field,
 }                       from 'formik';
 import {
-    LocalIcon,
-    DriveIcon,
+    ToolbarLocalIcon,
+    ToolbarDriveIcon,
 }                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
@@ -32,6 +32,7 @@ const SaveLoadModal = ({
     is_authorised,
     onDriveConnect,
     handleFileChange,
+    button_status,
 }) => {
     const title = is_save_modal ? 'Save Bot' : 'Load Bot';
 
@@ -51,7 +52,7 @@ const SaveLoadModal = ({
                 }
             >
                 {
-                    ({ values: { is_local, save_as_collection }, setValues }) => (
+                    ({ values: { is_local, save_as_collection }, setFieldValue }) => (
                         <Form>
                             <div className='modal__content'>
                                 <div className='modal__content-row'>
@@ -63,7 +64,7 @@ const SaveLoadModal = ({
                                                 id   : 'local',
                                                 label: <IconRadio
                                                     text={translate('Local')}
-                                                    icon={<LocalIcon />}
+                                                    icon={<ToolbarLocalIcon />}
                                                 />,
                                                 value: true,
                                             },
@@ -71,7 +72,7 @@ const SaveLoadModal = ({
                                                 id   : 'Drive',
                                                 label: <IconRadio
                                                     text={translate('Google Drive')}
-                                                    icon={<DriveIcon />}
+                                                    icon={<ToolbarDriveIcon />}
                                                     google_drive_connected={is_authorised}
                                                     onDriveConnect={onDriveConnect}
                                                 />,
@@ -81,7 +82,7 @@ const SaveLoadModal = ({
                                             },
                                         ]}
                                         selected={is_authorised ? is_local : true}
-                                        onToggle={() => setValues({ is_local: !is_local })}
+                                        onToggle={() => setFieldValue('is_local', !is_local)}
                                     />
                                 </div>
                                 {
@@ -91,10 +92,9 @@ const SaveLoadModal = ({
                                                 {({ field }) => (
                                                     <Checkbox
                                                         {...field}
-                                                        onChange={() => setValues({
-                                                            save_as_collection: !save_as_collection,
-                                                            is_local,
-                                                        })}
+                                                        onChange={() =>
+                                                            setFieldValue('save_as_collection', !save_as_collection)
+                                                        }
                                                         defaultChecked={save_as_collection}
                                                         label={translate('Save as collection')}
                                                         classNameLabel='saveload-type__checkbox-text'
@@ -131,6 +131,8 @@ const SaveLoadModal = ({
                                         'btn--primary',
                                         'btn--primary--orange',
                                     )}
+                                    is_loading={button_status === 1}
+                                    is_submit_success={button_status === 2}
                                     text={translate('Continue')}
                                 />
                             </div>
@@ -167,6 +169,7 @@ const IconRadio = props => {
 };
 
 SaveLoadModal.propTypes = {
+    button_status         : PropTypes.number,
     handleFileChange      : PropTypes.func,
     is_authorised         : PropTypes.bool,
     is_save_modal         : PropTypes.any,
@@ -178,6 +181,7 @@ SaveLoadModal.propTypes = {
 };
 
 export default connect(({ saveload, google_drive }) => ({
+    button_status         : saveload.button_status,
     handleFileChange      : saveload.handleFileChange,
     is_authorised         : google_drive.is_authorised,
     is_save_modal         : saveload.is_save_modal,

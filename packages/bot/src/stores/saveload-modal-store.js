@@ -9,19 +9,26 @@ export default class SaveLoadModalStore {
 
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
+    @observable button_status = 0; // 0 - none, 1 - loading, 2 - completed
 
     constructor(root_store) {
         this.root_store = root_store;
     }
 
     @action.bound
-    toggleSaveLoadModal(is_save) {
+    toggleSaveLoadModal(is_save = this.is_save_modal) {
+        if (!this.is_saveload_modal_open) {
+            this.setButtonStatus(0);
+        }
+
         this.is_saveload_modal_open = !this.is_saveload_modal_open;
         this.is_save_modal = is_save;
     }
 
     @action.bound
     async onConfirmSave({ is_local, save_as_collection }) {
+        this.setButtonStatus(1);
+        
         const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
         const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
@@ -38,8 +45,9 @@ export default class SaveLoadModalStore {
                 content : Blockly.Xml.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
-        }
 
+            this.setButtonStatus(2);
+        }
         this.toggleSaveLoadModal();
     }
 
@@ -55,23 +63,34 @@ export default class SaveLoadModalStore {
     }
 
     @action.bound
-    // eslint-disable-next-line class-methods-use-this
     async onLoadClick({ is_local }) {
+        this.setButtonStatus(1);
+        
+        const { onBotNameTyped } = this.root_store.toolbar;
         const { loadFile } = this.root_store.google_drive;
 
         if (is_local) {
             const upload = document.getElementById('files');
             upload.click();
         } else {
-            const xml_dom = await loadFile();
-            load(xml_dom);
+            const { xml_doc, file_name } = await loadFile();
+
+            onBotNameTyped(file_name);
+            load(xml_doc);
             
+            this.setButtonStatus(2);
             this.toggleSaveLoadModal();
         }
     }
 
     @action.bound
+    setButtonStatus(status) {
+        this.button_status = status;
+    }
+
+    @action.bound
     handleFileChange(event) {
+        const { onBotNameTyped } = this.root_store.toolbar;
         let files, drop_event;
         
         if (event.type === 'drop') {
@@ -88,6 +107,10 @@ export default class SaveLoadModalStore {
 
         files = Array.from(files);
         files.forEach(file => {
+            const file_name = file.name.replace(/\.[^/.]+$/, '');
+
+            onBotNameTyped(file_name);
+
             if (file.type.match('text/xml')) {
                 this.readFile(file, drop_event);
             }

@@ -13,13 +13,18 @@ export default class ToolbarStore {
     @observable file_name = 'Untitled Bot';
 
     @action.bound
-    // eslint-disable-next-line class-methods-use-this
     onRunClick() {
-        // TODO
+        this.root_store.run_panel.onRunButtonClick();
+    }
+
+    @action.bound
+    onStopClick() {
+        this.root_store.run_panel.onStopButtonClick();
     }
 
     @action.bound
     onToolboxToggle() {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         toolbox.toggle();
@@ -37,20 +42,21 @@ export default class ToolbarStore {
             this.onToolboxToggle();
         }
 
+        // eslint-disable-next-line no-underscore-dangle
         Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
     // eslint-disable-next-line class-methods-use-this
-    onSearchClear(setValues) {
+    onSearchClear(setFieldValue) {
+        // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
-        setValues({ search: '' });
+        setFieldValue('search', '');
         toolbox.showSearch('');
     }
 
     @action.bound
-    onBotNameTyped(values) {
-        const bot_name = values.botname;
+    onBotNameTyped(bot_name) {
         this.file_name = bot_name;
     }
 

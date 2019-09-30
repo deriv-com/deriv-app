@@ -88,7 +88,6 @@ export const importExternal = url => {
 }
 
 export const load = (block_string = '', drop_event = {}) => {
-    console.log(block_string); // eslint-disable-line
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
 
@@ -131,6 +130,7 @@ export const load = (block_string = '', drop_event = {}) => {
             loadWorkspace(xml);
         }
     } catch (e) {
+        console.error(e); // eslint-disable-line
         // TODO
         console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
     }

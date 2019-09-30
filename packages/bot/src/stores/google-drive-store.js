@@ -124,7 +124,8 @@ export default class GoogleDriveStore {
     }
 
     createSaveFilePicker(mime_type, title, options) {
-        return new Promise((resolve, reject) => {
+        const { setButtonStatus } = this.root_store.saveload;
+        return new Promise(resolve => {
             const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
                     const folderId = data.docs[0].id;
@@ -144,15 +145,16 @@ export default class GoogleDriveStore {
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
                     xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth.getToken().access_token}`);
                     xhr.onload = () => {
-                        if (xhr.status === 200) {
-                            resolve();
-                        } else if (xhr.status === 401) {
+                        if (xhr.status === 401) {
                             this.signOut();
                         }
 
-                        reject();
+                        setButtonStatus(0);
+                        resolve();
                     };
                     xhr.send(formData);
+                } else if (data.action === google.picker.Action.CANCEL) {
+                    setButtonStatus(0);
                 }
             };
 
@@ -161,10 +163,13 @@ export default class GoogleDriveStore {
     }
 
     createLoadFilePicker(mime_type, title) {
-        return new Promise((resolve, reject) => {
+        const { setButtonStatus } = this.root_store.saveload;
+        return new Promise(resolve => {
             const loadPickerCallback = async data => {
                 if (data.action === google.picker.Action.PICKED) {
-                    const fileId = data.docs[0].id;
+                    const file = data.docs[0];
+                    const file_name = file.name;
+                    const fileId = file.id;
                     const { files } = gapi.client.drive;
 
                     const response = await files.get({
@@ -173,9 +178,9 @@ export default class GoogleDriveStore {
                         mimeType: 'text/plain',
                     });
                     
-                    resolve(response.body);
+                    resolve({ xml_doc: response.body, file_name });
                 } else if (data.action === google.picker.Action.CANCEL) {
-                    reject();
+                    setButtonStatus(0);
                 }
             };
 

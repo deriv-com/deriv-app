@@ -4,14 +4,14 @@ import React                  from 'react';
 import {
     Button,
     Dropdown,
-    Input }                   from 'deriv-components';
+    Input,
+    Money }                   from 'deriv-components';
 import {
     Field,
     Formik,
     Form }                    from 'formik';
 import { getDecimalPlaces }   from '_common/base/currency_base';
 import Localize               from 'App/Components/Elements/localize.jsx';
-import Money                  from 'App/Components/Elements/money.jsx';
 import { website_name }       from 'App/Constants/app-config';
 import { localize }           from 'App/i18n';
 import Icon                   from 'Assets/icon.jsx';

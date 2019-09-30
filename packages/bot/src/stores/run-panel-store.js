@@ -4,8 +4,8 @@ import { CONTRACT_STAGES }    from '../constants/contract-stage';
 import { observer }           from '../utils/observer';
 
 export default class RunPanelStore {
-    constructor(rootstore) {
-        this.rootstore = rootstore;
+    constructor(root_store) {
+        this.root_store = root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -17,6 +17,7 @@ export default class RunPanelStore {
     @observable is_run_button_clicked = false;
     @observable is_running = false;
     @observable is_dialog_visible = false;
+    @observable is_drawer_open = false;
 
     @action.bound
     onBotRunningEvent() {
@@ -44,9 +45,13 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        if (!this.rootstore.core.client.is_logged_in) {
+        if (!this.root_store.core.client.is_logged_in) {
             this.is_dialog_visible = true;
             return;
+        }
+
+        if (!this.is_drawer_open) {
+            this.is_drawer_open = true;
         }
 
         this.is_run_button_clicked = true;
@@ -55,7 +60,7 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        if (!this.rootstore.core.client.is_logged_in) {
+        if (!this.root_store.core.client.is_logged_in) {
             this.is_dialog_visible = true;
             return;
         }
@@ -67,7 +72,15 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        this.rootstore.journal.clearMessages();
+        // TODO: Wait for bot to finish.
+        this.root_store.journal.clearMessages();
+        this.root_store.contract_card.clear();
+        this.root_store.summary.clear();
+    }
+
+    @action.bound
+    toggleDrawer(is_open) {
+        this.is_drawer_open = is_open;
     }
 
     @action.bound

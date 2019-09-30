@@ -59,6 +59,12 @@ Blockly.Colours.Special3 = {
     colourTertiary : '#9aa27b',
 };
 
+Blockly.Colours.Special4 = {
+    colour         : '#f27c7c',
+    colourSecondary: '#cb5555',
+    colourTertiary : '#cb5555',
+};
+
 // --- Binary.com colours ---
 
 Blockly.Colours.Binary = {

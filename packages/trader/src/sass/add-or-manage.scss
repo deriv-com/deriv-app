@@ -65,16 +65,18 @@
         h2 {
             @include typeface(--title-center-bold-black);
             margin-top: 2rem;
+            color: var(--text-general);
         }
         p {
             @include typeface(--paragraph-left-normal-black);
             padding: 1rem;
             text-align: center;
             text-transform: none;
+            color: var(--text-general);
         }
     }
     &__btn-area {
-        margin-bottom: 2rem;
+        margin: 3rem 0;
 
         & .btn {
             height: 4rem;
@@ -82,13 +84,13 @@
             font-size: 1.4rem;
             text-align: center;
             background: var(--brand-red-coral);
-            color: var(--general-main-1);
+            color: var(--text-colored-background);
             margin: 0 2rem;
 
             &--outline {
                 background: transparent;
-                border: 2px solid var(--text-less-prominent);
-                color: var(--text-less-prominent);
+                border: 2px solid var(--button-secondary-default);
+                color: var(--text-general);
             }
         }
     }

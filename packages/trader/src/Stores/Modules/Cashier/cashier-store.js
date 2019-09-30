@@ -1,19 +1,13 @@
 import {
     action,
     observable,
-    toJS }                  from 'mobx';
-import {
-    formatMoney,
-    getCurrencies,
-    getDecimalPlaces,
-    isCryptocurrency }      from '_common/base/currency_base';
-import BinarySocket         from '_common/base/socket_base';
-import {
-    getPropertyValue,
-    isEmptyObject }         from '_common/utility';
-import { localize }         from 'App/i18n';
-import { WS }               from 'Services';
-import BaseStore            from '../../base-store';
+    toJS }           from 'mobx';
+import CurrencyUtils from 'deriv-shared/utils/currency';
+import ObjectUtils   from 'deriv-shared/utils/object';
+import BinarySocket  from '_common/base/socket_base';
+import { localize }  from 'App/i18n';
+import { WS }        from 'Services';
+import BaseStore     from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -165,7 +159,7 @@ export default class CashierStore extends BaseStore {
                 // clear verification code on error
                 this.clearVerification();
             }
-        } else if (isCryptocurrency(this.root_store.client.currency)) {
+        } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
             this.setContainerHeight('700');
             this.setIframeUrl(response_cashier.cashier);
@@ -228,7 +222,7 @@ export default class CashierStore extends BaseStore {
     }
 
     getError = (error) => {
-        if (!error || isEmptyObject(error)) {
+        if (!error || ObjectUtils.isEmptyObject(error)) {
             return null;
         }
 
@@ -575,7 +569,7 @@ export default class CashierStore extends BaseStore {
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find((agent) => agent.value === loginid);
             this.setReceipt({
-                amount_transferred: formatMoney(currency, amount, true),
+                amount_transferred: CurrencyUtils.formatMoney(currency, amount, true),
                 ...(selected_agent && {
                     payment_agent_email: selected_agent.email,
                     payment_agent_id   : selected_agent.value,
@@ -657,21 +651,21 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferFee() {
-        const transfer_fee = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
+        const transfer_fee = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
         this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
     }
 
     @action.bound
     setMinimumFee() {
-        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const decimals = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
 
     @action.bound
     setTransferLimit() {
-        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
-        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const transfer_limit = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
+        const decimal_places = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
@@ -712,8 +706,8 @@ export default class CashierStore extends BaseStore {
         accounts.sort((a, b) => {
             const a_is_mt = a.account_type === 'mt5';
             const b_is_mt = b.account_type === 'mt5';
-            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+            const a_is_crypto = !a_is_mt && CurrencyUtils.isCryptocurrency(a.currency);
+            const b_is_crypto = !b_is_mt && CurrencyUtils.isCryptocurrency(b.currency);
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
@@ -739,7 +733,7 @@ export default class CashierStore extends BaseStore {
                 value    : account.loginid,
                 balance  : account.balance,
                 currency : account.currency,
-                is_crypto: isCryptocurrency(account.currency),
+                is_crypto: CurrencyUtils.isCryptocurrency(account.currency),
                 is_mt    : account.account_type === 'mt5',
                 ...(group.value && { mt_icon: group.value }),
             };
@@ -814,7 +808,7 @@ export default class CashierStore extends BaseStore {
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
+            this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach((account) => {
                 this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value)
                     .balance = account.balance;

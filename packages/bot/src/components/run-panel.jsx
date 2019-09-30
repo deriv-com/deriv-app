@@ -5,6 +5,7 @@ import React                                  from 'react';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
+import Summary                                from './summary.jsx';
 import { connect }                            from '../stores/connect';
 import { translate }                          from '../utils/tools';
 import '../assets/sass/run-panel.scss';
@@ -12,7 +13,9 @@ import '../assets/sass/run-panel.scss';
 const drawerContent = () => {
     return (
         <Tabs>
-            <div label={translate('Summary')} />
+            <div label={translate('Summary')}>
+                <Summary />
+            </div>
             <div label={translate('Transactions')} />
             <div label={translate('Journal')}>
                 <Journal />
@@ -92,7 +95,8 @@ class RunPanel extends React.PureComponent {
         return (
             <Drawer
                 className='run-panel'
-                is_open={true}
+                is_open={this.props.is_drawer_open}
+                toggleDrawer={this.props.toggleDrawer}
                 footer={footer}
             >
                 {content}
@@ -104,21 +108,25 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     closeModal           : PropTypes.func,
     is_dialog_visible    : PropTypes.bool,
+    is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onClearStatClick     : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
+    toggleDrawer         : PropTypes.func,
 };
 
-export default connect(({ runPanel }) => ({
-    closeModal           : runPanel.closeModal,
-    is_dialog_visible    : runPanel.is_dialog_visible,
-    is_running           : runPanel.is_running,
-    is_run_button_clicked: runPanel.is_run_button_clicked,
-    onClearStatClick     : runPanel.onClearStatClick,
-    onRunButtonClick     : runPanel.onRunButtonClick,
-    onStopButtonClick    : runPanel.onStopButtonClick,
-    onUnmount            : runPanel.onUnmount,
+export default connect(({ run_panel }) => ({
+    closeModal           : run_panel.closeModal,
+    is_dialog_visible    : run_panel.is_dialog_visible,
+    is_drawer_open       : run_panel.is_drawer_open,
+    is_run_button_clicked: run_panel.is_run_button_clicked,
+    is_running           : run_panel.is_running,
+    onClearStatClick     : run_panel.onClearStatClick,
+    onRunButtonClick     : run_panel.onRunButtonClick,
+    onStopButtonClick    : run_panel.onStopButtonClick,
+    onUnmount            : run_panel.onUnmount,
+    toggleDrawer         : run_panel.toggleDrawer,
 }))(RunPanel);

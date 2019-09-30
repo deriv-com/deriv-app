@@ -45,13 +45,12 @@ class Password extends Component {
         const is_valid = validPassword(values.password) &&
             validLength(values.password, {
                 min: 8,
-                max: 30,
+                max: 25,
             });
         const errors   = {};
 
         if (!is_valid) {
-            errors.password = localize(
-                'The password must contain at least two of three types of characters (lower case, upper case and digits).');
+            errors.password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
         }
 
         return errors;

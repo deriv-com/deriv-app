@@ -3,28 +3,37 @@ import {
     Tabs,
     Modal,
     Popover,
-    Money }                             from 'deriv-components';
-import React                            from 'react';
-import DataTable                        from 'App/Components/Elements/DataTable';
-import Localize                         from 'App/Components/Elements/localize.jsx';
-import UILoader                         from 'App/Components/Elements/ui-loader.jsx';
-import Tooltip                          from 'App/Containers/Mt5/tooltip.jsx';
-import TopUpVirtualModal                from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
-import { localize }                     from 'App/i18n';
-import IconInfoOutline                  from 'Assets/Common/icon-info-outline.jsx';
-import IconClipboard                    from 'Assets/Mt5/icon-clipboard.jsx';
+    Input,
+    PasswordMeter,
+    Money }                    from 'deriv-components';
+import {
+    Field,
+    Formik,
+    Form }                     from 'formik';
+import React                   from 'react';
+import DataTable               from 'App/Components/Elements/DataTable';
+import Localize                from 'App/Components/Elements/localize.jsx';
+import UILoader                from 'App/Components/Elements/ui-loader.jsx';
+import Tooltip                 from 'App/Containers/Mt5/tooltip.jsx';
+import TopUpVirtualModal       from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
+import { localize }            from 'App/i18n';
+import IconInfoOutline         from 'Assets/Common/icon-info-outline.jsx';
+import IconClipboard           from 'Assets/Mt5/icon-clipboard.jsx';
 // import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
-import IconMT5Standard                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
-import IconMT5Synthetic                 from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
-import IconDeviceLaptop                 from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
-import IconDeviceMac                    from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
-import IconDeviceMobile                 from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
-import IconInstallationApple            from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
-import IconInstallationGoogle           from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
-import IconInstallationLinux            from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
-import IconInstallationMac              from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
-import IconInstallationWindows          from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
-import { connect }                      from 'Stores/connect';
+import IconMT5Standard         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
+import IconMT5Synthetic        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
+import IconDeviceLaptop        from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
+import IconDeviceMac           from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
+import IconDeviceMobile        from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
+import IconInstallationApple   from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
+import IconInstallationGoogle  from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
+import IconInstallationLinux   from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
+import IconInstallationMac     from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
+import IconInstallationWindows from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
+import { connect }             from 'Stores/connect';
+import {
+    validLength,
+    validPassword }            from 'Utils/Validator/declarative-validation-rules';
 import 'Sass/app/modules/mt5-dashboard.scss';
 
 /*
@@ -95,6 +104,7 @@ const MT5AccountCard = ({
     type,
     onSelectAccount,
     onClickFund,
+    onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
 
@@ -182,7 +192,7 @@ const MT5AccountCard = ({
                         }
                     </Button>
                     <Button
-                        onClick={ console.log /* eslint-disable-line no-console */ }
+                        onClick={ onPasswordManager }
                         className='btn--secondary--default'
                         type='button'
                     >
@@ -225,7 +235,13 @@ const MT5AccountCard = ({
     );
 };
 
-const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, has_mt5_account }) => (
+const RealAccountsDisplay = ({
+    onSelectAccount,
+    openAccountTransfer,
+    current_list,
+    has_mt5_account,
+    openPasswordManager,
+}) => (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
@@ -243,6 +259,7 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
                 />
             }
             onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['real.standard'], {
                 category: 'real',
                 type    : 'standard',
@@ -256,29 +273,30 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             }}
         />
         {/* TODO Bring this back when Real Advanced is implemented */}
-        {/* <MT5AccountCard */}
-        {/*    has_mt5_account={has_mt5_account} */}
-        {/*    icon={() => (<IconMT5Advanced />)} */}
-        {/*    title={localize('Advanced')} */}
-        {/*    type={{ */}
-        {/*        category: 'real', */}
-        {/*        type    : 'advanced', */}
-        {/*    }} */}
-        {/*    existing_data={current_list['real.advanced']} */}
-        {/*    commission_message={<Localize i18n_default_text='No commission' />} */}
-        {/*    onSelectAccount={onSelectAccount} */}
-        {/*    onClickFund={() => openAccountTransfer(current_list['real.advanced'], { */}
-        {/*        category: 'real', */}
-        {/*        type    : 'advanced', */}
-        {/*    })} */}
-        {/*    descriptor={localize('Give you more products, tight spreads, and higher ticket size.')} */}
-        {/*    specs={{ */}
-        {/*        [localize('Leverage')]        : localize('Up to 1:100'), */}
-        {/*        [localize('Margin call')]     : localize('150%'), */}
-        {/*        [localize('Stop out level')]  : localize('75%'), */}
-        {/*        [localize('Number of assets')]: localize('50+'), */}
-        {/*    }} */}
-        {/* /> */}
+        {/* <MT5AccountCard
+            has_mt5_account={has_mt5_account}
+            icon={() => (<IconMT5Advanced />)}
+            title={localize('Advanced')}
+            type={{
+                category: 'real',
+                type    : 'advanced',
+            }}
+            existing_data={current_list['real.advanced']}
+            commission_message={<Localize i18n_default_text='No commission' />}
+            onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
+            onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
+                category: 'real',
+                type    : 'advanced',
+            })}
+            descriptor={localize('Give you more products, tight spreads, and higher ticket size.')}
+            specs={{
+                [localize('Leverage')]        : localize('Up to 1:100'),
+                [localize('Margin call')]     : localize('150%'),
+                [localize('Stop out level')]  : localize('75%'),
+                [localize('Number of assets')]: localize('50+'),
+            }}
+        /> */}
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
             icon={() => (<IconMT5Synthetic />)}
@@ -290,6 +308,7 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             existing_data={current_list['real.synthetic_indices']}
             commission_message={<Localize i18n_default_text='No commission' />}
             onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['real.synthetic_indices'], {
                 category: 'real',
                 type    : 'synthetic_indices',
@@ -305,7 +324,13 @@ const RealAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
     </div>
 );
 
-const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_list, has_mt5_account }) => (
+const DemoAccountsDisplay = ({
+    onSelectAccount,
+    openAccountTransfer,
+    current_list,
+    has_mt5_account,
+    openPasswordManager,
+}) => (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
@@ -323,6 +348,7 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
                 />
             }
             onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.standard'], {
                 category: 'demo',
                 type    : 'standard',
@@ -347,6 +373,7 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             existing_data={current_list['demo.advanced']}
             commission_message={<Localize i18n_default_text='No commission' />}
             onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.advanced'], {
                 category: 'demo',
                 type    : 'advanced',
@@ -370,6 +397,7 @@ const DemoAccountsDisplay = ({ onSelectAccount, openAccountTransfer, current_lis
             existing_data={current_list['demo.synthetic_indices']}
             commission_message={<Localize i18n_default_text='No commission' />}
             onSelectAccount={onSelectAccount}
+            onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.synthetic_indices'], {
                 category: 'demo',
                 type    : 'synthetic_indices',
@@ -548,6 +576,10 @@ const ModalContent = () => (
 );
 
 class MT5Dashboard extends React.Component {
+    state = {
+        is_password_manager_visible: false,
+    };
+
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
             this.props.toggleAccountTransferModal();
@@ -555,6 +587,10 @@ class MT5Dashboard extends React.Component {
             this.props.setCurrentAccount(data, meta);
             this.props.openTopUpModal();
         }
+    };
+
+    togglePasswordManagerModal = () => {
+        this.setState((prev_state) => ({ is_password_manager_visible: !prev_state.is_password_manager_visible }));
     };
 
     render() {
@@ -585,10 +621,122 @@ class MT5Dashboard extends React.Component {
                         toggleModal={toggleCompareAccounts}
                         type='button'
                     >
-                        <ModalContent />
+                        <ModalContent />s
                     </Modal>
                 </React.Suspense>
             </div>
+        );
+
+        const MainPasswordManager = () => {
+            const initial_values = { old_password: '', new_password: '', password_type: 'main' };
+            const validatePassword = (values) => {
+                const is_valid = validPassword(values.new_password) &&
+                    validLength(values.new_password, {
+                        min: 8,
+                        max: 25,
+                    });
+                const errors = {};
+
+                if (!is_valid) {
+                    errors.new_password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
+                }
+
+                if (!values.old_password && values.old_password !== undefined) {
+                    errors.old_password = localize('This field is required');
+                }
+
+                return errors;
+            };
+            const onSubmit = (values) => { console.log(values); };
+
+
+            return (
+                <Formik
+                    initialValues={ initial_values }
+                    validate={ validatePassword }
+                    onSubmit={ onSubmit }
+                >
+                    {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                        <Form className='mt5-password-manager__main-form' noValidate>
+                            <Field name='old_password'>
+                                {({ field }) => (
+                                    <Input
+                                        { ...field }
+                                        type='password'
+                                        label={localize('Create a password')}
+                                        error={ touched.old_password && errors.old_password }
+                                        required
+                                    />
+                                )}
+                            </Field>
+                            <Field name='new_password'>
+                                {({ field }) => (
+                                    <PasswordMeter
+                                        input={field.value}
+                                        error={touched.new_password && errors.new_password}
+                                    >
+                                        <Input
+                                            { ...field }
+                                            autoComplete='password'
+                                            label={localize('MT5 Password')}
+                                            type='password'
+                                            onChange={(e) => {
+                                                setFieldTouched('new_password', true, true);
+                                                field.onChange(e);
+                                            }}
+                                            required
+                                        />
+                                    </PasswordMeter>
+                                )}
+                            </Field>
+                            <p className='mt5-password-manager--hint'><Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' /></p>
+                            <div className='mt5-password-manager__actions'>
+                                <Button className='mt5-password-manager--button btn--primary--default' is_disabled={ isSubmitting }>
+                                    <span className='btn__text'><Localize i18n_default_text='Change password' /></span>
+                                </Button>
+                                <Button className='mt5-password-manager--button btn--tertiary--default' type='button'>
+                                    <span className='btn__text'><Localize i18n_default_text='Reset main password' /></span>
+                                </Button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            );
+        };
+
+        const InvestorPasswordManager = () => (
+            <React.Fragment>
+                <p className='mt5-password-manager__modal'>
+                    <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
+                </p>
+                <p className='mt5-password-manager__modal'>
+                    <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
+                </p>
+            </React.Fragment>
+        );
+
+        const PasswordManagerModal = () => (
+            <React.Suspense fallback={<UILoader />}>
+                <Modal
+                    className='mt5-password-manager__modal'
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_open={this.state.is_password_manager_visible}
+                    title={localize('Manage your DMT5 Standard real account password')}
+                    toggleModal={this.togglePasswordManagerModal}
+                >
+                    <div className='mt5-password-manager'>
+                        <Tabs>
+                            <div label={localize('Main password')}>
+                                <MainPasswordManager />
+                            </div>
+                            <div label={localize('Investor password')}>
+                                <InvestorPasswordManager />
+                            </div>
+                        </Tabs>
+                    </div>
+                </Modal>
+            </React.Suspense>
         );
 
         return (
@@ -610,8 +758,7 @@ class MT5Dashboard extends React.Component {
                 }
 
                 <div className='mt5-dashboard__accounts-display'>
-                    {/* TODO: Add MT5 accounts display component */}
-                    {/* <Tabs alignment='center' list={ MT5Dashboard.dashboard_tabs } /> */}
+                    <PasswordManagerModal />
                     <Tabs>
                         <div label={localize('Real account')}>
                             <RealAccountsDisplay
@@ -619,6 +766,7 @@ class MT5Dashboard extends React.Component {
                                 has_mt5_account={has_mt5_account}
                                 onSelectAccount={createMT5Account}
                                 openAccountTransfer={this.openAccountTransfer}
+                                openPasswordManager={ this.togglePasswordManagerModal }
                             />
                         </div>
                         <div label={localize('Demo account')}>
@@ -627,6 +775,7 @@ class MT5Dashboard extends React.Component {
                                 current_list={this.props.current_list}
                                 onSelectAccount={createMT5Account}
                                 openAccountTransfer={this.openAccountTransfer}
+                                openPasswordManager={ this.togglePasswordManagerModal }
                             />
                         </div>
                     </Tabs>

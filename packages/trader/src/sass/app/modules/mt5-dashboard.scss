@@ -313,10 +313,40 @@
     }
 }
 
+.mt5-password-manager {
+    margin: 5.6rem auto 0;
+    width: 400px;
+
+    &--hint {
+        //@include typeface(--xsmall-left-normal-black, none);
+        font-size: 12px;
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        padding: 1.333em 0;
+    }
+    &__main-form {
+        margin-top: 2.4rem;
+    }
+    &__actions {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+    &--button {
+        height: 4em;
+    }
+
+}
+
 .dc-modal {
     &__container {
         &_mt5-dashboard__compare-accounts {
             width: 904px;
+        }
+        &_mt5-password-manager__modal {
+            width: 904px;
+            height: 688px;
         }
     }
 }

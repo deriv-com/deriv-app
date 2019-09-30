@@ -24,6 +24,7 @@
         @include typeface(--small-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
+        margin-top: 1em;
     }
     &__body {
         flex-grow: 1;

@@ -139,7 +139,7 @@ class RealAccountSignup extends Component {
     get text_cancel () {
         const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
         if (post_signup) {
-            return localize('Proceed to create MT5 password');
+            return localize('Continue to DMT5');
         }
         return localize('Maybe later');
     }

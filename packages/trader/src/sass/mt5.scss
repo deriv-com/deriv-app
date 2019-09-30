@@ -133,6 +133,7 @@
         }
     }
 }
+
 .dc-tooltip {
     position: relative;
     display: inline-block;
@@ -158,8 +159,8 @@
         position: absolute;
         z-index: 1;
 
-        &::after {
-            content: " ";
+        &:after {
+            content: ' ';
             position: absolute;
             bottom: 100%; /* At the top of the tooltip */
             left: 89%;

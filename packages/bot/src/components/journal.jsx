@@ -20,10 +20,14 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
+    if (typeof message !== 'string') {
+        return message;
+    }
+
     const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
 
-    if (messages.count < 2) {
+    if (messages.length < 2) {
         return message;
     }
 

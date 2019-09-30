@@ -26,7 +26,11 @@ import zoomOut          from '../assets/icons/zoom-out.svg';
 import local            from '../assets/icons/shape.svg';
 import runIcon          from '../assets/icons/run-icon.svg';
 import stopIcon         from '../assets/icons/stop-icon.svg';
-import iconInfoOutline  from '../assets/icons/icon-info-outline.svg';
+import infoOutline      from '../assets/icons/icon-info-outline.svg';
+import entrySpot        from '../assets/icons/ic-entryspot.svg';
+import exitSpot         from '../assets/icons/ic-exitspot.svg';
+import riseFall         from '../assets/icons/ic-rise-fall.svg';
+import id               from '../assets/icons/ic-id.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
@@ -52,20 +56,25 @@ export const Stage4Icon         = Icon(stage4);
 export const BlueInfoIcon       = Icon(blueInfo);
 export const StopIcon           = Icon(stopIcon);
 export const RunIcon            = Icon(runIcon);
-export const InfoOutlineIcon    = Icon(iconInfoOutline);
+export const InfoOutlineIcon    = Icon(infoOutline);
 // Toolbar
-export const StartIcon      = Icon(start);
-export const SearchIcon     = Icon(search);
-export const RenameIcon     = Icon(rename);
-export const CloseIcon      = Icon(close);
-export const OpenIcon       = Icon(open);
-export const NewFileIcon    = Icon(newFile);
-export const SaveIcon       = Icon(save);
-export const UndoIcon       = Icon(undo);
-export const RedoIcon       = Icon(redo);
-export const PerformIcon    = Icon(performance);
-export const ReaarangeIcon  = Icon(rearrange);
-export const ZoomInIcon     = Icon(zoomIn);
-export const ZoomOutIcon    = Icon(zoomOut);
-export const LocalIcon      = Icon(local);
-export const DriveIcon      = Icon(drive);
+export const StartIcon          = Icon(start);
+export const SearchIcon         = Icon(search);
+export const RenameIcon         = Icon(rename);
+export const CloseIcon          = Icon(close);
+export const OpenIcon           = Icon(open);
+export const NewFileIcon        = Icon(newFile);
+export const SaveIcon           = Icon(save);
+export const UndoIcon           = Icon(undo);
+export const RedoIcon           = Icon(redo);
+export const PerformIcon        = Icon(performance);
+export const ReaarangeIcon      = Icon(rearrange);
+export const ZoomInIcon         = Icon(zoomIn);
+export const ZoomOutIcon        = Icon(zoomOut);
+export const LocalIcon          = Icon(local);
+export const DriveIcon          = Icon(drive);
+// transactions
+export const EntrySpotIcon      = Icon(entrySpot);
+export const ExitSpotIcon       = Icon(exitSpot);
+export const IdIcon             = Icon(id);
+export const RiseFallIcon       = Icon(riseFall);

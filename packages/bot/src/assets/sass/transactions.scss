@@ -1,0 +1,9 @@
+.transactions {
+    &__col {
+        display: flex;
+        flex-direction: row;
+    }
+    &__fall {
+        transform: rotate(90);
+    }
+}

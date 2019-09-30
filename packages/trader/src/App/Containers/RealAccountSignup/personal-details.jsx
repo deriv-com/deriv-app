@@ -1,13 +1,14 @@
-import classNames                      from 'classnames';
-import { Formik, Field, ErrorMessage } from 'formik';
-import React, { Component }            from 'react';
-import { CSSTransition }               from 'react-transition-group';
-import { localize }                    from 'App/i18n';
-import Localize                        from 'App/Components/Elements/localize.jsx';
-import { toMoment }                    from 'Utils/Date';
-import FormSubmitButton                from './form-submit-button.jsx';
+import classNames           from 'classnames';
+import { Input }            from 'deriv-components';
+import { Formik, Field }    from 'formik';
+import React, { Component } from 'react';
+import { CSSTransition }    from 'react-transition-group';
+import { localize }         from 'App/i18n';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import { toMoment }         from 'Utils/Date';
+import FormSubmitButton     from './form-submit-button.jsx';
+import DatePickerCalendar   from './date-picker-calendar.jsx';
 import 'Sass/personal-details-form.scss';
-import DatePickerCalendar              from './date-picker-calendar.jsx';
 
 class DateOfBirth extends Component {
     state = {
@@ -22,8 +23,18 @@ class DateOfBirth extends Component {
         this.reference = React.createRef();
     }
 
+    closeDatePicker = () => {
+        this.setState({
+            should_show_calendar: false,
+        });
+    };
+
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClick, { passive: true });
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClick);
     }
 
     handleClick = (e) => {
@@ -35,17 +46,7 @@ class DateOfBirth extends Component {
                 should_show_calendar: false,
             });
         }
-    }
-
-    closeDatePicker = () => {
-        this.setState({
-            should_show_calendar: false,
-        });
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClick);
-    }
+    };
 
     handleFocus = () => {
         this.setState({
@@ -60,19 +61,15 @@ class DateOfBirth extends Component {
                 name={this.props.name}
                 render={({
                     field: { name, value },
-                    id,
-                    label,
-                    className,
                     form : { setFieldValue },
                 }) => (
                     <div className='datepicker'>
-                        <Input
-                            name={name}
-                            className={classNames(className, 'dc-input--no-placeholder')}
-                            id={id}
-                            label={label}
-                            placeholder={this.props.label}
+                        <InputField
+                            {...this.props}
                             onFocus={this.handleFocus}
+                            className={classNames(this.props.className, {
+                                'datepicker--active-label': !!value,
+                            })}
                             onBlur={this.handleBlur}
                             value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
                             readOnly
@@ -112,40 +109,25 @@ class DateOfBirth extends Component {
     }
 }
 
-// TODO remove this and use deriv-components
-const Input = (props) => {
-    const ref = React.createRef();
+const InputField = (props) => {
     return (
-        <Field {...props}>
+        <Field name={props.name}>
             {
-                ({ field }) => (
-                    <div className={classNames('dc-input', props.className)}>
-                        <input ref={ref} {...field} {...props} className='dc-input__field' />
-                        {
-                            props.trailing_icon &&
-                            React.cloneElement(
-                                props.trailing_icon,
-                                {
-                                    className: classNames(
-                                        'dc-input__trailing-icon',
-                                        props.trailing_icon.props.className,
-                                    ),
-                                },
-                            )
-                        }
-                        <label className='dc-input__label' htmlFor={field.id}>
-                            {props.label || props.placeholder}
-                        </label>
-                        <ErrorMessage name={field.name}>
-                            {
-                                (msg) => (
-                                    <p className='dc-input__error'>
-                                        {msg}
-                                    </p>
-                                )
-                            }
-                        </ErrorMessage>
-                    </div>
+                ({
+                    field,
+                    form: { errors, touched },
+                }) => (
+                    <React.Fragment>
+                        <Input
+                            type='text'
+                            required
+                            autoComplete='off'
+                            maxLength='30'
+                            error={touched[field.name] && errors[field.name]}
+                            {...field}
+                            {...props}
+                        />
+                    </React.Fragment>
                 )
             }
         </Field>
@@ -162,45 +144,6 @@ class PersonalDetails extends Component {
     componentDidMount() {
         this.form.current.getFormikActions().validateForm();
     }
-
-    validatePersonalDetails = (values) => {
-        const max_date = toMoment().subtract(18, 'days');
-        const validations = {
-            first_name: [
-                v => !!v,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
-            ],
-            last_name: [
-                v => !!v,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
-            ],
-            date_of_birth: [
-                v => !!v,
-                v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
-            ],
-        };
-
-        const mappedKey = {
-            first_name   : localize('First name'),
-            last_name    : localize('Last name'),
-            date_of_birth: localize('Date of birth'),
-        };
-        const messages = [
-            '%s is required',
-            '%s is not in a proper format.',
-        ];
-        const errors = {};
-
-        Object.entries(validations)
-            .forEach(([key, rules]) => {
-                const error_index = rules.findIndex(v => !v(values[key]));
-                if (error_index !== -1) {
-                    errors[key] = localize(messages[error_index].replace('%s', mappedKey[key]));
-                }
-            });
-
-        return errors;
-    };
 
     render() {
         return (
@@ -225,18 +168,21 @@ class PersonalDetails extends Component {
                         <form onSubmit={handleSubmit}>
                             <div className='personal-details-form'>
                                 <div className='personal-details-form__elements'>
-                                    <Input
+                                    <InputField
+                                        className='dc-input--no-placeholder'
                                         name='first_name'
                                         label={localize('First name')}
                                         placeholder={localize('John')}
                                     />
-                                    <Input
+                                    <InputField
                                         name='last_name'
+                                        className='dc-input--no-placeholder'
                                         label={localize('Last name')}
                                         placeholder={localize('Doe')}
                                     />
                                     <DateOfBirth
                                         name='date_of_birth'
+                                        className='dc-input--no-placeholder'
                                         label={localize('Date of birth')}
                                         placeholder={localize('1999-07-01')}
                                     />
@@ -264,6 +210,45 @@ class PersonalDetails extends Component {
             </Formik>
         );
     }
+
+    validatePersonalDetails = (values) => {
+        const max_date    = toMoment().subtract(18, 'days');
+        const validations = {
+            first_name   : [
+                v => !!v,
+                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
+            ],
+            last_name    : [
+                v => !!v,
+                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
+            ],
+            date_of_birth: [
+                v => !!v,
+                v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
+            ],
+        };
+
+        const mappedKey = {
+            first_name   : localize('First name'),
+            last_name    : localize('Last name'),
+            date_of_birth: localize('Date of birth'),
+        };
+        const messages  = [
+            '%s is required',
+            '%s is not in a proper format.',
+        ];
+        const errors    = {};
+
+        Object.entries(validations)
+            .forEach(([key, rules]) => {
+                const error_index = rules.findIndex(v => !v(values[key]));
+                if (error_index !== -1) {
+                    errors[key] = localize(messages[error_index].replace('%s', mappedKey[key]));
+                }
+            });
+
+        return errors;
+    };
 }
 
 export default PersonalDetails;

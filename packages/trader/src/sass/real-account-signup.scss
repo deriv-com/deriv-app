@@ -39,7 +39,7 @@
             @include typeface(--paragraph-center-bold-black);
             background-color: var(--state-active);
             border: 1px solid var(--border-normal);
-            color: var(--text-general);
+            color: var(--text-colored-background);
         }
         &--active {
             .identifier {

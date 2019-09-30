@@ -3,7 +3,6 @@ import React, { lazy }   from 'react';
 import {
     withRouter,
     Redirect }           from 'react-router-dom';
-import { isEmptyObject } from '_common/utility';
 import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }   from 'App/Components/Animations';
 import { localize }      from 'App/i18n';
@@ -59,7 +58,7 @@ class Account extends React.Component {
     componentDidUpdate(prevProps) {
         // on page refresh account_status is always undefined on first render and on didMount
         // so we compare if prevProps and current props before setting state
-        if (!prevProps.account_status && !isEmptyObject(this.props.account_status)) {
+        if (!prevProps.account_status && !!this.props.account_status) {
             const is_high_risk_client = isHighRiskClient(this.props.account_status);
             this.setState({ is_high_risk_client, is_loading: false });
         }

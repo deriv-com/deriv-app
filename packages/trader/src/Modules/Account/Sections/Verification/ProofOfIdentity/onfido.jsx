@@ -9,7 +9,7 @@ import {
     Verified,
     Unverified,
     UploadComplete,
-    Unsuported,
+    Unsupported,
 }                              from './proof-of-identity-messages.jsx';
 import { onfido_status_codes } from './proof-of-identity';
 
@@ -76,7 +76,7 @@ class Onfido extends React.Component {
 
         switch (status) {
             case onfido_status_codes.unsupported:
-                return <Unsuported />;
+                return <Unsupported />;
             case onfido_status_codes.pending:
                 return <UploadComplete has_poa={has_poa} />;
             case onfido_status_codes.rejected:

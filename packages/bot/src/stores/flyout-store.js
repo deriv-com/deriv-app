@@ -22,6 +22,10 @@ export default class FlyoutStore {
     @observable is_visible = false;
     @observable is_search_flyout = false;
 
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     /**
      * Parses XML contents passed by Blockly.Toolbox. Supports all default
      * Blockly.Flyout elements i.e. <block>, <label>, <button> in their

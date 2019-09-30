@@ -9,7 +9,7 @@ import {
     Field,
     Formik,
     Form }                  from 'formik';
-import { getDecimalPlaces } from '_common/base/currency_base';
+import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { localize }         from 'App/i18n';
 import Icon                 from 'Assets/icon.jsx';
@@ -34,7 +34,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
         values.amount,
         {
             type    : 'float',
-            decimals: getDecimalPlaces(currency),
+            decimals: CurrencyUtils.getDecimalPlaces(currency),
             ...(payment_agent.min_withdrawal && {
                 min: payment_agent.min_withdrawal,
                 max: payment_agent.max_withdrawal,

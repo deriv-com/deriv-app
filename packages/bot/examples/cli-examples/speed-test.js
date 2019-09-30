@@ -14,6 +14,7 @@ while (true) {
     currency: 'USD',
     duration: 2,
     duration_unit: 'h',
+    basis: 'stake',
   });
 
   console.log('Preparing Proposals');

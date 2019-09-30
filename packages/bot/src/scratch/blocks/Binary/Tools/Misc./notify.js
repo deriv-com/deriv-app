@@ -5,7 +5,7 @@ Blockly.Blocks.notify = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: translate('Notify %1 with sound: %2 %3'),
             args0   : [
@@ -31,10 +31,10 @@ Blockly.Blocks.notify = {
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Displays a notification and optionally play selected sound'),
-            cateogry         : Blockly.Categories.Miscellaneous,
+            category         : Blockly.Categories.Miscellaneous,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Notify'),
             'description' : translate('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),

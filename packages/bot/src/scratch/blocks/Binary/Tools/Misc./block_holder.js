@@ -5,7 +5,7 @@ Blockly.Blocks.block_holder = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: translate('Ignore %1 %2'),
             args0   : [
@@ -25,7 +25,7 @@ Blockly.Blocks.block_holder = {
             category       : Blockly.Categories.Miscellaneous,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Ignore'),
             'description' : translate('In case if you want to temporarily exclude some blocks from your scenario, you can simply put them inside of this block. They won’t be executed.'),

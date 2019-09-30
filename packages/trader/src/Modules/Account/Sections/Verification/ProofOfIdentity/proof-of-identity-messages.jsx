@@ -6,7 +6,6 @@ import IconPoiPersonalDetails from 'Assets/AccountManagement/icon-poi-missing-de
 import IconIdentityCard       from 'Assets/AccountManagement/icon-identity-card.svg';
 import IconDrivingLicense     from 'Assets/AccountManagement/icon-driving-licence.svg';
 import IconPassport           from 'Assets/AccountManagement/icon-passport.svg';
-import IconPoiUploadComplete  from 'Assets/AccountManagement/icon-poi-upload-complete.svg';
 import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-is-expired.svg';
 import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.svg';
 import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
@@ -72,7 +71,7 @@ export const UploadComplete = ({ has_poa }) => {
             <IconMessageContent
                 message={message}
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
-                icon={<IconPoiUploadComplete />}
+                icon={<IconPoiVerified />}
             >
                 <ContinueTradingButton />
             </IconMessageContent>
@@ -81,7 +80,7 @@ export const UploadComplete = ({ has_poa }) => {
     return (
         <IconMessageContent
             message={message}
-            icon={<IconPoiUploadComplete />}
+            icon={<IconPoiVerified />}
         >
             <div className='account-management__text-container'>
                 <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>

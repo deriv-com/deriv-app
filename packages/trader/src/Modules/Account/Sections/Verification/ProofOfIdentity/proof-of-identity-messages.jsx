@@ -7,6 +7,7 @@ import IconIdentityCard       from 'Assets/AccountManagement/icon-identity-card.
 import IconDrivingLicense     from 'Assets/AccountManagement/icon-driving-licence.svg';
 import IconPassport           from 'Assets/AccountManagement/icon-passport.svg';
 import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-is-expired.svg';
+import IconPoiPending         from 'Assets/AccountManagement/icon-poi-pending.svg';
 import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.svg';
 import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
@@ -91,6 +92,7 @@ export const UploadComplete = ({ has_poa }) => {
     );
 };
 
+
 export const Unverified = () => (
     <IconMessageContent
         message={localize('We could not verify your proof of identity')}
@@ -147,5 +149,13 @@ export const MissingPersonalDetails = () => (
         message={localize('Your personal details are missing')}
         text={localize('Please complete your personal details before you verify your identity.')}
         icon={<IconPoiPersonalDetails />}
+    />
+);
+
+export const OnfidoFailed = () => (
+    <IconMessageContent
+        message={localize('Proof of identity verification failed')}
+        text={localize('We were unable to verify your document automatically. We will try to verify your document manually. Please check back in 1-3 days.')}
+        icon={<IconPoiPending />}
     />
 );

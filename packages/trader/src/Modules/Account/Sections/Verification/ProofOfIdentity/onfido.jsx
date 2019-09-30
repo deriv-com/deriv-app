@@ -6,8 +6,8 @@ import { init }                from 'onfido-sdk-ui';
 import { get as getLanguage }  from '_common/language';
 import {
     Expired,
+    OnfidoFailed,
     Verified,
-    Unverified,
     UploadComplete,
     Unsupported,
 }                              from './proof-of-identity-messages.jsx';
@@ -80,13 +80,13 @@ class Onfido extends React.Component {
             case onfido_status_codes.pending:
                 return <UploadComplete has_poa={has_poa} />;
             case onfido_status_codes.rejected:
-                return <Unverified />;
+                return <OnfidoFailed />;
             case onfido_status_codes.verified:
                 return <Verified has_poa={has_poa} />;
             case onfido_status_codes.expired:
                 return <Expired />;
             case onfido_status_codes.suspected:
-                return <Unverified />;
+                return <OnfidoFailed />;
             default:
                 return null;
         }

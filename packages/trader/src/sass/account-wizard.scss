@@ -9,6 +9,8 @@
 
     &--success {
         width: 400px;
+        border-radius: $BORDER_RADIUS;
+        overflow: hidden;
     }
     .dc-modal-header__title {
         background-color: var(--general-main-1);

@@ -97,7 +97,7 @@ class AccountWizard extends React.Component {
         }
     };
 
-    prevStep = (e) => {
+    prevStep = () => {
         this.setState({
             step      : this.state.step - 1,
             form_error: '',
@@ -105,6 +105,7 @@ class AccountWizard extends React.Component {
     };
 
     submitForm = () => {
+        this.props.onLoading();
         return this.props.realAccountSignup(this.form_values);
     };
 
@@ -173,6 +174,7 @@ class AccountWizard extends React.Component {
 }
 
 AccountWizard.propTypes = {
+    onLoading           : PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
 };
 

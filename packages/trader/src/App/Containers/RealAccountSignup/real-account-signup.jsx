@@ -1,5 +1,8 @@
 import classNames            from 'classnames';
-import { Modal }             from 'deriv-components';
+import {
+    Modal,
+    Loading,
+}                            from 'deriv-components';
 import React, { Component }  from 'react';
 import { localize }          from 'App/i18n';
 import Localize              from 'App/Components/Elements/localize.jsx';
@@ -18,17 +21,20 @@ const initialState = {
     success_message   : '',
 };
 
+const LoadingModal = () => <Loading is_fullscreen={false} />;
+
 class RealAccountSignup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ...initialState,
-            modal_content     : [
+            modal_content: [
                 {
                     icon : 'IconTheme',
                     label: localize('Add a real account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
+                        onLoading={this.showLoadingModal}
                     />,
                 },
                 {
@@ -37,6 +43,7 @@ class RealAccountSignup extends Component {
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
+                        onLoading={this.showLoadingModal}
                     />,
                 },
                 {
@@ -60,8 +67,14 @@ class RealAccountSignup extends Component {
                             onSubmit={this.closeModalThenOpenCashier}
                             success_message={this.state.success_message}
                         />
-                    )
-                }
+                    ),
+                },
+                {
+                    label: false,
+                    value: () => (
+                        <LoadingModal />
+                    ),
+                },
             ],
         };
     }
@@ -70,8 +83,8 @@ class RealAccountSignup extends Component {
         this.props.closeSignupAndOpenCashier();
         setTimeout(() => {
             this.setState(initialState);
-        }, 400)
-    }
+        }, 400);
+    };
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
         this.setState({
@@ -83,25 +96,31 @@ class RealAccountSignup extends Component {
 
     showAddCurrencySuccess = (currency) => {
         this.setState({
-            current_currency: currency,
+            current_currency  : currency,
             active_modal_index: 3,
-            success_message: <Localize
+            success_message   : <Localize
                 i18n_default_text='You have added a {{currency}} account.<0 />Make a deposit now to start trading.'
                 values={{
                     currency: currency,
                 }}
                 components={[
-                    <br />
+                    <br />,
                 ]}
-            />
+            />,
+        });
+    };
+
+    showLoadingModal = () => {
+        this.setState({
+            active_modal_index: 4,
         })
-    }
+    };
 
     closeModal = () => {
         this.props.closeRealAccountSignup();
         setTimeout(() => {
             this.setState(initialState);
-        }, 400)
+        }, 400);
     };
 
     get active_modal_index() {
@@ -123,7 +142,7 @@ class RealAccountSignup extends Component {
                     'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2,
                 })}
                 is_open={is_real_acc_signup_on}
-                has_close_icon={ this.active_modal_index < 2}
+                has_close_icon={this.active_modal_index < 2}
                 title={title}
                 toggleModal={this.closeModal}
             >

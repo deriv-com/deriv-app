@@ -48,7 +48,6 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable upgradeable_landing_companies = [];
-    @observable website_status = {};
     @observable mt5_login_list = [];
     @observable statement      = [];
 

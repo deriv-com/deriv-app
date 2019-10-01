@@ -28,6 +28,7 @@ class AddOrManageAccounts extends Component {
     };
 
     manageOrChangeAccount = (obj, setSubmitting) => {
+        this.props.onLoading();
         Object.entries(obj)
             .map(([key, value]) => {
                 if (key === 'fiat') {
@@ -103,6 +104,7 @@ class AddOrManageAccounts extends Component {
 }
 
 AddOrManageAccounts.propTypes = {
+    onLoading                  : PropTypes.func,
     onSuccessAddCurrency       : PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
 };

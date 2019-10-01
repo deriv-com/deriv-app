@@ -4,9 +4,12 @@ import { PropTypes }     from 'prop-types';
 import React             from 'react';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
 import {
-    IdIcon,
+    BuyPriceIcon,
     ExitSpotIcon,
     EntrySpotIcon,
+    PendingIcon,
+    RefrenceIdIcon,
+    SettledIcon,
 }                        from './Icons.jsx';
 import IconTradeType     from './icon-trade-types.jsx';
 import { connect }       from '../stores/connect';
@@ -35,7 +38,7 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={translate('Refrence Id')}
                                 >
-                                    <IdIcon className='transactions__middle' />
+                                    <RefrenceIdIcon className='transactions__middle' />
                                 </Popover>
                                 <div className='transactions__inline transactions__middle'>
                                     {contract.refrence_id}
@@ -47,7 +50,7 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={translate('Buy price')}
                                 >
-                                    <IdIcon className='transactions__middle' />
+                                    <BuyPriceIcon className='transactions__middle' />
                                 </Popover>
 
                                 <Money
@@ -97,7 +100,22 @@ const Transaction = ({ contract }) => {
                        
                     </td>
                     <td className='transactions__td'>
-                        <EntrySpotIcon />
+                        {
+                            contract.is_settled ?
+                                <Popover
+                                    className='transactions__inline transactions__middle'
+                                    alignment='left'
+                                    message={translate('Settled')}
+                                >
+                                    <SettledIcon className='transactions__middle' />
+                                </Popover> :
+                                <Popover
+                                    className='transactions__inline transactions__middle'
+                                    alignment='left'
+                                    message={translate('Pending')}
+                                >
+                                    <PendingIcon className='transactions__middle' />
+                                </Popover>}
                     </td>
                 </tr>
             </tbody>

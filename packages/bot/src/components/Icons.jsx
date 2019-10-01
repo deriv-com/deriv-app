@@ -75,10 +75,12 @@ import trade_type_unknown      from '../assets/icons/trade-types/unknown.svg';
 import trade_type_upordown     from '../assets/icons/trade-types/upordown.svg';
 
 // Transactions
-import journal_entry_spot      from '../assets/icons/ic-entryspot.svg';
-import journal_exit_spot       from '../assets/icons/ic-exitspot.svg';
-import journal_rise_fall       from '../assets/icons/ic-rise-fall.svg';
-import journal__id             from '../assets/icons/ic-id.svg';
+import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
+import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
+import contract_id              from '../assets/icons/ic-id.svg';
+import contract_pending         from '../assets/icons/contract-pending.svg';
+import contract_settled         from '../assets/icons/contract-settled.svg';
+import contract_buy_price       from '../assets/icons/buy-price.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
@@ -172,7 +174,9 @@ export const ToolbarLocalIcon        = Icon(toolbar_local);
 export const ToolbarDriveIcon        = Icon(toolbar_drive);
 
 // transactions
-export const EntrySpotIcon      = Icon(journal_entry_spot);
-export const ExitSpotIcon       = Icon(journal_exit_spot);
-export const IdIcon             = Icon(journal__id);
-export const RiseFallIcon       = Icon(journal_rise_fall);
+export const EntrySpotIcon           = Icon(contract_entry_spot);
+export const ExitSpotIcon            = Icon(contract_exit_spot);
+export const RefrenceIdIcon          = Icon(contract_id);
+export const PendingIcon             = Icon(contract_pending);
+export const BuyPriceIcon            = Icon(contract_buy_price);
+export const SettledIcon             = Icon(contract_settled);

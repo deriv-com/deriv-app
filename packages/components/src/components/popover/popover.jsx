@@ -93,7 +93,7 @@ Popover.defaultProps = {
 Popover.propTypes = {
     alignment          : PropTypes.string,
     children           : PropTypes.node,
-    className          : PropTypes.className,
+    className          : PropTypes.string,
     classNameBubble    : PropTypes.string,
     classNameTarget    : PropTypes.string,
     classNameTargetIcon: PropTypes.string,

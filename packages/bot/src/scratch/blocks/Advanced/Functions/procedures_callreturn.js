@@ -22,17 +22,17 @@ Blockly.Blocks.procedures_callreturn = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-            tooltip        : translate('Function with return value'),
+            colour         : Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary : Blockly.Colours.Special2.colourTertiary,
+            tooltip        : translate('Custom function'),
             category       : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Function with return value'),
-            'description' : translate('Function with return value Description'),
+            'display_name': translate('Custom function'),
+            'description' : '',
         };
     },
     onchange              : Blockly.Blocks.procedures_callnoreturn.onchange,

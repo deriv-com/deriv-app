@@ -9,17 +9,17 @@ Blockly.Blocks.check_sell = {
             message0       : translate('Sell is available'),
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('True if sell at market is available'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('True if active contract can be sold before expiration at current market price'),
             category       : Blockly.Categories.During_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Check Sell'),
-            'description' : translate('Check Sell Description'),
+            'display_name': translate('Can contract be sold?'),
+            'description' : translate('This block returns ‘True’ if purchased contract can be sold. Otherwise it returns an empty string.'),
         };
     },
     onchange(event) {

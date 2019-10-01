@@ -27,19 +27,19 @@ Blockly.Blocks.text_join = {
                     name: 'STACK',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Text Join Tooltip'),
+            tooltip          : translate('Text join'),
             category         : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Join'),
-            'description' : translate('Text Join Description'),
+            'display_name': translate('Text join'),
+            'description' : translate('Creates a single text string from combining the text value of each attached item, without spaces in between. The number of items can be added accordingly.'),
         };
     },
     onIconClick() {

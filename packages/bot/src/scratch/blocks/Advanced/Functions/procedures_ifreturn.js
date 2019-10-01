@@ -1,4 +1,3 @@
-import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
 /**
@@ -24,19 +23,19 @@ Blockly.Blocks.procedures_ifreturn = {
                     name: 'VALUE',
                 },
             ],
-            colour           : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary  : Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryProcedures.colourTertiary,
+            colour           : Blockly.Colours.Special2.colour,
+            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Function If Else'),
+            tooltip          : translate('Prematurely returns a value within a function'),
             category         : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Function If else'),
-            'description' : translate('Function If else Description'),
+            'display_name': translate('Premature return'),
+            'description' : translate('This block is used within a function block, this block returns a value when a specific condition is true.'),
         };
     },
     /**
@@ -72,8 +71,6 @@ Blockly.Blocks.procedures_ifreturn = {
      * @this Blockly.Block
      */
     onchange(/* e */) {
-        setBlockTextColor(this);
-
         if (!this.workspace.isDragging || this.workspace.isDragging()) {
             return; // Don't change state at the start of a drag.
         }

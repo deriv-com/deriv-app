@@ -1,3 +1,4 @@
+import moment                        from 'moment';
 import {
     action,
     computed,
@@ -5,25 +6,24 @@ import {
     runInAction,
     when,
 }                                    from 'mobx';
-import moment                        from 'moment';
+import CurrencyUtils                from 'deriv-shared/utils/currency';
+import ObjectUtils                  from 'deriv-shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { isEmptyObject }             from '_common/utility';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
-    State }                                from '_common/storage';
-import BinarySocketGeneral                 from 'Services/socket-general';
-import { handleClientNotifications }       from './Helpers/client-notifications';
-import BaseStore                           from './base-store';
-import { getClientAccountType }            from './Helpers/client';
-import { buildCurrenciesList }             from './Modules/Trading/Helpers/currency';
-import { setCurrencies } from '../_common/base/currency_base';
-import { toMoment }                        from '../Utils/Date';
+    State }                          from '_common/storage';
+import BinarySocketGeneral           from 'Services/socket-general';
+import { handleClientNotifications } from './Helpers/client-notifications';
+import BaseStore                     from './base-store';
+import { getClientAccountType }      from './Helpers/client';
+import { buildCurrenciesList }       from './Modules/Trading/Helpers/currency';
+import { toMoment }                  from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
@@ -58,7 +58,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get balance() {
-        if (isEmptyObject(this.accounts)) return '';
+        if (ObjectUtils.isEmptyObject(this.accounts)) return '';
         return (this.accounts[this.loginid] && this.accounts[this.loginid].balance) ?
             this.accounts[this.loginid].balance.toString() :
             '';
@@ -185,7 +185,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get all_loginids() {
-        return !isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
+        return !ObjectUtils.isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
     }
 
     @computed
@@ -242,7 +242,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_logged_in() {
         return !!(
-            !isEmptyObject(this.accounts) &&
+            !ObjectUtils.isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
             this.accounts[this.loginid].token
@@ -251,12 +251,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+        return !ObjectUtils.isEmptyObject(this.accounts) &&
+        this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
     get can_upgrade() {
-        return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
+        return this.upgrade_info &&
+        (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
     @computed
@@ -272,7 +274,8 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_single_currency() {
-        return Object.keys(this.currencies_list).map(type => Object.values(this.currencies_list[type]).length)
+        return Object.keys(this.currencies_list).map(type =>
+            Object.values(this.currencies_list[type]).length)
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
 
@@ -344,7 +347,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
-        setCurrencies(this.website_status);
+        CurrencyUtils.setCurrencies(this.website_status);
     }
 
     @action.bound
@@ -487,6 +490,19 @@ export default class ClientStore extends BaseStore {
     @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
+    }
+
+    @action.bound
+    refreshNotifications(settings) {
+        this.root_store.ui.removeAllNotifications();
+        const client = this.accounts[this.loginid];
+        handleClientNotifications(
+            client,
+            settings,
+            this.account_status,
+            this.root_store.ui.addNotification,
+            this.loginid,
+        );
     }
 
     /**
@@ -825,7 +841,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies
-                if (account_list && isEmptyObject(this.accounts)) {
+                if (account_list && ObjectUtils.isEmptyObject(this.accounts)) {
                     this.storeClientAccounts(obj_params, account_list);
                 }
             });

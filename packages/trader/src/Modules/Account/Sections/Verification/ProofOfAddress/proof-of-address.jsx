@@ -8,13 +8,14 @@ class ProofOfAddress extends React.Component {
         if (this.props.is_virtual) return <DemoMessage />;
 
         return (
-            <ProofOfAddressContainer />
+            <ProofOfAddressContainer refreshNotifications={this.props.refreshNotifications} />
         );
     }
 }
 
 export default connect(
     ({ client }) => ({
-        is_virtual: client.is_virtual,
+        is_virtual          : client.is_virtual,
+        refreshNotifications: client.refreshNotifications,
     }),
 )(ProofOfAddress);

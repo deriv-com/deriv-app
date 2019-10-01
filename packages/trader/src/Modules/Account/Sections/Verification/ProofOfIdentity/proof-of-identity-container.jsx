@@ -74,6 +74,7 @@ class ProofOfIdentityContainer extends React.Component {
                 const unwelcome              = get_account_status.status.some(account_status => account_status === 'unwelcome');
                 this.setState({ is_loading: false, has_poa, status, onfido_service_token, unwelcome });
             });
+            this.props.refreshNotifications();
         });
     }
 

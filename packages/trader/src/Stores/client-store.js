@@ -493,12 +493,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    refreshNotifications(settings) {
+    refreshNotifications() {
         this.root_store.ui.removeAllNotifications();
         const client = this.accounts[this.loginid];
         const { has_missing_required_field } = handleClientNotifications(
             client,
-            settings,
+            this.account_settings,
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,

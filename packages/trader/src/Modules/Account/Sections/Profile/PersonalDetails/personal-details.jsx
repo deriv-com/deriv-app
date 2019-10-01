@@ -128,7 +128,7 @@ class PersonalDetailsForm extends React.Component {
                         return;
                     }
                     this.setState({ ...response.get_settings, is_loading: false });
-                    this.props.refreshNotifications(response.get_settings);
+                    this.props.refreshNotifications();
                 });
                 this.setState({ is_submit_success: true });
             }

@@ -33,6 +33,7 @@ class ProofOfAddressContainer extends React.Component {
             const { document, identity } = get_account_status.authentication;
             const has_poi = !!(identity && identity.status === 'none');
             this.setState({ status: document.status, has_poi, is_loading: false });
+            this.props.refreshNotifications();
         });
     }
 

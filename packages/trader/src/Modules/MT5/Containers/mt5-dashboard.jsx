@@ -939,9 +939,9 @@ class MT5Dashboard extends React.Component {
                                 <IconDeviceLaptop />
                             </div>
                             <div className='mt5-dashboard__download-center-options--desktop-links'>
-                                <IconInstallationWindows />
-                                <IconInstallationMac />
-                                <IconInstallationLinux />
+                                <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank'><IconInstallationWindows /></a>
+                                <a href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg' target='_blank'><IconInstallationMac /></a>
+                                <a href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux' target='_blank'><IconInstallationLinux /></a>
                             </div>
                         </div>
                         <div className='mt5-dashboard__download-center-options--mobile'>
@@ -949,8 +949,8 @@ class MT5Dashboard extends React.Component {
                                 <IconDeviceMobile />
                             </div>
                             <div className='mt5-dashboard__download-center-options--mobile-links'>
-                                <IconInstallationApple />
-                                <IconInstallationGoogle />
+                                <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank'><IconInstallationApple /></a>
+                                <a href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server' target='_blank'><IconInstallationGoogle /></a>
                             </div>
                         </div>
                     </div>

@@ -28,6 +28,7 @@
         padding: 0 8px;
         height: 100%;
         width: 100%;
+        overflow: hidden;
     }
     &__scrollbars_container {
         height: 100%;
@@ -242,6 +243,17 @@
         }
         * {
             padding-left: 8px;
+        }
+    }
+    &-address {
+        &__details {
+            &-section {
+                margin-top: 0.5em;
+
+                .account-form__fieldset {
+                    margin-bottom: 3em;
+                }
+            }
         }
     }
 }

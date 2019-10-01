@@ -10,15 +10,14 @@ class Tab extends Component {
 
     render() {
         const {
-            activeTab,
+            is_active,
             label,
         } = this.props;
 
         return (
             <li
-                className={classNames(
-                    'dc-tabs__item',
-                    { 'dc-tabs__active': activeTab === label }
+                className={classNames('dc-tabs__item',
+                    { 'dc-tabs__active': is_active }
                 )}
                 onClick={this.onClick}
             >
@@ -29,10 +28,10 @@ class Tab extends Component {
 }
 
 Tab.propTypes = {
-    activeTab: PropTypes.string,
-    className: PropTypes.string,
-    label    : PropTypes.string,
-    onClick  : PropTypes.func,
+    active_tab: PropTypes.string,
+    className : PropTypes.string,
+    label     : PropTypes.string,
+    onClick   : PropTypes.func,
 };
 
 export default Tab;

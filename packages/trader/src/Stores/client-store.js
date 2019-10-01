@@ -698,11 +698,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setBalance(obj_balance) {
-        this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-        this.obj_total_balance = {
-            amount  : obj_balance.total.real.amount,
-            currency: obj_balance.total.real.currency,
-        };
+        if (this.accounts[obj_balance.loginid]) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            this.obj_total_balance = {
+                amount  : obj_balance.total.real.amount,
+                currency: obj_balance.total.real.currency,
+            };
+        }
     }
 
     @action.bound

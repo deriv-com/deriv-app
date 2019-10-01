@@ -95,6 +95,7 @@ class AccountSwitcher extends React.Component {
                                                 <Money
                                                     currency={account.icon}
                                                     amount={this.props.accounts[account.loginid].balance}
+                                                    is_formatted={false}
                                                 />
                                             </span>
                                             }

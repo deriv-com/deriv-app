@@ -114,7 +114,7 @@
             font-size: 1.4rem;
             text-align: left;
             line-height: 1.43;
-            max-width: 18rem;
+            max-width: 20rem;
 
             &-wrapper {
                 display: flex;
@@ -147,6 +147,14 @@
     }
     &__modal-tab {
         min-width: 24rem;
+    }
+    &__success {
+        background-color: var(--general-section-1);
+        padding: 2.4rem 3.4rem;
+        margin: 0 4.9rem;
+    }
+    &__amount-symbol {
+        top: 0.9rem;
     }
     /** @define cashier-error */
     &-error {
@@ -373,9 +381,6 @@
     &__paragraph {
         align-self: flex-start;
     }
-    &__amount-symbol {
-        top: 0.9rem;
-    }
 }
 
 /** @define account-transfer */
@@ -449,8 +454,24 @@
             margin-top: 3.2rem;
         }
     }
-    &__amount-symbol {
-        top: 0.9rem;
+}
+
+/** @define payment-agent-transfer */
+.payment-agent-transfer {
+    &__input {
+        width: 29.6rem;
+        display: inline-flex;
+
+        &:not(:first-child) {
+            margin-left: 2.4rem;
+        }
+    }
+    &__buttons {
+        margin-left: -10.7rem;
+        align-items: center;
+    }
+    &__done-button {
+        margin-right: 2.4rem;
     }
 }
 

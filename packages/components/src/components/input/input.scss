@@ -73,6 +73,11 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        &[type=textarea] {
+            height: 9.6rem;
+            border: none;
+            resize: none;
+        }
     }
     &__leading-icon {
         margin-left: 1rem;

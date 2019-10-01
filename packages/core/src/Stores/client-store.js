@@ -32,7 +32,6 @@ export default class ClientStore extends BaseStore {
     @observable accounts                   = {};
     @observable switched                   = '';
     @observable switch_broadcast           = false;
-    @observable is_account_switch_enabled  = true;
     @observable currencies_list            = {};
     @observable residence_list             = [];
     @observable selected_currency          = '';
@@ -42,6 +41,7 @@ export default class ClientStore extends BaseStore {
     @observable account_settings           = {};
     @observable account_status             = {};
     @observable device_data                = {};
+    is_account_switch_enabled              = true;
 
     constructor(root_store) {
         super({ root_store });

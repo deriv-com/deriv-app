@@ -1,4 +1,9 @@
+import BinarySocket                   from '_common/base/socket_base';
+import { localize }                   from 'App/i18n';
+import CurrencyUtils                  from 'deriv-shared/utils/currency';
+import ObjectUtils                    from 'deriv-shared/utils/object';
 import debounce                       from 'lodash.debounce';
+import { WS }                         from 'Services';
 import {
     action,
     computed,
@@ -6,17 +11,7 @@ import {
     reaction,
     runInAction,
     toJS,
-}                     from 'mobx';
-import BinarySocket                   from '_common/base/socket_base';
-import { localize }                   from 'App/i18n';
-import {
-    cloneObject,
-    isEmptyObject,
-    getPropertyValue }                from '_common/utility';
-import {
-    getMinPayout,
-    isCryptocurrency }                from '_common/base/currency_base';
-import { WS }                         from 'Services';
+}                                     from 'mobx';
 import {
     isDigitContractType,
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
@@ -39,10 +34,10 @@ import {
     createProposalRequests,
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
-import BaseStore                      from '../../base-store';
 import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -438,7 +433,7 @@ export default class TradeStore extends BaseStore {
      */
     @action.bound
     updateStore(new_state) {
-        Object.keys(cloneObject(new_state)).forEach((key) => {
+        Object.keys(ObjectUtils.cloneObject(new_state)).forEach((key) => {
             if (key === 'root_store' || ['validation_rules', 'validation_errors', 'currency'].indexOf(key) > -1) return;
             if (JSON.stringify(this[key]) === JSON.stringify(new_state[key])) {
                 delete new_state[key];
@@ -483,11 +478,11 @@ export default class TradeStore extends BaseStore {
             /\bcurrency\b/.test(Object.keys(obj_new_values))
         ) {
             const prev_currency = obj_old_values &&
-            !isEmptyObject(obj_old_values) &&
+            !ObjectUtils.isEmptyObject(obj_old_values) &&
             obj_old_values.currency ? obj_old_values.currency : this.currency;
-            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
+            if (CurrencyUtils.isCryptocurrency(obj_new_values.currency) !== CurrencyUtils.isCryptocurrency(prev_currency)) {
                 obj_new_values.amount = is_changed_by_user && obj_new_values.amount ?
-                    obj_new_values.amount : getMinPayout(obj_new_values.currency);
+                    obj_new_values.amount : CurrencyUtils.getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -506,7 +501,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
         if (has_only_forward_starting_contracts) return;
 
-        const new_state = this.updateStore(cloneObject(obj_new_values));
+        const new_state = this.updateStore(ObjectUtils.cloneObject(obj_new_values));
 
         if (is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state))) {
             this.updateStore({ // disable purchase button(s), clear contract info
@@ -567,7 +562,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!isEmptyObject(requests)) {
+        if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.proposal_info     = {};
             this.purchase_info     = {};
@@ -587,8 +582,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onProposalResponse(response) {
         const contract_type           = response.echo_req.contract_type;
-        const prev_proposal_info      = getPropertyValue(this.proposal_info, contract_type) || {};
-        const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+        const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
+        const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         this.proposal_info  = {
             ...this.proposal_info,
@@ -768,11 +763,14 @@ export default class TradeStore extends BaseStore {
             }));
         }
         if (req.active_symbols) {
-            if (this.should_refresh_active_symbols) {
-                return WS.activeSymbols(req);
-            }
             return BinarySocket.wait('active_symbols');
         }
         return WS.storage.send(req);
     };
+
+    @action.bound
+    resetRefresh() {
+        WS.activeSymbols(); // reset active symbols
+        this.should_refresh_active_symbols = false;
+    }
 }

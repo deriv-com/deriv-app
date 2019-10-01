@@ -1,0 +1,12 @@
+{
+    "text": [
+        "This block performs the following operations to a given number",
+        "Available operations are:",
+        "- Square root",
+        "- Absolute",
+        "- Negation",
+        "- Natural log",
+        "- Euler’s number (2.71) to the power of a given number",
+        "- 10 to the power of a given number"
+    ]
+}

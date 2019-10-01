@@ -20,9 +20,9 @@ Blockly.Blocks.timeout = {
                     name: 'SECONDS',
                 },
             ],
-            colour           : '#fef1cf',
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
             tooltip          : translate('Run the blocks inside every n seconds'),
@@ -31,8 +31,8 @@ Blockly.Blocks.timeout = {
     },
     meta(){
         return {
-            'display_name': translate('Timeout'),
-            'description' : translate('Timeout Description'),
+            'display_name': translate('Run after a timeout'),
+            'description' : translate('This block runs postpones execution of embedded instructions for X number of seconds. Actually, bot pauses execution of any other instructions until this block’s instructions are done.'),
         };
     },
     onchange(event) {

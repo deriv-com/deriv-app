@@ -38,8 +38,8 @@
 }
 
 .animation {
-    $static-circle-diameter: 8px;
-    $dynamic-circle-diameter: 8px;
+    $static-circle-diameter: 6px;
+    $dynamic-circle-diameter: 10px;
     $animation: &;
 
     &__container {
@@ -49,13 +49,15 @@
         flex-direction: column;
         justify-content: space-evenly;
         border-radius: 4px;
-        border: solid 1px #d6dadb; // TODO color
+        border: solid 1px var(--border-normal);
+        position: relative;
     }
     &__text {
         font-size: 12px;
         font-weight: bold;
         text-align: center;
         margin-bottom: 5px;
+        line-height: 18px;
     }
     &__progress {
         display: flex;
@@ -68,54 +70,49 @@
             display: flex;
 
             &.completed, &.active {
-                .static-circle, .dynamic-circle {
+                [class*='-circle'] {
                     transform: scale(1.2);
                 }
-            }
-            &.completed {
                 .static-circle {
-                    background-color: #4bb4b3; // TODO color
+                    animation: animate-circle-appear 1s;
+                    background-color: var(--status-success);
+                    border: 2px solid var(--status-success);
                 }
             }
             &.active {
                 .dynamic-circle {
-                    position: absolute;
-                    width: calc(#{$dynamic-circle-diameter} + 4px);
-                    height: calc(#{$dynamic-circle-diameter} + 4px);
-                    background-color: #4bb4b3; // TODO color
+                    animation: animate-circle 0.8s infinite;
+                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                    background-color: var(--status-success);
                     border-radius: 100%;
-                    opacity: 0.32;
+                    height: $dynamic-circle-diameter;
+                    width: $dynamic-circle-diameter;
                     margin-left: -2px;
                     margin-top: -2px;
-                    animation: animate-circle 0.8s infinite;
+                    opacity: 0.32;
+                    position: absolute;
                     // transform: translate(-50%, -50%);
-                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
                     // z-index: 1;
-                }
-                .static-circle {
-                    border: 2px solid #4bb4b3; // TODO color
-                    background-color: #ffffff;
-                    animation: animate-circle-appear 1s;
                 }
             }
             .static-circle {
                 width: $static-circle-diameter;
                 height: $static-circle-diameter;
+                background-color: var(--border-normal);
                 border-radius: 100%;
-                background-color: #f4f4f6;
                 align-self: center;
                 z-index: 1;
             }
         }
         &-line {
-            background-color: #f4f4f6;
-            height: 2.5px;
+            background-color: var(--border-normal);
+            height: 2px;
             width: 100%;
-            top: 38%;
+            top: 36%;
             position: absolute;
         }
         &-bar {
-            background-color: $COLOR_GREEN_1;
+            background-color: var(--status-success);
             width: 0;
             height: 100%;
         }
@@ -137,9 +134,15 @@
     &--running {
         #{$animation}__progress {
             .static-circle {
-                background-color: #ffad3a;
+                background-color: var(--status-warning);
                 animation: animate-circle-appear 1s;
             }
         }
+    }
+    &--completed {
+        border: 1px solid var(--general-main-1);
+    }
+    &--hidden {
+        visibility: hidden;
     }
 }

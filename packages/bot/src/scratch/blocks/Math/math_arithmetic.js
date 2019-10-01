@@ -26,17 +26,17 @@ Blockly.Blocks.math_arithmetic = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Mathematic Arithmetic (Add, minus, mutiply, divide, power)'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Arithmetic operations'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Mathematic Arithmetic'),
-            'description' : translate('Mathematic Arithmetic Description'),
+            'display_name': translate('Arithmetical operations'),
+            'description' : translate('Performs arithmetical operations between two numbers'),
         };
     },
 };

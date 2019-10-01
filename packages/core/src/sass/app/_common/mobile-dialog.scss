@@ -1,0 +1,163 @@
+$animation-duration: 0.2s;
+
+$header-height: 3.2em;
+$shadow-cover-height: 3.6em;
+
+$header-index: 4;
+$shadow-cover-index: 3;
+$shadow-index: 2;
+$content-index: 1;
+
+/** @define mobile-dialog; weak */
+.mobile-dialog {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    overflow: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $animation-duration;
+    background: $color-white;
+    // transform here would break fixed header
+
+    &--open {
+        opacity: 1;
+        pointer-events: auto;
+
+        & .mobile-dialog__content {
+            transform: scale(1);
+        }
+        & .mobile-dialog__header {
+            transform: translateY(0);
+        }
+    }
+    &__content {
+        box-sizing: border-box;
+        position: relative;
+        padding-top: $shadow-cover-height;
+        padding-bottom: 7em; // ios bottom bar fix
+        z-index: $content-index;
+        background: $color-white;
+        transform: scale(0);
+        transition: all $animation-duration ease-out;
+    }
+    &__header {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        padding: 1em;
+        height: $header-height;
+        z-index: $header-index;
+        background: $color-white;
+        transform: translateY(-100%);
+        transition: all $animation-duration ease-out;
+        transition-delay: $animation-duration;
+    }
+    &__header-shadow-cover {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: $shadow-cover-height;
+        z-index: $shadow-cover-index;
+        background-color: $color-white;
+    }
+    &__header-shadow {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: $header-height;
+        z-index: $shadow-index;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    &__title {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: var(--text-prominent);
+        margin: 0;
+    }
+    &__close-btn-icon {
+        width: 2.4em;
+        height: 2.4em;
+    }
+    fieldset {
+        border: none;
+        margin-right: 0.5em;
+        margin-left: 0.5em;
+    }
+    &__trade-type-info-modal {
+        padding: 1.6em;
+
+        .info-header {
+            display: flex;
+            padding: 0.8em;
+
+            .title {
+                margin-left: 1.5em;
+                font-size: 1.4em;
+                color: var(--text-prominent);
+            }
+            span {
+                align-self: center;
+            }
+        }
+        .info-gif {
+            padding: 0.8em;
+            width: 90%;
+            width: calc(100% - 1.6em);
+            height: fit-content;
+            background-color: $color-white;
+            border-radius: 4px;
+            margin: 0 auto;
+        }
+        .info-content {
+            padding: 0.8em;
+            margin: 0 auto;
+            font-size: 1.4em;
+            line-height: 2em;
+            color: var(--text-prominent);
+        }
+        .info-choose {
+            button {
+                background: var(--button-primary-default);
+                color: $color-white;
+                font-weight: bold;
+                margin: 1.6em 0;
+                width: 100%;
+            }
+        }
+        .info-navigation {
+            display: flex;
+            align-self: flex-end;
+            margin-top: 1.6em;
+
+            &__list {
+                display: inline-block;
+                text-align: center;
+                margin: 0 auto;
+
+                .circle-button {
+                    width: 1em;
+                    height: 1em;
+                    border-radius: 50%;
+                    display: inline-block;
+                    margin: 0 0.5em;
+                    background-color: var(--text-general);
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: var(--text-prominent);
+                    }
+                }
+            }
+        }
+    }
+}

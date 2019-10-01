@@ -6,7 +6,7 @@ import { routes }                     from 'Constants';
 
 // TODO: Find a workaround for black flash when on initial load for page route modules
 import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';
-import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
+// import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
 // import ProofOfIdentity     from 'Modules/Account/Sections/Verification/ProofOfIdentity';
 // import ProofOfAddress      from 'Modules/Account/Sections/Verification/ProofOfAddress';
 import DerivPassword       from 'Modules/Account/Sections/Security/DerivPassword';
@@ -17,13 +17,16 @@ import Statement           from  'Modules/Reports/Containers/statement.jsx';
 
 import Trade from 'Modules/Trading';
 
-const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */  'Modules/Contract'));
+const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
+
+// MT5 Routes
+const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
 
 // Reports Routes
-const Reports       = lazy(() => import(/* webpackChunkName: "reports" */        'Modules/Reports'));
+const Reports = lazy(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
 
 // Account Management Routes
-const Account = lazy(() => import(/* webpackChunkName: "account" */              'Modules/Account'));
+const Account = lazy(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -31,6 +34,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: RouterRedirect,  title: '',                            to: routes.trade },
+    { path: routes.mt5,       component: MT5,             title: localize('MT5'),               is_authenticated: true },
     {
         path            : routes.reports,
         component       : Reports,
@@ -53,7 +57,8 @@ const initRoutesConfig = () => ([
                 icon     : 'IconUser',
                 subroutes: [
                     { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
-                    { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
+                    // TODO: uncomment once below is ready
+                    // { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
                 ],
             },
             // TODO: uncomment when it's ready

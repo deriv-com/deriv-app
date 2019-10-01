@@ -9,17 +9,17 @@ Blockly.Blocks.math_random_float = {
             message0       : translate('random fraction'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Math Random Float Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Random fraction number'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Math Random Float'),
-            'description' : translate('Math Random Float Description'),
+            'display_name': translate('Random fraction number'),
+            'description' : translate('Returns a random fraction from 0.0 to 1.0'),
         };
     },
 };

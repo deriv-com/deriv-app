@@ -119,6 +119,15 @@
     }
 }
 
+@keyframes blinking-network-status {
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 /** @define network-status */
 .network-status {
     &__wrapper {
@@ -144,7 +153,8 @@
             background: var(--text-loss-danger);
         }
         &--blinker {
-            background: var(--text-disabled);
+            animation: blinking-network-status 0.4s alternate infinite;
+            background: var(--text-profit-success);
         }
     }
 }

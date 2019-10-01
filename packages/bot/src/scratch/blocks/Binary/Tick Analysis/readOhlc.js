@@ -30,17 +30,17 @@ Blockly.Blocks.read_ohlc = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Read the selected candle value in the nth recent candle'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Read the selected candle value'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Read selected candle'),
-            'description' : translate('Read selected candle description'),
+            'display_name': translate('Read candle value (1)'),
+            'description' : translate('This block returns specified candle value for the selected time interval.'),
         };
     },
 };

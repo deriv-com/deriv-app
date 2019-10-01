@@ -21,6 +21,7 @@ export default Engine =>
                 contractStatus({
                     id  : 'contract.purchase_recieved',
                     data: buy.transaction_id,
+                    buy,
                 });
 
                 this.subscribeToOpenContract(buy.contract_id);

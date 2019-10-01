@@ -1,13 +1,13 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
-import Button       from 'App/Components/Form/button.jsx';
 
 const UpgradeButton = ({ className, onClick }) => (
     <Button
         id='acc-balance-btn'
-        className={classNames(className, 'btn--primary btn--primary--orange')}
+        className={classNames(className, 'btn--primary--default')}
         has_effect
         text={localize('Upgrade')}
         onClick={onClick}

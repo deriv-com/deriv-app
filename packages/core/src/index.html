@@ -1,6 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Set skeleton theme color properties -->
+    <style>
+        :root {
+            --logo-loading-color: rgba(0, 0, 0, 0.8);
+            --header-footer-bg-color: rgba(0, 0, 0, 0.04);
+            --content-bg-color: #fff;
+            --general-main-1: #ffffff;
+            --general-section-1: #f2f3f4;
+            --text-prominent: #333333;
+            font-size: 62.5%;
+        }
+        .deriv-app > .header__loading {
+            background-color: var(--general-main-1);
+            border-bottom: var(--general-main-1);
+        }
+        .deriv-app > .app-contents__loading {
+            background-color: var(--general-main-1);
+        }
+        .deriv-app > .footer__loading {
+            background-color: var(--general-main-1);
+            border-bottom: var(--general-main-1);
+        }
+        .initial-loader__loading {
+            background-color: var(--general-main-1);
+        }
+        .logo__loading--fill {
+            fill: var(--logo-loading-color);
+        }
+    </style>
+    <script type="text/javascript">
+        var ui_store = localStorage.getItem('ui_store');
+        if (ui_store && (ui_store.length > 0)) {
+            var is_dark_theme = JSON.parse(ui_store).is_dark_mode_on || false;
+            if (is_dark_theme) {
+                // if dark theme, change the property colors for dark theme
+                document.documentElement.style.setProperty('--header-footer-bg-color', '#0b0e18');
+                document.documentElement.style.setProperty('--content-bg-color', '#101320');
+                document.documentElement.style.setProperty('--logo-loading-color', '#fff');
+                document.documentElement.style.setProperty('--general-main-1', '#0e0e0e');
+                document.documentElement.style.setProperty('--general-section-1', '#151717');
+                document.documentElement.style.setProperty('--text-prominent', '#ffffff');
+            }
+        }
+    </script>
+    <!-- End theme styles -->
     <!-- Start Anti-Clickjack -->
     <style id="antiClickjack">body{display:none !important;}</style>
     <script type="text/javascript">
@@ -84,15 +129,30 @@
 <!-- End GTM NoScript -->
 
 <div id="deriv_app" class="deriv-app">
-    <div class="initial-loader" style="background-color: #f4f4f6;">
-        <div class="initial-loader__barspinner barspinner barspinner-light">
-            <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
-            <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
-            <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
-            <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
-            <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+    <header class="header__loading" style="background: var(--general-main-1); border-bottom: 1px solid var(--general-section-1); position: fixed; z-index: 99; box-sizing: border-box; height: 48px; width: 100%; top: 0;">
+        <div class="icon_loading" style="height: 100%; padding: 0 1.6em; position: relative; display: inline-flex; align-items: center;">
+            <svg className='inline-icon header__icon' style='margin-right: 0.8rem; vertical-align: middle;' width='32' height='32' viewBox='0 0 32 32'>
+                <g fill='none' fillRule='evenodd'>
+                    <path fill='#FF444F' d='M5.982 0H25.92a5.982 5.982 0 0 1 5.981 5.982V25.92a5.982 5.982 0 0 1-5.981 5.981H5.98A5.982 5.982 0 0 1 0 25.921V5.98A5.982 5.982 0 0 1 5.982.002' />
+                    <path fill='#FFF' d='M7.826 5.982L6.76 9.312l5.324 6.55-5.334 6.49.858 3.569 8.264-10.05z' />
+                    <path fill='#FFF' d='M15.393 5.982H9.45l2.484 3.05h3.448a6.979 6.979 0 0 1 6.839 6.98c0 3.8-3.04 6.902-6.839 6.978h-3.734l-2.41 2.93h6.144c5.449-.06 9.82-4.52 9.77-9.969.05-5.445-4.315-9.903-9.76-9.97' />
+                </g>
+            </svg>
+            <div className='header__title' style='display: inline-block; font-weight: bold; font-size: 1.6rem; color: var(--text-prominent);'>DTrader<span className='header__logo' style="color: #fff; background-color: #85acb0; border-radius: 10px; display: inline-block; font-size: 1.4rem; font-weight: normal; height: 20px; line-height: 1.43; text-align: center; width: 50px; margin-left: 8px;">BETA</span></div>
+        </div>
+    </header>
+    <div class="app-contents app-contents__loading" style="margin-bottom: 0; overflow: hidden;">
+        <div class="initial-loader initial-loader__loading">
+            <div class="initial-loader__barspinner barspinner barspinner-light">
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+            </div>
         </div>
     </div>
+    <footer class="footer__loading" style="background: var(--general-main-1); border-top: 1px solid var(--general-section-1); position: fixed; bottom: 0; width: 100%; height: 35px; z-index: 3;"></footer>
 </div>
 <div id="modal_root" class="modal-root"></div>
 </body>

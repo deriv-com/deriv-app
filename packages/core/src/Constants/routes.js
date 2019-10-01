@@ -10,13 +10,10 @@ const routes = {
     index           : '/index',
     limits          : '/settings/limits',
     personal        : '/settings/personal',
-    positions       : '/reports/positions',
-    profit          : '/reports/profit',
     reports         : '/reports',
     root            : '/',
     redirect        : '/redirect',
     settings        : '/settings',
-    statement       : '/reports/statement',
     token           : '/settings/token',
     trade           : '/',
 };

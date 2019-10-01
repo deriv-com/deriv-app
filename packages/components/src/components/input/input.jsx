@@ -12,10 +12,14 @@ const Input = ({
     leading_icon,
     trailing_icon,
     label,
-    placeholder,
     ...props
 }, ref) => (
-    <div className={ classNames('dc-input', className, { 'dc-input__disabled': disabled }) }>
+    <div
+        className={ classNames('dc-input', className, {
+            'dc-input__disabled': disabled,
+            'dc-input--error'   : error,
+        })}
+    >
         {
             leading_icon &&
             React.cloneElement(
@@ -23,7 +27,7 @@ const Input = ({
                 { className: classNames('dc-input__leading-icon', leading_icon.props.className) },
             )
         }
-        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && placeholder })} disabled={disabled} />
+        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && props.placeholder })} disabled={disabled} />
         {
             trailing_icon &&
             React.cloneElement(

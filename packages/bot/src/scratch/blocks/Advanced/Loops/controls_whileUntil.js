@@ -26,19 +26,19 @@ Blockly.Blocks.controls_whileUntil = {
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Control While Tooltip'),
+            tooltip          : translate('Repeats inside blocks and stops only when the condition is met'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Control While'),
-            'description' : translate('Control While Description'),
+            'display_name': translate('Repeat While/Until'),
+            'description' : translate('Repeats inside blocks and stops only when the condition is met.'),
         };
     },
 };

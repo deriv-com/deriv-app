@@ -35,6 +35,7 @@ export default class ClientStore extends BaseStore {
     @observable switch_broadcast           = false;
     @observable currencies_list            = {};
     @observable residence_list             = [];
+    @observable states_list                = [];
     @observable selected_currency          = '';
     @observable is_populating_account_list = false;
     @observable website_status             = {};
@@ -337,6 +338,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].is_virtual                = +response.authorize.is_virtual;
         this.accounts[this.loginid].session_start             = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+        this.accounts[this.loginid].country                   = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
@@ -899,6 +901,17 @@ export default class ClientStore extends BaseStore {
                 this.residence_list = response.residence_list || [];
             });
         });
+    }
+
+    @action.bound
+    fetchStatesList() {
+        WS.statesList({
+            states_list: this.accounts[this.loginid].residence
+        }).then(response => {
+            runInAction(() => {
+                this.states_list = response.states_list || [];
+            })
+        })
     }
 
     @action.bound

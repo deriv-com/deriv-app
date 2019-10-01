@@ -152,6 +152,7 @@ class PersonalDetails extends Component {
                     first_name   : this.props.value.first_name,
                     last_name    : this.props.value.last_name,
                     date_of_birth: this.props.value.date_of_birth,
+                    phone        : this.props.value.phone,
                 }}
                 validate={this.validatePersonalDetails}
                 onSubmit={(values, actions) => {
@@ -185,6 +186,12 @@ class PersonalDetails extends Component {
                                         className='dc-input--no-placeholder'
                                         label={localize('Date of birth')}
                                         placeholder={localize('1999-07-01')}
+                                    />
+                                    <InputField
+                                        name='phone'
+                                        className='dc-input--no-placeholder'
+                                        label={localize('Phone number')}
+                                        placeholder={localize('Phone number')}
                                     />
                                 </div>
                                 <p className='personal-details-form__description'>
@@ -230,12 +237,17 @@ class PersonalDetails extends Component {
                 v => !!v,
                 v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
             ],
+            phone: [
+                v => !!v,
+                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+            ],
         };
 
         const mappedKey = {
             first_name   : localize('First name'),
             last_name    : localize('Last name'),
             date_of_birth: localize('Date of birth'),
+            phone        : localize('Phone'),
         };
 
         const common_messages  = [
@@ -245,7 +257,7 @@ class PersonalDetails extends Component {
             '%s is not in a proper format.',
         ];
 
-        const date_of_birth_validation_messages = [
+        const alt_messages = [
             '%s is required',
             '%s is not in a proper format.',
         ];
@@ -256,11 +268,14 @@ class PersonalDetails extends Component {
             .forEach(([key, rules]) => {
                 const error_index = rules.findIndex(v => !v(values[key]));
                 if (error_index !== -1) {
-                    if (key === 'date_of_birth') {
-                        errors[key] =
-                            localize(date_of_birth_validation_messages[error_index].replace('%s', mappedKey[key]));
-                    } else {
-                        errors[key] = localize(common_messages[error_index].replace('%s', mappedKey[key]));
+                    switch (key) {
+                        case 'date_of_birth':
+                        case 'phone':
+                            errors[key] =
+                                localize(alt_messages[error_index].replace('%s', mappedKey[key]));
+                            break;
+                        default:
+                            errors[key] = localize(common_messages[error_index].replace('%s', mappedKey[key]));
                     }
                 }
             });

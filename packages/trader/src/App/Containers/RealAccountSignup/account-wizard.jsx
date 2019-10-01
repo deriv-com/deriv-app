@@ -1,13 +1,14 @@
-import PropTypes            from 'prop-types';
-import fromEntries          from 'object.fromentries';
-import React                from 'react';
-import { localize }         from 'App/i18n';
-import { connect }          from 'Stores/connect';
-import { toMoment }         from 'Utils/Date';
-import CurrencySelector     from './currency-selector.jsx';
-import FormProgress         from './form-progress.jsx';
-import PersonalDetails      from './personal-details.jsx';
-import TermsOfUse           from './terms-of-use.jsx';
+import PropTypes        from 'prop-types';
+import fromEntries      from 'object.fromentries';
+import React            from 'react';
+import { localize }     from 'App/i18n';
+import { connect }      from 'Stores/connect';
+import { toMoment }     from 'Utils/Date';
+import AddressDetails   from './address-details.jsx';
+import CurrencySelector from './currency-selector.jsx';
+import FormProgress     from './form-progress.jsx';
+import PersonalDetails  from './personal-details.jsx';
+import TermsOfUse       from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {
@@ -37,6 +38,21 @@ class AccountWizard extends React.Component {
                         first_name   : '',
                         last_name    : '',
                         date_of_birth: '',
+                        phone        : '',
+                    },
+                },
+                {
+                    header: {
+                        active_title: localize('Complete your address details'),
+                        title       : localize('Address details'),
+                    },
+                    body      : AddressDetails,
+                    form_value: {
+                        address_line_1  : '',
+                        address_line_2  : '',
+                        address_city    : '',
+                        address_state   : '',
+                        address_postcode: '',
                     },
                 },
                 {

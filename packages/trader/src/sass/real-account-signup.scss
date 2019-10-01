@@ -70,7 +70,7 @@
             position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
             right: 0;
             top: 1.7em;
-            width: 67%;
+            width: 77%;
             border-top: 2px solid var(--state-active);
         }
         &--after {
@@ -93,5 +93,11 @@
         &__content {
             padding: 0 !important;
         }
+    }
+}
+
+.address_state-dropdown {
+    &__display {
+        height: 4em;
     }
 }

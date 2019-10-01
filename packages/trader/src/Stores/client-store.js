@@ -528,12 +528,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            this.responseMt5LoginList(
-                await WS.authorized.storage.mt5LoginList(),
-            );
-            this.responseLandingCompany(
-                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
-            );
+            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+                .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -645,7 +642,6 @@ export default class ClientStore extends BaseStore {
                 this.root_store.modules.trade.clearContracts();
                 return;
             }
-
             this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
             this.root_store.ui.addNotification({
@@ -658,6 +654,7 @@ export default class ClientStore extends BaseStore {
             await this.switchAccountHandler();
             return;
         }
+        this.root_store.modules.trade.proposal_info = {};
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();

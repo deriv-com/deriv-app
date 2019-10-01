@@ -214,12 +214,16 @@ class PersonalDetails extends Component {
     validatePersonalDetails = (values) => {
         const max_date    = toMoment().subtract(18, 'days');
         const validations = {
-            first_name   : [
+            first_name: [
                 v => !!v,
+                v => v.length > 2,
+                v => v.length < 30,
                 v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
-            last_name    : [
+            last_name: [
                 v => !!v,
+                v => v.length > 2,
+                v => v.length < 30,
                 v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
             ],
             date_of_birth: [
@@ -233,17 +237,31 @@ class PersonalDetails extends Component {
             last_name    : localize('Last name'),
             date_of_birth: localize('Date of birth'),
         };
-        const messages  = [
+
+        const common_messages  = [
+            '%s is required',
+            '%s is too short',
+            '%s is too long',
+            '%s is not in a proper format.',
+        ];
+
+        const date_of_birth_validation_messages = [
             '%s is required',
             '%s is not in a proper format.',
         ];
+
         const errors    = {};
 
         Object.entries(validations)
             .forEach(([key, rules]) => {
                 const error_index = rules.findIndex(v => !v(values[key]));
                 if (error_index !== -1) {
-                    errors[key] = localize(messages[error_index].replace('%s', mappedKey[key]));
+                    if (key === 'date_of_birth') {
+                        errors[key] =
+                            localize(date_of_birth_validation_messages[error_index].replace('%s', mappedKey[key]));
+                    } else {
+                        errors[key] = localize(common_messages[error_index].replace('%s', mappedKey[key]));
+                    }
                 }
             });
 

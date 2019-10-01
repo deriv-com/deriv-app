@@ -4,7 +4,7 @@ import {
     reaction }        from 'mobx';
 import { formatDate } from 'deriv-shared/utils/date';
 import { observer }   from '../utils/observer';
-import { translate } from '../utils/tools';
+import { translate }  from '../utils/tools';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -46,7 +46,7 @@ export default class JournalStore {
     }
 
     @action.bound
-    clear (){
+    clear() {
         this.messages = this.messages.slice(0, 0);  // force array update
     }
     
@@ -121,13 +121,11 @@ export default class JournalStore {
         observer.unregister('Error', this.onLogError);
         observer.unregister('Notify', this.onNotify);
 
-        // TODO: Dispose of these listeners.
-        // if (typeof this.disposeNotificationListener === 'function') {
-        //     this.disposeNotificationListener();
-        // }
-        // if (typeof this.switchAccountDisposer === 'function') {
-        //     this.switchAccountDisposer();
-        // }
-        
+        if (typeof this.disposeNotificationListener === 'function') {
+            this.disposeNotificationListener();
+        }
+        if (typeof this.switchAccountDisposer === 'function') {
+            this.switchAccountDisposer();
+        }
     }
 }

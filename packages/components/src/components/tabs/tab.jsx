@@ -28,10 +28,10 @@ class Tab extends Component {
 }
 
 Tab.propTypes = {
-    active_tab: PropTypes.string,
-    className : PropTypes.string,
-    label     : PropTypes.string,
-    onClick   : PropTypes.func,
+    className: PropTypes.string,
+    is_active: PropTypes.bool,
+    label    : PropTypes.string,
+    onClick  : PropTypes.func,
 };
 
 export default Tab;

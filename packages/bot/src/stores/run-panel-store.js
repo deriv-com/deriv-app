@@ -1,8 +1,11 @@
-import { observable, action, reaction } from 'mobx';
-import { CONTRACT_STAGES }    from '../constants/contract-stage';
-import { isEnded }            from '../utils/contract';
-import { translate }          from '../utils/lang/i18n';
-import { observer }           from '../utils/observer';
+import {
+    observable,
+    action,
+    reaction }             from 'mobx';
+import { CONTRACT_STAGES } from '../constants/contract-stage';
+import { isEnded }         from '../utils/contract';
+import { translate }       from '../utils/lang/i18n';
+import { observer }        from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -130,11 +133,6 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    registerObserverListeners() {
-        
-    }
-
-    @action.bound
     registerLogoutListener() {
         const { client } = this.root_store.core;
 
@@ -154,8 +152,8 @@ export default class RunPanelStore {
         observer.unregister('contract.status', this.onContractStatusEvent);
         observer.unregister('bot.contract', this.onBotContractEvent);
 
-        // if (typeof this.disposeLogoutListener === 'function') {
-        //     this.disposeLogoutListener();
-        // }
+        if (typeof this.disposeLogoutListener === 'function') {
+            this.disposeLogoutListener();
+        }
     }
 }

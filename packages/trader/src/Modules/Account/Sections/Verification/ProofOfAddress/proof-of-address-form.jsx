@@ -152,9 +152,9 @@ class ProofOfAddressForm extends React.Component {
                                         is_btn_loading   : false,
                                         is_submit_success: true,
                                     }, () => {
-                                        const { needs_verification } = get_account_status.authentication;
-                                        const needs_poi = !!(needs_verification.length && needs_verification[0] === 'identity');
-                                        this.props.onSubmit({ needs_poi });
+                                        const { identity } = get_account_status.authentication;
+                                        const has_poi = !(identity && identity.status === 'none');
+                                        this.props.onSubmit({ has_poi });
                                     });
                                 });
                             }

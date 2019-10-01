@@ -30,9 +30,9 @@ class ProofOfAddressContainer extends React.Component {
     componentDidMount(){
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
-            const { document, identity, needs_verification } = get_account_status.authentication;
-            const needs_poi = !!(needs_verification.length && identity.status === 'none');
-            this.setState({ status: document.status, needs_poi, is_loading: false });
+            const { document, identity } = get_account_status.authentication;
+            const has_poi = !!(identity && identity.status === 'none');
+            this.setState({ status: document.status, has_poi, is_loading: false });
         });
     }
 
@@ -40,14 +40,14 @@ class ProofOfAddressContainer extends React.Component {
         this.setState({ resubmit_poa: true });
     }
 
-    onSubmit = ({ needs_poi }) => {
-        this.setState({ submitted_poa: true, needs_poi });
+    onSubmit = ({ has_poi }) => {
+        this.setState({ submitted_poa: true, has_poi });
     }
 
     render() {
         const {
             is_loading,
-            needs_poi,
+            has_poi,
             resubmit_poa,
             status,
             submitted_poa,
@@ -55,7 +55,7 @@ class ProofOfAddressContainer extends React.Component {
 
         if (is_loading)    return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (resubmit_poa)  return <ProofOfAddressForm onSubmit={this.onSubmit} />;
-        if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
+        if (submitted_poa) return <Submitted has_poi={has_poi} />;
 
         switch (status) {
             case poa_status_codes.none:

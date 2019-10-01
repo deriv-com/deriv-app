@@ -36,19 +36,19 @@ Blockly.Blocks.controls_for = {
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Control For Tooltip'),
+            tooltip          : translate('Repeats inside blocks until counter reaches target value.'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Control For'),
-            'description' : translate('Control For Description'),
+            'display_name': translate('Iterate (1)'),
+            'description' : translate('This block uses the variable "i" to control the number of iterations. “From” is the starting value, “to” is the end value, while “by” is the step by which the value of "i" is increased.'),
         };
     },
 };

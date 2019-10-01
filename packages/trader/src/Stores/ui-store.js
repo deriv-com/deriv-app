@@ -6,8 +6,7 @@ import {
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
-import { unique }            from '_common/utility';
-import { urlFor }            from '_common/url';
+import ObjectUtils           from 'deriv-shared/utils/object';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import BaseStore             from './base-store';
 
@@ -32,6 +31,7 @@ export default class UIStore extends BaseStore {
     @observable is_services_error_visible             = false;
     @observable is_unsupported_contract_modal_visible = false;
     @observable is_account_signup_modal_visible       = false;
+    @observable is_reset_password_modal_visible       = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -339,7 +339,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
-        this.push_notifications = unique(this.push_notifications, 'msg_type');
+        this.push_notifications = ObjectUtils.unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound
@@ -348,7 +348,12 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountSignupModal(state_change = !this.is_unsupported_contract_modal_visible) {
+    toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
+        this.is_reset_password_modal_visible = state_change;
     }
 }

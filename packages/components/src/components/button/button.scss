@@ -2,6 +2,8 @@
 .btn {
     font-size: 1rem;
     display: inline-block;
+    vertical-align: middle;
+    justify-content: center;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
@@ -19,6 +21,8 @@
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
+        display: inline-block;
+        vertical-align: middle;
     }
     &--link {
         max-width: 220px;
@@ -27,6 +31,11 @@
         align-items: center;
         justify-content: center;
         text-decoration: none;
+    }
+    &__icon {
+        display: inline-block;
+        vertical-align: middle;
+        padding-right: 6px;
     }
     &:not([disabled]):hover {
         text-decoration: none;
@@ -261,6 +270,19 @@
         animation: buttonEffect 0.4s;
         animation-fill-mode: forwards;
         display: block;
+    }
+    /* postcss-bem-linter: ignore */
+    .initial-loader--btn {
+        background-color: unset;
+
+        /* postcss-bem-linter: ignore */
+        .initial-loader__barspinner--rect {
+            background-color: $COLOR_WHITE;
+        }
+        /* postcss-bem-linter: ignore */
+        .barspinner {
+            margin: 0 4px 0 -4px;
+        }
     }
 }
 

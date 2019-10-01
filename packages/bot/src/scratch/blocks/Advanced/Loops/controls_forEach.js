@@ -26,19 +26,19 @@ Blockly.Blocks.controls_forEach = {
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Control Foreach Tooltip'),
+            tooltip          : translate('Iterates through a given list'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Control Foreach'),
-            'description' : translate('Control Foreach'),
+            'display_name': translate('Iterate (2)'),
+            'description' : translate('This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'),
         };
     },
 };

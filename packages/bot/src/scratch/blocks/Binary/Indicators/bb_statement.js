@@ -32,9 +32,9 @@ Blockly.Blocks.bb_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             tooltip          : translate('Calculates Bollinger Bands (BB) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -43,8 +43,8 @@ Blockly.Blocks.bb_statement = {
     },
     meta(){
         return {
-            'display_name': translate('BB Statement'),
-            'descriptionL': translate('BB Statement Description'),
+            'display_name': translate('Bollinger Bands (BB))'),
+            'description' : translate('Bollinger Bands (BB) is technical analysis indicator created by John Bollinger in 1980s and commonly used by traders to inform their trend decisions. The idea behind Bollinger Bands is that 95% of market prices stay within the channel between 2 Bollinger Bands being typically placed 2 deviations away above and below from the Simple Moving average line. In case if price is reaching the upper or lower band, there’s a possibility of trend reversal.'),
         };
     },
     onchange(event) {

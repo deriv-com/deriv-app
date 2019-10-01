@@ -13,9 +13,9 @@ Blockly.Blocks.input_list = {
                     check: 'Array',
                 },
             ],
-            colour           : Blockly.Colours.BinaryLessGray.colour,
-            colourSecondary  : Blockly.Colours.BinaryLessGray.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryLessGray.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });

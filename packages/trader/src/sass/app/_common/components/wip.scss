@@ -32,11 +32,14 @@
         cursor: pointer;
         background: var(--button-primary-default);
 
+        &:hover {
+            background: var(--button-primary-hover);
+        }
         &--span {
             font-weight: normal;
             font-size: 1.6em;
             text-transform: none;
-            color: var(--text-prominent);
+            color: var(--text-colored-background);
         }
     }
 }

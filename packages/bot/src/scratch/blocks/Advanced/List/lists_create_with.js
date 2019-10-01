@@ -27,19 +27,19 @@ Blockly.Blocks.lists_create_with = {
                     name: 'STACK',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Create List with'),
+            tooltip          : translate('Create List'),
             category         : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Create list with'),
-            'description' : translate('Create list with description'),
+            'display_name': translate('Create list'),
+            'description' : translate('This block creates list with provided strings and/or numbers.'),
         };
     },
     onIconClick() {

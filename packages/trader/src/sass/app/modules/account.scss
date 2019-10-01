@@ -17,7 +17,7 @@
             font-size: 1.4rem;
             line-height: 1.5;
             margin-right: 8px;
-            color: var(--text-prominent);
+            color: var(--text-less-prominent);
         }
     }
     &__inset_header-icon {
@@ -139,14 +139,14 @@
             color: var(--text-general);
         }
         &--grey {
-            color: var(--text-prominent);
+            color: var(--text-less-prominent);
         }
     }
     .account-management__message {
         margin: 1em 0;
         font-weight: bold;
         font-size: 1.6em;
-        color: var(--text-prominent);
+        color: var(--text-less-prominent);
 
         &-content {
             display: flex;
@@ -192,7 +192,7 @@
             }
             th {
                 @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-general);
+                color: var(--text-prominent);
             }
         }
         &__divider {

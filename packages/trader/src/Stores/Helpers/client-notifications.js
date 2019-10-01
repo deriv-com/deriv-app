@@ -318,14 +318,14 @@ const getStatusValidations = status_arr =>
         return validations;
     }, {});
 
-const addVerificationNotifications = (identity, document, addNotification) => {
+const addVerificationNotifications = (identity, document, addNotification, unwelcome) => {
     if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
-    if (identity.status === 'rejected' || identity.status === 'suspected') {
+    if ((identity.status === 'rejected' || identity.status === 'suspected') && unwelcome) {
         addNotification(clientNotifications.poi_rejected);
     }
 
     if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
-    if (document.status === 'rejected' || document.status === 'suspected') {
+    if ((document.status === 'rejected' || document.status === 'suspected') && unwelcome) {
         addNotification(clientNotifications.poa_rejected);
     }
 };
@@ -333,11 +333,6 @@ const addVerificationNotifications = (identity, document, addNotification) => {
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
-
-    const { prompt_client_to_authenticate, status } = account_status;
-
-    const { identity, document } = account_status.authentication;
-    addVerificationNotifications(identity, document, addNotification);
 
     const {
         document_under_review,
@@ -349,6 +344,11 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         ukrts_max_turnover_limit_not_set,
         professional,
     } = getStatusValidations(status);
+
+    const { prompt_client_to_authenticate, status } = account_status;
+    const { identity, document } = account_status.authentication;
+    addVerificationNotifications(identity, document, addNotification, unwelcome);
+
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
 
     if (cashier_locked)        addNotification(clientNotifications.cashier_locked);

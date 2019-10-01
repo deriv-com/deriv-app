@@ -48,9 +48,9 @@ export default class JournalStore {
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         let message;
         if (typeof data === 'string') {
-            message = data;
+            message = `${data}`;
         } else {
-            message = data.message;
+            message = `${data.message}`;
         }
         this.messages.unshift({ date, time , message });
         this.messages = this.messages.slice(0);  // force array update

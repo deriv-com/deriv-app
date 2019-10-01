@@ -1,6 +1,7 @@
-import { observable, action } from 'mobx';
-import { isEnded }            from '../utils/contract';
+import { observable, action, reaction } from 'mobx';
 import { CONTRACT_STAGES }    from '../constants/contract-stage';
+import { isEnded }            from '../utils/contract';
+import { translate }          from '../utils/lang/i18n';
 import { observer }           from '../utils/observer';
 
 export default class RunPanelStore {
@@ -11,6 +12,8 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
+
+        this.registerLogoutListener();
     }
 
     @observable active_index          = 0;
@@ -19,6 +22,7 @@ export default class RunPanelStore {
     @observable is_running            = false;
     @observable is_dialog_visible     = false;
     @observable is_drawer_open        = false;
+    dialog_content                    = '';
 
     @action.bound
     onBotRunningEvent() {
@@ -48,6 +52,13 @@ export default class RunPanelStore {
     @action.bound
     onRunButtonClick = () => {
         if (!this.root_store.core.client.is_logged_in) {
+            this.dialog_content = translate('Please log in.');
+            this.is_dialog_visible = true;
+            return;
+        }
+
+        if (!this.root_store.core.client.is_virtual) {
+            this.dialog_content = translate('You cannot use your real money account with DBot at this time.');
             this.is_dialog_visible = true;
             return;
         }
@@ -65,6 +76,7 @@ export default class RunPanelStore {
     @action.bound
     onStopButtonClick() {
         if (!this.root_store.core.client.is_logged_in) {
+            this.dialog_content = translate('Please log in.');
             this.is_dialog_visible = true;
             return;
         }
@@ -117,10 +129,33 @@ export default class RunPanelStore {
         }
     }
 
+    @action.bound
+    registerObserverListeners() {
+        
+    }
+
+    @action.bound
+    registerLogoutListener() {
+        const { client } = this.root_store.core;
+
+        this.disposeLogoutListener = reaction(
+            () => client.loginid,
+            (loginid) => {
+                if (!loginid) {
+                    location.reload(); // TODO: Handle more gracefully.
+                }
+            }
+        );
+    }
+
     onUnmount() {
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
         observer.unregister('bot.contract', this.onBotContractEvent);
+
+        // if (typeof this.disposeLogoutListener === 'function') {
+        //     this.disposeLogoutListener();
+        // }
     }
 }

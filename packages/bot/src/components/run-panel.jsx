@@ -26,6 +26,7 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
 
 const drawerFooter = ({
     closeModal,
+    dialog_content,
     is_dialog_visible,
     is_running,
     is_run_button_clicked,
@@ -68,7 +69,7 @@ const drawerFooter = ({
                         )}
                         text={translate('Run bot')}
                         icon={<RunIcon />}
-                        onClick={is_virtual ? onRunButtonClick : null}
+                        onClick={onRunButtonClick}
                         has_effect
                     />
             }
@@ -78,7 +79,7 @@ const drawerFooter = ({
                 is_open={is_dialog_visible}
                 closeModal={closeModal}
             >
-                {translate('Please log in.')}
+                {dialog_content}
             </Dialog>
             <InfoOutlineIcon className='run-panel__icon-info' />
         </div>
@@ -86,9 +87,9 @@ const drawerFooter = ({
 };
 
 class RunPanel extends React.PureComponent {
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
+    // componentWillUnmount() {
+    //     this.props.onUnmount(); TODO: Dispose of listeners.
+    // }
 
     render() {
         const content = drawerContent(this.props);
@@ -110,6 +111,7 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     active_index         : PropTypes.number,
     closeModal           : PropTypes.func,
+    dialog_content       : PropTypes.string,
     is_dialog_visible    : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
@@ -126,6 +128,7 @@ RunPanel.propTypes = {
 export default connect(({ run_panel, core }) => ({
     active_index         : run_panel.active_index,
     closeModal           : run_panel.closeModal,
+    dialog_content       : run_panel.dialog_content,
     is_dialog_visible    : run_panel.is_dialog_visible,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,

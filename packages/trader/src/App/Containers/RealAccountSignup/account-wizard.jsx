@@ -93,6 +93,7 @@ class AccountWizard extends React.Component {
         if (this.hasMoreSteps()) {
             this.goNext();
         } else {
+            this.props.onLoading();
             this.createRealAccount(setSubmitting);
         }
     };
@@ -105,7 +106,6 @@ class AccountWizard extends React.Component {
     };
 
     submitForm = () => {
-        this.props.onLoading();
         return this.props.realAccountSignup(this.form_values);
     };
 

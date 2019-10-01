@@ -94,7 +94,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_change_currency () {
         const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || has_available_crypto_currencies;
+        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed

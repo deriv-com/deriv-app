@@ -284,6 +284,17 @@
             padding-left: 8px;
         }
     }
+    &-address {
+        &__details {
+            &-section {
+                margin-top: 0.5em;
+
+                .account-form__fieldset {
+                    margin-bottom: 3em;
+                }
+            }
+        }
+    }
 }
 
 /** @define account-poa; weak */

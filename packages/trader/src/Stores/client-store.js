@@ -1,5 +1,4 @@
-import CurrencyUtils                from 'deriv-shared/utils/currency';
-import ObjectUtils                  from 'deriv-shared/utils/object';
+import moment                        from 'moment';
 import {
     action,
     computed,
@@ -7,7 +6,8 @@ import {
     runInAction,
     when,
 }                                    from 'mobx';
-import moment                        from 'moment';
+import CurrencyUtils                from 'deriv-shared/utils/currency';
+import ObjectUtils                  from 'deriv-shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';
@@ -251,12 +251,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return !ObjectUtils.isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+        return !ObjectUtils.isEmptyObject(this.accounts) &&
+        this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
     get can_upgrade() {
-        return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
+        return this.upgrade_info &&
+        (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
     @computed
@@ -272,7 +274,8 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_single_currency() {
-        return Object.keys(this.currencies_list).map(type => Object.values(this.currencies_list[type]).length)
+        return Object.keys(this.currencies_list).map(type =>
+            Object.values(this.currencies_list[type]).length)
             .reduce((acc, cur) => acc + cur, 0) === 1;
     }
 
@@ -489,6 +492,19 @@ export default class ClientStore extends BaseStore {
         this.switch_broadcast = false;
     }
 
+    @action.bound
+    refreshNotifications(settings) {
+        this.root_store.ui.removeAllNotifications();
+        const client = this.accounts[this.loginid];
+        handleClientNotifications(
+            client,
+            settings,
+            this.account_status,
+            this.root_store.ui.addNotification,
+            this.loginid,
+        );
+    }
+
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
      * This will probably be the only place we are fetching data from Client_base.
@@ -575,7 +591,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setHasMissingRequiredField(has_missing_required_field) {
-        this.has_missing_required_field = has_missing_required_field
+        this.has_missing_required_field = has_missing_required_field;
     }
 
     /**

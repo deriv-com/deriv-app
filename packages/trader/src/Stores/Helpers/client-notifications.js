@@ -129,13 +129,15 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/financial-assessment'
-                    />,
-                ]}
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
+                // TODO: Re-enable below once FA check on deriv is ready
+                // components={[
+                //     <BinaryLink
+                //         key={0}
+                //         className='link link--white'
+                //         to='account/financial-assessment'
+                //     />,
+                // ]}
             />
         ),
         type: 'info',
@@ -281,7 +283,6 @@ const hasMissingRequiredField = (account_settings, client) => {
     } else {
         required_fields = getRequiredFields();
     }
-
 
     return required_fields.some(field => !account_settings[field]);
 

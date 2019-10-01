@@ -22,8 +22,7 @@ class Summary extends React.PureComponent {
     }
 
     componentWillUnmount() {
-        this.props.disposeOnAccountSwitch();
-        this.props.disposeObserverListener();
+        this.props.onUnmount();
     }
 
     render() {
@@ -79,10 +78,9 @@ class Summary extends React.PureComponent {
 Summary.propTypes = {
     contract               : PropTypes.object,
     currency               : PropTypes.string,
-    disposeObserverListener: PropTypes.func,
-    disposeOnAccountSwitch : PropTypes.func,
     lost_contracts         : PropTypes.number,
     number_of_runs         : PropTypes.number,
+    onUnmount              : PropTypes.func,
     registerOnAccountSwitch: PropTypes.func,
     total_payout           : PropTypes.number,
     total_profit           : PropTypes.number,
@@ -93,10 +91,9 @@ Summary.propTypes = {
 export default connect(({ summary }) => ({
     contract               : summary.contract,
     currency               : summary.currency,
-    disposeOnAccountSwitch : summary.disposeOnAccountSwitch,
-    disposeObserverListener: summary.disposeObserverListener,
     lost_contracts         : summary.lost_contracts,
     number_of_runs         : summary.number_of_runs,
+    onUnmount              : summary.onUnmount,
     registerOnAccountSwitch: summary.registerOnAccountSwitch,
     total_payout           : summary.total_payout,
     total_profit           : summary.total_profit,

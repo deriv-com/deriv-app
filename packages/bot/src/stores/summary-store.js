@@ -74,26 +74,28 @@ export default class SummaryStore {
         this.won_contracts  = 0;
     }
 
-    disposeObserverListener() {
-        observer.unregister('contract.status', this.onContractStatusEvent);
-    }
-
-    disposeOnAccountSwitch() {
-        if (typeof this.switchAccountDisposer === 'function') {
-            this.switchAccountDisposer();
-        }
-    }
-
-    registerOnAccountSwitch = () => {
+    @action.bound
+    registerOnAccountSwitch() {
         const { client } = this.root_store.core;
 
         this.switchAccountDisposer = reaction(
             () => client.switch_broadcast,
             action((switch_broadcast) => {
                 if (switch_broadcast) {
+                    this.clear();
                     this.currency = client.currency;
                 }
             })
         );
+    }
+
+    @action.bound
+    onUnmount() {
+        observer.unregister('contract.status', this.onContractStatusEvent);
+        
+        // TODO: Dispose of this listener.
+        // if (typeof this.switchAccountDisposer === 'function') {
+        //     this.switchAccountDisposer();
+        // }
     }
 }

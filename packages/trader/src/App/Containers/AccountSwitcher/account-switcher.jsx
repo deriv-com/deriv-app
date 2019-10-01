@@ -62,6 +62,7 @@ class AccountSwitcher extends React.Component {
         if (!this.props.is_logged_in) return false;
         // TODO: Once we allow other real accounts (apart from CR), assign correct title and group accounts into list with correct account title/types
         // e.g - Real, Financial, Gaming, Investment
+        const can_upgrade = !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
 
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
@@ -113,7 +114,7 @@ class AccountSwitcher extends React.Component {
                         }
                     </div>
 
-                    {this.can_manage_currency &&
+                    {this.can_manage_currency && !can_upgrade &&
                         <UpgradeButton
                             onClick={this.props.openRealAccountSignup}
                         >
@@ -126,7 +127,7 @@ class AccountSwitcher extends React.Component {
                         </UpgradeButton>
                     }
                 </div>
-                { !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to) &&
+                { can_upgrade &&
                 <UpgradeButton
                     onClick={() => {
                         if (this.props.can_upgrade_to === 'svg') {

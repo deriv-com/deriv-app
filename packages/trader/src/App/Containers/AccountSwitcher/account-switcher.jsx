@@ -4,6 +4,7 @@ import React             from 'react';
 import {
     Money,
     Popover }            from 'deriv-components';
+import CurrencyUtils     from 'deriv-shared/utils/currency';
 import { localize }      from 'App/i18n';
 import { urlFor }        from '_common/url';
 import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
@@ -93,9 +94,15 @@ class AccountSwitcher extends React.Component {
                                             {'balance' in this.props.accounts[account.loginid] &&
                                             <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
                                                 <Money
-                                                    currency={account.icon}
-                                                    amount={this.props.accounts[account.loginid].balance}
-                                                    is_formatted={false}
+                                                    currency={this.props.accounts[account.loginid].currency}
+                                                    amount={
+                                                        CurrencyUtils.formatMoney(
+                                                            this.props.accounts[account.loginid].currency,
+                                                            this.props.accounts[account.loginid].balance,
+                                                            true
+                                                        )
+                                                    }
+                                                    should_format={false}
                                                 />
                                             </span>
                                             }

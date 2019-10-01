@@ -24,17 +24,17 @@ Blockly.Blocks.logic_operation = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Logic Operator Tooltip'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Performs selected logic operation'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic Operator'),
-            'description' : translate('Logic Operator Description'),
+            'display_name': translate('Logic operation'),
+            'description' : translate('This block performs the "AND" or the "OR" logic operation.'),
         };
     },
 };

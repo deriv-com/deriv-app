@@ -41,11 +41,12 @@
                 </next>
             </block>
         </statement>
+        <statement name="INITIALIZATION"></statement>
         <statement name="SUBMARKET">
             <block type="trade_definition_tradeoptions">
                 <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
                 <field name="DURATIONTYPE_LIST"></field>
-                <field name="CURRENCY_LIST"></field>
+                <field name="CURRENCY_LIST">USD</field>
                 <value name="DURATION">
                     <shadow type="math_number">
                         <field name="NUM"></field>

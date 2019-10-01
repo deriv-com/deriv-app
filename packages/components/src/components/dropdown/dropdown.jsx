@@ -259,6 +259,11 @@ class Dropdown extends React.PureComponent {
                     ref={this.setWrapperRef}
                     className={this.container_class_name}
                 >
+                    {this.props.label &&
+                        <span className={classNames('dc-dropdown__label', { 'dc-dropdown__label--clicked': this.state.is_list_visible })}>
+                            {this.props.label}
+                        </span>
+                    }
                     <div
                         className={this.dropdown_display_class_name}
                         tabIndex={this.is_single_option ? '-1' : '0'}
@@ -325,7 +330,7 @@ class Dropdown extends React.PureComponent {
                                             is_align_text_left={this.props.is_align_text_left}
                                             value={this.props.value}
                                         /> :
-                                        Object.keys(this.props.list).map(key => (
+                                        Object.keys(this.props.list).map((key, idx) => (
                                             <React.Fragment key={key}>
                                                 <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
                                                 <Items
@@ -337,6 +342,9 @@ class Dropdown extends React.PureComponent {
                                                     is_align_text_left={this.props.is_align_text_left}
                                                     value={this.props.value}
                                                 />
+                                                {idx !== Object.keys(this.props.list).length - 1 &&
+                                                    <span className='dc-list__separator' />
+                                                }
                                             </React.Fragment>
                                         ))
                                     }
@@ -359,6 +367,7 @@ Dropdown.propTypes = {
     has_symbol       : PropTypes.bool,
     is_alignment_left: PropTypes.bool,
     is_nativepicker  : PropTypes.bool,
+    label            : PropTypes.string,
     list             : listPropType(),
     name             : PropTypes.string,
     no_border        : PropTypes.bool,

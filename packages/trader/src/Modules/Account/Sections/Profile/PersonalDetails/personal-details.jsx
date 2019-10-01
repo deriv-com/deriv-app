@@ -12,6 +12,8 @@ import { localize }                            from 'App/i18n';
 import { WS }                                  from 'Services';
 import { connect }                             from 'Stores/connect';
 import {
+    validAddress,
+    validPostCode,
     validTaxID,
     validPhone,
     validLetterSymbol,
@@ -21,7 +23,6 @@ import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
-import ButtonLoading                           from '../../../Components/button-loading.jsx';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
@@ -41,7 +42,16 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
     last_name                 = last_name.trim();
     tax_identification_number = tax_identification_number.trim();
 
-    const { tax_residence_text, citizen_text, place_of_birth_text }          = settings;
+    const {
+        tax_residence_text,
+        citizen_text,
+        place_of_birth_text,
+        address_line_1,
+        address_line_2,
+        address_city,
+        address_state,
+        address_postcode,
+    } = settings;
 
     const tax_residence  = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
     const citizen        = citizen_text ? getResidence(residence_list, citizen_text, 'value') : '';
@@ -69,6 +79,11 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
         citizen, tax_residence,
         email_consent,
         place_of_birth,
+        address_line_1,
+        address_line_2,
+        address_city,
+        address_state,
+        address_postcode,
     };
 };
 
@@ -111,6 +126,7 @@ class PersonalDetailsForm extends React.Component {
                         return;
                     }
                     this.setState({ ...response.get_settings, is_loading: false });
+                    this.props.refreshNotifications(response.get_settings);
                 });
                 this.setState({ is_submit_success: true });
             }
@@ -125,7 +141,16 @@ class PersonalDetailsForm extends React.Component {
 
         if (this.props.is_virtual) return errors;
 
-        const required_fields = ['first_name', 'last_name', 'phone', 'account_opening_reason', 'place_of_birth_text'];
+        const required_fields = [
+            'first_name',
+            'last_name',
+            'phone',
+            'account_opening_reason',
+            'place_of_birth_text',
+            'address_line_1',
+            'address_city',
+            'address_postcode',
+        ];
         validateValues(val => val, required_fields, localize('This field is required'));
 
         const only_alphabet_fields = ['first_name', 'last_name'];
@@ -168,6 +193,30 @@ class PersonalDetailsForm extends React.Component {
             }
         }
 
+        const permitted_characters = '- . \' # ; : ( ) , @ /';
+        const address_validation_message = localize(`Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`);
+
+        if (values.address_line_1 && !validAddress(values.address_line_1)) {
+            errors.address_line_1 = address_validation_message;
+        }
+        if (values.address_line_2 && !validAddress(values.address_line_2)) {
+            errors.address_line_2 = address_validation_message;
+        }
+
+        const validation_letter_symbol_message = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
+
+        if (values.address_city && !validLetterSymbol(values.address_city)) {
+            errors.address_city = validation_letter_symbol_message;
+        }
+
+        if (values.address_state && !validLetterSymbol(values.address_state)) {
+            errors.address_state = validation_letter_symbol_message;
+        }
+
+        if (values.address_postcode && !validPostCode(values.address_postcode)) {
+            errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
+        }
+
         return errors;
     };
 
@@ -191,6 +240,11 @@ class PersonalDetailsForm extends React.Component {
             email_consent,
             residence,
             tax_residence,
+            address_line_1,
+            address_line_2,
+            address_city,
+            address_state,
+            address_postcode,
             show_form,
             is_loading,
             is_btn_loading,
@@ -216,7 +270,6 @@ class PersonalDetailsForm extends React.Component {
 
         if (!tax_residence_text) tax_residence_text = '';
         if (!tax_identification_number) tax_identification_number = '';
-
         return (
             <Formik
                 initialValues={{
@@ -231,6 +284,11 @@ class PersonalDetailsForm extends React.Component {
                     email_consent,
                     residence,
                     tax_identification_number,
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
                 }}
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
@@ -249,7 +307,7 @@ class PersonalDetailsForm extends React.Component {
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         { show_form && (
-                            <form className='account-form' onSubmit={handleSubmit}>
+                            <form noValidate className='account-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset='80px'>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual &&
@@ -317,6 +375,7 @@ class PersonalDetailsForm extends React.Component {
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('citizen_text', value ? text : '', true)
                                                         }
+                                                        required
                                                     />
                                                 )}
                                             </Field>
@@ -388,42 +447,118 @@ class PersonalDetailsForm extends React.Component {
                                                 />
                                             }
                                         </fieldset>
-                                        <FormSubHeader title={localize('Tax information')} />
-                                        <fieldset className='account-form__fieldset'>
-                                            <Field name='tax_residence_text'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        { ...field }
-                                                        data-lpignore='true'
-                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                        type='text'
-                                                        label={localize('Tax residence')}
-                                                        error={touched.tax_residence_text && errors.tax_residence_text}
-                                                        disabled={tax_residence && is_fully_authenticated}
-                                                        list_items={this.props.residence_list}
-                                                        onItemSelection={
-                                                            ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
-                                                        }
-                                                    />
-                                                )}
-                                            </Field>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <Input
-                                                data-lpignore='true'
-                                                type='text'
-                                                name='tax_identification_number'
-                                                label={localize('Tax identification number')}
-                                                value={values.tax_identification_number}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={
-                                                    touched.tax_identification_number &&
-                                                    errors.tax_identification_number
-                                                }
-                                                disabled={tax_identification_number && is_fully_authenticated}
-                                            />
-                                        </fieldset>
+                                        {/* Hide Tax Information, uncomment block below to re-enable */}
+                                        {/* <FormSubHeader title={localize('Tax information')} />
+                                            <fieldset className='account-form__fieldset'>
+                                                <Field name='tax_residence_text'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            { ...field }
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('Tax residence')}
+                                                            error={touched.tax_residence_text && errors.tax_residence_text}
+                                                            disabled={tax_residence && is_fully_authenticated}
+                                                            list_items={this.props.residence_list}
+                                                            onItemSelection={
+                                                                ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
+                                                            }
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='tax_identification_number'
+                                                    label={localize('Tax identification number')}
+                                                    value={values.tax_identification_number}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={
+                                                        touched.tax_identification_number &&
+                                                        errors.tax_identification_number
+                                                    }
+                                                    disabled={tax_identification_number && is_fully_authenticated}
+                                                />
+                                            </fieldset> */}
+                                        <FormSubHeader title={localize('Address')} />
+                                        <div className='account-address__details-section'>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    maxLength={70}
+                                                    name='address_line_1'
+                                                    label={localize('First line of address')}
+                                                    value={values.address_line_1}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={touched.address_line_1 && errors.address_line_1}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    maxLength={70}
+                                                    name='address_line_2'
+                                                    label={localize('Second line of address (optional)')}
+                                                    value={values.address_line_2}
+                                                    error={touched.address_line_2 && errors.address_line_2}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_city'
+                                                    label={localize('Town/City')}
+                                                    value={values.address_city}
+                                                    error={touched.address_city && errors.address_city}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_state'
+                                                    label={localize('State/Province (optional)')}
+                                                    value={values.address_state}
+                                                    error={touched.address_state && errors.address_state}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_postcode'
+                                                    label={localize('Postal/ZIP Code')}
+                                                    value={values.address_postcode}
+                                                    error={touched.address_postcode && errors.address_postcode}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                />
+                                            </fieldset>
+                                        </div>
                                     </React.Fragment>
                                     }
                                     <FormSubHeader title={localize('Email Preference')} />
@@ -451,10 +586,15 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.phone || !values.phone) ||
                                                 (errors.tax_identification_number) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text) ||
-                                                (errors.account_opening_reason || !values.account_opening_reason))
+                                                (errors.account_opening_reason || !values.account_opening_reason) ||
+                                                (errors.address_line_1 || !values.address_line_1) ||
+                                                (errors.address_line_2) ||
+                                                (errors.address_city || !values.address_city) ||
+                                                (errors.address_state) ||
+                                                (errors.address_postcode || !values.address_postcode))
                                         )}
                                         has_effect
-                                        is_loading={is_btn_loading && <ButtonLoading />}
+                                        is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                     />
@@ -484,6 +624,7 @@ class PersonalDetailsForm extends React.Component {
         });
     }
 }
+
 // PersonalDetailsForm.propTypes = {};
 export default connect(
     ({ client }) => ({
@@ -493,5 +634,6 @@ export default connect(
         is_virtual            : client.is_virtual,
         residence_list        : client.residence_list,
         fetchResidenceList    : client.fetchResidenceList,
+        refreshNotifications  : client.refreshNotifications,
     }),
 )(PersonalDetailsForm);

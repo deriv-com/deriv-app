@@ -15,17 +15,17 @@ Blockly.Blocks.text = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : '#dedede',
+            colour         : Blockly.Colours.Utility.colour,
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
-            tooltip        : translate('Text Tooltip'),
+            tooltip        : translate('Enter some text here'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('text'),
-            'description' : translate('Text Description'),
+            'display_name': translate('Text'),
+            'description' : translate('A  block that can contain text.'),
         };
     },
 };

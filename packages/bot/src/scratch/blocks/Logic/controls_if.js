@@ -31,20 +31,19 @@ Blockly.Blocks.controls_if = {
                     name: 'DO0',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
-            // category         : Blockly.Categories.control,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('If else statement tooltip'),
+            tooltip          : translate('Conditional block'),
             category         : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': 'If else statement',
-            'description' : 'If else statement description',
+            'display_name': translate('Conditional block'),
+            'description' : translate('This block evaluates a statement and will perform an action only when the statement is true.'),
         };
     },
     /**

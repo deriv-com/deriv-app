@@ -19,17 +19,17 @@ Blockly.Blocks.purchase = {
                 },
             ],
             previousStatement: null,
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
-            tooltip          : translate('Payout for selected proposal'),
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
+            tooltip          : translate('This block purchases contract of a specified type.'),
             category         : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Puchase'),
-            'description' : translate('Purchase Description'),
+            'display_name': translate('Purchase'),
+            'description' : translate('You can use this block to purchase the contract of a specific type you define in the Trade Parameters block. You can add multiple Purchase blocks in conjunction with conditional blocks to define purchase conditions. You can use this block only within the Purchase conditions block.'),
         };
     },
     onchange(event) {
@@ -63,7 +63,7 @@ Blockly.Blocks.purchase = {
             const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
 
             if (opposite_name && opposite_name !== 'NA' && trade_type && contract_type) {
-                updatePurchaseChoices(contract_type, opposite_name);
+                updatePurchaseChoices(contract_type, event.group, opposite_name);
             }
         }
     },

@@ -195,7 +195,56 @@ export const addDomAsBlock = block_xml => {
     return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 };
 
-export const loadBlocks = (xml, drop_event = {}) => {
+export const load = (block_string = '', drop_event = {}) => {
+    try {
+        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length) {
+            throw new Error();
+        }
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    let xml;
+    try {
+        xml = Blockly.Xml.textToDom(block_string);
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    const blockly_xml = xml.querySelectorAll('block');
+
+    if (!blockly_xml.length) {
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+
+    blockly_xml.forEach(block => {
+        const block_type = block.getAttribute('type');
+
+        if (!Object.keys(Blockly.Blocks).includes(block_type)) {
+            // TODO
+            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        }
+    });
+
+    try {
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            loadBlocks(xml, drop_event);
+        } else {
+            loadWorkspace(xml);
+        }
+    } catch (e) {
+        console.error(e); // eslint-disable-line
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+};
+
+const loadBlocks = (xml, drop_event = {}) => {
     const workspace = Blockly.derivWorkspace;
     const variables = xml.getElementsByTagName('variables');
     if (variables.length) {
@@ -212,7 +261,7 @@ export const loadBlocks = (xml, drop_event = {}) => {
     Blockly.Events.setGroup(false);
 };
 
-export const loadWorkspace = (xml) => {
+const loadWorkspace = (xml) => {
     const workspace = Blockly.derivWorkspace;
 
     Blockly.Events.setGroup('load');

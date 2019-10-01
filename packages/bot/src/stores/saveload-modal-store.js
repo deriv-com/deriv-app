@@ -3,7 +3,7 @@ import {
     observable,
     action,
 }                                       from 'mobx';
-import { load } from '../utils/tools';
+import { load }                         from '../scratch/utils';
 
 export default class SaveLoadModalStore {
 

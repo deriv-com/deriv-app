@@ -13,11 +13,12 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
     }
 
-    @observable contract_stage = CONTRACT_STAGES.not_running‌;
+    @observable active_index          = 0;
+    @observable contract_stage        = CONTRACT_STAGES.not_running;
     @observable is_run_button_clicked = false;
-    @observable is_running = false;
-    @observable is_dialog_visible = false;
-    @observable is_drawer_open = false;
+    @observable is_running            = false;
+    @observable is_dialog_visible     = false;
+    @observable is_drawer_open        = false;
 
     @action.bound
     onBotRunningEvent() {
@@ -27,6 +28,7 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
+        this.root_store.core.client.is_account_switch_enabled = true;
         this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
     }
 
@@ -49,6 +51,8 @@ export default class RunPanelStore {
             this.is_dialog_visible = true;
             return;
         }
+
+        this.root_store.core.client.is_account_switch_enabled = false;
 
         if (!this.is_drawer_open) {
             this.is_drawer_open = true;
@@ -88,6 +92,11 @@ export default class RunPanelStore {
         this.is_dialog_visible = false;
     }
 
+    @action.bound
+    setActiveTabIndex(index) {
+        this.active_index = index;
+    }
+
     getContractStage(data) {
         switch (data.id) {
             case ('contract.purchase_sent'): {
@@ -96,7 +105,6 @@ export default class RunPanelStore {
             }
             case ('contract.purchase_recieved'): {
                 this.contract_stage = CONTRACT_STAGES.purchase_recieved;
-
                 break;
             }
             case ('contract.closed'): {
@@ -104,7 +112,7 @@ export default class RunPanelStore {
                 break;
             }
             default: {
-                this.contract_stage = CONTRACT_STAGES.not_running‌;
+                this.contract_stage = CONTRACT_STAGES.not_running;
             }
         }
     }

@@ -10,7 +10,7 @@ import {
     Field,
     Formik,
     Form }                    from 'formik';
-import { getDecimalPlaces }   from '_common/base/currency_base';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
 import Localize               from 'App/Components/Elements/localize.jsx';
 import { website_name }       from 'App/Constants/app-config';
 import { localize }           from 'App/i18n';
@@ -26,7 +26,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
+    } else if (!validNumber(values.amount, { type: 'float', decimals: CurrencyUtils.getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
         errors.amount = getPreBuildDVRs().number.message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');

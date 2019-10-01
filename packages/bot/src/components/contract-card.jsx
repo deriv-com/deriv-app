@@ -20,13 +20,9 @@ import { translate }         from '../utils/lang/i18n';
 import                            '../assets/sass/contract-card.scss';
 
 class ContractCard extends React.PureComponent {
-    componentWillMount() {
-        this.props.registerOnAccountSwitch();
-    }
-
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
+    // componentWillUnmount() {
+    //     this.props.onUnmount();
+    // }
 
     render() {
         const {
@@ -136,20 +132,17 @@ class ContractCard extends React.PureComponent {
 }
 
 ContractCard.propTypes = {
-    contract               : PropTypes.object,
-    indicative_moment      : PropTypes.string,
-    is_loading             : PropTypes.bool,
-    onUnmount              : PropTypes.func,
-    profit_movement        : PropTypes.string,
-    registerOnAccountSwitch: PropTypes.func,
+    contract         : PropTypes.object,
+    indicative_moment: PropTypes.string,
+    is_loading       : PropTypes.bool,
+    onUnmount        : PropTypes.func,
+    profit_movement  : PropTypes.string,
 };
 
 export default connect(({ contract_card }) => ({
-    contract               : contract_card.contract,
-    disposeObserverListener: contract_card.disposeObserverListener,
-    indicative_movement    : contract_card.indicative_movement,
-    is_loading             : contract_card.is_loading,
-    onUnmount              : contract_card.onUnmount,
-    profit_movement        : contract_card.profit_movement,
-    registerOnAccountSwitch: contract_card.registerOnAccountSwitch,
+    contract           : contract_card.contract,
+    indicative_movement: contract_card.indicative_movement,
+    is_loading         : contract_card.is_loading,
+    onUnmount          : contract_card.onUnmount,
+    profit_movement    : contract_card.profit_movement,
 }))(ContractCard);

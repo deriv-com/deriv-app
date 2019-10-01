@@ -19,6 +19,7 @@ export default class SummaryStore {
         this.currency          = client.currency;
 
         observer.register('contract.status', this.onContractStatusEvent);
+        this.registerOnAccountSwitch();
     }
 
     @action.bound
@@ -93,9 +94,8 @@ export default class SummaryStore {
     onUnmount() {
         observer.unregister('contract.status', this.onContractStatusEvent);
         
-        // TODO: Dispose of this listener.
-        // if (typeof this.switchAccountDisposer === 'function') {
-        //     this.switchAccountDisposer();
-        // }
+        if (typeof this.switchAccountDisposer === 'function') {
+            this.switchAccountDisposer();
+        }
     }
 }

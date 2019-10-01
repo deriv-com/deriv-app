@@ -20,6 +20,7 @@ export default class ContractCardStore {
 
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('contract.status', this.onContractStatusEvent);
+        this.registerOnAccountSwitch();
     }
 
     @action.bound
@@ -88,9 +89,8 @@ export default class ContractCardStore {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
 
-        // TODO: Dispose of this listener.
-        // if (typeof this.switchAccountDisposer === 'function') {
-        //     this.switchAccountDisposer();
-        // }
+        if (typeof this.switchAccountDisposer === 'function') {
+            this.switchAccountDisposer();
+        }
     }
 }

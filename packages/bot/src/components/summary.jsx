@@ -17,13 +17,9 @@ const SummaryTile = (props) => (
 );
 
 class Summary extends React.PureComponent {
-    componentDidMount() {
-        this.props.registerOnAccountSwitch();
-    }
-
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
+    // componentWillUnmount() {
+    //     this.props.onUnmount();
+    // }
 
     render() {
         const {
@@ -76,27 +72,25 @@ class Summary extends React.PureComponent {
 }
 
 Summary.propTypes = {
-    contract               : PropTypes.object,
-    currency               : PropTypes.string,
-    lost_contracts         : PropTypes.number,
-    number_of_runs         : PropTypes.number,
-    onUnmount              : PropTypes.func,
-    registerOnAccountSwitch: PropTypes.func,
-    total_payout           : PropTypes.number,
-    total_profit           : PropTypes.number,
-    total_stake            : PropTypes.number,
-    won_contracts          : PropTypes.number,
+    contract      : PropTypes.object,
+    currency      : PropTypes.string,
+    lost_contracts: PropTypes.number,
+    number_of_runs: PropTypes.number,
+    onUnmount     : PropTypes.func,
+    total_payout  : PropTypes.number,
+    total_profit  : PropTypes.number,
+    total_stake   : PropTypes.number,
+    won_contracts : PropTypes.number,
 };
 
 export default connect(({ summary }) => ({
-    contract               : summary.contract,
-    currency               : summary.currency,
-    lost_contracts         : summary.lost_contracts,
-    number_of_runs         : summary.number_of_runs,
-    onUnmount              : summary.onUnmount,
-    registerOnAccountSwitch: summary.registerOnAccountSwitch,
-    total_payout           : summary.total_payout,
-    total_profit           : summary.total_profit,
-    total_stake            : summary.total_stake,
-    won_contracts          : summary.won_contracts,
+    contract      : summary.contract,
+    currency      : summary.currency,
+    lost_contracts: summary.lost_contracts,
+    number_of_runs: summary.number_of_runs,
+    onUnmount     : summary.onUnmount,
+    total_payout  : summary.total_payout,
+    total_profit  : summary.total_profit,
+    total_stake   : summary.total_stake,
+    won_contracts : summary.won_contracts,
 }))(Summary);

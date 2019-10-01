@@ -108,7 +108,6 @@ class AccountSwitcher extends React.Component {
                     {this.can_manage_currency &&
                         <UpgradeButton
                             onClick={this.props.openRealAccountSignup}
-                            outlined
                         >
                             <Icon icon='IconAdd' />
                             <div className='btn__text'>
@@ -128,7 +127,6 @@ class AccountSwitcher extends React.Component {
                             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
                         }
                     }}
-                    outlined
                 >
                     <Icon icon='IconAdd' />
                     <div className='btn__text'>
@@ -138,6 +136,20 @@ class AccountSwitcher extends React.Component {
                     </div>
                 </UpgradeButton>
                 }
+                <div className='acc-switcher__separator' />
+
+                <div className='acc-switcher__total'>
+                    <Localize i18n_default_text='Total assets' />
+                    <span className='acc-switcher__balance'>
+                        <Money
+                            currency={this.props.obj_total_balance.currency}
+                            amount={this.props.obj_total_balance.amount}
+                        />
+                    </span>
+                </div>
+
+                <div className='acc-switcher__separator' />
+
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
                     <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
@@ -153,13 +165,16 @@ AccountSwitcher.propTypes = {
     accounts              : PropTypes.object,
     cleanUp               : PropTypes.func,
     clearError            : PropTypes.func,
+    display               : PropTypes.string,
     has_error             : PropTypes.bool,
     has_fiat              : PropTypes.bool,
+    hideDialog            : PropTypes.func,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
     is_virtual            : PropTypes.bool,
     is_visible            : PropTypes.bool,
+    obj_total_balance     : PropTypes.object,
     toggle                : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
 };
@@ -175,6 +190,7 @@ const account_switcher = connect(
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
         is_virtual            : client.is_virtual,
+        obj_total_balance     : client.obj_total_balance,
         switchAccount         : client.switchAccount,
         cleanUp               : client.cleanUp,
         clearError            : modules.contract_trade.clearError,

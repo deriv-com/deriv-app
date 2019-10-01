@@ -98,12 +98,11 @@
     }
     &__new-account {
         align-items: center;
-        background-color: var(--brand-red-coral);
+        background-color: transparent;
         border-radius: 4px;
         display: flex;
         height: 40px;
-        justify-content: center;
-        margin: 0.8em 0 1.6em;
+        margin: 0 0 0.8em;
 
         &-link {
             background-color: transparent;
@@ -120,41 +119,23 @@
                 }
             }
         }
-        &--outlined {
+        &:hover {
+            background-color: rgba(255, 68, 79, 0.08) !important;
+        }
+        .btn__text {
+            color: var(--brand-red-coral);
+        }
+        .btn {
+            align-items: center;
             background-color: transparent;
-            border: 1px solid var(--button-secondary-default);
+            display: flex;
+            margin: 0;
+            padding: 0 0 0 0.8rem;
+            justify-content: left;
 
-            &:hover {
-                background-color: var(--button-secondary-hover) !important;
-
-                .btn__text {
-                    color: var(--text-general);
-                }
-            }
-            .btn__text {
-                color: var(--text-general);
-            }
-            .btn {
-                align-items: center;
-                background-color: transparent;
-                display: flex;
-                justify-content: space-around;
-                margin: 0;
-                padding: 0 0 0 1rem;
-                width: 100%;
-
-                & > * {
-                    display: block;
-                    margin-right: 1rem;
-                }
-                svg {
-                    circle {
-                        fill: transparent;
-                    }
-                    path {
-                        fill: var(--text-general);
-                    }
-                }
+            & > * {
+                display: block;
+                margin-right: 1rem;
             }
         }
     }
@@ -185,18 +166,11 @@
 
             &:hover:not(.acc-switcher__account--selected) {
                 background-color: var(--state-hover);
+                border-radius: 4px;
             }
             .acc-switcher__id {
                 color: var(--text-general);
                 width: 100%;
-            }
-            .acc-switcher__balance {
-                color: var(--status-success);
-                margin-left: auto;
-
-                &--virtual {
-                    color: var(--text-prominent);
-                }
             }
             &--selected {
                 background: var(--state-active);
@@ -211,23 +185,8 @@
                     }
                 }
             }
-            &:first-child {
-                border-bottom: none;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-            }
-            &:last-child {
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
-                border-top: none;
-            }
             &:only-child {
                 border-radius: 4px;
-            }
-            &:not(:last-child):not(:only-child) {
-                border-bottom: 1px solid var(--general-main-2);
-                border-right: none;
-                border-left: none;
             }
         }
     }
@@ -255,6 +214,7 @@
         }
         &--selected {
             background: var(--state-active);
+            border-radius: 4px;
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
@@ -273,7 +233,6 @@
         display: flex;
         justify-content: flex-end;
         margin-top: 1.6em;
-        width: fit-content;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
@@ -285,5 +244,26 @@
             width: 1.6em;
             @extend %inline-icon;
         }
+    }
+    &__balance {
+        color: var(--status-success);
+        margin-left: auto;
+
+        &--virtual {
+            color: var(--text-prominent);
+        }
+    }
+    &__separator {
+        height: 4px;
+        background-color: var(--general-section-1);
+        width: calc(100% + 3.2rem);
+        margin-left: -1.6rem;
+    }
+    &__total {
+        font-size: 1.4rem;
+        margin: 1.6rem 0;
+        font-weight: bold;
+        display: flex;
+        color: var(--text-prominent);
     }
 }

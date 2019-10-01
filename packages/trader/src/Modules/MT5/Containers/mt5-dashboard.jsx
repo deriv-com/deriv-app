@@ -577,8 +577,20 @@ const ModalContent = () => (
 
 class MT5Dashboard extends React.Component {
     state = {
-        is_password_manager_visible    : false,
-        selected_login_password_manager: '',
+        password_manager: {
+            is_visible    : false,
+            selected_login: '',
+        },
+        // error_message_main: '',
+        // error_message_investor: '',
+        main: {
+            has_error    : false,
+            error_message: '',
+        },
+        investor: {
+            has_error    : false,
+            error_message: '',
+        },
     };
 
     openAccountTransfer = (data, meta) => {
@@ -592,9 +604,29 @@ class MT5Dashboard extends React.Component {
 
     togglePasswordManagerModal = (login) => {
         this.setState((prev_state) => ({
-            is_password_manager_visible    : !prev_state.is_password_manager_visible,
-            selected_login_password_manager: login,
+            password_manager: {
+                is_visible    : !prev_state.password_manager.is_visible,
+                selected_login: login || '',
+            },
         }));
+    };
+
+    showError = (section, error_message) => {
+        this.setState({
+            [section]: {
+                has_error: true,
+                error_message,
+            },
+        });
+    };
+
+    hideError = (section) => {
+        this.setState({
+            [section]: {
+                has_error    : false,
+                error_message: '',
+            },
+        });
     };
 
     render() {
@@ -604,6 +636,7 @@ class MT5Dashboard extends React.Component {
             enableApp,
             is_compare_accounts_visible,
             has_mt5_account,
+            onSubmitPasswordChange,
             toggleCompareAccounts,
         } = this.props;
 
@@ -649,13 +682,24 @@ class MT5Dashboard extends React.Component {
 
             return errors;
         };
+        const onSubmit = async (values) => {
+            if (!this.state.password_manager.selected_login) {
+                return;
+            }
+
+            const error = await onSubmitPasswordChange(
+                { login: this.state.password_manager.selected_login, ...values }
+            );
+
+            if (error) {
+                this.showError(values.password_type, error);
+            } else {
+                this.hideError(values.password_type);
+            }
+        };
 
         const MainPasswordManager = () => {
             const initial_values = { old_password: '', new_password: '', password_type: 'main' };
-            const onSubmit = (values) => {
-                console.log({ login: this.state.selected_login_password_manager, ...values });
-            };
-
 
             return (
                 <Formik
@@ -665,6 +709,11 @@ class MT5Dashboard extends React.Component {
                 >
                     {({ isSubmitting, errors, setFieldTouched, touched }) => (
                         <Form className='mt5-password-manager__main-form' noValidate>
+                            { this.state.main.has_error &&
+                                <p className='mt5-password-manager--error-message'>
+                                    { this.state.main.error_message }
+                                </p>
+                            }
                             <Field name='old_password'>
                                 {({ field }) => (
                                     <Input
@@ -713,15 +762,17 @@ class MT5Dashboard extends React.Component {
 
         const InvestorPasswordManager = () => {
             const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
-            const onSubmit = (values) => {
-                console.log({ login: this.state.selected_login_password_manager, ...values });
-            };
 
             return (
                 <div className='mt5-password-manager__investor-wrapper'>
                     <p className='mt5-password-manager--paragraph'>
                         <Localize i18n_default_text='Use this password to allow another user to access your account to view your trades. This user will not be able to trade or take any other actions.' />
                     </p>
+                    { this.state.investor.has_error &&
+                        <p className='mt5-password-manager--error-message'>
+                            { this.state.investor.error_message }
+                        </p>
+                    }
                     <Formik
                         initialValues={ initial_values }
                         validate={ validatePassword }
@@ -782,7 +833,7 @@ class MT5Dashboard extends React.Component {
                     className='mt5-password-manager__modal'
                     disableApp={disableApp}
                     enableApp={enableApp}
-                    is_open={this.state.is_password_manager_visible}
+                    is_open={this.state.password_manager.is_visible}
                     title={localize('Manage your DMT5 Standard real account password')}
                     toggleModal={this.togglePasswordManagerModal}
                 >
@@ -892,5 +943,6 @@ export default connect(({ modules, ui }) => ({
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,
+    onSubmitPasswordChange     : modules.mt5.changePassword,
     openTopUpModal             : ui.openTopUpModal,
 }))(MT5Dashboard);

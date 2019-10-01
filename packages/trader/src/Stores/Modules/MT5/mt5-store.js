@@ -289,4 +289,15 @@ export default class MT5Store extends BaseStore {
             console.error(response);
         }
     }
+
+    @action.bound
+    async changePassword({ login, old_password, new_password, password_type }) {
+        const response = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
+
+        if (response.error) {
+            return response.error.message;
+        }
+
+        return undefined;
+    }
 }

@@ -317,11 +317,15 @@
     margin: 5.6rem auto 0;
     width: 400px;
 
-    &--paragraph {
+    &--paragraph, &--error-message {
         @include typeface(--paragraph-left-normal-black, none);
         @include themify($themes) {
             color: themed('text_primary_color');
         }
+    }
+    &--error-message {
+        color: var(--text-loss-danger) !important;
+        margin-bottom: 1em;
     }
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);

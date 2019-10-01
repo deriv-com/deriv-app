@@ -183,6 +183,16 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const mt5PasswordChange = (login, old_password, new_password, password_type, values) =>
+        deriv_api.send({
+            mt5_password_change: 1,
+            login,
+            old_password,
+            new_password,
+            password_type,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -242,6 +252,7 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         mt5NewAccount,
+        mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
         profitTable,

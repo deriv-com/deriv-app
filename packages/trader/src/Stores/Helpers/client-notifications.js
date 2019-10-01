@@ -334,6 +334,8 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
+    const { prompt_client_to_authenticate, status } = account_status;
+
     const {
         document_under_review,
         cashier_locked,
@@ -345,7 +347,6 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         professional,
     } = getStatusValidations(status);
 
-    const { prompt_client_to_authenticate, status } = account_status;
     const { identity, document } = account_status.authentication;
     addVerificationNotifications(identity, document, addNotification, unwelcome);
 

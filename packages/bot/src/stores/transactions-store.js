@@ -1,29 +1,35 @@
-import {action, observable } from 'mobx';
-import { observer }          from '../utils/observer';
+import { action, observable } from 'mobx';
+import { observer } from '../utils/observer';
 
-export default class transactionsStore {
+export default class TransactionsStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
 
-        observer.register('contract.status', this.onContractStatusEvent);
-    }
-    @observable transactions;
-
-    @action.bound
-    onContractStatusEvent(data) {
-        this.pushMessage(data);
+        observer.register('bot.contract', this.onBotContractEvent);
     }
 
-    @action.bound
-    pushMessage(data) {
-       
-        console.log('************', data);
+    @observable contracts = [];
 
-        this.messages.unshift({ data });
-        this.messages = this.messages.slice(0);  // force array update
+    @action.bound
+    onBotContractEvent(data) {
+        this.pushTransaction(data);
+    }
+
+    @action.bound
+    pushTransaction(data) {
+        const contract = {
+            buy_price    : data.buy_price,
+            contract_type: data.contract_type,
+            refrence_id  : data.transaction_ids.buy,
+            entry_spot   : data.entry_spot,
+            exit_spot    : data.entry_tick_display_value,
+            profit       : data.profit,
+        };
+        this.contracts.unshift(contract);
+        this.contracts = this.contracts.slice(0);  // force array update
     }
 
     onUnmount() {
-        observer.unregister('contract.status', this.onLogError);
+        observer.unregister('contract.status', this.onBotContractEvent);
     }
 }

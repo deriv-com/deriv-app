@@ -5,6 +5,7 @@ import RunPanelStore     from './run-panel-store';
 import ScratchStore      from './scratch-store';
 import SummaryStore      from './summary-store';
 import ToolbarStore      from './toolbar-store';
+import TransactionsStore from './transactions-store';
 
 export default class RootStore {
     constructor(core, ws) {
@@ -15,6 +16,7 @@ export default class RootStore {
         this.journal       = new JournalStore(this);
         this.run_panel     = new RunPanelStore(this);
         this.summary       = new SummaryStore(this);
+        this.transactions  = new TransactionsStore(this);
         this.toolbar       = new ToolbarStore(this);
 
         // Create a singleton class to share rootStore with scratch

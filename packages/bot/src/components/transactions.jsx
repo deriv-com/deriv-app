@@ -1,98 +1,100 @@
 import className from 'classnames';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { connect } from '../stores/connect'
-import { Translate } from '../utils/tools';
-import { RiseFallIcon, IdIcon, ExitSpotIcon, EntrySpotIcon } from './Icons.jsx';
+import { Scrollbars } from 'tt-react-custom-scrollbars';
+import { IdIcon, ExitSpotIcon, EntrySpotIcon } from './Icons.jsx';
+import IconTradeType from './icon-trade-types.jsx';
+import { connect } from '../stores/connect';
+import { translate } from '../utils/tools';
+import '../assets/sass/transactions.scss';
 
-const Transaction = ({
-    is_rise,
-    refrence_id,
-    buy_price,
-    entry_spot,
-    exit_spot,
-    profit_loss,
-    isSettled }) => {
+const Transaction = ({ contract }) => {
     return (
-        <div className='transactions__item'>
-            <div className='transactions__trade-info'>
-                <div className={className(
-                    'transtactions__',
-                    [is_rise ? 'rise' : 'fall']
-                )}
-                >
-                    <RiseFallIcon />
-                </div>
-                <div className='transaction__col'>
-                    <div>
-                        <IdIcon />
-                        <div className='transactions__id'>{refrence_id}</div>
-                    </div>
-                    <div>
-                        <IdIcon />
-                        <div className='transactions__buy-price'>{buy_price}</div>
-                    </div>
-                </div>
-            </div>
-            <div className='transactions__entry-exit-spot'>
-                <div className='transaction__col'>
-                    <div>
+        <table className='transactions__item'>
+            <tbody>
+                <tr>
+                    <td className='transactions__inline transactions__middle transactions__td'>
+                        <IconTradeType className='transactions__inline transactions__top' trade_type={contract.contract_type} />
+
+                        <div className='transactions__inline transactions__middle'>
+                            <div>
+                                <IdIcon className='transactions__inline transactions__middle' />
+                                <div className='transactions__inline transactions__middle'>{contract.refrence_id}</div>
+                            </div>
+                            <div>
+                                <IdIcon className='transactions__inline transactions__middle' />
+                                <div className='transactions__inline transactions__middle'>{contract.buy_price}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td className='transactions__inline transactions__middle transactions__td'>
+                        <div>
+                            <EntrySpotIcon className='transactions__inline transactions__middle' />
+                            <div className='transactions__inline transactions__middle'>{contract.entry_spot}</div>
+                        </div>
+                        <div>
+                            <ExitSpotIcon className='transactions__inline transactions__middle' />
+                            <div className='transactions__inline transactions__middle'>{contract.exit_spot}</div>
+                        </div>
+                    </td>
+                    <td className='transactions__middle transactions__td'>
+                        <span className={className(
+                            'transtactions__',
+                            [contract.profit ? 'profit' : 'loss']
+                        )}
+                        >{contract.profit}
+                        </span>
+                    </td>
+                    <td className='transactions__middle transactions__td'>
                         <EntrySpotIcon />
-                        <div className='transactions__entry-spot'>{entry_spot}</div>
-                    </div>
-                    <div>
-                        <ExitSpotIcon />
-                        <div className='transactions__exit-spot'>{exit_spot}</div>
-                    </div>
-                </div>
-            </div>
-            <div className='transactions__profit-loss'>
-                <span className={className(
-                    'transtactions__',
-                    [is_rise ? 'profit' : 'loss']
-                )}>{is_rise ? '+' : '-'}</span>
-                <div className='transactions__exit-spot'>{profit_loss}</div>
-            </div>
-            <div className='transactions__settled'>
-                {isSettled ? <EntrySpotIcon/> : <ExitSpotIcon/>}
-            </div>
-        </div>
-    )
-}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    );
+};
 
 class Transactions extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
-    
+
     render() {
-        const { items } = this.props;
+        const { contracts } = this.props;
 
         return (
             <div className='transactions'>
                 <div className='transactions__header'>
-                    <span className='transactions__header-col'>{Translate('Trade information')}</span>
-                    <span className='transactions__header-col'>{Translate('Entry/Exit spot')}</span>
-                    <span className='transactions__header-col'>{Translate('Profit/Loss')}</span>
+                    <span className='transactions__header--col'>{translate('Trade information')}</span>
+                    <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
+                    <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
                 </div>
-                <div className='transactions_content'>
-                    {
-                        items.map((item) => {
-                            <Transaction item={item} />
-                        })
-                    }
+                <div className='transactions__content'>
+                    <Scrollbars
+                        autoHide
+                        style={{ height: 'calc(100vh - 283px)' }}
+                    >
+                        {
+                            contracts.map((contract, index) => {
+                                return <Transaction
+                                    key={`${contract.refrence_id}${index}`}
+                                    contract={contract}
+                                />;
+                            })
+                        }
+                    </Scrollbars>
                 </div>
             </div>
-        )
+        );
     }
 }
 
 Transactions.protoTypes = {
-    items     : PropTypes.array,
-    onUnmount : PropTypes.func, 
-}
+    contracts: PropTypes.array,
+    onUnmount: PropTypes.func,
+};
 
 export default connect(({ transactions }) => ({
-    items     : transactions.items,
-    onUnmount : transactions.onUnmount,
+    contracts: transactions.contracts,
+    onUnmount: transactions.onUnmount,
 }))(Transactions);

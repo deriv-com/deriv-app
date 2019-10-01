@@ -1,9 +1,39 @@
 .transactions {
-    &__col {
-        display: flex;
-        flex-direction: row;
+    &__header {
+        display: table;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: left;
+        height: 40px;
+        width: 100%;
+        padding-left: 16px;
+
+        &--col {
+            display: table-cell;
+            vertical-align: middle;
+        }
     }
-    &__fall {
-        transform: rotate(90);
+    &__item {
+        display: table;
+        font-size: 10px;
+        text-align: left;
+        width: 90%;
+        height: 40px;
+        border: 1px solid var(--border-normal);
+        border-collapse: initial;
+        border-radius: 4px;
+        margin: 8px 0 0 16px;
+        padding: 0 8px;
+    }
+    &__inline {
+        display: inline-block;
+        margin-right: 8px;
+    }
+    &__middle {
+        vertical-align: middle;
+    }
+    &__td {
+        line-height: 20px;
+        padding: 4px 0;
     }
 }

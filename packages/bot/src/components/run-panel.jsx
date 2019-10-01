@@ -5,6 +5,7 @@ import React                                  from 'react';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
+import Transactions                           from './transactions.jsx';
 import Summary                                from './summary.jsx';
 import { connect }                            from '../stores/connect';
 import { translate }                          from '../utils/tools';
@@ -16,7 +17,9 @@ const drawerContent = () => {
             <div label={translate('Summary')}>
                 <Summary />
             </div>
-            <div label={translate('Transactions')} />
+            <div label={translate('Transactions')} >
+                <Transactions />
+            </div>
             <div label={translate('Journal')}>
                 <Journal />
             </div>

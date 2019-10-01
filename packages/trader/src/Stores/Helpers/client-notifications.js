@@ -356,7 +356,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
     if (mt5_withdrawal_locked) addNotification(clientNotifications.mt5_withdrawal_locked);
     if (document_needs_action) addNotification(clientNotifications.document_needs_action);
-    if (unwelcome)             addNotification(clientNotifications.unwelcome);
+    if (unwelcome && !identity && !document) addNotification(clientNotifications.unwelcome);
     if (is_mf_retail)          addNotification(clientNotifications.mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {

@@ -11,6 +11,7 @@ import {
     Formik,
     Form }                     from 'formik';
 import React                   from 'react';
+import { OSDetect }            from '_common/os_detect';
 import DataTable               from 'App/Components/Elements/DataTable';
 import Localize                from 'App/Components/Elements/localize.jsx';
 import UILoader                from 'App/Components/Elements/ui-loader.jsx';
@@ -93,6 +94,17 @@ class ClipboardComponent extends React.PureComponent {
         copied: false,
     };
 }
+
+const getPlatformMt5DownloadLink = () => {
+    switch (OSDetect()) {
+        case 'windows': return 'https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe';
+        case 'linux': return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+        case 'mac': return 'https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg';
+        case 'ios': return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server';
+        case 'android': return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server';
+        default: return 'https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'; // Web
+    }
+};
 
 const MT5AccountCard = ({
     commission_message,
@@ -215,11 +227,11 @@ const MT5AccountCard = ({
                 <a
                     className='btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                     type='button'
-                    href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'
+                    href={ getPlatformMt5DownloadLink() }
                     target='_blank'
                     rel='noopener noreferrer'
                 >
-                    <Localize i18n_default_text='Trade now' />
+                    <Localize i18n_default_text='Download' />
                 </a>
                 }
                 {!existing_data && !has_mt5_account &&

@@ -32,6 +32,7 @@
     h1 {
         @include typeface(--title-center-bold-black);
         color: var(--text-prominent);
+        text-transform: none;
         margin-top: 3rem;
     }
     h2 {

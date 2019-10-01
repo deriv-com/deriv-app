@@ -154,6 +154,13 @@
             justify-content: flex-start;
         }
     }
+    &-modal {
+        &__wrapper {
+            margin-top: 1.6rem;
+            display: flex;
+            justify-content: center;
+        }
+    }
 
     .mt5-compare-account--hint {
         @include themify($themes) {

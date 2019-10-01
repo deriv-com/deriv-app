@@ -224,7 +224,7 @@ const MT5AccountCard = ({
                 }
                 {!existing_data && !has_mt5_account &&
                 <Button
-                    className='mt5-account-card__account-selection mt5-account-card__account-selection--secondary'
+                    className='mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                     onClick={() => { onSelectAccount(type); }}
                     type='button'
                 >
@@ -866,19 +866,18 @@ class MT5Dashboard extends React.Component {
         return (
             <div className='mt5-dashboard'>
                 {!has_mt5_account &&
-                <div className='mt5-dashboard__welcome-message'>
-                    <h1 className='mt5-dashboard__welcome-message--heading'>
-                        <Localize i18n_default_text='Welcome to Deriv MetaTrader 5 (MT5)' />
-                    </h1>
-                    <div className='mt5-dashboard__welcome-message--content'>
-                        <p className='mt5-dashboard__welcome-message--paragraph'>
-                            <Localize
-                                i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.'
-                            />
-                        </p>
-                        <CompareAccountsModal />
+                    <div className='mt5-dashboard__welcome-message'>
+                        <h1 className='mt5-dashboard__welcome-message--heading'>
+                            <Localize i18n_default_text='Welcome to your DMT5 account dashboard and manager' />
+                        </h1>
+                        <div className='mt5-dashboard__welcome-message--content'>
+                            <p className='mt5-dashboard__welcome-message--paragraph'>
+                                <Localize
+                                    i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.'
+                                />
+                            </p>
+                        </div>
                     </div>
-                </div>
                 }
 
                 <div className='mt5-dashboard__accounts-display'>
@@ -905,11 +904,13 @@ class MT5Dashboard extends React.Component {
                             />
                         </div>
                     </Tabs>
+                    <CompareAccountsModal />
                 </div>
+
                 <div className='mt5-dashboard__download-center'>
                     <h1 className='mt5-dashboard__download-center--heading'>
                         <Localize
-                            i18n_default_text='After creating your account, download MT5 for your desktop or mobile'
+                            i18n_default_text='Download MT5 for your desktop or mobile'
                         />
                     </h1>
 

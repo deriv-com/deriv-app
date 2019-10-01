@@ -1,16 +1,26 @@
 .transactions {
     &__header {
-        display: table;
+        display: flex;
         font-size: 12px;
         font-weight: bold;
-        text-align: left;
-        height: 40px;
+        line-height: 40px;
         width: 100%;
-        padding-left: 16px;
+        padding-left: 31px;
+        border-bottom: 1px solid var(--border-normal);
 
         &--col {
             display: table-cell;
             vertical-align: middle;
+
+            &:nth-child(1) {
+                width: 35%;
+            }
+            &:nth-child(2) {
+                width: 30%;
+            }
+            &:nth-child(3) {
+                width: 35%;
+            }
         }
     }
     &__item {
@@ -32,8 +42,33 @@
     &__middle {
         vertical-align: middle;
     }
+    &_tr {
+        display: flex;
+    }
     &__td {
         line-height: 20px;
         padding: 4px 0;
+        vertical-align: middle;
+
+        &:nth-child(1) {
+            width: 45%;
+        }
+        &:nth-child(2) {
+            width: 25%;
+        }
+        &:nth-child(3) {
+            width: 20%;
+        }
+        &:nth-child(4) {
+            width: 10%;
+        }
+    }
+    &__green {
+        color: var(--text-profit-success);
+        font-weight: bold;
+
+        &:before {
+            content: '+';
+        }
     }
 }

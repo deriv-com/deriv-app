@@ -1,8 +1,13 @@
-import className from 'classnames';
+// import className from 'classnames';
+import { Money } from 'deriv-components';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'tt-react-custom-scrollbars';
-import { IdIcon, ExitSpotIcon, EntrySpotIcon } from './Icons.jsx';
+import {
+    IdIcon,
+    ExitSpotIcon,
+    EntrySpotIcon,
+} from './Icons.jsx';
 import IconTradeType from './icon-trade-types.jsx';
 import { connect } from '../stores/connect';
 import { translate } from '../utils/tools';
@@ -12,8 +17,8 @@ const Transaction = ({ contract }) => {
     return (
         <table className='transactions__item'>
             <tbody>
-                <tr>
-                    <td className='transactions__inline transactions__middle transactions__td'>
+                <tr className='transactions__tr'>
+                    <td className='transactions__middle transactions__td'>
                         <IconTradeType className='transactions__inline transactions__top' trade_type={contract.contract_type} />
 
                         <div className='transactions__inline transactions__middle'>
@@ -23,11 +28,11 @@ const Transaction = ({ contract }) => {
                             </div>
                             <div>
                                 <IdIcon className='transactions__inline transactions__middle' />
-                                <div className='transactions__inline transactions__middle'>{contract.buy_price}</div>
+                                <Money amount={Math.abs(contract.buy_price)} currency={contract.currency} />
                             </div>
                         </div>
                     </td>
-                    <td className='transactions__inline transactions__middle transactions__td'>
+                    <td className='transactions__middle transactions__td'>
                         <div>
                             <EntrySpotIcon className='transactions__inline transactions__middle' />
                             <div className='transactions__inline transactions__middle'>{contract.entry_spot}</div>
@@ -37,15 +42,20 @@ const Transaction = ({ contract }) => {
                             <div className='transactions__inline transactions__middle'>{contract.exit_spot}</div>
                         </div>
                     </td>
-                    <td className='transactions__middle transactions__td'>
-                        <span className={className(
-                            'transtactions__',
-                            [contract.profit ? 'profit' : 'loss']
-                        )}
-                        >{contract.profit}
-                        </span>
+                    <td className='transactions__td'>
+                        <div
+                            className='transactions__inline
+                        transactions__middle
+                        transactions__green'
+                        >
+                            <Money
+                                amount={Math.abs(contract.profit)}
+                                currency={contract.currency}
+                            />
+                        </div>
+                       
                     </td>
-                    <td className='transactions__middle transactions__td'>
+                    <td className='transactions__td'>
                         <EntrySpotIcon />
                     </td>
                 </tr>

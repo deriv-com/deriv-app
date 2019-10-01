@@ -20,6 +20,7 @@ export default class TransactionsStore {
         const contract = {
             buy_price    : data.buy_price,
             contract_type: data.contract_type,
+            currency     : data.currency,
             refrence_id  : data.transaction_ids.buy,
             entry_spot   : data.entry_spot,
             exit_spot    : data.entry_tick_display_value,

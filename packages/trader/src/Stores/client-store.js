@@ -30,19 +30,19 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable email;
-    @observable accounts                   = {};
-    @observable switched                   = '';
-    @observable switch_broadcast           = false;
-    @observable currencies_list            = {};
-    @observable residence_list             = [];
-    @observable selected_currency          = '';
-    @observable is_populating_account_list = false;
-    @observable website_status             = {};
-    @observable verification_code          = '';
-    @observable account_settings           = {};
-    @observable account_status             = {};
-    @observable device_data                = {};
-    @observable landing_companies          = {
+    @observable accounts                       = {};
+    @observable switched                       = '';
+    @observable switch_broadcast               = false;
+    @observable currencies_list                = {};
+    @observable residence_list                 = [];
+    @observable selected_currency              = '';
+    @observable is_populating_account_list     = false;
+    @observable is_populating_mt5_account_list = true;
+    @observable verification_code              = '';
+    @observable account_settings               = {};
+    @observable account_status                 = {};
+    @observable device_data                    = {};
+    @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
     };
@@ -906,6 +906,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseMt5LoginList(response) {
+        this.is_populating_mt5_account_list = false;
+
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list;
         }

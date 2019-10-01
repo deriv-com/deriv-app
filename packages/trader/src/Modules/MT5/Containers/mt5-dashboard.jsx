@@ -34,6 +34,7 @@ import { connect }             from 'Stores/connect';
 import {
     validLength,
     validPassword }            from 'Utils/Validator/declarative-validation-rules';
+import Loading                 from '../../../templates/_common/components/loading.jsx';
 import 'Sass/app/modules/mt5-dashboard.scss';
 
 /*
@@ -236,12 +237,17 @@ const MT5AccountCard = ({
 };
 
 const RealAccountsDisplay = ({
+    is_loading,
     onSelectAccount,
     openAccountTransfer,
     current_list,
     has_mt5_account,
     openPasswordManager,
-}) => (
+}) => (is_loading ? (
+    <div className='mt5-real-accounts-display'>
+        <Loading />
+    </div>
+) : (
     <div className='mt5-real-accounts-display'>
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
@@ -322,15 +328,20 @@ const RealAccountsDisplay = ({
             }}
         />
     </div>
-);
+));
 
 const DemoAccountsDisplay = ({
+    is_loading,
     onSelectAccount,
     openAccountTransfer,
     current_list,
     has_mt5_account,
     openPasswordManager,
-}) => (
+}) => (is_loading ? (
+    <div className='mt5-demo-accounts-display'>
+        <Loading />
+    </div>
+) : (
     <div className='mt5-demo-accounts-display'>
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
@@ -411,7 +422,7 @@ const DemoAccountsDisplay = ({
             }}
         />
     </div>
-);
+));
 
 /* eslint-disable react/display-name, react/prop-types */
 const compareAccountsColumns = [
@@ -635,6 +646,7 @@ class MT5Dashboard extends React.Component {
             disableApp,
             enableApp,
             is_compare_accounts_visible,
+            is_loading,
             has_mt5_account,
             onSubmitPasswordChange,
             toggleCompareAccounts,
@@ -874,6 +886,7 @@ class MT5Dashboard extends React.Component {
                     <Tabs>
                         <div label={localize('Real account')}>
                             <RealAccountsDisplay
+                                is_loading={ is_loading }
                                 current_list={this.props.current_list}
                                 has_mt5_account={has_mt5_account}
                                 onSelectAccount={createMT5Account}
@@ -883,6 +896,7 @@ class MT5Dashboard extends React.Component {
                         </div>
                         <div label={localize('Demo account')}>
                             <DemoAccountsDisplay
+                                is_loading={ is_loading }
                                 has_mt5_account={has_mt5_account}
                                 current_list={this.props.current_list}
                                 onSelectAccount={createMT5Account}
@@ -933,12 +947,13 @@ class MT5Dashboard extends React.Component {
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     createMT5Account           : modules.mt5.createMT5Account,
     disableApp                 : ui.disableApp,
     enableApp                  : ui.enableApp,
     current_list               : modules.mt5.current_list,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
+    is_loading                 : client.is_populating_mt5_account_list,
     has_mt5_account            : !!modules.mt5.current_list.length,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,

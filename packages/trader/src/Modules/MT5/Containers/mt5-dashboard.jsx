@@ -644,12 +644,14 @@ class MT5Dashboard extends React.Component {
 
     render() {
         const {
+            beginRealSignupForMt5,
             createMT5Account,
             disableApp,
             enableApp,
             is_compare_accounts_visible,
             is_loading,
             has_mt5_account,
+            has_real_account,
             onSubmitPasswordChange,
             toggleCompareAccounts,
         } = this.props;
@@ -867,7 +869,7 @@ class MT5Dashboard extends React.Component {
 
         return (
             <div className='mt5-dashboard'>
-                {!has_mt5_account &&
+                { !has_mt5_account &&
                     <div className='mt5-dashboard__welcome-message'>
                         <h1 className='mt5-dashboard__welcome-message--heading'>
                             <Localize i18n_default_text='Welcome to your DMT5 account dashboard and manager' />
@@ -879,6 +881,20 @@ class MT5Dashboard extends React.Component {
                                 />
                             </p>
                         </div>
+                    </div>
+                }
+                { !has_real_account &&
+                    <div className='mt5-dashboard__missing-real'>
+                        <h1 className='mt5-dashboard__missing-real--heading'>
+                            <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to get started with DMT5.' />
+                        </h1>
+                        <Button
+                            className='btn--primary--default mt5-dashboard__missing-real--button'
+                            onClick={ beginRealSignupForMt5 }
+                            type='button'
+                        >
+                            <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
+                        </Button>
                     </div>
                 }
 
@@ -951,13 +967,15 @@ class MT5Dashboard extends React.Component {
 }
 
 export default connect(({ client, modules, ui }) => ({
+    beginRealSignupForMt5      : modules.mt5.beginRealSignupForMt5,
     createMT5Account           : modules.mt5.createMT5Account,
     disableApp                 : ui.disableApp,
     enableApp                  : ui.enableApp,
     current_list               : modules.mt5.current_list,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
-    has_mt5_account            : !!modules.mt5.current_list.length,
+    has_mt5_account            : modules.mt5.has_mt5_account,
+    has_real_account           : client.has_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,

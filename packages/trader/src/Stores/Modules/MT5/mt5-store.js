@@ -14,7 +14,6 @@ import BaseStore from '../../base-store';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;
-    @observable accounts_list               = [];
     @observable account_type                = {
         category: undefined,
         type    : undefined,
@@ -32,8 +31,11 @@ export default class MT5Store extends BaseStore {
 
     constructor({ root_store }) {
         super({ root_store });
+    }
 
-        this.onSwitchAccount(this.accountSwitcherListener);
+    @computed
+    get has_mt5_account() {
+        return this.current_list.length > 0;
     }
 
     @computed
@@ -58,10 +60,6 @@ export default class MT5Store extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
         return getMtCompanies();
-    }
-
-    accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
     }
 
     @action.bound
@@ -159,12 +157,6 @@ export default class MT5Store extends BaseStore {
         ].join(' ');
     }
 
-    onAccountSwitch() {
-        // Handle account type change
-        // eslint-disable-next-line no-console
-        // console.log('MT5 Accounts:', this.accounts_list);
-    }
-
     @action.bound
     openAccount(mt5_password) {
         const name         = this.getName();
@@ -180,16 +172,18 @@ export default class MT5Store extends BaseStore {
         });
     }
 
+    @action.bound
+    beginRealSignupForMt5() {
+        sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
+        this.root_store.ui.is_real_acc_signup_on = true;
+    }
+
     realMt5Signup() {
         // Check if the user has real account
         if (!this.root_store.client.has_real_account
             || !this.root_store.client.currency
         ) {
-            sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
-            this.root_store.ui.is_real_acc_signup_on = true;
-            // TODO remove this when it is done.
-            // eslint-disable-next-line no-console
-            console.log('Redirect user to real account signup form');
+            this.beginRealSignupForMt5();
         } else {
             switch (this.account_type.type) {
                 case 'standard':
@@ -212,11 +206,6 @@ export default class MT5Store extends BaseStore {
     @action.bound
     setAccountType(account_type) {
         this.account_type = account_type;
-    }
-
-    @action.bound
-    setAccountsList(new_list) {
-        this.accounts_list = new_list;
     }
 
     @action.bound

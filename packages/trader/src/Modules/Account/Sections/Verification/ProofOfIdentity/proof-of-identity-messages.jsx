@@ -92,7 +92,6 @@ export const UploadComplete = ({ has_poa }) => {
     );
 };
 
-
 export const Unverified = () => (
     <IconMessageContent
         message={localize('We could not verify your proof of identity')}

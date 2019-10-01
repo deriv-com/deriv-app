@@ -382,7 +382,7 @@ export const handleClientNotifications = (
 
     checkAccountStatus(account_status, client, addNotification, loginid);
 
-    if (loginid !== LocalStore.get('active_loginid')) return;
+    if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications.tnc);
 
@@ -393,5 +393,5 @@ export const handleClientNotifications = (
 
     return {
         has_missing_required_field,
-    }
+    };
 };

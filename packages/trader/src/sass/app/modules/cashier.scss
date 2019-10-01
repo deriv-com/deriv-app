@@ -2,12 +2,13 @@
 .cashier {
     &__content {
         width: 100%;
+        background: var(--status-default);
     }
     &__wrapper {
         text-align: center;
 
         &, &--align-left {
-            color: var(--text-prominent);
+            color: var(--text-general);
             width: 100%;
             height: 100%;
             line-height: 1.43;
@@ -29,6 +30,7 @@
         line-height: 1.5;
         font-weight: bold;
         margin-bottom: 16px;
+        color: var(--text-prominent);
     }
     &__form {
         &-submit {

@@ -46,7 +46,7 @@ class AccountInfo extends React.Component {
                         <Icon
                             icon='IconAccountsCurrency'
                             className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-                            type={is_virtual ? 'virtual' : currency.toLowerCase()}
+                            type={is_virtual ? 'virtual' : (currency || '').toLowerCase()}
                         />
                     </span>
                     {

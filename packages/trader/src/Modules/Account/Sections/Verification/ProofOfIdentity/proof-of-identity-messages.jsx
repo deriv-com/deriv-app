@@ -30,6 +30,15 @@ const PoaButton = () => (
     </ButtonLink>
 );
 
+const GoToPersonalDetailsButton = () => (
+    <ButtonLink
+        className='btn--primary--default'
+        to='/account/personal-details'
+    >
+        <p className='btn__text'>{localize('Go to personal details')}</p>
+    </ButtonLink>
+);
+
 export const Unsupported = () => {
     const UnsupportedIconRow = () => (
         <div className='poi-icon-row'>
@@ -148,7 +157,9 @@ export const MissingPersonalDetails = () => (
         message={localize('Your personal details are missing')}
         text={localize('Please complete your personal details before you verify your identity.')}
         icon={<IconPoiPersonalDetails />}
-    />
+    >
+        <GoToPersonalDetailsButton />
+    </IconMessageContent>
 );
 
 export const OnfidoFailed = () => (

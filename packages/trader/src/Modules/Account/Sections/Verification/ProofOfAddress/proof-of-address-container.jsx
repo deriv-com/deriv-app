@@ -22,7 +22,7 @@ const poa_status_codes = {
 class ProofOfAddressContainer extends React.Component {
     state = {
         is_loading   : true,
-        needs_poi    : false,
+        has_poi      : false,
         submitted_poa: false,
         resubmit_poa : false,
     };
@@ -63,7 +63,7 @@ class ProofOfAddressContainer extends React.Component {
             case poa_status_codes.pending:
                 return <NeedsReview />;
             case poa_status_codes.verified:
-                return <Verified needs_poi={needs_poi} />;
+                return <Verified has_poi={has_poi} />;
             case poa_status_codes.expired:
                 return <Expired onClick={this.handleResubmit} />;
             case poa_status_codes.rejected:

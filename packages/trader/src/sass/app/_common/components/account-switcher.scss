@@ -144,12 +144,13 @@
         display: flex;
         flex-flow: column nowrap;
         height: 100%;
-        padding: 1.6em;
+        padding: 1.6em 0.8em;
         background: var(--general-main-1);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
             padding-bottom: 0.8em;
+            margin-left: 0.8rem;
             display: block;
             color: var(--text-prominent);
         }
@@ -253,12 +254,12 @@
     &__separator {
         height: 4px;
         background-color: var(--general-section-1);
-        width: calc(100% + 3.2rem);
-        margin-left: -1.6rem;
+        width: calc(100% + 1.6rem);
+        margin-left: -0.8rem;
     }
     &__total {
         font-size: 1.4rem;
-        margin: 1.6rem 0;
+        margin: 1.6rem 0.8rem;
         font-weight: bold;
         display: flex;
         color: var(--text-prominent);

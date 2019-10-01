@@ -69,12 +69,13 @@
         background-color: var(--brand-red-coral);
         color: var(--text-colored-background);
 
-        /* stylelint-disable color-no-hex */
+        &:hover:not(&--disabled) {
+            background-color: var(--button-primary-hover);
+        }
         &--disabled {
             opacity: 0.32;
             cursor: initial;
         }
-        /* stylelint-enable color-no-hex */
         &--cancel {
             border: 1px solid var(--brand-red-coral);
             color: var(--brand-red-coral) !important;

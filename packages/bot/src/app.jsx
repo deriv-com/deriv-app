@@ -1,10 +1,12 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-import Workspace                from './components/workspace.jsx';
+import                               './public-path'; // Leave this here!
 import { scratchWorkspaceInit } from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
+import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
+import Workspace                from './components/workspace.jsx';
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -19,6 +21,7 @@ class App extends React.Component {
         return (
             <Provider {...this.rootStore}>
                 <React.Fragment>
+                    <Toolbar />
                     <Workspace />
                     <RunPanel />
                 </React.Fragment>
@@ -28,15 +31,14 @@ class App extends React.Component {
 
     componentDidMount() {
         scratchWorkspaceInit();
-        ApiHelpers.instance.registerAccountSwitcherListener();
+        ApiHelpers.instance.registerOnAccountSwitch();
     }
 
     componentWillUnmount() {
         if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();
         }
-        ApiHelpers.instance.disposeSwitchAccount();
+        ApiHelpers.instance.disposeOnAccountSwitch();
     }
 }
-
 export default App;

@@ -13,7 +13,6 @@ import {
 import { localize }           from 'App/i18n';
 import AppRoutes              from 'Constants/routes';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import ButtonLoading          from '../../../Components/button-loading.jsx';
 import {
     FormSubHeader,
     FormBody,
@@ -142,7 +141,7 @@ class ChangePasswordForm extends React.Component {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
-                                    className='account-form__footer-btn btn--tertiary--default'
+                                    className='btn btn--tertiary--default account-form__footer-btn'
                                     type='button'
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}
@@ -154,7 +153,7 @@ class ChangePasswordForm extends React.Component {
                                         !!((errors.new_password || !values.new_password) ||
                                         (errors.old_password || !values.old_password))
                                     }
-                                    is_loading={this.state.is_btn_loading && <ButtonLoading />}
+                                    is_loading={this.state.is_btn_loading}
                                     is_submit_success={this.state.is_submit_success}
                                     has_effect
                                     text={localize('Change Password')}

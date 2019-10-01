@@ -4,7 +4,7 @@ import {
     PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                 from 'prop-types';
 import React                     from 'react';
-import { isCryptocurrency }      from '_common/base/currency_base';
+import CurrencyUtils             from 'deriv-shared/utils/currency';
 import Tooltip                   from 'App/Components/Elements/tooltip.jsx';
 import IncrementButtons          from './increment-buttons.jsx';
 import Input                     from './input.jsx';
@@ -109,7 +109,7 @@ class InputField extends React.Component {
             let increment_value;
 
             const decimal_places = value ? getDecimals(value) : 0;
-            const is_crypto      = !!currency && isCryptocurrency(currency);
+            const is_crypto      = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
                 const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
@@ -124,7 +124,7 @@ class InputField extends React.Component {
             let decrement_value;
 
             const decimal_places = value ? getDecimals(value) : 0;
-            const is_crypto      = !!currency && isCryptocurrency(currency);
+            const is_crypto      = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
                 const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));

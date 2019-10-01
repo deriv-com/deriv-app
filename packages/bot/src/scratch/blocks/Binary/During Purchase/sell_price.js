@@ -9,17 +9,17 @@ Blockly.Blocks.sell_price = {
             message0       : translate('Sell profit/loss'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Returns the profit for sell at market.'),
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Returns the profit/loss form selling at market price'),
             category       : Blockly.Categories.During_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Sell price'),
-            'description' : translate('Sell price description'),
+            'display_name': translate('Profit/loss from selling'),
+            'description' : translate('In case if you want to sell active contract, that block returns potential profit or loss amount.'),
         };
     },
     onchange(event) {

@@ -10,18 +10,18 @@ Blockly.Blocks.trade_again = {
     definition(){
         return {
             message0         : translate('Trade Again'),
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special1.colour,
+            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            tooltip          : translate('Runs the trade block again'),
+            tooltip          : translate('This blocks transfers control to the Purchase conditions block.'),
             category         : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
             'display_name': translate('Trade Again'),
-            'description' : translate('Trade Again Description'),
+            'description' : translate('This blocks transfers control to the Purchase conditions block.'),
         };
     },
     onchange(event) {

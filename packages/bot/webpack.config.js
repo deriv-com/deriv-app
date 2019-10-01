@@ -5,6 +5,8 @@ const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
+const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+
 const output = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bot.js',
@@ -25,7 +27,7 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
-    devtool: 'source-map',
+    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     target: 'web',
     module: {
         rules: [
@@ -94,6 +96,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: './src/scratch/xml', to: 'xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
+            { from: './src/assets/images', to: 'media' },
         ]),
         new SpriteLoaderPlugin(),
         new MergeIntoSingleFilePlugin({

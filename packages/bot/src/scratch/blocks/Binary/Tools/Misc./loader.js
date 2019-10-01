@@ -11,12 +11,13 @@ Blockly.Blocks.loader = {
         this.jsonInit(this.definition());
 
         const urlField = this.getField('URL');
+        
         // eslint-disable-next-line no-underscore-dangle
         urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
     },
     definition(){
         return {
-            message0: translate('Load block from: %1'),
+            message0: translate('Load block from URL: %1'),
             args0   : [
                 {
                     type: 'field_input',
@@ -24,16 +25,17 @@ Blockly.Blocks.loader = {
                     text: 'http://www.example.com/block.xml',
                 },
             ],
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Load blocks from URL'),
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Loads blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };
-    }, meta(){
+    },
+    meta(){
         return {
-            'display_name': translate('Lodear'),
-            'description' : translate('Loeder Description'),
+            'display_name': translate('Loads from URL'),
+            'description' : translate('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
         };
     },
     onFinishEditingUrl(newValue) {

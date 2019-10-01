@@ -174,7 +174,6 @@ class ChartTradeClass extends React.Component {
         />
     );
 
-    topWidgets = () => (<ChartTopWidgets />);
     bottomWidgets = ({ digits, tick }) => (
         <ChartBottomWidgets digits={digits} tick={tick} />
     );
@@ -183,9 +182,19 @@ class ChartTradeClass extends React.Component {
         const {
             show_digits_stats,
             main_barrier,
+            should_refresh,
+            resetRefresh,
         } = this.props;
 
         const barriers = main_barrier ? [main_barrier] : [];
+        // smartcharts only way to refresh active-symbols is to reset the connection.
+        const is_socket_opened = this.props.is_socket_opened && !should_refresh;
+        if (should_refresh) {
+            setImmediate(() => resetRefresh());
+            // TODO: fix this in smartcharts, it should be possible to update
+            // active-symbols without re-rendering the entire chart.
+            return null;
+        }
 
         return (
             <SmartChart
@@ -204,8 +213,8 @@ class ChartTradeClass extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 symbol={this.props.symbol}
-                topWidgets={this.topWidgets}
-                isConnectionOpened={this.props.is_socket_opened}
+                topWidgets={ChartTopWidgets}
+                isConnectionOpened={is_socket_opened}
                 clearChart={false}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
@@ -248,5 +257,7 @@ const ChartTrade = connect(
         wsForgetStream   : modules.trade.wsForgetStream,
         wsSendRequest    : modules.trade.wsSendRequest,
         wsSubscribe      : modules.trade.wsSubscribe,
+        should_refresh   : modules.trade.should_refresh_active_symbols,
+        resetRefresh     : modules.trade.resetRefresh,
     })
 )(ChartTradeClass);

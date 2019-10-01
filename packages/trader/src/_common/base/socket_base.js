@@ -1,14 +1,11 @@
 const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
+const ObjectUtils      = require('deriv-shared/utils/object');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const APIMiddleware    = require('./api_middleware');
 const { State }        = require('../storage');
 const getLanguage      = require('../language').get;
-const {
-    cloneObject,
-    getPropertyValue,
-} = require('../utility');
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 
@@ -86,11 +83,11 @@ const BinarySocketBase = (() => {
 
         deriv_api.onMessage().subscribe(({ data: response }) => {
             const msg_type = response.msg_type;
-            State.set(['response', msg_type], cloneObject(response));
+            State.set(['response', msg_type], ObjectUtils.cloneObject(response));
 
             config.wsEvent('message');
 
-            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+            if (ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
                 wrong_app_id = getAppId();
             }
 
@@ -168,6 +165,18 @@ const BinarySocketBase = (() => {
             ...device_data,
         });
 
+    const setAccountCurrency = (currency, passthrough) =>
+        deriv_api.send({
+            set_account_currency: currency,
+            ...(passthrough && { passthrough }),
+        });
+
+    const newAccountReal = (values) =>
+        deriv_api.send({
+            new_account_real: 1,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -227,12 +236,14 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         newAccountVirtual,
+        newAccountReal,
         profitTable,
         statement,
         verifyEmail,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
+        setAccountCurrency,
         subscribeBalance,
         subscribeProposal,
         subscribeProposalOpenContract,

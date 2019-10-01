@@ -95,8 +95,8 @@ export default class GTMStore extends BaseStore {
                 chart           : {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
-                    chart_type      : this.root_store.modules.smart_chart.chart_type,
-                    granularity     : this.root_store.modules.smart_chart.granularity,
+                    chart_type      : this.root_store.modules.contract_trade.chart_type,
+                    granularity     : this.root_store.modules.contract_trade.granularity,
                 },
             },
         };

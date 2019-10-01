@@ -1,0 +1,219 @@
+
+/*
+*  [Work In Progress]
+*  This file is a WIP and will be broken down into different files for different components before the module is enabled
+*  Class names might change, properties and values will definitely change
+* */
+
+/* stylelint-disable */
+/** @define mt5-dashboard; */
+.mt5-dashboard {
+    margin: 4.8em auto;
+    max-width: 960px;
+
+    &--hint {
+        //@include typeface(--xsmall-left-normal-black, none);
+        font-size: 10px;
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+    }
+    &__welcome-message {
+        margin-bottom: 3.2em;
+
+        &--content {
+            display: flex;
+            justify-content: space-between;
+
+            .mt5-dashboard__welcome-message--paragraph {
+                max-width: 59.7em;
+            }
+        }
+        &--heading {
+            @include typeface(--title-left-bold-black, none);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            line-height: 1.5em;
+        }
+        &--paragraph {
+            @include typeface(--paragraph-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &--hint {
+            @include typeface(--xsmall-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+        }
+        &--button {
+            margin: 0;
+            background-color: transparent;
+            font-weight: bold;
+            border: solid 2px #999999;
+            height: 4em;
+            @include themify($themes) {
+                color: themed('text_active_color');
+            }
+        }
+    }
+    &__accounts-display {
+        margin-bottom: 2.4em;
+    }
+    &__download-center {
+        border-radius: 4px;
+        border: solid 1px #d6dadb;
+        padding-top: 1.6em;
+        padding-bottom: 1.6em;
+
+        &-options {
+            display: flex;
+            justify-content: space-between;
+
+            &--desktop, &--mobile {
+                display: flex;
+                flex-flow: column nowrap;
+                align-items: center;
+            }
+            &--desktop {
+                margin-left: 7em;
+
+                &-devices {
+                    width: 24em;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    margin-bottom: 1.6em;
+                }
+                &-links {
+                    width: 43em;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+            &--mobile {
+                margin-right: 7em;
+
+                &-devices {
+                    margin-bottom: 1.6em;
+                }
+                &-links {
+                    width: 27.1em;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+        &--heading {
+            @include typeface(--title-left-bold-black, none);
+            @include themify($themes) {
+                color: themed('text_color');
+            }
+            line-height: 1.5em;
+            margin-left: 1.3em;
+            margin-bottom: 1.5em;
+        }
+        &--hint {
+            @include typeface(--xsmall-left-normal-black, none);
+            @include themify($themes) {
+                color: themed('text_primary_color');
+            }
+            margin-top: 1.6em;
+            margin-left: 7.05em;
+        }
+    }
+}
+
+.mt5-real-accounts-display, .mt5-demo-accounts-display {
+    margin-top: 2.4em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mt5-account-card {
+    height: 32em;
+    width: 30.4em;
+    border-radius: 4px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    &:not(:hover) {
+        border: solid 1px #d6dadb;
+    }
+    &:hover {
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    }
+    &--heading {
+        @include typeface(--title-left-bold-black, none);
+        @include themify($themes) {
+            color: themed('text_color');
+        }
+        line-height: 1.5em;
+    }
+    &--paragraph {
+        @include typeface(--paragraph-left-normal-black, none);
+        @include themify($themes) {
+            color: themed('text_primary_color');
+        }
+        line-height: 1.45em;
+    }
+    &__type {
+        padding: 1.6em 1.6em 0;
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin-right: 1.6em;
+        }
+        &--description {
+            max-width: 19.2em;
+            display: inline-block;
+
+            .mt5-account-card--heading {
+                margin-bottom: 0.5em;
+            }
+        }
+    }
+    &__specs {
+        margin: 0 1.6em 1.6em;
+    }
+    &__specs-table {
+        width: 100%;
+
+        &-attribute {
+            width: 14.8em;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        &-data {
+            .mt5-account-card--paragraph {
+                @include typeface(--paragraph-left-bold-black, none);
+                @include themify($themes) {
+                    color: themed('text_primary_color');
+                }
+                line-height: 1.45em;
+            }
+        }
+    }
+    &__commission {
+        text-align: center;
+        &.mt5-account-card--paragraph {
+            line-height: 1.4em;
+        }
+    }
+    &__account-selection {
+        height: 4rem;
+        width: 27rem;
+        padding: 0;
+        margin: 1.6rem;
+        background-color: var(--brand-red-coral);
+        @include typeface(--paragraph-center-bold-black, none);
+        @include themify($themes) {
+            color: themed('text_active_color');
+        }
+    }
+}
+/* stylelint-enable */

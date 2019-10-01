@@ -1,10 +1,88 @@
+/* postcss-bem-linter: ignore */
+html {
+    font-size: 62.5%; // Set root font size to 10px (1rem) to convert units in base 10
+
+    /** TODO: define breakpoints */
+    // @include breakpoints(big-desktop) {
+    //     font-size: 75.5%; /* 1rem = 12px */
+    // }
+    // @include breakpoints(tab-land) {
+    //     font-size: 50%; /* 1rem = 8px */
+    // }
+    // @include breakpoints(tab-port) {
+    //     font-size: 47%; /* 1rem = 7.5px */
+    // }
+    // @include breakpoints(phone-xl) {
+    //     font-size: 38%; /* 1rem = 6px */
+    // }
+    // @include breakpoints(phone-lg) {
+    //     font-size: 35%; /* 1rem = 5.5px */
+    // }
+}
+
+/** @define body */
+.body {
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* postcss-bem-linter: ignore */
+*, html, .body {
+    font-family: $FONT_STACK;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+
+// Forms
+/** @define select */
+.select {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    padding: 2px 3px;
+    border: 1px solid var(--border-normal);
+    border-radius: $BORDER_RADIUS;
+}
+
+/** @define input */
+.input {
+    font-family: inherit;
+    font-style: inherit;
+    padding: 2px 3px;
+    color: var(--text-prominent);
+}
+
+// Placeholders
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: var(--text-prominent);
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: var(--text-prominent);
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: var(--text-prominent);
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: var(--text-prominent);
+}
+
 /** @define theme */
 .theme {
     &--light {
-        background: $COLOR_LIGHT_BLACK_4_SOLID;
+        background: $color-white;
     }
     &--dark {
-        background: $COLOR_DARK_BLUE_1;
+        background: $color-black;
     }
 }
 
@@ -33,7 +111,7 @@
 
 /** @define link */
 .link {
-    color: $COLOR_ORANGE;
+    color: var(--brand-red-coral);
     font-weight: bold;
     text-decoration: none;
 
@@ -41,7 +119,7 @@
         text-decoration: underline;
     }
     &--white {
-        color: $COLOR_WHITE;
+        color: $color-white;
     }
 }
 
@@ -63,9 +141,7 @@
 
 /** @define hr */
 .hr {
-    @include themify($themes) {
-        border-top: 1px solid themed('divider_color');
-    }
+    border-top: var(--general-section-1);
     display: block;
     height: 1px;
     border: 0;

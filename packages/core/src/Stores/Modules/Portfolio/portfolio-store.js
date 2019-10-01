@@ -26,13 +26,15 @@ export default class PortfolioStore extends BaseStore {
     @observable error      = '';
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
+    subscribers = {};
+
     @action.bound
     initializePortfolio = async () => {
         this.is_loading = true;
         await this.waitFor('authorize');
         WS.portfolio().then(this.portfolioHandler);
-        WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler, false);
-        WS.subscribeTransaction(this.transactionHandler, false);
+        WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler);
+        WS.subscribeTransaction(this.transactionHandler);
     };
 
     @action.bound
@@ -70,7 +72,8 @@ export default class PortfolioStore extends BaseStore {
             const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
             if (!new_pos) return;
             this.pushNewPosition(new_pos);
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler, false);
+            this.subscribers[contract_id] =
+                WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
@@ -81,7 +84,10 @@ export default class PortfolioStore extends BaseStore {
             if (i === -1) return;
 
             this.positions[i].is_loading = true;
-            WS.subscribeProposalOpenContract(contract_id, this.populateResultDetails, false);
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
+                this.populateResultDetails(poc);
+                subscriber.unsubscribe();
+            });
         }
     }
 
@@ -129,7 +135,7 @@ export default class PortfolioStore extends BaseStore {
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
         const { bid_price } = this.positions[i].contract_info;
-        this.positions[i].is_sell_requested = false;
+        this.positions[i].is_sell_requested = true;
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
@@ -187,8 +193,10 @@ export default class PortfolioStore extends BaseStore {
 
         if (isEnded(contract_response)) {
             // also forget for buy
-            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(cb => {
-                WS.forget('proposal_open_contract', cb, { contract_id: contract_response.contract_id });
+            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
+                if (!(contract_response.contract_id in this.subscribers)) return;
+                this.subscribers[contract_response.contract_id].unsubscribe();
+                delete this.subscribers[contract_response.contract_id];
             });
         }
     };
@@ -200,15 +208,10 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     removePositionById(contract_id) {
-        const { is_contract_mode } = this.root_store.modules.smart_chart;
-        const contract_idx         = this.getPositionIndexById(contract_id);
+        const contract_idx = this.getPositionIndexById(contract_id);
 
         this.positions.splice(contract_idx, 1);
-
-        // check if contract is in view in contract_mode before removing contract details from chart
-        if (is_contract_mode && (+this.root_store.modules.contract_trade.contract_id === +contract_id)) {
-            this.root_store.modules.contract_trade.onCloseContract();
-        }
+        this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
     @action.bound

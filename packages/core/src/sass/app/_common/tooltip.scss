@@ -2,10 +2,8 @@
 .tooltip {
     text-decoration: none;
     font-size: inherit;
-    @include themify($themes) {
-        color: themed('text_active_color');
-        @include tooltipColor(themed('background_tooltip_color'));
-    }
+    color: var(--text-prominent);
+    @include tooltipColor(var(--status-default));
 
     &__balloon-icon {
         position: absolute;
@@ -24,7 +22,7 @@
     &[data-tooltip] {
         cursor: initial;
         display: block;
-        @include themifiedTooltipColor('tooltip_background_color');
+        @include convertTooltipColor(var(--status-default));
 
         &:hover:after, &:hover:before {
             opacity: 0.96;
@@ -115,7 +113,7 @@
         }
     }
     &--error[data-tooltip] {
-        @include themifiedTooltipColor('tooltip_background_error');
+        @include convertTooltipColor(var(--status-danger));
 
         &, &[data-tooltip-pos=left] {
             // always show error tooltips, not just on hover
@@ -130,7 +128,7 @@
         }
     }
     &--error-secondary[data-tooltip] {
-        @include themifiedTooltipColor('tooltip_background_color');
+        @include convertTooltipColor(var(--status-danger));
 
         &, &[data-tooltip-pos=left] {
             // always show error tooltips, not just on hover

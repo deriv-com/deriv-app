@@ -1,19 +1,24 @@
-import { observable, action } from 'mobx';
-import { formatDate }         from 'deriv-shared/utils/date';
-import { observer }           from '../utils/observer';
+import {
+    observable,
+    action,
+    reaction }        from 'mobx';
+import { formatDate } from 'deriv-shared/utils/date';
+import { observer }   from '../utils/observer';
 
 export default class JournalStore {
-    constructor(rootstore) {
-        this.rootstore = rootstore;
+    constructor(root_store) {
+        this.root_store = root_store;
 
         observer.register('ui.log.success', this.onLogSuccess);
         observer.register('ui.log.error', this.onLogError);
         observer.register('Error', this.onLogError);
         observer.register('Notify', this.onNotify);
+
+        this.registerNotificationListener();
     }
 
     get serverTime () {
-        return this.rootstore.core.common.server_time;
+        return this.root_store.core.common.server_time;
     }
 
     @observable messages = [];
@@ -40,7 +45,7 @@ export default class JournalStore {
 
     @action.bound
     clearMessages (){
-        this.messages = this.messages.slice(0,0);  // force array update
+        this.messages = this.messages.slice(0, 0);  // force array update
     }
     
     pushMessage(data) {
@@ -56,10 +61,52 @@ export default class JournalStore {
         this.messages = this.messages.slice(0);  // force array update
     }
 
+    @action.bound
+    registerNotificationListener() {
+        const { ui } = this.root_store.core;
+
+        this.disposeNotificationListener = reaction(
+            () => ui.notification_messages,
+            (notification_messages) => {
+                if (!notification_messages.length) {
+                    return;
+                }
+
+                const string_messages = notification_messages.filter(m => typeof m.message === 'string');
+
+                if (string_messages.length) {
+                    const { run_panel } = this.root_store;
+
+                    if (!run_panel.is_drawer_open) {
+                        run_panel.toggleDrawer(true);
+                    }
+
+                    run_panel.setActiveTabIndex(2);
+
+                    string_messages.forEach(string_message => {
+                        // TODO: Proper handling of specific notification types. Trader
+                        // sometimes passes components as a message. Handle these.
+                        this.onNotify(string_message);
+                    });
+                }
+
+                if (ui.notification_messages.length > 0) {
+                    ui.removeAllNotifications();
+                }
+            }
+        );
+    }
+
+    @action.bound
     onUnmount() {
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);
         observer.unregister('Notify', this.onNotify);
+
+        // TODO: Dispose of this listener.
+        // if (typeof this.disposeNotificationListener === 'function') {
+        //     this.disposeNotificationListener();
+        // }
     }
 }

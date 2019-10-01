@@ -2,12 +2,9 @@ import * as Cookies          from 'js-cookie';
 import React                 from 'react';
 import { localize }          from 'App/i18n';
 import { WS }                from 'Services';
-import { connect }           from 'Stores/connect';
 import Onfido                from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
-import {
-    MissingPersonalDetails,
-    Unverified }             from './proof-of-identity-messages.jsx';
+import { Unverified }        from './proof-of-identity-messages.jsx';
 import ErrorMessage          from '../../ErrorMessages/LoadErrorMessage';
 import Loading               from '../../../../../templates/app/components/loading.jsx';
 
@@ -75,15 +72,7 @@ class ProofOfIdentityContainer extends React.Component {
                 const has_poa                = !(document && document.status === 'none');
                 const status                 = getIdentityStatus(identity, onfido_unsupported);
                 const unwelcome              = get_account_status.status.some(account_status => account_status === 'unwelcome');
-                const { has_missing_required_field } = this.props;
-                this.setState({
-                    is_loading: false,
-                    has_missing_required_field,
-                    has_poa,
-                    status,
-                    onfido_service_token,
-                    unwelcome,
-                });
+                this.setState({ is_loading: false, has_poa, status, onfido_service_token, unwelcome });
             });
         });
     }
@@ -94,7 +83,6 @@ class ProofOfIdentityContainer extends React.Component {
             status,
             onfido_service_token,
             has_poa,
-            has_missing_required_field,
             api_error,
             unwelcome,
         } = this.state;
@@ -102,7 +90,6 @@ class ProofOfIdentityContainer extends React.Component {
         if (api_error)  return <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />;
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (unwelcome)  return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
-        if (has_missing_required_field) return <MissingPersonalDetails />;
 
         return (
             <Onfido
@@ -115,8 +102,4 @@ class ProofOfIdentityContainer extends React.Component {
     }
 }
 
-export default connect(
-    ({ client }) => ({
-        has_missing_required_field: client.has_missing_required_field,
-    }),
-)(ProofOfIdentityContainer);
+export default ProofOfIdentityContainer;

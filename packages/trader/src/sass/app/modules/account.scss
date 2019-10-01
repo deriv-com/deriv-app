@@ -184,7 +184,8 @@
     .account-management__text {
         text-align: center;
         color: var(--text-less-prominent);
-        font-size: 1.6em;
+        font-size: var(--text-size-xs);
+        line-height: 1.5;
     }
     .account-management__text-container {
         margin-top: 10px;

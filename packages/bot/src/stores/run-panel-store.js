@@ -77,7 +77,7 @@ export default class RunPanelStore {
     @action.bound
     onClearStatClick() {
         // TODO: Wait for bot to finish.
-        this.root_store.journal.clearMessages();
+        this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
     }

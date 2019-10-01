@@ -4,6 +4,7 @@ import {
     reaction }        from 'mobx';
 import { formatDate } from 'deriv-shared/utils/date';
 import { observer }   from '../utils/observer';
+import { translate } from '../utils/tools';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -15,6 +16,7 @@ export default class JournalStore {
         observer.register('Notify', this.onNotify);
 
         this.registerNotificationListener();
+        this.registerOnAccountSwitch();
     }
 
     get serverTime () {
@@ -44,7 +46,7 @@ export default class JournalStore {
     }
 
     @action.bound
-    clearMessages (){
+    clear (){
         this.messages = this.messages.slice(0, 0);  // force array update
     }
     
@@ -98,15 +100,34 @@ export default class JournalStore {
     }
 
     @action.bound
+    registerOnAccountSwitch() {
+        const { client } = this.root_store.core;
+
+        this.switchAccountDisposer = reaction(
+            () => client.switch_broadcast,
+            action((switch_broadcast) => {
+                if (switch_broadcast) {
+                    this.clear();
+                    this.pushMessage(translate('You have switched accounts.'));
+                }
+            })
+        );
+    }
+
+    @action.bound
     onUnmount() {
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);
         observer.unregister('Notify', this.onNotify);
 
-        // TODO: Dispose of this listener.
+        // TODO: Dispose of these listeners.
         // if (typeof this.disposeNotificationListener === 'function') {
         //     this.disposeNotificationListener();
         // }
+        // if (typeof this.switchAccountDisposer === 'function') {
+        //     this.switchAccountDisposer();
+        // }
+        
     }
 }

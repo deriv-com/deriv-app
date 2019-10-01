@@ -68,7 +68,7 @@ const drawerFooter = ({
                         )}
                         text={translate('Run bot')}
                         icon={<RunIcon />}
-                        onClick={is_virtual && onRunButtonClick}
+                        onClick={is_virtual ? onRunButtonClick : null}
                         has_effect
                     />
             }

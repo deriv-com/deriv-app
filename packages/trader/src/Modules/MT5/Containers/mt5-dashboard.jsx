@@ -577,6 +577,8 @@ const ModalContent = () => (
             data_source={compareAccountsData}
             columns={compareAccountsColumns}
             item_size={40}
+            custom_height={ 400 }
+            custom_width={ 845 }
         />
         <p className='mt5-compare-account--hint'>
             <Localize
@@ -670,7 +672,7 @@ class MT5Dashboard extends React.Component {
                         toggleModal={toggleCompareAccounts}
                         type='button'
                     >
-                        <ModalContent />s
+                        <ModalContent />
                     </Modal>
                 </React.Suspense>
             </div>

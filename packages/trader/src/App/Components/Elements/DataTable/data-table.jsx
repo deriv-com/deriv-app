@@ -31,8 +31,8 @@ class DataTable extends React.PureComponent {
 
     componentDidMount() {
         this.setState({
-            height      : this.el_table_body.clientHeight,
-            width       : this.el_table_body.clientWidth,
+            height      : this.props.custom_height || this.el_table_body.clientHeight,
+            width       : this.props.custom_width || this.el_table_body.clientWidth,
             window_width: window.innerWidth,
         });
         window.onresize = this.resizeDimensions;
@@ -102,7 +102,6 @@ class DataTable extends React.PureComponent {
         } = this.props;
 
         const TableData =
-
             <React.Fragment>
                 <List
                     className={className}

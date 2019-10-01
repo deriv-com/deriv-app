@@ -32,6 +32,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts                   = {};
     @observable switched                   = '';
     @observable switch_broadcast           = false;
+    @observable is_account_switch_enabled  = true;
     @observable currencies_list            = {};
     @observable residence_list             = [];
     @observable selected_currency          = '';
@@ -274,9 +275,16 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
-        this.root_store.ui.removeAllNotifications();
-        this.setSwitched(loginid);
-        this.responsePayoutCurrencies(await WS.payoutCurrencies());
+        if (this.is_account_switch_enabled) {   
+            this.root_store.ui.removeAllNotifications();
+            this.setSwitched(loginid);
+            this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+        } else {
+            this.root_store.ui.addNotification({
+                message: localize('Switching accounts is disabled at this time.'),
+                type   : 'info',
+            });
+        }
     }
 
     @action.bound

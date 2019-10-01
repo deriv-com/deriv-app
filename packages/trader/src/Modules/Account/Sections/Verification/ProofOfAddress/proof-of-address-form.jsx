@@ -274,7 +274,7 @@ class ProofOfAddressForm extends React.Component {
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_state'
-                                                    label={localize('State/Province')}
+                                                    label={localize('State/Province (optional)')}
                                                     value={values.address_state}
                                                     error={touched.address_state && errors.address_state}
                                                     onChange={handleChange}

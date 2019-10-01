@@ -104,7 +104,7 @@ export const Verified = ({ needs_poi }) => {
 
 export const Unverified = () =>  (
     <IconMessageContent
-        message={localize('We could not verify your proof of identity')}
+        message={localize('We could not verify your proof of address')}
         text={
             <Localize
                 i18n_default_text='As a precaution, we have disabled trading, deposits and withdrawals for this account. If you have any questions, please go to our <0>Help Centre</0>.'

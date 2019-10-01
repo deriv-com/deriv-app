@@ -43,6 +43,7 @@
     &--primary {
         &--default {
             background: var(--button-primary-default);
+            color: var(--text-colored-background);
 
             &:hover:not([disabled]) {
                 background: var(--button-primary-hover);
@@ -55,7 +56,7 @@
                 cursor: not-allowed !important;
             }
             .btn__text {
-                color: $color-white;
+                color: var(--text-colored-background);
             }
         }
         // TODO: (colors) remove this line after colors migration complete

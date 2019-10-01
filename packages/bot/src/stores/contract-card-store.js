@@ -1,6 +1,7 @@
 import {
     observable,
-    action }                  from 'mobx';
+    action,
+    reaction }                from 'mobx';
 import { getIndicativePrice } from '../utils/contract';
 import { observer }           from '../utils/observer';
 
@@ -69,8 +70,27 @@ export default class ContractCardStore {
         this.profit_movement     = '';
     }
 
-    disposeObserverListener() {
+    @action.bound
+    registerOnAccountSwitch() {
+        const { client } = this.root_store.core;
+
+        this.switchAccountDisposer = reaction(
+            () => client.switch_broadcast,
+            action((switch_broadcast) => {
+                if (switch_broadcast) {
+                    this.clear(true);
+                }
+            })
+        );
+    }
+
+    onUnmount() {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
+
+        // TODO: Dispose of this listener.
+        // if (typeof this.switchAccountDisposer === 'function') {
+        //     this.switchAccountDisposer();
+        // }
     }
 }

@@ -17,6 +17,36 @@
         text-transform: none;
         border-top-left-radius: 1em;
     }
+    &--error {
+        & > svg {
+            width: 128px;
+            height: 128px;
+            align-self: center;
+            margin: 2em 0 0;
+        }
+        h1 {
+            @include typeface(--title-center-bold-black);
+            text-transform: none;
+            color: var(--text-general);
+            margin: 2em 0 1em;
+        }
+        p {
+            @include typeface(--paragraph-center-normal-black);
+            text-transform: none;
+            color: var(--text-prominent);
+        }
+        a {
+            @include typeface(--paragraph-center-bold-black);
+            text-transform: none;
+            text-decoration: none;
+            color: var(--text-colored-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12em;
+            align-self: center;
+        }
+    }
 }
 
 .dc-modal-header__real-account-signup-modal {

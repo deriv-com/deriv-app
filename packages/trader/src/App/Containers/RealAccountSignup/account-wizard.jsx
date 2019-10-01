@@ -126,6 +126,7 @@ class AccountWizard extends React.Component {
                 );
             })
             .catch(error_message => {
+                this.props.onError(error_message);
                 this.setState({
                     form_error: error_message,
                 }, () => setSubmitting(false));
@@ -174,6 +175,7 @@ class AccountWizard extends React.Component {
 }
 
 AccountWizard.propTypes = {
+    onError             : PropTypes.func,
     onLoading           : PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
 };

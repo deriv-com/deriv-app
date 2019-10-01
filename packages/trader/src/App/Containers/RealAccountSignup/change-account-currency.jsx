@@ -7,7 +7,8 @@ import { localize }         from 'App/i18n';
 import {
     RadioButtonGroup,
     RadioButton,
-}                           from './currency-selector.jsx';
+    reorderFiatCurrencies,
+} from './currency-selector.jsx';
 import FormSubmitButton     from './form-submit-button.jsx';
 
 class ChangeAccountCurrency extends Component {
@@ -17,7 +18,7 @@ class ChangeAccountCurrency extends Component {
 
     static getDerivedStateFromProps(props) {
         return {
-            selectable_currencies: props.legal_allowed_currencies.filter(currency => currency.type === 'fiat'),
+            selectable_currencies: reorderFiatCurrencies(props.legal_allowed_currencies.filter(currency => currency.type === 'fiat')),
         };
     }
 

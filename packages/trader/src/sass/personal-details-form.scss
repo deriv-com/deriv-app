@@ -6,6 +6,11 @@
 
     & .datepicker {
         max-width: initial;
+        &--active-label {
+            label {
+                color: var(--text-general);
+            }
+        }
     }
     &__elements {
         flex-grow: 1;

@@ -26,7 +26,6 @@ const Header = ({
     is_route_modal_on,
     is_virtual,
     loginid,
-    onClickUpgrade,
     disableApp,
     setCashierActiveTab,
     toggleAccountsDialog,
@@ -64,7 +63,6 @@ const Header = ({
                         is_logged_in={is_logged_in}
                         is_virtual={is_virtual}
                         loginid={loginid}
-                        onClickUpgrade={onClickUpgrade}
                         setCashierActiveTab={setCashierActiveTab}
                         toggleAccountsDialog={toggleAccountsDialog}
                         toggleCashierModal={toggleCashierModal}
@@ -94,7 +92,6 @@ Header.propTypes = {
     is_route_modal_on       : PropTypes.bool,
     is_virtual              : PropTypes.bool,
     loginid                 : PropTypes.string,
-    onClickUpgrade          : PropTypes.func,
     setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.func,
     toggleCashierModal      : PropTypes.func,

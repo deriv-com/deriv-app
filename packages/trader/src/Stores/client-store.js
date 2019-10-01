@@ -696,8 +696,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setBalance(balance) {
-        this.accounts[this.loginid].balance = balance;
+    setBalance(balance, loginid) {
+        this.accounts[loginid].balance = balance;
     }
 
     @action.bound

@@ -10,14 +10,13 @@ import Icon                from 'Assets/icon.jsx';
 const AccountInfo = ({
     balance,
     currency,
-    loginid,
     is_dialog_on,
     is_upgrade_enabled,
     is_virtual,
-    onClickUpgrade,
     toggleDialog,
 }) => (
     <div className='acc-info__wrapper'>
+        <div className='acc-info__separator' />
         <div
             className={classNames('acc-info', {
                 'acc-info--show'      : is_dialog_on,
@@ -25,12 +24,15 @@ const AccountInfo = ({
             })}
             onClick={toggleDialog}
         >
-            <p
+            <span
                 className='acc-info__id'
-                title={loginid}
             >
-                {loginid}&nbsp;
-            </p>
+                <Icon
+                    icon='IconAccountsCurrency'
+                    className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+                    type={is_virtual ? 'virtual' : currency.toLowerCase()}
+                />
+            </span>
             {
                 typeof balance !== 'undefined' &&
                 <p className='acc-info__balance'>
@@ -57,7 +59,6 @@ const AccountInfo = ({
                     is_visible={is_dialog_on}
                     toggle={toggleDialog}
                     is_upgrade_enabled={is_upgrade_enabled}
-                    onClickUpgrade={onClickUpgrade}
                 />
             </div>
         </CSSTransition>
@@ -72,7 +73,6 @@ AccountInfo.propTypes = {
     is_upgrade_enabled: PropTypes.bool,
     is_virtual        : PropTypes.bool,
     loginid           : PropTypes.string,
-    onClickUpgrade    : PropTypes.func,
     toggleDialog      : PropTypes.func,
 };
 

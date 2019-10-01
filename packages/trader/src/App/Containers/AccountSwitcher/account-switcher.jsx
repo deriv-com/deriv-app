@@ -39,6 +39,7 @@ class AccountSwitcher extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        this.props.hideDialog();
     }
 
     async doSwitch(loginid) {
@@ -62,7 +63,7 @@ class AccountSwitcher extends React.Component {
         // e.g - Real, Financial, Gaming, Investment
 
         return (
-            <div className='acc-switcher__list' ref={this.setWrapperRef}>
+            <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
                 <div className='acc-switcher__list-group'>
                     <span className='acc-switcher__list-title'>
                         <Localize i18n_default_text='Accounts' />

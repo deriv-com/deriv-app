@@ -27,8 +27,8 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     // });
 
     const root_blocks = blocks_to_clean.filter(block => block.isMainBlock()).sort((a, b) => {
-    const blockIndex = (block) => config.mainBlocks.findIndex(b => b === block.type); 
-    return blockIndex(a) - blockIndex(b);
+        const blockIndex = (block) => config.mainBlocks.findIndex(c => c === block.type);
+        return blockIndex(a) - blockIndex(b);
     });
     const column_count = 2;
     const blocks_per_column = Math.ceil(root_blocks.length / column_count);
@@ -40,7 +40,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
 
         root_blocks.forEach((block, index) => {
             if (index === (column_index + 1) * blocks_per_column) {
-                temp_cursor_y = cursor_y; 
+                temp_cursor_y = cursor_y;
                 column_index++;
             }
 
@@ -61,7 +61,10 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
             }
 
             block.snapToGrid();
-            temp_cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+            temp_cursor_y =
+                block.getRelativeToSurfaceXY().y +
+                block.getHeightWidth().height +
+                Blockly.BlockSvg.MIN_BLOCK_Y;
         });
 
         const lowest_root_block = root_blocks.reduce((a, b) => {
@@ -207,7 +210,7 @@ export const loadBlocks = (xml, drop_event = {}) => {
 
     fixCollapsedBlocks();
     Blockly.Events.setGroup(false);
-}
+};
 
 export const loadWorkspace = (xml) => {
     const workspace = Blockly.derivWorkspace;
@@ -218,4 +221,4 @@ export const loadWorkspace = (xml) => {
     Blockly.Xml.domToWorkspace(xml, workspace);
     fixCollapsedBlocks();
     Blockly.Events.setGroup(false);
-}
+};

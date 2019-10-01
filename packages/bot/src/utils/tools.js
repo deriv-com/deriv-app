@@ -80,12 +80,12 @@ export const importExternal = url => {
         const script = document.createElement('script');
         script.src = url;
         script.async = true;
-        script.onload = () => resolve(window['external_global_component']);
+        script.onload = () => resolve(window.external_global_component);
         script.onerror = reject;
 
         document.body.appendChild(script);
     });
-}
+};
 
 export const load = (block_string = '', drop_event = {}) => {
     try {
@@ -134,4 +134,4 @@ export const load = (block_string = '', drop_event = {}) => {
         // TODO
         console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
     }
-}
+};

@@ -241,9 +241,9 @@ const config = {
     bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd                              : {
-        cid: '762348641835-0vn7baqvt6ranmvj1lm23lk34uvbn9v1.apps.googleusercontent.com',
-        aid: 'famous-segment-254009',
-        api: 'AIzaSyC7bULpbdhEDKnknNBzsxe7KIbp65VnJHc',
+        cid: '828416594271-qj2dnf4u2omg1iugangbtsrq6p0a55oc.apps.googleusercontent.com',
+        aid: 'derivbot-248506',
+        api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
     },
     help: {
         TEXT : 'text',

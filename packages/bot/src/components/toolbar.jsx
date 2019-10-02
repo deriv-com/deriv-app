@@ -197,9 +197,10 @@ const Toolbar = ({
         </div>
         <div className='toolbar__section'>
             <TradeAnimation
-                className={classNames({
-                    'animation--hidden': is_drawer_open,
-                })}
+                className={classNames(
+                    'toolbar__animation',
+                    { 'animation--hidden': is_drawer_open }
+                )}
                 should_show_overlay={true}
             />
             

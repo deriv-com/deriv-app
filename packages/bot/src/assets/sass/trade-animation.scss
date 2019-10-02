@@ -21,7 +21,7 @@
         transform: scale(0);
     }
     50% {
-        transform: scale(1);
+        transform: scale(2);
     }
     100% {
         transform: scale(0);
@@ -43,7 +43,7 @@
     $animation: &;
 
     &__container {
-        width: 354px;
+        width: auto;
         padding: 5px 12px;
         display: flex;
         flex-direction: column;
@@ -70,13 +70,10 @@
             display: flex;
 
             &.completed, &.active {
-                [class*='-circle'] {
-                    transform: scale(1.2);
-                }
                 .static-circle {
-                    animation: animate-circle-appear 1s;
                     background-color: var(--status-success);
                     border: 2px solid var(--status-success);
+                    transform: scale(1.2);
                 }
             }
             &.active {
@@ -116,19 +113,16 @@
             width: 0;
             height: 100%;
         }
-        &-2 {
+        &-3 {
             animation: animate-progress 0.5s 1;
             animation-fill-mode: forwards;
         }
-        &-3 {
+        &-4 {
             width: calc(50% - 3.5px);
         }
-        &-4 {
+        &-5 {
             animation: animate-progress-complete 0.5s 1;
             animation-fill-mode: forwards;
-        }
-        &-5 {
-            width: 100%;
         }
     }
     &--running {

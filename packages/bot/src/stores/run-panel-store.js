@@ -57,7 +57,7 @@ export default class RunPanelStore {
         this.root_store.contract_card.is_loading = true;
         this.is_run_button_clicked = true;
         Blockly.BLOCKLY_CLASS_OLD.run();
-        this.contract_stage = CONTRACT_STAGES.purchase_sent;
+        this.contract_stage = CONTRACT_STAGES.bot_starting;
     }
 
     @action.bound

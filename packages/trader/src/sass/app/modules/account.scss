@@ -142,7 +142,7 @@
         }
         &--grey {
             @include themify($themes) {
-                color: themed('active_color');
+                color: var(--text-less-prominent);
             }
         }
     }

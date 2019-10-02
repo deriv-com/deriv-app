@@ -15,9 +15,9 @@
         border-left: 2px solid var(--general-main-1);
     }
     &__title {
-        font-size: 1.6rem;
+        font-size: var(--text-size-s);
         font-weight: bold;
-        margin-right: 8px;
+        margin: 0 0.8rem;
         color: var(--text-prominent);
     }
     &__header {

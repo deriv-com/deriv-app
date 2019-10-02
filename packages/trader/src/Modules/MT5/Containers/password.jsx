@@ -19,7 +19,7 @@ import {
     validPassword,
     validLength,
 }                           from 'Utils/Validator/declarative-validation-rules';
-import 'sass/mt5.scss';
+import 'Sass/app/modules/mt5/mt5.scss';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {

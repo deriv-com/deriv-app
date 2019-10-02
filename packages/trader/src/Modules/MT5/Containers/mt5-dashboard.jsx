@@ -39,7 +39,7 @@ import {
     validPassword,
 }                              from 'Utils/Validator/declarative-validation-rules';
 import Loading                 from '../../../templates/_common/components/loading.jsx';
-import 'Sass/app/modules/mt5-dashboard.scss';
+import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 import Password                from 'Modules/MT5/Containers/password.jsx';
 
 /*

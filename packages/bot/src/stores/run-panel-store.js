@@ -29,6 +29,7 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
+        this.setContractStage(CONTRACT_STAGES.not_running);
     }
 
     @action.bound
@@ -73,8 +74,8 @@ export default class RunPanelStore {
             return;
         }
         if (this.is_run_button_clicked) {
-            Blockly.BLOCKLY_CLASS_OLD.stop();
             this.setContractStage(CONTRACT_STAGES.bot_is_stopping);
+            Blockly.BLOCKLY_CLASS_OLD.stop();
         }
         this.is_run_button_clicked = false;
     }

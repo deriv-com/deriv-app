@@ -461,6 +461,9 @@
 
 /** @define payment-agent-transfer */
 .payment-agent-transfer {
+    &__header {
+        margin-bottom: 2.8rem;
+    }
     &__input {
         width: 29.6rem;
         display: inline-flex;

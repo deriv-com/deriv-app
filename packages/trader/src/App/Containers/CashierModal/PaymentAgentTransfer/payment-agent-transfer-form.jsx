@@ -71,98 +71,99 @@ class PaymentAgentTransferForm extends React.Component {
     render() {
         return (
             <div className='cashier__wrapper--align-left'>
-                <React.Fragment>
-                    <Formik
-                        initialValues={{
-                            loginid    : '',
-                            amount     : '',
-                            description: '',
-                        }}
-                        validate={this.validateTransferPassthrough}
-                        onSubmit={this.onTransferPassthrough}
-                    >
-                        {
-                            ({ errors, isSubmitting, isValid, touched, handleChange }) => (
-                                <Form noValidate>
-                                    <Field name='loginid'>
-                                        {({ field }) => (
-                                            <Input
-                                                { ...field }
-                                                onChange={(e) => {
-                                                    this.props.setErrorMessage('');
-                                                    handleChange(e);
-                                                }}
-                                                className='payment-agent-transfer__input'
-                                                type='text'
-                                                label={localize('Client login ID')}
-                                                error={ touched.loginid && errors.loginid }
-                                                required
-                                                autoComplete='off'
-                                                maxLength='20'
-                                            />
-                                        )}
-                                    </Field>
-                                    <Field name='amount'>
-                                        {({ field }) => (
-                                            <Input
-                                                { ...field }
-                                                onChange={(e) => {
-                                                    this.props.setErrorMessage('');
-                                                    handleChange(e);
-                                                }}
-                                                className='payment-agent-transfer__input dc-input--no-placeholder'
-                                                type='text'
-                                                label={localize('Amount')}
-                                                error={ touched.amount && errors.amount }
-                                                required
-                                                leading_icon={
-                                                    <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
-                                                }
-                                                autoComplete='off'
-                                                maxLength='30'
-                                            />
-                                        )}
-                                    </Field>
-                                    <Field name='description'>
-                                        {({ field }) => (
-                                            <Input
-                                                { ...field }
-                                                onChange={(e) => {
-                                                    this.props.setErrorMessage('');
-                                                    handleChange(e);
-                                                }}
-                                                type='textarea'
-                                                label={localize('Description')}
-                                                error={ touched.description && errors.description }
-                                                required
-                                                autoComplete='off'
-                                                maxLength='250'
-                                            />
-                                        )}
-                                    </Field>
-                                    <div className='cashier__form-submit'>
-                                        {this.props.error_message &&
-                                        <React.Fragment>
-                                            <Icon icon='IconEmergency' className='cashier__form-error-icon' />
-                                            <Icon icon='IconError' className='cashier__form-error-small-icon' />
-                                            <p className='cashier__form-error'>
-                                                {this.props.error_message}
-                                            </p>
-                                        </React.Fragment>
-                                        }
-                                        <Button
-                                            className='cashier__form-submit-button btn--primary--default'
-                                            type='submit'
-                                            is_disabled={!isValid || isSubmitting}
-                                        >
-                                            <Localize i18n_default_text='Transfer' />
-                                        </Button>
-                                    </div>
-                                </Form>
-                            )
-                        }
-                    </Formik>
-                </React.Fragment>
+                <h2 className='cashier__header payment-agent-transfer__header'>
+                    <Localize i18n_default_text='Transfer to client' />
+                </h2>
+                <Formik
+                    initialValues={{
+                        loginid    : '',
+                        amount     : '',
+                        description: '',
+                    }}
+                    validate={this.validateTransferPassthrough}
+                    onSubmit={this.onTransferPassthrough}
+                >
+                    {
+                        ({ errors, isSubmitting, isValid, touched, handleChange }) => (
+                            <Form noValidate>
+                                <Field name='loginid'>
+                                    {({ field }) => (
+                                        <Input
+                                            { ...field }
+                                            onChange={(e) => {
+                                                this.props.setErrorMessage('');
+                                                handleChange(e);
+                                            }}
+                                            className='payment-agent-transfer__input'
+                                            type='text'
+                                            label={localize('Client login ID')}
+                                            error={ touched.loginid && errors.loginid }
+                                            required
+                                            autoComplete='off'
+                                            maxLength='20'
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='amount'>
+                                    {({ field }) => (
+                                        <Input
+                                            { ...field }
+                                            onChange={(e) => {
+                                                this.props.setErrorMessage('');
+                                                handleChange(e);
+                                            }}
+                                            className='payment-agent-transfer__input dc-input--no-placeholder'
+                                            type='text'
+                                            label={localize('Amount')}
+                                            error={ touched.amount && errors.amount }
+                                            required
+                                            leading_icon={
+                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
+                                            }
+                                            autoComplete='off'
+                                            maxLength='30'
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='description'>
+                                    {({ field }) => (
+                                        <Input
+                                            { ...field }
+                                            onChange={(e) => {
+                                                this.props.setErrorMessage('');
+                                                handleChange(e);
+                                            }}
+                                            type='textarea'
+                                            label={localize('Description')}
+                                            error={ touched.description && errors.description }
+                                            required
+                                            autoComplete='off'
+                                            maxLength='250'
+                                        />
+                                    )}
+                                </Field>
+                                <div className='cashier__form-submit'>
+                                    {this.props.error_message &&
+                                    <React.Fragment>
+                                        <Icon icon='IconEmergency' className='cashier__form-error-icon' />
+                                        <Icon icon='IconError' className='cashier__form-error-small-icon' />
+                                        <p className='cashier__form-error'>
+                                            {this.props.error_message}
+                                        </p>
+                                    </React.Fragment>
+                                    }
+                                    <Button
+                                        className='cashier__form-submit-button btn--primary--default'
+                                        type='submit'
+                                        is_disabled={!isValid || isSubmitting}
+                                    >
+                                        <Localize i18n_default_text='Transfer' />
+                                    </Button>
+                                </div>
+                            </Form>
+                        )
+                    }
+                </Formik>
             </div>
         );
     }

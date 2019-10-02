@@ -2,6 +2,7 @@
     $flyout        : &;
     $default-margin: 15px;
     $button-padding: 5px 20px;
+    $shadow: var(--text-prominent);
 
     position: absolute;
     left: 250px;
@@ -15,7 +16,7 @@
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;
-    box-shadow: 0 2px 8px 0 rgba(var(--text-prominent), 0.4);
+    box-shadow: 0 2px 8px 0 var(--text-less-prominent);
     min-width: 400px;
 
     &__item:hover {
@@ -48,7 +49,7 @@
         &-new {
             width: 100%;
             font-size: 100%;
-            box-shadow: 0 2px 8px 0 rgba(var(--text-prominent), 1);
+            box-shadow: 0 2px 8px 0 var(--text-less-prominent);
             margin-bottom: $default-margin;
         }
         &-add {

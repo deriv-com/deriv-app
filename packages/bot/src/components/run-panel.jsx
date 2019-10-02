@@ -70,6 +70,7 @@ const drawerFooter = ({
                         className={classNames(
                             'btn--primary--default',
                             'run-panel__button',
+                            'run_panel__button--clear',
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
                         text={translate('Stop bot')}

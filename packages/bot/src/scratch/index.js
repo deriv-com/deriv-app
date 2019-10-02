@@ -15,8 +15,14 @@ export const scratchWorkspaceInit = async () => {
         // eslint-disable-next-line
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
 
+        Blockly.deriv_styles = getComputedStyle(document.documentElement);
+
         const workspace = Blockly.inject(el_scratch_div, {
-            grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
+            grid: {
+                pacing: 40,
+                length: 11,
+                colour: Blockly.deriv_styles.getPropertyValue('--general-section-1'),
+            },
             media   : `${__webpack_public_path__}media/`, // eslint-disable-line
             toolbox : toolbox_xml,
             trashcan: true,

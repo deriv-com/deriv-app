@@ -13,6 +13,9 @@
         margin-left: 0 !important;
         opacity: 1;
 
+        &--clear {
+            color: var(--text-prominent);
+        }
         &--run {
             background: var(--purchase-main-1) !important;
         }

@@ -1,9 +1,11 @@
 .summary {
+    color: var(--text-general);
     margin: 16px;
 
     &__tiles {
         display: flex;
         flex-wrap: wrap;
+        font-size: 12px;
         justify-content: space-between;
         margin: 24px 0;
     }
@@ -15,7 +17,7 @@
         width: 32%;
         max-width: 32%;
         text-align: center;
-        background-color: var(--general-section-1);
+        background-color: var(--general-disabled);
         padding: 8px 8px 0;
         margin-bottom: 2%;
         height: 56px;
@@ -23,17 +25,13 @@
         &-title {
             height: 18px;
             margin-bottom: 4px;
-            @include typeface(--small-center-bold-black, none);
+            font-weight: bold;
         }
         &-content {
             height: 18px;
-            margin-bottom: 4px;
-            @include typeface(--small-center-normal-black, none);
         }
     }
     &__amount {
-        @include typeface(--small-center-normal-black, none);
-
         &--positive {
             font-weight: bold;
             color: var(--text-profit-success);

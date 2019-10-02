@@ -1,7 +1,10 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import ObjectUtils       from 'deriv-shared/utils/object';
+import {
+    Money,
+    Popover }            from 'deriv-components';
+import CurrencyUtils     from 'deriv-shared/utils/currency';
 import { localize }      from 'App/i18n';
 import { urlFor }        from '_common/url';
 import UpgradeButton     from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
@@ -37,6 +40,7 @@ class AccountSwitcher extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        this.props.hideDialog();
     }
 
     async doSwitch(loginid) {
@@ -58,26 +62,43 @@ class AccountSwitcher extends React.Component {
         if (!this.props.is_logged_in) return false;
         // TODO: Once we allow other real accounts (apart from CR), assign correct title and group accounts into list with correct account title/types
         // e.g - Real, Financial, Gaming, Investment
-        const real_accounts = this.props.account_list.filter(acc => !acc.is_virtual);
-        const vrt_account   = this.props.account_list.find(acc => acc.is_virtual);
+        const can_upgrade = !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
 
-        const main_account_title = real_accounts.length > 1 ? localize('Real accounts') : localize('Real account');
+        // sort accounts as follows:
+        // top is fiat, then crypto (each alphabetically by currency), then demo
+        this.props.account_list.sort((a, b) => {
+            const a_currency = this.props.accounts[a.loginid].currency;
+            const b_currency = this.props.accounts[b.loginid].currency;
+            const a_is_crypto = CurrencyUtils.isCryptocurrency(a_currency);
+            const b_is_crypto = CurrencyUtils.isCryptocurrency(b_currency);
+            const a_is_fiat = !a_is_crypto;
+            const b_is_fiat = !b_is_crypto;
+            if (a.is_virtual || b.is_virtual) {
+                return a.is_virtual ? 1 : -1;
+            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                return a_currency < b_currency ? -1 : 1;
+            } else if (a_is_fiat && b_is_crypto) {
+                return -1;
+            }
+            return 1;
+        });
 
         return (
-            <div className='acc-switcher__list' ref={this.setWrapperRef}>
-                {
-                    // Make sure this block is not rendered if there are no real accounts
-                    !!(this.props.account_list.length && real_accounts.length) &&
-                    <div className='acc-switcher__list-group'>
-                        <span className='acc-switcher__list-title'>
-                            {main_account_title}
-                        </span>
-                        <div className='acc-switcher__accounts'>
-                            {
-                                real_accounts.map((account) => (
+            <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
+                <div className='acc-switcher__list-group'>
+                    <span className='acc-switcher__list-title'>
+                        <Localize i18n_default_text='Accounts' />
+                    </span>
+                    <div className='acc-switcher__accounts'>
+                        {
+                            this.props.account_list.map((account) => (
+                                <Popover
+                                    alignment='left'
+                                    message={account.loginid}
+                                    key={account.loginid}
+                                >
                                     <div
                                         id={`dt_${account.loginid}`}
-                                        key={account.loginid}
                                         className={classNames('acc-switcher__account', {
                                             'acc-switcher__account--selected': (account.loginid === this.props.account_loginid),
                                         })}
@@ -89,50 +110,43 @@ class AccountSwitcher extends React.Component {
                                                 className={`acc-switcher__id-icon acc-switcher__id-icon--${account.icon}`}
                                                 type={account.icon}
                                             />
-                                            {account.loginid}
+                                            <span>{account.is_virtual ? <Localize i18n_default_text='Demo' /> : account.icon.toUpperCase()}</span>
+                                            {'balance' in this.props.accounts[account.loginid] &&
+                                            <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                                <Money
+                                                    currency={this.props.accounts[account.loginid].currency}
+                                                    amount={
+                                                        CurrencyUtils.formatMoney(
+                                                            this.props.accounts[account.loginid].currency,
+                                                            this.props.accounts[account.loginid].balance,
+                                                            true
+                                                        )
+                                                    }
+                                                    should_format={false}
+                                                />
+                                            </span>
+                                            }
                                         </span>
                                     </div>
-                                ))
-                            }
-                        </div>
-
-                        {this.can_manage_currency &&
-                            <UpgradeButton
-                                onClick={this.props.openRealAccountSignup}
-                                outlined
-                            >
-                                <Icon icon='IconAdd' />
-                                <div className='btn__text'>
-                                    <Localize
-                                        i18n_default_text='Add/manage account'
-                                    />
-                                </div>
-                            </UpgradeButton>
+                                </Popover>
+                            ))
                         }
                     </div>
-                }
-                {
-                    !ObjectUtils.isEmptyObject(vrt_account) &&
-                    <div className='acc-switcher__list--virtual'>
-                        <span className='acc-switcher__list-title'>
-                            {localize('Demo account')}
-                        </span>
-                        <div className='acc-switcher__accounts'>
-                            <div
-                                id={`dt_${this.props.virtual_loginid}`}
-                                className={classNames('acc-switcher__account', {
-                                    'acc-switcher__account--selected': (this.props.virtual_loginid === this.props.account_loginid),
-                                })}
-                                onClick={this.doSwitch.bind(this, this.props.virtual_loginid)}
-                            >
-                                <span className={classNames('acc-switcher__id', 'acc-switcher__id--virtual')}>
-                                    {this.props.virtual_loginid}
-                                </span>
+
+                    {this.can_manage_currency && !can_upgrade &&
+                        <UpgradeButton
+                            onClick={this.props.openRealAccountSignup}
+                        >
+                            <Icon icon='IconAdd' />
+                            <div className='btn__text'>
+                                <Localize
+                                    i18n_default_text='Add/manage account'
+                                />
                             </div>
-                        </div>
-                    </div>
-                }
-                { !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to) &&
+                        </UpgradeButton>
+                    }
+                </div>
+                { can_upgrade &&
                 <UpgradeButton
                     onClick={() => {
                         if (this.props.can_upgrade_to === 'svg') {
@@ -141,7 +155,6 @@ class AccountSwitcher extends React.Component {
                             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
                         }
                     }}
-                    outlined
                 >
                     <Icon icon='IconAdd' />
                     <div className='btn__text'>
@@ -151,6 +164,27 @@ class AccountSwitcher extends React.Component {
                     </div>
                 </UpgradeButton>
                 }
+                <div className='acc-switcher__separator' />
+
+                <div className='acc-switcher__total'>
+                    <Localize i18n_default_text='Total assets' />
+                    <span className='acc-switcher__balance'>
+                        <Money
+                            currency={this.props.obj_total_balance.currency}
+                            amount={
+                                CurrencyUtils.formatMoney(
+                                    this.props.obj_total_balance.currency,
+                                    this.props.obj_total_balance.amount,
+                                    true
+                                )
+                            }
+                            should_format={false}
+                        />
+                    </span>
+                </div>
+
+                <div className='acc-switcher__separator' />
+
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
                     <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
@@ -163,24 +197,26 @@ class AccountSwitcher extends React.Component {
 AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
+    accounts              : PropTypes.object,
     cleanUp               : PropTypes.func,
     clearError            : PropTypes.func,
+    display               : PropTypes.string,
     has_error             : PropTypes.bool,
     has_fiat              : PropTypes.bool,
+    hideDialog            : PropTypes.func,
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_upgrade_enabled    : PropTypes.bool,
     is_virtual            : PropTypes.bool,
     is_visible            : PropTypes.bool,
-    onClickUpgrade        : PropTypes.func,
+    obj_total_balance     : PropTypes.object,
     toggle                : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
-    upgrade_info          : PropTypes.object,
-    virtual_loginid       : PropTypes.string,
 };
 
 const account_switcher = connect(
     ({ client, ui, modules }) => ({
+        accounts              : client.accounts,
         has_fiat              : client.has_fiat,
         can_change_currency   : client.can_change_currency,
         account_list          : client.account_list,
@@ -189,10 +225,9 @@ const account_switcher = connect(
         account_loginid       : client.loginid,
         is_logged_in          : client.is_logged_in,
         is_virtual            : client.is_virtual,
+        obj_total_balance     : client.obj_total_balance,
         switchAccount         : client.switchAccount,
-        upgrade_info          : client.upgrade_info,
         cleanUp               : client.cleanUp,
-        virtual_loginid       : client.virtual_account_loginid,
         clearError            : modules.contract_trade.clearError,
         has_error             : modules.contract_trade.has_error,
         is_positions_drawer_on: ui.is_positions_drawer_on,

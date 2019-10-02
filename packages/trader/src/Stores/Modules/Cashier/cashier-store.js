@@ -8,7 +8,6 @@ import BinarySocket  from '_common/base/socket_base';
 import { localize }  from 'App/i18n';
 import { WS }        from 'Services';
 import BaseStore     from '../../base-store';
-import {isEmptyObject} from "deriv-shared/src/utils/object/object";
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -153,9 +152,7 @@ export default class CashierStore extends BaseStore {
             this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
-        if (!this.config.payment_agent_transfer.is_payment_agent) {
-            this.checkIsPaymentAgent();
-        }
+        this.checkIsPaymentAgent();
 
         this.sortAccountsTransfer();
 
@@ -868,14 +865,8 @@ export default class CashierStore extends BaseStore {
     }
 
     async checkIsPaymentAgent() {
-        const response_settings = await BinarySocket.wait('get_settings');
-        const response_pa_list  = await BinarySocket.wait('paymentagent_list');
-
-        // show to payment agent account, not the sibling accounts
-        const is_payment_agent = response_settings.get_settings.is_authenticated_payment_agent &&
-            !isEmptyObject(this.getCurrentPaymentAgent(response_pa_list));
-
-        this.setIsPaymentAgent(is_payment_agent);
+        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
     }
 
     @action.bound
@@ -934,6 +925,7 @@ export default class CashierStore extends BaseStore {
         });
         this.config.payment_agent = new ConfigPaymentAgent();
         this.config.account_transfer = new ConfigAccountTransfer();
+        this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
     }
 
     accountSwitcherListener() {

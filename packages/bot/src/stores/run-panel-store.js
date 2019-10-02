@@ -163,8 +163,8 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.dialog_title = translate('Head\'s up');
-        this.dialog_content = translate('You cannot use your real money account with DBot at this time.');
+        this.dialog_title = translate('DBot isn\'t quite ready for real accounts');
+        this.dialog_content = translate('Please switch to your demo account to run your DBot.');
         this.is_dialog_visible = true;
     }
 

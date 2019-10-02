@@ -9,7 +9,9 @@ import FormSubmitButton                from './form-submit-button.jsx';
 import 'Sass/personal-details-form.scss';
 import DatePickerCalendar              from './date-picker-calendar.jsx';
 
-class DateOfBirth extends Component {
+// exporting DateOfBirth component here to be used in account/personal-details page
+// TODO: move to Components
+export class DateOfBirth extends Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -74,8 +76,9 @@ class DateOfBirth extends Component {
                             placeholder={this.props.label}
                             onFocus={this.handleFocus}
                             onBlur={this.handleBlur}
-                            value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
+                            value={value ? toMoment(value).format('DD-MMM-YYYY') : ''}
                             readOnly
+                            disabled={this.props.disabled}
                         />
                         <CSSTransition
                             in={this.state.should_show_calendar}

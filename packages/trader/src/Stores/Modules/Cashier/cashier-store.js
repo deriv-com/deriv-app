@@ -247,7 +247,10 @@ export default class CashierStore extends BaseStore {
                 error_message = [
                     localize('There was a problem validating your personal details.'),
                     (error.details.fields ?
-                        localize('Please update your {{details}}.', { details: error.details.fields.map(field => (this.error_fields[field] || field)).join(', ') })
+                        localize('Please update your {{details}}.', {
+                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
+                            interpolation: { escapeValue: false },
+                        })
                         :
                         localize('Please update your details.')
                     ),

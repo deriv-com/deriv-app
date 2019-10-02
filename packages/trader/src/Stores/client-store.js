@@ -51,6 +51,7 @@ export default class ClientStore extends BaseStore {
     @observable website_status = {};
     @observable mt5_login_list = [];
     @observable statement      = [];
+    @observable obj_total_balance = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -696,8 +697,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setBalance(balance) {
-        this.accounts[this.loginid].balance = balance;
+    setBalance(obj_balance) {
+        if (this.accounts[obj_balance.loginid]) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            this.obj_total_balance = {
+                amount  : obj_balance.total.real.amount,
+                currency: obj_balance.total.real.currency,
+            };
+        }
     }
 
     @action.bound

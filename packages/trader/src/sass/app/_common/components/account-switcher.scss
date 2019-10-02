@@ -8,8 +8,7 @@
     flex-direction: row;
     height: 100%;
     justify-content: center;
-    margin: 0 0 0 1.6em;
-    padding: 0 1.6em;
+    padding: 0 1.6em 0 1.7em;
 
     &__container {
         align-items: center;
@@ -23,24 +22,23 @@
         height: 100%;
         justify-content: center;
         position: relative;
+        margin-right: 0.8rem;
     }
     &__id {
-        @include typeface(--title-center-bold-black, default);
-        pointer-events: none;
-        color: var(--text-prominent);
-
-        &:after {
-            content: attr(title);
-            display: block;
-            font-weight: 500;
-            height: 0;
-            overflow: hidden;
-            visibility: hidden;
+        &-icon {
+            vertical-align: middle;
+            margin-right: 0.8rem;
         }
+    }
+    &__separator {
+        border-right: 1px solid var(--general-section-1);
+        width: 2rem;
+        height: 3.2rem;
+        margin-right: -0.1rem;
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
-        @include toEm(padding, 8px, 1.6em);
+        padding: 0.5em;
         color: var(--text-profit-success);
         pointer-events: none;
     }
@@ -62,16 +60,6 @@
         .acc-info__balance {
             color: var(--text-profit-success);
         }
-        &:before {
-            @include typeface(--small-left-normal-green, uppercase);
-            @include toEm(padding, 2px 8px, 1.2em);
-            @include toEm(margin-right, 8px, 1.2em);
-            color: var(--text-profit-success);
-            border: 1px solid var(--text-profit-success);
-            border-radius: 16px;
-            content: 'demo';
-            pointer-events: none;
-        }
     }
     &--show {
         .acc-info__select-arrow {
@@ -79,7 +67,7 @@
         }
     }
     &__button {
-        margin: 0 1.6em;
+        margin: 0 1.6em 0 0 !important;
 
         &:not(:last-child) {
             margin-right: 1em;
@@ -96,7 +84,7 @@
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
-        width: 240px;
+        width: 246px;
         background: var(--general-main-2);
 
         &--enter-done {
@@ -110,12 +98,11 @@
     }
     &__new-account {
         align-items: center;
-        background-color: var(--brand-red-coral);
+        background-color: transparent;
         border-radius: 4px;
         display: flex;
         height: 40px;
-        justify-content: center;
-        margin: 0.8em 0 1.6em;
+        margin: 0 0 0.8em;
 
         &-link {
             background-color: transparent;
@@ -132,41 +119,23 @@
                 }
             }
         }
-        &--outlined {
+        &:hover {
+            background-color: rgba(255, 68, 79, 0.08) !important;
+        }
+        .btn__text {
+            color: var(--brand-red-coral);
+        }
+        .btn {
+            align-items: center;
             background-color: transparent;
-            border: 1px solid var(--button-secondary-default);
+            display: flex;
+            margin: 0;
+            padding: 0 0 0 0.8rem;
+            justify-content: left;
 
-            &:hover {
-                background-color: var(--button-secondary-hover) !important;
-
-                .btn__text {
-                    color: var(--text-general);
-                }
-            }
-            .btn__text {
-                color: var(--text-general);
-            }
-            .btn {
-                align-items: center;
-                background-color: transparent;
-                display: flex;
-                justify-content: space-around;
-                margin: 0;
-                padding: 0 0 0 1rem;
-                width: 100%;
-
-                & > * {
-                    display: block;
-                    margin-right: 1rem;
-                }
-                svg {
-                    circle {
-                        fill: transparent;
-                    }
-                    path {
-                        fill: var(--text-general);
-                    }
-                }
+            & > * {
+                display: block;
+                margin-right: 1rem;
             }
         }
     }
@@ -175,17 +144,15 @@
         display: flex;
         flex-flow: column nowrap;
         height: 100%;
-        padding: 1.6em;
-        background: var(--general-section-1);
+        padding: 1.6em 0.8em;
+        background: var(--general-main-1);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
             padding-bottom: 0.8em;
+            margin-left: 0.8rem;
             display: block;
             color: var(--text-prominent);
-        }
-        &-group {
-            padding-bottom: 16px;
         }
     }
     &__accounts {
@@ -197,9 +164,11 @@
 
             &:hover:not(.acc-switcher__account--selected) {
                 background-color: var(--state-hover);
+                border-radius: 4px;
             }
             .acc-switcher__id {
                 color: var(--text-general);
+                width: 100%;
             }
             &--selected {
                 background: var(--state-active);
@@ -214,23 +183,8 @@
                     }
                 }
             }
-            &:first-child {
-                border-bottom: none;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-            }
-            &:last-child {
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
-                border-top: none;
-            }
             &:only-child {
                 border-radius: 4px;
-            }
-            &:not(:last-child):not(:only-child) {
-                border-bottom: 1px solid var(--general-main-2);
-                border-right: none;
-                border-left: none;
             }
         }
     }
@@ -239,7 +193,7 @@
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
-        padding: 0.8em 1.6em;
+        padding: 0.8em;
         position: relative;
         background-color: var(--state-normal);
 
@@ -250,16 +204,7 @@
             color: var(--text-prominent);
 
             &-icon {
-                @include toEm(margin-right, 16px, 1em);
-            }
-            &--virtual:before {
-                @include typeface(--xxxsmall-left-normal-orange, uppercase);
-                @include toEm(padding, 1px 2px, 0.6em);
-                @include toEm(margin-right, 8px, 0.6em);
-                content: 'demo';
-                color: var(--text-profit-success);
-                border: 1px solid var(--text-profit-success);
-                border-radius: 16px;
+                @include toEm(margin-right, 8px, 1em);
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
@@ -267,6 +212,7 @@
         }
         &--selected {
             background: var(--state-active);
+            border-radius: 4px;
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
@@ -285,7 +231,6 @@
         display: flex;
         justify-content: flex-end;
         margin-top: 1.6em;
-        width: fit-content;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
@@ -297,5 +242,26 @@
             width: 1.6em;
             @extend %inline-icon;
         }
+    }
+    &__balance {
+        color: var(--status-success);
+        margin-left: auto;
+
+        &--virtual {
+            color: var(--text-prominent);
+        }
+    }
+    &__separator {
+        height: 4px;
+        background-color: var(--general-section-1);
+        width: calc(100% + 1.6rem);
+        margin-left: -0.8rem;
+    }
+    &__total {
+        font-size: 1.4rem;
+        margin: 1.6rem 0.8rem;
+        font-weight: bold;
+        display: flex;
+        color: var(--text-prominent);
     }
 }

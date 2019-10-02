@@ -271,6 +271,19 @@
         animation-fill-mode: forwards;
         display: block;
     }
+    /* postcss-bem-linter: ignore */
+    .initial-loader--btn {
+        background-color: unset;
+
+        /* postcss-bem-linter: ignore */
+        .initial-loader__barspinner--rect {
+            background-color: $COLOR_WHITE;
+        }
+        /* postcss-bem-linter: ignore */
+        .barspinner {
+            margin: 0 4px 0 -4px;
+        }
+    }
 }
 
 @keyframes buttonEffect {
@@ -281,17 +294,5 @@
         bottom: -0.6em;
         right: -0.6em;
         border-width: 6px;
-    }
-}
-
-/** @define initial-loader; weak */
-.initial-loader--btn {
-    background-color: unset !important;
-
-    .initial-loader__barspinner--rect {
-        background-color: $COLOR_WHITE;
-    }
-    .barspinner {
-        margin: 0 4px 0 -4px;
     }
 }

@@ -259,16 +259,6 @@ export const clientNotifications = {
         ),
         type: 'danger',
     },
-    poi_rejected: {
-        key    : 'poi_rejected',
-        header : localize('We could not verify your proof of identity'),
-        message: (
-            <Localize
-                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
-            />
-        ),
-        type: 'danger',
-    },
 };
 
 const hasMissingRequiredField = (account_settings, client) => {
@@ -318,14 +308,11 @@ const getStatusValidations = status_arr =>
         return validations;
     }, {});
 
-const addVerificationNotifications = (identity, document, addNotification, unwelcome) => {
+const addVerificationNotifications = (identity, document, addNotification) => {
     if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
-    if ((identity.status === 'rejected' || identity.status === 'suspected') && unwelcome) {
-        addNotification(clientNotifications.poi_rejected);
-    }
 
     if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
-    if ((document.status === 'rejected' || document.status === 'suspected') && unwelcome) {
+    if ((document.status === 'rejected' || document.status === 'suspected')) {
         addNotification(clientNotifications.poa_rejected);
     }
 };
@@ -348,7 +335,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     } = getStatusValidations(status);
 
     const { identity, document } = account_status.authentication;
-    addVerificationNotifications(identity, document, addNotification, unwelcome);
+    addVerificationNotifications(identity, document, addNotification);
 
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
 

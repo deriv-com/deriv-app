@@ -161,7 +161,7 @@ export default class CashierStore extends BaseStore {
             }
         } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('700');
+            this.setContainerHeight('540');
             this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive
@@ -247,7 +247,10 @@ export default class CashierStore extends BaseStore {
                 error_message = [
                     localize('There was a problem validating your personal details.'),
                     (error.details.fields ?
-                        localize('Please update your {{details}}.', { details: error.details.fields.map(field => (this.error_fields[field] || field)).join(', ') })
+                        localize('Please update your {{details}}.', {
+                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
+                            interpolation: { escapeValue: false },
+                        })
                         :
                         localize('Please update your details.')
                     ),

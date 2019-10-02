@@ -4,7 +4,7 @@ import { SideMenuHeaders }       from './side-menu-headers.jsx';
 import {
     VerticalTabContentContainer,
     VerticalTabLayout }          from '../VerticalTabs';
-import Loading               from '../../../../templates/app/components/loading.jsx';
+import Loading                   from '../../../../templates/app/components/loading.jsx';
 
 const SideMenuTitle = ({ title }) => (<h1 className='side-menu__title'>{title}</h1>);
 

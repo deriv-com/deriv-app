@@ -38,8 +38,6 @@ export class AccountActions extends Component {
             is_logged_in,
             is_payment_agent_visible,
             is_virtual,
-            loginid,
-            onClickUpgrade,
             setCashierActiveTab,
             toggleAccountsDialog,
             toggleCashierModal,
@@ -55,9 +53,7 @@ export class AccountActions extends Component {
                             balance={CurrencyUtils.formatMoney(currency, balance, true)}
                             is_upgrade_enabled={can_upgrade}
                             is_virtual={is_virtual}
-                            onClickUpgrade={onClickUpgrade}
                             currency={currency}
-                            loginid={loginid}
                             is_dialog_on={is_acc_switcher_on}
                             toggleDialog={toggleAccountsDialog}
                         />
@@ -95,8 +91,6 @@ AccountActions.propTypes = {
     is_logged_in            : PropTypes.any,
     is_payment_agent_visible: PropTypes.any,
     is_virtual              : PropTypes.any,
-    loginid                 : PropTypes.any,
-    onClickUpgrade          : PropTypes.any,
     setCashierActiveTab     : PropTypes.func,
     toggleAccountsDialog    : PropTypes.any,
     toggleCashierModal      : PropTypes.any,

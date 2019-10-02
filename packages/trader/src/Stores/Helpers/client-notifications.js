@@ -321,10 +321,16 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    const { prompt_client_to_authenticate, status } = account_status;
+    const {
+        authentication: {
+            document,
+            identity,
+            needs_verification,
+        },
+        status,
+    } = account_status;
 
     const {
-        document_under_review,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -334,16 +340,16 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         professional,
     } = getStatusValidations(status);
 
-    const { identity, document } = account_status.authentication;
     addVerificationNotifications(identity, document, addNotification);
 
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
 
     if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
     if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
     if (mt5_withdrawal_locked) addNotification(clientNotifications.mt5_withdrawal_locked);
     if (document_needs_action) addNotification(clientNotifications.document_needs_action);
-    if (unwelcome) addNotification(clientNotifications.unwelcome);
+    if (unwelcome)             addNotification(clientNotifications.unwelcome);
     if (is_mf_retail)          addNotification(clientNotifications.mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
@@ -351,10 +357,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     }
     if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
     if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
-
-    if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
-        addNotification(clientNotifications.authenticate);
-    }
+    if (needs_authentication)              addNotification(clientNotifications.authenticate);
 };
 
 export const handleClientNotifications = (

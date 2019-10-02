@@ -67,7 +67,7 @@ export const scratchWorkspaceInit = async () => {
         };
 
         const drop_zone = document.body;
-        const { instance : { saveload } } = ScratchStore;
+        const { saveload } = ScratchStore.instance;
 
         drop_zone.addEventListener('dragover', handleDragOver, false);
         drop_zone.addEventListener('drop', e => saveload.handleFileChange(e), false);

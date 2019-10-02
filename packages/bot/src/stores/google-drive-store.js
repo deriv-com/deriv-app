@@ -58,7 +58,6 @@ export default class GoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
     
-    @action.bound
     signIn() {
         if (this.is_authorised) {
             return Promise.resolve();

@@ -20,12 +20,6 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
     const cursor_y = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
     
-    // blocks_to_clean.forEach(block => {
-    //     block.moveBy(cursor_x, cursor_y - toolbar_height);
-    //     block.snapToGrid();
-    //     cursor_y += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-    // });
-
     const root_blocks = blocks_to_clean.filter(block => block.isMainBlock()).sort((a, b) => {
         const blockIndex = (block) => config.mainBlocks.findIndex(c => c === block.type);
         return blockIndex(a) - blockIndex(b);
@@ -195,7 +189,7 @@ export const addDomAsBlock = block_xml => {
     return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 };
 
-export const load = (block_string = '', drop_event = {}) => {
+export const load = (block_string = '', drop_event) => {
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
 
@@ -244,7 +238,7 @@ export const load = (block_string = '', drop_event = {}) => {
     }
 };
 
-const loadBlocks = (xml, drop_event = {}) => {
+const loadBlocks = (xml, drop_event) => {
     const workspace = Blockly.derivWorkspace;
     const variables = xml.getElementsByTagName('variables');
     if (variables.length) {
@@ -255,7 +249,11 @@ const loadBlocks = (xml, drop_event = {}) => {
         Array.from(xml.children)
             .map(block => addDomAsBlock(block))
             .filter(b => b);
-    cleanUpOnLoad(addedBlocks, drop_event);
+    if(Object.keys(drop_event).length !== 0 ) {
+        cleanUpOnLoad(addedBlocks, drop_event);
+    }else {
+        workspace.cleanUp();
+    }
 
     fixCollapsedBlocks();
     Blockly.Events.setGroup(false);

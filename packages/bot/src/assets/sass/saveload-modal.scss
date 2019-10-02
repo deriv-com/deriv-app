@@ -23,7 +23,7 @@
 .radio-group {
     &__saveload-type {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
 
         .dc-radio {
             &-group {

@@ -142,7 +142,6 @@ const Toolbar = ({
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
-    // onGoogleDriveClick,
     onRedoClick,
     onResetClick,
     onRunClick,

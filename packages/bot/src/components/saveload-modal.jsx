@@ -34,11 +34,11 @@ const SaveLoadModal = ({
     onLoadClick,
     toggleSaveLoadModal,
 }) => {
-    const title = is_save_modal ? 'Save Bot' : 'Load Bot';
+    const title = translate(is_save_modal ? 'Save Bot' : 'Load Bot');
 
     return (
         <Modal
-            title={translate(title)}
+            title={title}
             className='modal--saveload'
             is_open={is_saveload_modal_open}
             toggleModal={toggleSaveLoadModal}
@@ -144,8 +144,12 @@ const SaveLoadModal = ({
     );
 };
 
-const IconRadio = props => {
-    const { icon, text, google_drive_connected, onDriveConnect } = props;
+const IconRadio = ({
+    icon,
+    text,
+    google_drive_connected,
+    onDriveConnect,
+}) => {
     const is_drive_radio = text === 'Google Drive';
 
     return (
@@ -172,7 +176,7 @@ SaveLoadModal.propTypes = {
     button_status         : PropTypes.number,
     handleFileChange      : PropTypes.func,
     is_authorised         : PropTypes.bool,
-    is_save_modal         : PropTypes.any,
+    is_save_modal         : PropTypes.bool,
     is_saveload_modal_open: PropTypes.bool,
     onConfirmSave         : PropTypes.func,
     onDriveConnect        : PropTypes.func,

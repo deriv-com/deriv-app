@@ -20,7 +20,7 @@ export default class ContractCardStore {
 
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('contract.status', this.onContractStatusEvent);
-        this.registerOnAccountSwitch();
+        this.registerReactions();
     }
 
     @action.bound
@@ -72,16 +72,21 @@ export default class ContractCardStore {
     }
 
     @action.bound
-    registerOnAccountSwitch() {
+    registerReactions() {
         const { client } = this.root_store.core;
+        const reset = (condition) => {
+            if (condition) {
+                this.clear(true);
+            }
+        };
 
-        this.switchAccountDisposer = reaction(
+        this.disposeLogoutListener = reaction(
+            () => client.loginid,
+            (loginid) => reset(!loginid),
+        );
+        this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
-            action((switch_broadcast) => {
-                if (switch_broadcast) {
-                    this.clear(true);
-                }
-            })
+            (switch_broadcast) => reset(switch_broadcast)
         );
     }
 
@@ -89,8 +94,11 @@ export default class ContractCardStore {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
 
-        if (typeof this.switchAccountDisposer === 'function') {
-            this.switchAccountDisposer();
+        if (typeof this.disposeLogoutListener === 'function') {
+            this.disposeLogoutListener();
+        }
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
         }
     }
 }

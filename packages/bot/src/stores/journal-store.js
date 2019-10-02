@@ -15,8 +15,7 @@ export default class JournalStore {
         observer.register('Error', this.onLogError);
         observer.register('Notify', this.onNotify);
 
-        this.registerNotificationListener();
-        this.registerOnAccountSwitch();
+        this.registerReactions();
     }
 
     get serverTime () {
@@ -64,46 +63,18 @@ export default class JournalStore {
     }
 
     @action.bound
-    registerNotificationListener() {
-        const { ui } = this.root_store.core;
-
-        this.disposeNotificationListener = reaction(
-            () => ui.notification_messages,
-            (notification_messages) => {
-                if (!notification_messages.length) {
-                    return;
-                }
-
-                const string_messages = notification_messages.filter(m => typeof m.message === 'string');
-
-                if (string_messages.length) {
-                    const { run_panel } = this.root_store;
-
-                    if (!run_panel.is_drawer_open) {
-                        run_panel.toggleDrawer(true);
-                    }
-
-                    run_panel.setActiveTabIndex(2);
-
-                    string_messages.forEach(string_message => {
-                        // TODO: Proper handling of specific notification types. Trader
-                        // sometimes passes components as a message. Handle these.
-                        this.onNotify(string_message);
-                    });
-                }
-
-                if (ui.notification_messages.length > 0) {
-                    ui.removeAllNotifications();
-                }
-            }
-        );
-    }
-
-    @action.bound
-    registerOnAccountSwitch() {
+    registerReactions() {
         const { client } = this.root_store.core;
 
-        this.switchAccountDisposer = reaction(
+        this.disposeLogoutListener = reaction(
+            () => client.loginid,
+            (loginid) => {
+                if (!loginid) {
+                    this.clear();
+                }
+            },
+        );
+        this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             action((switch_broadcast) => {
                 if (switch_broadcast) {
@@ -121,11 +92,11 @@ export default class JournalStore {
         observer.unregister('Error', this.onLogError);
         observer.unregister('Notify', this.onNotify);
 
-        if (typeof this.disposeNotificationListener === 'function') {
-            this.disposeNotificationListener();
+        if (typeof this.disposeLogoutListener === 'function') {
+            this.disposeLogoutListener();
         }
-        if (typeof this.switchAccountDisposer === 'function') {
-            this.switchAccountDisposer();
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
         }
     }
 }

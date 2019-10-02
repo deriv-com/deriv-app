@@ -16,7 +16,11 @@ export default class RunPanelStore {
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
 
-        this.registerLogoutListener();
+        this.registerReactions();
+
+        if (!this.root_store.core.client.is_virtual) {
+            this.showRealAccountDialog();
+        }
     }
 
     @observable active_index          = 0;
@@ -35,7 +39,6 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        this.root_store.core.client.is_account_switch_enabled = true;
         this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
     }
 
@@ -61,12 +64,9 @@ export default class RunPanelStore {
         }
 
         if (!this.root_store.core.client.is_virtual) {
-            this.dialog_content = translate('You cannot use your real money account with DBot at this time.');
-            this.is_dialog_visible = true;
+            this.showRealAccountDialog();
             return;
         }
-
-        this.root_store.core.client.is_account_switch_enabled = false;
 
         if (!this.is_drawer_open) {
             this.is_drawer_open = true;
@@ -133,17 +133,37 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    registerLogoutListener() {
+    registerReactions() {
         const { client } = this.root_store.core;
+        const reset = (condition) => {
+            if (condition) {
+                Blockly.BLOCKLY_CLASS_OLD.terminate();
+                this.is_run_button_clicked = false;
+            }
+        };
 
         this.disposeLogoutListener = reaction(
             () => client.loginid,
-            (loginid) => {
-                if (!loginid) {
-                    location.reload(); // TODO: Handle more gracefully.
-                }
-            }
+            (loginid) => reset(!loginid),
         );
+        this.disposeSwitchAccountListener = reaction(
+            () => client.switch_broadcast,
+            (switch_broadcast) => {
+                if (switch_broadcast) {
+                    reset(switch_broadcast);
+                    
+                    if (!client.is_virtual) {
+                        this.showRealAccountDialog();
+                    }
+                }
+            },
+        );
+    }
+
+    @action.bound
+    showRealAccountDialog() {
+        this.dialog_content = translate('You cannot use your real money account with DBot at this time.');
+        this.is_dialog_visible = true;
     }
 
     onUnmount() {
@@ -154,6 +174,10 @@ export default class RunPanelStore {
 
         if (typeof this.disposeLogoutListener === 'function') {
             this.disposeLogoutListener();
+        }
+
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
         }
     }
 }

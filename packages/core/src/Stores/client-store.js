@@ -41,7 +41,6 @@ export default class ClientStore extends BaseStore {
     @observable account_settings           = {};
     @observable account_status             = {};
     @observable device_data                = {};
-    is_account_switch_enabled              = true;
 
     constructor(root_store) {
         super({ root_store });
@@ -275,16 +274,9 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
-        if (this.is_account_switch_enabled) {   
-            this.root_store.ui.removeAllNotifications();
-            this.setSwitched(loginid);
-            this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
-        } else {
-            this.root_store.ui.addNotification({
-                message: localize('Switching accounts is disabled at this time.'),
-                type   : 'info',
-            });
-        }
+        this.root_store.ui.removeAllNotifications();
+        this.setSwitched(loginid);
+        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
 
     @action.bound

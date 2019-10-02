@@ -19,7 +19,7 @@ export default class SummaryStore {
         this.currency          = client.currency;
 
         observer.register('contract.status', this.onContractStatusEvent);
-        this.registerOnAccountSwitch();
+        this.registerReactions();
     }
 
     @action.bound
@@ -73,21 +73,6 @@ export default class SummaryStore {
         this.total_payout   = 0;
         this.total_stake    = 0;
         this.won_contracts  = 0;
-    }
-
-    @action.bound
-    registerOnAccountSwitch() {
-        const { client } = this.root_store.core;
-
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            action((switch_broadcast) => {
-                if (switch_broadcast) {
-                    this.clear();
-                    this.currency = client.currency;
-                }
-            })
-        );
     }
 
     registerReactions() {

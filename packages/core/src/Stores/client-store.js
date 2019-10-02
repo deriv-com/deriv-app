@@ -276,7 +276,7 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.root_store.ui.removeAllNotifications();
         this.setSwitched(loginid);
-        this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+        this.responsePayoutCurrencies(await WS.payoutCurrencies());
     }
 
     @action.bound

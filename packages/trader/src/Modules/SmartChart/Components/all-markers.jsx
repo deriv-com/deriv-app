@@ -291,7 +291,7 @@ const TickContract = RawMarkerMaker(({
             zoom: start.zoom,
             icon: ICONS.START.with_color(
                 color + (is_sold ? opacity : ''),
-                get_color({ status: 'bg', is_dark_theme })
+                get_color({ status: 'bg', is_dark_theme }) + (is_sold ? opacity : '')
             ),
         });
     }

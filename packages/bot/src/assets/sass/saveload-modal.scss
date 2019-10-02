@@ -2,7 +2,9 @@
     $saveload-modal : '&__modal--saveload';
 
     &__container {
-        width: 450px;
+        #{$saveload-modal} {
+            width: 450px;
+        }
     }
     &-header {
         #{$saveload-modal} {

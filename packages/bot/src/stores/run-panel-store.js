@@ -109,6 +109,10 @@ export default class RunPanelStore {
         }
     }
 
+    resetRunButton(value) {
+        this.is_run_button_clicked = value;
+    }
+    
     onUnmount() {
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);

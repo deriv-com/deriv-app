@@ -2,17 +2,8 @@ import JSInterpreter                  from 'js-interpreter';
 import { createScope }                from './cliTools';
 import { observer as globalObserver } from '../../../utils/observer';
 import Interface                      from '../Interface';
+import { unrecoverableErrors }        from '../../../constants/error-types';
 
-const unrecoverableErrors = [
-    'InsufficientBalance',
-    'CustomLimitsReached',
-    'OfferingsValidationError',
-    'InvalidCurrency',
-    'ContractBuyValidationError',
-    'NotDefaultCurrency',
-    'PleaseAuthenticate',
-    'FinancialAssessmentRequired',
-];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>

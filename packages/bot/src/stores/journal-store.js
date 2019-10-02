@@ -1,6 +1,7 @@
-import { observable, action } from 'mobx';
-import { formatDate }         from 'deriv-shared/utils/date';
-import { observer }           from '../utils/observer';
+import { observable, action }      from 'mobx';
+import { formatDate }              from 'deriv-shared/utils/date';
+import { observer }                from '../utils/observer';
+import { unrecoverableErrors }     from '../constants/error-types';
 
 export default class JournalStore {
     constructor(rootstore) {
@@ -8,7 +9,7 @@ export default class JournalStore {
 
         observer.register('ui.log.success', this.onLogSuccess);
         observer.register('ui.log.error', this.onLogError);
-        observer.register('Error', this.onLogError);
+        observer.register('Error', this.onError);
         observer.register('Notify', this.onNotify);
     }
 
@@ -20,22 +21,28 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(data) {
-        this.pushMessage(data);
+        this.pushMessage(data), 'success';
     }
 
     @action.bound
     onLogError(data) {
-        this.pushMessage(data);
+        if (unrecoverableErrors.some(x=>x.name && x.name === data.name)) {
+            this.rootstore.run_panel.resetRunButton(false);
+            this.rootstore.contract_card.clear();
+        }
+        this.pushMessage(data, 'error');
     }
 
     @action.bound
     onError(data) {
-        this.pushMessage(data);
+        this.rootstore.run_panel.resetRunButton(false);
+        this.rootstore.contract_card.clear();
+        this.pushMessage(data , 'error');
     }
 
     @action.bound
     onNotify(data) {
-        this.pushMessage(data);
+        this.pushMessage(data , 'notify');
     }
 
     @action.bound
@@ -43,7 +50,7 @@ export default class JournalStore {
         this.messages = this.messages.slice(0,0);  // force array update
     }
     
-    pushMessage(data) {
+    pushMessage(data,message_type) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         let message;
@@ -52,7 +59,7 @@ export default class JournalStore {
         } else {
             message = `${data.message}`;
         }
-        this.messages.unshift({ date, time , message });
+        this.messages.unshift({ date, time , message ,message_type });
         this.messages = this.messages.slice(0);  // force array update
     }
 

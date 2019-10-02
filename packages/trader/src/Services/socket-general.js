@@ -91,9 +91,9 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setBalance = flow(function* (balance) {
+    const setBalance = flow(function* (obj_balance) {
         yield BinarySocket.wait('website_status');
-        client_store.setBalance(balance);
+        client_store.setBalance(obj_balance);
     });
 
     const handleError = (response) => {
@@ -194,7 +194,7 @@ const ResponseHandlers = (() => {
 
     const balance = (response) => {
         if (!response.error){
-            BinarySocketGeneral.setBalance(response.balance.balance);
+            BinarySocketGeneral.setBalance(response.balance);
         }
     };
 

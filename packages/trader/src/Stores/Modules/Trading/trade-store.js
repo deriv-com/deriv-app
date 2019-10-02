@@ -696,6 +696,13 @@ export default class TradeStore extends BaseStore {
             false,
         );
         this.refresh();
+        WS.forgetAll('balance').then(() => {
+            WS.subscribeBalance((response) => {
+                if (response.balance) {
+                    this.root_store.client.setBalance(response.balance);
+                }
+            });
+        });
         this.debouncedProposal();
     }
 

@@ -20,8 +20,8 @@ const Transaction = ({ contract }) => {
     return (
         <table className='transactions__item'>
             <tbody>
-                <tr className='transactions__tr'>
-                    <td className='transactions__middle transactions__td'>
+                <tr className='transactions__row'>
+                    <td className='transactions__middle transactions__col'>
                         <Popover
                             className='transactions__inline transactions__top'
                             alignment='left'
@@ -60,7 +60,7 @@ const Transaction = ({ contract }) => {
                             </div>
                         </div>
                     </td>
-                    <td className='transactions__middle transactions__td'>
+                    <td className='transactions__middle transactions__col'>
                         <div>
                             <Popover
                                 className='transactions__inline transactions__middle'
@@ -86,7 +86,7 @@ const Transaction = ({ contract }) => {
                             </div>
                         </div>
                     </td>
-                    <td className='transactions__td'>
+                    <td className='transactions__col'>
                         <div
                             className={className(
                                 'transactions__inline',
@@ -102,7 +102,7 @@ const Transaction = ({ contract }) => {
                         </div>
 
                     </td>
-                    <td className='transactions__td'>
+                    <td className='transactions__col'>
                         {
                             contract.is_settled ?
                                 <Popover

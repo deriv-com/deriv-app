@@ -42,10 +42,10 @@
     &__middle {
         vertical-align: middle;
     }
-    &_tr {
+    &_row {
         display: flex;
     }
-    &__td {
+    &__col {
         line-height: 20px;
         padding: 4px 0;
         vertical-align: middle;

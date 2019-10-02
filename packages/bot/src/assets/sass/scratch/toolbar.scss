@@ -36,14 +36,14 @@
         }
         > #{$toolbar}__form {
             .dc-input {
-                margin-bottom: 5px;
+                margin-bottom: 0;
             }
         }
     }
     &__icon {
         cursor: pointer;
         border: none;
-        margin: 12px;
+        margin: 0 12px;
         height: 15px;
         width: 15px;
     }
@@ -54,6 +54,7 @@
 
         &-btn {
             padding: 0px 8px;
+            height: 40px;
 
             > * {
                 align-self: center;
@@ -63,11 +64,6 @@
     &__form {
         width: 18%;
         min-width: 160px;
-
-        &-field {
-            margin-bottom: 0;
-            margin-top: 0.5em;
-        }
     }
 }
 
@@ -75,5 +71,5 @@
     width: 1px;
     height: 17px;
     margin: 8px;
-    background-color: var(--border-normal); // TODO color
+    background-color: var(--border-normal);
 }

@@ -230,6 +230,7 @@
         display: flex;
         align-content: center;
         padding-left: 4px;
+        @extend %inline-icon;
     }
     .account-limit-popover-target {
         height: 100%;

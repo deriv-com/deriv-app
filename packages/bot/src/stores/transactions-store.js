@@ -3,9 +3,7 @@ import { isEnded }            from '../utils/contract';
 import { observer }           from '../utils/observer';
 
 export default class TransactionsStore {
-    constructor(rootStore) {
-        this.rootStore = rootStore;
-
+    constructor() {
         observer.register('bot.contract', this.onBotContractEvent);
     }
 

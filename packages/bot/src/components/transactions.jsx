@@ -25,7 +25,7 @@ const Transaction = ({ contract }) => {
                         <Popover
                             className='transactions__inline transactions__top'
                             alignment='left'
-                            message={translate(contract.contract_type)}
+                            message={contract.contract_type}
                         >
                             <IconTradeType
                                 trade_type={contract.contract_type}
@@ -161,7 +161,7 @@ class Transactions extends React.PureComponent {
     }
 }
 
-Transactions.protoTypes = {
+Transactions.propTypes = {
     contracts: PropTypes.array,
     onUnmount: PropTypes.func,
 };

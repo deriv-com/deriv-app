@@ -1,40 +1,38 @@
+$category-colour-all: var(--general-main-1);
 $category-colours: (
     search             : #afffda,
 
-    trade_parameters   : #f3f3f3,
-    purchase_conditions: #f3f3f3,
-    sell_conditions    : #f3f3f3,
-    trade_results      : #f3f3f3,
+    trade_parameters   : $category-colour-all,
+    purchase_conditions: $category-colour-all,
+    sell_conditions    : $category-colour-all,
+    trade_results      : $category-colour-all,
 
-    contract_details   : #f3f3f3,
-    analysis           : #f3f3f3,
-    tick_analysis      : #f3f3f3,
-    indicators         : #f3f3f3,
-    stats              : #f3f3f3,
+    contract_details   : $category-colour-all,
+    analysis           : $category-colour-all,
+    tick_analysis      : $category-colour-all,
+    indicators         : $category-colour-all,
+    stats              : $category-colour-all,
 
-    utility            : #f3f3f3,
-    math               : #f3f3f3,
-    text               : #f3f3f3,
-    logic              : #f3f3f3,
-    lists              : #f3f3f3,
-    custom_functions   : #f3f3f3,
-    variables          : #f3f3f3,
-    loops              : #f3f3f3,
-    time               : #f3f3f3,
-    misc               : #f3f3f3,
-    notifications      : #f3f3f3
+    utility            : $category-colour-all,
+    math               : $category-colour-all,
+    text               : $category-colour-all,
+    logic              : $category-colour-all,
+    lists              : $category-colour-all,
+    custom_functions   : $category-colour-all,
+    variables          : $category-colour-all,
+    loops              : $category-colour-all,
+    time               : $category-colour-all,
+    misc               : $category-colour-all,
+    notifications      : $category-colour-all
 );
 
 .toolbox {
     $toolbox         : &;
-    $white           : #fff;
-    $lightgrey       : #ebebeb;
-    $grey            : #f4f4f6;
-    $gray20          : #333;
     $category-text-spacing: 10px;
 
-    background-color: $white;
-    border: 1px solid $lightgrey;
+    background-color: var(--general-main-1);
+    border: 1px solid var(--general-section-1);
+    color: var(--text-general);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -49,8 +47,9 @@ $category-colours: (
         position: relative;
         font-weight: bold;
         font-size: 1.6em;
-        background-color: $grey;
+        background-color: var(--general-section-1);
         text-align: center;
+        height: 32px;
     }
     &__item {
         display: flex;
@@ -62,7 +61,7 @@ $category-colours: (
 
         &--back {
             margin-left: $category-text-spacing;
-            fill: $gray20;
+            fill: var(--text-prominent);
             transform: rotate(90deg);
         }
         &--open {
@@ -85,8 +84,8 @@ $category-colours: (
         &__category-return {
             #{$toolbox}__category {
                 &--#{$category} {
-                    background-color: $lightgrey;
-                    color: $gray20;
+                    background-color: var(--state-active);
+                    color: var(--text-general);
                     max-height: 38px;
                 }
             }
@@ -135,21 +134,21 @@ $category-colours: (
     }
     &__row {
         cursor: pointer;
-        border-top: 1px solid $lightgrey;
+        border-top: 1px solid var(--border-normal);
 
         &:last-of-type {
-            border-bottom: 1px solid $lightgrey;
+            border-bottom: 1px solid var(--border-normal);
         }
 
         @each $category, $colour in $category-colours {
             #{$toolbox}__category {
                 &--#{$category} {
                     &:hover:not(#{$toolbox}__category--selected) {
-                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
+                        background-image: linear-gradient(to right, var(--general-main-1) 25%, rgba($colour, 0.8) 100%);
                     }
                 }
                 &--#{$category}#{$toolbox}__category--selected {
-                    background-color: transparentize($colour, 0.9);
+                    background-color: rgba($colour, 0.9);
                     transition: background-color 0.25s ease;
                 }
             }
@@ -157,14 +156,6 @@ $category-colours: (
     }
     &__separator {
         padding: 10px 0;
-        border-top: 1px solid $lightgrey;
-    }
-    #search_input {
-        padding: 10px;
-        border-radius: 5px;
-        border: solid $grey 1px;
-        margin: 3px;
-        font-size: 14px;
-        font-weight: 700;
+        border-top: 1px solid var(--border-normal);
     }
 }

@@ -1,5 +1,3 @@
-
-import TradeAnimationStore  from './trade-animation-store';
 import ContractCardStore    from './contract-card-store';
 import FlyoutStore          from './flyout-store';
 import JournalStore         from './journal-store';
@@ -16,7 +14,6 @@ export default class RootStore {
         this.flyout        = new FlyoutStore(this);
         this.journal       = new JournalStore(this);
         this.run_panel     = new RunPanelStore(this);
-        this.animation     = new TradeAnimationStore(this);
         this.summary       = new SummaryStore(this);
         this.toolbar       = new ToolbarStore(this);
 

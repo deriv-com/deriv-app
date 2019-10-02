@@ -11,11 +11,9 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-
-        this.setContractStage(CONTRACT_STAGES.not_running);
     }
 
-    @observable contract_stage = {};
+    @observable contract_stage = CONTRACT_STAGES.not_running;
     @observable is_run_button_clicked = false;
     @observable is_running = false;
     @observable is_dialog_visible = false;
@@ -29,7 +27,7 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        this.setContractStage(CONTRACT_STAGES.not_running);
+        this.contract_stage = CONTRACT_STAGES.not_running;
     }
 
     @action.bound
@@ -59,12 +57,7 @@ export default class RunPanelStore {
         this.root_store.contract_card.is_loading = true;
         this.is_run_button_clicked = true;
         Blockly.BLOCKLY_CLASS_OLD.run();
-        this.setContractStage(CONTRACT_STAGES.purchase_sent);
-    }
-
-    @action.bound
-    setContractStage(contract_stage) {
-        this.contract_stage = observable(contract_stage);
+        this.contract_stage = CONTRACT_STAGES.purchase_sent;
     }
 
     @action.bound
@@ -74,7 +67,7 @@ export default class RunPanelStore {
             return;
         }
         if (this.is_run_button_clicked) {
-            this.setContractStage(CONTRACT_STAGES.bot_is_stopping);
+            this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
             Blockly.BLOCKLY_CLASS_OLD.stop();
         }
         this.is_run_button_clicked = false;
@@ -101,20 +94,20 @@ export default class RunPanelStore {
     getContractStage(data) {
         switch (data.id) {
             case ('contract.purchase_sent'): {
-                this.setContractStage(CONTRACT_STAGES.purchase_sent);
+                this.contract_stage = CONTRACT_STAGES.purchase_sent;
                 break;
             }
             case ('contract.purchase_recieved'): {
-                this.setContractStage(CONTRACT_STAGES.purchase_recieved);
+                this.contract_stage = CONTRACT_STAGES.purchase_recieved;
                 break;
             }
             case ('contract.closed'):
             case ('contract.sold'): {
-                this.setContractStage(CONTRACT_STAGES.contract_closed);
+                this.contract_stage = CONTRACT_STAGES.contract_closed;
                 break;
             }
             default: {
-                this.setContractStage(CONTRACT_STAGES.not_running);
+                this.contract_stage = CONTRACT_STAGES.not_running;
             }
         }
     }

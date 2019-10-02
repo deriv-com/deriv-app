@@ -9,7 +9,7 @@ import '../assets/sass/trade-animation.scss';
 const CircularWrapper = ({ className }) => (
     <div className={classNames(
         'circular-wrapper',
-        { [className]: !!className }
+        className
     )}
     >
         <span className='static-circle' />
@@ -17,72 +17,68 @@ const CircularWrapper = ({ className }) => (
     </div>
 );
 
-class TradeAnimation extends React.PureComponent {
-    componentDidMount() {
-        this.props.onMount();
+const TradeAnimation = ({
+    className,
+    contract_stage,
+    should_show_overlay,
+    profit,
+}) => {
+    const { index, text } = contract_stage;
+    const is_completed = index >= 4;
+    const progress_status = index - (index === 3 ? 2 : 1);
+
+    const status_classes = ['', '', ''];
+    if (progress_status >= 0 && progress_status < status_classes.length) {
+        status_classes[progress_status] =  'active';
     }
 
-    componentWillUnmount() {
-        this.props.onUnMount();
+    if (progress_status) {
+        for (let i = 0; i < progress_status; i++) {
+            status_classes[i] = 'completed';
+        }
     }
-
-    render() {
-        const {
-            className,
-            contract_stage,
-            status_class,
-            show_overlay,
-            profit,
-        } = this.props;
-        const { index, text } = contract_stage;
-        const completed = index >= 4;
         
-        return (
-            <div className={classNames(
-                'animation__container',
-                className,
-                {
-                    'animation--running'  : index > 0,
-                    'animation--completed': show_overlay && completed,
-                },
-            )}
-            >
-                {
-                    show_overlay &&
-                    completed &&
+    return (
+        <div className={classNames(
+            'animation__container',
+            className,
+            {
+                'animation--running'  : index > 0,
+                'animation--completed': should_show_overlay && is_completed,
+            },
+        )}
+        >
+            {
+                should_show_overlay &&
+                    is_completed &&
                     <ContractResultOverlay profit={profit} />
-                }
-                <span className='animation__text'>
-                    {translate(text)}
-                </span>
-                <div className='animation__progress'>
-                    <div className='animation__progress-line' >
-                        <div className={`animation__progress-bar animation__progress-${index}`} />
-                    </div>
-                    {
-                        status_class.map((status_c, i) => {
-                            return <CircularWrapper key={i} className={status_c} />;
-                        })
-                    }
+            }
+            <span className='animation__text'>
+                {translate(text)}
+            </span>
+            <div className='animation__progress'>
+                <div className='animation__progress-line' >
+                    <div className={`animation__progress-bar animation__progress-${index}`} />
                 </div>
+                {
+                    status_classes.map((status_class, i) => {
+                        return <CircularWrapper key={i} className={status_class} />;
+                    })
+                }
             </div>
-        );
-    }
-}
-
-TradeAnimation.propTypes = {
-    className     : PropTypes.string,
-    contract_stage: PropTypes.any,
-    onMount       : PropTypes.func,
-    onUnMount     : PropTypes.func,
-    profit        : PropTypes.number,
-    status_class  : PropTypes.array,
+        </div>
+    );
+    
 };
 
-export default connect(({ run_panel, animation, contract_card }) => ({
+TradeAnimation.propTypes = {
+    className          : PropTypes.string,
+    contract_stage     : PropTypes.object,
+    profit             : PropTypes.number,
+    should_show_overlay: PropTypes.bool,
+};
+
+export default connect(({ run_panel, contract_card }) => ({
     contract_stage: run_panel.contract_stage,
-    onMount       : animation.onMount,
-    onUnMount     : animation.onUnMount,
     profit        : contract_card.profit,
-    status_class  : animation.status_class,
 }))(TradeAnimation);

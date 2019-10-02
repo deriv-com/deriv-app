@@ -200,7 +200,7 @@ const Toolbar = ({
                 className={classNames({
                     'animation--hidden': is_drawer_open,
                 })}
-                show_overlay={true}
+                should_show_overlay={true}
             />
             
         </div>

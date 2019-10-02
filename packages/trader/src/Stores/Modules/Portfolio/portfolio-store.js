@@ -81,6 +81,7 @@ export default class PortfolioStore extends BaseStore {
 
             this.positions[i].is_loading = true;
             const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
+                this.root_store.modules.contract_trade.addContract(poc.proposal_open_contract);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
             });

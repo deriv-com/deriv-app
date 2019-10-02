@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import { isEnded }            from '../utils/contract';
 import { CONTRACT_STAGES }    from '../constants/contract-stage';
 import { observer }           from '../utils/observer';
+import { runBot, stopBot }    from '../scratch';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -55,7 +56,7 @@ export default class RunPanelStore {
         }
 
         this.is_run_button_clicked = true;
-        Blockly.BLOCKLY_CLASS_OLD.run();
+        runBot();
     }
 
     @action.bound
@@ -65,7 +66,7 @@ export default class RunPanelStore {
             return;
         }
         if (this.is_run_button_clicked) {
-            Blockly.BLOCKLY_CLASS_OLD.stop();
+            stopBot();
         }
         this.is_run_button_clicked = false;
     }

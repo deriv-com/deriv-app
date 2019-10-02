@@ -25,9 +25,7 @@ export const scratchWorkspaceInit = async () => {
 
         Blockly.derivWorkspace = workspace;
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
-
-        // TODO: Remove this.
-        Blockly.BLOCKLY_CLASS_OLD = new _Blockly();
+        Blockly.derivWorkspace.toolboxXmlStr = toolbox_xml;
 
         // Ensure flyout closes on click in workspace.
         const el_blockly_svg = document.querySelector('.blocklySvg');
@@ -37,22 +35,15 @@ export const scratchWorkspaceInit = async () => {
             }
         });
         
-        // Keep in memory to allow category browsing
-        workspace.initial_toolbox_xml = toolbox_xml;
-        
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
         Blockly.derivWorkspace.clearUndo();
 
         const onWorkspaceResize = () => {
             const toolbar_height = 56;
 
-            // el_scratch_div.style.left   = '0px';
-            // el_scratch_div.style.top    = '0px';
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
-            
             Blockly.svgResize(workspace);
-
             // eslint-disable-next-line no-underscore-dangle
             workspace.toolbox_.flyout_.position();
         };
@@ -77,95 +68,83 @@ export const scratchWorkspaceInit = async () => {
     }
 };
 
-// eslint-disable-next-line no-unused-vars
-const disableStrayBlocks = () => {
-    const top_blocks = Blockly.derivWorkspace.getTopBlocks();
+let interpreter = null;
 
+export const runBot = (limitations = {}) => {
+    // Disable blocks outside of any main or independent blocks.
+    const top_blocks = Blockly.derivWorkspace.getTopBlocks();
     top_blocks.forEach(block => {
-        if (block.isMainBlock() || !block.isIndependentBlock()) {
+        if (!block.isMainBlock() && !block.isIndependentBlock()) {
             block.setDisabled(true);
         }
     });
+    
+    try {
+        const code = `
+            var BinaryBotPrivateInit;
+            var BinaryBotPrivateStart;
+            var BinaryBotPrivateBeforePurchase; 
+            var BinaryBotPrivateDuringPurchase;
+            var BinaryBotPrivateAfterPurchase;
+            var BinaryBotPrivateLastTickTime;
+            var BinaryBotPrivateTickAnalysisList = [];
+            function BinaryBotPrivateRun(f, arg) {
+                if (f) return f(arg);
+                return false;
+            }
+            function BinaryBotPrivateTickAnalysis() {
+                var currentTickTime = Bot.getLastTick(true).epoch;
+                if (currentTickTime === BinaryBotPrivateLastTickTime) {
+                    return;
+                }
+                BinaryBotPrivateLastTickTime = currentTickTime;
+                for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
+                    BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
+                }
+            }
+            var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
+            ${Blockly.JavaScript.workspaceToCode(Blockly.derivWorkspace)}
+            BinaryBotPrivateRun(BinaryBotPrivateInit);
+            while (true) {
+                BinaryBotPrivateTickAnalysis();
+                BinaryBotPrivateRun(BinaryBotPrivateStart);
+                while (watch('before')) {
+                    BinaryBotPrivateTickAnalysis();
+                    BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
+                }
+                while (watch('during')) {
+                    BinaryBotPrivateTickAnalysis();
+                    BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
+                }
+                BinaryBotPrivateTickAnalysis();
+                if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
+                    break;
+                }
+            }
+            `;
+        if (code) {
+            if (interpreter === null) {
+                interpreter = new Interpreter();
+            } else {
+                interpreter.stop(true);
+            }
+
+            interpreter.run(code).catch(error => {
+                globalObserver.emit('Error', error);
+                interpreter.stop();
+            });
+        }
+    } catch (error) {
+        globalObserver.emit('Error', error);
+        if (interpreter) {
+            interpreter.stop();
+        }
+    }
 };
 
-export default class _Blockly {
-
-    run(limitations = {}) {
-        // disableStrayBlocks();
-
-        let code;
-        try {
-            code = `
-var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
-var BinaryBotPrivateLastTickTime
-var BinaryBotPrivateTickAnalysisList = [];
-function BinaryBotPrivateRun(f, arg) {
- if (f) return f(arg);
- return false;
-}
-function BinaryBotPrivateTickAnalysis() {
- var currentTickTime = Bot.getLastTick(true).epoch
- if (currentTickTime === BinaryBotPrivateLastTickTime) {
-   return
- }
- BinaryBotPrivateLastTickTime = currentTickTime
- for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
-   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
- }
-}
-var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-${Blockly.JavaScript.workspaceToCode(Blockly.derivWorkspace)}
-BinaryBotPrivateRun(BinaryBotPrivateInit);
-while(true) {
- BinaryBotPrivateTickAnalysis();
- BinaryBotPrivateRun(BinaryBotPrivateStart)
- while(watch('before')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
- }
- while(watch('during')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
- }
- BinaryBotPrivateTickAnalysis();
- if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
-   break;
- }
-}
-       `;
-            this.generatedJs = code;
-            if (code) {
-                this.stop(true);
-                this.interpreter = new Interpreter();
-                this.interpreter.run(code).catch(e => {
-                    globalObserver.emit('Error', e);
-                    this.stop();
-                });
-            }
-        } catch (e) {
-            globalObserver.emit('Error', e);
-            this.stop();
-        }
+export const stopBot = () => {
+    if (interpreter) {
+        interpreter.stop();
+        interpreter = null;
     }
-
-    stop(stopBeforeStart) {
-        if (!stopBeforeStart) {
-            // const $runButtons = $('#runButton, #summaryRunButton');
-            // const $stopButtons = $('#stopButton, #summaryStopButton');
-            // if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
-            //     $runButtons.show();
-            //     $stopButtons.hide();
-            // }
-        }
-        if (this.interpreter) {
-            this.interpreter.stop();
-            this.interpreter = null;
-        }
-    }
-
-    /* eslint-disable class-methods-use-this */
-    hasStarted() {
-        return this.interpreter && this.interpreter.hasStarted();
-    }
-    /* eslint-enable */
-}
+};

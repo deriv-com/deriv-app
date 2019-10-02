@@ -25,7 +25,7 @@ export default class TransactionsStore {
             currency     : data.currency,
             refrence_id  : data.transaction_ids.buy,
             entry_spot   : data.entry_spot,
-            exit_spot    : data.entry_tick_display_value,
+            exit_spot    : data.exit_tick_display_value,
             profit       : data.profit,
             is_settled,
         };

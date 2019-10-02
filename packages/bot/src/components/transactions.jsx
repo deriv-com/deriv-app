@@ -1,4 +1,4 @@
-// import className from 'classnames';
+import className         from 'classnames';
 import { Money,Popover } from 'deriv-components';
 import { PropTypes }     from 'prop-types';
 import React             from 'react';
@@ -88,16 +88,19 @@ const Transaction = ({ contract }) => {
                     </td>
                     <td className='transactions__td'>
                         <div
-                            className='transactions__inline
-                        transactions__middle
-                        transactions__green'
+                            className={className(
+                                'transactions__inline',
+                                'transactions__middle',
+                                [Math.sign(contract.profit) !== -1 ?
+                                    'transactions__green' :
+                                    'transactions__red'])}
                         >
                             <Money
                                 amount={Math.abs(contract.profit)}
                                 currency={contract.currency}
                             />
                         </div>
-                       
+
                     </td>
                     <td className='transactions__td'>
                         {

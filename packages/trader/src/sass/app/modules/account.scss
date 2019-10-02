@@ -14,7 +14,7 @@
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
         &-subheading {
-            font-size: 1.4rem;
+            font-size: var(--text-size-xs);
             line-height: 1.5;
             margin-right: 8px;
             color: var(--text-prominent);
@@ -23,6 +23,8 @@
     &__inset_header-icon {
         width: 24px;
         height: 24px;
+
+        @extend %inline-icon;
     }
     &__tab_container {
         padding: 0 8px;
@@ -61,7 +63,7 @@
 
         &__header {
             position: relative;
-            font-size: 1.4em;
+            font-size: var(--text-size-xs);
             font-weight: bold;
             margin-bottom: 1.6em;
 
@@ -149,7 +151,7 @@
     .account-management__message {
         margin-top: 1em;
         font-weight: bold;
-        font-size: 1.6em;
+        font-size: var(--text-size-s);
         color: var(--text-general);
 
         &-content {
@@ -170,12 +172,12 @@
             height: 128px;
         }
         &-title {
-            font-size: 1em;
+            font-size: var(--text-size-xs);
             margin-bottom: 1em;
             text-align: center;
         }
         &-subtitle {
-            font-size: 0.875em;
+            font-size: var(--text-size-xxs);
             font-weight: 400;
             text-align: center;
             line-height: 1.5;
@@ -283,6 +285,9 @@
 /** @define account-poa; weak */
 .account-poa {
     &__upload {
+        &-icon {
+            width: 25px;
+        }
         &-section {
             margin-top: 1em;
             display: flex;
@@ -291,12 +296,17 @@
         &-list {
             width: 100%;
             flex: 1;
+            margin-right: 16px;
         }
         &-file {
             width: 100%;
             flex: 1;
             height: 240px;
             position: relative;
+
+            .dc-file-dropzone {
+                max-width: 400px;
+            }
         }
         &-remove-btn {
             position: absolute;
@@ -330,10 +340,10 @@
             justify-content: flex-start;
         }
         &-item {
-            max-width: 238px;
+            min-width: 238px;
             width: 100%;
             margin-left: 1em;
-            font-size: 10px;
+            font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
         }
@@ -350,7 +360,7 @@
             flex: 1;
         }
         &-text {
-            font-size: 14px;
+            font-size: var(--text-size-xs);
             line-height: 1.5;
             color: var(--text-general);
         }
@@ -374,7 +384,7 @@
     max-width: 400px;
     margin: 24px auto 0;
     color: var(--text-prominent);
-    font-size: 1.2rem;
+    font-size: var(--text-size-xxs);
     line-height: 1.5;
 
     &__content {
@@ -395,7 +405,7 @@
     display: flex;
     align-items: center;
     margin-right: auto;
-    font-size: 1.2rem;
+    font-size: var(--text-size-xxs);
     font-weight: bold;
     flex: 1;
     color: var(--text-prominent);
@@ -430,7 +440,7 @@
             margin: 0 40px;
         }
         p {
-            font-size: 12px;
+            font-size: var(--text-size-xxs);
         }
         p:first-of-type {
             line-height: 1.5;
@@ -442,5 +452,5 @@
 
 /** @define onfido-container; weak */
 .onfido-container {
-    margin-top: 20px;
+    margin-top: 24px;
 }

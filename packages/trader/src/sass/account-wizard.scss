@@ -4,11 +4,12 @@
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease-in-out;
-    width: 900px;
-    overflow: unset;
+    max-width: 900px;
+    max-height: 688px;
 
     &--success {
-        width: 400px;
+        max-width: 400px;
+        max-height: 352px;
     }
     .dc-modal-header__title {
         background-color: var(--general-main-1);
@@ -41,7 +42,7 @@
         @include typeface(--small-center-normal-black);
         text-transform: none;
         color: var(--text-general);
-        margin-bottom: 3rem;
+        margin-bottom: 1.6rem;
     }
     form {
         display: flex;

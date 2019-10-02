@@ -485,7 +485,8 @@
 .dc-modal {
     &__container {
         &_modal-cashier {
-            width: 904px;
+            max-width: 904px;
+            max-height: 616px;
         }
     }
 }

@@ -15,7 +15,8 @@
 /** @define dc-modal; */
 .dc-modal {
     &__container_modal-settings {
-        width: 736px;
+        max-width: 736px;
+        max-height: 616px;
 
         /* postcss-bem-linter: ignore */
         .dc-modal-header {

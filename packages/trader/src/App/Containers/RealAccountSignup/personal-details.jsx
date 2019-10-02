@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
+import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }         from 'Utils/Date';
 import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
@@ -74,6 +75,7 @@ export class DateOfBirth extends Component {
                             value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
                             readOnly
                         />
+                        <IconDatepicker className='icon-datepicker' />
                         <CSSTransition
                             in={this.state.should_show_calendar}
                             timeout={100}

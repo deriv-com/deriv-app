@@ -6,11 +6,17 @@
 
     & .datepicker {
         max-width: initial;
+        position: relative;
 
         &--active-label {
             label {
                 color: var(--text-general);
             }
+        }
+        & .icon-datepicker {
+            top: 1em;
+            right: 1em;
+            position: absolute;
         }
     }
     &__elements {

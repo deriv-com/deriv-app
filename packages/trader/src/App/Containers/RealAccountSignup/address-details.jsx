@@ -48,7 +48,7 @@ class AddressDetails extends Component {
     };
 
     getPlaceholder = (address_state) => {
-        const placeholder = localize('State/Province (optional)');
+        const placeholder = localize('State/Province');
         return this.props.states_list.some(item => {
             return item.value === address_state;
         }) ? '' : placeholder;
@@ -94,7 +94,7 @@ class AddressDetails extends Component {
                                     />
                                     <InputField
                                         name='address_line_2'
-                                        label={localize('Second line of address (optional)')}
+                                        label={localize('Second line of address')}
                                         placeholder={localize('Second line of address')}
                                     />
                                     <InputField

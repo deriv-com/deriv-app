@@ -65,7 +65,7 @@
                 opacity: 0.4;
             }
         }
-        &:not(.dc-input--no-placeholder):not(:focus):valid {
+        &:not(.dc-input--no-placeholder):not(:focus):not([value='']) {
             & ~ label {
                 color: var(--text-general);
             }

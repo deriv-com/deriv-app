@@ -103,6 +103,7 @@
         background-color: var(--brand-red-coral);
         color: var(--text-colored-background);
         margin: 1.6em 1.6em 1.6em 0;
+        text-transform: none;
 
         /* stylelint-disable color-no-hex */
         &--disabled {
@@ -153,6 +154,7 @@
         }
         &__label {
             @include typeface(--paragraph-left-normal-black);
+            text-transform: none;
         }
     }
 }

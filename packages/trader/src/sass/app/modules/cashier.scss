@@ -1,4 +1,4 @@
-/** @define cashier */
+/** @define cashier; weak */
 .cashier {
     &__content {
         width: 100%;
@@ -14,6 +14,9 @@
         }
         &--align-left {
             text-align: left;
+        }
+        .inline-icon .color1-fill {
+            fill: var(--text-general);
         }
     }
     &__loader {

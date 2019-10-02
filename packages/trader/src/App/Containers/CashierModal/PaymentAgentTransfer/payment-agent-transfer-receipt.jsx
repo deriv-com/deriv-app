@@ -43,12 +43,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IconBack' />
                         <span className='account-transfer__transfer-details-to'>
-                            <Icon
-                                icon='IconAccountsCurrency'
-                                type={this.props.currency.toLowerCase()}
-                                height={16}
-                                width={16}
-                            />
+                            <Icon icon='IconUser' />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>&nbsp;({this.props.receipt.client_id})
                             </span>

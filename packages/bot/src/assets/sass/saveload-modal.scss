@@ -1,11 +1,6 @@
 .dc-modal {
     $saveload-modal : '&__modal--saveload';
 
-    &__container {
-        #{$saveload-modal} {
-            width: 450px;
-        }
-    }
     &-header {
         #{$saveload-modal} {
             border-bottom: solid 1px;
@@ -15,16 +10,18 @@
             color: var(--text-general);
         }
     }
-    #{$saveload-modal} {
-        .modal--content {
-            padding: 45px 76px 20px;
+    .modal--content {
+        padding: 10px;
+
+        > * {
+            padding: 5px;
         }
-        .modal--footer {
-            text-align: right;
-        }
-        .modal--content-row {
-            display: flex;
-            justify-content: center;
-        }
+    }
+    .modal--footer {
+        text-align: right;
+    }
+    .modal--content-row {
+        display: flex;
+        justify-content: center;
     }
 }

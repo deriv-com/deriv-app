@@ -321,7 +321,14 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    const { status } = account_status;
+    const {
+        authentication: {
+            document,
+            identity,
+            needs_verification,
+        },
+        status,
+    } = account_status;
 
     const {
         cashier_locked,
@@ -333,10 +340,10 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         professional,
     } = getStatusValidations(status);
 
-    const { identity, document, needs_verification } = account_status.authentication;
     addVerificationNotifications(identity, document, addNotification);
 
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
 
     if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
     if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
@@ -350,10 +357,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     }
     if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
     if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
-
-    if (needs_verification.length && document.status === 'none' && identity.status === 'none') {
-        addNotification(clientNotifications.authenticate);
-    }
+    if (needs_authentication)              addNotification(clientNotifications.authenticate);
 };
 
 export const handleClientNotifications = (

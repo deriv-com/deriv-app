@@ -42,11 +42,13 @@
     &__middle {
         vertical-align: middle;
     }
+    &__margin-bottom {
+        margin-bottom: 4px;
+    }
     &_row {
         display: flex;
     }
     &__col {
-        line-height: 20px;
         padding: 4px 0;
         vertical-align: middle;
 

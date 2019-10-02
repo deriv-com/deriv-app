@@ -32,7 +32,7 @@ const Transaction = ({ contract }) => {
                             />
                         </Popover>
                         <div className='transactions__inline transactions__middle'>
-                            <div>
+                            <div className='transactions__margin-bottom'>
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
@@ -61,7 +61,7 @@ const Transaction = ({ contract }) => {
                         </div>
                     </td>
                     <td className='transactions__middle transactions__col'>
-                        <div>
+                        <div className='transactions__margin-bottom'>
                             <Popover
                                 className='transactions__inline transactions__middle'
                                 alignment='left'

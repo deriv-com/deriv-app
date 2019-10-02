@@ -67,7 +67,6 @@
                     <block type="check_sell"></block>
                 </value>
                 <statement name="DO0">
-                    <block type="sell_at_market"></block>
                 </statement>
             </block>
         </statement>

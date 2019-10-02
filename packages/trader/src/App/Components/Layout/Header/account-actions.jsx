@@ -1,6 +1,6 @@
-import CurrencyUtils        from 'deriv-shared/utils/currency';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
+import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';

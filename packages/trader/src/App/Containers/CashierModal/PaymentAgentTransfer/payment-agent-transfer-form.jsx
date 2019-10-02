@@ -40,6 +40,10 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.amount = localize('Insufficient balance.');
     }
 
+    if (values.description && !/^[0-9A-Za-z .,'-]{0,250}$/.test(values.description)) {
+        errors.description = localize('Please enter a valid description.');
+    }
+
     return errors;
 };
 

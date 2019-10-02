@@ -2,8 +2,6 @@
     $saveload-modal : 'modal--saveload';
 
     &__container {
-        width: 384px;
-
         &_#{$saveload-modal} {
             width: 450px;
 

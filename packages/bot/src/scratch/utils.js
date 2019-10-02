@@ -249,9 +249,9 @@ const loadBlocks = (xml, drop_event) => {
         Array.from(xml.children)
             .map(block => addDomAsBlock(block))
             .filter(b => b);
-    if(Object.keys(drop_event).length !== 0 ) {
+    if (Object.keys(drop_event).length !== 0) {
         cleanUpOnLoad(addedBlocks, drop_event);
-    }else {
+    } else {
         workspace.cleanUp();
     }
 

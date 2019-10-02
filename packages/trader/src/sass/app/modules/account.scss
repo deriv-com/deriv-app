@@ -132,7 +132,7 @@
     }
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-prominent);
+        color: var(--text-general);
 
         &--small {
             @include typeface(--small-left-normal-black, none);
@@ -150,7 +150,7 @@
         margin-top: 1em;
         font-weight: bold;
         font-size: 1.6em;
-        color: var(--text-prominent);
+        color: var(--text-general);
 
         &-content {
             display: flex;
@@ -183,7 +183,7 @@
     }
     .account-management__text {
         text-align: center;
-        color: var(--text-less-prominent);
+        color: var(--text-general);
         font-size: var(--text-size-xs);
         line-height: 1.5;
     }
@@ -352,7 +352,7 @@
         &-text {
             font-size: 14px;
             line-height: 1.5;
-            color: var(--text-prominent);
+            color: var(--text-general);
         }
         &-fields {
             width: 100%;
@@ -408,7 +408,7 @@
 /** @define initial-loader; weak */
 .initial-loader--btn {
     .initial-loader__barspinner--rect {
-        background-color: $COLOR_WHITE;
+        background-color: var(--text-colored-background);
     }
     .barspinner {
         margin: 0 4px 0 -4px;

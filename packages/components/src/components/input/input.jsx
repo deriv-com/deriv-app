@@ -27,7 +27,10 @@ const Input = ({
                 { className: classNames('dc-input__leading-icon', leading_icon.props.className) },
             )
         }
-        <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && props.placeholder })} disabled={disabled} />
+        {props.type === 'textarea'
+            ? <textarea ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && props.placeholder })} disabled={disabled} />
+            : <input ref={ ref } { ...props } className={classNames('dc-input__field', { 'dc-input__field--placeholder-visible': !label && props.placeholder })} disabled={disabled} />
+        }
         {
             trailing_icon &&
             React.cloneElement(

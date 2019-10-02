@@ -40,7 +40,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.amount = localize('Insufficient balance.');
     }
 
-    if (values.description && !/^[0-9A-Za-z .,'-]{0,250}$/.test(values.description)) {
+    if (values.description && !/^[0-9A-Za-z .,'-]{0,250}$/.test(values.description.replace(/\n/g, ' '))) {
         errors.description = localize('Please enter a valid description.');
     }
 
@@ -60,7 +60,7 @@ class PaymentAgentTransferForm extends React.Component {
         const payment_agent_transfer = await this.props.requestPaymentAgentTransfer({
             amount     : values.amount,
             currency   : this.props.currency,
-            description: values.description,
+            description: values.description.replace(/\n/g, ' '),
             transfer_to: values.loginid,
         });
         if (payment_agent_transfer.error) {

@@ -122,7 +122,7 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const subscribeBalance = (cb) => subscribe({ balance: 1 }, cb);
+    const subscribeBalance = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -199,6 +199,16 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
+    const paymentAgentTransfer = ({ amount, currency, description, transfer_to }) =>
+        deriv_api.send({
+            amount,
+            currency,
+            description,
+            transfer_to,
+            paymentagent_transfer: 1,
+            dry_run              : 0,
+        });
+
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
 
     const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
@@ -243,6 +253,7 @@ const BinarySocketBase = (() => {
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
+        paymentAgentTransfer,
         setAccountCurrency,
         subscribeBalance,
         subscribeProposal,

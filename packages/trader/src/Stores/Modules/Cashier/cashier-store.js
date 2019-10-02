@@ -48,6 +48,16 @@ class ConfigPaymentAgent {
     @observable verification           = new ConfigVerification();
 }
 
+class ConfigPaymentAgentTransfer {
+    @observable container              = 'payment_agent_transfer';
+    @observable error                  = new ConfigError();
+    @observable has_no_balance         = false;
+    @observable is_payment_agent       = false;
+    @observable is_transfer_successful = false;
+    @observable receipt                = {};
+    @observable transfer_limit         = {};
+}
+
 class ConfigAccountTransfer {
     @observable accounts_list          = [];
     @observable container              = 'account_transfer';
@@ -81,8 +91,9 @@ export default class CashierStore extends BaseStore {
             ...(toJS(new Config({ container: 'deposit' }))),
             error: new ConfigError(),
         },
-        payment_agent: new ConfigPaymentAgent(),
-        withdraw     : {
+        payment_agent         : new ConfigPaymentAgent(),
+        payment_agent_transfer: new ConfigPaymentAgentTransfer(),
+        withdraw              : {
             ...(toJS(new Config({ container: 'withdraw' }))),
             error       : new ConfigError(),
             verification: new ConfigVerification(),
@@ -90,6 +101,7 @@ export default class CashierStore extends BaseStore {
     };
 
     active_container = this.config.deposit.container;
+    current_client;
 
     containers = [
         this.config.deposit.container,
@@ -106,15 +118,20 @@ export default class CashierStore extends BaseStore {
         residence       : localize('Country of Residence'),
     };
 
-    constructor({ root_store }) {
-        super({ root_store });
-
-        this.onSwitchAccount(this.accountSwitcherListener);
+    @action.bound
+    resetValuesIfNeeded() {
+        if (this.current_client && !this.current_client === this.root_store.client.loginid) {
+            this.onAccountSwitch();
+        }
+        this.current_client = this.root_store.client.loginid;
     }
 
     @action.bound
     async onMount(verification_code) {
         await BinarySocket.wait('authorize');
+
+        this.resetValuesIfNeeded();
+
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
@@ -141,6 +158,8 @@ export default class CashierStore extends BaseStore {
             this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
+        this.checkIsPaymentAgent();
+
         this.sortAccountsTransfer();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
@@ -161,7 +180,7 @@ export default class CashierStore extends BaseStore {
             }
         } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('700');
+            this.setContainerHeight('540');
             this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive
@@ -247,7 +266,10 @@ export default class CashierStore extends BaseStore {
                 error_message = [
                     localize('There was a problem validating your personal details.'),
                     (error.details.fields ?
-                        localize('Please update your {{details}}.', { details: error.details.fields.map(field => (this.error_fields[field] || field)).join(', ') })
+                        localize('Please update your {{details}}.', {
+                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
+                            interpolation: { escapeValue: false },
+                        })
                         :
                         localize('Please update your details.')
                     ),
@@ -423,9 +445,11 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgentList() {
+        this.setLoading(true);
         await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
         if (!this.config.payment_agent.list.length) {
-            this.setLoading(true);
             const payment_agent_list = await BinarySocket.wait('paymentagent_list');
             if (!this.config.payment_agent.list.length) {
                 this.setPaymentAgentList(payment_agent_list);
@@ -505,11 +529,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
+        await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
         this.setIsWithdraw(true);
         this.setIsWithdrawSuccessful(false);
         this.setReceipt({});
-
-        await BinarySocket.wait('authorize');
 
         if (!this.config.payment_agent.list.length) {
             const payment_agent_list = await this.getPaymentAgentList();
@@ -601,6 +626,8 @@ export default class CashierStore extends BaseStore {
     async onMountAccountTransfer() {
         this.setLoading(true);
         await BinarySocket.wait('authorize', 'website_status');
+        this.resetValuesIfNeeded();
+
         if (!this.config.account_transfer.accounts_list.length) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
             if (transfer_between_accounts.error) {
@@ -641,7 +668,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setHasNoBalance(has_no_balance) {
-        this.config.account_transfer.has_no_balance = has_no_balance;
+        this.config[this.active_container].has_no_balance = has_no_balance;
     }
 
     @action.bound
@@ -754,7 +781,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
-        this.config.account_transfer.is_transfer_successful = is_transfer_successful;
+        this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
 
     @action.bound
@@ -828,6 +855,82 @@ export default class CashierStore extends BaseStore {
         this.setIsTransferSuccessful(false);
     };
 
+    @action.bound
+    async onMountPaymentAgentTransfer() {
+        this.setLoading(true);
+        await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
+        const balance = this.root_store.client.balance;
+        if (!balance) {
+            this.setHasNoBalance(true);
+            this.setLoading(false);
+            return;
+        }
+        if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
+            const response = await BinarySocket.wait('paymentagent_list');
+            const current_payment_agent = this.getCurrentPaymentAgent(response);
+            this.setMinMaxPaymentAgentTransfer(current_payment_agent);
+        }
+        this.setLoading(false);
+    }
+
+    getCurrentPaymentAgent(response_payment_agent) {
+        return response_payment_agent.paymentagent_list.list.find((agent) =>
+            agent.paymentagent_loginid === this.root_store.client.loginid
+        ) || {};
+    }
+
+    async checkIsPaymentAgent() {
+        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+    }
+
+    @action.bound
+    setIsPaymentAgent(is_payment_agent) {
+        this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
+    }
+
+    @action.bound
+    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }) {
+        this.config.payment_agent_transfer.transfer_limit = {
+            min: min_withdrawal,
+            max: max_withdrawal,
+        };
+    }
+
+    @action.bound
+    setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }) {
+        this.config.payment_agent_transfer.receipt = {
+            amount_transferred,
+            client_id,
+            client_name,
+        };
+    }
+
+    @action.bound
+    requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        const payment_agent_transfer = await WS.paymentAgentTransfer({ amount, currency, description, transfer_to });
+        if (+payment_agent_transfer.paymentagent_transfer === 1) {
+            this.setReceiptPaymentAgentTransfer({
+                amount_transferred: amount,
+                client_id         : transfer_to,
+                client_name       : payment_agent_transfer.client_to_full_name,
+            });
+            this.setIsTransferSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+        }
+
+        return payment_agent_transfer;
+    };
+
+    @action.bound
+    resetPaymentAgentTransfer = () => {
+        this.setIsTransferSuccessful(false);
+        this.setErrorMessage('');
+    };
+
     onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {
             this.clearVerification(container);
@@ -839,9 +942,6 @@ export default class CashierStore extends BaseStore {
         });
         this.config.payment_agent = new ConfigPaymentAgent();
         this.config.account_transfer = new ConfigAccountTransfer();
-    }
-
-    accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
+        this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
     }
 }

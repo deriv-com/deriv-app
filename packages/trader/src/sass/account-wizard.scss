@@ -26,6 +26,7 @@
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
+    min-height: 628px;
 
     h1 {
         @include typeface(--title-center-bold-black);

@@ -7,7 +7,6 @@ import {
 }                        from 'App/Components/Layout/Header';
 import header_links      from 'App/Constants/header-links';
 import Lazy              from 'App/Containers/Lazy';
-import Password          from 'App/Containers/Mt5';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import { connect }       from 'Stores/connect';
 
@@ -74,7 +73,6 @@ const Header = ({
             </div>
         </div>
         <RealAccountSignup />
-        <Password />
     </header>
 );
 

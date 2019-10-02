@@ -5,18 +5,20 @@ import {
     Popover,
     Input,
     PasswordMeter,
-    Money }                    from 'deriv-components';
+    Money,
+}                              from 'deriv-components';
 import {
     Field,
     Formik,
-    Form }                     from 'formik';
+    Form,
+}                              from 'formik';
 import React                   from 'react';
 import { OSDetect }            from '_common/os_detect';
 import DataTable               from 'App/Components/Elements/DataTable';
 import Localize                from 'App/Components/Elements/localize.jsx';
 import UILoader                from 'App/Components/Elements/ui-loader.jsx';
-import Tooltip                 from 'App/Containers/Mt5/tooltip.jsx';
-import TopUpVirtualModal       from 'App/Containers/Mt5/top-up-virtual-modal.jsx';
+import Tooltip                 from 'Modules/MT5/Containers/tooltip.jsx';
+import TopUpVirtualModal       from 'Modules/MT5/Containers/top-up-virtual-modal.jsx';
 import { localize }            from 'App/i18n';
 import IconInfoOutline         from 'Assets/Common/icon-info-outline.jsx';
 import IconClipboard           from 'Assets/Mt5/icon-clipboard.jsx';
@@ -34,9 +36,11 @@ import IconInstallationWindows from 'Assets/SvgComponents/mt5/download-center/ic
 import { connect }             from 'Stores/connect';
 import {
     validLength,
-    validPassword }            from 'Utils/Validator/declarative-validation-rules';
+    validPassword,
+}                              from 'Utils/Validator/declarative-validation-rules';
 import Loading                 from '../../../templates/_common/components/loading.jsx';
 import 'Sass/app/modules/mt5-dashboard.scss';
+import Password                from 'Modules/MT5/Containers/password.jsx';
 
 /*
 *  [Work In Progress]
@@ -973,6 +977,7 @@ class MT5Dashboard extends React.Component {
                     </p>
                 </div>
                 <TopUpVirtualModal />
+                <Password />
             </div>
         );
     }

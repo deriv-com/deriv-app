@@ -5,7 +5,7 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
-import { MT5ServerErrorDialog } from 'App/Containers/Mt5';
+import MT5ServerErrorDialog     from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import 'Sass/app/modules/modals.scss';
 
 const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));

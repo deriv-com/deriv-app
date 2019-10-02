@@ -1,15 +1,15 @@
-import classNames        from 'classnames';
+import classNames    from 'classnames';
 import {
     Modal,
     Button,
-    Money }              from 'deriv-components';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { localize }      from 'App/i18n';
-import Localize          from 'App/Components/Elements/localize.jsx';
-import SuccessDialog     from 'App/Containers/Modals/success-dialog.jsx';
-import IconWallet        from 'Assets/Mt5/icon-wallet.jsx';
-import { connect }       from 'Stores/connect';
+    Money }          from 'deriv-components';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import { localize }  from 'App/i18n';
+import Localize      from 'App/Components/Elements/localize.jsx';
+import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
+import IconWallet    from 'Assets/Mt5/icon-wallet.jsx';
+import { connect }   from 'Stores/connect';
 
 class TopUpVirtualModal extends React.Component {
     accountTitle = () => {

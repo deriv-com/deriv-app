@@ -35,7 +35,7 @@ const ErrorModal = ({ message }) => (
             type='button'
             className='btn btn--primary--red'
             target='_blank'
-            rel='noopener'
+            rel='noopener noreferrer'
         >
             <Localize
                 i18n_default_text='Go To Help Centre'
@@ -104,13 +104,13 @@ class RealAccountSignup extends Component {
                     label: localize('Add a real account'),
                     value: () => (
                         <ErrorModal message={this.state.error_message} />
-                    )
-                }
+                    ),
+                },
             ],
         };
     }
 
-    closeModalThenOpenCashier = (e) => {
+    closeModalThenOpenCashier = () => {
         this.props.closeSignupAndOpenCashier();
         setTimeout(() => {
             this.setState(initialState);
@@ -132,10 +132,10 @@ class RealAccountSignup extends Component {
             success_message   : <Localize
                 i18n_default_text='You have added a {{currency}} account.<0 />Make a deposit now to start trading.'
                 values={{
-                    currency: currency,
+                    currency,
                 }}
                 components={[
-                    <br />,
+                    <br key={currency} />,
                 ]}
             />,
         });
@@ -144,13 +144,13 @@ class RealAccountSignup extends Component {
     showLoadingModal = () => {
         this.setState({
             active_modal_index: 4,
-        })
+        });
     };
 
     showErrorModal = (message) => {
         this.setState({
             active_modal_index: 5,
-            error_message: message,
+            error_message     : message,
         });
     };
 
@@ -177,7 +177,7 @@ class RealAccountSignup extends Component {
             <Modal
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
+                    'dc-modal__container_real-account-signup-modal--error'  : this.active_modal_index === 5,
                     'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 && this.active_modal_index < 5,
                 })}
                 is_open={is_real_acc_signup_on}

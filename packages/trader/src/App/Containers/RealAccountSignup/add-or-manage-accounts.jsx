@@ -6,8 +6,6 @@ import ChangeAccountCurrency from './change-account-currency.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
-const CLEAR_ERROR_TIMEOUT = 3000;
-
 class AddOrManageAccounts extends Component {
     constructor(props) {
         super(props);

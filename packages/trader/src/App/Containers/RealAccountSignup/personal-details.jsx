@@ -10,7 +10,7 @@ import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-class DateOfBirth extends Component {
+export class DateOfBirth extends Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),

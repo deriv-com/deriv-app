@@ -64,6 +64,25 @@ class AccountSwitcher extends React.Component {
         // e.g - Real, Financial, Gaming, Investment
         const can_upgrade = !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
 
+        // sort accounts as follows:
+        // top is fiat, then crypto (each alphabetically by currency), then demo
+        this.props.account_list.sort((a, b) => {
+            const a_currency = this.props.accounts[a.loginid].currency;
+            const b_currency = this.props.accounts[b.loginid].currency;
+            const a_is_crypto = CurrencyUtils.isCryptocurrency(a_currency);
+            const b_is_crypto = CurrencyUtils.isCryptocurrency(b_currency);
+            const a_is_fiat = !a_is_crypto;
+            const b_is_fiat = !b_is_crypto;
+            if (!a.is_virtual) {
+                if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                    return a_currency < b_currency ? -1 : 1;
+                } else if (a_is_fiat && b_is_crypto) {
+                    return -1;
+                }
+            }
+            return 1;
+        });
+
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
                 <div className='acc-switcher__list-group'>
@@ -152,7 +171,14 @@ class AccountSwitcher extends React.Component {
                     <span className='acc-switcher__balance'>
                         <Money
                             currency={this.props.obj_total_balance.currency}
-                            amount={this.props.obj_total_balance.amount}
+                            amount={
+                                CurrencyUtils.formatMoney(
+                                    this.props.obj_total_balance.currency,
+                                    this.props.obj_total_balance.amount,
+                                    true
+                                )
+                            }
+                            should_format={false}
                         />
                     </span>
                 </div>

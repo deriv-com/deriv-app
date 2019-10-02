@@ -71,6 +71,9 @@ export const scratchWorkspaceInit = async () => {
 
         drop_zone.addEventListener('dragover', handleDragOver, false);
         drop_zone.addEventListener('drop', e => saveload.handleFileChange(e), false);
+
+        // disable overflow
+        el_scratch_div.parentNode.style.overflow = 'hidden';
     } catch (error) {
         // TODO: Handle error.
         throw error;

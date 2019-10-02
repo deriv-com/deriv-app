@@ -64,7 +64,6 @@ export default class SaveLoadModalStore {
 
     @action.bound
     async onLoadClick({ is_local }) {
-        this.setButtonStatus(1);
         
         const { onBotNameTyped } = this.root_store.toolbar;
         const { loadFile } = this.root_store.google_drive;
@@ -90,6 +89,7 @@ export default class SaveLoadModalStore {
 
     @action.bound
     handleFileChange(event) {
+        this.setButtonStatus(1);
         const { onBotNameTyped } = this.root_store.toolbar;
         let files, drop_event;
         
@@ -116,18 +116,6 @@ export default class SaveLoadModalStore {
             }
         });
         event.target.value = '';
-        window.removeEventListener('focus', this.handleFocusBack);
-    }
-
-    @action.bound
-    clickedFileInput() {
-        window.addEventListener('focus', this.handleFocusBack);
-    }
-
-    @action.bound
-    handleFocusBack() {
-        this.setButtonStatus(0);
-        window.removeEventListener('focus', this.handleFocusBack);
     }
 
     // eslint-disable-next-line class-methods-use-this

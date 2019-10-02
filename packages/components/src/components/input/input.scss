@@ -73,6 +73,15 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        &[type=textarea] {
+            height: 9.6rem;
+            border: none;
+            resize: none;
+
+            ~ .dc-field-error {
+                top: 10rem;
+            }
+        }
     }
     &__leading-icon {
         margin-left: 1rem;

@@ -21,6 +21,7 @@ export class AccountActions extends Component {
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
             nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
             nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
+            nextProps.is_payment_agent_transfer_visible !== this.props.is_payment_agent_transfer_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid
@@ -37,6 +38,7 @@ export class AccountActions extends Component {
             is_cashier_modal_on,
             is_logged_in,
             is_payment_agent_visible,
+            is_payment_agent_transfer_visible,
             is_virtual,
             setCashierActiveTab,
             toggleAccountsDialog,
@@ -65,6 +67,7 @@ export class AccountActions extends Component {
                         toggleCashier={toggleCashierModal}
                         is_cashier_visible={is_cashier_modal_on}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         setCashierActiveTab={setCashierActiveTab}
                     />
                     }
@@ -81,17 +84,18 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
-    active_cashier_tab      : PropTypes.any,
-    balance                 : PropTypes.any,
-    can_upgrade             : PropTypes.any,
-    can_upgrade_to          : PropTypes.any,
-    currency                : PropTypes.any,
-    is_acc_switcher_on      : PropTypes.any,
-    is_cashier_modal_on     : PropTypes.any,
-    is_logged_in            : PropTypes.any,
-    is_payment_agent_visible: PropTypes.any,
-    is_virtual              : PropTypes.any,
-    setCashierActiveTab     : PropTypes.func,
-    toggleAccountsDialog    : PropTypes.any,
-    toggleCashierModal      : PropTypes.any,
+    active_cashier_tab               : PropTypes.any,
+    balance                          : PropTypes.any,
+    can_upgrade                      : PropTypes.any,
+    can_upgrade_to                   : PropTypes.any,
+    currency                         : PropTypes.any,
+    is_acc_switcher_on               : PropTypes.any,
+    is_cashier_modal_on              : PropTypes.any,
+    is_logged_in                     : PropTypes.any,
+    is_payment_agent_transfer_visible: PropTypes.any,
+    is_payment_agent_visible         : PropTypes.any,
+    is_virtual                       : PropTypes.any,
+    setCashierActiveTab              : PropTypes.func,
+    toggleAccountsDialog             : PropTypes.any,
+    toggleCashierModal               : PropTypes.any,
 };

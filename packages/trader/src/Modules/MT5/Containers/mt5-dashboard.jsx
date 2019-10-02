@@ -20,8 +20,7 @@ import UILoader                from 'App/Components/Elements/ui-loader.jsx';
 import Tooltip                 from 'Modules/MT5/Containers/tooltip.jsx';
 import TopUpVirtualModal       from 'Modules/MT5/Containers/top-up-virtual-modal.jsx';
 import { localize }            from 'App/i18n';
-import IconInfoOutline         from 'Assets/Common/icon-info-outline.jsx';
-import IconClipboard           from 'Assets/Mt5/icon-clipboard.jsx';
+import Icon                    from 'Assets/icon.jsx';
 // import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard         from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
 import IconMT5Synthetic        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
@@ -33,6 +32,7 @@ import IconInstallationGoogle  from 'Assets/SvgComponents/mt5/download-center/ic
 import IconInstallationLinux   from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
 import IconInstallationMac     from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
 import IconInstallationWindows from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
+import Password                from 'Modules/MT5/Containers/password.jsx';
 import { connect }             from 'Stores/connect';
 import {
     validLength,
@@ -40,7 +40,6 @@ import {
 }                              from 'Utils/Validator/declarative-validation-rules';
 import Loading                 from '../../../templates/_common/components/loading.jsx';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
-import Password                from 'Modules/MT5/Containers/password.jsx';
 
 /*
 *  [Work In Progress]
@@ -76,9 +75,9 @@ class ClipboardComponent extends React.PureComponent {
                 <Tooltip
                     message={localize('Click here to copy account login number and paste into the login box in MT5 platform along with your password.')}
                 >
-                    <IconClipboard
+                    <Icon
+                        icon='IconClipboard'
                         className='mt5-account-card__clipboard'
-                        key='1'
                         onClick={this.onClick}
                     />
                 </Tooltip>
@@ -87,7 +86,7 @@ class ClipboardComponent extends React.PureComponent {
                 <Tooltip
                     message={localize('Account login number copied!')}
                 >
-                    <IconInfoOutline className='mt5-account-card__clipboard' />
+                    <Icon icon='IconInfoOutline' className='mt5-account-card__clipboard' />
                 </Tooltip>
                 }
             </React.Fragment>

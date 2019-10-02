@@ -8,7 +8,7 @@ import React         from 'react';
 import { localize }  from 'App/i18n';
 import Localize      from 'App/Components/Elements/localize.jsx';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import IconWallet    from 'Assets/Mt5/icon-wallet.jsx';
+import IconWallet    from 'Assets/Common/icon-wallet.jsx';
 import { connect }   from 'Stores/connect';
 
 class TopUpVirtualModal extends React.Component {

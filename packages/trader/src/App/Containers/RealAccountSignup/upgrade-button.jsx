@@ -1,13 +1,9 @@
-import classNames from 'classnames';
 import { Button } from 'deriv-components';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-const UpgradeButton = ({ children, onClick, outlined }) => (
-    <div className={classNames('acc-switcher__new-account', {
-        'acc-switcher__new-account--outlined': outlined,
-    })}
-    >
+const UpgradeButton = ({ children, onClick }) => (
+    <div className='acc-switcher__new-account'>
         <Button
             id='upgrade-account'
             onClick={onClick}
@@ -19,9 +15,8 @@ const UpgradeButton = ({ children, onClick, outlined }) => (
 );
 
 UpgradeButton.propTypes = {
-    onClick : PropTypes.func,
-    outlined: PropTypes.bool,
-    text    : PropTypes.string,
+    onClick: PropTypes.func,
+    text   : PropTypes.string,
 };
 
 export default UpgradeButton;

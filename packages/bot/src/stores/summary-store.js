@@ -79,6 +79,8 @@ export default class SummaryStore {
         const { client } = this.root_store.core;
         const reset = (condition) => {
             if (condition) {
+                // TODO: Handle more gracefully, e.g. ask user for confirmation instead
+                // of killing and clearing everything instantly.
                 this.clear();
                 this.currency = client.currency;
             }

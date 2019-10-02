@@ -144,6 +144,8 @@ export default class RunPanelStore {
         const { client } = this.root_store.core;
         const reset = (condition) => {
             if (condition) {
+                // TODO: Handle more gracefully, e.g. ask user for confirmation instead
+                // of killing and clearing everything instantly.
                 Blockly.BLOCKLY_CLASS_OLD.terminate();
                 this.is_run_button_clicked = false;
             }

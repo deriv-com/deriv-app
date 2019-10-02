@@ -68,16 +68,7 @@ const onClick = () => {
     if (dropdown.classList.contains('open')) return;
     document.querySelector('.cq-symbol-select-btn').click();
     const left_panel = document.querySelector('.cq-filter-panel');
-    // TODO: Use back default code below on L80 and remove L71 to L79 once smartcharts is fixed
-    // We need the fix from smartcharts because the click function is targetting the icon el
-    // Smartcharts currently doesn't render icon el for Synthetic Index
-    // Workaround starts here
-    const cq_filter_text_el = left_panel.getElementsByClassName('cq-filter-text');
-    const temp_synth = cq_filter_text_el[cq_filter_text_el.length - 1];
-    if (temp_synth) temp_synth.parentNode.click();
-    // Workaround ends here
-    // Default code is below
-    // left_panel.querySelector('.ic-synthetic_index').parentNode.click();
+    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
 
     const node = document
         .querySelector('.category-synthetic_index')

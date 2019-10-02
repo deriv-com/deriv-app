@@ -8,6 +8,7 @@ import BinarySocket  from '_common/base/socket_base';
 import { localize }  from 'App/i18n';
 import { WS }        from 'Services';
 import BaseStore     from '../../base-store';
+import {isEmptyObject} from "deriv-shared/src/utils/object/object";
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -854,17 +855,27 @@ export default class CashierStore extends BaseStore {
         }
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
             const response = await BinarySocket.wait('paymentagent_list');
-            const current_payment_agent = response.paymentagent_list.list.find((agent) =>
-                agent.paymentagent_loginid === this.root_store.client.loginid
-            ) || {};
+            const current_payment_agent = this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
         this.setLoading(false);
     }
 
+    getCurrentPaymentAgent(response_payment_agent) {
+        return response_payment_agent.paymentagent_list.list.find((agent) =>
+            agent.paymentagent_loginid === this.root_store.client.loginid
+        ) || {};
+    }
+
     async checkIsPaymentAgent() {
-        const response = await BinarySocket.wait('get_settings');
-        this.setIsPaymentAgent(response.get_settings.is_authenticated_payment_agent);
+        const response_settings = await BinarySocket.wait('get_settings');
+        const response_pa_list  = await BinarySocket.wait('paymentagent_list');
+
+        // show to payment agent account, not the sibling accounts
+        const is_payment_agent = response_settings.get_settings.is_authenticated_payment_agent &&
+            !isEmptyObject(this.getCurrentPaymentAgent(response_pa_list));
+
+        this.setIsPaymentAgent(is_payment_agent);
     }
 
     @action.bound

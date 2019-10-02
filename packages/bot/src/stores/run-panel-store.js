@@ -17,10 +17,6 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
 
         this.registerReactions();
-
-        if (!this.root_store.core.client.is_virtual) {
-            this.showRealAccountDialog();
-        }
     }
 
     @observable active_index          = 0;
@@ -30,6 +26,7 @@ export default class RunPanelStore {
     @observable is_dialog_visible     = false;
     @observable is_drawer_open        = false;
     dialog_content                    = '';
+    dialog_title                      = '';
 
     @action.bound
     onBotRunningEvent() {
@@ -57,13 +54,16 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        if (!this.root_store.core.client.is_logged_in) {
+        const { client } = this.root_store.core;
+
+        if (!client.is_logged_in) {
+            this.dialog_title = translate('Run error');
             this.dialog_content = translate('Please log in.');
             this.is_dialog_visible = true;
             return;
         }
 
-        if (!this.root_store.core.client.is_virtual) {
+        if (!client.is_virtual) {
             this.showRealAccountDialog();
             return;
         }
@@ -79,6 +79,7 @@ export default class RunPanelStore {
     @action.bound
     onStopButtonClick() {
         if (!this.root_store.core.client.is_logged_in) {
+            this.dialog_title = translate('Run error');
             this.dialog_content = translate('Please log in.');
             this.is_dialog_visible = true;
             return;
@@ -162,6 +163,7 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
+        this.dialog_title = translate('Head\'s up');
         this.dialog_content = translate('You cannot use your real money account with DBot at this time.');
         this.is_dialog_visible = true;
     }

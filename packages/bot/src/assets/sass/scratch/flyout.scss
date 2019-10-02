@@ -5,7 +5,8 @@
 
     position: absolute;
     left: 250px;
-    background-color: $COLOR_WHITE;
+    color: var(--text-general);
+    background-color: var(--general-main-1);
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
     z-index: 1;
@@ -14,7 +15,7 @@
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;
-    box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+    box-shadow: 0 2px 8px 0 rgba(var(--text-prominent), 0.4);
     min-width: 400px;
 
     &__item:hover {
@@ -47,12 +48,12 @@
         &-new {
             width: 100%;
             font-size: 100%;
-            box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+            box-shadow: 0 2px 8px 0 rgba(var(--text-prominent), 1);
             margin-bottom: $default-margin;
         }
         &-add {
-            background-color: $COLOR_CORAL_RED;
-            color: $COLOR_WHITE;
+            background-color: var(--brand-red-coral);
+            color: $color-white;
 
             &-hide {
                 display: none;
@@ -62,7 +63,7 @@
             padding-bottom: 0;
             align-self: center;
             background-color: transparent;
-            color: $COLOR_BLACK;
+            color: var(--text-general);
 
             &:focus {
                 outline: none;
@@ -71,8 +72,9 @@
         &-next,
         &-previous {
             margin-left: 1em;
-            color: $COLOR_LIGHT_BLACK_1;
-            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+            color: var(--text-general);
+            background-color: var(--general-main-1);
+            border: 1px solid var(--border-normal);
 
             &:focus {
                 outline: none;
@@ -105,7 +107,7 @@
             cursor: pointer;
             font-weight: bold;
             display: block;
-            color: $COLOR_RED;
+            color: var(--brand-red-coral);
         }
         &-description {
             font-size: 14px;
@@ -129,9 +131,11 @@
         height: 100%;
 
         &-header {
+            background-color: var(--general-disabled);
+            border-top-right-radius: $BORDER_RADIUS;
+            border-top-left-radius: $BORDER_RADIUS;
             padding: 0.5em 1em;
             display: flex;
-            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
         }
         &-content {
             padding: 1.5em;
@@ -151,7 +155,7 @@
         &-footer {
             text-align: right;
             padding: 0.5em 0.8em;
-            border-top: solid 0.1em $COLOR_LIGHT_BLACK_4_SOLID;
+            border-top: solid 0.1em var(--general-main-1);
         }
     }
 }

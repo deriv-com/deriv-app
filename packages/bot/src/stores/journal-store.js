@@ -39,7 +39,7 @@ export default class JournalStore {
     }
 
     @action.bound
-    clearMessages (){
+    clear (){
         this.messages = this.messages.slice(0,0);  // force array update
     }
     

@@ -34,6 +34,11 @@ export default class TransactionsStore {
         this.contracts = this.contracts.slice(0);  // force array update
     }
 
+    @action.bound
+    clear(){
+        this.contracts = this.contracts.slice(0,0);  // force array update
+    }
+
     onUnmount() {
         observer.unregister('contract.status', this.onBotContractEvent);
     }

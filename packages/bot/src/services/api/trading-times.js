@@ -87,6 +87,10 @@ export default class TradingTimes {
         const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
         const { trading_times: { markets } } = response;
 
+        if (!markets) {
+            return;
+        }
+
         markets.forEach((market) => {
             const { submarkets } = market;
 

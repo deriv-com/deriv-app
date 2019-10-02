@@ -102,6 +102,7 @@
         border-radius: 4px;
         background-color: var(--brand-red-coral);
         color: var(--text-colored-background);
+        margin: 1.6em 1.6em 1.6em 0;
 
         /* stylelint-disable color-no-hex */
         &--disabled {
@@ -110,8 +111,8 @@
         }
         /* stylelint-enable color-no-hex */
         &--cancel {
-            border: 1px solid var(--brand-red-coral);
-            color: var(--brand-red-coral) !important;
+            border: 1px solid var(--text-less-prominent);
+            color: var(--text-less-prominent) !important;
             margin-right: 1rem;
             background-color: var(--general-main-1);
         }

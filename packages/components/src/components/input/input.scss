@@ -34,7 +34,8 @@
         &--placeholder-visible::placeholder {
             opacity: 0.2;
         }
-        &:focus, &:disabled, &:not(:focus):valid {
+        /* Not empty fields */
+        &:focus, &:disabled, &:not(:focus):not([value='']) {
             outline: none;
 
             & ~ label {

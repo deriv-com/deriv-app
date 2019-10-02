@@ -20,21 +20,15 @@ const initialState = {
     previous_currency : '',
     current_currency  : '',
     success_message   : '',
+    error_message     : '',
 };
 
-const DuplicatedModal = ({ message }) => (
+const ErrorModal = ({ message }) => (
     <React.Fragment>
         <IconDuplicate />
-        <h1><Localize i18n_default_text='Account exists' /></h1>
+        <h1><Localize i18n_default_text='Whoops!' /></h1>
         <p>
-            <Localize
-                i18n_default_text='A user account with the details you provided already exists. We allow only one Deriv account per user.<0/>
-Please visit the <1>Help Centre</1> to find out how to retrieve your login information. '
-                components={[
-                    <br />,
-                    <a href='https://www.deriv.com/help-centre/' />,
-                ]}
-            />
+            {localize(message)}
         </p>
         <a
             href='https://www.deriv.com/help-centre/'
@@ -74,6 +68,7 @@ class RealAccountSignup extends Component {
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
+                        onError={this.showErrorModal}
                     />,
                 },
                 {
@@ -108,7 +103,7 @@ class RealAccountSignup extends Component {
                 {
                     label: localize('Add a real account'),
                     value: () => (
-                        <DuplicatedModal />
+                        <ErrorModal message={this.state.error_message} />
                     )
                 }
             ],
@@ -152,9 +147,10 @@ class RealAccountSignup extends Component {
         })
     };
 
-    showErrorModal = () => {
+    showErrorModal = (message) => {
         this.setState({
             active_modal_index: 5,
+            error_message: message,
         });
     };
 

@@ -42,7 +42,8 @@ class FormProgress extends React.PureComponent {
                                 <div
                                     key={idx + 1}
                                     className={classNames('form-progress__step', {
-                                        'form-progress__step--active': (idx) <= current_step,
+                                        'form-progress__step--active' : (idx) <= current_step,
+                                        'form-progress__step--current': (idx) === current_step,
                                     })}
                                 >
                                     <span className='identifier'>{idx + 1}</span>

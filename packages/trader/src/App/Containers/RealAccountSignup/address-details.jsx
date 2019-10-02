@@ -1,4 +1,4 @@
-import { Dropdown, Input }            from 'deriv-components';
+import { Dropdown, Input }  from 'deriv-components';
 import { Formik, Field }    from 'formik';
 import React, { Component } from 'react';
 import { connect }          from 'Stores/connect';
@@ -42,6 +42,18 @@ class AddressDetails extends Component {
         this.form.current.getFormikActions().validateForm();
     }
 
+    handleCancel = (values) => {
+        this.props.onSave(this.props.index, values);
+        this.props.onCancel();
+    };
+
+    getPlaceholder = (address_state) => {
+        const placeholder = localize('State/Province (optional)');
+        return this.props.states_list.some(item => {
+            return item.value === address_state;
+        }) ? '' : placeholder;
+    };
+
     render() {
         return (
             <Formik
@@ -65,29 +77,30 @@ class AddressDetails extends Component {
                         errors,
                         values,
                         handleChange,
-                        handleBlur,
                     }) => (
                         <form onSubmit={handleSubmit}>
-                            <div className='personal-details-form'>
-                                <div className='personal-details-form__elements'>
+                            <div className='details-form'>
+                                <p className='details-form__description'>
+                                    <Localize
+                                        i18n_default_text='Please ensure that this address is the same as in your proof of address'
+                                    />
+                                </p>
+                                <div className='details-form__elements'>
                                     <InputField
-                                        className='dc-input--no-placeholder'
                                         name='address_line_1'
                                         required
-                                        label={localize('First line of address')}
+                                        label={localize('First line of address*')}
                                         placeholder={localize('First line of address')}
                                     />
                                     <InputField
                                         name='address_line_2'
-                                        className='dc-input--no-placeholder'
                                         label={localize('Second line of address (optional)')}
                                         placeholder={localize('Second line of address')}
                                     />
                                     <InputField
                                         name='address_city'
                                         required
-                                        className='dc-input--no-placeholder'
-                                        label={localize('Town/City')}
+                                        label={localize('Town/City*')}
                                         placeholder={localize('Town/City')}
                                     />
                                     <Dropdown
@@ -97,25 +110,21 @@ class AddressDetails extends Component {
                                         classNameDisplaySpan='address_state-dropdown__display__span'
                                         classNameItems='address_state-dropdown__items'
                                         classNameLabel='address_state-dropdown__label'
-                                        label={localize('State/Province (optional)')}
                                         list={this.props.states_list}
                                         name='address_state'
                                         value={values.address_state}
                                         onChange={handleChange}
+                                        placeholder={
+                                            this.getPlaceholder(values.address_state)
+                                        }
                                     />
                                     <InputField
                                         name='address_postcode'
                                         required
-                                        className='dc-input--no-placeholder'
-                                        label={localize('Postal/ZIP Code')}
+                                        label={localize('Postal/ZIP Code*')}
                                         placeholder={localize('Postal/ZIP Code')}
                                     />
                                 </div>
-                                <p className='personal-details-form__description'>
-                                    <Localize
-                                        i18n_default_text={'Any information you provide is confidential and will be used for verification purposes only.'}
-                                    />
-                                </p>
                             </div>
                             <FormSubmitButton
                                 is_disabled={
@@ -126,7 +135,7 @@ class AddressDetails extends Component {
                                 label='Next'
                                 has_cancel
                                 cancel_label='Previous'
-                                onCancel={this.props.onCancel}
+                                onCancel={this.handleCancel.bind(this, values)}
                             />
                         </form>
                     )

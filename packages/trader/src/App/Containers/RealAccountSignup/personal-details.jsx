@@ -8,7 +8,7 @@ import Localize             from 'App/Components/Elements/localize.jsx';
 import { toMoment }         from 'Utils/Date';
 import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
-import 'Sass/personal-details-form.scss';
+import 'Sass/details-form.scss';
 
 class DateOfBirth extends Component {
     state = {
@@ -61,7 +61,7 @@ class DateOfBirth extends Component {
                 name={this.props.name}
                 render={({
                     field: { name, value },
-                    form : { setFieldValue },
+                    form : { setFieldValue, handleBlur },
                 }) => (
                     <div className='datepicker'>
                         <InputField
@@ -70,7 +70,7 @@ class DateOfBirth extends Component {
                             className={classNames(this.props.className, {
                                 'datepicker--active-label': !!value,
                             })}
-                            onBlur={this.handleBlur}
+                            onBlur={handleBlur}
                             value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
                             readOnly
                         />
@@ -145,6 +145,11 @@ class PersonalDetails extends Component {
         this.form.current.getFormikActions().validateForm();
     }
 
+    handleCancel = (values) => {
+        this.props.onSave(this.props.index, values);
+        this.props.onCancel();
+    };
+
     render() {
         return (
             <Formik
@@ -165,36 +170,33 @@ class PersonalDetails extends Component {
                         handleSubmit,
                         isSubmitting,
                         errors,
+                        values,
                     }) => (
                         <form onSubmit={handleSubmit}>
-                            <div className='personal-details-form'>
-                                <div className='personal-details-form__elements'>
+                            <div className='details-form'>
+                                <div className='details-form__elements'>
                                     <InputField
-                                        className='dc-input--no-placeholder'
                                         name='first_name'
-                                        label={localize('First name')}
+                                        label={localize('First name*')}
                                         placeholder={localize('John')}
                                     />
                                     <InputField
                                         name='last_name'
-                                        className='dc-input--no-placeholder'
-                                        label={localize('Last name')}
+                                        label={localize('Last name*')}
                                         placeholder={localize('Doe')}
                                     />
                                     <DateOfBirth
                                         name='date_of_birth'
-                                        className='dc-input--no-placeholder'
-                                        label={localize('Date of birth')}
+                                        label={localize('Date of birth*')}
                                         placeholder={localize('1999-07-01')}
                                     />
                                     <InputField
                                         name='phone'
-                                        className='dc-input--no-placeholder'
-                                        label={localize('Phone number')}
+                                        label={localize('Phone number*')}
                                         placeholder={localize('Phone number')}
                                     />
                                 </div>
-                                <p className='personal-details-form__description'>
+                                <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={'Any information you provide is confidential and will be used for verification purposes only.'}
                                     />
@@ -209,7 +211,7 @@ class PersonalDetails extends Component {
                                 label='Next'
                                 has_cancel
                                 cancel_label='Previous'
-                                onCancel={this.props.onCancel}
+                                onCancel={this.handleCancel.bind(this, values)}
                             />
                         </form>
                     )

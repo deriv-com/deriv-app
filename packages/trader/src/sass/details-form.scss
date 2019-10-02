@@ -1,6 +1,6 @@
 @import 'app/_common/base/index';
 
-.personal-details-form {
+.details-form {
     flex-grow: 1;
     margin-top: 3rem;
 
@@ -21,7 +21,7 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         text-transform: none;
-        margin-top: 3rem;
+        margin: 2em 0;
         color: var(--text-general);
     }
 }

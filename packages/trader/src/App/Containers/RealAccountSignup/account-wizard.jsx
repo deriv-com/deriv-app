@@ -126,11 +126,17 @@ class AccountWizard extends React.Component {
     };
 
     updateValue = (index, value, setSubmitting) => {
+        this.saveFormData(index, value);
+        this.nextStep(setSubmitting);
+    };
+
+    saveFormData = (index, value) => {
         const cloned_items             = Object.assign([], this.state.items);
         cloned_items[index].form_value = value;
+
         this.setState({
             items: cloned_items,
-        }, () => this.nextStep(setSubmitting));
+        });
     };
 
     createRealAccount(setSubmitting) {
@@ -143,9 +149,6 @@ class AccountWizard extends React.Component {
             })
             .catch(error_message => {
                 this.props.onError(error_message);
-                this.setState({
-                    form_error: error_message,
-                }, () => setSubmitting(false));
             });
     }
 
@@ -176,6 +179,7 @@ class AccountWizard extends React.Component {
                             index={this.state_index}
                             onSubmit={this.updateValue}
                             onCancel={this.prevStep}
+                            onSave={this.saveFormData}
                             form_error={this.state.form_error}
                         />
                     </div>

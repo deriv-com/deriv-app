@@ -222,7 +222,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
                                                                     required
-                                                                    leading_icon={<span className={classNames('payment-agent__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                                                    leading_icon={<span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
                                                                     autoComplete='off'
                                                                     maxLength='30'
                                                                 />

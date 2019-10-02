@@ -38,7 +38,7 @@
             outline: none;
 
             & ~ label {
-                transform: translate(0, -1.6rem) scale(0.75);
+                transform: translate(0, -1.8rem) scale(0.75);
                 padding: 0 4px;
             }
         }
@@ -73,6 +73,15 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        &[type=textarea] {
+            height: 9.6rem;
+            border: none;
+            resize: none;
+
+            ~ .dc-field-error {
+                top: 10rem;
+            }
+        }
     }
     &__leading-icon {
         margin-left: 1rem;
@@ -97,7 +106,7 @@
         position: absolute;
         pointer-events: none;
         left: 1rem;
-        top: 1rem;
+        top: 1.3rem;
         transition: 0.25s ease all;
         transform-origin: top left;
     }

@@ -169,18 +169,18 @@ class AddressDetails extends Component {
         const mappedKey = {
             address_line_1  : localize('First line of address'),
             address_line_2  : localize('Second line of address'),
-            address_city    : localize('Town/City'),
-            address_state   : localize('State/Province'),
-            address_postcode: localize('Postal/ZIP Code'),
+            address_city    : `${localize('Town')}/${localize('City')}`,
+            address_state   : `${localize('State')}/${localize('Province')}`,
+            address_postcode: `${localize('Postal')}/${localize('ZIP Code')}`,
         };
 
         const required_messages = [
-            '%s is required',
-            '%s is not in a proper format.',
+            '{{field_name}} is required',
+            '{{field_name}} is not in a proper format.',
         ];
 
         const optional_messages = [
-            '%s is not in a proper format.',
+            '{{field_name}} is not in a proper format.',
         ];
 
         const errors = {};
@@ -192,11 +192,20 @@ class AddressDetails extends Component {
                     switch (key) {
                         case 'address_state':
                         case 'address_line_2':
-                            errors[key] =
-                                localize(optional_messages[error_index].replace('%s', mappedKey[key]));
+                            errors[key] = <Localize
+                                i18n_default_text={optional_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
                             break;
                         default:
-                            errors[key] = localize(required_messages[error_index].replace('%s', mappedKey[key]));
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={required_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
                     }
                 }
             });

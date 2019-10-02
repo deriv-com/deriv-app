@@ -227,13 +227,13 @@ class PersonalDetails extends Component {
                 v => !!v,
                 v => v.length > 2,
                 v => v.length < 30,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
+                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
-                v => v.length > 2,
-                v => v.length < 30,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
+                v => v.length >= 2,
+                v => v.length <= 50,
+                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,
@@ -253,15 +253,15 @@ class PersonalDetails extends Component {
         };
 
         const common_messages  = [
-            '%s is required',
-            '%s is too short',
-            '%s is too long',
-            '%s is not in a proper format.',
+            '{{field_name}} is required',
+            '{{field_name}} is too short',
+            '{{field_name}} is too long',
+            '{{field_name}} is not in a proper format.',
         ];
 
         const alt_messages = [
-            '%s is required',
-            '%s is not in a proper format.',
+            '{{field_name}} is required',
+            '{{field_name}} is not in a proper format.',
         ];
 
         const errors    = {};
@@ -273,11 +273,20 @@ class PersonalDetails extends Component {
                     switch (key) {
                         case 'date_of_birth':
                         case 'phone':
-                            errors[key] =
-                                localize(alt_messages[error_index].replace('%s', mappedKey[key]));
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={alt_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
                             break;
                         default:
-                            errors[key] = localize(common_messages[error_index].replace('%s', mappedKey[key]));
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={common_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
                     }
                 }
             });

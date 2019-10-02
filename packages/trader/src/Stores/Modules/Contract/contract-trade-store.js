@@ -1,9 +1,9 @@
-import ObjectUtils                from 'deriv-shared/utils/object';
 import {
     action,
     computed,
     observable,
     toJS }                        from 'mobx';
+import ObjectUtils                from 'deriv-shared/utils/object';
 import BinarySocket               from '_common/base/socket_base';
 import { localize }               from 'App/i18n';
 import { WS }                     from 'Services';

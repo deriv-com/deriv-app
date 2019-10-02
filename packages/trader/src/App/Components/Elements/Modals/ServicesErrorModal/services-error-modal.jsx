@@ -2,8 +2,8 @@ import { Dialog }    from 'deriv-components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
 import { localize }  from 'App/i18n';
-import { title }     from './constants';
 import { connect }   from 'Stores/connect';
+import { title }     from './constants';
 
 const ServicesErrorModal = ({
     disableApp,
@@ -11,7 +11,7 @@ const ServicesErrorModal = ({
     is_loading,
     is_visible,
     onConfirm,
-    services_error
+    services_error,
 }) => {
     const { code, message } = services_error;
 

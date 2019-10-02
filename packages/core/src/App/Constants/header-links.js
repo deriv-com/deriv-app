@@ -7,7 +7,8 @@ import { routes }   from 'Constants/index';
 const header_links = [
     {
         id     : 'dt_deriv_logo',
-        logo   : <div className='header__title'>{localize('DTrader')}<span className='header__logo'>{localize('BETA')}</span></div>,
+        // TODO: Update naming.
+        logo   : <div className='header__title'>{localize('DBot')}<span className='header__logo'>{localize('BETA')}</span></div>,
         image  : <IconDeriv className='header__icon' />,
         link_to: routes.trade,
     },

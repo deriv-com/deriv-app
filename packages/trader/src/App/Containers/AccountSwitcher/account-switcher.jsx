@@ -73,12 +73,12 @@ class AccountSwitcher extends React.Component {
             const b_is_crypto = CurrencyUtils.isCryptocurrency(b_currency);
             const a_is_fiat = !a_is_crypto;
             const b_is_fiat = !b_is_crypto;
-            if (!a.is_virtual) {
-                if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                    return a_currency < b_currency ? -1 : 1;
-                } else if (a_is_fiat && b_is_crypto) {
-                    return -1;
-                }
+            if (a.is_virtual || b.is_virtual) {
+                return a.is_virtual ? 1 : -1;
+            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                return a_currency < b_currency ? -1 : 1;
+            } else if (a_is_fiat && b_is_crypto) {
+                return -1;
             }
             return 1;
         });

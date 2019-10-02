@@ -25,12 +25,16 @@ const TradeAnimation = ({
 }) => {
     const { index, text } = contract_stage;
     const is_completed = index === 5;
-    const progress_status = index - ((index === 2 || index === 3) ? 2 : 3);
+    let progress_status = index - ((index === 2 || index === 3) ? 2 : 3);
 
     const status_classes = ['', '', ''];
     if (progress_status >= 0) {
         if (progress_status < status_classes.length) {
             status_classes[progress_status] =  'active';
+        }
+
+        if (is_completed) {
+            progress_status += 1;
         }
     
         for (let i = 0; i < progress_status; i++) {

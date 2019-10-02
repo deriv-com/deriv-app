@@ -27,7 +27,7 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        this.contract_stage = CONTRACT_STAGES.not_running;
+        this.contract_stage = CONTRACT_STAGES.contract_closed;
     }
 
     @action.bound

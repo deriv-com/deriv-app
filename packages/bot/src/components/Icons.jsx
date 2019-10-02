@@ -79,7 +79,7 @@ import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
 import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
 import contract_id              from '../assets/icons/ic-id.svg';
 import contract_pending         from '../assets/icons/contract-pending.svg';
-import contract_settled         from '../assets/icons/contract-settled.svg';
+import contract_completed       from '../assets/icons/contract-completed.svg';
 import contract_buy_price       from '../assets/icons/buy-price.svg';
 
 /* eslint-disable react/display-name */
@@ -179,4 +179,4 @@ export const ExitSpotIcon            = Icon(contract_exit_spot);
 export const RefrenceIdIcon          = Icon(contract_id);
 export const PendingIcon             = Icon(contract_pending);
 export const BuyPriceIcon            = Icon(contract_buy_price);
-export const SettledIcon             = Icon(contract_settled);
+export const CompletedIcon           = Icon(contract_completed);

@@ -9,7 +9,7 @@ import {
     EntrySpotIcon,
     PendingIcon,
     RefrenceIdIcon,
-    SettledIcon,
+    CompletedIcon,
 }                        from './Icons.jsx';
 import IconTradeType     from './icon-trade-types.jsx';
 import { connect }       from '../stores/connect';
@@ -36,7 +36,7 @@ const Transaction = ({ contract }) => {
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Refrence Id')}
+                                    message={translate('Refrence ID')}
                                 >
                                     <RefrenceIdIcon className='transactions__middle' />
                                 </Popover>
@@ -54,7 +54,7 @@ const Transaction = ({ contract }) => {
                                 </Popover>
 
                                 <Money
-                                    amount={Math.abs(contract.buy_price)}
+                                    amount={contract.buy_price}
                                     currency={contract.currency}
                                 />
                             </div>
@@ -104,13 +104,13 @@ const Transaction = ({ contract }) => {
                     </td>
                     <td className='transactions__col'>
                         {
-                            contract.is_settled ?
+                            contract.is_completed ?
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Settled')}
+                                    message={translate('Completed')}
                                 >
-                                    <SettledIcon className='transactions__middle' />
+                                    <CompletedIcon className='transactions__middle' />
                                 </Popover> :
                                 <Popover
                                     className='transactions__inline transactions__middle'

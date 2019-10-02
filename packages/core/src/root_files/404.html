@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <script type="text/javascript">
         var l = window.location;
-        var segmentCount = /^\/br_|bot/.test(l.pathname) ? 1 : 0;
+        var segmentCount = /^\/(br_|bot)/.test(l.pathname) ? 1 : 0;
 
         l.replace(
             l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +

@@ -8,15 +8,16 @@ const Money = ({
     className,
     currency = 'USD',
     has_sign,
-    is_formatted = true,
+    should_format = true,
 }) => {
     let sign = '';
     if (+amount && (amount < 0 || has_sign)) {
         sign = amount > 0 ? '+' : '-';
     }
 
-    const abs_value = Math.abs(amount);
-    const final_amount = is_formatted ? CurrencyUtils.formatMoney(currency, abs_value, true) : abs_value;
+    // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
+    const value = (has_sign || should_format) ? Math.abs(amount) : amount;
+    const final_amount = should_format ? CurrencyUtils.formatMoney(currency, value, true) : value;
 
     return (
         <React.Fragment>
@@ -32,10 +33,10 @@ Money.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    className   : PropTypes.string,
-    currency    : PropTypes.string,
-    has_sign    : PropTypes.bool,
-    is_formatted: PropTypes.bool,
+    className    : PropTypes.string,
+    currency     : PropTypes.string,
+    has_sign     : PropTypes.bool,
+    should_format: PropTypes.bool,
 };
 
 export default Money;

@@ -30,10 +30,6 @@ describe('AccountInfo', () => {
         const wrapper = shallow(<AccountInfo is_virtual={false} />);
         expect(wrapper.find('.acc-info--is-virtual').exists()).to.be.false;
     });
-    it('should have <p /> with loginid passed to it', () => {
-        const wrapper = shallow(<AccountInfo loginid='12345' />);
-        expect(wrapper.contains(<p className='acc-info__id' title='12345'>12345&nbsp;</p>)).to.be.true;
-    });
     it('should have <Icon icon=\'IconArrow\' />', () => {
         const wrapper = shallow(<AccountInfo />);
         expect(wrapper.contains(<Icon icon='IconArrowBold' className='acc-info__select-arrow' />)).to.be.true;
@@ -41,7 +37,6 @@ describe('AccountInfo', () => {
     it('should contain <CSSTransition /> and children', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={false}
                                              toggleDialog={() => true}
-                                             onClickUpgrade={() => false}
                                              is_upgrade_enabled={true} />);
         expect(wrapper.contains(<CSSTransition
             in={false}
@@ -54,7 +49,6 @@ describe('AccountInfo', () => {
                     is_visible={false}
                     toggle={() => true}
                     is_upgrade_enabled={true}
-                    onClickUpgrade={() => false}
                 />
             </div>
         </CSSTransition>));
@@ -62,28 +56,24 @@ describe('AccountInfo', () => {
     it('should have CSSTransition\'s prop \'in\' equal to false when is_dialog_on is false', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={false}
                                              toggleDialog={() => true}
-                                             onClickUpgrade={() => false}
                                              is_upgrade_enabled={true} />);
         expect(wrapper.find(CSSTransition).prop('in')).to.be.false;
     });
     it('should have CSSTransition\'s prop \'in\' equal to true when is_dialog_on is true', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={true}
                                              toggleDialog={() => true}
-                                             onClickUpgrade={() => false}
                                              is_upgrade_enabled={true} />);
         expect(wrapper.find(CSSTransition).prop('in')).to.be.true;
     });
     it('should have AccountSwitcher\'s prop \'is_visible\' equal to true when is_dialog_on is true', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={true}
                                              toggleDialog={() => true}
-                                             onClickUpgrade={() => false}
                                              is_upgrade_enabled={true} />);
         expect(wrapper.find(AccountSwitcher).prop('is_visible')).to.be.true;
     });
     it('should have AccountSwitcher\'s prop \'is_visible\' equal to false when is_dialog_on is false', () => {
         const wrapper = shallow(<AccountInfo is_dialog_on={false}
                                              toggleDialog={() => true}
-                                             onClickUpgrade={() => false}
                                              is_upgrade_enabled={true} />);
         expect(wrapper.find(AccountSwitcher).prop('is_visible')).to.be.false;
     });

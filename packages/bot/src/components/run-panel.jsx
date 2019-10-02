@@ -10,7 +10,10 @@ import { connect }                            from '../stores/connect';
 import { translate }                          from '../utils/tools';
 import '../assets/sass/run-panel.scss';
 
-const drawerContent = ({ active_index, setActiveTabIndex }) => {
+const drawerContent = ({
+    active_index,
+    setActiveTabIndex,
+}) => {
     return (
         <Tabs active_index={active_index} onClickTabItem={setActiveTabIndex}>
             <div label={translate('Summary')}>
@@ -25,12 +28,11 @@ const drawerContent = ({ active_index, setActiveTabIndex }) => {
 };
 
 const drawerFooter = ({
-    closeModal,
-    dialog_content,
-    dialog_title,
-    is_dialog_visible,
+    onCloseModal,
+    dialog_options,
     is_running,
     is_run_button_clicked,
+    is_dialog_visible,
     onClearStatClick,
     onRunButtonClick,
     onStopButtonClick,
@@ -72,14 +74,11 @@ const drawerFooter = ({
                         has_effect
                     />
             }
-
-            <Dialog
-                title={dialog_title}
-                is_open={is_dialog_visible}
-                closeModal={closeModal}
-            >
-                {dialog_content}
-            </Dialog>
+            { is_dialog_visible &&
+                <Dialog title={dialog_options.title} is_open={is_dialog_visible} closeModal={onCloseModal}>
+                    {dialog_options.message}
+                </Dialog>
+            }
             <InfoOutlineIcon className='run-panel__icon-info' />
         </div>
     );
@@ -91,7 +90,8 @@ class RunPanel extends React.PureComponent {
     // }
 
     render() {
-        const content = drawerContent(this.props);
+        const { active_index, setActiveTabIndex } = this.props;
+        const content = drawerContent({ active_index, setActiveTabIndex });
         const footer = drawerFooter(this.props);
 
         return (
@@ -109,14 +109,13 @@ class RunPanel extends React.PureComponent {
 
 RunPanel.propTypes = {
     active_index         : PropTypes.number,
-    closeModal           : PropTypes.func,
-    dialog_content       : PropTypes.string,
-    dialog_title         : PropTypes.string,
+    dialog_options       : PropTypes.object,
     is_dialog_visible    : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onClearStatClick     : PropTypes.func,
+    onCloseModal         : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
@@ -126,14 +125,13 @@ RunPanel.propTypes = {
 
 export default connect(({ run_panel }) => ({
     active_index         : run_panel.active_index,
-    closeModal           : run_panel.closeModal,
-    dialog_content       : run_panel.dialog_content,
-    dialog_title         : run_panel.dialog_title,
+    dialog_options       : run_panel.dialog_options,
     is_dialog_visible    : run_panel.is_dialog_visible,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onClearStatClick     : run_panel.onClearStatClick,
+    onCloseModal         : run_panel.onCloseModal,
     onRunButtonClick     : run_panel.onRunButtonClick,
     onStopButtonClick    : run_panel.onStopButtonClick,
     onUnmount            : run_panel.onUnmount,

@@ -1,7 +1,8 @@
 import {
     observable,
     action,
-    reaction }             from 'mobx';
+    reaction,
+    computed }             from 'mobx';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
@@ -21,13 +22,11 @@ export default class RunPanelStore {
 
     @observable active_index          = 0;
     @observable contract_stage        = CONTRACT_STAGES.not_running;
+    @observable dialog_options        = {};
     @observable is_run_button_clicked = false;
     @observable is_running            = false;
-    @observable is_dialog_visible     = false;
     @observable is_drawer_open        = false;
-    dialog_content                    = '';
-    dialog_title                      = '';
-
+    
     @action.bound
     onBotRunningEvent() {
         this.is_running = true;
@@ -57,9 +56,10 @@ export default class RunPanelStore {
         const { client } = this.root_store.core;
 
         if (!client.is_logged_in) {
-            this.dialog_title = translate('Run error');
-            this.dialog_content = translate('Please log in.');
-            this.is_dialog_visible = true;
+            this.dialog_options = {
+                title  : translate('Run error'),
+                message: translate('Please log in.'),
+            };
             return;
         }
 
@@ -79,9 +79,10 @@ export default class RunPanelStore {
     @action.bound
     onStopButtonClick() {
         if (!this.root_store.core.client.is_logged_in) {
-            this.dialog_title = translate('Run error');
-            this.dialog_content = translate('Please log in.');
-            this.is_dialog_visible = true;
+            this.dialog_options = {
+                title  : translate('Run error'),
+                message: translate('Please log in.'),
+            };
             return;
         }
         if (this.is_run_button_clicked) {
@@ -104,13 +105,18 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    closeModal() {
-        this.is_dialog_visible = false;
+    onCloseModal() {
+        this.dialog_options = {};
     }
 
     @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
+    }
+
+    @computed
+    get is_dialog_visible() {
+        return Object.entries(this.dialog_options).length > 0;
     }
 
     getContractStage(data) {
@@ -163,9 +169,10 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.dialog_title = translate('DBot isn\'t quite ready for real accounts');
-        this.dialog_content = translate('Please switch to your demo account to run your DBot.');
-        this.is_dialog_visible = true;
+        this.dialog_options = {
+            title  : translate('DBot isn\'t quite ready for real accounts'),
+            message: translate('Please switch to your demo account to run your DBot.'),
+        };
     }
 
     onUnmount() {

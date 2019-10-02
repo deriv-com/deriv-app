@@ -17,6 +17,12 @@
     outline: 0;
     position: relative;
     background: var(--button-primary-default);
+    /*
+     * Text will be transformed to sentence case in JS
+     * text-transform is declared in .btn instead of .btn__text
+     * to ensure consistency (even for children) as per styleguide
+     */
+    text-transform: none !important;
 
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);

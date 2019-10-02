@@ -327,7 +327,7 @@
         justify-content: space-between;
 
         .btn {
-            @include typeface(--small-center-bold-black);
+            @include typeface(--small-center-bold-black, none);
             margin: 0 1em;
             width: 122px;
             height: 32px;

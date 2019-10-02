@@ -23,10 +23,10 @@ import 'Sass/mt5.scss';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
-        return localize(`You have created a ${account_title}. To start trading, transfer funds from your Deriv account into this account.`);
+        return localize('You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.', { account_title: account_title[0].toLowerCase() + account_title.substr(1) });
     }
 
-    return localize(`You have created a Deriv ${account_title}.`);
+    return localize('You have created a Deriv {{account_title}}.', { account_title });
 };
 
 const getIconFromType = (type) => {
@@ -50,7 +50,7 @@ class Password extends Component {
         const errors   = {};
 
         if (!is_valid) {
-            errors.password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
+            errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
         }
 
         return errors;

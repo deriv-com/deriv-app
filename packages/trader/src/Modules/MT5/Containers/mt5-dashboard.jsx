@@ -701,7 +701,7 @@ class MT5Dashboard extends React.Component {
             const errors = {};
 
             if (!is_valid) {
-                errors.new_password = localize('The password must contain at least two of three types of characters (lower case, upper case and digits).');
+                errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
             }
 
             if (!values.old_password && values.old_password !== undefined) {

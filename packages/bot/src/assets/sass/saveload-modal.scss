@@ -55,19 +55,11 @@
 
 .saveload-type {
     &__checkbox-text {
-        font-size: 14px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
     }
     &__checkbox-description {
-        font-size: 14px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
@@ -81,10 +73,6 @@
     }
     &__radio-text {
         margin-top: 8px;
-        font-size: 14px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);

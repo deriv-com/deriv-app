@@ -110,6 +110,7 @@ const SaveLoadModal = ({
                                         :   <input
                                             type='file'
                                             id='files'
+                                            accept='.xml'
                                             style={{ display: 'none' }}
                                             onChange={handleFileChange}
                                         />

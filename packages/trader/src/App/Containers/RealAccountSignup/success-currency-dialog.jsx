@@ -40,7 +40,7 @@ const SuccessCurrencyDialog = ({
             <div className='success-change__btn-area'>
                 <Button
                     onClick={onCancel}
-                    className='btn--outline'
+                    className='btn--secondary--default'
                 >
                     <Localize
                         i18n_default_text='Maybe later'
@@ -48,6 +48,7 @@ const SuccessCurrencyDialog = ({
                 </Button>
                 <Button
                     onClick={onSubmit}
+                    className='btn--primary--default'
                 >
                     <Localize
                         i18n_default_text='Deposit now'

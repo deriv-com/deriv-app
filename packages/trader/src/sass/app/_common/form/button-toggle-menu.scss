@@ -22,10 +22,10 @@
         &:hover:not(.button-menu__button--active) {
             background-color: var(--state-hover) !important;
         }
-        // stylelint-disable-next-line
+        /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-left-normal-black, unset);
-            color: var(--text-prominent);
+            color: var(--text-general);
         }
         &--active {
             cursor: initial;

@@ -26,6 +26,8 @@ export default class RunPanelStore {
     @observable is_run_button_clicked = false;
     @observable is_running            = false;
     @observable is_drawer_open        = false;
+
+    is_contract_started = false;
     
     @action.bound
     onBotRunningEvent() {
@@ -35,7 +37,7 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        if (this.root_store.contract_card.contract) {
+        if (this.is_contract_started) {
             this.contract_stage = CONTRACT_STAGES.contract_closed;
         } else {
             this.contract_stage = CONTRACT_STAGES.not_running;
@@ -76,6 +78,7 @@ export default class RunPanelStore {
             this.is_drawer_open = true;
         }
 
+        this.is_contract_started = false;
         this.is_run_button_clicked = true;
         Blockly.BLOCKLY_CLASS_OLD.run();
         this.root_store.contract_card.is_loading = true;
@@ -96,6 +99,7 @@ export default class RunPanelStore {
             Blockly.BLOCKLY_CLASS_OLD.stop();
         }
         this.is_run_button_clicked = false;
+        this.root_store.contract_card.is_loading = false;
     }
 
     @action.bound
@@ -132,6 +136,7 @@ export default class RunPanelStore {
         switch (data.id) {
             case ('contract.purchase_sent'): {
                 this.contract_stage = CONTRACT_STAGES.purchase_sent;
+                this.is_contract_started = true;
                 break;
             }
             case ('contract.purchase_recieved'): {
@@ -145,6 +150,7 @@ export default class RunPanelStore {
             }
             default: {
                 this.contract_stage = CONTRACT_STAGES.not_running;
+                this.is_contract_started = false;
             }
         }
     }

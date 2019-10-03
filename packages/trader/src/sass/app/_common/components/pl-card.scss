@@ -16,7 +16,7 @@
             align-self: flex-start;
             white-space: nowrap;
             max-width: 90px;
-            color: var(--text-prominent);
+            color: var(--text-general);
         }
         &__body {
             @include typeface(--small-left-bold-black);

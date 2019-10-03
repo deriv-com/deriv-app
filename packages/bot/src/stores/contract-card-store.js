@@ -70,7 +70,8 @@ export default class ContractCardStore {
         this.profit_movement     = '';
     }
 
-    disposeObserverListener() {
+    @action.bound
+    onUnmount() {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
     }

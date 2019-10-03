@@ -22,7 +22,10 @@ class DatePickerCalendar extends Component {
         });
     };
 
-    isPeriodDisabled = (e) => {
+    isPeriodDisabled = (e, type, where) => {
+        if (type === 'year' && where !== 'body') {
+            return false;
+        }
         return !(e.isAfter(this.props.min_date) && e.isBefore(this.props.max_date));
     };
 

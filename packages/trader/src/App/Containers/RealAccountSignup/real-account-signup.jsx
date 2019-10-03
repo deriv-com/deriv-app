@@ -177,14 +177,15 @@ class RealAccountSignup extends Component {
             <Modal
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--error'  : this.active_modal_index === 5,
-                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 && this.active_modal_index < 5,
+                    'dc-modal__container_real-account-signup-modal--error'             : this.active_modal_index === 5,
+                    'dc-modal__container_real-account-signup-modal--success'           : this.active_modal_index >= 2 && this.active_modal_index < 5,
+                    'dc-modal__container_real-account-signup-modal--no-currency-change': !this.props.can_change_fiat_currency,
                 })}
                 is_open={is_real_acc_signup_on}
                 has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
-                height='688px'
+                height='672px'
                 width='900px'
             >
                 <Body />
@@ -194,6 +195,7 @@ class RealAccountSignup extends Component {
 }
 
 export default connect(({ ui, client }) => ({
+    can_change_fiat_currency : client.can_change_fiat_currency,
     has_real_account         : client.has_real_account,
     is_real_acc_signup_on    : ui.is_real_acc_signup_on,
     closeRealAccountSignup   : ui.closeRealAccountSignup,

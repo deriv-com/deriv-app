@@ -7,9 +7,12 @@
 
     &--success {
         max-width: 400px;
-        max-height: 352px;
+        max-height: 366px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
+    }
+    &--no-currency-change {
+        max-height: 366px;
     }
     .dc-modal-header__title {
         background-color: var(--general-main-1);
@@ -57,7 +60,6 @@
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
-    min-height: 628px;
 
     h1 {
         @include typeface(--title-center-bold-black);

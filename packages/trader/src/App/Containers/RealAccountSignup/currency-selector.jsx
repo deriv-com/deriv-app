@@ -165,7 +165,7 @@ class CurrencySelector extends React.Component {
                             <RadioButtonGroup
                                 id='currency'
                                 className='currency-selector__radio-group'
-                                label={localize('Crypto currencies')}
+                                label={localize('Cryptocurrencies')}
                                 value={values.currency}
                                 error={errors.currency}
                                 touched={touched.currency}

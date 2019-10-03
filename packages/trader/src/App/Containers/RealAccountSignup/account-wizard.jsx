@@ -1,6 +1,7 @@
 import PropTypes        from 'prop-types';
 import fromEntries      from 'object.fromentries';
 import React            from 'react';
+import Localize         from 'App/Components/Elements/localize.jsx';
 import { localize }     from 'App/i18n';
 import { connect }      from 'Stores/connect';
 import { toMoment }     from 'Utils/Date';
@@ -121,9 +122,9 @@ class AccountWizard extends React.Component {
         });
     };
 
-    submitForm = () => {
-        return this.props.realAccountSignup(this.form_values);
-    };
+    submitForm = () => this.props.realAccountSignup(this.form_values);
+
+    setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);
 
     updateValue = (index, value, setSubmitting) => {
         this.saveFormData(index, value);
@@ -140,11 +141,27 @@ class AccountWizard extends React.Component {
     };
 
     createRealAccount(setSubmitting) {
+        if (this.props.has_real_account
+            && !this.props.has_currency
+        ) {
+            this.setAccountCurrency()
+                .then((response) => {
+                    setSubmitting(false);
+                    this.props.onSuccessAddCurrency(
+                        response.echo_req.set_account_currency.toLowerCase()
+                    );
+                })
+                .catch(error_message => {
+                    this.setState({
+                        form_error: error_message,
+                    }, () => setSubmitting(false));
+                });
+        }
         this.submitForm()
             .then((response) => {
                 setSubmitting(false);
                 this.props.onSuccessAddCurrency(
-                    response.new_account_real.currency
+                    response.new_account_real.currency.toLowerCase()
                 );
             })
             .catch(error_message => {
@@ -159,6 +176,9 @@ class AccountWizard extends React.Component {
     }
 
     hasMoreSteps() {
+        if (!this.props.has_currency && this.props.has_real_account) {
+            return false;
+        }
         return this.state.step + 1 < this.state.items.length;
     }
 
@@ -167,10 +187,26 @@ class AccountWizard extends React.Component {
             const BodyComponent = this.getCurrent('body');
             return (
                 <div className='account-wizard'>
+                    {!this.props.has_real_account &&
                     <FormProgress
                         steps={this.state.items}
                         current_step={this.state.step}
                     />
+                    }
+                    {this.props.has_real_account &&
+                    <div className='account-wizard__set-currency'>
+                        <p>
+                            <Localize
+                                i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
+                            />
+                        </p>
+                        <h2>
+                            <Localize
+                                i18n_default_text='Please choose your currency'
+                            />
+                        </h2>
+                    </div>
+                    }
                     <div
                         className='account-wizard__body'
                     >
@@ -201,5 +237,8 @@ AccountWizard.propTypes = {
 };
 
 export default connect(({ client }) => ({
-    realAccountSignup: client.realAccountSignup,
+    realAccountSignup : client.realAccountSignup,
+    has_real_account  : client.has_real_account,
+    has_currency      : !!client.currency,
+    setAccountCurrency: client.setAccountCurrency,
 }))(AccountWizard);

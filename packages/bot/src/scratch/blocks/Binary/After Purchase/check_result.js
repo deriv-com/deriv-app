@@ -36,12 +36,10 @@ Blockly.Blocks.contract_check_result = {
         }
 
         if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('after_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
+            if (!this.isDescendantOf('after_purchase')) {
+                this.unplug(true);
+            } else if (this.disabled) {
+                this.setDisabled(false);
             }
         }
     },

@@ -23,10 +23,12 @@
         &:not(.dc-tabs__active) {
             border-bottom: 1px solid var(--general-section-1);
             cursor: pointer;
+            color: var(--text-general);
         }
     }
     &__active {
         font-weight: 700;
+        color: var(--text-prominent);
     }
     &__active-line {
         display: block;

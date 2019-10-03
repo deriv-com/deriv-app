@@ -91,9 +91,7 @@
         .btn {
             @include typeface(--paragraph-center-bold-black, none);
             background-color: var(--brand-red-coral);
-            @include themify($themes) {
-                color: themed('text_active_color');
-            }
+            color: var(--text-prominent);
 
             &--disabled {
                 background-color: var(--brand-red-coral);

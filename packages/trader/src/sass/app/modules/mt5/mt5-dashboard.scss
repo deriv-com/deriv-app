@@ -16,9 +16,7 @@
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
         font-size: 10px;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-less-prominent);
     }
     &__welcome-message {
         margin-bottom: 3.2em;
@@ -29,31 +27,23 @@
         }
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             line-height: 1.5em;
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general)
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-less-prominent);
         }
         &--button {
             margin: 0;
             background-color: transparent;
             font-weight: bold;
             height: 4em;
-            @include themify($themes) {
-                color: themed('text_active_color');
-            }
+            color: var(--text-prominent);
         }
     }
     &__missing-real {
@@ -80,7 +70,7 @@
     }
     &__download-center {
         border-radius: 4px;
-        border: solid 1px #d6dadb;
+        border: solid 1px var(--border-normal);
         padding-top: 1.6em;
         padding-bottom: 1.6em;
 
@@ -133,9 +123,7 @@
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-less-prominent);
             margin-top: 1.6em;
             margin-left: 7.05em;
         }
@@ -146,6 +134,7 @@
     @include typeface(--paragraph-left-bold-black, none);
     font-size: 14px;
     font-weight: bold;
+    color: var(--text-general);
 }
 
 .mt5-compare-accounts {
@@ -178,9 +167,7 @@
     }
 
     .mt5-compare-account--hint {
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-less-prominent);
         font-size: 12px;
         line-height: 1.5em;
         width: 100%;
@@ -203,7 +190,7 @@
     justify-content: space-between;
 
     &:not(:hover) {
-        border: solid 1px #d6dadb;
+        border: solid 1px var(--border-normal);
     }
     &:hover {
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
@@ -263,13 +250,15 @@
             width: 14.8em;
             display: inline-block;
             white-space: nowrap;
+
+            .mt5-account-card--paragraph {
+                color: var(--text-general);
+            }
         }
         &-data {
             .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-bold-black, none);
-                @include themify($themes) {
-                    color: themed('text_primary_color');
-                }
+                color: var(--text-prominent);
                 line-height: 1.45em;
             }
         }
@@ -300,6 +289,7 @@
         &--secondary {
             background-color: transparent;
             border: 2px solid var(--button-secondary-default);
+            color: var(--text-prominent);
 
             &:hover {
                 background-color: var(--button-secondary-hover);
@@ -331,6 +321,7 @@
             margin: 0 1em;
             width: 122px;
             height: 32px;
+            color: var(--text-prominent);
         }
     }
 }
@@ -352,9 +343,7 @@
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
         font-size: 12px;
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-less-prominent);
         padding: 1.333em 0;
     }
     &__main-form, &__investor-wrapper {
@@ -379,6 +368,7 @@
     }
     &--button {
         height: 4em;
+        color: var(--text-prominent);
     }
 
 }

@@ -277,9 +277,7 @@ export default class MT5Store extends BaseStore {
         }
     }
 
-    @action.bound
-    // eslint-disable-next-line class-methods-use-this
-    async changePassword({ login, old_password, new_password, password_type }) {
+    static async changePassword({ login, old_password, new_password, password_type }) {
         const response = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
 
         if (response.error) {

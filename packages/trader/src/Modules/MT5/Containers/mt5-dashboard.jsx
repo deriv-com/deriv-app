@@ -23,6 +23,7 @@ import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
 import { connect }               from 'Stores/connect';
+import MT5Store                  from 'Stores/Modules/MT5/mt5-store';
 import {
     validLength,
     validPassword }              from 'Utils/Validator/declarative-validation-rules';
@@ -94,7 +95,6 @@ class MT5Dashboard extends React.Component {
             is_loading,
             has_mt5_account,
             has_real_account,
-            onSubmitPasswordChange,
         } = this.props;
 
         const validatePassword = (values) => {
@@ -120,7 +120,7 @@ class MT5Dashboard extends React.Component {
                 return;
             }
 
-            const error = await onSubmitPasswordChange(
+            const error = await MT5Store.changePassword(
                 { login: this.state.password_manager.selected_login, ...values }
             );
 
@@ -397,6 +397,5 @@ export default connect(({ client, modules, ui }) => ({
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,
-    onSubmitPasswordChange     : modules.mt5.changePassword,
     openTopUpModal             : ui.openTopUpModal,
 }))(MT5Dashboard);

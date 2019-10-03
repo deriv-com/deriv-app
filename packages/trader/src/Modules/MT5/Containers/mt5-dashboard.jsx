@@ -31,6 +31,7 @@ import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
+import { urlFor }                from '../../../../../core/src/_common/url';
 
 class MT5Dashboard extends React.Component {
     state = {
@@ -115,6 +116,7 @@ class MT5Dashboard extends React.Component {
 
             return errors;
         };
+
         const onSubmit = async (values) => {
             if (!this.state.password_manager.selected_login) {
                 return;
@@ -130,6 +132,8 @@ class MT5Dashboard extends React.Component {
                 this.hideError(values.password_type);
             }
         };
+
+        const onClickReset = () => { window.open(urlFor('user/metatrader', undefined, undefined, true)); };
 
         const MainPasswordManager = () => {
             const initial_values = { old_password: '', new_password: '', password_type: 'main' };
@@ -183,7 +187,11 @@ class MT5Dashboard extends React.Component {
                                 <Button className='mt5-password-manager--button btn--primary--default' is_disabled={ isSubmitting }>
                                     <span className='btn__text'><Localize i18n_default_text='Change password' /></span>
                                 </Button>
-                                <Button className='mt5-password-manager--button btn--tertiary--default' type='button'>
+                                <Button
+                                    className='mt5-password-manager--button btn--tertiary--default'
+                                    type='button'
+                                    onClick={ onClickReset }
+                                >
                                     <span className='btn__text'><Localize i18n_default_text='Reset main password' /></span>
                                 </Button>
                             </div>
@@ -249,7 +257,11 @@ class MT5Dashboard extends React.Component {
                                     <Button className='mt5-password-manager--button btn--primary--default' is_disabled={ isSubmitting }>
                                         <span className='btn__text'><Localize i18n_default_text='Change investor password' /></span>
                                     </Button>
-                                    <Button className='mt5-password-manager--button btn--tertiary--default' type='button'>
+                                    <Button
+                                        className='mt5-password-manager--button btn--tertiary--default'
+                                        type='button'
+                                        onClick={ onClickReset }
+                                    >
                                         <span className='btn__text'><Localize i18n_default_text='Create or reset investor password' /></span>
                                     </Button>
                                 </div>

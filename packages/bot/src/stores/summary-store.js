@@ -18,7 +18,6 @@ export default class SummaryStore {
         this.currency          = client.currency;
 
         observer.register('contract.status', this.onContractStatusEvent);
-        this.registerReactions();
     }
 
     @action.bound

@@ -15,7 +15,10 @@ const drawerContent = ({
     setActiveTabIndex,
 }) => {
     return (
-        <Tabs active_index={active_index} onClickTabItem={setActiveTabIndex}>
+        <Tabs 
+            active_index={active_index} 
+            onClickTabItem={setActiveTabIndex}
+        >
             <div label={translate('Summary')}>
                 <Summary />
             </div>

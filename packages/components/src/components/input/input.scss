@@ -17,6 +17,10 @@
             border-color: var(--brand-secondary);
         }
     }
+    &__disabled {
+        border-color: var(--general-disabled);
+        color: var(--text-disabled);
+    }
     &__field {
         background: none;
         color: var(--text-prominent);
@@ -34,11 +38,12 @@
         &--placeholder-visible::placeholder {
             opacity: 0.2;
         }
-        &:focus, &:disabled, &:not(:focus):valid {
+        /* Not empty fields */
+        &:focus, &:disabled, &:not(:focus):not([value='']) {
             outline: none;
 
             & ~ label {
-                transform: translate(0, -1.6rem) scale(0.75);
+                transform: translate(0, -1.8rem) scale(0.75);
                 padding: 0 4px;
             }
         }
@@ -64,7 +69,7 @@
                 opacity: 0.4;
             }
         }
-        &:not(.dc-input--no-placeholder):not(:focus):valid {
+        &:not(.dc-input--no-placeholder):not(:focus):not([value='']) {
             & ~ label {
                 color: var(--text-general);
             }
@@ -72,6 +77,15 @@
         &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+        &[type=textarea] {
+            height: 9.6rem;
+            border: none;
+            resize: none;
+
+            ~ .dc-field-error {
+                top: 10rem;
+            }
         }
     }
     &__leading-icon {
@@ -97,7 +111,7 @@
         position: absolute;
         pointer-events: none;
         left: 1rem;
-        top: 1rem;
+        top: 1.3rem;
         transition: 0.25s ease all;
         transform-origin: top left;
     }

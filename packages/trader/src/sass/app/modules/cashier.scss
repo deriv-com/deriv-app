@@ -1,19 +1,23 @@
-/** @define cashier */
+/** @define cashier; weak */
 .cashier {
     &__content {
         width: 100%;
+        background: var(--status-default);
     }
     &__wrapper {
         text-align: center;
 
         &, &--align-left {
-            color: var(--text-prominent);
+            color: var(--text-general);
             width: 100%;
             height: 100%;
             line-height: 1.43;
         }
         &--align-left {
             text-align: left;
+        }
+        .inline-icon .color1-fill {
+            fill: var(--text-general);
         }
     }
     &__loader {
@@ -29,6 +33,7 @@
         line-height: 1.5;
         font-weight: bold;
         margin-bottom: 16px;
+        color: var(--text-prominent);
     }
     &__form {
         &-submit {
@@ -114,7 +119,7 @@
             font-size: 1.4rem;
             text-align: left;
             line-height: 1.43;
-            max-width: 18rem;
+            max-width: 20rem;
 
             &-wrapper {
                 display: flex;
@@ -147,6 +152,14 @@
     }
     &__modal-tab {
         min-width: 24rem;
+    }
+    &__success {
+        background-color: var(--general-section-1);
+        padding: 2.4rem 3.4rem;
+        margin: 0 4.9rem;
+    }
+    &__amount-symbol {
+        top: 0.9rem;
     }
     /** @define cashier-error */
     &-error {
@@ -373,9 +386,6 @@
     &__paragraph {
         align-self: flex-start;
     }
-    &__amount-symbol {
-        top: 0.9rem;
-    }
 }
 
 /** @define account-transfer */
@@ -449,8 +459,27 @@
             margin-top: 3.2rem;
         }
     }
-    &__amount-symbol {
-        top: 0.9rem;
+}
+
+/** @define payment-agent-transfer */
+.payment-agent-transfer {
+    &__header {
+        margin-bottom: 2.8rem;
+    }
+    &__input {
+        width: 29.6rem;
+        display: inline-flex;
+
+        &:not(:first-child) {
+            margin-left: 2.4rem;
+        }
+    }
+    &__buttons {
+        margin-left: -10.7rem;
+        align-items: center;
+    }
+    &__done-button {
+        margin-right: 2.4rem;
     }
 }
 

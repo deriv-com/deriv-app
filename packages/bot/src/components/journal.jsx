@@ -20,6 +20,10 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
+    if (typeof message !== 'string') {
+        return message;
+    }
+
     const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
 
@@ -86,7 +90,7 @@ const MessageItem = ({
 
 class Journal extends React.PureComponent {
     componentWillUnmount() {
-        this.props.onUnmount();
+        // this.props.onUnmount();
     }
 
     render() {

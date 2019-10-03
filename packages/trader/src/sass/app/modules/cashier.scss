@@ -488,6 +488,9 @@
     &__modal-cashier {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
+    &--modal-cashier {
+        background-color: var(--general-main-1);
+    }
     &__title {
         line-height: 1.65;
 

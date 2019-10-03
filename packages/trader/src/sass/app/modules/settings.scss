@@ -4,6 +4,9 @@
 
 /** @define dc-modal-header; */
 .dc-modal-header {
+    &--modal-settings {
+        background-color: var(--general-main-1);
+    }
     &__title {
         &--modal-settings {
             min-width: 28%;

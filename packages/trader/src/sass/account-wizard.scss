@@ -6,16 +6,15 @@
     transition: all 0.3s ease-in-out;
 
     &--success {
-        max-width: 400px;
         max-height: 366px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
+        max-width: 478px;
     }
     &--no-currency-change {
         max-height: 366px;
     }
     .dc-modal-header__title {
-        background-color: var(--general-main-1);
         text-transform: none;
         border-top-left-radius: 1em;
     }
@@ -85,6 +84,7 @@
         flex-grow: 1;
         justify-content: space-evenly;
         width: 100%;
+        padding: 2em;
     }
     &__body {
         align-items: center;
@@ -94,7 +94,17 @@
         justify-content: flex-start;
         width: 100%;
     }
-
+    &__set-currency {
+        p {
+            margin-top: 1em;
+            @include typeface(--small-center-normal-black);
+            text-transform: initial;
+            color: var(--text-prominent);
+        }
+        h2 {
+            color: var(--text-prominent);
+        }
+    }
     // This is taken from account-signup.scss
     // TODO remove this when deriv color changes is done
     &__btn {
@@ -125,7 +135,16 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        align-self: flex-end;
+        margin-top: 2em;
+        width: 20em;
 
+        .btn:not(:last-child) {
+            margin: 0 1em;
+        }
+        .btn:last-child {
+            margin: 0;
+        }
         &--absolute {
             bottom: 16px;
             position: absolute;
@@ -133,6 +152,7 @@
         }
         &--center {
             justify-content: center;
+            width: 100%;
 
             & .btn {
                 min-width: 9em;

@@ -55,11 +55,15 @@
 
 .saveload-type {
     &__checkbox-text {
+        font-size: 14px;
+        font-weight: bold;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
     }
     &__checkbox-description {
+        font-size: 14px;
+        font-weight: normal;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
@@ -72,6 +76,8 @@
         text-align: center;
     }
     &__radio-text {
+        font-size: 14px;
+        font-weight: bold;
         margin-top: 8px;
         line-height: 1.43;
         letter-spacing: normal;

@@ -160,7 +160,7 @@ class ProofOfAddressForm extends React.Component {
                             }
                         }).catch((error) => {
                             setStatus({ msg: error.message });
-                        }).finally(() => {
+                        }).then(() => {
                             setSubmitting(false);
                         });
                     });

@@ -46,7 +46,7 @@ const Button = ({
             }
             {text && !(is_loading || is_submit_success) &&
                 <span className={classNames('btn__text', classNameSpan)}>
-                    {text}
+                    { text[0].toUpperCase() + text.substr(1) }
                 </span>
             }
             {is_loading &&

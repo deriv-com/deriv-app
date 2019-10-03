@@ -8,16 +8,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
+const {GenerateSW} = require('workbox-webpack-plugin');
+
 const {
     copyConfig,
     cssConfig,
     htmlInjectConfig,
     htmlOutputConfig,
-    swPrecacheConfig,
     stylelintConfig,
 } = require('./config');
 const {
@@ -120,7 +120,11 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [
-        new SWPrecacheWebpackPlugin(swPrecacheConfig(base)),
+        new GenerateSW({
+            importWorkboxFrom: 'local',
+            cleanupOutdatedCaches: true,
+            exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+        })
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])
 ]);

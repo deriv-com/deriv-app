@@ -115,4 +115,11 @@ module.exports = {
             }
         })
     ],
+    externals: {
+        '@babel/polyfill' : '@babel/polyfill',
+        'classnames'      : 'classnames',
+        'deriv-components': 'deriv-components',
+        'deriv-shared'    : 'deriv-shared',
+        'formik'          : 'formik',
+    },
 };

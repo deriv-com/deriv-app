@@ -37,7 +37,7 @@ export const RadioButton = ({
                     'currency-list__item--current' : props.selected,
                 })}
             >
-                <div >
+                <div>
                     <Icon
                         icon='IconAccountsCurrency'
                         type={id.toLowerCase()}
@@ -74,6 +74,21 @@ export const Hr = () => (
     <div className='currency-hr' />
 );
 
+export const reorderFiatCurrencies = (list) => {
+    // The order should be custom
+    // [USD, EUR, GBP, AUD]
+    const order = ['USD', 'EUR', 'GBP', 'AUD'];
+    return list.sort((a, b) => {
+        if (order.indexOf(a.value) < order.indexOf(b.value)) {
+            return -1;
+        }
+        if (order.indexOf(a.value) > order.indexOf(b.value)) {
+            return 1;
+        }
+        return 0;
+    });
+};
+
 class CurrencySelector extends React.Component {
     constructor(props) {
         super(props);
@@ -91,7 +106,7 @@ class CurrencySelector extends React.Component {
         const fiat   = next_props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
 
         return {
-            fiat_currencies  : fiat,
+            fiat_currencies  : reorderFiatCurrencies(fiat),
             crypto_currencies: crypto,
         };
     }
@@ -104,7 +119,7 @@ class CurrencySelector extends React.Component {
         }
 
         return errors;
-    }
+    };
 
     render() {
         return (

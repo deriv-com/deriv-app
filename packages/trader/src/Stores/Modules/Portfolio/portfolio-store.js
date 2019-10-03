@@ -5,6 +5,7 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
+import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifcations';
 import {
@@ -79,24 +80,42 @@ export default class PortfolioStore extends BaseStore {
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
+            if (!this.positions[i]) {
+                // On a page refresh, portfolio call has returend empty,
+                // even though we we get a transaction.sell response.
+                return;
+            }
             this.positions[i].is_loading = true;
             const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
-                this.root_store.modules.contract_trade.addContract(poc.proposal_open_contract);
+                this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
             });
         }
     }
 
+    deepClone = obj => JSON.parse(JSON.stringify(obj));
+    updateContractTradeStore(response) {
+        const contract_trade = this.root_store.modules.contract_trade;
+        const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
+        const has_error = !!response.error;
+        if (!has_poc && !has_error) { return; }
+        contract_trade.addContract(this.deepClone(response.proposal_open_contract));
+        contract_trade.updateProposal(this.deepClone(response));
+    }
+
     @action.bound
     proposalOpenContractHandler(response) {
-        if ('error' in response) return;
+        if ('error' in response) {
+            this.updateContractTradeStore(response);
+            return;
+        }
 
         const proposal = response.proposal_open_contract;
-        this.root_store.modules.contract_trade.addContract(proposal);
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;
+        this.updateContractTradeStore(response);
 
         const prev_indicative = portfolio_position.indicative;
         const new_indicative  = +proposal.bid_price;

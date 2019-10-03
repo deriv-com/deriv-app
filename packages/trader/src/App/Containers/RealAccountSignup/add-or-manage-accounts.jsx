@@ -79,12 +79,7 @@ class AddOrManageAccounts extends Component {
 
     render() {
         return (
-            <Scrollbars
-                autoHide
-                style={{
-                    height: '110%',
-                }}
-            >
+            <Scrollbars autoHide>
                 <div className='account-wizard add-or-manage'>
                     <AddCryptoCurrency
                         className='account-wizard__body'

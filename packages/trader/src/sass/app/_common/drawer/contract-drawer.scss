@@ -124,9 +124,7 @@ $header-height: 4em;
             align-self: flex-start;
             text-transform: none;
             margin-bottom: 4px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
         }
         &__value {
             font-size: 1em;

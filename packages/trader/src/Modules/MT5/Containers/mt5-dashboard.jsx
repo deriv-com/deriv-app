@@ -3,42 +3,33 @@ import {
     Tabs,
     Modal,
     Input,
-    PasswordMeter,
-}                              from 'deriv-components';
+    PasswordMeter }              from 'deriv-components';
 import {
     Field,
     Formik,
-    Form,
-}                              from 'formik';
-import React                   from 'react';
-import Localize                from 'App/Components/Elements/localize.jsx';
-import UILoader                from 'App/Components/Elements/ui-loader.jsx';
-import TopUpVirtualModal       from 'Modules/MT5/Containers/top-up-virtual-modal.jsx';
-import { localize }            from 'App/i18n';
-import IconDeviceLaptop        from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
-import IconDeviceMac           from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
-import IconDeviceMobile        from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
-import IconInstallationApple   from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
-import IconInstallationGoogle  from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
-import IconInstallationLinux   from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
-import IconInstallationMac     from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
-import IconInstallationWindows        from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
-import Password                       from 'Modules/MT5/Containers/password.jsx';
+    Form }                       from 'formik';
+import React                     from 'react';
+import Localize                  from 'App/Components/Elements/localize.jsx';
+import UILoader                  from 'App/Components/Elements/ui-loader.jsx';
+import { localize }              from 'App/i18n';
+import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
+import IconDeviceMac             from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
+import IconDeviceMobile          from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
+import IconInstallationApple     from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
+import IconInstallationGoogle    from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
+import IconInstallationLinux     from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
+import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
+import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
+import Password                  from 'Modules/MT5/Containers/password.jsx';
+import TopUpVirtualModal         from 'Modules/MT5/Containers/top-up-virtual-modal.jsx';
 import { connect }               from 'Stores/connect';
 import {
     validLength,
-    validPassword,
-}                                from 'Utils/Validator/declarative-validation-rules';
-import 'Sass/app/modules/mt5/mt5-dashboard.scss';
+    validPassword }              from 'Utils/Validator/declarative-validation-rules';
 import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
-import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
-
-/*
-*  [Work In Progress]
-*  This file is a WIP and will be broken down into different files for different components before the module is enabled
-*  Class names might change, component structures might change, and content and icons will definitely change
-* */
+import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
     state = {

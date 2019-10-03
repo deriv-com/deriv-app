@@ -1,24 +1,21 @@
 import {
-    Dialog,
     Input,
     Modal,
-    PasswordMeter,
-}                           from 'deriv-components';
+    PasswordMeter }         from 'deriv-components';
 import { Formik }           from 'formik';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
-import SuccessDialog        from 'App/Containers/Modals/success-dialog.jsx';
-import { connect }          from 'Stores/connect';
 import Localize             from 'App/Components/Elements/localize.jsx';
+import SuccessDialog        from 'App/Containers/Modals/success-dialog.jsx';
 import FormSubmitButton     from 'App/Containers/RealAccountSignup/form-submit-button.jsx';
 import { localize }         from 'App/i18n';
-import IconMT5Synthetic     from 'Assets/Mt5/icon-mt5-synthetic.jsx';
 import IconMT5Advanced      from 'Assets/Mt5/icon-mt5-advanced.jsx';
 import IconMT5Standard      from 'Assets/Mt5/icon-mt5-standard.jsx';
+import IconMT5Synthetic     from 'Assets/Mt5/icon-mt5-synthetic.jsx';
+import { connect }          from 'Stores/connect';
 import {
     validPassword,
-    validLength,
-}                           from 'Utils/Validator/declarative-validation-rules';
+    validLength }           from 'Utils/Validator/declarative-validation-rules';
 import 'Sass/app/modules/mt5/mt5.scss';
 
 const getSubmitText = (account_title, category) => {

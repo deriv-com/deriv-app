@@ -30,16 +30,16 @@
 
         & .title {
             font-size: 1.2rem;
-            color: var(--text-general);
+            color: var(--text-less-prominent);
         }
         & .identifier {
             border-radius: 50%;
             display: block;
             width: 24px;
             @include typeface(--paragraph-center-bold-black);
-            background-color: var(--state-active);
-            border: 1px solid var(--border-normal);
-            color: var(--text-general);
+            background-color: var(--text-less-prominent);
+            border: 1px solid var(--text-less-prominent);
+            color: var(--text-colored-background);
         }
         &--active {
             .identifier {
@@ -49,6 +49,8 @@
                 color: var(--text-colored-background);
                 transition: all 0.3s ease;
             }
+        }
+        &--current {
             .title {
                 color: var(--brand-red-coral);
                 font-weight: bold;
@@ -70,8 +72,8 @@
             position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
             right: 0;
             top: 1.7em;
-            width: 67%;
-            border-top: 2px solid var(--state-active);
+            width: 77%;
+            border-top: 2px solid var(--text-less-prominent);
         }
         &--after {
             border-top: 2px solid var(--brand-red-coral);
@@ -93,5 +95,21 @@
         &__content {
             padding: 0 !important;
         }
+    }
+}
+
+.address_state-dropdown {
+    &__display {
+        display: flex;
+        flex-direction: column;
+        height: 4em;
+
+        & > span {
+            align-self: flex-start;
+        }
+    }
+    &__items {
+        display: block;
+        text-align: left;
     }
 }

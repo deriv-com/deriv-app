@@ -56,9 +56,7 @@
 
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             line-height: 1.5em;
         }
         &--button {
@@ -114,9 +112,7 @@
         }
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
             line-height: 1.5em;
             margin-left: 1.3em;
             margin-bottom: 1.5em;
@@ -198,16 +194,12 @@
     }
     &--heading {
         @include typeface(--title-left-bold-black, none);
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-prominent);
         line-height: 1.5em;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
         line-height: 1.45em;
     }
     &--balance {
@@ -282,9 +274,7 @@
 
         &--primary {
             background-color: var(--brand-red-coral);
-            @include themify($themes) {
-                color: themed('text_active_color');
-            }
+            color: var(--text-prominent);
         }
         &--secondary {
             background-color: transparent;
@@ -330,14 +320,13 @@
     margin: 5.6rem auto 0;
     width: 400px;
 
-    &--paragraph, &--error-message {
+    &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
-        @include themify($themes) {
-            color: themed('text_primary_color');
-        }
+        color: var(--text-general);
     }
     &--error-message {
-        color: var(--text-loss-danger) !important;
+        @include typeface(--paragraph-left-normal-black, none);
+        color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
     &--hint {

@@ -39,7 +39,7 @@ export default class JournalStore {
     }
 
     @action.bound
-    clearMessages (){
+    clear (){
         this.messages = this.messages.slice(0,0);  // force array update
     }
     
@@ -57,6 +57,7 @@ export default class JournalStore {
     }
 
     onUnmount() {
+        // TODO unregister is not working
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);

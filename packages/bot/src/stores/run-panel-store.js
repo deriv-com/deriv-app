@@ -4,7 +4,7 @@ import {
     reaction,
     computed }             from 'mobx';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
-import { runBot, stopBot } from '../scratch';
+import { runBot, stopBot, terminateBot } from '../scratch';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';
@@ -148,7 +148,7 @@ export default class RunPanelStore {
         const terminateAndClear = () => {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
-            Blockly.BLOCKLY_CLASS_OLD.terminate();
+            terminateBot();
             this.onClearStatClick();
             this.is_run_button_clicked = false;
         };

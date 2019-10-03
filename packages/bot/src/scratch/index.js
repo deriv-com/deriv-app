@@ -148,3 +148,10 @@ export const stopBot = () => {
         interpreter = null;
     }
 };
+
+export const terminateBot = () => {
+    if (interpreter) {
+        interpreter.terminateSession();
+        interpreter = null;
+    }
+};

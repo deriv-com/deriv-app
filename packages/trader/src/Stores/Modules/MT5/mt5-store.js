@@ -9,7 +9,7 @@ import {
     getMt5GroupConfig,
     getAccountTypeFields,
     getMtCompanies,
-}                from './Helpers/metatrader-config';
+}                from './Helpers/mt5-config';
 import BaseStore from '../../base-store';
 
 export default class MT5Store extends BaseStore {

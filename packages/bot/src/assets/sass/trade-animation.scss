@@ -21,7 +21,7 @@
         transform: scale(0);
     }
     50% {
-        transform: scale(2);
+        transform: scale(1.5);
     }
     100% {
         transform: scale(0);
@@ -34,6 +34,18 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes animate-circle-pop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
     }
 }
 
@@ -69,29 +81,6 @@
             height: $static-circle-diameter;
             display: flex;
 
-            &.completed, &.active {
-                .static-circle {
-                    background-color: var(--status-success);
-                    border: 2px solid var(--status-success);
-                    transform: scale(1.2);
-                }
-            }
-            &.active {
-                .dynamic-circle {
-                    animation: animate-circle 0.8s infinite;
-                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-                    background-color: var(--status-success);
-                    border-radius: 100%;
-                    height: $dynamic-circle-diameter;
-                    width: $dynamic-circle-diameter;
-                    margin-left: -2px;
-                    margin-top: -2px;
-                    opacity: 0.32;
-                    position: absolute;
-                    // transform: translate(-50%, -50%);
-                    // z-index: 1;
-                }
-            }
             .static-circle {
                 width: $static-circle-diameter;
                 height: $static-circle-diameter;
@@ -99,6 +88,15 @@
                 border-radius: 100%;
                 align-self: center;
                 z-index: 1;
+            }
+            .dynamic-circle {
+                border-radius: 100%;
+                height: $dynamic-circle-diameter;
+                width: $dynamic-circle-diameter;
+                margin-left: -2px;
+                margin-top: -2px;
+                opacity: 0.32;
+                position: absolute;
             }
         }
         &-line {
@@ -127,9 +125,32 @@
     }
     &--running {
         #{$animation}__progress {
-            .static-circle {
-                background-color: var(--status-warning);
-                animation: animate-circle-appear 1s;
+            .circular-wrapper {
+                &.completed, &.active {
+                    .static-circle {
+                        background-color: var(--status-success);
+                        border: 2px solid var(--status-success);
+                        transform: scale(1.2);
+                    }
+                }
+                &.active {
+                    .dynamic-circle {
+                        animation: animate-circle 0.8s infinite;
+                        animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                        background-color: var(--status-success);
+                        // transform: translate(-50%, -50%);
+                        // z-index: 1;
+                    }
+                }
+                .static-circle {
+                    animation: animate-circle-appear 1s;
+                    background-color: var(--status-warning);
+                }
+                .dynamic-circle {
+                    animation: animate-circle 1s;
+                    background-color: var(--status-warning);
+                    transform: scale(0);
+                }
             }
         }
     }

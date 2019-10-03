@@ -60,6 +60,7 @@ export default class RunPanelStore {
             this.is_drawer_open = true;
         }
 
+        this.is_contract_started = false;
         this.root_store.contract_card.is_loading = true;
         this.is_run_button_clicked = true;
         Blockly.BLOCKLY_CLASS_OLD.run();
@@ -111,7 +112,6 @@ export default class RunPanelStore {
             case ('contract.closed'):
             case ('contract.sold'): {
                 this.contract_stage = CONTRACT_STAGES.contract_closed;
-                this.is_contract_started = false;
                 break;
             }
             default: {

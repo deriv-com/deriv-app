@@ -38,7 +38,7 @@ export default class SaveLoadModalStore {
             const data = Blockly.Xml.domToPrettyText(xml);
             const blob = new Blob([data], { type: 'text/xml;charset=utf-8' });
 
-            filesaver.saveAs(blob, file_name);
+            filesaver.saveAs(blob, `${file_name}.xml`);
         } else {
             await saveFile({
                 name    : file_name,

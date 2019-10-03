@@ -17,6 +17,10 @@
             border-color: var(--brand-secondary);
         }
     }
+    &__disabled {
+        border-color: var(--general-disabled);
+        color: var(--text-disabled);
+    }
     &__field {
         background: none;
         color: var(--text-prominent);

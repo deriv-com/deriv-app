@@ -154,7 +154,7 @@ class ContractDrawer extends Component {
                             >
                                 <Button
                                     className={classNames(
-                                        'btn--primary--default',
+                                        'btn--secondary--default',
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}

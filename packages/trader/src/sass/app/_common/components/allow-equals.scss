@@ -10,7 +10,7 @@
     &__label {
         @include typeface(--paragraph-left-normal-black, none);
         @include toEm(padding, 0 8px, 1.2em);
-        color: var(--text-prominent);
+        color: var(--text-general);
         cursor: pointer;
     }
     &__tooltip {

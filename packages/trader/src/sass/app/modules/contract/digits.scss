@@ -109,10 +109,7 @@
                 animation-duration: 500ms;
                 animation-iteration-count: 4;
                 animation-timing-function: step-end;
-                // TODO: [colors] change when naming for animation is ready
-                @include themify($themes) {
-                    animation-name: themed('animation_blink_name');
-                }
+                animation-name: blinking;
             }
             &--loss {
                 border: none !important;
@@ -277,15 +274,9 @@
     }
 }
 
-@keyframes blinking-white {
+@keyframes blinking {
     50% {
-        background-color: $color-white;
-        color: var(--color-black);
-    }
-}
-
-@keyframes blinking-dark-blue-2 {
-    50% {
-        background-color: var(--color-grey-3);
+        background-color: var(--general-main-1);
+        color: var(--text-general);
     }
 }

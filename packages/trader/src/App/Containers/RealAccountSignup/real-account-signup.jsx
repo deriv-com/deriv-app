@@ -63,7 +63,7 @@ class RealAccountSignup extends Component {
                             message={this.state.success_message}
                             icon={<Icon type={this.state.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
                             text_submit={localize('Deposit now')}
-                            text_cancel={this.text_cancel}
+                            text_cancel={ RealAccountSignup.text_cancel() }
                         />
                     ),
                 },
@@ -76,7 +76,7 @@ class RealAccountSignup extends Component {
         setTimeout(() => {
             this.setState(initialState);
         }, 400);
-    }
+    };
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
         this.setState({
@@ -96,11 +96,11 @@ class RealAccountSignup extends Component {
                     currency: currency.toUpperCase(),
                 }}
                 components={[
-                    <p key={ currency } />
+                    <p key={ currency } />,
                 ]}
             />,
         });
-    }
+    };
 
     closeModalWithHooks = () => {
         this.closeModal();
@@ -111,7 +111,7 @@ class RealAccountSignup extends Component {
                 this.props.enableMt5PasswordModal();
             }
         }, 400);
-    }
+    };
 
     closeModal = () => {
         if (this.active_modal_index !== 3) {
@@ -136,13 +136,13 @@ class RealAccountSignup extends Component {
         return this.state.active_modal_index;
     }
 
-    get text_cancel () {
+    static text_cancel = () => {
         const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
         if (post_signup) {
             return localize('Continue to DMT5');
         }
         return localize('Maybe later');
-    }
+    };
 
     render() {
         const { is_real_acc_signup_on } = this.props;

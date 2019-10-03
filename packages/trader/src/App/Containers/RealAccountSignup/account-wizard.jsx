@@ -1,13 +1,14 @@
-import PropTypes            from 'prop-types';
-import fromEntries          from 'object.fromentries';
-import React                from 'react';
-import { localize }         from 'App/i18n';
-import { connect }          from 'Stores/connect';
-import { toMoment }         from 'Utils/Date';
-import CurrencySelector     from './currency-selector.jsx';
-import FormProgress         from './form-progress.jsx';
-import PersonalDetails      from './personal-details.jsx';
-import TermsOfUse           from './terms-of-use.jsx';
+import PropTypes        from 'prop-types';
+import fromEntries      from 'object.fromentries';
+import React            from 'react';
+import { localize }     from 'App/i18n';
+import { connect }      from 'Stores/connect';
+import { toMoment }     from 'Utils/Date';
+import AddressDetails   from './address-details.jsx';
+import CurrencySelector from './currency-selector.jsx';
+import FormProgress     from './form-progress.jsx';
+import PersonalDetails  from './personal-details.jsx';
+import TermsOfUse       from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {
@@ -37,6 +38,21 @@ class AccountWizard extends React.Component {
                         first_name   : '',
                         last_name    : '',
                         date_of_birth: '',
+                        phone        : '',
+                    },
+                },
+                {
+                    header: {
+                        active_title: localize('Complete your address details'),
+                        title       : localize('Address details'),
+                    },
+                    body      : AddressDetails,
+                    form_value: {
+                        address_line_1  : '',
+                        address_line_2  : '',
+                        address_city    : '',
+                        address_state   : '',
+                        address_postcode: '',
                     },
                 },
                 {
@@ -93,6 +109,7 @@ class AccountWizard extends React.Component {
         if (this.hasMoreSteps()) {
             this.goNext();
         } else {
+            this.props.onLoading();
             this.createRealAccount(setSubmitting);
         }
     };
@@ -109,11 +126,17 @@ class AccountWizard extends React.Component {
     };
 
     updateValue = (index, value, setSubmitting) => {
+        this.saveFormData(index, value);
+        this.nextStep(setSubmitting);
+    };
+
+    saveFormData = (index, value) => {
         const cloned_items             = Object.assign([], this.state.items);
         cloned_items[index].form_value = value;
+
         this.setState({
             items: cloned_items,
-        }, () => this.nextStep(setSubmitting));
+        });
     };
 
     createRealAccount(setSubmitting) {
@@ -125,9 +148,7 @@ class AccountWizard extends React.Component {
                 );
             })
             .catch(error_message => {
-                this.setState({
-                    form_error: error_message,
-                }, () => setSubmitting(false));
+                this.props.onError(error_message);
             });
     }
 
@@ -158,6 +179,7 @@ class AccountWizard extends React.Component {
                             index={this.state_index}
                             onSubmit={this.updateValue}
                             onCancel={this.prevStep}
+                            onSave={this.saveFormData}
                             form_error={this.state.form_error}
                         />
                     </div>
@@ -173,6 +195,8 @@ class AccountWizard extends React.Component {
 }
 
 AccountWizard.propTypes = {
+    onError             : PropTypes.func,
+    onLoading           : PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
 };
 

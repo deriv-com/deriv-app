@@ -7,7 +7,7 @@ import FieldError from 'Components/field-error';
 const PasswordMeter = ({ children, error, error_className, input }) => {
     // 0 - 4 Score for password strength
     const { score, feedback } = zxcvbn(input);
-    const width_scale = (0.25 * (input.length && (score < 1) ? 1 : score));
+    const width_scale = error && input.length ? 0.25 : (0.25 * (input.length && (score < 1) ? 1 : score));
 
     // const strength_map =  {
     //     1: 'Weak',
@@ -25,10 +25,10 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
                 <div className='dc-password-meter__bg' />
                 <div
                     className={classNames('dc-password-meter', {
-                        'dc-password-meter--weak'  : (input.length && score < 3),
-                        'dc-password-meter--strong': (input.length && score >= 3),
+                        'dc-password-meter--weak'  : (error || input.length && score < 3),
+                        'dc-password-meter--strong': (!error && input.length && score >= 3),
                     })}
-                    style={{ transform: `scale(${error ? 0 : width_scale}, 1)` }}
+                    style={{ transform: `scale(${width_scale}, 1)` }}
                 />
                 {error &&
                     <FieldError

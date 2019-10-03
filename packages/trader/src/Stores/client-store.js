@@ -30,20 +30,21 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable email;
-    @observable accounts                   = {};
-    @observable switched                   = '';
-    @observable switch_broadcast           = false;
-    @observable currencies_list            = {};
-    @observable residence_list             = [];
-    @observable states_list                = [];
-    @observable selected_currency          = '';
-    @observable is_populating_account_list = false;
-    @observable website_status             = {};
-    @observable verification_code          = '';
-    @observable account_settings           = {};
-    @observable account_status             = {};
-    @observable device_data                = {};
-    @observable landing_companies          = {
+    @observable accounts                       = {};
+    @observable switched                       = '';
+    @observable switch_broadcast               = false;
+    @observable currencies_list                = {};
+    @observable residence_list                 = [];
+    @observable states_list                    = [];
+    @observable selected_currency              = '';
+    @observable is_populating_account_list     = false;
+    @observable is_populating_mt5_account_list = true;
+    @observable website_status                 = {};
+    @observable verification_code              = '';
+    @observable account_settings               = {};
+    @observable account_status                 = {};
+    @observable device_data                    = {};
+    @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
     };
@@ -80,6 +81,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_real_account() {
         return this.active_accounts.some(acc => acc.is_virtual === 0);
+    }
+
+    @computed
+    get first_switchable_real_loginid () {
+        const result = this.active_accounts.find((acc) => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg');
+        return result.loginid || undefined;
     }
 
     @computed
@@ -174,7 +181,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_mt5_login() {
-        return !!this.mt5_login_list.length;
+        return this.mt5_login_list.length > 0;
     }
 
     @computed
@@ -456,6 +463,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get email_address() {
+        if (this.accounts && this.accounts[this.loginid]) {
+            return this.accounts[this.loginid].email;
+        }
+
+        return '';
+    }
+
+    @computed
     get is_website_status_ready() {
         return this.website_status &&
             this.website_status.site_status === 'up';
@@ -669,6 +685,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.modules.trade.clearContracts();
                 return;
             }
+
             this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
             this.root_store.ui.addNotification({
@@ -681,6 +698,7 @@ export default class ClientStore extends BaseStore {
             await this.switchAccountHandler();
             return;
         }
+
         this.root_store.modules.trade.proposal_info = {};
         sessionStorage.setItem('active_tab', '1');
         // set local storage
@@ -931,6 +949,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseMt5LoginList(response) {
+        this.is_populating_mt5_account_list = false;
+
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list;
         }

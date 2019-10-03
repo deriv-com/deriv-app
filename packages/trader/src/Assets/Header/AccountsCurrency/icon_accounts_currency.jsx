@@ -169,6 +169,18 @@ const IconAccountsCurrency = ({ type, className, height = 24, width = 24 }) => {
                     </g>
                 );
                 break;
+            case 'real_svg_standard':
+                IconCurrency = (
+                    <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
+                        <g>
+                            <circle fill='#C6E4E4' fillRule='nonzero' cx='10' cy='10' r='10' />
+                            <path d='M11.25,11.25 L12.5,11.25 L17.5,12.5 L17.5,11.25 L11.25,7.5 L11.25,5 C11.110101,4.05484485 10.6721847,3.17901232 10,2.5 C9.33747601,3.18589357 8.90120046,4.05844467 8.75,5 L8.75,7.5 L2.5,11.25 L2.5,12.4125 L7.5,11.25 L8.75,11.25 L8.75,15 L6.25,16.425 L6.25,17.5 L10,16.25 L10,16.25 L13.75,17.5 L13.75,16.425 L11.25,15 L11.25,11.25 Z' id='Path' fill='#84ABAE' fillRule='nonzero' />
+                            <path d='M10.9375,4.65 L10.9375,4.425 C10.9375,4.2375 10.725,3.825 10.525,3.7875 C10.206616,3.73143522 9.88088404,3.73143522 9.5625,3.7875 C9.3625,3.7875 9.1875,4.2375 9.15,4.4125 C9.14416197,4.49155904 9.14416197,4.57094096 9.15,4.65 C9.7160915,4.38375819 10.3714085,4.38375819 10.9375,4.65 Z' id='Path' fill='#C6E4E4' fillRule='nonzero' />
+                            <rect x='0' y='0' width='20' height='20' />
+                        </g>
+                    </g>
+                );
+                break;
             case 'virtual':
                 IconCurrency = (
                     <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>

@@ -481,16 +481,6 @@
     }
 }
 
-/** @define dc-modal; */
-.dc-modal {
-    &__container {
-        &_modal-cashier {
-            max-width: 904px;
-            max-height: 616px;
-        }
-    }
-}
-
 /** @define dc-modal-header; */
 .dc-modal-header {
     &__modal-cashier {

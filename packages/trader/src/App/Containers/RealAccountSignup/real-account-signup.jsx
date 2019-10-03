@@ -126,6 +126,8 @@ class RealAccountSignup extends Component {
                 has_close_icon={ this.active_modal_index < 2}
                 title={title}
                 toggleModal={this.closeModal}
+                height='688px'
+                width='900px'
             >
                 <Body />
             </Modal>

@@ -3,7 +3,9 @@ import {
     action }                     from 'mobx';
 import { formatDate }            from 'deriv-shared/utils/date';
 import { observer }              from '../utils/observer';
-import { unrecoverableErrors }   from '../constants/error-types';
+import {
+    messageTypes,
+    unrecoverableErrors }        from '../constants/message-types';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -23,28 +25,26 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(data) {
-        this.pushMessage(data, 'success');
+        this.pushMessage(data, messageTypes.success);
     }
 
     @action.bound
     onLogError(data) {
         if (unrecoverableErrors.some(x=>x.name && x.name === data.name)) {
-            this.rootstore.run_panel.resetRunButton(false);
-            this.rootstore.contract_card.clear();
+            this.root_store.run_panel.reset();
         }
-        this.pushMessage(data, 'error');
+        this.pushMessage(data, messageTypes.error);
     }
 
     @action.bound
     onError(data) {
-        this.rootstore.run_panel.resetRunButton(false);
-        this.rootstore.contract_card.clear();
-        this.pushMessage(data , 'error');
+        this.root_store.run_panel.reset();
+        this.pushMessage(data , messageTypes.error);
     }
 
     @action.bound
     onNotify(data) {
-        this.pushMessage(data , 'notify');
+        this.pushMessage(data , messageTypes.notify);
     }
 
     @action.bound

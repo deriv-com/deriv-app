@@ -186,6 +186,12 @@ export default class RunPanelStore {
         };
     }
 
+    reset(){
+        this.is_run_button_clicked = false;
+        this.root_store.contract_card.is_loading = false;
+        this.setActiveTabIndex(2);
+    }
+    
     onUnmount() {
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);

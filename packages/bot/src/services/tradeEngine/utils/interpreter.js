@@ -2,7 +2,7 @@ import JSInterpreter                  from 'js-interpreter';
 import { createScope }                from './cliTools';
 import { observer as globalObserver } from '../../../utils/observer';
 import Interface                      from '../Interface';
-import { unrecoverableErrors }        from '../../../constants/error-types';
+import { unrecoverableErrors }        from '../../../constants/message-types';
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;

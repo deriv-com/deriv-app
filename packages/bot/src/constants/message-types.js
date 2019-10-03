@@ -9,3 +9,9 @@ export const unrecoverableErrors = [
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
 ];
+
+export const messageTypes = [{
+    error  : 'error',
+    notify : 'notify',
+    success: 'success',
+}];

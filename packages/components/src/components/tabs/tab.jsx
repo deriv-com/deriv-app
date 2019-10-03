@@ -4,21 +4,20 @@ import PropTypes            from 'prop-types';
 
 class Tab extends Component {
     onClick = () => {
-        const { label, onClick } = this.props;
-        onClick(label);
+        const { onClick } = this.props;
+        onClick();
     }
 
     render() {
         const {
-            activeTab,
+            is_active,
             label,
         } = this.props;
 
         return (
             <li
-                className={classNames(
-                    'dc-tabs__item',
-                    { 'dc-tabs__active': activeTab === label }
+                className={classNames('dc-tabs__item',
+                    { 'dc-tabs__active': is_active }
                 )}
                 onClick={this.onClick}
             >
@@ -29,8 +28,8 @@ class Tab extends Component {
 }
 
 Tab.propTypes = {
-    activeTab: PropTypes.string,
     className: PropTypes.string,
+    is_active: PropTypes.bool,
     label    : PropTypes.string,
     onClick  : PropTypes.func,
 };

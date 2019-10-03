@@ -83,15 +83,8 @@
             @include typeface(--title-left-bold-black);
             font-size: 1.4rem;
             text-align: center;
-            background: var(--brand-red-coral);
             color: var(--text-colored-background);
             margin: 0 2rem;
-
-            &--outline {
-                background: transparent;
-                border: 2px solid var(--button-secondary-default);
-                color: var(--text-general);
-            }
         }
     }
 }

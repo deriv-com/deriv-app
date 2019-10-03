@@ -17,7 +17,8 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
                 <VerticalTabHeader
                     item={item}
                     className={classNames('side-menu__header', {
-                        'side-menu__header--active': item.title === active_title,
+                        'side-menu__header--active'  : item.title === active_title,
+                        'side-menu__header--disabled': item.is_disabled,
                     })}
                     onChange={handleSubroute}
                 >

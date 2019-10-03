@@ -17,7 +17,7 @@
         flex-direction: column;
         height: 128px;
         justify-content: space-around;
-        margin: $BORDER_RADIUS;
+        margin: 0.5em 2em 0;
         width: 128px;
 
         &:hover:not(&--selected) {

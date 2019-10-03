@@ -46,6 +46,7 @@ export default class ContractCardStore {
             this[name] = movements[name];
         });
 
+        // TODO only add props that is being used
         this.contract = contract;
     }
 
@@ -69,7 +70,8 @@ export default class ContractCardStore {
         this.profit_movement     = '';
     }
 
-    disposeObserverListener() {
+    @action.bound
+    onUnmount() {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
     }

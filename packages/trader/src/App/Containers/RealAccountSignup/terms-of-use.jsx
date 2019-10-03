@@ -1,34 +1,11 @@
-import { Checkbox }         from 'deriv-components';
 import { Field, Formik }    from 'formik';
 import React, { Component } from 'react';
 import Localize             from 'App/Components/Elements/localize.jsx';
+import CheckboxField        from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize }         from 'App/i18n';
 import { Hr }               from './currency-selector.jsx';
-import 'Sass/terms-of-use.scss';
 import FormSubmitButton     from './form-submit-button.jsx';
-
-// Checkbox input
-const CheckboxField = ({
-    field: { name, value, onChange },
-    // form : { setFieldValue },
-    id,
-    label,
-    className,
-    ...props
-}) => {
-    return (
-        <div className={className}>
-            <Checkbox
-                value={value}
-                name={name}
-
-                label={label}
-                onChange={onChange}
-                {...props}
-            />
-        </div>
-    );
-};
+import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends Component {
     render() {

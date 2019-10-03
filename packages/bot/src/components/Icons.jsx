@@ -74,6 +74,14 @@ import trade_type_ticklow      from '../assets/icons/trade-types/ticklow.svg';
 import trade_type_unknown      from '../assets/icons/trade-types/unknown.svg';
 import trade_type_upordown     from '../assets/icons/trade-types/upordown.svg';
 
+// Transactions
+import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
+import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
+import contract_id              from '../assets/icons/ic-id.svg';
+import contract_pending         from '../assets/icons/contract-pending.svg';
+import contract_completed       from '../assets/icons/contract-completed.svg';
+import contract_buy_price       from '../assets/icons/buy-price.svg';
+
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
     const { className, onClick } = props;
@@ -164,3 +172,11 @@ export const ToolbarZoomInIcon       = Icon(toolbar_zoomIn);
 export const ToolbarZoomOutIcon      = Icon(toolbar_zoomOut);
 export const ToolbarLocalIcon        = Icon(toolbar_local);
 export const ToolbarDriveIcon        = Icon(toolbar_drive);
+
+// transactions
+export const EntrySpotIcon           = Icon(contract_entry_spot);
+export const ExitSpotIcon            = Icon(contract_exit_spot);
+export const RefrenceIdIcon          = Icon(contract_id);
+export const PendingIcon             = Icon(contract_pending);
+export const BuyPriceIcon            = Icon(contract_buy_price);
+export const CompletedIcon           = Icon(contract_completed);

@@ -65,6 +65,7 @@ const AdvancedDuration = ({
                     <div className='duration-container'>
                         { duration_units_list.length > 1 &&
                             <Dropdown
+                                classNameDisplay='dc-dropdown__display--no-symbol'
                                 id='duration'
                                 is_alignment_left
                                 is_nativepicker={false}

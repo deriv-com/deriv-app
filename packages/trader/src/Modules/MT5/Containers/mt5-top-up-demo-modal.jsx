@@ -11,7 +11,7 @@ import { localize }  from 'App/i18n';
 import IconWallet    from 'Assets/Common/icon-wallet.jsx';
 import { connect }   from 'Stores/connect';
 
-class TopUpVirtualModal extends React.Component {
+class Mt5TopUpDemoModal extends React.Component {
     accountTitle = () => {
         if (!this.props.mt5_companies || !this.props.current_account) return '';
         return this.props.mt5_companies
@@ -121,7 +121,7 @@ class TopUpVirtualModal extends React.Component {
     }
 }
 
-TopUpVirtualModal.propTypes = {
+Mt5TopUpDemoModal.propTypes = {
     account_title            : PropTypes.string,
     closeSuccessTopUpModal   : PropTypes.func,
     closeTopUpVirtual        : PropTypes.func,
@@ -140,4 +140,4 @@ export default connect(({ ui, modules }) => ({
     current_account          : modules.mt5.current_account,
     mt5_companies            : modules.mt5.mt5_companies,
     topUpVirtual             : modules.mt5.topUpVirtual,
-}))(TopUpVirtualModal);
+}))(Mt5TopUpDemoModal);

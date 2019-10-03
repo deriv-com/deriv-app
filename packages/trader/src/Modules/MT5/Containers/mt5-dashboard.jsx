@@ -20,8 +20,8 @@ import IconInstallationGoogle    from 'Assets/SvgComponents/mt5/download-center/
 import IconInstallationLinux     from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
 import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
 import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
-import Password                  from 'Modules/MT5/Containers/password.jsx';
-import TopUpVirtualModal         from 'Modules/MT5/Containers/top-up-virtual-modal.jsx';
+import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
+import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
 import { connect }               from 'Stores/connect';
 import {
     validLength,
@@ -377,8 +377,8 @@ class MT5Dashboard extends React.Component {
                         />
                     </p>
                 </div>
-                <TopUpVirtualModal />
-                <Password />
+                <Mt5TopUpDemoModal />
+                <MT5PasswordModal />
             </div>
         );
     }

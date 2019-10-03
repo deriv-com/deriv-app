@@ -19,6 +19,8 @@ export default class RunPanelStore {
     @observable is_dialog_visible = false;
     @observable is_drawer_open = false;
 
+    is_contract_started = false;
+
     @action.bound
     onBotRunningEvent() {
         this.is_running = true;
@@ -27,7 +29,11 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        this.contract_stage = CONTRACT_STAGES.contract_closed;
+        if (this.is_contract_started) {
+            this.contract_stage = CONTRACT_STAGES.contract_closed;
+        } else {
+            this.contract_stage = CONTRACT_STAGES.not_running;
+        }
     }
 
     @action.bound
@@ -95,6 +101,7 @@ export default class RunPanelStore {
         switch (data.id) {
             case ('contract.purchase_sent'): {
                 this.contract_stage = CONTRACT_STAGES.purchase_sent;
+                this.is_contract_started = true;
                 break;
             }
             case ('contract.purchase_recieved'): {
@@ -104,10 +111,12 @@ export default class RunPanelStore {
             case ('contract.closed'):
             case ('contract.sold'): {
                 this.contract_stage = CONTRACT_STAGES.contract_closed;
+                this.is_contract_started = false;
                 break;
             }
             default: {
                 this.contract_stage = CONTRACT_STAGES.not_running;
+                this.is_contract_started = false;
             }
         }
     }

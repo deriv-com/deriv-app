@@ -49,6 +49,7 @@ const SimpleDuration = ({
                 <TradingDatePicker
                     alignment='left'
                     mode='duration'
+                    name='duration'
                 />
             }
             { (simple_duration_unit !== 't' && simple_duration_unit !== 'd') &&

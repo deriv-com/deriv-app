@@ -86,6 +86,7 @@ const AdvancedDuration = ({
                         { advanced_duration_unit === 'd' &&
                             <TradingDatePicker
                                 mode='duration'
+                                name='duration'
                                 is_24_hours_contract={is_24_hours_contract}
                             />
                         }

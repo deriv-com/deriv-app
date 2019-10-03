@@ -17,6 +17,7 @@ const TradingDatePicker = ({
     expiry_type,
     is_24_hours_contract,
     mode,
+    name,
     onChange,
     server_time,
     start_time,
@@ -56,8 +57,7 @@ const TradingDatePicker = ({
     }
 
     const tradingDatePickerOnChange = e => {
-        const { value, name } = e.target;
-        const is_same_duration_as_trade_store = (name === 'duration' && duration_d === value);
+        const is_same_duration_as_trade_store = (e.target.name === 'duration' && duration_d === e.target.value);
 
         if (!is_same_duration_as_trade_store) onChange(e);
     };
@@ -77,7 +77,7 @@ const TradingDatePicker = ({
             is_read_only={is_read_only}
             label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
             mode={mode}
-            name='duration'
+            name={name}
             onChange={tradingDatePickerOnChange}
             min_date={min_date_expiry}
             max_date={max_date_duration}

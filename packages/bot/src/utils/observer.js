@@ -21,7 +21,7 @@ of a flag e.g. contract_purchase_sent (when buy was sent to
 API, or contract_purchase_recieved (when buy was acknowledged
 by API), or contract.sold (when a contract was sold/expired).
 
--contract.settled: Confusing name, but this event was emitted to initiate a
+-contract.settled: this event was emitted to initiate a
 settlement of a contract, i.e. it would call proposal_open_contract to retrieve
 latest values for contract, not required atm by DerivBot
 

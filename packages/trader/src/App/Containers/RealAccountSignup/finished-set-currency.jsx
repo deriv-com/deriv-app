@@ -21,11 +21,10 @@ const FinishedSetCurrency = ({
         icon='IconRedArrow'
     />;
 
-    const IconWon          = ({className}) => <Icon
+    const IconWon          = ({ className }) => <Icon
         className={className}
         icon='IconWon'
-    />
-
+    />;
 
     return (
         <div className='success-change'>
@@ -33,7 +32,7 @@ const FinishedSetCurrency = ({
                 <IconPrevCurrency />
                 <IconArrow />
                 <IconNextCurrency />
-                <IconWon className='bottom-right-overlay'/>
+                <IconWon className='bottom-right-overlay' />
             </div>
             <div className='success-change__body-area'>
                 <h2>
@@ -50,7 +49,7 @@ const FinishedSetCurrency = ({
             <div className='success-change__btn-area'>
                 <Button
                     onClick={onCancel}
-                    className='btn--outline'
+                    className='btn--secondary--default'
                 >
                     <Localize
                         i18n_default_text='Maybe later'
@@ -58,6 +57,7 @@ const FinishedSetCurrency = ({
                 </Button>
                 <Button
                     onClick={onSubmit}
+                    className='btn--primary--default'
                 >
                     <Localize
                         i18n_default_text='Deposit now'

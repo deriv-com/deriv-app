@@ -1,8 +1,7 @@
 import {
     observable,
-    action,
-    reaction }       from 'mobx';
-import { observer }  from '../utils/observer';
+    action }        from 'mobx';
+import { observer } from '../utils/observer';
 
 export default class SummaryStore {
     @observable currency        = '';
@@ -74,26 +73,8 @@ export default class SummaryStore {
         this.won_contracts  = 0;
     }
 
-    disposeObserverListener() {
+    @action.bound
+    onUnmount() {
         observer.unregister('contract.status', this.onContractStatusEvent);
-    }
-
-    disposeOnAccountSwitch() {
-        if (typeof this.switchAccountDisposer === 'function') {
-            this.switchAccountDisposer();
-        }
-    }
-
-    registerOnAccountSwitch = () => {
-        const { client } = this.root_store.core;
-
-        this.switchAccountDisposer = reaction(
-            () => client.switch_broadcast,
-            action((switch_broadcast) => {
-                if (switch_broadcast) {
-                    this.currency = client.currency;
-                }
-            })
-        );
     }
 }

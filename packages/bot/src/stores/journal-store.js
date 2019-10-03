@@ -1,11 +1,13 @@
-import { observable, action }      from 'mobx';
-import { formatDate }              from 'deriv-shared/utils/date';
-import { observer }                from '../utils/observer';
-import { unrecoverableErrors }     from '../constants/error-types';
+import {
+    observable,
+    action }                     from 'mobx';
+import { formatDate }            from 'deriv-shared/utils/date';
+import { observer }              from '../utils/observer';
+import { unrecoverableErrors }   from '../constants/error-types';
 
 export default class JournalStore {
-    constructor(rootstore) {
-        this.rootstore = rootstore;
+    constructor(root_store) {
+        this.root_store = root_store;
 
         observer.register('ui.log.success', this.onLogSuccess);
         observer.register('ui.log.error', this.onLogError);
@@ -14,14 +16,14 @@ export default class JournalStore {
     }
 
     get serverTime () {
-        return this.rootstore.core.common.server_time;
+        return this.root_store.core.common.server_time;
     }
 
     @observable messages = [];
 
     @action.bound
     onLogSuccess(data) {
-        this.pushMessage(data), 'success';
+        this.pushMessage(data, 'success');
     }
 
     @action.bound
@@ -46,11 +48,12 @@ export default class JournalStore {
     }
 
     @action.bound
-    clearMessages (){
-        this.messages = this.messages.slice(0,0);  // force array update
+    clear() {
+        this.messages = this.messages.slice(0, 0);  // force array update
     }
     
-    pushMessage(data,message_type) {
+    @action.bound
+    pushMessage(data, message_type) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         let message;
@@ -63,7 +66,9 @@ export default class JournalStore {
         this.messages = this.messages.slice(0);  // force array update
     }
 
+    @action.bound
     onUnmount() {
+        // TODO unregister is not working
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);

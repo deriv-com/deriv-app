@@ -1,14 +1,17 @@
-import classNames           from 'classnames';
-import { Modal }            from 'deriv-components';
-import React, { Component } from 'react';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import Icon                 from 'Assets/icon.jsx';
-import { connect }          from 'Stores/connect';
-import AccountWizard        from './account-wizard.jsx';
-import AddOrManageAccounts  from './add-or-manage-accounts.jsx';
-import FinishedSetCurrency  from './finished-set-currency.jsx';
-import SuccessDialog        from '../Modals/success-dialog.jsx';
+import classNames            from 'classnames';
+import {
+    Modal,
+    Loading }                from 'deriv-components';
+import React, { Component }  from 'react';
+import { localize }          from 'App/i18n';
+import Localize              from 'App/Components/Elements/localize.jsx';
+import Icon                  from 'Assets/icon.jsx';
+import IconDuplicate         from 'Assets/Signup/icon-duplicate.jsx';
+import { connect }           from 'Stores/connect';
+import AccountWizard         from './account-wizard.jsx';
+import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
+import FinishedSetCurrency   from './finished-set-currency.jsx';
+import SuccessDialog         from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -17,7 +20,31 @@ const initialState = {
     previous_currency : '',
     current_currency  : '',
     success_message   : '',
+    error_message     : '',
 };
+
+const ErrorModal = ({ message }) => (
+    <React.Fragment>
+        <IconDuplicate />
+        <h1><Localize i18n_default_text='Whoops!' /></h1>
+        <p>
+            {localize(message)}
+        </p>
+        <a
+            href='https://www.deriv.com/help-centre/'
+            type='button'
+            className='btn btn--primary--red'
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+            <Localize
+                i18n_default_text='Go To Help Centre'
+            />
+        </a>
+    </React.Fragment>
+);
+
+const LoadingModal = () => <Loading is_fullscreen={false} />;
 
 class RealAccountSignup extends Component {
     constructor(props) {
@@ -30,6 +57,8 @@ class RealAccountSignup extends Component {
                     label: localize('Add a real account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
+                        onLoading={this.showLoadingModal}
+                        onError={this.showErrorModal}
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                     />,
                 },
@@ -39,6 +68,8 @@ class RealAccountSignup extends Component {
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
+                        onLoading={this.showLoadingModal}
+                        onError={this.showErrorModal}
                     />,
                 },
                 {
@@ -65,6 +96,18 @@ class RealAccountSignup extends Component {
                             text_submit={localize('Deposit now')}
                             text_cancel={ RealAccountSignup.text_cancel() }
                         />
+                    ),
+                },
+                {
+                    label: false,
+                    value: () => (
+                        <LoadingModal />
+                    ),
+                },
+                {
+                    label: localize('Add a real account'),
+                    value: () => (
+                        <ErrorModal message={this.state.error_message} />
                     ),
                 },
             ],
@@ -113,6 +156,19 @@ class RealAccountSignup extends Component {
         }, 400);
     };
 
+    showLoadingModal = () => {
+        this.setState({
+            active_modal_index: 4,
+        });
+    };
+
+    showErrorModal = (message) => {
+        this.setState({
+            active_modal_index: 5,
+            error_message     : message,
+        });
+    };
+
     closeModal = () => {
         if (this.active_modal_index !== 3) {
             sessionStorage.removeItem('post_real_account_signup');
@@ -152,10 +208,11 @@ class RealAccountSignup extends Component {
             <Modal
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2,
+                    'dc-modal__container_real-account-signup-modal--error'  : this.active_modal_index === 5,
+                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 && this.active_modal_index < 5,
                 })}
                 is_open={is_real_acc_signup_on}
-                has_close_icon={ this.active_modal_index < 2}
+                has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
             >

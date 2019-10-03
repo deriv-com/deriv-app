@@ -75,7 +75,7 @@ class AddCryptoCurrency extends Component {
                         <RadioButtonGroup
                             id='crypto_currency'
                             className='currency-selector__radio-group'
-                            label={localize('Crypto currencies')}
+                            label={localize('Cryptocurrencies')}
                             value={values.currency}
                             error={errors.currency}
                             touched={touched.currency}

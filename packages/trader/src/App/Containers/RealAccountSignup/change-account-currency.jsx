@@ -53,7 +53,7 @@ class ChangeAccountCurrency extends Component {
                         </h3>
                         <RadioButtonGroup
                             id='fiat'
-                            label={localize('Crypto currencies')}
+                            label={localize('Cryptocurrencies')}
                             value={values.fiat}
                             error={errors.fiat}
                             touched={touched.fiat}

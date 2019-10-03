@@ -49,6 +49,7 @@
     &--primary {
         &--default {
             background: var(--button-primary-default);
+            color: var(--text-colored-background);
 
             &:hover:not([disabled]) {
                 background: var(--button-primary-hover);
@@ -61,7 +62,7 @@
                 cursor: not-allowed !important;
             }
             .btn__text {
-                color: $color-white;
+                color: var(--text-colored-background);
             }
         }
         // TODO: (colors) remove this line after colors migration complete
@@ -271,7 +272,7 @@
         bottom: -0.1em;
         right: -0.1em;
         border-radius: inherit;
-        border: 0 solid $COLOR_DARK_BLUE_5;
+        border: 0 solid var(--brand-secondary);
         opacity: 0.4;
         animation: buttonEffect 0.4s;
         animation-fill-mode: forwards;
@@ -283,11 +284,16 @@
 
         /* postcss-bem-linter: ignore */
         .initial-loader__barspinner--rect {
-            background-color: $COLOR_WHITE;
+            background-color: var(--text-colored-background);
         }
         /* postcss-bem-linter: ignore */
         .barspinner {
-            margin: 0 4px 0 -4px;
+            margin: 0.6rem 4px 0 -4px;
+
+            /* postcss-bem-linter: ignore */
+            &__rect {
+                height: 35%;
+            }
         }
     }
 }

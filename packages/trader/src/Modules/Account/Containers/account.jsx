@@ -47,7 +47,6 @@ class Account extends React.Component {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const is_high_risk_client = isHighRiskClient(this.props.account_status);
-
                 this.setState({ is_high_risk_client, is_loading: false });
             }
         });
@@ -80,12 +79,15 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address/.test(selected_content.path)) return <Redirect to='/' />;
+        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach((menu_item) => {
             if (menu_item.title === 'Verification') {
                 menu_item.is_disabled = !is_high_risk_client;
+            }
+            if (menu_item.title === 'Profile') {
+                menu_item.subroutes[1].is_disabled = !is_high_risk_client;
             }
         });
 

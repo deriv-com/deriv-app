@@ -18,6 +18,7 @@ module.exports = {
         drawer           : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
         dropdown         : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         'field-error'    : path.resolve(__dirname, 'src', 'components/field-error/index.js'),
+        'file-dropzone'  : path.resolve(__dirname, 'src', 'components/file-dropzone/index.js'),
         input            : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label            : path.resolve(__dirname, 'src', 'components/label/index.js'),
         loading          : path.resolve(__dirname, 'src', 'components/loading/index.js'),
@@ -27,7 +28,7 @@ module.exports = {
         popover          : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group'    : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
         tabs             : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
-        'underlying-icon': path.resolve(__dirname, 'src', 'components/underlying-icon/index.js')
+        'underlying-icon': path.resolve(__dirname, 'src', 'components/underlying-icon/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -121,6 +122,7 @@ module.exports = {
     externals: {
         'formik'                    : 'formik',
         'classnames'                : 'classnames',
+        '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
         'react'                     : 'react',
         'react-dom'                 : 'react-dom',
         'react-pose'                : 'react-pose',

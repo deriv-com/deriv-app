@@ -10,7 +10,7 @@ import FormSubmitButton     from './form-submit-button.jsx';
 // Checkbox input
 const CheckboxField = ({
     field: { name, value, onChange },
-    form : { setFieldValue },
+    // form : { setFieldValue },
     id,
     label,
     className,

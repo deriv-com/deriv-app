@@ -2,7 +2,8 @@
     $saveload-modal : '&__modal--saveload';
 
     &__container {
-        width: 450px;
+        max-width: 450px;
+        max-height: 500px;
     }
     &-header {
         #{$saveload-modal} {

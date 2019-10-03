@@ -1,4 +1,3 @@
-import ObjectUtils                from 'deriv-shared/utils/object';
 import {
     action,
     computed,
@@ -22,12 +21,6 @@ export default class ContractTradeStore extends BaseStore {
     // Chart specific observables
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
-
-    // Forget old proposal_open_contract stream on account switch from ErrorComponent
-    // TODO: figure out this later
-    // should_forget_first = false;
-
-    subscribers = {};
 
     // -------------------
     // ----- Actions -----
@@ -57,14 +50,6 @@ export default class ContractTradeStore extends BaseStore {
                 clientNotifications.switch_to_tick_chart
             );
         }
-    }
-
-    handleSubscribeProposalOpenContract = (contract_id, cb) => {
-        this.subscribers[contract_id]
-            = WS.subscribeProposalOpenContract(contract_id, cb);
-    }
-
-    handleSubscribeProposalOpenContractAll = () => {
     }
 
     applicable_contracts = () => {
@@ -132,9 +117,6 @@ export default class ContractTradeStore extends BaseStore {
             underlying,
         });
         this.contracts.push(contract);
-        BinarySocket.wait('authorize').then(() => {
-            this.handleSubscribeProposalOpenContract(contract_id, this.updateProposal);
-        });
 
         if (is_tick_contract && this.granularity !== 0) {
             this.root_store.ui.addNotification(
@@ -146,39 +128,20 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
-        this.forgetProposalOpenContract(contract_id, this.updateProposal);
     }
 
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         // TODO: don't forget the tick history when switching to contract-replay-store
-        // TODO: don't forget the POC when switching to contract-replay-store
-        if (this.contracts.length > 0) {
-            this.contracts.forEach(contract =>  {
-                const { contract_id, is_forgotten, is_ended } = contract;
-                if (contract_id && !is_forgotten && is_ended) {
-                    this.forgetProposalOpenContract(contract_id, this.updateProposal);
-                    // once contract for the id is forgotten, add flag to indicate it's already forgotten
-                    contract.is_forgotten = true;
-                }
-            });
-        }
     }
 
+    // Called from portfolio
     @action.bound
     updateProposal(response) {
         if ('error' in response) {
             this.has_error     = true;
             this.error_message = response.error.message;
-            return;
-        }
-        // Empty response means the contract belongs to a different account
-        if (ObjectUtils.isEmptyObject(response.proposal_open_contract)) {
-            this.has_error           = true;
-            this.error_message       = localize('Sorry, you can\'t view this contract because it doesn\'t belong to this account.');
-            // If contract does not belong to this account
-            this.contracts           = [];
             return;
         }
         // Update the contract-store corresponding to this POC
@@ -202,12 +165,6 @@ export default class ContractTradeStore extends BaseStore {
         const applicable_contracts = this.applicable_contracts();
         const length = applicable_contracts.length;
         return length > 0 ? applicable_contracts[length - 1] : { };
-    }
-
-    forgetProposalOpenContract = (contract_id) => {
-        if (!(contract_id in this.subscribers)) return;
-        this.subscribers[contract_id].unsubscribe();
-        delete this.subscribers[contract_id];
     }
 
     @action.bound

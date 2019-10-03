@@ -45,7 +45,6 @@ const parse_svg = (markup) => {
     };
 };
 
-
 export const START = parse_svg(`
 <svg width="15" height="20" viewBox="0 0 15 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7,20 C11.2,14.4 14,10.8659932 14,7 C14,3.13400675 10.8659932,0 7,0 C3.13400675,0 0,3.13400675 0,7 C0,10.8659932 2.8,14.4 7,20 Z" fill="#333333"/>

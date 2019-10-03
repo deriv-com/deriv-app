@@ -6,6 +6,7 @@ import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
 import Summary                                from './summary.jsx';
+import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
 import { translate }                          from '../utils/tools';
 import '../assets/sass/run-panel.scss';
@@ -22,7 +23,9 @@ const drawerContent = ({
             <div label={translate('Summary')}>
                 <Summary />
             </div>
-            <div label={translate('Transactions')} />
+            <div label={translate('Transactions')} >
+                <Transactions />
+            </div>
             <div label={translate('Journal')}>
                 <Journal />
             </div>

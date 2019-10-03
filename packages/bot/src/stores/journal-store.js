@@ -61,6 +61,7 @@ export default class JournalStore {
 
     @action.bound
     onUnmount() {
+        // TODO unregister is not working
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);

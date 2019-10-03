@@ -46,6 +46,7 @@ export default class ContractCardStore {
             this[name] = movements[name];
         });
 
+        // TODO only add props that is being used
         this.contract = contract;
     }
 

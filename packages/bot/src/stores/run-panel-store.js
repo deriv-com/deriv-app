@@ -93,10 +93,12 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        // TODO: Wait for bot to finish.
+        // TODO: Wait for bot to finish. show a dialog ask user if he want to delete ,
+        // and warn him that bot is running
         this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
+        this.root_store.transactions.clear();
     }
 
     @action.bound

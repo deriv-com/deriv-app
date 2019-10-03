@@ -90,7 +90,7 @@ const MessageItem = ({
 
 class Journal extends React.PureComponent {
     componentWillUnmount() {
-        this.props.onUnmount();
+        // this.props.onUnmount();
     }
 
     render() {

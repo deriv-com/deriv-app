@@ -24,9 +24,7 @@
         align-items: center;
         padding: 1rem 1.6rem;
         font-size: 1.4rem;
-        @include themify($themes) {
-            color: themed('text_color');
-        }
+        color: var(--text-general);
 
         &:hover {
             background-color: var(--state-hover);

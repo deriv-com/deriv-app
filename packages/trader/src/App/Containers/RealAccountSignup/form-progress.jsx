@@ -21,7 +21,7 @@ class FormProgress extends React.PureComponent {
             offsetLeft : 0,
             clientWidth: 1,
         };
-        this.el_completed_bar.current.style.width     = `${(this.props.current_step) * 33}%`;
+        this.el_completed_bar.current.style.width     = `${(this.props.current_step) * 25}%`;
         this.el_completed_bar.current.style.transform =
             `translateX(${el_first_identifier.offsetLeft + (el_first_identifier.clientWidth / 2)}px)`;
     }
@@ -42,7 +42,8 @@ class FormProgress extends React.PureComponent {
                                 <div
                                     key={idx + 1}
                                     className={classNames('form-progress__step', {
-                                        'form-progress__step--active': (idx) <= current_step,
+                                        'form-progress__step--active' : (idx) <= current_step,
+                                        'form-progress__step--current': (idx) === current_step,
                                     })}
                                 >
                                     <span className='identifier'>{idx + 1}</span>

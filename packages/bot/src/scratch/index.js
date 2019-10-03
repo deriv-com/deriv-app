@@ -163,6 +163,13 @@ while(true) {
         }
     }
 
+    terminate() {
+        if (this.interpreter) {
+            this.interpreter.terminateSession();
+            this.interpreter = null;
+        }
+    }
+
     /* eslint-disable class-methods-use-this */
     hasStarted() {
         return this.interpreter && this.interpreter.hasStarted();

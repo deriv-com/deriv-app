@@ -24,7 +24,7 @@ class RealAccountSignup extends Component {
         super(props);
         this.state = {
             ...initialState,
-            modal_content     : [
+            modal_content: [
                 {
                     icon : 'IconTheme',
                     label: localize('Add a real account'),
@@ -65,17 +65,17 @@ class RealAccountSignup extends Component {
                             text_submit={localize('Deposit now')}
                             text_cancel={this.text_cancel}
                         />
-                    )
-                }
+                    ),
+                },
             ],
         };
     }
 
-    closeModalThenOpenCashier = (e) => {
+    closeModalThenOpenCashier = () => {
         this.props.closeSignupAndOpenCashier();
         setTimeout(() => {
             this.setState(initialState);
-        }, 400)
+        }, 400);
     }
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
@@ -88,18 +88,18 @@ class RealAccountSignup extends Component {
 
     showAddCurrencySuccess = (currency) => {
         this.setState({
-            current_currency: currency,
+            current_currency  : currency,
             active_modal_index: 3,
-            success_message: <Localize
+            success_message   : <Localize
                 i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
                 values={{
                     currency: currency.toUpperCase(),
                 }}
                 components={[
-                    <p />
+                    <p key={ currency } />
                 ]}
-            />
-        })
+            />,
+        });
     }
 
     closeModalWithHooks = () => {
@@ -120,7 +120,7 @@ class RealAccountSignup extends Component {
         this.props.closeRealAccountSignup();
         setTimeout(() => {
             this.setState(initialState);
-        }, 400)
+        }, 400);
     };
 
     get active_modal_index() {

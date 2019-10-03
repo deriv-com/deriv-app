@@ -98,7 +98,7 @@ class AccountWizard extends React.Component {
         }
     };
 
-    prevStep = (e) => {
+    prevStep = () => {
         this.setState({
             step      : this.state.step - 1,
             form_error: '',

@@ -12,8 +12,8 @@
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-1);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
-        width: 95vw;
-        height: 95vh;
+        width: 90vw;
+        height: calc(100vh - 48px - 36px);
 
         &--hide {
             display: none;

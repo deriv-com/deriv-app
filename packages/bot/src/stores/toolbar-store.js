@@ -10,7 +10,7 @@ export default class ToolbarStore {
     }
 
     @observable is_toolbox_open = true;
-    @observable file_name = 'Untitled Bot';
+    @observable file_name = translate('Untitled Bot');
 
     @action.bound
     onRunClick() {

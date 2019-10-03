@@ -18,8 +18,8 @@ import {
 }                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
 import { translate }    from '../utils/tools';
-import                       '../assets/sass/saveload-modal.scss';
-import                       '../assets/sass/google-drive.scss';
+import '../assets/sass/google-drive.scss';
+import '../assets/sass/saveload-modal.scss';
 
 const initial_option = { is_local: true, save_as_collection: true };
 
@@ -69,16 +69,18 @@ const SaveLoadModal = ({
                                                 value: true,
                                             },
                                             {
-                                                id   : 'Drive',
+                                                id   : 'drive',
                                                 label: <IconRadio
-                                                    text={translate('Google Drive')}
+                                                    text={'Google Drive'}
                                                     icon={<ToolbarDriveIcon />}
                                                     google_drive_connected={is_authorised}
                                                     onDriveConnect={onDriveConnect}
                                                 />,
                                                 value    : false,
                                                 disabled : !is_authorised,
-                                                className: is_authorised ? '' : 'dc-radio-group__item-disabled',
+                                                className: classNames({
+                                                    'dc-radio-group__item-disabled': !is_authorised,
+                                                }),
                                             },
                                         ]}
                                         selected={is_authorised ? is_local : true}
@@ -162,11 +164,16 @@ const IconRadio = ({
                         { className: classNames('saveload-type__icon', icon.props.className) },
                     )
                 }
-                <p className='saveload-type__text'>{translate(text)}</p>
+                <p className='saveload-type__radio-text'>{translate(text)}</p>
             </div>
             {
                 is_drive_radio &&
-                <p className='saveload-type__drive-status' onClick={onDriveConnect}>{google_drive_connected ? 'Disconnect' : 'Connect'}</p>
+                <p
+                    className='saveload-type__drive-status'
+                    onClick={onDriveConnect}
+                >
+                    {translate(google_drive_connected ? 'Disconnect' : 'Connect')}
+                </p>
             }
         </div>
     );

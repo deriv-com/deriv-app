@@ -6,7 +6,7 @@
             width: 450px;
 
             .modal__content {
-                padding: 24px;
+                padding: 26px;
             }
             .modal__footer {
                 text-align: right;
@@ -35,10 +35,10 @@
 
                     &-disabled {
                         .saveload-type__text {
-                            color: var(--general-disabled);
+                            color: var(--general-disabled) !important;
                         }
                         .dc-radio-group__circle {
-                            border-color: var(--general-disabled);
+                            border-color: var(--general-disabled) !important;
                         }
                     }
                 }
@@ -55,18 +55,39 @@
 
 .saveload-type {
     &__checkbox-text {
-        @include typeface(--title-left-bold-black, capitalize);
+        font-size: 14px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: var(--text-prominent);
     }
     &__checkbox-description {
-        @include typeface(--paragraph-left-normal-black, capitalize);
-        margin-left: 18px;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: var(--text-prominent);
+        margin-left: 20px;
     }
     &__container {
         text-align: center;
     }
-    &__text {
+    &__radio {
+        text-align: center;
+    }
+    &__radio-text {
         margin-top: 8px;
-        @include typeface(--paragraph-center-bold-black, capitalize);
+        font-size: 14px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: var(--text-prominent);
     }
     &__drive-status {
         cursor: pointer;

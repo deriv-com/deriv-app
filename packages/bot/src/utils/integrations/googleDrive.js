@@ -66,7 +66,6 @@ class GoogleDrive {
             this.profile = null;
         }
         this.isAuthorised = isSignedIn;
-        globalObserver.emit('googledrive.authorise', this.isAuthorised);
     }
 
     authorise() {

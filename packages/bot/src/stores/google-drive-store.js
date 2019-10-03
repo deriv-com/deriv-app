@@ -63,7 +63,13 @@ export default class GoogleDriveStore {
             return Promise.resolve();
         }
 
-        return this.google_auth.signIn({ prompt: 'select_account' });
+        return this.google_auth.signIn({ prompt: 'select_account' })
+            .catch(response => {
+                if (response.error === 'access_denied') {
+                    // TODO
+                    console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
+                }
+            });
     }
 
     signOut() {
@@ -90,24 +96,22 @@ export default class GoogleDriveStore {
     async saveFile(options) {
         await this.signIn();
         await this.checkFolderExists();
-
-        await this.createSaveFilePicker('application/vnd.google-apps.folder', 'Select a folder', options);
+        await this.createSaveFilePicker('application/vnd.google-apps.folder', translate('Select a folder'), options);
     }
 
     @action.bound
     async loadFile() {
         await this.signIn();
-        const xml_doc = await this.createLoadFilePicker(['text/xml', 'application/xml'], 'Select a Deriv Bot Strategy');
+        const xml_doc = await this.createLoadFilePicker(['text/xml', 'application/xml'], translate('Select a Deriv Bot Strategy'));
 
         return xml_doc;
     }
 
     async checkFolderExists() {
         const { files } = gapi.client.drive;
-        
         const response = await files.list({ q: 'trashed=false' });
-        const mimeType = 'application/vnd.google-apps.folder';
-        const folder = response.result.files.find(file => file.mimeType === mimeType);
+        const mime_type = 'application/vnd.google-apps.folder';
+        const folder = response.result.files.find(file => file.mimeType === mime_type);
 
         if (folder) {
             return;
@@ -115,9 +119,9 @@ export default class GoogleDriveStore {
 
         await files.create({
             resource: {
-                name  : this.bot_folder_name,
-                mimeType,
-                fields: 'id',
+                name    : this.bot_folder_name,
+                mimeType: mime_type,
+                fields  : 'id',
             },
         });
     }
@@ -127,17 +131,17 @@ export default class GoogleDriveStore {
         return new Promise(resolve => {
             const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
-                    const folderId = data.docs[0].id;
-                    const strategyFile = new Blob([options.content], { type: options.mimeType });
-                    const strategyFileMetadata = JSON.stringify({
+                    const folder_id = data.docs[0].id;
+                    const strategy_file = new Blob([options.content], { type: options.mimeType });
+                    const strategy_file_metadata = JSON.stringify({
                         name    : options.name,
                         mimeType: options.mimeType,
-                        parents : [folderId],
+                        parents : [folder_id],
                     });
 
-                    const formData = new FormData();
-                    formData.append('metadata', new Blob([strategyFileMetadata], { type: 'application/json' }));
-                    formData.append('file', strategyFile);
+                    const form_data = new FormData();
+                    form_data.append('metadata', new Blob([strategy_file_metadata], { type: 'application/json' }));
+                    form_data.append('file', strategy_file);
 
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
@@ -151,7 +155,7 @@ export default class GoogleDriveStore {
                         setButtonStatus(0);
                         resolve();
                     };
-                    xhr.send(formData);
+                    xhr.send(form_data);
                 } else if (data.action === google.picker.Action.CANCEL) {
                     setButtonStatus(0);
                 }

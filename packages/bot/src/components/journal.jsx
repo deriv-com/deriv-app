@@ -100,7 +100,7 @@ class Journal extends React.PureComponent {
             <Scrollbars
                 className='journal'
                 autoHide
-                style={{ height: 'calc(100vh - 243px)' }}
+                style={{ height: 'calc(100vh - 350px)' }}
             >
                 <table className='journal__table'>
                     <thead className='journal__table--header'>

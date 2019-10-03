@@ -35,6 +35,7 @@ export default class ClientStore extends BaseStore {
     @observable switch_broadcast           = false;
     @observable currencies_list            = {};
     @observable residence_list             = [];
+    @observable states_list                = [];
     @observable selected_currency          = '';
     @observable is_populating_account_list = false;
     @observable website_status             = {};
@@ -48,7 +49,6 @@ export default class ClientStore extends BaseStore {
     };
 
     @observable upgradeable_landing_companies = [];
-    @observable website_status = {};
     @observable mt5_login_list = [];
     @observable statement      = [];
     @observable obj_total_balance = {};
@@ -96,7 +96,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_change_currency () {
         const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || has_available_crypto_currencies;
+        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed
@@ -339,6 +339,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].is_virtual                = +response.authorize.is_virtual;
         this.accounts[this.loginid].session_start             = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+        this.accounts[this.loginid].country                   = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
@@ -549,12 +550,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            this.responseMt5LoginList(
-                await WS.authorized.storage.mt5LoginList(),
-            );
-            this.responseLandingCompany(
-                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
-            );
+            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+                .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -671,7 +669,6 @@ export default class ClientStore extends BaseStore {
                 this.root_store.modules.trade.clearContracts();
                 return;
             }
-
             this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
             this.root_store.ui.addNotification({
@@ -684,6 +681,7 @@ export default class ClientStore extends BaseStore {
             await this.switchAccountHandler();
             return;
         }
+        this.root_store.modules.trade.proposal_info = {};
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -918,6 +916,17 @@ export default class ClientStore extends BaseStore {
                 this.residence_list = response.residence_list || [];
             });
         });
+    }
+
+    @action.bound
+    fetchStatesList() {
+        WS.statesList({
+            states_list: this.accounts[this.loginid].residence
+        }).then(response => {
+            runInAction(() => {
+                this.states_list = response.states_list || [];
+            })
+        })
     }
 
     @action.bound

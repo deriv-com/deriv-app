@@ -4,7 +4,10 @@ import {
     reaction,
     computed }             from 'mobx';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
-import { runBot, stopBot, terminateBot } from '../scratch';
+import {
+    runBot,
+    stopBot,
+    terminateBot }         from '../scratch';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';

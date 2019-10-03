@@ -1,7 +1,6 @@
 import {
     observable,
-    action,
-    reaction }                from 'mobx';
+    action }                  from 'mobx';
 import { getIndicativePrice } from '../utils/contract';
 import { observer }           from '../utils/observer';
 
@@ -20,7 +19,6 @@ export default class ContractCardStore {
 
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('contract.status', this.onContractStatusEvent);
-        this.registerReactions();
     }
 
     @action.bound
@@ -72,35 +70,8 @@ export default class ContractCardStore {
     }
 
     @action.bound
-    registerReactions() {
-        const { client } = this.root_store.core;
-        const reset = (condition) => {
-            if (condition) {
-                // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-                // of killing and clearing everything instantly.
-                this.clear(true);
-            }
-        };
-
-        this.disposeLogoutListener = reaction(
-            () => client.loginid,
-            (loginid) => reset(!loginid),
-        );
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            (switch_broadcast) => reset(switch_broadcast)
-        );
-    }
-
     onUnmount() {
         observer.unregister('bot.contract', this.onBotContractEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
-
-        if (typeof this.disposeLogoutListener === 'function') {
-            this.disposeLogoutListener();
-        }
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 }

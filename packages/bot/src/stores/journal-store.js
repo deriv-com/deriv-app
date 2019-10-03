@@ -1,10 +1,8 @@
 import {
     observable,
-    action,
-    reaction }        from 'mobx';
+    action }          from 'mobx';
 import { formatDate } from 'deriv-shared/utils/date';
 import { observer }   from '../utils/observer';
-import { translate }  from '../utils/tools';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -14,8 +12,6 @@ export default class JournalStore {
         observer.register('ui.log.error', this.onLogError);
         observer.register('Error', this.onLogError);
         observer.register('Notify', this.onNotify);
-
-        this.registerReactions();
     }
 
     get serverTime () {
@@ -49,6 +45,7 @@ export default class JournalStore {
         this.messages = this.messages.slice(0, 0);  // force array update
     }
     
+    @action.bound
     pushMessage(data) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
@@ -63,40 +60,10 @@ export default class JournalStore {
     }
 
     @action.bound
-    registerReactions() {
-        const { client } = this.root_store.core;
-
-        this.disposeLogoutListener = reaction(
-            () => client.loginid,
-            (loginid) => {
-                if (!loginid) {
-                    this.clear();
-                }
-            },
-        );
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            action((switch_broadcast) => {
-                if (switch_broadcast) {
-                    this.clear();
-                    this.pushMessage(translate('You have switched accounts.'));
-                }
-            })
-        );
-    }
-
-    @action.bound
     onUnmount() {
         observer.unregister('ui.log.success', this.onLogSuccess);
         observer.unregister('ui.log.error', this.onLogError);
         observer.unregister('Error', this.onLogError);
         observer.unregister('Notify', this.onNotify);
-
-        if (typeof this.disposeLogoutListener === 'function') {
-            this.disposeLogoutListener();
-        }
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 }

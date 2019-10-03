@@ -4,8 +4,8 @@ import PropTypes            from 'prop-types';
 
 class Tab extends Component {
     onClick = () => {
-        const { label, onClick } = this.props;
-        onClick(label);
+        const { onClick } = this.props;
+        onClick();
     }
 
     render() {

@@ -1,8 +1,7 @@
 import {
     observable,
-    action,
-    reaction }       from 'mobx';
-import { observer }  from '../utils/observer';
+    action }        from 'mobx';
+import { observer } from '../utils/observer';
 
 export default class SummaryStore {
     @observable currency        = '';
@@ -75,37 +74,8 @@ export default class SummaryStore {
         this.won_contracts  = 0;
     }
 
-    registerReactions() {
-        const { client } = this.root_store.core;
-        const reset = (condition) => {
-            if (condition) {
-                // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-                // of killing and clearing everything instantly.
-                this.clear();
-                this.currency = client.currency;
-            }
-        };
-
-        this.disposeLogoutListener = reaction(
-            () => client.loginid,
-            (loginid) => reset(!loginid),
-        );
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            (switch_broadcast) => reset(switch_broadcast)
-        );
-    }
-
     @action.bound
     onUnmount() {
         observer.unregister('contract.status', this.onContractStatusEvent);
-        
-        if (typeof this.disposeLogoutListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
-
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 }

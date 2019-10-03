@@ -142,24 +142,31 @@ export default class RunPanelStore {
     @action.bound
     registerReactions() {
         const { client } = this.root_store.core;
-        const reset = (condition) => {
-            if (condition) {
-                // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-                // of killing and clearing everything instantly.
-                Blockly.BLOCKLY_CLASS_OLD.terminate();
-                this.is_run_button_clicked = false;
-            }
+        const terminateAndClear = () => {
+            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
+            // of killing and clearing everything instantly.
+            Blockly.BLOCKLY_CLASS_OLD.terminate();
+            this.onClearStatClick();
+            this.is_run_button_clicked = false;
         };
 
         this.disposeLogoutListener = reaction(
             () => client.loginid,
-            (loginid) => reset(!loginid),
+            (loginid) => {
+                if (!loginid) {
+                    terminateAndClear();
+                    this.root_store.summary.currency = client.currency;
+                }
+            },
         );
+
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             (switch_broadcast) => {
                 if (switch_broadcast) {
-                    reset(switch_broadcast);
+                    terminateAndClear();
+                    this.root_store.summary.currency = client.currency;
+                    this.root_store.journal.pushMessage(translate('You have switched accounts.'));
                     
                     if (!client.is_virtual) {
                         this.showRealAccountDialog();

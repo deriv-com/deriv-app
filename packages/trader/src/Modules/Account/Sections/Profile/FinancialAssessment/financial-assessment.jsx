@@ -80,7 +80,7 @@ class FinancialAssessment extends React.Component {
         });
         return errors;
     };
-    
+
     showForm = show_form => this.setState({ show_form });
 
     render() {
@@ -213,7 +213,6 @@ class FinancialAssessment extends React.Component {
                                     <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Net annual income')}
-                                            is_alignment_top
                                             is_align_text_left
                                             name='net_income'
                                             list={net_income_list}

@@ -1,9 +1,4 @@
-import BinarySocket                   from '_common/base/socket_base';
-import { localize }                   from 'App/i18n';
-import CurrencyUtils                  from 'deriv-shared/utils/currency';
-import ObjectUtils                    from 'deriv-shared/utils/object';
 import debounce                       from 'lodash.debounce';
-import { WS }                         from 'Services';
 import {
     action,
     computed,
@@ -12,6 +7,11 @@ import {
     runInAction,
     toJS,
 }                                     from 'mobx';
+import CurrencyUtils                  from 'deriv-shared/utils/currency';
+import ObjectUtils                    from 'deriv-shared/utils/object';
+import { localize }                   from 'App/i18n';
+import { WS }                         from 'Services';
+import BinarySocket                   from '_common/base/socket_base';
 import {
     isDigitContractType,
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
@@ -480,7 +480,8 @@ export default class TradeStore extends BaseStore {
             const prev_currency = obj_old_values &&
             !ObjectUtils.isEmptyObject(obj_old_values) &&
             obj_old_values.currency ? obj_old_values.currency : this.currency;
-            if (CurrencyUtils.isCryptocurrency(obj_new_values.currency) !== CurrencyUtils.isCryptocurrency(prev_currency)) {
+            if (CurrencyUtils.isCryptocurrency(obj_new_values.currency)
+                !== CurrencyUtils.isCryptocurrency(prev_currency)) {
                 obj_new_values.amount = is_changed_by_user && obj_new_values.amount ?
                     obj_new_values.amount : CurrencyUtils.getMinPayout(obj_new_values.currency);
             }

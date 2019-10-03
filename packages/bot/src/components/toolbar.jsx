@@ -1,3 +1,4 @@
+import classNames           from 'classnames';
 import {
     Button,
     Input,
@@ -26,7 +27,8 @@ import {
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
-import SaveLoadModal        from './saveload-modal.jsx';
+import SaveLoadModal        from './save-load-modal.jsx';
+import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
@@ -105,7 +107,8 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
 );
 
 const ButtonGroup = ({
-    toggleSaveLoadModal,
+    is_run_button_clicked,
+    is_running,
     onResetClick,
     onUndoClick,
     onRedoClick,
@@ -113,8 +116,7 @@ const ButtonGroup = ({
     onSortClick,
     onZoomInOutClick,
     onStopClick,
-    is_run_button_clicked,
-    is_running,
+    toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
         <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
@@ -139,6 +141,7 @@ const ButtonGroup = ({
 
 const Toolbar = ({
     file_name,
+    is_drawer_open,
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
@@ -191,12 +194,23 @@ const Toolbar = ({
                 toggleSaveLoadModal={toggleSaveLoadModal}
             />
         </div>
+        <div className='toolbar__section'>
+            <TradeAnimation
+                className={classNames(
+                    'toolbar__animation',
+                    { 'animation--hidden': is_drawer_open }
+                )}
+                should_show_overlay={true}
+            />
+            
+        </div>
         <SaveLoadModal />
     </div>
 );
 
 Toolbar.propTypes = {
     file_name            : PropTypes.string,
+    is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onBotNameTyped       : PropTypes.func,
@@ -217,6 +231,7 @@ Toolbar.propTypes = {
 
 export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name            : toolbar.file_name,
+    is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onBotNameTyped       : toolbar.onBotNameTyped,

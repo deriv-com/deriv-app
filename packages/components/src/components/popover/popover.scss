@@ -14,6 +14,15 @@
                 @extend %inline-icon.disabled;
             }
         }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
     }
     &__bubble {
         @include typeface(--small-center-normal-active, none);

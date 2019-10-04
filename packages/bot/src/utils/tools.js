@@ -1,6 +1,6 @@
-import RenderHTML                     from 'react-render-html';
-import { observer as globalObserver } from './observer';
-import { translate as i18nTranslate } from './lang/i18n';
+import RenderHTML                       from 'react-render-html';
+import { observer as globalObserver }   from './observer';
+import { translate as i18nTranslate }   from './lang/i18n';
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
@@ -72,4 +72,16 @@ export const trackAndEmitError = (message, object = {}) => {
     if (window.trackJs) {
         trackJs.track(`${message} - Error: ${JSON.stringify(object)}`);
     }
+};
+
+export const importExternal = url => {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = () => resolve(window.external_global_component);
+        script.onerror = reject;
+
+        document.body.appendChild(script);
+    });
 };

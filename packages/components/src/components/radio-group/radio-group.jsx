@@ -17,6 +17,7 @@ class RadioGroup extends React.PureComponent {
                         onChange={this.props.onToggle}
                         className={item.className}
                         name={this.props.name}
+                        disabled={item.disabled}
                     >
                         {item.label}
                     </Radio>

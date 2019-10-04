@@ -4,7 +4,7 @@ import {
     epochToMoment,
     formatMiliseconds,
     getDiffDuration }      from 'Utils/Date';
-import { isDigitContract } from '../../Contract/Helpers/digits';
+import { isDigitContract } from '../../Contract/Helpers/digits'; // eslint-disable-line import/no-unresolved
 
 export const getCurrentTick = (contract_info) => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');

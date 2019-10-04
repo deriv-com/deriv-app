@@ -87,7 +87,11 @@ class Account extends React.Component {
                 menu_item.is_disabled = !is_high_risk_client;
             }
             if (menu_item.title === 'Profile') {
-                menu_item.subroutes[1].is_disabled = !is_high_risk_client;
+                menu_item.subroutes.forEach(route => {
+                    if (route.path === AppRoutes.financial_assessment) {
+                        route.is_disabled = !is_high_risk_client;
+                    }
+                });
             }
         });
 
@@ -101,7 +105,7 @@ class Account extends React.Component {
             },
         ];
 
-        const is_account_limits_route = /account-limits/.test(this.props.location.pathname);
+        const is_account_limits_route = selected_content.path === AppRoutes.account_limits;
         if (is_account_limits_route) {
             action_bar_items.push({
                 component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,

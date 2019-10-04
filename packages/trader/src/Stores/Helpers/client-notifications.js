@@ -6,6 +6,7 @@ import { getRiskAssessment,
     shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
+import routes           from 'Constants/routes';
 import {
     LocalStore,
     State }             from '_common/storage';
@@ -48,7 +49,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/proof-of-identity'
+                        to={routes.proof_of_identity}
                     />,
                 ]}
             />
@@ -83,7 +84,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/proof-of-identity'
+                        to={routes.proof_of_identity}
                     />,
                 ]}
             />
@@ -133,7 +134,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/financial-assessment'
+                        to={routes.financial_assessment}
                     />,
                 ]}
             />
@@ -150,7 +151,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/personal-details'
+                        to={routes.personal_details}
                     />,
                 ]}
             />
@@ -178,7 +179,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/personal-details'
+                        to={routes.personal_details}
                     />,
                 ]}
             />
@@ -223,7 +224,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/proof-of-address'
+                        to={routes.proof_of_address}
                     />,
                 ]}
             />
@@ -250,7 +251,7 @@ export const clientNotifications = {
                     <BinaryLink
                         key={0}
                         className='link link--white'
-                        to='account/proof-of-identity'
+                        to={routes.proof_of_identity}
                     />,
                 ]}
             />

@@ -311,9 +311,6 @@ const addVerificationNotifications = (identity, document, addNotification) => {
     if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
 
     if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
-    if ((document.status === 'rejected' || document.status === 'suspected')) {
-        addNotification(clientNotifications.poa_rejected);
-    }
 };
 
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {

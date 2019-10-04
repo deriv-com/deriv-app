@@ -98,7 +98,7 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        this.showLoginDialog();
+        this.showClearStatDialog();
     }
 
     @action.bound
@@ -107,7 +107,7 @@ export default class RunPanelStore {
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
-        this.contract_stage = CONTRACT_STAGES.not_running();
+        this.contract_stage = CONTRACT_STAGES.not_running;
         this.onCloseModal();
     }
 

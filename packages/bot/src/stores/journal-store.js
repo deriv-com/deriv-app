@@ -62,7 +62,6 @@ export default class JournalStore {
         } else {
             message = `${data.message}`;
         }
-        console.log(message_type); // eslint-disable-line no-console
 
         this.messages.unshift({ date, time , message ,message_type });
         this.messages = this.messages.slice(0);  // force array update

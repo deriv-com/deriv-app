@@ -12,7 +12,7 @@ class PlatformDropdown extends React.PureComponent {
         if (!event.target.closest('.platform_dropdown__list') && !event.target.closest('.platform_switcher')) {
             this.props.closeDrawer();
         }
-    }
+    };
 
     componentWillMount() {
         window.addEventListener('popstate', this.props.closeDrawer);

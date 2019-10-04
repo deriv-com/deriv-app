@@ -4,14 +4,14 @@ import React                  from 'react';
 import {
     Button,
     Dropdown,
-    Input }                   from 'deriv-components';
+    Input,
+    Money }                   from 'deriv-components';
 import {
     Field,
     Formik,
     Form }                    from 'formik';
-import { getDecimalPlaces }   from '_common/base/currency_base';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
 import Localize               from 'App/Components/Elements/localize.jsx';
-import Money                  from 'App/Components/Elements/money.jsx';
 import { website_name }       from 'App/Constants/app-config';
 import { localize }           from 'App/i18n';
 import Icon                   from 'Assets/icon.jsx';
@@ -26,7 +26,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!validNumber(values.amount, { type: 'float', decimals: getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
+    } else if (!validNumber(values.amount, { type: 'float', decimals: CurrencyUtils.getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
         errors.amount = getPreBuildDVRs().number.message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
@@ -132,6 +132,7 @@ class AccountTransferForm extends React.Component {
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
+                                                label={localize('From')}
                                                 list={from_accounts}
                                                 name='transfer_from'
                                                 value={this.props.selected_from.value}
@@ -145,6 +146,7 @@ class AccountTransferForm extends React.Component {
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
+                                                label={localize('To')}
                                                 list={to_accounts}
                                                 name='transfer_to'
                                                 value={this.props.selected_to.value}
@@ -165,7 +167,7 @@ class AccountTransferForm extends React.Component {
                                                         required
                                                         leading_icon={
                                                             this.props.selected_from.currency ?
-                                                                <span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
+                                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
                                                                 : undefined
                                                         }
                                                         autoComplete='off'
@@ -226,7 +228,7 @@ class AccountTransferForm extends React.Component {
                                                 </React.Fragment>
                                                 }
                                                 <Button
-                                                    className='cashier__form-submit-button btn--primary btn--primary--orange'
+                                                    className='cashier__form-submit-button btn--primary--default'
                                                     type='submit'
                                                     is_disabled={!isValid || isSubmitting}
                                                 >

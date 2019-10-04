@@ -1,4 +1,7 @@
-import { Button, Drawer, Tabs }               from 'deriv-components';
+import { Button,
+    Drawer,
+    Popover,
+    Tabs }                                    from 'deriv-components';
 import classNames                             from 'classnames';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
@@ -53,7 +56,7 @@ const drawerFooter = ({
                 className={classNames(
                     'btn--flat',
                     'run-panel__button',
-                    { 'run-panel__button--disable': is_run_button_clicked }
+                    { 'run-panel__button--disable': is_run_button_clicked || is_running }
                 )}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}
@@ -85,7 +88,7 @@ const drawerFooter = ({
                         has_effect
                     />
             }
-            { is_dialog_visible &&
+            {is_dialog_visible &&
                 <Dialog
                     title={dialog_options.title}
                     is_open={is_dialog_visible}
@@ -95,7 +98,17 @@ const drawerFooter = ({
                     {dialog_options.message}
                 </Dialog>
             }
-            <InfoOutlineIcon className='run-panel__icon-info' />
+            <Popover
+                className='run-panel__info'
+                alignment='left'
+                message={translate(
+                    `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
+                     by our system. Please be aware that some completed transactions may not be displayed
+                     in the transaction table if the bot is stopped while placing trades. You may refer to
+                     the statement page for details of all completed transactions.`)}
+            >
+                <InfoOutlineIcon className='run-panel__icon-info' />
+            </Popover>
         </div>
     );
 };

@@ -24,6 +24,10 @@
     &__icon-info {
         vertical-align: middle;
     }
+    &__info {
+        display: inline-block;
+        font-size: 10px;
+    }
     &__animation {
         height: 64px;
         margin: 0 16px;

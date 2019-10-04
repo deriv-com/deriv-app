@@ -161,7 +161,7 @@ export default class RunPanelStore {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
             Blockly.BLOCKLY_CLASS_OLD.terminate();
-            this.onClearStatClick();
+            this.clearStat();
             this.is_run_button_clicked = false;
         };
 

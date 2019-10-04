@@ -4,7 +4,6 @@
 
     height: $toolbar_height;
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     box-shadow: inset 0 1px 0 0 var(--general-section-1), inset 0 -1px 0 0 var(--general-section-1);
     padding: 5px 12px;
@@ -36,7 +35,7 @@
         }
         > #{$toolbar}__form {
             .dc-input {
-                margin-bottom: 5px;
+                margin-bottom: 0;
             }
         }
     }
@@ -55,6 +54,7 @@
 
         &-btn {
             padding: 0px 8px;
+            height: 40px;
 
             > * {
                 align-self: center;
@@ -64,11 +64,9 @@
     &__form {
         width: 18%;
         min-width: 160px;
-
-        &-field {
-            margin-bottom: 0;
-            margin-top: 5px;
-        }
+    }
+    &__animation {
+        width: 354px;
     }
 }
 
@@ -76,5 +74,5 @@
     width: 1px;
     height: 17px;
     margin: 8px;
-    background-color: var(--border-normal); // TODO color
+    background-color: var(--border-normal);
 }

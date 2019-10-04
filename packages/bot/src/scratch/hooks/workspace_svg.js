@@ -101,11 +101,12 @@ Blockly.WorkspaceSvg.prototype.reshowFlyout = function () {
  * root-blocks are sorted in columns first, then all other blocks are positioned below 
  * the lowest hanging root-block.
  */
-Blockly.WorkspaceSvg.prototype.cleanUp = function() {
+Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean = []) {
   this.setResizesEnabled(false);
   Blockly.Events.setGroup(true);
 
-  const top_blocks = this.getTopBlocks(true);
+  const is_import = blocks_to_clean.length !== 0;
+  const top_blocks = is_import ? blocks_to_clean : this.getTopBlocks(true);
   const root_blocks = top_blocks.filter(block => block.isMainBlock()).sort((a, b) => {
     const blockIndex = (block) => config.mainBlocks.findIndex(b => b === block.type); 
     return blockIndex(a) - blockIndex(b);
@@ -113,38 +114,44 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
   const column_count = 2;
   const blocks_per_column = Math.ceil(root_blocks.length / column_count);
 
-  let cursor_y = 0;
+  let original_cursor_y = y;
 
   if (root_blocks.length) {
     let column_index = 0;
 
     root_blocks.forEach((block, index) => {
       if (index === (column_index + 1) * blocks_per_column) {
-        cursor_y = 0;
+        original_cursor_y = y;
         column_index++;
       }
 
       const xy = block.getRelativeToSurfaceXY();
+      const cursor_x = is_import ? x : -xy.x;
+      const cursor_y = original_cursor_y - (is_import ? 0 : xy.y);
 
       if (column_index === 0) {
-        block.moveBy(-xy.x, cursor_y - xy.y);
+        block.moveBy(cursor_x, cursor_y);
       } else {
         const start = (column_index - 1) * blocks_per_column;
         const fat_neighbour_block = root_blocks
           .slice(start, start + blocks_per_column)
           .reduce((a, b) => a.getHeightWidth().width > b.getHeightWidth().width ? a : b);
         
+        let position_x = cursor_x +
+                            fat_neighbour_block.getHeightWidth().width +
+                            Blockly.BlockSvg.MIN_BLOCK_X;
+        if(!is_import) {
+          position_x += fat_neighbour_block.getRelativeToSurfaceXY().x;
+        }
+
         block.moveBy(
-          -xy.x +
-            fat_neighbour_block.getRelativeToSurfaceXY().x +
-            fat_neighbour_block.getHeightWidth().width +
-            Blockly.BlockSvg.MIN_BLOCK_X,
-          cursor_y - xy.y
+          position_x,
+          cursor_y
         );
       }
 
       block.snapToGrid();
-      cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+      original_cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
     });
 
     const lowest_root_block = root_blocks.reduce((a, b) => {
@@ -153,7 +160,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
       return a_metrics > b_metrics ? a : b;
     });
 
-    cursor_y =
+    original_cursor_y =
       lowest_root_block.getRelativeToSurfaceXY().y +
       lowest_root_block.getHeightWidth().height +
       Blockly.BlockSvg.MIN_BLOCK_Y;
@@ -163,10 +170,12 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function() {
 
   filtered_top_blocks.forEach(block => {
     const xy = block.getRelativeToSurfaceXY();
+    const cursor_x = is_import ? x : -xy.x;
+    const cursor_y = original_cursor_y - (is_import ? 0 : xy.y);
 
-    block.moveBy(-xy.x, cursor_y - xy.y);
+    block.moveBy(cursor_x, cursor_y);
     block.snapToGrid();
-    cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+    original_cursor_y = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
   });
 
   Blockly.Events.setGroup(false);

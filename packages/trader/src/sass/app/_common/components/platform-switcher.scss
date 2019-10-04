@@ -1,0 +1,44 @@
+.platform_switcher {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--general-hover);
+    }
+    & svg:first-child, p, h1 {
+        margin: 0 0 0 8px;
+    }
+    & svg:last-child {
+        margin: 0 8px;
+    }
+    &__header {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: bold;
+        color: var(--text-general);
+    }
+    &__label {
+        font-size: 14px;
+        line-height: 20px;
+        border-radius: 10px;
+        background-color: var(--brand-secondary);
+        color: var(--text-colored-background);
+        width: 50px;
+        height: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+    &__arrow {
+        transition: transform 0.3s ease;
+        transform: rotate(0deg);
+    }
+    &__arrow .color1-fill {
+        fill: var(--text-general);
+    }
+    &--active &__arrow {
+        transform: rotate(180deg);
+    }
+}

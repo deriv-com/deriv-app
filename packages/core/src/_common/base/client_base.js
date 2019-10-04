@@ -1,10 +1,9 @@
-const isCryptocurrency = require('./currency_base').isCryptocurrency;
-const SocketCache      = require('./socket_cache');
-const localize         = require('../../App/i18n').localize;
-const LocalStore       = require('../storage').LocalStore;
-const State            = require('../storage').State;
-const getPropertyValue = require('../utility').getPropertyValue;
-const isEmptyObject    = require('../utility').isEmptyObject;
+const CurrencyUtils = require('deriv-shared/utils/currency');
+const ObjectUtils   = require('deriv-shared/utils/object');
+const SocketCache   = require('./socket_cache');
+const localize      = require('../../App/i18n').localize;
+const LocalStore    = require('../storage').LocalStore;
+const State         = require('../storage').State;
 
 const ClientBase = (() => {
     const storage_key = 'client.accounts';
@@ -17,7 +16,7 @@ const ClientBase = (() => {
     };
 
     const isLoggedIn = () => (
-        !isEmptyObject(getAllAccountsObject()) &&
+        !ObjectUtils.isEmptyObject(getAllAccountsObject()) &&
         get('loginid') &&
         get('token')
     );
@@ -95,7 +94,7 @@ const ClientBase = (() => {
         return id ? Object.assign({ loginid: id }, get(null, id)) : {};
     };
 
-    const hasAccountType = (type, only_enabled) => !isEmptyObject(getAccountOfType(type, only_enabled));
+    const hasAccountType = (type, only_enabled) => !ObjectUtils.isEmptyObject(getAccountOfType(type, only_enabled));
 
     // only considers currency of real money accounts
     // @param {String} type = crypto|fiat
@@ -104,11 +103,11 @@ const ClientBase = (() => {
         if (type === 'crypto') {
             // find if has crypto currency account
             return loginids.find(loginid =>
-                !get('is_virtual', loginid) && isCryptocurrency(get('currency', loginid)));
+                !get('is_virtual', loginid) && CurrencyUtils.isCryptocurrency(get('currency', loginid)));
         }
         // else find if have fiat currency account
         return loginids.find(loginid =>
-            !get('is_virtual', loginid) && !isCryptocurrency(get('currency', loginid)));
+            !get('is_virtual', loginid) && !CurrencyUtils.isCryptocurrency(get('currency', loginid)));
     };
 
     const TypesMapConfig = (() => {
@@ -220,17 +219,17 @@ const ClientBase = (() => {
     const getLandingCompanyValue = (loginid, landing_company, key) => {
         let landing_company_object;
         if (loginid.financial || isAccountOfType('financial', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'financial_company');
+            landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'financial_company');
         } else if (loginid.real || isAccountOfType('real', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'gaming_company');
+            landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'gaming_company');
 
             // handle accounts that don't have gaming company
             if (!landing_company_object) {
-                landing_company_object = getPropertyValue(landing_company, 'financial_company');
+                landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'financial_company');
             }
         } else {
-            const financial_company = (getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
-            const gaming_company    = (getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
+            const financial_company = (ObjectUtils.getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
+            const gaming_company    = (ObjectUtils.getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
             landing_company_object  = financial_company.concat(gaming_company);
             return landing_company_object;
         }
@@ -282,8 +281,8 @@ const ClientBase = (() => {
             return (same_cur_allowed[from_landing_company] || '') === to_landing_company;
         }
         // or for other clients if current account is cryptocurrency it should only transfer to fiat currencies and vice versa
-        const is_from_crypto = isCryptocurrency(from_currency);
-        const is_to_crypto   = isCryptocurrency(to_currency);
+        const is_from_crypto = CurrencyUtils.isCryptocurrency(from_currency);
+        const is_to_crypto   = CurrencyUtils.isCryptocurrency(to_currency);
         return (is_from_crypto ? !is_to_crypto : is_to_crypto);
     };
 
@@ -300,7 +299,7 @@ const ClientBase = (() => {
         // 2. User must not have any MT5 account
         // 3. Not be a crypto account
         // 4. Not be a virtual account
-        return is_current ? currency && !get('is_virtual') && has_account_criteria && !isCryptocurrency(currency) : has_account_criteria;
+        return is_current ? currency && !get('is_virtual') && has_account_criteria && !CurrencyUtils.isCryptocurrency(currency) : has_account_criteria;
     };
 
     return {

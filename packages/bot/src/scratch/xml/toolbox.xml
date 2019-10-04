@@ -79,7 +79,7 @@
     <sep />
 
     <category id="analysis" name="Analysis" description="Indicators, ticks, stats, etc." iconURI="ic-arrow">
-        <category id="indicators" name="Indicators" description="Indicators">
+        <category id="indicators" name="Indicators" description="Simple Moving Average, Bollinger Bands, Exponential Moving Average, etc.">
             <block type="sma_statement">
                 <statement name="STATEMENT">
                     <block type="input_list" deletable="false" movable="false">

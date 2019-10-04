@@ -62,7 +62,7 @@
         </block>
     </category>
     <!-- Purchase Conditions -->
-    <category id="purchase_conditions" name="Purchase contract" description="Define purchase conditions." iconURI="ic-stage-2">
+    <category id="purchase_conditions" name="Purchase contract" description="Define your purchase conditions." iconURI="ic-stage-2">
         <block type="before_purchase"></block>
         <block type="purchase"></block>
     </category>

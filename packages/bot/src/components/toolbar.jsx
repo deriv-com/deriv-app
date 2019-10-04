@@ -27,7 +27,7 @@ import {
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
-import SaveLoadModal        from './save-load-modal.jsx';
+import SaveLoadModal        from './saveload-modal.jsx';
 import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';

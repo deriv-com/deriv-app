@@ -7,19 +7,20 @@ import {
 import { connect }            from 'Stores/connect';
 import { localize }           from 'App/i18n';
 import { WS }                 from 'Services';
+import {
+    account_turnover_list,
+    education_level_list,
+    employment_industry_list,
+    employment_status_list,
+    estimated_worth_list,
+    income_source_list,
+    net_income_list,
+    occupation_list,
+    source_of_wealth_list }   from './financial-information-list';
 import DemoMessage            from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import {
-    income_source_list,
-    employment_status_list,
-    employment_industry_list,
-    occupation_list,
-    source_of_wealth_list,
-    education_level_list,
-    net_income_list,
-    estimated_worth_list,
-    account_turnover_list }  from '../../../Constants/constants-financial-information';
+
 import {
     FormBody,
     FormSubHeader,

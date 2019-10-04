@@ -144,7 +144,7 @@ class Transactions extends React.PureComponent {
                 <div className='transactions__content'>
                     <Scrollbars
                         autoHide
-                        style={{ height: 'calc(100vh - 283px)' }}
+                        style={{ height: 'calc(100vh - 375px)' }}
                     >
                         {
                             contracts.map((contract, index) => {

@@ -1,3 +1,4 @@
+import classNames           from 'classnames';
 import {
     Button,
     Input,
@@ -27,6 +28,7 @@ import {
     ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
 import SaveLoadModal        from './save-load-modal.jsx';
+import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
@@ -41,7 +43,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
             onSubmit={values => onSearch(values)}
         >
             {
-                ({ submitForm, values: { search }, setValues }) => (
+                ({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <Field name='search'>
                             {({ field }) => (
@@ -58,7 +60,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                         search ?
                                             <ToolbarCloseIcon
                                                 className='toolbar__btn-icon'
-                                                onClick={() => onSearchClear(setValues)}
+                                                onClick={() => onSearchClear(setFieldValue)}
                                             />
                                             : <ToolbarSearchIcon />
                                     }
@@ -76,7 +78,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={initial_botname_value}
-            onSubmit={values => onBotNameTyped(values)}
+            onSubmit={values => onBotNameTyped(values.botname)}
         >
             {
                 ({ submitForm }) => (
@@ -105,7 +107,8 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
 );
 
 const ButtonGroup = ({
-    toggleSaveLoadModal,
+    is_run_button_clicked,
+    is_running,
     onResetClick,
     onUndoClick,
     onRedoClick,
@@ -113,8 +116,7 @@ const ButtonGroup = ({
     onSortClick,
     onZoomInOutClick,
     onStopClick,
-    is_run_button_clicked,
-    is_running,
+    toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
         <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
@@ -139,10 +141,10 @@ const ButtonGroup = ({
 
 const Toolbar = ({
     file_name,
+    is_drawer_open,
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
-    // onGoogleDriveClick,
     onRedoClick,
     onResetClick,
     onRunClick,
@@ -192,12 +194,23 @@ const Toolbar = ({
                 toggleSaveLoadModal={toggleSaveLoadModal}
             />
         </div>
+        <div className='toolbar__section'>
+            <TradeAnimation
+                className={classNames(
+                    'toolbar__animation',
+                    { 'animation--hidden': is_drawer_open }
+                )}
+                should_show_overlay={true}
+            />
+            
+        </div>
         <SaveLoadModal />
     </div>
 );
 
 Toolbar.propTypes = {
     file_name            : PropTypes.string,
+    is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onBotNameTyped       : PropTypes.func,
@@ -216,8 +229,9 @@ Toolbar.propTypes = {
     toggleSaveLoadModal  : PropTypes.func,
 };
 
-export default connect(({ toolbar, run_panel }) => ({
+export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name            : toolbar.file_name,
+    is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onBotNameTyped       : toolbar.onBotNameTyped,
@@ -229,9 +243,8 @@ export default connect(({ toolbar, run_panel }) => ({
     onSearchBlur         : toolbar.onSearchBlur,
     onSearchClear        : toolbar.onSearchClear,
     onSortClick          : toolbar.onSortClick,
-    onStopClick          : toolbar.onStopClick,
     onToolboxToggle      : toolbar.onToolboxToggle,
     onUndoClick          : toolbar.onUndoClick,
     onZoomInOutClick     : toolbar.onZoomInOutClick,
-    toggleSaveLoadModal  : toolbar.toggleSaveLoadModal,
+    toggleSaveLoadModal  : saveload.toggleSaveLoadModal,
 }))(Toolbar);

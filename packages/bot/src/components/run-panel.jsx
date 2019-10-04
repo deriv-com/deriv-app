@@ -6,6 +6,7 @@ import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
 import Summary                                from './summary.jsx';
+import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
 import { translate }                          from '../utils/tools';
@@ -34,6 +35,7 @@ const drawerContent = ({
 };
 
 const drawerFooter = ({
+    active_index,
     dialog_options,
     is_running,
     is_run_button_clicked,
@@ -46,6 +48,7 @@ const drawerFooter = ({
 }) => {
     return (
         <div className='run-panel__footer'>
+            <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <Button
                 className={classNames(
                     'btn--flat',

@@ -3,7 +3,6 @@ import React, { lazy }   from 'react';
 import {
     withRouter,
     Redirect }           from 'react-router-dom';
-import ObjectUtils       from 'deriv-shared/utils/object';
 import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }   from 'App/Components/Animations';
 import { localize }      from 'App/i18n';
@@ -17,9 +16,9 @@ import 'Sass/app/modules/account.scss';
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal-details',
-    'component': DemoMessage,
-    'title'    : 'Personal details',
+    path     : AppRoutes.personal_details,
+    component: DemoMessage,
+    title    : 'Personal details',
 };
 
 class Account extends React.Component {

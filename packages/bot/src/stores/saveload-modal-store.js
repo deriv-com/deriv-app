@@ -22,7 +22,7 @@ export default class SaveLoadModalStore {
         }
 
         this.is_saveload_modal_open = !this.is_saveload_modal_open;
-        this.is_save_modal = is_save;
+        this.is_save_modal = typeof is_save === 'boolean' ? is_save : this.is_save_modal;
     }
 
     @action.bound

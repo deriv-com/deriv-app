@@ -50,15 +50,6 @@ class Account extends React.Component {
         this.props.toggleAccount(true);
     }
 
-    componentDidUpdate(prevProps) {
-        // on page refresh account_status is always undefined on first render and on didMount
-        // so we compare if prevProps and current props before setting state
-        if (!prevProps.account_status && !ObjectUtils.isEmptyObject(this.props.account_status)) {
-            const is_high_risk_client = this.props.getRiskAssessment();
-            this.setState({ is_high_risk_client, is_loading: false });
-        }
-    }
-
     componentWillUnmount() {
         this.props.toggleAccount(false);
         this.props.disableRouteMode();

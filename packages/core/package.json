@@ -15,8 +15,9 @@
     "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
     "deploy:clean": "npm run build && gh-pages -d dist",
     "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f",
-    "deploy:staging": "./scripts/release-staging.sh",
-    "deploy:production": "./scripts/release-prod.sh"
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\"",
+    "deploy:production:bot": "npm run build -- bot && gh-pages -d dist -e bot --remote=production"
   },
   "repository": {
     "type": "git",

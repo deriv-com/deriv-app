@@ -3,9 +3,9 @@ import React                    from 'react';
 import { connect }              from 'Stores/connect';
 import AccountTransferForm      from './AccountTransfer/account-transfer-form.jsx';
 import AccountTransferNoAccount from './AccountTransfer/account-transfer-no-account.jsx';
-import AccountTransferNoBalance from './AccountTransfer/account-transfer-no-balance.jsx';
 import AccountTransferReceipt   from './AccountTransfer/account-transfer-receipt.jsx';
 import Error                    from './error.jsx';
+import TransferNoBalance        from './transfer-no-balance.jsx';
 import Loading                  from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
@@ -30,7 +30,7 @@ class AccountTransfer extends React.Component {
                                 <AccountTransferNoAccount />
                                 :
                                 (this.props.has_no_balance ?
-                                    <AccountTransferNoBalance setModalIndex={this.props.setModalIndex} />
+                                    <TransferNoBalance setModalIndex={this.props.setModalIndex} />
                                     :
                                     (this.props.is_transfer_successful ?
                                         <AccountTransferReceipt />

@@ -68,7 +68,7 @@ export const ApiCallProxyHandler = {
                                     window.TrackJS.console.log(queue.list);
                                     window.TrackJS.track(error.getMessage());
                                 }
-                            }).finally(() => {
+                            }).then(() => {
                                 resolve(return_value);
                             });
                         });

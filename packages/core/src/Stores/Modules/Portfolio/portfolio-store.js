@@ -17,7 +17,7 @@ import {
     getEndTime,
     isEnded,
     isUserSold,
-    isValidToSell }                from '../Contract/Helpers/logic';
+    isValidToSell }                from '../Contract/Helpers/logic'; // eslint-disable-line import/no-unresolved
 import BaseStore                   from '../../base-store';
 
 export default class PortfolioStore extends BaseStore {

@@ -56,24 +56,24 @@ html {
     font-family: inherit;
     font-style: inherit;
     padding: 2px 3px;
-    color: var(--text-prominent);
+    color: var(--text-general);
 }
 
 // Placeholders
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: var(--text-prominent);
+    color: var(--text-general);
 }
 
 ::-moz-placeholder { /* Firefox 19+ */
-    color: var(--text-prominent);
+    color: var(--text-general);
 }
 
 :-ms-input-placeholder { /* IE 10+ */
-    color: var(--text-prominent);
+    color: var(--text-general);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-    color: var(--text-prominent);
+    color: var(--text-general);
 }
 
 /** @define theme */

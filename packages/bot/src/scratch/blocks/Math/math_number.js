@@ -1,6 +1,14 @@
+import { translate } from '../../../utils/lang/i18n';
+
 Blockly.Blocks.math_number = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const fieldInput = this.getField('NUM');
+        fieldInput.setValidator(input => this.numberValidator(input));
+    },
+    definition(){
+        return {
             message0: '%1',
             args0   : [
                 {
@@ -11,13 +19,18 @@ Blockly.Blocks.math_number = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : '#dedede',
+            colour         : Blockly.Colours.Utility.colour,
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
-        });
-
-        const fieldInput = this.getField('NUM');
-        fieldInput.setValidator(input => this.numberValidator(input));
+            tooltip        : translate('Please use `.` as a decimal separator for fractional numbers.'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Number block'),
+            'description' : translate('Enter integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
+        };
     },
     numberValidator(input) {
         if (/^-?([0][,.]|[1-9]+[,.])?([0]|[1-9])*$/.test(input)) {

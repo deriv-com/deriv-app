@@ -1,8 +1,22 @@
 import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_change = {
+    /**
+    * Initializes the block, in most cases this calls the jsonInit function, in some
+    * cases it may add extra properties to the block object.
+    * https://developers.google.com/blockly/reference/js/Blockly.Block#jsonInit
+    */
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    /**
+     * Block definitions describe how a block looks and behaves, including the text,
+     * the colour, the shape, and what other blocks it can connect to. We've separated
+     * the block definition from the init function so we can search through it.
+     * https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks
+     */
+    definition() {
+        return {
             message0: translate('change %1 by %2'),
             args0   : [
                 {
@@ -16,12 +30,25 @@ Blockly.Blocks.math_change = {
                     check: 'Number',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Adds a number to a variable'),
+            category         : Blockly.Categories.Mathematical,
+        };
+    },
+    /**
+     * Meta returns an object with with properties that contain human readable strings,
+     * these strings are used in the flyout help content, as well as used for searching
+     * for specific blocks.
+     */
+    meta() {
+        return {
+            'display_name': translate('Change variable'),
+            'description' : translate('Adds a given number to the selected variable.'),
+        };
     },
 };
 

@@ -3,7 +3,15 @@ import { translate }    from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_join = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
+
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'STACK');
+    },
+    definition(){
+        return {
             message0: translate('set %1 to create text with'),
             message1: '%1',
             args0   : [
@@ -19,17 +27,20 @@ Blockly.Blocks.text_join = {
                     name: 'STACK',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
-
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'STACK');
+            tooltip          : translate('Text join'),
+            category         : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Text join'),
+            'description' : translate('Creates a single text string from combining the text value of each attached item, without spaces in between. The number of items can be added accordingly.'),
+        };
     },
     onIconClick() {
         if (!this.workspace || this.isInFlyout) {

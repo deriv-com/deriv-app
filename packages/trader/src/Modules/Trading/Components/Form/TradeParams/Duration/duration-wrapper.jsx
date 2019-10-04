@@ -6,12 +6,13 @@ import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/durat
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
-    hasDurationUnit = (duration_unit) => {
+    hasDurationUnit = (duration_unit, is_advanced_duration) => {
         let duration_list = [...this.props.duration_units_list];
 
-        if (this.props.duration_units_list.length > 1 && !this.props.is_advanced_duration) {
+        if (duration_list.length > 1 && !is_advanced_duration) {
             duration_list = duration_list.filter(du => du.value === 'm' || du.value === 't');
         }
+
         return duration_list.some(du => du.value === duration_unit);
     };
 
@@ -54,9 +55,7 @@ class DurationWrapper extends React.Component {
         const {
             advanced_duration_unit,
             advanced_expiry_type,
-            contract_expiry_type,
             duration,
-            duration_min_max,
             duration_unit,
             expiry_type,
             getDurationFromUnit,
@@ -68,8 +67,6 @@ class DurationWrapper extends React.Component {
 
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
-        const [min_value, max_value] =
-            this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
         if (duration_unit !== current_unit) {
             onChangeUiStore({ name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`, value: duration_unit });
@@ -85,13 +82,7 @@ class DurationWrapper extends React.Component {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
 
-        if (current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
-            onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
-            onChange({ target: { name: 'duration', value: max_value } });
-        }
+        this.assertDurationIsWithinBoundary(duration_unit, current_duration, onChangeUiStore, onChange);
     }
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
@@ -122,6 +113,24 @@ class DurationWrapper extends React.Component {
         if (duration !== current_duration) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
+
+        this.assertDurationIsWithinBoundary(duration_unit, current_duration, onChangeUiStore, onChange);
+    }
+
+    assertDurationIsWithinBoundary (duration_unit, current_duration, onChangeUiStore, onChange) {
+        const [min_value, max_value] = this.getDurationMinMaxValues(
+            this.props.duration_min_max,
+            this.props.contract_expiry_type,
+            duration_unit,
+        );
+
+        if (current_duration < min_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
+        } else if (current_duration > max_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
+        }
     }
 
     render() {
@@ -136,7 +145,7 @@ class DurationWrapper extends React.Component {
         } = this.props;
 
         const current_duration_unit           = (is_advanced_duration ? advanced_duration_unit : simple_duration_unit);
-        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit);
+        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit, is_advanced_duration);
         const simple_is_missing_duration_unit =
             (!is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4);
         const [min_value, max_value]          =
@@ -161,16 +170,22 @@ DurationWrapper.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
     contract_expiry_type  : PropTypes.string,
-    duration              : PropTypes.number,
-    duration_d            : PropTypes.number,
-    duration_h            : PropTypes.number,
-    duration_m            : PropTypes.number,
-    duration_min_max      : PropTypes.object,
-    duration_s            : PropTypes.number,
-    duration_t            : PropTypes.number,
-    duration_unit         : PropTypes.string,
-    duration_units_list   : MobxPropTypes.arrayOrObservableArray,
-    expiry_date           : PropTypes.oneOfType([
+    duration              : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
+    duration_d      : PropTypes.number,
+    duration_h      : PropTypes.number,
+    duration_m      : PropTypes.number,
+    duration_min_max: PropTypes.object,
+    duration_s      : PropTypes.number,
+    duration_t      : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
+    duration_unit      : PropTypes.string,
+    duration_units_list: MobxPropTypes.arrayOrObservableArray,
+    expiry_date        : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
     ]),

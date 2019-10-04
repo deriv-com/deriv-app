@@ -1,10 +1,14 @@
-import React         from 'react';
+import { Dialog }    from 'deriv-components';
 import PropTypes     from 'prop-types';
+import React         from 'react';
 import { localize }  from 'App/i18n';
-import FullPageModal from 'App/Components/Elements/FullPageModal/full-page-modal.jsx';
+import { connect }   from 'Stores/connect';
 import { title }     from './constants';
 
 const ServicesErrorModal = ({
+    disableApp,
+    enableApp,
+    is_loading,
     is_visible,
     onConfirm,
     services_error,
@@ -14,24 +18,36 @@ const ServicesErrorModal = ({
     if (!code || !message) return null;
 
     return (
-        <FullPageModal
+        <Dialog
             title={title[services_error.type]}
             confirm_button_text={localize('OK')}
             onConfirm={onConfirm}
             // TODO: handle onCancel
             // cancel_button_text={cancel_button_text}
             // onCancel={onCancel}
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_loading={is_loading}
             is_visible={is_visible}
         >
             {message}
-        </FullPageModal>
+        </Dialog>
     );
 };
 
 ServicesErrorModal.propTypes = {
+    disableApp    : PropTypes.func,
+    enableApp     : PropTypes.func,
+    is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onConfirm     : PropTypes.func,
     services_error: PropTypes.object,
 };
 
-export default ServicesErrorModal;
+export default connect(
+    ({ ui }) => ({
+        disableApp: ui.disableApp,
+        enableApp : ui.enableApp,
+        is_loading: ui.is_loading,
+    }),
+)(ServicesErrorModal);

@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_sort = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('sort %1 %2 %3'),
             args0   : [
                 {
@@ -22,10 +25,18 @@ Blockly.Blocks.lists_sort = {
             ],
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Sorts the items in a given list'),
+            category       : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Sort list'),
+            'description' : translate('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
+        };
     },
 };
 

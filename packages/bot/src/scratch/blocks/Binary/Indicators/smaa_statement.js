@@ -3,7 +3,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.smaa_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Simple Moving Average Array %2'),
             message1: '%1',
             args0   : [
@@ -23,13 +26,20 @@ Blockly.Blocks.smaa_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
-            tooltip          : translate('Calculates Simple Moving Average (SMA) from a list with a period'),
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            tooltip          : translate('Calculates Simple Moving Average line from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Simple Moving Average Array (SMAA)'),
+            'description' : translate('Simple Moving Average Array (SMAA) is similar to SMA. The only difference is that it returns the entire SMA line, containing a list of all values for a given period. To learn more see SMA indicator.'),
+        };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,
 };

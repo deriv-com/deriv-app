@@ -14,14 +14,11 @@
         margin: unset;
         /* postcss-bem-linter: ignore */
         g {
-            @include themify($themes) {
-                stroke: themed('text_primary_color');
-            }
+            stroke: var(--text-general);
         }
     }
     &__dialog {
-        background-color: $COLOR_WHITE;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 4px 0 var(--shadow-menu);
         border-radius: 4px;
         padding-top: 10px;
         position: absolute;
@@ -31,9 +28,7 @@
         transition: transform 0.25s ease, opacity 0.25s linear;
         width: 231px;
         z-index: 1;
-        @include themify($themes) {
-            background-color: themed('container_secondary_color');
-        }
+        background-color: var(--general-main-2);
 
         &--enter, &--exit {
             opacity: 0;
@@ -48,7 +43,7 @@
         height: inherit;
 
         &--hours {
-            border-right: 1px solid $COLOR_LIGHT_BLACK_4;
+            border-right: 1px solid var(--general-section-1);
             border-radius: 0 0 0 4px;
             width: 150px;
         }
@@ -61,16 +56,12 @@
             height: 228px;
             overflow: hidden;
             text-align: center;
-            @include themify($themes) {
-                border-color: themed('background_cover');
-                color: themed('text_primary_color');
-            }
+            border-color: var(--general-section-1);
+            color: var(--text-prominent);
         }
         &-list-title {
             @include typeface(--small-center-bold-black, capitalize);
-            @include themify($themes) {
-                color: themed('text_color');
-            }
+            color: var(--text-prominent);
         }
         &-list-item {
             @include typeface(--small-left-normal-black);
@@ -79,26 +70,18 @@
             display: inline-block;
             margin: 3px;
             padding: 7px;
-            @include themify($themes) {
-                color: themed('text_primary_color');
-            }
+            color: var(--text-general);
 
             &:hover:not(&--disabled):not(&--selected) {
-                @include themify($themes) {
-                    background: themed('tab_hover_color');
-                    color: themed('text_primary_color');
-                }
+                background: var(--state-hover);
+                color: var(--text-general);
             }
             &--selected {
-                @include themify($themes) {
-                    background: themed('active_color');
-                    color: themed('text_active_color') !important;
-                }
+                background: var(--state-active);
+                color: var(--text-prominent) !important;
             }
             &--disabled {
-                @include themify($themes) {
-                    color: themed('disabled_color');
-                }
+                color: var(--text-disabled);
                 cursor: default;
             }
         }

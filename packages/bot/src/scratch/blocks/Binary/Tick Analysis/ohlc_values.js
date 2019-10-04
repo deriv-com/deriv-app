@@ -1,9 +1,12 @@
-import config        from '../../../../constants/const';
+import config        from '../../../../constants';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.ohlc_values = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Make a List of %1 values in candles list with interval: %2'),
             args0   : [
                 {
@@ -19,33 +22,18 @@ Blockly.Blocks.ohlc_values = {
             ],
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Returns a list of the selected candle values'),
-        });
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Returns a list of specific values from a candle list according to selected time interval'),
+            category       : Blockly.Categories.Tick_Analysis,
+        };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            const allowedScopes = [
-                'trade_definition',
-                'during_purchase',
-                'before_purchase',
-                'after_purchase',
-                'tick_analysis',
-            ];
-            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
+    meta(){
+        return {
+            'display_name': translate('Create a list of candle values (1)'),
+            'description' : translate('This block extracts selected type of values from a candle list according to selected time interval.'),
+        };
     },
 };
 

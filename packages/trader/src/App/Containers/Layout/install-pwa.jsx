@@ -1,9 +1,9 @@
+import { Button }       from 'deriv-components';
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { website_name } from 'App/Constants/app-config';
 import { connect }      from 'Stores/connect';
 import { localize }     from 'App/i18n';
-import Button           from '../../Components/Form/button.jsx';
 
 const InstallPWA = ({
     onClose,
@@ -26,13 +26,13 @@ const InstallPWA = ({
         <React.Fragment>
             <p>{localize('Install {{website_name}} app?', { website_name })}</p>
             <Button
-                className='btn--secondary btn--secondary--orange btn--link notification-bar__button'
+                className='btn--tertiary--default notification-bar__button'
                 has_effect
                 text={localize('No')}
                 onClick={onClose}
             />
             <Button
-                className='btn--primary btn--primary--orange notification-bar__button'
+                className='btn--primary--default notification-bar__button'
                 has_effect
                 text={localize('Yes')}
                 onClick={showPrompt}

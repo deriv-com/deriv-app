@@ -1,9 +1,12 @@
-import config        from '../../../../constants/const';
+import config        from '../../../../constants';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.check_direction = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Direction is %1'),
             args0   : [
                 {
@@ -14,33 +17,18 @@ Blockly.Blocks.check_direction = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('True if the direction matches the selection'),
-        });
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('True if the market direction matches the selection'),
+            category       : Blockly.Categories.Tick_Analysis,
+        };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            const allowedScopes = [
-                'trade_definition',
-                'during_purchase',
-                'before_purchase',
-                'after_purchase',
-                'tick_analysis',
-            ];
-            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
+    meta(){
+        return {
+            'display_name': translate('Market direction'),
+            'description' : translate('This block returns “True” in case if market price goes in the selected direction since the last tick. '),
+        };
     },
 };
 

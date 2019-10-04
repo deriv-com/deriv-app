@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_repeat = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to item %2 repeated %3 times'),
             args0   : [
                 {
@@ -19,12 +22,20 @@ Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Creates a list by repeating a given item'),
+            category         : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Repeat an item'),
+            'description' : translate('Creates a list with a given item repeated for a specific number of times.'),
+        };
     },
 };
 

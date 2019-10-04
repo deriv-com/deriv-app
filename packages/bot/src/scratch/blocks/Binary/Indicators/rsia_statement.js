@@ -3,7 +3,10 @@ import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.rsia_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Relative Strength Index Array %2'),
             message1: '%1',
             args0   : [
@@ -23,13 +26,20 @@ Blockly.Blocks.rsia_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             tooltip          : translate('Calculates Relative Strength Index (RSI) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Relative Strength Index Array (RSIA)'),
+            'description' : translate('Relative Strength Index Array (RSIA) is similar to RSI indicator. The only difference is that it returns the list of values for each entry in the imput list.'),
+        };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'period'],

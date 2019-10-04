@@ -8,7 +8,7 @@ export const requestLogout = () =>
 
 const doLogout = (response) => {
     if (response.logout !== 1) return;
-    removeCookies('affiliate_token', 'affiliate_tracking');
+    removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     Client.clearAllAccounts();
     Client.set('loginid', '');
     SocketCache.clear();

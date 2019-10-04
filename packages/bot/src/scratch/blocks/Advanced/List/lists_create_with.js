@@ -3,7 +3,15 @@ import { translate }    from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_create_with = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Render a ➕-icon for adding additional `lists_statement` blocks
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', () => this.onIconClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'STACK');
+    },
+    definition(){
+        return {
             message0: translate('set %1 to create list with'),
             message1: '%1',
             args0   : [
@@ -19,17 +27,20 @@ Blockly.Blocks.lists_create_with = {
                     name: 'STACK',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
-
-        // Render a ➕-icon for adding additional `lists_statement` blocks
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'STACK');
+            tooltip          : translate('Create List'),
+            category         : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Create list'),
+            'description' : translate('This block creates list with provided strings and/or numbers.'),
+        };
     },
     onIconClick() {
         if (!this.workspace || this.isInFlyout) {

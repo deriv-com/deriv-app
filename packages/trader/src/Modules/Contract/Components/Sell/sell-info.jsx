@@ -1,9 +1,9 @@
+import { Money }    from 'deriv-components';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'App/i18n';
 import Localize     from 'App/Components/Elements/localize.jsx';
-import Money        from 'App/Components/Elements/money.jsx';
 
 const SellInfo = ({
     contract_info,

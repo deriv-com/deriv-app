@@ -1,9 +1,12 @@
-import config        from '../../../../../constants/const';
+import config        from '../../../../../constants';
 import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.notify = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition() {
+        return {
             message0: translate('Notify %1 with sound: %2 %3'),
             args0   : [
                 {
@@ -22,13 +25,20 @@ Blockly.Blocks.notify = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special3.colour,
+            colourSecondary  : Blockly.Colours.Special3.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Creates a notification'),
-        });
+            tooltip          : translate('Displays a notification and optionally play selected sound'),
+            category         : Blockly.Categories.Miscellaneous,
+        };
+    },
+    meta() {
+        return {
+            'display_name': translate('Notify'),
+            'description' : translate('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),
+        };
     },
 };
 

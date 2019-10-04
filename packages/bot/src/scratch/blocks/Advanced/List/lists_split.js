@@ -21,10 +21,17 @@ Blockly.Blocks.lists_split = {
 
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
-            Blockly.Colours.Binary.colour,
-            Blockly.Colours.Binary.colourSecondary,
-            Blockly.Colours.Binary.colourTertiary
+            Blockly.Colours.Utility.colour,
+            Blockly.Colours.Utility.colourSecondary,
+            Blockly.Colours.Utility.colourTertiary
         );
+    },
+    meta(){
+        return {
+            'display_name': translate('Create list from text'),
+            'description' : translate('Creates a list from a given text by splitting it by a given delimiter. This block can also to join items in a given list in a string of text, separated by a given delimiter.'),
+            'category'    : Blockly.Categories.List,
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

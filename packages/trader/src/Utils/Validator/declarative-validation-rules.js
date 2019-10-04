@@ -1,11 +1,9 @@
+import CurrencyUtils             from 'deriv-shared/utils/currency';
+import ObjectUtils               from 'deriv-shared/utils/object';
 import Client                    from '_common/base/client_base';
-import {
-    addComma,
-    getDecimalPlaces }           from '_common/base/currency_base';
 import { getElementById }        from '_common/common_functions';
-import { localize }              from 'App/i18n';
 import { compareBigUnsignedInt } from '_common/string_util';
-import { cloneObject }           from '_common/utility';
+import { localize }              from 'App/i18n';
 
 // ------------------------------
 // ----- Validation Methods -----
@@ -18,28 +16,28 @@ const validRequired     = (value/* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
-const validEmail        = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
-const validGeneral      = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
-const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
-const validPhone        = value => /^\+?[0-9\s]*$/.test(value);
-const validRegular      = (value, options) => options.regex.test(value);
-const validEmailToken   = value => value.trim().length === 8;
-const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-const validBarrier      = value => /^[+-]?\d+\.?\d*$/.test(value);
+const validEmail               = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+export const validPassword     = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
+const validGeneral             = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
+export const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
+export const validPhone        = value => /^\+?((-|\s)*[0-9])*$/.test(value);
+const validRegular             = (value, options) => options.regex.test(value);
+const validEmailToken          = value => value.trim().length === 8;
+export const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
+const validBarrier             = value => /^[+-]?\d+\.?\d*$/.test(value);
 
 const validCompare  = (value, options) => value === getElementById(options.to.substr(1)).value;
 const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;
 const validMin      = (value, options) => (options.min ? value.length >= options.min : true);
-const validLength   = (value, options) => (
+export const validLength   = (value, options) => (
     (options.min ? value.length >= options.min : true) &&
     (options.max ? value.length <= options.max : true)
 );
 
-const validNumber = (value, opts) => {
-    const options = cloneObject(opts);
+export const validNumber = (value, opts) => {
+    const options = ObjectUtils.cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {
         return true;
@@ -62,22 +60,22 @@ const validNumber = (value, opts) => {
         message = localize('Up to {{decimal_count}} decimal places are allowed.', { decimal_count: options.decimals });
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok   = false;
-        message = localize('Should be {{value}}', { value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be {{value}}', { value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
         is_ok   = false;
         message = localize(
             'Should be between {{min_value}} and {{max_value}}',
             {
-                min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
-                max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined),
+                min_value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined),
+                max_value: CurrencyUtils.addComma(options.max, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined),
             }
         );
     } else if ('min' in options && +value < +options.min) {
         is_ok   = false;
-        message = localize('Should be more than {{min_value}}', { min_value: addComma(options.min, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be more than {{min_value}}', { min_value: CurrencyUtils.addComma(options.min, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     } else if ('max' in options && isMoreThanMax(value, options)) {
         is_ok   = false;
-        message = localize('Should be less than {{max_value}}', { max_value: addComma(options.max, options.format_money ? getDecimalPlaces(Client.get('currency')) : undefined) });
+        message = localize('Should be less than {{max_value}}', { max_value: CurrencyUtils.addComma(options.max, options.format_money ? CurrencyUtils.getDecimalPlaces(Client.get('currency')) : undefined) });
     }
 
     getPreBuildDVRs().number.message = message;

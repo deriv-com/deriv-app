@@ -1,7 +1,6 @@
-const Cookies          = require('js-cookie');
-const getPropertyValue = require('./utility').getPropertyValue;
-const isEmptyObject    = require('./utility').isEmptyObject;
-const isProduction     = require('../config').isProduction;
+const Cookies      = require('js-cookie');
+const ObjectUtils  = require('deriv-shared/utils/object');
+const isProduction = require('../config').isProduction;
 
 const getObject = function (key) {
     return JSON.parse(this.getItem(key) || '{}');
@@ -72,13 +71,13 @@ const InScriptStore = function (object) {
 
 InScriptStore.prototype = {
     get(key) {
-        return getPropertyValue(this.store, key);
+        return ObjectUtils.getPropertyValue(this.store, key);
     },
     set(k, value, obj = this.store) {
         let key = k;
         if (!Array.isArray(key)) key = [key];
         if (key.length > 1) {
-            if (!(key[0] in obj) || isEmptyObject(obj[key[0]])) obj[key[0]] = {};
+            if (!(key[0] in obj) || ObjectUtils.isEmptyObject(obj[key[0]])) obj[key[0]] = {};
             this.set(key.slice(1), value, obj[key[0]]);
         } else {
             obj[key[0]] = value;
@@ -115,6 +114,7 @@ State.prototype.getResponse = function (pathname) {
     }
     return this.get(path);
 };
+State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
 const CookieStorage = function (cookie_name, cookie_domain) {

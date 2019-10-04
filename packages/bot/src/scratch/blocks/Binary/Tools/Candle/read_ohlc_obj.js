@@ -1,9 +1,12 @@
-import config        from '../../../../../constants/const';
+import config        from '../../../../../constants';
 import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.read_ohlc_obj = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('Read %1 value in candle %2'),
             args0   : [
                 {
@@ -18,11 +21,18 @@ Blockly.Blocks.read_ohlc_obj = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Read a field in a candle (read from the Candles list)'),
-        });
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Read the selected candle value'),
+            category       : Blockly.Categories.Candle,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Read candle value (2)'),
+            'description' : translate('This block reads selected value from a candle. '),
+        };
     },
 };
 

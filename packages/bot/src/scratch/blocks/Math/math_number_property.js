@@ -2,7 +2,17 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.math_number_property = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        this.setOnChange(event => {
+            if (event.name === 'PROPERTY') {
+                const hasDivisorInput = this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY';
+                this.updateShape(hasDivisorInput);
+            }
+        });
+    },
+    definition(){
+        return {
             message0: translate('%1 is %2'),
             args0   : [
                 {
@@ -25,17 +35,18 @@ Blockly.Blocks.math_number_property = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        this.setOnChange(event => {
-            if (event.name === 'PROPERTY') {
-                const hasDivisorInput = this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY';
-                this.updateShape(hasDivisorInput);
-            }
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            toolip         : translate('Math Number Tooltip'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Test a number'),
+            'description' : translate('Tests whether a given number is any of the following: Even, Odd, Prime, Whole, Positive, Negative, Divisible according to selection. Returns a boolean value (true or false).'),
+        };
     },
     domToMutation(xmlElement) {
         const hasDivisorInput = xmlElement.getAttribute('divisor_input') === 'true';

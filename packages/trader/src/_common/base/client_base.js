@@ -1,11 +1,9 @@
-const moment           = require('moment');
-const isCryptocurrency = require('./currency_base').isCryptocurrency;
-const SocketCache      = require('./socket_cache');
-const localize         = require('../../App/i18n').localize;
-const LocalStore       = require('../storage').LocalStore;
-const State            = require('../storage').State;
-const getPropertyValue = require('../utility').getPropertyValue;
-const isEmptyObject    = require('../utility').isEmptyObject;
+const CurrencyUtils = require('deriv-shared/utils/currency');
+const ObjectUtils   = require('deriv-shared/utils/object');
+const SocketCache   = require('./socket_cache');
+const localize      = require('../../App/i18n').localize;
+const LocalStore    = require('../storage').LocalStore;
+const State         = require('../storage').State;
 
 const ClientBase = (() => {
     const storage_key = 'client.accounts';
@@ -18,7 +16,7 @@ const ClientBase = (() => {
     };
 
     const isLoggedIn = () => (
-        !isEmptyObject(getAllAccountsObject()) &&
+        !ObjectUtils.isEmptyObject(getAllAccountsObject()) &&
         get('loginid') &&
         get('token')
     );
@@ -96,7 +94,7 @@ const ClientBase = (() => {
         return id ? Object.assign({ loginid: id }, get(null, id)) : {};
     };
 
-    const hasAccountType = (type, only_enabled) => !isEmptyObject(getAccountOfType(type, only_enabled));
+    const hasAccountType = (type, only_enabled) => !ObjectUtils.isEmptyObject(getAccountOfType(type, only_enabled));
 
     // only considers currency of real money accounts
     // @param {String} type = crypto|fiat
@@ -105,11 +103,11 @@ const ClientBase = (() => {
         if (type === 'crypto') {
             // find if has crypto currency account
             return loginids.find(loginid =>
-                !get('is_virtual', loginid) && isCryptocurrency(get('currency', loginid)));
+                !get('is_virtual', loginid) && CurrencyUtils.isCryptocurrency(get('currency', loginid)));
         }
         // else find if have fiat currency account
         return loginids.find(loginid =>
-            !get('is_virtual', loginid) && !isCryptocurrency(get('currency', loginid)));
+            !get('is_virtual', loginid) && !CurrencyUtils.isCryptocurrency(get('currency', loginid)));
     };
 
     const TypesMapConfig = (() => {
@@ -139,31 +137,13 @@ const ClientBase = (() => {
 
     const responseAuthorize = (response) => {
         const authorize = response.authorize;
-        set('email',      authorize.email);
-        set('currency',   authorize.currency);
-        set('is_virtual', +authorize.is_virtual);
-        set('session_start', parseInt(moment().valueOf() / 1000));
-        set('landing_company_shortcode', authorize.landing_company_name);
-        updateAccountList(authorize.account_list);
+        set('loginid', authorize.loginid);
     };
 
-    const updateAccountList = (account_list) => {
-        account_list.forEach((account) => {
-            set('excluded_until', account.excluded_until || '', account.loginid);
-            Object.keys(account).forEach((param) => {
-                const param_to_set = param === 'country' ? 'residence' : param;
-                const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
-                if (param_to_set !== 'loginid') {
-                    set(param_to_set, value_to_set, account.loginid);
-                }
-            });
-        });
-    };
-
-    const shouldAcceptTnc = () => {
+    const shouldAcceptTnc = (account_settings = State.getResponse('get_settings')) => {
         if (get('is_virtual')) return false;
         const website_tnc_version = State.getResponse('website_status.terms_conditions_version');
-        const client_tnc_status   = State.getResponse('get_settings.client_tnc_status');
+        const client_tnc_status   = account_settings.client_tnc_status;
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== website_tnc_version;
     };
 
@@ -198,8 +178,8 @@ const ClientBase = (() => {
         return landing_company_response[landing_company_prop] || {};
     };
 
-    const shouldCompleteTax = () => isAccountOfType('financial') &&
-        !/crs_tin_information/.test((State.getResponse('get_account_status') || {}).status);
+    const shouldCompleteTax = (account_status = State.getResponse('get_account_status')) => isAccountOfType('financial') &&
+        !/crs_tin_information/.test((account_status || {}).status);
 
     // remove manager id or master distinction from group
     // remove EUR or GBP distinction from group
@@ -239,26 +219,26 @@ const ClientBase = (() => {
     const getLandingCompanyValue = (loginid, landing_company, key) => {
         let landing_company_object;
         if (loginid.financial || isAccountOfType('financial', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'financial_company');
+            landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'financial_company');
         } else if (loginid.real || isAccountOfType('real', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'gaming_company');
+            landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'gaming_company');
 
             // handle accounts that don't have gaming company
             if (!landing_company_object) {
-                landing_company_object = getPropertyValue(landing_company, 'financial_company');
+                landing_company_object = ObjectUtils.getPropertyValue(landing_company, 'financial_company');
             }
         } else {
-            const financial_company = (getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
-            const gaming_company    = (getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
+            const financial_company = (ObjectUtils.getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
+            const gaming_company    = (ObjectUtils.getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
             landing_company_object  = financial_company.concat(gaming_company);
             return landing_company_object;
         }
         return (landing_company_object || {})[key];
     };
 
-    const getRiskAssessment = () => {
-        const status       = State.getResponse('get_account_status.status');
-        const is_high_risk = /high/.test(State.getResponse('get_account_status.risk_classification'));
+    const getRiskAssessment = (account_status = State.getResponse('get_account_status')) => {
+        const status       = account_status.status;
+        const is_high_risk = /high/.test(account_status.risk_classification);
 
         return (
             isAccountOfType('financial') ?
@@ -301,8 +281,8 @@ const ClientBase = (() => {
             return (same_cur_allowed[from_landing_company] || '') === to_landing_company;
         }
         // or for other clients if current account is cryptocurrency it should only transfer to fiat currencies and vice versa
-        const is_from_crypto = isCryptocurrency(from_currency);
-        const is_to_crypto   = isCryptocurrency(to_currency);
+        const is_from_crypto = CurrencyUtils.isCryptocurrency(from_currency);
+        const is_to_crypto   = CurrencyUtils.isCryptocurrency(to_currency);
         return (is_from_crypto ? !is_to_crypto : is_to_crypto);
     };
 
@@ -319,7 +299,7 @@ const ClientBase = (() => {
         // 2. User must not have any MT5 account
         // 3. Not be a crypto account
         // 4. Not be a virtual account
-        return is_current ? currency && !get('is_virtual') && has_account_criteria && !isCryptocurrency(currency) : has_account_criteria;
+        return is_current ? currency && !get('is_virtual') && has_account_criteria && !CurrencyUtils.isCryptocurrency(currency) : has_account_criteria;
     };
 
     return {

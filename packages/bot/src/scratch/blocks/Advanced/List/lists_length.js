@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_length = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('length of %1'),
             args0   : [
                 {
@@ -12,10 +15,18 @@ Blockly.Blocks.lists_length = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns the total number of items in a given list'),
+            category       : Blockly.Categories.List,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('List Length'),
+            'description' : translate('Returns the total number of items in a given list.'),
+        };
     },
 };
 

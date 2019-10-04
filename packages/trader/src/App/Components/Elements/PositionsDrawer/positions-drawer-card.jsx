@@ -2,21 +2,21 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
-import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
+import { NavLink }             from 'react-router-dom';
+import {
+    Button,
+    Money,
+    UnderlyingIcon }           from 'deriv-components';
+import CurrencyUtils           from 'deriv-shared/utils/currency';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
-import Button                  from 'App/Components/Form/button.jsx';
-import Money                   from 'App/Components/Elements/money.jsx';
-import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';
 import ResultOverlay           from './result-overlay.jsx';
 
 const PositionsDrawerCard = ({
-    active_position,
     className,
     contract_info,
     currency,
@@ -98,7 +98,7 @@ const PositionsDrawerCard = ({
                 </div>
                 <div className={classNames(
                     'positions-drawer-card__profit-loss', {
-                        'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                        'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
                         'positions-drawer-card__profit-loss--negative' : (profit_loss < 0),
                         'positions-drawer-card__profit-loss--positive' : (profit_loss > 0),
                     })}
@@ -161,17 +161,14 @@ const PositionsDrawerCard = ({
     );
 
     return (
-        <div className={classNames(
-            'positions-drawer-card__wrapper', {
-                'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
-            },
-            className)}
+        <div
+            id={`dt_drawer_card_${id}`}
+            className={classNames('positions-drawer-card__wrapper', className)}
         >
             <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
                 is_visible={!!(contract_info.is_sold)}
-                has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={(result || fallback_result)}
@@ -180,9 +177,8 @@ const PositionsDrawerCard = ({
                 <div
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
-                            'positions-drawer-card--green' : (profit_loss > 0) && !result,
-                            'positions-drawer-card--red'   : (profit_loss < 0) && !result,
+                            'positions-drawer-card--green': (profit_loss > 0) && !result,
+                            'positions-drawer-card--red'  : (profit_loss < 0) && !result,
                         }
                     )}
                     onClick={() => toggleUnsupportedContractModal(true)}
@@ -190,18 +186,22 @@ const PositionsDrawerCard = ({
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
                 :
-                <ContractLink
+                <NavLink
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
-                            'positions-drawer-card--green' : (profit_loss > 0) && !result,
-                            'positions-drawer-card--red'   : (profit_loss < 0) && !result,
+                            'positions-drawer-card--green': (profit_loss > 0) && !result,
+                            'positions-drawer-card--red'  : (profit_loss < 0) && !result,
                         }
                     )}
-                    contract_id={id}
+                    to={{
+                        pathname: `/contract/${id}`,
+                        state   : {
+                            // from_table_row: true,
+                        },
+                    }}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
-                </ContractLink>
+                </NavLink>
             }
             <CSSTransition
                 in={!!(is_valid_to_sell)}
@@ -215,9 +215,9 @@ const PositionsDrawerCard = ({
             >
                 <div className='positions-drawer-card__sell-button'>
                     <Button
+                        id={`dt_drawer_card_${id}_button`}
                         className={classNames(
-                            'btn--primary',
-                            'btn--primary--green',
+                            'btn--secondary--default',
                             'btn--sell', {
                                 'btn--loading': is_sell_requested,
                             })}
@@ -232,10 +232,6 @@ const PositionsDrawerCard = ({
 };
 
 PositionsDrawerCard.propTypes = {
-    active_position: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
     className                     : PropTypes.string,
     contract_info                 : PropTypes.object,
     currency                      : PropTypes.string,

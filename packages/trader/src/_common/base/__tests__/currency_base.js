@@ -1,5 +1,5 @@
 const expect   = require('chai').expect;
-const Currency = require('../currency_base');
+const Currency = require('deriv-shared/utils/currency');
 
 describe('Currency', () => {
     const currencies_config = {
@@ -102,13 +102,4 @@ describe('Currency', () => {
             expect(Currency.isCryptocurrency('ZZZ')).to.eq(false);
         });
     });
-
-    describe('.getTransferLimits()', () => {
-        it('returns limits based on input', () => {
-            expect(Currency.getTransferLimits('USD')).to.eq('1.00');
-            expect(Currency.getTransferLimits('USD', 'max')).to.eq('2500.00');
-            expect(Currency.getTransferLimits('BTC')).to.eq(undefined);
-            expect(Currency.getTransferLimits('BTC', 'max')).to.eq(undefined);
-        })
-    })
 });

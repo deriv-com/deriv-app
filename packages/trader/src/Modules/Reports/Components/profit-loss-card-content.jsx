@@ -1,9 +1,9 @@
 import classNames           from 'classnames';
+import { Money }            from 'deriv-components';
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { isCryptocurrency } from '_common/base/currency_base';
+import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
-import Money                from 'App/Components/Elements/money.jsx';
 import Icon                 from 'Assets/icon.jsx';
 
 const ProfitLossCardContent = ({
@@ -18,12 +18,14 @@ const ProfitLossCardContent = ({
             <div className='pl-card__item__header'>
                 { is_sold ? <Localize i18n_default_text='Profit/Loss:' /> : <Localize i18n_default_text='Potential profit/loss:' /> }
             </div>
-            <div className={classNames(
-                'pl-card__item__body', {
-                    'pl-card__item__body--is-crypto': isCryptocurrency(currency),
-                    'pl-card__item__body--loss'     : +pl_value < 0,
-                    'pl-card__item__body--profit'   : +pl_value > 0,
-                })}
+            <div
+                id='dt_profit_loss_label'
+                className={classNames(
+                    'pl-card__item__body', {
+                        'pl-card__item__body--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                        'pl-card__item__body--loss'     : +pl_value < 0,
+                        'pl-card__item__body--profit'   : +pl_value > 0,
+                    })}
             >
                 <Money currency={currency} has_sign={false} amount={pl_value} />
                 <div className={classNames(
@@ -43,7 +45,7 @@ const ProfitLossCardContent = ({
             <div className='pl-card__item__header'>
                 { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
             </div>
-            <div className='pl-card__item__body'>
+            <div id='dt_payout_label' className='pl-card__item__body'>
                 <Money currency={currency} amount={payout} />
                 <div className={classNames(
                     'pl-card__indicative--movement', {

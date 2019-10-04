@@ -1,6 +1,11 @@
+import { translate } from '../../../utils/lang/i18n';
+
 Blockly.Blocks.math_arithmetic = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2 %3',
             args0   : [
                 {
@@ -21,10 +26,18 @@ Blockly.Blocks.math_arithmetic = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Arithmetic operations'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Arithmetical operations'),
+            'description' : translate('Performs arithmetical operations between two numbers'),
+        };
     },
 };
 

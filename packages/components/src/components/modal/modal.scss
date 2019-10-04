@@ -1,0 +1,59 @@
+/**
+ * @define dc-modal
+ */
+.dc-modal {
+    &__container {
+        min-width: 400px;
+        position: relative;
+        overflow: hidden;
+        border-radius: $BORDER_RADIUS;
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--general-main-2);
+        box-shadow: 0 4px 6px 0 var(--shadow-menu);
+
+        &--hide {
+            display: none;
+        }
+        &--enter, &--exit {
+            transform: translateY(50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        &--enter-done {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+    /**
+     * @define dc-modal-header
+     */
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        line-height: 24px;
+        align-items: center;
+        border-bottom: 1px solid var(--general-section-1);
+
+        &__title {
+            @include typeface(--title-left-bold-black);
+            color: var(--text-prominent);
+            line-height: 24px;
+            padding: 16px;
+        }
+        &__section {
+            flex-grow: 1;
+            padding: 16px;
+            line-height: 24px;
+            display: flex;
+            align-items: center;
+        }
+        &__close {
+            display: block;
+            cursor: pointer;
+            padding-right: 16px;
+            @extend %inline-icon.white;
+        }
+    }
+}

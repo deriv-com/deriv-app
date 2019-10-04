@@ -1,7 +1,7 @@
+import { Money }    from 'deriv-components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'App/i18n';
-import Money        from 'App/Components/Elements/money.jsx';
 import Icon         from 'Assets/icon.jsx';
 
 class IndicativeCell extends React.PureComponent {
@@ -13,10 +13,10 @@ class IndicativeCell extends React.PureComponent {
         };
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(prevProps) {
         this.setState(() => ({
-            movement: props.amount >= this.state.amount ? 'profit' : 'loss',
-            amount  : props.amount,
+            movement: prevProps.amount >= this.state.amount ? 'profit' : 'loss',
+            amount  : prevProps.amount,
         }));
     }
 

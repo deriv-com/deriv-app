@@ -1,10 +1,13 @@
-import config        from '../../../../constants/const';
+import config        from '../../../../constants';
 import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.read_details = {
     init() {
-        this.jsonInit({
-            message0: translate('Contract Detail: %1'),
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
+            message0: translate('Contract Details: %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -13,18 +16,26 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-            tooltip        : translate('Reads a selected option from contract details list'),
-        });
+            colour         : Blockly.Colours.Analysis.colour,
+            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
+            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            tooltip        : translate('Reads a selected property from contract details list'),
+            category       : Blockly.Categories.After_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Contract Details'),
+            'description' : translate('Contract Details block returns one of properties of the last sold or expired contract.'),
+
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
             if (this.isDescendantOf('after_purchase')) {
                 if (this.disabled) {
                     this.setDisabled(false);

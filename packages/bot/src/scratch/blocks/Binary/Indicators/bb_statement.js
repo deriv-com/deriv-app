@@ -1,10 +1,13 @@
 import { expectValue } from '../../../shared';
-import config          from '../../../../constants/const';
+import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bb_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Bollinger Bands %2 %3'),
             message1: '%1',
             args0   : [
@@ -29,13 +32,20 @@ Blockly.Blocks.bb_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             tooltip          : translate('Calculates Bollinger Bands (BB) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Bollinger Bands (BB))'),
+            'description' : translate('Bollinger Bands (BB) is technical analysis indicator created by John Bollinger in 1980s and commonly used by traders to inform their trend decisions. The idea behind Bollinger Bands is that 95% of market prices stay within the channel between 2 Bollinger Bands being typically placed 2 deviations away above and below from the Simple Moving average line. In case if price is reaching the upper or lower band, there’s a possibility of trend reversal.'),
+        };
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {

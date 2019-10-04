@@ -13,7 +13,13 @@ Blockly.Blocks.text_getSubstring = {
             [translate('last'), 'LAST'],
         ];
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        this.updateAt(1, true);
+        this.updateAt(2, true);
+    },
+    definition(){
+        return {
             message0: translate('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
                 {
@@ -41,13 +47,18 @@ Blockly.Blocks.text_getSubstring = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        this.updateAt(1, true);
-        this.updateAt(2, true);
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns a specific portion of a given string of text.'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Get substring'),
+            'description' : translate('Returns a specific portion of a given string of text.'),
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

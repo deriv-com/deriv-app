@@ -5,19 +5,29 @@ const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
+const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+
+const output = {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bot.js',
+    chunkFilename: '[name]-[chunkhash:6].bot.js',
+    libraryExport: 'default',
+    library: 'deriv-bot',
+    libraryTarget: 'umd',
+    hashDigestLength: 6,
+};
+
 module.exports = {
-    entry : [
-        path.join(__dirname, 'src', 'app.js') 
+    entry: [
+        'core-js/fn/promise',
+        path.join(__dirname, 'src', 'app.js')
     ],
-    output: {
-        path    : path.resolve(__dirname, 'dist'),
-        filename: 'bot.js',
-    },
+    output,
     devServer: {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
-    devtool: 'source-map',
+    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     target: 'web',
     module: {
         rules: [
@@ -25,7 +35,7 @@ module.exports = {
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
-                     MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: { sourceMap: true },
@@ -33,10 +43,16 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: { sourceMap: true },
+                    },
+                    {
+                        loader: "sass-resources-loader",
+                        options: {
+                            resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
+                        }
                     }
-               ]
-            },  
-            {  
+                ]
+            },
+            {
                 test: /\.svg$/,
                 use: [
                     {
@@ -60,7 +76,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.(js|jsx)$/,
-                exclude: [/node_modules/],
+                exclude: [/node_modules/, /lib/, /utils/],
                 loader: "eslint-loader",
                 options: {
                     fix: true
@@ -69,26 +85,41 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : 'babel-loader',
+                loader : ['deriv-shared/utils/deriv-components-loader.js',
+                    'babel-loader'],
             },
         ],
     },
     plugins: [
         new MiniCssExtractPlugin({ filename: 'bot.css' }),
-        new StyleLintPlugin( { fix: true }),
+        new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([
-            { from: './src/scratch/xml' },
+            { from: './src/scratch/xml', to: 'xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
+            { from: './src/assets/images', to: 'media' },
         ]),
+        new SpriteLoaderPlugin(),
         new MergeIntoSingleFilePlugin({
             files: {
-                'scratch.js': [
-                    './node_modules/scratch-blocks/blockly_compressed_vertical.js',
-                    './node_modules/scratch-blocks/msg/messages.js',
-                    './node_modules/blockly/generators/javascript.js',
-                ]
+                'scratch.min.js': [
+                    'node_modules/scratch-blocks/blockly_compressed_vertical.js',
+                    'node_modules/scratch-blocks/msg/messages.js',
+                    'node_modules/blockly/generators/javascript.js',
+                ],
+            },
+            transform: {
+                'scratch.min.js': (code) => {
+                    const uglifyjs = require('uglify-js');
+                    return uglifyjs.minify(code).code;
+                }
             }
-        }),
-        new SpriteLoaderPlugin(),
+        })
     ],
+    externals: {
+        '@babel/polyfill' : '@babel/polyfill',
+        'classnames'      : 'classnames',
+        'deriv-components': 'deriv-components',
+        'deriv-shared'    : 'deriv-shared',
+        'formik'          : 'formik',
+    },
 };

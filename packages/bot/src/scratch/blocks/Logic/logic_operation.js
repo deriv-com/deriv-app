@@ -2,7 +2,10 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.logic_operation = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2 %3',
             args0   : [
                 {
@@ -21,10 +24,18 @@ Blockly.Blocks.logic_operation = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Performs selected logic operation'),
+            category       : Blockly.Categories.Logic,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Logic operation'),
+            'description' : translate('This block performs the "AND" or the "OR" logic operation.'),
+        };
     },
 };
 

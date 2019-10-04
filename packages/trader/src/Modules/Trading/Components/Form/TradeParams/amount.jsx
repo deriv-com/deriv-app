@@ -1,12 +1,10 @@
 import classNames                     from 'classnames';
+import { Dropdown }                   from 'deriv-components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import {
-    addComma,
-    getDecimalPlaces }                from '_common/base/currency_base';
+import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
-import Dropdown                       from 'App/Components/Form/DropDown';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
@@ -36,7 +34,7 @@ const Amount = ({
                 <span className='fieldset-minimized__basis'>{(basis_list.find(o => o.value === basis) || {}).text}</span>
                 &nbsp;
                 <i><span className={classNames('fieldset-minimized__currency', 'symbols', { [`symbols--${(currency || '').toLowerCase()}`]: currency })} /></i>
-                {addComma(amount, 2)}
+                {CurrencyUtils.addComma(amount, 2)}
             </div>
         );
     }
@@ -48,8 +46,8 @@ const Amount = ({
             classNameInput='trade-container__input'
             currency={currency}
             error_messages={validation_errors.amount}
-            fractional_digits={getDecimalPlaces(currency)}
-            id='amount'
+            fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
+            id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
@@ -67,6 +65,7 @@ const Amount = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <ButtonToggleMenu
+                id='dt_amount_toggle'
                 buttons_arr={basis_list}
                 className='dropdown--no-margin'
                 is_animated={true}
@@ -77,6 +76,7 @@ const Amount = ({
             {!is_single_currency ?
                 <div className='trade-container__currency-options'>
                     <Dropdown
+                        id='amount'
                         className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
                         classNameDisplay='trade-container__currency-options--display'
                         has_symbol
@@ -84,6 +84,7 @@ const Amount = ({
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
+                        no_border={true}
                         value={currency}
                         onChange={onChange}
                     />
@@ -91,7 +92,6 @@ const Amount = ({
                 </div>
                 :
                 input
-
             }
             <AllowEquals
                 contract_start_type={contract_start_type}

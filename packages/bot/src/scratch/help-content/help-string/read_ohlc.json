@@ -1,0 +1,6 @@
+{
+    "text": [
+        "This block returns specified candle value for the selected time interval.",
+        "In the below example an open price is extracted from the most recent candle into the variable \"op\"."
+    ]
+}

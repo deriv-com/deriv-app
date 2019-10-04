@@ -1,10 +1,13 @@
 import { expectValue } from '../../../shared';
-import config          from '../../../../constants/const';
+import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bba_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to Bollinger Bands Array %2 %3'),
             message1: '%1',
             args0   : [
@@ -29,13 +32,20 @@ Blockly.Blocks.bba_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
             tooltip          : translate('Calculates Bollinger Bands (BB) list from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Bollinger Bands Array (BBA)'),
+            'description' : translate('Bollinger Bands Array (BBA) is similar to BB indicator. The only difference is that it returns the entire BB lower, higher or SMA line.'),
+        };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],

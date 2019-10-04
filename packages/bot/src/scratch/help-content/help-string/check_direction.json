@@ -1,0 +1,8 @@
+{
+    "text": [
+        "This block returns “True” in case if market price goes in the selected direction since the last tick. ",
+        "Examples:",
+        "1. In case if the selected direction is “Rise” and the last tick value is less than the current tick value, the output will be “True”, otherwise the output will be an empty string.",
+        "2. In case if the selected direction is “Fall” and the last tick value is greater than the current tick value, the output will be “True”, otherwise the output will be an empty string."
+    ]
+}

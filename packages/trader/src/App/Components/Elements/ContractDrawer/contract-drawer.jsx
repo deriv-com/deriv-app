@@ -3,12 +3,14 @@ import PropTypes               from 'prop-types';
 import React, { Component }    from 'react';
 import { withRouter }          from 'react-router';
 import { CSSTransition }       from 'react-transition-group';
+import {
+    Button,
+    Money,
+    UnderlyingIcon }           from 'deriv-components';
 import { localize }            from 'App/i18n';
 import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
 import Localize                from 'App/Components/Elements/localize.jsx';
-import { UnderlyingIcon }      from 'App/Components/Elements/underlying-icon.jsx';
-import Button                  from 'App/Components/Form/button.jsx';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
@@ -29,7 +31,6 @@ import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
 import ContractCard            from './contract-card.jsx';
-import Money                   from '../money.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -79,13 +80,13 @@ class ContractDrawer extends Component {
                             'contract-card__grid-underlying-trade'
                         )}
                         >
-                            <div className='contract-card__underlying-name'>
+                            <div id='dt_underlying_label' className='contract-card__underlying-name'>
                                 <UnderlyingIcon market={contract_info.underlying} />
                                 <span className='contract-card__symbol'>
                                     {contract_info.display_name}
                                 </span>
                             </div>
-                            <div className='contract-card__type'>
+                            <div id='dt_contract_type_label' className='contract-card__type'>
                                 <ContractTypeCell
                                     type={contract_info.contract_type}
                                     is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
@@ -119,7 +120,7 @@ class ContractDrawer extends Component {
                                 <span className='purchase-price__label'>
                                     {localize('Purchase price:')}
                                 </span>
-                                <span className='purchase-price__value' >
+                                <span id='dt_purchase_price_label' className='purchase-price__value' >
                                     <Money
                                         currency={currency}
                                         amount={buy_price}
@@ -130,7 +131,7 @@ class ContractDrawer extends Component {
                                 <span className='potential-payout__label'>
                                     {localize('Potential payout:')}
                                 </span>
-                                <span className='potential-payout-price__value' >
+                                <span id='dt_potential_payout_label' className='potential-payout-price__value' >
                                     <Money
                                         currency={currency}
                                         amount={payout}
@@ -153,8 +154,7 @@ class ContractDrawer extends Component {
                             >
                                 <Button
                                     className={classNames(
-                                        'btn--primary',
-                                        'btn--primary--green',
+                                        'btn--secondary--default',
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}
@@ -166,6 +166,7 @@ class ContractDrawer extends Component {
                         </CSSTransition>
                     </ContractCardFooter>
                 </ContractCard>
+                {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={getEndTime(contract_info)}
@@ -176,7 +177,7 @@ class ContractDrawer extends Component {
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold)}
-                />
+                />}
             </React.Fragment>
         );
     }
@@ -207,7 +208,7 @@ class ContractDrawer extends Component {
             </React.Fragment>
         );
         return (
-            <div className={classNames('contract-drawer', {})}>
+            <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
                 <div className='contract-drawer__heading'>
                     {
                         this.props.is_from_reports &&

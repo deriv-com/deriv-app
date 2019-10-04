@@ -1,5 +1,4 @@
 import { plusIconLight }     from '../../images';
-import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.procedures_defnoreturn = {
@@ -7,7 +6,20 @@ Blockly.Blocks.procedures_defnoreturn = {
         this.arguments = [];
         this.argumentVarModels = [];
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Enforce unique procedure names
+        const nameField = this.getField('NAME');
+        nameField.setValidator(Blockly.Procedures.rename);
+
+        // Render a ➕-icon for adding parameters
+        const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+
+        this.setStatements(true);
+    },
+    definition() {
+        return {
             message0: translate('function %1 %2'),
             args0   : [
                 {
@@ -21,20 +33,18 @@ Blockly.Blocks.procedures_defnoreturn = {
                     text: '',
                 },
             ],
-            colour         : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-        });
-
-        // Enforce unique procedure names
-        const nameField = this.getField('NAME');
-        nameField.setValidator(Blockly.Procedures.rename);
-
-        // Render a ➕-icon for adding parameters
-        const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-
-        this.setStatements(true);
+            colour         : Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary : Blockly.Colours.Special2.colourTertiary,
+            tooltip        : translate('Function with no return value'),
+            category       : Blockly.Categories.Functions,
+        };
+    },
+    meta() {
+        return {
+            'display_name': translate('Function with no return value'),
+            'description' : translate('This block executes nested instructions (bloks). It doesn\'t return any value'),
+        };
     },
     /**
      * Sets the block colour and updates this procedure's caller blocks
@@ -43,8 +53,6 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onchange(event) {
-        setBlockTextColor(this);
-
         const allowedEvents = [Blockly.Events.BLOCK_DELETE, Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE];
         if (!this.workspace || this.workspace.isFlyout || !allowedEvents.includes(event.type)) {
             return;
@@ -64,6 +72,10 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
+        if (this.isInFlyout) {
+            return;
+        }
+        
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
             const promptMessage = translate('Specify a parameter name:');

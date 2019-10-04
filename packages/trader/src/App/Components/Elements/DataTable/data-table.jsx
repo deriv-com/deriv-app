@@ -31,8 +31,8 @@ class DataTable extends React.PureComponent {
 
     componentDidMount() {
         this.setState({
-            height      : this.el_table_body.clientHeight,
-            width       : this.el_table_body.clientWidth,
+            height      : this.props.custom_height || this.el_table_body.clientHeight,
+            width       : this.props.custom_width || this.el_table_body.clientWidth,
             window_width: window.innerWidth,
         });
         window.onresize = this.resizeDimensions;
@@ -67,6 +67,7 @@ class DataTable extends React.PureComponent {
             id } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
+        const contract_id = data_source[index].contract_id || data_source[index].id;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const content = (
@@ -74,6 +75,7 @@ class DataTable extends React.PureComponent {
                 className={className}
                 row_obj={item}
                 columns={columns}
+                id={contract_id}
                 key={id}
                 to={typeof action === 'string' ? action : undefined}
                 replace={typeof action === 'object' ? action : undefined}
@@ -95,17 +97,17 @@ class DataTable extends React.PureComponent {
             data_source,
             footer,
             is_empty,
+            item_size,
             onScroll,
         } = this.props;
 
         const TableData =
-
             <React.Fragment>
                 <List
                     className={className}
                     height={this.state.height}
                     itemCount={data_source.length}
-                    itemSize={63}
+                    itemSize={item_size || 63}
                     width={this.state.width}
                 >
                     {this.rowRenderer.bind(this)}

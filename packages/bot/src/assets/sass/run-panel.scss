@@ -1,0 +1,31 @@
+/**
+* @define -panel
+**/
+.run-panel {
+    height: calc(100% - 56px);
+    top: 56px;
+
+    &__footer {
+        text-align: center;
+        height: 152px;
+    }
+    &__button {
+        margin-left: 0 !important;
+        opacity: 1;
+
+        &--run {
+            background: var(--purchase-main-1) !important;
+        }
+        &--disable {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+    &__icon-info {
+        vertical-align: middle;
+    }
+    &__animation {
+        height: 64px;
+        margin: 16px;
+    }
+}

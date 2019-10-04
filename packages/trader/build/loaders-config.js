@@ -3,6 +3,9 @@ const path                 = require('path');
 
 const js_loaders = [
     {
+        loader: 'deriv-shared/utils/deriv-components-loader.js'
+    },
+    {
         loader : 'babel-loader',
         options: {
             presets: [
@@ -18,7 +21,7 @@ const js_loaders = [
                 '@babel/plugin-syntax-dynamic-import',
             ],
         }
-    }
+    },
 ];
 
 const html_loaders = [
@@ -98,6 +101,12 @@ const css_loaders = [
             sourceMap: true,
         }
     },
+    {
+        loader: 'sass-resources-loader',
+        options: {
+            resources: require('deriv-shared/utils/index.js'),
+        }
+    }
 ];
 
 module.exports = {

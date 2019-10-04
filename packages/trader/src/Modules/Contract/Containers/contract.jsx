@@ -10,7 +10,12 @@ import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
     componentWillUnmount() {
-        if (this.props.has_error) this.props.clearError();
+        this.props.disableRouteMode();
+        this.props.removeErrorMessage();
+    }
+
+    componentDidMount() {
+        this.props.enableRouteMode();
     }
 
     render () {
@@ -47,21 +52,25 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
-    clearError   : PropTypes.func,
-    error_message: PropTypes.string,
-    has_error    : PropTypes.bool,
-    history      : PropTypes.object,
-    is_mobile    : PropTypes.bool,
-    match        : PropTypes.object,
-    symbol       : PropTypes.string,
+    disableRouteMode  : PropTypes.func,
+    enableRouteMode   : PropTypes.func,
+    error_message     : PropTypes.string,
+    has_error         : PropTypes.bool,
+    history           : PropTypes.object,
+    is_mobile         : PropTypes.bool,
+    match             : PropTypes.object,
+    removeErrorMessage: PropTypes.func,
+    symbol            : PropTypes.string,
 };
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        clearError   : modules.contract_replay.clearError,
-        error_message: modules.contract_replay.error_message,
-        has_error    : modules.contract_replay.has_error,
-        is_mobile    : ui.is_mobile,
-        symbol       : modules.contract_replay.contract_info.underlying,
+        disableRouteMode  : ui.disableRouteModal,
+        enableRouteMode   : ui.setRouteModal,
+        error_message     : modules.contract_replay.error_message,
+        has_error         : modules.contract_replay.has_error,
+        removeErrorMessage: modules.contract_replay.removeErrorMessage,
+        symbol            : modules.contract_replay.contract_info.underlying,
+        is_mobile         : ui.is_mobile,
     }),
 )(Contract));

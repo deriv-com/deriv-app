@@ -1,7 +1,7 @@
 import React        from 'react';
+import { Button }   from 'deriv-components';
 import { localize } from 'App/i18n';
 import Localize     from './localize.jsx';
-import Button       from '../Form/button.jsx';
 
 const toggleFade = ({ node, opacity, direction, color }) => {
     const sub_or_add = direction === -1 && opacity > 0.1 ? -1 : 1;
@@ -81,8 +81,7 @@ const MarketIsClosedOverlay = () => (
         <p><Localize i18n_default_text='Market is closed.' /></p>
         <p><Localize i18n_default_text='Try Volatility Indices which simulate real-world market volatility and are open 24/7.' /></p>
         <Button
-            className='market-is-closed-overlay__button'
-            classNameSpan='market-is-closed-overlay__button--span'
+            className='btn--primary--default market-is-closed-overlay__button'
             onClick={onClick}
             text={localize('Try Volatility Indices')}
         />

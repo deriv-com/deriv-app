@@ -1,5 +1,5 @@
 import { notify }     from './broadcast';
-import config         from '../../../constants/const';
+import config         from '../../../constants';
 import { getUTCTime } from '../../../utils/tools';
 import { translate }  from '../../../utils/lang/i18n';
 
@@ -18,7 +18,7 @@ export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis        : 'stake',
+            basis        : tradeOption.basis,
             currency     : tradeOption.currency,
             symbol       : tradeOption.symbol,
             duration     : tradeOption.duration,

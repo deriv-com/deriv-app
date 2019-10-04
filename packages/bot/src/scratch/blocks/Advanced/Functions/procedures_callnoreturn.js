@@ -1,4 +1,3 @@
-import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.procedures_callnoreturn = {
@@ -7,7 +6,16 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.argumentVarModels = [];
         this.previousDisabledState = false;
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    /**
+     * Block definitions describe how a block looks and behaves, including the text,
+     * the colour, the shape, and what other blocks it can connect to. We've separated
+     * the block definition from the init function so we can search through it.
+     * https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks
+     */
+    definition() {
+        return {
             message0: '%1 %2',
             args0   : [
                 {
@@ -20,12 +28,25 @@ Blockly.Blocks.procedures_callnoreturn = {
                     name: 'TOPROW',
                 },
             ],
-            colour           : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary  : Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary   : Blockly.Colours.BinaryProcedures.colourTertiary,
+            colour           : Blockly.Colours.Special2.colour,
+            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Custom function'),
+            category         : Blockly.Categories.Functions,
+        };
+    },
+    /**
+     * Meta returns an object with with properties that contain human readable strings,
+     * these strings are used in the flyout help content, as well as used for searching
+     * for specific blocks.
+     */
+    meta() {
+        return {
+            'display_name': translate('Custom function'),
+            'description' : '',
+        };
     },
     /**
      * Procedure calls cannot exist without the corresponding procedure
@@ -34,8 +55,6 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     onchange(event) {
-        setBlockTextColor(this);
-
         if (!this.workspace || this.workspace.isFlyout) {
             // Block is deleted or is in a flyout.
             return;

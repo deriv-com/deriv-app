@@ -2,8 +2,8 @@ import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
 import { Scrollbars }     from 'tt-react-custom-scrollbars';
+import { Button }         from 'deriv-components';
 import Icon               from 'Assets/icon.jsx';
-import Button             from 'App/Components/Form/button.jsx';
 import { localize }       from 'App/i18n';
 
 const TradeTypeInfoItem = ({
@@ -15,13 +15,14 @@ const TradeTypeInfoItem = ({
     item,
     item_index,
     itemList,
+    itemListLength,
     onBackButtonClick,
     onSubmitButtonClick,
 }) => (
-    <React.Fragment>
+    <div id={`dt_contract_info_${item.value}`}>
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
-            <span onClick={() => onBackButtonClick()}>
+            <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
                 <Icon icon='IconBack' />
             </span>
             <span className='title'>{item.text}</span>
@@ -52,20 +53,24 @@ const TradeTypeInfoItem = ({
                                     <Icon icon='TradeCategories' category={type.value} />
                                 </Scrollbars>
                             </div>
+                            {itemListLength > 1 &&
                             <div>
                                 <Button
-                                    className='btn--primary--orange trade-type-info-dialog__choose-button'
+                                    id={`dt_contract_info_${item.value}_button`}
+                                    className='btn--secondary--default trade-type-info-dialog__choose-button'
                                     onClick={() => onSubmitButtonClick(type)}
                                     text={localize('Choose')}
                                 />
                             </div>
+                            }
                         </div>
                     ))
                 }
             </div>
         </div>
+        {itemListLength > 1 &&
         <div className='trade-type-info-navigation'>
-            <div className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
+            <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
                 <Icon icon='IconChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
@@ -79,6 +84,7 @@ const TradeTypeInfoItem = ({
                     itemList.map((contract, idx) => (
                         <React.Fragment key={idx}>
                             <div
+                                id={`dt_contract_info_${contract.value}_circle`}
                                 className='trade-type-info-navigation__circle-button'
                                 onClick={() => handleNavigationClick(contract)}
                             />
@@ -86,11 +92,12 @@ const TradeTypeInfoItem = ({
                     ))
                 }
             </div>
-            <div className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
+            <div id='dt_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
                 <Icon icon='IconChevronRight' />
             </div>
         </div>
-    </React.Fragment>
+        }
+    </div>
 );
 
 TradeTypeInfoItem.propTypes = {

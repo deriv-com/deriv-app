@@ -15,20 +15,24 @@ function confirm {
     echo "${RESET}"
 }
 
-cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
+cd $(git rev-parse --show-toplevel) &&
 
 if [[ ! $(git config --get remote.origin.url) =~ binary-com/deriv-app ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"remote 'origin' should be pointing to binary-com/deriv-app."
+    echo "$RED  > ERROR: $RESET remote 'origin' should be pointing to binary-com/deriv-app."
     exit 1
 fi
 
 if [[ ! $(git rev-parse --abbrev-ref HEAD) =~ dev ]]; then
-    echo ${RED}"  > ERROR: "${RESET}"Current working branch should be dev."
+    echo "$RED  > ERROR: $RESET Current working branch should be dev."
     exit 1
 fi
 
+if [[ -z $(command -v lerna) ]]; then
+    echo "$RED  > ERROR: $RESET Please install lerna globally."
+fi
+
 message "Creating CNAME" &&
-echo "staging.deriv.app" > ./scripts/CNAME &&
+echo "staging.deriv.app" > ./packages/trader/scripts/CNAME &&
 
 message "Checking npm production value" &&
 if [[ $(npm config get production) =~ ^true$ ]]
@@ -37,7 +41,7 @@ then
 fi
 
 message "Installing packages" &&
-npm ci &&
+lerna bootstrap --ci && lerna run build --scope=deriv-shared --scope=deriv-components &&
 
 confirm "Please confirm release to STAGING" &&
 if [[ $REPLY =~ ^[Nn]$ ]]
@@ -49,4 +53,6 @@ fi &&
 export NODE_ENV=staging &&
 
 message "Running build and deploy" &&
-npm run deploy:clean
+cd packages/trader/ && npm run deploy:clean &&
+cd ../bot/ && npm run build &&
+cd ../core/ && npm run deploy:folder bot

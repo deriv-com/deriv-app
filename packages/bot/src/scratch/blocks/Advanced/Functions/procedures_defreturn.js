@@ -6,7 +6,21 @@ Blockly.Blocks.procedures_defreturn = {
         this.arguments = [];
         this.argumentVarModels = [];
 
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        // Enforce unique procedure names
+        const nameField = this.getField('NAME');
+        nameField.setValidator(Blockly.Procedures.rename);
+
+        // Render a ➕-icon for adding parameters
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
+        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.moveInputBefore('ADD_ICON', 'RETURN');
+
+        this.setStatements(true);
+    },
+    definition(){
+        return {
             message0: translate('function %1 %2 %3'),
             message1: 'return %1',
             args0   : [
@@ -32,21 +46,18 @@ Blockly.Blocks.procedures_defreturn = {
                     align: Blockly.ALIGN_RIGHT,
                 },
             ],
-            colour         : Blockly.Colours.BinaryProcedures.colour,
-            colourSecondary: Blockly.Colours.BinaryProcedures.colourSecondary,
-            colourTertiary : Blockly.Colours.BinaryProcedures.colourTertiary,
-        });
-
-        // Enforce unique procedure names
-        const nameField = this.getField('NAME');
-        nameField.setValidator(Blockly.Procedures.rename);
-
-        // Render a ➕-icon for adding parameters
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.moveInputBefore('ADD_ICON', 'RETURN');
-
-        this.setStatements(true);
+            colour         : Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary : Blockly.Colours.Special2.colourTertiary,
+            tooltip        : translate('Function that returns a value'),
+            category       : Blockly.Categories.Functions,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Function that returns a value'),
+            'description' : translate('This block executes nested instructions (bloks) and can return a value which is typically the result of nested instructions execution.'),
+        };
     },
     onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,
     onchange     : Blockly.Blocks.procedures_defnoreturn.onchange,

@@ -1,10 +1,10 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
-import { WS }           from 'Services';
 import { getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
+import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
 import {
     LocalStore,
@@ -14,8 +14,9 @@ import Localize         from '../../App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-const client_notifications = {
+export const clientNotifications = {
     currency: {
+        key    : 'currency',
         header : localize('Set Currency'),
         message: (
             <Localize
@@ -26,6 +27,7 @@ const client_notifications = {
         type: 'danger',
     },
     self_exclusion: (excluded_until) => ({
+        key    : 'self_exclusion',
         header : localize('Self-exclusion Detected'),
         message: (
             <Localize
@@ -37,41 +39,59 @@ const client_notifications = {
         type: 'danger',
     }),
     authenticate: {
+        key    : 'authenticate',
         header : localize('Account Authentication'),
         message: (
             <Localize
                 i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'info',
     },
     cashier_locked: {
+        key    : 'cashier_locked',
         header : localize('Cashier Disabled'),
         message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
         type   : 'warning',
     },
     withdrawal_locked: {
+        key    : 'withdrawal_locked',
         header : localize('Withdrawal Disabled'),
         message: localize('Withdrawals have been disabled on your account. Please check your email for more details.'),
         type   : 'warning',
     },
     mt5_withdrawal_locked: {
+        key    : 'mt5_withdrawal_locked',
         header : localize('MT5 Withdrawal Disabled'),
         message: localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
         type   : 'warning',
     },
     document_needs_action: {
+        key    : 'document_needs_action',
         header : localize('Authentication Failed'),
         message: (
             <Localize
                 i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'warning',
     },
     unwelcome: {
+        key    : 'unwelcome',
         header : localize('Trading and Deposits Disabled'),
         message: (
             <Localize
@@ -82,6 +102,7 @@ const client_notifications = {
         type: 'danger',
     },
     mf_retail: {
+        key    : 'mf_retail',
         header : localize('Binary Options Trading Disabled'),
         message: (
             <Localize
@@ -92,6 +113,7 @@ const client_notifications = {
         type: 'danger',
     },
     financial_limit: {
+        key    : 'financial_limit',
         header : localize('Remove Deposit Limits'),
         message: (
             <Localize
@@ -102,26 +124,43 @@ const client_notifications = {
         type: 'warning',
     },
     risk: {
+        key    : 'risk',
         header : localize('Withdrawal and Trading Limits'),
         message: (
             <Localize
                 i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
                 components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
+                // TODO: Re-enable below once FA check on deriv is ready
+                // components={[
+                //     <BinaryLink
+                //         key={0}
+                //         className='link link--white'
+                //         to='account/financial-assessment'
+                //     />,
+                // ]}
             />
         ),
         type: 'info',
     },
     tax: {
+        key    : 'tax',
         header : localize('Complete your personal details'),
         message: (
             <Localize
                 i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/personal-details'
+                    />,
+                ]}
             />
         ),
         type: 'danger',
     },
     tnc: {
+        key    : 'tnc',
         header : localize('Terms & Conditions Updated'),
         message: (
             <Localize
@@ -132,19 +171,98 @@ const client_notifications = {
         type: 'danger',
     },
     required_fields: {
+        key    : 'required_fields',
         header : localize('Complete your personal details'),
         message: (
             <Localize
                 i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/detailsws', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/personal-details'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
+    },
+    switch_to_tick_chart: {
+        key    : 'switch_to_tick_chart',
+        header : localize('This chart display is not ideal for tick contracts'),
+        message: (
+            <Localize
+                i18n_default_text='Please change the chart duration to tick for a better trading experience.'
+            />
+        ),
+        type: 'info',
+    },
+    you_are_offline: {
+        key    : 'you_are_offline',
+        header : localize('You are offline'),
+        message: (
+            <Localize i18n_default_text='Check your connection.' />
+        ),
+        type: 'danger',
+    },
+    password_changed: {
+        key    : 'password_changed',
+        header : localize('Password updated.'),
+        message: (
+            <Localize
+                i18n_default_text='Please log in with your updated password.'
+            />
+        ),
+        type: 'info',
+    },
+    poa_expired: {
+        key    : 'poa_expired',
+        header : localize('Document expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-address'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
+    },
+    poa_rejected: {
+        key    : 'poa_rejected',
+        header : localize('We could not verify your proof of address'),
+        message: (
+            <Localize
+                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
+            />
+        ),
+        type: 'danger',
+    },
+    poi_expired: {
+        key    : 'poi_expired',
+        header : localize('Proof of identity expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'danger',
     },
 };
 
-const hasMissingRequiredField = (response, client) => {
-    if (!response.get_settings) return false;
+const hasMissingRequiredField = (account_settings, client) => {
+    if (!account_settings) return false;
 
     const { landing_company_shortcode } = client;
     const is_svg = (landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica');
@@ -156,8 +274,7 @@ const hasMissingRequiredField = (response, client) => {
         required_fields = getRequiredFields();
     }
 
-    const get_settings = response.get_settings;
-    return required_fields.some(field => !get_settings[field]);
+    return required_fields.some(field => !account_settings[field]);
 
     function getSVGRequiredFields() {
         const necessary_withdrawal_fields = State.getResponse('landing_company.financial_company.requirements.withdrawal');
@@ -185,14 +302,35 @@ const hasMissingRequiredField = (response, client) => {
     }
 };
 
-const checkAccountStatus = (response, client, addNotification, loginid) => {
-    if (!response.get_account_status) return;
+const getStatusValidations = status_arr =>
+    status_arr.reduce((validations, stats) => {
+        validations[stats] = true;
+        return validations;
+    }, {});
+
+const addVerificationNotifications = (identity, document, addNotification) => {
+    if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
+
+    if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
+    if ((document.status === 'rejected' || document.status === 'suspected')) {
+        addNotification(clientNotifications.poa_rejected);
+    }
+};
+
+const checkAccountStatus = (account_status, client, addNotification, loginid) => {
+    if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    const { prompt_client_to_authenticate, status } = response.get_account_status;
+    const {
+        authentication: {
+            document,
+            identity,
+            needs_verification,
+        },
+        status,
+    } = account_status;
 
     const {
-        document_under_review,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -201,46 +339,50 @@ const checkAccountStatus = (response, client, addNotification, loginid) => {
         ukrts_max_turnover_limit_not_set,
         professional,
     } = getStatusValidations(status);
+
+    addVerificationNotifications(identity, document, addNotification);
+
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
 
-    if (cashier_locked)        addNotification(client_notifications.cashier_locked);
-    if (withdrawal_locked)     addNotification(client_notifications.withdrawal_locked);
-    if (mt5_withdrawal_locked) addNotification(client_notifications.mt5_withdrawal_locked);
-    if (document_needs_action) addNotification(client_notifications.document_needs_action);
-    if (unwelcome)             addNotification(client_notifications.unwelcome);
-    if (is_mf_retail)          addNotification(client_notifications.mf_retail);
+    if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
+    if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
+    if (mt5_withdrawal_locked) addNotification(clientNotifications.mt5_withdrawal_locked);
+    if (document_needs_action) addNotification(clientNotifications.document_needs_action);
+    if (unwelcome)             addNotification(clientNotifications.unwelcome);
+    if (is_mf_retail)          addNotification(clientNotifications.mf_retail);
+
     if (ukrts_max_turnover_limit_not_set) {
-        addNotification(client_notifications.financial_limit);
+        addNotification(clientNotifications.financial_limit);
     }
-    if (getRiskAssessment()) addNotification(client_notifications.risk);
-    if (shouldCompleteTax()) addNotification(client_notifications.tax);
-
-    if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
-        addNotification(client_notifications.authenticate);
-    }
-
-    function getStatusValidations(status_arr) {
-        return status_arr.reduce((validations, account_status) => {
-            validations[account_status] = true;
-            return validations;
-        }, {});
-    }
+    if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
+    if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
+    if (needs_authentication)              addNotification(clientNotifications.authenticate);
 };
 
-export const handleClientNotifications = (client, addNotification, loginid) => {
+export const handleClientNotifications = (
+    client,
+    account_settings,
+    account_status,
+    addNotification,
+    loginid
+) => {
     const { currency, excluded_until } = client;
-    if (!currency)         addNotification(client_notifications.currency);
-    if (excluded_until)    addNotification(client_notifications.self_exclusion(excluded_until));
+    if (!currency)      addNotification(clientNotifications.currency);
+    if (excluded_until) addNotification(clientNotifications.self_exclusion(excluded_until));
 
-    WS.getAccountStatus().then((response) => checkAccountStatus(response, client, addNotification, loginid));
+    checkAccountStatus(account_status, client, addNotification, loginid);
 
-    WS.sendRequest({ get_settings: 1 }, { forced: true }).then((response) => {
-        if (loginid !== LocalStore.get('active_loginid')) return;
+    if (loginid !== LocalStore.get('active_loginid')) return {};
 
-        if (shouldAcceptTnc()) addNotification(client_notifications.tnc);
+    if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications.tnc);
 
-        if (hasMissingRequiredField(response, client)) {
-            addNotification(client_notifications.required_fields);
-        }
-    });
+    const has_missing_required_field = hasMissingRequiredField(account_settings, client);
+    if (has_missing_required_field) {
+        addNotification(clientNotifications.required_fields);
+    }
+
+    return {
+        has_missing_required_field,
+    };
 };

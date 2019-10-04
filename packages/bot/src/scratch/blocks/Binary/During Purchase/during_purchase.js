@@ -4,8 +4,11 @@ import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.during_purchase = {
     init() {
-        this.jsonInit({
-            message0: translate('%1 (3) Watch and sell your purchased contract %2'),
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
+            message0: translate('%1 3. Sell conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -26,13 +29,20 @@ Blockly.Blocks.during_purchase = {
                     check: 'SellAtMarket',
                 },
             ],
-            colour         : '#2a3052',
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
             tooltip        : translate(
-                'Watch the purchased contract info and sell at market if available (Runs on contract update)'
+                'Sell your active contract if needed (optional)'
             ),
-        });
+            category: Blockly.Categories.During_Purchase,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Sell conditions'),
+            'description' : translate('This block allows you to specify conditions for selling your purchased contract before its expiration.'),
+        };
     },
     onchange(event) {
         setBlockTextColor(this);

@@ -1,10 +1,13 @@
 import { expectValue } from '../../../shared';
-import config          from '../../../../constants/const';
+import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.macda_statement = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('set %1 to MACD Array %2 %3'),
             message1: '%1',
             args0   : [
@@ -29,14 +32,22 @@ Blockly.Blocks.macda_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
-            tooltip          : translate('Calculates Moving Average Convergence Divergence (MACD) list from a list'),
+            colour           : Blockly.Colours.Special4.colour,
+            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            tooltip          : translate('Calculates Moving Average Convergence Divergence (MACD) from a list'),
             previousStatement: null,
             nextStatement    : null,
-        });
+            category         : Blockly.Categories.Indicators,
+        };
     },
+    meta(){
+        return {
+            'display_name': translate('MACD'),
+            'description' : translate('MACD acronym stands for Moving Average Convergence Divergence. MACD is calculated by subtracting the long-term Exponential Moving Average (26 periods) from the short-term Exponential Moving Average (12 periods). The idea behind the MACD indicator is that when the short-term EMA is greater or lower than long-term EMA than there’s a possibility of trend reversal.'),
+        };
+    },
+    
     onchange           : Blockly.Blocks.bb_statement.onchange,
     requiredParamBlocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
 };

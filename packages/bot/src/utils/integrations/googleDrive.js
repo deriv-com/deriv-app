@@ -1,9 +1,10 @@
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
 import { translate, trackAndEmitError } from '../tools';
-import config                           from '../../constants/const';
+import config                           from '../../constants';
 import { loadWorkspace, loadBlocks }    from '../../scratch';
 
+/* eslint-disable */
 class GoogleDrive {
     constructor() {
         this.botFolderName = `Binary Bot - ${translate('Strategies')}`;
@@ -12,12 +13,31 @@ class GoogleDrive {
         this.isAuthorised = null;
         this.profile = null;
 
-        $.getScript('https://apis.google.com/js/api.js', () => this.init());
+        this.getScript('https://apis.google.com/js/api.js', () => this.init());
+    }
+
+    getScript(source, callback) {
+        let script = document.createElement('script');
+        const prior = document.getElementsByTagName('script')[0];
+
+        script.async = 1;
+        script.onload = script.onreadystatechange = function(_, isAbort) {
+            if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
+                script.onload = null;
+                script.onreadystatechange = null;
+                script = undefined;
+    
+                if (!isAbort && callback) setTimeout(callback, 0);
+            }
+        };
+    
+        script.src = source;
+        prior.parentNode.insertBefore(script, prior);
     }
 
     init() {
-        gapi.load('client:auth2:picker', {
-            callback: () => {
+        gapi.load('client:auth2', 
+            () => {
                 gapi.client
                     .init({
                         apiKey       : this.apiKey,
@@ -30,36 +50,13 @@ class GoogleDrive {
                             this.googleAuth = gapi.auth2.getAuthInstance();
                             this.googleAuth.isSignedIn.listen(isSignedIn => this.updateSigninStatus(isSignedIn));
                             this.updateSigninStatus(this.googleAuth.isSignedIn.get());
-
-                            $('#integrations').removeClass('invisible');
-                            $('#save-google-drive')
-                                .parent()
-                                .removeClass('invisible');
-                            $('#load-google-drive')
-                                .parent()
-                                .removeClass('invisible');
                         },
                         error => {
-                            if (window.trackJs) {
-                                trackJs.track(
-                                    `${translate(
-                                        'There was an error initialising Google Drive'
-                                    )} - Error: ${JSON.stringify(error)}`
-                                );
-                            }
+                            console.log(error); // eslint-disable-line
                         }
                     );
-            },
-            onerror: error => {
-                if (window.trackJs) {
-                    trackJs.track(
-                        `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
-                            error
-                        )}`
-                    );
-                }
-            },
-        });
+            }
+        );
     }
 
     updateSigninStatus(isSignedIn) {
@@ -69,7 +66,6 @@ class GoogleDrive {
             this.profile = null;
         }
         this.isAuthorised = isSignedIn;
-        globalObserver.emit('googledrive.authorise', { isAuthorised: isSignedIn });
     }
 
     authorise() {
@@ -103,9 +99,10 @@ class GoogleDrive {
     }
 
     setInfo(data) {
-        this.clientId = data.gd.cid;
-        this.appId = data.gd.aid;
-        this.apiKey = data.gd.api;
+        const { gd: {cid, aid, api } } = data;
+        this.clientId = cid;
+        this.appId = aid;
+        this.apiKey = api;
     }
 
     // eslint-disable-next-line class-methods-use-this

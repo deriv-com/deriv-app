@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.variables_set = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             type    : 'field_variable',
             message0: translate('set %1 to %2'),
             args0   : [
@@ -16,13 +19,20 @@ Blockly.Blocks.variables_set = {
                     name: 'VALUE',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Special2.colour,
+            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
+            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : '',
-        });
+            tooltip          : translate('Sets variable value'),
+            category         : Blockly.Categories.Variables,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Set variable'),
+            'description' : translate('Assigns a given value to a variable'),
+        };
     },
 };
 

@@ -20,14 +20,21 @@ Blockly.Blocks.lists_setIndex = {
 
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
-            Blockly.Colours.Binary.colour,
-            Blockly.Colours.Binary.colourSecondary,
-            Blockly.Colours.Binary.colourTertiary
+            Blockly.Colours.Utility.colour,
+            Blockly.Colours.Utility.colourSecondary,
+            Blockly.Colours.Utility.colourTertiary
         );
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
 
         this.updateAt(true);
+    },
+    meta(){
+        return {
+            'display_name': translate('Set list item'),
+            'description' : translate('This block replaces a specific item in a list with another given item. It can also insert new item in the list at specified position.'),
+            'category'    : Blockly.Categories.List,
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

@@ -19,15 +19,22 @@ Blockly.Blocks.lists_getSublist = {
 
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
-            Blockly.Colours.Binary.colour,
-            Blockly.Colours.Binary.colourSecondary,
-            Blockly.Colours.Binary.colourTertiary
+            Blockly.Colours.Utility.colour,
+            Blockly.Colours.Utility.colourSecondary,
+            Blockly.Colours.Utility.colourTertiary
         );
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
 
         this.updateAt(1, true);
         this.updateAt(2, true);
+    },
+    meta() {
+        return {
+            'display_name': translate('Get sub-list'),
+            'description' : translate('This block extracts a sub-list from a given list using specified items positions.'),
+            'category'    : Blockly.Categories.List,
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

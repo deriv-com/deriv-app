@@ -2,7 +2,10 @@ import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.controls_whileUntil = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: translate('repeat %1 %2'),
             args0   : [
                 {
@@ -23,12 +26,20 @@ Blockly.Blocks.controls_whileUntil = {
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Binary.colour,
-            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            colour           : Blockly.Colours.Utility.colour,
+            colourSecondary  : Blockly.Colours.Utility.colourSecondary,
+            colourTertiary   : Blockly.Colours.Utility.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-        });
+            tooltip          : translate('Repeats inside blocks and stops only when the condition is met'),
+            category         : Blockly.Categories.Loop,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Repeat While/Until'),
+            'description' : translate('Repeats inside blocks and stops only when the condition is met.'),
+        };
     },
 };
 

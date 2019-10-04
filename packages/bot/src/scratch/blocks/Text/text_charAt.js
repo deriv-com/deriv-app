@@ -2,7 +2,23 @@ import { translate } from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_charAt = {
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+
+        const dropdown = this.getField('WHERE');
+        dropdown.setValidator(value => {
+            const newAt = ['FROM_START', 'FROM_END'].includes(value);
+            if (newAt !== this.isAt) {
+                this.updateAt(newAt);
+                this.setFieldValue(value, 'WHERE');
+                return null;
+            }
+            return undefined;
+        });
+
+        this.updateAt(true);
+    },
+    definition(){
+        return {
             message0: translate('in text %1 get %2'),
             args0   : [
                 {
@@ -23,23 +39,18 @@ Blockly.Blocks.text_charAt = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
-
-        const dropdown = this.getField('WHERE');
-        dropdown.setValidator(value => {
-            const newAt = ['FROM_START', 'FROM_END'].includes(value);
-            if (newAt !== this.isAt) {
-                this.updateAt(newAt);
-                this.setFieldValue(value, 'WHERE');
-                return null;
-            }
-            return undefined;
-        });
-
-        this.updateAt(true);
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Returns a specific character from a given string'),
+            category       : Blockly.Categories.Text,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Get character'),
+            'description' : translate('Returns the specific character from a given string of text according to the selected option. '),
+        };
     },
     mutationToDom() {
         const container = document.createElement('mutation');

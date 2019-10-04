@@ -1,3 +1,5 @@
+import { translate } from '../../../utils/lang/i18n';
+
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
 Blockly.Blocks.math_round = {
     /**
@@ -6,7 +8,10 @@ Blockly.Blocks.math_round = {
      * @this Blockly.Block
      */
     init() {
-        this.jsonInit({
+        this.jsonInit(this.definition());
+    },
+    definition(){
+        return {
             message0: '%1 %2',
             args0   : [
                 {
@@ -21,10 +26,18 @@ Blockly.Blocks.math_round = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
-        });
+            colour         : Blockly.Colours.Utility.colour,
+            colourSecondary: Blockly.Colours.Utility.colourSecondary,
+            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            tooltip        : translate('Rounds a given number to an integer'),
+            category       : Blockly.Categories.Mathematical,
+        };
+    },
+    meta(){
+        return {
+            'display_name': translate('Rounding operation'),
+            'description' : translate('Rounds a given number to an integer according to selection: Rounds up, Rounds down, Rounds.'),
+        };
     },
 };
 

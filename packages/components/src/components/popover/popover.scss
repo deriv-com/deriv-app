@@ -1,0 +1,101 @@
+.dc-popover {
+    &__target {
+        &__icon .info {
+            @extend %inline-icon.secondary;
+
+            &:hover {
+                @extend %inline-icon.white;
+            }
+        }
+        &__icon--disabled .info {
+            @extend %inline-icon.disabled;
+
+            &:hover {
+                @extend %inline-icon.disabled;
+            }
+        }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
+    }
+    &__bubble {
+        @include typeface(--small-center-normal-active, none);
+        cursor: help;
+        position: fixed;
+        padding: 0.7em;
+        max-width: 280px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        background: var(--status-default);
+        color: $color-black;
+
+        &__icon {
+            flex-grow: 1;
+            margin-right: 0.7em;
+            padding-top: 3px;
+        }
+        &__text {
+            flex-grow: 2;
+            text-align: left;
+        }
+        &__arrow {
+            position: absolute;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent;
+        }
+        &[data-popover-pos=top], &[data-popover-pos=bottom] {
+            margin: 1em 0;
+        }
+        &[data-popover-pos=left], &[data-popover-pos=right] {
+            margin: 0 1em;
+        }
+        &[data-popover-pos=left] &__arrow {
+            left: 100%;
+            top: 50%;
+            margin-top: -5px;
+            border-left-color: var(--status-default);
+        }
+        &[data-popover-pos=right] &__arrow {
+            right: 100%;
+            top: 50%;
+            margin-top: -5px;
+            border-right-color: var(--status-default);
+        }
+        &[data-popover-pos=top] &__arrow {
+            left: 50%;
+            top: 100%;
+            margin-left: -5px;
+            border-top-color: var(--status-default);
+        }
+        &[data-popover-pos=bottom] &__arrow {
+            left: 50%;
+            bottom: 100%;
+            margin-left: -5px;
+            border-bottom-color: var(--status-default);
+        }
+        &--error {
+            background-color: var(--status-danger);
+
+            &[data-popover-pos=left] .popover__bubble__arrow {
+                border-left-color: var(--status-danger);
+            }
+            &[data-popover-pos=right] .popover__bubble__arrow {
+                border-right-color: var(--status-danger);
+            }
+            &[data-popover-pos=top] .popover__bubble__arrow {
+                border-top-color: var(--status-danger);
+            }
+            &[data-popover-pos=bottom] .popover__bubble__arrow {
+                border-bottom-color: var(--status-danger);
+            }
+        }
+    }
+}

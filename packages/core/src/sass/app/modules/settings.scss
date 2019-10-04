@@ -1,0 +1,23 @@
+@import '../_common/base/index';
+@import '../_common/components/theme-select';
+@import '../_common/components/settings-language';
+
+/** @define dc-modal-header; */
+.dc-modal-header {
+    &--modal-settings {
+        border-bottom: 0;
+    }
+    &__title {
+        &--modal-settings {
+            min-width: 28%;
+            background-color: var(--general-section-1);
+        }
+    }
+}
+
+/** @define dc-modal; */
+.dc-modal {
+    &__container_modal-settings {
+        width: 736px;
+    }
+}

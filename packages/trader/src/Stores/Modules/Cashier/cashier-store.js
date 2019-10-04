@@ -109,6 +109,11 @@ export default class CashierStore extends BaseStore {
         this.config.withdraw.container,
     ];
 
+    map_action = {
+        [this.config.withdraw.container]     : 'payment_withdraw',
+        [this.config.payment_agent.container]: 'payment_agent_withdraw',
+    };
+
     @action.bound
     resetValuesIfNeeded() {
         if (this.current_client && this.current_client !== this.root_store.client.loginid) {
@@ -212,7 +217,7 @@ export default class CashierStore extends BaseStore {
         this.config[container].iframe_url = url;
         if (url) {
             // after we set iframe url we can clear verification code
-            this.root_store.client.setVerificationCode('');
+            this.root_store.client.setVerificationCode('', this.map_action[container]);
         }
     }
 
@@ -349,7 +354,7 @@ export default class CashierStore extends BaseStore {
         this.setVerificationEmailSent(false, container);
         this.setVerificationResendClicked(false, container);
         this.setVerificationResendTimeout(60, container);
-        this.root_store.client.setVerificationCode('');
+        this.root_store.client.setVerificationCode('', this.map_action[container]);
     }
 
     @action.bound

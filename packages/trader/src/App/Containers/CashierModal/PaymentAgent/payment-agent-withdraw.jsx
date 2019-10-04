@@ -12,7 +12,6 @@ import {
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { localize }         from 'App/i18n';
-import Icon                 from 'Assets/icon.jsx';
 import { connect }          from 'Stores/connect';
 import {
     validNumber,

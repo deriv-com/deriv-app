@@ -287,6 +287,6 @@ class FinancialAssessment extends React.Component {
 export default connect(
     ({ client }) => ({
         is_virtual          : client.is_virtual,
-        refreshNotifications: client.refreshNotifications(),
+        refreshNotifications: client.refreshNotifications,
     }),
 )(FinancialAssessment);

@@ -514,7 +514,7 @@ export default class ClientStore extends BaseStore {
     refreshNotifications() {
         this.root_store.ui.removeAllNotifications();
         const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(
+        const { has_missing_required_field, has_risk_assessment } = handleClientNotifications(
             client,
             this.account_settings,
             this.account_status,
@@ -522,6 +522,7 @@ export default class ClientStore extends BaseStore {
             this.loginid,
         );
         this.setHasMissingRequiredField(has_missing_required_field);
+        this.setHasRiskAssessment(has_risk_assessment);
     }
 
     /**
@@ -547,17 +548,16 @@ export default class ClientStore extends BaseStore {
         }
 
         if (client && !client.is_virtual) {
-            await WS.getAccountStatus();
-            BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                const { has_missing_required_field } = handleClientNotifications(
-                    client,
-                    this.account_settings,
-                    this.account_status,
-                    this.root_store.ui.addNotification,
-                    this.loginid,
-                );
-                this.setHasMissingRequiredField(has_missing_required_field);
-            });
+            await BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status');
+            const { has_missing_required_field, has_risk_assessment } = handleClientNotifications(
+                client,
+                this.account_settings,
+                this.account_status,
+                this.root_store.ui.addNotification,
+                this.loginid,
+            );
+            this.setHasMissingRequiredField(has_missing_required_field);
+            this.setHasRiskAssessment(has_risk_assessment);
         } else if (!client || client.is_virtual) {
             this.root_store.ui.removeAllNotifications();
         }
@@ -608,6 +608,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setHasMissingRequiredField(has_missing_required_field) {
         this.has_missing_required_field = has_missing_required_field;
+    }
+
+    @action.bound
+    setHasRiskAssessment(has_risk_assessment) {
+        this.has_risk_assessment = has_risk_assessment;
     }
 
     /**
@@ -975,6 +980,11 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @action.bound
+    getRiskAssessment() {
+        return this.has_risk_assessment;
     }
 }
 /* eslint-enable */

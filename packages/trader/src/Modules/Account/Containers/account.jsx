@@ -22,11 +22,6 @@ const fallback_content = {
     'title'    : 'Personal details',
 };
 
-const isHighRiskClient = account_status => {
-    const { needs_verification, document, identity } = account_status.authentication;
-    return !!((needs_verification.length) || (document.status !== 'none' || identity.status !== 'none'));
-};
-
 class Account extends React.Component {
     state = {
         is_high_risk_client: false,
@@ -46,7 +41,7 @@ class Account extends React.Component {
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const is_high_risk_client = isHighRiskClient(this.props.account_status);
+                const is_high_risk_client = this.props.getRiskAssessment();
                 this.setState({ is_high_risk_client, is_loading: false });
             }
         });
@@ -59,7 +54,7 @@ class Account extends React.Component {
         // on page refresh account_status is always undefined on first render and on didMount
         // so we compare if prevProps and current props before setting state
         if (!prevProps.account_status && !ObjectUtils.isEmptyObject(this.props.account_status)) {
-            const is_high_risk_client = isHighRiskClient(this.props.account_status);
+            const is_high_risk_client = this.props.getRiskAssessment();
             this.setState({ is_high_risk_client, is_loading: false });
         }
     }
@@ -156,12 +151,13 @@ Account.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        account_status  : client.account_status,
-        currency        : client.currency,
-        is_virtual      : client.is_virtual,
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode : ui.setRouteModal,
-        is_visible      : ui.is_account_settings_visible,
-        toggleAccount   : ui.toggleAccountSettings,
+        account_status   : client.account_status,
+        currency         : client.currency,
+        is_virtual       : client.is_virtual,
+        getRiskAssessment: client.getRiskAssessment,
+        disableRouteMode : ui.disableRouteModal,
+        enableRouteMode  : ui.setRouteModal,
+        is_visible       : ui.is_account_settings_visible,
+        toggleAccount    : ui.toggleAccountSettings,
     })
 )(withRouter(Account));

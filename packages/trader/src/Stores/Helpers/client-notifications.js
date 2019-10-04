@@ -317,8 +317,8 @@ const addVerificationNotifications = (identity, document, addNotification) => {
 };
 
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
-    if (!account_status) return;
-    if (loginid !== LocalStore.get('active_loginid')) return;
+    if (!account_status) return 0;
+    if (loginid !== LocalStore.get('active_loginid')) return 0;
 
     const {
         authentication: {
@@ -341,8 +341,9 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
 
     addVerificationNotifications(identity, document, addNotification);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
+    const has_risk_assessment  = getRiskAssessment(account_status);
 
     if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
     if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
@@ -354,9 +355,13 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (ukrts_max_turnover_limit_not_set) {
         addNotification(clientNotifications.financial_limit);
     }
-    if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
+    if (has_risk_assessment)               addNotification(clientNotifications.risk);
     if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
     if (needs_authentication)              addNotification(clientNotifications.authenticate);
+
+    return {
+        has_risk_assessment,
+    };
 };
 
 export const handleClientNotifications = (
@@ -370,7 +375,7 @@ export const handleClientNotifications = (
     if (!currency)      addNotification(clientNotifications.currency);
     if (excluded_until) addNotification(clientNotifications.self_exclusion(excluded_until));
 
-    checkAccountStatus(account_status, client, addNotification, loginid);
+    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotification, loginid);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -383,5 +388,6 @@ export const handleClientNotifications = (
 
     return {
         has_missing_required_field,
+        has_risk_assessment,
     };
 };

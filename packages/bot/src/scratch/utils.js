@@ -12,20 +12,15 @@ export const oppositesToDropdownOptions = opposite_name => {
 
 export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     const { clientX = 0, clientY = 0 } = drop_event || {};
+    const toolbar_height = 76;
     const blockly_metrics = Blockly.derivWorkspace.getMetrics();
     const scale_cancellation = 1 / Blockly.derivWorkspace.scale;
     const blockly_left = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
     const blockly_top = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
     const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
-    let cursor_y = clientY ? (clientY - blockly_top) * scale_cancellation : 0;
-    const toolbar_height = 76;
-    blocks_to_clean.forEach(block => {
-        block.moveBy(cursor_x, cursor_y - toolbar_height);
-        block.snapToGrid();
-        cursor_y += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-    });
-    // Fire an event to allow scrollbars to resize.
-    Blockly.derivWorkspace.resizeContents();
+    const cursor_y = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
+    
+    Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
 export const setBlockTextColor = block => {
@@ -130,4 +125,85 @@ export const addDomAsBlock = block_xml => {
             .forEach(b => b.dispose());
     }
     return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+};
+
+export const load = (block_string = '', drop_event) => {
+    try {
+        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length) {
+            throw new Error();
+        }
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    let xml;
+    try {
+        xml = Blockly.Xml.textToDom(block_string);
+    } catch (e) {
+        // TODO
+        console.error(e);  // eslint-disable-line
+    }
+
+    const blockly_xml = xml.querySelectorAll('block');
+
+    if (!blockly_xml.length) {
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+
+    blockly_xml.forEach(block => {
+        const block_type = block.getAttribute('type');
+
+        if (!Object.keys(Blockly.Blocks).includes(block_type)) {
+            // TODO
+            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        }
+    });
+
+    try {
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            loadBlocks(xml, drop_event);
+        } else {
+            loadWorkspace(xml);
+        }
+    } catch (e) {
+        console.error(e); // eslint-disable-line
+        // TODO
+        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+    }
+};
+
+const loadBlocks = (xml, drop_event) => {
+    const workspace = Blockly.derivWorkspace;
+    const variables = xml.getElementsByTagName('variables');
+    if (variables.length) {
+        Blockly.Xml.domToVariables(variables[0], workspace);
+    }
+    Blockly.Events.setGroup('load');
+    const addedBlocks =
+        Array.from(xml.children)
+            .map(block => addDomAsBlock(block))
+            .filter(b => b);
+    if (drop_event && Object.keys(drop_event).length !== 0) {
+        cleanUpOnLoad(addedBlocks, drop_event);
+    } else {
+        workspace.cleanUp();
+    }
+
+    fixCollapsedBlocks();
+    Blockly.Events.setGroup(false);
+};
+
+const loadWorkspace = (xml) => {
+    const workspace = Blockly.derivWorkspace;
+
+    Blockly.Events.setGroup('load');
+    workspace.clear();
+
+    Blockly.Xml.domToWorkspace(xml, workspace);
+    fixCollapsedBlocks();
+    Blockly.Events.setGroup(false);
 };

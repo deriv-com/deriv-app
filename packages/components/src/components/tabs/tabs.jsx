@@ -18,8 +18,8 @@ class Tabs extends Component {
     };
 
     componentDidUpdate(prev_props, prev_state) {
-        if (prev_state.active_index !== this.props.active_index) {
-            this.setState({ active_index: this.props.active_index });
+        if (this.props.active_index && prev_state.active_index !== this.props.active_index) {
+            this.setState({ active_index: this.props.active_index || 0 });
         }
     }
 

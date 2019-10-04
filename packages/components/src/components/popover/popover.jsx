@@ -40,6 +40,7 @@ class Popover extends React.PureComponent {
             classNameBubble,
             classNameTarget,
             classNameTargetIcon,
+            counter,
             disable_target_icon,
             disable_message_icon,
             has_error,
@@ -63,6 +64,7 @@ class Popover extends React.PureComponent {
                         {(icon === 'info') && <IconInfoOutline className={icon_class_name} />}
                         {(icon === 'question') && <IconQuestion className={icon_class_name} />}
                         {(icon === 'dot') && <IconRedDot className={icon_class_name} />}
+                        {(icon === 'counter') && <span className={icon_class_name}>{ counter }</span>}
                     </i>
                     }
 

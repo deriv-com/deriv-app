@@ -81,32 +81,37 @@ const Duration = ({
     };
 
     const onToggleDurationType = ({ target }) => {
-        const { name, value } = target;
-        onChangeUiStore({ name, value });
+        const { name, value : is_advanced } = target;
+        onChangeUiStore({ name, value: is_advanced });
 
         // replace selected duration unit and duration if the contract doesn't have that duration unit
-        let current_duration_unit = value ? advanced_duration_unit : simple_duration_unit;
-        if (!hasDurationUnit(current_duration_unit)) {
+        let current_duration_unit = is_advanced ? advanced_duration_unit : simple_duration_unit;
+        const duration_value      = getDurationFromUnit(current_duration_unit);
+        if (!hasDurationUnit(current_duration_unit, is_advanced)) {
             current_duration_unit = duration_units_list[0].value;
-            onChangeUiStore({ name: `${value ? 'advanced' : 'simple'}_duration_unit`, value: current_duration_unit });
+            onChangeUiStore({ name: `${is_advanced ? 'advanced' : 'simple'}_duration_unit`, value: current_duration_unit });
         }
 
-        const duration_value         = getDurationFromUnit(current_duration_unit);
-        const new_trade_store_values = {
-            duration_unit: current_duration_unit,
-            duration     : duration_value,
-        };
+        const new_trade_store_values = {};
 
         // simple only has expiry type of duration
-        if (!value && expiry_type !== 'duration') {
+        if (!is_advanced && expiry_type !== 'duration') {
             new_trade_store_values.expiry_type = 'duration';
         }
-
-        if (value && expiry_type !== advanced_expiry_type) {
+        if (is_advanced && expiry_type !== advanced_expiry_type) {
             new_trade_store_values.expiry_type = advanced_expiry_type;
         }
 
-        onChangeMultiple({ ...new_trade_store_values });
+        const has_same_duration = (current_duration_unit === duration_unit && duration_value === duration);
+        if (!has_same_duration) {
+            new_trade_store_values.duration_unit = current_duration_unit;
+            new_trade_store_values.duration      = duration_value;
+        }
+
+        const should_update_trade_store = Object.keys(new_trade_store_values).length;
+        if (should_update_trade_store) {
+            onChangeMultiple({ ...new_trade_store_values });
+        }
     };
 
     const props = {

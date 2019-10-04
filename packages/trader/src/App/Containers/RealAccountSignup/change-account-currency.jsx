@@ -7,7 +7,8 @@ import { localize }         from 'App/i18n';
 import {
     RadioButtonGroup,
     RadioButton,
-}                           from './currency-selector.jsx';
+    reorderFiatCurrencies,
+} from './currency-selector.jsx';
 import FormSubmitButton     from './form-submit-button.jsx';
 
 class ChangeAccountCurrency extends Component {
@@ -17,7 +18,7 @@ class ChangeAccountCurrency extends Component {
 
     static getDerivedStateFromProps(props) {
         return {
-            selectable_currencies: props.legal_allowed_currencies.filter(currency => currency.type === 'fiat'),
+            selectable_currencies: reorderFiatCurrencies(props.legal_allowed_currencies.filter(currency => currency.type === 'fiat')),
         };
     }
 
@@ -52,7 +53,7 @@ class ChangeAccountCurrency extends Component {
                         </h3>
                         <RadioButtonGroup
                             id='fiat'
-                            label={localize('Crypto currencies')}
+                            label={localize('Cryptocurrencies')}
                             value={values.fiat}
                             error={errors.fiat}
                             touched={touched.fiat}
@@ -71,7 +72,7 @@ class ChangeAccountCurrency extends Component {
                         </RadioButtonGroup>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.fiat}
-                            label='Next' // Localization will be handled by component
+                            label='Change currency' // Localization will be handled by component
                             is_absolute={false}
                             is_center
                             form_error={this.props.form_error}

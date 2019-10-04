@@ -22,7 +22,7 @@ export const CalendarYears = ({
         <div className='calendar__body calendar__body--year'>
             { years.map((year, idx) => {
                 const is_other_decade = idx === 0 || idx === 11;
-                const is_disabled     = isPeriodDisabled(moment_date.clone().year(year), 'year');
+                const is_disabled     = isPeriodDisabled(moment_date.clone().year(year), 'year', 'body');
                 return (
                     <span
                         key={idx}

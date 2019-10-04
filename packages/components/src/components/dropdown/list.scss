@@ -5,8 +5,8 @@
     overflow-y: auto;
     z-index: 2;
     border-radius: $BORDER_RADIUS;
-    box-shadow: 0 2px 8px 0 var(--shadow-menu);
-    background: var(--state-normal);
+    box-shadow: 0 8px 16px 0 var(--shadow-menu);
+    background: var(--general-main-2);
 
     &--left {
         width: unset;

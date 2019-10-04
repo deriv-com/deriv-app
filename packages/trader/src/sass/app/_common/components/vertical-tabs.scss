@@ -74,7 +74,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         @include typeface(--paragraph-center-bold-black, none);
         line-height: 1.5;
         color: var(--text-general);
-        padding: 10px 16px;
+        padding: 10px 12px 10px 16px;
         cursor: pointer;
         display: flex;
         align-items: center;

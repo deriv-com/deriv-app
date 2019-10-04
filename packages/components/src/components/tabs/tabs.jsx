@@ -6,44 +6,50 @@ class Tabs extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            activeTab: this.props.children[0].props.label,
-        };
+        this.state = { active_index: props.active_index || 0 };
     }
 
-    onClickTabItem = tab => {
-        this.setState({ activeTab: tab });
+    onClickTabItem = index => {
+        this.setState({ active_index: index });
+
+        if (typeof this.props.onClickTabItem === 'function') {
+            this.props.onClickTabItem(index);
+        }
     };
 
+    componentDidUpdate(prev_props, prev_state) {
+        if (this.props.active_index && prev_state.active_index !== this.props.active_index) {
+            this.setState({ active_index: this.props.active_index || 0 });
+        }
+    }
+
     render() {
-        const {
-            onClickTabItem,
-            props: { children },
-            state: { activeTab },
-        } = this;
-  
-        const tab_width = (100 / children.length).toFixed(2);
+        const { children }     = this.props;
+        const { active_index } = this.state;
+        const tab_width        = (100 / children.length).toFixed(2);
 
         return (
             <div className='dc-tabs' style={{ '--tab-width': `${tab_width}%` }}>
                 <ul className='dc-tabs__list'>
-                    {children.map((child) => {
+                    {children.map((child, index) => {
                         const { label } = child.props;
 
                         return (
                             <Tab
-                                activeTab={activeTab}
+                                is_active={index === active_index}
                                 key={label}
                                 label={label}
-                                onClick={onClickTabItem}
+                                onClick={() => this.onClickTabItem(index)}
                             />
                         );
                     })}
                     <span className='dc-tabs__active-line' />
                 </ul>
                 <div className='dc-tabs__content'>
-                    {children.map((child) => {
-                        if (child.props.label !== activeTab) return undefined;
+                    {children.map((child, index) => {
+                        if (index !== active_index) {
+                            return undefined;
+                        }
                         return child.props.children;
                     })}
                 </div>

@@ -30,25 +30,26 @@ export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
     @observable email;
-    @observable accounts                   = {};
-    @observable switched                   = '';
-    @observable switch_broadcast           = false;
-    @observable currencies_list            = {};
-    @observable residence_list             = [];
-    @observable selected_currency          = '';
-    @observable is_populating_account_list = false;
-    @observable website_status             = {};
-    @observable verification_code          = '';
-    @observable account_settings           = {};
-    @observable account_status             = {};
-    @observable device_data                = {};
-    @observable landing_companies          = {
+    @observable accounts                       = {};
+    @observable switched                       = '';
+    @observable switch_broadcast               = false;
+    @observable currencies_list                = {};
+    @observable residence_list                 = [];
+    @observable states_list                    = [];
+    @observable selected_currency              = '';
+    @observable is_populating_account_list     = false;
+    @observable is_populating_mt5_account_list = true;
+    @observable website_status                 = {};
+    @observable verification_code              = '';
+    @observable account_settings               = {};
+    @observable account_status                 = {};
+    @observable device_data                    = {};
+    @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
     };
 
     @observable upgradeable_landing_companies = [];
-    @observable website_status = {};
     @observable mt5_login_list = [];
     @observable statement      = [];
     @observable obj_total_balance = {};
@@ -83,6 +84,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get first_switchable_real_loginid () {
+        const result = this.active_accounts.find((acc) => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg');
+        return result.loginid || undefined;
+    }
+
+    @computed
     get can_change_fiat_currency () {
         const has_no_mt5           = !this.has_mt5_login;
         const has_no_transaction   = (this.statement.count === 0 && this.statement.transactions.length === 0);
@@ -96,7 +103,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_change_currency () {
         const has_available_crypto_currencies = this.available_crypto_currencies.length > 0;
-        return this.can_change_fiat_currency || has_available_crypto_currencies;
+        return this.can_change_fiat_currency || (!this.is_virtual && has_available_crypto_currencies);
     }
 
     @computed
@@ -174,7 +181,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_mt5_login() {
-        return !!this.mt5_login_list.length;
+        return this.mt5_login_list.length > 0;
     }
 
     @computed
@@ -339,6 +346,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].is_virtual                = +response.authorize.is_virtual;
         this.accounts[this.loginid].session_start             = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+        this.accounts[this.loginid].country                   = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
@@ -455,6 +463,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get email_address() {
+        if (this.accounts && this.accounts[this.loginid]) {
+            return this.accounts[this.loginid].email;
+        }
+
+        return '';
+    }
+
+    @computed
     get is_website_status_ready() {
         return this.website_status &&
             this.website_status.site_status === 'up';
@@ -494,16 +511,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    refreshNotifications(settings) {
+    refreshNotifications() {
         this.root_store.ui.removeAllNotifications();
         const client = this.accounts[this.loginid];
-        handleClientNotifications(
+        const { has_missing_required_field } = handleClientNotifications(
             client,
-            settings,
+            this.account_settings,
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,
         );
+        this.setHasMissingRequiredField(has_missing_required_field);
     }
 
     /**
@@ -529,14 +547,16 @@ export default class ClientStore extends BaseStore {
         }
 
         if (client && !client.is_virtual) {
+            await WS.getAccountStatus();
             BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                handleClientNotifications(
+                const { has_missing_required_field } = handleClientNotifications(
                     client,
                     this.account_settings,
                     this.account_status,
                     this.root_store.ui.addNotification,
                     this.loginid,
                 );
+                this.setHasMissingRequiredField(has_missing_required_field);
             });
         } else if (!client || client.is_virtual) {
             this.root_store.ui.removeAllNotifications();
@@ -546,12 +566,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            this.responseMt5LoginList(
-                await WS.authorized.storage.mt5LoginList(),
-            );
-            this.responseLandingCompany(
-                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
-            );
+            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+                .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -586,6 +603,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setSwitched(switched) {
         this.switched = switched;
+    }
+
+    @action.bound
+    setHasMissingRequiredField(has_missing_required_field) {
+        this.has_missing_required_field = has_missing_required_field;
     }
 
     /**
@@ -676,6 +698,8 @@ export default class ClientStore extends BaseStore {
             await this.switchAccountHandler();
             return;
         }
+
+        this.root_store.modules.trade.proposal_info = {};
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -913,7 +937,20 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    fetchStatesList() {
+        WS.statesList({
+            states_list: this.accounts[this.loginid].residence
+        }).then(response => {
+            runInAction(() => {
+                this.states_list = response.states_list || [];
+            })
+        })
+    }
+
+    @action.bound
     responseMt5LoginList(response) {
+        this.is_populating_mt5_account_list = false;
+
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list;
         }

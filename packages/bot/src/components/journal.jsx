@@ -20,6 +20,10 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
+    if (typeof message !== 'string') {
+        return message;
+    }
+
     const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
 
@@ -86,7 +90,7 @@ const MessageItem = ({
 
 class Journal extends React.PureComponent {
     componentWillUnmount() {
-        this.props.onUnmount();
+        // this.props.onUnmount();
     }
 
     render() {
@@ -96,7 +100,7 @@ class Journal extends React.PureComponent {
             <Scrollbars
                 className='journal'
                 autoHide
-                style={{ height: 'calc(100vh - 243px)' }}
+                style={{ height: 'calc(100vh - 350px)' }}
             >
                 <table className='journal__table'>
                     <thead className='journal__table--header'>

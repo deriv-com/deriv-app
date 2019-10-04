@@ -6,8 +6,6 @@ import ChangeAccountCurrency from './change-account-currency.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
-const CLEAR_ERROR_TIMEOUT = 3000;
-
 class AddOrManageAccounts extends Component {
     constructor(props) {
         super(props);
@@ -28,6 +26,7 @@ class AddOrManageAccounts extends Component {
     };
 
     manageOrChangeAccount = (obj, setSubmitting) => {
+        this.props.onLoading();
         Object.entries(obj)
             .map(([key, value]) => {
                 if (key === 'fiat') {
@@ -39,15 +38,8 @@ class AddOrManageAccounts extends Component {
                                 response.echo_req.set_account_currency,
                             );
                         })
-                        .catch(e => {
-                            this.setState({
-                                form_error: e,
-                            }, () => {
-                                setTimeout(() => {
-                                    this.clearError();
-                                    setSubmitting(false);
-                                }, CLEAR_ERROR_TIMEOUT);
-                            });
+                        .catch(error_message => {
+                            this.props.onError(error_message);
                         });
                 } else {
                     // Add Crypto Account
@@ -58,15 +50,8 @@ class AddOrManageAccounts extends Component {
                             );
                             setSubmitting(false);
                         })
-                        .catch(e => {
-                            this.setState({
-                                form_error: e,
-                            }, () => {
-                                setTimeout(() => {
-                                    this.clearError();
-                                    setSubmitting(false);
-                                }, CLEAR_ERROR_TIMEOUT);
-                            });
+                        .catch(error_message => {
+                            this.props.onError(error_message);
                         });
                 }
             });
@@ -103,6 +88,8 @@ class AddOrManageAccounts extends Component {
 }
 
 AddOrManageAccounts.propTypes = {
+    onError                    : PropTypes.func,
+    onLoading                  : PropTypes.func,
     onSuccessAddCurrency       : PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
 };

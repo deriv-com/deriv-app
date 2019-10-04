@@ -75,7 +75,7 @@ class AddCryptoCurrency extends Component {
                         <RadioButtonGroup
                             id='crypto_currency'
                             className='currency-selector__radio-group'
-                            label={localize('Crypto currencies')}
+                            label={localize('Cryptocurrencies')}
                             value={values.currency}
                             error={errors.currency}
                             touched={touched.currency}
@@ -120,7 +120,7 @@ class AddCryptoCurrency extends Component {
                           this.props.available_crypto_currencies.length !== 0) &&
                           <FormSubmitButton
                               is_disabled={isSubmitting || !values.currency}
-                              label='Next' // Localization will be handled by component
+                              label='Add account' // Localization will be handled by component
                               is_absolute={false}
                               is_center={true}
                               form_error={this.props.form_error}

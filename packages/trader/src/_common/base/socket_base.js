@@ -177,6 +177,22 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const mt5NewAccount = (values) =>
+        deriv_api.send({
+            mt5_new_account: 1,
+            ...values,
+        });
+
+    const mt5PasswordChange = (login, old_password, new_password, password_type, values) =>
+        deriv_api.send({
+            mt5_password_change: 1,
+            login,
+            old_password,
+            new_password,
+            password_type,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -235,6 +251,7 @@ const BinarySocketBase = (() => {
         hasReadyState,
         clear             : () => {},
         sendBuffered      : () => {},
+        getSocket         : () => binary_socket,
         get               : () => deriv_api,
         setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
@@ -245,6 +262,8 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        mt5NewAccount,
+        mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
         profitTable,

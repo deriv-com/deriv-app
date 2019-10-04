@@ -22,7 +22,6 @@
     justify-content: center;
     flex-direction: column;
     flex-grow: 1;
-    padding-top: 3rem;
 
     &__icon-area {
         display: flex;
@@ -30,6 +29,7 @@
         width: 60%;
         justify-content: space-between;
         position: relative;
+        margin-top: 2em;
 
         .bottom-right-overlay {
             position: absolute;
@@ -45,17 +45,25 @@
         svg {
             display: block;
         }
-        &--big {
+        &--xlarge, &--large {
             width: auto;
 
-            svg.inline-icon {
-                width: 120px;
-                height: 120px;
-            }
             .bottom-right-overlay {
                 width: 48px;
                 height: 48px;
                 right: 0;
+            }
+        }
+        &--xlarge {
+            svg:first-child {
+                width: 128px;
+                height: 128px;
+            }
+        }
+        &--large {
+            svg.inline-icon {
+                width: 120px;
+                height: 120px;
             }
         }
     }
@@ -83,15 +91,8 @@
             @include typeface(--title-left-bold-black);
             font-size: 1.4rem;
             text-align: center;
-            background: var(--brand-red-coral);
             color: var(--text-colored-background);
             margin: 0 2rem;
-
-            &--outline {
-                background: transparent;
-                border: 2px solid var(--button-secondary-default);
-                color: var(--text-general);
-            }
         }
     }
 }

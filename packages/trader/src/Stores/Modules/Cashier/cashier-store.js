@@ -120,7 +120,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetValuesIfNeeded() {
-        if (this.current_client && !this.current_client === this.root_store.client.loginid) {
+        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
             this.onAccountSwitch();
         }
         this.current_client = this.root_store.client.loginid;
@@ -705,9 +705,9 @@ export default class CashierStore extends BaseStore {
 
         const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
         let display_text = localize('MT5');
-        if (/svg/.test(value)) {
+        if (/svg$/.test(value)) {
             display_text = localize('DMT5 Synthetic indices');
-        } else if (/vanuatu/.test(value)) {
+        } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
             display_text = localize('DMT5 Standard');
         } else if (/labuan/.test(value)) {
             display_text = localize('DMT5 Advanced');

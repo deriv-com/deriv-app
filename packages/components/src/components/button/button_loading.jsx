@@ -7,7 +7,7 @@ const ButtonLoading = (props) => {
         <Loading
             {...props}
             is_fullscreen={false}
-            className='initial-loader--btn '
+            className='initial-loader--btn'
         />
     );
 };

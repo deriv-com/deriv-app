@@ -25,8 +25,9 @@ class PlatformSwitcher extends React.PureComponent {
                 )}
                 onClick={this.toggleDrawer}
             >
-                <Icon className='platform_switcher__icon' icon='IconDeriv' />
-                <h1 className='platform_switcher__header'>{localize('DTrader')}</h1>
+                {/* TODO: Display platform name and icon based on route */}
+                <Icon className='platform_switcher__icon' icon='IconDBot' />
+                <h1 className='platform_switcher__header'>{localize('DBot')}</h1>
                 <p className='platform_switcher__label'>{localize('BETA')}</p>
                 <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
             </div>

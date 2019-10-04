@@ -34,12 +34,13 @@ const drawerContent = ({
 };
 
 const drawerFooter = ({
-    onCloseModal,
     dialog_options,
     is_running,
     is_run_button_clicked,
     is_dialog_visible,
+    onCancelButtonClick,
     onClearStatClick,
+    onOkButtonClick,
     onRunButtonClick,
     onStopButtonClick,
 }) => {
@@ -81,7 +82,12 @@ const drawerFooter = ({
                     />
             }
             { is_dialog_visible &&
-                <Dialog title={dialog_options.title} is_open={is_dialog_visible} closeModal={onCloseModal}>
+                <Dialog
+                    title={dialog_options.title}
+                    is_open={is_dialog_visible}
+                    onOkButtonClick={onOkButtonClick}
+                    onCancelButtonClick={onCancelButtonClick}
+                >
                     {dialog_options.message}
                 </Dialog>
             }
@@ -120,8 +126,9 @@ RunPanel.propTypes = {
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
+    onCancelButtonClick  : PropTypes.func,
     onClearStatClick     : PropTypes.func,
-    onCloseModal         : PropTypes.func,
+    onOkButtonClick      : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
@@ -136,8 +143,9 @@ export default connect(({ run_panel }) => ({
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
+    onCancelButtonClick  : run_panel.onCancelButtonClick,
     onClearStatClick     : run_panel.onClearStatClick,
-    onCloseModal         : run_panel.onCloseModal,
+    onOkButtonClick      : run_panel.onOkButtonClick,
     onRunButtonClick     : run_panel.onRunButtonClick,
     onStopButtonClick    : run_panel.onStopButtonClick,
     onUnmount            : run_panel.onUnmount,

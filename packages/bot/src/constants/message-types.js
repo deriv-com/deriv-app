@@ -10,8 +10,8 @@ export const unrecoverableErrors = [
     'FinancialAssessmentRequired',
 ];
 
-export const messageTypes = [{
+export const messageTypes = {
     error  : 'error',
     notify : 'notify',
     success: 'success',
-}];
+};

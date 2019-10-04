@@ -56,10 +56,7 @@ export default class RunPanelStore {
         const { client } = this.root_store.core;
 
         if (!client.is_logged_in) {
-            this.dialog_options = {
-                title  : translate('Run error'),
-                message: translate('Please log in.'),
-            };
+            this.showLoginDialog();
             return;
         }
 
@@ -79,10 +76,7 @@ export default class RunPanelStore {
     @action.bound
     onStopButtonClick() {
         if (!this.root_store.core.client.is_logged_in) {
-            this.dialog_options = {
-                title  : translate('Run error'),
-                message: translate('Please log in.'),
-            };
+            this.showLoginDialog();
             return;
         }
         if (this.is_run_button_clicked) {
@@ -93,12 +87,16 @@ export default class RunPanelStore {
 
     @action.bound
     onClearStatClick() {
-        // TODO: Wait for bot to finish. show a dialog ask user if he want to delete ,
-        // and warn him that bot is running
+        this.showLoginDialog();
+    }
+
+    @action.bound
+    clearStat() {
         this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
+        this.onCloseModal();
     }
 
     @action.bound
@@ -179,10 +177,30 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    showLoginDialog() {
+        this.onOkButtonClick = this.onCloseModal;
+        this.dialog_options = {
+            title  : translate('Run error'),
+            message: translate('Please log in.'),
+        };
+    }
+
+    @action.bound
     showRealAccountDialog() {
+        this.onOkButtonClick = this.onCloseModal;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
             message: translate('Please switch to your demo account to run your DBot.'),
+        };
+    }
+
+    @action.bound
+    showClearStatDialog() {
+        this.onOkButtonClick = this.clearStat;
+        this.onCancelButtonClick = this.onCloseModal;
+        this.dialog_options = {
+            title  : translate('Are you sure?'),
+            message: translate('This will clear all transactions in the summary panel, and all counters will be reset to zero.'),
         };
     }
 

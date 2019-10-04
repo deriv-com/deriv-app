@@ -117,6 +117,8 @@ class Journal extends React.PureComponent {
                                 const date_el = DateItem({ date, time });
                                 const message_el = MessageItem({ message });
 
+                                console.log(message_type); // eslint-disable-line no-console
+                                
                                 return (
                                     <tr className='journal__table--tr' key={`${item.date}-${index}`}>
                                         <td className='journal__table--td'>{date_el}</td>

@@ -27,7 +27,7 @@ import {
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
-import SaveLoadModal        from './save-load-modal.jsx';
+import SaveLoadModal        from './saveload-modal.jsx';
 import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
@@ -43,7 +43,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
             onSubmit={values => onSearch(values)}
         >
             {
-                ({ submitForm, values: { search }, setValues }) => (
+                ({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <Field name='search'>
                             {({ field }) => (
@@ -60,7 +60,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                         search ?
                                             <ToolbarCloseIcon
                                                 className='toolbar__btn-icon'
-                                                onClick={() => onSearchClear(setValues)}
+                                                onClick={() => onSearchClear(setFieldValue)}
                                             />
                                             : <ToolbarSearchIcon />
                                     }
@@ -78,7 +78,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={initial_botname_value}
-            onSubmit={values => onBotNameTyped(values)}
+            onSubmit={values => onBotNameTyped(values.botname)}
         >
             {
                 ({ submitForm }) => (
@@ -145,7 +145,6 @@ const Toolbar = ({
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
-    // onGoogleDriveClick,
     onRedoClick,
     onResetClick,
     onRunClick,
@@ -230,7 +229,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal  : PropTypes.func,
 };
 
-export default connect(({ toolbar, run_panel }) => ({
+export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name            : toolbar.file_name,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
@@ -244,9 +243,8 @@ export default connect(({ toolbar, run_panel }) => ({
     onSearchBlur         : toolbar.onSearchBlur,
     onSearchClear        : toolbar.onSearchClear,
     onSortClick          : toolbar.onSortClick,
-    onStopClick          : toolbar.onStopClick,
     onToolboxToggle      : toolbar.onToolboxToggle,
     onUndoClick          : toolbar.onUndoClick,
     onZoomInOutClick     : toolbar.onZoomInOutClick,
-    toggleSaveLoadModal  : toolbar.toggleSaveLoadModal,
+    toggleSaveLoadModal  : saveload.toggleSaveLoadModal,
 }))(Toolbar);

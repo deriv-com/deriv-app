@@ -41,7 +41,7 @@
         }
         &--disabled {
             opacity: 0.32;
-            cursor: not-allowed !important;
+            cursor: not-allowed;
         }
     }
     &__residence-field {

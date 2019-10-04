@@ -107,6 +107,7 @@ export default class RunPanelStore {
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
+        this.contract_stage = CONTRACT_STAGES.not_running();
         this.onCloseModal();
     }
 

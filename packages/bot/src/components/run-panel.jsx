@@ -52,7 +52,8 @@ const drawerFooter = ({
             <Button
                 className={classNames(
                     'btn--flat',
-                    'run-panel__button'
+                    'run-panel__button',
+                    { 'run-panel__button--disable': is_run_button_clicked }
                 )}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}

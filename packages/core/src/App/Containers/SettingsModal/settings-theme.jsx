@@ -1,18 +1,18 @@
 import classNames    from 'classnames';
 import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
-// import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
+import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
 import { connect }   from 'Stores/connect';
 
 const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColor, */ pushDataLayer }) => {
-    // const darkOnClick = () => {
-    //     if (!is_dark_mode) {
-    //         // const new_dark_mode = toggleDarkMode();
-    //         // updateBarrierColor(new_dark_mode);
-    //         pushDataLayer({ event: 'switch theme' });
-    //     }
-    // };
+    const darkOnClick = () => {
+        if (!is_dark_mode) {
+            // const new_dark_mode = toggleDarkMode();
+            // updateBarrierColor(new_dark_mode);
+            pushDataLayer({ event: 'switch theme' });
+        }
+    };
 
     const lightOnClick = () => {
         if (is_dark_mode) {
@@ -28,7 +28,6 @@ const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColo
                     <Localize i18n_default_text='Select theme' />
                 </h4>
                 <div className='theme-select-settings__content'>
-                    {/* TODO: Re-enable.
                     <div id='dt_settings_dark_button' className='theme-select-settings__option'>
                         <DarkModeIcon
                             className={classNames('theme-select-settings__option__icon', {
@@ -42,7 +41,7 @@ const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColo
                         >
                             <Localize i18n_default_text='Dark' />
                         </p>
-                    </div> */}
+                    </div>
                     <div id='dt_settings_light_button' className='theme-select-settings__option'>
                         <LightModeIcon
                             className={classNames('theme-select-settings__option__icon', {

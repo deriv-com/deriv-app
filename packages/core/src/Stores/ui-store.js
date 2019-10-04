@@ -6,9 +6,9 @@ import {
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
-import { unique }            from '_common/utility';
+import ObjectUtils           from 'deriv-shared/utils/object';
+import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import BaseStore             from './base-store';
-import { sortNotifications } from '../App/Components/Elements/NotificationMessage';
 
 const store_name = 'ui_store';
 
@@ -65,11 +65,18 @@ export default class UIStore extends BaseStore {
     @observable is_app_disabled   = false;
     @observable is_route_modal_on = false;
 
+    // real account signup
+    @observable is_real_acc_signup_on = false;
+
     // position states
     @observable show_positions_toggle = true;
 
     @observable active_cashier_tab = 'deposit';
     @observable modal_index        = 0;
+
+    // Mt5 topup
+    @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_success = false;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -98,13 +105,16 @@ export default class UIStore extends BaseStore {
         super({ local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            if (this.is_dark_mode_on) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
-            } else {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-            }
+            // TODO: Re-enable dark theme when Bot is ready
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+            // if (this.is_dark_mode_on) {
+            //     document.body.classList.remove('theme--light');
+            //     document.body.classList.add('theme--dark');
+            // } else {
+            //     document.body.classList.remove('theme--dark');
+            //     document.body.classList.add('theme--light');
+            // }
         });
     }
 
@@ -246,6 +256,25 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    openRealAccountSignup() {
+        this.is_real_acc_signup_on = true;
+    }
+
+    @action.bound
+    closeRealAccountSignup() {
+        this.is_real_acc_signup_on = false;
+    }
+
+    @action.bound
+    closeSignupAndOpenCashier(active_tab = 'deposit') {
+        this.is_real_acc_signup_on = false;
+        this.setCashierActiveTab(active_tab);
+        this.closeRealAccountSignup();
+        // TODO enable this one cashier is active
+        setTimeout(this.toggleCashierModal, 300);
+    }
+
+    @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
     }
@@ -293,7 +322,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        if (this.notification_messages.indexOf(notification) === -1) {
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
         }
     }
@@ -317,7 +346,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
-        this.push_notifications = unique(this.push_notifications, 'msg_type');
+        this.push_notifications = ObjectUtils.unique(this.push_notifications, 'msg_type');
     }
 
     @action.bound
@@ -328,6 +357,21 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    closeTopUpModal() {
+        this.is_top_up_virtual_open = false;
+    }
+
+    @action.bound
+    openTopUpModal() {
+        this.is_top_up_virtual_open = true;
+    }
+
+    @action.bound
+    closeSuccessTopUpModal () {
+        this.is_top_up_virtual_success = false;
     }
 
     @action.bound

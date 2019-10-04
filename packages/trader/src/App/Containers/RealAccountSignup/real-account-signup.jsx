@@ -149,7 +149,7 @@ class RealAccountSignup extends Component {
         this.closeModal();
         setTimeout(() => {
             const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
-            if (post_signup.category && post_signup.type) {
+            if (post_signup && post_signup.category && post_signup.type) {
                 sessionStorage.removeItem('post_real_account_signup');
                 this.props.enableMt5PasswordModal();
             }

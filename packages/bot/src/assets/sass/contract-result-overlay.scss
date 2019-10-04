@@ -1,3 +1,12 @@
+@keyframes animate-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .db-contract-card__result {
     $contract_result: &;
 
@@ -15,6 +24,7 @@
     align-items: center;
     justify-content: center;
     background-color: var(--overlay-inside-dialog);
+    animation: animate-fade-in 0.3s;
 
     &:hover {
         background: 0;

@@ -9,20 +9,20 @@ import {
     NetworkStatus,
     ToggleFullScreen,
     // TogglePositions,
-    ToggleSettings }                  from '../../Components/Layout/Footer';
+    /* ToggleSettings */ }                  from '../../Components/Layout/Footer';
 
 const Footer = ({
     // active_positions,
-    enableApp,
+    // enableApp,
     is_app_disabled,
     // is_logged_in,
     // is_positions_drawer_on,
     is_route_modal_on,
-    is_settings_modal_on,
-    disableApp,
+    // is_settings_modal_on,
+    // disableApp,
     // show_positions_toggle,
     // togglePositionsDrawer,
-    toggleSettingsModal,
+    // toggleSettingsModal,
 }) => (
     <footer className={classNames('footer', {
         'footer--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -42,12 +42,12 @@ const Footer = ({
         <NetworkStatus />
         <ServerTime />
         <div className='footer__links'>
-            <ToggleSettings
+            {/* <ToggleSettings
                 is_settings_visible={is_settings_modal_on}
                 toggleSettings={toggleSettingsModal}
                 disableApp={disableApp}
                 enableApp={enableApp}
-            />
+            /> */}
             <ToggleFullScreen />
         </div>
     </footer>
@@ -59,25 +59,25 @@ Footer.propTypes = {
     is_logged_in          : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on     : PropTypes.bool,
-    is_settings_modal_on  : PropTypes.bool,
+    // is_settings_modal_on  : PropTypes.bool,
     location              : PropTypes.object,
     togglePositionsDrawer : PropTypes.func,
-    toggleSettingsModal   : PropTypes.func,
+    // toggleSettingsModal   : PropTypes.func,
 };
 
 export default withRouter(connect(
     ({ client/* , modules */, ui }) => ({
         // active_positions      : modules.portfolio.active_positions,
-        enableApp             : ui.enableApp,
+        // enableApp             : ui.enableApp,
         is_app_disabled       : ui.is_app_disabled,
         is_route_modal_on     : ui.is_route_modal_on,
         is_logged_in          : client.is_logged_in,
         is_loading            : ui.is_loading,
         is_positions_drawer_on: ui.is_positions_drawer_on,
-        is_settings_modal_on  : ui.is_settings_modal_on,
-        disableApp            : ui.disableApp,
+        // is_settings_modal_on  : ui.is_settings_modal_on,
+        // disableApp            : ui.disableApp,
         show_positions_toggle : ui.show_positions_toggle,
         togglePositionsDrawer : ui.togglePositionsDrawer,
-        toggleSettingsModal   : ui.toggleSettingsModal,
+        // toggleSettingsModal   : ui.toggleSettingsModal,
     })
 )(Footer));

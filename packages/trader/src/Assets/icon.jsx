@@ -85,6 +85,10 @@ class Icon extends React.PureComponent {
             IconReports         : React.lazy(() => import('./Header/NavBar/icon-reports.jsx')),
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
             IconUser            : React.lazy(() => import('./Header/NavBar/icon-user.jsx')),
+            
+            // Platform Switcher
+            IconDBot: React.lazy(() => import('./Header/PlatformSwitcher/icon-d-bot.jsx')),
+            IconMT5 : React.lazy(() => import('./Header/PlatformSwitcher/icon-mt5.jsx')),
 
             // Reports
             IconDemo                : React.lazy(() => import('./Reports/icon-demo.jsx')),

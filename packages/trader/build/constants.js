@@ -124,6 +124,8 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
             importWorkboxFrom: 'local',
             cleanupOutdatedCaches: true,
             exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+            skipWaiting: true,
+            clientsClaim: true,
         })
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])

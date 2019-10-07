@@ -124,8 +124,8 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMount(verification_code) {
-        await BinarySocket.wait('authorize');
         const current_container = this.active_container;
+        await BinarySocket.wait('authorize', 'balance');
 
         this.resetValuesIfNeeded();
 

@@ -30,7 +30,7 @@ class Virtual extends React.Component {
                         :
                         <React.Fragment>
                             <p className='cashier__paragraph cashier__text'>
-                                <Localize i18n_default_text={'If you\'re looking to trade with real money, it\'s easy to create a real account, make a deposit, and start trading.'} />
+                                <Localize i18n_default_text={'You need a real money account to use this feature. It\'s easy to create a real money account and start trading.'} />
                             </p>
                             <Button
                                 className='btn--primary--default cashier-error__button'

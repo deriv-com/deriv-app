@@ -13,12 +13,14 @@ import Localize                  from 'App/Components/Elements/localize.jsx';
 import UILoader                  from 'App/Components/Elements/ui-loader.jsx';
 import { localize }              from 'App/i18n';
 import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
-import IconDeviceMac             from 'Assets/SvgComponents/mt5/download-center/icon-device-mac.svg';
-import IconDeviceMobile          from 'Assets/SvgComponents/mt5/download-center/icon-device-mobile.svg';
+import IconDeviceDesktop         from 'Assets/SvgComponents/mt5/download-center/icon-device-desktop.svg';
+import IconDevicePhone           from 'Assets/SvgComponents/mt5/download-center/icon-device-phone.svg';
+import IconDeviceTablet          from 'Assets/SvgComponents/mt5/download-center/icon-device-tablet.svg';
 import IconInstallationApple     from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
 import IconInstallationGoogle    from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
 import IconInstallationLinux     from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
 import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
+import IconInstallationWeb       from 'Assets/SvgComponents/mt5/download-center/icon-installation-web.svg';
 import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
@@ -356,8 +358,9 @@ class MT5Dashboard extends React.Component {
                     <div className='mt5-dashboard__download-center-options'>
                         <div className='mt5-dashboard__download-center-options--desktop'>
                             <div className='mt5-dashboard__download-center-options--desktop-devices'>
-                                <IconDeviceMac />
+                                <IconDeviceDesktop />
                                 <IconDeviceLaptop />
+                                <a href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationWeb /></a>
                             </div>
                             <div className='mt5-dashboard__download-center-options--desktop-links'>
                                 <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank' rel='noopener noreferrer'><IconInstallationWindows /></a>
@@ -367,7 +370,8 @@ class MT5Dashboard extends React.Component {
                         </div>
                         <div className='mt5-dashboard__download-center-options--mobile'>
                             <div className='mt5-dashboard__download-center-options--mobile-devices'>
-                                <IconDeviceMobile />
+                                <IconDeviceTablet />
+                                <IconDevicePhone />
                             </div>
                             <div className='mt5-dashboard__download-center-options--mobile-links'>
                                 <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationApple /></a>

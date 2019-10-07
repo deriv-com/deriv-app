@@ -15,7 +15,7 @@ Blockly.Blocks.text = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Utility.colour,
+            colour         : Blockly.Colours.Base.colour,
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
             tooltip        : translate('Enter some text here'),

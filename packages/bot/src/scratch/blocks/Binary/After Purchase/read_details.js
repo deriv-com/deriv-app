@@ -16,9 +16,9 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Reads a selected property from contract details list'),
             category       : Blockly.Categories.After_Purchase,
         };

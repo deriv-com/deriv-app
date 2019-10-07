@@ -19,7 +19,7 @@ Blockly.Blocks.math_number = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
+            colour         : Blockly.Colours.Base.colour,
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
             tooltip        : translate('Please use `.` as a decimal separator for fractional numbers.'),

@@ -40,6 +40,7 @@ const drawerContent = ({
 const drawerFooter = ({
     active_index,
     dialog_options,
+    is_clear_stat_disable,
     is_running,
     is_run_button_clicked,
     is_dialog_visible,
@@ -56,7 +57,7 @@ const drawerFooter = ({
                 className={classNames(
                     'btn--flat',
                     'run-panel__button',
-                    { 'run-panel__button--disable': is_run_button_clicked || is_running }
+                    { 'run-panel__button--disable': is_clear_stat_disable }
                 )}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}
@@ -139,6 +140,7 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     active_index         : PropTypes.number,
     dialog_options       : PropTypes.object,
+    is_clear_stat_disable: PropTypes.bool,
     is_dialog_visible    : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
@@ -153,9 +155,11 @@ RunPanel.propTypes = {
     toggleDrawer         : PropTypes.func,
 };
 
-export default connect(({ run_panel }) => ({
+export default connect(({ run_panel, journal }) => ({
     active_index         : run_panel.active_index,
     dialog_options       : run_panel.dialog_options,
+    is_clear_stat_disable: run_panel.is_run_button_clicked ||
+    run_panel.is_running || journal.messages.length === 0,
     is_dialog_visible    : run_panel.is_dialog_visible,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,

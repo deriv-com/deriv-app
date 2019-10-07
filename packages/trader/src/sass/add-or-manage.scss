@@ -88,11 +88,13 @@
 
         & .btn {
             height: 4rem;
-            @include typeface(--title-left-bold-black);
-            font-size: 1.4rem;
-            text-align: center;
-            color: var(--text-colored-background);
             margin: 0 2rem;
+
+            &__text {
+                @include typeface(--title-left-bold-black);
+                font-size: 1.4rem;
+                text-align: center;
+            }
         }
     }
 }

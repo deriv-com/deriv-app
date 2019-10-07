@@ -2,6 +2,7 @@ import classNames           from 'classnames';
 import {
     Button,
     Input,
+    Popover,
 }                           from 'deriv-components';
 import {
     Field,
@@ -120,23 +121,73 @@ const ButtonGroup = ({
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
-        <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-        <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
-        <ToolbarSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+        <Popover
+            alignment='bottom'
+            message={translate('Load')}
+        >
+            <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+        </Popover>
+        <Popover
+            alignment='bottom'
+            message={translate('Reset')}
+        >
+            <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
+        </Popover>
+        <Popover
+            alignment='bottom'
+            message={translate('Save')}
+        >
+            <ToolbarSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+        </Popover>
         <div className='vertical-divider' />
-        <ToolbarUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
-        <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+        <Popover
+            alignment='bottom'
+            message={translate('Undo')}
+        >
+            <ToolbarUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
+        </Popover>
+        <Popover
+            alignment='bottom'
+            message={translate('Redo')}
+        >
+            <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+        </Popover>
         <div className='vertical-divider' />
         { is_run_button_clicked || is_running ?
             !is_run_button_clicked &&
+            <Popover
+                alignment='bottom'
+                message={translate('Stop')}
+            >
                 <ToolbarStopDisabledIcon className='toolbar__icon' /> ||
                 <ToolbarStopIcon className='toolbar__icon' onClick={onStopClick} />
+            </Popover>
             :
-            <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
+            <Popover
+                alignment='bottom'
+                message={translate('Run')}
+            >
+                <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
+            </Popover>
         }
-        <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-        <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-        <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+        <Popover
+            alignment='bottom'
+            message={translate('Rearrange')}
+        >
+            <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+        </Popover>
+        <Popover
+            alignment='bottom'
+            message={translate('Zoom in')}
+        >
+            <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+        </Popover>
+        <Popover
+            alignment='bottom'
+            message={translate('Zoom out')}
+        >
+            <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+        </Popover>
     </div>
 );
 

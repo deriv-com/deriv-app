@@ -12,7 +12,6 @@ function refreshOnUpdate() {
                     // eslint-disable-next-line no-console
                     console.log('New version is found, refreshing the page...');
                     clearInterval(interval_id);
-                    location.reload();
                 }
             };
         };

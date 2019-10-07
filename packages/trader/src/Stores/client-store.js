@@ -728,6 +728,7 @@ export default class ClientStore extends BaseStore {
                 amount  : obj_balance.total.real.amount,
                 currency: obj_balance.total.real.currency,
             };
+            this.resetLocalStorageValues(obj_balance.loginid);
         }
     }
 

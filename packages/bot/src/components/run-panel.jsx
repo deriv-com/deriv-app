@@ -55,7 +55,7 @@ const drawerFooter = ({
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <Button
                 className={classNames(
-                    'btn--flat',
+                    'btn--secondary--default',
                     'run-panel__button',
                     { 'run-panel__button--disable': is_clear_stat_disable }
                 )}
@@ -68,7 +68,7 @@ const drawerFooter = ({
                 (is_run_button_clicked || is_running) ?
                     <Button
                         className={classNames(
-                            'btn--primary',
+                            'btn--primary--default',
                             'run-panel__button',
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}

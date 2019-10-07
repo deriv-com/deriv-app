@@ -30,7 +30,7 @@ const Dialog = ({
                     {onCancelButtonClick &&
                         <Button
                             className={classNames(
-                                'btn--secondary',
+                                'btn--secondary--default',
                                 'bot-dialog__cancel'
                             )}
                             text={'Cancel'}
@@ -40,7 +40,7 @@ const Dialog = ({
                     {onOkButtonClick &&
                         <Button
                             className={classNames(
-                                'btn--primary',
+                                'btn--primary--default',
                                 'bot-dialog__ok'
                             )}
                             text={'Ok'}

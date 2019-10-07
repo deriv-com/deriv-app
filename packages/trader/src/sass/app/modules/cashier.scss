@@ -161,6 +161,15 @@
     &__amount-symbol {
         top: 0.9rem;
     }
+    &__no-balance {
+        &-icon {
+            margin: 10.7rem 0 1.6rem;
+        }
+        &-button {
+            height: 4rem;
+            margin-top: 3.2rem;
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -454,15 +463,6 @@
         margin-top: 3.2rem;
         min-width: 6.5rem;
         height: 4rem;
-    }
-    &__no-balance {
-        &-icon {
-            margin: 10.7rem 0 1.6rem;
-        }
-        &-button {
-            height: 4rem;
-            margin-top: 3.2rem;
-        }
     }
 }
 

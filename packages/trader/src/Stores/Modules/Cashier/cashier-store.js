@@ -52,7 +52,6 @@ class ConfigPaymentAgent {
 class ConfigPaymentAgentTransfer {
     @observable container              = 'payment_agent_transfer';
     @observable error                  = new ConfigError();
-    @observable has_no_balance         = false;
     @observable is_payment_agent       = false;
     @observable is_transfer_successful = false;
     @observable receipt                = {};
@@ -60,18 +59,18 @@ class ConfigPaymentAgentTransfer {
 }
 
 class ConfigAccountTransfer {
-    @observable accounts_list          = [];
-    @observable container              = 'account_transfer';
-    @observable error                  = new ConfigError();
-    @observable has_no_account         = false;
-    @observable has_no_balance         = false;
-    @observable is_transfer_successful = false;
-    @observable minimum_fee            = null;
-    @observable receipt                = {};
-    @observable selected_from          = {};
-    @observable selected_to            = {};
-    @observable transfer_fee           = null;
-    @observable transfer_limit         = {};
+    @observable accounts_list           = [];
+    @observable container               = 'account_transfer';
+    @observable error                   = new ConfigError();
+    @observable has_no_account          = false;
+    @observable has_no_accounts_balance = false;
+    @observable is_transfer_successful  = false;
+    @observable minimum_fee             = null;
+    @observable receipt                 = {};
+    @observable selected_from           = {};
+    @observable selected_to             = {};
+    @observable transfer_fee            = null;
+    @observable transfer_limit          = {};
 }
 
 class ConfigVerification {
@@ -84,7 +83,8 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading = false;
+    @observable has_no_balance = false;
+    @observable is_loading     = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -135,6 +135,10 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setContainerHeight(0);
         this.setLoading(true);
+
+        if (!this.root_store.client.balance) {
+            this.setHasNoBalance(true);
+        }
 
         if (!this.config[this.active_container].is_session_timeout) {
             this.checkIframeLoaded();
@@ -238,6 +242,11 @@ export default class CashierStore extends BaseStore {
                 fields: error.details.fields,
             }),
         };
+    }
+
+    @action.bound
+    setHasNoBalance(has_no_balance) {
+        this.has_no_balance = has_no_balance;
     }
 
     @action.bound
@@ -575,7 +584,7 @@ export default class CashierStore extends BaseStore {
         // should have at least one account with balance
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
-            this.setHasNoBalance(true);
+            this.setHasNoAccountsBalance(true);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
@@ -589,8 +598,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setHasNoBalance(has_no_balance) {
-        this.config[this.active_container].has_no_balance = has_no_balance;
+    setHasNoAccountsBalance(has_no_accounts_balance) {
+        this.config.account_transfer.has_no_accounts_balance = has_no_accounts_balance;
     }
 
     @action.bound
@@ -783,12 +792,6 @@ export default class CashierStore extends BaseStore {
         await BinarySocket.wait('authorize');
         this.resetValuesIfNeeded();
 
-        const balance = this.root_store.client.balance;
-        if (!balance) {
-            this.setHasNoBalance(true);
-            this.setLoading(false);
-            return;
-        }
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
             const response = await BinarySocket.wait('paymentagent_list');
             const current_payment_agent = this.getCurrentPaymentAgent(response);

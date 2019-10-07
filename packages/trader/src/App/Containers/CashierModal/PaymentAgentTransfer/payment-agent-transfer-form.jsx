@@ -48,6 +48,14 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 };
 
 class PaymentAgentTransferForm extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    componentWillUnmount() {
+        this.props.onUnMount();
+    }
+
     validateTransferPassthrough = (values) => (
         validateTransfer(values, {
             balance       : this.props.balance,
@@ -173,6 +181,7 @@ PaymentAgentTransferForm.propTypes = {
     balance                    : PropTypes.string,
     currency                   : PropTypes.string,
     error                      : PropTypes.object,
+    onMount                    : PropTypes.func,
     requestPaymentAgentTransfer: PropTypes.func,
     setErrorMessage            : PropTypes.func,
     transfer_limit             : PropTypes.object,
@@ -183,6 +192,7 @@ export default connect(
         balance                    : client.balance,
         currency                   : client.currency,
         error_message              : modules.cashier.config.payment_agent_transfer.error.message,
+        onMount                    : modules.cashier.onMountPaymentAgentTransfer,
         requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
         setErrorMessage            : modules.cashier.setErrorMessage,
         transfer_limit             : modules.cashier.config.payment_agent_transfer.transfer_limit,

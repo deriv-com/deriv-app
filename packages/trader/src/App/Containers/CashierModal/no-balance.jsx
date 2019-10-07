@@ -6,7 +6,7 @@ import Localize         from 'App/Components/Elements/localize.jsx';
 import { localize }     from 'App/i18n';
 import { connect }      from 'Stores/connect';
 
-class TransferNoBalance extends React.Component {
+class NoBalance extends React.Component {
     onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         this.props.setModalIndex(0);
@@ -14,12 +14,12 @@ class TransferNoBalance extends React.Component {
 
     render = () => {
         return (
-            <div className='cashier__wrapper account-transfer__no-balance'>
-                <Icon icon='IconNoBalance' className='account-transfer__no-balance-icon' />
+            <div className='cashier__wrapper cashier__no-balance'>
+                <Icon icon='IconNoBalance' className='cashier__no-balance-icon' />
                 <h2 className='withdraw__header'><Localize i18n_default_text='You have no funds in your {{currency}} account' values={{ currency: this.props.currency.toUpperCase() }} /></h2>
                 <p className='cashier__text'><Localize i18n_default_text='Please make a deposit to use this feature.' /></p>
                 <Button
-                    className='btn--primary--default account-transfer__no-balance-button'
+                    className='btn--primary--default cashier__no-balance-button'
                     has_effect
                     text={localize('Deposit now')}
                     onClick={this.onClickDeposit}
@@ -29,14 +29,15 @@ class TransferNoBalance extends React.Component {
     }
 }
 
-TransferNoBalance.propTypes = {
+NoBalance.propTypes = {
     currency     : PropTypes.string,
     setModalIndex: PropTypes.func,
 };
 
 export default connect(
-    ({ client }) => ({
-        currency: client.currency,
+    ({ client, ui }) => ({
+        currency     : client.currency,
+        setModalIndex: ui.setModalIndex,
     })
-)(TransferNoBalance);
+)(NoBalance);
 

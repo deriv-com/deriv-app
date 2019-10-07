@@ -312,20 +312,6 @@ class MT5Dashboard extends React.Component {
                         </div>
                     </div>
                 }
-                { !has_real_account &&
-                    <div className='mt5-dashboard__missing-real'>
-                        <h1 className='mt5-dashboard__missing-real--heading'>
-                            <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to get started with DMT5.' />
-                        </h1>
-                        <Button
-                            className='btn--primary--default mt5-dashboard__missing-real--button'
-                            onClick={ beginRealSignupForMt5 }
-                            type='button'
-                        >
-                            <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
-                        </Button>
-                    </div>
-                }
 
                 <div className='mt5-dashboard__accounts-display'>
                     <PasswordManagerModal />
@@ -338,6 +324,8 @@ class MT5Dashboard extends React.Component {
                                 onSelectAccount={createMT5Account}
                                 openAccountTransfer={this.openAccountTransfer}
                                 openPasswordManager={ this.togglePasswordManagerModal }
+                                beginRealSignupForMt5={ beginRealSignupForMt5 }
+                                has_real_account={ has_real_account }
                             />
                         </div>
                         <div label={localize('Demo account')}>

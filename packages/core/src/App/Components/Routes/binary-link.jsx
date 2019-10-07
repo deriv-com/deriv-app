@@ -33,6 +33,7 @@ BinaryLink.propTypes = {
     active_class: PropTypes.string,
     children    : PropTypes.oneOfType([
         PropTypes.object,
+        PropTypes.array,
         PropTypes.string,
     ]),
     to: PropTypes.string,

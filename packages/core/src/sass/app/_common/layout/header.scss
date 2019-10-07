@@ -87,8 +87,8 @@
             @include typeface(--title-left-normal-black);
             padding: 0.5em 0;
             position: relative;
-            color: var(--text-prominent);
-            @include colorIcon(var(--text-prominent), none, var(--text-prominent));
+            color: var(--text-general);
+            @include colorIcon(var(--text-general), none, var(--text-general));
 
             &:before {
                 position: absolute;

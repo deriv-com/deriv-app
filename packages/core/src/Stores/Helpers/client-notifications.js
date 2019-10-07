@@ -44,7 +44,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'info',
@@ -73,7 +79,13 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/authenticate', undefined, undefined, true)} /> ]}
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
             />
         ),
         type: 'warning',
@@ -117,13 +129,15 @@ export const clientNotifications = {
         message: (
             <Localize
                 i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/financial-assessment'
-                    />,
-                ]}
+                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
+                // TODO: Re-enable below once FA check on deriv is ready
+                // components={[
+                //     <BinaryLink
+                //         key={0}
+                //         className='link link--white'
+                //         to='account/financial-assessment'
+                //     />,
+                // ]}
             />
         ),
         type: 'info',
@@ -183,6 +197,14 @@ export const clientNotifications = {
         ),
         type: 'info',
     },
+    you_are_offline: {
+        key    : 'you_are_offline',
+        header : localize('You are offline'),
+        message: (
+            <Localize i18n_default_text='Check your connection.' />
+        ),
+        type: 'danger',
+    },
     password_changed: {
         key    : 'password_changed',
         header : localize('Password updated.'),
@@ -192,6 +214,50 @@ export const clientNotifications = {
             />
         ),
         type: 'info',
+    },
+    poa_expired: {
+        key    : 'poa_expired',
+        header : localize('Document expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-address'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
+    },
+    poa_rejected: {
+        key    : 'poa_rejected',
+        header : localize('We could not verify your proof of address'),
+        message: (
+            <Localize
+                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
+            />
+        ),
+        type: 'danger',
+    },
+    poi_expired: {
+        key    : 'poi_expired',
+        header : localize('Proof of identity expired'),
+        message: (
+            <Localize
+                i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
+                components={[
+                    <BinaryLink
+                        key={0}
+                        className='link link--white'
+                        to='account/proof-of-identity'
+                    />,
+                ]}
+            />
+        ),
+        type: 'danger',
     },
 };
 
@@ -236,14 +302,35 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 };
 
+const getStatusValidations = status_arr =>
+    status_arr.reduce((validations, stats) => {
+        validations[stats] = true;
+        return validations;
+    }, {});
+
+const addVerificationNotifications = (identity, document, addNotification) => {
+    if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
+
+    if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
+    if ((document.status === 'rejected' || document.status === 'suspected')) {
+        addNotification(clientNotifications.poa_rejected);
+    }
+};
+
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
     if (!account_status) return;
     if (loginid !== LocalStore.get('active_loginid')) return;
 
-    const { prompt_client_to_authenticate, status } = account_status;
+    const {
+        authentication: {
+            document,
+            identity,
+            needs_verification,
+        },
+        status,
+    } = account_status;
 
     const {
-        document_under_review,
         cashier_locked,
         withdrawal_locked,
         mt5_withdrawal_locked,
@@ -252,7 +339,11 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         ukrts_max_turnover_limit_not_set,
         professional,
     } = getStatusValidations(status);
+
+    addVerificationNotifications(identity, document, addNotification);
+
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
 
     if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
     if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
@@ -266,17 +357,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     }
     if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
     if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
-
-    if ((+prompt_client_to_authenticate) && !(document_under_review || document_needs_action)) {
-        addNotification(clientNotifications.authenticate);
-    }
-
-    function getStatusValidations(status_arr) {
-        return status_arr.reduce((validations, stats) => {
-            validations[stats] = true;
-            return validations;
-        }, {});
-    }
+    if (needs_authentication)              addNotification(clientNotifications.authenticate);
 };
 
 export const handleClientNotifications = (
@@ -292,11 +373,16 @@ export const handleClientNotifications = (
 
     checkAccountStatus(account_status, client, addNotification, loginid);
 
-    if (loginid !== LocalStore.get('active_loginid')) return;
+    if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications.tnc);
 
-    if (hasMissingRequiredField(account_settings, client)) {
+    const has_missing_required_field = hasMissingRequiredField(account_settings, client);
+    if (has_missing_required_field) {
         addNotification(clientNotifications.required_fields);
     }
+
+    return {
+        has_missing_required_field,
+    };
 };

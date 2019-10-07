@@ -1,0 +1,33 @@
+@import 'app/_common/base/index';
+
+.details-form {
+    flex-grow: 1;
+    margin-top: 3rem;
+
+    & .datepicker {
+        max-width: initial;
+        position: relative;
+
+        &--active-label {
+            label {
+                color: var(--text-general);
+            }
+        }
+        & .icon-datepicker {
+            top: 1em;
+            right: 1em;
+            position: absolute;
+        }
+    }
+    &__elements {
+        flex-grow: 1;
+        margin: 0 auto;
+        width: 40%;
+    }
+    &__description {
+        @include typeface(--paragraph-center-normal-black);
+        text-transform: none;
+        margin: 2em 0;
+        color: var(--text-general);
+    }
+}

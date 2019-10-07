@@ -66,10 +66,12 @@
     &__description {
         @include typeface(--small-center-normal-black);
         text-transform: none;
+        color: var(--text-general);
     }
     &--h4 {
         @include typeface(--small-center-bold-black);
         text-transform: none;
+        color: var(--text-prominent);
     }
     &--balance {
         @include typeface(--paragraph-center-bold-black);
@@ -77,6 +79,7 @@
     }
     &--balance-descriptor {
         @include typeface(--small-center-normal-black);
+        color: var(--text-general);
     }
     &--button {
         height: 4rem;
@@ -91,7 +94,7 @@
         .btn {
             @include typeface(--paragraph-center-bold-black, none);
             background-color: var(--brand-red-coral);
-            color: var(--text-prominent);
+            color: var(--text-colored-background);
 
             &--disabled {
                 background-color: var(--brand-red-coral);
@@ -115,6 +118,7 @@
 .dc-modal-header__section {
     &--top-up-virtual {
         @include typeface(--paragraph-center-bold-black);
+        color: var(--text-prominent);
         text-transform: none;
     }
 }
@@ -122,12 +126,14 @@
 .mt5-success-topup {
     &__heading {
         @include typeface(--small-center-bold-black);
+        color: var(--text-prominent);
         text-transform: none;
         margin-top: 2em;
     }
     &__description {
         p {
             @include typeface(--small-center-normal-black);
+            color: var(--text-general);
             text-transform: none;
         }
     }

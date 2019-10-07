@@ -3,7 +3,7 @@ import { load as loadLang } from '../utils/lang/lang';
 
 loadLang();
 
-const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
+const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
 const config = {
     lists: {

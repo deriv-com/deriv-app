@@ -31,7 +31,7 @@ PaymentAgent.propTypes = {
 
 export default connect(
     ({ client, modules }) => ({
-        verification_code        : client.verification_code,
+        verification_code        : client.verification_code.payment_agent_withdraw,
         container                : modules.cashier.config.payment_agent.container,
         is_payment_agent_withdraw: modules.cashier.config.payment_agent.is_withdraw,
         setActiveTab             : modules.cashier.setActiveTab,

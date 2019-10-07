@@ -84,21 +84,20 @@ Blockly.Blocks.trade_definition = {
     },
     onchange(event) {
         setBlockTextColor(this);
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout) {
             return;
         }
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             // Maintain single instance of this block, dispose of older ones.
-            const top_blocks = this.workspace.getTopBlocks(true);
+            const top_blocks = this.workspace.getTopBlocks(false);
 
             top_blocks.forEach(top_block => {
                 if (top_block.type === this.type && top_block.id !== this.id) {
                     top_block.dispose(false);
                 }
             });
-
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 

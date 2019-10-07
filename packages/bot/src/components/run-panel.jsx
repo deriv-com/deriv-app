@@ -36,11 +36,11 @@ const drawerContent = ({
 
 const drawerFooter = ({
     active_index,
-    onCloseModal,
+    onCloseDialog,
     dialog_options,
     is_running,
     is_run_button_clicked,
-    is_dialog_visible,
+    is_dialog_open,
     onClearStatClick,
     onRunButtonClick,
     onStopButtonClick,
@@ -83,8 +83,12 @@ const drawerFooter = ({
                         has_effect
                     />
             }
-            { is_dialog_visible &&
-                <Dialog title={dialog_options.title} is_open={is_dialog_visible} closeModal={onCloseModal}>
+            { is_dialog_open &&
+                <Dialog
+                    title={dialog_options.title}
+                    is_open={is_dialog_open}
+                    closeModal={onCloseDialog}
+                >
                     {dialog_options.message}
                 </Dialog>
             }
@@ -119,12 +123,12 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     active_index         : PropTypes.number,
     dialog_options       : PropTypes.object,
-    is_dialog_visible    : PropTypes.bool,
+    is_dialog_open       : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onClearStatClick     : PropTypes.func,
-    onCloseModal         : PropTypes.func,
+    onCloseDialog        : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
@@ -135,12 +139,12 @@ RunPanel.propTypes = {
 export default connect(({ run_panel }) => ({
     active_index         : run_panel.active_index,
     dialog_options       : run_panel.dialog_options,
-    is_dialog_visible    : run_panel.is_dialog_visible,
+    is_dialog_open       : run_panel.is_dialog_open,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onClearStatClick     : run_panel.onClearStatClick,
-    onCloseModal         : run_panel.onCloseModal,
+    onCloseDialog        : run_panel.onCloseDialog,
     onRunButtonClick     : run_panel.onRunButtonClick,
     onStopButtonClick    : run_panel.onStopButtonClick,
     onUnmount            : run_panel.onUnmount,

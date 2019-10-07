@@ -118,7 +118,7 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onCloseModal() {
+    onCloseDialog() {
         this.dialog_options = {};
     }
 
@@ -128,7 +128,7 @@ export default class RunPanelStore {
     }
 
     @computed
-    get is_dialog_visible() {
+    get is_dialog_open() {
         return Object.entries(this.dialog_options).length > 0;
     }
 

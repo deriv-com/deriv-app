@@ -10,6 +10,7 @@ import {
 }                           from 'formik';
 import PropTypes            from 'prop-types';
 import React                from 'react';
+import Dialog               from './dialog.jsx';
 import {
     ToolbarCloseIcon,
     ToolbarNewFileIcon,
@@ -141,10 +142,12 @@ const ButtonGroup = ({
 
 const Toolbar = ({
     file_name,
+    is_dialog_open,
     is_drawer_open,
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
+    onCloseDialog,
     onRedoClick,
     onResetClick,
     onRunClick,
@@ -205,15 +208,26 @@ const Toolbar = ({
             
         </div>
         <SaveLoadModal />
+        { is_dialog_open &&
+        <Dialog
+            title={translate('Are you sure?')}
+            is_open={is_dialog_open}
+            closeModal={onCloseDialog}
+        >
+            {translate('Any unsaved changes will be lost.')}
+        </Dialog>
+        }
     </div>
 );
 
 Toolbar.propTypes = {
     file_name            : PropTypes.string,
+    is_dialog_open       : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onBotNameTyped       : PropTypes.func,
+    onCloseDialog        : PropTypes.func,
     onGoogleDriveClick   : PropTypes.func,
     onRedoClick          : PropTypes.func,
     onResetClick         : PropTypes.func,
@@ -231,10 +245,12 @@ Toolbar.propTypes = {
 
 export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name            : toolbar.file_name,
+    is_dialog_open       : toolbar.is_dialog_open,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onBotNameTyped       : toolbar.onBotNameTyped,
+    onCloseDialog        : toolbar.onCloseDialog,
     onGoogleDriveClick   : toolbar.onGoogleDriveClick,
     onRedoClick          : toolbar.onRedoClick,
     onResetClick         : toolbar.onResetClick,

@@ -9,6 +9,7 @@ export default class ToolbarStore {
         this.root_store = root_store;
     }
 
+    @observable is_dialog_open = false;
     @observable is_toolbox_open = true;
     @observable file_name = translate('Untitled Bot');
 
@@ -56,12 +57,22 @@ export default class ToolbarStore {
     }
 
     @action.bound
+    onCloseDialog() {
+        this.is_dialog_open = false;
+    }
+
+    @action.bound
     onBotNameTyped(bot_name) {
         this.file_name = bot_name;
     }
 
     @action.bound
     onResetClick() {
+        this.is_dialog_open = true;
+    }
+
+    @action.bound
+    resetBlocks() {
         const workspace = Blockly.derivWorkspace;
         
         Blockly.Events.setGroup('reset');

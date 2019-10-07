@@ -125,7 +125,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMount(verification_code) {
         const current_container = this.active_container;
-        await BinarySocket.wait('authorize', 'balance');
+        await BinarySocket.wait('authorize');
 
         this.resetValuesIfNeeded();
 
@@ -137,7 +137,11 @@ export default class CashierStore extends BaseStore {
         this.setLoading(true);
 
         if (!this.root_store.client.balance) {
-            this.setHasNoBalance(true);
+            await BinarySocket.wait('balance');
+            // make sure balance response has come then set it to false, but don't wait unless we need to
+            if (!this.root_store.client.balance) {
+                this.setHasNoBalance(true);
+            }
         }
 
         if (!this.config[this.active_container].is_session_timeout) {

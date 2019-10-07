@@ -535,6 +535,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetPaymentAgent = () => {
+        this.setErrorMessage('');
         this.setIsWithdraw(false);
         this.clearVerification();
     };

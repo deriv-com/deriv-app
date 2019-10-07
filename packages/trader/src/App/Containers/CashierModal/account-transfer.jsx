@@ -21,7 +21,8 @@ class AccountTransfer extends React.Component {
                     <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
-                        {this.props.error.is_show_full_page ?
+                        {this.props.error.is_show_full_page ||
+                        (this.props.error.message && !this.props.accounts_list.length) ?
                             <Error error={this.props.error} />
                             :
                             (this.props.has_no_account ?
@@ -46,6 +47,7 @@ class AccountTransfer extends React.Component {
 }
 
 AccountTransfer.propTypes = {
+    accounts_list         : PropTypes.array,
     container             : PropTypes.string,
     error                 : PropTypes.object,
     has_no_account        : PropTypes.bool,
@@ -59,6 +61,7 @@ AccountTransfer.propTypes = {
 
 export default connect(
     ({ modules, ui }) => ({
+        accounts_list         : modules.cashier.config.account_transfer.accounts_list,
         container             : modules.cashier.config.account_transfer.container,
         error                 : modules.cashier.config.account_transfer.error,
         has_no_account        : modules.cashier.config.account_transfer.has_no_account,

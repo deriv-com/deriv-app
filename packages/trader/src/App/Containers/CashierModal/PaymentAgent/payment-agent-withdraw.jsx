@@ -141,6 +141,10 @@ class PaymentAgentWithdraw extends React.Component {
         this.props.onMount();
     }
 
+    componentWillUnmount() {
+        this.props.setErrorMessage('');
+    }
+
     validateWithdrawalPassthrough = (values) => (
         validateWithdrawal(values, {
             balance      : this.props.balance,
@@ -258,6 +262,7 @@ PaymentAgentWithdraw.propTypes = {
     onMount                    : PropTypes.func,
     payment_agent_list         : PropTypes.array,
     requestPaymentAgentWithdraw: PropTypes.func,
+    setErrorMessage            : PropTypes.func,
     verification_code          : PropTypes.string,
 };
 
@@ -271,5 +276,6 @@ export default connect(
         onMount                    : modules.cashier.onMountPaymentAgentWithdraw,
         payment_agent_list         : modules.cashier.config.payment_agent.agents,
         requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
+        setErrorMessage            : modules.cashier.setErrorMessage,
     })
 )(PaymentAgentWithdraw);

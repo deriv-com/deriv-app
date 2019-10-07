@@ -97,25 +97,27 @@
         }
     }
     &__new-account {
-        align-items: center;
         background-color: transparent;
         border-radius: 4px;
-        display: flex;
-        height: 40px;
-        margin: 0 0 0.8em;
 
         &-link {
             background-color: transparent;
-            margin: 0;
-            padding: 0;
+            margin: 0 0 0.8em;
+            padding: 0 0 0 0.8em;
+            display: flex;
+            text-decoration: none;
+            width: 100%;
+            height: 40px;
+            align-items: center;
 
             & .btn {
                 background-color: transparent;
-                margin: 0;
                 padding: 0;
 
                 &__text {
                     color: $COLOR_WHITE;
+                    margin: 0 0 0 0.5em;
+
                 }
             }
         }
@@ -264,4 +266,27 @@
         display: flex;
         color: var(--text-prominent);
     }
+}
+
+/** @define set-currency; weak */
+.set-currency {
+    & .btn {
+        @include typeface(--paragraph-center-bold-black);
+        text-transform: none;
+        color: var(--general-main-1);
+        text-decoration: none;
+        width: 11.6rem;
+        height: 3.2rem;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/** @define no-currency; weak */
+.no-currency {
+    @include typeface(--xxsmall-center-normal-black);
+    text-transform: none;
+    color: var(--text-less-prominent);
+    line-height: 1.5;
+    text-align: right;
 }

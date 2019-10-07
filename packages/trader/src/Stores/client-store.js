@@ -520,6 +520,7 @@ export default class ClientStore extends BaseStore {
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,
+            this.root_store.ui,
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -555,6 +556,7 @@ export default class ClientStore extends BaseStore {
                     this.account_status,
                     this.root_store.ui.addNotification,
                     this.loginid,
+                    this.root_store.ui,
                 );
                 this.setHasMissingRequiredField(has_missing_required_field);
             });

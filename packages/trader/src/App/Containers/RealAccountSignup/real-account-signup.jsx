@@ -54,7 +54,7 @@ class RealAccountSignup extends Component {
             modal_content: [
                 {
                     icon : 'IconTheme',
-                    label: localize('Add a real account'),
+                    label: this.props.has_currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}

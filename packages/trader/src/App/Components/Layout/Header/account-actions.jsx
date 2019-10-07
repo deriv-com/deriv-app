@@ -1,6 +1,8 @@
+import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
+import Localize             from 'App/Components/Elements/localize.jsx';
 import Icon                 from 'Assets/icon.jsx';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
@@ -40,6 +42,7 @@ export class AccountActions extends Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_virtual,
+            openRealAccountSignup,
             setCashierActiveTab,
             toggleAccountsDialog,
             toggleCashierModal,
@@ -60,7 +63,22 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!is_virtual &&
+                    {!is_virtual && !currency &&
+                        <div className='set-currency'>
+                            <Button
+                                onClick={openRealAccountSignup}
+                                type='button'
+                                className='btn btn--primary--default'
+                            >
+                                <span>
+                                    <Localize
+                                        i18n_default_text='Set currency'
+                                    />
+                                </span>
+                            </Button>
+                        </div>
+                    }
+                    {!is_virtual && currency &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
@@ -95,6 +113,7 @@ AccountActions.propTypes = {
     is_payment_agent_transfer_visible: PropTypes.any,
     is_payment_agent_visible         : PropTypes.any,
     is_virtual                       : PropTypes.any,
+    openRealAccountSignup            : PropTypes.func,
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.any,
     toggleCashierModal               : PropTypes.any,

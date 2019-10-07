@@ -32,6 +32,7 @@ const Header = ({
     setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
+    openRealAccountSignup,
 }) => (
     <header className={classNames('header', {
         'header--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -69,6 +70,7 @@ const Header = ({
                         setCashierActiveTab={setCashierActiveTab}
                         toggleAccountsDialog={toggleAccountsDialog}
                         toggleCashierModal={toggleCashierModal}
+                        openRealAccountSignup={openRealAccountSignup}
                     />
                 </div>
             </div>
@@ -120,6 +122,7 @@ export default connect(
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
         is_route_modal_on                : ui.is_route_modal_on,
         is_mobile                        : ui.is_mobile,
+        openRealAccountSignup            : ui.openRealAccountSignup,
         disableApp                       : ui.disableApp,
         setCashierActiveTab              : ui.setCashierActiveTab,
         toggleAccountsDialog             : ui.toggleAccountsDialog,

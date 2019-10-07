@@ -166,6 +166,7 @@ const MT5PasswordModal = ({
                                     !values.password ||
                                     Object.keys(errors).length > 0
                                 }
+                                is_loading={ isSubmitting }
                                 label={ <Localize i18n_default_text='Add account' /> }
                                 form_error={form_error}
                             />

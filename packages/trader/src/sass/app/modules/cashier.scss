@@ -169,15 +169,20 @@
             margin-top: 8.7rem;
             margin-bottom: 1.6rem;
         }
-        &__text {
+        &__header {
             color: var(--text-loss-danger);
             font-weight: bold;
             font-size: 1.6rem;
             line-height: 1.5;
+            margin-bottom: 0.8rem;
         }
         &__button {
             margin-top: 3.2rem;
             height: 4rem;
+            margin-bottom: 1.6rem;
+        }
+        &__footer {
+            font-size: 1.2rem;
         }
     }
 }

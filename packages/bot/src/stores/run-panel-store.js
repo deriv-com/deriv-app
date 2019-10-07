@@ -215,7 +215,7 @@ export default class RunPanelStore {
         this.onCancelButtonClick = this.onCloseModal;
         this.dialog_options = {
             title  : translate('Are you sure?'),
-            message: translate('This will clear all transactions in the summary panel, and all counters will be reset to zero.'),
+            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
         };
     }
 

@@ -25,6 +25,7 @@ import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSub
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
+import Icon from '../../../../../Assets/icon.jsx';
 
 const getResidence = (residence_list, value, type) => {
     const residence = residence_list.find(location =>
@@ -586,7 +587,7 @@ class PersonalDetailsForm extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='account-form__footer-btn btn--primary--default'
+                                        className='account-form__footer-btn btn--primary--green'
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?
@@ -607,7 +608,7 @@ class PersonalDetailsForm extends React.Component {
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
-                                        text={localize('Submit')}
+                                        icon={<Icon icon='IconCheck' />}
                                     />
                                 </FormFooter>
                             </form>

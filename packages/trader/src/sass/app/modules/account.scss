@@ -135,9 +135,16 @@
             background-color: var(--general-main-1);
 
             &-btn {
+                height: 4em;
                 margin-top: 0;
                 margin-bottom: 0;
                 margin-right: 0;
+                min-width: 6.4em;
+
+                .btn__icon {
+                    line-height: 0;
+                    padding: 0;
+                }
             }
         }
     }

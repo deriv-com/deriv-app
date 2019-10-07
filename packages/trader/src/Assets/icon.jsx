@@ -18,6 +18,7 @@ class Icon extends React.PureComponent {
             IconBack              : React.lazy(() => import('./Common/icon-back.jsx')),
             IconCalendarToday     : React.lazy(() => import('./Common/icon-calendar-today.jsx')),
             IconCalendar          : React.lazy(() => import('./Common/icon-calendar.jsx')),
+            IconCheck             : React.lazy(() => import('./Common/icon-check.jsx')),
             IconChevronDoubleLeft : React.lazy(() => import('./Common/icon-chevron-double-left.jsx')),
             IconChevronDoubleRight: React.lazy(() => import('./Common/icon-chevron-double-right.jsx')),
             IconChevronLeft       : React.lazy(() => import('./Common/icon-chevron-left.jsx')),

@@ -45,6 +45,14 @@
         margin: 0 12px;
         height: 15px;
         width: 15px;
+
+        &--stop {
+            stroke: var(--text-prominent);
+        }
+        &--disabled {
+            stroke: var(--general-disabled);
+            pointer-events: none;
+        }
     }
     &__group {
         display: flex;

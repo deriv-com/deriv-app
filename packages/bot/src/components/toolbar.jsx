@@ -35,7 +35,7 @@ import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
-const initial_search_value  = { search: '' };
+const initial_search_value = { search: '' };
 const initial_botname_value = { botname: '' };
 
 const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
@@ -137,14 +137,17 @@ const ButtonGroup = ({
             alignment='bottom'
             message={translate('Save')}
         >
-            <ToolbarSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+            <ToolbarSaveIcon
+                className='toolbar__icon toolbar__icon--stop'
+                onClick={() => toggleSaveLoadModal(true)}
+            />
         </Popover>
         <div className='vertical-divider' />
         <Popover
             alignment='bottom'
             message={translate('Undo')}
         >
-            <ToolbarUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
+            <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
         </Popover>
         <Popover
             alignment='bottom'
@@ -153,14 +156,18 @@ const ButtonGroup = ({
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
         <div className='vertical-divider' />
-        { is_run_button_clicked || is_running ?
-            !is_run_button_clicked &&
+        {is_run_button_clicked || is_running ?
             <Popover
                 alignment='bottom'
                 message={translate('Stop')}
             >
-                <ToolbarStopDisabledIcon className='toolbar__icon' /> ||
-                <ToolbarStopIcon className='toolbar__icon' onClick={onStopClick} />
+                <ToolbarStopIcon
+                    className={classNames(
+                        'toolbar__icon',
+                        'toolbar__icon--stop',
+                        { 'toolbar__icon--disabled': !is_run_button_clicked })}
+                    onClick={onStopClick}
+                />
             </Popover>
             :
             <Popover
@@ -257,10 +264,10 @@ const Toolbar = ({
                 )}
                 should_show_overlay={true}
             />
-            
+
         </div>
         <SaveLoadModal />
-        { is_dialog_open &&
+        {is_dialog_open &&
         <Dialog
             title={translate('Are you sure?')}
             is_open={is_dialog_open}
@@ -314,6 +321,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onSearchBlur         : toolbar.onSearchBlur,
     onSearchClear        : toolbar.onSearchClear,
     onSortClick          : toolbar.onSortClick,
+    onStopClick          : toolbar.onStopClick,
     onToolboxToggle      : toolbar.onToolboxToggle,
     onUndoClick          : toolbar.onUndoClick,
     onZoomInOutClick     : toolbar.onZoomInOutClick,

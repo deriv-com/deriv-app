@@ -9,8 +9,9 @@ Blockly.Blocks.todatetime = {
             message0: `${translate('To date/time %1')}%2`,
             args0   : [
                 {
-                    type: 'input_value',
-                    name: 'TIMESTAMP',
+                    type : 'input_value',
+                    name : 'TIMESTAMP',
+                    check: 'Number',
                 },
                 {
                     // Extra dummy for spacing.

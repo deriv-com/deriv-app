@@ -1,13 +1,13 @@
 import JSInterpreter                  from 'js-interpreter';
 import { createScope }                from './cliTools';
-import { observer as globalObserver } from '../../../utils/observer';
 import Interface                      from '../Interface';
-import { unrecoverableErrors }        from '../../../constants/message-types';
+import { unrecoverable_errors }       from '../../../constants/message-types';
+import { observer as globalObserver } from '../../../utils/observer';
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+    !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
     const stopErrors = ['SellNotAvailable'];

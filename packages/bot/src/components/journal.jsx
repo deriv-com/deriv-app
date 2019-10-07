@@ -2,7 +2,7 @@ import classnames        from 'classnames';
 import proptypes         from 'prop-types';
 import React             from 'react';
 import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import { messageTypes }  from '../constants/message-types';
+import { message_types }  from '../constants/message-types';
 import { connect }       from '../stores/connect';
 import { translate }     from '../utils/tools';
 import '../assets/sass/journal.scss';
@@ -122,7 +122,7 @@ class Journal extends React.PureComponent {
                                         <td className='journal__table--td'>{date_el}</td>
                                         <td className={classnames(
                                             'journal__table--td',
-                                            { 'journal__table--red': message_type === messageTypes.error })}
+                                            { 'journal__table--red': message_type === message_types.error })}
                                         >{message_el}
                                         </td>
                                     </tr>);

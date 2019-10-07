@@ -1,5 +1,4 @@
-
-export const unrecoverableErrors = [
+export const unrecoverable_errors = [
     'InsufficientBalance',
     'CustomLimitsReached',
     'OfferingsValidationError',
@@ -10,7 +9,7 @@ export const unrecoverableErrors = [
     'FinancialAssessmentRequired',
 ];
 
-export const messageTypes = {
+export const message_types = {
     error  : 'error',
     notify : 'notify',
     success: 'success',

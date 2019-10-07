@@ -4,8 +4,8 @@ import {
 import { formatDate }            from 'deriv-shared/utils/date';
 import { observer }              from '../utils/observer';
 import {
-    messageTypes,
-    unrecoverableErrors }        from '../constants/message-types';
+    message_types,
+    unrecoverable_errors }        from '../constants/message-types';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -25,26 +25,26 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(data) {
-        this.pushMessage(data, messageTypes.success);
+        this.pushMessage(data, message_types.success);
     }
 
     @action.bound
     onLogError(data) {
-        if (unrecoverableErrors.some(x=>x.name && x.name === data.name)) {
+        if (unrecoverable_errors.some(x=>x.name && x.name === data.name)) {
             this.root_store.run_panel.reset();
         }
-        this.pushMessage(data, messageTypes.error);
+        this.pushMessage(data, message_types.error);
     }
 
     @action.bound
     onError(data) {
         this.root_store.run_panel.reset();
-        this.pushMessage(data , messageTypes.error);
+        this.pushMessage(data , message_types.error);
     }
 
     @action.bound
     onNotify(data) {
-        this.pushMessage(data , messageTypes.notify);
+        this.pushMessage(data , message_types.notify);
     }
 
     @action.bound

@@ -1,8 +1,9 @@
-import { Button, Modal } from 'deriv-components';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
 
+import classNames         from 'classnames';
+import { Button, Modal }  from 'deriv-components';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { translate }      from '../utils/tools';
 import '../assets/sass/dialog.scss';
 
 const Dialog = ({
@@ -33,7 +34,7 @@ const Dialog = ({
                                 'btn--secondary--default',
                                 'bot-dialog__cancel'
                             )}
-                            text={'Cancel'}
+                            text={translate('Cancel')}
                             onClick={onCancelButtonClick}
                             has_effect
                         />}
@@ -43,7 +44,7 @@ const Dialog = ({
                                 'btn--primary--default',
                                 'bot-dialog__ok'
                             )}
-                            text={'Ok'}
+                            text={translate('Ok')}
                             onClick={onOkButtonClick}
                             has_effect
                         />}

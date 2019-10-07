@@ -16,7 +16,7 @@
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;
-    box-shadow: 0 2px 8px 0 var(--text-less-prominent);
+    box-shadow: 0 0 8px 0 var(--text-less-prominent);
     min-width: 400px;
 
     &__item:hover {
@@ -47,10 +47,12 @@
         text-align: center;
 
         &-new {
-            width: 100%;
+            background-color: var(--general-main-1);
+            box-shadow: 0 0 8px 0 var(--text-less-prominent);
+            color: var(--text-general);
             font-size: 100%;
-            box-shadow: 0 2px 8px 0 var(--text-less-prominent);
             margin-bottom: $default-margin;
+            width: 100%;
         }
         &-add {
             background-color: var(--brand-red-coral);

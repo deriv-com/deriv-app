@@ -129,6 +129,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMount(verification_code) {
         await BinarySocket.wait('authorize');
+        const current_container = this.active_container;
 
         this.resetValuesIfNeeded();
 
@@ -165,7 +166,7 @@ export default class CashierStore extends BaseStore {
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
         // if tab changed while waiting for response, ignore it
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (current_container !== this.active_container) {
             return;
         }
 

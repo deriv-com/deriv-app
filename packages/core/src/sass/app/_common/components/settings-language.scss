@@ -22,11 +22,10 @@
             border-radius: $BORDER_RADIUS;
             padding: 16px;
             text-decoration: none;
+            background-color: var(--state-normal);
 
             &--active {
                 border: 1px solid var(--border-active);
-                box-shadow: 0 0 0 2px var(--shadow-menu);
-                background-color: var(--state-active);
                 color: var(--text-prominent);
             }
         }

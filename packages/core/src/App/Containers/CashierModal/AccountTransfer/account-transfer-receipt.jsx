@@ -58,7 +58,7 @@ class AccountTransferReceipt extends React.Component {
                     </span>
                 </div>
                 <Button
-                    className='btn--primary btn--primary--orange account-transfer__button-done'
+                    className='btn--primary--default account-transfer__button-done'
                     has_effect
                     text={localize('Done')}
                     onClick={this.props.resetAccountTransfer}
@@ -73,15 +73,13 @@ AccountTransferReceipt.propTypes = {
     resetAccountTransfer: PropTypes.func,
     selected_from       : PropTypes.object,
     selected_to         : PropTypes.object,
-    toggleCashierModal  : PropTypes.func,
 };
 
 export default withRouter(connect(
-    ({ modules, ui }) => ({
+    ({ modules }) => ({
         receipt             : modules.cashier.config.account_transfer.receipt,
         resetAccountTransfer: modules.cashier.resetAccountTransfer,
         selected_from       : modules.cashier.config.account_transfer.selected_from,
         selected_to         : modules.cashier.config.account_transfer.selected_to,
-        toggleCashierModal  : ui.toggleCashierModal,
     })
 )(AccountTransferReceipt));

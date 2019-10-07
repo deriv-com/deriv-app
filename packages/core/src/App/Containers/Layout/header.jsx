@@ -1,13 +1,16 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import {
     AccountActions,
     MenuLinks,
-}                     from 'App/Components/Layout/Header';
-import header_links   from 'App/Constants/header-links';
-import Lazy           from 'App/Containers/Lazy';
-import { connect }    from 'Stores/connect';
+    PlatformSwitcher,
+}                        from 'App/Components/Layout/Header';
+import platform_config   from 'App/Constants/platform-config';
+import header_links      from 'App/Constants/header-links';
+import Lazy              from 'App/Containers/Lazy';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import { connect }       from 'Stores/connect';
 
 const Header = ({
     active_cashier_tab,
@@ -22,11 +25,11 @@ const Header = ({
     is_logged_in,
     is_mobile,
     is_payment_agent_visible,
+    is_payment_agent_transfer_visible,
     is_route_modal_on,
     is_virtual,
-    loginid,
-    onClickUpgrade,
     disableApp,
+    setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
 }) => (
@@ -36,6 +39,7 @@ const Header = ({
     >
         <div className='header__menu-items'>
             <div className='header__menu-left'>
+                <PlatformSwitcher platform_config={platform_config} />
                 <Lazy
                     has_progress={false}
                     ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
@@ -59,40 +63,41 @@ const Header = ({
                         is_acc_switcher_on={is_acc_switcher_on}
                         is_cashier_modal_on={is_cashier_modal_on}
                         is_payment_agent_visible={is_payment_agent_visible}
+                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         is_logged_in={is_logged_in}
                         is_virtual={is_virtual}
-                        loginid={loginid}
-                        onClickUpgrade={onClickUpgrade}
+                        setCashierActiveTab={setCashierActiveTab}
                         toggleAccountsDialog={toggleAccountsDialog}
                         toggleCashierModal={toggleCashierModal}
                     />
                 </div>
             </div>
         </div>
+        <RealAccountSignup />
     </header>
 );
 
 Header.propTypes = {
-    active_cashier_tab      : PropTypes.string,
-    balance                 : PropTypes.string,
-    can_upgrade             : PropTypes.bool,
-    can_upgrade_to          : PropTypes.string,
-    currency                : PropTypes.string,
-    disableApp              : PropTypes.func,
-    enableApp               : PropTypes.func,
-    is_acc_switcher_on      : PropTypes.bool,
-    is_app_disabled         : PropTypes.bool,
-    is_cashier_modal_on     : PropTypes.bool,
-    is_dark_mode            : PropTypes.bool,
-    is_logged_in            : PropTypes.bool,
-    is_mobile               : PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_route_modal_on       : PropTypes.bool,
-    is_virtual              : PropTypes.bool,
-    loginid                 : PropTypes.string,
-    onClickUpgrade          : PropTypes.func,
-    toggleAccountsDialog    : PropTypes.func,
-    toggleCashierModal      : PropTypes.func,
+    active_cashier_tab               : PropTypes.string,
+    balance                          : PropTypes.string,
+    can_upgrade                      : PropTypes.bool,
+    can_upgrade_to                   : PropTypes.string,
+    currency                         : PropTypes.string,
+    disableApp                       : PropTypes.func,
+    enableApp                        : PropTypes.func,
+    is_acc_switcher_on               : PropTypes.bool,
+    is_app_disabled                  : PropTypes.bool,
+    is_cashier_modal_on              : PropTypes.bool,
+    is_dark_mode                     : PropTypes.bool,
+    is_logged_in                     : PropTypes.bool,
+    is_mobile                        : PropTypes.bool,
+    is_payment_agent_transfer_visible: PropTypes.bool,
+    is_payment_agent_visible         : PropTypes.bool,
+    is_route_modal_on                : PropTypes.bool,
+    is_virtual                       : PropTypes.bool,
+    setCashierActiveTab              : PropTypes.func,
+    toggleAccountsDialog             : PropTypes.func,
+    toggleCashierModal               : PropTypes.func,
 };
 
 export default connect(
@@ -104,7 +109,6 @@ export default connect(
         currency                : client.currency,
         is_logged_in            : client.is_logged_in,
         is_virtual              : client.is_virtual,
-        loginid                 : client.loginid,
         enableApp               : ui.enableApp,
         is_acc_switcher_on      : ui.is_accounts_switcher_on,
         is_cashier_modal_on     : ui.is_cashier_modal_on,
@@ -113,10 +117,12 @@ export default connect(
         is_loading              : ui.is_loading,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),
-        is_route_modal_on   : ui.is_route_modal_on,
-        is_mobile           : ui.is_mobile,
-        disableApp          : ui.disableApp,
-        toggleAccountsDialog: ui.toggleAccountsDialog,
-        toggleCashierModal  : ui.toggleCashierModal,
+        is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
+        is_route_modal_on                : ui.is_route_modal_on,
+        is_mobile                        : ui.is_mobile,
+        disableApp                       : ui.disableApp,
+        setCashierActiveTab              : ui.setCashierActiveTab,
+        toggleAccountsDialog             : ui.toggleAccountsDialog,
+        toggleCashierModal               : ui.toggleCashierModal,
     })
 )(Header);

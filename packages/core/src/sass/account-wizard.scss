@@ -1,0 +1,182 @@
+@import 'app/_common/base/index';
+
+.dc-modal__container_real-account-signup-modal {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease-in-out;
+    width: 900px;
+    overflow: unset;
+
+    &--success {
+        width: 400px;
+        border-radius: $BORDER_RADIUS;
+        overflow: hidden;
+        max-width: 478px;
+    }
+    .dc-modal-header__title {
+        text-transform: none;
+        border-top-left-radius: 1em;
+    }
+    &--error {
+        & > svg {
+            width: 128px;
+            height: 128px;
+            align-self: center;
+            margin: 2em 0 0;
+        }
+        h1 {
+            @include typeface(--title-center-bold-black);
+            text-transform: none;
+            color: var(--text-general);
+            margin: 2em 0 1em;
+        }
+        p {
+            @include typeface(--paragraph-center-normal-black);
+            text-transform: none;
+            color: var(--text-prominent);
+        }
+        a {
+            @include typeface(--paragraph-center-bold-black);
+            text-transform: none;
+            text-decoration: none;
+            color: var(--text-colored-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12em;
+            align-self: center;
+        }
+    }
+}
+
+.dc-modal-header__real-account-signup-modal {
+    border-bottom: 1px solid var(--general-section-1);
+}
+
+.account-wizard {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+
+    h1 {
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-top: 3rem;
+    }
+    h2 {
+        @include typeface(--paragraph-center-bold-black);
+        text-transform: none;
+        margin-top: 2rem;
+        color: var(--text-general);
+    }
+    h3 {
+        @include typeface(--small-center-normal-black);
+        text-transform: none;
+        color: var(--text-general);
+        margin-bottom: 3rem;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-evenly;
+        width: 100%;
+        padding: 2em;
+    }
+    &__body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    &__set-currency {
+        p {
+            margin-top: 1em;
+            @include typeface(--small-center-normal-black);
+            text-transform: initial;
+            color: var(--text-prominent);
+        }
+        h2 {
+            color: var(--text-prominent);
+        }
+    }
+    // This is taken from account-signup.scss
+    // TODO remove this when deriv color changes is done
+    &__btn {
+        @include typeface(--paragraph-center-bold-black);
+        min-width: initial;
+        height: 40px;
+        border-radius: 4px;
+        background-color: var(--brand-red-coral);
+        color: var(--text-colored-background);
+        margin: 1.6em 1.6em 1.6em 0;
+        text-transform: none;
+
+        &:hover:not(&--disabled) {
+            background-color: var(--button-primary-hover);
+        }
+        &--disabled {
+            opacity: 0.32;
+            cursor: initial;
+        }
+        &--cancel {
+            border: 1px solid var(--text-less-prominent);
+            color: var(--text-less-prominent) !important;
+            margin-right: 1rem;
+            background-color: var(--general-main-1);
+        }
+    }
+    &__btn-area {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        align-self: flex-end;
+        margin-top: 2em;
+        width: 20em;
+
+        .btn:not(:last-child) {
+            margin: 0 1em;
+        }
+        .btn:last-child {
+            margin: 0;
+        }
+        &--absolute {
+            bottom: 16px;
+            position: absolute;
+            right: 16px;
+        }
+        &--center {
+            justify-content: center;
+            width: 100%;
+
+            & .btn {
+                min-width: 9em;
+            }
+        }
+        &--error {
+            @include typeface(--paragraph-left-normal-black);
+            text-transform: none;
+            color: var(--brand-red-coral) !important;
+        }
+    }
+    .checkbox {
+        align-items: center;
+        margin: 1rem 0 0;
+
+        &__box--active {
+            background-color: var(--brand-red-coral);
+        }
+        &__box--active:after {
+            font-size: 1.3rem;
+            line-height: 20px;
+        }
+        &__label {
+            @include typeface(--paragraph-left-normal-black);
+            text-transform: none;
+        }
+    }
+}

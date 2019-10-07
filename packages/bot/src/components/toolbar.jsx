@@ -123,7 +123,7 @@ const ButtonGroup = ({
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
             alignment='bottom'
-            message={translate('Load')}
+            message={translate('Load new blocks (xml file)')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
@@ -198,7 +198,8 @@ const Toolbar = ({
     is_run_button_clicked,
     is_running,
     onBotNameTyped,
-    onCloseDialog,
+    onOkButtonClick,
+    onCancelButtonClick,
     onRedoClick,
     onResetClick,
     onRunClick,
@@ -263,7 +264,8 @@ const Toolbar = ({
         <Dialog
             title={translate('Are you sure?')}
             is_open={is_dialog_open}
-            closeModal={onCloseDialog}
+            onOkButtonClick={onOkButtonClick}
+            onCancelButtonClick={onCancelButtonClick}
         >
             {translate('Any unsaved changes will be lost.')}
         </Dialog>
@@ -278,8 +280,9 @@ Toolbar.propTypes = {
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
     onBotNameTyped       : PropTypes.func,
-    onCloseDialog        : PropTypes.func,
+    onCancelButtonClick  : PropTypes.func,
     onGoogleDriveClick   : PropTypes.func,
+    onOkButtonClick      : PropTypes.func,
     onRedoClick          : PropTypes.func,
     onResetClick         : PropTypes.func,
     onRunClick           : PropTypes.func,
@@ -301,8 +304,9 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
     onBotNameTyped       : toolbar.onBotNameTyped,
-    onCloseDialog        : toolbar.onCloseDialog,
+    onCancelButtonClick  : toolbar.onResetCancelButtonClick,
     onGoogleDriveClick   : toolbar.onGoogleDriveClick,
+    onOkButtonClick      : toolbar.onResetOkButtonClick,
     onRedoClick          : toolbar.onRedoClick,
     onResetClick         : toolbar.onResetClick,
     onRunClick           : toolbar.onRunClick,

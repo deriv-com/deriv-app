@@ -1,8 +1,8 @@
 import {
     observable,
     action,
-}                                       from 'mobx';
-import { translate }                    from '../utils/lang/i18n';
+} from 'mobx';
+import { translate } from '../utils/lang/i18n';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -47,18 +47,12 @@ export default class ToolbarStore {
         Blockly.derivWorkspace.toolbox_.showSearch(search);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    onSearchClear(setFieldValue) {
+    onSearchClear = (setFieldValue) => {
         // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
 
         setFieldValue('search', '');
         toolbox.showSearch('');
-    }
-
-    @action.bound
-    onCloseDialog() {
-        this.is_dialog_open = false;
     }
 
     @action.bound
@@ -72,38 +66,40 @@ export default class ToolbarStore {
     }
 
     @action.bound
-    resetBlocks() {
+    onResetCancelButtonClick() {
+        this.is_dialog_open = false;
+    }
+
+    @action.bound
+    onResetOkButtonClick() {
         const workspace = Blockly.derivWorkspace;
-        
         Blockly.Events.setGroup('reset');
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
-
         this.file_name = translate('Untitled Bot');
+        this.is_dialog_open = false;
     }
 
-    @action.bound onUndoClick = () => {
+    @action.bound
+    onUndoClick = () => {
         Blockly.Events.setGroup('undo');
         Blockly.derivWorkspace.undo();
         Blockly.Events.setGroup(false);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    onRedoClick() {
+    onRedoClick = () => {
         Blockly.derivWorkspace.undo(true);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    onZoomInOutClick(is_zoom_in) {
+    onZoomInOutClick = (is_zoom_in) => {
         const metrics = Blockly.derivWorkspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
 
         Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    onSortClick() {
+    onSortClick = () => {
         Blockly.derivWorkspace.cleanUp();
     }
 }

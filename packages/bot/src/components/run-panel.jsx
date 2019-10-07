@@ -1,4 +1,7 @@
-import { Button, Drawer, Tabs }               from 'deriv-components';
+import { Button,
+    Drawer,
+    Popover,
+    Tabs }                                    from 'deriv-components';
 import classNames                             from 'classnames';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
@@ -36,12 +39,14 @@ const drawerContent = ({
 
 const drawerFooter = ({
     active_index,
-    onCloseDialog,
     dialog_options,
+    is_clear_stat_disable,
     is_running,
     is_run_button_clicked,
     is_dialog_open,
+    onCancelButtonClick,
     onClearStatClick,
+    onOkButtonClick,
     onRunButtonClick,
     onStopButtonClick,
 }) => {
@@ -50,8 +55,9 @@ const drawerFooter = ({
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <Button
                 className={classNames(
-                    'btn--flat',
-                    'run-panel__button'
+                    'btn--secondary--default',
+                    'run-panel__button',
+                    { 'run-panel__button--disable': is_clear_stat_disable }
                 )}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}
@@ -62,7 +68,7 @@ const drawerFooter = ({
                 (is_run_button_clicked || is_running) ?
                     <Button
                         className={classNames(
-                            'btn--primary',
+                            'btn--primary--default',
                             'run-panel__button',
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
@@ -83,16 +89,27 @@ const drawerFooter = ({
                         has_effect
                     />
             }
-            { is_dialog_open &&
+            {is_dialog_open &&
                 <Dialog
                     title={dialog_options.title}
                     is_open={is_dialog_open}
-                    closeModal={onCloseDialog}
+                    onOkButtonClick={onOkButtonClick}
+                    onCancelButtonClick={onCancelButtonClick}
                 >
                     {dialog_options.message}
                 </Dialog>
             }
-            <InfoOutlineIcon className='run-panel__icon-info' />
+            <Popover
+                className='run-panel__info'
+                alignment='left'
+                message={translate(
+                    `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
+                     by our system. Please be aware that some completed transactions may not be displayed
+                     in the transaction table if the bot is stopped while placing trades. You may refer to
+                     the statement page for details of all completed transactions.`)}
+            >
+                <InfoOutlineIcon className='run-panel__icon-info' />
+            </Popover>
         </div>
     );
 };
@@ -123,12 +140,14 @@ class RunPanel extends React.PureComponent {
 RunPanel.propTypes = {
     active_index         : PropTypes.number,
     dialog_options       : PropTypes.object,
+    is_clear_stat_disable: PropTypes.bool,
     is_dialog_open       : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
+    onCancelButtonClick  : PropTypes.func,
     onClearStatClick     : PropTypes.func,
-    onCloseDialog        : PropTypes.func,
+    onOkButtonClick      : PropTypes.func,
     onRunButtonClick     : PropTypes.func,
     onStopButtonClick    : PropTypes.func,
     onUnmount            : PropTypes.func,
@@ -136,15 +155,18 @@ RunPanel.propTypes = {
     toggleDrawer         : PropTypes.func,
 };
 
-export default connect(({ run_panel }) => ({
+export default connect(({ run_panel, journal }) => ({
     active_index         : run_panel.active_index,
     dialog_options       : run_panel.dialog_options,
+    is_clear_stat_disable: run_panel.is_run_button_clicked ||
+    run_panel.is_running || journal.messages.length === 0,
     is_dialog_open       : run_panel.is_dialog_open,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
+    onCancelButtonClick  : run_panel.onCancelButtonClick,
     onClearStatClick     : run_panel.onClearStatClick,
-    onCloseDialog        : run_panel.onCloseDialog,
+    onOkButtonClick      : run_panel.onOkButtonClick,
     onRunButtonClick     : run_panel.onRunButtonClick,
     onStopButtonClick    : run_panel.onStopButtonClick,
     onUnmount            : run_panel.onUnmount,

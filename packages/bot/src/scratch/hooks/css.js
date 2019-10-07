@@ -3,7 +3,7 @@
  */
 Blockly.Css.CONTENT = [
     '.blocklySvg {',
-    'background-color: #ffffff;',
+    // 'background-color: #ffffff;',
     'outline: none;',
     'overflow: hidden;',  /* IE overflows by default. */
     'position: absolute;',
@@ -337,9 +337,11 @@ Blockly.Css.CONTENT = [
     '.blocklyNonEditableText>text {',
     'pointer-events: none;',
     '}',
+    
     '.blocklyNonEditableText>text,',
     '.blocklyEditableText>text {',
-    'fill: $colour_text;',
+    // 'fill: $colour_text;',
+    // 'fill: #575E75 !important;',
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',

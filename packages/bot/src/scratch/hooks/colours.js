@@ -12,7 +12,7 @@ Blockly.Colours.RootBlock = {
     colourTertiary : '#F2F3F5',
 };
 
-if (checkDarkmode()) {
+if (checkDarkmode()) {              // Dark theme
     Blockly.Colours.Base = {
         colour         : '#4665A0',
         colourSecondary: '#507ED5',
@@ -32,11 +32,11 @@ if (checkDarkmode()) {
     };
 
     Blockly.Colours.Special3 = {
-        colour         : '#CB5555',
+        colour         : '#994949',
         colourSecondary: '#CB5555',
         colourTertiary : '#CB5555',
     };
-} else {
+} else {                            // Light theme
     Blockly.Colours.Base = {
         colour         : '#507ED5',
         colourSecondary: '#4665A0',
@@ -45,7 +45,7 @@ if (checkDarkmode()) {
     
     Blockly.Colours.Special1 = {
         colour         : '#D27954',
-        colourSecondary: '#ffffff',
+        colourSecondary: '#9E6248',
         colourTertiary : '#9E6248',
     };
     

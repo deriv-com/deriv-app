@@ -66,6 +66,10 @@ class MT5Dashboard extends React.Component {
                 is_visible    : !prev_state.password_manager.is_visible,
                 selected_login: login || '',
             },
+            ...(
+                prev_state.password_manager.is_visible && // Reset error messages on modal close
+                { main: { has_error: false, error_message: '' }, investor: { has_error: false, error_message: '' } }
+            ),
         }));
     };
 

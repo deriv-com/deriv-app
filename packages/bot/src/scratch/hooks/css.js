@@ -2,12 +2,10 @@
  * Array making up the CSS content for Blockly.
  */
 
-const computed_style = getComputedStyle(document.documentElement);
-
 Blockly.Css.CONTENT = [
     '.blocklySvg {',
     // 'background-color: $colour_workspace;',
-    `background-color: ${computed_style.getPropertyValue('--general-main-1')};`,
+    'background-color: var(--general-main-1)};',
     'outline: none;',
     'overflow: hidden;',  /* IE overflows by default. */
     'position: absolute;',

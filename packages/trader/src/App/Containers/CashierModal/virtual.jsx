@@ -1,0 +1,62 @@
+import PropTypes        from 'prop-types';
+import React            from 'react';
+import { Button }       from 'deriv-components';
+import Localize         from 'App/Components/Elements/localize.jsx';
+import { localize }     from 'App/i18n';
+import { connect }      from 'Stores/connect';
+
+class Virtual extends React.Component {
+    onClickSignup = () => {
+        this.props.toggleCashierModal();
+        setTimeout(this.props.openRealAccountSignup, 500);
+    };
+
+    render = () => {
+        return (
+            <div className='cashier__wrapper cashier__center-align-wrapper'>
+                <div className='cashier__center-align-content'>
+                    <h2 className='cashier-error__text cashier__virtual-header'>
+                        <Localize i18n_default_text={'You\'re currently using a demo account'} />
+                    </h2>
+                    {this.props.has_real_account ?
+                        <React.Fragment>
+                            <p className='cashier__paragraph cashier__text'>
+                                <Localize i18n_default_text='You need to switch to a real money account to use this feature.' />
+                                <br />
+                                <Localize i18n_default_text='You can do this by selecting a real account from the Account Switcher.' />
+                            </p>
+                            <div className='cashier__account-switch-icon' />
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                            <p className='cashier__paragraph cashier__text'>
+                                <Localize i18n_default_text={'If you\'re looking to trade with real money, it\'s easy to create a real account, make a deposit, and start trading.'} />
+                            </p>
+                            <Button
+                                className='btn--primary--default cashier-error__button'
+                                has_effect
+                                text={localize('Create my real account')}
+                                onClick={this.onClickSignup}
+                            />
+                        </React.Fragment>
+                    }
+                </div>
+            </div>
+        );
+    }
+}
+
+Virtual.propTypes = {
+    has_real_account     : PropTypes.bool,
+    openRealAccountSignup: PropTypes.func,
+    toggleCashierModal   : PropTypes.func,
+};
+
+export default connect(
+    ({ client, ui }) => ({
+        has_real_account     : client.has_real_account,
+        openRealAccountSignup: ui.openRealAccountSignup,
+        toggleCashierModal   : ui.toggleCashierModal,
+    })
+)(Virtual);
+

@@ -170,6 +170,27 @@
             margin-top: 3.2rem;
         }
     }
+    &__account-switch-icon {
+        background-image: url('~Images/app/cashier/account_switcher.jpg');
+        width: 400px;
+        height: 360px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin: 2.4rem auto;
+    }
+    &__virtual-header {
+        margin-top: 0;
+        margin-bottom: 0.8rem;
+    }
+    &__center-align {
+        &-wrapper {
+            display: flex;
+        }
+        &-content {
+            align-self: center;
+            width: 100%;
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {

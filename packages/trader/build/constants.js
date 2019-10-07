@@ -19,6 +19,7 @@ const {
     htmlInjectConfig,
     htmlOutputConfig,
     stylelintConfig,
+    generateSWConfig,
 } = require('./config');
 const {
     css_loaders,
@@ -120,13 +121,7 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [
-        new GenerateSW({
-            importWorkboxFrom: 'local',
-            cleanupOutdatedCaches: true,
-            exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
-            skipWaiting: true,
-            clientsClaim: true,
-        })
+        new GenerateSW(generateSWConfig())
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])
 ]);

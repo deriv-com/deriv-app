@@ -24,6 +24,14 @@ const copyConfig = (base) => ([
     },
 ]);
 
+const generateSWConfig = () => ({
+    importWorkboxFrom    : 'local',
+    cleanupOutdatedCaches: true,
+    exclude              : [/CNAME$/, /index\.html$/, /404\.html$/],
+    skipWaiting          : true,
+    clientsClaim         : true,
+});
+
 const htmlOutputConfig = () => ({
     template: 'index.html',
     filename: 'index.html',
@@ -87,4 +95,5 @@ module.exports = {
     htmlInjectConfig,
     cssConfig,
     stylelintConfig,
+    generateSWConfig,
 };

@@ -78,7 +78,7 @@
         color: var(--text-profit-success);
     }
     &--balance-descriptor {
-        @include typeface(--small-center-normal-black);
+        @include typeface(--small-center-normal-black, none);
         color: var(--text-general);
     }
     &--button {

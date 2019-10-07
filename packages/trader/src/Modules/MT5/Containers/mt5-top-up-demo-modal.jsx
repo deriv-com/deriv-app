@@ -33,7 +33,7 @@ class Mt5TopUpDemoModal extends React.Component {
                     toggleModal={this.props.closeTopUpModal}
                     is_open={this.props.is_top_up_virtual_open}
                     className='top-up-virtual'
-                    header={localize('Fund Top up')}
+                    header={localize('Fund top up')}
                 >
                     <div className='dc-modal__container_top-up-virtual__body'>
                         <p className='dc-modal__container_top-up-virtual__description'>
@@ -45,7 +45,7 @@ class Mt5TopUpDemoModal extends React.Component {
                             <Localize
                                 i18n_default_text='DMT5 {{ account_title }} account'
                                 values={{
-                                    account_title: title,
+                                    account_title: (title.charAt(0).toLowerCase() + title.slice(1)),
                                 }}
                             />
                         </h4>

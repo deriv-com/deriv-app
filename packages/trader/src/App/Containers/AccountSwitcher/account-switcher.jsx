@@ -85,7 +85,7 @@ class AccountSwitcher extends React.Component {
 
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
-                <div className={!can_upgrade && !this.can_manage_currency ? 'acc-switcher__list-group' : undefined}>
+                <div className={(can_upgrade || this.can_manage_currency) ? undefined : 'acc-switcher__list-group'}>
                     <span className='acc-switcher__list-title'>
                         <Localize i18n_default_text='Accounts' />
                     </span>

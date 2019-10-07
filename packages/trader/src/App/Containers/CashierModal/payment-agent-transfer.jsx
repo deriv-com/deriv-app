@@ -11,6 +11,7 @@ import Loading                     from '../../../templates/_common/components/l
 class PaymentAgentTransfer extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
+        this.props.onMount();
     }
 
     componentWillUnmount() {
@@ -51,6 +52,7 @@ PaymentAgentTransfer.propTypes = {
     is_loading            : PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
     is_virtual            : PropTypes.bool,
+    onMount               : PropTypes.func,
     onUnMount             : PropTypes.func,
     setActiveTab          : PropTypes.func,
 };
@@ -63,6 +65,7 @@ export default connect(
         has_no_balance        : modules.cashier.has_no_balance,
         is_loading            : modules.cashier.is_loading,
         is_transfer_successful: modules.cashier.config.payment_agent_transfer.is_transfer_successful,
+        onMount               : modules.cashier.onMountPaymentAgentTransfer,
         onUnMount             : modules.cashier.resetPaymentAgentTransfer,
         setActiveTab          : modules.cashier.setActiveTab,
     })

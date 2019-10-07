@@ -123,11 +123,24 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMount(verification_code) {
-        const current_container = this.active_container;
+    async onMountCommon() {
         await BinarySocket.wait('authorize');
 
         this.resetValuesIfNeeded();
+
+        if (!this.root_store.client.balance) {
+            const balance = await WS.authorized.balance();
+            // make sure balance response has come then set it to false, but don't wait unless we need to
+            if (!balance.balance) {
+                this.setHasNoBalance(true);
+            }
+        }
+    }
+
+    @action.bound
+    async onMount(verification_code) {
+        const current_container = this.active_container;
+        await this.onMountCommon();
 
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
@@ -135,14 +148,6 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setContainerHeight(0);
         this.setLoading(true);
-
-        if (!this.root_store.client.balance) {
-            await BinarySocket.wait('balance');
-            // make sure balance response has come then set it to false, but don't wait unless we need to
-            if (!this.root_store.client.balance) {
-                this.setHasNoBalance(true);
-            }
-        }
 
         if (!this.config[this.active_container].is_session_timeout) {
             this.checkIframeLoaded();
@@ -380,8 +385,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentList() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
         if (!this.config.payment_agent.list.length) {
             const payment_agent_list = await BinarySocket.wait('paymentagent_list');
@@ -463,8 +467,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
         this.setIsWithdraw(true);
         this.setIsWithdrawSuccessful(false);
@@ -560,8 +563,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountAccountTransfer() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize', 'website_status');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
+        await BinarySocket.wait('website_status');
 
         if (!this.config.account_transfer.accounts_list.length) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
@@ -793,8 +796,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentTransfer() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
             const response = await BinarySocket.wait('paymentagent_list');

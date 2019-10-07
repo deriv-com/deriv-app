@@ -1,9 +1,9 @@
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import { Button }       from 'deriv-components';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { localize }     from 'App/i18n';
-import { connect }      from 'Stores/connect';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import { Button }   from 'deriv-components';
+import Localize     from 'App/Components/Elements/localize.jsx';
+import { localize } from 'App/i18n';
+import { connect }  from 'Stores/connect';
 
 class Virtual extends React.Component {
     onClickSignup = () => {

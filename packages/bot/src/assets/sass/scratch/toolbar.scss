@@ -9,7 +9,7 @@
     padding: 5px 12px;
 
     #{$toolbar}__btn {
-        &-icon {
+        &--icon {
             display: flex;
             justify-content: center;
 
@@ -21,6 +21,10 @@
                 margin-left: 8px;
             }
         }
+        &--start {
+            height: 40px;
+            margin: 0 4px;
+        }
     }
     &__section {
         display: flex;
@@ -29,7 +33,7 @@
             align-self: center;
             margin: 0 4px;
         }
-        > #{$toolbar}__btn-icon {
+        > #{$toolbar}__btn--icon {
             margin: 0 4px;
             height: calc(#{$toolbar_height} - 18px);
         }

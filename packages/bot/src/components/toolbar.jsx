@@ -60,7 +60,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     trailing_icon={
                                         search ?
                                             <ToolbarCloseIcon
-                                                className='toolbar__btn-icon'
+                                                className='toolbar__btn--icon'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
                                             : <ToolbarSearchIcon />
@@ -222,18 +222,18 @@ const Toolbar = ({
     <div className='toolbar'>
         <div className='toolbar__section'>
             <Popover
-                alignment='bottom'
+                alignment='right'
                 message={translate('Click here to start building your DBot.')}
             >
                 <Button
                     id='start'
-                    className='btn--primary--green toolbar__btn-icon'
+                    className='btn--primary--green toolbar__btn--icon toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
                 >
                     <ToolbarStartIcon />
                     <span
-                        className='toolbar__btn-icon-text'
+                        className='toolbar__btn--icon-text'
                     >{translate('Get started')}
                     </span>
                 </Button>

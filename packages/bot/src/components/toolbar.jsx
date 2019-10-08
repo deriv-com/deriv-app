@@ -62,7 +62,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                                 className='toolbar__btn-icon'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
-                                            : <ToolbarSearchIcon />
+                                            : <ToolbarSearchIcon className='toolbar__icon--fill' />
                                     }
                                 />
                             )}
@@ -94,7 +94,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                     label={translate('Bot name')}
                                     value={file_name}
                                     trailing_icon={
-                                        <ToolbarRenameIcon />
+                                        <ToolbarRenameIcon className='toolbar__icon--fill' />
                                     }
                                 />
                             )}
@@ -119,23 +119,55 @@ const ButtonGroup = ({
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
-        <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-        <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
-        <ToolbarSaveIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(true)} />
+        <ToolbarOpenIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={() => toggleSaveLoadModal(false)}
+        />
+        <ToolbarNewFileIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={onResetClick}
+        />
+        <ToolbarSaveIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={() => toggleSaveLoadModal(true)}
+        />
         <div className='vertical-divider' />
-        <ToolbarUndoIcon  className='toolbar__icon' onClick={onUndoClick} />️
-        <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+        <ToolbarUndoIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={onUndoClick}
+        />️
+        <ToolbarRedoIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={onRedoClick}
+        />
         <div className='vertical-divider' />
         { is_run_button_clicked || is_running ?
             !is_run_button_clicked &&
-                <ToolbarStopDisabledIcon className='toolbar__icon' /> ||
-                <ToolbarStopIcon className='toolbar__icon' onClick={onStopClick} />
+                <ToolbarStopDisabledIcon
+                    className='toolbar__icon toolbar__icon--stroke'
+                /> ||
+                <ToolbarStopIcon
+                    className='toolbar__icon toolbar__icon--stroke'
+                    onClick={onStopClick}
+                />
             :
-            <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
+            <ToolbarRunIcon
+                className='toolbar__icon toolbar__icon--stroke'
+                onClick={onRunClick}
+            />
         }
-        <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-        <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-        <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+        <ToolbarReaarangeIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={onSortClick}
+        />
+        <ToolbarZoomInIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={() => onZoomInOutClick(true)}
+        />
+        <ToolbarZoomOutIcon
+            className='toolbar__icon toolbar__icon--stroke'
+            onClick={() => onZoomInOutClick(false)}
+        />
     </div>
 );
 

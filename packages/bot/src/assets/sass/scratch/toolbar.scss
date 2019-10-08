@@ -45,6 +45,15 @@
         margin: 0 12px;
         height: 15px;
         width: 15px;
+
+        &--fill {
+            fill: var(--text-prominent);
+            stroke: none;
+        }
+        &--stroke {
+            stroke: var(--text-prominent);
+            fill: none;
+        }
     }
     &__group {
         display: flex;

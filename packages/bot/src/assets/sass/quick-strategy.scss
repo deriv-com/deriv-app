@@ -1,0 +1,72 @@
+.dc-modal {
+    $strategy-modal : 'modal--strategy';
+
+    &__container {
+        &_#{$strategy-modal} {
+            width: 464px;
+
+            .modal__content {
+                padding: 24px 24px 0;
+            }
+            .modal__footer {
+                padding: 0 24px 24px;
+            }
+        }
+    }
+}
+
+.quick-strategy {
+    $quick-strategy: &;
+
+    &__description {
+        margin-top: 24px;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.43;
+        color: var(--text-general);
+    }
+    &__form {
+        &-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin: 14px 0;
+
+            > * {
+                justify-content: center;
+            }
+            #{$quick-strategy}__input {
+                margin: 10px 0 0;
+                width: 196px;
+            }
+        }
+        &-footer {
+            text-align: right;
+        }
+    }
+    &__button {
+        &--create {
+            justify-content: flex-end;
+        }
+    }
+    &__option {
+        display: flex;
+
+        > * {
+            align-self: center;
+        }
+        .icons-underlying {
+            margin-top: 5px;
+        }
+    }
+    &__symbol {
+        margin-left: 8px;
+    }
+    &__icon {
+        width: 24px;
+        height: 24px;
+        padding: 3px;
+        margin: 2px;
+        background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+    }
+}

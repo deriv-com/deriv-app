@@ -306,12 +306,76 @@ export default class ContractsFor {
 
         return prediction_range;
     }
+    
+    async getTradeTypeBySymbol(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+        const trade_type_options = {};
+
+        contracts.forEach(contract => {
+            const market = contract.market;
+            const submarket = contract.submarket;
+            const icon = contract.contract_type;
+            const trade_type_category      = this.getTradeTypeCategoryByTradeType(contract.contract_category);
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
+            const trade_type = this.getTradeTypeByTradeCategory(market, submarket, symbol, icon, trade_type_category);
+
+            if (trade_type_category_name) {
+                const is_disabled = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
+                    trade_type_category,
+                });
+
+                if (!is_disabled) {
+                    trade_type_options[trade_type_category_name] = trade_type;
+                }
+            }
+        });
+
+        return trade_type_options;
+    }
+
+    getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
+        const {
+            TRADE_TYPE_CATEGORIES,
+            opposites,
+        }                   = config;
+        const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
+        const dropdown_options = [];
+
+        if (subcategories.length) {
+            for (let i = 0; i < subcategories.length; i++) {
+                const trade_type    = subcategories[i];
+                const is_disabled   = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
+                    trade_type_category,
+                    trade_type,
+                });
+
+                if (!is_disabled) {
+                    const types = opposites[trade_type.toUpperCase()];
+                    dropdown_options.push(
+                        {
+                            name : types.map(type => type[Object.keys(type)[0]]).join('/'),
+                            value: trade_type,
+                            icon : [Object.keys(types[0])[0], Object.keys(types[1])[0]],
+                        }
+                    );
+                }
+            }
+        }
+
+        return dropdown_options;
+    }
 
     async getTradeTypeCategories(market, submarket, symbol) {
         const {
             TRADE_TYPE_CATEGORY_NAMES,
             NOT_AVAILABLE_DROPDOWN_OPTIONS,
-        }                                  = config;
+        }                                   = config;
         const contracts                     = await this.getContractsFor(symbol);
         const trade_type_categories         = [];
 

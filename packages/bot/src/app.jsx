@@ -7,6 +7,7 @@ import RootStore                from './stores';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
+import QuickStrategy            from './components/quick-strategy.jsx';
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -24,6 +25,7 @@ class App extends React.Component {
                     <Toolbar />
                     <Workspace />
                     <RunPanel />
+                    <QuickStrategy />
                 </React.Fragment>
             </Provider>
         );

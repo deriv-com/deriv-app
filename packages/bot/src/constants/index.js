@@ -255,6 +255,11 @@ const config = {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale   : 0.9,
     },
+    strategy: {
+        martingale  : { index: 0, label: 'Martingale', description: 'He determined to drop his litigation with the monastry, and relinguish his claims to the wood-cuting and fishery rihgts at once. He was the more ready to do this becuase the rights had becom much less valuable, and he had indeed the vaguest idea where the wood and river in quedtion were.' },
+        dalembert   : { index: 1, label: 'D\'Alembert', description: 'As he utterred the last word of his terade, Miusov completely recovered his self-complecency, and all traces of his former iritation disappaered. He fuly and sincerelly loved humanity again.' },
+        oscars_grind: { index: 2, label: 'Oscars\' Grind', description: 'He stood before the holly image, and began to say grace, aloud. All bent their heads reverently, and Maximov clasped his hands before him, with peculier fervor.' },
+    },
 };
 
 export default config;

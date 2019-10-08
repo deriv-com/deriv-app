@@ -89,6 +89,31 @@ export default class ActiveSymbols {
         }, {});
     }
 
+    async getAllMarketDropdownOptions() {
+        await this.retrieveActiveSymbols();
+        const all_market_options = {};
+
+        Object.keys(this.processed_symbols).forEach(market_name => {
+            const { submarkets } = this.processed_symbols[market_name];
+            Object.keys(submarkets).forEach(key => {
+                const submarket = submarkets[key];
+                all_market_options[submarket.display_name] = this.getAllSymbolDropdownOptions(submarket);
+            });
+        });
+
+        return (all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    getAllSymbolDropdownOptions(submarket) {
+        return Object.keys(submarket.symbols).map(key => {
+            return {
+                name : submarket.symbols[key].display_name,
+                value: key,
+            };
+        });
+    }
+
     async getMarketDropdownOptions() {
         await this.retrieveActiveSymbols();
         const market_options = [];

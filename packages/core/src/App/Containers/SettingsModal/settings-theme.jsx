@@ -5,20 +5,22 @@ import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
 import { connect }   from 'Stores/connect';
 
-const ThemeSelectSettings = ({ is_dark_mode,/* toggleDarkMode, updateBarrierColor, */ pushDataLayer }) => {
+const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode/*, updateBarrierColor, pushDataLayer */}) => {
     const darkOnClick = () => {
         if (!is_dark_mode) {
+            toggleDarkMode();
             // const new_dark_mode = toggleDarkMode();
             // updateBarrierColor(new_dark_mode);
-            pushDataLayer({ event: 'switch theme' });
+            // pushDataLayer({ event: 'switch theme' });
         }
     };
 
     const lightOnClick = () => {
         if (is_dark_mode) {
+            toggleDarkMode();
             // const new_dark_mode = toggleDarkMode();
             // updateBarrierColor(new_dark_mode);
-            pushDataLayer({ event: 'switch theme' });
+            // pushDataLayer({ event: 'switch theme' });
         }
     };
     return (

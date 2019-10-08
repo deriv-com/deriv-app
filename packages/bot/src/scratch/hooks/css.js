@@ -3,7 +3,6 @@
  */
 Blockly.Css.CONTENT = [
     '.blocklySvg {',
-    // 'background-color: #ffffff;',
     'outline: none;',
     'overflow: hidden;',  /* IE overflows by default. */
     'position: absolute;',

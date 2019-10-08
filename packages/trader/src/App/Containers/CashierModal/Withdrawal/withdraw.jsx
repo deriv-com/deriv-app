@@ -32,7 +32,7 @@ Withdraw.propTypes = {
 
 export default connect(
     ({ client, modules }) => ({
-        verification_code: client.verification_code,
+        verification_code: client.verification_code.payment_withdraw,
         iframe_height    : modules.cashier.config.withdraw.iframe_height,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         is_loading       : modules.cashier.is_loading,

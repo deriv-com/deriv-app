@@ -15,7 +15,7 @@ class Virtual extends React.Component {
         return (
             <div className='cashier__wrapper cashier__center-align-wrapper'>
                 <div className='cashier__center-align-content'>
-                    <h2 className='cashier-error__text cashier__virtual-header'>
+                    <h2 className='cashier-error__header cashier__virtual-header'>
                         <Localize i18n_default_text={'You\'re currently using a demo account'} />
                     </h2>
                     {this.props.has_real_account ?

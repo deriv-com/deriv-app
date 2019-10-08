@@ -6,7 +6,7 @@ Blockly.Blocks.lastDigitList = {
     },
     definition(){
         return {
-            message0       : translate('Last Digits List'),
+            message0       : translate('Last digits list'),
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Analysis.colour,
@@ -19,7 +19,7 @@ Blockly.Blocks.lastDigitList = {
     meta(){
         return {
             'display_name': translate('Last Digits List'),
-            'description' : translate('Returns the list of last digits of 1000 recent tick values'),
+            'description' : translate('This block gives you a list of the last digits of the last 1000 tick values.'),
         };
     },
 };

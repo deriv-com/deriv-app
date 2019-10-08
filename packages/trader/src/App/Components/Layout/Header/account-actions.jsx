@@ -60,7 +60,6 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!is_virtual &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
@@ -70,7 +69,6 @@ export class AccountActions extends Component {
                         is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         setCashierActiveTab={setCashierActiveTab}
                     />
-                    }
                 </React.Fragment>
             );
         }

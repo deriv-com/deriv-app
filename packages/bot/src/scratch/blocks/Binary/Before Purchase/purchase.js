@@ -29,7 +29,7 @@ Blockly.Blocks.purchase = {
     meta(){
         return {
             'display_name': translate('Purchase'),
-            'description' : translate('You can use this block to purchase the contract of a specific type you define in the Trade Parameters block. You can add multiple Purchase blocks in conjunction with conditional blocks to define purchase conditions. You can use this block only within the Purchase conditions block.'),
+            'description' : translate('Use this block to purchase the specific contract you want. You may add multiple Purchase blocks together with conditional blocks to define your purchase conditions. This block can only be used within the Purchase conditions block.'),
         };
     },
     onchange(event) {

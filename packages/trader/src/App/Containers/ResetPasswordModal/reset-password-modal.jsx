@@ -62,7 +62,7 @@ class ResetPassword extends React.Component {
         if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
             errors.password = true;
         }
-    
+
         return errors;
     };
 
@@ -191,6 +191,6 @@ export default connect(
         disableApp              : ui.disableApp,
         is_loading              : ui.is_loading,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
-        verification_code       : client.verification_code,
+        verification_code       : client.verification_code.reset_password,
     }),
 )(ResetPasswordModal);

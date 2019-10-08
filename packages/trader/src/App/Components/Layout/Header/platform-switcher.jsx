@@ -1,6 +1,7 @@
 import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
+import { withRouter }       from 'react-router-dom';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
 import Icon                 from 'Assets/icon.jsx';
@@ -56,4 +57,4 @@ PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
 };
 
-export { PlatformSwitcher };
+export default withRouter(PlatformSwitcher);

@@ -6,6 +6,7 @@ import {
     isEqualObject,
     unique,
     getPropertyValue,
+    removeEmptyPropertiesFromObject,
 } from './object';
 
 export default {
@@ -16,4 +17,5 @@ export default {
     isEqualObject,
     unique,
     getPropertyValue,
+    removeEmptyPropertiesFromObject,
 };

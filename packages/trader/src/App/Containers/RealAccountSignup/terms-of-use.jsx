@@ -97,7 +97,7 @@ class TermsOfUse extends Component {
 
                             has_cancel={true}
                             onCancel={this.props.onCancel}
-                            cancel_label='Previous'
+                            cancel_label={localize('Previous')}
                             form_error={this.props.form_error}
                         />
                     </form>

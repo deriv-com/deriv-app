@@ -903,7 +903,12 @@ export default class ClientStore extends BaseStore {
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code, password, residence, this.device_data).then(async response => {
+        WS.newAccountVirtual(
+            this.verification_code,
+            password, 
+            residence,
+            ObjectUtils.removeEmptyPropertiesFromObject(this.device_data),
+        ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {

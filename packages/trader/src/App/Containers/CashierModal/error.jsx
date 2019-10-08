@@ -1,6 +1,6 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import Button       from 'deriv-components/lib/button';
+import { Button }   from 'deriv-components';
 import { urlFor }   from '_common/url';
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';

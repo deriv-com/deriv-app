@@ -87,6 +87,15 @@
                 top: 10rem;
             }
         }
+        /* To get rid of ugly chrome autofill shadow dom-applied background color */
+        &:-webkit-autofill {
+            border-radius: $BORDER_RADIUS;
+            -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+
+            &:hover, &:focus, &:active {
+                -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+            }
+        }
     }
     &__leading-icon {
         margin-left: 1rem;
@@ -111,7 +120,7 @@
         position: absolute;
         pointer-events: none;
         left: 1rem;
-        top: 1.3rem;
+        top: 0.9rem;
         transition: 0.25s ease all;
         transform-origin: top left;
     }

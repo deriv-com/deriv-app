@@ -37,9 +37,11 @@ const ErrorModal = ({ message }) => (
             target='_blank'
             rel='noopener noreferrer'
         >
-            <Localize
-                i18n_default_text='Go To Help Centre'
-            />
+            <span className='btn__text'>
+                <Localize
+                    i18n_default_text='Go To Help Centre'
+                />
+            </span>
         </a>
     </React.Fragment>
 );

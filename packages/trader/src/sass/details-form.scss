@@ -14,20 +14,39 @@
             }
         }
         & .icon-datepicker {
-            top: 1em;
-            right: 1em;
+            top: 1.2rem;
+            right: 1rem;
             position: absolute;
+        }
+        &__picker {
+            margin-top: 8px;
         }
     }
     &__elements {
         flex-grow: 1;
         margin: 0 auto;
         width: 40%;
+
+        &-container {
+            height: calc(100vh - 438px);
+            overflow: hidden;
+
+            .details-form__elements {
+                margin-top: 8px;
+            }
+        }
+        .dc-input__label {
+            top: 1.2rem;
+        }
     }
     &__description {
         @include typeface(--paragraph-center-normal-black);
         text-transform: none;
         margin: 2em 0;
         color: var(--text-general);
+    }
+    .address-state__fieldset {
+        margin-bottom: 3.2rem;
+        margin-top: -8px;
     }
 }

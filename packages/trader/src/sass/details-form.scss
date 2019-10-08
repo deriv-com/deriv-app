@@ -35,8 +35,18 @@
                 margin-top: 8px;
             }
         }
-        .dc-input__label {
-            top: 1.2rem;
+        .dc-input {
+            label {
+                top: 1.2rem;
+                background-color: var(--general-main-2);
+            }
+        }
+        .dc-dropdown__display {
+            background-color: var(--general-main-2);
+
+            &-placeholder-text {
+                background-color: var(--general-main-2);
+            }
         }
     }
     &__description {

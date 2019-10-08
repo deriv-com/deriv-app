@@ -17,13 +17,12 @@ const platform_config = [
         description: localize('A powerful robot builder to automate your trading strategies'),
         href       : '/bot',
     },
-    // TODO: Enable MT5 once all relevant tasks are done
-    // {
-    //     icon       : 'IconMT5',
-    //     title      : localize('MetaTrader 5'),
-    //     description: localize('An all-in-one platform for FX and CFD Trading'),
-    //     [key]      : routes.mt5,
-    // },
+    {
+        icon       : 'IconMT5',
+        title      : localize('MetaTrader 5'),
+        description: localize('An all-in-one platform for FX and CFD Trading'),
+        [key]      : routes.mt5,
+    },
 ];
 
 export default platform_config;

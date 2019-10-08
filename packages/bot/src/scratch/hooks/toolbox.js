@@ -56,7 +56,7 @@ Blockly.Toolbox.prototype.init = function () {
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
     this.position();
-    this.toggle;
+    this.toggle();
 };
 
 /**

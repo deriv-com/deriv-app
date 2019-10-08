@@ -87,14 +87,7 @@
         margin: 3rem 0;
 
         & .btn {
-            height: 4rem;
             margin: 0 2rem;
-
-            &__text {
-                @include typeface(--title-left-bold-black);
-                font-size: 1.4rem;
-                text-align: center;
-            }
         }
     }
 }

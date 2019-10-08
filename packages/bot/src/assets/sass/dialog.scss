@@ -19,6 +19,8 @@
     }
     &__footer {
         align-self: flex-end;
-        width: 96px;
+    }
+    &__ok, &__cancel {
+        margin-right: 0 !important;
     }
 }

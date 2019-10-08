@@ -154,6 +154,9 @@
             display: block;
             color: var(--text-prominent);
         }
+        &-group {
+            margin-bottom: 0.8rem;
+        }
     }
     &__accounts {
         border-radius: $BORDER_RADIUS;

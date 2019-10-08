@@ -63,6 +63,7 @@ export default class ContractCardStore {
             this.contract = null;
         }
 
+        this.is_loading          = false;
         this.profit              = 0;
         this.profit_loss         = 0;
         this.indicative          = 0;

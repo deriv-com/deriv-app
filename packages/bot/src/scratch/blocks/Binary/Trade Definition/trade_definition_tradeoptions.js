@@ -43,14 +43,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Trade Options Tooltip'),
+            tooltip          : translate('Define your trade options such as duration and stake.'),
             category         : Blockly.Categories.Trade_Definition,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trade Options'),
-            'description' : translate('This block is used to define trade options within the Trade parameters block. Some options are only applicable for certain trade types.'),
+            'display_name': translate('Trade options'),
+            'description' : translate('Define your trade options such as duration and stake. Some options are only applicable for certain trade types.'),
         };
     },
     onchange(event) {

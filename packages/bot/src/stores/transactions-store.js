@@ -22,7 +22,7 @@ export default class TransactionsStore {
             contract_type: data.contract_type,
             currency     : data.currency,
             refrence_id  : data.transaction_ids.buy,
-            entry_spot   : data.entry_spot,
+            entry_spot   : data.entry_tick_display_value,
             exit_spot    : data.exit_tick_display_value,
             profit       : data.profit,
             is_completed,

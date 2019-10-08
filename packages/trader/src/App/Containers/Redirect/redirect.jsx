@@ -14,7 +14,7 @@ const Redirect = ({
 }) => {
     const url_params = new URLSearchParams(window.location.search);
 
-    setVerificationCode(url_params.get('code'));
+    setVerificationCode(url_params.get('code'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {

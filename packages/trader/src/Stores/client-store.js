@@ -40,7 +40,6 @@ export default class ClientStore extends BaseStore {
     @observable is_populating_account_list     = false;
     @observable is_populating_mt5_account_list = true;
     @observable website_status                 = {};
-    @observable verification_code              = '';
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
@@ -53,6 +52,13 @@ export default class ClientStore extends BaseStore {
     @observable mt5_login_list = [];
     @observable statement      = [];
     @observable obj_total_balance = {};
+
+    @observable verification_code = {
+        signup                : '',
+        reset_password        : '',
+        payment_withdraw      : '',
+        payment_agent_withdraw: '',
+    };
 
     constructor(root_store) {
         super({ root_store });
@@ -733,6 +739,7 @@ export default class ClientStore extends BaseStore {
                 amount  : obj_balance.total.real.amount,
                 currency: obj_balance.total.real.currency,
             };
+            this.resetLocalStorageValues(this.loginid);
         }
     }
 
@@ -886,15 +893,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setVerificationCode(code) {
-        this.verification_code = code;
+    setVerificationCode(code, action) {
+        this.verification_code[action] = code;
         if (code) {
-            LocalStore.set('verification_code', code);
+            LocalStore.set(`verification_code.${action}`, code);
         } else {
-            LocalStore.remove('verification_code');
+            LocalStore.remove(`verification_code.${action}`);
         }
-        // TODO: add await if error handling needs to happen before AccountSignup is initialised
-        this.fetchResidenceList(); // Prefetch for use in account signup process
+        if (action === 'signup') {
+            // TODO: add await if error handling needs to happen before AccountSignup is initialised
+            this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
     }
 
     @action.bound
@@ -904,11 +913,11 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     onSignup({ password, residence }, cb) {
-        if (!this.verification_code || !password || !residence) return;
+        if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code, password, residence, this.device_data).then(async response => {
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.device_data).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {

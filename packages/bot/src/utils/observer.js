@@ -27,15 +27,15 @@ latest values for contract, not required atm by DerivBot
 
 -googledrive.authorise : event to start auturize google flow
 
--ui.log.success: comming from server or notification by users from notify block , green
+-ui.log.success: UI Notifications
 
--ui.log.error: red messages
+-ui.log.error: UI errors
 
--ui.log.warn: yellow messages
+-ui.log.warn: UI warning
 
--Notify: coming from server , info messages
+-Notify: Server Notifications
 
--Error : coming from server , red messages
+-Error : Server errors
 
  */
 

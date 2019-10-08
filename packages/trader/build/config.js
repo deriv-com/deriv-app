@@ -24,6 +24,14 @@ const copyConfig = (base) => ([
     },
 ]);
 
+const generateSWConfig = () => ({
+    importWorkboxFrom    : 'local',
+    cleanupOutdatedCaches: true,
+    exclude              : [/CNAME$/, /index\.html$/, /404\.html$/],
+    skipWaiting          : true,
+    clientsClaim         : true,
+});
+
 const htmlOutputConfig = () => ({
     template: 'index.html',
     filename: 'index.html',
@@ -74,23 +82,6 @@ const htmlInjectConfig = () => ({
 
 const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });
 
-const swPrecacheConfig = (base) => ({
-    cacheId: 'app',
-    dontCacheBustUrlsMatching: /\.\w{8}\./,
-    filename: 'service-worker.js',
-    minify: IS_RELEASE,
-    navigateFallback: base,
-    staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/, /CNAME$/],
-    logger(message) {
-        if (message.indexOf('Total precache size is') === 0) {
-            // This message occurs for every build and is a bit too noisy.
-            return;
-        }
-        // eslint-disable-next-line no-console
-        console.log(message);
-    },
-});
-
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),
     formatter: stylelintFormatter,
@@ -103,6 +94,6 @@ module.exports = {
     htmlOutputConfig,
     htmlInjectConfig,
     cssConfig,
-    swPrecacheConfig,
     stylelintConfig,
+    generateSWConfig,
 };

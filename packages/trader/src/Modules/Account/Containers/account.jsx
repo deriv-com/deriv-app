@@ -40,7 +40,7 @@ class Account extends React.Component {
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const is_high_risk_client = this.props.getRiskAssessment();
+                const is_high_risk_client = this.props.is_high_risk;
                 this.setState({ is_high_risk_client, is_loading: false });
             }
         });
@@ -143,6 +143,7 @@ export default connect(
     ({ client, ui }) => ({
         account_status   : client.account_status,
         currency         : client.currency,
+        is_high_risk     : client.is_high_risk,
         is_virtual       : client.is_virtual,
         getRiskAssessment: client.getRiskAssessment,
         disableRouteMode : ui.disableRouteModal,

@@ -55,12 +55,13 @@ const SuccessDialog = ({
                 {has_cancel &&
                 <Button
                     onClick={onCancel}
+                    has_effect
                     className='btn--secondary--default'
                     text={text_cancel || localize('Maybe later')}
                 />
                 }
                 {has_submit &&
-                <Button onClick={onSubmit} text={text_submit} />
+                <Button has_effect onClick={onSubmit} text={text_submit} />
                 }
             </div>
         </div>

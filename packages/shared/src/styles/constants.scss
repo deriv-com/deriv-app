@@ -152,7 +152,7 @@ $color-blue: #377cfc;
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
         --button-primary-hover: #{$color-red-5};
-        --button-secondary-hover: #{$color-black-10};
+        --button-secondary-hover: transparentize(#{$color-white}, 0.92);
         --button-tertiary-hover: #{$color-red-6};
         // Overlay
         --overlay-outside-dialog: #{$color-black-7};

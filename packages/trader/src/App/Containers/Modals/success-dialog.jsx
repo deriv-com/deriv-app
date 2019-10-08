@@ -54,7 +54,7 @@ const SuccessDialog = ({
                 {has_cancel &&
                 <Button
                     onClick={onCancel}
-                    className='btn--outline'
+                    className='btn--flat'
                 >
                     {text_cancel && text_cancel}
                     {!text_cancel &&
@@ -65,7 +65,7 @@ const SuccessDialog = ({
                 </Button>
                 }
                 {has_submit &&
-                <Button onClick={onSubmit}>{text_submit}</Button>
+                <Button className='btn--primary--red btn--primary--default' onClick={onSubmit}>{text_submit}</Button>
                 }
             </div>
         </div>

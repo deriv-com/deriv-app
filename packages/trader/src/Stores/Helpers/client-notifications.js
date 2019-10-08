@@ -6,6 +6,7 @@ import { getRiskAssessment,
     shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
+import routes           from 'Constants/routes';
 import {
     LocalStore,
     State }             from '_common/storage';
@@ -56,7 +57,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/proof-of-identity'
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -91,7 +92,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/proof-of-identity'
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -137,15 +138,13 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
-                    // TODO: Re-enable below once FA check on deriv is ready
-                    // components={[
-                    //     <BinaryLink
-                    //         key={0}
-                    //         className='link link--white'
-                    //         to='account/financial-assessment'
-                    //     />,
-                    // ]}
+                    components={[
+                         <BinaryLink
+                             key={0}
+                             className='link link--white'
+                            to={routes.financial_assessment}
+                    />,
+                     ]}
                 />
             ),
             type: 'info',
@@ -160,7 +159,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/personal-details'
+                            to={routes.personal_details}
                         />,
                     ]}
                 />
@@ -188,7 +187,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/personal-details'
+                            to={routes.personal_details}
                         />,
                     ]}
                 />
@@ -233,7 +232,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/proof-of-address'
+                            to={routes.proof_of_address}
                         />,
                     ]}
                 />
@@ -260,7 +259,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link link--white'
-                            to='account/proof-of-identity'
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -321,14 +320,11 @@ const addVerificationNotifications = (identity, document, addNotification) => {
     if (identity.status === 'expired') addNotification(clientNotifications().poi_expired);
 
     if (document.status === 'expired') addNotification(clientNotifications().poa_expired);
-    if ((document.status === 'rejected' || document.status === 'suspected')) {
-        addNotification(clientNotifications().poa_rejected);
-    }
 };
 
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
-    if (!account_status) return;
-    if (loginid !== LocalStore.get('active_loginid')) return;
+    if (!account_status) return 0;
+    if (loginid !== LocalStore.get('active_loginid')) return 0;
 
     const {
         authentication: {
@@ -351,8 +347,9 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
 
     addVerificationNotifications(identity, document, addNotification);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
+    const has_risk_assessment  = getRiskAssessment(account_status);
 
     if (cashier_locked)        addNotification(clientNotifications().cashier_locked);
     if (withdrawal_locked)     addNotification(clientNotifications().withdrawal_locked);
@@ -364,9 +361,13 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
     if (ukrts_max_turnover_limit_not_set) {
         addNotification(clientNotifications().financial_limit);
     }
-    if (getRiskAssessment(account_status)) addNotification(clientNotifications().risk);
+    if (has_risk_assessment)               addNotification(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotification(clientNotifications().tax);
     if (needs_authentication)              addNotification(clientNotifications().authenticate);
+
+    return {
+        has_risk_assessment,
+    };
 };
 
 export const handleClientNotifications = (
@@ -381,7 +382,7 @@ export const handleClientNotifications = (
     if (!currency)      addNotification(clientNotifications(ui).currency);
     if (excluded_until) addNotification(clientNotifications(ui).self_exclusion(excluded_until));
 
-    checkAccountStatus(account_status, client, addNotification, loginid);
+    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotification, loginid);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -394,5 +395,6 @@ export const handleClientNotifications = (
 
     return {
         has_missing_required_field,
+        has_risk_assessment,
     };
 };

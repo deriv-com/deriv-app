@@ -107,7 +107,7 @@
             display: flex;
             text-decoration: none;
             width: 100%;
-            height: 40px;
+            height: 4rem;
             align-items: center;
 
             & .btn {
@@ -115,9 +115,8 @@
                 padding: 0;
 
                 &__text {
-                    color: $COLOR_WHITE;
+                    color: var(--general-main-1);
                     margin: 0 0 0 0.5em;
-
                 }
             }
         }
@@ -133,6 +132,7 @@
             display: flex;
             margin: 0 0 0.8em;
             padding: 0 0 0 0.8rem;
+            height: 4rem;
             justify-content: left;
 
             & > * {
@@ -155,6 +155,9 @@
             margin-left: 0.8rem;
             display: block;
             color: var(--text-prominent);
+        }
+        &-group {
+            margin-bottom: 0.8rem;
         }
     }
     &__accounts {

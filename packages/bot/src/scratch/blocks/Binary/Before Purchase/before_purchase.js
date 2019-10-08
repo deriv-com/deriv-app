@@ -39,7 +39,7 @@ Blockly.Blocks.before_purchase = {
     meta(){
         return {
             'display_name': translate('Purchase conditions'),
-            'description' : translate('This block is mandatory, it allows you to specify contract type and purchase conditions.'),
+            'description' : translate('This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'),
         };
     },
     onchange(event) {

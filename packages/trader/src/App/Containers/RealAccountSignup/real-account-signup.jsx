@@ -33,7 +33,7 @@ const ErrorModal = ({ message }) => (
         <a
             href='https://www.deriv.com/help-centre/'
             type='button'
-            className='btn btn--primary--red'
+            className='btn btn--primary--default'
             target='_blank'
             rel='noopener noreferrer'
         >

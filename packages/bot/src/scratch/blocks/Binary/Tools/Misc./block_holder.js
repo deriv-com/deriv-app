@@ -1,5 +1,6 @@
 import { translate } from '../../../../../utils/lang/i18n';
 import { setBlockTextColor } from '../../../../utils';
+import ScratchStore          from '../../../../../stores/scratch-store';
 
 Blockly.Blocks.block_holder = {
     init() {
@@ -32,7 +33,10 @@ Blockly.Blocks.block_holder = {
         };
     },
     onchange() {
-        setBlockTextColor(this);
+        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
+            setBlockTextColor(this);
+        }
+
     },
 };
 

@@ -1,6 +1,7 @@
 import { sellContract }      from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
+import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -45,7 +46,10 @@ Blockly.Blocks.during_purchase = {
         };
     },
     onchange(event) {
-        setBlockTextColor(this);
+        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
+            setBlockTextColor(this);
+        }
+
         if (!this.workspace || this.isInFlyout) {
             return;
         }

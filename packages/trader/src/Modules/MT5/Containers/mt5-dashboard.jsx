@@ -9,6 +9,7 @@ import {
     Formik,
     Form }                       from 'formik';
 import React                     from 'react';
+import { urlFor }                from '_common/url';
 import Localize                  from 'App/Components/Elements/localize.jsx';
 import UILoader                  from 'App/Components/Elements/ui-loader.jsx';
 import { localize }              from 'App/i18n';
@@ -33,7 +34,6 @@ import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
-import { urlFor }                from '../../../../../core/src/_common/url';
 
 class MT5Dashboard extends React.Component {
     state = {

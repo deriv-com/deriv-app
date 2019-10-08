@@ -139,12 +139,12 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
                     components={[
-                         <BinaryLink
-                             key={0}
-                             className='link link--white'
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
                             to={routes.financial_assessment}
-                    />,
-                     ]}
+                        />,
+                    ]}
                 />
             ),
             type: 'info',

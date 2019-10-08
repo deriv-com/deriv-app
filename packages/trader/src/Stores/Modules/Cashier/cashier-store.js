@@ -129,7 +129,7 @@ export default class CashierStore extends BaseStore {
         this.resetValuesIfNeeded();
 
         if (!this.root_store.client.balance) {
-            const balance = await WS.authorized.balance();
+            const balance = (await WS.authorized.balance()).balance;
             // make sure balance response has come then set it to false, but don't wait unless we need to
             if (!balance.balance) {
                 this.setHasNoBalance(true);

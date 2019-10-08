@@ -32,7 +32,7 @@ const FormSubmitButton = ({
                 onClick={onCancel}
                 type='button'
             >
-                <Localize i18n_default_text={cancel_label} />
+                {cancel_label}
             </Button>
             }
             <Button

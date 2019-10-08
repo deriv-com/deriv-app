@@ -195,11 +195,13 @@ class AccountWizard extends React.Component {
                     }
                     {this.props.has_real_account &&
                     <div className='account-wizard__set-currency'>
+                        {this.props.has_currency &&
                         <p>
                             <Localize
                                 i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
                             />
                         </p>
+                        }
                         <h2>
                             <Localize
                                 i18n_default_text='Please choose your currency'
@@ -216,6 +218,7 @@ class AccountWizard extends React.Component {
                             onSubmit={this.updateValue}
                             onCancel={this.prevStep}
                             onSave={this.saveFormData}
+                            has_currency={this.props.has_currency}
                             form_error={this.state.form_error}
                         />
                     </div>

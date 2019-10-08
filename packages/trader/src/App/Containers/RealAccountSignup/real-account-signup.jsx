@@ -54,7 +54,7 @@ class RealAccountSignup extends Component {
             modal_content: [
                 {
                     icon : 'IconTheme',
-                    label: this.props.has_currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
+                    label: props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
@@ -112,6 +112,17 @@ class RealAccountSignup extends Component {
                 },
             ],
         };
+    }
+
+    get labels () {
+        return [
+            this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
+            localize('Add or manage account'),
+            null,
+            null,
+            null,
+            localize('Add a real account'),
+        ];
     }
 
     closeModalThenOpenCashier = () => {
@@ -185,7 +196,7 @@ class RealAccountSignup extends Component {
 
         if (this.state.active_modal_index === -1) {
             return (
-                this.props.has_real_account && this.props.has_currency
+                this.props.has_real_account && this.props.currency
             ) ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
         }
 
@@ -202,7 +213,7 @@ class RealAccountSignup extends Component {
 
     render() {
         const { is_real_acc_signup_on } = this.props;
-        const title                     = this.state.modal_content[this.active_modal_index].label;
+        const title                     = this.labels[this.active_modal_index];
         const Body                      = this.state.modal_content[this.active_modal_index].value;
         return (
             <Modal
@@ -224,7 +235,9 @@ class RealAccountSignup extends Component {
 
 export default connect(({ ui, client, modules }) => ({
     has_real_account         : client.has_real_account,
-    has_currency             : !!client.currency,
+    account_list             : client.account_list,
+    loginid                  : client.loginid,
+    currency                 : client.currency,
     is_real_acc_signup_on    : ui.is_real_acc_signup_on,
     closeRealAccountSignup   : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,

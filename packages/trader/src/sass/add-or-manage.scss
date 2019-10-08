@@ -91,8 +91,12 @@
             @include typeface(--title-left-bold-black);
             font-size: 1.4rem;
             text-align: center;
-            color: var(--text-colored-background);
+            color: var(--text-less-prominent);
             margin: 0 2rem;
+
+            &--primary--default {
+                color: var(--text-colored-background);
+            }
         }
     }
 }

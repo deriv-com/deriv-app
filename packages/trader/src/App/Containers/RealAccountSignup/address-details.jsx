@@ -132,9 +132,9 @@ class AddressDetails extends Component {
                                     isSubmitting ||
                                     Object.keys(errors).length > 0
                                 }
-                                label='Next'
+                                label={localize('Next')}
                                 has_cancel
-                                cancel_label='Previous'
+                                cancel_label={localize('Previous')}
                                 onCancel={this.handleCancel.bind(this, values)}
                             />
                         </form>

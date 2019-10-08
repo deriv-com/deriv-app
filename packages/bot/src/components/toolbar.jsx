@@ -122,7 +122,7 @@ const ButtonGroup = ({
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
             alignment='bottom'
-            message={translate('Load new blocks (xml file)')}
+            message={translate('Import')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
@@ -178,7 +178,7 @@ const ButtonGroup = ({
         }
         <Popover
             alignment='bottom'
-            message={translate('Rearrange')}
+            message={translate('Sort')}
         >
             <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
         </Popover>
@@ -221,18 +221,23 @@ const Toolbar = ({
 }) => (
     <div className='toolbar'>
         <div className='toolbar__section'>
-            <Button
-                id='start'
-                className='btn--primary--green toolbar__btn-icon'
-                has_effect
-                onClick={onToolboxToggle}
+            <Popover
+                alignment='bottom'
+                message={translate('Click here to start building your DBot.')}
             >
-                <ToolbarStartIcon />
-                <span
-                    className='toolbar__btn-icon-text'
-                >{translate('Get started')}
-                </span>
-            </Button>
+                <Button
+                    id='start'
+                    className='btn--primary--green toolbar__btn-icon'
+                    has_effect
+                    onClick={onToolboxToggle}
+                >
+                    <ToolbarStartIcon />
+                    <span
+                        className='toolbar__btn-icon-text'
+                    >{translate('Get started')}
+                    </span>
+                </Button>
+            </Popover>
             <SearchBox
                 onSearch={onSearch}
                 onSearchClear={onSearchClear}

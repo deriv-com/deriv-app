@@ -7,9 +7,10 @@ import {
     PlatformSwitcher,
 }                        from 'App/Components/Layout/Header';
 import platform_config   from 'App/Constants/platform-config';
-import header_links      from 'App/Constants/header-links';
 import Lazy              from 'App/Containers/Lazy';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import { localize }      from 'App/i18n';
+import Icon              from 'Assets/icon.jsx';
 import { connect }       from 'Stores/connect';
 
 const Header = ({
@@ -32,50 +33,69 @@ const Header = ({
     setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
-}) => (
-    <header className={classNames('header', {
-        'header--is-disabled': (is_app_disabled || is_route_modal_on),
-    })}
-    >
-        <div className='header__menu-items'>
-            <div className='header__menu-left'>
-                <PlatformSwitcher platform_config={platform_config} />
-                <Lazy
-                    has_progress={false}
-                    ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
-                    should_load={is_mobile}
-                />
-                <MenuLinks
-                    is_logged_in={is_logged_in}
-                    items={header_links}
-                />
-            </div>
-            <div className='header__menu-right'>
-                <div className='acc-info__container'>
-                    <AccountActions
-                        active_cashier_tab={active_cashier_tab}
-                        balance={balance}
-                        can_upgrade_to={can_upgrade_to}
-                        currency={currency}
-                        can_upgrade={can_upgrade}
-                        disableApp={disableApp}
-                        enableApp={enableApp}
-                        is_acc_switcher_on={is_acc_switcher_on}
-                        is_cashier_modal_on={is_cashier_modal_on}
-                        is_payment_agent_visible={is_payment_agent_visible}
-                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+}) => {
+    const header_links = [
+        {
+            id        : 'dt_reports_tab',
+            icon      : <Icon icon='IconReports' className='header__icon' />,
+            text      : localize('Reports'),
+            link_to   : '/reports',
+            login_only: true,
+        },
+        {
+            id        : 'dt_cashier_tab',
+            icon      : <Icon icon='IconCashier' className='header__icon' />,
+            text      : localize('Cashier'),
+            onClick   : toggleCashierModal,
+            login_only: true,
+        },
+    ];
+
+    return (
+        <header className={classNames('header', {
+            'header--is-disabled': (is_app_disabled || is_route_modal_on),
+        })}
+        >
+            <div className='header__menu-items'>
+                <div className='header__menu-left'>
+                    <PlatformSwitcher platform_config={platform_config} />
+                    <Lazy
+                        has_progress={false}
+                        ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
+                        should_load={is_mobile}
+                    />
+                    <MenuLinks
                         is_logged_in={is_logged_in}
-                        is_virtual={is_virtual}
-                        setCashierActiveTab={setCashierActiveTab}
-                        toggleAccountsDialog={toggleAccountsDialog}
-                        toggleCashierModal={toggleCashierModal}
+                        items={header_links}
                     />
                 </div>
+                <div className='header__menu-right'>
+                    <div className='acc-info__container'>
+                        <AccountActions
+                            active_cashier_tab={active_cashier_tab}
+                            balance={balance}
+                            can_upgrade_to={can_upgrade_to}
+                            currency={currency}
+                            can_upgrade={can_upgrade}
+                            disableApp={disableApp}
+                            enableApp={enableApp}
+                            is_acc_switcher_on={is_acc_switcher_on}
+                            is_cashier_modal_on={is_cashier_modal_on}
+                            is_payment_agent_visible={is_payment_agent_visible}
+                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                            is_logged_in={is_logged_in}
+                            is_virtual={is_virtual}
+                            setCashierActiveTab={setCashierActiveTab}
+                            toggleAccountsDialog={toggleAccountsDialog}
+                            toggleCashierModal={toggleCashierModal}
+                        />
+                    </div>
+                </div>
             </div>
-        </div>
-        <RealAccountSignup />
-    </header>
-);
+            <RealAccountSignup />
+        </header>
+    );
+};
 
 Header.propTypes = {
     active_cashier_tab               : PropTypes.string,

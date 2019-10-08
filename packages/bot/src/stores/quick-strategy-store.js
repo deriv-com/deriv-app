@@ -4,6 +4,8 @@ import {
     runInAction,
 }                from 'mobx';
 import ApiHelper from '../services/api/api-helpers';
+import config    from '../constants/index';
+import { load }  from '../scratch/utils';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -12,63 +14,18 @@ export default class QuickStrategyStore {
     }
 
     @observable initial_values = {
-        assets    : 'frxXAGUSD',
-        trade_type: 'callputequal',
-        stake     : 0,
-        size      : 2,
-        max_loss  : 300,
-        max_profit: 300,
+        symbol   : 'frxAUDJPY',
+        tradetype: 'callput',
+        stake    : 100,
+        size     : 2,
+        loss     : 300,
+        profit   : 400,
     };
 
     @observable is_strategy_modal_open = false;
     @observable active_index = 0;
     @observable market_dropdown = [];
     @observable tradetype_dropdown = [];
-    // @observable strategy = 'martingale';
-
-    // updateStrategy = async () => {
-    //     const workspace = Blockly.mainWorkspace;
-    //     const strategy_xml = await fetch(`dist/${this.strategy}.xml`).then(response => response.text());
-    //     const strategy_dom = Blockly.Xml.textToDom(strategy_xml);
-
-    //     const modifiedValue = (key, value) => {
-    //         const value_block = strategy_dom.querySelector(`value[id="${key}_value"]`);
-
-    //         if (value_block){
-    //             value_block.innerHTML = `<block type="math_number"><field name="NUM">${value}</field></block>`;
-    //         }
-    //     };
-
-    //     const modifiedDropdownValue = (name, value) => {
-    //         const block = strategy_dom.querySelector(`field[name="${`${name.toUpperCase()  }_LIST`}"]`);
-
-    //         if (block){
-    //             block.innerHTML = value;
-    //         }
-    //     };
-
-    //     Object.keys(this.trade_options).forEach(key => {
-    //         const value = this.trade_options[key];
-
-    //         if (!isNaN(value)){
-    //             modifiedValue(key, value);
-    //         } else if (typeof value === 'string'){
-    //             modifiedDropdownValue(key, value);
-    //         }
-    //     });
-
-    //     /* const dropdowns = {
-    //         MARKET_LIST: 'market',
-    //         TYPE_LIST  : 'contract',
-    //     };
-    //     const fields = ['stake', 'size', 'loss', 'profit'];
-
-    //     Object.keys(dropdowns).forEach(key => modifiedDropdownValue(key, dropdowns[key]));
-    //     fields.forEach(field => modifiedValue(field)); */
-
-    //     workspace.clear();
-    //     Blockly.Xml.domToWorkspace(strategy_dom, workspace);
-    // }
 
     @action.bound
     toggleStrategyModal = () => {
@@ -82,8 +39,52 @@ export default class QuickStrategyStore {
 
     @action.bound
     // eslint-disable-next-line
-    createStrategy(values) {
-        console.log(values); // eslint-disable-line
+    async createStrategy(values) {
+        const { contracts_for } = ApiHelper.instance;
+        const { symbol, tradetype } = values;
+        const { market, submarket } = await contracts_for.getMarketAndSubmarketBySymbol(symbol);
+        const tradetypecat = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
+        const { strategies } = config;
+        const strategy_name = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
+        // eslint-disable-next-line
+        const strategy_xml = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
+        const strategy_dom = Blockly.Xml.textToDom(strategy_xml);
+
+        const modifiedValue = (key, value) => {
+            const value_block = strategy_dom.querySelector(`value[id="${key}_value"]`);
+
+            if (value_block){
+                value_block.innerHTML = `<block type="math_number"><field name="NUM">${value}</field></block>`;
+            }
+        };
+
+        const modifiedDropdownValue = (name, value) => {
+            const block = strategy_dom.querySelector(`field[name="${`${name.toUpperCase()}_LIST`}"]`);
+
+            if (block){
+                block.innerHTML = value;
+            }
+        };
+
+        const field_values = {
+            ...values,
+            market,
+            submarket,
+            tradetypecat,
+        };
+
+        Object.keys(field_values).forEach(key => {
+            const value = field_values[key];
+
+            if (!isNaN(value)){
+                modifiedValue(key, value);
+            } else if (typeof value === 'string'){
+                modifiedDropdownValue(key, value);
+            }
+        });
+
+        load(Blockly.Xml.domToText(strategy_dom));
+        this.toggleStrategyModal();
     }
 
     @action.bound
@@ -98,28 +99,28 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async updateTradetypeDropdown(symbol = this.initial_values.assets) {
+    async updateTradetypeDropdown(symbol = this.initial_values.symbol) {
         const { contracts_for } = ApiHelper.instance;
         const tradetype_options = await contracts_for.getTradeTypeBySymbol(symbol);
 
-        this.tradetype_dropdown = tradetype_options;
+        runInAction(() => {
+            this.tradetype_dropdown = tradetype_options;
+        });
     }
 
     @action.bound
     // eslint-disable-next-line
-    onChangeMarketDropdown(setFieldValue, value) {
-        setFieldValue('assets', value);
-        this.updateTradetypeDropdown(value);
+    async onChangeMarketDropdown(setFieldValue, value) {
+        setFieldValue('symbol', value);
+        await this.updateTradetypeDropdown(value);
+
+        const first_option = this.tradetype_dropdown[Object.keys(this.tradetype_dropdown)[0]][0].value;
+        setFieldValue('tradetype', first_option);
     }
 
     @action.bound
     // eslint-disable-next-line
     onChangeTradeTypeDropdown(setFieldValue, value) {
-        setFieldValue('trade_type', value);
+        setFieldValue('tradetype', value);
     }
-
-    // @action.bound
-    // setTradeOption = (name, value) => {
-    //     this.trade_options[name] = value;
-    // };
 }

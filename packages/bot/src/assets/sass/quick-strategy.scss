@@ -42,11 +42,13 @@
         }
         &-footer {
             text-align: right;
-        }
-    }
-    &__button {
-        &--create {
-            justify-content: flex-end;
+
+            #{$quick-strategy}__button {
+                &--create {
+                    height: 40px;
+                    margin: 14px 0 0;
+                }
+            }
         }
     }
     &__option {

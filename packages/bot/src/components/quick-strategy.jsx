@@ -55,7 +55,7 @@ class QuickStrategy extends React.PureComponent {
             tradetype_dropdown,
         } = this.props;
 
-        const { strategy } = config;
+        const { strategies } = config;
         const assets_dropdown_options = {};
         Object.assign(assets_dropdown_options, market_dropdown);
         
@@ -94,8 +94,8 @@ class QuickStrategy extends React.PureComponent {
                             onClickTabItem={setActiveTabIndex}
                         >
                             {
-                                Object.keys(strategy).map(key => {
-                                    const { index, label, description } = strategy[key];
+                                Object.keys(strategies).map(key => {
+                                    const { index, label, description } = strategies[key];
                                     return (
                                         <div key={index} label={translate(label)}>
                                             <div className='quick-strategy__description'>{translate(description)}</div>
@@ -113,15 +113,15 @@ class QuickStrategy extends React.PureComponent {
                             onSubmit={createStrategy}
                         >
                             {
-                                ({ values : { assets, trade_type }, setFieldValue }) => (
+                                ({ values : { symbol, tradetype }, setFieldValue }) => (
                                     <Form>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown
                                                 placeholder={translate('Assets')}
                                                 is_align_text_left
                                                 list={assets_dropdown_options}
-                                                name='assets'
-                                                value={assets}
+                                                name='symbol'
+                                                value={symbol}
                                                 onChange={e => onChangeMarketDropdown(setFieldValue, e.target.value)}
                                             />
                                         </div>
@@ -129,9 +129,9 @@ class QuickStrategy extends React.PureComponent {
                                             <Dropdown
                                                 placeholder={translate('Trade type')}
                                                 is_align_text_left
-                                                list={tradetype_dropdown}
-                                                name='trade_type'
-                                                value={trade_type}
+                                                list={tradetype_dropdown_options}
+                                                name='tradetype'
+                                                value={tradetype}
                                                 onChange={e => onChangeTradeTypeDropdown(setFieldValue, e.target.value)}
                                             />
                                         </div>
@@ -146,7 +146,7 @@ class QuickStrategy extends React.PureComponent {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='max_loss'>
+                                            <Field name='loss'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
@@ -168,7 +168,7 @@ class QuickStrategy extends React.PureComponent {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='max_profit'>
+                                            <Field name='profit'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
@@ -202,17 +202,23 @@ class QuickStrategy extends React.PureComponent {
 }
 
 QuickStrategy.propTypes = {
-    active_index             : proptypes.number,
-    createStrategy           : proptypes.func,
-    initial_values           : proptypes.object,
-    is_strategy_modal_open   : proptypes.bool,
-    market_dropdown          : proptypes.object,
+    active_index          : proptypes.number,
+    createStrategy        : proptypes.func,
+    initial_values        : proptypes.object,
+    is_strategy_modal_open: proptypes.bool,
+    market_dropdown       : proptypes.oneOfType([
+        proptypes.array,
+        proptypes.object,
+    ]),
     onChangeMarketDropdown   : proptypes.func,
     onChangeTradeTypeDropdown: proptypes.func,
     quickStrategyDidMount    : proptypes.func,
     setActiveTabIndex        : proptypes.func,
     toggleStrategyModal      : proptypes.func,
-    tradetype_dropdown       : proptypes.object,
+    tradetype_dropdown       : proptypes.oneOfType([
+        proptypes.array,
+        proptypes.object,
+    ]),
 };
 
 export default connect(({ quick_strategy }) => ({

@@ -306,6 +306,15 @@ export default class ContractsFor {
 
         return prediction_range;
     }
+
+    async getMarketAndSubmarketBySymbol(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+
+        return {
+            market   : contracts[0].market,
+            submarket: contracts[0].submarket,
+        };
+    }
     
     async getTradeTypeBySymbol(symbol) {
         const contracts = await this.getContractsFor(symbol);
@@ -314,10 +323,9 @@ export default class ContractsFor {
         contracts.forEach(contract => {
             const market = contract.market;
             const submarket = contract.submarket;
-            const icon = contract.contract_type;
             const trade_type_category      = this.getTradeTypeCategoryByTradeType(contract.contract_category);
             const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
-            const trade_type = this.getTradeTypeByTradeCategory(market, submarket, symbol, icon, trade_type_category);
+            const trade_type = this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
 
             if (trade_type_category_name) {
                 const is_disabled = this.isDisabledOption({
@@ -344,7 +352,7 @@ export default class ContractsFor {
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
         const dropdown_options = [];
 
-        if (subcategories.length) {
+        if (subcategories && subcategories.length) {
             for (let i = 0; i < subcategories.length; i++) {
                 const trade_type    = subcategories[i];
                 const is_disabled   = this.isDisabledOption({

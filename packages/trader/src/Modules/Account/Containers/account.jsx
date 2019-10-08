@@ -3,7 +3,6 @@ import React, { lazy }   from 'react';
 import {
     withRouter,
     Redirect }           from 'react-router-dom';
-import ObjectUtils       from 'deriv-shared/utils/object';
 import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }   from 'App/Components/Animations';
 import { localize }      from 'App/i18n';
@@ -17,14 +16,9 @@ import 'Sass/app/modules/account.scss';
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal-details',
-    'component': DemoMessage,
-    'title'    : 'Personal details',
-};
-
-const isHighRiskClient = account_status => {
-    const { needs_verification, document, identity } = account_status.authentication;
-    return !!((needs_verification.length) || (document.status !== 'none' || identity.status !== 'none'));
+    path     : AppRoutes.personal_details,
+    component: DemoMessage,
+    title    : localize('Personal details'),
 };
 
 class Account extends React.Component {
@@ -46,23 +40,13 @@ class Account extends React.Component {
     componentDidMount() {
         BinarySocket.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const is_high_risk_client = isHighRiskClient(this.props.account_status);
-
+                const is_high_risk_client = this.props.is_high_risk;
                 this.setState({ is_high_risk_client, is_loading: false });
             }
         });
         this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
-    }
-
-    componentDidUpdate(prevProps) {
-        // on page refresh account_status is always undefined on first render and on didMount
-        // so we compare if prevProps and current props before setting state
-        if (!prevProps.account_status && !ObjectUtils.isEmptyObject(this.props.account_status)) {
-            const is_high_risk_client = isHighRiskClient(this.props.account_status);
-            this.setState({ is_high_risk_client, is_loading: false });
-        }
     }
 
     componentWillUnmount() {
@@ -80,12 +64,19 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address/.test(selected_content.path)) return <Redirect to='/' />;
+        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach((menu_item) => {
             if (menu_item.title === 'Verification') {
                 menu_item.is_disabled = !is_high_risk_client;
+            }
+            if (menu_item.title === 'Profile') {
+                menu_item.subroutes.forEach(route => {
+                    if (route.path === AppRoutes.financial_assessment) {
+                        route.is_disabled = !is_high_risk_client;
+                    }
+                });
             }
         });
 
@@ -99,7 +90,7 @@ class Account extends React.Component {
             },
         ];
 
-        const is_account_limits_route = /account-limits/.test(this.props.location.pathname);
+        const is_account_limits_route = selected_content.path === AppRoutes.account_limits;
         if (is_account_limits_route) {
             action_bar_items.push({
                 component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,
@@ -150,12 +141,14 @@ Account.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        account_status  : client.account_status,
-        currency        : client.currency,
-        is_virtual      : client.is_virtual,
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode : ui.setRouteModal,
-        is_visible      : ui.is_account_settings_visible,
-        toggleAccount   : ui.toggleAccountSettings,
+        account_status   : client.account_status,
+        currency         : client.currency,
+        is_high_risk     : client.is_high_risk,
+        is_virtual       : client.is_virtual,
+        getRiskAssessment: client.getRiskAssessment,
+        disableRouteMode : ui.disableRouteModal,
+        enableRouteMode  : ui.setRouteModal,
+        is_visible       : ui.is_account_settings_visible,
+        toggleAccount    : ui.toggleAccountSettings,
     })
 )(withRouter(Account));

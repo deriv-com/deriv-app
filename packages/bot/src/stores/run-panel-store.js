@@ -187,7 +187,7 @@ export default class RunPanelStore {
                     this.root_store.summary.currency = client.currency;
                     this.root_store.journal.pushMessage(translate('You have switched accounts.'));
                     
-                    if (!client.is_virtual) {
+                    if (client.is_logged_in && !client.is_virtual) {
                         this.showRealAccountDialog();
                     }
                 }

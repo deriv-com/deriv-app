@@ -19,7 +19,7 @@ const ErrorComponent = ({
     <div className='cashier__wrapper'>
         <Icon icon='IconCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
-        <p className='cashier__paragraph'>{message}</p>
+        {message && <p className='cashier__paragraph'>{message}</p>}
         {button_link &&
         <ButtonLink
             className='btn--primary--default cashier-error__button'
@@ -151,14 +151,14 @@ class Error extends React.Component {
             case 'WrongResponse':
                 AccountError = (
                     <ErrorComponent
-                        message={this.props.error.message}
+                        header={this.props.error.message}
                         onClickButton={this.onClickButton}
                         button_text={localize('Try again')}
                     />
                 );
                 break;
             default:
-                AccountError = <ErrorComponent message={this.props.error.message} />;
+                AccountError = <ErrorComponent header={this.props.error.message} />;
                 break;
         }
         return AccountError;

@@ -18,7 +18,7 @@ const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Mo
 const fallback_content = {
     path     : AppRoutes.personal_details,
     component: DemoMessage,
-    title    : 'Personal details',
+    title    : localize('Personal details'),
 };
 
 class Account extends React.Component {

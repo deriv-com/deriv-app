@@ -23,7 +23,6 @@ import {
     ToolbarSaveIcon,
     ToolbarSearchIcon,
     ToolbarStartIcon,
-    ToolbarStopDisabledIcon,
     ToolbarStopIcon,
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
@@ -231,7 +230,7 @@ const Toolbar = ({
                 <ToolbarStartIcon />
                 <span
                     className='toolbar__btn-icon-text'
-                >{translate('Start')}
+                >{translate('Get started')}
                 </span>
             </Button>
             <SearchBox

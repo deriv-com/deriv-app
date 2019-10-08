@@ -25,7 +25,7 @@ export default class RunPanelStore {
     @observable dialog_options        = {};
     @observable is_run_button_clicked = false;
     @observable is_running            = false;
-    @observable is_drawer_open        = false;
+    @observable is_drawer_open        = true;
 
     is_contract_started = false;
     

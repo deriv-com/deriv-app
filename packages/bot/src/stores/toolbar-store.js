@@ -10,7 +10,7 @@ export default class ToolbarStore {
     }
 
     @observable is_dialog_open = false;
-    @observable is_toolbox_open = true;
+    @observable is_toolbox_open = false;
     @observable file_name = translate('Untitled Bot');
 
     @action.bound
@@ -27,9 +27,9 @@ export default class ToolbarStore {
     onToolboxToggle() {
         // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
-
-        toolbox.toggle();
+        
         this.is_toolbox_open = !this.is_toolbox_open;
+        toolbox.toggle();
     }
 
     @action.bound

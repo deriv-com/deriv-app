@@ -26,10 +26,11 @@ class Config {
 }
 
 class ConfigError {
-    @observable message       = '';
-    @observable button_text   = '';
-    @observable link          = '';
-    @observable onClickButton = null;
+    @observable message           = '';
+    @observable code              = '';
+    @observable fields            = '';
+    @observable is_show_full_page = false;
+    @observable onClickButton     = null;
 }
 
 class ConfigPaymentAgent {
@@ -51,7 +52,6 @@ class ConfigPaymentAgent {
 class ConfigPaymentAgentTransfer {
     @observable container              = 'payment_agent_transfer';
     @observable error                  = new ConfigError();
-    @observable has_no_balance         = false;
     @observable is_payment_agent       = false;
     @observable is_transfer_successful = false;
     @observable receipt                = {};
@@ -59,18 +59,18 @@ class ConfigPaymentAgentTransfer {
 }
 
 class ConfigAccountTransfer {
-    @observable accounts_list          = [];
-    @observable container              = 'account_transfer';
-    @observable error                  = new ConfigError();
-    @observable has_no_account         = false;
-    @observable has_no_balance         = false;
-    @observable is_transfer_successful = false;
-    @observable minimum_fee            = null;
-    @observable receipt                = {};
-    @observable selected_from          = {};
-    @observable selected_to            = {};
-    @observable transfer_fee           = null;
-    @observable transfer_limit         = {};
+    @observable accounts_list           = [];
+    @observable container               = 'account_transfer';
+    @observable error                   = new ConfigError();
+    @observable has_no_account          = false;
+    @observable has_no_accounts_balance = false;
+    @observable is_transfer_successful  = false;
+    @observable minimum_fee             = null;
+    @observable receipt                 = {};
+    @observable selected_from           = {};
+    @observable selected_to             = {};
+    @observable transfer_fee            = null;
+    @observable transfer_limit          = {};
 }
 
 class ConfigVerification {
@@ -83,7 +83,8 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading = false;
+    @observable has_no_balance = false;
+    @observable is_loading     = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -108,14 +109,9 @@ export default class CashierStore extends BaseStore {
         this.config.withdraw.container,
     ];
 
-    error_fields = {
-        address_city    : localize('Town/City'),
-        address_line_1  : localize('First line of home address'),
-        address_postcode: localize('Postal Code/ZIP'),
-        address_state   : localize('State/Province'),
-        email           : localize('Email address'),
-        phone           : localize('Telephone'),
-        residence       : localize('Country of Residence'),
+    map_action = {
+        [this.config.withdraw.container]     : 'payment_withdraw',
+        [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
     @action.bound
@@ -127,10 +123,24 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onMount(verification_code) {
+    async onMountCommon() {
         await BinarySocket.wait('authorize');
 
         this.resetValuesIfNeeded();
+
+        if (!this.root_store.client.balance) {
+            const balance = (await WS.authorized.balance()).balance;
+            // make sure balance response has come then set it to false, but don't wait unless we need to
+            if (!balance.balance) {
+                this.setHasNoBalance(true);
+            }
+        }
+    }
+
+    @action.bound
+    async onMount(verification_code) {
+        const current_container = this.active_container;
+        await this.onMountCommon();
 
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
@@ -165,7 +175,7 @@ export default class CashierStore extends BaseStore {
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
         // if tab changed while waiting for response, ignore it
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (current_container !== this.active_container) {
             return;
         }
 
@@ -220,7 +230,7 @@ export default class CashierStore extends BaseStore {
         this.config[container].iframe_url = url;
         if (url) {
             // after we set iframe url we can clear verification code
-            this.root_store.client.setVerificationCode('');
+            this.root_store.client.setVerificationCode('', this.map_action[container]);
         }
     }
 
@@ -231,93 +241,22 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setErrorMessage(error, onClickButton) {
-        const obj_error = this.getError(error) || {};
+        // for errors that need to show a button, reset the form
         this.config[this.active_container].error = {
             onClickButton,
-            message    : obj_error.error_message,
-            button_text: obj_error.error_button_text,
-            link       : obj_error.error_link,
+            code             : error.code,
+            message          : error.message,
+            is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
+            ...(ObjectUtils.getPropertyValue(error, ['details', 'fields']) && {
+                fields: error.details.fields,
+            }),
         };
     }
 
-    getError = (error) => {
-        if (!error || ObjectUtils.isEmptyObject(error)) {
-            return null;
-        }
-
-        let error_message,
-            error_button_text,
-            error_link;
-
-        switch (error.code) {
-            case 'ASK_EMAIL_VERIFY':
-            case 'InvalidToken':
-                error_message = [
-                    localize('Verification code is wrong.'),
-                    localize('Please use the link sent to your email.'),
-                ];
-                error_button_text = localize('Okay');
-                break;
-            case 'ASK_TNC_APPROVAL':
-                error_message = localize('Please accept the updated Terms and Conditions.');
-                error_link    = 'user/tnc_approvalws';
-                break;
-            case 'ASK_FIX_DETAILS':
-                error_message = [
-                    localize('There was a problem validating your personal details.'),
-                    (error.details.fields ?
-                        localize('Please update your {{details}}.', {
-                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
-                            interpolation: { escapeValue: false },
-                        })
-                        :
-                        localize('Please update your details.')
-                    ),
-                ];
-                break;
-            // TODO: handle ukgc after enabling different brokers on deriv
-            // case 'ASK_UK_FUNDS_PROTECTION':
-            //     error_message = [
-            //         localize(
-            //             'We are required by our license to inform you about what happens to funds which we hold on account for you, and the extent to which funds are protected in the event of insolvency {{gambling_link}}.',
-            //             { gambling_link: '<a href=\'%\' target=\'_blank\' rel=\'noopener noreferrer\'>%</a>'.replace(/%/g, 'http://www.gamblingcommission.gov.uk/for-the-public/Your-rights/Protection-of-customer-funds.aspx') }
-            //         ),
-            //         localize('The company holds customer funds in separate bank accounts to the operational accounts which would not, in the event of insolvency, form part of the Company\'s assets. This meets the Gambling Commission\'s requirements for the segregation of customer funds at the level: <strong>medium protection</strong>.'),
-            //     ];
-            //     error_button_text = localize('Proceed');
-            //     break;
-            case 'ASK_AUTHENTICATE':
-                error_message = localize('Please [_1]authenticate[_2] your account.');
-                error_link    = 'user/authenticate';
-                break;
-            case 'ASK_FINANCIAL_RISK_APPROVAL':
-                error_message = [
-                    localize('Financial Risk approval is required.'),
-                    localize('Please contact customer support for more information.'),
-                ];
-                error_link = 'contact';
-                break;
-            case 'ASK_AGE_VERIFICATION':
-                error_message = [
-                    localize('Account needs age verification.'),
-                    localize('Please contact customer support for more information.'),
-                ];
-                error_link = 'contact';
-                break;
-            case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
-                error_message = localize('Please set your 30-day turnover limit to access the cashier.');
-                error_link    = 'user/security/self_exclusionws';
-                break;
-            case 'WrongResponse':
-                error_message = error.message;
-                error_button_text = localize('Try again');
-                break;
-            default:
-                error_message = error.message;
-        }
-
-        return { error_message, error_link, error_button_text };
-    };
+    @action.bound
+    setHasNoBalance(has_no_balance) {
+        this.has_no_balance = has_no_balance;
+    }
 
     @action.bound
     setLoading(is_loading) {
@@ -433,7 +372,7 @@ export default class CashierStore extends BaseStore {
         this.setVerificationEmailSent(false, container);
         this.setVerificationResendClicked(false, container);
         this.setVerificationResendTimeout(60, container);
-        this.root_store.client.setVerificationCode('');
+        this.root_store.client.setVerificationCode('', this.map_action[container]);
     }
 
     @action.bound
@@ -446,8 +385,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentList() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
         if (!this.config.payment_agent.list.length) {
             const payment_agent_list = await BinarySocket.wait('paymentagent_list');
@@ -529,8 +467,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
         this.setIsWithdraw(true);
         this.setIsWithdrawSuccessful(false);
@@ -614,6 +551,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetPaymentAgent = () => {
+        this.setErrorMessage('');
         this.setIsWithdraw(false);
         this.clearVerification();
     };
@@ -625,8 +563,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountAccountTransfer() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize', 'website_status');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
+        await BinarySocket.wait('website_status');
 
         if (!this.config.account_transfer.accounts_list.length) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
@@ -653,7 +591,7 @@ export default class CashierStore extends BaseStore {
         // should have at least one account with balance
         if (!accounts.find(account => +account.balance > 0)) {
             can_transfer = false;
-            this.setHasNoBalance(true);
+            this.setHasNoAccountsBalance(true);
         }
         // should have at least two real-money accounts
         if (accounts.length <= 1) {
@@ -667,8 +605,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setHasNoBalance(has_no_balance) {
-        this.config[this.active_container].has_no_balance = has_no_balance;
+    setHasNoAccountsBalance(has_no_accounts_balance) {
+        this.config.account_transfer.has_no_accounts_balance = has_no_accounts_balance;
     }
 
     @action.bound
@@ -858,15 +796,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentTransfer() {
         this.setLoading(true);
-        await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
+        await this.onMountCommon();
 
-        const balance = this.root_store.client.balance;
-        if (!balance) {
-            this.setHasNoBalance(true);
-            this.setLoading(false);
-            return;
-        }
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
             const response = await BinarySocket.wait('paymentagent_list');
             const current_payment_agent = this.getCurrentPaymentAgent(response);

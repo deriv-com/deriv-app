@@ -586,6 +586,10 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    <div className='account-form__footer-note'>
+                                        Please make sure your information is correct or
+                                        it may affect your trading experience.
+                                    </div>
                                     <Button
                                         className='account-form__footer-btn btn--primary--green'
                                         type='submit'

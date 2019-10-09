@@ -16,6 +16,7 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output         : null,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Analysis.colour,
             colourSecondary: Blockly.Colours.Analysis.colourSecondary,
             colourTertiary : Blockly.Colours.Analysis.colourTertiary,

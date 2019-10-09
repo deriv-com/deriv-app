@@ -77,8 +77,6 @@ export const config = {
     last_digit: [
         { type: TEXT },
         { type: BLOCK },
-        { type: TEXT },
-        { type: TEXT },
     ], read_ohlc: [
         { type: TEXT },
         { type: BLOCK },

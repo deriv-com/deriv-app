@@ -41,7 +41,7 @@ Blockly.Blocks.during_purchase = {
     meta(){
         return {
             'display_name': translate('Sell conditions'),
-            'description' : translate('This block allows you to specify conditions for selling your purchased contract before its expiration.'),
+            'description' : translate('Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'),
         };
     },
     onchange(event) {

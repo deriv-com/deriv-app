@@ -6,20 +6,20 @@ Blockly.Blocks.sell_at_market = {
     },
     definition(){
         return {
-            message0         : translate('Sell at market'),
+            message0         : translate('Sell at market price'),
             colour           : Blockly.Colours.Special1.colour,
             colourSecondary  : Blockly.Colours.Special1.colourSecondary,
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('This block sells your active contract at market price.'),
+            tooltip          : translate('Use this block to sell your contract at the market price.'),
             category         : Blockly.Categories.During_Purchase,
         };
     },
     meta(){
         return {
             'display_name': translate('Sell at market price'),
-            'description' : translate('This block sells your active contract at market price.'),
+            'description' : translate('Use this block to sell your contract at the market price.'),
         };
     },
     onchange(event) {

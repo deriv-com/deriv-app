@@ -46,9 +46,9 @@
     &__icon {
         cursor: pointer;
         border: none;
-        margin: 0 12px;
-        height: 15px;
-        width: 15px;
+        margin: auto 12px;
+        height: 16px;
+        width: 16px;
 
         &--stop {
             stroke: var(--text-prominent);
@@ -62,6 +62,7 @@
         display: flex;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
+        height: 40px;
 
         &-btn {
             padding: 0px 8px;

@@ -38,7 +38,7 @@ Blockly.Blocks.rsia_statement = {
     meta(){
         return {
             'display_name': translate('Relative Strength Index Array (RSIA)'),
-            'description' : translate('Relative Strength Index Array (RSIA) is similar to RSI indicator. The only difference is that it returns the list of values for each entry in the imput list.'),
+            'description' : translate('Similar to RSI, this block gives you a list of values for each entry in the input list.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

@@ -206,19 +206,20 @@ class RealAccountSignup extends Component {
         const { is_real_acc_signup_on } = this.props;
         const title                     = this.state.modal_content[this.active_modal_index].label;
         const Body                      = this.state.modal_content[this.active_modal_index].value;
+        const height                    = this.props.available_crypto_currencies.length !== 0 ? '688px' : '375px';
+
         return (
             <Modal
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
-                    'dc-modal__container_real-account-signup-modal--error'             : this.active_modal_index === 5,
-                    'dc-modal__container_real-account-signup-modal--success'           : this.active_modal_index >= 2 && this.active_modal_index < 5,
-                    'dc-modal__container_real-account-signup-modal--no-currency-change': !this.props.can_change_fiat_currency,
+                    'dc-modal__container_real-account-signup-modal--error'  : this.active_modal_index === 5,
+                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 && this.active_modal_index < 5,
                 })}
                 is_open={is_real_acc_signup_on}
                 has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
-                height='672px'
+                height={height}
                 width='900px'
             >
                 <Body />
@@ -228,11 +229,11 @@ class RealAccountSignup extends Component {
 }
 
 export default connect(({ ui, client, modules }) => ({
-    can_change_fiat_currency : client.can_change_fiat_currency,
-    has_real_account         : client.has_real_account,
-    has_currency             : !!client.currency,
-    is_real_acc_signup_on    : ui.is_real_acc_signup_on,
-    closeRealAccountSignup   : ui.closeRealAccountSignup,
-    closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
-    enableMt5PasswordModal   : modules.mt5.enableMt5PasswordModal,
+    available_crypto_currencies: client.available_crypto_currencies,
+    has_real_account           : client.has_real_account,
+    has_currency               : !!client.currency,
+    is_real_acc_signup_on      : ui.is_real_acc_signup_on,
+    closeRealAccountSignup     : ui.closeRealAccountSignup,
+    closeSignupAndOpenCashier  : ui.closeSignupAndOpenCashier,
+    enableMt5PasswordModal     : modules.mt5.enableMt5PasswordModal,
 }))(RealAccountSignup);

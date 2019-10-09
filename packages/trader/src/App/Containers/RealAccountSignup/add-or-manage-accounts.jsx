@@ -66,13 +66,15 @@ class AddOrManageAccounts extends Component {
         return (
             <Scrollbars autoHide>
                 <div className='account-wizard add-or-manage'>
-                    <AddCryptoCurrency
-                        className='account-wizard__body'
-                        onSubmit={this.updateValue}
-                        value={this.state.form_value}
-                        form_error={this.state.form_error}
-                        {...this.props}
-                    />
+                    {this.props.available_crypto_currencies.length !== 0 &&
+                        <AddCryptoCurrency
+                            className='account-wizard__body'
+                            onSubmit={this.updateValue}
+                            value={this.state.form_value}
+                            form_error={this.state.form_error}
+                            {...this.props}
+                        />
+                    }
                     {this.props.can_change_fiat_currency &&
                     <div className='change-currency'>
                         <ChangeAccountCurrency
@@ -98,7 +100,8 @@ AddOrManageAccounts.propTypes = {
 };
 
 export default connect(({ client }) => ({
-    can_change_fiat_currency: client.can_change_fiat_currency,
-    setCurrency             : client.setAccountCurrency,
-    createCryptoAccount     : client.createCryptoAccount,
+    available_crypto_currencies: client.available_crypto_currencies,
+    can_change_fiat_currency   : client.can_change_fiat_currency,
+    setCurrency                : client.setAccountCurrency,
+    createCryptoAccount        : client.createCryptoAccount,
 }))(AddOrManageAccounts);

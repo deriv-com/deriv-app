@@ -26,7 +26,7 @@
                                                     <block type="trade_definition_restartonerror" deletable="false" movable="false">
                                                         <value name="RESTARTONERROR">
                                                             <shadow type="logic_boolean">
-                                                                <field name="BOOL">FALSE</field>
+                                                                <field name="BOOL">TRUE</field>
                                                             </shadow>
                                                         </value>
                                                     </block>
@@ -67,7 +67,6 @@
                     <block type="check_sell"></block>
                 </value>
                 <statement name="DO0">
-                    <block type="sell_at_market"></block>
                 </statement>
             </block>
         </statement>

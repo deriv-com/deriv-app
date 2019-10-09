@@ -63,7 +63,8 @@ const Duration = ({
     const changeDurationUnit = ({ target }) => {
         const { name, value } = target;
         const duration_value  = getDurationFromUnit(value);
-
+        console.log('hi')
+        console.log(expiry_type)
         onChangeUiStore({ name, value });
         onChangeMultiple({
             duration_unit: value,

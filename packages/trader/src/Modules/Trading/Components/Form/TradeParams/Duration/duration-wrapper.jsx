@@ -5,7 +5,7 @@ import { connect }                    from 'Stores/connect';
 import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/duration';
 import Duration                       from './duration.jsx';
 
-class DurationWrapper extends React.Component {
+class DurationWrapper extends React.PureComponent {
     hasDurationUnit = (duration_unit, is_advanced_duration) => {
         let duration_list = [...this.props.duration_units_list];
 
@@ -144,6 +144,7 @@ class DurationWrapper extends React.Component {
             is_advanced_duration,
             simple_duration_unit,
         } = this.props;
+        console.log("TCL: DurationWrapper -> render -> this.props", this.props)
 
         const current_duration_unit           = (is_advanced_duration ? advanced_duration_unit : simple_duration_unit);
         const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit, is_advanced_duration);
@@ -151,6 +152,8 @@ class DurationWrapper extends React.Component {
             (!is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4);
         const [min_value, max_value]          =
             this.getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+            console.log("TCL: DurationWrapper -> render -> min_value", min_value)
+            console.log("TCL: DurationWrapper -> render -> max_value", max_value)
 
         if (has_missing_duration_unit || simple_is_missing_duration_unit) {
             this.setDurationUnit();

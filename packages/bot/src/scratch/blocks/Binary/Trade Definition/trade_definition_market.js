@@ -47,10 +47,24 @@ Blockly.Blocks.trade_definition_market = {
         const submarket          = submarket_field.getValue();
         const symbol             = symbol_field.getValue();
 
-        if (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) {
+        if (
+            (event.type === Blockly.Events.CREATE && event.ids.includes(this.id)) ||
+            (event.type === Blockly.Events.END_DRAG && !market_field.menuGenerator_.length === 0)
+        ) {
             active_symbols.getMarketDropdownOptions().then(market_options => {
                 market_field.updateOptions(market_options, event.group, market, true, true);
             });
+        } else if (event.type === Blockly.Events.END_DRAG) {
+            const top_parent = this.getTopParent();
+
+            if (event.blockId === top_parent.id) {
+                const market_options = market_field.menuGenerator_; // eslint-disable-line
+
+                if (market_options[0][0] === ''); {
+                    // Trigger a create event to populate dropdowns.
+                    Blockly.Events.fire(new Blockly.Events.Create(this));
+                }
+            }
         } else if (event.type === Blockly.Events.CHANGE) {
             if (event.name === 'MARKET_LIST') {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {

@@ -28,7 +28,6 @@ import toolbar_undo            from '../assets/icons/undo.svg';
 import toolbar_zoomIn          from '../assets/icons/zoom-in.svg';
 import toolbar_zoomOut         from '../assets/icons/zoom-out.svg';
 import toolbar_stop            from '../assets/icons/ic-toolbar-stop.svg';
-import toolbar_stop_disabled   from '../assets/icons/ic-toolbar-stop-disabled.svg';
 
 // Toolbox
 import toolbox_stage1          from '../assets/icons/ic-stage-1.svg';
@@ -166,7 +165,6 @@ export const ToolbarUndoIcon         = Icon(toolbar_undo);
 export const ToolbarRedoIcon         = Icon(toolbar_redo);
 export const ToolbarRunIcon          = Icon(toolbar_run);
 export const ToolbarStopIcon         = Icon(toolbar_stop);
-export const ToolbarStopDisabledIcon = Icon(toolbar_stop_disabled);
 export const ToolbarReaarangeIcon    = Icon(toolbar_rearrange);
 export const ToolbarZoomInIcon       = Icon(toolbar_zoomIn);
 export const ToolbarZoomOutIcon      = Icon(toolbar_zoomOut);

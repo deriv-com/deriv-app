@@ -30,7 +30,7 @@ export default class RunPanelStore {
     @observable dialog_options        = {};
     @observable is_run_button_clicked = false;
     @observable is_running            = false;
-    @observable is_drawer_open        = false;
+    @observable is_drawer_open        = true;
 
     is_contract_started = false;
 
@@ -118,7 +118,7 @@ export default class RunPanelStore {
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
         this.contract_stage = CONTRACT_STAGES.not_running;
-        this.onCloseModal();
+        this.onCloseDialog();
     }
 
     @action.bound
@@ -127,7 +127,7 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onCloseModal() {
+    onCloseDialog() {
         this.dialog_options = {};
     }
 
@@ -137,7 +137,7 @@ export default class RunPanelStore {
     }
 
     @computed
-    get is_dialog_visible() {
+    get is_dialog_open() {
         return Object.entries(this.dialog_options).length > 0;
     }
 
@@ -224,7 +224,7 @@ export default class RunPanelStore {
 
     @action.bound
     showLoginDialog() {
-        this.onOkButtonClick = this.onCloseModal;
+        this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('Run error'),
@@ -234,7 +234,7 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.onOkButtonClick = this.onCloseModal;
+        this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
@@ -245,7 +245,7 @@ export default class RunPanelStore {
     @action.bound
     showClearStatDialog() {
         this.onOkButtonClick = this.clearStat;
-        this.onCancelButtonClick = this.onCloseModal;
+        this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
             title  : translate('Are you sure?'),
             message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),

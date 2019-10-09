@@ -28,8 +28,20 @@ const Button = ({
     text,
     wrapperClassName,
     type,
+    primary,
+    secondary,
+    size,
+    tertiary,
 }) => {
-    const classes = classNames('btn', { effect: has_effect }, className);
+    const classes = classNames('btn', {
+        effect         : has_effect,
+        'btn-primary'  : primary,
+        'btn-secondary': secondary,
+        'btn-tertiary' : tertiary,
+        'btn--large'   : size === 'l',
+        'btn--medium'  : size === 'm',
+        'btn--small'   : size === 's',
+    }, className);
     const button = (
         <button
             id={id}
@@ -55,7 +67,9 @@ const Button = ({
             {is_submit_success &&
                 <IconCheckmark />
             }
-            {children}
+            <span className={classNames('btn__text', classNameSpan)}>
+                {!text && children}
+            </span>
         </button>
     );
     const wrapper = (<div className={wrapperClassName}>{button}</div>);

@@ -1,22 +1,15 @@
 /** @define btn */
 .btn {
-    font-size: 1rem;
-    display: inline-block;
     vertical-align: middle;
     justify-content: center;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
-    padding: 0 1.6em;
-    margin: 1.6em;
-    border: 0;
+    padding: 1rem 1.6rem;
     border-radius: 4px;
-    height: 3.2em; // 32px
-    min-width: 9.6em; // 96px
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
-    background: var(--button-primary-default);
     /*
      * Text will be transformed to sentence case in JS
      * text-transform is declared in .btn instead of .btn__text

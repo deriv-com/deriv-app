@@ -198,7 +198,7 @@ export default class RunPanelStore {
     @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseModal;
-        this.onCancelButtonClick = false;
+        this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('Run error'),
             message: translate('Please log in.'),
@@ -208,7 +208,7 @@ export default class RunPanelStore {
     @action.bound
     showRealAccountDialog() {
         this.onOkButtonClick = this.onCloseModal;
-        this.onCancelButtonClick = false;
+        this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
             message: translate('Please switch to your demo account to run your DBot.'),

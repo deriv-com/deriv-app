@@ -58,12 +58,9 @@ const Dialog = ({
 Dialog.propTypes = {
     children           : PropTypes.node,
     is_open            : PropTypes.bool,
-    onCancelButtonClick: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    onOkButtonClick: PropTypes.func,
-    title          : PropTypes.string,
+    onCancelButtonClick: PropTypes.func,
+    onOkButtonClick    : PropTypes.func,
+    title              : PropTypes.string,
 };
 
 export default Dialog;

@@ -562,6 +562,11 @@ export default class ClientStore extends BaseStore {
                 this.loginid,
             );
             this.setHasMissingRequiredField(has_missing_required_field);
+            // TODO: set all currency references to be used only from client-store,
+            // removing the need for reinitializing below
+            if (this.currency && (this.currency.length > 0)) {
+                this.root_store.modules.trade.initAccountCurrency(this.currency);
+            }
         } else if (!client || client.is_virtual) {
             this.root_store.ui.removeAllNotifications();
         }

@@ -43,7 +43,7 @@ const drawerFooter = ({
     is_clear_stat_disable,
     is_running,
     is_run_button_clicked,
-    is_dialog_visible,
+    is_dialog_open,
     onCancelButtonClick,
     onClearStatClick,
     onOkButtonClick,
@@ -89,10 +89,10 @@ const drawerFooter = ({
                         has_effect
                     />
             }
-            {is_dialog_visible &&
+            {is_dialog_open &&
                 <Dialog
                     title={dialog_options.title}
-                    is_open={is_dialog_visible}
+                    is_open={is_dialog_open}
                     onOkButtonClick={onOkButtonClick}
                     onCancelButtonClick={onCancelButtonClick}
                 >
@@ -141,7 +141,7 @@ RunPanel.propTypes = {
     active_index         : PropTypes.number,
     dialog_options       : PropTypes.object,
     is_clear_stat_disable: PropTypes.bool,
-    is_dialog_visible    : PropTypes.bool,
+    is_dialog_open       : PropTypes.bool,
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
@@ -160,7 +160,7 @@ export default connect(({ run_panel, journal }) => ({
     dialog_options       : run_panel.dialog_options,
     is_clear_stat_disable: run_panel.is_run_button_clicked ||
     run_panel.is_running || journal.messages.length === 0,
-    is_dialog_visible    : run_panel.is_dialog_visible,
+    is_dialog_open       : run_panel.is_dialog_open,
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,

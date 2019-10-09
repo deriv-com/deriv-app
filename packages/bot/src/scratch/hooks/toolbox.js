@@ -11,7 +11,7 @@ import { translate }  from '../../utils/lang/i18n';
  * This is the sum of the width of the flyout (250) and some extra padding (25).
  * @type {number}
  */
-Blockly.Toolbox.prototype.width = 0;
+Blockly.Toolbox.prototype.width = 25;
 
 /**
  * Initializes the toolbox.

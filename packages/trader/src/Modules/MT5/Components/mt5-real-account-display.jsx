@@ -27,14 +27,15 @@ const MT5RealAccountDisplay = ({
             <div className='mt5-dashboard__missing-real'>
                 <h1 className='mt5-dashboard__missing-real--heading'>
                     <Localize
-                        i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.'/>
+                        i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.'
+                    />
                 </h1>
                 <Button
                     className='btn--primary--default mt5-dashboard__missing-real--button'
                     onClick={ beginRealSignupForMt5 }
                     type='button'
                 >
-                    <span className='btn__text'><Localize i18n_default_text='Create a Deriv account'/></span>
+                    <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
                 </Button>
             </div>
         }

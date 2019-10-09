@@ -59,13 +59,11 @@ export default class RunPanelStore {
 
     @action.bound
     onContractStatusEvent(data) {
-        console.log(data); // eslint-disable-line
         this.getContractStage(data);
     }
 
     @action.bound
     onBotContractEvent(data) {
-        console.log(data); // eslint-disable-line
         if (isEnded(data)) {
             this.getContractStage({ id: 'contract.closed' });
         }

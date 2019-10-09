@@ -156,17 +156,18 @@ class AccountWizard extends React.Component {
                         form_error: error_message,
                     }, () => setSubmitting(false));
                 });
+        } else {
+            this.submitForm()
+                .then((response) => {
+                    setSubmitting(false);
+                    this.props.onSuccessAddCurrency(
+                        response.new_account_real.currency.toLowerCase()
+                    );
+                })
+                .catch(error_message => {
+                    this.props.onError(error_message);
+                });
         }
-        this.submitForm()
-            .then((response) => {
-                setSubmitting(false);
-                this.props.onSuccessAddCurrency(
-                    response.new_account_real.currency.toLowerCase()
-                );
-            })
-            .catch(error_message => {
-                this.props.onError(error_message);
-            });
     }
 
     goNext() {

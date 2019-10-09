@@ -53,3 +53,15 @@ export const getPropertyValue = (obj, k) => {
     // else return clone of object to avoid overwriting data
     return obj ? cloneObject(obj[keys[0]]) : undefined;
 };
+
+export const removeEmptyPropertiesFromObject = (obj) => {
+    const clone = { ...obj };
+
+    Object.getOwnPropertyNames(obj).forEach((key) => {
+        if (!obj[key]) {
+            delete clone[key];
+        }
+    });
+
+    return clone;
+};

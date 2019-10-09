@@ -105,39 +105,13 @@
             color: var(--text-prominent);
         }
     }
-    // This is taken from account-signup.scss
-    // TODO remove this when deriv color changes is done
-    &__btn {
-        @include typeface(--paragraph-center-bold-black);
-        min-width: initial;
-        height: 40px;
-        border-radius: 4px;
-        background-color: var(--brand-red-coral);
-        color: var(--text-colored-background);
-        margin: 1.6em 1.6em 1.6em 0;
-        text-transform: none;
-
-        &:hover:not(&--disabled) {
-            background-color: var(--button-primary-hover);
-        }
-        &--disabled {
-            opacity: 0.32;
-            cursor: initial;
-        }
-        &--cancel {
-            border: 1px solid var(--text-less-prominent);
-            color: var(--text-less-prominent) !important;
-            margin-right: 1rem;
-            background-color: var(--general-main-1);
-        }
-    }
     &__btn-area {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
         margin-top: 2em;
-        width: 20em;
+        width: 100%;
 
         .btn:not(:last-child) {
             margin: 0 1em;

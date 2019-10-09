@@ -4,6 +4,10 @@ import {
     reaction,
     computed }             from 'mobx';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
+import {
+    runBot,
+    stopBot,
+    terminateBot }         from '../scratch';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';
@@ -77,7 +81,7 @@ export default class RunPanelStore {
 
         this.is_contract_started = false;
         this.is_run_button_clicked = true;
-        Blockly.BLOCKLY_CLASS_OLD.run();
+        runBot();
         this.root_store.contract_card.is_loading = true;
         this.contract_stage = CONTRACT_STAGES.bot_starting;
     }
@@ -89,8 +93,8 @@ export default class RunPanelStore {
             return;
         }
         if (this.is_run_button_clicked) {
+            stopBot();
             this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
-            Blockly.BLOCKLY_CLASS_OLD.stop();
         }
         this.is_run_button_clicked = false;
         this.root_store.contract_card.is_loading = false;
@@ -160,8 +164,8 @@ export default class RunPanelStore {
         const terminateAndClear = () => {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
-            Blockly.BLOCKLY_CLASS_OLD.terminate();
-            this.clearStat();
+            terminateBot();
+            this.onClearStatClick();
             this.is_run_button_clicked = false;
         };
 
@@ -183,7 +187,7 @@ export default class RunPanelStore {
                     this.root_store.summary.currency = client.currency;
                     this.root_store.journal.pushMessage(translate('You have switched accounts.'));
                     
-                    if (!client.is_virtual) {
+                    if (client.is_logged_in && !client.is_virtual) {
                         this.showRealAccountDialog();
                     }
                 }
@@ -194,6 +198,7 @@ export default class RunPanelStore {
     @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseModal;
+        this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('Run error'),
             message: translate('Please log in.'),
@@ -203,6 +208,7 @@ export default class RunPanelStore {
     @action.bound
     showRealAccountDialog() {
         this.onOkButtonClick = this.onCloseModal;
+        this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
             message: translate('Please switch to your demo account to run your DBot.'),

@@ -34,6 +34,23 @@ class MT5PasswordManagerModal extends React.Component {
         },
     };
 
+    shouldComponentUpdate(next_props, next_state) {
+        if (!next_props.is_visible && this.props.is_visible) {
+            this.setState({
+                main: {
+                    has_error    : false,
+                    error_message: '',
+                },
+                investor: {
+                    has_error    : false,
+                    error_message: '',
+                },
+            });
+        }
+
+        return this.props !== next_props || this.state !== next_state;
+    }
+
     showError = (section, error_message) => {
         this.setState({
             [section]: {

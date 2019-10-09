@@ -20,6 +20,7 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             { trade_type_category: 'lookback' },
+            { trade_type_category: 'callputspread' },
         ];
         this.retrieving_contracts_for  = {};
         this.root_store                = root_store;

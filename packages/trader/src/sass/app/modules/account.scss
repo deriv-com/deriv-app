@@ -104,6 +104,18 @@
             }
             .datepicker {
                 max-width: unset;
+
+                &__picker {
+                    margin-top: 8px;
+                }
+                .icon-datepicker {
+                    position: absolute;
+                    top: 1.2rem;
+                    right: 1rem;
+                }
+            }
+            .dc-input__label {
+                top: 1.2rem;
             }
         }
         &__footer {

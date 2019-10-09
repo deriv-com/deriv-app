@@ -33,13 +33,15 @@ const ErrorModal = ({ message }) => (
         <a
             href='https://www.deriv.com/help-centre/'
             type='button'
-            className='btn btn--primary--red'
+            className='btn btn--primary--default'
             target='_blank'
             rel='noopener noreferrer'
         >
-            <Localize
-                i18n_default_text='Go To Help Centre'
-            />
+            <span className='btn__text'>
+                <Localize
+                    i18n_default_text='Go To Help Centre'
+                />
+            </span>
         </a>
     </React.Fragment>
 );

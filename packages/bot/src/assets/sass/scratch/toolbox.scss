@@ -162,6 +162,8 @@ $category-colours: (
     &__button.btn {
         margin: 16px auto;
         padding: 0;
+        width: 152px;
+        height: 32px;
         color: var(--text-colored-background);
         font-size: 14px;
         font-weight: bold;

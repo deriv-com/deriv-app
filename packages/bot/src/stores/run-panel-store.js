@@ -20,6 +20,7 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
+        observer.register('bot.trade_again', this.onBotNotTradeAgain);
 
         this.registerReactions();
     }
@@ -39,6 +40,14 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    onBotNotTradeAgain(is_trade_again) {
+        if (!is_trade_again) {
+            this.is_run_button_clicked = false;
+            this.onBotStopEvent();
+        }
+    }
+
+    @action.bound
     onBotStopEvent() {
         this.is_running = false;
         if (this.is_contract_started) {
@@ -50,13 +59,14 @@ export default class RunPanelStore {
 
     @action.bound
     onContractStatusEvent(data) {
+        console.log(data); // eslint-disable-line
         this.getContractStage(data);
     }
 
     @action.bound
     onBotContractEvent(data) {
-        const isClosed = isEnded(data);
-        if (isClosed) {
+        console.log(data); // eslint-disable-line
+        if (isEnded(data)) {
             this.getContractStage({ id: 'contract.closed' });
         }
     }
@@ -94,8 +104,13 @@ export default class RunPanelStore {
         }
         if (this.is_run_button_clicked) {
             stopBot();
-            this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
+            if (this.is_contract_started) {
+                this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
+            } else {
+                this.contract_stage = CONTRACT_STAGES.not_running;
+            }
         }
+
         this.is_run_button_clicked = false;
         this.root_store.contract_card.is_loading = false;
     }

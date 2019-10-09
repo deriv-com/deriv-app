@@ -38,6 +38,11 @@
             #{$quick-strategy}__input {
                 margin: 10px 0 0;
                 width: 196px;
+
+                .dc-field-error {
+                    padding: 0;
+                    left: 0;
+                }
             }
         }
         &-footer {

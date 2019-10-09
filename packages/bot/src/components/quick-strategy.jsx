@@ -36,6 +36,24 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
+const validateQuickStrategy = values => {
+    const errors = {};
+
+    Object.keys(values).forEach(key => {
+        const value = values[key];
+
+        if (!value) {
+            errors[key] = translate('Field cannot be empty');
+        }
+
+        if (typeof value === 'number' && value < 0){
+            errors[key] = translate('Must be positive number');
+        }
+    });
+
+    return errors;
+};
+
 class QuickStrategy extends React.PureComponent {
     componentDidMount() {
         this.props.quickStrategyDidMount();
@@ -110,10 +128,11 @@ class QuickStrategy extends React.PureComponent {
                     <div className='quick-strategy__form'>
                         <Formik
                             initialValues={initial_values}
+                            validate={validateQuickStrategy}
                             onSubmit={createStrategy}
                         >
                             {
-                                ({ values : { symbol, tradetype }, setFieldValue }) => (
+                                ({ errors, isValid, isSubmitting, values : { symbol, tradetype }, setFieldValue, touched }) => (
                                     <Form>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown
@@ -142,6 +161,7 @@ class QuickStrategy extends React.PureComponent {
                                                         {...field}
                                                         className='quick-strategy__input'
                                                         type='number'
+                                                        error={touched.stake && errors.stake}
                                                         label={translate('Initial stake')}
                                                     />
                                                 )}
@@ -152,6 +172,7 @@ class QuickStrategy extends React.PureComponent {
                                                         {...field}
                                                         className='quick-strategy__input'
                                                         type='number'
+                                                        error={touched.loss && errors.loss}
                                                         label={translate('Maximum loss')}
                                                     />
                                                 )}
@@ -164,6 +185,7 @@ class QuickStrategy extends React.PureComponent {
                                                         {...field}
                                                         className='quick-strategy__input'
                                                         type='number'
+                                                        error={touched.size && errors.size}
                                                         label={translate('Size')}
                                                     />
                                                 )}
@@ -174,6 +196,7 @@ class QuickStrategy extends React.PureComponent {
                                                         {...field}
                                                         className='quick-strategy__input'
                                                         type='number'
+                                                        error={touched.profit && errors.profit}
                                                         label={translate('Maximum profit')}
                                                     />
                                                 )}
@@ -188,6 +211,7 @@ class QuickStrategy extends React.PureComponent {
                                                     'quick-strategy__button--create',
                                                 )}
                                                 text={translate('Create')}
+                                                is_disabled={!isValid || isSubmitting}
                                             />
                                         </div>
                                     </Form>

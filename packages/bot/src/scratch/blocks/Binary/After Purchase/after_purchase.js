@@ -68,6 +68,7 @@ Blockly.JavaScript.after_purchase = block => {
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
         ${stack}
+        Bot.isTradeAgain(false);
         return false;
     };`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];

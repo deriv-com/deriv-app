@@ -126,12 +126,12 @@ export const runBot = (limitations = {}) => {
             }
             `;
         if (code) {
-            if (interpreter === null) {
-                interpreter = new Interpreter();
-            } else {
+            if (interpreter !== null) {
                 interpreter.stop(true);
+                interpreter = null;
             }
 
+            interpreter = new Interpreter();
             interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 interpreter.stop();

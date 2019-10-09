@@ -256,9 +256,9 @@ const config = {
         mainWorkspaceStartScale   : 0.9,
     },
     strategies: {
-        martingale  : { index: 0, label: 'Martingale', description: 'He determined to drop his litigation with the monastry, and relinguish his claims to the wood-cuting and fishery rihgts at once. He was the more ready to do this becuase the rights had becom much less valuable, and he had indeed the vaguest idea where the wood and river in quedtion were.' },
-        dalembert   : { index: 1, label: 'D\'Alembert', description: 'As he utterred the last word of his terade, Miusov completely recovered his self-complecency, and all traces of his former iritation disappaered. He fuly and sincerelly loved humanity again.' },
-        oscars_grind: { index: 2, label: 'Oscars\' Grind', description: 'He stood before the holly image, and began to say grace, aloud. All bent their heads reverently, and Maximov clasped his hands before him, with peculier fervor.' },
+        martingale  : { index: 0, label: 'Martingale', description: 'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.' },
+        dalembert   : { index: 1, label: 'D\'Alembert', description: 'The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.' },
+        oscars_grind: { index: 2, label: 'Oscars\' Grind', description: 'The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, and decrease the size of your contract after each unsuccessful trade.' },
     },
 };
 

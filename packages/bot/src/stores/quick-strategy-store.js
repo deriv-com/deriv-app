@@ -16,10 +16,10 @@ export default class QuickStrategyStore {
     @observable initial_values = {
         symbol   : 'frxAUDJPY',
         tradetype: 'callput',
-        stake    : 100,
-        size     : 2,
-        loss     : 300,
-        profit   : 400,
+        stake    : '',
+        size     : '',
+        loss     : '',
+        profit   : '',
     };
 
     @observable is_strategy_modal_open = false;

@@ -43,8 +43,8 @@ Blockly.Blocks.macda_statement = {
     },
     meta(){
         return {
-            'display_name': translate('MACD'),
-            'description' : translate('MACD acronym stands for Moving Average Convergence Divergence. MACD is calculated by subtracting the long-term Exponential Moving Average (26 periods) from the short-term Exponential Moving Average (12 periods). The idea behind the MACD indicator is that when the short-term EMA is greater or lower than long-term EMA than there’s a possibility of trend reversal.'),
+            'display_name': translate('Moving Average Convergence Divergence'),
+            'description' : translate('MACD is calculated by subtracting the long-term EMA (26 periods) from the short-term EMA (12 periods). If the short-term EMA is greater or lower than the long-term EMA than there’s a possibility of a trend reversal.'),
         };
     },
     

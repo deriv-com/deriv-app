@@ -1,6 +1,6 @@
 {
     "text": [
-        "This block is mandatory. It allows you to specify whether you want to continue trading or not. You can add only one copy of this block to the canvas.",
-        "Most commonnly this block is used to for adjusting parameters for the next trade and implementing stop loss/take profit logic."
+        "This block is mandatory. Here is where you can decide to continue trading. Only one copy of this block is allowed.",
+        "This block is commonly used to adjust the parameters of your next trade and to implement stop loss/take profit logic."
     ]
 }

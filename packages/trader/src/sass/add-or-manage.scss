@@ -87,15 +87,8 @@
         margin: 3rem 0;
 
         & .btn {
-            height: 4rem;
-            @include typeface(--title-left-bold-black);
-            font-size: 1.4rem;
-            text-align: center;
             margin: 0 2rem;
-
-            &--primary--default {
-                color: var(--text-colored-background);
-            }
+            height: 4rem;
         }
     }
 }

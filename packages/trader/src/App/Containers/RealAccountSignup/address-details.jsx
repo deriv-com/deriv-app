@@ -1,6 +1,7 @@
 import { Dropdown, Input }  from 'deriv-components';
 import { Formik, Field }    from 'formik';
 import React, { Component } from 'react';
+import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
@@ -47,13 +48,6 @@ class AddressDetails extends Component {
         this.props.onCancel();
     };
 
-    getPlaceholder = (address_state) => {
-        const placeholder = localize('State/Province');
-        return this.props.states_list.some(item => {
-            return item.value === address_state;
-        }) ? '' : placeholder;
-    };
-
     render() {
         return (
             <Formik
@@ -85,45 +79,52 @@ class AddressDetails extends Component {
                                         i18n_default_text='Please ensure that this address is the same as in your proof of address'
                                     />
                                 </p>
-                                <div className='details-form__elements'>
-                                    <InputField
-                                        name='address_line_1'
-                                        required
-                                        label={localize('First line of address*')}
-                                        placeholder={localize('First line of address')}
-                                    />
-                                    <InputField
-                                        name='address_line_2'
-                                        label={localize('Second line of address')}
-                                        placeholder={localize('Second line of address')}
-                                    />
-                                    <InputField
-                                        name='address_city'
-                                        required
-                                        label={localize('Town/City*')}
-                                        placeholder={localize('Town/City')}
-                                    />
-                                    <Dropdown
-                                        id='address_state'
-                                        className='address_state-dropdown'
-                                        classNameDisplay='dc-input address_state-dropdown__display'
-                                        classNameDisplaySpan='address_state-dropdown__display__span'
-                                        classNameItems='address_state-dropdown__items'
-                                        classNameLabel='address_state-dropdown__label'
-                                        list={this.props.states_list}
-                                        name='address_state'
-                                        value={values.address_state}
-                                        onChange={handleChange}
-                                        placeholder={
-                                            this.getPlaceholder(values.address_state)
-                                        }
-                                    />
-                                    <InputField
-                                        name='address_postcode'
-                                        required
-                                        label={localize('Postal/ZIP Code*')}
-                                        placeholder={localize('Postal/ZIP Code')}
-                                    />
+                                <div className='details-form__elements-container'>
+                                    <Scrollbars
+                                        autoHide
+                                        style={{
+                                            height: '100%',
+                                        }}
+                                    >
+                                        <div className='details-form__elements'>
+                                            <InputField
+                                                name='address_line_1'
+                                                required
+                                                label={localize('First line of address*')}
+                                                placeholder={localize('First line of address')}
+                                            />
+                                            <InputField
+                                                name='address_line_2'
+                                                label={localize('Second line of address')}
+                                                placeholder={localize('Second line of address')}
+                                            />
+                                            <InputField
+                                                name='address_city'
+                                                required
+                                                label={localize('Town/City*')}
+                                                placeholder={localize('Town/City')}
+                                            />
+                                            <fieldset className='address-state__fieldset'>
+                                                <Dropdown
+                                                    is_alignment_top={(window.innerHeight < 930)}
+                                                    id='address_state'
+                                                    className='address_state-dropdown'
+                                                    is_align_text_left
+                                                    list={this.props.states_list}
+                                                    name='address_state'
+                                                    value={values.address_state}
+                                                    onChange={handleChange}
+                                                    placeholder={localize('State/Province')}
+                                                />
+                                            </fieldset>
+                                            <InputField
+                                                name='address_postcode'
+                                                required
+                                                label={localize('Postal/ZIP Code*')}
+                                                placeholder={localize('Postal/ZIP Code')}
+                                            />
+                                        </div>
+                                    </Scrollbars>
                                 </div>
                             </div>
                             <FormSubmitButton
@@ -169,9 +170,9 @@ class AddressDetails extends Component {
         const mappedKey = {
             address_line_1  : localize('First line of address'),
             address_line_2  : localize('Second line of address'),
-            address_city    : `${localize('Town')}/${localize('City')}`,
-            address_state   : `${localize('State')}/${localize('Province')}`,
-            address_postcode: `${localize('Postal')}/${localize('ZIP Code')}`,
+            address_city    : `${localize('Town/City')}`,
+            address_state   : `${localize('State/Province')}`,
+            address_postcode: `${localize('Postal/ZIP Code')}`,
         };
 
         const required_messages = [
@@ -197,14 +198,16 @@ class AddressDetails extends Component {
                                 values={{
                                     field_name: mappedKey[key],
                                 }}
+                                options={{ interpolation: { escapeValue: false } }}
                             />;
                             break;
                         default:
-                            errors[key] = errors[key] = <Localize
+                            errors[key] = <Localize
                                 i18n_default_text={required_messages[error_index]}
                                 values={{
                                     field_name: mappedKey[key],
                                 }}
+                                options={{ interpolation: { escapeValue: false } }}
                             />;
                     }
                 }

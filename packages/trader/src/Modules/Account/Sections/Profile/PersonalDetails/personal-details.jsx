@@ -5,7 +5,6 @@ import {
     Autocomplete,
     Checkbox,
     Button,
-    Dropdown,
     Input }                                    from 'deriv-components';
 import BinarySocket                            from '_common/base/socket_base';
 import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
@@ -20,7 +19,7 @@ import {
     validLetterSymbol,
     validLength }                              from 'Utils/Validator/declarative-validation-rules';
 import { toMoment }                            from 'Utils/Date';
-import { account_opening_reason_list }         from './constants';
+// import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
@@ -147,7 +146,7 @@ class PersonalDetailsForm extends React.Component {
             'first_name',
             'last_name',
             'phone',
-            'account_opening_reason',
+            // 'account_opening_reason',
             'place_of_birth_text',
             'address_line_1',
             'address_city',
@@ -231,7 +230,7 @@ class PersonalDetailsForm extends React.Component {
     render() {
         const {
             api_initial_load_error,
-            account_opening_reason,
+            // account_opening_reason,
             date_of_birth,
             first_name,
             last_name,
@@ -275,7 +274,7 @@ class PersonalDetailsForm extends React.Component {
         return (
             <Formik
                 initialValues={{
-                    account_opening_reason,
+                    // account_opening_reason,
                     first_name,
                     last_name,
                     citizen_text,
@@ -432,7 +431,8 @@ class PersonalDetailsForm extends React.Component {
                                                 error={touched.phone && errors.phone}
                                             />
                                         </fieldset>
-                                        <fieldset className='account-form__fieldset'>
+                                        {/* Hide Account Opening Reason, uncomment block below to re-enable */}
+                                        {/* <fieldset className='account-form__fieldset'>
                                             {account_opening_reason && is_fully_authenticated ?
                                                 <Input
                                                     data-lpignore='true'
@@ -457,7 +457,7 @@ class PersonalDetailsForm extends React.Component {
                                                     }
                                                 />
                                             }
-                                        </fieldset>
+                                        </fieldset> */}
                                         {/* Hide Tax Information, uncomment block below to re-enable */}
                                         {/* <FormSubHeader title={localize('Tax information')} />
                                             <fieldset className='account-form__fieldset'>
@@ -597,7 +597,7 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.phone || !values.phone) ||
                                                 (errors.tax_identification_number) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text) ||
-                                                (errors.account_opening_reason || !values.account_opening_reason) ||
+                                                // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                 (errors.address_line_1 || !values.address_line_1) ||
                                                 (errors.address_line_2) ||
                                                 (errors.address_city || !values.address_city) ||

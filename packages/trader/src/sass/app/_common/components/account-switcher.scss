@@ -162,10 +162,10 @@
     }
     &__accounts {
         border-radius: $BORDER_RADIUS;
-        background: var(--general-main-1);
+        background: var(--general-main-2);
 
         .acc-switcher__account {
-            background: var(--state-normal);
+            background: var(--general-main-2);
 
             &:hover:not(.acc-switcher__account--selected) {
                 background-color: var(--state-hover);
@@ -200,7 +200,7 @@
         cursor: pointer;
         padding: 0.8em;
         position: relative;
-        background-color: var(--state-normal);
+        background: var(--general-main-2);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
@@ -258,7 +258,7 @@
     }
     &__separator {
         height: 4px;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
         width: calc(100% + 1.6rem);
         margin-left: -0.8rem;
     }

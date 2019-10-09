@@ -1,8 +1,7 @@
-import classNames from 'classnames';
-import { Button } from 'deriv-components';
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import Localize   from 'App/Components/Elements/localize.jsx';
+import classNames   from 'classnames';
+import { Button }   from 'deriv-components';
+import PropTypes    from 'prop-types';
+import React        from 'react';
 
 const FormSubmitButton = ({
     cancel_label,
@@ -28,22 +27,20 @@ const FormSubmitButton = ({
             }
             {has_cancel &&
             <Button
-                className={'account-wizard__btn account-wizard__btn--cancel'}
+                className='btn--secondary--default'
+                has_effect
                 onClick={onCancel}
+                text={cancel_label}
                 type='button'
-            >
-                {cancel_label}
-            </Button>
+            />
             }
             <Button
-                type='submit'
+                className='btn--primary--default'
+                has_effect
                 is_disabled={is_disabled}
-                className={classNames('account-wizard__btn', {
-                    'account-wizard__btn--disabled': is_disabled,
-                })}
-            >
-                <Localize i18n_default_text={label} />
-            </Button>
+                type='submit'
+                text={label}
+            />
         </div>
     );
 };

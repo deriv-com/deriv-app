@@ -97,19 +97,3 @@
         }
     }
 }
-
-.address_state-dropdown {
-    &__display {
-        display: flex;
-        flex-direction: column;
-        height: 4em;
-
-        & > span {
-            align-self: flex-start;
-        }
-    }
-    &__items {
-        display: block;
-        text-align: left;
-    }
-}

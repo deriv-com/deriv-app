@@ -107,12 +107,11 @@ Blockly.Block.getDimensions = function(block_node) {
 };
 
 Blockly.Block.prototype.isMainBlock = function() {
-    return config.mainBlocks.some(block_type => block_type === this.type);
+    return config.mainBlocks.includes(this.type);
 };
 
 Blockly.Block.prototype.isIndependentBlock = function() {
-    const { INDEPEDENT_BLOCKS } = config;
-    return INDEPEDENT_BLOCKS.some(block_type => block_type === this.type);
+    return config.INDEPEDENT_BLOCKS.includes(this.type);
 };
 
 Blockly.Block.isDynamic = function(block_type) {

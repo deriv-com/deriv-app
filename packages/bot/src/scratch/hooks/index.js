@@ -2,6 +2,8 @@ import './block';
 import './block_svg';
 import './colours';
 import './constant';
+import './contextmenu';
+import './css';
 import './data_category';
 import './field_dropdown';
 import './field_image';
@@ -15,4 +17,4 @@ import './workspace_audio';
 import './workspace_svg';
 import './xml';
 import './block_render_svg_vertical';
-import './css';
+

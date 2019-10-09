@@ -38,7 +38,7 @@ Blockly.Blocks.sma_statement = {
     meta(){
         return {
             'display_name': translate('Simple Moving Average (SMA)'),
-            'description' : translate('Simple moving average (SMA) is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. If the SMA is moving upwards, it means the market trend is up. '),
+            'description' : translate('SMA is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. For example, if the SMA is moving upwards, it means the market trend is up. '),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

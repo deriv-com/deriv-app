@@ -227,10 +227,12 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIframeUrl(url, container = this.active_container) {
-        this.config[container].iframe_url = url;
         if (url) {
+            this.config[container].iframe_url = `${url}&theme=${this.root_store.ui.is_dark_mode_on ? 'dark' : 'light'}`;
             // after we set iframe url we can clear verification code
             this.root_store.client.setVerificationCode('', this.map_action[container]);
+        } else {
+            this.config[container].iframe_url = url;
         }
     }
 

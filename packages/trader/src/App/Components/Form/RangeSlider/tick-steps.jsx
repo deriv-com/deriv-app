@@ -12,7 +12,9 @@ const TickSteps = ({
     value,
 }) => {
     let arr_ticks = [];
-    if (max_value <= 10) {
+    const max_tick = 10;
+    /* TODO: fix reaction trade store for min and max value */
+    if (max_value <= max_tick) {
         arr_ticks = Array.from(Array((max_value - min_value) + 1).keys());
     }
 

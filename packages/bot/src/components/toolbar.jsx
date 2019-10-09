@@ -137,7 +137,7 @@ const ButtonGroup = ({
             message={translate('Save')}
         >
             <ToolbarSaveIcon
-                className='toolbar__icon toolbar__icon--stop'
+                className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
         </Popover>

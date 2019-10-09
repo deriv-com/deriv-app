@@ -553,17 +553,20 @@ export default class ClientStore extends BaseStore {
         }
 
         if (client && !client.is_virtual) {
-            await WS.getAccountStatus();
-            BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                const { has_missing_required_field } = handleClientNotifications(
-                    client,
-                    this.account_settings,
-                    this.account_status,
-                    this.root_store.ui.addNotification,
-                    this.loginid,
-                );
-                this.setHasMissingRequiredField(has_missing_required_field);
-            });
+            await BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status');
+            const { has_missing_required_field } = handleClientNotifications(
+                client,
+                this.account_settings,
+                this.account_status,
+                this.root_store.ui.addNotification,
+                this.loginid,
+            );
+            this.setHasMissingRequiredField(has_missing_required_field);
+            // TODO: set all currency references to be used only from client-store,
+            // removing the need for reinitializing below
+            if (this.currency && (this.currency.length > 0)) {
+                this.root_store.modules.trade.initAccountCurrency(this.currency);
+            }
         } else if (!client || client.is_virtual) {
             this.root_store.ui.removeAllNotifications();
         }
@@ -912,7 +915,12 @@ export default class ClientStore extends BaseStore {
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.device_data).then(async response => {
+        WS.newAccountVirtual(
+            this.verification_code.signup,
+            password,
+            residence,
+            ObjectUtils.removeEmptyPropertiesFromObject(this.device_data),
+        ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -984,6 +992,11 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @computed
+    get is_high_risk() {
+        return this.account_status.risk_classification === 'high';
     }
 }
 /* eslint-enable */

@@ -12,9 +12,9 @@ Blockly.Blocks.trade_definition = {
         return {
             message0: translate('%1 1. Trade parameters %2'),
             message1: '%1',
-            message2: translate('%1Run Once at Start: %2'),
+            message2: translate('%1Run once at start: %2'),
             message3: '%1',
-            message4: translate('%1Trade Options: %2'),
+            message4: translate('%1Trade options: %2'),
             message5: '%1',
             args0   : [
                 {
@@ -72,33 +72,32 @@ Blockly.Blocks.trade_definition = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate('Here is where you define the parameters of your desired contract.'),
+            tooltip        : translate('Here is where you define the parameters of your contract.'),
             category       : Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
             'display_name': translate('Trade parameters'),
-            'description' : translate('Here is where you define the parameters of your desired contract.'),
+            'description' : translate('Here is where you define the parameters of your contract.'),
         };
     },
     onchange(event) {
         setBlockTextColor(this);
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || this.isInFlyout) {
             return;
         }
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             // Maintain single instance of this block, dispose of older ones.
-            const top_blocks = this.workspace.getTopBlocks(true);
+            const top_blocks = this.workspace.getTopBlocks(false);
 
             top_blocks.forEach(top_block => {
                 if (top_block.type === this.type && top_block.id !== this.id) {
                     top_block.dispose(false);
                 }
             });
-
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE || Blockly.Events.END_DRAG) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 

@@ -46,8 +46,9 @@
             height: 40px;
             display: table-cell;
             vertical-align: middle;
-            padding-left: 16px;
+            padding: 0 16px;
             line-height: 16px;
+            word-break: break-word;
 
             &:nth-child(1) {
                 width: 25%;

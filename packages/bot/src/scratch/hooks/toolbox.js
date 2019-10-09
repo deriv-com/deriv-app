@@ -326,8 +326,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 return null;
             };
 
-            const { initial_toolbox_xml } = this.workspace_;
-            const toolboxDom = Blockly.Xml.textToDom(initial_toolbox_xml);
+            const { toolboxXmlStr } = this.workspace_;
+            const toolboxDom = Blockly.Xml.textToDom(toolboxXmlStr);
             const selected_category = findCategory(toolboxDom.children);
 
             if (selected_category) {
@@ -335,7 +335,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
 
                 flyout.setVisibility(false);
                 if (el_parent.tagName === 'xml') {
-                    this.workspace_.updateToolbox(initial_toolbox_xml);
+                    this.workspace_.updateToolbox(toolboxXmlStr);
                 } else {
                     const newTree = getCategoryTree(
                         el_parent.getAttribute('name'),
@@ -573,7 +573,7 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 Blockly.Toolbox.prototype.toggle = function () {
     const { toolbar, flyout } = ScratchStore.instance;
     if (toolbar.is_toolbox_open) {
-        this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.initial_toolbox_xml));
+        this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.toolboxXmlStr));
         this.addStyle('hidden');
     
         flyout.setVisibility(false);

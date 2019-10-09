@@ -12,9 +12,9 @@ Blockly.Blocks.trade_definition = {
         return {
             message0: translate('%1 1. Trade parameters %2'),
             message1: '%1',
-            message2: translate('%1Run Once at Start: %2'),
+            message2: translate('%1Run once at start: %2'),
             message3: '%1',
-            message4: translate('%1Trade Options: %2'),
+            message4: translate('%1Trade options: %2'),
             message5: '%1',
             args0   : [
                 {
@@ -72,14 +72,14 @@ Blockly.Blocks.trade_definition = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate('Here is where you define the parameters of your desired contract.'),
+            tooltip        : translate('Here is where you define the parameters of your contract.'),
             category       : Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
             'display_name': translate('Trade parameters'),
-            'description' : translate('Here is where you define the parameters of your desired contract.'),
+            'description' : translate('Here is where you define the parameters of your contract.'),
         };
     },
     onchange(event) {

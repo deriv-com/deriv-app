@@ -12,14 +12,14 @@ Blockly.Blocks.tick = {
             colour         : Blockly.Colours.Analysis.colour,
             colourSecondary: Blockly.Colours.Analysis.colourSecondary,
             colourTertiary : Blockly.Colours.Analysis.colourTertiary,
-            tooltip        : translate('Returns the tick value received from server'),
+            tooltip        : translate('This block gives you the value of the last tick.'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
             'display_name': translate('Last tick'),
-            'description' : translate('This block returns the last tick value for the selected Market. You can select Market in the root block “Trade parameters”.'),
+            'description' : translate('This block gives you the value of the last tick.'),
         };
     },
 };

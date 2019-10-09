@@ -11,7 +11,10 @@ const TickSteps = ({
     onMouseLeave,
     value,
 }) => {
-    const arr_ticks = [...Array((max_value - min_value) + 1).keys()];
+    let arr_ticks = [];
+    if (max_value <= 10) {
+        arr_ticks = Array.from(Array((max_value - min_value) + 1).keys());
+    }
 
     const isActive = (idx) => (idx + min_value) === value;
     const isMarked = (idx) => (idx + min_value) < value;

@@ -1,9 +1,10 @@
-import PropTypes  from 'prop-types';
-import classNames from 'classnames';
-import { Button } from 'deriv-components';
-import React      from 'react';
-import Localize   from 'App/Components/Elements/localize.jsx';
-import Icon       from 'Assets/icon.jsx';
+import PropTypes    from 'prop-types';
+import classNames   from 'classnames';
+import { Button }   from 'deriv-components';
+import React        from 'react';
+import Localize     from 'App/Components/Elements/localize.jsx';
+import { localize } from 'App/i18n';
+import Icon         from 'Assets/icon.jsx';
 
 const SuccessDialog = ({
     has_cancel,
@@ -54,18 +55,13 @@ const SuccessDialog = ({
                 {has_cancel &&
                 <Button
                     onClick={onCancel}
-                    className='btn--outline'
-                >
-                    {text_cancel && text_cancel}
-                    {!text_cancel &&
-                    <Localize
-                        i18n_default_text='Maybe later'
-                    />
-                    }
-                </Button>
+                    has_effect
+                    className='btn--secondary--default'
+                    text={text_cancel || localize('Maybe later')}
+                />
                 }
                 {has_submit &&
-                <Button onClick={onSubmit}>{text_submit}</Button>
+                <Button has_effect onClick={onSubmit} text={text_submit} />
                 }
             </div>
         </div>

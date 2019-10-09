@@ -43,14 +43,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Trade Options Tooltip'),
+            tooltip          : translate('Define your trade options such as duration and stake.'),
             category         : Blockly.Categories.Trade_Definition,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trade Options'),
-            'description' : translate('This block is used to define trade options within the Trade parameters block. Some options are only applicable for certain trade types.'),
+            'display_name': translate('Trade options'),
+            'description' : translate('Define your trade options such as duration and stake. Some options are only applicable for certain trade types.'),
         };
     },
     onchange(event) {
@@ -58,15 +58,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             return;
         }
 
-        const top_parent_block = this.getTopParent();
+        const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
 
-        if (!top_parent_block) {
+        if (!trade_definition_block) {
             return;
         }
 
-        const market_block                = top_parent_block.getChildByType('trade_definition_market');
-        const trade_type_block            = top_parent_block.getChildByType('trade_definition_tradetype');
-
+        const market_block                = trade_definition_block.getChildByType('trade_definition_market');
+        const trade_type_block            = trade_definition_block.getChildByType('trade_definition_tradetype');
         this.selected_symbol              = market_block.getFieldValue('SYMBOL_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
@@ -76,16 +75,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('SECONDBARRIERTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
-        if (!this.selected_symbol) {
-            return;
-        }
-
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.updateBarrierInputs(true, event.group);
             this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
             this.updateDurationInput(true, event.group);
             this.updatePredictionInput();
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        } else if (this.selected_symbol && event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'DURATIONTYPE_LIST') {
                 // Update barrier suggested values when changing duration unit.
                 this.updateBarrierInputs(true, event.group);

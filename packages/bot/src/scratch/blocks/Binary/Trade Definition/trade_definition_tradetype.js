@@ -33,7 +33,7 @@ Blockly.Blocks.trade_definition_tradetype = {
 
         this.enforceLimitations();
 
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
             if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
                 const { contracts_for } = ApiHelpers.instance;
                 const top_parent_block  = this.getTopParent();
@@ -47,14 +47,14 @@ Blockly.Blocks.trade_definition_tradetype = {
                 if (symbol && event.name === 'SYMBOL_LIST') {
                     contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                         const trade_type_cat_block = this.getField('TRADETYPECAT_LIST');
-                        trade_type_cat_block.updateOptions(categories, event.group, trade_type_cat, event.group);
+                        trade_type_cat_block.updateOptions(categories, event.group, trade_type_cat, true, true);
+                    });
+                } else if (event.name === 'TRADETYPECAT_LIST') {
+                    contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
+                        const trade_type_block = this.getField('TRADETYPE_LIST');
+                        trade_type_block.updateOptions(trade_types, event.group, trade_type, true, true);
                     });
                 }
-
-                contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
-                    const trade_type_block = this.getField('TRADETYPE_LIST');
-                    trade_type_block.updateOptions(trade_types, event.group, trade_type);
-                });
             }
         }
     },

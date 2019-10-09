@@ -2,6 +2,7 @@ import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
+import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
@@ -47,7 +48,7 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
+                    <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                         <Icon icon='IconUser' />
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>
@@ -60,7 +61,6 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!is_virtual &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
@@ -70,7 +70,6 @@ export class AccountActions extends Component {
                         is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                         setCashierActiveTab={setCashierActiveTab}
                     />
-                    }
                 </React.Fragment>
             );
         }

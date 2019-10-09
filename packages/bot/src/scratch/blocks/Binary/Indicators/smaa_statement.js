@@ -38,7 +38,7 @@ Blockly.Blocks.smaa_statement = {
     meta(){
         return {
             'display_name': translate('Simple Moving Average Array (SMAA)'),
-            'description' : translate('Simple Moving Average Array (SMAA) is similar to SMA. The only difference is that it returns the entire SMA line, containing a list of all values for a given period. To learn more see SMA indicator.'),
+            'description' : translate('Similar to SMA, this block gives you the entire SMA line containing a list of all values for a given period.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

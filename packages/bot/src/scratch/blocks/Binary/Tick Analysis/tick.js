@@ -19,7 +19,7 @@ Blockly.Blocks.tick = {
     meta(){
         return {
             'display_name': translate('Last tick'),
-            'description' : translate('This block returns the last tick value for the selected Market. You can select Market in the root block “Trade parameters”.'),
+            'description' : translate('This block gives you the value of the last tick.'),
         };
     },
 };

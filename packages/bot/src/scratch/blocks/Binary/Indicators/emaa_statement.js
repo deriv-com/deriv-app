@@ -37,7 +37,7 @@ Blockly.Blocks.emaa_statement = {
     }, meta(){
         return {
             'display_name': translate('Exponential Moving Average Array (EMAA)'),
-            'description' : translate('Exponential Moving Average Array is similar to EMA is similar ti EMA the only difference is that it returns the entire EMA line based on the input lise'),
+            'description' : translate('Similar to EMA. This block gives you the entire EMA line based on the input list and the given period.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

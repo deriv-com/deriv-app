@@ -326,6 +326,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyText {',
     'fill: #fff;',
+    'font-family: inherit;',
     'font-size: 12pt;',
     '}',
 

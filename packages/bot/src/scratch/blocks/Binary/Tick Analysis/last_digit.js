@@ -19,7 +19,7 @@ Blockly.Blocks.last_digit = {
     meta(){
         return {
             'display_name': translate('Last Digit'),
-            'description' : translate('This block returns the last digit of the latest tick value for the selected Market. You can select Market in the root block “Trade parameters”.'),
+            'description' : translate('This block gives you the last digit of the latest tick value.'),
         };
     },
 };

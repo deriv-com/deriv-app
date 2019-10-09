@@ -29,7 +29,7 @@ Blockly.Blocks.tick_analysis = {
     meta(){
         return {
             'display_name': translate('Run on every tick'),
-            'description' : translate('The content of this block is called on every tick. This blocks should be placed outside of any root block.'),
+            'description' : translate('The content of this block is called on every tick. Place this block outside of any root block.'),
         };
     },
     onchange() {

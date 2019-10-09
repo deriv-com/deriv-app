@@ -9,8 +9,9 @@ Blockly.Blocks.todatetime = {
             message0: `${translate('To date/time %1')}%2`,
             args0   : [
                 {
-                    type: 'input_value',
-                    name: 'TIMESTAMP',
+                    type : 'input_value',
+                    name : 'TIMESTAMP',
+                    check: 'Number',
                 },
                 {
                     // Extra dummy for spacing.
@@ -38,7 +39,7 @@ Blockly.Blocks.todatetime = {
 
 Blockly.JavaScript.todatetime = block => {
     const timestamp = Blockly.JavaScript.valueToCode(block, 'TIMESTAMP', Blockly.JavaScript.ORDER_ATOMIC);
-    const invalid_timestamp = `${translate('Invalid timestamp')}: ${timestamp}`;
+    const invalid_timestamp = `${translate('Invalid timestamp')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('timestampToDateString', [
@@ -47,7 +48,7 @@ Blockly.JavaScript.todatetime = block => {
             var datetime = new Date(timestamp * 1000);
 
             if (!datetime.getTime()) {
-                return "${invalid_timestamp}";
+                return "${invalid_timestamp} " + timestamp;
             }
 
             var getTwoDigitValue = function(input) {

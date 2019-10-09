@@ -121,6 +121,13 @@
     }
     &__trailing-icon {
         margin: 0 1.2rem 0 0 !important;
+
+        .color1-fill {
+            fill: var(--text-less-prominent);
+        }
+        .color1-stroke {
+            fill: var(--text-less-prominent);
+        }
     }
     &__label {
         color: var(--text-less-prominent);

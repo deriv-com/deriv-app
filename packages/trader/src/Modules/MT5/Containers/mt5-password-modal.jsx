@@ -1,5 +1,5 @@
 import {
-    Input,
+    PasswordInput,
     Modal,
     PasswordMeter }     from 'deriv-components';
 import { Formik }       from 'formik';
@@ -133,10 +133,9 @@ const MT5PasswordModal = ({
                                         input={values.password}
                                         error={touched.password && errors.password}
                                     >
-                                        <Input
+                                        <PasswordInput
                                             autoComplete='password'
                                             label={localize('MT5 Password')}
-                                            type='password'
                                             name='password'
                                             value={values.password}
                                             onBlur={handleBlur}
@@ -167,7 +166,7 @@ const MT5PasswordModal = ({
                                     Object.keys(errors).length > 0
                                 }
                                 is_loading={ isSubmitting }
-                                label={ <Localize i18n_default_text='Add account' /> }
+                                label={ localize('Add account') }
                                 form_error={form_error}
                             />
                         </form>

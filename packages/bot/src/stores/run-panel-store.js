@@ -20,7 +20,7 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('Error' , this.onErrorEvent);
+        observer.register('Error', this.onErrorEvent);
 
         this.registerReactions();
     }
@@ -33,7 +33,7 @@ export default class RunPanelStore {
     @observable is_drawer_open        = false;
 
     is_contract_started = false;
-    
+
     @action.bound
     onBotRunningEvent() {
         this.is_running = true;
@@ -166,38 +166,59 @@ export default class RunPanelStore {
 
     @action.bound
     registerReactions() {
-        const { client } = this.root_store.core;
+        const { client, common } = this.root_store.core;
         const terminateAndClear = () => {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
             terminateBot();
-            this.onClearStatClick();
+            this.clearStat();
             this.is_run_button_clicked = false;
         };
 
-        this.disposeLogoutListener = reaction(
-            () => client.loginid,
-            (loginid) => {
-                if (!loginid) {
-                    terminateAndClear();
-                    this.root_store.summary.currency = client.currency;
-                }
-            },
-        );
+        const resigter = () => {
+            if (common.is_socket_opened) {
+                this.disposeLogoutListener = reaction(
+                    () => client.loginid,
+                    (loginid) => {
+                        if (!loginid) {
+                            terminateAndClear();
+                            this.root_store.summary.currency = client.currency;
+                        }
+                    },
+                );
 
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            (switch_broadcast) => {
-                if (switch_broadcast) {
-                    terminateAndClear();
-                    this.root_store.summary.currency = client.currency;
-                    this.root_store.journal.pushMessage(translate('You have switched accounts.'));
-                    
-                    if (client.is_logged_in && !client.is_virtual) {
-                        this.showRealAccountDialog();
-                    }
+                this.disposeSwitchAccountListener = reaction(
+                    () => client.switch_broadcast,
+                    (switch_broadcast) => {
+                        if (switch_broadcast) {
+                            terminateAndClear();
+                            this.root_store.summary.currency = client.currency;
+                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+
+                            if (client.is_logged_in && !client.is_virtual) {
+                                this.showRealAccountDialog();
+                            }
+                        }
+                    },
+                );
+            } else {
+                if (typeof this.disposeLogoutListener === 'function') {
+                    this.disposeLogoutListener();
                 }
-            },
+
+                if (typeof this.disposeSwitchAccountListener === 'function') {
+                    this.disposeSwitchAccountListener();
+                }
+            }
+        };
+
+        resigter();
+
+        this.disposeLogoutListener = reaction(
+            () => common.is_socket_opened,
+            () => {
+                resigter();
+            }
         );
     }
 
@@ -231,24 +252,16 @@ export default class RunPanelStore {
         };
     }
 
-    reset(){
+    reset() {
         this.is_run_button_clicked = false;
         this.root_store.contract_card.is_loading = false;
         this.setActiveTabIndex(2);
     }
-    
+
     onUnmount() {
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
         observer.unregister('bot.contract', this.onBotContractEvent);
-
-        if (typeof this.disposeLogoutListener === 'function') {
-            this.disposeLogoutListener();
-        }
-
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 }

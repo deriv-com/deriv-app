@@ -235,10 +235,15 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
-                });
+                this.processNewValuesAsync(
+                    {
+                        ...ContractType.getContractValues(this),
+                        ...ContractType.getContractCategories(),
+                    },
+                    false,
+                    {},
+                    false,
+                );
             });
         }
     }

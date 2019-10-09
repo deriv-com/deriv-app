@@ -16,6 +16,7 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
+        observer.register('Error' , this.onErrorEvent);
 
         this.registerReactions();
     }
@@ -37,10 +38,10 @@ export default class RunPanelStore {
     @action.bound
     onBotStopEvent() {
         this.is_running = false;
-        if (this.is_contract_started) {
-            this.contract_stage = CONTRACT_STAGES.contract_closed;
-        } else {
+        if (this.is_error_happened || !this.is_contract_started) {
             this.contract_stage = CONTRACT_STAGES.not_running;
+        } else {
+            this.contract_stage = CONTRACT_STAGES.contract_closed;
         }
     }
 
@@ -55,6 +56,11 @@ export default class RunPanelStore {
         if (isClosed) {
             this.getContractStage({ id: 'contract.closed' });
         }
+    }
+
+    @action.bound
+    onErrorEvent() {
+        this.is_error_happened = true;
     }
 
     @action.bound

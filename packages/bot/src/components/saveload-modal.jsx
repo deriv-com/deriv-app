@@ -120,7 +120,7 @@ const SaveLoadModal = ({
                                 <Button
                                     type='button'
                                     className={classNames(
-                                        'save-load__button',
+                                        'modal__footer--cancel',
                                         'btn--secondary--default',
                                     )}
                                     text={translate('Cancel')}
@@ -129,7 +129,6 @@ const SaveLoadModal = ({
                                 <Button
                                     type='submit'
                                     className={classNames(
-                                        'save-load__button',
                                         'btn--primary--default',
                                     )}
                                     is_loading={button_status === 1}

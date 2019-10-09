@@ -10,6 +10,10 @@
             }
             .modal__footer {
                 text-align: right;
+
+                &--cancel {
+                    margin-right: 0;
+                }
             }
             .modal__content-row {
                 padding: 21px 21px 35px;
@@ -21,7 +25,8 @@
 .radio-group {
     &__saveload-type {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        margin-top: 0;
 
         .dc-radio {
             &-group {

@@ -20,7 +20,7 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             {
-                symbol    : 'WLDAUD',
+                symbol    : 'OTC_AS51',
                 trade_type: 'callputequal',
             },
             { trade_type_category: 'lookback' },

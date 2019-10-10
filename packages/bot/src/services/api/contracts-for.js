@@ -331,7 +331,6 @@ export default class ContractsFor {
 
     async getSubmarketBySymbol(symbol) {
         const contracts = await this.getContractsFor(symbol);
-        console.log(contracts); // eslint-disable-line
 
         if (!contracts.length) {
             return 'na';

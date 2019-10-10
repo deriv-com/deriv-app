@@ -6,7 +6,6 @@ import RootStore                from './stores';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
-
 import { scratchWorkspaceInit } from './scratch';
 import './assets/sass/app.scss';
 

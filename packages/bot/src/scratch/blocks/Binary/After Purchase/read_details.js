@@ -16,6 +16,7 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output         : null,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,

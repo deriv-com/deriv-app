@@ -1,4 +1,4 @@
-const checkDarkmode = () => {
+const isDarkModeEnabled = () => {
     const ui_store = localStorage.getItem('ui_store');
     
     if (ui_store && (ui_store.length > 0)) {
@@ -7,7 +7,7 @@ const checkDarkmode = () => {
     return false;
 };
 
-if (checkDarkmode()) {              // Dark theme
+if (isDarkModeEnabled()) {              // Dark theme
     Blockly.Colours.RootBlock = {
         colour         : '#151717',
         colourSecondary: '#F2F3F5',

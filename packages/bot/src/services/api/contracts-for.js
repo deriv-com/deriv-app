@@ -16,6 +16,10 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             {
+                submarket : 'metals',
+                trade_type: 'callputequal',
+            },
+            {
                 market    : 'indices',
                 trade_type: 'callputequal',
             },

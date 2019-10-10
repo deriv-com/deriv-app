@@ -295,7 +295,7 @@
     </statement>
     <value name="RETURN">
       <block type="math_arithmetic" id="US22LDE-R$fo.w[=-2E;">
-        <field name="OP">ADD</field>
+        <field name="OP">MULTIPLY</field>
         <value name="A">
           <shadow type="math_number">
             <field name="NUM">1</field>

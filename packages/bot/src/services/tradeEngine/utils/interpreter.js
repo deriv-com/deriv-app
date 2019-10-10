@@ -28,6 +28,7 @@ export default class Interpreter {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
         this.stopped = false;
+        console.log("***********" , this.stopped); //eslint-disable-line no-console
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
         );
@@ -93,6 +94,7 @@ export default class Interpreter {
 
         return new Promise((resolve, reject) => {
             const onError = e => {
+                console.log("***********" , this.stopped); //eslint-disable-line no-console
                 if (this.stopped) {
                     return;
                 }
@@ -144,8 +146,9 @@ export default class Interpreter {
 
     terminateSession() {
         this.$scope.api.disconnect();
-        globalObserver.emit('bot.stop');
         this.stopped = true;
+        console.log("***********" , this.stopped); //eslint-disable-line no-console
+        globalObserver.emit('bot.stop');
     }
 
     stop() {

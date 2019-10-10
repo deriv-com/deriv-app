@@ -93,6 +93,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                     name='botname'
                                     onKeyUp={submitForm}
                                     label={translate('Bot name')}
+                                    value={file_name}
                                     placeholder={translate('Untitled Bot')}
                                     trailing_icon={
                                         <ToolbarRenameIcon />
@@ -227,7 +228,9 @@ const Toolbar = ({
             >
                 <Button
                     id='start'
-                    className='btn--primary--green toolbar__btn--icon toolbar__btn--start'
+                    className='btn--primary--green
+                    toolbar__btn--icon
+                    toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
                 >

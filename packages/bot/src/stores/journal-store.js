@@ -31,14 +31,17 @@ export default class JournalStore {
     @action.bound
     onLogError(data) {
         if (unrecoverable_errors.some(x=>x.name && x.name === data.name)) {
-            this.root_store.run_panel.reset();
+            this.root_store.contract_card.clear();
+            this.root_store.run_panel.setActiveTabIndex(2);
         }
         this.pushMessage(data, message_types.error);
     }
 
     @action.bound
     onError(data) {
-        this.root_store.run_panel.reset();
+        this.root_store.contract_card.clear();
+        this.root_store.run_panel.is_error_happened = true;
+        this.root_store.run_panel.setActiveTabIndex(2);
         this.pushMessage(data , message_types.error);
     }
 

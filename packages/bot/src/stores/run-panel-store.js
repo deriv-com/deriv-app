@@ -20,7 +20,6 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('Error', this.onErrorEvent);
 
         this.registerReactions();
     }
@@ -32,7 +31,7 @@ export default class RunPanelStore {
     @observable is_running            = false;
     @observable is_drawer_open        = true;
 
-    is_contract_started = false;
+    is_error_happened   = false;
 
     @action.bound
     onBotRunningEvent() {
@@ -41,35 +40,49 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        this.is_running = false;
-        if (this.is_error_happened || !this.is_contract_started) {
-            this.contract_stage = CONTRACT_STAGES.not_running;
+        if (this.is_error_happened) {
+            this.setContractStage(CONTRACT_STAGES.purchase_sent);
+        } else if (this.is_running) {
+            this.setContractStage(CONTRACT_STAGES.contract_closed);
         } else {
-            this.contract_stage = CONTRACT_STAGES.contract_closed;
+            this.setContractStage(CONTRACT_STAGES.not_running);
         }
+        this.is_running = false;
     }
 
     @action.bound
     onContractStatusEvent(data) {
-        this.getContractStage(data);
+        switch (data.id) {
+            case ('contract.purchase_sent'): {
+                this.setContractStage(CONTRACT_STAGES.purchase_sent);
+                break;
+            }
+            case ('contract.purchase_recieved'): {
+                this.setContractStage(CONTRACT_STAGES.purchase_recieved);
+                break;
+            }
+            case ('contract.sold'): {
+                this.setContractStage(CONTRACT_STAGES.contract_closed);
+                break;
+            }
+            default: {
+                this.setContractStage(CONTRACT_STAGES.not_running);
+            }
+        }
     }
 
     @action.bound
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
         if (isClosed) {
-            this.getContractStage({ id: 'contract.closed' });
+            this.setContractStage({ id: 'contract.closed' });
         }
-    }
-
-    @action.bound
-    onErrorEvent() {
-        this.is_error_happened = true;
     }
 
     @action.bound
     onRunButtonClick = () => {
         const { client } = this.root_store.core;
+        this.root_store.contract_card.is_loading = true;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -85,22 +98,23 @@ export default class RunPanelStore {
             this.is_drawer_open = true;
         }
 
-        this.is_contract_started = false;
-        this.is_run_button_clicked = true;
         runBot();
-        this.root_store.contract_card.is_loading = true;
-        this.contract_stage = CONTRACT_STAGES.bot_starting;
+        this.setContractStage(CONTRACT_STAGES.starting);
+        this.is_run_button_clicked = true;
     }
 
     @action.bound
     onStopButtonClick() {
-        if (!this.root_store.core.client.is_logged_in) {
-            this.showLoginDialog();
-            return;
-        }
         if (this.is_run_button_clicked) {
             stopBot();
-            this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
+            if (this.is_error_happened) {
+                this.setContractStage(CONTRACT_STAGES.not_running);
+                this.is_error_happened = false;
+            } else if (this.is_running) {
+                this.setContractStage(CONTRACT_STAGES.is_stopping);
+            } else {
+                this.setContractStage(CONTRACT_STAGES.not_running);
+            }
         }
         this.is_run_button_clicked = false;
         this.root_store.contract_card.is_loading = false;
@@ -117,7 +131,7 @@ export default class RunPanelStore {
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
-        this.contract_stage = CONTRACT_STAGES.not_running;
+        this.setContractStage(CONTRACT_STAGES.not_running);
         this.onCloseDialog();
     }
 
@@ -141,27 +155,34 @@ export default class RunPanelStore {
         return Object.entries(this.dialog_options).length > 0;
     }
 
-    getContractStage(data) {
-        switch (data.id) {
-            case ('contract.purchase_sent'): {
-                this.contract_stage = CONTRACT_STAGES.purchase_sent;
-                this.is_contract_started = true;
-                break;
-            }
-            case ('contract.purchase_recieved'): {
-                this.contract_stage = CONTRACT_STAGES.purchase_recieved;
-                break;
-            }
-            case ('contract.closed'):
-            case ('contract.sold'): {
-                this.contract_stage = CONTRACT_STAGES.contract_closed;
-                break;
-            }
-            default: {
-                this.contract_stage = CONTRACT_STAGES.not_running;
-                this.is_contract_started = false;
-            }
-        }
+    @action.bound
+    showLoginDialog() {
+        this.onOkButtonClick = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title  : translate('Run error'),
+            message: translate('Please log in.'),
+        };
+    }
+
+    @action.bound
+    showRealAccountDialog() {
+        this.onOkButtonClick = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title  : translate('DBot isn\'t quite ready for real accounts'),
+            message: translate('Please switch to your demo account to run your DBot.'),
+        };
+    }
+
+    @action.bound
+    showClearStatDialog() {
+        this.onOkButtonClick = this.clearStat;
+        this.onCancelButtonClick = this.onCloseDialog;
+        this.dialog_options = {
+            title  : translate('Are you sure?'),
+            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
+        };
     }
 
     @action.bound
@@ -172,7 +193,6 @@ export default class RunPanelStore {
             // of killing and clearing everything instantly.
             terminateBot();
             this.clearStat();
-            this.is_run_button_clicked = false;
         };
 
         const resigter = () => {
@@ -222,40 +242,8 @@ export default class RunPanelStore {
         );
     }
 
-    @action.bound
-    showLoginDialog() {
-        this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
-        this.dialog_options = {
-            title  : translate('Run error'),
-            message: translate('Please log in.'),
-        };
-    }
-
-    @action.bound
-    showRealAccountDialog() {
-        this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
-        this.dialog_options = {
-            title  : translate('DBot isn\'t quite ready for real accounts'),
-            message: translate('Please switch to your demo account to run your DBot.'),
-        };
-    }
-
-    @action.bound
-    showClearStatDialog() {
-        this.onOkButtonClick = this.clearStat;
-        this.onCancelButtonClick = this.onCloseDialog;
-        this.dialog_options = {
-            title  : translate('Are you sure?'),
-            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
-        };
-    }
-
-    reset() {
-        this.is_run_button_clicked = false;
-        this.root_store.contract_card.is_loading = false;
-        this.setActiveTabIndex(2);
+    setContractStage(value) {
+        this.contract_stage = value;
     }
 
     onUnmount() {

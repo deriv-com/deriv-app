@@ -6,13 +6,13 @@ import IconExitWon          from 'Assets/SvgComponents/contract_details/ic-exitt
 import IconExitLoss         from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
 import {
     epochToMoment,
-    toGMTFormat }        from 'Utils/Date';
+    toGMTFormat }           from 'Utils/Date';
 import {
     getBarrierLabel,
     getBarrierValue,
-    isDigitType }        from 'App/Components/Elements/PositionsDrawer/helpers';
-import { getThemedIcon } from './Helpers/icons';
-import ContractAuditItem from './contract-audit-item.jsx';
+    isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
+import { getThemedIcon }    from './Helpers/icons';
+import ContractAuditItem    from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
     render() {

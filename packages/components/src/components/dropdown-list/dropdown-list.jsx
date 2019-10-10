@@ -1,7 +1,7 @@
-import React                from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import PropTypes            from 'prop-types';
-import ThemedScrollbars     from 'Components/themed-scrollbars';
+import React             from 'react';
+import { CSSTransition } from 'react-transition-group';
+import PropTypes         from 'prop-types';
+import ThemedScrollbars  from 'Components/themed-scrollbars';
 
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;

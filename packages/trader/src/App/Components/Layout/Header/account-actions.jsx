@@ -1,7 +1,7 @@
 import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import Localize             from 'App/Components/Elements/localize.jsx';
+import { localize }         from 'App/i18n';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
@@ -68,15 +68,11 @@ export class AccountActions extends Component {
                         <div className='set-currency'>
                             <Button
                                 onClick={openRealAccountSignup}
+                                has_effect
                                 type='button'
                                 className='btn btn--primary--default'
-                            >
-                                <span>
-                                    <Localize
-                                        i18n_default_text='Set currency'
-                                    />
-                                </span>
-                            </Button>
+                                text={localize('Set currency')}
+                            />
                         </div>
                     }
                     {currency &&

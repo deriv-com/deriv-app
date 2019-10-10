@@ -118,16 +118,13 @@ class DurationWrapper extends React.Component {
     }
 
     assertDurationIsWithinBoundary (duration_unit, current_duration, onChangeUiStore, onChange) {
-        const [min_value, max_value] = this.getDurationMinMaxValues(
+        const [max_value] = this.getDurationMinMaxValues(
             this.props.duration_min_max,
             this.props.contract_expiry_type,
             duration_unit,
         );
 
-        if (current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
-            onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
+        if (current_duration > max_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }

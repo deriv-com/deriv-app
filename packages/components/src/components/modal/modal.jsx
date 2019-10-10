@@ -45,7 +45,7 @@ class ModalElement extends React.PureComponent {
     };
 
     render() {
-        const { id, title, className, header, children, has_close_icon, toggleModal } = this.props;
+        const { id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
         
         return ReactDOM.createPortal(
             <div
@@ -56,6 +56,10 @@ class ModalElement extends React.PureComponent {
                         [`dc-modal__container_${className}`]: className,
                     }
                 )}
+                style={{
+                    height: height || 'auto',
+                    width : width || 'auto',
+                }}
             >
                 <div className={classNames('dc-modal-header', {
                     [`dc-modal-header--${className}`]: className,
@@ -121,9 +125,11 @@ const Modal = ({
     header,
     id,
     is_open,
+    has_close_icon,
+    height,
     title,
     toggleModal,
-    has_close_icon,
+    width,
 }) => (
     <CSSTransition
         appear
@@ -145,6 +151,8 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
+            height={height}
+            width={width}
         >
             {children}
         </ModalElement>
@@ -160,6 +168,7 @@ Modal.propTypes = {
     className     : PropTypes.string,
     has_close_icon: PropTypes.bool,
     header        : PropTypes.node,
+    height        : PropTypes.string,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
     title         : PropTypes.oneOfType([
@@ -167,6 +176,7 @@ Modal.propTypes = {
         PropTypes.bool,
     ]),
     toggleModal: PropTypes.func,
+    width      : PropTypes.string,
 };
 
 export default Modal;

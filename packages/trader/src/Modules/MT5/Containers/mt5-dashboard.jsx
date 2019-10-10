@@ -281,6 +281,8 @@ class MT5Dashboard extends React.Component {
                     is_open={this.state.password_manager.is_visible}
                     title={localize('Manage your DMT5 Standard real account password')}
                     toggleModal={this.togglePasswordManagerModal}
+                    height='688px'
+                    width='904px'
                 >
                     <div className='mt5-password-manager'>
                         <Tabs>

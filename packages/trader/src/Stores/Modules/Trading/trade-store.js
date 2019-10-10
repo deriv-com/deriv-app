@@ -703,14 +703,19 @@ export default class TradeStore extends BaseStore {
         );
         this.refresh();
         WS.forgetAll('balance').then(() => {
-            WS.subscribeBalance((response) => {
-                if (response.balance) {
-                    this.root_store.client.setBalance(response.balance);
-                }
-            });
+            // the first has to be without subscribe to quickly update current account's balance
+            WS.authorized.balance().then(this.handleResponseBalance);
+            // the second is to subscribe to balance and update all sibling accounts' balances too
+            WS.subscribeBalanceAll(this.handleResponseBalance);
         });
         this.debouncedProposal();
     }
+
+    handleResponseBalance = (response) => {
+        if (response.balance) {
+            this.root_store.client.setBalance(response.balance);
+        }
+    };
 
     @action.bound
     onUnmount() {

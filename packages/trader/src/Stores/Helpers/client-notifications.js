@@ -323,8 +323,8 @@ const addVerificationNotifications = (identity, document, addNotification) => {
 };
 
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
-    if (!account_status) return 0;
-    if (loginid !== LocalStore.get('active_loginid')) return 0;
+    if (!account_status.length) return {};
+    if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
         authentication: {

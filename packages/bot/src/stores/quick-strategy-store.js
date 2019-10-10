@@ -13,12 +13,12 @@ export default class QuickStrategyStore {
     }
 
     initial_values = {
-        symbol    : 'WLDAUD',
-        trade_type: 'callput',
-        stake     : '',
-        size      : '',
-        loss      : '',
-        profit    : '',
+        symbol   : 'WLDAUD',
+        tradetype: 'callput',
+        stake    : '',
+        size     : '',
+        loss     : '',
+        profit   : '',
     };
 
     @observable is_strategy_modal_open = false;
@@ -41,14 +41,15 @@ export default class QuickStrategyStore {
         const { contracts_for } = ApiHelper.instance;
         const {
             symbol,
-            trade_type,
+            tradetype,
             stake,
             size,
             loss,
-            profit }            = values;
+            profit,
+        }                       = values;
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
-        const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const tradetype_cat    = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
         // eslint-disable-next-line
@@ -75,8 +76,8 @@ export default class QuickStrategyStore {
             market,
             submarket,
             symbol,
-            trade_type,
-            trade_type_cat,
+            tradetype,
+            tradetype_cat,
             stake,
             size,
             loss,
@@ -126,12 +127,12 @@ export default class QuickStrategyStore {
         await this.updateTradetypeDropdown(value);
 
         const first_option = this.trade_type_dropdown[Object.keys(this.trade_type_dropdown)[0]][0].value;
-        setFieldValue('trade_type', first_option);
+        setFieldValue('tradetype', first_option);
     }
 
     @action.bound
     // eslint-disable-next-line
     onChangeTradeTypeDropdown(setFieldValue, value) {
-        setFieldValue('trade_type', value);
+        setFieldValue('tradetype', value);
     }
 }

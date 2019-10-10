@@ -149,7 +149,7 @@ class QuickStrategy extends React.PureComponent {
                                     isSubmitting,
                                     values : {
                                         symbol,
-                                        trade_type,
+                                        tradetype,
                                     },
                                     setFieldValue,
                                     touched,
@@ -170,8 +170,8 @@ class QuickStrategy extends React.PureComponent {
                                                 placeholder={translate('Trade type')}
                                                 is_align_text_left
                                                 list={trade_type_dropdown_options}
-                                                name='trade_type'
-                                                value={trade_type}
+                                                name='tradetype'
+                                                value={tradetype}
                                                 onChange={e => onChangeTradeTypeDropdown(setFieldValue, e.target.value)}
                                             />
                                         </div>

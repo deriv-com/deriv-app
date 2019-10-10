@@ -8,19 +8,19 @@ const platform_config = [
     {
         icon       : 'IconDeriv',
         title      : localize('DTrader'),
-        description: localize('Everything you need to trade the markets you want'),
+        description: localize('Start trading now with a powerful, yet easy-to-use platform.'),
         [key]      : routes.trade,
     },
     {
         icon       : 'IconDBot',
         title      : localize('DBot'),
-        description: localize('A powerful robot builder to automate your trading strategies'),
+        description: localize('Automate your trading ideas without coding.'),
         href       : '/bot',
     },
     {
         icon       : 'IconMT5',
-        title      : localize('MetaTrader 5'),
-        description: localize('An all-in-one platform for FX and CFD Trading'),
+        title      : localize('DMT5'),
+        description: localize('Trade with the platform of choice for professionals.'),
         [key]      : routes.mt5,
     },
 ];

@@ -79,7 +79,7 @@ export class AccountActions extends Component {
                             </Button>
                         </div>
                     }
-                    {!is_virtual && currency &&
+                    {currency &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'

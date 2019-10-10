@@ -94,6 +94,8 @@ const ToggleSettings = ({
                     disableApp={disableApp}
                     title={localize('Platform settings')}
                     toggleModal={toggleSettings}
+                    height='616px'
+                    width='736px'
                 >
                     <ModalContent />
                 </Modal>

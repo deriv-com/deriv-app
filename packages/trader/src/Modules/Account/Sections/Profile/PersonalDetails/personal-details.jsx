@@ -1,6 +1,7 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
 import { Formik, Field }                       from 'formik';
+import classNames                              from 'classnames';
 import {
     Autocomplete,
     Checkbox,
@@ -25,7 +26,6 @@ import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSub
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
-import Icon from '../../../../../Assets/icon.jsx';
 
 const getResidence = (residence_list, value, type) => {
     const residence = residence_list.find(location =>
@@ -587,11 +587,13 @@ class PersonalDetailsForm extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <div className='account-form__footer-note'>
-                                        Please make sure your information is correct or
-                                        it may affect your trading experience.
+                                        { localize('Please make sure your information is correct or it may affect your trading experience.') }
                                     </div>
                                     <Button
-                                        className='account-form__footer-btn btn--primary--green'
+                                        className={classNames('account-form__footer-btn', {
+                                            'btn--primary--default': !is_submit_success,
+                                            'btn--primary--green'  : is_submit_success,
+                                        })}
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?
@@ -612,7 +614,7 @@ class PersonalDetailsForm extends React.Component {
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
-                                        icon={<Icon icon='IconCheck' />}
+                                        text={localize('Next')}
                                     />
                                 </FormFooter>
                             </form>

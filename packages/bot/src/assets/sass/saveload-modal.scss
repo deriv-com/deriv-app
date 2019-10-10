@@ -72,7 +72,7 @@
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
-        margin-left: 20px;
+        margin: 8px 0 0 20px;
     }
     &__container {
         text-align: center;
@@ -96,6 +96,7 @@
         cursor: pointer;
         position: absolute;
         margin-top: 20px;
+        font-weight: bold;
         color: var(--brand-red-coral);
         width: 80px;
     }

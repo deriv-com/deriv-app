@@ -29,6 +29,7 @@ export default class ActiveSymbols {
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
+        console.log(this.processed_symbols); // eslint-disable-line
         this.trading_times.onMarketOpenCloseChanged = (changes) => {
             Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];

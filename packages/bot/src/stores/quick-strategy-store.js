@@ -40,15 +40,14 @@ export default class QuickStrategyStore {
     async createStrategy(values) {
         const { contracts_for } = ApiHelper.instance;
         const {
+            symbol,
+            trade_type,
             stake,
             size,
             loss,
             profit }            = values;
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
-        const {
-            symbol,
-            trade_type }        = values;
         const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];

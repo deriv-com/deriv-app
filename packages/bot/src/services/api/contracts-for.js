@@ -16,12 +16,12 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             {
-                submarket : 'minor_pairs',
-                trade_type: 'higherlower',
+                market    : 'indices',
+                trade_type: 'callputequal',
             },
             {
-                symbol    : 'OTC_AS51',
-                trade_type: 'callputequal',
+                submarket : 'minor_pairs',
+                trade_type: 'higherlower',
             },
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },
@@ -323,6 +323,7 @@ export default class ContractsFor {
 
     async getSubmarketBySymbol(symbol) {
         const contracts = await this.getContractsFor(symbol);
+        console.log(contracts); // eslint-disable-line
 
         if (!contracts.length) {
             return 'na';
@@ -474,7 +475,13 @@ export default class ContractsFor {
 
     isDisabledOption(compare_obj) {
         return this.disabled_options.some(disabled_obj =>
-            Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
+            Object.keys(disabled_obj).every(prop => {
+                if (Array.isArray(disabled_obj[prop])) {
+                    return disabled_obj[prop].includes(compare_obj[prop]);
+                }
+                return compare_obj[prop] === disabled_obj[prop];
+                
+            })
         );
     }
 

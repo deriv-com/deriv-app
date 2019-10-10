@@ -38,17 +38,25 @@ const TradetypeOption = ({ type }) => (
 
 const validateQuickStrategy = values => {
     const errors = {};
+    const number_field = ['stake', 'size', 'profit', 'loss'];
 
     Object.keys(values).forEach(key => {
         const value = values[key];
+
+        if (number_field.includes(key)){
+            if (isNaN(value)) {
+                errors[key] = translate('Must be a number');
+            }
+
+            if (value < 1){
+                errors[key] = translate('Must be a number higher than 0');
+            }
+        }
 
         if (value === '') {
             errors[key] = translate('Field cannot be empty');
         }
 
-        if (typeof value === 'number' && value < 1){
-            errors[key] = translate('Must be a number higher than 0');
-        }
     });
 
     return errors;
@@ -173,7 +181,7 @@ class QuickStrategy extends React.PureComponent {
                                                     <Input
                                                         {...field}
                                                         className='quick-strategy__input'
-                                                        type='number'
+                                                        type='text'
                                                         error={touched.stake && errors.stake}
                                                         label={translate('Initial stake')}
                                                     />
@@ -184,7 +192,7 @@ class QuickStrategy extends React.PureComponent {
                                                     <Input
                                                         {...field}
                                                         className='quick-strategy__input'
-                                                        type='number'
+                                                        type='text'
                                                         error={touched.loss && errors.loss}
                                                         label={translate('Maximum loss')}
                                                     />
@@ -197,7 +205,7 @@ class QuickStrategy extends React.PureComponent {
                                                     <Input
                                                         {...field}
                                                         className='quick-strategy__input'
-                                                        type='number'
+                                                        type='text'
                                                         error={touched.size && errors.size}
                                                         label={translate('Size')}
                                                     />
@@ -208,7 +216,7 @@ class QuickStrategy extends React.PureComponent {
                                                     <Input
                                                         {...field}
                                                         className='quick-strategy__input'
-                                                        type='number'
+                                                        type='text'
                                                         error={touched.profit && errors.profit}
                                                         label={translate('Maximum profit')}
                                                     />

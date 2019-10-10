@@ -1,7 +1,9 @@
-import { Dropdown, Input }  from 'deriv-components';
+import {
+    Dropdown,
+    Input,
+    ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
 import React, { Component } from 'react';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
@@ -80,7 +82,7 @@ class AddressDetails extends Component {
                                     />
                                 </p>
                                 <div className='details-form__elements-container'>
-                                    <Scrollbars
+                                    <ThemedScrollbars
                                         autoHide
                                         style={{
                                             height: '100%',
@@ -124,7 +126,7 @@ class AddressDetails extends Component {
                                                 placeholder={localize('Postal/ZIP Code')}
                                             />
                                         </div>
-                                    </Scrollbars>
+                                    </ThemedScrollbars>
                                 </div>
                             </div>
                             <FormSubmitButton

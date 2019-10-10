@@ -1,9 +1,9 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import { localize }      from 'App/i18n';
-import IconExitWon       from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
-import IconExitLoss      from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
+import { localize }         from 'App/i18n';
+import IconExitWon          from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
+import IconExitLoss         from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
 import {
     epochToMoment,
     toGMTFormat }        from 'Utils/Date';
@@ -30,7 +30,7 @@ class ContractAudit extends React.PureComponent {
         const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
         return (
             <div className='contract-audit__wrapper'>
-                <Scrollbars
+                <ThemedScrollbars
                     style={{ width: '100%', height: '100%' }}
                     autoHide
                 >
@@ -98,7 +98,7 @@ class ContractAudit extends React.PureComponent {
                             value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                         />
                     </div>
-                </Scrollbars>
+                </ThemedScrollbars>
             </div>
         );
     }

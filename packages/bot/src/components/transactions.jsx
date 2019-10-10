@@ -1,8 +1,10 @@
-import className         from 'classnames';
-import { Money,Popover } from 'deriv-components';
-import { PropTypes }     from 'prop-types';
-import React             from 'react';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
+import className            from 'classnames';
+import {
+    Money,
+    Popover,
+    ThemedScrollbars }      from 'deriv-components';
+import { PropTypes }        from 'prop-types';
+import React                from 'react';
 import {
     BuyPriceIcon,
     ExitSpotIcon,
@@ -142,7 +144,7 @@ class Transactions extends React.PureComponent {
                     <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
                 </div>
                 <div className='transactions__content'>
-                    <Scrollbars
+                    <ThemedScrollbars
                         autoHide
                         style={{ height: 'calc(100vh - 390px)' }}
                     >
@@ -154,7 +156,7 @@ class Transactions extends React.PureComponent {
                                 />;
                             })
                         }
-                    </Scrollbars>
+                    </ThemedScrollbars>
                 </div>
             </div>
         );

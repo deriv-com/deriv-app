@@ -1,10 +1,10 @@
-import React             from 'react';
-import { CSSTransition } from 'react-transition-group';
-import PropTypes         from 'prop-types';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
+import React                from 'react';
+import { CSSTransition }    from 'react-transition-group';
+import PropTypes            from 'prop-types';
+import ThemedScrollbars     from 'Components/themed-scrollbars';
 
-const trackHorizontal = props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />;
-const thumbHorizontal = props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />;
+const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
+const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 
 const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
@@ -27,7 +27,7 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
             unmountOnExit
         >
             <div style={style} className='dc-dropdown-list'>
-                <Scrollbars
+                <ThemedScrollbars
                     autoHeight
                     autoHide
                     autoHeightMax={220} // As specified by design spec
@@ -73,7 +73,7 @@ const DropdownList = ({ is_visible, list_items, onItemSelection, style }) => {
                                 </div>
                             ))
                     }
-                </Scrollbars>
+                </ThemedScrollbars>
             </div>
         </CSSTransition>
     );

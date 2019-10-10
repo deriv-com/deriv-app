@@ -73,7 +73,7 @@ const drawerFooter = ({
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
                         text={translate('Stop bot')}
-                        icon={<StopIcon />}
+                        icon={<StopIcon className='run-panel__button--icon' />}
                         onClick={onStopButtonClick}
                         has_effect
                     /> :
@@ -84,7 +84,7 @@ const drawerFooter = ({
                             'run-panel__button--run',
                         )}
                         text={translate('Run bot')}
-                        icon={<RunIcon />}
+                        icon={<RunIcon className='run-panel__button--icon' />}
                         onClick={onRunButtonClick}
                         has_effect
                     />
@@ -101,7 +101,8 @@ const drawerFooter = ({
             }
             <Popover
                 className='run-panel__info'
-                alignment='left'
+                classNameBubble='run-panel__info--bubble'
+                alignment='top'
                 message={translate(
                     `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
                      by our system. Please be aware that some completed transactions may not be displayed

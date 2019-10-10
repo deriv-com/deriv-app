@@ -56,7 +56,7 @@ export class AccountActions extends Component {
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
-                            balance={CurrencyUtils.formatMoney(currency, balance, true)}
+                            balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
                             is_upgrade_enabled={can_upgrade}
                             is_virtual={is_virtual}
                             currency={currency}

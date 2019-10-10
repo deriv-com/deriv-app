@@ -571,17 +571,19 @@ export default class ClientStore extends BaseStore {
                         this.root_store.ui,
                     );
                     this.setHasMissingRequiredField(has_missing_required_field);
-                    // TODO: set all currency references to be used only from client-store,
-                    // removing the need for reinitializing below
-                    if (this.currency && (this.currency.length > 0)) {
-                        this.root_store.modules.trade.initAccountCurrency(this.currency);
-                    }
                 } else if (!client || client.is_virtual) {
                     this.root_store.ui.removeAllNotifications();
                 }
             }
         );
 
+        // TODO: set all currency references to be used only from client-store,
+        // removing the need for reinitializing below
+        if (client && !client.is_virtual) {
+            if (this.currency && (this.currency.length > 0)) {
+                this.root_store.modules.trade.initAccountCurrency(this.currency);
+            }
+        }
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

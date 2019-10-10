@@ -646,11 +646,11 @@ export default class CashierStore extends BaseStore {
         const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
         let display_text = localize('MT5');
         if (/svg$/.test(value)) {
-            display_text = localize('DMT5 Synthetic indices');
+            display_text = localize('Synthetic indices');
         } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
-            display_text = localize('DMT5 Standard');
+            display_text = localize('Standard');
         } else if (/labuan/.test(value)) {
-            display_text = localize('DMT5 Advanced');
+            display_text = localize('Advanced');
         }
 
         return { display_text, value };

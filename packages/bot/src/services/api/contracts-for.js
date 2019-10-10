@@ -20,6 +20,10 @@ export default class ContractsFor {
                 trade_type: 'callputequal',
             },
             {
+                symbol             : 'OTC_AS51',
+                trade_type_category: 'inout',
+            },
+            {
                 submarket : 'minor_pairs',
                 trade_type: 'higherlower',
             },

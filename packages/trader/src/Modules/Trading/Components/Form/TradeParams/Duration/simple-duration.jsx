@@ -8,6 +8,7 @@ import { connect }                    from 'Stores/connect';
 import TradingDatePicker              from '../../DatePicker';
 
 const SimpleDuration = ({
+    contract_expiry_type,
     changeDurationUnit,
     duration_t,
     duration_units_list,
@@ -37,7 +38,7 @@ const SimpleDuration = ({
                     value={simple_duration_unit}
                 />
             }
-            { simple_duration_unit === 't' &&
+            { simple_duration_unit === 't' && contract_expiry_type === 'tick' &&
                 <RangeSlider
                     name='duration'
                     value={duration_t}
@@ -70,6 +71,7 @@ const SimpleDuration = ({
 
 SimpleDuration.propTypes = {
     changeDurationUnit  : PropTypes.func,
+    contract_expiry_type: PropTypes.string,
     duration_t          : PropTypes.number,
     duration_units_list : MobxPropTypes.arrayOrObservableArray,
     getDurationFromUnit : PropTypes.func,
@@ -81,6 +83,7 @@ SimpleDuration.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        validation_errors: modules.trade.validation_errors,
+        contract_expiry_type: modules.trade.contract_expiry_type,
+        validation_errors   : modules.trade.validation_errors,
     })
 )(SimpleDuration);

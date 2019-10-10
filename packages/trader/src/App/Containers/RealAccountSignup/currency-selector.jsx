@@ -192,7 +192,8 @@ class CurrencySelector extends React.Component {
                         </Scrollbars>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
-                            label='Next' // Localization will be handled by component
+                            is_center={!this.props.has_currency}
+                            label={!this.props.currency ? localize('Set currency') : localize('Next')}
                         />
                     </form>
                 )}

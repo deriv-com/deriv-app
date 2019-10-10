@@ -64,10 +64,10 @@
         margin-top: 3rem;
     }
     h2 {
-        @include typeface(--paragraph-center-bold-black);
+        @include typeface(--title-center-bold-black);
         text-transform: none;
         margin-top: 2rem;
-        color: var(--text-general);
+        color: var(--text-less-prominent);
     }
     h3 {
         @include typeface(--small-center-normal-black);
@@ -81,7 +81,7 @@
         flex-grow: 1;
         justify-content: space-evenly;
         width: 100%;
-        padding: 2em;
+        padding: 0 2em 2em;
     }
     &__body {
         align-items: center;
@@ -94,11 +94,12 @@
     &__set-currency {
         p {
             margin-top: 1em;
-            @include typeface(--small-center-normal-black);
+            @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
         }
         h2 {
+            @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
         }
     }

@@ -56,7 +56,6 @@ class RealAccountSignup extends Component {
             modal_content: [
                 {
                     icon : 'IconTheme',
-                    label: localize('Add a real account'),
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
@@ -66,7 +65,6 @@ class RealAccountSignup extends Component {
                 },
                 {
                     icon : 'IconTheme',
-                    label: localize('Add or manage account'),
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
@@ -75,7 +73,6 @@ class RealAccountSignup extends Component {
                     />,
                 },
                 {
-                    label: false,
                     value: () => (
                         <FinishedSetCurrency
                             prev={this.state.previous_currency}
@@ -84,10 +81,8 @@ class RealAccountSignup extends Component {
                             onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
-                    title: false,
                 },
                 {
-                    label: false,
                     value: () => (
                         <SuccessDialog
                             has_cancel
@@ -101,19 +96,28 @@ class RealAccountSignup extends Component {
                     ),
                 },
                 {
-                    label: false,
                     value: () => (
                         <LoadingModal />
                     ),
                 },
                 {
-                    label: localize('Add a real account'),
                     value: () => (
                         <ErrorModal message={this.state.error_message} />
                     ),
                 },
             ],
         };
+    }
+
+    get labels () {
+        return [
+            this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
+            localize('Add or manage account'),
+            null,
+            null,
+            null,
+            localize('Add a real account'),
+        ];
     }
 
     closeModalThenOpenCashier = () => {
@@ -187,7 +191,7 @@ class RealAccountSignup extends Component {
 
         if (this.state.active_modal_index === -1) {
             return (
-                this.props.has_real_account && this.props.has_currency
+                this.props.has_real_account && this.props.currency
             ) ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
         }
 
@@ -209,10 +213,10 @@ class RealAccountSignup extends Component {
             is_real_acc_signup_on,
         } = this.props;
 
-        const title  = this.state.modal_content[this.active_modal_index].label;
+        const title  = this.labels[this.active_modal_index];
         const Body   = this.state.modal_content[this.active_modal_index].value;
         // We need to pass height since we add Scrollbars to modal content
-        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) ? '688px' : '375px';
+        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) ? '648px' : '355px';
 
         return (
             <Modal
@@ -238,7 +242,7 @@ export default connect(({ ui, client, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency   : client.can_change_fiat_currency,
     has_real_account           : client.has_real_account,
-    has_currency               : !!client.currency,
+    currency                   : client.currency,
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,
     closeRealAccountSignup     : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier  : ui.closeSignupAndOpenCashier,

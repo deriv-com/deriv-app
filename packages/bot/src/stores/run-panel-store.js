@@ -31,23 +31,29 @@ export default class RunPanelStore {
     @observable is_running            = false;
     @observable is_drawer_open        = true;
 
+    // when error happens, if it is unrecoverable_errors we reset run-panel
+    // we activate run-button and clear trade info and set the ContractStage to not_running
+    // otherwise we keep opening new contracts and set the ContractStage to purchase_sent
     is_error_happened   = false;
-
-    @action.bound
-    onBotRunningEvent() {
-        this.is_running = true;
-    }
+    is_continue_trading = true;
 
     @action.bound
     onBotStopEvent() {
-        if (this.is_error_happened) {
+        this.is_running = false;
+
+        if (this.is_error_happened && this.is_continue_trading) {
             this.setContractStage(CONTRACT_STAGES.purchase_sent);
         } else if (this.is_running) {
             this.setContractStage(CONTRACT_STAGES.contract_closed);
         } else {
             this.setContractStage(CONTRACT_STAGES.not_running);
+            this.is_run_button_clicked = false;
         }
-        this.is_running = false;
+    }
+
+    @action.bound
+    onBotRunningEvent() {
+        this.is_running = true;
     }
 
     @action.bound
@@ -108,11 +114,15 @@ export default class RunPanelStore {
         if (this.is_run_button_clicked) {
             stopBot();
             if (this.is_error_happened) {
+                // when user click stop button when there is a error but bot is retrying
                 this.setContractStage(CONTRACT_STAGES.not_running);
                 this.is_error_happened = false;
+                this.is_continue_trading = true;
             } else if (this.is_running) {
+                // when user click stop button when bot is running
                 this.setContractStage(CONTRACT_STAGES.is_stopping);
             } else {
+                // when user click stop button before bot start running
                 this.setContractStage(CONTRACT_STAGES.not_running);
             }
         }
@@ -213,13 +223,13 @@ export default class RunPanelStore {
                     () => client.switch_broadcast,
                     (switch_broadcast) => {
                         if (switch_broadcast) {
-                            terminateAndClear();
-                            this.root_store.summary.currency = client.currency;
-                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
-
                             if (client.is_logged_in && !client.is_virtual) {
                                 this.showRealAccountDialog();
                             }
+
+                            terminateAndClear();
+                            this.root_store.summary.currency = client.currency;
+                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
                         }
                     },
                 );

@@ -614,7 +614,7 @@ class PersonalDetailsForm extends React.Component {
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
-                                        text={localize('Next')}
+                                        text={localize('Submit')}
                                     />
                                 </FormFooter>
                             </form>

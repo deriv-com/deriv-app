@@ -210,13 +210,14 @@ class RealAccountSignup extends Component {
         const {
             available_crypto_currencies,
             can_change_fiat_currency,
+            has_real_account,
             is_real_acc_signup_on,
         } = this.props;
 
         const title  = this.labels[this.active_modal_index];
         const Body   = this.state.modal_content[this.active_modal_index].value;
         // We need to pass height since we add Scrollbars to modal content
-        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) ? '648px' : '355px';
+        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) || !has_real_account ? '648px' : '355px';
 
         return (
             <Modal

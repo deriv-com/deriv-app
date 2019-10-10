@@ -42,12 +42,12 @@ const validateQuickStrategy = values => {
     Object.keys(values).forEach(key => {
         const value = values[key];
 
-        if (!value) {
+        if (value === '') {
             errors[key] = translate('Field cannot be empty');
         }
 
-        if (typeof value === 'number' && value < 0){
-            errors[key] = translate('Must be positive number');
+        if (typeof value === 'number' && value < 1){
+            errors[key] = translate('Must be a number higher than 0');
         }
     });
 
@@ -70,7 +70,7 @@ class QuickStrategy extends React.PureComponent {
             onChangeTradeTypeDropdown,
             setActiveTabIndex,
             toggleStrategyModal,
-            tradetype_dropdown,
+            trade_type_dropdown,
         } = this.props;
 
         const { strategies } = config;
@@ -86,13 +86,13 @@ class QuickStrategy extends React.PureComponent {
             });
         }
 
-        const tradetype_dropdown_options = {};
-        Object.assign(tradetype_dropdown_options, tradetype_dropdown);
+        const trade_type_dropdown_options = {};
+        Object.assign(trade_type_dropdown_options, trade_type_dropdown);
 
-        if (tradetype_dropdown_options) {
-            Object.keys(tradetype_dropdown_options).forEach(key => {
-                const tradetype = tradetype_dropdown_options[key];
-                tradetype.forEach(type => {
+        if (trade_type_dropdown_options) {
+            Object.keys(trade_type_dropdown_options).forEach(key => {
+                const trade_type = trade_type_dropdown_options[key];
+                trade_type.forEach(type => {
                     type.text = <TradetypeOption type={type} />;
                 });
             });
@@ -132,7 +132,7 @@ class QuickStrategy extends React.PureComponent {
                             onSubmit={createStrategy}
                         >
                             {
-                                ({ errors, isValid, isSubmitting, values : { symbol, tradetype }, setFieldValue, touched }) => (
+                                ({ errors, isValid, isSubmitting, values : { symbol, trade_type }, setFieldValue, touched }) => (
                                     <Form>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown
@@ -148,9 +148,9 @@ class QuickStrategy extends React.PureComponent {
                                             <Dropdown
                                                 placeholder={translate('Trade type')}
                                                 is_align_text_left
-                                                list={tradetype_dropdown_options}
-                                                name='tradetype'
-                                                value={tradetype}
+                                                list={trade_type_dropdown_options}
+                                                name='trade_type'
+                                                value={trade_type}
                                                 onChange={e => onChangeTradeTypeDropdown(setFieldValue, e.target.value)}
                                             />
                                         </div>
@@ -239,7 +239,7 @@ QuickStrategy.propTypes = {
     quickStrategyDidMount    : proptypes.func,
     setActiveTabIndex        : proptypes.func,
     toggleStrategyModal      : proptypes.func,
-    tradetype_dropdown       : proptypes.oneOfType([
+    trade_type_dropdown      : proptypes.oneOfType([
         proptypes.array,
         proptypes.object,
     ]),
@@ -256,5 +256,5 @@ export default connect(({ quick_strategy }) => ({
     quickStrategyDidMount    : quick_strategy.quickStrategyDidMount,
     setActiveTabIndex        : quick_strategy.setActiveTabIndex,
     toggleStrategyModal      : quick_strategy.toggleStrategyModal,
-    tradetype_dropdown       : quick_strategy.tradetype_dropdown,
+    trade_type_dropdown      : quick_strategy.trade_type_dropdown,
 }))(QuickStrategy);

@@ -10,27 +10,26 @@ import { load }  from '../scratch/utils';
 export default class QuickStrategyStore {
     constructor(root_store) {
         this.root_store = root_store;
-
     }
 
-    @observable initial_values = {
-        symbol   : 'frxAUDJPY',
-        tradetype: 'callput',
-        stake    : '',
-        size     : '',
-        loss     : '',
-        profit   : '',
+    initial_values = {
+        symbol    : 'WLDAUD',
+        trade_type: 'callput',
+        stake     : '',
+        size      : '',
+        loss      : '',
+        profit    : '',
     };
 
     @observable is_strategy_modal_open = false;
-    @observable active_index = 0;
-    @observable market_dropdown = [];
-    @observable tradetype_dropdown = [];
+    @observable active_index           = 0;
+    @observable market_dropdown        = [];
+    @observable trade_type_dropdown    = [];
 
     @action.bound
-    toggleStrategyModal = () => {
+    toggleStrategyModal() {
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
-    };
+    }
 
     @action.bound
     setActiveTabIndex(index) {
@@ -38,48 +37,55 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    // eslint-disable-next-line
     async createStrategy(values) {
         const { contracts_for } = ApiHelper.instance;
-        const { symbol, tradetype } = values;
-        const { market, submarket } = await contracts_for.getMarketAndSubmarketBySymbol(symbol);
-        const tradetypecat = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
-        const { strategies } = config;
-        const strategy_name = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
+        const market            = await contracts_for.getMarketBySymbol(symbol);
+        const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
+        const {
+            symbol,
+            trade_type }        = values;
+        const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const { strategies }    = config;
+        const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
         // eslint-disable-next-line
-        const strategy_xml = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
-        const strategy_dom = Blockly.Xml.textToDom(strategy_xml);
+        const strategy_xml      = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
+        const strategy_dom      = Blockly.Xml.textToDom(strategy_xml);
 
-        const modifiedValue = (key, value) => {
-            const value_block = strategy_dom.querySelector(`value[id="${key}_value"]`);
+        const modifyValueInputs = (key, value) => {
+            const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);
 
-            if (value_block){
-                value_block.innerHTML = `<block type="math_number"><field name="NUM">${value}</field></block>`;
-            }
+            el_value_inputs.forEach(el_value_input => {
+                el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+            });
         };
 
-        const modifiedDropdownValue = (name, value) => {
-            const block = strategy_dom.querySelector(`field[name="${`${name.toUpperCase()}_LIST`}"]`);
+        const modifyFieldDropdownValues = (name, value) => {
+            const el_blocks = strategy_dom.querySelectorAll(`field[name="${`${name.toUpperCase()}_LIST`}"]`);
 
-            if (block){
-                block.innerHTML = value;
-            }
+            el_blocks.forEach(el_block => {
+                el_block.innerHTML = value;
+            });
         };
 
-        const field_values = {
-            ...values,
+        const fields_to_update = {
             market,
             submarket,
-            tradetypecat,
+            symbol,
+            trade_type,
+            trade_type_cat,
+            stake : values.stake,
+            size  : values.size,
+            loss  : values.loss,
+            profit: values.loss,
         };
 
-        Object.keys(field_values).forEach(key => {
-            const value = field_values[key];
+        Object.keys(fields_to_update).forEach(key => {
+            const value = fields_to_update[key];
 
             if (!isNaN(value)){
-                modifiedValue(key, value);
+                modifyValueInputs(key, value);
             } else if (typeof value === 'string'){
-                modifiedDropdownValue(key, value);
+                modifyFieldDropdownValues(key, value);
             }
         });
 
@@ -88,9 +94,10 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async quickStrategyDidMount() {
+    async onMount() {
         const { active_symbols } = ApiHelper.instance;
-        const market_options = await active_symbols.getAllMarketDropdownOptions();
+        const market_options     = await active_symbols.getAllMarketDropdownOptions();
+
         this.updateTradetypeDropdown();
             
         runInAction(() => {
@@ -100,11 +107,11 @@ export default class QuickStrategyStore {
 
     @action.bound
     async updateTradetypeDropdown(symbol = this.initial_values.symbol) {
-        const { contracts_for } = ApiHelper.instance;
-        const tradetype_options = await contracts_for.getTradeTypeBySymbol(symbol);
+        const { contracts_for }  = ApiHelper.instance;
+        const trade_type_options = await contracts_for.getTradeTypeBySymbol(symbol);
 
         runInAction(() => {
-            this.tradetype_dropdown = tradetype_options;
+            this.trade_type_dropdown = trade_type_options;
         });
     }
 
@@ -114,13 +121,13 @@ export default class QuickStrategyStore {
         setFieldValue('symbol', value);
         await this.updateTradetypeDropdown(value);
 
-        const first_option = this.tradetype_dropdown[Object.keys(this.tradetype_dropdown)[0]][0].value;
-        setFieldValue('tradetype', first_option);
+        const first_option = this.trade_type_dropdown[Object.keys(this.trade_type_dropdown)[0]][0].value;
+        setFieldValue('trade_type', first_option);
     }
 
     @action.bound
     // eslint-disable-next-line
     onChangeTradeTypeDropdown(setFieldValue, value) {
-        setFieldValue('tradetype', value);
+        setFieldValue('trade_type', value);
     }
 }

@@ -6,13 +6,10 @@
     transition: all 0.3s ease-in-out;
 
     &--success {
-        max-height: 290px;
+        max-height: 365px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
-    }
-    &--no-currency-change {
-        max-height: 366px;
     }
     .dc-modal-header__title {
         text-transform: none;

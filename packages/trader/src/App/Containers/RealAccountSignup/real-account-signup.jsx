@@ -203,10 +203,16 @@ class RealAccountSignup extends Component {
     };
 
     render() {
-        const { is_real_acc_signup_on } = this.props;
-        const title                     = this.state.modal_content[this.active_modal_index].label;
-        const Body                      = this.state.modal_content[this.active_modal_index].value;
-        const height                    = this.props.available_crypto_currencies.length !== 0 ? '688px' : '375px';
+        const {
+            available_crypto_currencies,
+            can_change_fiat_currency,
+            is_real_acc_signup_on,
+        } = this.props;
+
+        const title  = this.state.modal_content[this.active_modal_index].label;
+        const Body   = this.state.modal_content[this.active_modal_index].value;
+        // We need to pass height since we add Scrollbars to modal content
+        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) ? '688px' : '375px';
 
         return (
             <Modal
@@ -230,6 +236,7 @@ class RealAccountSignup extends Component {
 
 export default connect(({ ui, client, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
+    can_change_fiat_currency   : client.can_change_fiat_currency,
     has_real_account           : client.has_real_account,
     has_currency               : !!client.currency,
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,

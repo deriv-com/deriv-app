@@ -95,6 +95,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                     label={translate('Bot name')}
                                     value={file_name}
                                     placeholder={translate('Untitled Bot')}
+                                    value={file_name}
                                     trailing_icon={
                                         <ToolbarRenameIcon />
                                     }

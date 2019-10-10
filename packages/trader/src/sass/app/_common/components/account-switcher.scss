@@ -274,12 +274,6 @@
 /** @define set-currency; weak */
 .set-currency {
     & .btn {
-        @include typeface(--paragraph-center-bold-black);
-        text-transform: none;
-        color: var(--general-main-1);
-        text-decoration: none;
-        width: 11.6rem;
-        height: 3.2rem;
         display: flex;
         align-items: center;
     }

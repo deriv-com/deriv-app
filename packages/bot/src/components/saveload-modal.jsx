@@ -165,7 +165,12 @@ const IconRadio = ({
                 }
                 <p className={classNames(
                     'saveload-type__radio-text',
-                    { 'saveload-type__radio-text--disabled': is_drive_radio && !google_drive_connected })}
+                    {
+                        'saveload-type__radio-text--disabled':
+                            is_drive_radio
+                            &&
+                            !google_drive_connected,
+                    })}
                 >
                     {translate(text)}
                 </p>

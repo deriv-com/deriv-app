@@ -127,6 +127,7 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
+        this.is_run_button_clicked = false;
         this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
@@ -191,13 +192,14 @@ export default class RunPanelStore {
         const terminateAndClear = () => {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
+            // Core need to change to pass beforeswitch account event
             terminateBot();
             this.clearStat();
         };
 
-        const resigter = () => {
+        const register = () => {
             if (common.is_socket_opened) {
-                this.disposeLogoutListener = reaction(
+                this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     (loginid) => {
                         if (!loginid) {
@@ -232,12 +234,12 @@ export default class RunPanelStore {
             }
         };
 
-        resigter();
+        register();
 
         this.disposeLogoutListener = reaction(
             () => common.is_socket_opened,
             () => {
-                resigter();
+                register();
             }
         );
     }
@@ -251,5 +253,8 @@ export default class RunPanelStore {
         observer.unregister('bot.stop', this.onBotStopEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
         observer.unregister('bot.contract', this.onBotContractEvent);
+
+        this.disposeIsSocketOpenedListener();
+
     }
 }

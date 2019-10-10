@@ -94,6 +94,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                     onKeyUp={submitForm}
                                     label={translate('Bot name')}
                                     placeholder={translate('Untitled Bot')}
+                                    value={file_name}
                                     trailing_icon={
                                         <ToolbarRenameIcon />
                                     }

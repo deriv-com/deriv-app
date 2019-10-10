@@ -436,6 +436,7 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
+                this.root_store.ui.removeNotification({ key: 'currency' });
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);
@@ -526,6 +527,7 @@ export default class ClientStore extends BaseStore {
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,
+            this.root_store.ui,
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -560,6 +562,7 @@ export default class ClientStore extends BaseStore {
                 this.account_status,
                 this.root_store.ui.addNotification,
                 this.loginid,
+                this.root_store.ui,
             );
             this.setHasMissingRequiredField(has_missing_required_field);
             // TODO: set all currency references to be used only from client-store,

@@ -39,6 +39,11 @@ export default class QuickStrategyStore {
     @action.bound
     async createStrategy(values) {
         const { contracts_for } = ApiHelper.instance;
+        const {
+            stake,
+            size,
+            loss,
+            profit }            = values;
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
         const {
@@ -73,10 +78,10 @@ export default class QuickStrategyStore {
             symbol,
             trade_type,
             trade_type_cat,
-            stake : values.stake,
-            size  : values.size,
-            loss  : values.loss,
-            profit: values.loss,
+            stake,
+            size,
+            loss,
+            profit,
         };
 
         Object.keys(fields_to_update).forEach(key => {

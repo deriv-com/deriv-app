@@ -64,10 +64,17 @@ $side-padding: 1.2em;
         grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
 
         &--detail {
+            overflow: hidden;
+            max-height: 63px;
             display: flex;
+            align-items: center;
+            padding: 0;
             justify-content: center;
-            padding: 1.12em;
             background-color: var(--general-section-1);
+
+            &-text {
+                padding: 1.12em;
+            }
         }
         .date {
             text-align: left;

@@ -34,6 +34,7 @@ class Mt5TopUpDemoModal extends React.Component {
                     is_open={this.props.is_top_up_virtual_open}
                     className='top-up-virtual'
                     header={localize('Fund top up')}
+                    width='400px'
                 >
                     <div className='dc-modal__container_top-up-virtual__body'>
                         <p className='dc-modal__container_top-up-virtual__description'>

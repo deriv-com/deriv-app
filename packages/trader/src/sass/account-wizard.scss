@@ -4,11 +4,9 @@
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease-in-out;
-    width: 900px;
-    overflow: unset;
 
     &--success {
-        width: 400px;
+        max-height: 365px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
@@ -75,7 +73,7 @@
         @include typeface(--small-center-normal-black);
         text-transform: none;
         color: var(--text-general);
-        margin-bottom: 3rem;
+        margin-bottom: 1.6rem;
     }
     form {
         display: flex;

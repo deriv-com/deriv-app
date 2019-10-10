@@ -133,7 +133,7 @@
         <statement name="DO0">
           <block type="variables_set" id="{}-XA:3=]2W.Aq|zIiP(">
             <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:expectedProfit</field>
-            <value name="VALUE" id="profit_value">
+            <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="Xk/kdhNk!8S=H#k(z8ZK">
                 <field name="TYPE">NUMBER</field>
                 <value name="TEXT">
@@ -163,7 +163,7 @@
             <statement name="DO0">
               <block type="variables_set" id=":OS%IuonU;AkRO!H-SEF">
                 <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:maximumLoss</field>
-                <value name="VALUE" id="loss_value">
+                <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id="VzzZ|#G2u],5bu1C%nhV">
                     <field name="TYPE">NUMBER</field>
                     <value name="TEXT">
@@ -193,7 +193,7 @@
                 <statement name="DO0">
                   <block type="variables_set" id="BEp45H17VcN)bNjaC13X">
                     <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
-                    <value name="VALUE" id="stake_value">
+                    <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="eDI}~Q?gz;|Mee%Eio6[">
                         <field name="TYPE">NUMBER</field>
                         <value name="TEXT">
@@ -223,10 +223,10 @@
                     <statement name="DO0">
                       <block type="variables_set" id="-93lGY=!6I#8sh)~z`3Z">
                         <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-                        <value name="VALUE" id="size_value">
-                          <block type="math_number" id="V_wKk,@wB*OF9ev0RrZx">
+                        <value name="VALUE" strategy_value="size">
+                          <shadow type="math_number" id="V_wKk,@wB*OF9ev0RrZx">
                             <field name="NUM">1</field>
-                          </block>
+                          </shadow>
                         </value>
                       </block>
                     </statement>
@@ -249,9 +249,9 @@
                           <block type="variables_set" id="2s+YXTZv%VGRY=?APf^h">
                             <field name="VAR" id="Kb@{Vb{+5IqV=d~y*dcr" variabletype="">martingale:totalProfit</field>
                             <value name="VALUE">
-                              <block type="math_number" id="%JgI()#r0Zu#ruzKLXpj">
+                              <shadow type="math_number" id="%JgI()#r0Zu#ruzKLXpj">
                                 <field name="NUM">0</field>
-                              </block>
+                              </shadow>
                             </value>
                           </block>
                         </statement>
@@ -303,10 +303,10 @@
         <statement name="DO0">
           <block type="variables_set" id="dBpW`FWzhfYxYL[m%r_/">
             <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-            <value name="VALUE">
-              <block type="math_number" id="#{5k!r3Zgo@m8VSv[fPn">
+            <value name="VALUE" strategy_value="size">
+              <shadow type="math_number" id="#{5k!r3Zgo@m8VSv[fPn">
                 <field name="NUM">1</field>
-              </block>
+              </shadow>
             </value>
           </block>
         </statement>

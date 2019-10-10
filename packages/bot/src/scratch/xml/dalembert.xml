@@ -134,7 +134,7 @@
         <statement name="DO0">
           <block type="variables_set" id="Y=Z$E2zJKQ`l[H,_C|w@">
             <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:expectedProfit</field>
-            <value name="VALUE" id="profit_value">
+            <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="{#mjw]aEOed`FE9C0G^j">
                 <field name="TYPE">NUMBER</field>
                 <value name="TEXT">
@@ -164,7 +164,7 @@
             <statement name="DO0">
               <block type="variables_set" id="?VovWY,aXgs.y1djI*-g">
                 <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:maximumLoss</field>
-                <value name="VALUE" id="loss_value">
+                <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id=";+1mWtzrw=-S]mR4Rav+">
                     <field name="TYPE">NUMBER</field>
                     <value name="TEXT">
@@ -194,7 +194,7 @@
                 <statement name="DO0">
                   <block type="variables_set" id="mq}/@a{Qc-KeTxmcqFjU">
                     <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:amount</field>
-                    <value name="VALUE" id="stake_value">
+                    <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="g@u0I0vK4IkO_rsxxo8R">
                         <field name="TYPE">NUMBER</field>
                         <value name="TEXT">
@@ -224,10 +224,10 @@
                     <statement name="DO0">
                       <block type="variables_set" id="iX^w=Jc(b/VlAIdNMduh">
                         <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
-                        <value name="VALUE" id="size_value">
-                          <block type="math_number" id="d#8t+7WO$h2wHp|@8_eA">
+                        <value name="VALUE" strategy_value="size">
+                          <shadow type="math_number" id="d#8t+7WO$h2wHp|@8_eA">
                             <field name="NUM">1</field>
-                          </block>
+                          </shadow>
                         </value>
                       </block>
                     </statement>
@@ -250,9 +250,9 @@
                           <block type="variables_set" id="5zYkm?%M%dhWa.SDk_?Q">
                             <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
                             <value name="VALUE">
-                              <block type="math_number" id="FU3;}.nT{+$wT#*Dn^k7">
+                              <shadow type="math_number" id="FU3;}.nT{+$wT#*Dn^k7">
                                 <field name="NUM">0</field>
-                              </block>
+                              </shadow>
                             </value>
                           </block>
                         </statement>
@@ -275,9 +275,9 @@
                               <block type="variables_set" id="3(a50!~_FArRjyUd)*np">
                                 <field name="VAR" id="weOIq50C[S,Wr;`!|gYR" variabletype="">dalembert:totalProfit</field>
                                 <value name="VALUE">
-                                  <block type="math_number" id="*6;H2j+wK=C6V,Pp}Oe`">
+                                  <shadow type="math_number" id="*6;H2j+wK=C6V,Pp}Oe`">
                                     <field name="NUM">0</field>
-                                  </block>
+                                  </shadow>
                                 </value>
                               </block>
                             </statement>
@@ -364,9 +364,9 @@
                       </block>
                     </value>
                     <value name="B">
-                      <block type="math_number" id="Pw~TuRCIs`o~yD$HP[`R">
+                      <shadow type="math_number" id="Pw~TuRCIs`o~yD$HP[`R">
                         <field name="NUM">1</field>
-                      </block>
+                      </shadow>
                     </value>
                   </block>
                 </value>
@@ -397,9 +397,9 @@
                   <block type="variables_set" id="$!zqw!LV_Z5o3PiO:?4f">
                     <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
                     <value name="VALUE">
-                      <block type="math_number" id="ynHk=_vu8jP.q4hh#|^-">
+                      <shadow type="math_number" id="ynHk=_vu8jP.q4hh#|^-">
                         <field name="NUM">0</field>
-                      </block>
+                      </shadow>
                     </value>
                     <next>
                       <block type="notify" id="d)Lvf7B[%s5@kUZOyQjI">

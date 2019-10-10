@@ -134,7 +134,7 @@
         <statement name="DO0">
           <block type="variables_set" id="za68V.=r];6v1ZVCl9V3">
             <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
-            <value name="VALUE" id="profit_value">
+            <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="H;ibW~XT_XPz=_FC6:%_">
                 <field name="TYPE">NUMBER</field>
                 <value name="TEXT">
@@ -164,7 +164,7 @@
             <statement name="DO0">
               <block type="variables_set" id="}nd^[K,g#_9_{ZbuY?}I">
                 <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
-                <value name="VALUE" id="loss_value">
+                <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id="^d2yt,KS8$q@?kx4AK9)">
                     <field name="TYPE">NUMBER</field>
                     <value name="TEXT">
@@ -194,7 +194,7 @@
                 <statement name="DO0">
                   <block type="variables_set" id="K$RfuYH6fHK~K1@fM4FQ">
                     <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
-                    <value name="VALUE" id="stake_value">
+                    <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="A]252OG(/WDV@*nn4PX$">
                         <field name="TYPE">NUMBER</field>
                         <value name="TEXT">
@@ -224,10 +224,10 @@
                     <statement name="DO0">
                       <block type="variables_set" id="vs7E%QIYfT*!c?ytY*Os">
                         <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
-                        <value name="VALUE" id="size_value">
-                          <block type="math_number" id="ZU]`rKA~b;b*-3@Xe1T!">
+                        <value name="VALUE" strategy_value="size">
+                          <shadow type="math_number" id="ZU]`rKA~b;b*-3@Xe1T!">
                             <field name="NUM">1</field>
-                          </block>
+                          </shadow>
                         </value>
                       </block>
                     </statement>
@@ -250,9 +250,9 @@
                           <block type="variables_set" id="MJ[9tY-n2r.NbytTFK.L">
                             <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
                             <value name="VALUE">
-                              <block type="math_number" id="(o6lVcwiVXStriK+0/Tq">
+                              <shadow type="math_number" id="(o6lVcwiVXStriK+0/Tq">
                                 <field name="NUM">0</field>
-                              </block>
+                              </shadow>
                             </value>
                           </block>
                         </statement>
@@ -275,9 +275,9 @@
                               <block type="variables_set" id="@aN)Eku}D/(fckg(LuZ2">
                                 <field name="VAR" id="l6`t`DbnHr`2hOJ2RunJ" variabletype="">oscarsGrind:totalProfit</field>
                                 <value name="VALUE">
-                                  <block type="math_number" id="Y8DiwsAwNkC}k((kaYN{">
+                                  <shadow type="math_number" id="Y8DiwsAwNkC}k((kaYN{">
                                     <field name="NUM">0</field>
-                                  </block>
+                                  </shadow>
                                 </value>
                               </block>
                             </statement>
@@ -364,9 +364,9 @@
                       </block>
                     </value>
                     <value name="B">
-                      <block type="math_number" id="7Il@$?D@;I:+L1H+!}u!">
+                      <shadow type="math_number" id="7Il@$?D@;I:+L1H+!}u!">
                         <field name="NUM">0</field>
-                      </block>
+                      </shadow>
                     </value>
                   </block>
                 </value>
@@ -398,9 +398,9 @@
                           </block>
                         </value>
                         <value name="B">
-                          <block type="math_number" id="I/GqhIwFOu5v0itED{RP">
+                          <shadow type="math_number" id="I/GqhIwFOu5v0itED{RP">
                             <field name="NUM">0</field>
-                          </block>
+                          </shadow>
                         </value>
                       </block>
                     </value>
@@ -456,17 +456,17 @@
                   <block type="variables_set" id="T5=;3-yp30=P:VsZ@6*Y">
                     <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
                     <value name="VALUE">
-                      <block type="math_number" id="r^4zWSI|eyiu-]{wLjG;">
+                      <shadow type="math_number" id="r^4zWSI|eyiu-]{wLjG;">
                         <field name="NUM">0</field>
-                      </block>
+                      </shadow>
                     </value>
                     <next>
                       <block type="variables_set" id="H~pwuieau2,eC#ghI*}D">
                         <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
                         <value name="VALUE">
-                          <block type="math_number" id="Amh]hPhPj-Y%;y$Gub1s">
+                          <shadow type="math_number" id="Amh]hPhPj-Y%;y$Gub1s">
                             <field name="NUM">1</field>
-                          </block>
+                          </shadow>
                         </value>
                         <next>
                           <block type="notify" id="ec!-6+T`O6~_8IFEc%DP">

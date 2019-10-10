@@ -49,7 +49,7 @@ export default class QuickStrategyStore {
         }                       = values;
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
-        const tradetype_cat    = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
+        const tradetypecat      = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
         // eslint-disable-next-line
@@ -77,7 +77,7 @@ export default class QuickStrategyStore {
             submarket,
             symbol,
             tradetype,
-            tradetype_cat,
+            tradetypecat,
             stake,
             size,
             loss,

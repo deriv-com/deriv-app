@@ -87,6 +87,10 @@
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__drive-status {
         cursor: pointer;

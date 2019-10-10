@@ -107,7 +107,7 @@ const SaveLoadModal = ({
                                                 {translate('A collection allow you to save block as an individual part which can be add into other bot')}
                                             </div>
                                         </>
-                                        :   <input
+                                        : <input
                                             type='file'
                                             id='files'
                                             accept='.xml'
@@ -162,7 +162,12 @@ const IconRadio = ({
                         { className: classNames('saveload-type__icon', icon.props.className) },
                     )
                 }
-                <p className='saveload-type__radio-text'>{translate(text)}</p>
+                <p className={classNames(
+                    'saveload-type__radio-text',
+                    { 'saveload-type__radio-text--disabled': is_drive_radio && !google_drive_connected })}
+                >
+                    {translate(text)}
+                </p>
             </div>
             {
                 is_drive_radio &&
@@ -170,7 +175,12 @@ const IconRadio = ({
                     className='saveload-type__drive-status'
                     onClick={onDriveConnect}
                 >
-                    {translate(google_drive_connected ? 'Disconnect' : 'Connect')}
+                    {
+                        translate(google_drive_connected ?
+                            translate('Disconnect')
+                            :
+                            translate('Connect'))
+                    }
                 </p>
             }
         </div>

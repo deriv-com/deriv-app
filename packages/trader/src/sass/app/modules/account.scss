@@ -135,7 +135,7 @@
             background-color: var(--general-main-1);
 
             &-note {
-                color: $color-black-1;
+                color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
                 height: 4rem;
                 line-height: 1.5;

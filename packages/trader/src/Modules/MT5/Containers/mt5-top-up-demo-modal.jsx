@@ -92,7 +92,7 @@ class Mt5TopUpDemoModal extends React.Component {
                                 <Localize
                                     i18n_default_text='USD 10,000.00 has been credited into your DMT5 {{title}} account.'
                                     values={{
-                                        title,
+                                        title: title[0].toLowerCase() + title.slice(1),
                                     }}
                                 />
                             </h3>

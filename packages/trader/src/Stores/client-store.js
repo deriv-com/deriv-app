@@ -66,10 +66,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return '';
+        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
         return (this.accounts[this.loginid] && this.accounts[this.loginid].balance) ?
             this.accounts[this.loginid].balance.toString() :
-            '';
+            undefined;
     }
 
     /**

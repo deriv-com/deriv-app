@@ -122,11 +122,6 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const balance = async (cb) => {
-        await wait('authorize');
-        deriv_api.send({ balance: 1 }).then(cb);
-    };
-
     const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
@@ -282,7 +277,6 @@ const BinarySocketBase = (() => {
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,
-        balance,
         subscribeBalanceAll,
         subscribeProposal,
         subscribeProposalOpenContract,

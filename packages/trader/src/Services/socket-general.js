@@ -139,7 +139,7 @@ const BinarySocketGeneral = (() => {
         client_store.responseAuthorize(response);
         WS.forgetAll('balance').then(() => {
             // the first has to be without subscribe to quickly update current account's balance
-            WS.balance(ResponseHandlers.balance);
+            WS.authorized.balance().then(ResponseHandlers.balance);
             // the second is to subscribe to balance and update all sibling accounts' balances too
             WS.subscribeBalanceAll(ResponseHandlers.balance);
         });

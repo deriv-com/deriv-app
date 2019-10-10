@@ -19,6 +19,10 @@ export default class ContractsFor {
                 submarket : 'minor_pairs',
                 trade_type: 'higherlower',
             },
+            {
+                symbol    : 'WLDAUD',
+                trade_type: 'callputequal',
+            },
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },
         ];
@@ -284,10 +288,9 @@ export default class ContractsFor {
         const prediction_range  = [];
         const {
             DIGIT_CATEGORIES,
-            opposites,
-        }                       = config;
+            opposites }         = config;
 
-        if (DIGIT_CATEGORIES.includes(contract_category)) {
+        if (DIGIT_CATEGORIES.includes(contract_category) && trade_type !== 'evenodd') {
             const contract = contracts.find(c => {
                 const categories = Object.keys(opposites);
 
@@ -308,13 +311,24 @@ export default class ContractsFor {
         return prediction_range;
     }
 
-    async getMarketAndSubmarketBySymbol(symbol) {
+    async getMarketBySymbol(symbol) {
         const contracts = await this.getContractsFor(symbol);
 
-        return {
-            market   : contracts[0].market,
-            submarket: contracts[0].submarket,
-        };
+        if (!contracts.length) {
+            return 'na';
+        }
+
+        return contracts[0].market;
+    }
+
+    async getSubmarketBySymbol(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+
+        if (!contracts.length) {
+            return 'na';
+        }
+
+        return contracts[0].submarket;
     }
     
     async getTradeTypeBySymbol(symbol) {

@@ -56,7 +56,7 @@ const validateQuickStrategy = values => {
 
 class QuickStrategy extends React.PureComponent {
     componentDidMount() {
-        this.props.quickStrategyDidMount();
+        this.props.onMount();
     }
 
     render() {
@@ -71,15 +71,16 @@ class QuickStrategy extends React.PureComponent {
             setActiveTabIndex,
             toggleStrategyModal,
             trade_type_dropdown,
-        } = this.props;
-
-        const { strategies } = config;
-        const assets_dropdown_options = {};
-        Object.assign(assets_dropdown_options, market_dropdown);
+        }                             = this.props;
+        const { strategies }          = config;
+        const asset_dropdown_options = {};
         
-        if (assets_dropdown_options) {
-            Object.keys(assets_dropdown_options).forEach(key => {
-                const submarket = assets_dropdown_options[key];
+        Object.assign(asset_dropdown_options, market_dropdown);
+        
+        if (asset_dropdown_options) {
+            Object.keys(asset_dropdown_options).forEach(key => {
+                const submarket = asset_dropdown_options[key];
+
                 submarket.forEach(symbol => {
                     symbol.text = <MarketOption symbol={symbol} />;
                 });
@@ -87,11 +88,13 @@ class QuickStrategy extends React.PureComponent {
         }
 
         const trade_type_dropdown_options = {};
+
         Object.assign(trade_type_dropdown_options, trade_type_dropdown);
 
         if (trade_type_dropdown_options) {
             Object.keys(trade_type_dropdown_options).forEach(key => {
                 const trade_type = trade_type_dropdown_options[key];
+
                 trade_type.forEach(type => {
                     type.text = <TradetypeOption type={type} />;
                 });
@@ -100,7 +103,7 @@ class QuickStrategy extends React.PureComponent {
 
         return (
             <Modal
-                title={translate('Quick Strategy')}
+                title={translate('Quick strategy')}
                 className='modal--strategy'
                 is_open={is_strategy_modal_open}
                 toggleModal={toggleStrategyModal}
@@ -115,8 +118,8 @@ class QuickStrategy extends React.PureComponent {
                                 Object.keys(strategies).map(key => {
                                     const { index, label, description } = strategies[key];
                                     return (
-                                        <div key={index} label={translate(label)}>
-                                            <div className='quick-strategy__description'>{translate(description)}</div>
+                                        <div key={index} label={label}>
+                                            <div className='quick-strategy__description'>{description}</div>
                                         </div>
                                     );
                                 })
@@ -138,7 +141,7 @@ class QuickStrategy extends React.PureComponent {
                                             <Dropdown
                                                 placeholder={translate('Assets')}
                                                 is_align_text_left
-                                                list={assets_dropdown_options}
+                                                list={asset_dropdown_options}
                                                 name='symbol'
                                                 value={symbol}
                                                 onChange={e => onChangeMarketDropdown(setFieldValue, e.target.value)}
@@ -236,7 +239,7 @@ QuickStrategy.propTypes = {
     ]),
     onChangeMarketDropdown   : proptypes.func,
     onChangeTradeTypeDropdown: proptypes.func,
-    quickStrategyDidMount    : proptypes.func,
+    onMount                  : proptypes.func,
     setActiveTabIndex        : proptypes.func,
     toggleStrategyModal      : proptypes.func,
     trade_type_dropdown      : proptypes.oneOfType([
@@ -253,7 +256,7 @@ export default connect(({ quick_strategy }) => ({
     market_dropdown          : quick_strategy.market_dropdown,
     onChangeMarketDropdown   : quick_strategy.onChangeMarketDropdown,
     onChangeTradeTypeDropdown: quick_strategy.onChangeTradeTypeDropdown,
-    quickStrategyDidMount    : quick_strategy.quickStrategyDidMount,
+    onMount                  : quick_strategy.onMount,
     setActiveTabIndex        : quick_strategy.setActiveTabIndex,
     toggleStrategyModal      : quick_strategy.toggleStrategyModal,
     trade_type_dropdown      : quick_strategy.trade_type_dropdown,

@@ -81,7 +81,6 @@ class AddressDetails extends Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <Scrollbars
-                                        autoHide
                                         style={{
                                             height: '100%',
                                         }}

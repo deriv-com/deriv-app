@@ -268,7 +268,7 @@ const config = {
         },
         oscars_grind: {
             index      : 2,
-            label      : 'Oscars\' Grind',
+            label      : 'Oscar\'s Grind',
             description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, and decrease the size of your contract after each unsuccessful trade.'),
         },
     },

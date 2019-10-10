@@ -47,7 +47,7 @@ $header-height: 52px;
         flex-direction: column;
 
         .table__row-link:hover {
-            background-color: var(--general-hover);
+            background-color: var(--state-hover);
             cursor: pointer;
         }
         .table__row:last-child {

@@ -12,7 +12,7 @@ const DisplayText = ({
     name,
     value,
 }) => {
-    const symbol_value_class = has_symbol ? `symbols--${value.toLowerCase()}` : null;
+    const symbol_value_class = value && has_symbol ? `symbols--${value.toLowerCase()}` : null;
     return (
         <React.Fragment>
             {has_symbol ?

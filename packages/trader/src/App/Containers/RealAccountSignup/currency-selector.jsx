@@ -184,7 +184,8 @@ class CurrencySelector extends React.Component {
                         }
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
-                            label={ localize('Next') }
+                            is_center={!this.props.has_currency}
+                            label={!this.props.currency ? localize('Set currency') : localize('Next')}
                         />
                     </form>
                 )}

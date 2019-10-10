@@ -463,7 +463,7 @@
                     <next>
                       <block type="variables_set" id="H~pwuieau2,eC#ghI*}D">
                         <field name="VAR" id="V0OvvcA:RnlA|:N~#`d." variabletype="">oscarsGrind:size</field>
-                        <value name="VALUE">
+                        <value name="VALUE" strategy_value="size">
                           <shadow type="math_number" id="Amh]hPhPj-Y%;y$Gub1s">
                             <field name="NUM">1</field>
                           </shadow>

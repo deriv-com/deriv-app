@@ -5,6 +5,7 @@ import {
     observable,
     runInAction,
     when,
+    reaction,
 }                                    from 'mobx';
 import CurrencyUtils                from 'deriv-shared/utils/currency';
 import ObjectUtils                  from 'deriv-shared/utils/object';
@@ -554,26 +555,35 @@ export default class ClientStore extends BaseStore {
             }
         }
 
+        /**
+         * Set up reaction for account_settings, account_status
+         */
+        reaction(
+            () => [this.account_settings, this.account_status],
+            () => {
+                if (client && !client.is_virtual) {
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this.account_settings,
+                        this.account_status,
+                        this.root_store.ui.addNotification,
+                        this.loginid,
+                        this.root_store.ui,
+                    );
+                    this.setHasMissingRequiredField(has_missing_required_field);
+                } else if (!client || client.is_virtual) {
+                    this.root_store.ui.removeAllNotifications();
+                }
+            }
+        );
+
+        // TODO: set all currency references to be used only from client-store,
+        // removing the need for reinitializing below
         if (client && !client.is_virtual) {
-            await BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status');
-            const { has_missing_required_field } = handleClientNotifications(
-                client,
-                this.account_settings,
-                this.account_status,
-                this.root_store.ui.addNotification,
-                this.loginid,
-                this.root_store.ui,
-            );
-            this.setHasMissingRequiredField(has_missing_required_field);
-            // TODO: set all currency references to be used only from client-store,
-            // removing the need for reinitializing below
             if (this.currency && (this.currency.length > 0)) {
                 this.root_store.modules.trade.initAccountCurrency(this.currency);
             }
-        } else if (!client || client.is_virtual) {
-            this.root_store.ui.removeAllNotifications();
         }
-
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

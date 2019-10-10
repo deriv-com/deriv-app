@@ -2,7 +2,6 @@
 
 .details-form {
     flex-grow: 1;
-    margin-top: 3rem;
 
     & .datepicker {
         max-width: initial;
@@ -24,16 +23,12 @@
     }
     &__elements {
         flex-grow: 1;
-        margin: 0 auto;
+        margin: 1.2rem auto;
         width: 40%;
 
         &-container {
-            height: calc(100vh - 438px);
+            height: calc(100% - 76px);
             overflow: hidden;
-
-            .details-form__elements {
-                margin-top: 8px;
-            }
         }
         .dc-input {
             label {

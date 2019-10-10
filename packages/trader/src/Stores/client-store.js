@@ -66,10 +66,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return '';
-        return (this.accounts[this.loginid] && this.accounts[this.loginid].balance) ?
+        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
+        return (this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]) ?
             this.accounts[this.loginid].balance.toString() :
-            '';
+            undefined;
     }
 
     /**
@@ -736,10 +736,12 @@ export default class ClientStore extends BaseStore {
     setBalance(obj_balance) {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            this.obj_total_balance = {
-                amount  : obj_balance.total.real.amount,
-                currency: obj_balance.total.real.currency,
-            };
+            if (obj_balance.total) {
+                this.obj_total_balance = {
+                    amount  : obj_balance.total.real.amount,
+                    currency: obj_balance.total.real.currency,
+                };
+            }
             this.resetLocalStorageValues(this.loginid);
         }
     }

@@ -93,8 +93,7 @@ class TermsOfUse extends Component {
                         </div>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                            label='Add account' // Localization will be handled by component
-
+                            label={localize('Add account')}
                             has_cancel={true}
                             onCancel={this.props.onCancel}
                             cancel_label={localize('Previous')}

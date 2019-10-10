@@ -90,8 +90,7 @@
 
         .btn {
             @include typeface(--paragraph-center-bold-black, none);
-            background-color: var(--brand-red-coral);
-            color: var(--text-prominent);
+            text-transform: none;
 
             &--disabled {
                 background-color: var(--brand-red-coral);

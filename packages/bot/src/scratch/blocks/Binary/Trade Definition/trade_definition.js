@@ -83,9 +83,10 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
-        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
-            setBlockTextColor(this);
-        }
+        //        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
+        // TODO: incomment this when the dark mode is done
+        setBlockTextColor(this);
+        //        }
 
         if (!this.workspace || this.isInFlyout) {
             return;

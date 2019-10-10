@@ -1,6 +1,6 @@
 import { translate } from '../../../../utils/lang/i18n';
 import { setBlockTextColor } from '../../../utils';
-import ScratchStore          from '../../../../stores/scratch-store';
+// import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.tick_analysis = {
     init() {
@@ -33,9 +33,10 @@ Blockly.Blocks.tick_analysis = {
         };
     },
     onchange() {
-        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
-            setBlockTextColor(this);
-        }
+        // TODO: incomment this when the dark mode is done
+        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
+        setBlockTextColor(this);
+        // }
 
     },
 };

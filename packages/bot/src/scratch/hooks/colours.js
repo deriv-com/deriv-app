@@ -1,10 +1,12 @@
 const isDarkModeEnabled = () => {
-    const ui_store = localStorage.getItem('ui_store');
-    
-    if (ui_store && (ui_store.length > 0)) {
-        return JSON.parse(ui_store).is_dark_mode_on || false;
-    }
     return false;
+    // TODO: uncomment the following lines when the Dark Mode is ready fo DBot
+    // const ui_store = localStorage.getItem('ui_store');
+    
+    // if (ui_store && (ui_store.length > 0)) {
+    //     return JSON.parse(ui_store).is_dark_mode_on || false;
+    // }
+    // return false;
 };
 
 if (isDarkModeEnabled()) {              // Dark theme

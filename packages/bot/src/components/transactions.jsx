@@ -1,22 +1,21 @@
-import className            from 'classnames';
+import className       from 'classnames';
 import {
     Money,
     Popover,
-    ThemedScrollbars }      from 'deriv-components';
-import { PropTypes }        from 'prop-types';
-import React                from 'react';
+    ThemedScrollbars } from 'deriv-components';
+import { PropTypes }   from 'prop-types';
+import React           from 'react';
 import {
     BuyPriceIcon,
     ExitSpotIcon,
     EntrySpotIcon,
     PendingIcon,
     RefrenceIdIcon,
-    CompletedIcon,
-}                        from './Icons.jsx';
-import IconTradeType     from './icon-trade-types.jsx';
-import { connect }       from '../stores/connect';
-import { translate }     from '../utils/tools';
-import '../assets/sass/transactions.scss';
+    CompletedIcon }    from './Icons.jsx';
+import IconTradeType   from './icon-trade-types.jsx';
+import { connect }     from '../stores/connect';
+import { translate }   from '../utils/tools';
+import                      '../assets/sass/transactions.scss';
 
 const Transaction = ({ contract }) => {
     return (

@@ -32,7 +32,7 @@ class MT5Dashboard extends React.Component {
 
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
-            this.props.toggleAccountTransferModal();
+            this.props.closeMt5AndOpenCashier('account_transfer');
         } else {
             this.props.setCurrentAccount(data, meta);
             this.props.openTopUpModal();
@@ -161,6 +161,6 @@ export default connect(({ client, modules, ui }) => ({
     has_real_account           : client.has_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
-    toggleAccountTransferModal : modules.mt5.toggleAccountTransferModal,
+    closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
 }))(MT5Dashboard);

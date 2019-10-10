@@ -11,7 +11,7 @@ import { translate }  from '../../utils/lang/i18n';
  * This is the sum of the width of the flyout (250) and some extra padding (25).
  * @type {number}
  */
-Blockly.Toolbox.prototype.width = 275;
+Blockly.Toolbox.prototype.width = 25;
 
 /**
  * Initializes the toolbox.
@@ -56,6 +56,7 @@ Blockly.Toolbox.prototype.init = function () {
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
     this.position();
+    this.toggle();
 };
 
 /**
@@ -572,8 +573,7 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 
 Blockly.Toolbox.prototype.toggle = function () {
     const { toolbar, flyout } = ScratchStore.instance;
-    if (toolbar.is_toolbox_open) {
-        this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.toolboxXmlStr));
+    if (!toolbar.is_toolbox_open) {
         this.addStyle('hidden');
     
         flyout.setVisibility(false);

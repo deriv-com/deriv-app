@@ -509,15 +509,6 @@
     }
 }
 
-/** @define dc-modal; */
-.dc-modal {
-    &__container {
-        &_modal-cashier {
-            width: 904px;
-        }
-    }
-}
-
 /** @define dc-modal-header; */
 .dc-modal-header {
     &__modal-cashier {

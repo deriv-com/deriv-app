@@ -135,7 +135,17 @@ class QuickStrategy extends React.PureComponent {
                             onSubmit={createStrategy}
                         >
                             {
-                                ({ errors, isValid, isSubmitting, values : { symbol, trade_type }, setFieldValue, touched }) => (
+                                ({ 
+                                    errors, 
+                                    isValid, 
+                                    isSubmitting, 
+                                    values : { 
+                                        symbol, 
+                                        trade_type 
+                                    }, 
+                                    setFieldValue, 
+                                    touched 
+                                }) => (
                                     <Form>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown

@@ -166,7 +166,7 @@ const MT5PasswordModal = ({
                                     !values.password ||
                                     Object.keys(errors).length > 0
                                 }
-                                label={ <Localize i18n_default_text='Add account' /> }
+                                label={ localize('Add account')}
                                 form_error={form_error}
                             />
                         </form>

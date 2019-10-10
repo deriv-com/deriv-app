@@ -27,12 +27,14 @@ const Header = ({
     is_mobile,
     is_payment_agent_visible,
     is_payment_agent_transfer_visible,
+    is_real_acc_signup_on,
     is_route_modal_on,
     is_virtual,
     disableApp,
     setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
+    openRealAccountSignup,
 }) => {
     const header_links = [
         {
@@ -88,11 +90,14 @@ const Header = ({
                             setCashierActiveTab={setCashierActiveTab}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleCashierModal={toggleCashierModal}
+                            openRealAccountSignup={openRealAccountSignup}
                         />
                     </div>
                 </div>
             </div>
+            {is_real_acc_signup_on &&
             <RealAccountSignup />
+            }
         </header>
     );
 };
@@ -140,6 +145,8 @@ export default connect(
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
         is_route_modal_on                : ui.is_route_modal_on,
         is_mobile                        : ui.is_mobile,
+        is_real_acc_signup_on            : ui.is_real_acc_signup_on,
+        openRealAccountSignup            : ui.openRealAccountSignup,
         disableApp                       : ui.disableApp,
         setCashierActiveTab              : ui.setCashierActiveTab,
         toggleAccountsDialog             : ui.toggleAccountsDialog,

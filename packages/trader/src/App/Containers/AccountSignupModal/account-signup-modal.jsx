@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import {
     Autocomplete,
-    Input,
+    PasswordInput,
     Button,
     Dialog }             from 'deriv-components';
 import {
@@ -129,10 +129,9 @@ class AccountSignup extends React.Component {
                                             </p>
                                             <Field name='password'>
                                                 {({ field }) => (
-                                                    <Input
+                                                    <PasswordInput
                                                         { ...field }
                                                         className='account-signup__password-field'
-                                                        type='password'
                                                         label={localize('Create a password')}
                                                         error={ touched.password && errors.password }
                                                         required

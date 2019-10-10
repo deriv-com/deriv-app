@@ -4,9 +4,8 @@ import React             from 'react';
 import {
     AccountActions,
     MenuLinks,
-    PlatformSwitcher,
-}                        from 'App/Components/Layout/Header';
-import platform_config   from 'App/Constants/platform-config';
+    PlatformSwitcher }   from 'App/Components/Layout/Header';
+import platform_config  from 'App/Constants/platform-config';
 import Lazy              from 'App/Containers/Lazy';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import { localize }      from 'App/i18n';

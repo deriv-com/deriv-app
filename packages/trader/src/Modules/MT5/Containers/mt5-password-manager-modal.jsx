@@ -1,8 +1,8 @@
 import {
     Modal,
     Tabs,
+    PasswordInput,
     PasswordMeter,
-    Input,
     Button }        from 'deriv-components';
 import {
     Field,
@@ -131,9 +131,8 @@ class MT5PasswordManagerModal extends React.Component {
                             }
                             <Field name='old_password'>
                                 {({ field }) => (
-                                    <Input
+                                    <PasswordInput
                                         { ...field }
-                                        type='password'
                                         label={localize('Current password')}
                                         error={ touched.old_password && errors.old_password }
                                         required
@@ -146,11 +145,10 @@ class MT5PasswordManagerModal extends React.Component {
                                         input={field.value}
                                         error={touched.new_password && errors.new_password}
                                     >
-                                        <Input
+                                        <PasswordInput
                                             { ...field }
                                             autoComplete='password'
                                             label={localize('New password')}
-                                            type='password'
                                             onChange={(e) => {
                                                 setFieldTouched('new_password', true, true);
                                                 field.onChange(e);
@@ -203,9 +201,8 @@ class MT5PasswordManagerModal extends React.Component {
                             <Form className='mt5-password-manager__investor-form' noValidate>
                                 <Field name='old_password'>
                                     {({ field }) => (
-                                        <Input
+                                        <PasswordInput
                                             { ...field }
-                                            type='password'
                                             label={localize('Current investor password')}
                                             error={ touched.old_password && errors.old_password }
                                             required
@@ -218,11 +215,10 @@ class MT5PasswordManagerModal extends React.Component {
                                             input={field.value}
                                             error={touched.new_password && errors.new_password}
                                         >
-                                            <Input
+                                            <PasswordInput
                                                 { ...field }
                                                 autoComplete='password'
                                                 label={localize('New investor password')}
-                                                type='password'
                                                 onChange={(e) => {
                                                     setFieldTouched('new_password', true, true);
                                                     field.onChange(e);

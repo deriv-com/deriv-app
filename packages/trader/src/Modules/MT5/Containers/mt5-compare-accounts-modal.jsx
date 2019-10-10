@@ -185,6 +185,8 @@ const CompareAccountsModal = ({ toggleCompareAccounts, disableApp, enableApp, is
                 title={localize('Compare accounts')}
                 toggleModal={toggleCompareAccounts}
                 type='button'
+                height='595px'
+                width='904px'
             >
                 <ModalContent />
             </Modal>

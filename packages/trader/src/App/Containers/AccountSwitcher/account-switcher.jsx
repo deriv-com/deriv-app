@@ -110,9 +110,17 @@ class AccountSwitcher extends React.Component {
                                                 className={`acc-switcher__id-icon acc-switcher__id-icon--${account.icon}`}
                                                 type={account.icon}
                                             />
-                                            <span>{account.is_virtual ? <Localize i18n_default_text='Demo' /> : account.icon.toUpperCase()}</span>
+                                            <span>
+                                                {account.is_virtual ?
+                                                    <Localize i18n_default_text='Demo' /> :
+                                                    account.icon.toUpperCase() === 'REAL' ?
+                                                        <Localize i18n_default_text='Real' /> :
+                                                        account.icon.toUpperCase()
+                                                }
+                                            </span>
                                             {'balance' in this.props.accounts[account.loginid] &&
                                             <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                                {this.props.accounts[account.loginid].currency &&
                                                 <Money
                                                     currency={this.props.accounts[account.loginid].currency}
                                                     amount={
@@ -124,6 +132,13 @@ class AccountSwitcher extends React.Component {
                                                     }
                                                     should_format={false}
                                                 />
+                                                }
+                                                {!this.props.accounts[account.loginid].currency &&
+                                                    <span className='no-currency'><Localize
+                                                        i18n_default_text='No currency assigned'
+                                                    />
+                                                    </span>
+                                                }
                                             </span>
                                             }
                                         </span>

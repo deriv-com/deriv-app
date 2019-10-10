@@ -123,11 +123,12 @@ class DurationWrapper extends React.Component {
             this.props.contract_expiry_type,
             duration_unit,
         );
-
-        if (current_duration < min_value) {
+        if (this.props.contract_expiry_type === 'tick' && current_duration < min_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
+        }
+
+        if (!(current_duration < min_value) && current_duration > max_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }

@@ -25,9 +25,9 @@ Blockly.Blocks.loader = {
                     text: 'http://www.example.com/block.xml',
                 },
             ],
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Loads blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };

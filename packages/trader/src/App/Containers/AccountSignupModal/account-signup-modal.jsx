@@ -94,7 +94,7 @@ class AccountSignup extends React.Component {
                                                 <Localize i18n_default_text='Thanks for verifying your email' />
                                             </p>
                                             <p className='account-signup__text'>
-                                                <Localize i18n_default_text='Where are you a resident?' />
+                                                <Localize i18n_default_text='Where do you live?' />
                                             </p>
                                             <Field name='residence'>
                                                 {({ field }) => (

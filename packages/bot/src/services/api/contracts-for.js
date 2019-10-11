@@ -15,6 +15,14 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             {
+                submarket : 'smart_fx',
+                trade_type: 'callputequal',
+            },
+            {
+                submarket : 'minor_pairs',
+                trade_type: 'callputequal',
+            },
+            {
                 submarket : 'metals',
                 trade_type: 'callputequal',
             },
@@ -334,7 +342,7 @@ export default class ContractsFor {
         return contracts[0].submarket;
     }
     
-    async getTradeTypeBySymbol(symbol) {
+    async getGroupedTradeTypes(symbol) {
         const contracts = await this.getContractsFor(symbol);
         const trade_type_options = {};
 
@@ -454,7 +462,6 @@ export default class ContractsFor {
         const trade_types   = [];
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
 
-        console.log(subcategories); // eslint-disable-line
         if (subcategories) {
             for (let i = 0; i < subcategories.length; i++) {
                 const trade_type    = subcategories[i];
@@ -476,7 +483,6 @@ export default class ContractsFor {
             }
         }
 
-        console.log(trade_types); // eslint-disable-line
         return (trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
     }
 

@@ -89,7 +89,7 @@ export default class ActiveSymbols {
         }, {});
     }
 
-    async getAllMarketDropdownOptions() {
+    async getAssetOptions() {
         await this.retrieveActiveSymbols();
         const all_market_options = {};
 

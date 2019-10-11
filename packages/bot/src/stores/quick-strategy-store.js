@@ -101,7 +101,7 @@ export default class QuickStrategyStore {
     @action.bound
     async onMount() {
         const { active_symbols } = ApiHelper.instance;
-        const market_options     = await active_symbols.getAllMarketDropdownOptions();
+        const market_options     = await active_symbols.getAssetOptions();
 
         this.updateTradetypeDropdown();
             
@@ -113,7 +113,7 @@ export default class QuickStrategyStore {
     @action.bound
     async updateTradetypeDropdown(symbol = this.initial_values.symbol) {
         const { contracts_for }  = ApiHelper.instance;
-        const trade_type_options = await contracts_for.getTradeTypeBySymbol(symbol);
+        const trade_type_options = await contracts_for.getGroupedTradeTypes(symbol);
 
         runInAction(() => {
             this.trade_type_dropdown = trade_type_options;

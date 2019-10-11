@@ -17,9 +17,9 @@ Blockly.Blocks.contract_check_result = {
             ],
             output         : 'Boolean',
             outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('True if the result of the last trade matches the selection'),
             category       : Blockly.Categories.After_Purchase,
         };
@@ -36,12 +36,11 @@ Blockly.Blocks.contract_check_result = {
         }
 
         if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('after_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
+            const top_parent = this.getTopParent();
+            const is_illegal_root_block = top_parent.isMainBlock() && top_parent.type !== 'after_purchase';
+            
+            if (is_illegal_root_block) {
+                this.unplug(true);
             }
         }
     },

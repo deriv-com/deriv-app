@@ -26,9 +26,9 @@ Blockly.Blocks.emaa_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Special4.colour,
-            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            colour           : Blockly.Colours.Base.colour,
+            colourSecondary  : Blockly.Colours.Base.colourSecondary,
+            colourTertiary   : Blockly.Colours.Base.colourTertiary,
             tooltip          : translate('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -37,7 +37,7 @@ Blockly.Blocks.emaa_statement = {
     }, meta(){
         return {
             'display_name': translate('Exponential Moving Average Array (EMAA)'),
-            'description' : translate('Exponential Moving Average Array is similar to EMA is similar ti EMA the only difference is that it returns the entire EMA line based on the input lise'),
+            'description' : translate('Similar to EMA. This block gives you the entire EMA line based on the input list and the given period.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

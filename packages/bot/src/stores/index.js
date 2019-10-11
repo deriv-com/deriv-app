@@ -15,10 +15,10 @@ export default class RootStore {
         this.ws = ws;
         this.contract_card = new ContractCardStore(this);
         this.flyout        = new FlyoutStore(this);
-        this.google_drive   = new GoogleDriveStore(this);
+        this.google_drive  = new GoogleDriveStore(this);
         this.journal       = new JournalStore(this);
         this.run_panel     = new RunPanelStore(this);
-        this.saveload       = new SaveLoadModalStore(this);
+        this.saveload      = new SaveLoadModalStore(this);
         this.summary       = new SummaryStore(this);
         this.transactions  = new TransactionsStore(this);
         this.toolbar       = new ToolbarStore(this);

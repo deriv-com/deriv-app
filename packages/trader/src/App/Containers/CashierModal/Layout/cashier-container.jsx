@@ -1,7 +1,7 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
-import Loading        from '../../../../templates/_common/components/loading.jsx';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
+import Loading              from '../../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     render() {
@@ -9,7 +9,7 @@ class CashierContainer extends React.Component {
             <React.Fragment>
                 {this.props.is_loading && <Loading />}
                 {this.props.iframe_url &&
-                <Scrollbars
+                <ThemedScrollbars
                     autoHeight
                     autoHide
                     autoHeightMax={550}
@@ -23,7 +23,7 @@ class CashierContainer extends React.Component {
                         frameBorder='0'
                         scrolling='auto'
                     />
-                </Scrollbars>
+                </ThemedScrollbars>
                 }
             </React.Fragment>
         );

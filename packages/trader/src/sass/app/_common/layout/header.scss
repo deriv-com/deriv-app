@@ -82,6 +82,7 @@
         align-items: center;
         justify-content: space-evenly;
         transition: background-color 0.3s;
+        cursor: pointer;
 
         &-text {
             @include typeface(--title-left-normal-black);

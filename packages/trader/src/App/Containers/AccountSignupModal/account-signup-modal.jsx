@@ -94,13 +94,15 @@ class AccountSignup extends React.Component {
                                                 <Localize i18n_default_text='Thanks for verifying your email' />
                                             </p>
                                             <p className='account-signup__text'>
-                                                <Localize i18n_default_text='Where are you a resident?' />
+                                                <Localize i18n_default_text='Where do you live?' />
                                             </p>
                                             <Field name='residence'>
                                                 {({ field }) => (
                                                     <Autocomplete
                                                         { ...field }
+                                                        autoComplete='off'
                                                         className='account-signup__residence-field'
+                                                        dropdown_offset='3.2rem'
                                                         type='text'
                                                         label={ localize('Choose country') }
                                                         error={ touched.residence && errors.residence }
@@ -115,11 +117,10 @@ class AccountSignup extends React.Component {
                                             <Button
                                                 className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.residence || errors.residence })}
                                                 type='button'
-                                                is_disabled={ !values.residence || errors.residence }
+                                                is_disabled={ !values.residence || !!errors.residence }
                                                 onClick={this.onResidenceSelection}
-                                            >
-                                                <Localize i18n_default_text='Next' />
-                                            </Button>
+                                                text={localize('Next')}
+                                            />
                                         </div>
                                         :
                                         <div className='account-signup__password-selection'>
@@ -147,10 +148,9 @@ class AccountSignup extends React.Component {
                                             <Button
                                                 className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.password || errors.password || isSubmitting })}
                                                 type='submit'
-                                                is_disabled={ !values.password || errors.password || isSubmitting }
-                                            >
-                                                <Localize i18n_default_text='Start trading' />
-                                            </Button>
+                                                is_disabled={ !values.password || !!errors.password || isSubmitting }
+                                                text={localize('Start trading')}
+                                            />
                                         </div>
                                 }
                             </React.Fragment>

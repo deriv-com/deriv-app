@@ -1,18 +1,13 @@
 import {
     action,
     observable,
-    toJS }                  from 'mobx';
-import {
-    getCurrencies,
-    getDecimalPlaces,
-    isCryptocurrency }      from '_common/base/currency_base';
-import BinarySocket         from '_common/base/socket_base';
-import {
-    getPropertyValue,
-    isEmptyObject }         from '_common/utility';
-import { localize }         from 'App/i18n';
-import { WS }               from 'Services';
-import BaseStore            from '../../base-store';
+    toJS }           from 'mobx';
+import CurrencyUtils from 'deriv-shared/utils/currency';
+import ObjectUtils   from 'deriv-shared/utils/object';
+import BinarySocket  from '_common/base/socket_base';
+import { localize }  from 'App/i18n';
+import { WS }        from 'Services';
+import BaseStore     from '../../base-store';
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -48,10 +43,19 @@ class ConfigPaymentAgent {
     @observable is_withdraw            = false;
     @observable is_withdraw_successful = false;
     @observable receipt                = {};
-    @observable selected_agent         = {};
     @observable selected_bank          = bank_default_option[0].value;
     @observable supported_banks        = bank_default_option;
     @observable verification           = new ConfigVerification();
+}
+
+class ConfigPaymentAgentTransfer {
+    @observable container              = 'payment_agent_transfer';
+    @observable error                  = new ConfigError();
+    @observable has_no_balance         = false;
+    @observable is_payment_agent       = false;
+    @observable is_transfer_successful = false;
+    @observable receipt                = {};
+    @observable transfer_limit         = {};
 }
 
 class ConfigAccountTransfer {
@@ -87,8 +91,9 @@ export default class CashierStore extends BaseStore {
             ...(toJS(new Config({ container: 'deposit' }))),
             error: new ConfigError(),
         },
-        payment_agent: new ConfigPaymentAgent(),
-        withdraw     : {
+        payment_agent         : new ConfigPaymentAgent(),
+        payment_agent_transfer: new ConfigPaymentAgentTransfer(),
+        withdraw              : {
             ...(toJS(new Config({ container: 'withdraw' }))),
             error       : new ConfigError(),
             verification: new ConfigVerification(),
@@ -96,6 +101,7 @@ export default class CashierStore extends BaseStore {
     };
 
     active_container = this.config.deposit.container;
+    current_client;
 
     containers = [
         this.config.deposit.container,
@@ -112,15 +118,20 @@ export default class CashierStore extends BaseStore {
         residence       : localize('Country of Residence'),
     };
 
-    constructor({ root_store }) {
-        super({ root_store });
-
-        this.onSwitchAccount(this.accountSwitcherListener);
+    @action.bound
+    resetValuesIfNeeded() {
+        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
+            this.onAccountSwitch();
+        }
+        this.current_client = this.root_store.client.loginid;
     }
 
     @action.bound
     async onMount(verification_code) {
         await BinarySocket.wait('authorize');
+
+        this.resetValuesIfNeeded();
+
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
@@ -147,6 +158,8 @@ export default class CashierStore extends BaseStore {
             this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
+        this.checkIsPaymentAgent();
+
         this.sortAccountsTransfer();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
@@ -165,9 +178,9 @@ export default class CashierStore extends BaseStore {
                 // clear verification code on error
                 this.clearVerification();
             }
-        } else if (isCryptocurrency(this.root_store.client.currency)) {
+        } else if (CurrencyUtils.isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('700');
+            this.setContainerHeight('540');
             this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive
@@ -228,7 +241,7 @@ export default class CashierStore extends BaseStore {
     }
 
     getError = (error) => {
-        if (!error || isEmptyObject(error)) {
+        if (!error || ObjectUtils.isEmptyObject(error)) {
             return null;
         }
 
@@ -253,7 +266,10 @@ export default class CashierStore extends BaseStore {
                 error_message = [
                     localize('There was a problem validating your personal details.'),
                     (error.details.fields ?
-                        localize('Please update your {{details}}.', { details: error.details.fields.map(field => (this.error_fields[field] || field)).join(', ') })
+                        localize('Please update your {{details}}.', {
+                            details      : error.details.fields.map(field => (this.error_fields[field] || field)).join(', '),
+                            interpolation: { escapeValue: false },
+                        })
                         :
                         localize('Please update your details.')
                     ),
@@ -429,16 +445,17 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async onMountPaymentAgentList() {
+        this.setLoading(true);
         await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
         if (!this.config.payment_agent.list.length) {
-            this.setLoading(true);
             const payment_agent_list = await BinarySocket.wait('paymentagent_list');
             if (!this.config.payment_agent.list.length) {
                 this.setPaymentAgentList(payment_agent_list);
             }
         }
 
-        this.setIsNameSelected(true);
         this.filterPaymentAgentList();
         this.setLoading(false);
     }
@@ -448,11 +465,6 @@ export default class CashierStore extends BaseStore {
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency  = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
-    }
-
-    @action.bound
-    setIsNameSelected(is_name_selected = !this.config.payment_agent.is_name_selected) {
-        this.config.payment_agent.is_name_selected = is_name_selected;
     }
 
     @action.bound
@@ -517,18 +529,18 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
+        await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
         this.setIsWithdraw(true);
         this.setIsWithdrawSuccessful(false);
         this.setReceipt({});
-
-        await BinarySocket.wait('authorize');
 
         if (!this.config.payment_agent.list.length) {
             const payment_agent_list = await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
                 this.addPaymentAgent(payment_agent);
             });
-            this.onChangePaymentAgent({ target: { value: this.config.payment_agent.agents[0].value } });
         }
 
         this.setLoading(false);
@@ -577,22 +589,22 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    onChangePaymentAgent({ target }) {
-        this.config.payment_agent.selected_agent =
-            this.config.payment_agent.agents.find((agent) => agent.value === target.value);
-    }
-
-    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.paymentAgentWithdraw({ loginid, currency, amount, verification_code });
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
+            const selected_agent = this.config.payment_agent.agents.find((agent) => agent.value === loginid);
             this.setReceipt({
-                amount_transferred : amount,
-                payment_agent_email: this.config.payment_agent.selected_agent.email,
-                payment_agent_id   : this.config.payment_agent.selected_agent.value,
-                payment_agent_name : this.config.payment_agent.selected_agent.text,
-                payment_agent_phone: this.config.payment_agent.selected_agent.phone,
-                payment_agent_url  : this.config.payment_agent.selected_agent.url,
+                amount_transferred: CurrencyUtils.formatMoney(currency, amount, true),
+                ...(selected_agent && {
+                    payment_agent_email: selected_agent.email,
+                    payment_agent_id   : selected_agent.value,
+                    payment_agent_name : selected_agent.text,
+                    payment_agent_phone: selected_agent.phone,
+                    payment_agent_url  : selected_agent.url,
+                }),
+                ...(!selected_agent && {
+                    payment_agent_id: loginid,
+                }),
             });
             this.setIsWithdrawSuccessful(true);
         } else {
@@ -614,21 +626,19 @@ export default class CashierStore extends BaseStore {
     async onMountAccountTransfer() {
         this.setLoading(true);
         await BinarySocket.wait('authorize', 'website_status');
+        this.resetValuesIfNeeded();
+
         if (!this.config.account_transfer.accounts_list.length) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
-            const mt5_login_list = await BinarySocket.wait('mt5_login_list');
-            if (mt5_login_list.error || transfer_between_accounts.error) {
-                this.setErrorMessage(
-                    mt5_login_list.error || transfer_between_accounts.error,
-                    this.onMountAccountTransfer
-                );
+            if (transfer_between_accounts.error) {
+                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
                 this.setLoading(false);
                 return;
             }
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
-            this.sortAccountsTransfer(transfer_between_accounts, mt5_login_list);
+            this.sortAccountsTransfer(transfer_between_accounts);
         } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
             return;
         }
@@ -658,7 +668,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setHasNoBalance(has_no_balance) {
-        this.config.account_transfer.has_no_balance = has_no_balance;
+        this.config[this.active_container].has_no_balance = has_no_balance;
     }
 
     @action.bound
@@ -668,21 +678,21 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferFee() {
-        const transfer_fee = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
+        const transfer_fee = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'fees', this.config.account_transfer.selected_to.currency]);
         this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 1 : +transfer_fee;
     }
 
     @action.bound
     setMinimumFee() {
-        const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const decimals = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
 
     @action.bound
     setTransferLimit() {
-        const transfer_limit = getPropertyValue(getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
-        const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
+        const transfer_limit = ObjectUtils.getPropertyValue(CurrencyUtils.getCurrencies(), [this.config.account_transfer.selected_from.currency, 'transfer_between_accounts', 'limits']);
+        const decimal_places = CurrencyUtils.getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
@@ -691,47 +701,47 @@ export default class CashierStore extends BaseStore {
     }
 
     getMT5AccountType = (group) => {
+        if (!group) return {};
+
         const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
         let display_text = localize('MT5');
-        if (/svg/.test(value)) {
+        if (/svg$/.test(value)) {
             display_text = localize('DMT5 Synthetic indices');
-        } else if (/vanuatu/.test(value)) {
+        } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
             display_text = localize('DMT5 Standard');
         } else if (/labuan/.test(value)) {
             display_text = localize('DMT5 Advanced');
         }
+
         return { display_text, value };
     };
 
     @action.bound
-    async sortAccountsTransfer(response_accounts, response_mt5_accounts) {
+    async sortAccountsTransfer(response_accounts) {
         const transfer_between_accounts = response_accounts || await WS.transferBetweenAccounts();
-        const mt5_login_list = response_mt5_accounts || await BinarySocket.wait('mt5_login_list');
         if (!this.config.account_transfer.accounts_list.length) {
             // should have more than one account
-            if (mt5_login_list.error || transfer_between_accounts.error ||
+            if (transfer_between_accounts.error ||
                 transfer_between_accounts.accounts.length <= 1) {
                 return;
             }
         }
-        const accounts     = transfer_between_accounts.accounts;
-        const mt5_accounts = mt5_login_list.mt5_login_list;
+        const accounts = transfer_between_accounts.accounts;
         // sort accounts as follows:
         // for non-MT5, top is fiat, then crypto, alphabetically by currency
         // for MT5, standard, advanced, then synthetic indices
         accounts.sort((a, b) => {
-            const a_is_mt = /MT/.test(a.loginid);
-            const b_is_mt = /MT/.test(b.loginid);
-            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+            const a_is_mt = a.account_type === 'mt5';
+            const b_is_mt = b.account_type === 'mt5';
+            const a_is_crypto = !a_is_mt && CurrencyUtils.isCryptocurrency(a.currency);
+            const b_is_crypto = !b_is_mt && CurrencyUtils.isCryptocurrency(b.currency);
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                const a_group = mt5_accounts.find(account => account.login === a.loginid.split('MT')[1]).group;
-                if (/vanuatu/.test(a_group)) {
+                if (/vanuatu/.test(a.mt5_group)) {
                     return -1;
                 }
-                if (/svg/.test(a_group)) {
+                if (/svg/.test(a.mt5_group)) {
                     return 1;
                 }
                 return -1;
@@ -744,19 +754,15 @@ export default class CashierStore extends BaseStore {
         });
         const arr_accounts = [];
         accounts.forEach((account, idx) => {
-            const is_mt = /MT/.test(account.loginid);
-            let group;
-            if (is_mt) {
-                group = this.getMT5AccountType(mt5_accounts.find(mt5_account => mt5_account.login === account.loginid.split('MT')[1]).group);
-            }
+            const group = this.getMT5AccountType(account.mt5_group);
             const obj_values = {
-                is_mt,
-                text     : is_mt ? group.display_text : account.currency.toUpperCase(),
+                text     : group.display_text || account.currency.toUpperCase(),
                 value    : account.loginid,
                 balance  : account.balance,
                 currency : account.currency,
-                is_crypto: isCryptocurrency(account.currency),
-                ...(is_mt && { mt_icon: group.value }),
+                is_crypto: CurrencyUtils.isCryptocurrency(account.currency),
+                is_mt    : account.account_type === 'mt5',
+                ...(group.value && { mt_icon: group.value }),
             };
             if (idx === 0) {
                 this.config.account_transfer.selected_from = obj_values;
@@ -775,7 +781,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
-        this.config.account_transfer.is_transfer_successful = is_transfer_successful;
+        this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
 
     @action.bound
@@ -819,16 +825,17 @@ export default class CashierStore extends BaseStore {
 
     requestTransferBetweenAccounts = async ({ amount }) => {
         this.setErrorMessage('');
+        const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
-            this.config.account_transfer.selected_from.currency,
+            currency,
             amount,
         );
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount });
+            this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach((account) => {
                 this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value)
                     .balance = account.balance;
@@ -848,6 +855,82 @@ export default class CashierStore extends BaseStore {
         this.setIsTransferSuccessful(false);
     };
 
+    @action.bound
+    async onMountPaymentAgentTransfer() {
+        this.setLoading(true);
+        await BinarySocket.wait('authorize');
+        this.resetValuesIfNeeded();
+
+        const balance = this.root_store.client.balance;
+        if (!balance) {
+            this.setHasNoBalance(true);
+            this.setLoading(false);
+            return;
+        }
+        if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
+            const response = await BinarySocket.wait('paymentagent_list');
+            const current_payment_agent = this.getCurrentPaymentAgent(response);
+            this.setMinMaxPaymentAgentTransfer(current_payment_agent);
+        }
+        this.setLoading(false);
+    }
+
+    getCurrentPaymentAgent(response_payment_agent) {
+        return response_payment_agent.paymentagent_list.list.find((agent) =>
+            agent.paymentagent_loginid === this.root_store.client.loginid
+        ) || {};
+    }
+
+    async checkIsPaymentAgent() {
+        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        this.setIsPaymentAgent(get_settings.is_authenticated_payment_agent);
+    }
+
+    @action.bound
+    setIsPaymentAgent(is_payment_agent) {
+        this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
+    }
+
+    @action.bound
+    setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }) {
+        this.config.payment_agent_transfer.transfer_limit = {
+            min: min_withdrawal,
+            max: max_withdrawal,
+        };
+    }
+
+    @action.bound
+    setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }) {
+        this.config.payment_agent_transfer.receipt = {
+            amount_transferred,
+            client_id,
+            client_name,
+        };
+    }
+
+    @action.bound
+    requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        const payment_agent_transfer = await WS.paymentAgentTransfer({ amount, currency, description, transfer_to });
+        if (+payment_agent_transfer.paymentagent_transfer === 1) {
+            this.setReceiptPaymentAgentTransfer({
+                amount_transferred: amount,
+                client_id         : transfer_to,
+                client_name       : payment_agent_transfer.client_to_full_name,
+            });
+            this.setIsTransferSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+        }
+
+        return payment_agent_transfer;
+    };
+
+    @action.bound
+    resetPaymentAgentTransfer = () => {
+        this.setIsTransferSuccessful(false);
+        this.setErrorMessage('');
+    };
+
     onAccountSwitch() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {
             this.clearVerification(container);
@@ -859,9 +942,6 @@ export default class CashierStore extends BaseStore {
         });
         this.config.payment_agent = new ConfigPaymentAgent();
         this.config.account_transfer = new ConfigAccountTransfer();
-    }
-
-    accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.onAccountSwitch()));
+        this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
     }
 }

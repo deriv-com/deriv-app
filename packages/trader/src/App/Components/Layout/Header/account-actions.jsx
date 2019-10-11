@@ -1,7 +1,10 @@
+import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
+import { localize }         from 'App/i18n';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
+import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
@@ -40,6 +43,7 @@ export class AccountActions extends Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_virtual,
+            openRealAccountSignup,
             setCashierActiveTab,
             toggleAccountsDialog,
             toggleCashierModal,
@@ -47,12 +51,12 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <BinaryLink className='account-settings-toggle' to='/account/personal-details'>
+                    <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                         <Icon icon='IconUser' />
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
-                            balance={CurrencyUtils.formatMoney(currency, balance, true)}
+                            balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
                             is_upgrade_enabled={can_upgrade}
                             is_virtual={is_virtual}
                             currency={currency}
@@ -60,7 +64,18 @@ export class AccountActions extends Component {
                             toggleDialog={toggleAccountsDialog}
                         />
                     </React.Suspense>
-                    {!is_virtual &&
+                    {!is_virtual && !currency &&
+                        <div className='set-currency'>
+                            <Button
+                                onClick={openRealAccountSignup}
+                                has_effect
+                                type='button'
+                                className='btn btn--primary--default'
+                                text={localize('Set currency')}
+                            />
+                        </div>
+                    }
+                    {currency &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'
@@ -95,6 +110,7 @@ AccountActions.propTypes = {
     is_payment_agent_transfer_visible: PropTypes.any,
     is_payment_agent_visible         : PropTypes.any,
     is_virtual                       : PropTypes.any,
+    openRealAccountSignup            : PropTypes.func,
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.any,
     toggleCashierModal               : PropTypes.any,

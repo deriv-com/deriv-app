@@ -9,9 +9,9 @@ Blockly.Blocks.tick = {
             message0       : translate('Last Tick'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns the tick value received from server'),
             category       : Blockly.Categories.Tick_Analysis,
         };
@@ -19,7 +19,7 @@ Blockly.Blocks.tick = {
     meta(){
         return {
             'display_name': translate('Last tick'),
-            'description' : translate('This block returns the last tick value for the selected Market. You can select Market in the root block “Trade parameters”.'),
+            'description' : translate('This block gives you the value of the last tick.'),
         };
     },
 };
@@ -33,9 +33,9 @@ Blockly.Blocks.tick_string = {
             message0       : translate('Last Tick String'),
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Binary.colour,
-            colourSecondary: Blockly.Colours.Binary.colourSecondary,
-            colourTertiary : Blockly.Colours.Binary.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns the tick value received by a before purchase block in string format'),
             category       : Blockly.Categories.Tick_Analysis,
         };

@@ -121,8 +121,7 @@ const SaveLoadModal = ({
                                     type='button'
                                     className={classNames(
                                         'save-load__button',
-                                        'btn--secondary',
-                                        'btn--secondary--orange',
+                                        'btn--secondary--default',
                                     )}
                                     text={translate('Cancel')}
                                     onClick={() => toggleSaveLoadModal(is_save_modal)}
@@ -131,8 +130,7 @@ const SaveLoadModal = ({
                                     type='submit'
                                     className={classNames(
                                         'save-load__button',
-                                        'btn--primary',
-                                        'btn--primary--orange',
+                                        'btn--primary--default',
                                     )}
                                     is_loading={button_status === 1}
                                     is_submit_success={button_status === 2}

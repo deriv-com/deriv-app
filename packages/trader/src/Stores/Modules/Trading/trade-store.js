@@ -235,10 +235,15 @@ export default class TradeStore extends BaseStore {
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
-                this.processNewValuesAsync({
-                    ...ContractType.getContractValues(this),
-                    ...ContractType.getContractCategories(),
-                });
+                this.processNewValuesAsync(
+                    {
+                        ...ContractType.getContractValues(this),
+                        ...ContractType.getContractCategories(),
+                    },
+                    false,
+                    {},
+                    false,
+                );
             });
         }
     }
@@ -285,7 +290,10 @@ export default class TradeStore extends BaseStore {
         }
 
         if (name === 'currency') {
-            this.root_store.client.selectCurrency(value);
+            // Only allow the currency dropdown change if client is not logged in
+            if (!this.root_store.client.is_logged_in) {
+                this.root_store.client.selectCurrency(value);
+            }
         } else if (name === 'expiry_date') {
             this.expiry_time = null;
         } else if (!(name in this)) {
@@ -698,14 +706,19 @@ export default class TradeStore extends BaseStore {
         );
         this.refresh();
         WS.forgetAll('balance').then(() => {
-            WS.subscribeBalance((response) => {
-                if (response.balance) {
-                    this.root_store.client.setBalance(response.balance);
-                }
-            });
+            // the first has to be without subscribe to quickly update current account's balance
+            WS.authorized.balance().then(this.handleResponseBalance);
+            // the second is to subscribe to balance and update all sibling accounts' balances too
+            WS.subscribeBalanceAll(this.handleResponseBalance);
         });
         this.debouncedProposal();
     }
+
+    handleResponseBalance = (response) => {
+        if (response.balance) {
+            this.root_store.client.setBalance(response.balance);
+        }
+    };
 
     @action.bound
     onUnmount() {

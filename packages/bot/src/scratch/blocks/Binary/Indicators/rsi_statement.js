@@ -26,9 +26,9 @@ Blockly.Blocks.rsi_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Special4.colour,
-            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            colour           : Blockly.Colours.Base.colour,
+            colourSecondary  : Blockly.Colours.Base.colourSecondary,
+            colourTertiary   : Blockly.Colours.Base.colourTertiary,
             tooltip          : translate('Relative Strength Index (RSI) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -38,7 +38,7 @@ Blockly.Blocks.rsi_statement = {
     meta(){
         return {
             'display_name': translate('Relative Strength Index (RSI)'),
-            'description' : translate('Relative Strength Index (RSI) is a technical analysis tool which helps in trend identification. RSI measures the magnitude of recent price changes. It can have a reading from 0 to 100. Typically, RSI value of 70 and above indicates that a security is overbought and the current trend may reverse or price correction may occur. A value of 30 or below, indicates that a security id oversold. The indicator was originally developed by J. Welles Wilder Jr. and introduced in his seminal 1978 book, New Concepts in Technical Trading Systems.'),
+            'description' : translate('RSI is a technical analysis tool that helps you identify the market trend. It will give you a value from 0 to 100. An RSI value of 70 and above means that the asset is overbought and the current trend may reverse, while a value of 30 and below means that the asset is oversold.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

@@ -5,7 +5,7 @@ import React                          from 'react';
 import { NavLink }                    from 'react-router-dom';
 import { TransitionGroup,
     CSSTransition }                   from 'react-transition-group';
-import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { ThemedScrollbars }           from 'deriv-components';
 import { localize }                   from 'App/i18n';
 import Icon                           from 'Assets/icon.jsx';
 import routes                         from 'Constants/routes';
@@ -70,39 +70,46 @@ class PositionsDrawer extends React.Component {
         );
 
         return (
-            <div
-                id='dt_positions_drawer'
-                className={classNames(
-                    'positions-drawer', {
-                        'positions-drawer--open': is_positions_drawer_on,
+            <React.Fragment>
+                <div className={classNames(
+                    'positions-drawer__bg', {
+                        'positions-drawer__bg--open': is_positions_drawer_on,
                     })}
-            >
-                <div className='positions-drawer__header'>
-                    <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
-                    <div
-                        id='dt_positions_drawer_close_icon'
-                        className='positions-drawer__icon-close'
-                        onClick={toggleDrawer}
-                    >
-                        <Icon icon='IconMinimize' />
+                />
+                <div
+                    id='dt_positions_drawer'
+                    className={classNames(
+                        'positions-drawer', {
+                            'positions-drawer--open': is_positions_drawer_on,
+                        })}
+                >
+                    <div className='positions-drawer__header'>
+                        <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
+                        <div
+                            id='dt_positions_drawer_close_icon'
+                            className='positions-drawer__icon-close'
+                            onClick={toggleDrawer}
+                        >
+                            <Icon icon='IconMinimize' />
+                        </div>
+                    </div>
+                    <div className='positions-drawer__body'>
+                        <ThemedScrollbars
+                            style={{ width: '100%', height: '100%' }}
+                            autoHide
+                        >
+                            {(is_empty || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
+                        </ThemedScrollbars>
+                    </div>
+                    <div className='positions-drawer__footer'>
+                        <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary--large btn--link' to={routes.reports}>
+                            <span className='btn__text'>
+                                {localize('Go to Reports')}
+                            </span>
+                        </NavLink>
                     </div>
                 </div>
-                <div className='positions-drawer__body'>
-                    <Scrollbars
-                        style={{ width: '100%', height: '100%' }}
-                        autoHide
-                    >
-                        {(is_empty || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
-                    </Scrollbars>
-                </div>
-                <div className='positions-drawer__footer'>
-                    <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary--large btn--link' to={routes.reports}>
-                        <span className='btn__text'>
-                            {localize('Go to Reports')}
-                        </span>
-                    </NavLink>
-                </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

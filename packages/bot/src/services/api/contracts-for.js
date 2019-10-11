@@ -351,6 +351,7 @@ export default class ContractsFor {
             const submarket = contracts[i].submarket;
             const trade_type_category      = this.getTradeTypeCategoryByTradeType(contracts[i].contract_category);
             const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i].contract_category);
+            // eslint-disable-next-line no-await-in-loop
             const trade_types = await this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
 
             if (trade_type_category_name) {

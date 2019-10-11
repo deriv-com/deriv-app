@@ -30,7 +30,7 @@ export default class JournalStore {
 
     @action.bound
     onError(data) {
-        if (unrecoverable_errors.some(x=>x && x === data.name)) {
+        if (unrecoverable_errors.includes(data.name) {
             this.root_store.contract_card.clear();
             this.root_store.run_panel.setActiveTabIndex(2);
             this.root_store.run_panel.is_continue_trading = false;

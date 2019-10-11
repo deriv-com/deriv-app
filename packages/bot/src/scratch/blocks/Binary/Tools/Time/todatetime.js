@@ -20,9 +20,9 @@ Blockly.Blocks.todatetime = {
             ],
             output         : 'String',
             outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate(
                 'Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'
             ),

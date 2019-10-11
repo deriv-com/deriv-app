@@ -5,6 +5,7 @@ import {
     observable,
     runInAction,
     when,
+    reaction,
 }                                    from 'mobx';
 import CurrencyUtils                from 'deriv-shared/utils/currency';
 import ObjectUtils                  from 'deriv-shared/utils/object';
@@ -66,10 +67,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return '';
-        return (this.accounts[this.loginid] && this.accounts[this.loginid].balance) ?
+        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
+        return (this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]) ?
             this.accounts[this.loginid].balance.toString() :
-            '';
+            undefined;
     }
 
     /**
@@ -436,6 +437,7 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
+                this.root_store.ui.removeNotification({ key: 'currency' });
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);
@@ -526,6 +528,7 @@ export default class ClientStore extends BaseStore {
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,
+            this.root_store.ui,
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -552,25 +555,35 @@ export default class ClientStore extends BaseStore {
             }
         }
 
+        /**
+         * Set up reaction for account_settings, account_status
+         */
+        reaction(
+            () => [this.account_settings, this.account_status],
+            () => {
+                if (client && !client.is_virtual) {
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this.account_settings,
+                        this.account_status,
+                        this.root_store.ui.addNotification,
+                        this.loginid,
+                        this.root_store.ui,
+                    );
+                    this.setHasMissingRequiredField(has_missing_required_field);
+                } else if (!client || client.is_virtual) {
+                    this.root_store.ui.removeAllNotifications();
+                }
+            }
+        );
+
+        // TODO: set all currency references to be used only from client-store,
+        // removing the need for reinitializing below
         if (client && !client.is_virtual) {
-            await BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status');
-            const { has_missing_required_field } = handleClientNotifications(
-                client,
-                this.account_settings,
-                this.account_status,
-                this.root_store.ui.addNotification,
-                this.loginid,
-            );
-            this.setHasMissingRequiredField(has_missing_required_field);
-            // TODO: set all currency references to be used only from client-store,
-            // removing the need for reinitializing below
             if (this.currency && (this.currency.length > 0)) {
                 this.root_store.modules.trade.initAccountCurrency(this.currency);
             }
-        } else if (!client || client.is_virtual) {
-            this.root_store.ui.removeAllNotifications();
         }
-
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -733,10 +746,12 @@ export default class ClientStore extends BaseStore {
     setBalance(obj_balance) {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            this.obj_total_balance = {
-                amount  : obj_balance.total.real.amount,
-                currency: obj_balance.total.real.currency,
-            };
+            if (obj_balance.total) {
+                this.obj_total_balance = {
+                    amount  : obj_balance.total.real.amount,
+                    currency: obj_balance.total.real.currency,
+                };
+            }
             this.resetLocalStorageValues(this.loginid);
         }
     }

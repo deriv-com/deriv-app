@@ -3,7 +3,7 @@ import PropTypes     from 'prop-types';
 import React         from 'react';
 import ButtonLoading from './button_loading.jsx';
 
-// TODO: use Icons from components
+// TODO: use-from-shared - Use this icon from icons' shared package
 const IconCheckmark = () => (
     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
         <g fill='none' fillRule='evenodd'>

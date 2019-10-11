@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import {
     Autocomplete,
-    Input,
+    PasswordInput,
     Button,
     Dialog }             from 'deriv-components';
 import {
@@ -94,7 +94,7 @@ class AccountSignup extends React.Component {
                                                 <Localize i18n_default_text='Thanks for verifying your email' />
                                             </p>
                                             <p className='account-signup__text'>
-                                                <Localize i18n_default_text='Where are you a resident?' />
+                                                <Localize i18n_default_text='Where do you live?' />
                                             </p>
                                             <Field name='residence'>
                                                 {({ field }) => (
@@ -129,10 +129,9 @@ class AccountSignup extends React.Component {
                                             </p>
                                             <Field name='password'>
                                                 {({ field }) => (
-                                                    <Input
+                                                    <PasswordInput
                                                         { ...field }
                                                         className='account-signup__password-field'
-                                                        type='password'
                                                         label={localize('Create a password')}
                                                         error={ touched.password && errors.password }
                                                         required

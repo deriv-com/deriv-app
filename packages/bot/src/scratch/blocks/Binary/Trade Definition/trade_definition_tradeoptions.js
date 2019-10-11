@@ -165,6 +165,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
             const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
             const duration_input          = this.getInput('DURATION');
+            const duration_value          = Blockly.JavaScript.valueToCode(this, 'DURATION') || '0';
             const { connection }          = duration_input;
             const duration_options        = durations.map(duration => [duration.display, duration.unit]);
 
@@ -180,7 +181,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 if (target_block && target_block.isShadow()) {
                     const min_duration = durations.find(d => d.unit === this.selected_duration);
 
-                    if (min_duration && event_group !== 'load') {
+                    if (min_duration && (event_group !== 'load' || duration_value === '0')) {
                         target_block.setFieldValue(min_duration.min, 'NUM');
                     }
                 }

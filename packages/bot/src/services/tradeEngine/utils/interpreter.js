@@ -144,8 +144,8 @@ export default class Interpreter {
 
     terminateSession() {
         this.$scope.api.disconnect();
-        globalObserver.emit('bot.stop');
         this.stopped = true;
+        globalObserver.emit('bot.stop');
     }
 
     stop() {

@@ -17,6 +17,7 @@ const AdvancedDuration = ({
     advanced_expiry_type,
     duration_units_list,
     duration_t,
+    contract_expiry_type,
     changeDurationUnit,
     getDurationFromUnit,
     expiry_date,
@@ -76,7 +77,7 @@ const AdvancedDuration = ({
                                 value={advanced_duration_unit}
                             />
                         }
-                        { advanced_duration_unit === 't' &&
+                        { advanced_duration_unit === 't' && contract_expiry_type === 'tick' &&
                             <RangeSlider
                                 name='duration'
                                 ticks={10}
@@ -126,6 +127,7 @@ AdvancedDuration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
     changeDurationUnit    : PropTypes.func,
+    contract_expiry_type  : PropTypes.string,
     duration_t            : PropTypes.number,
     duration_units_list   : MobxPropTypes.arrayOrObservableArray,
     expiry_date           : PropTypes.oneOfType([
@@ -149,6 +151,7 @@ AdvancedDuration.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        validation_errors: modules.trade.validation_errors,
+        contract_expiry_type: modules.trade.contract_expiry_type,
+        validation_errors   : modules.trade.validation_errors,
     })
 )(AdvancedDuration);

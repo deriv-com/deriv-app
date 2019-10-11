@@ -30,9 +30,9 @@ Blockly.Blocks.read_ohlc = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Read the selected candle value'),
             category       : Blockly.Categories.Tick_Analysis,
         };

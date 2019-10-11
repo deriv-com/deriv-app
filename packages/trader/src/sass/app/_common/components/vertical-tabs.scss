@@ -7,6 +7,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     justify-content: flex-start;
     border-radius: $BORDER_RADIUS;
     background-color: var(--general-section-1);
+    height: 100%;
 
     &__content-container {
         position: relative;
@@ -24,7 +25,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         // }
     }
     &:not(.vertical-tab--full-screen) {
-        height: 600px;
+        // height: 600px;
 
         .vertical-tab__content {
             @include toEm(padding, 24px);

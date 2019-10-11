@@ -1,5 +1,6 @@
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
+import { Scrollbars }        from 'tt-react-custom-scrollbars';
 import { connect }           from 'Stores/connect';
 import AddCryptoCurrency     from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -63,26 +64,30 @@ class AddOrManageAccounts extends Component {
 
     render() {
         return (
-            <div className='account-wizard add-or-manage'>
-                <AddCryptoCurrency
-                    className='account-wizard__body'
-                    onSubmit={this.updateValue}
-                    value={this.state.form_value}
-                    form_error={this.state.form_error}
-                    {...this.props}
-                />
-                {this.props.can_change_fiat_currency &&
-                <div className='change-currency'>
-                    <ChangeAccountCurrency
-                        className='account-wizard__body'
-                        onSubmit={this.updateValue}
-                        value={this.state.form_value}
-                        form_error={this.state.form_error}
-                        {...this.props}
-                    />
+            <Scrollbars autoHide>
+                <div className='account-wizard add-or-manage'>
+                    {this.props.available_crypto_currencies.length !== 0 &&
+                        <AddCryptoCurrency
+                            className='account-wizard__body'
+                            onSubmit={this.updateValue}
+                            value={this.state.form_value}
+                            form_error={this.state.form_error}
+                            {...this.props}
+                        />
+                    }
+                    {this.props.can_change_fiat_currency &&
+                    <div className='change-currency'>
+                        <ChangeAccountCurrency
+                            className='account-wizard__body'
+                            onSubmit={this.updateValue}
+                            value={this.state.form_value}
+                            form_error={this.state.form_error}
+                            {...this.props}
+                        />
+                    </div>
+                    }
                 </div>
-                }
-            </div>
+            </Scrollbars>
         );
     }
 }
@@ -95,7 +100,8 @@ AddOrManageAccounts.propTypes = {
 };
 
 export default connect(({ client }) => ({
-    can_change_fiat_currency: client.can_change_fiat_currency,
-    setCurrency             : client.setAccountCurrency,
-    createCryptoAccount     : client.createCryptoAccount,
+    available_crypto_currencies: client.available_crypto_currencies,
+    can_change_fiat_currency   : client.can_change_fiat_currency,
+    setCurrency                : client.setAccountCurrency,
+    createCryptoAccount        : client.createCryptoAccount,
 }))(AddOrManageAccounts);

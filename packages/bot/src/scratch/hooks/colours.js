@@ -1,98 +1,71 @@
-Blockly.Colours.RootBlock = {
-    colour         : '#F2F3F5',
-    colourSecondary: '#F2F3F5',
-    colourTertiary : '#F2F3F5',
+const isDarkModeEnabled = () => {
+    return false;
+    // TODO: uncomment the following lines when the Dark Mode is ready fo DBot
+    // const ui_store = localStorage.getItem('ui_store');
+    
+    // if (ui_store && (ui_store.length > 0)) {
+    //     return JSON.parse(ui_store).is_dark_mode_on || false;
+    // }
+    // return false;
 };
 
-Blockly.Colours.TradeDefinition = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
+if (isDarkModeEnabled()) {              // Dark theme
+    Blockly.Colours.RootBlock = {
+        colour         : '#151717',
+        colourSecondary: '#F2F3F5',
+        colourTertiary : '#151717',
+    };
+    Blockly.Colours.Base = {
+        colour         : '#4665A0',
+        colourSecondary: '#507ED5',
+        colourTertiary : '#507ED5',
+    };
 
-Blockly.Colours.BeforePurchase = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
+    Blockly.Colours.Special1 = {
+        colour         : '#9E6248',
+        colourSecondary: '#D27954',
+        colourTertiary : '#D27954',
+    };
 
-Blockly.Colours.DuringPurchase = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
+    Blockly.Colours.Special2 = {
+        colour         : '#4F7F7E',
+        colourSecondary: '#5DA5A3',
+        colourTertiary : '#5DA5A3',
+    };
 
-Blockly.Colours.AfterPurchase = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
-
-Blockly.Colours.Utility = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
-
-Blockly.Colours.Analysis = {
-    colour         : '#77a6fc',
-    colourSecondary: '#507ed5',
-    colourTertiary : '#507ed5',
-};
-
-// --- Special colours ---
-Blockly.Colours.Special1 = {
-    colour         : '#d89f52',
-    colourSecondary: '#a27b47',
-    colourTertiary : '#a27b47',
-};
-
-Blockly.Colours.Special2 = {
-    colour         : '#5da5a3',
-    colourSecondary: '#4f7f7e',
-    colourTertiary : '#4f7f7e',
-};
-
-Blockly.Colours.Special3 = {
-    colour         : '#c2c9a2',
-    colourSecondary: '#9aa27b',
-    colourTertiary : '#9aa27b',
-};
-
-Blockly.Colours.Special4 = {
-    colour         : '#f27c7c',
-    colourSecondary: '#cb5555',
-    colourTertiary : '#cb5555',
-};
-
-// --- Binary.com colours ---
-
-Blockly.Colours.Binary = {
-    colour         : '#dedede',
-    colourSecondary: '#e2e2e2',
-    colourTertiary : '#bababa',
-};
-
-Blockly.Colours.BinaryLessGray = {
-    colour         : '#f3f3f3',
-    colourSecondary: '#e2e2e2',
-    colourTertiary : '#bababa',
-};
-
-Blockly.Colours.BinaryPurple = {
-    colour         : '#dedede',
-    colourSecondary: '#e2e2e2',
-    colourTertiary : '#bababa',
-};
-
-Blockly.Colours.BinaryLessPurple = {
-    colour         : '#dedede',
-    colourSecondary: '#e2e2e2',
-    colourTertiary : '#bababa',
-};
-
-Blockly.Colours.BinaryProcedures = {
-    colour         : '#1876d2',
-    colourSecondary: '#0d47a1',
-    colourTertiary : '#0d47a1',
-};
+    Blockly.Colours.Special3 = {
+        colour         : '#994949',
+        colourSecondary: '#CB5555',
+        colourTertiary : '#CB5555',
+    };
+} else {                            // Light theme
+    Blockly.Colours.RootBlock = {
+        colour         : '#F2F3F5',
+        colourSecondary: '#F2F3F5',
+        colourTertiary : '#F2F3F5',
+    };
+    
+    Blockly.Colours.Base = {
+        colour         : '#507ED5',
+        colourSecondary: '#4665A0',
+        colourTertiary : '#4665A0',
+    };
+    
+    Blockly.Colours.Special1 = {
+        colour         : '#D27954',
+        colourSecondary: '#9E6248',
+        colourTertiary : '#9E6248',
+    };
+    
+    Blockly.Colours.Special2 = {
+        colour         : '#5DA5A3',
+        colourSecondary: '#4F7F7E',
+        colourTertiary : '#4F7F7E',
+    };
+    
+    Blockly.Colours.Special3 = {
+        colour         : '#CB5555',
+        colourSecondary: '#994949',
+        colourTertiary : '#994949',
+    };
+}

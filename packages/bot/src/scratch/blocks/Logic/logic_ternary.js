@@ -30,9 +30,9 @@ Blockly.Blocks.logic_ternary = {
             ],
             output         : null,
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Tests if a given value is True or false and returns respective item'),
             category       : Blockly.Categories.Logic,
         };

@@ -6,28 +6,22 @@
 
 /* COLOR PALETTE */
 
+/* colors */
 $color-black: #0e0e0e;
 $color-black-1: #333333;
 $color-black-3: #151717;
 $color-black-4: #1d1f20;
 $color-black-5: #242828;
 $color-black-6: #3e3e3e;
-$color-black-7: #000000b8;
+$color-black-7: #000000;
 $color-black-8: #323738;
-$color-black-9: #0e0e0ef5;
-$color-black-10: #00000014;
-$color-black-11: #00000029;
-$color-black-12: #000000d6;
 $color-white: #ffffff;
-$color-white-1: #fffffff5;
-$color-white-2: #ffffff29;
 $color-red: #ff444f;
 $color-red-1: #ec3f3f;
 $color-red-2: #cc2e3d;
 $color-red-3: #a32430;
 $color-red-4: #d33636;
 $color-red-5: #eb3e48;
-$color-red-6: #ff444f14;
 $color-grey: #c2c2c2;
 $color-grey-1: #999999;
 $color-grey-2: #f2f3f4;
@@ -44,6 +38,19 @@ $color-green-4: #008079;
 $color-orange: #ff6444;
 $color-yellow: #ffad3a;
 $color-blue: #377cfc;
+
+/* alpha colors */
+$alpha-color-black-1: transparentize($color-black-7, 0.28);
+$alpha-color-black-2: transparentize($color-black, 0.04);
+$alpha-color-black-3: transparentize($color-black-7, 0.92);
+$alpha-color-black-4: transparentize($color-black-7, 0.84);
+$alpha-color-black-5: transparentize($color-black-7, 0.16);
+$alpha-color-white-1: transparentize($color-white, 0.04);
+$alpha-color-white-2: transparentize($color-white, 0.84);
+$alpha-color-white-3: transparentize($color-white, 0.92);
+$alpha-color-red-1: transparentize($color-red, 0.92);
+$alpha-color-green-1: transparentize($color-green-1, 0.08);
+$alpha-color-green-2: transparentize($color-green-3, 0.08);
 
 :root {
     // Text sizes
@@ -92,13 +99,13 @@ $color-blue: #377cfc;
         --button-secondary-default: #{$color-grey-1};
         --button-tertiary-default: transparent;
         --button-primary-hover: #{$color-red-5};
-        --button-secondary-hover: #{$color-black-10};
-        --button-tertiary-hover: #{$color-red-6};
+        --button-secondary-hover: #{$alpha-color-black-3};
+        --button-tertiary-hover: #{$alpha-color-red-1};
         // Overlay
-        --overlay-outside-dialog: #{$color-black-7};
-        --overlay-inside-dialog: #{$color-white-1};
+        --overlay-outside-dialog: #{$alpha-color-black-1};
+        --overlay-inside-dialog: #{$alpha-color-white-1};
         // Shadow
-        --shadow-menu: #{$color-black-11};
+        --shadow-menu: #{$alpha-color-black-4};
         // States
         --state-normal: #{$color-white};
         --state-hover: #{$color-grey-4};
@@ -122,7 +129,7 @@ $color-blue: #377cfc;
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Transparentize
-        --transparent-success: transparentize(#{$color-green-1}, 0.92);
+        --transparent-success: #{$alpha-color-green-1};
     }
     .theme--dark {
         // General
@@ -152,13 +159,13 @@ $color-blue: #377cfc;
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
         --button-primary-hover: #{$color-red-5};
-        --button-secondary-hover: transparentize(#{$color-white}, 0.92);
-        --button-tertiary-hover: #{$color-red-6};
+        --button-secondary-hover: #{$alpha-color-white-3};
+        --button-tertiary-hover: #{$alpha-color-red-1};
         // Overlay
-        --overlay-outside-dialog: #{$color-black-7};
-        --overlay-inside-dialog: #{$color-black-9};
+        --overlay-outside-dialog: #{$alpha-color-black-1};
+        --overlay-inside-dialog: #{$alpha-color-black-2};
         // Shadow
-        --shadow-menu: #{$color-black-12};
+        --shadow-menu: #{$alpha-color-black-5};
         // States
         --state-normal: #{$color-black};
         --state-hover: #{$color-black-5};
@@ -182,7 +189,7 @@ $color-blue: #377cfc;
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Transparentize
-        --transparent-success: transparentize(#{$color-green-3}, 0.92);
+        --transparent-success: #{$alpha-color-green-2};
     }
 }
 

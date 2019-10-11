@@ -1,7 +1,8 @@
-import TicksInterface          from './TicksInterface';
-import ToolsInterface          from './ToolsInterface';
-import TradeEngine             from '../trade';
-import { noop, createDetails } from '../utils/helpers';
+import TicksInterface                   from './TicksInterface';
+import ToolsInterface                   from './ToolsInterface';
+import TradeEngine                      from '../trade';
+import { noop, createDetails }          from '../utils/helpers';
+import { observer as globalObserver }   from '../../../utils/observer';
 
 /**
  * Bot - Bot Module
@@ -52,6 +53,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             sellAtMarket   : () => this.tradeEngine.sellAtMarket(),
             getSellPrice   : () => this.getSellPrice(),
             isResult       : result => getDetail(10) === result,
+            isTradeAgain   : result => globalObserver.emit('bot.trade_again', result),
             readDetails    : i => getDetail(i - 1),
         };
     }

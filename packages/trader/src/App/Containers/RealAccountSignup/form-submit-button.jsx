@@ -10,6 +10,7 @@ const FormSubmitButton = ({
     is_center,
     is_disabled,
     is_absolute,
+    is_loading,
     label,
     onCancel,
 }) => {
@@ -40,6 +41,7 @@ const FormSubmitButton = ({
                 is_disabled={is_disabled}
                 type='submit'
                 text={label}
+                is_loading={ is_loading }
             />
         </div>
     );

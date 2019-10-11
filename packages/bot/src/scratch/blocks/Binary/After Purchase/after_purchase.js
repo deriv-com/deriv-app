@@ -1,6 +1,7 @@
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
+// import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -8,7 +9,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 4. Continue trading %2'),
+            message0: translate('%1 4. Restart trading conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -40,12 +41,16 @@ Blockly.Blocks.after_purchase = {
     },
     meta(){
         return {
-            'display_name': translate('Continue trading'),
+            'display_name': translate('Restart trading conditions'),
             'description' : translate('Here is where you can decide to continue trading.'),
         };
     },
     onchange(event) {
+        // TODO: incomment this when the dark mode is done
+        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         setBlockTextColor(this);
+        // }
+        
         if (!this.workspace || this.isInFlyout) {
             return;
         }
@@ -68,6 +73,7 @@ Blockly.JavaScript.after_purchase = block => {
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
         ${stack}
+        Bot.isTradeAgain(false);
         return false;
     };`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];

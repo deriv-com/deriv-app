@@ -21,9 +21,9 @@ Blockly.Blocks.ohlc_values_in_list = {
             ],
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns a list of specific values from a given candle list'),
             category       : Blockly.Categories.Candle,
         };

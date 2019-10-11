@@ -41,7 +41,7 @@ const SaveLoadModal = ({
             title={title}
             className='modal--saveload'
             is_open={is_saveload_modal_open}
-            toggleModal={toggleSaveLoadModal}
+            toggleModal={() => toggleSaveLoadModal()}
         >
             <Formik
                 initialValues={initial_option}

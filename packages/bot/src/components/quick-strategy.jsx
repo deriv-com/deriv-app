@@ -115,6 +115,7 @@ class QuickStrategy extends React.PureComponent {
                 className='modal--strategy'
                 is_open={is_strategy_modal_open}
                 toggleModal={toggleStrategyModal}
+                width={'460px'}
             >
                 <div className='modal__content'>
                     <div className='quick-strategy__tabs'>

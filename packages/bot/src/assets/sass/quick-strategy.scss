@@ -3,8 +3,6 @@
 
     &__container {
         &_#{$strategy-modal} {
-            width: 464px;
-
             .modal__content {
                 padding: 24px 24px 0;
             }

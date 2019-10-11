@@ -74,6 +74,9 @@ class MT5PasswordManagerModal extends React.Component {
             enableApp,
             disableApp,
             is_visible,
+            selected_login,
+            selected_account,
+            toggleModal,
         } = this.props;
 
         const validatePassword = (values) => {
@@ -96,7 +99,7 @@ class MT5PasswordManagerModal extends React.Component {
         };
 
         const onSubmit = async (values) => {
-            const login = this.props.selected_login;
+            const login = selected_login;
 
             if (!login) {
                 return;
@@ -257,8 +260,8 @@ class MT5PasswordManagerModal extends React.Component {
                     disableApp={ disableApp }
                     enableApp={ enableApp }
                     is_open={ is_visible }
-                    title={ localize('Manage your DMT5 Standard real account password') }
-                    toggleModal={ this.props.toggleModal }
+                    title={ localize('Manage your DMT5 {{account_title}} account password', { account_title: selected_account }) }
+                    toggleModal={ toggleModal }
                     height='688px'
                     width='904px'
                 >
@@ -279,9 +282,10 @@ class MT5PasswordManagerModal extends React.Component {
 }
 
 MT5PasswordManagerModal.propTypes = {
-    is_visible    : PropTypes.bool,
-    selected_login: PropTypes.string,
-    toggleModal   : PropTypes.func,
+    is_visible      : PropTypes.bool,
+    selected_account: PropTypes.string,
+    selected_login  : PropTypes.string,
+    toggleModal     : PropTypes.func,
 };
 
 export default connect(({ ui }) => ({

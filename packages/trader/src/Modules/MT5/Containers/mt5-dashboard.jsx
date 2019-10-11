@@ -25,8 +25,9 @@ import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 class MT5Dashboard extends React.Component {
     state = {
         password_manager: {
-            is_visible    : false,
-            selected_login: '',
+            is_visible      : false,
+            selected_login  : '',
+            selected_account: '',
         },
     };
 
@@ -39,11 +40,12 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = (login) => {
+    togglePasswordManagerModal = (login, title) => {
         this.setState((prev_state) => ({
             password_manager: {
-                is_visible    : !prev_state.password_manager.is_visible,
-                selected_login: login || '',
+                is_visible      : !prev_state.password_manager.is_visible,
+                selected_login  : login || '',
+                selected_account: title || '',
             },
         }));
     };
@@ -78,6 +80,7 @@ class MT5Dashboard extends React.Component {
                     <MT5PasswordManagerModal
                         is_visible={ this.state.password_manager.is_visible }
                         selected_login={ this.state.password_manager.selected_login }
+                        selected_account={ this.state.password_manager.selected_account }
                         toggleModal={ this.togglePasswordManagerModal }
                     />
                     <Tabs>

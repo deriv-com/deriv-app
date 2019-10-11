@@ -1,10 +1,11 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { Scrollbars }     from 'tt-react-custom-scrollbars';
-import { Button }         from 'deriv-components';
-import Icon               from 'Assets/icon.jsx';
-import { localize }       from 'App/i18n';
+import classNames      from 'classnames';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import {
+    Button,
+    ThemedScrollbars } from 'deriv-components';
+import Icon            from 'Assets/icon.jsx';
+import { localize }    from 'App/i18n';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,
@@ -46,12 +47,12 @@ const TradeTypeInfoItem = ({
                                 />
                             </div>
                             <div className='trade-type-info-dialog__content'>
-                                <Scrollbars
+                                <ThemedScrollbars
                                     autoHide
                                     style={{ height: '100%' }}
                                 >
                                     <Icon icon='TradeCategories' category={type.value} />
-                                </Scrollbars>
+                                </ThemedScrollbars>
                             </div>
                             {itemListLength > 1 &&
                             <div>

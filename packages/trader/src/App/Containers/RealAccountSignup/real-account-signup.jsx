@@ -23,6 +23,20 @@ const initialState = {
     error_message     : '',
 };
 
+const modalHeights = {
+    account_wizard: {
+        0: '650px',
+        1: '750px',
+        2: '750px',
+        3: '700px',
+    },
+    add_manage_account: '648px',
+    set_currency      : '575px',
+    error             : '400px',
+    add_currency      : '355px',
+    change_currency   : '290px',
+};
+
 const ErrorModal = ({ message }) => (
     <React.Fragment>
         <IconDuplicate />
@@ -62,6 +76,7 @@ class RealAccountSignup extends Component {
                         onLoading={this.showLoadingModal}
                         onError={this.showErrorModal}
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                        setModalHeight={this.setModalHeight}
                     />,
                 },
                 {
@@ -103,11 +118,37 @@ class RealAccountSignup extends Component {
                 },
                 {
                     value: () => (
-                        <ErrorModal message={this.state.error_message} />
+                        <ErrorModal message={'this.state.error_message'} />
                     ),
                 },
             ],
+            modal_height: modalHeights.change_currency,
         };
+    }
+
+    componentDidMount() {
+        const {
+            available_crypto_currencies,
+            can_change_fiat_currency,
+            currency,
+            has_real_account,
+        } = this.props;
+
+        let height = this.state.height;
+        if (!has_real_account) {
+            height = modalHeights.account_wizard[0];
+        } else if (!currency) {
+            height = modalHeights.set_currency;
+        } else if (available_crypto_currencies.length !== 0 && can_change_fiat_currency) {
+            height = modalHeights.add_manage_account;
+        } else {
+            height = modalHeights.add_currency;
+        }
+        this.setState({ modal_height: height });
+    }
+
+    setModalHeight = (step) => {
+        this.setState({ modal_height: modalHeights.account_wizard[step] });
     }
 
     get labels () {
@@ -133,6 +174,7 @@ class RealAccountSignup extends Component {
             previous_currency,
             current_currency,
             active_modal_index: 2,
+            modal_height      : modalHeights.change_currency,
         });
     };
 
@@ -149,6 +191,7 @@ class RealAccountSignup extends Component {
                     <p key={ currency } />,
                 ]}
             />,
+            modal_height: modalHeights.add_currency,
         });
     };
 
@@ -173,6 +216,7 @@ class RealAccountSignup extends Component {
         this.setState({
             active_modal_index: 5,
             error_message     : message,
+            modal_height      : modalHeights.error,
         });
     };
 
@@ -208,17 +252,9 @@ class RealAccountSignup extends Component {
     };
 
     render() {
-        const {
-            available_crypto_currencies,
-            can_change_fiat_currency,
-            has_real_account,
-            is_real_acc_signup_on,
-        } = this.props;
-
-        const title  = this.labels[this.active_modal_index];
-        const Body   = this.state.modal_content[this.active_modal_index].value;
-        // We need to pass height since we add Scrollbars to modal content
-        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) || !has_real_account ? '648px' : '355px';
+        const { is_real_acc_signup_on } = this.props;
+        const title = this.labels[this.active_modal_index];
+        const Body  = this.state.modal_content[this.active_modal_index].value;
 
         return (
             <Modal
@@ -231,7 +267,7 @@ class RealAccountSignup extends Component {
                 has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
-                height={height}
+                height={this.state.modal_height}
                 width='900px'
             >
                 <Body />

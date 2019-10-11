@@ -83,11 +83,12 @@ class AddressDetails extends Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
+                                        autoHide
                                         style={{
                                             height: '100%',
                                         }}
                                     >
-                                        <div className='details-form__elements'>
+                                        <div className='details-form__elements' style={{ paddingBottom: '10rem' }}>
                                             <InputField
                                                 name='address_line_1'
                                                 required

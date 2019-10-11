@@ -1,9 +1,10 @@
 import classNames           from 'classnames';
-import { Input }            from 'deriv-components';
+import {
+    Input,
+    ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
 import React, { Component } from 'react';
 import { CSSTransition }    from 'react-transition-group';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
@@ -203,8 +204,8 @@ class PersonalDetails extends Component {
                                     />
                                 </p>
                                 <div className='details-form__elements-container'>
-                                    <Scrollbars
-                                        autohide
+                                    <ThemedScrollbars
+                                        autoHide
                                         style={{
                                             height: '100%',
                                         }}
@@ -232,7 +233,7 @@ class PersonalDetails extends Component {
                                                 placeholder={localize('Phone number')}
                                             />
                                         </div>
-                                    </Scrollbars>
+                                    </ThemedScrollbars>
                                 </div>
                             </div>
                             <FormSubmitButton

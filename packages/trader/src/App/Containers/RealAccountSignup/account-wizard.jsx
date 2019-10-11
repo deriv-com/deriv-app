@@ -119,6 +119,8 @@ class AccountWizard extends React.Component {
         this.setState({
             step      : this.state.step - 1,
             form_error: '',
+        }, () => {
+            this.props.setModalHeight(this.state.step);
         });
     };
 
@@ -173,6 +175,8 @@ class AccountWizard extends React.Component {
     goNext() {
         this.setState({
             step: this.state.step + 1,
+        }, () => {
+            this.props.setModalHeight(this.state.step);
         });
     }
 

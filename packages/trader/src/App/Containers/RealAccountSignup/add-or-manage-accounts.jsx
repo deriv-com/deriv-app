@@ -1,6 +1,7 @@
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import { Scrollbars }        from 'tt-react-custom-scrollbars';
+import { ThemedScrollbars }  from 'deriv-components';
 import { connect }           from 'Stores/connect';
 import AddCryptoCurrency     from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -64,7 +65,7 @@ class AddOrManageAccounts extends Component {
 
     render() {
         return (
-            <Scrollbars autoHide>
+            <ThemedScrollbars autoHide>
                 <div className='account-wizard add-or-manage'>
                     {this.props.available_crypto_currencies.length !== 0 &&
                         <AddCryptoCurrency
@@ -87,7 +88,7 @@ class AddOrManageAccounts extends Component {
                     </div>
                     }
                 </div>
-            </Scrollbars>
+            </ThemedScrollbars>
         );
     }
 }

@@ -122,7 +122,7 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const subscribeBalance = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
+    const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -277,7 +277,7 @@ const BinarySocketBase = (() => {
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,
-        subscribeBalance,
+        subscribeBalanceAll,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,

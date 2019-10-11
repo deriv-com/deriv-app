@@ -59,7 +59,7 @@
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
-            color: var(--text-general);
+            color: var(--text-less-prominent);
 
             &--left {
                 left: 5px;

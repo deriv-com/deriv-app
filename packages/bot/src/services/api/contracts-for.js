@@ -12,7 +12,7 @@ export default class ContractsFor {
         this.disabled_options          = [
             {
                 market    : 'forex',
-                submarket : 'smart_fx',
+                submarket : ['smart_fx', 'minor_pairs'],
                 trade_type: 'higherlower',
             },
             {
@@ -24,12 +24,12 @@ export default class ContractsFor {
                 trade_type: 'callputequal',
             },
             {
-                symbol             : 'OTC_AS51',
-                trade_type_category: 'inout',
+                symbol    : ['frxXPDUSD', 'frxXPDUSD'],
+                trade_type: 'higherlower',
             },
             {
-                submarket : 'minor_pairs',
-                trade_type: 'higherlower',
+                symbol             : 'OTC_AS51',
+                trade_type_category: 'inout',
             },
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },

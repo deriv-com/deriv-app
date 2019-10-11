@@ -100,9 +100,9 @@ export const getMt5GroupConfig = (group = undefined) => {
     if (group !== undefined) {
         if (map_mode[group] && map_mode[group].type) {
             return map_mode[group];
-        } else {
-            return { type: '', category: '' };
         }
+
+        return { type: '', category: '' };
     }
 
     return map_mode;

@@ -93,7 +93,6 @@ export default class RunPanelStore {
     @action.bound
     onRunButtonClick = () => {
         const { client } = this.root_store.core;
-        this.root_store.contract_card.is_loading = true;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -104,6 +103,8 @@ export default class RunPanelStore {
             this.showRealAccountDialog();
             return;
         }
+
+        this.root_store.contract_card.is_loading = true;
 
         if (!this.is_drawer_open) {
             this.is_drawer_open = true;

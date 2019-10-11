@@ -1,10 +1,10 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { withRouter } from 'react-router';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
-import { connect }    from 'Stores/connect';
-// import InstallPWA     from './install-pwa.jsx';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { withRouter }       from 'react-router';
+import { ThemedScrollbars } from 'deriv-components';
+import { connect }          from 'Stores/connect';
+// import InstallPWA    from './install-pwa.jsx';
 
 const AppContents = ({
     // addNotificationBar,
@@ -41,12 +41,12 @@ const AppContents = ({
             })}
         >
             {/* Calculate height of user screen and offset height of header and footer */}
-            <Scrollbars
+            <ThemedScrollbars
                 autoHide
                 style={{ height: 'calc(100vh - 83px)' }}
             >
                 {children}
-            </Scrollbars>
+            </ThemedScrollbars>
         </div>
     );
 };

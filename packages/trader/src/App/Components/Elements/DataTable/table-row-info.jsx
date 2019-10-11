@@ -1,7 +1,7 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
 
 export default class TableRowInfo extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ export default class TableRowInfo extends React.Component {
             >
                 {
                     this.state.showDetails ?
-                        <Scrollbars
+                        <ThemedScrollbars
                             autoHeight
                             autoHide
                             autoHeightMax='63px'
@@ -40,7 +40,7 @@ export default class TableRowInfo extends React.Component {
                                     </p>
                                 }
                             </div>
-                        </Scrollbars>
+                        </ThemedScrollbars>
                         : this.props.cells
                 }
             </div>

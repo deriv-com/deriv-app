@@ -68,31 +68,9 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    async toggleAccountTransferModal () {
-        if (this.root_store.client.is_virtual &&
-            this.root_store.client.has_real_account &&
-            this.root_store.client.first_switchable_real_loginid) {
-            await this.root_store.client.switchAccount(
-                this.root_store.client.first_switchable_real_loginid,
-            );
-        }
-
-        this.root_store.ui.setCashierActiveTab('account_transfer');
-        setTimeout(this.root_store.ui.toggleCashierModal, 300);
-    }
-
-    @action.bound
     async closeMt5AndOpenCashier(active_tab = 'deposit') {
-        if (this.account_type.category === 'real' &&
-            this.root_store.client.is_virtual &&
-            this.root_store.client.has_real_account &&
-            this.root_store.client.first_switchable_real_loginid) {
-            await this.root_store.client.switchAccount(
-                this.root_store.client.first_switchable_real_loginid,
-            );
-            this.root_store.ui.setCashierActiveTab(active_tab);
-            setTimeout(this.root_store.ui.toggleCashierModal, 300);
-        }
+        this.root_store.ui.setCashierActiveTab(active_tab);
+        setTimeout(this.root_store.ui.toggleCashierModal, 300);
         // We should switch the user to the first svg account in order for cashier to work
         runInAction(() => {
             this.is_mt5_password_modal_enabled = false;

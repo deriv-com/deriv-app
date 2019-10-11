@@ -1,9 +1,10 @@
 import classNames           from 'classnames';
-import { Input }            from 'deriv-components';
+import {
+    Input,
+    ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
+import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
-import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
@@ -12,7 +13,7 @@ import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends Component {
+export class DateOfBirth extends React.Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -149,7 +150,7 @@ const InputField = (props) => {
     );
 };
 
-class PersonalDetails extends Component {
+class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
         this.form = React.createRef();
@@ -203,7 +204,7 @@ class PersonalDetails extends Component {
                                     />
                                 </p>
                                 <div className='details-form__elements-container'>
-                                    <Scrollbars
+                                    <ThemedScrollbars
                                         autohide
                                         style={{
                                             height: '100%',
@@ -232,7 +233,7 @@ class PersonalDetails extends Component {
                                                 placeholder={localize('Phone number')}
                                             />
                                         </div>
-                                    </Scrollbars>
+                                    </ThemedScrollbars>
                                 </div>
                             </div>
                             <FormSubmitButton

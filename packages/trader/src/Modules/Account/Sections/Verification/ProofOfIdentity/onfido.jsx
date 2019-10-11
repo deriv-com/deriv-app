@@ -1,7 +1,7 @@
 
+import { ThemedScrollbars }    from 'deriv-components';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-import { Scrollbars }          from 'tt-react-custom-scrollbars';
 import { init }                from 'onfido-sdk-ui';
 import { get as getLanguage }  from '_common/language';
 import {
@@ -15,14 +15,14 @@ import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
 const OnfidoContainer = () => (
-    <Scrollbars
+    <ThemedScrollbars
         autoHide
         style={{
             height: '100%',
         }}
     >
         <div className='onfido-container'><div id={onfido_container_id} /></div>
-    </Scrollbars>
+    </ThemedScrollbars>
 );
 
 class Onfido extends React.Component {
@@ -55,7 +55,7 @@ class Onfido extends React.Component {
     handleComplete = () => {
         this.state.onfido.tearDown();
         this.props.handleComplete();
-    }
+    };
 
     componentDidMount() {
         if (this.props.status === onfido_status_codes.onfido) {

@@ -225,11 +225,14 @@ const Toolbar = ({
         <div className='toolbar__section'>
             <Popover
                 alignment='bottom'
+                classNameBubble='toolbar__bubble'
                 message={translate('Click here to start building your DBot.')}
             >
                 <Button
                     id='start'
-                    className='btn--primary--green toolbar__btn--icon toolbar__btn--start'
+                    className='btn--primary--green
+                    toolbar__btn--icon
+                    toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
                 >

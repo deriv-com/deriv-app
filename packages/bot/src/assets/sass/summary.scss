@@ -1,5 +1,6 @@
 .summary {
-    margin: 16px;
+    height: calc(100vh - 324px);
+    padding: 16px;
 
     &__tiles {
         display: flex;

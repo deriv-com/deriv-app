@@ -91,7 +91,7 @@ class Mt5TopUpDemoModal extends React.Component {
                         heading={(
                             <h3 className='mt5-success-topup__heading'>
                                 <Localize
-                                    i18n_default_text='Your DMT5 {{title}} account has been toped up with USD 10,000 in virtual funds.'
+                                    i18n_default_text='Your DMT5 {{title}} account has been topped up with USD 10,000 in virtual funds.'
                                     values={{
                                         title: title[0].toLowerCase() + title.slice(1),
                                     }}

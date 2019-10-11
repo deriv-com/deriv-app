@@ -73,6 +73,7 @@ export default class RunPanelStore {
             }
             default: {
                 this.setContractStage(CONTRACT_STAGES.not_running);
+                break;
             }
         }
     }
@@ -81,7 +82,7 @@ export default class RunPanelStore {
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
         if (isClosed) {
-            this.setContractStage({ id: 'contract.closed' });
+            this.setContractStage(CONTRACT_STAGES.contract_closed);
         }
     }
 

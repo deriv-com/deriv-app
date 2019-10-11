@@ -130,11 +130,7 @@ export default class ProfitTableStore extends BaseStore {
         let profit_loss = 0;
 
         this.data.forEach((transaction) => {
-            if (transaction.profit_loss.indexOf('-') !== -1) {
-                profit_loss -= parseFloat(transaction.profit_loss.split('-')[1]);
-            } else {
-                profit_loss += parseFloat(transaction.profit_loss);
-            }
+            profit_loss += parseFloat(transaction.profit_loss.replace(/,/,''));
         });
         return {
             profit_loss: profit_loss.toString(),

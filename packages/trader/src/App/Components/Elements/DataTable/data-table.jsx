@@ -2,7 +2,7 @@ import classNames                     from 'classnames';
 import debounce                       from 'lodash.debounce';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { FixedSizeList as List }      from 'react-window';
-import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import TableRow                       from './table-row.jsx';
@@ -133,13 +133,13 @@ class DataTable extends React.PureComponent {
                     {is_empty ?
                         TableData
                         :
-                        <Scrollbars
+                        <ThemedScrollbars
                             autoHeight
                             autoHeightMax={this.state.height}
                             autoHide
                         >
                             {TableData}
-                        </Scrollbars>
+                        </ThemedScrollbars>
                     }
                 </div>
 

@@ -5,7 +5,7 @@ import React                          from 'react';
 import { NavLink }                    from 'react-router-dom';
 import { TransitionGroup,
     CSSTransition }                   from 'react-transition-group';
-import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { ThemedScrollbars }           from 'deriv-components';
 import { localize }                   from 'App/i18n';
 import Icon                           from 'Assets/icon.jsx';
 import routes                         from 'Constants/routes';
@@ -94,12 +94,12 @@ class PositionsDrawer extends React.Component {
                         </div>
                     </div>
                     <div className='positions-drawer__body'>
-                        <Scrollbars
+                        <ThemedScrollbars
                             style={{ width: '100%', height: '100%' }}
                             autoHide
                         >
                             {(is_empty || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
-                        </Scrollbars>
+                        </ThemedScrollbars>
                     </div>
                     <div className='positions-drawer__footer'>
                         <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary--large btn--link' to={routes.reports}>

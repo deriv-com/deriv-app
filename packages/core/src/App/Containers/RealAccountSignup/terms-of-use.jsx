@@ -1,5 +1,6 @@
 import { Field, Formik }    from 'formik';
 import React, { Component } from 'react';
+import { Scrollbars }       from 'tt-react-custom-scrollbars';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import CheckboxField        from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize }         from 'App/i18n';
@@ -28,76 +29,82 @@ class TermsOfUse extends Component {
                     <form
                         onSubmit={handleSubmit}
                     >
-                        <div className='terms-of-use'>
-                            <h4>
-                                <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-                            </h4>
-                            <p>
-                                <Localize
-                                    i18n_default_text={'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'}
+                        <Scrollbars
+                            autohide
+                            style={{
+                                height: '100%',
+                            }}
+                        >
+                            <div className='terms-of-use'>
+                                <h4>
+                                    <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+                                </h4>
+                                <p>
+                                    <Localize
+                                        i18n_default_text={'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'}
+                                    />
+                                </p>
+                                <Hr />
+                                <h4>
+                                    <Localize i18n_default_text={'Risk warning'} />
+                                </h4>
+                                <p>
+                                    <Localize
+                                        i18n_default_text={'The financial trading services offered on this site are only suitable for customers who accept the ' +
+                                        'possibility of losing all the money they invest and who understand and have experience of the risk ' +
+                                        'involved in the purchase of financial contracts. Transactions in financial contracts carry a high ' +
+                                        'degree of risk. If the contracts you purchased expire as worthless, you will lose all your ' +
+                                        'investment, which includes the contract premium.'}
+                                    />
+                                </p>
+                                <Hr />
+                                <h4>
+                                    <Localize
+                                        i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).'
+                                    />
+                                </h4>
+                                <p>
+                                    <Localize
+                                        i18n_default_text='A politically exposed person (PEP) is someone
+                                        appointed with a prominent public position. Close
+                                    associates and family members of a PEP are also considered
+                                    to be PEPs.'
+                                    />
+                                </p>
+                                <Field
+                                    component={CheckboxField}
+                                    className='terms-of-use__checkbox'
+                                    name='agreed_tos'
+                                    id='agreed_tos'
+                                    label={localize('I am not a PEP, and I have not been a PEP in the last 12 months.')}
                                 />
-                            </p>
-                            <Hr />
-                            <h4>
-                                <Localize i18n_default_text={'Risk warning'} />
-                            </h4>
-                            <p>
-                                <Localize
-                                    i18n_default_text={'The financial trading services offered on this site are only suitable for customers who accept the ' +
-                                    'possibility of losing all the money they invest and who understand and have experience of the risk ' +
-                                    'involved in the purchase of financial contracts. Transactions in financial contracts carry a high ' +
-                                    'degree of risk. If the contracts you purchased expire as worthless, you will lose all your ' +
-                                    'investment, which includes the contract premium.'}
+                                <Hr />
+                                <Field
+                                    component={CheckboxField}
+                                    className='terms-of-use__checkbox'
+                                    name='agreed_tnc'
+                                    id='agreed_tnc'
+                                    label={<Localize
+                                        i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                        components={[ (
+                                            <a
+                                                key={0}
+                                                className='link'
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                                href='https://www.deriv.com/terms-and-conditions/#general'
+                                            />
+                                        ) ]}
+                                    />}
                                 />
-                            </p>
-                            <Hr />
-                            <h4>
-                                <Localize
-                                    i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).'
-                                />
-                            </h4>
-                            <p>
-                                <Localize
-                                    i18n_default_text='A politically exposed person (PEP) is someone
-                                    appointed with a prominent public position. Close
-                                associates and family members of a PEP are also considered
-                                to be PEPs.'
-                                />
-                            </p>
-                            <Field
-                                component={CheckboxField}
-                                className='terms-of-use__checkbox'
-                                name='agreed_tos'
-                                id='agreed_tos'
-                                label={localize('I am not a PEP, and I have not been a PEP in the last 12 months.')}
-                            />
-                            <Hr />
-                            <Field
-                                component={CheckboxField}
-                                className='terms-of-use__checkbox'
-                                name='agreed_tnc'
-                                id='agreed_tnc'
-                                label={<Localize
-                                    i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
-                                    components={[ (
-                                        <a
-                                            key={0}
-                                            className='link'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            href='https://www.deriv.com/terms-and-conditions/#general'
-                                        />
-                                    ) ]}
-                                />}
-                            />
-                        </div>
+                            </div>
+                        </Scrollbars>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                            label='Add account' // Localization will be handled by component
-
+                            label={localize('Add account')}
                             has_cancel={true}
                             onCancel={this.props.onCancel}
-                            cancel_label='Previous'
+                            cancel_label={localize('Previous')}
                             form_error={this.props.form_error}
                         />
                     </form>

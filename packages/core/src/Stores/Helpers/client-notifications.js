@@ -6,6 +6,7 @@ import { getRiskAssessment,
     shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
+import routes           from 'Constants/routes';
 import {
     LocalStore,
     State }             from '_common/storage';
@@ -14,251 +15,258 @@ import Localize         from '../../App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = {
-    currency: {
-        key    : 'currency',
-        header : localize('Set Currency'),
-        message: (
-            <Localize
-                i18n_default_text='Please set the <0>currency</0> of your account to enable trading.'
-                components={[<a key={0} className='link link--white' target='_blank' href={urlFor('user/set-currency', undefined, undefined, true)} />]}
-            />
-        ),
-        type: 'danger',
-    },
-    self_exclusion: (excluded_until) => ({
-        key    : 'self_exclusion',
-        header : localize('Self-exclusion Detected'),
-        message: (
-            <Localize
-                i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'), interpolation: { escapeValue: false } }}
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
-            />
-        ),
-        type: 'danger',
-    }),
-    authenticate: {
-        key    : 'authenticate',
-        header : localize('Account Authentication'),
-        message: (
-            <Localize
-                i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/proof-of-identity'
-                    />,
-                ]}
-            />
-        ),
-        type: 'info',
-    },
-    cashier_locked: {
-        key    : 'cashier_locked',
-        header : localize('Cashier Disabled'),
-        message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
-        type   : 'warning',
-    },
-    withdrawal_locked: {
-        key    : 'withdrawal_locked',
-        header : localize('Withdrawal Disabled'),
-        message: localize('Withdrawals have been disabled on your account. Please check your email for more details.'),
-        type   : 'warning',
-    },
-    mt5_withdrawal_locked: {
-        key    : 'mt5_withdrawal_locked',
-        header : localize('MT5 Withdrawal Disabled'),
-        message: localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
-        type   : 'warning',
-    },
-    document_needs_action: {
-        key    : 'document_needs_action',
-        header : localize('Authentication Failed'),
-        message: (
-            <Localize
-                i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/proof-of-identity'
-                    />,
-                ]}
-            />
-        ),
-        type: 'warning',
-    },
-    unwelcome: {
-        key    : 'unwelcome',
-        header : localize('Trading and Deposits Disabled'),
-        message: (
-            <Localize
-                i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
-            />
-        ),
-        type: 'danger',
-    },
-    mf_retail: {
-        key    : 'mf_retail',
-        header : localize('Binary Options Trading Disabled'),
-        message: (
-            <Localize
-                i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
-            />
-        ),
-        type: 'danger',
-    },
-    financial_limit: {
-        key    : 'financial_limit',
-        header : localize('Remove Deposit Limits'),
-        message: (
-            <Localize
-                i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
-            />
-        ),
-        type: 'warning',
-    },
-    risk: {
-        key    : 'risk',
-        header : localize('Withdrawal and Trading Limits'),
-        message: (
-            <Localize
-                i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/settings/assessmentws', undefined, undefined, true)} /> ]}
-                // TODO: Re-enable below once FA check on deriv is ready
-                // components={[
-                //     <BinaryLink
-                //         key={0}
-                //         className='link link--white'
-                //         to='account/financial-assessment'
-                //     />,
-                // ]}
-            />
-        ),
-        type: 'info',
-    },
-    tax: {
-        key    : 'tax',
-        header : localize('Complete your personal details'),
-        message: (
-            <Localize
-                i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/personal-details'
-                    />,
-                ]}
-            />
-        ),
-        type: 'danger',
-    },
-    tnc: {
-        key    : 'tnc',
-        header : localize('Terms & Conditions Updated'),
-        message: (
-            <Localize
-                i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
-                components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
-            />
-        ),
-        type: 'danger',
-    },
-    required_fields: {
-        key    : 'required_fields',
-        header : localize('Complete your personal details'),
-        message: (
-            <Localize
-                i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/personal-details'
-                    />,
-                ]}
-            />
-        ),
-        type: 'danger',
-    },
-    switch_to_tick_chart: {
-        key    : 'switch_to_tick_chart',
-        header : localize('This chart display is not ideal for tick contracts'),
-        message: (
-            <Localize
-                i18n_default_text='Please change the chart duration to tick for a better trading experience.'
-            />
-        ),
-        type: 'info',
-    },
-    you_are_offline: {
-        key    : 'you_are_offline',
-        header : localize('You are offline'),
-        message: (
-            <Localize i18n_default_text='Check your connection.' />
-        ),
-        type: 'danger',
-    },
-    password_changed: {
-        key    : 'password_changed',
-        header : localize('Password updated.'),
-        message: (
-            <Localize
-                i18n_default_text='Please log in with your updated password.'
-            />
-        ),
-        type: 'info',
-    },
-    poa_expired: {
-        key    : 'poa_expired',
-        header : localize('Document expired'),
-        message: (
-            <Localize
-                i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/proof-of-address'
-                    />,
-                ]}
-            />
-        ),
-        type: 'danger',
-    },
-    poa_rejected: {
-        key    : 'poa_rejected',
-        header : localize('We could not verify your proof of address'),
-        message: (
-            <Localize
-                i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
-            />
-        ),
-        type: 'danger',
-    },
-    poi_expired: {
-        key    : 'poi_expired',
-        header : localize('Proof of identity expired'),
-        message: (
-            <Localize
-                i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
-                components={[
-                    <BinaryLink
-                        key={0}
-                        className='link link--white'
-                        to='account/proof-of-identity'
-                    />,
-                ]}
-            />
-        ),
-        type: 'danger',
-    },
+export const clientNotifications = (ui = {}) => {
+    return {
+        currency: {
+            key    : 'currency',
+            header : localize('Set Currency'),
+            message: (
+                <Localize
+                    i18n_default_text='Please set the <0>currency</0> of your account to enable trading.'
+                    components={[
+                        <a
+                            key={0}
+                            type='button'
+                            className='link link--white'
+                            onClick={ui.openRealAccountSignup}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'danger',
+        },
+        self_exclusion: (excluded_until) => ({
+            key    : 'self_exclusion',
+            header : localize('Self-exclusion Detected'),
+            message: (
+                <Localize
+                    i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                    values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'), interpolation: { escapeValue: false } }}
+                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                />
+            ),
+            type: 'danger',
+        }),
+        authenticate: {
+            key    : 'authenticate',
+            header : localize('Account Authentication'),
+            message: (
+                <Localize
+                    i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.proof_of_identity}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'info',
+        },
+        cashier_locked: {
+            key    : 'cashier_locked',
+            header : localize('Cashier Disabled'),
+            message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
+            type   : 'warning',
+        },
+        withdrawal_locked: {
+            key    : 'withdrawal_locked',
+            header : localize('Withdrawal Disabled'),
+            message: localize('Withdrawals have been disabled on your account. Please check your email for more details.'),
+            type   : 'warning',
+        },
+        mt5_withdrawal_locked: {
+            key    : 'mt5_withdrawal_locked',
+            header : localize('MT5 Withdrawal Disabled'),
+            message: localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
+            type   : 'warning',
+        },
+        document_needs_action: {
+            key    : 'document_needs_action',
+            header : localize('Authentication Failed'),
+            message: (
+                <Localize
+                    i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.proof_of_identity}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
+        unwelcome: {
+            key    : 'unwelcome',
+            header : localize('Trading and Deposits Disabled'),
+            message: (
+                <Localize
+                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                />
+            ),
+            type: 'danger',
+        },
+        mf_retail: {
+            key    : 'mf_retail',
+            header : localize('Binary Options Trading Disabled'),
+            message: (
+                <Localize
+                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                />
+            ),
+            type: 'danger',
+        },
+        financial_limit: {
+            key    : 'financial_limit',
+            header : localize('Remove Deposit Limits'),
+            message: (
+                <Localize
+                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
+                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
+                />
+            ),
+            type: 'warning',
+        },
+        risk: {
+            key    : 'risk',
+            header : localize('Withdrawal and Trading Limits'),
+            message: (
+                <Localize
+                    i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.financial_assessment}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'info',
+        },
+        tax: {
+            key    : 'tax',
+            header : localize('Complete your personal details'),
+            message: (
+                <Localize
+                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.personal_details}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'danger',
+        },
+        tnc: {
+            key    : 'tnc',
+            header : localize('Terms & Conditions Updated'),
+            message: (
+                <Localize
+                    i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
+                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
+                />
+            ),
+            type: 'danger',
+        },
+        required_fields: {
+            key    : 'required_fields',
+            header : localize('Complete your personal details'),
+            message: (
+                <Localize
+                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.personal_details}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'danger',
+        },
+        switch_to_tick_chart: {
+            key    : 'switch_to_tick_chart',
+            header : localize('This chart display is not ideal for tick contracts'),
+            message: (
+                <Localize
+                    i18n_default_text='Please change the chart duration to tick for a better trading experience.'
+                />
+            ),
+            type: 'info',
+        },
+        you_are_offline: {
+            key    : 'you_are_offline',
+            header : localize('You are offline'),
+            message: (
+                <Localize i18n_default_text='Check your connection.' />
+            ),
+            type: 'danger',
+        },
+        password_changed: {
+            key    : 'password_changed',
+            header : localize('Password updated.'),
+            message: (
+                <Localize
+                    i18n_default_text='Please log in with your updated password.'
+                />
+            ),
+            type: 'info',
+        },
+        poa_expired: {
+            key    : 'poa_expired',
+            header : localize('Document expired'),
+            message: (
+                <Localize
+                    i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.proof_of_address}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'danger',
+        },
+        poa_rejected: {
+            key    : 'poa_rejected',
+            header : localize('We could not verify your proof of address'),
+            message: (
+                <Localize
+                    i18n_default_text='We have disabled trading, deposits and withdrawals for this account.'
+                />
+            ),
+            type: 'danger',
+        },
+        poi_expired: {
+            key    : 'poi_expired',
+            header : localize('Proof of identity expired'),
+            message: (
+                <Localize
+                    i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link link--white'
+                            href={routes.proof_of_identity}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'danger',
+        },
+    };
 };
 
 const hasMissingRequiredField = (account_settings, client) => {
@@ -309,17 +317,14 @@ const getStatusValidations = status_arr =>
     }, {});
 
 const addVerificationNotifications = (identity, document, addNotification) => {
-    if (identity.status === 'expired') addNotification(clientNotifications.poi_expired);
+    if (identity.status === 'expired') addNotification(clientNotifications().poi_expired);
 
-    if (document.status === 'expired') addNotification(clientNotifications.poa_expired);
-    if ((document.status === 'rejected' || document.status === 'suspected')) {
-        addNotification(clientNotifications.poa_rejected);
-    }
+    if (document.status === 'expired') addNotification(clientNotifications().poa_expired);
 };
 
 const checkAccountStatus = (account_status, client, addNotification, loginid) => {
-    if (!account_status) return;
-    if (loginid !== LocalStore.get('active_loginid')) return;
+    if (!account_status.length) return {};
+    if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
         authentication: {
@@ -342,22 +347,27 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
 
     addVerificationNotifications(identity, document, addNotification);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
+    const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
+    const has_risk_assessment  = getRiskAssessment(account_status);
 
-    if (cashier_locked)        addNotification(clientNotifications.cashier_locked);
-    if (withdrawal_locked)     addNotification(clientNotifications.withdrawal_locked);
-    if (mt5_withdrawal_locked) addNotification(clientNotifications.mt5_withdrawal_locked);
-    if (document_needs_action) addNotification(clientNotifications.document_needs_action);
-    if (unwelcome)             addNotification(clientNotifications.unwelcome);
-    if (is_mf_retail)          addNotification(clientNotifications.mf_retail);
+    if (cashier_locked)        addNotification(clientNotifications().cashier_locked);
+    if (withdrawal_locked)     addNotification(clientNotifications().withdrawal_locked);
+    if (mt5_withdrawal_locked) addNotification(clientNotifications().mt5_withdrawal_locked);
+    if (document_needs_action) addNotification(clientNotifications().document_needs_action);
+    if (unwelcome)             addNotification(clientNotifications().unwelcome);
+    if (is_mf_retail)          addNotification(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
-        addNotification(clientNotifications.financial_limit);
+        addNotification(clientNotifications().financial_limit);
     }
-    if (getRiskAssessment(account_status)) addNotification(clientNotifications.risk);
-    if (shouldCompleteTax(account_status)) addNotification(clientNotifications.tax);
-    if (needs_authentication)              addNotification(clientNotifications.authenticate);
+    if (has_risk_assessment)               addNotification(clientNotifications().risk);
+    if (shouldCompleteTax(account_status)) addNotification(clientNotifications().tax);
+    if (needs_authentication)              addNotification(clientNotifications().authenticate);
+
+    return {
+        has_risk_assessment,
+    };
 };
 
 export const handleClientNotifications = (
@@ -365,24 +375,26 @@ export const handleClientNotifications = (
     account_settings,
     account_status,
     addNotification,
-    loginid
+    loginid,
+    ui
 ) => {
     const { currency, excluded_until } = client;
-    if (!currency)      addNotification(clientNotifications.currency);
-    if (excluded_until) addNotification(clientNotifications.self_exclusion(excluded_until));
+    if (!currency)      addNotification(clientNotifications(ui).currency);
+    if (excluded_until) addNotification(clientNotifications(ui).self_exclusion(excluded_until));
 
-    checkAccountStatus(account_status, client, addNotification, loginid);
+    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotification, loginid);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications.tnc);
+    if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {
-        addNotification(clientNotifications.required_fields);
+        addNotification(clientNotifications(ui).required_fields);
     }
 
     return {
         has_missing_required_field,
+        has_risk_assessment,
     };
 };

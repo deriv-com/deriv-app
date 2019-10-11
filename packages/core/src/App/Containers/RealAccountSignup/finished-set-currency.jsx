@@ -1,5 +1,6 @@
 import React         from 'react';
 import Localize      from 'App/Components/Elements/localize.jsx';
+import { localize }  from 'App/i18n';
 import Icon          from 'Assets/icon.jsx';
 import Button        from 'deriv-components/src/components/button';
 
@@ -50,19 +51,13 @@ const FinishedSetCurrency = ({
                 <Button
                     onClick={onCancel}
                     className='btn--secondary--default'
-                >
-                    <Localize
-                        i18n_default_text='Maybe later'
-                    />
-                </Button>
+                    text={localize('Maybe later')}
+                />
                 <Button
                     onClick={onSubmit}
                     className='btn--primary--default'
-                >
-                    <Localize
-                        i18n_default_text='Deposit now'
-                    />
-                </Button>
+                    text={localize('Deposit now')}
+                />
             </div>
         </div>
     );

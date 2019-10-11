@@ -120,7 +120,7 @@ class AddCryptoCurrency extends Component {
                           this.props.available_crypto_currencies.length !== 0) &&
                           <FormSubmitButton
                               is_disabled={isSubmitting || !values.currency}
-                              label={localize('Add account')}
+                              label={ localize('Add account') }
                               is_absolute={false}
                               is_center={true}
                               form_error={this.props.form_error}

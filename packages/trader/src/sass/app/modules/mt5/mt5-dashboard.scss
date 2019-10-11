@@ -52,7 +52,7 @@
         align-items: center;
         padding-left: 1.6rem;
         background-color: var(--general-section-1);
-        margin-bottom: 3.2em;
+        margin: 2.4em 0;
 
         &--heading {
             @include typeface(--title-left-bold-black, none);
@@ -83,17 +83,28 @@
             }
             &--desktop {
                 margin-left: 7em;
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: flex-start;
 
                 &-devices {
-                    width: 24em;
+                    width: 200px;
                     display: flex;
                     justify-content: space-between;
                     align-items: flex-end;
-                    margin-bottom: 1.6em;
+                    margin-right: 1.6em;
+                    flex-wrap: wrap;
+                    svg:first-child {
+                        margin-right: 0.4em;
+                    }
+                    svg:not(:last-child) {
+                        margin-bottom: 1.6em;
+                    }
                 }
                 &-links {
-                    width: 43em;
+                    height: 142px;
                     display: flex;
+                    flex-flow: column nowrap;
                     justify-content: space-between;
                 }
             }
@@ -102,6 +113,9 @@
 
                 &-devices {
                     margin-bottom: 1.6em;
+                    svg:first-child {
+                        margin-right: 0.8em;
+                    }
                 }
                 &-links {
                     width: 27.1em;
@@ -120,7 +134,6 @@
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
             color: var(--text-less-prominent);
-            margin-top: 1.6em;
             margin-left: 7.05em;
         }
     }

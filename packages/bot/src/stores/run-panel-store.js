@@ -143,7 +143,6 @@ export default class RunPanelStore {
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
         this.setContractStage(CONTRACT_STAGES.not_running);
-        this.onCloseDialog();
     }
 
     @action.bound
@@ -188,7 +187,10 @@ export default class RunPanelStore {
 
     @action.bound
     showClearStatDialog() {
-        this.onOkButtonClick = this.clearStat;
+        this.onOkButtonClick = () => {
+            this.clearStat();
+            this.onCloseDialog();
+        };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
             title  : translate('Are you sure?'),
@@ -212,24 +214,23 @@ export default class RunPanelStore {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     (loginid) => {
-                        if (!loginid) {
+                        if (loginid) {
+                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+                        } else {
                             terminateAndClear();
-                            this.root_store.summary.currency = client.currency;
                         }
+                        this.root_store.summary.currency = client.currency;
                     },
                 );
 
                 this.disposeSwitchAccountListener = reaction(
-                    () => client.switch_broadcast,
-                    (switch_broadcast) => {
-                        if (switch_broadcast) {
-                            if (client.is_logged_in && !client.is_virtual) {
+                    () => client.switched,
+                    (switched) => {
+                        if (switched) {
+                            if (client.is_logged_in && !/^VRTC/.test(switched)) {
                                 this.showRealAccountDialog();
+                                terminateAndClear();
                             }
-
-                            terminateAndClear();
-                            this.root_store.summary.currency = client.currency;
-                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
                         }
                     },
                 );

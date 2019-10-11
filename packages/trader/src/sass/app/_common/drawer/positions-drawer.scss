@@ -29,12 +29,13 @@ $header-height: 3.6em;
         z-index: 2;
         top: 0;
         left: 0;
-        width: 258px;
+        width: 260px;
         height: 100%;
         background: var(--general-section-2);
-        box-shadow: 10px 0 5px -2px var(--general-section-2);
+        // box-shadow: 10px 0 5px -2px var(--general-section-2);
         transition: opacity 0.25s linear;
         opacity: 0;
+        pointer-events: none;
 
         &--open {
             opacity: 1;

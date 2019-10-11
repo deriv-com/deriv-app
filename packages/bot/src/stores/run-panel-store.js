@@ -31,39 +31,68 @@ export default class RunPanelStore {
     @observable is_running            = false;
     @observable is_drawer_open        = true;
 
-    is_contract_started = false;
-    
+    // when error happens, if it is unrecoverable_errors we reset run-panel
+    // we activate run-button and clear trade info and set the ContractStage to not_running
+    // otherwise we keep opening new contracts and set the ContractStage to purchase_sent
+    is_error_happened   = false;
+    is_continue_trading = true;
+
+    @action.bound
+    onBotStopEvent() {
+        if (this.is_error_happened && this.is_continue_trading) {
+            // When error happens but its not unrecoverable_errors
+            this.setContractStage(CONTRACT_STAGES.purchase_sent);
+            this.is_error_happened = false;
+        } else if (this.is_error_happened && !this.is_continue_trading) {
+            this.setContractStage(CONTRACT_STAGES.not_running);
+            this.is_error_happened = false;
+            this.is_run_button_clicked = false;
+        } else if (this.is_running) {
+            // When bot was running and it closes now
+            this.setContractStage(CONTRACT_STAGES.contract_closed);
+        }
+        this.is_running = false;
+    }
+
     @action.bound
     onBotRunningEvent() {
         this.is_running = true;
     }
 
     @action.bound
-    onBotStopEvent() {
-        this.is_running = false;
-        if (this.is_contract_started) {
-            this.contract_stage = CONTRACT_STAGES.contract_closed;
-        } else {
-            this.contract_stage = CONTRACT_STAGES.not_running;
-        }
-    }
-
-    @action.bound
     onContractStatusEvent(data) {
-        this.getContractStage(data);
+        switch (data.id) {
+            case ('contract.purchase_sent'): {
+                this.setContractStage(CONTRACT_STAGES.purchase_sent);
+                break;
+            }
+            case ('contract.purchase_recieved'): {
+                this.setContractStage(CONTRACT_STAGES.purchase_recieved);
+                break;
+            }
+            case ('contract.sold'): {
+                this.setContractStage(CONTRACT_STAGES.contract_closed);
+                break;
+            }
+            default: {
+                this.setContractStage(CONTRACT_STAGES.not_running);
+                break;
+            }
+        }
     }
 
     @action.bound
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
         if (isClosed) {
-            this.getContractStage({ id: 'contract.closed' });
+            this.setContractStage(CONTRACT_STAGES.contract_closed);
         }
     }
 
     @action.bound
     onRunButtonClick = () => {
         const { client } = this.root_store.core;
+        this.root_store.contract_card.is_loading = true;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -79,23 +108,29 @@ export default class RunPanelStore {
             this.is_drawer_open = true;
         }
 
-        this.is_contract_started = false;
-        this.is_run_button_clicked = true;
         runBot();
-        this.root_store.contract_card.is_loading = true;
-        this.contract_stage = CONTRACT_STAGES.bot_starting;
+        this.setContractStage(CONTRACT_STAGES.starting);
+        this.is_run_button_clicked = true;
     }
 
     @action.bound
     onStopButtonClick() {
-        if (!this.root_store.core.client.is_logged_in) {
-            this.showLoginDialog();
-            return;
-        }
         if (this.is_run_button_clicked) {
             stopBot();
-            this.contract_stage = CONTRACT_STAGES.bot_is_stopping;
+            if (this.is_error_happened) {
+                // when user click stop button when there is a error but bot is retrying
+                this.setContractStage(CONTRACT_STAGES.not_running);
+                this.is_error_happened = false;
+                this.is_continue_trading = true;
+            } else if (this.is_running) {
+                // when user click stop button when bot is running
+                this.setContractStage(CONTRACT_STAGES.is_stopping);
+            } else {
+                // when user click stop button before bot start running
+                this.setContractStage(CONTRACT_STAGES.not_running);
+            }
         }
+
         this.is_run_button_clicked = false;
         this.root_store.contract_card.is_loading = false;
     }
@@ -107,12 +142,12 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
+        this.is_run_button_clicked = false;
         this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
         this.root_store.transactions.clear();
-        this.contract_stage = CONTRACT_STAGES.not_running;
-        this.onCloseDialog();
+        this.setContractStage(CONTRACT_STAGES.not_running);
     }
 
     @action.bound
@@ -135,66 +170,6 @@ export default class RunPanelStore {
         return Object.entries(this.dialog_options).length > 0;
     }
 
-    getContractStage(data) {
-        switch (data.id) {
-            case ('contract.purchase_sent'): {
-                this.contract_stage = CONTRACT_STAGES.purchase_sent;
-                this.is_contract_started = true;
-                break;
-            }
-            case ('contract.purchase_recieved'): {
-                this.contract_stage = CONTRACT_STAGES.purchase_recieved;
-                break;
-            }
-            case ('contract.closed'):
-            case ('contract.sold'): {
-                this.contract_stage = CONTRACT_STAGES.contract_closed;
-                break;
-            }
-            default: {
-                this.contract_stage = CONTRACT_STAGES.not_running;
-                this.is_contract_started = false;
-            }
-        }
-    }
-
-    @action.bound
-    registerReactions() {
-        const { client } = this.root_store.core;
-        const terminateAndClear = () => {
-            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-            // of killing and clearing everything instantly.
-            terminateBot();
-            this.onClearStatClick();
-            this.is_run_button_clicked = false;
-        };
-
-        this.disposeLogoutListener = reaction(
-            () => client.loginid,
-            (loginid) => {
-                if (!loginid) {
-                    terminateAndClear();
-                    this.root_store.summary.currency = client.currency;
-                }
-            },
-        );
-
-        this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            (switch_broadcast) => {
-                if (switch_broadcast) {
-                    terminateAndClear();
-                    this.root_store.summary.currency = client.currency;
-                    this.root_store.journal.pushMessage(translate('You have switched accounts.'));
-                    
-                    if (client.is_logged_in && !client.is_virtual) {
-                        this.showRealAccountDialog();
-                    }
-                }
-            },
-        );
-    }
-
     @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseDialog;
@@ -207,7 +182,7 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.onOkButtonClick = this.onCloseDialog;
+        this.onOkButtonClick = this.onRealAccountOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
@@ -216,8 +191,17 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    onRealAccountOkButtonClick() {
+        this.root_store.contract_card.is_loading = false;
+        this.onCloseDialog();
+    }
+
+    @action.bound
     showClearStatDialog() {
-        this.onOkButtonClick = this.clearStat;
+        this.onOkButtonClick = () => {
+            this.clearStat();
+            this.onCloseDialog();
+        };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
             title  : translate('Are you sure?'),
@@ -225,24 +209,78 @@ export default class RunPanelStore {
         };
     }
 
-    reset(){
-        this.is_run_button_clicked = false;
-        this.root_store.contract_card.is_loading = false;
-        this.setActiveTabIndex(2);
+    @action.bound
+    registerReactions() {
+        const { client, common } = this.root_store.core;
+        const terminateAndClear = () => {
+            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
+            // of killing and clearing everything instantly.
+            // Core need to change to pass beforeswitch account event
+            terminateBot();
+            this.clearStat();
+        };
+
+        const register = () => {
+            if (common.is_socket_opened) {
+                this.disposeIsSocketOpenedListener = reaction(
+                    () => client.loginid,
+                    (loginid) => {
+                        if (loginid) {
+                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+                        } else {
+                            terminateAndClear();
+                        }
+                        this.root_store.summary.currency = client.currency;
+                    },
+                );
+
+                this.disposeSwitchAccountListener = reaction(
+                    () => client.switched,
+                    (switched) => {
+                        if (switched) {
+                            if (client.is_logged_in && !/^VRTC/.test(switched)) {
+                                // TODO: temporary fix to not showing modal when another modal is open
+                                const is_modal_open = document.getElementById('modal_root').hasChildNodes();
+                                if (!is_modal_open) {
+                                    this.showRealAccountDialog();
+                                }
+                                terminateAndClear();
+                            }
+                        }
+                    },
+                );
+            } else {
+                if (typeof this.disposeLogoutListener === 'function') {
+                    this.disposeLogoutListener();
+                }
+
+                if (typeof this.disposeSwitchAccountListener === 'function') {
+                    this.disposeSwitchAccountListener();
+                }
+            }
+        };
+
+        register();
+
+        this.disposeLogoutListener = reaction(
+            () => common.is_socket_opened,
+            () => {
+                register();
+            }
+        );
     }
-    
+
+    setContractStage(value) {
+        this.contract_stage = value;
+    }
+
     onUnmount() {
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);
         observer.unregister('contract.status', this.onContractStatusEvent);
         observer.unregister('bot.contract', this.onBotContractEvent);
 
-        if (typeof this.disposeLogoutListener === 'function') {
-            this.disposeLogoutListener();
-        }
+        this.disposeIsSocketOpenedListener();
 
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 }

@@ -12,6 +12,7 @@ const Bot = (() => {
     const el_scratch_js = document.createElement('script');
     el_scratch_js.src = './js/bot/scratch.min.js';
     el_head.appendChild(el_scratch_js);
+    // eslint-disable-next-line import/no-unresolved
     return lazy(() => import(/* webpackChunkName: "bot" */ 'deriv-bot'));
 })();
 

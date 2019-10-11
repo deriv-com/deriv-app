@@ -254,7 +254,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Add option to create caller.
         const option = { enabled: true };
         const name = this.getFieldValue('NAME');
-        option.text = Blockly.Msg.PROCEDURES_CREATE_DO.replace('%1', name);
+        option.text = translate('Create "%1"').replace('%1', name);
 
         const xmlMutation = document.createElement('mutation');
         xmlMutation.setAttribute('name', name);
@@ -276,7 +276,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             this.argumentVarModels.forEach(argumentVarModel => {
                 const getOption = { enabled: true };
 
-                getOption.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', argumentVarModel.name);
+                getOption.text = translate('Create "get %1"').replace('%1', argumentVarModel.name);
 
                 const xmlField = Blockly.Variables.generateVariableFieldDom(argumentVarModel);
                 const xmlOptionBlock = document.createElement('block');

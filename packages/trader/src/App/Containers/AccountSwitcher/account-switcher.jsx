@@ -46,6 +46,7 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
+        await this.props.clearPositions();
         await this.props.switchAccount(loginid);
 
         if (this.props.has_error) {
@@ -215,6 +216,7 @@ AccountSwitcher.propTypes = {
     accounts              : PropTypes.object,
     cleanUp               : PropTypes.func,
     clearError            : PropTypes.func,
+    clearPositions        : PropTypes.func,
     display               : PropTypes.string,
     has_error             : PropTypes.bool,
     has_fiat              : PropTypes.bool,
@@ -245,6 +247,7 @@ const account_switcher = connect(
         cleanUp               : client.cleanUp,
         clearError            : modules.contract_trade.clearError,
         has_error             : modules.contract_trade.has_error,
+        clearPositions        : modules.portfolio.clearTable,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup : ui.openRealAccountSignup,
         togglePositionsDrawer : ui.togglePositionsDrawer,

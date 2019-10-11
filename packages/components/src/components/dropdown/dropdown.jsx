@@ -2,7 +2,7 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
+import ThemedScrollbars  from 'Components/themed-scrollbars';
 import Icon              from 'Components/icon-arrow.jsx';
 import {
     getItemFromValue,
@@ -304,18 +304,16 @@ class Dropdown extends React.PureComponent {
                                 ref={this.list_ref}
                                 style={getDropDownAlignment()}
                             >
-                                <Scrollbars
+                                <ThemedScrollbars
                                     autoHeight
                                     autoHide
                                     autoHeightMax={200}
                                     renderTrackHorizontal={props => <div
                                         {...props}
-                                        className='track-horizontal'
                                         style={{ display: 'none' }}
                                     />}
                                     renderThumbHorizontal={props => <div
                                         {...props}
-                                        className='thumb-horizontal'
                                         style={{ display: 'none' }}
                                     />}
                                 >
@@ -348,7 +346,7 @@ class Dropdown extends React.PureComponent {
                                             </React.Fragment>
                                         ))
                                     }
-                                </Scrollbars>
+                                </ThemedScrollbars>
                             </div>
                         </div>
                     </CSSTransition>

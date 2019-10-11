@@ -8,6 +8,7 @@
     &__footer {
         text-align: center;
         height: 152px;
+        margin: 16px 0;
     }
     &__button {
         margin-left: 0 !important;
@@ -20,6 +21,10 @@
             pointer-events: none;
             opacity: 0.5;
         }
+        &--icon {
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
     &__icon-info {
         vertical-align: middle;
@@ -27,6 +32,16 @@
     &__info {
         display: inline-block;
         font-size: 10px;
+
+        //TODO remove this after popover bug fixes
+        &--bubble {
+            left: calc(100vw - 156px) !important;
+            width: 400px !important;
+
+            .dc-popover__bubble__arrow {
+                left: 83% !important;
+            }
+        }
     }
     &__animation {
         height: 64px;

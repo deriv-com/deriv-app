@@ -1,10 +1,10 @@
-import classnames        from 'classnames';
-import proptypes         from 'prop-types';
-import React             from 'react';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import { message_types }  from '../constants/message-types';
-import { connect }       from '../stores/connect';
-import { translate }     from '../utils/tools';
+import classnames           from 'classnames';
+import proptypes            from 'prop-types';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
+import { message_types }    from '../constants/message-types';
+import { connect }          from '../stores/connect';
+import { translate }        from '../utils/tools';
 import '../assets/sass/journal.scss';
 
 const DateItem = ({
@@ -98,10 +98,10 @@ class Journal extends React.PureComponent {
         const { messages } = this.props;
 
         return (
-            <Scrollbars
+            <ThemedScrollbars
                 className='journal'
                 autoHide
-                style={{ height: 'calc(100vh - 349px)' }}
+                style={{ height: 'calc(100vh - 324px)' }}
             >
                 <table className='journal__table'>
                     <thead className='journal__table--header'>
@@ -116,7 +116,7 @@ class Journal extends React.PureComponent {
                                 const { date, time, message, message_type } = item;
                                 const date_el = DateItem({ date, time });
                                 const message_el = MessageItem({ message });
-                                
+
                                 return (
                                     <tr className='journal__table--tr' key={`${item.date}-${index}`}>
                                         <td className='journal__table--td'>{date_el}</td>
@@ -130,7 +130,7 @@ class Journal extends React.PureComponent {
                         }
                     </tbody>
                 </table>
-            </Scrollbars>
+            </ThemedScrollbars>
         );
     }
 }

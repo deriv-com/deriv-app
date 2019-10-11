@@ -34,13 +34,10 @@ import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
-const initial_search_value = { search: '' };
-const initial_botname_value = { botname: '' };
-
 const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
     <div className='toolbar__form'>
         <Formik
-            initialValues={initial_search_value}
+            initialValues={{ search: '' }}
             onSubmit={values => onSearch(values)}
         >
             {
@@ -78,31 +75,35 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
 const BotNameBox = ({ onBotNameTyped, file_name }) => (
     <div className='toolbar__form'>
         <Formik
-            initialValues={initial_botname_value}
-            onSubmit={values => onBotNameTyped(values.botname)}
+            enableReinitialize={true}
+            initialValues={{ botname: file_name }}
+            onSubmit={({ botname }) => onBotNameTyped(botname)}
         >
             {
-                ({ submitForm }) => (
-                    <Form>
-                        <Field name='botname'>
-                            {({ field }) => (
-                                <Input
-                                    {...field}
-                                    className='toolbar__form-field'
-                                    type='text'
-                                    name='botname'
-                                    onKeyUp={submitForm}
-                                    label={translate('Bot name')}
-                                    placeholder={translate('Untitled Bot')}
-                                    value={file_name}
-                                    trailing_icon={
-                                        <ToolbarRenameIcon />
-                                    }
-                                />
-                            )}
-                        </Field>
-                    </Form>
-                )
+                ({ submitForm, setFieldValue }) => {
+                    return (
+                        <Form>
+                            <Field name='botname'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='toolbar__form-field'
+                                        type='text'
+                                        onKeyUp={({ target: { value } }) => {
+                                            setFieldValue('botname', value, false);
+                                            submitForm();
+                                        }}
+                                        label={translate('Bot name')}
+                                        placeholder={translate('Untitled Bot')}
+                                        trailing_icon={
+                                            <ToolbarRenameIcon />
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </Form>
+                    );
+                }
             }
         </Formik>
     </div>

@@ -159,12 +159,14 @@ $category-colours: (
         padding: 10px 0;
         border-top: 1px solid $lightgrey;
     }
-    #search_input {
-        padding: 10px;
-        border-radius: 5px;
-        border: solid $grey 1px;
-        margin: 3px;
+    &__button.btn {
+        margin: 16px auto;
+        padding: 0;
+        width: 152px;
+        height: 32px;
+        color: var(--text-colored-background);
         font-size: 14px;
-        font-weight: 700;
+        font-weight: bold;
+        line-height: 1.4;
     }
 }

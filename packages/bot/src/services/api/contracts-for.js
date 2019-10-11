@@ -11,13 +11,32 @@ export default class ContractsFor {
         // e.g. if market omitted, rule will apply to all markets.
         this.disabled_options          = [
             {
-                market    : 'forex',
                 submarket : 'smart_fx',
                 trade_type: 'higherlower',
             },
             {
+                submarket : 'smart_fx',
+                trade_type: 'callputequal',
+            },
+            {
+                submarket : 'minor_pairs',
+                trade_type: 'callputequal',
+            },
+            {
                 submarket : 'minor_pairs',
                 trade_type: 'higherlower',
+            },
+            {
+                submarket : 'metals',
+                trade_type: 'callputequal',
+            },
+            {
+                market    : 'indices',
+                trade_type: 'callputequal',
+            },
+            {
+                symbol             : 'OTC_AS51',
+                trade_type_category: 'inout',
             },
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },
@@ -284,10 +303,9 @@ export default class ContractsFor {
         const prediction_range  = [];
         const {
             DIGIT_CATEGORIES,
-            opposites,
-        }                       = config;
+            opposites }         = config;
 
-        if (DIGIT_CATEGORIES.includes(contract_category)) {
+        if (DIGIT_CATEGORIES.includes(contract_category) && trade_type !== 'evenodd') {
             const contract = contracts.find(c => {
                 const categories = Object.keys(opposites);
 
@@ -308,11 +326,98 @@ export default class ContractsFor {
         return prediction_range;
     }
 
+    async getMarketBySymbol(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+
+        if (!contracts.length) {
+            return 'na';
+        }
+
+        return contracts[0].market;
+    }
+
+    async getSubmarketBySymbol(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+
+        if (!contracts.length) {
+            return 'na';
+        }
+
+        return contracts[0].submarket;
+    }
+    
+    async getGroupedTradeTypes(symbol) {
+        const contracts = await this.getContractsFor(symbol);
+        const trade_type_options = {};
+
+        for (let i = 0; i < contracts.length; i++) {
+            const market = contracts[i].market;
+            const submarket = contracts[i].submarket;
+            const trade_type_category      = this.getTradeTypeCategoryByTradeType(contracts[i].contract_category);
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i].contract_category);
+            // eslint-disable-next-line no-await-in-loop
+            const trade_types = await this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
+
+            if (trade_type_category_name) {
+                const is_disabled = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
+                    trade_type_category,
+                });
+
+                if (!is_disabled) {
+                    trade_type_options[trade_type_category_name] = trade_types;
+                }
+            }
+        }
+
+        return trade_type_options;
+    }
+
+    async getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
+        const {
+            NOT_AVAILABLE_DURATIONS,
+            TRADE_TYPE_CATEGORIES,
+            opposites,
+        }                   = config;
+        const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
+        const dropdown_options = [];
+
+        if (subcategories && subcategories.length) {
+            for (let i = 0; i < subcategories.length; i++) {
+                const trade_type    = subcategories[i];
+                const durations     = await this.getDurations(symbol, trade_type); // eslint-disable-line no-await-in-loop
+                const has_durations = JSON.stringify(durations) !== JSON.stringify(NOT_AVAILABLE_DURATIONS);
+                const is_disabled   = this.isDisabledOption({
+                    market,
+                    submarket,
+                    symbol,
+                    trade_type_category,
+                    trade_type,
+                });
+
+                if (!is_disabled && has_durations) {
+                    const types = opposites[trade_type.toUpperCase()];
+                    dropdown_options.push(
+                        {
+                            name : types.map(type => type[Object.keys(type)[0]]).join('/'),
+                            value: trade_type,
+                            icon : [Object.keys(types[0])[0], Object.keys(types[1])[0]],
+                        }
+                    );
+                }
+            }
+        }
+
+        return dropdown_options;
+    }
+
     async getTradeTypeCategories(market, submarket, symbol) {
         const {
             TRADE_TYPE_CATEGORY_NAMES,
             NOT_AVAILABLE_DROPDOWN_OPTIONS,
-        }                                  = config;
+        }                                   = config;
         const contracts                     = await this.getContractsFor(symbol);
         const trade_type_categories         = [];
 

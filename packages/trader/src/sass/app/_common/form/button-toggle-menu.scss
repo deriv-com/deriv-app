@@ -15,6 +15,9 @@
     }
     &__button {
         margin: 0;
+        border: none;
+        padding: 0 1.6em;
+        height: 3.2em;
         border-radius: 0px;
         width: 50%;
         background-color: var(--state-normal);

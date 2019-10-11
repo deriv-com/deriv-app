@@ -9,9 +9,9 @@ Blockly.Blocks.epoch = {
             message0       : translate('Seconds Since Epoch'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns the number of seconds since January 1st, 1970'),
             category       : Blockly.Categories.Time,
         };

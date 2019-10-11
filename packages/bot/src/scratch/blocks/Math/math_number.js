@@ -19,9 +19,9 @@ Blockly.Blocks.math_number = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: '#ffffff',
-            colourTertiary : '#ffffff',
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Please use `.` as a decimal separator for fractional numbers.'),
             category       : Blockly.Categories.Mathematical,
         };

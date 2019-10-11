@@ -83,14 +83,15 @@ class Mt5TopUpDemoModal extends React.Component {
                     className='top-up-virtual'
                     is_open={this.props.is_top_up_virtual_success}
                     toggleModal={this.closeSuccess}
-                    has_close_icon={false}
+                    has_close_icon
+                    title={ localize('Top up success') }
                 >
                     <SuccessDialog
                         icon={<IconWallet />}
                         heading={(
                             <h3 className='mt5-success-topup__heading'>
                                 <Localize
-                                    i18n_default_text='USD 10,000.00 has been credited into your DMT5 {{title}} account.'
+                                    i18n_default_text='Your DMT5 {{title}} account has been toped up with USD 10,000 in virtual funds.'
                                     values={{
                                         title: title[0].toLowerCase() + title.slice(1),
                                     }}

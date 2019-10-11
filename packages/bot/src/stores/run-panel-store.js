@@ -44,6 +44,7 @@ export default class RunPanelStore {
             this.setContractStage(CONTRACT_STAGES.purchase_sent);
             this.is_error_happened = false;
         } else if (this.is_error_happened && !this.is_continue_trading) {
+            // When error happens and its recoverable_errors, bot should stop
             this.setContractStage(CONTRACT_STAGES.not_running);
             this.is_error_happened = false;
             this.is_run_button_clicked = false;
@@ -92,7 +93,6 @@ export default class RunPanelStore {
     @action.bound
     onRunButtonClick = () => {
         const { client } = this.root_store.core;
-        this.root_store.contract_card.is_loading = true;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -103,6 +103,8 @@ export default class RunPanelStore {
             this.showRealAccountDialog();
             return;
         }
+
+        this.root_store.contract_card.is_loading = true;
 
         if (!this.is_drawer_open) {
             this.is_drawer_open = true;
@@ -172,7 +174,7 @@ export default class RunPanelStore {
 
     @action.bound
     showLoginDialog() {
-        this.onOkButtonClick = this.onCloseDialog;
+        this.onOkButtonClick = this.onDialogOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('Run error'),
@@ -182,7 +184,7 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.onOkButtonClick = this.onRealAccountOkButtonClick;
+        this.onOkButtonClick = this.onDialogOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
@@ -191,7 +193,7 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onRealAccountOkButtonClick() {
+    onDialogOkButtonClick() {
         this.root_store.contract_card.is_loading = false;
         this.onCloseDialog();
     }

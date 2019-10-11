@@ -421,6 +421,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async setPaymentAgentList(pa_list) {
         const payment_agent_list = pa_list || await this.getPaymentAgentList();
+        if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
+            return;
+        }
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,

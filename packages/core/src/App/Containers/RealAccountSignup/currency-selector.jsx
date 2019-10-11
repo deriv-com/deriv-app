@@ -1,12 +1,12 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { Field, Formik } from 'formik';
-import { Scrollbars }    from 'tt-react-custom-scrollbars';
-import { connect }       from 'Stores/connect';
-import Icon              from 'Assets/icon.jsx';
-import { localize }      from 'App/i18n';
-import FormSubmitButton  from './form-submit-button.jsx';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { Field, Formik }    from 'formik';
+import { ThemedScrollbars } from 'deriv-components';
+import { connect }          from 'Stores/connect';
+import Icon                 from 'Assets/icon.jsx';
+import { localize }         from 'App/i18n';
+import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -142,7 +142,7 @@ class CurrencySelector extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit} className='currency-selector'>
-                        <Scrollbars
+                        <ThemedScrollbars
                             autohide
                             style={{
                                 height: '100%',
@@ -189,7 +189,7 @@ class CurrencySelector extends React.Component {
                                 </RadioButtonGroup>
                             </React.Fragment>
                             }
-                        </Scrollbars>
+                        </ThemedScrollbars>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.currency}
                             is_center={!this.props.has_currency}

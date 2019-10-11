@@ -229,7 +229,11 @@ export default class RunPanelStore {
                     (switched) => {
                         if (switched) {
                             if (client.is_logged_in && !/^VRTC/.test(switched)) {
-                                this.showRealAccountDialog();
+                                // TODO: temporary fix to not showing modal when another modal is open
+                                const is_modal_open = document.getElementById('modal_root').hasChildNodes();
+                                if (!is_modal_open) {
+                                    this.showRealAccountDialog();
+                                }
                                 terminateAndClear();
                             }
                         }

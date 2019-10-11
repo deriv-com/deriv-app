@@ -23,6 +23,10 @@ export default class ContractsFor {
                 trade_type: 'callputequal',
             },
             {
+                submarket : 'minor_pairs',
+                trade_type: 'higherlower',
+            },
+            {
                 submarket : 'metals',
                 trade_type: 'callputequal',
             },

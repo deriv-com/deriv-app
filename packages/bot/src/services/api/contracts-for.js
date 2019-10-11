@@ -11,8 +11,7 @@ export default class ContractsFor {
         // e.g. if market omitted, rule will apply to all markets.
         this.disabled_options          = [
             {
-                market    : 'forex',
-                submarket : ['smart_fx', 'minor_pairs'],
+                submarket : 'smart_fx',
                 trade_type: 'higherlower',
             },
             {
@@ -22,10 +21,6 @@ export default class ContractsFor {
             {
                 market    : 'indices',
                 trade_type: 'callputequal',
-            },
-            {
-                symbol    : ['frxXPDUSD', 'frxXPDUSD'],
-                trade_type: 'higherlower',
             },
             {
                 symbol             : 'OTC_AS51',
@@ -343,12 +338,12 @@ export default class ContractsFor {
         const contracts = await this.getContractsFor(symbol);
         const trade_type_options = {};
 
-        contracts.forEach(contract => {
-            const market = contract.market;
-            const submarket = contract.submarket;
-            const trade_type_category      = this.getTradeTypeCategoryByTradeType(contract.contract_category);
-            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
-            const trade_type = this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
+        for (let i = 0; i < contracts.length; i++) {
+            const market = contracts[i].market;
+            const submarket = contracts[i].submarket;
+            const trade_type_category      = this.getTradeTypeCategoryByTradeType(contracts[i].contract_category);
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i].contract_category);
+            const trade_types = await this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
 
             if (trade_type_category_name) {
                 const is_disabled = this.isDisabledOption({
@@ -359,16 +354,17 @@ export default class ContractsFor {
                 });
 
                 if (!is_disabled) {
-                    trade_type_options[trade_type_category_name] = trade_type;
+                    trade_type_options[trade_type_category_name] = trade_types;
                 }
             }
-        });
+        }
 
         return trade_type_options;
     }
 
-    getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
+    async getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
         const {
+            NOT_AVAILABLE_DURATIONS,
             TRADE_TYPE_CATEGORIES,
             opposites,
         }                   = config;
@@ -378,6 +374,8 @@ export default class ContractsFor {
         if (subcategories && subcategories.length) {
             for (let i = 0; i < subcategories.length; i++) {
                 const trade_type    = subcategories[i];
+                const durations     = await this.getDurations(symbol, trade_type); // eslint-disable-line no-await-in-loop
+                const has_durations = JSON.stringify(durations) !== JSON.stringify(NOT_AVAILABLE_DURATIONS);
                 const is_disabled   = this.isDisabledOption({
                     market,
                     submarket,
@@ -386,7 +384,7 @@ export default class ContractsFor {
                     trade_type,
                 });
 
-                if (!is_disabled) {
+                if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
                     dropdown_options.push(
                         {
@@ -456,6 +454,7 @@ export default class ContractsFor {
         const trade_types   = [];
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
 
+        console.log(subcategories); // eslint-disable-line
         if (subcategories) {
             for (let i = 0; i < subcategories.length; i++) {
                 const trade_type    = subcategories[i];
@@ -477,18 +476,13 @@ export default class ContractsFor {
             }
         }
 
+        console.log(trade_types); // eslint-disable-line
         return (trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
     }
 
     isDisabledOption(compare_obj) {
         return this.disabled_options.some(disabled_obj =>
-            Object.keys(disabled_obj).every(prop => {
-                if (Array.isArray(disabled_obj[prop])) {
-                    return disabled_obj[prop].includes(compare_obj[prop]);
-                }
-                return compare_obj[prop] === disabled_obj[prop];
-                
-            })
+            Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
         );
     }
 

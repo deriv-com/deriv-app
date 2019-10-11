@@ -1,8 +1,8 @@
 import { Button }           from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
+import { localize }         from 'App/i18n';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
-import Localize             from 'App/Components/Elements/localize.jsx';
 import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
@@ -56,7 +56,7 @@ export class AccountActions extends Component {
                     </BinaryLink>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
-                            balance={CurrencyUtils.formatMoney(currency, balance, true)}
+                            balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
                             is_upgrade_enabled={can_upgrade}
                             is_virtual={is_virtual}
                             currency={currency}
@@ -68,18 +68,14 @@ export class AccountActions extends Component {
                         <div className='set-currency'>
                             <Button
                                 onClick={openRealAccountSignup}
+                                has_effect
                                 type='button'
                                 className='btn btn--primary--default'
-                            >
-                                <span>
-                                    <Localize
-                                        i18n_default_text='Set currency'
-                                    />
-                                </span>
-                            </Button>
+                                text={localize('Set currency')}
+                            />
                         </div>
                     }
-                    {!is_virtual && currency &&
+                    {currency &&
                     <ToggleCashier
                         active_tab={active_cashier_tab}
                         className='acc-info__button'

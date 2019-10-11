@@ -43,6 +43,9 @@
                 background-color: var(--general-main-2);
             }
         }
+        &--overflow {
+            padding-bottom: 10rem;
+        }
     }
     &__description {
         @include typeface(--paragraph-center-normal-black);

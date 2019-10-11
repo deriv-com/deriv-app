@@ -88,7 +88,7 @@ class AddressDetails extends Component {
                                             height: '100%',
                                         }}
                                     >
-                                        <div className='details-form__elements' style={{ paddingBottom: '10rem' }}>
+                                        <div className='details-form__elements details-form__elements--overflow'>
                                             <InputField
                                                 name='address_line_1'
                                                 required

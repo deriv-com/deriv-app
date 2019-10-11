@@ -27,7 +27,6 @@ export default class ToolbarStore {
     onToolboxToggle() {
         // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
-        
         this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
     }

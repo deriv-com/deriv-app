@@ -25,6 +25,13 @@ const LanguageSettingContainer = () => (
     />
 );
 
+const ChartSettingContainer = () => (
+    <Lazy
+        ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')}
+    />
+);
+
+ChartSettingContainer.displayName    = 'ChartSettingContainer';
 LanguageSettingContainer.displayName = 'LanguageSettingContainer';
 ThemeSetting.displayName             = 'ThemeSettingContainer';
 
@@ -39,6 +46,15 @@ const ModalContent = () => {
             icon : 'IconLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
+        }, {
+            icon : 'IconCharts',
+            label: localize('Charts'),
+            value: ChartSettingContainer,
+            // uncomment below lines to bring back purchase lock and purchase confirmation}
+            // }, {
+            //     icon : IconPurchase,
+            //     label: localize('Purchase'),
+            //     value: PurchaseSettings,
         },
     ];
     return (
@@ -78,6 +94,8 @@ const ToggleSettings = ({
                     disableApp={disableApp}
                     title={localize('Platform settings')}
                     toggleModal={toggleSettings}
+                    height='616px'
+                    width='736px'
                 >
                     <ModalContent />
                 </Modal>

@@ -1,11 +1,11 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { Scrollbars }                 from 'tt-react-custom-scrollbars';
 import {
     Accordion,
     Button,
-    Dropdown }                        from 'deriv-components';
+    Dropdown,
+    ThemedScrollbars }                from 'deriv-components';
 import Localize                       from 'App/Components/Elements/localize.jsx';
 import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
@@ -30,7 +30,7 @@ class PaymentAgentList extends React.Component {
                     />
                     :
                     <div className='cashier__wrapper--align-left'>
-                        <Scrollbars
+                        <ThemedScrollbars
                             style={{ width: '100%', height: '100%' }}
                             autoHide
                         >
@@ -88,7 +88,7 @@ class PaymentAgentList extends React.Component {
                                 <span className='cashier__text--bold'><Localize i18n_default_text='DISCLAIMER' /></span>:&nbsp;
                                 <Localize i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.' values={{ website_name }} />
                             </div>
-                        </Scrollbars>
+                        </ThemedScrollbars>
                     </div>
                 }
             </div>

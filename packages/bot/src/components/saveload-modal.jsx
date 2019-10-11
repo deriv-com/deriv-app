@@ -40,6 +40,7 @@ const SaveLoadModal = ({
         <Modal
             title={title}
             className='modal--saveload'
+            width='384px'
             is_open={is_saveload_modal_open}
             toggleModal={toggleSaveLoadModal}
         >
@@ -107,7 +108,7 @@ const SaveLoadModal = ({
                                                 {translate('A collection allow you to save block as an individual part which can be add into other bot')}
                                             </div>
                                         </>
-                                        :   <input
+                                        : <input
                                             type='file'
                                             id='files'
                                             accept='.xml'
@@ -120,7 +121,7 @@ const SaveLoadModal = ({
                                 <Button
                                     type='button'
                                     className={classNames(
-                                        'save-load__button',
+                                        'modal__footer--cancel',
                                         'btn--secondary--default',
                                     )}
                                     text={translate('Cancel')}
@@ -129,7 +130,6 @@ const SaveLoadModal = ({
                                 <Button
                                     type='submit'
                                     className={classNames(
-                                        'save-load__button',
                                         'btn--primary--default',
                                     )}
                                     is_loading={button_status === 1}
@@ -163,7 +163,17 @@ const IconRadio = ({
                         { className: classNames('saveload-type__icon', icon.props.className) },
                     )
                 }
-                <p className='saveload-type__radio-text'>{translate(text)}</p>
+                <p className={classNames(
+                    'saveload-type__radio-text',
+                    {
+                        'saveload-type__radio-text--disabled':
+                            is_drive_radio
+                            &&
+                            !google_drive_connected,
+                    })}
+                >
+                    {translate(text)}
+                </p>
             </div>
             {
                 is_drive_radio &&
@@ -171,7 +181,12 @@ const IconRadio = ({
                     className='saveload-type__drive-status'
                     onClick={onDriveConnect}
                 >
-                    {translate(google_drive_connected ? 'Disconnect' : 'Connect')}
+                    {
+                        translate(google_drive_connected ?
+                            translate('Disconnect')
+                            :
+                            translate('Connect'))
+                    }
                 </p>
             }
         </div>

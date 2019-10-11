@@ -5,6 +5,7 @@ import {
     observable,
     runInAction,
     when,
+    reaction,
 }                                    from 'mobx';
 import CurrencyUtils                from 'deriv-shared/utils/currency';
 import ObjectUtils                  from 'deriv-shared/utils/object';
@@ -40,7 +41,6 @@ export default class ClientStore extends BaseStore {
     @observable is_populating_account_list     = false;
     @observable is_populating_mt5_account_list = true;
     @observable website_status                 = {};
-    @observable verification_code              = '';
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
@@ -54,16 +54,23 @@ export default class ClientStore extends BaseStore {
     @observable statement      = [];
     @observable obj_total_balance = {};
 
+    @observable verification_code = {
+        signup                : '',
+        reset_password        : '',
+        payment_withdraw      : '',
+        payment_agent_withdraw: '',
+    };
+
     constructor(root_store) {
         super({ root_store });
     }
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return '';
-        return (this.accounts[this.loginid] && this.accounts[this.loginid].balance) ?
+        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
+        return (this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]) ?
             this.accounts[this.loginid].balance.toString() :
-            '';
+            undefined;
     }
 
     /**
@@ -430,6 +437,7 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
+                this.root_store.ui.removeNotification({ key: 'currency' });
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 // await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);
@@ -520,6 +528,7 @@ export default class ClientStore extends BaseStore {
             this.account_status,
             this.root_store.ui.addNotification,
             this.loginid,
+            this.root_store.ui,
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
@@ -546,22 +555,35 @@ export default class ClientStore extends BaseStore {
             }
         }
 
-        if (client && !client.is_virtual) {
-            await WS.getAccountStatus();
-            BinarySocket.wait('landing_company', 'website_status', 'get_settings', 'get_account_status').then(() => {
-                const { has_missing_required_field } = handleClientNotifications(
-                    client,
-                    this.account_settings,
-                    this.account_status,
-                    this.root_store.ui.addNotification,
-                    this.loginid,
-                );
-                this.setHasMissingRequiredField(has_missing_required_field);
-            });
-        } else if (!client || client.is_virtual) {
-            this.root_store.ui.removeAllNotifications();
-        }
+        /**
+         * Set up reaction for account_settings, account_status
+         */
+        reaction(
+            () => [this.account_settings, this.account_status],
+            () => {
+                if (client && !client.is_virtual) {
+                    const { has_missing_required_field } = handleClientNotifications(
+                        client,
+                        this.account_settings,
+                        this.account_status,
+                        this.root_store.ui.addNotification,
+                        this.loginid,
+                        this.root_store.ui,
+                    );
+                    this.setHasMissingRequiredField(has_missing_required_field);
+                } else if (!client || client.is_virtual) {
+                    this.root_store.ui.removeAllNotifications();
+                }
+            }
+        );
 
+        // TODO: set all currency references to be used only from client-store,
+        // removing the need for reinitializing below
+        if (client && !client.is_virtual) {
+            if (this.currency && (this.currency.length > 0)) {
+                // this.root_store.modules.trade.initAccountCurrency(this.currency);
+            }
+        }
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -724,10 +746,13 @@ export default class ClientStore extends BaseStore {
     setBalance(obj_balance) {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            this.obj_total_balance = {
-                amount  : obj_balance.total.real.amount,
-                currency: obj_balance.total.real.currency,
-            };
+            if (obj_balance.total) {
+                this.obj_total_balance = {
+                    amount  : obj_balance.total.real.amount,
+                    currency: obj_balance.total.real.currency,
+                };
+            }
+            this.resetLocalStorageValues(this.loginid);
         }
     }
 
@@ -858,7 +883,7 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            window.history.replaceState({}, document.title, '/');
 
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
@@ -881,15 +906,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setVerificationCode(code) {
-        this.verification_code = code;
+    setVerificationCode(code, action) {
+        this.verification_code[action] = code;
         if (code) {
-            LocalStore.set('verification_code', code);
+            LocalStore.set(`verification_code.${action}`, code);
         } else {
-            LocalStore.remove('verification_code');
+            LocalStore.remove(`verification_code.${action}`);
         }
-        // TODO: add await if error handling needs to happen before AccountSignup is initialised
-        this.fetchResidenceList(); // Prefetch for use in account signup process
+        if (action === 'signup') {
+            // TODO: add await if error handling needs to happen before AccountSignup is initialised
+            this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
     }
 
     @action.bound
@@ -899,11 +926,16 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     onSignup({ password, residence }, cb) {
-        if (!this.verification_code || !password || !residence) return;
+        if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code, password, residence, this.device_data).then(async response => {
+        WS.newAccountVirtual(
+            this.verification_code.signup,
+            password,
+            residence,
+            ObjectUtils.removeEmptyPropertiesFromObject(this.device_data),
+        ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -975,6 +1007,11 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @computed
+    get is_high_risk() {
+        return this.account_status.risk_classification === 'high';
     }
 }
 /* eslint-enable */

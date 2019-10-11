@@ -290,7 +290,10 @@ export default class TradeStore extends BaseStore {
         }
 
         if (name === 'currency') {
-            this.root_store.client.selectCurrency(value);
+            // Only allow the currency dropdown change if client is not logged in
+            if (!this.root_store.client.is_logged_in) {
+                this.root_store.client.selectCurrency(value);
+            }
         } else if (name === 'expiry_date') {
             this.expiry_time = null;
         } else if (!(name in this)) {

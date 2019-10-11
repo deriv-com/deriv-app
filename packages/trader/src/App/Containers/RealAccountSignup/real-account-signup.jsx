@@ -37,7 +37,8 @@ const ErrorModal = ({ message }) => (
             target='_blank'
             rel='noopener noreferrer'
         >
-            <span className='btn__text'>
+            {/* TODO: the fontsize is incorrectly overriden somewhere, find the overriding class and remove it */}
+            <span className='btn__text' style={{ fontSize: '1.4rem' }}>
                 <Localize
                     i18n_default_text='Go To Help Centre'
                 />

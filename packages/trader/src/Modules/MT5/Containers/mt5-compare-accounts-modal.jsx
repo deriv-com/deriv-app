@@ -55,9 +55,9 @@ const compareAccountsData = [
                     'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.')}
             />
         ),
-        standard : localize('Up To 1:1000'),
-        advanced : localize('Up To 1:100'),
-        synthetic: localize('Up To 1:1000'),
+        standard : localize('Up to 1:1000'),
+        advanced : localize('Up to 1:100'),
+        synthetic: localize('Up to 1:1000'),
     },
     {
         attribute: (
@@ -185,6 +185,8 @@ const CompareAccountsModal = ({ toggleCompareAccounts, disableApp, enableApp, is
                 title={localize('Compare accounts')}
                 toggleModal={toggleCompareAccounts}
                 type='button'
+                height='595px'
+                width='904px'
             >
                 <ModalContent />
             </Modal>

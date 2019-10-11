@@ -26,7 +26,7 @@
 
     &__text {
         @include typeface(--paragraph-center-bold-black, unset);
-        color: var(--text-general);
+        color: var(--text-colored-background);
         display: inline-block;
         vertical-align: middle;
     }
@@ -65,10 +65,6 @@
                 color: var(--text-colored-background);
             }
         }
-        // TODO: (colors) remove this line after colors migration complete
-        .btn__text {
-            color: $color-white;
-        }
         &--orange {
             background: $COLOR_ORANGE;
 
@@ -83,21 +79,18 @@
                 border: 0 solid $COLOR_ORANGE;
             }
         }
-        &--red {
-            background: var(--button-primary-default);
-        }
         &--green {
-            background: $COLOR_GREEN_1;
+            background: var(--status-success);
 
             &:hover:not([disabled]) {
-                background: $COLOR_GREEN_2;
+                background: var(--transparent-success);
             }
             &:active:not([disabled]) {
-                background: $COLOR_GREEN_1;
+                background: var(--status-success);
             }
             /* postcss-bem-linter: ignore */
             &.effect:focus:not(:active):after {
-                border: 0 solid $COLOR_GREEN_1;
+                border: 0 solid var(--status-success);
             }
         }
         &:disabled, &[disabled] {

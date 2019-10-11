@@ -2,6 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
+import Localize            from 'App/Components/Elements/localize.jsx';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 import Icon                from 'Assets/icon.jsx';
 
@@ -46,7 +47,7 @@ class AccountInfo extends React.Component {
                         <Icon
                             icon='IconAccountsCurrency'
                             className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-                            type={is_virtual ? 'virtual' : (currency || '').toLowerCase()}
+                            type={is_virtual ? 'virtual' : (currency || 'real').toLowerCase()}
                         />
                     </span>
                     {
@@ -55,7 +56,12 @@ class AccountInfo extends React.Component {
                             <span
                                 className={classNames('symbols', { [`symbols--${(currency || '').toLowerCase()}`]: currency })}
                             />
-                            {balance}
+                            {!currency &&
+                            <Localize
+                                i18n_default_text='No currency assigned'
+                            />
+                            }
+                            {currency && balance}
                         </p>
                     }
                     <Icon icon='IconArrowBold' className='acc-info__select-arrow' />

@@ -9,7 +9,7 @@
     padding: 5px 12px;
 
     #{$toolbar}__btn {
-        &-icon {
+        &--icon {
             display: flex;
             justify-content: center;
 
@@ -21,6 +21,10 @@
                 margin-left: 8px;
             }
         }
+        &--start {
+            height: 40px;
+            margin: 0 4px;
+        }
     }
     &__section {
         display: flex;
@@ -29,7 +33,7 @@
             align-self: center;
             margin: 0 4px;
         }
-        > #{$toolbar}__btn-icon {
+        > #{$toolbar}__btn--icon {
             margin: 0 4px;
             height: calc(#{$toolbar_height} - 18px);
         }
@@ -42,17 +46,26 @@
     &__icon {
         cursor: pointer;
         border: none;
-        margin: 0 12px;
-        height: 15px;
-        width: 15px;
+        margin: auto 12px;
+        height: 16px;
+        width: 16px;
+
+        &--stop {
+            stroke: var(--text-prominent);
+        }
+        &--disabled {
+            stroke: var(--general-disabled);
+            pointer-events: none;
+        }
     }
     &__group {
         display: flex;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
+        height: 40px;
 
         &-btn {
-            padding: 0px 8px;
+            padding: 0px 12px;
             height: 40px;
 
             > * {

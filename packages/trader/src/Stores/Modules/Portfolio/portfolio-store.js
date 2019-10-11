@@ -43,6 +43,7 @@ export default class PortfolioStore extends BaseStore {
         this.positions  = [];
         this.is_loading = false;
         this.error      = '';
+        WS.forgetAll('proposal_open_contract', 'transaction');
     }
 
     @action.bound
@@ -234,8 +235,6 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     accountSwitcherListener () {
         return new Promise(async (resolve) => {
-            await this.clearTable();
-            await WS.forgetAll('proposal_open_contract', 'transaction');
             return resolve(this.initializePortfolio());
         });
     }
@@ -262,8 +261,7 @@ export default class PortfolioStore extends BaseStore {
         this.disposeSwitchAccount();
         // keep data and connections for portfolio drawer on desktop
         if (this.root_store.ui.is_mobile) {
-            this.clearTable();
-            WS.forgetAll('proposal_open_contract', 'transaction');
+            // this.clearTable();
         }
     }
 

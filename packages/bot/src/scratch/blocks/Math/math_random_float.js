@@ -9,9 +9,9 @@ Blockly.Blocks.math_random_float = {
             message0       : translate('random fraction'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Random fraction number'),
             category       : Blockly.Categories.Mathematical,
         };

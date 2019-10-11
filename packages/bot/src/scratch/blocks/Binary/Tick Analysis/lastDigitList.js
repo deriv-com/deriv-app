@@ -9,9 +9,9 @@ Blockly.Blocks.lastDigitList = {
             message0       : translate('Last digits list'),
             output         : 'Array',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns the list of last digits of 1000 recent tick values'),
             category       : Blockly.Categories.Tick_Analysis,
         };

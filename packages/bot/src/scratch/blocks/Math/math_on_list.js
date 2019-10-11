@@ -29,9 +29,9 @@ Blockly.Blocks.math_on_list = {
             ],
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Agregate functions'),
             category       : Blockly.Categories.Mathematical,
         };

@@ -26,9 +26,9 @@ Blockly.Blocks.lists_getIndex = {
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
-            Blockly.Colours.Utility.colour,
-            Blockly.Colours.Utility.colourSecondary,
-            Blockly.Colours.Utility.colourTertiary
+            Blockly.Colours.Base.colour,
+            Blockly.Colours.Base.colourSecondary,
+            Blockly.Colours.Base.colourTertiary
         );
         this.setOutput(true, null);
 

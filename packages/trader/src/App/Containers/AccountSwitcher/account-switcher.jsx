@@ -124,7 +124,7 @@ class AccountSwitcher extends React.Component {
                                                 }
                                             </span>
                                             {'balance' in this.props.accounts[account.loginid] &&
-                                            <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                            <span className={classNames('acc-switcher__balance', { 'acc-switcher__balance--virtual': account.is_virtual })}>
                                                 {this.props.accounts[account.loginid].currency &&
                                                 <Money
                                                     currency={this.props.accounts[account.loginid].currency}

@@ -31,9 +31,9 @@ Blockly.Blocks.balance = {
                 },
             ],
             output         : null,
-            colour         : Blockly.Colours.Utility.colour,
-            colourSecondary: Blockly.Colours.Utility.colourSecondary,
-            colourTertiary : Blockly.Colours.Utility.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('This block returns current account balance'),
             category       : Blockly.Categories.Miscellaneous,
         };

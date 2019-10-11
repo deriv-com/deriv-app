@@ -118,7 +118,7 @@ class RealAccountSignup extends Component {
                 },
                 {
                     value: () => (
-                        <ErrorModal message={'this.state.error_message'} />
+                        <ErrorModal message={this.state.error_message} />
                     ),
                 },
             ],

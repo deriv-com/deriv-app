@@ -1,0 +1,29 @@
+/** @define dc-themed-scrollbars */
+.dc-themed-scrollbars {
+    &__track {
+        &--horizontal {
+            height: 6px;
+            right: 2px;
+            bottom: 2px;
+            left: 2px;
+            border-radius: 3px;
+        }
+        &--vertical {
+            width: 6px;
+            right: 2px;
+            bottom: 2px;
+            top: 2px;
+            border-radius: 3px;
+        }
+    }
+    &__thumb {
+        &--horizontal {
+            border-radius: inherit;
+            background-color: var(--state-active);
+        }
+        &--vertical {
+            border-radius: inherit;
+            background-color: var(--state-active);
+        }
+    }
+}

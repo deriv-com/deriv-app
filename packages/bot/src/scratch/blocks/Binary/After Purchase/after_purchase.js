@@ -9,7 +9,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 4. Continue trading %2'),
+            message0: translate('%1 4. Restart trading conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -41,7 +41,7 @@ Blockly.Blocks.after_purchase = {
     },
     meta(){
         return {
-            'display_name': translate('Continue trading'),
+            'display_name': translate('Restart trading conditions'),
             'description' : translate('Here is where you can decide to continue trading.'),
         };
     },

@@ -8,7 +8,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/if-return.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/if-return.png` }, // eslint-disable-line
     ],
     //= ================= Math ==================
     math_arithmetic: [

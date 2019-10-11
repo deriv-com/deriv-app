@@ -27,7 +27,6 @@ export default class ToolbarStore {
     onToolboxToggle() {
         // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
-        
         this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
     }
@@ -39,7 +38,7 @@ export default class ToolbarStore {
 
     @action.bound
     onSearch({ search }) {
-        if (this.is_toolbox_open) {
+        if (this.is_toolbox_open && search !== '') {
             this.onToolboxToggle();
         }
 

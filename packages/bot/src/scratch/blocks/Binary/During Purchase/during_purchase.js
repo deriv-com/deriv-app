@@ -1,3 +1,4 @@
+// import ScratchStore          from '../../../../stores/scratch-store';
 import { sellContract }      from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
@@ -45,7 +46,11 @@ Blockly.Blocks.during_purchase = {
         };
     },
     onchange(event) {
+        // TODO: incomment this when the dark mode is done
+        //        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         setBlockTextColor(this);
+        //        }
+
         if (!this.workspace || this.isInFlyout) {
             return;
         }

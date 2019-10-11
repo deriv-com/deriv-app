@@ -3,7 +3,7 @@ import React                  from 'react';
 import { Formik }             from 'formik';
 import {
     Button,
-    Input,
+    PasswordInput,
     PasswordMeter }           from 'deriv-components';
 import { withRouter }         from 'react-router-dom';
 import { connect }            from 'Stores/connect';
@@ -104,11 +104,10 @@ class ChangePasswordForm extends React.Component {
                                 <FormBody scroll_offset='55px'>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <fieldset className='account-form__fieldset'>
-                                        <Input
+                                        <PasswordInput
                                             autoComplete='current-password'
                                             label={localize('Current password')}
                                             error={touched.old_password && errors.old_password}
-                                            type='password'
                                             name='old_password'
                                             value={values.old_password}
                                             onBlur={handleBlur}
@@ -120,10 +119,9 @@ class ChangePasswordForm extends React.Component {
                                             input={this.state.new_pw_input}
                                             error={touched.new_password && errors.new_password}
                                         >
-                                            <Input
+                                            <PasswordInput
                                                 autoComplete='new-password'
                                                 label={localize('New password')}
-                                                type='password'
                                                 name='new_password'
                                                 value={values.new_password}
                                                 onBlur={handleBlur}

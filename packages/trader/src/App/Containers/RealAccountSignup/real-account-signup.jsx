@@ -23,7 +23,7 @@ const initialState = {
     error_message     : '',
 };
 
-const modalHeights = {
+const ModalHeights = {
     account_wizard: {
         0: '650px',
         1: '750px',
@@ -122,7 +122,7 @@ class RealAccountSignup extends Component {
                     ),
                 },
             ],
-            modal_height: modalHeights.change_currency,
+            modal_height: ModalHeights.change_currency,
         };
     }
 
@@ -136,19 +136,19 @@ class RealAccountSignup extends Component {
 
         let height = this.state.height;
         if (!has_real_account) {
-            height = modalHeights.account_wizard[0];
+            height = ModalHeights.account_wizard[0];
         } else if (!currency) {
-            height = modalHeights.set_currency;
+            height = ModalHeights.set_currency;
         } else if (available_crypto_currencies.length !== 0 && can_change_fiat_currency) {
-            height = modalHeights.add_manage_account;
+            height = ModalHeights.add_manage_account;
         } else {
-            height = modalHeights.add_currency;
+            height = ModalHeights.add_currency;
         }
         this.setState({ modal_height: height });
     }
 
     setModalHeight = (step) => {
-        this.setState({ modal_height: modalHeights.account_wizard[step] });
+        this.setState({ modal_height: ModalHeights.account_wizard[step] });
     }
 
     get labels () {
@@ -174,7 +174,7 @@ class RealAccountSignup extends Component {
             previous_currency,
             current_currency,
             active_modal_index: 2,
-            modal_height      : modalHeights.change_currency,
+            modal_height      : ModalHeights.change_currency,
         });
     };
 
@@ -191,7 +191,7 @@ class RealAccountSignup extends Component {
                     <p key={ currency } />,
                 ]}
             />,
-            modal_height: modalHeights.add_currency,
+            modal_height: ModalHeights.add_currency,
         });
     };
 
@@ -216,7 +216,7 @@ class RealAccountSignup extends Component {
         this.setState({
             active_modal_index: 5,
             error_message     : message,
-            modal_height      : modalHeights.error,
+            modal_height      : ModalHeights.error,
         });
     };
 

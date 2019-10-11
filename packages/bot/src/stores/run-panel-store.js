@@ -48,16 +48,17 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        this.is_running = false;
-
         if (this.is_error_happened && this.is_continue_trading) {
+            // When error happens but its not unrecoverable_errors
             this.setContractStage(CONTRACT_STAGES.purchase_sent);
-        } else if (this.is_running) {
-            this.setContractStage(CONTRACT_STAGES.contract_closed);
-        } else {
+        } else if (this.is_error_happened && !this.is_continue_trading) {
             this.setContractStage(CONTRACT_STAGES.not_running);
             this.is_run_button_clicked = false;
+        } else if (this.is_running) {
+            // When bot was running and it closes now
+            this.setContractStage(CONTRACT_STAGES.contract_closed);
         }
+        this.is_running = false;
     }
 
     @action.bound

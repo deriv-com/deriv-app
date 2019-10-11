@@ -20,7 +20,7 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('bot.trade_again', this.onBotNotTradeAgain);
+        // observer.register('bot.trade_again', this.onBotNotTradeAgain);
 
         this.registerReactions();
     }
@@ -38,13 +38,13 @@ export default class RunPanelStore {
     is_error_happened   = false;
     is_continue_trading = true;
 
-    @action.bound
-    onBotNotTradeAgain(is_trade_again) {
-        if (!is_trade_again) {
-            this.is_run_button_clicked = false;
-            this.onBotStopEvent();
-        }
-    }
+    // @action.bound
+    // onBotNotTradeAgain(is_trade_again) {
+    //     if (!is_trade_again) {
+    //         this.is_run_button_clicked = false;
+    //         this.onBotStopEvent();
+    //     }
+    // }
 
     @action.bound
     onBotStopEvent() {
@@ -188,12 +188,18 @@ export default class RunPanelStore {
 
     @action.bound
     showRealAccountDialog() {
-        this.onOkButtonClick = this.onCloseDialog;
+        this.onOkButtonClick = this.onRealAccountOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
             message: translate('Please switch to your demo account to run your DBot.'),
         };
+    }
+
+    @action.bound
+    onRealAccountOkButtonClick() {
+        this.root_store.contract_card.is_loading = false;
+        this.onCloseDialog();
     }
 
     @action.bound

@@ -10,6 +10,10 @@
             }
             .modal__footer {
                 text-align: right;
+
+                &--cancel {
+                    margin-right: 0;
+                }
             }
             .modal__content-row {
                 padding: 21px 21px 35px;
@@ -21,7 +25,8 @@
 .radio-group {
     &__saveload-type {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        margin-top: 0;
 
         .dc-radio {
             &-group {
@@ -67,7 +72,7 @@
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
-        margin-left: 20px;
+        margin: 8px 0 0 20px;
     }
     &__container {
         text-align: center;
@@ -82,11 +87,16 @@
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__drive-status {
         cursor: pointer;
         position: absolute;
         margin-top: 20px;
+        font-weight: bold;
         color: var(--brand-red-coral);
         width: 80px;
     }

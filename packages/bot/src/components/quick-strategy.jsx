@@ -248,23 +248,17 @@ class QuickStrategy extends React.PureComponent {
 }
 
 QuickStrategy.propTypes = {
-    active_index          : proptypes.number,
-    createStrategy        : proptypes.func,
-    initial_values        : proptypes.object,
-    is_strategy_modal_open: proptypes.bool,
-    market_dropdown       : proptypes.oneOfType([
-        proptypes.array,
-        proptypes.object,
-    ]),
+    active_index             : proptypes.number,
+    createStrategy           : proptypes.func,
+    initial_values           : proptypes.object,
+    is_strategy_modal_open   : proptypes.bool,
+    market_dropdown          : proptypes.object,
     onChangeMarketDropdown   : proptypes.func,
     onChangeTradeTypeDropdown: proptypes.func,
     onMount                  : proptypes.func,
     setActiveTabIndex        : proptypes.func,
     toggleStrategyModal      : proptypes.func,
-    trade_type_dropdown      : proptypes.oneOfType([
-        proptypes.array,
-        proptypes.object,
-    ]),
+    trade_type_dropdown      : proptypes.object,
 };
 
 export default connect(({ quick_strategy }) => ({

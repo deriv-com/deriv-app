@@ -23,8 +23,8 @@ export default class QuickStrategyStore {
 
     @observable is_strategy_modal_open = false;
     @observable active_index           = 0;
-    @observable market_dropdown        = [];
-    @observable trade_type_dropdown    = [];
+    @observable market_dropdown        = {};
+    @observable trade_type_dropdown    = {};
 
     @action.bound
     toggleStrategyModal() {

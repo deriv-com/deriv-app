@@ -101,9 +101,13 @@ class AccountSwitcher extends React.Component {
                                     <div
                                         id={`dt_${account.loginid}`}
                                         className={classNames('acc-switcher__account', {
-                                            'acc-switcher__account--selected': (account.loginid === this.props.account_loginid),
+                                            'acc-switcher__account--selected': account.loginid === this.props.account_loginid,
+                                            'acc-switcher__account--disabled': account.is_disabled,
                                         })}
-                                        onClick={this.doSwitch.bind(this, account.loginid)}
+                                        onClick={account.is_disabled
+                                            ? undefined
+                                            : this.doSwitch.bind(this, account.loginid)
+                                        }
                                     >
                                         <span className={'acc-switcher__id'}>
                                             <Icon

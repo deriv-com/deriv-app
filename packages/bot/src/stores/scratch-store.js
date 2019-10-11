@@ -6,6 +6,7 @@ class ScratchStore {
         this.flyout     = root_store.flyout;
         this.toolbar    = root_store.toolbar;
         this.saveload   = root_store.saveload;
+        this.quick_strategy = root_store.quick_strategy;
     }
 
     static setInstance(root_store) {

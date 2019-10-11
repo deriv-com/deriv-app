@@ -41,4 +41,11 @@ Blockly.Blocks.trade_again = {
     },
 };
 
-Blockly.JavaScript.trade_again = () => 'return true;\n';
+Blockly.JavaScript.trade_again = () => {
+    const code = `
+        Bot.isTradeAgain(true);\n
+        return true;\n
+    `;
+
+    return code;
+};

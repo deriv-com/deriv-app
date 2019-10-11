@@ -37,7 +37,7 @@ export const scratchWorkspaceInit = async () => {
         
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
         Blockly.derivWorkspace.clearUndo();
-
+        
         const onWorkspaceResize = () => {
             const toolbar_height = 56;
 
@@ -126,12 +126,12 @@ export const runBot = (limitations = {}) => {
             }
             `;
         if (code) {
-            if (interpreter === null) {
-                interpreter = new Interpreter();
-            } else {
+            if (interpreter !== null) {
                 interpreter.stop(true);
+                interpreter = null;
             }
 
+            interpreter = new Interpreter();
             interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 interpreter.stop();

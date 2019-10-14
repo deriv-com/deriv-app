@@ -27,11 +27,24 @@ const RouteWithSubRoutes = route => {
         } else {
             result = (
                 (route.is_authenticated && !route.is_logged_in) ?
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> db138c0584dfd3e9036e0fc2d29410858a580d35
                     <LoginPrompt
                         onLogin={redirectToLogin}
                         onSignup={goToSignUp}
                         page_title={route.title}
                     />
+<<<<<<< HEAD
+=======
+=======
+                    <LoginPrompt 
+                    onLogin={redirectToLogin}  
+                    onSignup={goToSignUp} 
+                    page_title={route.title} />
+>>>>>>> 1291e2594263c96b35b87be25024dbeb972c3975
+>>>>>>> db138c0584dfd3e9036e0fc2d29410858a580d35
                     :
                     <route.component {...props} routes={route.routes} />
             );

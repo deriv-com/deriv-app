@@ -10,7 +10,7 @@ const PageError = ({
     header,
     redirect_label,
     redirect_url,
-}) => (  
+}) => (
     <div className='page-error__container'>
         <div className='page-error__box'>
             <h3 className='page-error__header'>

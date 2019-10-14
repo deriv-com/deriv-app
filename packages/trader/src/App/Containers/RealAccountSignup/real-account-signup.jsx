@@ -228,7 +228,7 @@ class RealAccountSignup extends Component {
 export default connect(({ ui, client, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency   : client.can_change_fiat_currency,
-    has_real_account           : client.has_real_account,
+    has_real_account           : client.has_active_real_account,
     currency                   : client.currency,
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,
     closeRealAccountSignup     : ui.closeRealAccountSignup,

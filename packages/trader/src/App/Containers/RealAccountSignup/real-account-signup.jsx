@@ -15,14 +15,6 @@ import SuccessDialog         from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const initialState = {
-    active_modal_index: -1,
-    previous_currency : '',
-    current_currency  : '',
-    success_message   : '',
-    error_message     : '',
-};
-
 const ErrorModal = ({ message }) => (
     <React.Fragment>
         <IconDuplicate />
@@ -53,7 +45,6 @@ class RealAccountSignup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ...initialState,
             modal_content: [
                 {
                     icon : 'IconTheme',
@@ -76,8 +67,8 @@ class RealAccountSignup extends Component {
                 {
                     value: () => (
                         <FinishedSetCurrency
-                            prev={this.state.previous_currency}
-                            current={this.state.current_currency}
+                            prev={this.props.state_value.previous_currency}
+                            current={this.props.state_value.current_currency}
                             onCancel={this.closeModal}
                             onSubmit={this.closeModalThenOpenCashier}
                         />
@@ -89,8 +80,8 @@ class RealAccountSignup extends Component {
                             has_cancel
                             onCancel={this.closeModalWithHooks}
                             onSubmit={this.closeModalThenOpenCashier}
-                            message={this.state.success_message}
-                            icon={<Icon type={this.state.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
+                            message={this.props.state_value.success_message}
+                            icon={<Icon type={this.props.state_value.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
                             text_submit={localize('Deposit now')}
                             text_cancel={ RealAccountSignup.text_cancel() }
                         />
@@ -103,7 +94,7 @@ class RealAccountSignup extends Component {
                 },
                 {
                     value: () => (
-                        <ErrorModal message={this.state.error_message} />
+                        <ErrorModal message={this.props.state_value.error_message} />
                     ),
                 },
             ],
@@ -123,13 +114,10 @@ class RealAccountSignup extends Component {
 
     closeModalThenOpenCashier = () => {
         this.props.closeSignupAndOpenCashier();
-        setTimeout(() => {
-            this.setState(initialState);
-        }, 400);
     };
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
-        this.setState({
+        this.props.setParams({
             previous_currency,
             current_currency,
             active_modal_index: 2,
@@ -137,7 +125,7 @@ class RealAccountSignup extends Component {
     };
 
     showAddCurrencySuccess = (currency) => {
-        this.setState({
+        this.props.setParams({
             current_currency  : currency,
             active_modal_index: 3,
             success_message   : <Localize
@@ -146,7 +134,7 @@ class RealAccountSignup extends Component {
                     currency: currency.toUpperCase(),
                 }}
                 components={[
-                    <p key={ currency } />,
+                    <p key={currency} />,
                 ]}
             />,
         });
@@ -164,13 +152,13 @@ class RealAccountSignup extends Component {
     };
 
     showLoadingModal = () => {
-        this.setState({
+        this.props.setParams({
             active_modal_index: 4,
         });
     };
 
     showErrorModal = (message) => {
-        this.setState({
+        this.props.setParams({
             active_modal_index: 5,
             error_message     : message,
         });
@@ -181,22 +169,19 @@ class RealAccountSignup extends Component {
             sessionStorage.removeItem('post_real_account_signup');
         }
         this.props.closeRealAccountSignup();
-        setTimeout(() => {
-            this.setState(initialState);
-        }, 400);
     };
 
     get active_modal_index() {
         const ACCOUNT_WIZARD = 1;
         const ADD_OR_MANAGE_ACCOUNT = 0;
 
-        if (this.state.active_modal_index === -1) {
+        if (this.props.state_value.active_modal_index === -1) {
             return (
                 this.props.has_real_account && this.props.currency
             ) ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
         }
 
-        return this.state.active_modal_index;
+        return this.props.state_value.active_modal_index;
     }
 
     static text_cancel = () => {
@@ -243,10 +228,12 @@ class RealAccountSignup extends Component {
 export default connect(({ ui, client, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency   : client.can_change_fiat_currency,
-    has_real_account           : client.has_real_account,
+    has_real_account           : client.has_active_real_account,
     currency                   : client.currency,
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,
     closeRealAccountSignup     : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier  : ui.closeSignupAndOpenCashier,
     enableMt5PasswordModal     : modules.mt5.enableMt5PasswordModal,
+    setParams                  : ui.setRealAccountSignupParams,
+    state_value                : ui.real_account_signup,
 }))(RealAccountSignup);

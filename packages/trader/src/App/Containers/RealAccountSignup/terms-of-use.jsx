@@ -32,7 +32,7 @@ class TermsOfUse extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '100%',
+                                height: '420px',
                             }}
                         >
                             <div className='terms-of-use'>

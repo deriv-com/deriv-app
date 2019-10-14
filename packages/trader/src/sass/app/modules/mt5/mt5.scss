@@ -1,0 +1,181 @@
+@import '../../_common/base/index';
+
+.dc-modal__container_mt5-password-modal {
+    max-width: 424px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    h2 {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-bottom: 3em;
+    }
+    form {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2em;
+    }
+    &__description {
+        @include typeface(--small-center-normal-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-top: 1em;
+    }
+    &__body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .dc-modal-header {
+        display: none;
+    }
+    .success-change {
+        margin-top: 3em;
+    }
+    & .dc-password-meter__container {
+        flex-grow: 0;
+        width: 300px;
+    }
+    & .mt5-password-field {
+        margin-bottom: 1em;
+        width: 80%;
+    }
+}
+
+.dc-modal__container_top-up-virtual {
+    width: 384px;
+    min-height: 367px;
+    display: flex;
+    flex-direction: column;
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        padding: 5em 3em 3em;
+        flex-grow: 1;
+        justify-content: space-around;
+        align-items: center;
+    }
+    &__description {
+        @include typeface(--small-center-normal-black);
+        text-transform: none;
+        color: var(--text-general);
+    }
+    &--h4 {
+        @include typeface(--small-center-bold-black);
+        text-transform: none;
+        color: var(--text-prominent);
+    }
+    &--balance {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-profit-success);
+    }
+    &--balance-descriptor {
+        @include typeface(--small-center-normal-black, none);
+        color: var(--text-general);
+    }
+    &--button {
+        height: 4rem;
+        width: 27rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 0;
+        margin: 1.6rem;
+
+        .btn {
+            @include typeface(--paragraph-center-bold-black, none);
+            background-color: var(--brand-red-coral);
+            color: var(--text-colored-background);
+            text-transform: none;
+
+            &--disabled {
+                background-color: var(--brand-red-coral);
+                opacity: 0.32;
+                cursor: initial;
+            }
+        }
+    }
+    .success-change {
+        margin-top: 2em;
+
+        &__body-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            flex-grow: 1;
+        }
+    }
+}
+
+.dc-modal-header__section {
+    &--top-up-virtual {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-prominent);
+        text-transform: none;
+    }
+}
+
+.mt5-success-topup {
+    &__heading {
+        @include typeface(--small-center-bold-black);
+        color: var(--text-prominent);
+        text-transform: none;
+        margin-top: 2em;
+        padding: 0 1.6em;
+    }
+    &__description {
+        p {
+            @include typeface(--small-center-normal-black);
+            color: var(--text-general);
+            text-transform: none;
+        }
+    }
+}
+
+.dc-tooltip {
+    position: relative;
+    display: inline-block;
+
+    &:hover {
+        .dc-tooltiptext {
+            visibility: visible;
+        }
+    }
+    .dc-tooltiptext {
+        @include typeface(--xsmall-left-normal-black);
+        text-transform: none;
+        box-shadow: 0 0 8px 0 rgba(21, 33, 45, 0.32);
+        visibility: hidden;
+        width: 216px;
+        top: 100%;
+        left: 100%;
+        margin-left: -200px;
+        background-color: var(--general-main-1);
+        color: var(--text-prominent);
+        padding: 0.5em;
+        border-radius: 0.3em;
+        position: absolute;
+        z-index: 1;
+
+        &:after {
+            content: ' ';
+            position: absolute;
+            bottom: 100%; /* At the top of the tooltip */
+            left: 89%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent var(--general-main-1) transparent;
+        }
+    }
+}

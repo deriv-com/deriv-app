@@ -6,12 +6,13 @@ import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/durat
 import Duration                       from './duration.jsx';
 
 class DurationWrapper extends React.Component {
-    hasDurationUnit = (duration_unit) => {
+    hasDurationUnit = (duration_unit, is_advanced_duration) => {
         let duration_list = [...this.props.duration_units_list];
 
-        if (this.props.duration_units_list.length > 1 && !this.props.is_advanced_duration) {
+        if (duration_list.length > 1 && !is_advanced_duration) {
             duration_list = duration_list.filter(du => du.value === 'm' || du.value === 't');
         }
+
         return duration_list.some(du => du.value === duration_unit);
     };
 
@@ -122,11 +123,12 @@ class DurationWrapper extends React.Component {
             this.props.contract_expiry_type,
             duration_unit,
         );
-
-        if (current_duration < min_value) {
+        if (this.props.contract_expiry_type === 'tick' && current_duration < min_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
             onChange({ target: { name: 'duration', value: min_value } });
-        } else if (current_duration > max_value) {
+        }
+
+        if (!(current_duration < min_value) && current_duration > max_value) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }
@@ -144,7 +146,7 @@ class DurationWrapper extends React.Component {
         } = this.props;
 
         const current_duration_unit           = (is_advanced_duration ? advanced_duration_unit : simple_duration_unit);
-        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit);
+        const has_missing_duration_unit       = !this.hasDurationUnit(current_duration_unit, is_advanced_duration);
         const simple_is_missing_duration_unit =
             (!is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4);
         const [min_value, max_value]          =

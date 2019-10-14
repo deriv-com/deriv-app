@@ -5,8 +5,7 @@
     &__content {
         display: flex;
         flex-direction: column;
-        width: 400px;
-        font-size: 16px;
+        font-size: 14px;
         padding: 16px;
     }
     &__header {
@@ -18,8 +17,10 @@
         text-align: left;
         line-height: 40px;
     }
-    &__ok-button {
+    &__footer {
         align-self: flex-end;
-        width: 96px;
+    }
+    &__ok, &__cancel {
+        margin-right: 0 !important;
     }
 }

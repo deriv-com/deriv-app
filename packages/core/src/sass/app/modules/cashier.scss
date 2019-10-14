@@ -1,20 +1,23 @@
-/** @define cashier */
+/** @define cashier; weak */
 .cashier {
-    // TODO: until here
     &__content {
         width: 100%;
+        background: var(--status-default);
     }
     &__wrapper {
         text-align: center;
 
         &, &--align-left {
-            color: var(--text-prominent);
+            color: var(--text-general);
             width: 100%;
             height: 100%;
             line-height: 1.43;
         }
         &--align-left {
             text-align: left;
+        }
+        .inline-icon .color1-fill {
+            fill: var(--text-general);
         }
     }
     &__loader {
@@ -30,6 +33,7 @@
         line-height: 1.5;
         font-weight: bold;
         margin-bottom: 16px;
+        color: var(--text-prominent);
     }
     &__form {
         &-submit {
@@ -82,7 +86,7 @@
 
         &-display {
             justify-content: left;
-            min-height: 3.8rem;
+            min-height: 4rem;
             height: auto;
 
             &-span {
@@ -96,12 +100,10 @@
             }
         }
         &-items, &-label {
-            text-transform: none !important;
-            text-align: left !important;
-            font-size: 1.4rem !important;
             justify-content: left;
-            padding-left: 1.4rem;
-            align-items: center;
+        }
+        &-label {
+            margin-left: 1.6rem;
         }
     }
     &__transferred {
@@ -114,6 +116,10 @@
         &-details {
             margin-left: 8px;
             vertical-align: super;
+            font-size: 1.4rem;
+            text-align: left;
+            line-height: 1.43;
+            max-width: 20rem;
 
             &-wrapper {
                 display: flex;
@@ -129,8 +135,9 @@
         }
     }
     &__paragraph {
-        font-size: 1.4em;
+        font-size: 1.4rem;
         align-self: center;
+        line-height: 1.43;
     }
     &__text {
         font-size: 1.4rem;
@@ -146,6 +153,44 @@
     &__modal-tab {
         min-width: 24rem;
     }
+    &__success {
+        background-color: var(--general-section-1);
+        padding: 2.4rem 3.4rem;
+        margin: 0 4.9rem;
+    }
+    &__amount-symbol {
+        top: 0.9rem;
+    }
+    &__no-balance {
+        &-icon {
+            margin: 10.7rem 0 1.6rem;
+        }
+        &-button {
+            height: 4rem;
+            margin-top: 3.2rem;
+        }
+    }
+    &__account-switch-icon {
+        background-image: url('~Images/app/cashier/account_switcher.jpg');
+        width: 400px;
+        height: 360px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin: 2.4rem auto;
+    }
+    &__virtual-header {
+        margin-top: 0;
+        margin-bottom: 0.8rem;
+    }
+    &__center-align {
+        &-wrapper {
+            display: flex;
+        }
+        &-content {
+            align-self: center;
+            width: 100%;
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -154,15 +199,20 @@
             margin-top: 8.7rem;
             margin-bottom: 1.6rem;
         }
-        &__text {
+        &__header {
             color: var(--text-loss-danger);
             font-weight: bold;
             font-size: 1.6rem;
             line-height: 1.5;
+            margin-bottom: 0.8rem;
         }
         &__button {
             margin-top: 3.2rem;
             height: 4rem;
+            margin-bottom: 1.6rem;
+        }
+        &__footer {
+            font-size: 1.2rem;
         }
     }
 }
@@ -223,7 +273,7 @@
             margin-top: 4rem;
 
             &-text {
-                color: $COLOR_ORANGE;
+                color: var(--brand-red-coral);
                 font-weight: bold;
                 text-decoration: none;
                 cursor: pointer;
@@ -260,14 +310,13 @@
         &-selector {
             margin-bottom: 16px;
             display: flex;
-
-            .payment-agent__drop-down {
-                margin-left: 8px;
-                margin-bottom: 0;
-                min-width: 19.6rem;
-                width: auto;
-            }
         }
+    }
+    &__drop-down {
+        margin-left: 8px;
+        min-width: 20rem;
+        width: auto;
+        margin-bottom: 0;
     }
     &__accordion-content {
         &-line {
@@ -286,10 +335,36 @@
         line-height: 1.42;
     }
     &__radio {
-        margin-bottom: 16px;
+        display: none;
 
         &-group {
             display: block;
+        }
+        &-wrapper {
+            display: flex;
+
+            &:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+            &:last-child {
+                margin-bottom: 2.7rem;
+            }
+        }
+        &-circle {
+            border: 2px solid var(--text-general);
+            border-radius: 50%;
+            box-shadow: 0 0 1px 0 $color-white;
+            width: 16px;
+            height: 16px;
+            transition: all 0.3s ease-in-out;
+            margin-right: 8px;
+            align-self: center;
+            display: inline-flex;
+
+            &--selected {
+                border-width: 4px;
+                border-color: var(--brand-red-coral);
+            }
         }
     }
     &__receipt {
@@ -318,7 +393,8 @@
         margin-bottom: 24px;
     }
     &__buttons {
-        float: right;
+        justify-content: flex-end;
+        display: flex;
     }
     &__statement-button, &__done-button {
         margin: 0;
@@ -338,6 +414,12 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
+        &-error {
+            white-space: nowrap;
+        }
+    }
+    &__paragraph {
+        align-self: flex-start;
     }
 }
 
@@ -350,7 +432,7 @@
         line-height: 1.5;
     }
     &__bullet {
-        background-color: var(--bullet);
+        background-color: var(--text-general);
         border-radius: 100%;
         margin-right: 1.3rem;
         width: 0.6rem;
@@ -367,6 +449,9 @@
         min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
         width: auto;
         margin-bottom: 3.4rem;
+    }
+    &__currency, &__balance {
+        line-height: 1.43;
     }
     &__currency {
         margin: 0 0.4rem;
@@ -400,23 +485,27 @@
         min-width: 6.5rem;
         height: 4rem;
     }
-    &__no-balance {
-        &-icon {
-            margin: 10.7rem 0 1.6rem;
-        }
-        &-button {
-            height: 4rem;
-            margin-top: 3.2rem;
-        }
-    }
 }
 
-/** @define dc-modal; */
-.dc-modal {
-    &__container {
-        &_modal-cashier {
-            width: 904px;
+/** @define payment-agent-transfer */
+.payment-agent-transfer {
+    &__header {
+        margin-bottom: 2.8rem;
+    }
+    &__input {
+        width: 29.6rem;
+        display: inline-flex;
+
+        &:not(:first-child) {
+            margin-left: 2.4rem;
         }
+    }
+    &__buttons {
+        margin-left: -10.7rem;
+        align-items: center;
+    }
+    &__done-button {
+        margin-right: 2.4rem;
     }
 }
 
@@ -425,10 +514,16 @@
     &__modal-cashier {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
+    &--modal-cashier {
+        background-color: var(--general-main-1);
+    }
     &__title {
+        line-height: 1.65;
+
         &--modal-cashier {
             min-width: 24rem;
             border-bottom: 1px solid var(--general-section-1);
+            background-color: var(--general-section-1);
         }
     }
 }

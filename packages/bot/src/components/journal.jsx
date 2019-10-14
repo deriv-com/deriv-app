@@ -1,9 +1,10 @@
-import classnames     from 'classnames';
-import proptypes      from 'prop-types';
-import React          from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
-import { connect }    from '../stores/connect';
-import { translate }  from '../utils/tools';
+import classnames           from 'classnames';
+import proptypes            from 'prop-types';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
+import { message_types }    from '../constants/message-types';
+import { connect }          from '../stores/connect';
+import { translate }        from '../utils/tools';
 import '../assets/sass/journal.scss';
 
 const DateItem = ({
@@ -20,6 +21,10 @@ const DateItem = ({
 const FormatMessage = ({
     message,
 }) => {
+    if (typeof message !== 'string') {
+        return message;
+    }
+
     const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
 
@@ -86,17 +91,17 @@ const MessageItem = ({
 
 class Journal extends React.PureComponent {
     componentWillUnmount() {
-        this.props.onUnmount();
+        // this.props.onUnmount();
     }
 
     render() {
         const { messages } = this.props;
 
         return (
-            <Scrollbars
+            <ThemedScrollbars
                 className='journal'
                 autoHide
-                style={{ height: 'calc(100vh - 243px)' }}
+                style={{ height: 'calc(100vh - 324px)' }}
             >
                 <table className='journal__table'>
                     <thead className='journal__table--header'>
@@ -108,20 +113,24 @@ class Journal extends React.PureComponent {
                     <tbody className='journal__table--body'>
                         {
                             messages.map((item, index) => {
-                                const { date, time, message } = item;
+                                const { date, time, message, message_type } = item;
                                 const date_el = DateItem({ date, time });
                                 const message_el = MessageItem({ message });
 
                                 return (
                                     <tr className='journal__table--tr' key={`${item.date}-${index}`}>
                                         <td className='journal__table--td'>{date_el}</td>
-                                        <td className='journal__table--td'>{message_el}</td>
+                                        <td className={classnames(
+                                            'journal__table--td',
+                                            { 'journal__table--red': message_type === message_types.error })}
+                                        >{message_el}
+                                        </td>
                                     </tr>);
                             })
                         }
                     </tbody>
                 </table>
-            </Scrollbars>
+            </ThemedScrollbars>
         );
     }
 }

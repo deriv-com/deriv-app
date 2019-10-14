@@ -21,21 +21,21 @@ of a flag e.g. contract_purchase_sent (when buy was sent to
 API, or contract_purchase_recieved (when buy was acknowledged
 by API), or contract.sold (when a contract was sold/expired).
 
--contract.settled: Confusing name, but this event was emitted to initiate a
+-contract.settled: this event was emitted to initiate a
 settlement of a contract, i.e. it would call proposal_open_contract to retrieve
 latest values for contract, not required atm by DerivBot
 
 -googledrive.authorise : event to start auturize google flow
 
--ui.log.success: comming from server or notification by users from notify block , green
+-ui.log.success: UI Notifications
 
--ui.log.error: red messages
+-ui.log.error: UI errors
 
--ui.log.warn: yellow messages
+-ui.log.warn: UI warning
 
--Notify: coming from server , info messages
+-Notify: Server Notifications
 
--Error : coming from server , red messages
+-Error : Server errors
 
  */
 

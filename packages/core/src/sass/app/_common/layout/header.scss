@@ -82,13 +82,14 @@
         align-items: center;
         justify-content: space-evenly;
         transition: background-color 0.3s;
+        cursor: pointer;
 
         &-text {
             @include typeface(--title-left-normal-black);
             padding: 0.5em 0;
             position: relative;
-            color: var(--text-prominent);
-            @include colorIcon(var(--text-prominent), none, var(--text-prominent));
+            color: var(--text-general);
+            @include colorIcon(var(--text-general), none, var(--text-general));
 
             &:before {
                 position: absolute;

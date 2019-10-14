@@ -2,7 +2,7 @@ import classNames                     from 'classnames';
 import debounce                       from 'lodash.debounce';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { FixedSizeList as List }      from 'react-window';
-import { Scrollbars }                 from 'tt-react-custom-scrollbars';
+import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import TableRow                       from './table-row.jsx';
@@ -31,8 +31,8 @@ class DataTable extends React.PureComponent {
 
     componentDidMount() {
         this.setState({
-            height      : this.el_table_body.clientHeight,
-            width       : this.el_table_body.clientWidth,
+            height      : this.props.custom_height || this.el_table_body.clientHeight,
+            width       : this.props.custom_width || this.el_table_body.clientWidth,
             window_width: window.innerWidth,
         });
         window.onresize = this.resizeDimensions;
@@ -97,17 +97,17 @@ class DataTable extends React.PureComponent {
             data_source,
             footer,
             is_empty,
+            item_size,
             onScroll,
         } = this.props;
 
         const TableData =
-
             <React.Fragment>
                 <List
                     className={className}
                     height={this.state.height}
                     itemCount={data_source.length}
-                    itemSize={63}
+                    itemSize={item_size || 63}
                     width={this.state.width}
                 >
                     {this.rowRenderer.bind(this)}
@@ -133,13 +133,13 @@ class DataTable extends React.PureComponent {
                     {is_empty ?
                         TableData
                         :
-                        <Scrollbars
+                        <ThemedScrollbars
                             autoHeight
                             autoHeightMax={this.state.height}
                             autoHide
                         >
                             {TableData}
-                        </Scrollbars>
+                        </ThemedScrollbars>
                     }
                 </div>
 

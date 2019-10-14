@@ -12,7 +12,7 @@ const IconClose = ({ className, onClick }) => (
             className='color1-fill'
             fill='#2A3052'
             fillRule='nonzero'
-            d='M8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 1 1 .708-.708L8 7.293z'
+            d='M8 6.587l4.293-4.294a1 1 0 0 1 1.414 1.414L9.414 8.002l4.293 4.294a1 1 0 0 1-1.414 1.414L8 9.416 3.707 13.71a1 1 0 1 1-1.414-1.414l4.293-4.294-4.293-4.295a1 1 0 1 1 1.414-1.414L8 6.587z'
         />
     </svg>
 );
@@ -45,7 +45,7 @@ class ModalElement extends React.PureComponent {
     };
 
     render() {
-        const { id, title, className, header, children, has_close_icon, toggleModal } = this.props;
+        const { id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
         
         return ReactDOM.createPortal(
             <div
@@ -56,6 +56,10 @@ class ModalElement extends React.PureComponent {
                         [`dc-modal__container_${className}`]: className,
                     }
                 )}
+                style={{
+                    height: height || 'auto',
+                    width : width || 'auto',
+                }}
             >
                 <div className={classNames('dc-modal-header', {
                     [`dc-modal-header--${className}`]: className,
@@ -121,9 +125,11 @@ const Modal = ({
     header,
     id,
     is_open,
+    has_close_icon,
+    height,
     title,
     toggleModal,
-    has_close_icon,
+    width,
 }) => (
     <CSSTransition
         appear
@@ -145,6 +151,8 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
+            height={height}
+            width={width}
         >
             {children}
         </ModalElement>
@@ -160,6 +168,7 @@ Modal.propTypes = {
     className     : PropTypes.string,
     has_close_icon: PropTypes.bool,
     header        : PropTypes.node,
+    height        : PropTypes.string,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
     title         : PropTypes.oneOfType([
@@ -167,6 +176,7 @@ Modal.propTypes = {
         PropTypes.bool,
     ]),
     toggleModal: PropTypes.func,
+    width      : PropTypes.string,
 };
 
 export default Modal;

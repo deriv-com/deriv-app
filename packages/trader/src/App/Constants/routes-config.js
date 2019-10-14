@@ -4,16 +4,15 @@ import { Redirect }                   from 'App/Containers/Redirect';
 import { localize }                   from 'App/i18n';
 import { routes }                     from 'Constants';
 
-// TODO: Find a workaround for black flash when on initial load for page route modules
 import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';
-// import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
-// import ProofOfIdentity     from 'Modules/Account/Sections/Verification/ProofOfIdentity';
-// import ProofOfAddress      from 'Modules/Account/Sections/Verification/ProofOfAddress';
+import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
+import ProofOfIdentity     from 'Modules/Account/Sections/Verification/ProofOfIdentity';
+import ProofOfAddress      from 'Modules/Account/Sections/Verification/ProofOfAddress';
 import DerivPassword       from 'Modules/Account/Sections/Security/DerivPassword';
 import AccountLimits       from 'Modules/Account/Sections/Security/AccountLimits';
 import OpenPositions       from 'Modules/Reports/Containers/open-positions.jsx';
 import ProfitTable         from 'Modules/Reports/Containers/profit-table.jsx';
-import Statement           from  'Modules/Reports/Containers/statement.jsx';
+import Statement           from 'Modules/Reports/Containers/statement.jsx';
 
 import Trade from 'Modules/Trading';
 
@@ -57,19 +56,17 @@ const initRoutesConfig = () => ([
                 icon     : 'IconUser',
                 subroutes: [
                     { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
-                    // TODO: uncomment once below is ready
-                    // { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
+                    { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
                 ],
             },
-            // TODO: uncomment when it's ready
-            // {
-            //     title    : localize('Verification'),
-            //     icon     : 'IconVerification',
-            //     subroutes: [
-            //         { path: routes.proof_of_identity, component: ProofOfIdentity, title: localize('Proof of identity') },
-            //         { path: routes.proof_of_address,  component: ProofOfAddress,  title: localize('Proof of address') },
-            //     ],
-            // },
+            {
+                title    : localize('Verification'),
+                icon     : 'IconVerification',
+                subroutes: [
+                    { path: routes.proof_of_identity, component: ProofOfIdentity, title: localize('Proof of identity') },
+                    { path: routes.proof_of_address,  component: ProofOfAddress,  title: localize('Proof of address') },
+                ],
+            },
             {
                 title    : localize('Security and safety'),
                 icon     : 'IconSecurity',

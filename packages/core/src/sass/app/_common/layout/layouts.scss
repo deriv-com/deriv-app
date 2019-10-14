@@ -28,27 +28,34 @@
     &--show-positions-drawer {
         .trade-container {
             .chart-container {
-                width: calc(100% - #{$SIDEBAR_WIDTH * 2} - 18px);
-                margin-left: #{$SIDEBAR_WIDTH + 18px};
+                width: 100%;
 
                 .cq-top-ui-widgets {
-                    transform: translate3d(1px, 0, 0);
-
-                    .info-box {
-                        transform: translate3d(1px, 0, 0);
+                    transform: translate3d(248px, 0, 0);
+                }
+                .cq-chart-controls {
+                    transform: translate3d(130px, 0, 0) !important;
+                }
+                .cq-bottom-ui-widgets {
+                    .digits__container {
+                        transform: translate3d(130px, 0, 0) !important;
                     }
                 }
                 .cq-chart-control-left {
                     .cq-chart-controls {
-                        transform: translate3d(1px, 0, 0) !important;
+                        transform: translate3d(248px, 0, 0) !important;
+                    }
+                    .cq-bottom-ui-widgets {
+                        .digits__container {
+                            transform: translate3d(170px, 40px, 0) !important;
+                        }
                     }
                 }
-            }
-        }
-        .statement {
-            &.container {
-                max-width: calc(100% - 252px);
-                margin-left: calc(240px + 12px);
+                &__loader {
+                    .barspinner {
+                        transform: translate3d(130px, 0, 0) !important;
+                    }
+                }
             }
         }
     }
@@ -136,6 +143,17 @@
                         padding: 0;
                         position: absolute;
                     }
+                    .cq-bottom-ui-widgets {
+                        bottom: 30px !important;
+
+                        .digits {
+                            margin-right: 0;
+
+                            &__container {
+                                transition: transform 0.25s ease;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -148,7 +166,6 @@
 /** @define chart-container; weak */
 .chart-container {
     width: 100%;
-    transition: width 0.15s ease-out, margin 0.15s ease-out;
     position: relative;
     z-index: 1;
 

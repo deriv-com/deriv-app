@@ -14,6 +14,15 @@
                 @extend %inline-icon.disabled;
             }
         }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
     }
     &__bubble {
         @include typeface(--small-center-normal-active, none);
@@ -24,8 +33,8 @@
         border-radius: 4px;
         display: flex;
         flex-direction: row;
-        background: var(--status-default);
-        color: $color-black;
+        background: var(--general-active);
+        color: var(--text-prominent);
 
         &__icon {
             flex-grow: 1;
@@ -52,25 +61,25 @@
             left: 100%;
             top: 50%;
             margin-top: -5px;
-            border-left-color: var(--status-default);
+            border-left-color: var(--general-active);
         }
         &[data-popover-pos=right] &__arrow {
             right: 100%;
             top: 50%;
             margin-top: -5px;
-            border-right-color: var(--status-default);
+            border-right-color: var(--general-active);
         }
         &[data-popover-pos=top] &__arrow {
             left: 50%;
             top: 100%;
             margin-left: -5px;
-            border-top-color: var(--status-default);
+            border-top-color: var(--general-active);
         }
         &[data-popover-pos=bottom] &__arrow {
             left: 50%;
             bottom: 100%;
             margin-left: -5px;
-            border-bottom-color: var(--status-default);
+            border-bottom-color: var(--general-active);
         }
         &--error {
             background-color: var(--status-danger);

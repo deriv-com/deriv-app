@@ -3,8 +3,6 @@
  */
 Blockly.Css.CONTENT = [
     '.blocklySvg {',
-    // 'background-color: $colour_workspace;',
-    'background-color: #ffffff;',
     'outline: none;',
     'overflow: hidden;',  /* IE overflows by default. */
     'position: absolute;',
@@ -103,7 +101,6 @@ Blockly.Css.CONTENT = [
     'box-shadow: 4px 4px 20px 1px rgba(0,0,0,.15);',
     'color: #000;',
     'display: none;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 9pt;',
     'opacity: 0.9;',
     'padding: 2px;',
@@ -188,7 +185,6 @@ Blockly.Css.CONTENT = [
     'border: 1px solid $colour_numPadBorder;',
     'cursor: pointer;',
     'font-weight: 600;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 12pt;',
     '-webkit-tap-highlight-color: rgba(0,0,0,0);',
     '}',
@@ -225,7 +221,6 @@ Blockly.Css.CONTENT = [
     'overflow: auto;',
     'word-wrap: break-word;',
     'text-align: center;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: .8em;',
     '}',
 
@@ -252,11 +247,6 @@ Blockly.Css.CONTENT = [
 
     '.blocklyPath {',
     'stroke-width: 1px;',
-    '}',
-
-    '.blocklySelected>.blocklyPath {',
-    // 'stroke: #fc3;',
-    // 'stroke-width: 3px;',
     '}',
 
     '.blocklySelected>.blocklyPathLight {',
@@ -336,9 +326,8 @@ Blockly.Css.CONTENT = [
 
     '.blocklyText {',
     'fill: #fff;',
-    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    'font-family: inherit;',
     'font-size: 12pt;',
-    'font-weight: 500;',
     '}',
 
     '.blocklyTextTruncated {',
@@ -348,15 +337,16 @@ Blockly.Css.CONTENT = [
     '.blocklyNonEditableText>text {',
     'pointer-events: none;',
     '}',
+    
     '.blocklyNonEditableText>text,',
     '.blocklyEditableText>text {',
-    'fill: $colour_text;',
+    // 'fill: $colour_text;',
+    // 'fill: #575E75 !important;',
     '}',
 
-    // '.blocklyEditableText>.blocklyEditableLabel {',
-    // 'fill: #fff;',
-    // 'fill: $colour_text;',
-    // '}',
+    '.blocklyEditableText>.blocklyEditableLabel {',
+    'fill: #fff;',
+    '}',
 
     '.blocklyDropdownText {',
     'fill: #fff !important;',
@@ -400,7 +390,6 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyFlyoutLabelText {',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 14pt;',
     'fill: #575E75;',
     'font-weight: bold;',
@@ -552,7 +541,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.scratchCommentText {',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 12pt;',
     'font-weight: 400;',
     '}',
@@ -578,7 +567,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyHtmlInput {',
     'border: none;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 12pt;',
     'height: 100%;',
     'margin: 0;',
@@ -719,7 +708,7 @@ Blockly.Css.CONTENT = [
     'overflow-x: visible;',
     'overflow-y: auto;',
     'position: absolute;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'z-index: 40;', /* so blocks go over toolbox when dragging */
     '-webkit-tap-highlight-color: transparent;', /* issue #1345 */
     '}',
@@ -809,7 +798,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyTreeLabel {',
     'cursor: default;',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 16px;',
     'padding: 0 3px;',
     'vertical-align: middle;',
@@ -857,7 +846,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.scratchColourPickerLabel {',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 0.65rem;',
     'color: $colour_toolboxText;',
     'margin: 8px;',
@@ -878,7 +867,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.scratchNotePickerKeyLabel {',
-    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 0.75rem;',
     'fill: $colour_text;',
     'pointer-events: none;',

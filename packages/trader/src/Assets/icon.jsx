@@ -23,6 +23,7 @@ class Icon extends React.PureComponent {
             IconChevronLeft       : React.lazy(() => import('./Common/icon-chevron-left.jsx')),
             IconChevronRight      : React.lazy(() => import('./Common/icon-chevron-right.jsx')),
             IconClear             : React.lazy(() => import('./Common/icon-clear.jsx')),
+            IconClipboard         : React.lazy(() => import('./Common/icon-clipboard.jsx')),
             IconClock             : React.lazy(() => import('./Common/icon-clock.jsx')),
             IconClose             : React.lazy(() => import('./Common/icon-close.jsx')),
             IconCountryFlag       : React.lazy(() => import('./Common/icon-country-flag.jsx')),
@@ -38,6 +39,8 @@ class Icon extends React.PureComponent {
             IconInformation       : React.lazy(() => import('./Common/icon-information.jsx')),
             IconMinimize          : React.lazy(() => import('./Common/icon-minimize.jsx')),
             IconMinus             : React.lazy(() => import('./Common/icon-minus.jsx')),
+            IconPasswordHide      : React.lazy(() => import('./Common/icon-password-hide.jsx')),
+            IconPasswordShow      : React.lazy(() => import('./Common/icon-password-show.jsx')),
             IconPaymentAgent      : React.lazy(() => import('./Common/icon-payment-agent.jsx')),
             IconPlus              : React.lazy(() => import('./Common/icon-plus.jsx')),
             IconQuestion          : React.lazy(() => import('./Common/icon-question.jsx')),
@@ -84,6 +87,10 @@ class Icon extends React.PureComponent {
             IconReports         : React.lazy(() => import('./Header/NavBar/icon-reports.jsx')),
             IconTrade           : React.lazy(() => import('./Header/NavBar/icon-trade.jsx')),
             IconUser            : React.lazy(() => import('./Header/NavBar/icon-user.jsx')),
+
+            // Platform Switcher
+            IconDBot: React.lazy(() => import('./Header/PlatformSwitcher/icon-d-bot.jsx')),
+            IconMT5 : React.lazy(() => import('./Header/PlatformSwitcher/icon-mt5.jsx')),
 
             // Reports
             IconDemo                : React.lazy(() => import('./Reports/icon-demo.jsx')),

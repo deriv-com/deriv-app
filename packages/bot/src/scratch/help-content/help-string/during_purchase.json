@@ -1,6 +1,6 @@
 {
     "text": [
-        "This block allows you to specify conditions for selling your purchased contract before its expiration. You can add only one Sell Conditions block to the canvas.",
+        "Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.",
         "Example:"
     ]
 }

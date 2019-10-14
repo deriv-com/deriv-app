@@ -1,24 +1,32 @@
-import PropTypes        from 'prop-types';
-import React, { lazy }  from 'react';
-import { withRouter }   from 'react-router-dom';
-import SideMenu         from 'App/Components/Elements/SideMenu';
-import { FadeWrapper }  from 'App/Components/Animations';
-import { localize }     from 'App/i18n';
-import AppRoutes        from 'Constants/routes';
-import { connect }      from 'Stores/connect';
-import { flatten }      from '../Helpers/flatten';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+import PropTypes         from 'prop-types';
+import React, { lazy }   from 'react';
+import {
+    withRouter,
+    Redirect }           from 'react-router-dom';
+import SideMenu          from 'App/Components/Elements/SideMenu';
+import { FadeWrapper }   from 'App/Components/Animations';
+import { localize }      from 'App/i18n';
+import AppRoutes         from 'Constants/routes';
+import { connect }       from 'Stores/connect';
+import BinarySocket      from '_common/base/socket_base';
+import { flatten }       from '../Helpers/flatten';
+import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
 
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
 const fallback_content = {
-    'path'     : '/account/personal-details',
-    'component': DemoMessage,
-    'title'    : 'Personal details',
+    path     : AppRoutes.personal_details,
+    component: DemoMessage,
+    title    : localize('Personal details'),
 };
 
 class Account extends React.Component {
+    state = {
+        is_high_risk_client: false,
+        is_loading         : true,
+    }
+
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -30,6 +38,12 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
+        BinarySocket.wait('authorize', 'get_account_status').then(() => {
+            if (this.props.account_status) {
+                const is_high_risk_client = this.props.is_high_risk;
+                this.setState({ is_high_risk_client, is_loading: false });
+            }
+        });
         this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
@@ -40,8 +54,32 @@ class Account extends React.Component {
         this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
-    
+
     render () {
+        const { is_high_risk_client, is_loading } = this.state;
+
+        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
+        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
+        if (!selected_content) { // fallback
+            selected_content = subroutes[0];
+            this.props.history.push(AppRoutes.personal_details);
+        }
+        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
+
+        // TODO: modify account route to support disabled
+        this.props.routes.forEach((menu_item) => {
+            if (menu_item.title === 'Verification') {
+                menu_item.is_disabled = !is_high_risk_client;
+            }
+            if (menu_item.title === 'Profile') {
+                menu_item.subroutes.forEach(route => {
+                    if (route.path === AppRoutes.financial_assessment) {
+                        route.is_disabled = !is_high_risk_client;
+                    }
+                });
+            }
+        });
+
         const action_bar_items = [
             {
                 onClick: () => {
@@ -52,24 +90,16 @@ class Account extends React.Component {
             },
         ];
 
-        const is_account_limits_route = /account-limits/.test(this.props.location.pathname);
+        const is_account_limits_route = selected_content.path === AppRoutes.account_limits;
         if (is_account_limits_route) {
             action_bar_items.push({
                 component: () => <AccountLimitInfo currency={this.props.currency} is_virtual={this.props.is_virtual} />,
             });
         }
 
-        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
-        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
-
-        if (!selected_content) { // fallback
-            selected_content = subroutes[0];
-            this.props.history.push(AppRoutes.personal_details);
-        }
-
         const { title: active_title } = this.props.routes
             .find(route => route.subroutes
-                .find((sub_route) => sub_route.title === selected_content.title));
+                .find(sub_route => sub_route.title === selected_content.title));
 
         return (
             <FadeWrapper
@@ -87,6 +117,7 @@ class Account extends React.Component {
                         header_title={localize('Settings')}
                         is_routed={true}
                         is_full_width={true}
+                        is_loading={is_loading}
                         list={this.props.routes}
                         selected_content={selected_content}
                         sub_list={subroutes}
@@ -110,11 +141,14 @@ Account.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        currency        : client.currency,
-        is_virtual      : client.is_virtual,
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode : ui.setRouteModal,
-        is_visible      : ui.is_account_settings_visible,
-        toggleAccount   : ui.toggleAccountSettings,
+        account_status   : client.account_status,
+        currency         : client.currency,
+        is_high_risk     : client.is_high_risk,
+        is_virtual       : client.is_virtual,
+        getRiskAssessment: client.getRiskAssessment,
+        disableRouteMode : ui.disableRouteModal,
+        enableRouteMode  : ui.setRouteModal,
+        is_visible       : ui.is_account_settings_visible,
+        toggleAccount    : ui.toggleAccountSettings,
     })
 )(withRouter(Account));

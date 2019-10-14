@@ -9,9 +9,9 @@ Blockly.Blocks.last_digit = {
             message0       : translate('Last Digit'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Analysis.colour,
-            colourSecondary: Blockly.Colours.Analysis.colourSecondary,
-            colourTertiary : Blockly.Colours.Analysis.colourTertiary,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
             tooltip        : translate('Returns the last digit of the latest tick'),
             category       : Blockly.Categories.Tick_Analysis,
         };
@@ -19,7 +19,7 @@ Blockly.Blocks.last_digit = {
     meta(){
         return {
             'display_name': translate('Last Digit'),
-            'description' : translate('This block returns the last digit of the latest tick value for the selected Market. You can select Market in the root block “Trade parameters”.'),
+            'description' : translate('This block gives you the last digit of the latest tick value.'),
         };
     },
 };

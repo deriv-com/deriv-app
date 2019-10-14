@@ -11,9 +11,9 @@ Blockly.Blocks.trade_definition_candleinterval = {
                     options: config.candleIntervals.slice(1),
                 },
             ],
-            colour           : Blockly.Colours.TradeDefinition.colour,
-            colourSecondary  : Blockly.Colours.TradeDefinition.colourSecondary,
-            colourTertiary   : Blockly.Colours.TradeDefinition.colourTertiary,
+            colour           : Blockly.Colours.Base.colour,
+            colourSecondary  : Blockly.Colours.Base.colourSecondary,
+            colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
         });

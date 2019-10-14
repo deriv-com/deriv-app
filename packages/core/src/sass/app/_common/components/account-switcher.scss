@@ -1,53 +1,52 @@
 @import '../base/index';
+
 /** @define acc-info */
 .acc-info {
-    display: flex;
-    height: 100%;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    margin: 0 0 0 1.6em;
-    padding: 0 1.6em;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    padding: 0 1.6em 0 1.7em;
 
     &__container {
-        display: flex;
-        -webkit-box-align: center;
         align-items: center;
+        -webkit-box-align: center;
+        display: flex;
     }
     &__wrapper {
-        display: flex;
         align-items: center;
-        position: relative;
-        height: 100%;
+        display: flex;
         flex-direction: row;
+        height: 100%;
         justify-content: center;
+        position: relative;
+        margin-right: 0.8rem;
     }
     &__id {
-        @include typeface(--title-center-bold-black, default);
-        pointer-events: none;
-        color: var(--text-prominent);
-
-        &:after {
-            display: block;
-            content: attr(title);
-            font-weight: 500;
-            height: 0;
-            overflow: hidden;
-            visibility: hidden;
+        &-icon {
+            vertical-align: middle;
+            margin-right: 0.8rem;
         }
+    }
+    &__separator {
+        border-right: 1px solid var(--general-section-1);
+        width: 2rem;
+        height: 3.2rem;
+        margin-right: -0.1rem;
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
-        @include toEm(padding, 8px, 1.6em);
+        padding: 0.5em;
         color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
         pointer-events: none;
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         transform: rotate(0);
         transform-origin: 50% 45%;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         @extend %inline-icon;
     }
     &:hover:not(.show) {
@@ -61,16 +60,6 @@
         .acc-info__balance {
             color: var(--text-profit-success);
         }
-        &:before {
-            @include typeface(--small-left-normal-green, uppercase);
-            @include toEm(padding, 2px 8px, 1.2em);
-            @include toEm(margin-right, 8px, 1.2em);
-            content: 'demo';
-            color: var(--text-profit-success);
-            border: 1px solid var(--text-profit-success);
-            border-radius: 16px;
-            pointer-events: none;
-        }
     }
     &--show {
         .acc-info__select-arrow {
@@ -78,7 +67,7 @@
         }
     }
     &__button {
-        margin: 0 1.6em;
+        margin: 0 1.6em 0 0 !important;
 
         &:not(:last-child) {
             margin-right: 1em;
@@ -86,17 +75,17 @@
     }
 }
 
-/** @define acc-switcher */
+/** @define acc-switcher; weak */
 .acc-switcher {
     &__wrapper {
+        border-radius: $BORDER_RADIUS;
         position: absolute;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
-        width: 240px;
-        border-radius: $BORDER_RADIUS;
-        background: var(--general-main-2);
+        width: 246px;
+        background-color: var(--general-main-2);
 
         &--enter-done {
             opacity: 1;
@@ -108,63 +97,83 @@
         }
     }
     &__new-account {
-        display: flex;
-        justify-content: center;
-        margin: 0.8em 0 1.6em;
+        background-color: transparent;
+        border-radius: 4px;
 
         &-link {
-            @include typeface(--small-center-normal-grey, none);
-            @include toEm(padding, 8px 16px, 1.2em);
-            width: 100%;
-            border-radius: 4px;
-            cursor: pointer;
+            background-color: transparent;
+            margin: 0 0 0.8em;
+            padding: 0 0 0 0.8em;
+            display: flex;
             text-decoration: none;
-            color: var(--text-general);
-            border: 1px dashed var(--button-secondary-default);
+            width: 100%;
+            height: 4rem;
+            align-items: center;
 
-            &:before {
-                content: '\002B';
-                color: var(--text-general);
-                float: left;
+            & .btn {
+                background-color: transparent;
+                padding: 0;
+
+                &__text {
+                    color: var(--general-main-1);
+                    margin: 0 0 0 0.5em;
+                }
             }
-            &:hover {
-                background: var(--button-secondary-hover);
-            }
-            &:visited, &:active {
-                color: var(--text-general);
+        }
+        &:hover {
+            background-color: rgba(255, 68, 79, 0.08) !important;
+        }
+        .btn__text {
+            color: var(--brand-red-coral);
+        }
+        .btn {
+            align-items: center;
+            background-color: transparent;
+            display: flex;
+            margin: 0 0 0.8em;
+            padding: 0 0 0 0.8rem;
+            height: 4rem;
+            justify-content: left;
+
+            & > * {
+                display: block;
+                margin-right: 1rem;
             }
         }
     }
     &__list {
-        height: 100%;
         border-radius: $BORDER_RADIUS;
-        padding: 1.6em;
         display: flex;
         flex-flow: column nowrap;
-        background: var(--general-section-1);
+        height: 100%;
+        padding: 1.6em 0.8em;
+        background: var(--general-main-2);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
             padding-bottom: 0.8em;
+            margin-left: 0.8rem;
             display: block;
             color: var(--text-prominent);
         }
         &-group {
-            padding-bottom: 16px;
+            margin-bottom: 0.8rem;
         }
     }
     &__accounts {
-        border-radius: 4px;
-        background: var(--general-main-1);
+        border-radius: $BORDER_RADIUS;
+        background: var(--general-main-2);
 
         .acc-switcher__account {
-            background: var(--state-normal);
+            background: var(--general-main-2);
 
             &:hover:not(.acc-switcher__account--selected) {
                 background-color: var(--state-hover);
+                border-radius: 4px;
             }
             .acc-switcher__id {
                 color: var(--text-general);
+                width: 100%;
             }
             &--selected {
                 background: var(--state-active);
@@ -179,52 +188,28 @@
                     }
                 }
             }
-            &:first-child {
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-                border-bottom: none;
-            }
-            &:last-child {
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
-                border-top: none;
-            }
             &:only-child {
                 border-radius: 4px;
-            }
-            &:not(:last-child):not(:only-child) {
-                border-bottom: 1px solid var(--general-main-2);
-                border-right: none;
-                border-left: none;
             }
         }
     }
     &__account {
-        cursor: pointer;
-        padding: 0.8em 1.6em;
-        position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: var(--state-normal);
+        cursor: pointer;
+        padding: 0.8em;
+        position: relative;
+        background: var(--general-main-2);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
-            display: flex;
             align-items: center;
+            display: flex;
             color: var(--text-prominent);
 
-            &--virtual:before {
-                @include typeface(--xxxsmall-left-normal-orange, uppercase);
-                @include toEm(padding, 1px 2px, 0.6em);
-                @include toEm(margin-right, 8px, 0.6em);
-                content: 'demo';
-                color: var(--brand-red-coral);
-                border: 1px solid var(--brand-red-coral);
-                border-radius: 16px;
-            }
             &-icon {
-                @include toEm(margin-right, 16px, 1em);
+                @include toEm(margin-right, 8px, 1em);
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
@@ -232,6 +217,7 @@
         }
         &--selected {
             background: var(--state-active);
+            border-radius: 4px;
 
             .acc-switcher__id {
                 @include typeface(--paragraph-left-bold-active);
@@ -244,23 +230,60 @@
         }
     }
     &__logout {
-        margin-top: 1.6em;
+        align-items: center;
+        align-self: flex-end;
         cursor: pointer;
         display: flex;
-        align-items: center;
         justify-content: flex-end;
-        width: fit-content;
-        align-self: flex-end;
+        margin-top: 1.6em;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
         }
         &-icon {
-            width: 1.6em;
             height: auto;
             margin-left: 8px;
+            width: 1.6em;
             @extend %inline-icon;
         }
     }
+    &__balance {
+        color: var(--status-success);
+        margin-left: auto;
+
+        &--virtual {
+            color: var(--text-prominent);
+        }
+    }
+    &__separator {
+        height: 4px;
+        background-color: var(--general-section-2);
+        width: calc(100% + 1.6rem);
+        margin-left: -0.8rem;
+    }
+    &__total {
+        font-size: 1.4rem;
+        margin: 1.6rem 0.8rem;
+        font-weight: bold;
+        display: flex;
+        color: var(--text-prominent);
+    }
+}
+
+/** @define set-currency; weak */
+.set-currency {
+    & .btn {
+        display: flex;
+        align-items: center;
+    }
+}
+
+/** @define no-currency; weak */
+.no-currency {
+    @include typeface(--xxsmall-center-normal-black);
+    text-transform: none;
+    color: var(--text-less-prominent);
+    line-height: 1.5;
+    text-align: right;
 }

@@ -45,7 +45,7 @@ Blockly.Blocks.trade_definition_contracttype = {
 
         let contract_types;
 
-        if (trade_type) {
+        if (trade_type && trade_type !== 'na') {
             const { opposites } = config;
             contract_types      = [
                 [translate('Both'), 'both'],

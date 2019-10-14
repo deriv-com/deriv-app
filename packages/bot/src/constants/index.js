@@ -3,7 +3,7 @@ import { load as loadLang } from '../utils/lang/lang';
 
 loadLang();
 
-const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
+const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
 const config = {
     lists: {
@@ -241,9 +241,9 @@ const config = {
     bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd                              : {
-        cid: '646610722767-7ivdbunktgtnumj23en9gkecbgtf2ur7.apps.googleusercontent.com',
+        cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
         aid: 'binarybot-237009',
-        api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
+        api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
     help: {
         TEXT : 'text',
@@ -254,6 +254,23 @@ const config = {
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale   : 0.9,
+    },
+    strategies: {
+        martingale: {
+            index      : 0,
+            label      : 'Martingale',
+            description: translate('The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'),
+        },
+        dalembert: {
+            index      : 1,
+            label      : 'D\'Alembert',
+            description: translate('The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'),
+        },
+        oscars_grind: {
+            index      : 2,
+            label      : 'Oscar\'s Grind',
+            description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, and decrease the size of your contract after each unsuccessful trade.'),
+        },
     },
 };
 

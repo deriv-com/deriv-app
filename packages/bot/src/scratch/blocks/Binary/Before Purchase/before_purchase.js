@@ -1,6 +1,7 @@
 import { purchase }          from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import { translate }         from '../../../../utils/lang/i18n';
+// import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -39,11 +40,15 @@ Blockly.Blocks.before_purchase = {
     meta(){
         return {
             'display_name': translate('Purchase conditions'),
-            'description' : translate('This block is mandatory, it allows you to specify contract type and purchase conditions.'),
+            'description' : translate('This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'),
         };
     },
     onchange(event) {
+        // TODO: incomment this when the dark mode is done
+        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         setBlockTextColor(this);
+        // }
+
         if (!this.workspace || this.isInFlyout) {
             return;
         }

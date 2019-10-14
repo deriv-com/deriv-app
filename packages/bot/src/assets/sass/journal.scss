@@ -28,10 +28,10 @@
             padding-left: 16px;
 
             &:nth-child(1) {
-                width: 25%;
+                width: 30%;
             }
             &:nth-child(2) {
-                width: 75%;
+                width: 70%;
             }
         }
         &--tr {
@@ -46,14 +46,15 @@
             height: 40px;
             display: table-cell;
             vertical-align: middle;
-            padding-left: 16px;
+            padding: 0 16px;
             line-height: 16px;
+            word-break: break-word;
 
             &:nth-child(1) {
-                width: 25%;
+                width: 30%;
             }
             &:nth-child(2) {
-                width: 75%;
+                width: 70%;
             }
         }
         &--date, &--time {

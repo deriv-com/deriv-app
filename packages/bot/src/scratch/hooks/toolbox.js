@@ -11,7 +11,7 @@ import { translate }  from '../../utils/lang/i18n';
  * This is the sum of the width of the flyout (250) and some extra padding (25).
  * @type {number}
  */
-Blockly.Toolbox.prototype.width = 275;
+Blockly.Toolbox.prototype.width = 25;
 
 /**
  * Initializes the toolbox.
@@ -56,6 +56,7 @@ Blockly.Toolbox.prototype.init = function () {
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
     this.position();
+    this.toggle();
 };
 
 /**
@@ -65,7 +66,18 @@ Blockly.Toolbox.prototype.init = function () {
  * deriv-bot: We don't want to `showAll` or `setSelectedItem` here (like in Scratch)
  */
 Blockly.Toolbox.prototype.populate_ = function (newTree) {
+    const parent = this.categoryMenu_.parentHtml_;
+    parent.removeChild(parent.lastChild);
+    
     this.categoryMenu_.populate(newTree);
+    
+    const { quick_strategy } = ScratchStore.instance;
+    const quick_strat_btn = document.createElement('BUTTON');
+    quick_strat_btn.innerHTML = translate('Quick Strategy');
+    quick_strat_btn.className = 'toolbox__button btn effect btn--primary--red';
+    quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
+
+    parent.appendChild(quick_strat_btn);
 };
 
 Blockly.Toolbox.prototype.showSearch = function (search) {
@@ -326,8 +338,8 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 return null;
             };
 
-            const { initial_toolbox_xml } = this.workspace_;
-            const toolboxDom = Blockly.Xml.textToDom(initial_toolbox_xml);
+            const { toolboxXmlStr } = this.workspace_;
+            const toolboxDom = Blockly.Xml.textToDom(toolboxXmlStr);
             const selected_category = findCategory(toolboxDom.children);
 
             if (selected_category) {
@@ -335,7 +347,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
 
                 flyout.setVisibility(false);
                 if (el_parent.tagName === 'xml') {
-                    this.workspace_.updateToolbox(initial_toolbox_xml);
+                    this.workspace_.updateToolbox(toolboxXmlStr);
                 } else {
                     const newTree = getCategoryTree(
                         el_parent.getAttribute('name'),
@@ -572,8 +584,7 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 
 Blockly.Toolbox.prototype.toggle = function () {
     const { toolbar, flyout } = ScratchStore.instance;
-    if (toolbar.is_toolbox_open) {
-        this.populate_(Blockly.Xml.textToDom(Blockly.derivWorkspace.initial_toolbox_xml));
+    if (!toolbar.is_toolbox_open) {
         this.addStyle('hidden');
     
         flyout.setVisibility(false);

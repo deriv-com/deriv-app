@@ -28,7 +28,6 @@ import toolbar_undo            from '../assets/icons/undo.svg';
 import toolbar_zoomIn          from '../assets/icons/zoom-in.svg';
 import toolbar_zoomOut         from '../assets/icons/zoom-out.svg';
 import toolbar_stop            from '../assets/icons/ic-toolbar-stop.svg';
-import toolbar_stop_disabled   from '../assets/icons/ic-toolbar-stop-disabled.svg';
 
 // Toolbox
 import toolbox_stage1          from '../assets/icons/ic-stage-1.svg';
@@ -73,6 +72,14 @@ import trade_type_tickhigh     from '../assets/icons/trade-types/tickhigh.svg';
 import trade_type_ticklow      from '../assets/icons/trade-types/ticklow.svg';
 import trade_type_unknown      from '../assets/icons/trade-types/unknown.svg';
 import trade_type_upordown     from '../assets/icons/trade-types/upordown.svg';
+
+// Transactions
+import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
+import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
+import contract_id              from '../assets/icons/ic-id.svg';
+import contract_pending         from '../assets/icons/contract-pending.svg';
+import contract_completed       from '../assets/icons/contract-completed.svg';
+import contract_buy_price       from '../assets/icons/buy-price.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
@@ -158,9 +165,16 @@ export const ToolbarUndoIcon         = Icon(toolbar_undo);
 export const ToolbarRedoIcon         = Icon(toolbar_redo);
 export const ToolbarRunIcon          = Icon(toolbar_run);
 export const ToolbarStopIcon         = Icon(toolbar_stop);
-export const ToolbarStopDisabledIcon = Icon(toolbar_stop_disabled);
 export const ToolbarReaarangeIcon    = Icon(toolbar_rearrange);
 export const ToolbarZoomInIcon       = Icon(toolbar_zoomIn);
 export const ToolbarZoomOutIcon      = Icon(toolbar_zoomOut);
 export const ToolbarLocalIcon        = Icon(toolbar_local);
 export const ToolbarDriveIcon        = Icon(toolbar_drive);
+
+// transactions
+export const EntrySpotIcon           = Icon(contract_entry_spot);
+export const ExitSpotIcon            = Icon(contract_exit_spot);
+export const RefrenceIdIcon          = Icon(contract_id);
+export const PendingIcon             = Icon(contract_pending);
+export const BuyPriceIcon            = Icon(contract_buy_price);
+export const CompletedIcon           = Icon(contract_completed);

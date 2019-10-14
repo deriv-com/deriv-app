@@ -32,9 +32,9 @@ Blockly.Blocks.bba_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Special4.colour,
-            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            colour           : Blockly.Colours.Base.colour,
+            colourSecondary  : Blockly.Colours.Base.colourSecondary,
+            colourTertiary   : Blockly.Colours.Base.colourTertiary,
             tooltip          : translate('Calculates Bollinger Bands (BB) list from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -44,7 +44,7 @@ Blockly.Blocks.bba_statement = {
     meta(){
         return {
             'display_name': translate('Bollinger Bands Array (BBA)'),
-            'description' : translate('Bollinger Bands Array (BBA) is similar to BB indicator. The only difference is that it returns the entire BB lower, higher or SMA line.'),
+            'description' : translate('Similar to BB. This block gives you a choice of returning the values of either the lower band, higher band, or the SMA line in the middle.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

@@ -1,22 +1,13 @@
 import JSInterpreter                  from 'js-interpreter';
 import { createScope }                from './cliTools';
-import { observer as globalObserver } from '../../../utils/observer';
 import Interface                      from '../Interface';
+import { unrecoverable_errors }       from '../../../constants/message-types';
+import { observer as globalObserver } from '../../../utils/observer';
 
-const unrecoverableErrors = [
-    'InsufficientBalance',
-    'CustomLimitsReached',
-    'OfferingsValidationError',
-    'InvalidCurrency',
-    'ContractBuyValidationError',
-    'NotDefaultCurrency',
-    'PleaseAuthenticate',
-    'FinancialAssessmentRequired',
-];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+    !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
     const stopErrors = ['SellNotAvailable'];
@@ -108,7 +99,6 @@ export default class Interpreter {
 
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
-                    // $('#stopButton').trigger('click');
                     this.stop();
                     return;
                 }
@@ -154,8 +144,8 @@ export default class Interpreter {
 
     terminateSession() {
         this.$scope.api.disconnect();
-        globalObserver.emit('bot.stop');
         this.stopped = true;
+        globalObserver.emit('bot.stop');
     }
 
     stop() {

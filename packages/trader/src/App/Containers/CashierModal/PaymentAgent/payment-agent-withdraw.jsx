@@ -12,7 +12,6 @@ import {
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import { localize }         from 'App/i18n';
-import Icon                 from 'Assets/icon.jsx';
 import { connect }          from 'Stores/connect';
 import {
     validNumber,
@@ -142,6 +141,10 @@ class PaymentAgentWithdraw extends React.Component {
         this.props.onMount();
     }
 
+    componentWillUnmount() {
+        this.props.resetPaymentAgent();
+    }
+
     validateWithdrawalPassthrough = (values) => (
         validateWithdrawal(values, {
             balance      : this.props.balance,
@@ -168,9 +171,7 @@ class PaymentAgentWithdraw extends React.Component {
                     <Loading className='cashier__loader' />
                     :
                     <React.Fragment>
-                        {/* for errors with CTA hide the form and show the error,
-                         for others show them at the bottom of the form next to submit button */}
-                        {this.props.error.button_text ?
+                        {this.props.error.message ?
                             <Error error={this.props.error} />
                             :
                             <div className='cashier__wrapper--align-left'>
@@ -222,22 +223,13 @@ class PaymentAgentWithdraw extends React.Component {
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
                                                                     required
-                                                                    leading_icon={<span className={classNames('payment-agent__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                                                    leading_icon={<span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
                                                                     autoComplete='off'
                                                                     maxLength='30'
                                                                 />
                                                             )}
                                                         </Field>
                                                         <div className='cashier__form-submit'>
-                                                            {this.props.error.message &&
-                                                            <React.Fragment>
-                                                                <Icon icon='IconEmergency' className='cashier__form-error-icon' />
-                                                                <Icon icon='IconError' className='cashier__form-error-small-icon' />
-                                                                <p className='cashier__form-error'>
-                                                                    {this.props.error.message}
-                                                                </p>
-                                                            </React.Fragment>
-                                                            }
                                                             <Button
                                                                 className='cashier__form-submit-button btn--primary--default'
                                                                 type='submit'
@@ -270,6 +262,7 @@ PaymentAgentWithdraw.propTypes = {
     onMount                    : PropTypes.func,
     payment_agent_list         : PropTypes.array,
     requestPaymentAgentWithdraw: PropTypes.func,
+    resetPaymentAgent          : PropTypes.func,
     verification_code          : PropTypes.string,
 };
 
@@ -283,5 +276,6 @@ export default connect(
         onMount                    : modules.cashier.onMountPaymentAgentWithdraw,
         payment_agent_list         : modules.cashier.config.payment_agent.agents,
         requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
+        resetPaymentAgent          : modules.cashier.resetPaymentAgent,
     })
 )(PaymentAgentWithdraw);

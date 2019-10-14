@@ -5,9 +5,9 @@ import {
     Autocomplete,
     Checkbox,
     Button,
-    Dropdown,
     Input }                                    from 'deriv-components';
 import BinarySocket                            from '_common/base/socket_base';
+import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { localize }                            from 'App/i18n';
 import { WS }                                  from 'Services';
 import { connect }                             from 'Stores/connect';
@@ -18,8 +18,8 @@ import {
     validPhone,
     validLetterSymbol,
     validLength }                              from 'Utils/Validator/declarative-validation-rules';
-// import { formatDate }                       from 'Utils/Date';
-import { account_opening_reason_list }         from './constants';
+import { toMoment }                            from 'Utils/Date';
+// import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
 import LoadErrorMessage                        from '../../ErrorMessages/LoadErrorMessage';
@@ -36,12 +36,12 @@ const getResidence = (residence_list, value, type) => {
 
 // TODO: standardize validations and refactor this
 const makeSettingsRequest = ({ ...settings }, residence_list) => {
-    let { email_consent, first_name, last_name, tax_identification_number  } = settings;
+    let { email_consent, first_name, last_name, tax_identification_number, date_of_birth } = settings;
     email_consent             = +email_consent; // checkbox is boolean but api expects number (1 or 0)
     first_name                = first_name.trim();
     last_name                 = last_name.trim();
     tax_identification_number = tax_identification_number.trim();
-
+    date_of_birth = toMoment(date_of_birth).format('YYYY-MM-DD');
     const {
         tax_residence_text,
         citizen_text,
@@ -79,6 +79,7 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
         citizen, tax_residence,
         email_consent,
         place_of_birth,
+        date_of_birth,
         address_line_1,
         address_line_2,
         address_city,
@@ -126,7 +127,7 @@ class PersonalDetailsForm extends React.Component {
                         return;
                     }
                     this.setState({ ...response.get_settings, is_loading: false });
-                    this.props.refreshNotifications(response.get_settings);
+                    this.props.refreshNotifications();
                 });
                 this.setState({ is_submit_success: true });
             }
@@ -145,7 +146,7 @@ class PersonalDetailsForm extends React.Component {
             'first_name',
             'last_name',
             'phone',
-            'account_opening_reason',
+            // 'account_opening_reason',
             'place_of_birth_text',
             'address_line_1',
             'address_city',
@@ -229,8 +230,8 @@ class PersonalDetailsForm extends React.Component {
     render() {
         const {
             api_initial_load_error,
-            account_opening_reason,
-            // date_of_birth,
+            // account_opening_reason,
+            date_of_birth,
             first_name,
             last_name,
             citizen,
@@ -273,11 +274,12 @@ class PersonalDetailsForm extends React.Component {
         return (
             <Formik
                 initialValues={{
-                    account_opening_reason,
+                    // account_opening_reason,
                     first_name,
                     last_name,
                     citizen_text,
                     tax_residence_text,
+                    date_of_birth,
                     place_of_birth_text,
                     phone,
                     email,
@@ -361,6 +363,14 @@ class PersonalDetailsForm extends React.Component {
                                             </Field>
                                         </fieldset>
                                         <fieldset className='account-form__fieldset'>
+                                            <DateOfBirth
+                                                name='date_of_birth'
+                                                label={localize('Date of birth')}
+                                                value={date_of_birth}
+                                                disabled={is_fully_authenticated}
+                                            />
+                                        </fieldset>
+                                        <fieldset className='account-form__fieldset'>
                                             <Field name='citizen_text'>
                                                 {({ field }) => (
                                                     <Autocomplete
@@ -421,7 +431,8 @@ class PersonalDetailsForm extends React.Component {
                                                 error={touched.phone && errors.phone}
                                             />
                                         </fieldset>
-                                        <fieldset className='account-form__fieldset'>
+                                        {/* Hide Account Opening Reason, uncomment block below to re-enable */}
+                                        {/* <fieldset className='account-form__fieldset'>
                                             {account_opening_reason && is_fully_authenticated ?
                                                 <Input
                                                     data-lpignore='true'
@@ -446,7 +457,7 @@ class PersonalDetailsForm extends React.Component {
                                                     }
                                                 />
                                             }
-                                        </fieldset>
+                                        </fieldset> */}
                                         {/* Hide Tax Information, uncomment block below to re-enable */}
                                         {/* <FormSubHeader title={localize('Tax information')} />
                                             <fieldset className='account-form__fieldset'>
@@ -586,7 +597,7 @@ class PersonalDetailsForm extends React.Component {
                                                 (errors.phone || !values.phone) ||
                                                 (errors.tax_identification_number) ||
                                                 (errors.place_of_birth_text || !values.place_of_birth_text) ||
-                                                (errors.account_opening_reason || !values.account_opening_reason) ||
+                                                // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                 (errors.address_line_1 || !values.address_line_1) ||
                                                 (errors.address_line_2) ||
                                                 (errors.address_city || !values.address_city) ||

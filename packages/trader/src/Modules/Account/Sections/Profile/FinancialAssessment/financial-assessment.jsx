@@ -7,19 +7,20 @@ import {
 import { connect }            from 'Stores/connect';
 import { localize }           from 'App/i18n';
 import { WS }                 from 'Services';
+import {
+    account_turnover_list,
+    education_level_list,
+    employment_industry_list,
+    employment_status_list,
+    estimated_worth_list,
+    income_source_list,
+    net_income_list,
+    occupation_list,
+    source_of_wealth_list }   from './financial-information-list';
 import DemoMessage            from '../../ErrorMessages/DemoMessage';
 import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import {
-    income_source_list,
-    employment_status_list,
-    employment_industry_list,
-    occupation_list,
-    source_of_wealth_list,
-    education_level_list,
-    net_income_list,
-    estimated_worth_list,
-    account_turnover_list }  from '../../../Constants/constants-financial-information';
+
 import {
     FormBody,
     FormSubHeader,
@@ -65,6 +66,7 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
+                this.props.refreshNotifications();
             }
             setSubmitting(false);
         });
@@ -80,7 +82,7 @@ class FinancialAssessment extends React.Component {
         });
         return errors;
     };
-    
+
     showForm = show_form => this.setState({ show_form });
 
     render() {
@@ -213,7 +215,6 @@ class FinancialAssessment extends React.Component {
                                     <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Net annual income')}
-                                            is_alignment_top
                                             is_align_text_left
                                             name='net_income'
                                             list={net_income_list}
@@ -285,6 +286,7 @@ class FinancialAssessment extends React.Component {
 // FinancialAssessment.propTypes = {};
 export default connect(
     ({ client }) => ({
-        is_virtual: client.is_virtual,
+        is_virtual          : client.is_virtual,
+        refreshNotifications: client.refreshNotifications,
     }),
 )(FinancialAssessment);

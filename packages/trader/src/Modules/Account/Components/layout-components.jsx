@@ -1,6 +1,6 @@
-import classNames     from 'classnames';
-import React          from 'react';
-import { Scrollbars } from 'tt-react-custom-scrollbars';
+import classNames           from 'classnames';
+import React                from 'react';
+import { ThemedScrollbars } from 'deriv-components';
 
 export const FormSubHeader = ({ title, subtitle }) => (
     <div className='account-form__header'>
@@ -45,12 +45,12 @@ export const Text = ({ children, size, color, className }) => (
 );
 
 export const ScrollbarsContainer = ({ children, className, scroll_offset }) => (
-    <Scrollbars
+    <ThemedScrollbars
         autoHide
         style={{
             height: scroll_offset ? `calc(100% - ${scroll_offset})` : '100%',
         }}
     >
         <div className={classNames('account__scrollbars_container', className)}>{children}</div>
-    </Scrollbars>
+    </ThemedScrollbars>
 );

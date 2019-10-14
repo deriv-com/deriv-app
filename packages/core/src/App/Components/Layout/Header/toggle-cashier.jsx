@@ -8,10 +8,11 @@ import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
 
-const Deposit         = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal      = () => import('App/Containers/CashierModal/withdrawal.jsx');
-const PaymentAgent    = () => import('App/Containers/CashierModal/payment-agent.jsx');
-const AccountTransfer = () => import('App/Containers/CashierModal/account-transfer.jsx');
+const Deposit              = () => import('App/Containers/CashierModal/deposit.jsx');
+const Withdrawal           = () => import('App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent         = () => import('App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer      = () => import('App/Containers/CashierModal/account-transfer.jsx');
+const PaymentAgentTransfer = () => import('App/Containers/CashierModal/payment-agent-transfer.jsx');
 
 const modal_content = [
     {
@@ -62,6 +63,18 @@ const modal_content = [
                 has_progress={true}
             />
         ),
+    }, {
+        container: 'payment_agent_transfer',
+        icon     : 'IconAccountTransfer',
+        label    : localize('Transfer to client'),
+        // eslint-disable-next-line react/display-name
+        value    : () => (
+            <Lazy
+                ctor={PaymentAgentTransfer}
+                should_load={true}
+                has_progress={true}
+            />
+        ),
     },
 ];
 
@@ -82,7 +95,10 @@ const ModalContent = ({
 };
 
 class ToggleCashier extends React.Component {
-    onClickDeposit = () => { this.props.toggleCashier('deposit'); };
+    onClickDeposit = () => {
+        this.props.setCashierActiveTab('deposit');
+        this.props.toggleCashier();
+    };
 
     render() {
         const {
@@ -92,13 +108,15 @@ class ToggleCashier extends React.Component {
             enableApp,
             is_cashier_visible,
             is_payment_agent_visible,
+            is_payment_agent_transfer_visible,
             toggleCashier,
         } = this.props;
 
         const visible_items = [];
 
         modal_content.forEach(content => {
-            if (content.container !== 'payment_agent' || is_payment_agent_visible) {
+            if ((content.container !== 'payment_agent' || is_payment_agent_visible) &&
+            (content.container !== 'payment_agent_transfer' || is_payment_agent_transfer_visible)) {
                 visible_items.push(content.container);
             }
         });
@@ -123,6 +141,8 @@ class ToggleCashier extends React.Component {
                         is_open={is_cashier_visible}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
+                        height='616px'
+                        width='904px'
                     >
                         <ModalContent
                             visible_items={visible_items}
@@ -136,13 +156,16 @@ class ToggleCashier extends React.Component {
 }
 
 ToggleCashier.propTypes = {
-    active_tab              : PropTypes.string,
-    className               : PropTypes.string,
-    disableApp              : PropTypes.func,
-    enableApp               : PropTypes.func,
-    is_open                 : PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    toggleModal             : PropTypes.func,
+    active_tab                       : PropTypes.string,
+    className                        : PropTypes.string,
+    disableApp                       : PropTypes.func,
+    enableApp                        : PropTypes.func,
+    is_open                          : PropTypes.bool,
+    is_payment_agent_transfer_visible: PropTypes.bool,
+    is_payment_agent_visible         : PropTypes.bool,
+    setCashierActiveTab              : PropTypes.func,
+    toggleCashier                    : PropTypes.func,
+    toggleModal                      : PropTypes.func,
 };
 
 export default ToggleCashier;

@@ -16,7 +16,7 @@ const DenialOfServiceModal = ({
 }) => (
     <Dialog
         title={localize('Whoops!')}
-        confirm_button_text={localize('Continue with Virtual Account')}
+        confirm_button_text={localize('Continue with Demo Account')}
         cancel_button_text={localize('Back to main website')}
         onConfirm={onConfirm}
         onCancel={onCancel}

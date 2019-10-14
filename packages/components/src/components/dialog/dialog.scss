@@ -47,11 +47,13 @@
         background-color: var(--general-main-2);
     }
     &__header {
+        align-self: flex-start;
         @include typeface(--title-left-bold-black, none);
         @include toEm(margin-bottom, 16px, 1.6em);
         color: var(--text-prominent);
     }
     &__content {
+        align-self: flex-start;
         @include typeface(--paragraph-left-normal-black, unset);
         @include toEm(margin-bottom, 32px, 1.4em);
         color: var(--text-general);
@@ -60,6 +62,9 @@
         /* postcss-bem-linter: ignore */
         .dc-input__label {
             background-color: var(--general-main-2);
+        }
+        &--centered {
+            align-self: center;
         }
     }
     &__footer {

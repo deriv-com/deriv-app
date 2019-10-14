@@ -26,9 +26,9 @@ Blockly.Blocks.sma_statement = {
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Special4.colour,
-            colourSecondary  : Blockly.Colours.Special4.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special4.colourTertiary,
+            colour           : Blockly.Colours.Base.colour,
+            colourSecondary  : Blockly.Colours.Base.colourSecondary,
+            colourTertiary   : Blockly.Colours.Base.colourTertiary,
             tooltip          : translate('Calculates Simple Moving Average (SMA) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
@@ -38,7 +38,7 @@ Blockly.Blocks.sma_statement = {
     meta(){
         return {
             'display_name': translate('Simple Moving Average (SMA)'),
-            'description' : translate('Simple moving average (SMA) is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. If the SMA is moving upwards, it means the market trend is up. '),
+            'description' : translate('SMA is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. For example, if the SMA is moving upwards, it means the market trend is up. '),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

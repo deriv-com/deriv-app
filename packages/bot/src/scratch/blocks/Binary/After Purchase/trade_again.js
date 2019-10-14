@@ -9,7 +9,7 @@ Blockly.Blocks.trade_again = {
     },
     definition(){
         return {
-            message0         : translate('Trade Again'),
+            message0         : translate('Trade again'),
             colour           : Blockly.Colours.Special1.colour,
             colourSecondary  : Blockly.Colours.Special1.colourSecondary,
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
@@ -20,8 +20,8 @@ Blockly.Blocks.trade_again = {
     },
     meta(){
         return {
-            'display_name': translate('Trade Again'),
-            'description' : translate('This blocks transfers control to the Purchase conditions block.'),
+            'display_name': translate('Trade again'),
+            'description' : translate('This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract.'),
         };
     },
     onchange(event) {
@@ -41,4 +41,11 @@ Blockly.Blocks.trade_again = {
     },
 };
 
-Blockly.JavaScript.trade_again = () => 'return true;\n';
+Blockly.JavaScript.trade_again = () => {
+    const code = `
+        Bot.isTradeAgain(true);\n
+        return true;\n
+    `;
+
+    return code;
+};

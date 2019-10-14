@@ -1,14 +1,14 @@
-import { Label }         from 'deriv-components';
+import { Label, Money }  from 'deriv-components';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import Icon              from 'Assets/icon.jsx';
 import Localize          from 'App/Components/Elements/localize.jsx';
-import Money             from 'App/Components/Elements/money.jsx';
+import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 
 const Description = ({ currency, is_virtual }) => (
     is_virtual ?
-        <Localize i18n_default_text='Practice wallet' />
+        <Localize i18n_default_text='Demo account' />
         :
         <Localize i18n_default_text='{{currency}} wallet' values={{ currency: currency.toUpperCase() }} />
 
@@ -25,13 +25,12 @@ const WalletInformation = ({
 }) => {
     return (
         <div className='account-wallet'>
-            {!is_virtual && <Icon icon='IconAccountsCurrency' type={currency.toLowerCase()} />}
-            {is_virtual && <Icon icon='IconDemo' />}
+            <Icon icon='IconAccountsCurrency' type={is_virtual ? 'virtual' : currency.toLowerCase()} />
             <span className='description'>
                 { has_description ?
                     <Description currency={currency} is_virtual={is_virtual} />
                     :
-                    <span className='description__currency'>{currency.toUpperCase()}</span>
+                    <span className='description__currency'>{is_virtual ? localize('Demo') : currency.toUpperCase()}</span>
                 }
             </span>
             {has_loginid && <span className='current-loginid'>{loginid}</span>}

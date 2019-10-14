@@ -81,11 +81,11 @@
         border-radius: $BORDER_RADIUS;
         position: absolute;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
         width: 246px;
-        background: var(--general-main-2);
+        background-color: var(--general-main-2);
 
         &--enter-done {
             opacity: 1;
@@ -97,25 +97,26 @@
         }
     }
     &__new-account {
-        align-items: center;
         background-color: transparent;
         border-radius: 4px;
-        display: flex;
-        height: 40px;
-        margin: 0 0 0.8em;
 
         &-link {
             background-color: transparent;
-            margin: 0;
-            padding: 0;
+            margin: 0 0 0.8em;
+            padding: 0 0 0 0.8em;
+            display: flex;
+            text-decoration: none;
+            width: 100%;
+            height: 4rem;
+            align-items: center;
 
             & .btn {
                 background-color: transparent;
-                margin: 0;
                 padding: 0;
 
                 &__text {
-                    color: $COLOR_WHITE;
+                    color: var(--general-main-1);
+                    margin: 0 0 0 0.5em;
                 }
             }
         }
@@ -129,8 +130,9 @@
             align-items: center;
             background-color: transparent;
             display: flex;
-            margin: 0;
+            margin: 0 0 0.8em;
             padding: 0 0 0 0.8rem;
+            height: 4rem;
             justify-content: left;
 
             & > * {
@@ -145,7 +147,7 @@
         flex-flow: column nowrap;
         height: 100%;
         padding: 1.6em 0.8em;
-        background: var(--general-main-1);
+        background: var(--general-main-2);
 
         &-title {
             @include typeface(--paragraph-left-bold-black);
@@ -154,13 +156,16 @@
             display: block;
             color: var(--text-prominent);
         }
+        &-group {
+            margin-bottom: 0.8rem;
+        }
     }
     &__accounts {
         border-radius: $BORDER_RADIUS;
-        background: var(--general-main-1);
+        background: var(--general-main-2);
 
         .acc-switcher__account {
-            background: var(--state-normal);
+            background: var(--general-main-2);
 
             &:hover:not(.acc-switcher__account--selected) {
                 background-color: var(--state-hover);
@@ -195,7 +200,7 @@
         cursor: pointer;
         padding: 0.8em;
         position: relative;
-        background-color: var(--state-normal);
+        background: var(--general-main-2);
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
@@ -253,7 +258,7 @@
     }
     &__separator {
         height: 4px;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
         width: calc(100% + 1.6rem);
         margin-left: -0.8rem;
     }
@@ -264,4 +269,21 @@
         display: flex;
         color: var(--text-prominent);
     }
+}
+
+/** @define set-currency; weak */
+.set-currency {
+    & .btn {
+        display: flex;
+        align-items: center;
+    }
+}
+
+/** @define no-currency; weak */
+.no-currency {
+    @include typeface(--xxsmall-center-normal-black);
+    text-transform: none;
+    color: var(--text-less-prominent);
+    line-height: 1.5;
+    text-align: right;
 }

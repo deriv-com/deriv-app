@@ -1,14 +1,11 @@
 const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
+const ObjectUtils      = require('deriv-shared/utils/object');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const APIMiddleware    = require('./api_middleware');
 const { State }        = require('../storage');
 const getLanguage      = require('../language').get;
-const {
-    cloneObject,
-    getPropertyValue,
-} = require('../utility');
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 
@@ -86,11 +83,11 @@ const BinarySocketBase = (() => {
 
         deriv_api.onMessage().subscribe(({ data: response }) => {
             const msg_type = response.msg_type;
-            State.set(['response', msg_type], cloneObject(response));
+            State.set(['response', msg_type], ObjectUtils.cloneObject(response));
 
             config.wsEvent('message');
 
-            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+            if (ObjectUtils.getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
                 wrong_app_id = getAppId();
             }
 
@@ -125,7 +122,7 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const subscribeBalance = (cb) => subscribe({ balance: 1 }, cb);
+    const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -168,6 +165,34 @@ const BinarySocketBase = (() => {
             ...device_data,
         });
 
+    const setAccountCurrency = (currency, passthrough) =>
+        deriv_api.send({
+            set_account_currency: currency,
+            ...(passthrough && { passthrough }),
+        });
+
+    const newAccountReal = (values) =>
+        deriv_api.send({
+            new_account_real: 1,
+            ...values,
+        });
+
+    const mt5NewAccount = (values) =>
+        deriv_api.send({
+            mt5_new_account: 1,
+            ...values,
+        });
+
+    const mt5PasswordChange = (login, old_password, new_password, password_type, values) =>
+        deriv_api.send({
+            mt5_password_change: 1,
+            login,
+            old_password,
+            new_password,
+            password_type,
+            ...values,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -190,6 +215,16 @@ const BinarySocketBase = (() => {
             paymentagent_loginid : loginid,
         });
 
+    const paymentAgentTransfer = ({ amount, currency, description, transfer_to }) =>
+        deriv_api.send({
+            amount,
+            currency,
+            description,
+            transfer_to,
+            paymentagent_transfer: 1,
+            dry_run              : 0,
+        });
+
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
 
     const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
@@ -207,6 +242,9 @@ const BinarySocketBase = (() => {
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
+    const tncApproval = () =>
+        deriv_api.send({ tnc_approval: '1' });
+
     return {
         init,
         forgetStream,
@@ -216,6 +254,7 @@ const BinarySocketBase = (() => {
         hasReadyState,
         clear             : () => {},
         sendBuffered      : () => {},
+        getSocket         : () => binary_socket,
         get               : () => deriv_api,
         setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
         setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
@@ -226,20 +265,26 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
+        mt5NewAccount,
+        mt5PasswordChange,
         newAccountVirtual,
+        newAccountReal,
         profitTable,
         statement,
         verifyEmail,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
-        subscribeBalance,
+        paymentAgentTransfer,
+        setAccountCurrency,
+        subscribeBalanceAll,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,
         subscribeTicksHistory,
         subscribeTransaction,
         subscribeWebsiteStatus,
+        tncApproval,
         transferBetweenAccounts,
     };
 })();

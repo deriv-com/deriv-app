@@ -74,6 +74,10 @@ export default class UIStore extends BaseStore {
     @observable active_cashier_tab = 'deposit';
     @observable modal_index        = 0;
 
+    // Mt5 topup
+    @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_success = false;
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -251,6 +255,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     openRealAccountSignup() {
         this.is_real_acc_signup_on = true;
+        this.is_accounts_switcher_on = false;
     }
 
     @action.bound
@@ -259,9 +264,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    closeSignupAndOpenCashier() {
+    closeSignupAndOpenCashier(active_tab = 'deposit') {
         this.is_real_acc_signup_on = false;
-        this.setCashierActiveTab('deposit');
+        this.setCashierActiveTab(active_tab);
         this.closeRealAccountSignup();
         // TODO enable this one cashier is active
         setTimeout(this.toggleCashierModal, 300);
@@ -350,6 +355,21 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    closeTopUpModal() {
+        this.is_top_up_virtual_open = false;
+    }
+
+    @action.bound
+    openTopUpModal() {
+        this.is_top_up_virtual_open = true;
+    }
+
+    @action.bound
+    closeSuccessTopUpModal () {
+        this.is_top_up_virtual_success = false;
     }
 
     @action.bound

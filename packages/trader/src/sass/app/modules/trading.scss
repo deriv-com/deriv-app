@@ -59,7 +59,7 @@
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
-            color: var(--text-less-prominent);
+            color: var(--text-general);
 
             &--left {
                 left: 5px;
@@ -77,7 +77,7 @@
         box-sizing: border-box;
         border-radius: $BORDER_RADIUS;
         background: var(--fill-normal);
-        color: var(--text-prominent);
+        color: var(--text-general);
         border: 1px solid var(--fill-normal);
 
         &:hover {
@@ -116,7 +116,7 @@
         background: transparent;
         border-color: transparent;
         z-index: 2;
-        color: var(--text-prominent);
+        color: var(--text-general);
 
         &--symbol {
             font-size: 1.4em;

@@ -36,9 +36,11 @@ class Popover extends React.PureComponent {
         const {
             alignment,
             children,
+            className,
             classNameBubble,
             classNameTarget,
             classNameTargetIcon,
+            counter,
             disable_target_icon,
             disable_message_icon,
             has_error,
@@ -51,7 +53,7 @@ class Popover extends React.PureComponent {
         const icon_class_name = classNames(classNameTargetIcon, icon);
         return (
             <div
-                className='dc-popover'
+                className={classNames('dc-popover', className)}
                 id={id}
                 onMouseEnter={this.toggleOpen}
                 onMouseLeave={this.toggleClose}
@@ -62,6 +64,7 @@ class Popover extends React.PureComponent {
                         {(icon === 'info') && <IconInfoOutline className={icon_class_name} />}
                         {(icon === 'question') && <IconQuestion className={icon_class_name} />}
                         {(icon === 'dot') && <IconRedDot className={icon_class_name} />}
+                        {(icon === 'counter') && <span className={icon_class_name}>{ counter }</span>}
                     </i>
                     }
 
@@ -92,6 +95,7 @@ Popover.defaultProps = {
 Popover.propTypes = {
     alignment          : PropTypes.string,
     children           : PropTypes.node,
+    className          : PropTypes.string,
     classNameBubble    : PropTypes.string,
     classNameTarget    : PropTypes.string,
     classNameTargetIcon: PropTypes.string,

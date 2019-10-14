@@ -1,15 +1,19 @@
-import classNames                      from 'classnames';
-import { Formik, Field, ErrorMessage } from 'formik';
-import React, { Component }            from 'react';
-import { CSSTransition }               from 'react-transition-group';
-import { localize }                    from 'App/i18n';
-import Localize                        from 'App/Components/Elements/localize.jsx';
-import { toMoment }                    from 'Utils/Date';
-import FormSubmitButton                from './form-submit-button.jsx';
-import 'Sass/personal-details-form.scss';
-import DatePickerCalendar              from './date-picker-calendar.jsx';
+import classNames           from 'classnames';
+import {
+    Input,
+    ThemedScrollbars }      from 'deriv-components';
+import { Formik, Field }    from 'formik';
+import React, { Component } from 'react';
+import { CSSTransition }    from 'react-transition-group';
+import { localize }         from 'App/i18n';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
+import { toMoment }         from 'Utils/Date';
+import FormSubmitButton     from './form-submit-button.jsx';
+import DatePickerCalendar   from './date-picker-calendar.jsx';
+import 'Sass/details-form.scss';
 
-class DateOfBirth extends Component {
+export class DateOfBirth extends Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -22,8 +26,22 @@ class DateOfBirth extends Component {
         this.reference = React.createRef();
     }
 
+    closeDatePicker = () => {
+        this.setState({
+            should_show_calendar: false,
+        }, () => {
+            if (this.props.onFocus) {
+                this.props.onFocus(false);
+            }
+        });
+    };
+
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClick, { passive: true });
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClick);
     }
 
     handleClick = (e) => {
@@ -33,23 +51,21 @@ class DateOfBirth extends Component {
         if (!this.reference.current.contains(e.target)) {
             this.setState({
                 should_show_calendar: false,
+            }, () => {
+                if (this.props.onFocus) {
+                    this.props.onFocus(false);
+                }
             });
         }
-    }
-
-    closeDatePicker = () => {
-        this.setState({
-            should_show_calendar: false,
-        });
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClick);
-    }
+    };
 
     handleFocus = () => {
         this.setState({
             should_show_calendar: true,
+        }, () => {
+            if (this.props.onFocus) {
+                this.props.onFocus(true);
+            }
         });
     };
 
@@ -60,23 +76,20 @@ class DateOfBirth extends Component {
                 name={this.props.name}
                 render={({
                     field: { name, value },
-                    id,
-                    label,
-                    className,
-                    form : { setFieldValue },
+                    form : { setFieldValue, handleBlur },
                 }) => (
                     <div className='datepicker'>
-                        <Input
-                            name={name}
-                            className={classNames(className, 'dc-input--no-placeholder')}
-                            id={id}
-                            label={label}
-                            placeholder={this.props.label}
+                        <InputField
+                            {...this.props}
                             onFocus={this.handleFocus}
-                            onBlur={this.handleBlur}
+                            className={classNames(this.props.className, {
+                                'datepicker--active-label': !!value,
+                            })}
+                            onBlur={handleBlur}
                             value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
                             readOnly
                         />
+                        <IconDatepicker className='icon-datepicker' />
                         <CSSTransition
                             in={this.state.should_show_calendar}
                             timeout={100}
@@ -112,40 +125,25 @@ class DateOfBirth extends Component {
     }
 }
 
-// TODO remove this and use deriv-components
-const Input = (props) => {
-    const ref = React.createRef();
+const InputField = (props) => {
     return (
-        <Field {...props}>
+        <Field name={props.name}>
             {
-                ({ field }) => (
-                    <div className={classNames('dc-input', props.className)}>
-                        <input ref={ref} {...field} {...props} className='dc-input__field' />
-                        {
-                            props.trailing_icon &&
-                            React.cloneElement(
-                                props.trailing_icon,
-                                {
-                                    className: classNames(
-                                        'dc-input__trailing-icon',
-                                        props.trailing_icon.props.className,
-                                    ),
-                                },
-                            )
-                        }
-                        <label className='dc-input__label' htmlFor={field.id}>
-                            {props.label || props.placeholder}
-                        </label>
-                        <ErrorMessage name={field.name}>
-                            {
-                                (msg) => (
-                                    <p className='dc-input__error'>
-                                        {msg}
-                                    </p>
-                                )
-                            }
-                        </ErrorMessage>
-                    </div>
+                ({
+                    field,
+                    form: { errors, touched },
+                }) => (
+                    <React.Fragment>
+                        <Input
+                            type='text'
+                            required
+                            autoComplete='off'
+                            maxLength='30'
+                            error={touched[field.name] && errors[field.name]}
+                            {...field}
+                            {...props}
+                        />
+                    </React.Fragment>
                 )
             }
         </Field>
@@ -155,51 +153,25 @@ const Input = (props) => {
 class PersonalDetails extends Component {
     constructor(props) {
         super(props);
-
         this.form = React.createRef();
+        this.state = {
+            // add padding-bottom to the form when datepicker is active
+            // to add empty spaces at the bottom when scrolling
+            paddingBottom: 'unset',
+        };
     }
 
     componentDidMount() {
         this.form.current.getFormikActions().validateForm();
     }
 
-    validatePersonalDetails = (values) => {
-        const max_date = toMoment().subtract(18, 'days');
-        const validations = {
-            first_name: [
-                v => !!v,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
-            ],
-            last_name: [
-                v => !!v,
-                v => /^[a-zA-Z \-\.\']{2,30}$/.exec(v) !== null,
-            ],
-            date_of_birth: [
-                v => !!v,
-                v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
-            ],
-        };
+    handleCancel = (values) => {
+        this.props.onSave(this.props.index, values);
+        this.props.onCancel();
+    };
 
-        const mappedKey = {
-            first_name   : localize('First name'),
-            last_name    : localize('Last name'),
-            date_of_birth: localize('Date of birth'),
-        };
-        const messages = [
-            '%s is required',
-            '%s is not in a proper format.',
-        ];
-        const errors = {};
-
-        Object.entries(validations)
-            .forEach(([key, rules]) => {
-                const error_index = rules.findIndex(v => !v(values[key]));
-                if (error_index !== -1) {
-                    errors[key] = localize(messages[error_index].replace('%s', mappedKey[key]));
-                }
-            });
-
-        return errors;
+    onFocus = (is_active) => {
+        this.setState({ paddingBottom: is_active ? '18rem' : 'unset' });
     };
 
     render() {
@@ -209,6 +181,7 @@ class PersonalDetails extends Component {
                     first_name   : this.props.value.first_name,
                     last_name    : this.props.value.last_name,
                     date_of_birth: this.props.value.date_of_birth,
+                    phone        : this.props.value.phone,
                 }}
                 validate={this.validatePersonalDetails}
                 onSubmit={(values, actions) => {
@@ -221,42 +194,58 @@ class PersonalDetails extends Component {
                         handleSubmit,
                         isSubmitting,
                         errors,
+                        values,
                     }) => (
                         <form onSubmit={handleSubmit}>
-                            <div className='personal-details-form'>
-                                <div className='personal-details-form__elements'>
-                                    <Input
-                                        name='first_name'
-                                        label={localize('First name')}
-                                        placeholder={localize('John')}
-                                    />
-                                    <Input
-                                        name='last_name'
-                                        label={localize('Last name')}
-                                        placeholder={localize('Doe')}
-                                    />
-                                    <DateOfBirth
-                                        name='date_of_birth'
-                                        label={localize('Date of birth')}
-                                        placeholder={localize('1999-07-01')}
-                                    />
-                                </div>
-                                <p className='personal-details-form__description'>
+                            <div className='details-form'>
+                                <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={'Any information you provide is confidential and will be used for verification purposes only.'}
                                     />
                                 </p>
+                                <div className='details-form__elements-container'>
+                                    <ThemedScrollbars
+                                        autohide
+                                        style={{
+                                            height: '100%',
+                                        }}
+                                    >
+                                        <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
+                                            <InputField
+                                                name='first_name'
+                                                label={localize('First name*')}
+                                                placeholder={localize('John')}
+                                            />
+                                            <InputField
+                                                name='last_name'
+                                                label={localize('Last name*')}
+                                                placeholder={localize('Doe')}
+                                            />
+                                            <DateOfBirth
+                                                name='date_of_birth'
+                                                label={localize('Date of birth*')}
+                                                placeholder={localize('1999-07-01')}
+                                                onFocus={this.onFocus}
+                                            />
+                                            <InputField
+                                                name='phone'
+                                                label={localize('Phone number*')}
+                                                placeholder={localize('Phone number')}
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </div>
                             </div>
                             <FormSubmitButton
+                                cancel_label={localize('Previous')}
+                                has_cancel
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars
                                     isSubmitting ||
                                     Object.keys(errors).length > 0
                                 }
-                                label='Next'
-                                has_cancel
-                                cancel_label='Previous'
-                                onCancel={this.props.onCancel}
+                                label={localize('Next')}
+                                onCancel={this.handleCancel.bind(this, values)}
                             />
                         </form>
                     )
@@ -264,6 +253,80 @@ class PersonalDetails extends Component {
             </Formik>
         );
     }
+
+    validatePersonalDetails = (values) => {
+        const max_date    = toMoment().subtract(18, 'days');
+        const validations = {
+            first_name: [
+                v => !!v,
+                v => v.length > 2,
+                v => v.length < 30,
+                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+            ],
+            last_name: [
+                v => !!v,
+                v => v.length >= 2,
+                v => v.length <= 50,
+                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+            ],
+            date_of_birth: [
+                v => !!v,
+                v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
+            ],
+            phone: [
+                v => !!v,
+                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+            ],
+        };
+
+        const mappedKey = {
+            first_name   : localize('First name'),
+            last_name    : localize('Last name'),
+            date_of_birth: localize('Date of birth'),
+            phone        : localize('Phone'),
+        };
+
+        const common_messages  = [
+            '{{field_name}} is required',
+            '{{field_name}} is too short',
+            '{{field_name}} is too long',
+            '{{field_name}} is not in a proper format.',
+        ];
+
+        const alt_messages = [
+            '{{field_name}} is required',
+            '{{field_name}} is not in a proper format.',
+        ];
+
+        const errors    = {};
+
+        Object.entries(validations)
+            .forEach(([key, rules]) => {
+                const error_index = rules.findIndex(v => !v(values[key]));
+                if (error_index !== -1) {
+                    switch (key) {
+                        case 'date_of_birth':
+                        case 'phone':
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={alt_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                            break;
+                        default:
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={common_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                    }
+                }
+            });
+
+        return errors;
+    };
 }
 
 export default PersonalDetails;

@@ -354,7 +354,7 @@
                 <mutation else="1"></mutation>
                 <value name="IF0">
                   <block type="logic_compare" id="5zG.nOjAV8~Wv0+|QNA-">
-                    <field name="OP">LT</field>
+                    <field name="OP">LTE</field>
                     <value name="A">
                       <block type="variables_get" id="oO2f%u~0|$AM[WV{cd82">
                         <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>

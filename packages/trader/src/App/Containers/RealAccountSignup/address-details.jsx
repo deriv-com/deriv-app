@@ -74,7 +74,7 @@ class AddressDetails extends Component {
                         values,
                         handleChange,
                     }) => (
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} style={{ height: '420px' }}>
                             <div className='details-form'>
                                 <p className='details-form__description'>
                                     <Localize
@@ -85,7 +85,7 @@ class AddressDetails extends Component {
                                     <ThemedScrollbars
                                         autoHide
                                         style={{
-                                            height: '100%',
+                                            height: '355px',
                                         }}
                                     >
                                         <div className='details-form__elements details-form__elements--overflow'>

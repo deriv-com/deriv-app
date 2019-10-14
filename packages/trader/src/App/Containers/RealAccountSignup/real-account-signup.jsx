@@ -33,7 +33,7 @@ const ModalHeights = {
     add_manage_account: '648px',
     set_currency      : '575px',
     error             : '400px',
-    add_currency      : '355px',
+    add_currency      : '380px',
     change_currency   : '290px',
 };
 

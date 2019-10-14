@@ -12,23 +12,25 @@ const SubHeaderLayout = ({ children }) => <div className='side-menu__sub-header-
 
 const MainHeaders = ({ items, handleSubroute, active_title }) => (
     <>
-        {items.map(item => (
-            <div key={item.title} className='side-menu'>
-                <VerticalTabHeader
-                    item={item}
-                    className={classNames('side-menu__header', {
-                        'side-menu__header--active'  : item.title === active_title,
-                        'side-menu__header--disabled': item.is_disabled,
-                    })}
-                    onChange={handleSubroute}
-                >
-                    <Icon
-                        icon='IconChevronRight'
-                        className='side-menu__icon'
-                    />
-                </VerticalTabHeader>
-            </div>
-        ))}
+        {items
+            .filter(item => !item.is_hidden)
+            .map(item => (
+                <div key={item.title} className='side-menu'>
+                    <VerticalTabHeader
+                        item={item}
+                        className={classNames('side-menu__header', {
+                            'side-menu__header--active'  : item.title === active_title,
+                            'side-menu__header--disabled': item.is_disabled,
+                        })}
+                        onChange={handleSubroute}
+                    >
+                        <Icon
+                            icon='IconChevronRight'
+                            className='side-menu__icon'
+                        />
+                    </VerticalTabHeader>
+                </div>
+            ))}
     </>
 );
 

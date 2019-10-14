@@ -86,8 +86,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_real_account() {
+    get has_active_real_account() {
         return this.active_accounts.some(acc => acc.is_virtual === 0);
+    }
+
+    @computed
+    get has_any_real_account() {
+        return this.account_list.some(acc => acc.is_virtual === 0);
     }
 
     @computed
@@ -179,10 +184,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get account_list() {
         return this.all_loginids.map(id => (
-            !this.isDisabled(id) &&
-            this.getToken(id) ?
-                this.getAccountInfo(id) :
-                undefined
+            this.getAccountInfo(id)
         )).filter(account => account);
     }
 
@@ -671,11 +673,13 @@ export default class ClientStore extends BaseStore {
     getAccountInfo(loginid = this.loginid) {
         const account      = this.getAccount(loginid);
         const currency     = account.currency;
+        const is_disabled  = account.is_disabled;
         const is_virtual   = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
 
         return {
             loginid,
+            is_disabled,
             is_virtual,
             icon : account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,

@@ -72,7 +72,6 @@ class VerticalTabContentContainer extends React.PureComponent {
                         />
                     }
                 </div>
-         
             </div>
         );
     }

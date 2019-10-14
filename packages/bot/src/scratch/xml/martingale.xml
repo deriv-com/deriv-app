@@ -223,7 +223,7 @@
                     <statement name="DO0">
                       <block type="variables_set" id="-93lGY=!6I#8sh)~z`3Z">
                         <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-                        <value name="VALUE" strategy_value="size">
+                        <value name="VALUE">
                           <shadow type="math_number" id="V_wKk,@wB*OF9ev0RrZx">
                             <field name="NUM">1</field>
                           </shadow>
@@ -303,7 +303,7 @@
         <statement name="DO0">
           <block type="variables_set" id="dBpW`FWzhfYxYL[m%r_/">
             <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-            <value name="VALUE" strategy_value="size">
+            <value name="VALUE">
               <shadow type="math_number" id="#{5k!r3Zgo@m8VSv[fPn">
                 <field name="NUM">1</field>
               </shadow>
@@ -324,7 +324,7 @@
                     <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
                   </block>
                 </value>
-                <value name="B">
+                <value name="B" strategy_value="size">
                   <shadow type="math_number" id="#Om$-j0C[l$EXD$2JdKl">
                     <field name="NUM">2</field>
                   </shadow>

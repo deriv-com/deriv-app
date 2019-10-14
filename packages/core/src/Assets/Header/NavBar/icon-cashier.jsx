@@ -4,23 +4,7 @@ import React      from 'react';
 
 const IconCashier = ({ className }) => (
     <svg className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <g fill='none' fillRule='evenodd'>
-            <rect stroke='#2A3052' x='.5' y='5.5' width='15' height='9' rx='1' />
-            <path fill='#2A3052' d='M0 11h16v1H0z' />
-            <path stroke='#2A3052' d='M2.5 3.5h4v2h-4z' />
-            <rect stroke='#2A3052' x='9.5' y='1.5' width='6' height='2' rx='1' />
-            <path fill='#2A3052' d='M12 4h1v1h-1z' />
-            <rect fill='#2A3052' x='10' y='9' width='4' height='1' rx='.5' />
-            <rect fill='#2A3052' x='10' y='7' width='4' height='1' rx='.5' />
-            <rect fill='#2A3052' x='8' y='9' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='8' y='7' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='6' y='9' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='6' y='7' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='4' y='9' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='4' y='7' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='2' y='9' width='1' height='1' rx='.5' />
-            <rect fill='#2A3052' x='2' y='7' width='1' height='1' rx='.5' />
-        </g>
+        <path className='color1-fill' fillRule='nonzero' d='M1.5 6a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5h-13zM15 1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2v1h1.5A1.5 1.5 0 0 1 16 6.5v7a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-7A1.5 1.5 0 0 1 1.5 5H2V3h5v2h5V4h-2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5zm0 10H1v1h14v-1zm-1.5-2h-3a.5.5 0 0 0-.09.992l.09.008h3a.5.5 0 1 0 0-1zm-5 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm11-2h-3a.5.5 0 0 0-.09.992L10.5 8h3a.5.5 0 1 0 0-1zm-5 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zm-2 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1zM6 4H3v1h3V4zm9-2h-5v1h5V2z' />
     </svg>
 );
 

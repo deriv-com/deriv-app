@@ -69,7 +69,7 @@ class Account extends React.Component {
         // TODO: modify account route to support disabled
         this.props.routes.forEach((menu_item) => {
             if (menu_item.title === 'Verification') {
-                menu_item.is_disabled = !is_high_risk_client;
+                menu_item.is_hidden = !is_high_risk_client;
             }
             if (menu_item.title === 'Profile') {
                 menu_item.subroutes.forEach(route => {

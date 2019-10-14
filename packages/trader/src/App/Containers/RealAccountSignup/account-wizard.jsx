@@ -246,7 +246,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client }) => ({
     realAccountSignup : client.realAccountSignup,
-    has_real_account  : client.has_real_account,
+    has_real_account  : client.has_active_real_account,
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
 }))(AccountWizard);

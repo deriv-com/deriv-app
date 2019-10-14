@@ -59,9 +59,9 @@ export default class CommonStore extends BaseStore {
 
         const ui = this.root_store.ui;
         if (!is_online) {
-            ui.addNotification(clientNotifications.you_are_offline);
+            ui.addNotification(clientNotifications().you_are_offline);
         } else {
-            ui.removeNotification(clientNotifications.you_are_offline);
+            ui.removeNotification(clientNotifications().you_are_offline);
         }
     }
 

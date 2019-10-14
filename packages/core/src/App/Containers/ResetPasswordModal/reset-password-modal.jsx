@@ -5,9 +5,9 @@ import {
     Formik,
     Form }                   from 'formik';
 import {
-    Input,
     Button,
     Dialog,
+    PasswordInput,
     PasswordMeter }          from 'deriv-components';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import { localize }          from 'App/i18n';
@@ -62,7 +62,7 @@ class ResetPassword extends React.Component {
         if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
             errors.password = true;
         }
-    
+
         return errors;
     };
 
@@ -99,10 +99,9 @@ class ResetPassword extends React.Component {
                                                 input={values.password}
                                                 error={touched.password && errors.password}
                                             >
-                                                <Input
+                                                <PasswordInput
                                                     className='reset-password__password-field'
                                                     name='password'
-                                                    type='password'
                                                     label={localize('Create a password')}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -191,6 +190,6 @@ export default connect(
         disableApp              : ui.disableApp,
         is_loading              : ui.is_loading,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
-        verification_code       : client.verification_code,
+        verification_code       : client.verification_code.reset_password,
     }),
 )(ResetPasswordModal);

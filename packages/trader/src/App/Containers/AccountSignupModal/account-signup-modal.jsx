@@ -14,7 +14,7 @@ import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
-import { website_name }  from 'App/Constants/app-config';
+import { website_name } from 'App/Constants/app-config';
 import 'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
@@ -181,6 +181,7 @@ const AccountSignupModal = ({
             disableApp={disableApp}
             enableApp={enableApp}
             is_loading={is_loading}
+            is_content_centered
         >
             <AccountSignup
                 onSignup={onSignup}

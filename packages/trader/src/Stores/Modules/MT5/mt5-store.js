@@ -156,7 +156,7 @@ export default class MT5Store extends BaseStore {
 
     realMt5Signup() {
         // Check if the user has real account
-        if (!this.root_store.client.has_real_account
+        if (!this.root_store.client.has_active_real_account
             || !this.root_store.client.currency
         ) {
             this.beginRealSignupForMt5();

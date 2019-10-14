@@ -46,6 +46,7 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
+        // await this.props.clearPositions();
         await this.props.switchAccount(loginid);
 
         /* if (this.props.has_error) {
@@ -85,7 +86,7 @@ class AccountSwitcher extends React.Component {
 
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
-                <div className='acc-switcher__list-group'>
+                <div className={(can_upgrade || this.can_manage_currency) ? undefined : 'acc-switcher__list-group'}>
                     <span className='acc-switcher__list-title'>
                         <Localize i18n_default_text='Accounts' />
                     </span>
@@ -110,9 +111,17 @@ class AccountSwitcher extends React.Component {
                                                 className={`acc-switcher__id-icon acc-switcher__id-icon--${account.icon}`}
                                                 type={account.icon}
                                             />
-                                            <span>{account.is_virtual ? <Localize i18n_default_text='Demo' /> : account.icon.toUpperCase()}</span>
+                                            <span>
+                                                {account.is_virtual ?
+                                                    <Localize i18n_default_text='Demo' /> :
+                                                    account.icon.toUpperCase() === 'REAL' ?
+                                                        <Localize i18n_default_text='Real' /> :
+                                                        account.icon.toUpperCase()
+                                                }
+                                            </span>
                                             {'balance' in this.props.accounts[account.loginid] &&
                                             <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                                {this.props.accounts[account.loginid].currency &&
                                                 <Money
                                                     currency={this.props.accounts[account.loginid].currency}
                                                     amount={
@@ -124,6 +133,13 @@ class AccountSwitcher extends React.Component {
                                                     }
                                                     should_format={false}
                                                 />
+                                                }
+                                                {!this.props.accounts[account.loginid].currency &&
+                                                    <span className='no-currency'><Localize
+                                                        i18n_default_text='No currency assigned'
+                                                    />
+                                                    </span>
+                                                }
                                             </span>
                                             }
                                         </span>
@@ -200,6 +216,7 @@ AccountSwitcher.propTypes = {
     accounts              : PropTypes.object,
     cleanUp               : PropTypes.func,
     // clearError            : PropTypes.func,
+    // clearPositions        : PropTypes.func,
     display               : PropTypes.string,
     // has_error             : PropTypes.bool,
     has_fiat              : PropTypes.bool,
@@ -230,6 +247,7 @@ const account_switcher = connect(
         cleanUp               : client.cleanUp,
         // clearError            : modules.contract_trade.clearError,
         // has_error             : modules.contract_trade.has_error,
+        // clearPositions        : modules.portfolio.clearTable,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup : ui.openRealAccountSignup,
         togglePositionsDrawer : ui.togglePositionsDrawer,

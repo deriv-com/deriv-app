@@ -161,7 +161,7 @@ export default connect(({ client, modules, ui }) => ({
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
     has_mt5_account            : modules.mt5.has_mt5_account,
-    has_real_account           : client.has_real_account,
+    has_real_account           : client.has_active_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,

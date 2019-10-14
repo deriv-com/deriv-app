@@ -3,6 +3,8 @@
     @include typeface(--paragraph-left-normal-black);
     color: var(--text-prominent);
     text-transform: initial;
+    display: flex;
+    align-items: center;
 
     .description {
         font-weight: bold;

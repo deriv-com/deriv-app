@@ -101,9 +101,13 @@ class AccountSwitcher extends React.Component {
                                     <div
                                         id={`dt_${account.loginid}`}
                                         className={classNames('acc-switcher__account', {
-                                            'acc-switcher__account--selected': (account.loginid === this.props.account_loginid),
+                                            'acc-switcher__account--selected': account.loginid === this.props.account_loginid,
+                                            'acc-switcher__account--disabled': account.is_disabled,
                                         })}
-                                        onClick={this.doSwitch.bind(this, account.loginid)}
+                                        onClick={account.is_disabled
+                                            ? undefined
+                                            : this.doSwitch.bind(this, account.loginid)
+                                        }
                                     >
                                         <span className={'acc-switcher__id'}>
                                             <Icon
@@ -120,7 +124,7 @@ class AccountSwitcher extends React.Component {
                                                 }
                                             </span>
                                             {'balance' in this.props.accounts[account.loginid] &&
-                                            <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                            <span className={classNames('acc-switcher__balance', { 'acc-switcher__balance--virtual': account.is_virtual })}>
                                                 {this.props.accounts[account.loginid].currency &&
                                                 <Money
                                                     currency={this.props.accounts[account.loginid].currency}

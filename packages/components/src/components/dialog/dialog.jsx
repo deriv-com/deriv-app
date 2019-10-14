@@ -1,8 +1,8 @@
-import classNames        from 'classnames';
-import React             from 'react';
-import PropTypes         from 'prop-types';
+import classNames         from 'classnames';
+import React              from 'react';
+import PropTypes          from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import Button            from '../button/button.jsx';
+import Button             from '../button/button.jsx';
 
 class Dialog extends React.Component {
     componentDidMount() {
@@ -39,55 +39,59 @@ class Dialog extends React.Component {
             onCancel,
             is_loading,
             is_visible,
+            is_content_centered,
             title,
         } = this.props;
+
+        const content_classes = classNames('dc-dialog__content', is_content_centered && 'dc-dialog__content--centered');
+
         return (
             <React.Fragment>
                 <CSSTransition
                     appear
-                    in={(is_visible && !is_loading)}
-                    timeout={50}
-                    classNames={{
+                    in={ (is_visible && !is_loading) }
+                    timeout={ 50 }
+                    classNames={ {
                         appear   : 'dc-dialog__wrapper--enter',
                         enter    : 'dc-dialog__wrapper--enter',
                         enterDone: 'dc-dialog__wrapper--enter-done',
                         exit     : 'dc-dialog__wrapper--exit',
-                    }}
+                    } }
                     unmountOnExit
                 >
                     <div className='dc-dialog__wrapper'>
                         <div className='dc-dialog__dialog'>
                             { title &&
-                                <h1 className='dc-dialog__header'>{title}</h1>
+                            <h1 className='dc-dialog__header'>{ title }</h1>
                             }
                             { typeof children === 'string' ?
-                                <p className='dc-dialog__content'>{children}</p>
+                                <p className={ content_classes }>{ children }</p>
                                 :
-                                <div className='dc-dialog__content'>{children}</div>
+                                <div className={ content_classes }>{ children }</div>
                             }
                             <div className='dc-dialog__footer'>
                                 { onCancel &&
-                                    <Button
-                                        className={classNames(
-                                            'dc-dialog__button',
-                                            'btn--tertiary--default',
-                                        )}
-                                        has_effect
-                                        text={cancel_button_text}
-                                        onClick={this.handleCancel}
-                                    />
+                                <Button
+                                    className={ classNames(
+                                        'dc-dialog__button',
+                                        'btn--tertiary--default',
+                                    ) }
+                                    has_effect
+                                    text={ cancel_button_text }
+                                    onClick={ this.handleCancel }
+                                />
                                 }
                                 { confirm_button_text &&
-                                    <Button
-                                        className={classNames(
-                                            'dc-dialog__button',
-                                            'btn--primary',
-                                            'btn--primary--default',
-                                        )}
-                                        has_effect
-                                        text={confirm_button_text}
-                                        onClick={this.handleConfirm}
-                                    />
+                                <Button
+                                    className={ classNames(
+                                        'dc-dialog__button',
+                                        'btn--primary',
+                                        'btn--primary--default',
+                                    ) }
+                                    has_effect
+                                    text={ confirm_button_text }
+                                    onClick={ this.handleConfirm }
+                                />
                                 }
                             </div>
                         </div>

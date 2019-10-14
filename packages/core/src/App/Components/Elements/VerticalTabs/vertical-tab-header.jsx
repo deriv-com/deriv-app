@@ -19,6 +19,7 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
     const is_active   = selected && selected.label === item.label;
     const handleClick = () => onChange(item);
     const id          = `dt_${label}_link`;
+    const is_disabled = !!item.is_disabled;
 
     return (
         is_routed ?
@@ -26,7 +27,9 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
                 id={id}
                 to={item.path}
                 onClick={handleClick}
-                className='vertical-tab__header'
+                className={classNames('vertical-tab__header', {
+                    'vertical-tab__header--disabled': is_disabled,
+                })}
                 activeClassName={
                     classNames(className, {
                         'vertical-tab__header--active': is_active,
@@ -42,7 +45,8 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
                 id={id}
                 className={
                     classNames('vertical-tab__header', className, {
-                        'vertical-tab__header--active': is_active,
+                        'vertical-tab__header--active'  : is_active,
+                        'vertical-tab__header--disabled': is_disabled,
                     })
                 }
                 onClick={handleClick}

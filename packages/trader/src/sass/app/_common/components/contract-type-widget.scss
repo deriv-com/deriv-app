@@ -19,7 +19,7 @@
         /* postcss-bem-linter: ignore */
         span[name=contract_type] {
             @include typeface(--paragraph-left-normal-black);
-            color: var(--text-general);
+            color: var(--text-prominent);
             font-weight: bold;
             vertical-align: middle;
             padding-left: 0.4em;

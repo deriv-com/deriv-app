@@ -258,6 +258,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     openRealAccountSignup() {
         this.is_real_acc_signup_on = true;
+        this.is_accounts_switcher_on = false;
     }
 
     @action.bound

@@ -161,6 +161,36 @@
     &__amount-symbol {
         top: 0.9rem;
     }
+    &__no-balance {
+        &-icon {
+            margin: 10.7rem 0 1.6rem;
+        }
+        &-button {
+            height: 4rem;
+            margin-top: 3.2rem;
+        }
+    }
+    &__account-switch-icon {
+        background-image: url('~Images/app/cashier/account_switcher.jpg');
+        width: 400px;
+        height: 360px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin: 2.4rem auto;
+    }
+    &__virtual-header {
+        margin-top: 0;
+        margin-bottom: 0.8rem;
+    }
+    &__center-align {
+        &-wrapper {
+            display: flex;
+        }
+        &-content {
+            align-self: center;
+            width: 100%;
+        }
+    }
     /** @define cashier-error */
     &-error {
         &__icon {
@@ -169,15 +199,20 @@
             margin-top: 8.7rem;
             margin-bottom: 1.6rem;
         }
-        &__text {
+        &__header {
             color: var(--text-loss-danger);
             font-weight: bold;
             font-size: 1.6rem;
             line-height: 1.5;
+            margin-bottom: 0.8rem;
         }
         &__button {
             margin-top: 3.2rem;
             height: 4rem;
+            margin-bottom: 1.6rem;
+        }
+        &__footer {
+            font-size: 1.2rem;
         }
     }
 }
@@ -450,15 +485,6 @@
         min-width: 6.5rem;
         height: 4rem;
     }
-    &__no-balance {
-        &-icon {
-            margin: 10.7rem 0 1.6rem;
-        }
-        &-button {
-            height: 4rem;
-            margin-top: 3.2rem;
-        }
-    }
 }
 
 /** @define payment-agent-transfer */
@@ -480,15 +506,6 @@
     }
     &__done-button {
         margin-right: 2.4rem;
-    }
-}
-
-/** @define dc-modal; */
-.dc-modal {
-    &__container {
-        &_modal-cashier {
-            width: 904px;
-        }
     }
 }
 

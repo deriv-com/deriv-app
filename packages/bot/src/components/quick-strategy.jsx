@@ -48,7 +48,7 @@ const validateQuickStrategy = values => {
                 errors[key] = translate('Must be a number');
             }
 
-            if (value < 1){
+            if (value <= 0){
                 errors[key] = translate('Must be a number higher than 0');
             }
         }
@@ -56,7 +56,6 @@ const validateQuickStrategy = values => {
         if (value === '') {
             errors[key] = translate('Field cannot be empty');
         }
-
     });
 
     return errors;

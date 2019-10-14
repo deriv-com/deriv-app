@@ -2,9 +2,9 @@ import React               from 'react';
 import {
     Redirect,
     Route }                from 'react-router-dom';
-import { 
+import {
     redirectToLogin,
-     goToSignUp }          from '_common/base/login';
+    goToSignUp }           from '_common/base/login';
 import BinarySocket        from '_common/base/socket_base';
 import Language            from '_common/language';
 import LoginPrompt         from 'App/Components/Elements/login-prompt.jsx';
@@ -27,10 +27,11 @@ const RouteWithSubRoutes = route => {
         } else {
             result = (
                 (route.is_authenticated && !route.is_logged_in) ?
-                    <LoginPrompt 
-                    onLogin={redirectToLogin}  
-                    onSignup={goToSignUp} 
-                    page_title={route.title} />
+                    <LoginPrompt
+                        onLogin={redirectToLogin}
+                        onSignup={goToSignUp}
+                        page_title={route.title}
+                    />
                     :
                     <route.component {...props} routes={route.routes} />
             );

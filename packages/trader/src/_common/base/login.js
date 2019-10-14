@@ -17,10 +17,10 @@ const Login = (() => {
         }
     };
 
-    const goToSignUp = () => { 
-        window.open('https://deriv.com'); 
+    const goToSignUp = () => {
+        window.open('https://deriv.com');
     };
-
+    
     const loginUrl = () => {
         const server_url         = localStorage.getItem('config.server_url');
         const language           = getLanguage();
@@ -59,7 +59,7 @@ const Login = (() => {
         redirectToLogin,
         isLoginPages,
         initOneAll,
-        goToSignUp
+        goToSignUp,
     };
 })();
 

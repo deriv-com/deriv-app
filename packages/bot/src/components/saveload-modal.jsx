@@ -21,7 +21,7 @@ import { translate }    from '../utils/tools';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/saveload-modal.scss';
 
-const initial_option = { is_local: true, save_as_collection: true };
+const initial_option = { is_local: true, save_as_collection: false };
 
 const SaveLoadModal = ({
     button_status,

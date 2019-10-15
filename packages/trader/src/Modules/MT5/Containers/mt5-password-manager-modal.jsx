@@ -164,16 +164,18 @@ class MT5PasswordManagerModal extends React.Component {
                             <p className='mt5-password-manager--hint'><Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' /></p>
                             <div className='mt5-password-manager__actions'>
                                 <Button
-                                    className='mt5-password-manager--button btn--primary--default'
+                                    className='mt5-password-manager--button'
                                     is_disabled={ isSubmitting }
                                     is_loading={ isSubmitting }
                                     text={ localize('Change password') }
+                                    primary
                                 />
                                 <Button
-                                    className='mt5-password-manager--button btn--tertiary--default'
+                                    className='mt5-password-manager--button'
                                     type='button'
                                     onClick={ onClickReset }
                                     text={ localize('Reset main password') }
+                                    tertiary
                                 />
                             </div>
                         </Form>
@@ -234,16 +236,18 @@ class MT5PasswordManagerModal extends React.Component {
                                 <p className='mt5-password-manager--hint'><Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' /></p>
                                 <div className='mt5-password-manager__actions'>
                                     <Button
-                                        className='mt5-password-manager--button btn--primary--default'
+                                        className='mt5-password-manager--button'
                                         is_disabled={ isSubmitting }
                                         is_loading={ isSubmitting }
                                         text={ localize('Change investor password') }
+                                        primary
                                     />
                                     <Button
-                                        className='mt5-password-manager--button btn--tertiary--default'
+                                        className='mt5-password-manager--button'
                                         type='button'
                                         onClick={ onClickReset }
                                         text={ localize('Create or reset investor password') }
+                                        tertiary
                                     />
                                 </div>
                             </Form>

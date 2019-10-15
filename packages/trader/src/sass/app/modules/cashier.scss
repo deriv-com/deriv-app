@@ -166,8 +166,7 @@
             margin: 10.7rem 0 1.6rem;
         }
         &-button {
-            height: 4rem;
-            margin-top: 3.2rem;
+            margin: 3.2rem auto;
         }
     }
     &__account-switch-icon {
@@ -232,12 +231,7 @@
         font-size: 1.4rem;
     }
     &__verify-button {
-        margin-top: 3.2rem;
-        height: 4rem;
-
-        &-text {
-            font-size: 1.4rem;
-        }
+        margin: 3.2rem auto;
     }
     &__icon {
         margin-top: 8rem;

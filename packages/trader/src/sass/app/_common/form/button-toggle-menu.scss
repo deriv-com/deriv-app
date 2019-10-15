@@ -46,6 +46,7 @@
         border-radius: $BORDER_RADIUS;
         width: 100%;
         background-color: var(--state-normal);
+        display: flex;
 
         .button-menu {
             &__button, &__button--active {

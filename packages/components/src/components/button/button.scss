@@ -1,17 +1,20 @@
 /** @define btn */
 .btn {
     vertical-align: middle;
+    align-items: center;
     justify-content: center;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
     padding: 0 1.6rem;
+    display: flex;
     border: 0;
     height: 3.2rem;
     border-radius: 4px;
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
+    text-decoration: none;
     /*
      * Text will be transformed to sentence case in JS
      * text-transform is declared in .btn instead of .btn__text
@@ -65,22 +68,20 @@
         }
     }
     &--tertiary {
-        &--default {
-            background: var(--button-tertiary-default);
+        background: var(--button-tertiary-default);
 
-            &:hover:not([disabled]) {
-                background: var(--button-tertiary-hover);
-            }
-            &:active:not([disabled]) {
-                background: var(--button-tertiary-default);
-            }
-            .btn__text {
-                color: var(--brand-red-coral);
-            }
-            &:disabled, &[disabled] {
-                opacity: 0.32;
-                cursor: not-allowed !important;
-            }
+        &:hover:not([disabled]) {
+            background: var(--button-tertiary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-tertiary-default);
+        }
+        .btn__text {
+            color: var(--brand-red-coral);
+        }
+        &:disabled, &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
         }
     }
     /* TODO: confirm this button with designer are we still using this? */

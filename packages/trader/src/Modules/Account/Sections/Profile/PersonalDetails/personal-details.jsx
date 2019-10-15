@@ -586,7 +586,7 @@ class PersonalDetailsForm extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='account-form__footer-btn btn--primary--default'
+                                        className='account-form__footer-btn'
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?
@@ -608,6 +608,8 @@ class PersonalDetailsForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
+                                        primary
+                                        size='l'
                                     />
                                 </FormFooter>
                             </form>

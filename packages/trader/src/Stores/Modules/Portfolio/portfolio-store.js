@@ -62,23 +62,26 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    onBuyResponse({ contract_id, longcode, contract_type }) {
+        const new_pos = {
+            contract_id,
+            longcode,
+            contract_type,
+        };
+        this.pushNewPosition(new_pos);
+        this.subscribers[contract_id] =
+            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+    }
+
+    @action.bound
     async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, longcode, action: act } = response.transaction;
+        const { contract_id, action: act } = response.transaction;
 
-        if (act === 'buy') {
-            const new_pos = {
-                contract_id,
-                longcode,
-                contract_type: '',
-            };
-            this.pushNewPosition(new_pos);
-            this.subscribers[contract_id] =
-                WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
-        } else if (act === 'sell') {
+        if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {

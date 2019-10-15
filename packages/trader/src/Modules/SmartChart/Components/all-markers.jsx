@@ -540,7 +540,7 @@ const DigitContract = RawMarkerMaker(({
             top : start.top - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + opacity),
+            icon: ICONS.START.with_color(color + opacity, get_color({ status: 'bg', is_dark_theme }) + opacity),
         });
     }
     // remaining ticks

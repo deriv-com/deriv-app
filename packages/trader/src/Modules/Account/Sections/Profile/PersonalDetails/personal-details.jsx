@@ -27,16 +27,16 @@ import LoadErrorMessage                        from '../../ErrorMessages/LoadErr
 import { LeaveConfirm }                        from '../../../Components/leave-confirm.jsx';
 import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
 
-const getResidence = (residence_list, value, type) => {
-    const residence = residence_list.find(location =>
+const getLocation = (location_list, value, type) => {
+    const location_obj = location_list.find(location =>
         location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase());
 
-    if (residence) return residence[type];
+    if (location_obj) return location_obj[type];
     return '';
 };
 
 // TODO: standardize validations and refactor this
-const makeSettingsRequest = ({ ...settings }, residence_list) => {
+const makeSettingsRequest = ({ ...settings }, residence_list, states_list) => {
     let { email_consent, first_name, last_name, tax_identification_number, date_of_birth } = settings;
     email_consent             = +email_consent; // checkbox is boolean but api expects number (1 or 0)
     first_name                = first_name.trim();
@@ -50,15 +50,16 @@ const makeSettingsRequest = ({ ...settings }, residence_list) => {
         address_line_1,
         address_line_2,
         address_city,
-        address_state,
+        address_state_text,
         address_postcode,
     } = settings;
 
-    const tax_residence  = tax_residence_text ? getResidence(residence_list, tax_residence_text, 'value') : '';
-    const citizen        = citizen_text ? getResidence(residence_list, citizen_text, 'value') : '';
-    const place_of_birth = place_of_birth_text ? getResidence(residence_list, place_of_birth_text, 'value') : '';
-
+    const tax_residence  = tax_residence_text ? getLocation(residence_list, tax_residence_text, 'value') : '';
+    const citizen        = citizen_text ? getLocation(residence_list, citizen_text, 'value') : '';
+    const place_of_birth = place_of_birth_text ? getLocation(residence_list, place_of_birth_text, 'value') : '';
+    const address_state  = address_state_text ? getLocation(states_list, address_state_text, 'value') : '';
     const settings_to_be_removed_for_api = [
+        'address_state_text',
         'first_name',
         'last_name',
         'tax_identification_number',
@@ -113,11 +114,15 @@ class PersonalDetailsForm extends React.Component {
         const email_consent_value = values.email_consent ? 1 : 0;
         const request = this.props.is_virtual ?
             { 'email_consent': email_consent_value }
-            : makeSettingsRequest(values, this.props.residence_list);
+            : makeSettingsRequest(values, this.props.residence_list, this.props.states_list);
+
         this.setState({ is_btn_loading: true });
+
         WS.setSettings(request).then((data) => {
             this.setState({ is_btn_loading: false });
+
             setSubmitting(false);
+
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
@@ -160,7 +165,7 @@ class PersonalDetailsForm extends React.Component {
 
         const { residence_list } = this.props;
         const residence_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
-        const validateResidence = val => getResidence(residence_list, val, 'value');
+        const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
@@ -211,10 +216,6 @@ class PersonalDetailsForm extends React.Component {
             errors.address_city = validation_letter_symbol_message;
         }
 
-        if (values.address_state && !validLetterSymbol(values.address_state)) {
-            errors.address_state = validation_letter_symbol_message;
-        }
-
         if (values.address_postcode && !validPostCode(values.address_postcode)) {
             errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
         }
@@ -255,20 +256,21 @@ class PersonalDetailsForm extends React.Component {
 
         let { tax_identification_number } = this.state;
 
-        const { is_fully_authenticated, residence_list } = this.props;
+        const { is_fully_authenticated, residence_list, has_residence, states_list } = this.props;
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
-        if (is_loading || !residence_list.length) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || !residence_list.length || (has_residence && !states_list.length)) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         let citizen_text = '';
         let tax_residence_text = '';
         let place_of_birth_text = '';
-        if (this.props.residence_list.length) {
-            citizen_text = citizen ? getResidence(residence_list, citizen, 'text') : '';
-            tax_residence_text = tax_residence ? getResidence(residence_list, tax_residence, 'text') : '';
-            place_of_birth_text = place_of_birth ? getResidence(residence_list, place_of_birth, 'text') : '';
-        }
+        let address_state_text = '';
+
+        citizen_text = citizen ? getLocation(residence_list, citizen, 'text') : '';
+        tax_residence_text = tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
+        place_of_birth_text = place_of_birth ? getLocation(residence_list, place_of_birth, 'text') : '';
+        address_state_text = address_state ? getLocation(this.props.states_list, address_state, 'text') : '';
 
         if (!tax_residence_text) tax_residence_text = '';
         if (!tax_identification_number) tax_identification_number = '';
@@ -290,7 +292,7 @@ class PersonalDetailsForm extends React.Component {
                     address_line_1,
                     address_line_2,
                     address_city,
-                    address_state,
+                    address_state_text,
                     address_postcode,
                 }}
                 onSubmit={this.onSubmit}
@@ -384,7 +386,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={citizen && is_fully_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            ({ value, text }) => setFieldValue('citizen_text', value ? text : '', true)
+                                                            (item) => setFieldValue('citizen_text', item.text, false)
                                                         }
                                                         required
                                                     />
@@ -543,18 +545,24 @@ class PersonalDetailsForm extends React.Component {
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    name='address_state'
-                                                    label={localize('State/Province (optional)')}
-                                                    value={values.address_state}
-                                                    error={touched.address_state && errors.address_state}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                />
+                                                <Field name='address_state_text'>
+                                                    {({ field }) => (
+                                                        <Autocomplete
+                                                            { ...field }
+                                                            data-lpignore='true'
+                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            type='text'
+                                                            label={localize('State/Province (optional)')}
+                                                            error={
+                                                                touched.address_state_text && errors.address_state_text
+                                                            }
+                                                            list_items={this.props.states_list}
+                                                            onItemSelection={
+                                                                ({ value, text }) => setFieldValue('address_state_text', value ? text : '', true)
+                                                            }
+                                                        />
+                                                    )}
+                                                </Field>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -627,6 +635,9 @@ class PersonalDetailsForm extends React.Component {
 
     componentDidMount() {
         this.props.fetchResidenceList();
+
+        if (this.props.has_residence) this.props.fetchStatesList();
+
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { account_settings, getChangeableFields, is_virtual } = this.props;
 
@@ -647,11 +658,14 @@ class PersonalDetailsForm extends React.Component {
 export default connect(
     ({ client }) => ({
         account_settings      : client.account_settings,
+        has_residence         : client.has_residence,
         getChangeableFields   : client.getChangeableFields,
         is_fully_authenticated: client.is_fully_authenticated,
         is_virtual            : client.is_virtual,
         residence_list        : client.residence_list,
+        states_list           : client.states_list,
         fetchResidenceList    : client.fetchResidenceList,
+        fetchStatesList       : client.fetchStatesList,
         refreshNotifications  : client.refreshNotifications,
     }),
 )(PersonalDetailsForm);

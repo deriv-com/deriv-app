@@ -1017,5 +1017,10 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         return this.account_status.risk_classification === 'high';
     }
+
+    @computed
+    get has_residence() {
+        return !!this.accounts[this.loginid].residence;
+    }
 }
 /* eslint-enable */

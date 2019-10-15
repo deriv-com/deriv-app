@@ -132,7 +132,9 @@ export const runBot = (limitations = {}) => {
             }
 
             interpreter = new Interpreter();
+            console.log(code); // eslint-disable-line
             interpreter.run(code).catch(error => {
+                console.log(error); // eslint-disable-line
                 globalObserver.emit('Error', error);
                 interpreter.stop();
             });

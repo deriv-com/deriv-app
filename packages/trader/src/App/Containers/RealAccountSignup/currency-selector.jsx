@@ -145,7 +145,7 @@ class CurrencySelector extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '100%',
+                                height: '420px',
                             }}
                         >
                             <RadioButtonGroup

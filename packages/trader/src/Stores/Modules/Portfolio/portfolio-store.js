@@ -63,6 +63,9 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onBuyResponse({ contract_id, longcode, contract_type }) {
+        if (this.subscribers[contract_id]) {
+            return /* do nothing */;
+        }
         const new_pos = {
             contract_id,
             longcode,
@@ -79,9 +82,15 @@ export default class PortfolioStore extends BaseStore {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, action: act } = response.transaction;
+        const { contract_id, action: act, longcode } = response.transaction;
 
-        if (act === 'sell') {
+        if (act === 'buy') {
+            this.onBuyResponse({
+                contract_id,
+                longcode,
+                contract_type: '', // TODO: figure out the icon not showing
+            });
+        } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
@@ -133,6 +142,12 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.indicative       = new_indicative;
         portfolio_position.profit_loss      = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
+
+        const formatted_position = formatPortfolioPosition(proposal, this.root_store.modules.trade.active_symbols);
+        Object.assign(portfolio_position, formatted_position);
+        window.pos = portfolio_position;
+        window.poc = proposal;
+        window.formatted_position = formatted_position;
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 

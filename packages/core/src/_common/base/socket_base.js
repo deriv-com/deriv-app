@@ -122,7 +122,7 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const subscribeBalance = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
+    const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -242,6 +242,9 @@ const BinarySocketBase = (() => {
     const forgetStream = (id) =>
         deriv_api.forget(id);
 
+    const tncApproval = () =>
+        deriv_api.send({ tnc_approval: '1' });
+
     return {
         init,
         forgetStream,
@@ -274,13 +277,14 @@ const BinarySocketBase = (() => {
         paymentAgentWithdraw,
         paymentAgentTransfer,
         setAccountCurrency,
-        subscribeBalance,
+        subscribeBalanceAll,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,
         subscribeTicksHistory,
         subscribeTransaction,
         subscribeWebsiteStatus,
+        tncApproval,
         transferBetweenAccounts,
     };
 })();

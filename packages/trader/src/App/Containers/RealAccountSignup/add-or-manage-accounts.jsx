@@ -1,5 +1,5 @@
 import PropTypes             from 'prop-types';
-import React, { Component }  from 'react';
+import React                 from 'react';
 import { ThemedScrollbars }  from 'deriv-components';
 import { connect }           from 'Stores/connect';
 import AddCryptoCurrency     from './add-crypto-currency.jsx';
@@ -7,7 +7,7 @@ import ChangeAccountCurrency from './change-account-currency.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
-class AddOrManageAccounts extends Component {
+class AddOrManageAccounts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

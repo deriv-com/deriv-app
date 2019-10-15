@@ -117,6 +117,7 @@ html {
 
     &:hover {
         text-decoration: underline;
+        cursor: pointer;
     }
     &--white {
         color: $color-white;

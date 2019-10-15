@@ -17,20 +17,6 @@ import 'Sass/real-account-signup.scss';
 
 const ModalHeights = {
     account_wizard: {
-        0: '650px',
-        1: '750px',
-        2: '750px',
-        3: '700px',
-    },
-    add_manage_account: '648px',
-    set_currency      : '575px',
-    error             : '400px',
-    add_currency      : '355px',
-    change_currency   : '290px',
-};
-
-const ModalHeights = {
-    account_wizard: {
         0: '675px',
         1: '750px',
         2: '750px',

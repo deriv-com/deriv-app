@@ -20,6 +20,7 @@ export default class RunPanelStore {
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
+        observer.register('bot.trade_again', this.onBotTradeAgain);
 
         this.registerReactions();
     }
@@ -36,6 +37,14 @@ export default class RunPanelStore {
     // otherwise we keep opening new contracts and set the ContractStage to purchase_sent
     is_error_happened   = false;
     is_continue_trading = true;
+
+    @action.bound
+    onBotTradeAgain(is_trade_again) {
+        if (!is_trade_again) {
+            this.is_run_button_clicked = false;
+            this.onBotStopEvent();
+        }
+    }
 
     @action.bound
     onBotStopEvent() {

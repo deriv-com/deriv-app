@@ -1,6 +1,7 @@
 // import PropTypes        from 'prop-types';
 import React                                   from 'react';
 import { Formik, Field }                       from 'formik';
+import classNames                              from 'classnames';
 import {
     Autocomplete,
     Checkbox,
@@ -585,8 +586,13 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    <div className='account-form__footer-note'>
+                                        { localize('Please make sure your information is correct or it may affect your trading experience.') }
+                                    </div>
                                     <Button
-                                        className='account-form__footer-btn'
+                                        className={classNames('account-form__footer-btn', {
+                                            'btn--primary--green': is_submit_success,
+                                        })}
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             this.props.is_virtual ?

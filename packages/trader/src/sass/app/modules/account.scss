@@ -134,7 +134,16 @@
             border-width: 1px;
             background-color: var(--general-main-1);
 
+            &-note {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xxs);
+                height: 4rem;
+                line-height: 1.5;
+                text-align: right;
+                width: 27.6rem;
+            }
             &-btn {
+                height: 4em;
                 margin-top: 0;
                 margin-bottom: 0;
                 margin-right: 1.6rem;

@@ -33,11 +33,10 @@ class Virtual extends React.Component {
                                 <Localize i18n_default_text={'You need a real money account to use this feature. It\'s easy to create a real money account and start trading.'} />
                             </p>
                             <Button
-                                className='cashier-error__button'
+                                className='btn--primary--default cashier-error__button'
                                 has_effect
                                 text={localize('Create my real account')}
                                 onClick={this.onClickSignup}
-                                primary
                             />
                         </React.Fragment>
                     }
@@ -55,7 +54,7 @@ Virtual.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        has_real_account     : client.has_any_real_account,
+        has_real_account     : client.has_real_account,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleCashierModal   : ui.toggleCashierModal,
     })

@@ -1,7 +1,9 @@
 import classNames           from 'classnames';
-import { Input }            from 'deriv-components';
+import {
+    Input,
+    ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
+import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
@@ -11,7 +13,7 @@ import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends Component {
+export class DateOfBirth extends React.Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -27,6 +29,10 @@ export class DateOfBirth extends Component {
     closeDatePicker = () => {
         this.setState({
             should_show_calendar: false,
+        }, () => {
+            if (this.props.onFocus) {
+                this.props.onFocus(false);
+            }
         });
     };
 
@@ -45,6 +51,10 @@ export class DateOfBirth extends Component {
         if (!this.reference.current.contains(e.target)) {
             this.setState({
                 should_show_calendar: false,
+            }, () => {
+                if (this.props.onFocus) {
+                    this.props.onFocus(false);
+                }
             });
         }
     };
@@ -52,6 +62,10 @@ export class DateOfBirth extends Component {
     handleFocus = () => {
         this.setState({
             should_show_calendar: true,
+        }, () => {
+            if (this.props.onFocus) {
+                this.props.onFocus(true);
+            }
         });
     };
 
@@ -136,11 +150,15 @@ const InputField = (props) => {
     );
 };
 
-class PersonalDetails extends Component {
+class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
-
         this.form = React.createRef();
+        this.state = {
+            // add padding-bottom to the form when datepicker is active
+            // to add empty spaces at the bottom when scrolling
+            paddingBottom: 'unset',
+        };
     }
 
     componentDidMount() {
@@ -150,6 +168,10 @@ class PersonalDetails extends Component {
     handleCancel = (values) => {
         this.props.onSave(this.props.index, values);
         this.props.onCancel();
+    };
+
+    onFocus = (is_active) => {
+        this.setState({ paddingBottom: is_active ? '18rem' : 'unset' });
     };
 
     render() {
@@ -176,43 +198,53 @@ class PersonalDetails extends Component {
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='details-form'>
-                                <div className='details-form__elements'>
-                                    <InputField
-                                        name='first_name'
-                                        label={localize('First name*')}
-                                        placeholder={localize('John')}
-                                    />
-                                    <InputField
-                                        name='last_name'
-                                        label={localize('Last name*')}
-                                        placeholder={localize('Doe')}
-                                    />
-                                    <DateOfBirth
-                                        name='date_of_birth'
-                                        label={localize('Date of birth*')}
-                                        placeholder={localize('1999-07-01')}
-                                    />
-                                    <InputField
-                                        name='phone'
-                                        label={localize('Phone number*')}
-                                        placeholder={localize('Phone number')}
-                                    />
-                                </div>
                                 <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={'Any information you provide is confidential and will be used for verification purposes only.'}
                                     />
                                 </p>
+                                <div className='details-form__elements-container'>
+                                    <ThemedScrollbars
+                                        autohide
+                                        style={{
+                                            height: '100%',
+                                        }}
+                                    >
+                                        <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
+                                            <InputField
+                                                name='first_name'
+                                                label={localize('First name*')}
+                                                placeholder={localize('John')}
+                                            />
+                                            <InputField
+                                                name='last_name'
+                                                label={localize('Last name*')}
+                                                placeholder={localize('Doe')}
+                                            />
+                                            <DateOfBirth
+                                                name='date_of_birth'
+                                                label={localize('Date of birth*')}
+                                                placeholder={localize('1999-07-01')}
+                                                onFocus={this.onFocus}
+                                            />
+                                            <InputField
+                                                name='phone'
+                                                label={localize('Phone number*')}
+                                                placeholder={localize('Phone number')}
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </div>
                             </div>
                             <FormSubmitButton
+                                cancel_label={localize('Previous')}
+                                has_cancel
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars
                                     isSubmitting ||
                                     Object.keys(errors).length > 0
                                 }
-                                label='Next'
-                                has_cancel
-                                cancel_label='Previous'
+                                label={localize('Next')}
                                 onCancel={this.handleCancel.bind(this, values)}
                             />
                         </form>

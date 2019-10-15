@@ -115,7 +115,7 @@ class PersonalDetailsForm extends React.Component {
             'last_name',
             'phone',
             // 'account_opening_reason',
-            'place_of_birth_text',
+            'place_of_birth',
             'address_line_1',
             'address_city',
             'address_postcode',
@@ -126,7 +126,7 @@ class PersonalDetailsForm extends React.Component {
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
-        const residence_fields = ['place_of_birth_text', 'tax_residence_text', 'citizen_text'];
+        const residence_fields = ['place_of_birth', 'tax_residence', 'citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
@@ -267,7 +267,7 @@ class PersonalDetailsForm extends React.Component {
                                             />
                                         </InputGroup>
                                         <fieldset className='account-form__fieldset'>
-                                            <Field name='place_of_birth_text'>
+                                            <Field name='place_of_birth'>
                                                 {({ field }) => (
                                                     <Autocomplete
                                                         { ...field }
@@ -276,13 +276,13 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Place of birth')}
                                                         error={
-                                                            touched.place_of_birth_text && errors.place_of_birth_text
+                                                            touched.place_of_birth && errors.place_of_birth
                                                         }
                                                         required
                                                         disabled={values.place_of_birth && this.isChangeableField('place_of_birth')}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            ({ value, text }) => setFieldValue('place_of_birth_text', value ? text : '', true)
+                                                            ({ value, text }) => setFieldValue('place_of_birth', value ? text : '', true)
                                                         }
                                                     />
                                                 )}

@@ -17,6 +17,7 @@ const Button = ({
     children,
     className = '',
     classNameSpan,
+    green,
     has_effect,
     icon,
     id,
@@ -34,13 +35,14 @@ const Button = ({
     tertiary,
 }) => {
     const classes = classNames('btn', {
-        effect         : has_effect,
-        'btn-primary'  : primary,
-        'btn-secondary': secondary,
-        'btn-tertiary' : tertiary,
-        'btn--large'   : size === 'l',
-        'btn--medium'  : size === 'm',
-        'btn--small'   : size === 's',
+        effect          : has_effect,
+        'btn--primary'  : primary,
+        'btn--secondary': secondary,
+        'btn--tertiary' : tertiary,
+        'btn--green'    : green,
+        'btn__large'    : size === 'l',
+        'btn__medium'   : size === 'm',
+        'btn__small'    : size === 's',
     }, className);
     const button = (
         <button
@@ -81,6 +83,7 @@ Button.propTypes = {
     children         : PropTypes.node,
     className        : PropTypes.string,
     classNameSpan    : PropTypes.string,
+    green            : PropTypes.bool,
     has_effect       : PropTypes.bool,
     icon             : PropTypes.node,
     id               : PropTypes.string,
@@ -88,6 +91,10 @@ Button.propTypes = {
     is_loading       : PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     is_submit_success: PropTypes.bool,
     onClick          : PropTypes.func,
+    primary          : PropTypes.bool,
+    secondary        : PropTypes.bool,
+    size             : PropTypes.string,
+    tertiary         : PropTypes.bool,
     text             : PropTypes.string,
     wrapperClassName : PropTypes.string,
 };

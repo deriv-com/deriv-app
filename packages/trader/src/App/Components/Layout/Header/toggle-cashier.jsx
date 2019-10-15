@@ -126,10 +126,12 @@ class ToggleCashier extends React.Component {
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary--default')}
+                    className={className}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}
+                    size='m'
+                    primary
                 />
                 <React.Suspense fallback={<UILoader />}>
                     <Modal

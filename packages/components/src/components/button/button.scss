@@ -5,8 +5,9 @@
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
-    padding: 1rem 1.6rem;
+    padding: 0 1.6rem;
     border: 0;
+    height: 3.2rem;
     border-radius: 4px;
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
@@ -27,7 +28,7 @@
     &:not([disabled]):hover {
         text-decoration: none;
     }
-    &__primary {
+    &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);
 
@@ -45,7 +46,7 @@
             color: var(--text-colored-background);
         }
     }
-    &__secondary {
+    &--secondary {
         background: transparent;
         border: 1px solid var(--button-secondary-default);
 
@@ -63,7 +64,7 @@
             color: var(--text-prominent);
         }
     }
-    &__tertiary {
+    &--tertiary {
         &--default {
             background: var(--button-tertiary-default);
 
@@ -74,7 +75,7 @@
                 background: var(--button-tertiary-default);
             }
             .btn__text {
-                color: var(--brand-red-coral); /* stylelint-disable-line color-no-hex */
+                color: var(--brand-red-coral);
             }
             &:disabled, &[disabled] {
                 opacity: 0.32;
@@ -83,7 +84,7 @@
         }
     }
     /* TODO: confirm this button with designer are we still using this? */
-    &__green {
+    &--green {
         background: var(--status-success);
 
         &:hover:not([disabled]) {
@@ -94,6 +95,30 @@
         }
         .btn__text {
             color: var(--text-colored-background);
+        }
+    }
+    &__small {
+        height: 2.4rem;
+        border-width: 1px;
+
+        .btn__text {
+            font-size: 1.2rem;
+        }
+    }
+    &__medium {
+        height: 3.2rem;
+        border-width: 1px;
+
+        .btn__text {
+            font-size: 1.4rem;
+        }
+    }
+    &__large {
+        height: 4rem;
+        border-width: 2px;
+
+        .btn__text {
+            font-size: 1.4rem;
         }
     }
 

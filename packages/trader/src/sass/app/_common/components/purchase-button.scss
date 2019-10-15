@@ -23,7 +23,7 @@
         @include typeface(--paragraph-left-bold-active);
     }
     &__info {
-        color: $color-white;
+        color: var(--text-prominent);
         text-align: left;
         position: relative;
         display: flex;

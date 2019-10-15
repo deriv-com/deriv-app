@@ -4,8 +4,9 @@
 // Fonts
 @import 'deriv-shared/src/styles/google-fonts.scss';
 
-// Reset
+// Shared
 @import 'deriv-shared/src/styles/reset.scss';
+// @import 'deriv-shared/src/styles/themes.scss';
 
 // General
 @import 'deriv-shared/src/styles/symbols.scss';
@@ -73,6 +74,3 @@
 @import 'app/modules/portfolio';
 @import 'app/modules/smart-chart';
 @import 'app/modules/trading';
-
-// Themes
-@import 'app/_common/themes/dark';

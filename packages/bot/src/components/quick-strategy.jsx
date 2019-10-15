@@ -227,13 +227,10 @@ class QuickStrategy extends React.PureComponent {
                                         <div className='quick-strategy__form-footer' >
                                             <Button
                                                 type='submit'
-                                                className={classnames(
-                                                    'btn--primary',
-                                                    'btn--primary--red',
-                                                    'quick-strategy__button--create',
-                                                )}
+                                                className='quick-strategy__button--create'
                                                 text={translate('Create')}
                                                 is_disabled={!isValid || isSubmitting}
+                                                primary
                                             />
                                         </div>
                                     </Form>

@@ -55,20 +55,19 @@ const drawerFooter = ({
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <Button
                 className={classNames(
-                    'btn--secondary--default',
                     'run-panel__button',
                     { 'run-panel__button--disable': is_clear_stat_disable }
                 )}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}
                 has_effect
+                secondary
             />
 
             {
                 (is_run_button_clicked || is_running) ?
                     <Button
                         className={classNames(
-                            'btn--primary--default',
                             'run-panel__button',
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
@@ -76,10 +75,10 @@ const drawerFooter = ({
                         icon={<StopIcon className='run-panel__button--icon' />}
                         onClick={onStopButtonClick}
                         has_effect
+                        primary
                     /> :
                     <Button
                         className={classNames(
-                            'btn--primary',
                             'run-panel__button',
                             'run-panel__button--run',
                         )}
@@ -87,6 +86,7 @@ const drawerFooter = ({
                         icon={<RunIcon className='run-panel__button--icon' />}
                         onClick={onRunButtonClick}
                         has_effect
+                        green
                     />
             }
             {is_dialog_open &&

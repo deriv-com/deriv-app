@@ -121,21 +121,17 @@ const SaveLoadModal = ({
                             <div className='modal__footer'>
                                 <Button
                                     type='button'
-                                    className={classNames(
-                                        'modal__footer--cancel',
-                                        'btn--secondary--default',
-                                    )}
+                                    className='modal__footer--cancel'
                                     text={translate('Cancel')}
                                     onClick={() => toggleSaveLoadModal(is_save_modal)}
+                                    secondary
                                 />
                                 <Button
                                     type='submit'
-                                    className={classNames(
-                                        'btn--primary--default',
-                                    )}
                                     is_loading={button_status === 1}
                                     is_submit_success={button_status === 2}
                                     text={translate('Continue')}
+                                    primary
                                 />
                             </div>
                         </Form>

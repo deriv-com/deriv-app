@@ -34,7 +34,7 @@
         cursor: pointer;
     }
     &__icon path {
-        fill: var(--fill-normal);
+        fill: var(--text-colored-background);
     }
     &--is-active {
         transform: translate(-50%, 0);

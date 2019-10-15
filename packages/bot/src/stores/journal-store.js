@@ -32,9 +32,11 @@ export default class JournalStore {
     onError(data) {
         if (unrecoverable_errors.includes(data.name)) {
             this.root_store.contract_card.clear();
-            this.root_store.run_panel.setActiveTabIndex(2);
             this.root_store.run_panel.is_continue_trading = false;
+        } else {
+            this.root_store.run_panel.is_continue_trading = true;
         }
+        this.root_store.run_panel.setActiveTabIndex(2);
         this.root_store.run_panel.is_error_happened = true;
         this.pushMessage(data , message_types.error);
     }

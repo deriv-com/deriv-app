@@ -63,6 +63,9 @@
         .dc-input__label {
             background-color: var(--general-main-2);
         }
+        &--centered {
+            align-self: center;
+        }
     }
     &__footer {
         display: flex;

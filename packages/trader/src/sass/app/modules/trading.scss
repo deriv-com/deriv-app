@@ -263,6 +263,13 @@
     }
 }
 
+/** @define input-field; weak */
+.input-field {
+    .input-wrapper__icon {
+        top: 6px;
+    }
+}
+
 /** @define purchase-container */
 .purchase-container {
     position: relative;

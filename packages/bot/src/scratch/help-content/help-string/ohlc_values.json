@@ -1,9 +1,7 @@
 {
     "text": [
-        "This block extracts selected type of values from a candle list according to selected time interval. Each candle has open price, close price, high price, low price, and open time.",
-        "This block requires a candle list as an input parameter.",
-        "Example:",
+        "This block gives you the selected candle value from a list of candles within the selected time interval. You can choose from open price, close price, high price, low price, and open time.",
         "In this example we extract open prices from a \"candle\" list into variable candle_list.",
-        "In the above example it is assumed that variable candle_list is processed somewhere within other blocks."
+        "In this example, the open prices from a list of candles are assigned to a variable called “candle_list”."
     ]
 }

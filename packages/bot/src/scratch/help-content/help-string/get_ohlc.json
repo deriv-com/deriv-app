@@ -1,8 +1,7 @@
 {
     "text": [
-        "This block returns specified candle for the selected time interval.",
-        "Example:",
-        "In this example we extract an open price from a candle into variable candle_open_price. The Candle data is provided by another block (In candle list get # from end).",
+        "This block gives you a specific candle from within the selected time interval.",
+        "In this example, the open price of a candle is assigned to the variable “candle_open_price”. The candle value…",
         "In the above example it is assumed that variable candle_open_price is processed somewhere within other blocks."
     ]
 }

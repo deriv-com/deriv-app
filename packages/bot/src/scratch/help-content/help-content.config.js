@@ -98,23 +98,18 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/get_candle.png` }, // eslint-disable-line
         { type: TEXT },
     ], ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` }, // eslint-disable-line
     ], ohlc_values: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
         { type: IMAGE, url: `${__webpack_public_path__}media/candle_list.png` }, // eslint-disable-line
-        { type: TEXT },
     ], is_candle_black: [
         { type: TEXT },
         { type: BLOCK },
@@ -132,7 +127,6 @@ export const config = {
     ], ohlc_values_in_list: [
         { type: TEXT },
         { type: BLOCK },
-        { type: TEXT },
         { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` }, // eslint-disable-line

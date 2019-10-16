@@ -72,10 +72,9 @@ class PersonalDetailsForm extends React.Component {
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
-        // TODO: Refactor requests for virtual and real accounts
-        const email_consent_value = values.email_consent ? 1 : 0;
+
         const request = this.props.is_virtual ?
-            { 'email_consent': email_consent_value }
+            { 'email_consent': +values.email_consent }
             : makeSettingsRequest(values, this.props.residence_list, this.props.states_list);
 
         this.setState({ is_btn_loading: true });
@@ -205,7 +204,8 @@ class PersonalDetailsForm extends React.Component {
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
 
-        if (is_loading || !residence_list.length || (has_residence && !states_list.length)) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        const should_wait_for_residence_states = (!residence_list.length || (has_residence && !states_list.length));
+        if (is_loading || should_wait_for_residence_states) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         form_initial_values.citizen = form_initial_values.citizen ? getLocation(residence_list, form_initial_values.citizen, 'text') : '';
         // tax_residence = tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
@@ -557,9 +557,10 @@ class PersonalDetailsForm extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchResidenceList();
+        const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
 
-        if (this.props.has_residence) this.props.fetchStatesList();
+        fetchResidenceList();
+        if (has_residence) fetchStatesList();
 
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { account_settings, getChangeableFields, is_virtual } = this.props;

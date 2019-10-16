@@ -83,8 +83,7 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable has_no_balance = false;
-    @observable is_loading     = false;
+    @observable is_loading = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -125,16 +124,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountCommon() {
         await BinarySocket.wait('authorize');
-
         this.resetValuesIfNeeded();
-
-        if (!this.root_store.client.balance) {
-            const balance = (await WS.authorized.balance()).balance;
-            // make sure balance response has come then set it to false, but don't wait unless we need to
-            if (!balance.balance) {
-                this.setHasNoBalance(true);
-            }
-        }
     }
 
     @action.bound
@@ -253,11 +243,6 @@ export default class CashierStore extends BaseStore {
                 fields: error.details.fields,
             }),
         };
-    }
-
-    @action.bound
-    setHasNoBalance(has_no_balance) {
-        this.has_no_balance = has_no_balance;
     }
 
     @action.bound

@@ -61,9 +61,7 @@ class PersonalDetailsForm extends React.Component {
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
 
-        const request = this.props.is_virtual ?
-            { 'email_consent': +values.email_consent }
-            : this.makeSettingsRequest(values, this.props.residence_list, this.props.states_list);
+        const request = this.makeSettingsRequest(values);
 
         this.setState({ is_btn_loading: true });
 
@@ -90,6 +88,8 @@ class PersonalDetailsForm extends React.Component {
     }
 
     makeSettingsRequest = settings => {
+        if (this.props.is_virtual) return { email_consent: +settings.email_consent };
+
         const settings_to_be_removed_for_api = ['email', 'residence'];
         const request                        = removeObjProperties(settings_to_be_removed_for_api, settings);
 

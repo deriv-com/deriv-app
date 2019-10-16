@@ -283,7 +283,7 @@ class PersonalDetailsForm extends React.Component {
                                                             touched.place_of_birth && errors.place_of_birth
                                                         }
                                                         required
-                                                        disabled={values.place_of_birth && this.isChangeableField('place_of_birth')}
+                                                        disabled={form_initial_values.place_of_birth && this.isChangeableField('place_of_birth')}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             ({ value, text }) => setFieldValue('place_of_birth', value ? text : '', true)
@@ -310,7 +310,7 @@ class PersonalDetailsForm extends React.Component {
                                                         type='text'
                                                         label={localize('Citizenship')}
                                                         error={touched.citizen && errors.citizen}
-                                                        disabled={values.citizen && is_fully_authenticated}
+                                                        disabled={form_initial_values.citizen && is_fully_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
                                                             (item) => setFieldValue('citizen', item.text, false)

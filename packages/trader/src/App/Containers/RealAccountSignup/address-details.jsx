@@ -74,7 +74,7 @@ class AddressDetails extends Component {
                         values,
                         handleChange,
                     }) => (
-                        <form onSubmit={handleSubmit} style={{ height: '420px' }}>
+                        <form onSubmit={handleSubmit}>
                             <div className='details-form'>
                                 <p className='details-form__description'>
                                     <Localize
@@ -83,12 +83,12 @@ class AddressDetails extends Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
-                                        autoHide
+                                        autoHide={!(window.innerHeight < 890)}
                                         style={{
-                                            height: '355px',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
-                                        <div className='details-form__elements details-form__elements--overflow'>
+                                        <div className='details-form__elements' style={{ paddingBottom: (window.innerHeight < 930) ? '10rem' : '12rem' }}>
                                             <InputField
                                                 name='address_line_1'
                                                 required
@@ -108,7 +108,7 @@ class AddressDetails extends Component {
                                             />
                                             <fieldset className='address-state__fieldset'>
                                                 <Dropdown
-                                                    is_alignment_top={(window.innerHeight < 930)}
+                                                    // is_alignment_top={(window.innerHeight < 930)}
                                                     id='address_state'
                                                     className='address_state-dropdown'
                                                     is_align_text_left
@@ -130,6 +130,7 @@ class AddressDetails extends Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars
                                     isSubmitting ||

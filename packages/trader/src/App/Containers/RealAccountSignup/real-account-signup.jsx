@@ -15,22 +15,8 @@ import SuccessDialog         from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const ModalHeights = {
-    account_wizard: {
-        0: '650px',
-        1: '750px',
-        2: '750px',
-        3: '700px',
-    },
-    add_manage_account: '648px',
-    set_currency      : '575px',
-    error             : '400px',
-    add_currency      : '355px',
-    change_currency   : '290px',
-};
-
 const ErrorModal = ({ message }) => (
-    <React.Fragment>
+    <div className='account-wizard--error'>
         <IconDuplicate />
         <h1><Localize i18n_default_text='Whoops!' /></h1>
         <p>
@@ -50,7 +36,7 @@ const ErrorModal = ({ message }) => (
                 />
             </span>
         </a>
-    </React.Fragment>
+    </div>
 );
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
@@ -67,7 +53,6 @@ class RealAccountSignup extends Component {
                         onLoading={this.showLoadingModal}
                         onError={this.showErrorModal}
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                        setModalHeight={this.setModalHeight}
                     />,
                 },
                 {
@@ -113,33 +98,14 @@ class RealAccountSignup extends Component {
                     ),
                 },
             ],
-            modal_height: ModalHeights.change_currency,
         };
     }
 
-    componentDidMount() {
-        const {
-            available_crypto_currencies,
-            can_change_fiat_currency,
-            currency,
-            has_real_account,
-        } = this.props;
-
-        let height = this.state.height;
-        if (!has_real_account) {
-            height = ModalHeights.account_wizard[0];
-        } else if (!currency) {
-            height = ModalHeights.set_currency;
-        } else if (available_crypto_currencies.length !== 0 && can_change_fiat_currency) {
-            height = ModalHeights.add_manage_account;
-        } else {
-            height = ModalHeights.add_currency;
-        }
-        this.setState({ modal_height: height });
-    }
-
-    setModalHeight = (step) => {
-        this.setState({ modal_height: ModalHeights.account_wizard[step] });
+    get modal_height() {
+        if (!this.props.currency) return '688px';
+        return (
+            this.props.has_real_account && this.props.currency
+        ) ? '702px' : '740px';
     }
 
     get labels () {
@@ -162,7 +128,6 @@ class RealAccountSignup extends Component {
             previous_currency,
             current_currency,
             active_modal_index: 2,
-            modal_height      : ModalHeights.change_currency,
         });
     };
 
@@ -179,7 +144,6 @@ class RealAccountSignup extends Component {
                     <p key={currency} />,
                 ]}
             />,
-            modal_height: ModalHeights.add_currency,
         });
     };
 
@@ -204,7 +168,6 @@ class RealAccountSignup extends Component {
         this.props.setParams({
             active_modal_index: 5,
             error_message     : message,
-            modal_height      : ModalHeights.error,
         });
     };
 
@@ -252,8 +215,8 @@ class RealAccountSignup extends Component {
                 has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
-                height={this.state.modal_height}
-                width='900px'
+                height={this.modal_height}
+                width='904px'
             >
                 <Body />
             </Modal>

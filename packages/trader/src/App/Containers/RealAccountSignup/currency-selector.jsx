@@ -145,7 +145,7 @@ class CurrencySelector extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '420px',
+                                height: 'calc(100% - 50px)',
                             }}
                         >
                             <RadioButtonGroup
@@ -191,6 +191,7 @@ class CurrencySelector extends React.Component {
                             }
                         </ThemedScrollbars>
                         <FormSubmitButton
+                            is_absolute
                             is_disabled={isSubmitting || !values.currency}
                             is_center={!this.props.has_currency}
                             label={!this.props.currency ? localize('Set currency') : localize('Next')}

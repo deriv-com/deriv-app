@@ -119,8 +119,6 @@ class AccountWizard extends React.Component {
         this.setState({
             step      : this.state.step - 1,
             form_error: '',
-        }, () => {
-            this.props.setModalHeight(this.state.step);
         });
     };
 
@@ -175,8 +173,6 @@ class AccountWizard extends React.Component {
     goNext() {
         this.setState({
             step: this.state.step + 1,
-        }, () => {
-            this.props.setModalHeight(this.state.step);
         });
     }
 
@@ -200,7 +196,7 @@ class AccountWizard extends React.Component {
                     }
                     {this.props.has_real_account &&
                     <div className='account-wizard__set-currency'>
-                        {this.props.has_currency &&
+                        {!this.props.has_currency &&
                         <p>
                             <Localize
                                 i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'

@@ -196,7 +196,7 @@ class PersonalDetails extends Component {
                         errors,
                         values,
                     }) => (
-                        <form onSubmit={handleSubmit} style={{ height: '420px' }}>
+                        <form onSubmit={handleSubmit}>
                             <div className='details-form'>
                                 <p className='details-form__description'>
                                     <Localize
@@ -207,7 +207,7 @@ class PersonalDetails extends Component {
                                     <ThemedScrollbars
                                         autoHide
                                         style={{
-                                            height: '355px',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
                                         <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
@@ -237,6 +237,7 @@ class PersonalDetails extends Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 cancel_label={localize('Previous')}
                                 has_cancel
                                 is_disabled={

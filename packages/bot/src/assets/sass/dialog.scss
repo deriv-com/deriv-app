@@ -19,11 +19,10 @@
     }
     &__footer {
         align-self: flex-end;
-        justify-content: space-between;
-        width: 14rem;
+        justify-content: flex-end;
         display: flex;
     }
-    &__ok, &__cancel {
-        margin-right: 0 !important;
+    &__cancel {
+        margin-right: 1.6rem !important;
     }
 }

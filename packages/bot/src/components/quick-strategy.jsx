@@ -1,5 +1,3 @@
-
-import classnames       from 'classnames';
 import proptypes        from 'prop-types';
 import React            from 'react';
 import {

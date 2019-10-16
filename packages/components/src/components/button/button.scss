@@ -22,11 +22,14 @@
      */
     text-transform: none !important;
 
-    &__text {
+    &__text, &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: inline-block;
         vertical-align: middle;
+    }
+    &__icon {
+        padding-right: 6px;
     }
     &:not([disabled]):hover {
         text-decoration: none;
@@ -45,7 +48,7 @@
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text {
+        .btn__text, .btn__icon {
             color: var(--text-colored-background);
         }
     }
@@ -63,7 +66,7 @@
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text {
+        .btn__text, .btn__icon {
             color: var(--text-prominent);
         }
     }
@@ -76,7 +79,7 @@
         &:active:not([disabled]) {
             background: var(--button-tertiary-default);
         }
-        .btn__text {
+        .btn__text, .btn__icon {
             color: var(--brand-red-coral);
         }
         &:disabled, &[disabled] {
@@ -94,7 +97,7 @@
         &:active:not([disabled]) {
             background: var(--status-success);
         }
-        .btn__text {
+        .btn__text, .btn__icon {
             color: var(--text-colored-background);
         }
     }

@@ -54,10 +54,8 @@ const drawerFooter = ({
         <div className='run-panel__footer'>
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <Button
-                className={classNames(
-                    'run-panel__button',
-                    { 'run-panel__button--disable': is_clear_stat_disable }
-                )}
+                className='run-panel__button'
+                is_disabled={is_clear_stat_disable}
                 text={translate('Clear stat')}
                 onClick={onClearStatClick}
                 has_effect
@@ -67,10 +65,8 @@ const drawerFooter = ({
             {
                 (is_run_button_clicked || is_running) ?
                     <Button
-                        className={classNames(
-                            'run-panel__button',
-                            { 'run-panel__button--disable': !is_run_button_clicked }
-                        )}
+                        className='run-panel__button'
+                        is_disabled={!is_run_button_clicked}
                         text={translate('Stop bot')}
                         icon={<StopIcon className='run-panel__button--icon' />}
                         onClick={onStopButtonClick}

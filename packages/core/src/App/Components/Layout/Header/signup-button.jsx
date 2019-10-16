@@ -7,10 +7,11 @@ import { localize } from 'App/i18n';
 const SignupButton = ({ className }) => (
     <Button
         id='dt_signup_button'
-        className={classNames(className, 'btn--primary--default')}
+        className={className}
         has_effect
         text={localize('Sign up')}
         onClick={() => { window.open('https://deriv.com'); }}
+        primary
     />
 );
 

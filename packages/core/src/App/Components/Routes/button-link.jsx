@@ -5,7 +5,7 @@ import { Link }   from 'react-router-dom';
 
 const ButtonLink = ({ children, className, to, onClick }) => (
     <Link
-        className={classNames('btn btn--link', className, 'effect')}
+        className={classNames('btn btn--secondary btn__medium', className, 'effect')}
         to={to}
         onClick={onClick}
     >

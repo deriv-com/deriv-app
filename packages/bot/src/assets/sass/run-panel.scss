@@ -11,12 +11,9 @@
         margin: 16px 0;
     }
     &__button {
-        margin-left: 0 !important;
-        opacity: 1;
+        display: inline-block !important;
+        margin: 1.2rem 0.8rem;
 
-        &--run {
-            background: var(--purchase-main-1) !important;
-        }
         &--disable {
             pointer-events: none;
             opacity: 0.5;

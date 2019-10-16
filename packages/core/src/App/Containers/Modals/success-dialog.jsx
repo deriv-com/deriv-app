@@ -56,8 +56,8 @@ const SuccessDialog = ({
                 <Button
                     onClick={onCancel}
                     has_effect
-                    className='btn--secondary--default'
                     text={text_cancel || localize('Maybe later')}
+                    secondary
                 />
                 }
                 {has_submit &&

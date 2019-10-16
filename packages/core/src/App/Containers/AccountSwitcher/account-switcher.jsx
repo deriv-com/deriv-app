@@ -154,11 +154,9 @@ class AccountSwitcher extends React.Component {
                             onClick={this.props.openRealAccountSignup}
                         >
                             <Icon icon='IconAdd' />
-                            <div className='btn__text'>
-                                <Localize
-                                    i18n_default_text='Add/manage account'
-                                />
-                            </div>
+                            <Localize
+                                i18n_default_text='Add/manage account'
+                            />
                         </UpgradeButton>
                     }
                 </div>
@@ -173,11 +171,9 @@ class AccountSwitcher extends React.Component {
                     }}
                 >
                     <Icon icon='IconAdd' />
-                    <div className='btn__text'>
-                        <Localize
-                            i18n_default_text='Add a real account'
-                        />
-                    </div>
+                    <Localize
+                        i18n_default_text='Add a real account'
+                    />
                 </UpgradeButton>
                 }
                 <div className='acc-switcher__separator' />

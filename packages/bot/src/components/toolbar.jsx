@@ -230,17 +230,13 @@ const Toolbar = ({
             >
                 <Button
                     id='start'
-                    className='btn--primary--green
-                    toolbar__btn--icon
-                    toolbar__btn--start'
+                    className='toolbar__btn--icon toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
+                    green
                 >
                     <ToolbarStartIcon />
-                    <span
-                        className='toolbar__btn--icon-text'
-                    >{translate('Get started')}
-                    </span>
+                    <span className='toolbar__btn--icon-text'>{translate('Get started')}</span>
                 </Button>
             </Popover>
             <SearchBox

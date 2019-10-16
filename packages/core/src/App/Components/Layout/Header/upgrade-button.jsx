@@ -7,10 +7,11 @@ import { localize } from 'App/i18n';
 const UpgradeButton = ({ className, onClick }) => (
     <Button
         id='acc-balance-btn'
-        className={classNames(className, 'btn--primary--default')}
+        className={className}
         has_effect
         text={localize('Upgrade')}
         onClick={onClick}
+        primary
     />
 );
 

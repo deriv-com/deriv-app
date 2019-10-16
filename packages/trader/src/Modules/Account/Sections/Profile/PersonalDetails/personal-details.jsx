@@ -35,21 +35,16 @@ const getLocation = (location_list, value, type) => {
     return '';
 };
 
-// TODO: standardize validations and refactor this
-const makeSettingsRequest = ({ ...settings }, residence_list, states_list) => {
-    settings.email_consent             = +settings.email_consent; // checkbox is boolean but api expects number (1 or 0)
-    settings.first_name                = settings.first_name.trim();
-    settings.last_name                 = settings.last_name.trim();
-    settings.tax_identification_number = settings.tax_identification_number.trim();
-    settings.date_of_birth             = toMoment(settings.date_of_birth).format('YYYY-MM-DD');
-    settings.citizen                   = settings.citizen ? getLocation(residence_list, settings.citizen, 'value') : '';
-    settings.place_of_birth            = settings.place_of_birth ? getLocation(residence_list, settings.place_of_birth, 'value') : '';
-    settings.address_state             = settings.address_state ? getLocation(states_list, settings.address_state, 'value') : '';
+const removeObjProperties = (property_arr, { ...obj }) => {
+    property_arr.forEach(property => delete obj[property]);
+    return obj;
+};
 
-    const settings_to_be_removed_for_api = [ 'email', 'residence', 'client_tnc_status', 'country_code', 'has_secret_answer', 'is_authenticated_payment_agent', 'user_hash' ];
-    settings_to_be_removed_for_api.forEach(setting => delete settings[setting]);
-
-    return settings;
+const validate = (errors, values) => (fn, arr, err_msg) => {
+    arr.forEach(field => {
+        const value = values[field];
+        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
+    });
 };
 
 const InputGroup = ({ children, className }) => (
@@ -60,13 +55,6 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
-const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach(field => {
-        const value = values[field];
-        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
-    });
-};
-
 class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, show_form: true }
 
@@ -75,7 +63,7 @@ class PersonalDetailsForm extends React.Component {
 
         const request = this.props.is_virtual ?
             { 'email_consent': +values.email_consent }
-            : makeSettingsRequest(values, this.props.residence_list, this.props.states_list);
+            : this.makeSettingsRequest(values, this.props.residence_list, this.props.states_list);
 
         this.setState({ is_btn_loading: true });
 
@@ -90,7 +78,7 @@ class PersonalDetailsForm extends React.Component {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage.getSettings().then((response) => {
                     if (response.error) {
-                        this.setState({ api_initial_load_error: response.error.message });
+                        this.setState({ api_error: response.error.message });
                         return;
                     }
                     this.setState({ ...response.get_settings, is_loading: false });
@@ -100,6 +88,22 @@ class PersonalDetailsForm extends React.Component {
             }
         });
     }
+
+    makeSettingsRequest = settings => {
+        const settings_to_be_removed_for_api = ['email', 'residence'];
+        const request                        = removeObjProperties(settings_to_be_removed_for_api, settings);
+
+        request.email_consent             = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
+        request.first_name                = request.first_name.trim();
+        request.last_name                 = request.last_name.trim();
+        request.tax_identification_number = request.tax_identification_number.trim();
+        request.date_of_birth             = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        request.citizen                   = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
+        request.place_of_birth            = request.place_of_birth ? getLocation(this.props.residence_list, request.place_of_birth, 'value') : '';
+        request.address_state             = request.address_state ? getLocation(this.props.states_list, request.address_state, 'value') : '';
+
+        return request;
+    };
 
     // TODO: standardize validations and refactor this
     validateFields = (values) => {
@@ -192,8 +196,8 @@ class PersonalDetailsForm extends React.Component {
 
     render() {
         const {
-            account_settings: { ...form_initial_values },
-            api_initial_load_error,
+            form_initial_values,
+            api_error,
             is_loading,
             is_btn_loading,
             is_submit_success,
@@ -202,7 +206,7 @@ class PersonalDetailsForm extends React.Component {
 
         const { is_fully_authenticated, residence_list, has_residence, states_list } = this.props;
 
-        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
+        if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
         const should_wait_for_residence_states = (!residence_list.length || (has_residence && !states_list.length));
         if (is_loading || should_wait_for_residence_states) return <Loading is_fullscreen={false} className='account___intial-loader' />;
@@ -563,17 +567,16 @@ class PersonalDetailsForm extends React.Component {
         if (has_residence) fetchStatesList();
 
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
-            const { account_settings, getChangeableFields, is_virtual } = this.props;
+            const { getChangeableFields, is_virtual, account_settings } = this.props;
 
-            if (account_settings.error) {
-                this.setState({ api_initial_load_error: account_settings.error.message });
-            } else {
-                this.setState({
-                    changeable_fields: is_virtual ? [] : getChangeableFields(),
-                    is_loading       : false,
-                    account_settings,
-                });
-            }
+            const hidden_settings     = ['client_tnc_status', 'country_code', 'has_secret_answer', 'is_authenticated_payment_agent', 'user_hash', 'country', 'request_professional_status'];
+            const form_initial_values = removeObjProperties(hidden_settings, account_settings);
+
+            this.setState({
+                changeable_fields: is_virtual ? [] : getChangeableFields(),
+                is_loading       : false,
+                form_initial_values,
+            });
         });
     }
 }

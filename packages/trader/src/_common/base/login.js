@@ -17,7 +17,7 @@ const Login = (() => {
         }
     };
 
-    const goToSignUp = () => {
+    const redirectToSignUp = () => {
         window.open('https://deriv.com');
     };
     
@@ -59,7 +59,7 @@ const Login = (() => {
         redirectToLogin,
         isLoginPages,
         initOneAll,
-        goToSignUp,
+        redirectToSignUp,
     };
 })();
 

@@ -4,7 +4,7 @@ import {
     Route }                from 'react-router-dom';
 import {
     redirectToLogin,
-    redirectToSignUp }           from '_common/base/login';
+    redirectToSignUp }     from '_common/base/login';
 import BinarySocket        from '_common/base/socket_base';
 import Language            from '_common/language';
 import LoginPrompt         from 'App/Components/Elements/login-prompt.jsx';

@@ -41,6 +41,9 @@ class OpenPositions extends React.Component {
             : getContractPath(row_obj.id)
     );
 
+    // After refactoring transactionHandler for creating positions,
+    // purchase property in contract positions object is somehow NaN or undefined in the first few responses.
+    // So we set it to true in these case to show a preloader for the data-table-row until the correct value is set.
     isPurchaseReceived = (item) => isNaN(item.purchase) || !item.purchase;
 
     render() {

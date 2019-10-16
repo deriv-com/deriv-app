@@ -1,4 +1,3 @@
-import classNames    from 'classnames';
 import {
     Modal,
     Button,

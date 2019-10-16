@@ -563,7 +563,7 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings, this.account_status],
             () => {
-                if (client && !client.is_virtual) {
+                if (client && !client.is_virtual && this.landing_company_shortcode) {
                     const { has_missing_required_field } = handleClientNotifications(
                         client,
                         this.account_settings,

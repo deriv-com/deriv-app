@@ -44,15 +44,21 @@ function get_color({ status, profit, is_dark_theme }) {
 const calc_scale = (zoom) => {
     return zoom ? Math.max(Math.min(Math.sqrt(zoom / 18), 1.2),  0.8) : 1;
 };
+
+const hex_map = [];
 const calc_opacity = (from, to) => {
+    if (hex_map.length === 0) {
+        for (let i = 255; i >= 0; --i) {
+            hex_map[i] = (i < 16 ? '0' : '') + i.toString(16);
+        }
+    }
     const opacity = Math.floor(
         Math.min(
             Math.max(to - from - 10, 0) / 6,
             1
         ) * 255
-    ).toString(16);
-    if (opacity.length === 1) { return `0${opacity}`; }
-    return opacity;
+    );
+    return hex_map[opacity];
 };
 
 /** @param {CanvasRenderingContext2D} ctx */
@@ -73,7 +79,7 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
         ctx.beginPath();
         let prev_x, prev_y;
         for (let idx = 0; idx < points.length; idx++) {
-            let x, y, cx1, cx2, cy1, cy2;
+            let x, y, cx1, cx2, cy1, cy2, r;
             if (points[idx] === 'M') {
                 x = points[++idx];
                 y = points[++idx];
@@ -102,6 +108,13 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
                 x = points[++idx];
                 y = points[++idx];
                 ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x, y);
+            } else if (points[idx] === 'A') {
+                x = points[++idx];
+                y = points[++idx];
+                r = points[++idx];
+                const start_a = points[++idx];
+                const end_a = points[++idx];
+                ctx.arc(x, y, r, start_a, end_a);
             }
             prev_x = x;
             prev_y = y;
@@ -276,7 +289,10 @@ const TickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + (is_sold ? opacity : '')),
+            icon: ICONS.START.with_color(
+                color + (is_sold ? opacity : ''),
+                get_color({ status: 'bg', is_dark_theme }) + (is_sold ? opacity : '')
+            ),
         });
     }
     // status marker
@@ -285,7 +301,10 @@ const TickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: exit.left + 8 * scale,
             zoom: exit.zoom,
-            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
+            icon: ICONS.END.with_color(
+                color,
+                get_color({ status: 'bg', is_dark_theme })
+            ),
         });
     }
     ctx.restore();
@@ -521,7 +540,7 @@ const DigitContract = RawMarkerMaker(({
             top : start.top - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + opacity),
+            icon: ICONS.START.with_color(color + opacity, get_color({ status: 'bg', is_dark_theme }) + opacity),
         });
     }
     // remaining ticks

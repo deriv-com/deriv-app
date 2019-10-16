@@ -556,7 +556,17 @@ export default class CashierStore extends BaseStore {
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
 
-        if (!this.config.account_transfer.accounts_list.length) {
+        // check if some balance update has come in since the last mount
+        const has_updated_account_balance = this.config.account_transfer.has_no_accounts_balance &&
+            Object.keys(this.root_store.client.active_accounts).find(account =>
+                !this.root_store.client.active_accounts[account].is_virtual &&
+                this.root_store.client.active_accounts[account].balance
+            );
+        if (has_updated_account_balance) {
+            this.setHasNoAccountsBalance(false);
+        }
+
+        if (!this.config.account_transfer.accounts_list.length || has_updated_account_balance) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
             if (transfer_between_accounts.error) {
                 this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);

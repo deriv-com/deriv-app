@@ -26,6 +26,7 @@ $header-height: 52px;
         padding: 0 1.6em;
         box-sizing: border-box;
         text-decoration: none;
+        position: relative;
 
         &, &:active, &:visited {
             color: var(--text-general);
@@ -35,6 +36,7 @@ $header-height: 52px;
             top: 0;
             left: 0;
             height: 100%;
+            max-height: 64px;
             width: 100%;
         }
     }

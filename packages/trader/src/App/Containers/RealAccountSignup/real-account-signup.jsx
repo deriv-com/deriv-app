@@ -102,10 +102,10 @@ class RealAccountSignup extends Component {
     }
 
     get modal_height() {
-        if (!this.props.currency) return '688px';
-        return (
-            this.props.has_real_account && this.props.currency
-        ) ? '702px' : '740px';
+        const { currency, has_real_account } = this.props;
+        if (!currency)                    return '688px'; // Set currency modal
+        if (has_real_account && currency) return '702px'; // Add or manage account modal
+        return '740px'; // Account wizard modal
     }
 
     get labels () {

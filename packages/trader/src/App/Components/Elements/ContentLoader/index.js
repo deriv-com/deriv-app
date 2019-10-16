@@ -1,3 +1,3 @@
 export * from './positions-card.jsx';
-export * from './positions-row.jsx';
+export * from './reports-table-row.jsx';
 export * from './trade-params.jsx';

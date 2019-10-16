@@ -30,6 +30,13 @@ $header-height: 52px;
         &, &:active, &:visited {
             color: var(--text-general);
         }
+        &--preloader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
     }
     &__head {
         border-bottom: 2px solid var(--general-section-1);

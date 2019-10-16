@@ -2,7 +2,7 @@ import ContentLoader from 'react-content-loader';
 import React         from 'react';
 import PropTypes     from 'prop-types';
 
-const PositionsRowLoader = ({ speed }) => (
+const ReportsTableRowLoader = ({ speed }) => (
     <ContentLoader
         height={64}
         width={992}
@@ -21,8 +21,8 @@ const PositionsRowLoader = ({ speed }) => (
     </ContentLoader>
 );
 
-PositionsRowLoader.propTypes = {
+ReportsTableRowLoader.propTypes = {
     speed: PropTypes.number,
 };
 
-export { PositionsRowLoader };
+export { ReportsTableRowLoader };

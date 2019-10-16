@@ -1,10 +1,10 @@
-import classNames             from 'classnames';
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { NavLink }            from 'react-router-dom';
-import { PositionsRowLoader } from 'App/Components/Elements/ContentLoader';
-import TableCell              from './table-cell.jsx';
-import TableRowInfo           from './table-row-info.jsx';
+import classNames                from 'classnames';
+import PropTypes                 from 'prop-types';
+import React                     from 'react';
+import { NavLink }               from 'react-router-dom';
+import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
+import TableCell                 from './table-cell.jsx';
+import TableRowInfo              from './table-row-info.jsx';
 
 const TableRow = ({
     className,
@@ -35,11 +35,8 @@ const TableRow = ({
     const row_class_name = classNames('table__row', { 'table__row-link': to || replace }, { [`${className}__row`]: className });
     if (!is_footer && !is_header && show_preloader) {
         return (
-            <div
-                className='table__row--placeholder'
-                style={{ position: 'absolute', top: '0', left: '0', height: '100%', width: '100%' }}
-            >
-                <PositionsRowLoader />
+            <div className='table__row--preloader'>
+                <ReportsTableRowLoader />
             </div>
         );
     }

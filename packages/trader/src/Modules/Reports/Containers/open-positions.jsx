@@ -41,7 +41,7 @@ class OpenPositions extends React.Component {
             : getContractPath(row_obj.id)
     );
 
-    preloaderCheck = (item) => isNaN(item.purchase);
+    isPurchaseReceived = (item) => isNaN(item.purchase) || !item.purchase;
 
     render() {
         const {
@@ -77,7 +77,7 @@ class OpenPositions extends React.Component {
                     <DataTable
                         className='open-positions'
                         columns={getOpenPositionsColumnsTemplate(currency)}
-                        preloaderCheck={this.preloaderCheck}
+                        preloaderCheck={this.isPurchaseReceived}
                         footer={totals}
                         data_source={active_positions}
                         getRowAction={this.getRowAction}

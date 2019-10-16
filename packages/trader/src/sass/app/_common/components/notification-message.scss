@@ -19,7 +19,7 @@
     border-radius: 4px;
     max-width: 348px;
     padding: 16px;
-    var(--text-colored-background);
+    color: var(--text-colored-background);
 
     &--danger {
         background-color: var(--status-danger);

@@ -102,6 +102,9 @@ export default class PortfolioStore extends BaseStore {
 
         if (!portfolio_position) return;
 
+        const formatted_position = formatPortfolioPosition(proposal, this.root_store.modules.trade.active_symbols);
+        Object.assign(portfolio_position, formatted_position);
+
         const prev_indicative = portfolio_position.indicative;
         const new_indicative  = +proposal.bid_price;
         const profit_loss     = +proposal.profit;
@@ -114,6 +117,10 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.indicative       = new_indicative;
         portfolio_position.profit_loss      = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 

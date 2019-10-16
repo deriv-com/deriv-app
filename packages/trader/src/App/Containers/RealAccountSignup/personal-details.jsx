@@ -224,7 +224,7 @@ class PersonalDetails extends Component {
                                             <DateOfBirth
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
-                                                placeholder={localize('13-01-1999')}
+                                                placeholder={localize('01-07-1999')}
                                                 onFocus={this.onFocus}
                                             />
                                             <InputField

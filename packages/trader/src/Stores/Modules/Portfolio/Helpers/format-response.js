@@ -9,6 +9,9 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = []) => {
         active_symbols,
         getMarketInformation(portfolio_pos.shortcode).underlying
     );
+    const transaction_id = portfolio_pos.transaction_id || (
+        portfolio_pos.transaction_ids && portfolio_pos.transaction_ids.buy
+    );
 
     return {
         contract_info : portfolio_pos,
@@ -18,7 +21,7 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = []) => {
         indicative    : 0,
         payout,
         purchase,
-        reference     : +portfolio_pos.transaction_id,
+        reference     : +transaction_id,
         type          : portfolio_pos.contract_type,
         is_unsupported: !!getUnsupportedContracts()[portfolio_pos.contract_type],
     };

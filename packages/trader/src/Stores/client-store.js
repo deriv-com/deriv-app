@@ -1003,8 +1003,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
+        const landing_company = State.getResponse('landing_company');
         const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
-        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, this.landing_company, 'changeable_fields');
+        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
             if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {

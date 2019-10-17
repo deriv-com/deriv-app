@@ -123,12 +123,11 @@ class PersonalDetailsForm extends React.Component {
             'address_postcode',
         ];
         validateValues(val => val, required_fields, localize('This field is required'));
-
         const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
-        const residence_fields = ['place_of_birth', 'tax_residence', 'citizen'];
+        const residence_fields = ['place_of_birth', 'citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 

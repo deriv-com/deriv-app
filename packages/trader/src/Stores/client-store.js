@@ -563,19 +563,21 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings, this.account_status],
             () => {
-                if (client && !client.is_virtual && this.landing_company_shortcode) {
-                    const { has_missing_required_field } = handleClientNotifications(
-                        client,
-                        this.account_settings,
-                        this.account_status,
-                        this.root_store.ui.addNotification,
-                        this.loginid,
-                        this.root_store.ui,
-                    );
-                    this.setHasMissingRequiredField(has_missing_required_field);
-                } else if (!client || client.is_virtual) {
-                    this.root_store.ui.removeAllNotifications();
-                }
+                BinarySocket.wait('landing_company').then(() => {
+                    if (client && !client.is_virtual) {
+                        const { has_missing_required_field } = handleClientNotifications(
+                            client,
+                            this.account_settings,
+                            this.account_status,
+                            this.root_store.ui.addNotification,
+                            this.loginid,
+                            this.root_store.ui,
+                        );
+                        this.setHasMissingRequiredField(has_missing_required_field);
+                    } else if (!client || client.is_virtual) {
+                        this.root_store.ui.removeAllNotifications();
+                    }
+                });
             }
         );
 

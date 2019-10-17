@@ -89,14 +89,13 @@ class PersonalDetailsForm extends React.Component {
 
     makeSettingsRequest = settings => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
-
         const settings_to_be_removed_for_api = ['email', 'residence'];
         const request                        = removeObjProperties(settings_to_be_removed_for_api, settings);
 
         request.email_consent             = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name                = request.first_name.trim();
         request.last_name                 = request.last_name.trim();
-        request.tax_identification_number = request.tax_identification_number.trim();
+        // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
         request.date_of_birth             = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         request.citizen                   = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth            = request.place_of_birth ? getLocation(this.props.residence_list, request.place_of_birth, 'value') : '';
@@ -216,7 +215,7 @@ class PersonalDetailsForm extends React.Component {
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
         form_initial_values.address_state = form_initial_values.address_state ? getLocation(this.props.states_list, form_initial_values.address_state, 'text') : '';
 
-        // if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
+        // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
             <Formik
                 initialValues={{
@@ -569,7 +568,17 @@ class PersonalDetailsForm extends React.Component {
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 
-            const hidden_settings     = ['client_tnc_status', 'country_code', 'has_secret_answer', 'is_authenticated_payment_agent', 'user_hash', 'country', 'request_professional_status'];
+            const hidden_settings = [
+                'account_opening_reason',
+                'tax_residence',
+                'tax_identification_number',
+                'client_tnc_status',
+                'country_code',
+                'has_secret_answer',
+                'is_authenticated_payment_agent',
+                'user_hash',
+                'country',
+                'request_professional_status'];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
 
             this.setState({

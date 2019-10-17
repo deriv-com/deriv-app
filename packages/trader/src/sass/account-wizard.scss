@@ -165,8 +165,14 @@
             color: var(--text-disabled);
         }
         .currency-list__item {
-            opacity: 0.5;
             pointer-events: none;
+
+            svg {
+                opacity: 0.08;
+            }
+            .label {
+                color: var(--text-disabled);
+            }
         }
         &-message {
             position: absolute;

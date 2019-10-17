@@ -25,8 +25,14 @@
             border: 1px solid var(--border-hover);
         }
         &--current {
-            opacity: 0.5;
             pointer-events: none;
+
+            svg {
+                opacity: 0.08;
+            }
+            .label {
+                color: var(--text-disabled);
+            }
         }
         &--selected {
             border: 2px solid var(--border-active);

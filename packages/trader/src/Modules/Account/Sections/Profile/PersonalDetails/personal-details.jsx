@@ -196,7 +196,7 @@ class PersonalDetailsForm extends React.Component {
 
     render() {
         const {
-            form_initial_values,
+            form_initial_values: { ...form_initial_values },
             api_error,
             is_loading,
             is_btn_loading,
@@ -212,11 +212,11 @@ class PersonalDetailsForm extends React.Component {
         if (is_loading || should_wait_for_residence_states) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
         form_initial_values.citizen = form_initial_values.citizen ? getLocation(residence_list, form_initial_values.citizen, 'text') : '';
-        // tax_residence = tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
+        // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
         form_initial_values.address_state = form_initial_values.address_state ? getLocation(this.props.states_list, form_initial_values.address_state, 'text') : '';
 
-        // if (!tax_identification_number) tax_identification_number = '';
+        // if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         return (
             <Formik
                 initialValues={{

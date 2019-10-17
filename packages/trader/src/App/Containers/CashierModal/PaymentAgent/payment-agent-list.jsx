@@ -47,7 +47,7 @@ class PaymentAgentList extends React.Component {
                                         text={localize('Request withdrawal form')}
                                         onClick={this.props.sendVerificationEmail}
                                         primary
-                                        size='l'
+                                        large
                                     />
                                 </div>
                             </div>

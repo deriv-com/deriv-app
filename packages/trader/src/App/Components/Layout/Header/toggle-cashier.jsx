@@ -129,7 +129,6 @@ class ToggleCashier extends React.Component {
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}
-                    size='m'
                     primary
                 />
                 <React.Suspense fallback={<UILoader />}>

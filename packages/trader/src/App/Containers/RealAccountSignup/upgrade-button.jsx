@@ -8,6 +8,7 @@ const UpgradeButton = ({ children, onClick }) => (
             id='upgrade-account'
             onClick={onClick}
             className='acc-switcher__new-account-link'
+            tertiary
         >
             {children}
         </Button>

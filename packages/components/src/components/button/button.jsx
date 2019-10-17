@@ -24,6 +24,8 @@ const Button = ({
     is_disabled,
     is_loading,
     is_submit_success,
+    large,
+    medium,
     onClick,
     tabIndex,
     text,
@@ -31,7 +33,7 @@ const Button = ({
     type,
     primary,
     secondary,
-    size,
+    small,
     tertiary,
 }) => {
     const classes = classNames('btn', {
@@ -40,9 +42,9 @@ const Button = ({
         'btn--secondary': secondary,
         'btn--tertiary' : tertiary,
         'btn--green'    : green,
-        'btn__large'    : size === 'l',
-        'btn__medium'   : size === 'm',
-        'btn__small'    : size === 's',
+        'btn__large'    : large,
+        'btn__medium'   : medium,
+        'btn__small'    : small,
     }, className);
     const button = (
         <button
@@ -90,10 +92,12 @@ Button.propTypes = {
     is_disabled      : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     is_loading       : PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     is_submit_success: PropTypes.bool,
+    large            : PropTypes.bool,
+    medium           : PropTypes.bool,
     onClick          : PropTypes.func,
     primary          : PropTypes.bool,
     secondary        : PropTypes.bool,
-    size             : PropTypes.string,
+    small            : PropTypes.bool,
     tertiary         : PropTypes.bool,
     text             : PropTypes.string,
     wrapperClassName : PropTypes.string,

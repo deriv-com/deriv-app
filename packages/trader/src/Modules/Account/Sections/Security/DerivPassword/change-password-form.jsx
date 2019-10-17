@@ -144,7 +144,7 @@ class ChangePasswordForm extends React.Component {
                                     onClick={this.props.onClickSendEmail}
                                     text={localize('Forgot your password?')}
                                     tertiary
-                                    size='l'
+                                    large
                                 />
                                 <Button
                                     className='account-form__footer-btn'
@@ -158,7 +158,7 @@ class ChangePasswordForm extends React.Component {
                                     has_effect
                                     text={localize('Change Password')}
                                     primary
-                                    size='l'
+                                    large
                                 />
                             </FormFooter>
                         </form>

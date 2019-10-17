@@ -273,7 +273,7 @@ class FinancialAssessment extends React.Component {
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
                                         primary
-                                        size='l'
+                                        large
                                     />
                                 </FormFooter>
                             </form>

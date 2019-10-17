@@ -28,7 +28,7 @@ class SendEmail extends React.Component {
                             text={localize('Request authentication email')}
                             onClick={this.props.sendVerificationEmail}
                             primary
-                            size='l'
+                            large
                         />
                     </React.Fragment>
                 }

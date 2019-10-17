@@ -81,6 +81,15 @@ export const runBot = (limitations = {}) => {
             block.setDisabled(true);
         }
     });
+
+    const { mandatoryMainBlocks } = config;
+    const has_main_blocks = mandatoryMainBlocks
+        .every(block => top_blocks.filter(top_block => top_block.type === block).length);
+
+    if (!has_main_blocks) {
+        globalObserver.emit('Error', new Error('Root Block(s) missing from workspace'));
+        return;
+    }
     
     try {
         const code = `

@@ -6,6 +6,7 @@ import { observer }              from '../utils/observer';
 import {
     message_types,
     unrecoverable_errors }        from '../constants/message-types';
+import { CONTRACT_STAGES }        from '../constants/contract-stage';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -30,14 +31,21 @@ export default class JournalStore {
 
     @action.bound
     onError(data) {
+        const { contract_card, run_panel } = this.root_store;
+
         if (unrecoverable_errors.includes(data.name)) {
-            this.root_store.contract_card.clear();
-            this.root_store.run_panel.is_continue_trading = false;
+            contract_card.clear();
+            run_panel.is_continue_trading = false;
         } else {
-            this.root_store.run_panel.is_continue_trading = true;
+            run_panel.is_continue_trading = true;
         }
-        this.root_store.run_panel.setActiveTabIndex(2);
-        this.root_store.run_panel.is_error_happened = true;
+
+        contract_card.is_loading = false;
+        run_panel.setActiveTabIndex(2);
+        run_panel.setContractStage(CONTRACT_STAGES.not_running);
+        run_panel.is_error_happened = true;
+        run_panel.is_run_button_clicked = false;
+
         this.pushMessage(data , message_types.error);
     }
 

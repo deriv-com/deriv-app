@@ -92,7 +92,7 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { client } = this.root_store.core;
+        const { core : { client }, contract_card } = this.root_store;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -104,15 +104,15 @@ export default class RunPanelStore {
             return;
         }
 
-        this.root_store.contract_card.is_loading = true;
-
         if (!this.is_drawer_open) {
             this.is_drawer_open = true;
         }
 
-        runBot();
+        contract_card.is_loading = true;
         this.setContractStage(CONTRACT_STAGES.starting);
         this.is_run_button_clicked = true;
+        this.is_error_happened = false;
+        runBot();
     }
 
     @action.bound

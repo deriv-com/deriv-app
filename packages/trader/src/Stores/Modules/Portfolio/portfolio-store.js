@@ -320,7 +320,8 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get active_positions() {
-        return this.positions.filter((portfolio_pos) => !portfolio_pos.result);
+        return this.positions.filter((portfolio_pos) =>
+            (!portfolio_pos.result || !portfolio_pos.contract_info.is_sold));
     }
 
     @computed

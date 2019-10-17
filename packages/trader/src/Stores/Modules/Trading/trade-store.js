@@ -379,19 +379,26 @@ export default class TradeStore extends BaseStore {
                         longcode,
                         start_time,
                     } = response.buy;
+
                     // toggle smartcharts to contract mode
                     if (contract_id) {
                         const shortcode = response.buy.shortcode;
                         const { category, underlying } = Shortcode.extractInfoFromShortcode(shortcode);
                         const is_digit_contract = isDigitContractType(category.toUpperCase());
+                        const contract_type = category.toUpperCase();
                         this.root_store.modules.contract_trade.addContract({
                             contract_id,
                             start_time,
                             longcode,
                             underlying,
-                            barrier      : is_digit_contract ? last_digit : null,
-                            contract_type: category.toUpperCase(),
+                            barrier: is_digit_contract ? last_digit : null,
+                            contract_type,
                             is_tick_contract,
+                        });
+                        this.root_store.modules.portfolio.onBuyResponse({
+                            contract_id,
+                            longcode,
+                            contract_type,
                         });
                         // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,

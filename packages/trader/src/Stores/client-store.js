@@ -563,19 +563,21 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings, this.account_status],
             () => {
-                if (client && !client.is_virtual) {
-                    const { has_missing_required_field } = handleClientNotifications(
-                        client,
-                        this.account_settings,
-                        this.account_status,
-                        this.root_store.ui.addNotification,
-                        this.loginid,
-                        this.root_store.ui,
-                    );
-                    this.setHasMissingRequiredField(has_missing_required_field);
-                } else if (!client || client.is_virtual) {
-                    this.root_store.ui.removeAllNotifications();
-                }
+                BinarySocket.wait('landing_company').then(() => {
+                    if (client && !client.is_virtual) {
+                        const { has_missing_required_field } = handleClientNotifications(
+                            client,
+                            this.account_settings,
+                            this.account_status,
+                            this.root_store.ui.addNotification,
+                            this.loginid,
+                            this.root_store.ui,
+                        );
+                        this.setHasMissingRequiredField(has_missing_required_field);
+                    } else if (!client || client.is_virtual) {
+                        this.root_store.ui.removeAllNotifications();
+                    }
+                });
             }
         );
 
@@ -1001,8 +1003,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
+        const landing_company = State.getResponse('landing_company');
         const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
-        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, this.landing_company, 'changeable_fields');
+        const changeable           = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
             if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {
@@ -1016,6 +1019,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_high_risk() {
         return this.account_status.risk_classification === 'high';
+    }
+
+    @computed
+    get has_residence() {
+        return !!this.accounts[this.loginid].residence;
     }
 }
 /* eslint-enable */

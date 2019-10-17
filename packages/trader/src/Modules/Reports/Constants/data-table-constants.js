@@ -70,7 +70,6 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
             if (is_footer) {
                 return localize('Profit/loss on the last {{item_count}} contracts', { item_count: items_count });
             }
-
             return (
                 <MarketSymbolIconRow
                     action={cell_value}

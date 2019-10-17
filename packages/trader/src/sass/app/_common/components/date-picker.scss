@@ -94,6 +94,8 @@
             &-enter-done {
                 transform: translate3d(-295px, 0, 0);
                 opacity: 1;
+            }
+            &-enter-done, &-exit {
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }
@@ -105,6 +107,8 @@
             &-enter-done {
                 transform: translate3d(0, 33px, 0);
                 opacity: 1;
+            }
+            &-enter-done, &-exit {
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }

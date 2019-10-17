@@ -93,6 +93,7 @@ class DataTable extends React.PureComponent {
             className,
             getRowAction,
             columns,
+            preloaderCheck,
             id } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
@@ -107,6 +108,7 @@ class DataTable extends React.PureComponent {
                 id={contract_id}
                 key={id}
                 to={typeof action === 'string' ? action : undefined}
+                show_preloader={(typeof preloaderCheck === 'function') ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
             />
         );

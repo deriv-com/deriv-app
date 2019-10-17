@@ -1,6 +1,5 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { urlFor }   from '_common/url';
 import PageError    from 'Modules/PageError';
 import Localize     from './localize.jsx';
 

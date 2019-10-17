@@ -2,6 +2,7 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import PageError    from 'Modules/PageError';
 import Localize     from './localize.jsx';
+import { urlFor }   from '_common/url';
 
 // TODO - Remove this default setting once sign-up has been integrated to app 2
 LoginPrompt.defaultProps = {

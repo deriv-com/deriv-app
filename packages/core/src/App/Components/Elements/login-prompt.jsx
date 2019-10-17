@@ -4,11 +4,6 @@ import PageError    from 'Modules/PageError';
 import { urlFor }   from '_common/url';
 import Localize     from './localize.jsx';
 
-// TODO - Remove this default setting once sign-up has been integrated to app 2
-LoginPrompt.defaultProps = {
-    onSignup: () => { window.open(urlFor('new-account', undefined, undefined, true)); },
-};
-
 const LoginPrompt = ({
     onLogin,
     onSignup,
@@ -39,6 +34,11 @@ LoginPrompt.propTypes = {
     onLogin   : PropTypes.func,
     onSignup  : PropTypes.func,
     page_title: PropTypes.string,
+};
+
+// TODO - Remove this default setting once sign-up has been integrated to app 2
+LoginPrompt.defaultProps = {
+    onSignup: () => { window.open(urlFor('new-account', undefined, undefined, true)); },
 };
 
 export default LoginPrompt;

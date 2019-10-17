@@ -40,5 +40,6 @@ LoginPrompt.propTypes = {
 LoginPrompt.defaultProps = {
     onSignup: () => { window.open(urlFor('new-account', undefined, undefined, true)); },
 };
-
+    
 export default LoginPrompt;
+

@@ -2,7 +2,7 @@ import { getUnsupportedContracts } from 'Constants';
 import { getSymbolDisplayName }    from '../../Trading/Helpers/active-symbols';
 import { getMarketInformation }    from '../../../../Modules/Reports/Helpers/market-underlying';
 
-export const formatPortfolioPosition = (portfolio_pos, active_symbols = []) => {
+export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indicative) => {
     const purchase     = parseFloat(portfolio_pos.buy_price);
     const payout       = parseFloat(portfolio_pos.payout);
     const display_name = getSymbolDisplayName(
@@ -18,7 +18,7 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = []) => {
         details       : portfolio_pos.longcode.replace(/\n/g, '<br />'),
         display_name,
         id            : portfolio_pos.contract_id,
-        indicative    : 0,
+        indicative    : (isNaN(indicative) || !indicative) ? 0 : indicative,
         payout,
         purchase,
         reference     : +transaction_id,

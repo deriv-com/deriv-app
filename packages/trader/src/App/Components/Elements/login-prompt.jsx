@@ -37,4 +37,3 @@ LoginPrompt.propTypes = {
 };
 
 export default LoginPrompt;
-

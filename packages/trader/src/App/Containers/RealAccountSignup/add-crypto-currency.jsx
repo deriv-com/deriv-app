@@ -49,7 +49,13 @@ class AddCryptoCurrency extends Component {
         return this.props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     }
 
+    canAddCrypto = (currency) => {
+        // check if the cryptocurrency has not been created
+        return this.props.available_crypto_currencies.map((e) => e.value).indexOf(currency.value) === -1;
+    }
+
     render() {
+
         return (
             <Formik
                 initialValues={{
@@ -84,13 +90,14 @@ class AddCryptoCurrency extends Component {
                                 touched={touched.currency}
                                 is_title_enabled={this.can_add_fiat}
                             >
-                                {this.props.available_crypto_currencies.map(currency => (
+                                {this.crypto_currencies.map(currency => (
                                     <Field
                                         key={currency.value}
                                         component={RadioButton}
                                         name='currency'
                                         id={currency.value}
                                         label={currency.name}
+                                        selected={this.canAddCrypto(currency)}
                                     />
                                 ))}
                             </RadioButtonGroup>

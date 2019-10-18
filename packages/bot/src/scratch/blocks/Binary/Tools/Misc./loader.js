@@ -4,12 +4,9 @@ import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
     init() {
+        this.blocks_added_by_me     = [];
         this.current_url            = '';
         this.jsonInit(this.definition());
-
-        const urlField = this.getField('URL');
-        // eslint-disable-next-line no-underscore-dangle
-        urlField.onFinishEditing_ = new_url => this.onFinishEditingUrl(new_url);
     },
     definition(){
         return {
@@ -34,19 +31,6 @@ Blockly.Blocks.loader = {
             'description' : translate('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
         };
     },
-    onFinishEditingUrl(new_url) {
-        if (this.isKnownUrl(new_url)) {
-            globalObserver.emit('ui.log.error', translate('Blocks from this URL are already loaded'));
-            this.setDisabled(true);
-        }
-
-        if (this.current_url === new_url) {
-            return;
-        }
-
-        this.setDisabled(false);
-        this.loadBlocksFromCurrentUrl();
-    },
     onchange(event) {
         if (!this.workspace || this.isInFlyout) {
             return;
@@ -61,17 +45,26 @@ Blockly.Blocks.loader = {
                     this.setDisabled(true);
                 }
             });
-        }
-
-        if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.oldValue !== event.newValue) {
-                this.loadBlocksFromCurrentUrl();
+                const is_valid_url = this.isValidUrl(event.newValue);
+                const is_known_url = this.isKnownUrl(event.newValue);
+
+                if (is_valid_url && !is_known_url) {
+                    this.setDisabled(false);
+                    this.loadBlocksFromCurrentUrl();
+                } else {
+                    this.setDisabled(true);
+                }
             }
         }
     },
     loadBlocksFromCurrentUrl() {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
+
+        // Remove blocks previously loaded by this block.
+        this.blocks_added_by_me.forEach(block => block.dispose());
 
         loadBlocksFromRemote(this).then(() => {
             Blockly.Events.recordUndo = recordUndo;
@@ -86,6 +79,10 @@ Blockly.Blocks.loader = {
     isKnownUrl(url) {
         const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
         return loader_blocks.some(block => block.id !== this.id && block.current_url === url);
+    },
+    isValidUrl(url) {
+        const url_pattern = /[^/]*\.[a-zA-Z]{3}$/;
+        return url.match(url_pattern);
     },
 };
 

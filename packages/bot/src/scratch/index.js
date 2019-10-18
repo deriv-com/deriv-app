@@ -83,10 +83,10 @@ export const runBot = (limitations = {}) => {
     });
 
     const { mandatoryMainBlocks } = config;
-    const has_main_blocks = mandatoryMainBlocks
+    const has_mandatory_blocks = mandatoryMainBlocks
         .every(block => top_blocks.filter(top_block => top_block.type === block).length);
 
-    if (!has_main_blocks) {
+    if (!has_mandatory_blocks) {
         globalObserver.emit('Error', new Error('Root Block(s) missing from workspace'));
         return;
     }

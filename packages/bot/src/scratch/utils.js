@@ -164,18 +164,20 @@ const loadBlocksFromHeader = (xml_string, block) => {
             addLoaderBlocksFirst(xml).then(() => {
                 const added_blocks = [];
                 const ws_blocks    = Blockly.derivWorkspace.getAllBlocks(true);
-                const lowest_block = ws_blocks[ws_blocks.length - 1];
-                const start_coords = lowest_block.getRelativeToSurfaceXY();
+
+                let x = 0;
+                let y = 0;
+
+                if (ws_blocks.length > 0) {
+                    const lowest_block = ws_blocks[ws_blocks.length - 1];
+                    const start_coords = lowest_block.getRelativeToSurfaceXY();
+
+                    x = start_coords.x;
+                    y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+                }
 
                 Array.from(xml.children).forEach(el_block => added_blocks.push(addDomAsBlock(el_block, block)));
-
-                let cursor_y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-
-                added_blocks.forEach(added_block => {
-                    added_block.moveBy(start_coords.x, cursor_y);
-                    cursor_y += added_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-                });
-
+                // TODO: Clean up added_blocks.
                 Blockly.Events.recordUndo = recordUndo;
                 resolve();
             }).catch(() => {
@@ -234,8 +236,17 @@ export const addLoaderBlocksFirst = (xml) => {
         const promises     = [];
         const added_blocks = [];
         const ws_blocks    = Blockly.derivWorkspace.getAllBlocks(true);
-        const lowest_block = ws_blocks[ws_blocks.length - 1];
-        const start_coords = lowest_block.getRelativeToSurfaceXY();
+
+        let x = 0;
+        let y = 0;
+
+        if (ws_blocks.length > 0) {
+            const lowest_block = ws_blocks[ws_blocks.length - 1];
+            const start_coords = lowest_block.getRelativeToSurfaceXY();
+
+            x = start_coords.x;
+            y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+        }
 
         Array.from(xml.children).forEach(el_block => {
             const block_type = el_block.getAttribute('type');
@@ -250,12 +261,7 @@ export const addLoaderBlocksFirst = (xml) => {
             }
         });
 
-        let cursor_y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-
-        added_blocks.forEach(added_block => {
-            added_block.moveBy(start_coords.x, cursor_y);
-            cursor_y += added_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-        });
+        // TODO: Clean up added_blocks.
 
         if (promises.length) {
             Promise.all(promises).then(resolve, reject);
@@ -265,7 +271,7 @@ export const addLoaderBlocksFirst = (xml) => {
     });
 };
 
-export const addDomAsBlock = el_block => {
+export const addDomAsBlock = (el_block, parent_block = null) => {
     if (el_block.tagName.toLowerCase() === 'variables') {
         return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
     }
@@ -289,5 +295,11 @@ export const addDomAsBlock = el_block => {
         });
     }
 
-    return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+    const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+
+    if (parent_block) {
+        parent_block.blocks_added_by_me.push(block);
+    }
+
+    return block;
 };

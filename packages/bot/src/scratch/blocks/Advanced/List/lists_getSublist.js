@@ -97,12 +97,17 @@ Blockly.JavaScript.lists_getSublist = block => {
         } else if (where1 === 'FROM_END') {
             at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
             at1 = `${list}.length - ${at1}`;
+        } else if (where1 === 'FIRST') {
+            at1 = '0';
         }
+
         if (where2 === 'FROM_START') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
         } else if (where2 === 'FROM_END') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
             at2 = `${list}.length - ${at2}`;
+        } else if (where2 === 'LAST') {
+            at2 = `${list}.length`;
         }
 
         code = `${list}.slice(${at1}, ${at2})`;
@@ -112,6 +117,8 @@ Blockly.JavaScript.lists_getSublist = block => {
         const wherePascalCase = {
             FROM_START: 'FromStart',
             FROM_END  : 'FromEnd',
+            FIRST     : 'First',
+            LAST      : 'Last',
         };
         const getIndex = (listName, where, at) => (where === 'FROM_END' ? `${listName}.length - 1 - ${at}` : at);
 

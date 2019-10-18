@@ -162,22 +162,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
             Blockly.Events.recordUndo = false;
 
             addLoaderBlocksFirst(xml).then(() => {
-                const added_blocks = [];
-                const ws_blocks    = Blockly.derivWorkspace.getAllBlocks(true);
-
-                let x = 0;
-                let y = 0;
-
-                if (ws_blocks.length > 0) {
-                    const lowest_block = ws_blocks[ws_blocks.length - 1];
-                    const start_coords = lowest_block.getRelativeToSurfaceXY();
-
-                    x = start_coords.x;
-                    y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-                }
-
-                Array.from(xml.children).forEach(el_block => added_blocks.push(addDomAsBlock(el_block, block)));
-                // TODO: Clean up added_blocks.
+                Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
                 Blockly.Events.recordUndo = recordUndo;
                 resolve();
             }).catch(() => {
@@ -234,34 +219,16 @@ export const loadBlocksFromRemote = (block) => {
 export const addLoaderBlocksFirst = (xml) => {
     return new Promise((resolve, reject) => {
         const promises     = [];
-        const added_blocks = [];
-        const ws_blocks    = Blockly.derivWorkspace.getAllBlocks(true);
-
-        let x = 0;
-        let y = 0;
-
-        if (ws_blocks.length > 0) {
-            const lowest_block = ws_blocks[ws_blocks.length - 1];
-            const start_coords = lowest_block.getRelativeToSurfaceXY();
-
-            x = start_coords.x;
-            y = start_coords.y + lowest_block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
-        }
 
         Array.from(xml.children).forEach(el_block => {
             const block_type = el_block.getAttribute('type');
     
             if (block_type === 'loader') {
                 el_block.remove();
-
                 const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
-
                 promises.push(loadBlocksFromRemote(loader)); // eslint-disable-line no-use-before-define
-                added_blocks.push(loader);
             }
         });
-
-        // TODO: Clean up added_blocks.
 
         if (promises.length) {
             Promise.all(promises).then(resolve, reject);

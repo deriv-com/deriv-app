@@ -20,7 +20,7 @@ class Withdrawal extends React.Component {
         if (this.props.is_virtual) {
             return <Virtual />;
         }
-        if (this.props.has_no_balance) {
+        if (!+this.props.balance) {
             return <NoBalance />;
         }
         if (!this.props.error.message) {
@@ -38,9 +38,9 @@ class Withdrawal extends React.Component {
 }
 
 Withdrawal.propTypes = {
+    balance          : PropTypes.string,
     container        : PropTypes.string,
     error            : PropTypes.object,
-    has_no_balance   : PropTypes.bool,
     iframe_url       : PropTypes.string,
     is_virtual       : PropTypes.bool,
     setActiveTab     : PropTypes.func,
@@ -49,11 +49,11 @@ Withdrawal.propTypes = {
 
 export default connect(
     ({ client, modules }) => ({
+        balance          : client.balance,
         is_virtual       : client.is_virtual,
         verification_code: client.verification_code.payment_withdraw,
         container        : modules.cashier.config.withdraw.container,
         error            : modules.cashier.config.withdraw.error,
-        has_no_balance   : modules.cashier.has_no_balance,
         iframe_url       : modules.cashier.config.withdraw.iframe_url,
         setActiveTab     : modules.cashier.setActiveTab,
         setErrorMessage  : modules.cashier.setErrorMessage,

@@ -224,9 +224,9 @@
                     <statement name="DO0">
                       <block type="variables_set" id="iX^w=Jc(b/VlAIdNMduh">
                         <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
-                        <value name="VALUE" strategy_value="size">
+                        <value name="VALUE">
                           <shadow type="math_number" id="d#8t+7WO$h2wHp|@8_eA">
-                            <field name="NUM">1</field>
+                            <field name="NUM">0</field>
                           </shadow>
                         </value>
                       </block>
@@ -295,7 +295,7 @@
     </statement>
     <value name="RETURN">
       <block type="math_arithmetic" id="US22LDE-R$fo.w[=-2E;">
-        <field name="OP">MULTIPLY</field>
+        <field name="OP">ADD</field>
         <value name="A">
           <shadow type="math_number">
             <field name="NUM">1</field>
@@ -357,13 +357,13 @@
                 <mutation else="1"></mutation>
                 <value name="IF0">
                   <block type="logic_compare" id="fc^*b4o|5ye7Kp#LG;H2">
-                    <field name="OP">GT</field>
+                    <field name="OP">GTE</field>
                     <value name="A">
                       <block type="variables_get" id="m;w7$qbTH`u!5kRA_DP.">
                         <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
                       </block>
                     </value>
-                    <value name="B">
+                    <value name="B" strategy_value="size">
                       <shadow type="math_number" id="Pw~TuRCIs`o~yD$HP[`R">
                         <field name="NUM">1</field>
                       </shadow>
@@ -384,7 +384,7 @@
                             <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
                           </block>
                         </value>
-                        <value name="B">
+                        <value name="B" strategy_value="size">
                           <shadow type="math_number" id="_}}H@yuuKb{YkC3^Dt]X">
                             <field name="NUM">1</field>
                           </shadow>
@@ -456,7 +456,7 @@
                         <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:size</field>
                       </block>
                     </value>
-                    <value name="B">
+                    <value name="B" strategy_value="size">
                       <shadow type="math_number" id="]z_r/lY7P}3*W(#/419;">
                         <field name="NUM">1</field>
                       </shadow>

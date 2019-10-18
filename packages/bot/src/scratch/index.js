@@ -24,7 +24,7 @@ export const scratchWorkspaceInit = async () => {
         });
 
         Blockly.JavaScript.init(workspace);
-        Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap());
+        Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line
 
         Blockly.derivWorkspace = workspace;
         Blockly.derivWorkspace.blocksXmlStr = main_xml;

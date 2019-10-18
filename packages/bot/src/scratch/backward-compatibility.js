@@ -1,7 +1,8 @@
+import config        from '../constants';
 import { translate } from '../utils/lang/i18n';
-import config from '../constants';
-import ApiHelpers from '../services/api/api-helpers';
+import ApiHelpers    from '../services/api/api-helpers';
 
+/* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor(is_collection) {
         this.is_collection            = is_collection;
@@ -267,6 +268,7 @@ export default class BlockConversion {
         return conversions;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
         const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` }); // eslint-disable-line
         const fragment         = document.createDocumentFragment();
@@ -278,6 +280,33 @@ export default class BlockConversion {
         const workspace        = Blockly.createMainWorkspace_(svg, options, false, false);
 
         return workspace;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    getFieldValue(el_block, field_name) {
+        const el_field = el_block.querySelector(`field[name="${field_name}"]`);
+        return el_field ? el_field.textContent : '';
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    getFirstBlockInStack(block) {
+        let current_previous_connection = block.previousConnection;
+        let previous_block              = block.getPreviousBlock();
+
+        if (!current_previous_connection) {
+            return block;
+        }
+        
+        while (previous_block) {
+            if (previous_block === block.getSurroundParent()) {
+                break;
+            }
+
+            current_previous_connection = previous_block.previousConnection;
+            previous_block = previous_block.getPreviousBlock();
+        }
+
+        return current_previous_connection.sourceBlock_;
     }
 
     generateUniqueVariable(variable_name) {
@@ -293,11 +322,6 @@ export default class BlockConversion {
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
         
         return ws_variable;
-    }
-
-    getFieldValue(el_block, field_name) {
-        const el_field = el_block.querySelector(`field[name="${field_name}"]`);
-        return el_field ? el_field.textContent : '';
     }
 
     convertStrategy(strategy_node) {
@@ -457,7 +481,7 @@ export default class BlockConversion {
         }
 
         if (!block) {
-            console.warn('Unrecognised block found.', block_type);
+            console.warn('Unrecognised block found.', block_type); // eslint-disable-line no-console
             return false;
         }
 
@@ -489,19 +513,19 @@ export default class BlockConversion {
                     break;
                 }
                 case ('value'): {
-                    this.convertAndReconnectValueInputBlocks(block, el_block_child);
+                    this.processValueInputs(block, el_block_child);
                     break;
                 }
                 case ('statement'): {
                     const statement_name = el_block_child.getAttribute('name');
-                    this.convertAndReconnectStatementInputBlocks(block, statement_name, el_block_child);
+                    this.processStatementInputs(block, statement_name, el_block_child);
                     break;
                 }
                 case ('next'): {
                     const closest_statement = el_block_child.closest('statement');
                     if (closest_statement) {
                         const statement_name = closest_statement.getAttribute('name');
-                        this.convertAndReconnectStatementInputBlocks(block, statement_name, el_block_child, block.conversion_parent);
+                        this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
                     }
                     break;
                 }
@@ -529,21 +553,24 @@ export default class BlockConversion {
         return block;
     }
 
-    convertAndReconnectValueInputBlocks(block, el_input) {
+    // eslint-disable-next-line consistent-return
+    processValueInputs(block, el_input) {
         const input_name = el_input.getAttribute('name');
         const input      = block.getInput(input_name);
 
         if (!input) {
-            console.warn('Unrecognised value input', input_name);
+            console.warn('Unrecognised value input', input_name); // eslint-disable-line no-console
             return false;
         }
 
         // Each of the children of a value node is a shadow or block node. Recursively
         // convert these block nodes to their new counterpart and re-connect them.
+        // eslint-disable-next-line consistent-return
         Array.from(el_input.children).forEach(el_input_child_block => {
             const input_child_block = this.convertBlockNode(el_input_child_block, block);
 
             if (!input_child_block) {
+                // eslint-disable-next-line no-console
                 console.warn('Illegal child.', el_input_child_block.getAttribute('type'));
                 return false;
             }
@@ -559,20 +586,23 @@ export default class BlockConversion {
         });
     }
 
-    convertAndReconnectStatementInputBlocks(block, statement_name, el_node_with_children, block_to_search = null) {
+    // eslint-disable-next-line consistent-return
+    processStatementInputs(block, statement_name, el_node_with_children, block_to_search = null) {
         const block_to_use = block_to_search || block;
         const input        = block_to_use.getInput(statement_name);
 
         if (!input) {
-            console.warn('Unrecognised statement input', statement_name);
+            console.warn('Unrecognised statement input', statement_name); // eslint-disable-line no-console
             return false;
         }
 
         // Each of the children of a statement node is a block node. Recursively
         // convert these block nodes to their new counterpart and reconnect them.
+        // eslint-disable-next-line consistent-return
         Array.from(el_node_with_children.children).forEach(el_input_child_block => {
             const input_child_block = this.convertBlockNode(el_input_child_block, block_to_use);
             if (!input_child_block) {
+                // eslint-disable-next-line no-console
                 console.warn('Unrecognised child in statement', el_input_child_block.getAttribute('type'));
                 return false;
             }
@@ -583,27 +613,6 @@ export default class BlockConversion {
             const statement_input = block_to_use.getInput(statement_name);
             statement_input.connection.connect(input_child_block.previousConnection);
         });
-    }
-
-    getFirstBlockInStack(block) {
-        let current_previous_connection = block.previousConnection;
-        let previous_block              = block.getPreviousBlock();
-
-        if (!current_previous_connection) {
-            return block;
-        }
-        
-        while (previous_block) {
-            if (previous_block === block.getSurroundParent()) {
-                break;
-            }
-
-            current_previous_connection = previous_block.previousConnection;
-            previous_block = previous_block.getPreviousBlock();
-        }
-
-        // eslint-disable-next-line no-underscore-toggle
-        return current_previous_connection.sourceBlock_;
     }
 
     getClosestLegalPreviousConnection(supposed_parent_block) {

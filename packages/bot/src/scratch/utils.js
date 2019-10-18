@@ -1,6 +1,6 @@
-import { saveAs }                   from './shared';
-import config                       from '../constants';
-import BlockConversion              from './backward-compatibility';
+import BlockConversion from './backward-compatibility';
+import { saveAs }      from './shared';
+import config          from '../constants';
 import { translate }   from '../utils/lang/i18n';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
@@ -13,8 +13,8 @@ export const oppositesToDropdownOptions = opposite_name => {
 };
 
 export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
-    const { 
-        clientX = 0, 
+    const {
+        clientX = 0,
         clientY = 0 }        = drop_event || {};
     const toolbar_height     = 76;
     const blockly_metrics    = Blockly.derivWorkspace.getMetrics();
@@ -139,7 +139,8 @@ const loadWorkspace = (xml) => {
     Blockly.Events.setGroup(false);
 };
 
-const loadBlocksFromHeader = (xml_string, block) => { 
+const loadBlocksFromHeader = (xml_string, block) => {
+    // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {
         let xml;
 
@@ -188,6 +189,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
 };
 
 export const loadBlocksFromRemote = (block) => {
+    // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {
         let url = block.getFieldValue('URL');
 
@@ -276,7 +278,7 @@ export const addDomAsBlock = el_block => {
     Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
         if (el.hasAttribute('varid')) {
             el.setAttribute('varId', el.getAttribute('varid'));
-        } 
+        }
     });
 
     if (config.mainBlocks.includes(block_type)) {

@@ -1,6 +1,7 @@
 import {
     observable,
-    action }                  from 'mobx';
+    action,
+    computed }                  from 'mobx';
 import { getIndicativePrice } from '../utils/contract';
 import { observer }           from '../utils/observer';
 
@@ -8,7 +9,6 @@ export default class ContractCardStore {
     @observable contract            = null;
     @observable indicative_movement = '';
     @observable profit_movement     = '';
-    @observable is_loading          = false;
 
     contract_id                     = null;
     profit                          = 0;
@@ -18,7 +18,11 @@ export default class ContractCardStore {
         this.root_store  = root_store;
 
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('contract.status', this.onContractStatusEvent);
+    }
+
+    @computed
+    get is_loading() {
+        return this.root_store.run_panel.is_running;
     }
 
     @action.bound
@@ -31,7 +35,6 @@ export default class ContractCardStore {
             this.contract_id = contract.id;
             this.profit      = profit;
             this.indicative  = indicative;
-            this.is_loading  = false;
         }
 
         const movements  = { profit, indicative };
@@ -51,19 +54,11 @@ export default class ContractCardStore {
     }
 
     @action.bound
-    onContractStatusEvent(contract_status) {
-        if (contract_status.id === 'contract.purchase_sent') {
-            this.is_loading = true;
-        }
-    }
-
-    @action.bound
     clear(should_unset_contract = true) {
         if (should_unset_contract) {
             this.contract = null;
         }
 
-        this.is_loading          = false;
         this.profit              = 0;
         this.profit_loss         = 0;
         this.indicative          = 0;
@@ -74,6 +69,5 @@ export default class ContractCardStore {
     @action.bound
     onUnmount() {
         observer.unregister('bot.contract', this.onBotContractEvent);
-        observer.unregister('contract.status', this.onContractStatusEvent);
     }
 }

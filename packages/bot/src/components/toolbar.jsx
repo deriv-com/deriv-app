@@ -110,7 +110,6 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
 );
 
 const ButtonGroup = ({
-    is_run_button_clicked,
     is_running,
     onResetClick,
     onUndoClick,
@@ -157,7 +156,7 @@ const ButtonGroup = ({
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
         <div className='vertical-divider' />
-        {is_run_button_clicked || is_running ?
+        {is_running ?
             <Popover
                 alignment='bottom'
                 message={translate('Stop')}
@@ -166,7 +165,7 @@ const ButtonGroup = ({
                     className={classNames(
                         'toolbar__icon',
                         'toolbar__icon--stop',
-                        { 'toolbar__icon--disabled': !is_run_button_clicked })}
+                        { 'toolbar__icon--disabled': !is_running })}
                     onClick={onStopClick}
                 />
             </Popover>
@@ -203,7 +202,6 @@ const Toolbar = ({
     file_name,
     is_dialog_open,
     is_drawer_open,
-    is_run_button_clicked,
     is_running,
     onBotNameTyped,
     onOkButtonClick,
@@ -253,7 +251,6 @@ const Toolbar = ({
                 onBotNameTyped={onBotNameTyped}
             />
             <ButtonGroup
-                is_run_button_clicked={is_run_button_clicked}
                 is_running={is_running}
                 onRedoClick={onRedoClick}
                 onResetClick={onResetClick}
@@ -290,49 +287,47 @@ const Toolbar = ({
 );
 
 Toolbar.propTypes = {
-    file_name            : PropTypes.string,
-    is_dialog_open       : PropTypes.bool,
-    is_drawer_open       : PropTypes.bool,
-    is_run_button_clicked: PropTypes.bool,
-    is_running           : PropTypes.bool,
-    onBotNameTyped       : PropTypes.func,
-    onCancelButtonClick  : PropTypes.func,
-    onGoogleDriveClick   : PropTypes.func,
-    onOkButtonClick      : PropTypes.func,
-    onRedoClick          : PropTypes.func,
-    onResetClick         : PropTypes.func,
-    onRunClick           : PropTypes.func,
-    onSearch             : PropTypes.func,
-    onSearchBlur         : PropTypes.func,
-    onSearchClear        : PropTypes.func,
-    onSortClick          : PropTypes.func,
-    onStopClick          : PropTypes.func,
-    onToolboxToggle      : PropTypes.func,
-    onUndoClick          : PropTypes.func,
-    onZoomInOutClick     : PropTypes.func,
-    toggleSaveLoadModal  : PropTypes.func,
+    file_name          : PropTypes.string,
+    is_dialog_open     : PropTypes.bool,
+    is_drawer_open     : PropTypes.bool,
+    is_running         : PropTypes.bool,
+    onBotNameTyped     : PropTypes.func,
+    onCancelButtonClick: PropTypes.func,
+    onGoogleDriveClick : PropTypes.func,
+    onOkButtonClick    : PropTypes.func,
+    onRedoClick        : PropTypes.func,
+    onResetClick       : PropTypes.func,
+    onRunClick         : PropTypes.func,
+    onSearch           : PropTypes.func,
+    onSearchBlur       : PropTypes.func,
+    onSearchClear      : PropTypes.func,
+    onSortClick        : PropTypes.func,
+    onStopClick        : PropTypes.func,
+    onToolboxToggle    : PropTypes.func,
+    onUndoClick        : PropTypes.func,
+    onZoomInOutClick   : PropTypes.func,
+    toggleSaveLoadModal: PropTypes.func,
 };
 
 export default connect(({ run_panel, saveload, toolbar }) => ({
-    file_name            : toolbar.file_name,
-    is_dialog_open       : toolbar.is_dialog_open,
-    is_drawer_open       : run_panel.is_drawer_open,
-    is_run_button_clicked: run_panel.is_run_button_clicked,
-    is_running           : run_panel.is_running,
-    onBotNameTyped       : toolbar.onBotNameTyped,
-    onCancelButtonClick  : toolbar.onResetCancelButtonClick,
-    onGoogleDriveClick   : toolbar.onGoogleDriveClick,
-    onOkButtonClick      : toolbar.onResetOkButtonClick,
-    onRedoClick          : toolbar.onRedoClick,
-    onResetClick         : toolbar.onResetClick,
-    onRunClick           : toolbar.onRunClick,
-    onSearch             : toolbar.onSearch,
-    onSearchBlur         : toolbar.onSearchBlur,
-    onSearchClear        : toolbar.onSearchClear,
-    onSortClick          : toolbar.onSortClick,
-    onStopClick          : toolbar.onStopClick,
-    onToolboxToggle      : toolbar.onToolboxToggle,
-    onUndoClick          : toolbar.onUndoClick,
-    onZoomInOutClick     : toolbar.onZoomInOutClick,
-    toggleSaveLoadModal  : saveload.toggleSaveLoadModal,
+    file_name          : toolbar.file_name,
+    is_dialog_open     : toolbar.is_dialog_open,
+    is_drawer_open     : run_panel.is_drawer_open,
+    is_running         : run_panel.is_running,
+    onBotNameTyped     : toolbar.onBotNameTyped,
+    onCancelButtonClick: toolbar.onResetCancelButtonClick,
+    onGoogleDriveClick : toolbar.onGoogleDriveClick,
+    onOkButtonClick    : toolbar.onResetOkButtonClick,
+    onRedoClick        : toolbar.onRedoClick,
+    onResetClick       : toolbar.onResetClick,
+    onRunClick         : toolbar.onRunClick,
+    onSearch           : toolbar.onSearch,
+    onSearchBlur       : toolbar.onSearchBlur,
+    onSearchClear      : toolbar.onSearchClear,
+    onSortClick        : toolbar.onSortClick,
+    onStopClick        : toolbar.onStopClick,
+    onToolboxToggle    : toolbar.onToolboxToggle,
+    onUndoClick        : toolbar.onUndoClick,
+    onZoomInOutClick   : toolbar.onZoomInOutClick,
+    toggleSaveLoadModal: saveload.toggleSaveLoadModal,
 }))(Toolbar);

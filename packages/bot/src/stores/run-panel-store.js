@@ -27,7 +27,8 @@ export default class RunPanelStore {
     @observable active_index          = 0;
     @observable contract_stage        = CONTRACT_STAGES.not_running;
     @observable dialog_options        = {};
-    @observable is_run_button_clicked = false;
+    @observable has_open_contract     = false;
+    // when bot is running, either if its a contract purchase or about to purchase
     @observable is_running            = false;
     @observable is_drawer_open        = true;
 
@@ -36,6 +37,16 @@ export default class RunPanelStore {
     // otherwise we keep opening new contracts and set the ContractStage to purchase_sent
     is_error_happened   = false;
     is_continue_trading = true;
+
+    @computed
+    get is_dialog_open() {
+        return Object.entries(this.dialog_options).length > 0;
+    }
+
+    @action.bound
+    onBotRunningEvent() {
+        this.has_open_contract = true;
+    }
 
     @action.bound
     onBotStopEvent() {
@@ -47,17 +58,12 @@ export default class RunPanelStore {
             // When error happens and its recoverable_errors, bot should stop
             this.setContractStage(CONTRACT_STAGES.not_running);
             this.is_error_happened = false;
-            this.is_run_button_clicked = false;
-        } else if (this.is_running) {
+            this.is_running = false;
+        } else if (this.has_open_contract) {
             // When bot was running and it closes now
             this.setContractStage(CONTRACT_STAGES.contract_closed);
         }
-        this.is_running = false;
-    }
-
-    @action.bound
-    onBotRunningEvent() {
-        this.is_running = true;
+        this.has_open_contract = false;
     }
 
     @action.bound
@@ -104,37 +110,33 @@ export default class RunPanelStore {
             return;
         }
 
-        this.root_store.contract_card.is_loading = true;
-
-        if (!this.is_drawer_open) {
-            this.is_drawer_open = true;
-        }
+        this.is_running = true;
+        this.is_drawer_open = true;
+        this.root_store.contract_card.clear();
+        this.setContractStage(CONTRACT_STAGES.starting);
 
         runBot();
-        this.setContractStage(CONTRACT_STAGES.starting);
-        this.is_run_button_clicked = true;
     }
 
     @action.bound
     onStopButtonClick() {
-        if (this.is_run_button_clicked) {
-            stopBot();
-            if (this.is_error_happened) {
-                // when user click stop button when there is a error but bot is retrying
-                this.setContractStage(CONTRACT_STAGES.not_running);
-                this.is_error_happened = false;
-                this.is_continue_trading = true;
-            } else if (this.is_running) {
-                // when user click stop button when bot is running
-                this.setContractStage(CONTRACT_STAGES.is_stopping);
-            } else {
-                // when user click stop button before bot start running
-                this.setContractStage(CONTRACT_STAGES.not_running);
-            }
+        stopBot();
+
+        this.is_running = false;
+
+        if (this.is_error_happened) {
+            // when user click stop button when there is a error but bot is retrying
+            this.setContractStage(CONTRACT_STAGES.not_running);
+            this.is_error_happened = false;
+            this.is_continue_trading = true;
+        } else if (this.has_open_contract) {
+            // when user click stop button when bot is running
+            this.setContractStage(CONTRACT_STAGES.is_stopping);
+        } else {
+            // when user click stop button before bot start running
+            this.setContractStage(CONTRACT_STAGES.not_running);
         }
 
-        this.is_run_button_clicked = false;
-        this.root_store.contract_card.is_loading = false;
     }
 
     @action.bound
@@ -144,7 +146,7 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        this.is_run_button_clicked = false;
+        this.is_running = false;
         this.root_store.journal.clear();
         this.root_store.contract_card.clear();
         this.root_store.summary.clear();
@@ -167,35 +169,24 @@ export default class RunPanelStore {
         this.active_index = index;
     }
 
-    @computed
-    get is_dialog_open() {
-        return Object.entries(this.dialog_options).length > 0;
-    }
-
     @action.bound
     showLoginDialog() {
-        this.onOkButtonClick = this.onDialogOkButtonClick;
+        this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Run error'),
-            message: translate('Please log in.'),
+            title  : translate('please log in'),
+            message: translate('You need to log in to run the bot.'),
         };
     }
 
     @action.bound
     showRealAccountDialog() {
-        this.onOkButtonClick = this.onDialogOkButtonClick;
+        this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title  : translate('DBot isn\'t quite ready for real accounts'),
             message: translate('Please switch to your demo account to run your DBot.'),
         };
-    }
-
-    @action.bound
-    onDialogOkButtonClick() {
-        this.root_store.contract_card.is_loading = false;
-        this.onCloseDialog();
     }
 
     @action.bound
@@ -219,6 +210,7 @@ export default class RunPanelStore {
             // of killing and clearing everything instantly.
             // Core need to change to pass beforeswitch account event
             terminateBot();
+            this.has_open_contract = false;
             this.clearStat();
         };
 
@@ -229,9 +221,8 @@ export default class RunPanelStore {
                     (loginid) => {
                         if (loginid) {
                             this.root_store.journal.pushMessage(translate('You have switched accounts.'));
-                        } else {
-                            terminateAndClear();
                         }
+                        terminateAndClear();
                         this.root_store.summary.currency = client.currency;
                     },
                 );

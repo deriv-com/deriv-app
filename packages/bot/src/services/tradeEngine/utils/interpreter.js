@@ -146,15 +146,18 @@ export default class Interpreter {
         this.$scope.api.disconnect();
         this.stopped = true;
         globalObserver.emit('bot.stop');
+        globalObserver.unregister('contract.status', this.contractStatusCb);
+    }
+
+    contractStatusCb(contractStatus) {
+        if (contractStatus.id === 'contract.sold') {
+            this.terminateSession();
+        }
     }
 
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
-            globalObserver.register('contract.status', contractStatus => {
-                if (contractStatus.id === 'contract.sold') {
-                    this.terminateSession();
-                }
-            });
+            globalObserver.register('contract.status', this.contractStatusCb);
         } else {
             this.terminateSession();
         }

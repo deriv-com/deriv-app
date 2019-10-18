@@ -41,9 +41,8 @@ const drawerFooter = ({
     active_index,
     dialog_options,
     is_clear_stat_disable,
-    is_running,
-    is_run_button_clicked,
     is_dialog_open,
+    is_stop_button_visible,
     onCancelButtonClick,
     onClearStatClick,
     onOkButtonClick,
@@ -65,12 +64,12 @@ const drawerFooter = ({
             />
 
             {
-                (is_run_button_clicked || is_running) ?
+                (is_stop_button_visible) ?
                     <Button
                         className={classNames(
                             'btn--primary--default',
                             'run-panel__button',
-                            { 'run-panel__button--disable': !is_run_button_clicked }
+                            // { 'run-panel__button--disable': is_stop_button_disable }
                         )}
                         text={translate('Stop bot')}
                         icon={<StopIcon className='run-panel__button--icon' />}
@@ -139,38 +138,37 @@ class RunPanel extends React.PureComponent {
 }
 
 RunPanel.propTypes = {
-    active_index         : PropTypes.number,
-    dialog_options       : PropTypes.object,
-    is_clear_stat_disable: PropTypes.bool,
-    is_dialog_open       : PropTypes.bool,
-    is_drawer_open       : PropTypes.bool,
-    is_run_button_clicked: PropTypes.bool,
-    is_running           : PropTypes.bool,
-    onCancelButtonClick  : PropTypes.func,
-    onClearStatClick     : PropTypes.func,
-    onOkButtonClick      : PropTypes.func,
-    onRunButtonClick     : PropTypes.func,
-    onStopButtonClick    : PropTypes.func,
-    onUnmount            : PropTypes.func,
-    setActiveTabIndex    : PropTypes.func,
-    toggleDrawer         : PropTypes.func,
+    active_index          : PropTypes.number,
+    dialog_options        : PropTypes.object,
+    is_clear_stat_disable : PropTypes.bool,
+    is_dialog_open        : PropTypes.bool,
+    is_drawer_open        : PropTypes.bool,
+    is_stop_button_disable: PropTypes.bool,
+    is_stop_button_visible: PropTypes.bool,
+    onCancelButtonClick   : PropTypes.func,
+    onClearStatClick      : PropTypes.func,
+    onOkButtonClick       : PropTypes.func,
+    onRunButtonClick      : PropTypes.func,
+    onStopButtonClick     : PropTypes.func,
+    onUnmount             : PropTypes.func,
+    setActiveTabIndex     : PropTypes.func,
+    toggleDrawer          : PropTypes.func,
 };
 
 export default connect(({ run_panel, journal }) => ({
-    active_index         : run_panel.active_index,
-    dialog_options       : run_panel.dialog_options,
-    is_clear_stat_disable: run_panel.is_run_button_clicked ||
-    run_panel.is_running || journal.messages.length === 0,
-    is_dialog_open       : run_panel.is_dialog_open,
-    is_drawer_open       : run_panel.is_drawer_open,
-    is_run_button_clicked: run_panel.is_run_button_clicked,
-    is_running           : run_panel.is_running,
-    onCancelButtonClick  : run_panel.onCancelButtonClick,
-    onClearStatClick     : run_panel.onClearStatClick,
-    onOkButtonClick      : run_panel.onOkButtonClick,
-    onRunButtonClick     : run_panel.onRunButtonClick,
-    onStopButtonClick    : run_panel.onStopButtonClick,
-    onUnmount            : run_panel.onUnmount,
-    setActiveTabIndex    : run_panel.setActiveTabIndex,
-    toggleDrawer         : run_panel.toggleDrawer,
+    active_index          : run_panel.active_index,
+    dialog_options        : run_panel.dialog_options,
+    is_clear_stat_disable : run_panel.is_running || journal.messages.length === 0,
+    is_dialog_open        : run_panel.is_dialog_open,
+    is_drawer_open        : run_panel.is_drawer_open,
+    is_stop_button_disable: run_panel.has_open_contract,
+    is_stop_button_visible: run_panel.is_running || run_panel.has_open_contract,
+    onCancelButtonClick   : run_panel.onCancelButtonClick,
+    onClearStatClick      : run_panel.onClearStatClick,
+    onOkButtonClick       : run_panel.onOkButtonClick,
+    onRunButtonClick      : run_panel.onRunButtonClick,
+    onStopButtonClick     : run_panel.onStopButtonClick,
+    onUnmount             : run_panel.onUnmount,
+    setActiveTabIndex     : run_panel.setActiveTabIndex,
+    toggleDrawer          : run_panel.toggleDrawer,
 }))(RunPanel);

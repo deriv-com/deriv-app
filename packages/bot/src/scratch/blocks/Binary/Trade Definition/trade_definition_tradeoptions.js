@@ -129,7 +129,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     createBarrierInputs(barriers) {
         Blockly.Events.disable();
 
-        const input_names  = ['BARRIER', 'SECONDBARRIER'];
+        const input_names  = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
         for (let i = 0; i < barriers.values.length; i++) {
             const label = (barriers.values.length === 1 ? translate('Barrier') : config.BARRIER_LABELS[i]);
@@ -200,7 +200,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         ).then(barriers => {
             this.createBarrierInputs(barriers);
             
-            const input_names = ['BARRIER', 'SECONDBARRIER'];
+            const input_names = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
             for (let i = 0; i < barriers.values.length; i++) {
                 const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
@@ -225,7 +225,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
                 if (connection) {
                     const target_block = connection.targetBlock();
-                    if (target_block.isShadow()) {
+
+                    if (target_block && target_block.isShadow()) {
                         const barrier_value = barriers.values[i] !== false ? barriers.values[i] : '';
                         target_block.setFieldValue(barrier_value, 'NUM');
                     }
@@ -246,7 +247,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 if (connection) {
                     const target_block = connection.targetBlock();
 
-                    if (target_block) {
+                    if (target_block && target_block.isShadow()) {
                         const initial_prediction = Math.max(1, prediction_range[0]);
                         target_block.setFieldValue(initial_prediction, 'NUM');
                     }
@@ -288,8 +289,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     mutationToDom() {
         const container = document.createElement('mutation');
 
-        container.setAttribute('has_first_barrier', !!this.getInput('BARRIER'));
-        container.setAttribute('has_second_barrier', !!this.getInput('SECONDBARRIER'));
+        container.setAttribute('has_first_barrier', !!this.getInput('BARRIEROFFSET'));
+        container.setAttribute('has_second_barrier', !!this.getInput('SECONDBARRIEROFFSET'));
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
         
         return container;
@@ -318,15 +319,15 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
         prediction_value = Blockly.JavaScript.valueToCode(block, 'PREDICTION') || '-1';
     }
 
-    if (block.getInput('BARRIER')) {
+    if (block.getInput('BARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('BARRIERTYPE_LIST');
-        const value               = Blockly.JavaScript.valueToCode(block, 'BARRIER') || '0';
+        const value               = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET') || '0';
         barrier_offset_value      = getBarrierValue(barrier_offset_type, value);
     }
 
-    if (block.getInput('SECONDBARRIER')) {
+    if (block.getInput('SECONDBARRIEROFFSET')) {
         const barrier_offset_type   = block.getFieldValue('SECONDBARRIERTYPE_LIST');
-        const value                 = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIER') || '0';
+        const value                 = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET') || '0';
         second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 

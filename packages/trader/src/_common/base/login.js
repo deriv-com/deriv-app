@@ -17,6 +17,10 @@ const Login = (() => {
         }
     };
 
+    const redirectToSignUp = () => {
+        window.open('https://deriv.com');
+    };
+    
     const loginUrl = () => {
         const server_url         = localStorage.getItem('config.server_url');
         const language           = getLanguage();
@@ -55,6 +59,7 @@ const Login = (() => {
         redirectToLogin,
         isLoginPages,
         initOneAll,
+        redirectToSignUp,
     };
 })();
 

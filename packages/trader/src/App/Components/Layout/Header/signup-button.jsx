@@ -1,7 +1,8 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import { localize } from 'App/i18n';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import { Button }           from 'deriv-components';
+import { redirectToSignUp } from '_common/base/login';
+import { localize }         from 'App/i18n';
 
 const SignupButton = ({ className }) => (
     <Button
@@ -9,7 +10,7 @@ const SignupButton = ({ className }) => (
         className={className}
         has_effect
         text={localize('Sign up')}
-        onClick={() => { window.open('https://deriv.com'); }}
+        onClick={redirectToSignUp}
         primary
     />
 );

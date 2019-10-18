@@ -80,7 +80,6 @@ Blockly.Blocks.text_join = {
         while (currentBlock !== null) {
             if (currentBlock.type !== 'text_statement') {
                 currentBlock.unplug(false);
-                console.log(`Unplugged ${  currentBlock.type}`);
             }
             currentBlock = currentBlock.getNextBlock();
         }

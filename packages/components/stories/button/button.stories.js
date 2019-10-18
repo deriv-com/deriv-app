@@ -1,4 +1,3 @@
-/* eslint-disable key-spacing, import/no-unresolved */
 import { action }    from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
 import {
@@ -156,4 +155,4 @@ stories
                 </FlexWrapper>
             </Theme>
         )
-    )
+    );

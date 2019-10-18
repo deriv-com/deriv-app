@@ -3,7 +3,7 @@ import { translate }         from '../../../../utils/lang/i18n';
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
         this.previousDisabledState = false;
 
         this.jsonInit(this.definition());
@@ -212,7 +212,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.arguments = [].concat(paramNames);
 
         // And rebuild the argument model list.
-        this.argumentVarModels = this.arguments.map(argumentName =>
+        this.argument_var_models = this.arguments.map(argumentName =>
             Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, argumentName, '')
         );
 
@@ -309,7 +309,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     getVarModels() {
-        return this.argumentVarModels;
+        return this.argument_var_models;
     },
     /**
      * Add menu option to find the definition block for this call.

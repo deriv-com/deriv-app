@@ -4,7 +4,7 @@ import { translate }         from '../../../../utils/lang/i18n';
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
 
         this.jsonInit(this.definition());
 
@@ -84,7 +84,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                     const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
                     if (variable) {
                         this.arguments.push(paramName);
-                        this.argumentVarModels.push(variable);
+                        this.argument_var_models.push(variable);
 
                         const paramField = this.getField('PARAMS');
                         paramField.setText(`${translate('with: ')} ${this.arguments.join(', ')}`);
@@ -155,7 +155,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             container.setAttribute('name', this.getFieldValue('NAME'));
         }
 
-        this.argumentVarModels.forEach((arg, i) => {
+        this.argument_var_models.forEach((arg, i) => {
             const parameter = document.createElement('arg');
 
             parameter.setAttribute('name', arg.name);
@@ -240,7 +240,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     getVarModels() {
-        return this.argumentVarModels;
+        return this.argument_var_models;
     },
     /**
      * Add custom menu options to this block's context menu.
@@ -273,7 +273,7 @@ Blockly.Blocks.procedures_defnoreturn = {
 
         // Add options to create getters for each parameter.
         if (!this.isCollapsed()) {
-            this.argumentVarModels.forEach(argumentVarModel => {
+            this.argument_var_models.forEach(argumentVarModel => {
                 const getOption = { enabled: true };
 
                 getOption.text = translate('Create "get %1"').replace('%1', argumentVarModel.name);

@@ -180,22 +180,22 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
-        this.arguments = [];
-        this.argumentVarModels = [];
+        this.arguments           = [];
+        this.argument_var_models = [];
 
         xmlElement.childNodes.forEach(childNode => {
             if (childNode.nodeName.toLowerCase() === 'arg') {
-                const varName = childNode.getAttribute('name');
-                this.arguments.push(varName);
+                const var_name = childNode.getAttribute('name');
+                const var_id   = childNode.getAttribute('varid') || childNode.getAttribute('varId');
+                const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, var_id, var_name, '');
 
-                const varId = childNode.getAttribute('varid') || childNode.getAttribute('varId');
-                const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, varId, varName, '');
+                this.arguments.push(var_name);
 
                 if (variable !== null) {
-                    this.argumentVarModels.push(variable);
+                    this.argument_var_models.push(variable);
                 } else {
                     // eslint-disable-next-line no-console
-                    console.log(`Failed to create a variable with name ${varName}, ignoring.`);
+                    console.log(`Failed to create a variable with name ${var_name}, ignoring.`);
                 }
             }
         });

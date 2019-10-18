@@ -150,6 +150,7 @@
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    flex-grow: 1;
 
     &__data {
     width: 845px;

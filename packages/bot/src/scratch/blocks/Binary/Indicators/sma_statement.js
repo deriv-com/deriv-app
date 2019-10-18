@@ -2,10 +2,12 @@ import { expectValue } from '../../../shared';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.sma_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: translate('set %1 to Simple Moving Average %2'),
             message1: '%1',
@@ -35,14 +37,13 @@ Blockly.Blocks.sma_statement = {
             category         : Blockly.Categories.Indicators,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Simple Moving Average (SMA)'),
             'description' : translate('SMA is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. For example, if the SMA is moving upwards, it means the market trend is up. '),
         };
     },
-    onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'period'],
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
 Blockly.JavaScript.sma_statement = block => {

@@ -37,25 +37,34 @@ Blockly.Blocks.trade_definition_contracttype = {
         }
     },
     updateContractTypes(event_group) {
-        const top_parent_block    = this.getTopParent();
-        const trade_type_block    = top_parent_block.getChildByType('trade_definition_tradetype');
-        const trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
-        const contract_type_field = this.getField('TYPE_LIST');
-        const contract_type       = contract_type_field.getValue();
+        const top_parent_block      = this.getTopParent();
+        const trade_type_block      = top_parent_block.getChildByType('trade_definition_tradetype');
+        const trade_type            = trade_type_block.getFieldValue('TRADETYPE_LIST');
+        const contract_type_field   = this.getField('TYPE_LIST');
+        const contract_type         = contract_type_field.getValue();
+        
+        let contract_type_options;
 
-        let contract_types;
+        if (trade_type) {
+            const { opposites }  = config;
+            const opposites_pair = opposites[trade_type.toUpperCase()];
 
-        if (trade_type && trade_type !== 'na') {
-            const { opposites } = config;
-            contract_types      = [
-                [translate('Both'), 'both'],
-                ...opposites[trade_type.toUpperCase()].map(type => Object.entries(type)[0].reverse()),
-            ];
-        } else {
-            contract_types = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+            if (opposites_pair) {
+                const opposite_options = opposites_pair.map(type => Object.entries(type)[0].reverse());
+
+                contract_type_options = [...opposite_options];
+
+                if (opposite_options.length > 1) {
+                    contract_type_options.unshift([translate('Both'), 'both']);
+                }
+            }
         }
 
-        contract_type_field.updateOptions(contract_types, event_group, contract_type);
+        if (!contract_type_options || contract_type_options.length === 0) {
+            contract_type_options = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+
+        contract_type_field.updateOptions(contract_type_options, event_group, contract_type);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

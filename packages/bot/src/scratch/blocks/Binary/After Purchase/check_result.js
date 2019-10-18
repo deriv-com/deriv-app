@@ -37,10 +37,13 @@ Blockly.Blocks.contract_check_result = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
             const top_parent = this.getTopParent();
-            const is_illegal_root_block = top_parent.isMainBlock() && top_parent.type !== 'after_purchase';
-            
-            if (is_illegal_root_block) {
-                this.unplug(true);
+
+            if (top_parent) {
+                const is_illegal_root_block = top_parent.isMainBlock() && top_parent.type !== 'after_purchase';
+
+                if (is_illegal_root_block) {
+                    this.setDisabled(true);
+                }
             }
         }
     },

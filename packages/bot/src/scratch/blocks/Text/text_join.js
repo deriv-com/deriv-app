@@ -2,6 +2,7 @@ import { plusIconDark } from '../images';
 import { translate }    from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_join = {
+    protected_statements: ['STACK'],
     init() {
         this.jsonInit(this.definition());
 
@@ -79,6 +80,7 @@ Blockly.Blocks.text_join = {
         while (currentBlock !== null) {
             if (currentBlock.type !== 'text_statement') {
                 currentBlock.unplug(false);
+                console.log(`Unplugged ${  currentBlock.type}`);
             }
             currentBlock = currentBlock.getNextBlock();
         }
@@ -130,7 +132,7 @@ Blockly.JavaScript.text_join = block => {
     if (elements.length === 0) {
         code = `${varName} = '';\n`;
     } else {
-        code = `${varName} = ${elements.join(' + ')};\n`;
+        code = `${varName} = String(${elements.join(' + ')});\n`;
     }
 
     return code;

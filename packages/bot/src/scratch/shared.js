@@ -16,6 +16,10 @@ const getPurchaseDropdownOptions = (contract_type, opposite_name) => {
     const { [opposite_name]: trade_types } = config.opposites;
     let temp_purchase_choices = [];
 
+    if (contract_type === 'na') {
+        return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+    }
+
     if (trade_types) {
         temp_purchase_choices.push(...trade_types.filter(trade_type => {
             return contract_type === 'both' || contract_type === Object.keys(trade_type)[0];

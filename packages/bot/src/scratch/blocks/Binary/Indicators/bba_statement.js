@@ -3,6 +3,8 @@ import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bba_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
         this.jsonInit(this.definition());
     },

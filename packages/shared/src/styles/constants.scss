@@ -53,9 +53,9 @@ $alpha-color-green-1: transparentize($color-green-1, 0.08);
 $alpha-color-green-2: transparentize($color-green-3, 0.08);
 
 /* gradient colors */
-$gradient-color-green-1: linear-gradient(to top, $color-black, transparentize($color-green-1, 0.84));
-$gradient-color-green-2: linear-gradient(to top, $color-black, transparentize($color-green-3, 0.84));
-$gradient-color-red-1: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
+$gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($color-green-1, 0.84));
+$gradient-color-green-2: linear-gradient(to top, $color-white, transparentize($color-green-3, 0.84));
+$gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($color-red, 0.84));
 
 /* Preserve legacy variables */
 /* Primary */

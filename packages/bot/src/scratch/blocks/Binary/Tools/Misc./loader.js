@@ -1,4 +1,4 @@
-import { loadBlocksFromRemote }                 from '../../../../utils';
+import { loadBlocksFromRemote }       from '../../../../utils';
 import { translate }                  from '../../../../../utils/lang/i18n';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
@@ -46,11 +46,10 @@ Blockly.Blocks.loader = {
                 }
             });
         } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
-            if (event.oldValue !== event.newValue) {
-                const is_valid_url = this.isValidUrl(event.newValue);
-                const is_known_url = this.isKnownUrl(event.newValue);
-
-                if (is_valid_url && !is_known_url) {
+            if (event.newValue && event.oldValue !== event.newValue) {
+                if (event.newValue === this.current_url) {
+                    this.setDisabled(false);
+                } else if (this.isValidUrl(event.newValue) && !this.isKnownUrl(event.newValue)) {
                     this.setDisabled(false);
                     this.loadBlocksFromCurrentUrl();
                 } else {
@@ -60,16 +59,18 @@ Blockly.Blocks.loader = {
         }
     },
     loadBlocksFromCurrentUrl() {
+        this.current_url = this.getFieldValue('URL');
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
 
         // Remove blocks previously loaded by this block.
+        Blockly.Events.disable();
         this.blocks_added_by_me.forEach(block => block.dispose());
+        Blockly.Events.enable();
 
         loadBlocksFromRemote(this).then(() => {
             Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-            this.current_url = this.getFieldValue('URL');
         }).catch(error_msg => {
             Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.error', error_msg);
@@ -82,7 +83,7 @@ Blockly.Blocks.loader = {
     },
     isValidUrl(url) {
         const url_pattern = /[^/]*\.[a-zA-Z]{3}$/;
-        return url.match(url_pattern);
+        return String(url).match(url_pattern);
     },
 };
 

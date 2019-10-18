@@ -125,7 +125,20 @@
             font-size: 1.4rem;
         }
     }
-
+    &__effect:focus:not(:active):after {
+        content: '';
+        position: absolute;
+        top: -0.1em;
+        left: -0.1em;
+        bottom: -0.1em;
+        right: -0.1em;
+        border-radius: inherit;
+        border: 0 solid var(--brand-secondary);
+        opacity: 0.4;
+        animation: buttonEffect 0.4s;
+        animation-fill-mode: forwards;
+        display: block;
+    }
     /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */
     .initial-loader--btn {
@@ -144,5 +157,16 @@
                 height: 35%;
             }
         }
+    }
+}
+
+@keyframes buttonEffect {
+    to {
+        opacity: 0;
+        top: -0.6em;
+        left: -0.6em;
+        bottom: -0.6em;
+        right: -0.6em;
+        border-width: 6px;
     }
 }

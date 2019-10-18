@@ -37,7 +37,7 @@ const Button = ({
     tertiary,
 }) => {
     const classes = classNames('btn', {
-        effect          : has_effect,
+        'btn__effect'   : has_effect,
         'btn--primary'  : primary,
         'btn--secondary': secondary,
         'btn--tertiary' : tertiary,

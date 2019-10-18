@@ -5,6 +5,7 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
+import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifcations';
 import {
@@ -61,46 +62,80 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    onBuyResponse({ contract_id, longcode, contract_type }) {
+        if (this.subscribers[contract_id]) {
+            return /* do nothing */;
+        }
+        const new_pos = {
+            contract_id,
+            longcode,
+            contract_type,
+        };
+        this.pushNewPosition(new_pos);
+        this.subscribers[contract_id] =
+            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+    }
+
+    @action.bound
     async transactionHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, action: act } = response.transaction;
+        const { contract_id, action: act, longcode } = response.transaction;
 
         if (act === 'buy') {
-            const res = await WS.portfolio();
-            const new_pos = res.portfolio.contracts.find(pos => +pos.contract_id === +contract_id);
-            if (!new_pos) return;
-            this.pushNewPosition(new_pos);
-            this.subscribers[contract_id] =
-                WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+            this.onBuyResponse({
+                contract_id,
+                longcode,
+                contract_type: '', // TODO: figure out the icon not showing
+            });
         } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
-            // Currently, if the contract has ended before the response is sent
-            // the Portfolio API returns an empty `contracts` array.
-            // This causes the contract to not be pushed to the `positions` property here.
-            // The statement below prevents accessing undefined values caused by the above explanation.
-            if (i === -1) return;
-
+            if (!this.positions[i]) {
+                // On a page refresh, portfolio call has returend empty,
+                // even though we we get a transaction.sell response.
+                return;
+            }
             this.positions[i].is_loading = true;
             const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
+                this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
             });
         }
     }
 
+    deepClone = obj => JSON.parse(JSON.stringify(obj));
+    updateContractTradeStore(response) {
+        const contract_trade = this.root_store.modules.contract_trade;
+        const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
+        const has_error = !!response.error;
+        if (!has_poc && !has_error) { return; }
+        contract_trade.addContract(this.deepClone(response.proposal_open_contract));
+        contract_trade.updateProposal(this.deepClone(response));
+    }
+
     @action.bound
     proposalOpenContractHandler(response) {
-        if ('error' in response) return;
+        if ('error' in response) {
+            this.updateContractTradeStore(response);
+            return;
+        }
 
         const proposal = response.proposal_open_contract;
-        this.root_store.modules.contract_trade.addContract(proposal);
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;
+        this.updateContractTradeStore(response);
+
+        const formatted_position = formatPortfolioPosition(
+            proposal,
+            this.root_store.modules.trade.active_symbols,
+            portfolio_position.indicative
+        );
+        Object.assign(portfolio_position, formatted_position);
 
         const prev_indicative = portfolio_position.indicative;
         const new_indicative  = +proposal.bid_price;
@@ -114,6 +149,7 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.indicative       = new_indicative;
         portfolio_position.profit_loss      = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
+
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 

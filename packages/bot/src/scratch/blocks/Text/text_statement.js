@@ -2,6 +2,7 @@ import { minusIconDark } from '../images';
 import { translate } from '../../../utils/tools';
 
 Blockly.Blocks.text_statement = {
+    has_protected_statement: true,
     init() {
         this.requiredParentId = '';
 
@@ -71,6 +72,6 @@ Blockly.Blocks.text_statement = {
 };
 
 Blockly.JavaScript.text_statement = block => {
-    const code = Blockly.JavaScript.valueToCode(block, 'TEXT') || '';
+    const code = Blockly.JavaScript.valueToCode(block, 'TEXT') || '\'\'';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

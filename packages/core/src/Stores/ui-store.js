@@ -78,6 +78,15 @@ export default class UIStore extends BaseStore {
     @observable is_top_up_virtual_open = false;
     @observable is_top_up_virtual_success = false;
 
+    // Real account signup
+    @observable real_account_signup = {
+        active_modal_index: -1,
+        previous_currency : '',
+        current_currency  : '',
+        success_message   : '',
+        error_message     : '',
+    };
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -264,6 +273,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
+        setTimeout(this.resetRealAccountSignupParams, 300);
     }
 
     @action.bound
@@ -378,5 +388,24 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    @action.bound
+    setRealAccountSignupParams(params) {
+        this.real_account_signup = {
+            ...this.real_account_signup,
+            ...params,
+        };
+    }
+
+    @action.bound
+    resetRealAccountSignupParams() {
+        this.real_account_signup = {
+            active_modal_index: -1,
+            previous_currency : '',
+            current_currency  : '',
+            success_message   : '',
+            error_message     : '',
+        };
     }
 }

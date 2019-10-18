@@ -83,8 +83,7 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable has_no_balance = false;
-    @observable is_loading     = false;
+    @observable is_loading = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -116,7 +115,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetValuesIfNeeded() {
-        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
+        if (this.current_client !== this.root_store.client.loginid) {
             this.onAccountSwitch();
         }
         this.current_client = this.root_store.client.loginid;
@@ -125,16 +124,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountCommon() {
         await BinarySocket.wait('authorize');
-
         this.resetValuesIfNeeded();
-
-        if (!this.root_store.client.balance) {
-            const balance = (await WS.authorized.balance()).balance;
-            // make sure balance response has come then set it to false, but don't wait unless we need to
-            if (!balance.balance) {
-                this.setHasNoBalance(true);
-            }
-        }
     }
 
     @action.bound
@@ -253,11 +243,6 @@ export default class CashierStore extends BaseStore {
                 fields: error.details.fields,
             }),
         };
-    }
-
-    @action.bound
-    setHasNoBalance(has_no_balance) {
-        this.has_no_balance = has_no_balance;
     }
 
     @action.bound
@@ -421,6 +406,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async setPaymentAgentList(pa_list) {
         const payment_agent_list = pa_list || await this.getPaymentAgentList();
+        if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
+            return;
+        }
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -568,7 +556,17 @@ export default class CashierStore extends BaseStore {
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
 
-        if (!this.config.account_transfer.accounts_list.length) {
+        // check if some balance update has come in since the last mount
+        const has_updated_account_balance = this.config.account_transfer.has_no_accounts_balance &&
+            Object.keys(this.root_store.client.active_accounts).find(account =>
+                !this.root_store.client.active_accounts[account].is_virtual &&
+                this.root_store.client.active_accounts[account].balance
+            );
+        if (has_updated_account_balance) {
+            this.setHasNoAccountsBalance(false);
+        }
+
+        if (!this.config.account_transfer.accounts_list.length || has_updated_account_balance) {
             const transfer_between_accounts = await WS.transferBetweenAccounts();
             if (transfer_between_accounts.error) {
                 this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);

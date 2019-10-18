@@ -165,6 +165,9 @@
                 background-color: var(--state-hover);
                 border-radius: 4px;
             }
+            &.acc-switcher__account--disabled:hover {
+                background-color: var(--general-main-2);
+            }
             .acc-switcher__id {
                 color: var(--text-general);
                 width: 100%;
@@ -181,6 +184,10 @@
                         border: 1px solid var(--text-prominent);
                     }
                 }
+            }
+            &--disabled {
+                opacity: 0.5;
+                cursor: default;
             }
             &:only-child {
                 border-radius: 4px;

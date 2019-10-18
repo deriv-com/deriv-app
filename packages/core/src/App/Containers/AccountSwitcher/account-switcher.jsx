@@ -47,6 +47,7 @@ class AccountSwitcher extends React.Component {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
         // await this.props.clearPositions();
+        // await this.props.clearContracts();
         await this.props.switchAccount(loginid);
 
         /* if (this.props.has_error) {
@@ -101,9 +102,13 @@ class AccountSwitcher extends React.Component {
                                     <div
                                         id={`dt_${account.loginid}`}
                                         className={classNames('acc-switcher__account', {
-                                            'acc-switcher__account--selected': (account.loginid === this.props.account_loginid),
+                                            'acc-switcher__account--selected': account.loginid === this.props.account_loginid,
+                                            'acc-switcher__account--disabled': account.is_disabled,
                                         })}
-                                        onClick={this.doSwitch.bind(this, account.loginid)}
+                                        onClick={account.is_disabled
+                                            ? undefined
+                                            : this.doSwitch.bind(this, account.loginid)
+                                        }
                                     >
                                         <span className={'acc-switcher__id'}>
                                             <Icon
@@ -120,7 +125,7 @@ class AccountSwitcher extends React.Component {
                                                 }
                                             </span>
                                             {'balance' in this.props.accounts[account.loginid] &&
-                                            <span className={classNames('acc-switcher__balance', { 'acc-swithcer__balance--virtual': account.is_virtual })}>
+                                            <span className={classNames('acc-switcher__balance', { 'acc-switcher__balance--virtual': account.is_virtual })}>
                                                 {this.props.accounts[account.loginid].currency &&
                                                 <Money
                                                     currency={this.props.accounts[account.loginid].currency}
@@ -211,6 +216,7 @@ AccountSwitcher.propTypes = {
     account_loginid       : PropTypes.string,
     accounts              : PropTypes.object,
     cleanUp               : PropTypes.func,
+    // clearContracts        : PropTypes.func,
     // clearError            : PropTypes.func,
     // clearPositions        : PropTypes.func,
     display               : PropTypes.string,
@@ -244,6 +250,7 @@ const account_switcher = connect(
         // clearError            : modules.contract_trade.clearError,
         // has_error             : modules.contract_trade.has_error,
         // clearPositions        : modules.portfolio.clearTable,
+        // clearContracts        : modules.trade.clearContracts,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup : ui.openRealAccountSignup,
         togglePositionsDrawer : ui.togglePositionsDrawer,

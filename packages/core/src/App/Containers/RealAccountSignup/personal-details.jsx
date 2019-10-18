@@ -86,7 +86,7 @@ export class DateOfBirth extends React.Component {
                                 'datepicker--active-label': !!value,
                             })}
                             onBlur={handleBlur}
-                            value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
+                            value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
                         <IconDatepicker className='icon-datepicker' />
@@ -224,7 +224,7 @@ class PersonalDetails extends React.Component {
                                             <DateOfBirth
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
-                                                placeholder={localize('1999-07-01')}
+                                                placeholder={localize('01-07-1999')}
                                                 onFocus={this.onFocus}
                                             />
                                             <InputField

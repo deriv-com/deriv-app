@@ -1,4 +1,5 @@
 import './block';
+import './block_render_svg_vertical';
 import './block_svg';
 import './colours';
 import './constant';
@@ -12,9 +13,8 @@ import './gesture';
 import './icon';
 import './procedures';
 import './toolbox';
+import './variable_map';
 import './variables';
 import './workspace_audio';
 import './workspace_svg';
 import './xml';
-import './block_render_svg_vertical';
-

@@ -54,13 +54,15 @@ Blockly.Block.prototype.getBlocksInStatement = function(statementInputName) {
     return blocksInStatement;
 };
 
-Blockly.Block.prototype.getLastConnectionInStatement = function(statementInputName) {
-    const firstBlockInStack = this.getInputTargetBlock(statementInputName);
-    if (firstBlockInStack) {
-        return firstBlockInStack.lastConnectionInStack();
+Blockly.Block.prototype.getLastConnectionInStatement = function(statement_input_name) {
+    const first_block_in_stack = this.getInputTargetBlock(statement_input_name);
+
+    if (first_block_in_stack) {
+        return first_block_in_stack.lastConnectionInStack();
     }
-    const statementInput = this.getInput(statementInputName);
-    return statementInput.connection;
+
+    const statement_input = this.getInput(statement_input_name);
+    return statement_input.connection;
 };
 
 Blockly.Block.prototype.isDescendantOf = function(type) {

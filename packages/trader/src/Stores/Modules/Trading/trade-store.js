@@ -10,7 +10,9 @@ import {
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
 import { localize }                   from 'App/i18n';
-import { WS }                         from 'Services';
+import {
+    requestLogout,
+    WS }                              from 'Services';
 import BinarySocket                   from '_common/base/socket_base';
 import {
     isDigitContractType,
@@ -421,7 +423,17 @@ export default class TradeStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     };
-                    this.root_store.ui.toggleServicesErrorModal(true);
+                    
+                    // check if token is invalid
+                    if (response.error.code === 'InvalidToken') {
+                    // send logout ,clear contracts, clean up client and then show message
+                        this.root_store.client.cleanUp();
+                        requestLogout().then(() => {
+                            this.root_store.modules.trade.clearContracts();
+                            this.root_store.ui.toggleServicesErrorModal(true);
+                        });
+                    } else this.root_store.ui.toggleServicesErrorModal(true); // for other senarioss
+
                 }
                 WS.forgetAll('proposal');
                 this.purchase_info = response;

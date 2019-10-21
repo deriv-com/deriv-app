@@ -3,6 +3,7 @@ import {
     action,
     reaction,
     computed }             from 'mobx';
+import { is } from 'immutable';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
 import {
     runBot,
@@ -31,11 +32,24 @@ export default class RunPanelStore {
     is_error_happened   = false;
     is_continue_trading = true;
 
-    setContractStage(value) {
-        this.contract_stage = value;
+    // #region button clicks
+    @computed
+    get is_stop_button_disabled() {
+        return this.contract_stage.index === CONTRACT_STAGES.is_stopping.index;
     }
 
-    // #region button clicks
+    @computed
+    get is_stop_button_visible(){
+        return this.is_running || this.has_open_contract;
+    }
+    
+    @computed
+    get is_clear_stat_disabled() {
+        return this.is_running ||
+          this.has_open_contract ||
+          this.root_store.journal.messages.length === 0;
+    }
+
     @action.bound
     onRunButtonClick = () => {
         const { client } = this.root_store.core;
@@ -86,12 +100,14 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
+        const { contract_card , journal, summary, transactions } = this.root_store;
+
         this.is_running = false;
         this.has_open_contract = false;
-        this.root_store.journal.clear();
-        this.root_store.contract_card.clear();
-        this.root_store.summary.clear();
-        this.root_store.transactions.clear();
+        journal.clear();
+        contract_card.clear();
+        summary.clear();
+        transactions.clear();
         this.setContractStage(CONTRACT_STAGES.not_running);
     }
     // #endregion
@@ -298,6 +314,10 @@ export default class RunPanelStore {
                 register();
             }
         );
+    }
+
+    setContractStage(value) {
+        this.contract_stage = value;
     }
 
     onUnmount() {

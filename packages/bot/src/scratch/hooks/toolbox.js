@@ -111,6 +111,14 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         })
         .flat();
 
+    const pushBlockWithName = ({ block_type, block_meta, block_content }) => {
+        const block_name = block_meta.display_name;
+
+        if (block_type.toUpperCase() === search_term || block_name.toUpperCase() === search_term) {
+            pushIfNotExists(flyout_content, block_content);
+        }
+    };
+
     const pushBlockMatchedName = ({ block_type, block_meta, block_content }) => {
         const block_name = block_meta.display_name;
         // block_name matched
@@ -120,7 +128,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     };
 
     const pushBlockMatchedDefinition = ({ block_definitions, block_content }) => {
-        const definition_key_to_search = /^((message)|(tooltip))/;
+        const definition_key_to_search = /^((message)|(tooltip)|(category))/;
         // eslint-disable-next-line consistent-return
         const matched_definition = Object.keys(block_definitions).filter(key => {
             const definition = block_definitions[key];
@@ -161,7 +169,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         }
     };
 
-    const prioprity_order = ['block_name', 'block_definitions', 'block_meta'];
+    const prioprity_order = ['exact_block_name', 'block_name', 'block_definitions', 'block_meta'];
 
     prioprity_order.forEach(prioprity => {
         block_contents.forEach(block_content => {
@@ -171,6 +179,9 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             const block_definitions = block.definition instanceof Function && block.definition();
 
             switch (prioprity) {
+                case 'exact_block_name':
+                    pushBlockWithName({ block_type, block_meta, block_content });
+                    break;
                 case 'block_name':
                     pushBlockMatchedName({ block_type, block_meta, block_content });
                     break;

@@ -320,13 +320,13 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     }
 
     if (block.getInput('BARRIEROFFSET')) {
-        const barrier_offset_type = block.getFieldValue('BARRIERTYPE_LIST');
+        const barrier_offset_type = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
         const value               = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET') || '0';
         barrier_offset_value      = getBarrierValue(barrier_offset_type, value);
     }
 
     if (block.getInput('SECONDBARRIEROFFSET')) {
-        const barrier_offset_type   = block.getFieldValue('SECONDBARRIERTYPE_LIST');
+        const barrier_offset_type   = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
         const value                 = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET') || '0';
         second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }

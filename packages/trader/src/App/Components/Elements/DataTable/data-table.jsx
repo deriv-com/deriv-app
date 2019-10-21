@@ -4,13 +4,42 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { FixedSizeList as List }      from 'react-window';
 import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
-import React                          from 'react';
+import React, { useCallback }         from 'react';
 import TableRow                       from './table-row.jsx';
 
 /* TODO:
       1. implement sorting by column (ASC/DESC)
       2. implement filtering per column
 */
+
+const ListScrollbar = React.forwardRef((props, ref) => (
+    <ExtendedScrollbars {...props} forwardedRef={ref} />
+));
+
+// Display name is required by Developer Tools to give a name to the components we use.
+// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
+ListScrollbar.displayName = 'ListScrollbar';
+
+const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
+    const refSetter = useCallback(scrollbarsRef => {
+        if (scrollbarsRef) {
+            forwardedRef(scrollbarsRef.view);
+        } else {
+            forwardedRef(null);
+        }
+    }, []);
+
+    return (
+        <ThemedScrollbars
+            ref={refSetter}
+            style={{ ...style, overflow: 'hidden' }}
+            onScroll={onScroll}
+            autoHide
+        >
+            {children}
+        </ThemedScrollbars>
+    );
+};
 
 class DataTable extends React.PureComponent {
     constructor(props) {
@@ -64,6 +93,7 @@ class DataTable extends React.PureComponent {
             className,
             getRowAction,
             columns,
+            preloaderCheck,
             id } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
@@ -78,6 +108,7 @@ class DataTable extends React.PureComponent {
                 id={contract_id}
                 key={id}
                 to={typeof action === 'string' ? action : undefined}
+                show_preloader={(typeof preloaderCheck === 'function') ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
             />
         );
@@ -109,6 +140,7 @@ class DataTable extends React.PureComponent {
                     itemCount={data_source.length}
                     itemSize={item_size || 63}
                     width={this.state.width}
+                    outerElementType={is_empty ? null : ListScrollbar}
                 >
                     {this.rowRenderer.bind(this)}
                 </List>
@@ -127,20 +159,10 @@ class DataTable extends React.PureComponent {
                 </div>
                 <div
                     className='table__body'
-                    onScroll={onScroll}
                     ref={el => { this.el_table_body = el; }}
+                    onScroll={onScroll}
                 >
-                    {is_empty ?
-                        TableData
-                        :
-                        <ThemedScrollbars
-                            autoHeight
-                            autoHeightMax={this.state.height}
-                            autoHide
-                        >
-                            {TableData}
-                        </ThemedScrollbars>
-                    }
+                    {TableData}
                 </div>
 
                 {footer &&

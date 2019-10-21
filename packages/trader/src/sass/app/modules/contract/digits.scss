@@ -95,7 +95,7 @@
             transition: background-color 0.2s ease-out, transform 0.1s ease-out;
 
             &--selected {
-                background-color: var(--transparent-success);
+                background-color: var(--general-main-2);
             }
             &--win {
                 background-color: var(--text-profit-success);

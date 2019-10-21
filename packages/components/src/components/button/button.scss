@@ -25,11 +25,10 @@
     &__text, &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
-        display: inline-block;
-        vertical-align: middle;
+        display: flex;
     }
     &__icon {
-        padding-right: 6px;
+        padding-right: 0.8rem;
     }
     &:not([disabled]):hover {
         text-decoration: none;

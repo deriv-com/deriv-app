@@ -152,8 +152,8 @@ class AccountSwitcher extends React.Component {
                     {this.can_manage_currency && !can_upgrade &&
                         <UpgradeButton
                             onClick={this.props.openRealAccountSignup}
+                            icon={<Icon icon='IconAdd' />}
                         >
-                            <Icon icon='IconAdd' />
                             <Localize
                                 i18n_default_text='Add/manage account'
                             />

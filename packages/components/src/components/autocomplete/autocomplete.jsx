@@ -15,23 +15,78 @@ const IconArrow = ({ className, classNamePath }) => (
         />
     </svg>
 );
-
+const list_height = 220;
 class Autocomplete extends React.PureComponent {
+    list_ref      = React.createRef();
+    list_item_ref = React.createRef();
+
     state = {
         should_show_list: false,
         filtered_items  : null,
         input_value     : '',
+        active_index    : null,
     };
 
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
-    // TODO: Prevent form submission when user is finished typing and keys in Enter
     onKeyPressed = (event) => {
+        console.log(event.keyCode);
+        if (event.keyCode === 13 || (this.state.should_show_list && event.keyCode === 9)) {
+            this.hideDropdownList();
+            this.onItemSelection(this.props.list_items[this.state.active_index]);
+        }
+
         if (this.state.should_show_list) {
-            // keycode == 13 is Enter key
-            if (event.keyCode === 13) event.preventDefault();
+            if (event.keyCode === 27) {
+                this.setState({ should_show_list: false });
+            }
+            if (event.keyCode === 40) {
+                this.setActiveDown();
+            }
+            if (event.keyCode === 38) {
+                this.setActiveUp();
+            }
         }
     };
+
+    setActiveUp = () => {
+        const { active_index } = this.state;
+        if (typeof active_index === 'number') {
+            const { active_index } = this.state;
+            let next = active_index - 1;
+
+            if (next <= 0) {
+                this.setState({ active_index: this.props.list_items.length - 1 });
+                this.list_ref.current.scrollToBottom();
+            } else {
+                const to = this.list_item_ref.current.offsetTop - 40;
+                this.setState({ active_index: next });
+                this.list_ref.current.scrollTop(to);
+            }
+        }
+    }
+
+    setActiveDown = () => {
+        const { active_index } = this.state;
+        if (active_index === null) {
+            this.setState({ active_index: 0 });
+        }
+        if (typeof active_index === 'number') {
+            const { active_index } = this.state;
+            const next = active_index + 1;
+
+            if (this.list_ref.current) {
+                if (next >= this.props.list_items.length) {
+                    this.setState({ active_index: 0 });
+                    this.list_ref.current.scrollTop();
+                } else {
+                    const to = this.list_item_ref.current.offsetTop + 40;
+                    this.list_ref.current.scrollTop(to);
+                    this.setState({ active_index: next });
+                }
+            }
+        }
+    }
 
     onBlur = (e) => {
         event.preventDefault();
@@ -144,6 +199,8 @@ class Autocomplete extends React.PureComponent {
                     />
                 </div>
                 <DropdownList
+                    ref={{ list_ref: this.list_ref, list_item_ref: this.list_item_ref }}
+                    active_index={this.state.active_index}
                     style={ {
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',
                         marginTop: dropdown_offset ? `calc(-${dropdown_offset} + 8px)` : '8px', // 4px is the standard margin. In case of error, the list should overlap the error

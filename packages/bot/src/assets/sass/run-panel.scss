@@ -11,7 +11,7 @@
         margin: 16px 0;
     }
     &__button {
-        display: inline-block !important;
+        display: inline-flex !important;
         margin: 1.2rem 0.8rem;
 
         &--disable {
@@ -19,7 +19,7 @@
             opacity: 0.5;
         }
         &--icon {
-            display: inline-block;
+            display: inline-flex;
             vertical-align: middle;
         }
     }

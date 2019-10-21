@@ -14,7 +14,7 @@
 
     position: absolute;
     left: 250px;
-    background-color: $COLOR_WHITE;
+    background-color: var(--general-main-1);
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
     z-index: 1;
@@ -60,7 +60,7 @@
         }
         &-add {
             background-color: $COLOR_CORAL_RED;
-            color: $COLOR_WHITE;
+            color: var(--general-main-1);
 
             &-hide {
                 display: none;
@@ -83,7 +83,7 @@
         &-previous {
             margin-left: 1em;
             color: $COLOR_LIGHT_BLACK_1;
-            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+            background-color: var(--general-section-1);
 
             &:focus {
                 outline: none;
@@ -141,7 +141,7 @@
         &-header {
             padding: 15px;
             display: flex;
-            background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+            background-color: var(--general-section-1);
         }
         &-content {
             padding: 1.5em;
@@ -161,7 +161,7 @@
         &-footer {
             text-align: right;
             padding: 0.5em 0.8em;
-            border-top: solid 0.1em $COLOR_LIGHT_BLACK_4_SOLID;
+            border-top: solid 0.1em var(--general-section-1);
         }
     }
     &__search {

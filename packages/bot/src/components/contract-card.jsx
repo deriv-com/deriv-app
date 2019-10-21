@@ -20,32 +20,32 @@ import { translate }         from '../utils/lang/i18n';
 import                            '../assets/sass/contract-card.scss';
 
 class ContractCard extends React.PureComponent {
-    // componentWillUnmount() {
-    //     this.props.onUnmount();
-    // }
-
     render() {
         const {
             contract,
             profit_movement,
+            is_contract_completed,
+            is_contract_loading,
+            is_contract_losing,
+            is_contract_inactive,
+            is_contract_winning,
             indicative_movement,
-            is_loading,
         } = this.props;
 
         return (
             <div className={classNames(
                 'db-contract-card', {
-                    'db-contract-card--inactive'  : !contract && !is_loading,
-                    'db-contract-card--is-loading': is_loading,
-                    'db-contract-card--is-winning': contract && contract.profit > 0,
-                    'db-contract-card--is-losing' : contract && contract.profit < 0,
-                    'db-contract-card--completed' : !is_loading && contract && isEnded(contract),
+                    'db-contract-card--inactive'  : is_contract_inactive,
+                    'db-contract-card--is-loading': is_contract_loading,
+                    'db-contract-card--is-winning': is_contract_winning,
+                    'db-contract-card--is-losing' : is_contract_losing,
+                    'db-contract-card--completed' : is_contract_completed,
                 })}
             >
-                { is_loading && <ContractCardLoader /> }
-                { !is_loading && contract &&
+                { is_contract_loading && <ContractCardLoader /> }
+                { !is_contract_loading && contract &&
                     <React.Fragment>
-                        { !!isEnded(contract) && <ContractResultOverlay profit={contract.profit} /> }
+                        { is_contract_completed && <ContractResultOverlay profit={contract.profit} /> }
                         <div className='db-contract-card__underlying'>
                             <div className='db-contract-card__underlying-name'>
                                 <UnderlyingIcon market={contract.underlying} />
@@ -122,7 +122,7 @@ class ContractCard extends React.PureComponent {
                         </div>
                     </React.Fragment>
                 }
-                { !is_loading && !contract &&
+                { !is_contract_loading && !contract &&
                     <React.Fragment>
                         { translate('Build a bot from the start menu then hit the run button to run the bot.') }
                     </React.Fragment>}
@@ -132,17 +132,23 @@ class ContractCard extends React.PureComponent {
 }
 
 ContractCard.propTypes = {
-    contract         : PropTypes.object,
-    indicative_moment: PropTypes.string,
-    is_loading       : PropTypes.bool,
-    onUnmount        : PropTypes.func,
-    profit_movement  : PropTypes.string,
+    contract             : PropTypes.object,
+    indicative_moment    : PropTypes.string,
+    is_contract_completed: PropTypes.bool,
+    is_contract_inactive : PropTypes.bool,
+    is_contract_loading  : PropTypes.bool,
+    is_contract_losing   : PropTypes.bool,
+    is_contract_winning  : PropTypes.bool,
+    profit_movement      : PropTypes.string,
 };
 
 export default connect(({ contract_card }) => ({
-    contract           : contract_card.contract,
-    indicative_movement: contract_card.indicative_movement,
-    is_loading         : contract_card.is_loading,
-    onUnmount          : contract_card.onUnmount,
-    profit_movement    : contract_card.profit_movement,
+    contract             : contract_card.contract,
+    is_contract_completed: contract_card.is_contract_completed,
+    is_contract_loading  : contract_card.is_contract_loading,
+    is_contract_losing   : contract_card.is_contract_losing,
+    is_contract_inactive : contract_card.is_contract_inactive,
+    is_contract_winning  : contract_card.is_contract_winning,
+    indicative_movement  : contract_card.indicative_movement,
+    profit_movement      : contract_card.profit_movement,
 }))(ContractCard);

@@ -17,10 +17,6 @@ const SummaryTile = (props) => (
 );
 
 class Summary extends React.PureComponent {
-    // componentWillUnmount() {
-    //     this.props.onUnmount();
-    // }
-
     render() {
         const {
             total_stake,
@@ -76,7 +72,6 @@ Summary.propTypes = {
     currency      : PropTypes.string,
     lost_contracts: PropTypes.number,
     number_of_runs: PropTypes.number,
-    onUnmount     : PropTypes.func,
     total_payout  : PropTypes.number,
     total_profit  : PropTypes.number,
     total_stake   : PropTypes.number,
@@ -88,7 +83,6 @@ export default connect(({ summary }) => ({
     currency      : summary.currency,
     lost_contracts: summary.lost_contracts,
     number_of_runs: summary.number_of_runs,
-    onUnmount     : summary.onUnmount,
     total_payout  : summary.total_payout,
     total_profit  : summary.total_profit,
     total_stake   : summary.total_stake,

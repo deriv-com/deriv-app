@@ -120,6 +120,7 @@
         }
     }
     &--is-loading {
+        background-color: inherit;
         border: 1px solid var(--general-main-1);
     }
     &--completed {

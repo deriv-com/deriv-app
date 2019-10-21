@@ -1,11 +1,7 @@
 import { action, observable } from 'mobx';
 import { isEnded }            from '../utils/contract';
-import { observer }           from '../utils/observer';
 
 export default class TransactionsStore {
-    constructor() {
-        observer.register('bot.contract', this.onBotContractEvent);
-    }
 
     @observable contracts = [];
 
@@ -37,9 +33,5 @@ export default class TransactionsStore {
     @action.bound
     clear(){
         this.contracts = this.contracts.slice(0,0);  // force array update
-    }
-
-    onUnmount() {
-        observer.unregister('contract.status', this.onBotContractEvent);
     }
 }

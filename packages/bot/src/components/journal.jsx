@@ -90,10 +90,6 @@ const MessageItem = ({
 };
 
 class Journal extends React.PureComponent {
-    componentWillUnmount() {
-        // this.props.onUnmount();
-    }
-
     render() {
         const { messages } = this.props;
 
@@ -136,11 +132,9 @@ class Journal extends React.PureComponent {
 }
 
 Journal.propTypes = {
-    messages : proptypes.array,
-    onUnmount: proptypes.func,
+    messages: proptypes.array,
 };
 
 export default connect(({ journal }) => ({
-    messages : journal.messages,
-    onUnmount: journal.onUnmount,
+    messages: journal.messages,
 }))(Journal);

@@ -2,7 +2,6 @@ import {
     observable,
     action }                     from 'mobx';
 import { formatDate }            from 'deriv-shared/utils/date';
-import { observer }              from '../utils/observer';
 import {
     message_types,
     unrecoverable_errors }        from '../constants/message-types';
@@ -10,11 +9,6 @@ import {
 export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
-
-        observer.register('ui.log.success', this.onLogSuccess);
-        observer.register('ui.log.error', this.onError);
-        observer.register('Error', this.onError);
-        observer.register('Notify', this.onNotify);
     }
 
     get serverTime () {
@@ -45,11 +39,6 @@ export default class JournalStore {
     onNotify(data) {
         this.pushMessage(data , message_types.notify);
     }
-
-    @action.bound
-    clear() {
-        this.messages = this.messages.slice(0, 0);  // force array update
-    }
     
     @action.bound
     pushMessage(data, message_type) {
@@ -71,11 +60,7 @@ export default class JournalStore {
     }
 
     @action.bound
-    onUnmount() {
-        // TODO unregister is not working
-        observer.unregister('ui.log.success', this.onLogSuccess);
-        observer.unregister('ui.log.error', this.onLogError);
-        observer.unregister('Error', this.onLogError);
-        observer.unregister('Notify', this.onNotify);
+    clear() {
+        this.messages = this.messages.slice(0, 0);  // force array update
     }
 }

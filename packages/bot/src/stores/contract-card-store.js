@@ -1,9 +1,10 @@
 import {
     observable,
     action,
-    computed }                  from 'mobx';
-import { getIndicativePrice } from '../utils/contract';
-import { observer }           from '../utils/observer';
+    computed }                from 'mobx';
+import { CONTRACT_STAGES }    from '../constants/contract-stage';
+import { isEnded ,
+    getIndicativePrice }      from '../utils/contract';
 
 export default class ContractCardStore {
     @observable contract            = null;
@@ -16,13 +17,36 @@ export default class ContractCardStore {
     
     constructor(root_store) {
         this.root_store  = root_store;
-
-        observer.register('bot.contract', this.onBotContractEvent);
     }
 
     @computed
-    get is_loading() {
-        return this.root_store.run_panel.is_running;
+    get is_contract_completed() {
+        return this.contract &&
+        isEnded(this.contract) &&
+        (this.root_store.run_panel.contract_stage.index !== CONTRACT_STAGES.purchase_recieved.index);
+    }
+
+    @computed
+    get is_contract_loading() {
+        return  (this.root_store.run_panel.is_running && this.contract === null) ||
+        (this.root_store.run_panel.contract_stage.index === CONTRACT_STAGES.purchase_sent.index) ||
+        (this.root_store.run_panel.contract_stage.index === CONTRACT_STAGES.starting.index);
+    }
+
+    @computed
+    get is_contract_inactive() {
+        return !this.contract &&
+        !this.is_loading;
+    }
+
+    @computed
+    get is_contract_losing() {
+        return this.contract && this.contract.profit < 0;
+    }
+
+    @computed
+    get is_contract_winning() {
+        return this.contract && this.contract.profit > 0;
     }
 
     @action.bound
@@ -64,10 +88,5 @@ export default class ContractCardStore {
         this.indicative          = 0;
         this.indicative_movement = '';
         this.profit_movement     = '';
-    }
-
-    @action.bound
-    onUnmount() {
-        observer.unregister('bot.contract', this.onBotContractEvent);
     }
 }

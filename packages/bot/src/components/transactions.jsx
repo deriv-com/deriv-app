@@ -128,10 +128,6 @@ const Transaction = ({ contract }) => {
 };
 
 class Transactions extends React.PureComponent {
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
-
     render() {
         const { contracts } = this.props;
 
@@ -164,10 +160,8 @@ class Transactions extends React.PureComponent {
 
 Transactions.propTypes = {
     contracts: PropTypes.array,
-    onUnmount: PropTypes.func,
 };
 
 export default connect(({ transactions }) => ({
     contracts: transactions.contracts,
-    onUnmount: transactions.onUnmount,
 }))(Transactions);

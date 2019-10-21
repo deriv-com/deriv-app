@@ -116,9 +116,9 @@ const drawerFooter = ({
 };
 
 class RunPanel extends React.PureComponent {
-    // componentWillUnmount() {
-    //     this.props.onUnmount(); TODO: Dispose of listeners.
-    // }
+    componentWillUnmount() {
+        this.props.onUnmount();
+    }
 
     render() {
         const { active_index, setActiveTabIndex } = this.props;
@@ -156,7 +156,7 @@ RunPanel.propTypes = {
     toggleDrawer           : PropTypes.func,
 };
 
-export default connect(({ run_panel, journal }) => ({
+export default connect(({ run_panel }) => ({
     active_index           : run_panel.active_index,
     dialog_options         : run_panel.dialog_options,
     is_clear_stat_disabled : run_panel.is_clear_stat_disabled,

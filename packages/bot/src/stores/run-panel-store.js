@@ -3,7 +3,6 @@ import {
     action,
     reaction,
     computed }             from 'mobx';
-import { is } from 'immutable';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
 import {
     runBot,
@@ -202,12 +201,13 @@ export default class RunPanelStore {
             this.setContractStage(CONTRACT_STAGES.not_running);
             this.is_error_happened = false;
             this.is_running = false;
+            this.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now
             this.setContractStage(CONTRACT_STAGES.contract_closed);
+            this.unregisterBotListeners();
         }
         this.has_open_contract = false;
-        this.unregisterBotListeners();
     }
 
     @action.bound

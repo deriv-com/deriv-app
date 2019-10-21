@@ -10,83 +10,34 @@ import { Arrow2Icon }   from '../../components/Icons.jsx';
 import { connect }      from '../../stores/connect';
 import { translate }    from '../../utils/tools';
 
-class HelpBase extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        const {
-            is_search_flyout,
-            onBackClick,
-            onSequenceClick,
-            block_nodes,
-        } = props;
+const HelpBase = ({
+    block_node,
+    block_type,
+    help_string,
+    is_search_flyout,
+    onBackClick,
+    onSequenceClick,
+    title,
+}) => {
+    const block_help_component = help_string && config[block_type];
+    let text_count = 0;
 
-        this.state = {
-            is_search_flyout,
-            onBackClick,
-            onSequenceClick,
-            block_nodes,
-            help_string     : null,
-            has_help_content: true,
-        };
-    }
-
-    getHelpString = block_nodes => {
-        const block_type = block_nodes[0].getAttribute('type');
-        const title = Blockly.Blocks[block_type].meta().display_name;
-
-        import(`./help-string/${block_type}.json`)
-            .then(help_string => {
-                this.setState({ help_string, has_help_content: true });
-            })
-            .catch(() => this.setState({ has_help_content: false }));
-
-        this.setState({ title, block_type });
-    }
-
-    componentDidMount() {
-        const { block_nodes } = this.props;
-        this.getHelpString(block_nodes);
-    }
-
-    componentDidUpdate(prev_state) {
-        const { block_nodes } = this.props;
-
-        if (prev_state !== this.props) {
-            this.setState({ ...this.props });
-            this.getHelpString(block_nodes);
-        }
-    }
-
-    render() {
-        const {
-            is_search_flyout,
-            onBackClick,
-            onSequenceClick,
-            block_type,
-            title,
-            block_nodes,
-            help_string,
-            has_help_content,
-        } = this.state;
-        const block_help_component = help_string && config[block_type];
-        let text_count = 0;
-
-        return (
-            <React.Fragment>
-                <div className='flyout__help-header'>
-                    <button className='flyout__button flyout__button-back' onClick={onBackClick}>
-                        <Arrow2Icon />
+    return (
+        <React.Fragment>
+            <div className='flyout__help-header'>
+                <button className='flyout__button flyout__button-back' onClick={onBackClick}>
+                    <Arrow2Icon />
+                </button>
+                <span className='flyout__help-title'>{title}</span>
+                <div className='flyout__item-buttons'>
+                    <button className='flyout__button flyout__button-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}>
+                        {translate('Add')}
                     </button>
-                    <span className='flyout__help-title'>{title}</span>
-                    <div className='flyout__item-buttons'>
-                        <button className='flyout__button flyout__button-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[0])}>
-                            {translate('Add')}
-                        </button>
-                    </div>
                 </div>
-                <div className='flyout__help-content'>
-                    {
-                        block_help_component &&
+            </div>
+            <div className='flyout__help-content'>
+                {
+                    block_help_component &&
                         block_help_component.map((component, index) => {
                             const { type, width, url } = component;
                             const { text } = help_string;
@@ -110,7 +61,7 @@ class HelpBase extends React.PureComponent {
                                         <FlyoutBlock
                                             key={`${block_type}_${index}`}
                                             should_center_block={true}
-                                            block_node={block_nodes[0]}
+                                            block_node={block_node}
                                         />
                                     );
                                 }
@@ -118,36 +69,35 @@ class HelpBase extends React.PureComponent {
                                     return null;
                             }
                         })
-                    }
-                    {
-                        !has_help_content &&
-                        <div className='flyout__item'>
-                            <h3>Coming soon...</h3>
-                        </div>
-                    }
-                </div>
-                {
-                    !is_search_flyout &&
-                    <div className='flyout__help-footer'>
-                        <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(block_type, false)}>{translate('Previous')}</button>
-                        <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(block_type, true)}>{translate('Next')}</button>
-                    </div>
                 }
-            </React.Fragment >
-        );
-    }
-}
+            </div>
+            {
+                !is_search_flyout &&
+                    <div className='flyout__help-footer'>
+                        <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(false)}>{translate('Previous')}</button>
+                        <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(true)}>{translate('Next')}</button>
+                    </div>
+            }
+        </React.Fragment >
+    );
+};
 
 HelpBase.propTypes = {
-    block_nodes     : PropTypes.array,
+    block_node      : PropTypes.object,
+    block_type      : PropTypes.string,
+    help_string     : PropTypes.object,
     is_search_flyout: PropTypes.bool,
     onBackClick     : PropTypes.func,
     onSequenceClick : PropTypes.func,
     title           : PropTypes.string,
 };
 
-export default connect(({ flyout }) => ({
+export default connect(({ flyout, flyout_help }) => ({
+    block_node      : flyout_help.block_node,
+    block_type      : flyout_help.block_type,
+    help_string     : flyout_help.help_string,
     is_search_flyout: flyout.is_search_flyout,
-    onBackClick     : flyout.onBackClick,
-    onSequenceClick : flyout.onSequenceClick,
+    onBackClick     : flyout_help.onBackClick,
+    onSequenceClick : flyout_help.onSequenceClick,
+    title           : flyout_help.title,
 }))(HelpBase);

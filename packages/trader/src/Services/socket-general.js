@@ -121,7 +121,7 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'InvalidToken':
                 requestLogout().then(() => {
-                    client_store.cleanUpWithoutResetErrorServices();
+                    client_store.backgroundCleanUp();
                 });
                 break;
             // no default

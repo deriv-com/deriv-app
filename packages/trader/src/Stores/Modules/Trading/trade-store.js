@@ -432,7 +432,9 @@ export default class TradeStore extends BaseStore {
                             this.root_store.modules.trade.clearContracts();
                             this.root_store.ui.toggleServicesErrorModal(true);
                         });
-                    } else this.root_store.ui.toggleServicesErrorModal(true); // for other senarioss
+                    } else {
+                        this.root_store.ui.toggleServicesErrorModal(true); // for other scenarios
+                    }
 
                 }
                 WS.forgetAll('proposal');

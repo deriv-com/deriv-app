@@ -7,6 +7,29 @@ import ThemedScrollbars  from 'Components/themed-scrollbars';
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 
+const ListItems = React.forwardRef((props, ref) => {
+    const { active_index, list_items, is_object_list, onItemSelection } = props;
+
+    return (
+        <>
+            {list_items.map((item, idx) => (
+                <div
+                    ref={idx === active_index ? ref : null}
+                    key={idx}
+                    // onMouseDown ensures the click handler runs before the onBlur event of Input
+                    onMouseDown={() => onItemSelection(item)}
+                    className={classNames('dc-dropdown-list__item', {
+                        'dc-dropdown-list__item--active': idx === active_index,
+                    })}
+                    value={is_object_list ? item.value : null}
+                >
+                    { is_object_list ? item.text : item }
+                </div>
+            ))}
+        </>
+    );
+});
+ListItems.displayName = 'ListItems'
 
 const DropdownList = React.forwardRef((props, ref) => {
     const { list_ref, list_item_ref } = ref;
@@ -19,6 +42,7 @@ const DropdownList = React.forwardRef((props, ref) => {
     const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
 
     const is_string_array = !is_object && list_items.length && typeof list_items[0] === 'string';
+
     return (
         <CSSTransition
             in={is_visible}
@@ -30,7 +54,7 @@ const DropdownList = React.forwardRef((props, ref) => {
             }}
             unmountOnExit
         >
-            <div style={style} className='dc-dropdown-list' tabIndex="-1">
+            <div style={style} className='dc-dropdown-list'>
                 <ThemedScrollbars
                     list_ref={list_ref}
                     autoHeight
@@ -40,52 +64,11 @@ const DropdownList = React.forwardRef((props, ref) => {
                     renderThumbHorizontal={thumbHorizontal}
                 >
                     {is_object &&
-                        Object.keys(list_items).map((items) => (
-                            list_items[items].map((item, idx) => (
-                                <div
-                                    ref={idx === active_index ? list_item_ref : null}
-                                    key={idx}
-                                    // onMouseDown ensures the click handler runs before the onBlur event of Input
-                                    onMouseDown={() => onItemSelection(item)}
-                                    className={classNames('dc-dropdown-list__item', {
-                                        'dc-dropdown-list__item--active': idx === active_index,
-                                    })}
-                                    value={item.value}
-                                >
-                                    { item.text }
-                                </div>
-                            ))
-                        ))
+                        Object.keys(list_items).map(items => <ListItems active_index={active_index} list_items={list_items[items]} ref={list_item_ref} onItemSelection={onItemSelection} />)
                     }
-                    {
-                        is_string_array ?
-                            list_items.map((item, idx) => (
-                                <div
-                                    ref={idx === active_index ? list_item_ref : null}
-                                    key={idx}
-                                    // onMouseDown ensures the click handler runs before the onBlur event of Input
-                                    onMouseDown={() => onItemSelection(item)}
-                                    className={classNames('dc-dropdown-list__item', {
-                                        'dc-dropdown-list__item--active': idx === active_index,
-                                    })}
-                                >
-                                    { item }
-                                </div>
-                            ))
-                            :
-                            list_items.map((item, idx) => (
-                                <div
-                                    ref={idx === active_index ? list_item_ref : null}
-                                    key={idx}
-                                    // onMouseDown ensures the click handler runs before the onBlur event of Input
-                                    onMouseDown={() => onItemSelection(item)}
-                                    className={classNames('dc-dropdown-list__item', {
-                                        'dc-dropdown-list__item--active': idx === active_index,
-                                    })}
-                                >
-                                    { item.text }
-                                </div>
-                            ))
+                    {is_string_array ? 
+                        <ListItems active_index={active_index} list_items={list_items} ref={list_item_ref} onItemSelection={onItemSelection} /> :
+                        <ListItems active_index={active_index} list_items={list_items} ref={list_item_ref} onItemSelection={onItemSelection} is_object_list />
                     }
                 </ThemedScrollbars>
             </div>

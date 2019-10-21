@@ -15,7 +15,14 @@ const IconArrow = ({ className, classNamePath }) => (
         />
     </svg>
 );
-const list_height = 220;
+
+const key_code_map = {
+    enter: 13,
+    escape: 27,
+    tab: 9,
+    keydown: 40,
+    keyup: 38,
+}
 class Autocomplete extends React.PureComponent {
     list_ref      = React.createRef();
     list_item_ref = React.createRef();
@@ -30,29 +37,33 @@ class Autocomplete extends React.PureComponent {
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
     onKeyPressed = (event) => {
-        console.log(event.keyCode);
-        if (event.keyCode === 13 || (this.state.should_show_list && event.keyCode === 9)) {
+        if (event.keyCode === key_code_map.enter) {
+            event.preventDefault();
             this.hideDropdownList();
             this.onItemSelection(this.props.list_items[this.state.active_index]);
         }
-
-        if (this.state.should_show_list) {
-            if (event.keyCode === 27) {
-                this.setState({ should_show_list: false });
+        if (this.state.should_show_list && event.keyCode === key_code_map.tab) {
+            this.hideDropdownList();
+            this.onItemSelection(this.props.list_items[this.state.active_index]);
+        }
+        if (event.keyCode === key_code_map.escape) {
+            this.setState({ should_show_list: false });
+        }
+        if (event.keyCode === key_code_map.keydown) {
+            if (!this.state.should_show_list) {
+                this.showDropdownList();
             }
-            if (event.keyCode === 40) {
-                this.setActiveDown();
-            }
-            if (event.keyCode === 38) {
-                this.setActiveUp();
-            }
+            this.setActiveDown();
+        }
+        if (event.keyCode === key_code_map.keyup) {
+            this.setActiveUp();
         }
     };
 
     setActiveUp = () => {
         const { active_index } = this.state;
+
         if (typeof active_index === 'number') {
-            const { active_index } = this.state;
             let next = active_index - 1;
 
             if (next <= 0) {
@@ -68,11 +79,12 @@ class Autocomplete extends React.PureComponent {
 
     setActiveDown = () => {
         const { active_index } = this.state;
+
         if (active_index === null) {
             this.setState({ active_index: 0 });
         }
+
         if (typeof active_index === 'number') {
-            const { active_index } = this.state;
             const next = active_index + 1;
 
             if (this.list_ref.current) {
@@ -128,31 +140,30 @@ class Autocomplete extends React.PureComponent {
         this.setState({ should_show_list: false });
     };
 
+    get_filtered_items = val => {
+        const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
+        const list = this.props.list_items.filter(item => (
+            is_string_array ?
+                item.toLowerCase().includes(val)
+                : item.text.toLowerCase().includes(val)
+        ));
+        if (!list.length) {
+            list.push({
+                text : 'No results found', // TODO: add localize
+                value: '',
+            });
+            this.setState({ input_value: 'NaN' });
+        }
+        return list;
+    };
+
     filterList = (e) => {
         const val = e.target.value.toLowerCase();
-
-        const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
-
-        const get_filtered_items = () => {
-            const list = this.props.list_items.filter(item => (
-                is_string_array ?
-                    item.toLowerCase().includes(val)
-                    : item.text.toLowerCase().includes(val)
-            ));
-            if (!list.length) {
-                list.push({
-                    text : 'No results found', // TODO: add localize
-                    value: '',
-                });
-                this.setState({ input_value: 'NaN' });
-            }
-            return list;
-        };
 
         this.setState(
             {
                 filtered_items: val ?
-                    get_filtered_items()
+                    this.get_filtered_items(val)
                     : null,
             }
         );

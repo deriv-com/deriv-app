@@ -192,4 +192,9 @@
             height: calc(100% - 60px);
         }
     }
+    &__normal {
+        #{$flyout}__content {
+            height: 100%;
+        }
+    }
 }

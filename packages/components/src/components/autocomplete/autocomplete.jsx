@@ -16,20 +16,31 @@ const IconArrow = ({ className, classNamePath }) => (
     </svg>
 );
 
-const key_code_map = {
-    enter: 13,
-    escape: 27,
-    tab: 9,
-    keydown: 40,
-    keyup: 38,
+const KEY_CODE = {
+    ENTER: 13,
+    ESCAPE: 27,
+    TAB: 9,
+    KEYDOWN: 40,
+    KEYUP: 38,
 }
+
+const get_filtered_items = (val, list) => {
+    const is_string_array = list.length && typeof list[0] === 'string';
+
+    return list.filter(item => (
+        is_string_array ?
+            item.toLowerCase().includes(val)
+            : item.text.toLowerCase().includes(val)
+    ));
+};
+
 class Autocomplete extends React.PureComponent {
     list_ref      = React.createRef();
     list_item_ref = React.createRef();
 
     state = {
         should_show_list: false,
-        filtered_items  : null,
+        filtered_items  : [...this.props.list_items],
         input_value     : '',
         active_index    : null,
     };
@@ -37,48 +48,46 @@ class Autocomplete extends React.PureComponent {
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
     onKeyPressed = (event) => {
-        if (event.keyCode === key_code_map.enter) {
+        if (event.keyCode === KEY_CODE.ENTER) {
             event.preventDefault();
             this.hideDropdownList();
-            this.onItemSelection(this.props.list_items[this.state.active_index]);
+            this.onItemSelection(this.state.filtered_items[this.state.active_index]);
         }
-        if (this.state.should_show_list && event.keyCode === key_code_map.tab) {
+        if (this.state.should_show_list && event.keyCode === KEY_CODE.TAB) {
             this.hideDropdownList();
-            this.onItemSelection(this.props.list_items[this.state.active_index]);
+            this.onItemSelection(this.state.filtered_items[this.state.active_index]);
         }
-        if (event.keyCode === key_code_map.escape) {
-            this.setState({ should_show_list: false });
+        if (event.keyCode === KEY_CODE.ESCAPE) {
+            this.hideDropdownList();
         }
-        if (event.keyCode === key_code_map.keydown) {
-            if (!this.state.should_show_list) {
-                this.showDropdownList();
-            }
+        if (event.keyCode === KEY_CODE.KEYDOWN) {
+            if (!this.state.should_show_list)  this.showDropdownList();
             this.setActiveDown();
         }
-        if (event.keyCode === key_code_map.keyup) {
+        if (event.keyCode === KEY_CODE.KEYUP) {
             this.setActiveUp();
         }
     };
 
     setActiveUp = () => {
-        const { active_index } = this.state;
+        const { active_index, filtered_items } = this.state;
 
         if (typeof active_index === 'number') {
             let next = active_index - 1;
 
             if (next <= 0) {
-                this.setState({ active_index: this.props.list_items.length - 1 });
+                this.setState({ active_index: filtered_items.length - 1 });
                 this.list_ref.current.scrollToBottom();
             } else {
                 const to = this.list_item_ref.current.offsetTop - 40;
-                this.setState({ active_index: next });
                 this.list_ref.current.scrollTop(to);
+                this.setState({ active_index: next });
             }
         }
     }
 
     setActiveDown = () => {
-        const { active_index } = this.state;
+        const { active_index, filtered_items } = this.state;
 
         if (active_index === null) {
             this.setState({ active_index: 0 });
@@ -88,12 +97,12 @@ class Autocomplete extends React.PureComponent {
             const next = active_index + 1;
 
             if (this.list_ref.current) {
-                if (next >= this.props.list_items.length) {
+                if (next >= filtered_items.length) {
                     this.setState({ active_index: 0 });
                     this.list_ref.current.scrollTop();
                 } else {
-                    const to = this.list_item_ref.current.offsetTop + 40;
                     this.list_ref.current.scrollTop(to);
+                    const to = this.list_item_ref.current.offsetTop + 40;
                     this.setState({ active_index: next });
                 }
             }
@@ -119,54 +128,26 @@ class Autocomplete extends React.PureComponent {
     };
 
     onItemSelection = (item) => {
-        this.setState({
-            input_value: item.text ? item.text : item,
-        }, () => {
-            this.setState({
-                filtered_items: this.props.list_items.filter(i => i.text === this.state.input_value),
-            });
-        });
+        this.setState({ input_value: item.text ? item.text : item });
 
         if (typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection(item);
         }
     };
 
-    showDropdownList = () => {
-        this.setState({ should_show_list: true });
-    };
+    showDropdownList = () => this.setState({ should_show_list: true });
 
-    hideDropdownList = () => {
-        this.setState({ should_show_list: false });
-    };
-
-    get_filtered_items = val => {
-        const is_string_array = this.props.list_items.length && typeof this.props.list_items[0] === 'string';
-        const list = this.props.list_items.filter(item => (
-            is_string_array ?
-                item.toLowerCase().includes(val)
-                : item.text.toLowerCase().includes(val)
-        ));
-        if (!list.length) {
-            list.push({
-                text : 'No results found', // TODO: add localize
-                value: '',
-            });
-            this.setState({ input_value: 'NaN' });
-        }
-        return list;
-    };
+    hideDropdownList = () => this.setState({ should_show_list: false });
 
     filterList = (e) => {
         const val = e.target.value.toLowerCase();
+        let filtered_items = get_filtered_items(val, this.props.list_items);
 
-        this.setState(
-            {
-                filtered_items: val ?
-                    this.get_filtered_items(val)
-                    : null,
-            }
-        );
+        if (!filtered_items.length) {
+            // TODO: investigate this
+            this.setState({ input_value: 'NaN' });
+        }
+        this.setState({ filtered_items });
     };
 
     render() {
@@ -189,9 +170,9 @@ class Autocomplete extends React.PureComponent {
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onFocus={(e) => this.showDropdownList(e) }
-                        onInput={ this.filterList }
+                        onInput={this.filterList}
                         // Field's onBlur still needs to run to perform form functions such as validation
-                        onBlur={ this.onBlur }
+                        onBlur={this.onBlur}
                         value={
                             // This allows us to let control of value externally (from <Form/>) or internally if used without form
                             typeof onItemSelection === 'function' ?
@@ -218,10 +199,10 @@ class Autocomplete extends React.PureComponent {
                         // TODO confirm placement of dropdown list and positioning of error
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
                     } }
-                    is_visible={ this.state.should_show_list }
-                    list_items={ this.state.filtered_items || list_items }
+                    is_visible={this.state.should_show_list}
+                    list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
-                    onItemSelection={ this.onItemSelection }
+                    onItemSelection={this.onItemSelection}
                 />
             </div>
         );

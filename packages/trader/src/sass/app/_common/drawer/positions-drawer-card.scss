@@ -24,16 +24,10 @@
         background-color: var(--overlay-inside-dialog);
 
         &--won, &--won:after {
-            // TODO: [color] change to css var when the color is ready
-            @include themify($themes) {
-                background-image: themed('won_gradient_color');
-            }
+            background-image: var(--gradient-success);
         }
         &--lost, &--lost:after {
-            // TODO: [color] change to css var when the color is ready
-            @include themify($themes) {
-                background-image: themed('lost_gradient_color');
-            }
+            background-image: var(--gradient-danger);
         }
         &:hover {
             background: 0 !important;

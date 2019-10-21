@@ -169,6 +169,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     is_loading={ isSubmitting }
                                     text={ localize('Change password') }
                                     primary
+                                    large
                                 />
                                 <Button
                                     className='mt5-password-manager--button'
@@ -176,6 +177,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     onClick={ onClickReset }
                                     text={ localize('Reset main password') }
                                     tertiary
+                                    large
                                 />
                             </div>
                         </Form>
@@ -241,6 +243,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         is_loading={ isSubmitting }
                                         text={ localize('Change investor password') }
                                         primary
+                                        large
                                     />
                                     <Button
                                         className='mt5-password-manager--button'
@@ -248,6 +251,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         onClick={ onClickReset }
                                         text={ localize('Create or reset investor password') }
                                         tertiary
+                                        large
                                     />
                                 </div>
                             </Form>

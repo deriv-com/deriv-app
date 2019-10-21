@@ -364,15 +364,10 @@
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
-        .mt5-password-manager--button:last-child {
-            margin-top: 0;
-        }
     }
     &--button {
-        height: 4em;
-        color: var(--text-prominent);
+        margin-top: 1.6rem;
     }
-
 }
 
 .dc-modal {

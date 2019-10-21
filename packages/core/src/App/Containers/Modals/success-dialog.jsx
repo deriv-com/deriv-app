@@ -61,7 +61,7 @@ const SuccessDialog = ({
                 />
                 }
                 {has_submit &&
-                <Button has_effect onClick={onSubmit} text={text_submit} />
+                <Button has_effect onClick={onSubmit} text={text_submit} primary />
                 }
             </div>
         </div>

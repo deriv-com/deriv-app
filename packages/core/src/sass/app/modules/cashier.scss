@@ -243,6 +243,11 @@
         margin-top: 8rem;
         margin-bottom: 1.6rem;
     }
+    &__resend {
+        &-button {
+            margin: 4rem auto 0;
+        }
+    }
     &__email {
         &-sent {
             width: 40rem;
@@ -481,9 +486,8 @@
         }
     }
     &__button-done {
-        margin-top: 3.2rem;
-        min-width: 6.5rem;
         height: 4rem;
+        margin: 3.2rem auto 0;
     }
 }
 

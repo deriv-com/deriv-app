@@ -76,6 +76,13 @@
 
         &-field {
             margin-bottom: 0;
+
+            input {
+                width: 80%;
+            }
+            input::-ms-clear {
+                display: none;
+            }
         }
     }
     &__animation {

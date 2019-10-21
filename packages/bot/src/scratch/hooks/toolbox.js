@@ -1,9 +1,9 @@
-import React          from 'react';
-import ReactDOM       from 'react-dom';
-import ScratchStore   from '../../stores/scratch-store';
-import { Arrow1Icon } from '../../components/Icons.jsx';
-import { translate }  from '../../utils/lang/i18n';
-import { pushIfNotExists } from '../../utils/tools';
+import React                from 'react';
+import ReactDOM             from 'react-dom';
+import ScratchStore         from '../../stores/scratch-store';
+import { Arrow1Icon }       from '../../components/Icons.jsx';
+import { translate }        from '../../utils/lang/i18n';
+import { pushIfNotExists }  from '../../utils/tools';
 
 /* eslint-disable func-names, no-underscore-dangle */
 

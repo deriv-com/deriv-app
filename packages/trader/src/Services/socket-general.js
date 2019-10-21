@@ -119,6 +119,11 @@ const BinarySocketGeneral = (() => {
             case 'DisabledClient':
                 common_store.setError(true, { message: response.error.message });
                 break;
+            case 'InvalidToken':
+                requestLogout().then(() => {
+                    client_store.cleanUpWithoutResetErrorServices();
+                });
+                break;
             // no default
         }
     };

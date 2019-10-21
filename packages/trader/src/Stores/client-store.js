@@ -805,6 +805,22 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.debouncedProposal();
     }
 
+    @action.bound
+    cleanUpWithoutResetErrorServices() {
+        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
+        this.loginid      = null;
+        this.upgrade_info = undefined;
+        this.accounts     = {};
+        runInAction(async () => {
+            this.responsePayoutCurrencies(await WS.payoutCurrencies());
+        });
+        this.root_store.modules.trade.should_refresh_active_symbols = true;
+        this.root_store.modules.trade.clearContracts();
+        this.root_store.ui.removeAllNotifications();
+        this.root_store.modules.trade.refresh();
+        this.root_store.modules.trade.debouncedProposal();
+    }
+
     /* eslint-disable */
     @action.bound
     storeClientAccounts(obj_params, account_list) {

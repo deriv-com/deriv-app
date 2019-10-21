@@ -137,6 +137,7 @@ const MT5AccountCard = ({
                     className='mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                     onClick={() => { onSelectAccount(type); }}
                     type='button'
+                    primary
                 >
                     <Localize i18n_default_text='Create account' />
                 </Button>

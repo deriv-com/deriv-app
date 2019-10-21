@@ -88,7 +88,8 @@ const Flyout = ({
                                         );
                                     case Blockly.Xml.NODE_BUTTON: {
                                         const callback_key = node.getAttribute('callbackKey');
-                                        const callback = Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => { });
+                                        const callback =
+                                        Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => { });
 
                                         return (
                                             <button
@@ -106,7 +107,8 @@ const Flyout = ({
                                                     // eslint-disable-next-line no-underscore-dangle
                                                     flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
                                                     // eslint-disable-next-line no-underscore-dangle
-                                                    flyout_button.getTargetWorkspace = () => flyout_button.targetWorkspace_;
+                                                    flyout_button.getTargetWorkspace =
+                                                    () => flyout_button.targetWorkspace_;
 
                                                     callback(flyout_button);
                                                 }}

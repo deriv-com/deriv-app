@@ -2,7 +2,6 @@ import { minusIconDark } from '../images';
 import { translate } from '../../../utils/tools';
 
 Blockly.Blocks.text_statement = {
-    has_protected_statement: true,
     init() {
         this.requiredParentId = '';
 

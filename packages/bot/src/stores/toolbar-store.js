@@ -1,9 +1,9 @@
 import {
     observable,
     action,
-} from 'mobx';
-import { translate } from '../utils/lang/i18n';
-import { delay } from '../utils/tools';
+}                               from 'mobx';
+import { translate }            from '../utils/lang/i18n';
+import { delayCallbackByMs }    from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -36,7 +36,7 @@ export default class ToolbarStore {
     @action.bound
     onSearchKeyUp(submitForm) {
         this.is_search_loading = true;
-        delay(submitForm, 1000).then(
+        delayCallbackByMs(submitForm, 1000).then(
             action(() => this.is_search_loading = false)
         );
     }

@@ -86,7 +86,7 @@ export const importExternal = url => {
     });
 };
 
-export const delay = (callback, ms) => {
+export const delayCallbackByMs = (callback, ms) => {
     let timer = 0;
     return new Promise(resolve => {
         clearTimeout(timer);

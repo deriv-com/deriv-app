@@ -74,8 +74,16 @@ const HelpBase = ({
             {
                 !is_search_flyout &&
                     <div className='flyout__help-footer'>
-                        <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(false)}>{translate('Previous')}</button>
-                        <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(true)}>{translate('Next')}</button>
+                        <button
+                            className='flyout__button flyout__button-previous'
+                            onClick={() => onSequenceClick(false)}
+                        >{translate('Previous')}
+                        </button>
+                        <button
+                            className='flyout__button flyout__button-next'
+                            onClick={() => onSequenceClick(true)}
+                        >{translate('Next')}
+                        </button>
                     </div>
             }
         </React.Fragment >

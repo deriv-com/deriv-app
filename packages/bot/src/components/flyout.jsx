@@ -37,7 +37,7 @@ const Flyout = ({
                 is_search_flyout && !is_help_content && (
                     is_empty ?
                         <div className='flyout__search-empty'>
-                            <h2>{translate('No Result Found')}</h2>
+                            <h2>{translate('No results found')}</h2>
                         </div> :
                         <div className='flyout__search-header'>
                             <span className='flyout__search-header-text'>{translate(`Results for "${search_term}"`)}</span>
@@ -45,7 +45,7 @@ const Flyout = ({
                                 'flyout__search-header-text',
                                 'flyout__search-header-results',
                             )}
-                            >{translate(`${total_result} results`)}
+                            >{`${total_result} ${translate('results')}`}
                             </span>
                         </div>
                 )
@@ -64,7 +64,7 @@ const Flyout = ({
 
                                         return (
                                             <FlyoutBlockGroup
-                                                key={node.getAttribute('type') + Math.random()}
+                                                key={node.getAttribute('type') + Date.now()}
                                                 id={`flyout__item-workspace--${index}`}
                                                 block_node={node}
                                                 onInfoClick={
@@ -74,7 +74,7 @@ const Flyout = ({
                                             />
                                         );
                                     }
-                                    case Blockly.Xml.NODE_LABEL:
+                                    case Blockly.Xml.NODE_LABEL: {
                                         return (
                                             <div
                                                 key={node.getAttribute('text') + index}
@@ -83,6 +83,7 @@ const Flyout = ({
                                                 {node.getAttribute('text')}
                                             </div>
                                         );
+                                    }
                                     case Blockly.Xml.NODE_BUTTON: {
                                         const callback_key = node.getAttribute('callbackKey');
                                         const callback =

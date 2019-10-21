@@ -188,5 +188,8 @@
             font-size: 16px;
             font-weight: bold;
         }
+        #{$flyout}__help-content {
+            height: calc(100% - 60px);
+        }
     }
 }

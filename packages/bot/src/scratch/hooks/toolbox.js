@@ -169,16 +169,16 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         }
     };
 
-    const prioprity_order = ['exact_block_name', 'block_name', 'block_definitions', 'block_meta'];
+    const priority_order = ['exact_block_name', 'block_name', 'block_definitions', 'block_meta'];
 
-    prioprity_order.forEach(prioprity => {
+    priority_order.forEach(priority => {
         block_contents.forEach(block_content => {
             const block_type = block_content.getAttribute('type');
             const block = Blockly.Blocks[block_type];
             const block_meta = block.meta instanceof Function && block.meta();
             const block_definitions = block.definition instanceof Function && block.definition();
 
-            switch (prioprity) {
+            switch (priority) {
                 case 'exact_block_name':
                     pushBlockWithName({ block_type, block_meta, block_content });
                     break;

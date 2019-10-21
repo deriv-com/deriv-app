@@ -3,6 +3,7 @@ import ReactDOM       from 'react-dom';
 import ScratchStore   from '../../stores/scratch-store';
 import { Arrow1Icon } from '../../components/Icons.jsx';
 import { translate }  from '../../utils/lang/i18n';
+import { pushIfNotExists } from '../../utils/tools';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -110,31 +111,15 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         })
         .flat();
 
-    block_contents.forEach(block_content => {
-        const block_type = block_content.getAttribute('type');
-        const block = Blockly.Blocks[block_type];
-        const block_meta = block.meta instanceof Function && block.meta();
-        const block_definitions = block.definition instanceof Function && block.definition();
-
-        if (!block_meta) {
-            return;
-        }
-
+    const pushBlockMatchedName = ({ block_type, block_meta, block_content }) => {
+        const block_name = block_meta.display_name;
         // block_name matched
-        if (block_type.toUpperCase().includes(search_term)) {
-            flyout_content.unshift(block_content);
-            return;
+        if (block_type.toUpperCase().includes(search_term) || block_name.toUpperCase().includes(search_term)) {
+            pushIfNotExists(flyout_content, block_content);
         }
+    };
 
-        // block_meta matched
-        const matched_meta = Object.keys(block_meta)
-            .find(key => block_meta[key].toUpperCase().includes(search_term));
-        if (matched_meta && matched_meta.length) {
-            flyout_content.push(block_content);
-            return;
-        }
-
-        // block_definition matched
+    const pushBlockMatchedDefinition = ({ block_definitions, block_content }) => {
         const definition_key_to_search = /^((message)|(tooltip))/;
         // eslint-disable-next-line consistent-return
         const matched_definition = Object.keys(block_definitions).filter(key => {
@@ -161,9 +146,44 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             return false;
         });
         if (matched_definition && matched_definition.length) {
-            flyout_content.push(block_content);
-
+            pushIfNotExists(flyout_content, block_content);
         }
+    };
+
+    const pushBlockMatchedMeta = ({ block_meta, block_content }) => {
+        // block_meta matched
+        const matched_meta = Object.keys(block_meta)
+            .filter(key => key !== 'display_name')
+            .find(key => block_meta[key].toUpperCase().includes(search_term));
+        if (matched_meta && matched_meta.length) {
+            pushIfNotExists(flyout_content, block_content);
+            
+        }
+    };
+
+    const prioprity_order = ['block_name', 'block_definitions', 'block_meta'];
+
+    prioprity_order.forEach(prioprity => {
+        block_contents.forEach(block_content => {
+            const block_type = block_content.getAttribute('type');
+            const block = Blockly.Blocks[block_type];
+            const block_meta = block.meta instanceof Function && block.meta();
+            const block_definitions = block.definition instanceof Function && block.definition();
+
+            switch (prioprity) {
+                case 'block_name':
+                    pushBlockMatchedName({ block_type, block_meta, block_content });
+                    break;
+                case 'block_definitions':
+                    pushBlockMatchedDefinition({ block_definitions, block_content });
+                    break;
+                case 'block_meta':
+                    pushBlockMatchedMeta({ block_meta, block_content });
+                    break;
+                default:
+                    break;
+            }
+        });
     });
 
     // block_variable_name matched
@@ -175,7 +195,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         return flyout_content.indexOf(variable_block) === -1;
     });
     if (unique_var_blocks && unique_var_blocks.length) {
-        flyout_content.push(...unique_var_blocks);
+        flyout_content.unshift(...unique_var_blocks);
     }
 
     // block_procedure_name matched
@@ -186,7 +206,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const procedure = procedures_callnoreturn[key];
 
         if (procedure[0].toUpperCase().includes(search_term)) {
-            searched_procedures['0'].push(procedure);
+            searched_procedures['0'].unshift(procedure);
         }
     });
 
@@ -194,7 +214,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const procedure = procedures_callreturn[key];
 
         if (procedure[0].toUpperCase().includes(search_term)) {
-            searched_procedures['1'].push(procedure);
+            searched_procedures['1'].unshift(procedure);
         }
     });
 
@@ -204,12 +224,13 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         return flyout_content.indexOf(procedure_block) === -1;
     });
     if (unique_proce_blocks.length) {
-        flyout_content.push(...unique_proce_blocks);
-
+        flyout_content.unshift(...unique_proce_blocks);
     }
 
+    // flyout_content.reverse();
+
     flyout.setIsSearchFlyout(true);
-    flyout.setContents(flyout_content, true);
+    flyout.setContents(flyout_content, search);
 };
 
 /**

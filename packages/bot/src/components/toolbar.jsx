@@ -34,7 +34,13 @@ import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
-const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
+const SearchBox = ({
+    is_search_loading,
+    onSearch,
+    onSearchClear,
+    onSearchBlur,
+    onSearchKeyUp,
+}) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={{ search: '' }}
@@ -51,15 +57,18 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     type='text'
                                     name='search'
                                     placeholder={translate('Search block...')}
-                                    onKeyUp={submitForm}
+                                    onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         search ?
-                                            <ToolbarCloseIcon
-                                                className='toolbar__btn--icon'
-                                                onClick={() => onSearchClear(setFieldValue)}
-                                            />
+                                            (is_search_loading ?
+                                                <div className='loader' /> :
+                                                <ToolbarCloseIcon
+                                                    className='toolbar__btn--icon'
+                                                    onClick={() => onSearchClear(setFieldValue)}
+                                                />
+                                            )
                                             : <ToolbarSearchIcon />
                                     }
                                 />
@@ -205,6 +214,7 @@ const Toolbar = ({
     is_drawer_open,
     is_run_button_clicked,
     is_running,
+    is_search_loading,
     onBotNameTyped,
     onOkButtonClick,
     onCancelButtonClick,
@@ -214,6 +224,7 @@ const Toolbar = ({
     onSearch,
     onSearchBlur,
     onSearchClear,
+    onSearchKeyUp,
     onSortClick,
     onStopClick,
     onToolboxToggle,
@@ -244,9 +255,11 @@ const Toolbar = ({
                 </Button>
             </Popover>
             <SearchBox
+                is_search_loading={is_search_loading}
                 onSearch={onSearch}
                 onSearchClear={onSearchClear}
                 onSearchBlur={onSearchBlur}
+                onSearchKeyUp={onSearchKeyUp}
             />
             <BotNameBox
                 file_name={file_name}
@@ -295,6 +308,7 @@ Toolbar.propTypes = {
     is_drawer_open       : PropTypes.bool,
     is_run_button_clicked: PropTypes.bool,
     is_running           : PropTypes.bool,
+    is_search_loading    : PropTypes.bool,
     onBotNameTyped       : PropTypes.func,
     onCancelButtonClick  : PropTypes.func,
     onGoogleDriveClick   : PropTypes.func,
@@ -305,6 +319,7 @@ Toolbar.propTypes = {
     onSearch             : PropTypes.func,
     onSearchBlur         : PropTypes.func,
     onSearchClear        : PropTypes.func,
+    onSearchKeyUp        : PropTypes.func,
     onSortClick          : PropTypes.func,
     onStopClick          : PropTypes.func,
     onToolboxToggle      : PropTypes.func,
@@ -319,6 +334,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     is_drawer_open       : run_panel.is_drawer_open,
     is_run_button_clicked: run_panel.is_run_button_clicked,
     is_running           : run_panel.is_running,
+    is_search_loading    : toolbar.is_search_loading,
     onBotNameTyped       : toolbar.onBotNameTyped,
     onCancelButtonClick  : toolbar.onResetCancelButtonClick,
     onGoogleDriveClick   : toolbar.onGoogleDriveClick,
@@ -329,6 +345,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onSearch             : toolbar.onSearch,
     onSearchBlur         : toolbar.onSearchBlur,
     onSearchClear        : toolbar.onSearchClear,
+    onSearchKeyUp        : toolbar.onSearchKeyUp,
     onSortClick          : toolbar.onSortClick,
     onStopClick          : toolbar.onStopClick,
     onToolboxToggle      : toolbar.onToolboxToggle,

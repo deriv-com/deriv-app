@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action }   from 'mobx';
 import config                   from '../constants';
-import { translate }            from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -21,6 +20,8 @@ export default class FlyoutStore {
     @observable flyout_width = this.flyout_min_width;
     @observable is_visible = false;
     @observable is_search_flyout = false;
+    @observable is_loading = false;
+    @observable search_term = '';
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -33,35 +34,16 @@ export default class FlyoutStore {
      * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
      */
-    @action.bound setContents(xml_list) {
-        let processed_xml = xml_list;
+    @action.bound setContents(xml_list, search_term = '') {
+        const processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
         this.is_help_content = false;
+        this.search_term = search_term;
 
-        if (this.is_search_flyout) {
-            const has_result = xml_list.length;
-
-            processed_xml = [];
-
-            if (!has_result) {
-                const label = document.createElement('label');
-                label.setAttribute('text', translate('No Blocks Found'));
-
-                processed_xml.push(label);
-            } else {
-                const label = document.createElement('label');
-                label.setAttribute('text', translate('Result(s)'));
-
-                processed_xml.push(label);
-            }
-
-            processed_xml = processed_xml.concat(xml_list);
-        }
-
-        const xml_list_group = this.groupBy(processed_xml);
+        const xml_list_group = this.groupBy(xml_list);
 
         this.flyout_content = observable(xml_list_group);
         this.setFlyoutWidth(processed_xml);
@@ -208,8 +190,22 @@ export default class FlyoutStore {
             node.setAttribute('height', block_hw.height * this.options.zoom.startScale);
         });
 
-        this.block_nodes = block_node;
         this.is_help_content = true;
+        this.block_nodes = block_node;
+    }
+
+    @action.bound
+    onBackClick() {
+        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const { toolbar } = this.root_store;
+
+        if (this.is_search_flyout){
+            const search = document.getElementsByName('search')[0].value;
+
+            toolbar.onSearch({ search });
+        } else {
+            toolbox.refreshCategory();
+        }
     }
 
     // eslint-disable-next-line

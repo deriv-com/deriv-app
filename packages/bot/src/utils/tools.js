@@ -85,3 +85,20 @@ export const importExternal = url => {
         document.body.appendChild(script);
     });
 };
+
+export const delay = (callback, ms) => {
+    let timer = 0
+    return new Promise(resolve => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            callback();
+            resolve();
+        }, ms || 0)
+    })
+}
+
+export const pushIfNotExists = (array, element_to_push) => {
+    if(!array.some(element => element === element_to_push)) {
+        array.push(element_to_push);
+    }
+}

@@ -3,6 +3,7 @@ import {
     action,
 } from 'mobx';
 import { translate } from '../utils/lang/i18n';
+import { delay } from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -11,6 +12,7 @@ export default class ToolbarStore {
 
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
+    @observable is_search_loading = false;
     @observable file_name = translate('Untitled Bot');
 
     @action.bound
@@ -29,6 +31,14 @@ export default class ToolbarStore {
         const toolbox = Blockly.derivWorkspace.toolbox_;
         this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
+    }
+
+    @action.bound
+    onSearchKeyUp(submitForm) {
+        this.is_search_loading = true;
+        delay(submitForm, 1000).then(
+            action(() => this.is_search_loading = false)
+        );
     }
 
     @action.bound

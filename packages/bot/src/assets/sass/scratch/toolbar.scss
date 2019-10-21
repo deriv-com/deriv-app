@@ -83,6 +83,24 @@
     }
 }
 
+.loader {
+    border: 1px solid var(--general-section-1);
+    border-top: 1px solid var(--general-active);
+    border-radius: 50%;
+    width: 18.29px;
+    height: 15px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .vertical-divider {
     width: 1px;
     height: 17px;

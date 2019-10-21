@@ -13,9 +13,16 @@ import { translate }    from '../../utils/tools';
 class HelpBase extends React.PureComponent {
     constructor(props) {
         super(props);
-        const { onSequenceClick, block_nodes } = props;
+        const {
+            is_search_flyout,
+            onBackClick,
+            onSequenceClick,
+            block_nodes,
+        } = props;
 
         this.state = {
+            is_search_flyout,
+            onBackClick,
             onSequenceClick,
             block_nodes,
             help_string     : null,
@@ -52,6 +59,8 @@ class HelpBase extends React.PureComponent {
 
     render() {
         const {
+            is_search_flyout,
+            onBackClick,
             onSequenceClick,
             block_type,
             title,
@@ -65,7 +74,7 @@ class HelpBase extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className='flyout__help-header'>
-                    <button className='flyout__button flyout__button-back' onClick={() => Blockly.derivWorkspace.reshowFlyout()}>
+                    <button className='flyout__button flyout__button-back' onClick={onBackClick}>
                         <Arrow2Icon />
                     </button>
                     <span className='flyout__help-title'>{title}</span>
@@ -117,21 +126,28 @@ class HelpBase extends React.PureComponent {
                         </div>
                     }
                 </div>
-                <div className='flyout__help-footer'>
-                    <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(block_type, false)}>{translate('Previous')}</button>
-                    <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(block_type, true)}>{translate('Next')}</button>
-                </div>
+                {
+                    !is_search_flyout &&
+                    <div className='flyout__help-footer'>
+                        <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(block_type, false)}>{translate('Previous')}</button>
+                        <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(block_type, true)}>{translate('Next')}</button>
+                    </div>
+                }
             </React.Fragment >
         );
     }
 }
 
 HelpBase.propTypes = {
-    block_nodes    : PropTypes.array,
-    onSequenceClick: PropTypes.func,
-    title          : PropTypes.string,
+    block_nodes     : PropTypes.array,
+    is_search_flyout: PropTypes.bool,
+    onBackClick     : PropTypes.func,
+    onSequenceClick : PropTypes.func,
+    title           : PropTypes.string,
 };
 
 export default connect(({ flyout }) => ({
-    onSequenceClick: flyout.onSequenceClick,
+    is_search_flyout: flyout.is_search_flyout,
+    onBackClick     : flyout.onBackClick,
+    onSequenceClick : flyout.onSequenceClick,
 }))(HelpBase);

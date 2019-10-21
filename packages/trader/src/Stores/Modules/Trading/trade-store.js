@@ -426,7 +426,7 @@ export default class TradeStore extends BaseStore {
                     
                     // check if token is invalid
                     if (response.error.code === 'InvalidToken') {
-                    // send logout ,clear contracts, clean up client and then show message
+                    // send logout, clear contracts, clean up client and then show message
                         this.root_store.client.cleanUp();
                         requestLogout().then(() => {
                             this.root_store.modules.trade.clearContracts();

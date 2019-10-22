@@ -158,7 +158,7 @@ const ModalContent = ()  => (
             columns={compareAccountsColumns}
             item_size={40}
             custom_height={ 400 }
-            custom_width={ 845 }
+            custom_width={'100%'}
         />
         <p className='mt5-compare-account--hint'>
             <Localize

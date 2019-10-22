@@ -12,7 +12,7 @@ const ListItems = React.forwardRef((props, ref) => {
 
     return (
         <>
-            {list_items.length ? 
+            {list_items.length ?
                 list_items.map((item, idx) => (
                     <div
                         ref={idx === active_index ? ref : null}
@@ -41,9 +41,8 @@ const DropdownList = React.forwardRef((props, ref) => {
         throw Error('Dropdown received wrong data structure');
     }
 
-    const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
-
-    const is_string_array = !is_object && list_items.length && typeof list_items[0] === 'string';
+    const is_object       = !Array.isArray(list_items) && typeof list_items === 'object';
+    const is_string_array = list_items.length && typeof list_items[0] === 'string';
 
     return (
         <CSSTransition
@@ -65,13 +64,25 @@ const DropdownList = React.forwardRef((props, ref) => {
                     renderTrackHorizontal={trackHorizontal}
                     renderThumbHorizontal={thumbHorizontal}
                 >
-                    {is_object &&
-                        Object.keys(list_items).map(items =>
-                            <ListItems not_found_text={not_found_text} active_index={active_index} list_items={list_items[items]} ref={list_item_ref} onItemSelection={onItemSelection} />)
-                    }
-                    {is_string_array ? 
-                        <ListItems not_found_text={not_found_text} active_index={active_index} list_items={list_items} ref={list_item_ref} onItemSelection={onItemSelection} /> :
-                        <ListItems not_found_text={not_found_text} active_index={active_index} list_items={list_items} ref={list_item_ref} onItemSelection={onItemSelection} is_object_list />
+                    {is_object ?
+                        Object.keys(list_items).map((items, idx) =>
+                            <ListItems
+                                key={idx}
+                                not_found_text={not_found_text}
+                                active_index={active_index}
+                                list_items={list_items[items]}
+                                ref={list_item_ref}
+                                onItemSelection={onItemSelection}
+                            />
+                        ) :
+                        <ListItems
+                            not_found_text={not_found_text}
+                            active_index={active_index}
+                            list_items={list_items}
+                            ref={list_item_ref}
+                            onItemSelection={onItemSelection}
+                            is_object_list={!is_string_array}
+                        />
                     }
                 </ThemedScrollbars>
             </div>

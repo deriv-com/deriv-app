@@ -17,11 +17,11 @@ const IconArrow = ({ className, classNamePath }) => (
 );
 
 const KEY_CODE = {
-    ENTER: 13,
-    ESCAPE: 27,
-    TAB: 9,
+    ENTER  : 13,
+    ESCAPE : 27,
+    TAB    : 9,
     KEYDOWN: 40,
-    KEYUP: 38,
+    KEYUP  : 38,
 };
 
 const not_found_default_text = 'No results found';
@@ -42,7 +42,7 @@ class Autocomplete extends React.PureComponent {
 
     state = {
         should_show_list: false,
-        filtered_items  : [...this.props.list_items],
+        filtered_items  : [... this.props.list_items],
         input_value     : '',
         active_index    : null,
     };
@@ -74,6 +74,9 @@ class Autocomplete extends React.PureComponent {
             case KEY_CODE.KEYUP:
                 this.setActiveUp();
                 break;
+            default:
+                if (!should_show_list) this.showDropdownList();
+                break;
         }
     };
 
@@ -87,9 +90,9 @@ class Autocomplete extends React.PureComponent {
                 this.setState({ active_index: filtered_items.length - 1 });
                 this.dropdown_ref.current.scrollToBottom();
             } else {
-                const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
-                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
-                const wrapper_top        = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
+                const item_height = this.list_item_ref.current.getBoundingClientRect().height;
+                const item_top    = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
+                const wrapper_top = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
                 const item_is_above_view = item_top <= wrapper_top;
 
                 if (item_is_above_view) {
@@ -113,10 +116,12 @@ class Autocomplete extends React.PureComponent {
                 this.setState({ active_index: 0 });
                 this.dropdown_ref.current.scrollTop();
             } else {
-                const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
-                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height + (item_height / 2);
-                const list_height        = this.dropdown_ref.current.getClientHeight();
-                const wrapper_bottom     = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
+                const item_height    = this.list_item_ref.current.getBoundingClientRect().height;
+                const item_top       = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height
+                    + (item_height / 2);
+                const list_height    = this.dropdown_ref.current.getClientHeight();
+                const wrapper_bottom = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top)
+                    + list_height;
                 const item_is_below_view = item_top >= wrapper_bottom;
 
                 if (item_is_below_view) {
@@ -218,7 +223,11 @@ class Autocomplete extends React.PureComponent {
                     />
                 </div>
                 <DropdownList
-                    ref={{ dropdown_ref: this.dropdown_ref, list_item_ref: this.list_item_ref, list_wrapper_ref: this.list_wrapper_ref }}
+                    ref={{
+                        dropdown_ref    : this.dropdown_ref,
+                        list_item_ref   : this.list_item_ref,
+                        list_wrapper_ref: this.list_wrapper_ref,
+                    }}
                     active_index={this.state.active_index}
                     style={{
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',

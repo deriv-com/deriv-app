@@ -35,19 +35,15 @@ const Flyout = ({
         >
             {
                 is_search_flyout && !is_help_content && (
-                    is_empty ?
-                        <div className='flyout__search-empty'>
-                            <h2>{translate('No results found')}</h2>
-                        </div> :
-                        <div className='flyout__search-header'>
-                            <span className='flyout__search-header-text'>{translate(`Results for "${search_term}"`)}</span>
-                            <span className={classNames(
-                                'flyout__search-header-text',
-                                'flyout__search-header-results',
-                            )}
-                            >{`${total_result} ${translate('results')}`}
-                            </span>
-                        </div>
+                    <div className='flyout__search-header'>
+                        <span className='flyout__search-header-text'>{translate(`Results for "${search_term}"`)}</span>
+                        <span className={classNames(
+                            'flyout__search-header-text',
+                            'flyout__search-header-results',
+                        )}
+                        >{`${total_result} ${translate('results')}`}
+                        </span>
+                    </div>
                 )
             }
             {
@@ -55,70 +51,74 @@ const Flyout = ({
                     <HelpBase /> :
                     <div className='flyout__content'>
                         {
-                            flyout_content.map((node, index) => {
-                                const tag_name = node.tagName.toUpperCase();
+                            is_empty ?
+                                <div className='flyout__search-empty'>
+                                    <h2>{translate('No results found')}</h2>
+                                </div> :
+                                flyout_content.map((node, index) => {
+                                    const tag_name = node.tagName.toUpperCase();
 
-                                switch (tag_name) {
-                                    case Blockly.Xml.NODE_BLOCK: {
-                                        const block_type = node.getAttribute('type');
+                                    switch (tag_name) {
+                                        case Blockly.Xml.NODE_BLOCK: {
+                                            const block_type = node.getAttribute('type');
 
-                                        return (
-                                            <FlyoutBlockGroup
-                                                key={node.getAttribute('type') + Date.now()}
-                                                id={`flyout__item-workspace--${index}`}
-                                                block_node={node}
-                                                onInfoClick={
-                                                    config[block_type]
+                                            return (
+                                                <FlyoutBlockGroup
+                                                    key={node.getAttribute('type') + Date.now()}
+                                                    id={`flyout__item-workspace--${index}`}
+                                                    block_node={node}
+                                                    onInfoClick={
+                                                        config[block_type]
                                                     && (() => setHelpContent(node))
-                                                }
-                                            />
-                                        );
-                                    }
-                                    case Blockly.Xml.NODE_LABEL: {
-                                        return (
-                                            <div
-                                                key={node.getAttribute('text') + index}
-                                                className='flyout__item-label'
-                                            >
-                                                {node.getAttribute('text')}
-                                            </div>
-                                        );
-                                    }
-                                    case Blockly.Xml.NODE_BUTTON: {
-                                        const callback_key = node.getAttribute('callbackKey');
-                                        const callback =
+                                                    }
+                                                />
+                                            );
+                                        }
+                                        case Blockly.Xml.NODE_LABEL: {
+                                            return (
+                                                <div
+                                                    key={node.getAttribute('text') + index}
+                                                    className='flyout__item-label'
+                                                >
+                                                    {node.getAttribute('text')}
+                                                </div>
+                                            );
+                                        }
+                                        case Blockly.Xml.NODE_BUTTON: {
+                                            const callback_key = node.getAttribute('callbackKey');
+                                            const callback =
                                         Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => { });
 
-                                        return (
-                                            <button
-                                                key={`${callback_key}${index}`}
-                                                className={
-                                                    classNames(
-                                                        'flyout__button',
-                                                        'flyout__button-new'
-                                                    )
-                                                }
-                                                onClick={(button) => {
-                                                    const flyout_button = button;
+                                            return (
+                                                <button
+                                                    key={`${callback_key}${index}`}
+                                                    className={
+                                                        classNames(
+                                                            'flyout__button',
+                                                            'flyout__button-new'
+                                                        )
+                                                    }
+                                                    onClick={(button) => {
+                                                        const flyout_button = button;
 
-                                                    // Workaround for not having a flyout workspace.
-                                                    // eslint-disable-next-line no-underscore-dangle
-                                                    flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                                    // eslint-disable-next-line no-underscore-dangle
-                                                    flyout_button.getTargetWorkspace =
+                                                        // Workaround for not having a flyout workspace.
+                                                        // eslint-disable-next-line no-underscore-dangle
+                                                        flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                                        // eslint-disable-next-line no-underscore-dangle
+                                                        flyout_button.getTargetWorkspace =
                                                     () => flyout_button.targetWorkspace_;
 
-                                                    callback(flyout_button);
-                                                }}
-                                            >
-                                                {node.getAttribute('text')}
-                                            </button>
-                                        );
+                                                        callback(flyout_button);
+                                                    }}
+                                                >
+                                                    {node.getAttribute('text')}
+                                                </button>
+                                            );
+                                        }
+                                        default:
+                                            return null;
                                     }
-                                    default:
-                                        return null;
-                                }
-                            })
+                                })
                         }
                     </div>
             }

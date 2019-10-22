@@ -91,16 +91,12 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
 
     flyout.setVisibility(false);
 
-    if (search_term.length <= 1) {
-        flyout.setIsSearchFlyout(true);
-        flyout.setContents(flyout_content, search);
-        return;
-    }
-
     // avoid general term which the result will return most of the blocks
-    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS'];
+    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN'];
 
-    if (general_term.includes(search_term))  {
+    if (search_term.length === 0) {
+        return;
+    } else if (search_term.length <= 2 || general_term.includes(search_term)) {
         flyout.setIsSearchFlyout(true);
         flyout.setContents(flyout_content, search);
         return;
@@ -248,8 +244,6 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     if (unique_proce_blocks.length) {
         flyout_content.unshift(...unique_proce_blocks);
     }
-
-    // flyout_content.reverse();
 
     flyout.setIsSearchFlyout(true);
     flyout.setContents(flyout_content, search);

@@ -94,16 +94,24 @@ class Autocomplete extends React.PureComponent {
             } else {
                 const item_height = this.list_item_ref.current.getBoundingClientRect().height;
                 const item_top    = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
-                const wrapper_top = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
-                const item_is_above_view = item_top <= wrapper_top;
 
-                if (item_is_above_view) {
+                if (!this.isListItemWithinView(item_top)) {
                     const top_of_list = this.list_item_ref.current.offsetTop - item_height;
                     this.dropdown_ref.current.scrollTop(top_of_list);
                 }
                 this.setState({ active_index: next });
             }
         }
+    }
+
+    isListItemWithinView(item_top) {
+        const list_height    = this.dropdown_ref.current.getClientHeight();
+        const wrapper_top    = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
+        const wrapper_bottom = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
+
+        if (item_top >= wrapper_bottom) return false;
+        if (item_top <= wrapper_top) return false;
+        return true;
     }
 
     setActiveDown = () => {
@@ -123,11 +131,8 @@ class Autocomplete extends React.PureComponent {
                 const item_top       = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height
                     + (item_height / 2);
                 const list_height    = this.dropdown_ref.current.getClientHeight();
-                const wrapper_bottom = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top)
-                    + list_height;
-                const item_is_below_view = item_top >= wrapper_bottom;
 
-                if (item_is_below_view) {
+                if (!this.isListItemWithinView(item_top)) {
                     const items_above = (list_height / item_height) - 2;
                     const bottom_of_list = this.list_item_ref.current.offsetTop - (items_above * item_height);
                     this.dropdown_ref.current.scrollTop(bottom_of_list);

@@ -178,6 +178,7 @@ export default class RunPanelStore {
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
+        observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('contract.status', summary.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
@@ -214,6 +215,13 @@ export default class RunPanelStore {
             this.unregisterBotListeners();
         }
         this.has_open_contract = false;
+    }
+
+    @action.bound
+    onBotTradeAgain(is_trade_again) {
+        if (!is_trade_again) {
+            this.onStopButtonClick();
+        }
     }
 
     @action.bound
@@ -262,6 +270,7 @@ export default class RunPanelStore {
 
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);
+        observer.unregister('bot.trade_again', this.onBotTradeAgain);
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
         observer.unregister('ui.log.success', journal.onLogSuccess);

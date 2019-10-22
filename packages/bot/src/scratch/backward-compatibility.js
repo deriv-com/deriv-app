@@ -537,17 +537,19 @@ export default class BlockConversion {
         const is_collapsed   = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
         const is_immovable   = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
         const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
+        const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
 
         if (is_collapsed) {
             block.setCollapsed(true);
         }
-
         if (is_immovable) {
             block.setMovable(false);
         }
-
         if (is_undeletable) {
             block.setDeletable(false);
+        }
+        if (is_disabled) {
+            block.setDisabled(true);
         }
 
         return block;

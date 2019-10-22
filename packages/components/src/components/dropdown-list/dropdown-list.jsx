@@ -35,7 +35,7 @@ const ListItems = React.forwardRef((props, ref) => {
 ListItems.displayName = 'ListItems';
 
 const DropdownList = React.forwardRef((props, ref) => {
-    const { list_ref, list_item_ref } = ref;
+    const { list_ref, list_item_ref, list_wrapper_ref } = ref;
     const { active_index, is_visible, list_items, onItemSelection, style, search } = props;
 
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
@@ -57,7 +57,7 @@ const DropdownList = React.forwardRef((props, ref) => {
             }}
             unmountOnExit
         >
-            <div style={style} className='dc-dropdown-list'>
+            <div style={style} className='dc-dropdown-list' ref={list_wrapper_ref}>
                 <ThemedScrollbars
                     list_ref={list_ref}
                     autoHeight

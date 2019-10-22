@@ -22,7 +22,7 @@ const KEY_CODE = {
     TAB: 9,
     KEYDOWN: 40,
     KEYUP: 38,
-}
+};
 
 const get_filtered_items = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
@@ -35,8 +35,9 @@ const get_filtered_items = (val, list) => {
 };
 
 class Autocomplete extends React.PureComponent {
-    list_ref      = React.createRef();
-    list_item_ref = React.createRef();
+    list_ref         = React.createRef();
+    list_wrapper_ref = React.createRef();
+    list_item_ref    = React.createRef();
 
     state = {
         should_show_list: false,
@@ -73,14 +74,21 @@ class Autocomplete extends React.PureComponent {
         const { active_index, filtered_items } = this.state;
 
         if (typeof active_index === 'number') {
-            let next = active_index - 1;
+            const next = active_index - 1;
 
-            if (next <= 0) {
+            if (next < 0) {
                 this.setState({ active_index: filtered_items.length - 1 });
                 this.list_ref.current.scrollToBottom();
             } else {
-                const to = this.list_item_ref.current.offsetTop - 40;
-                this.list_ref.current.scrollTop(to);
+                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top);
+                const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
+                const wrapper_top        = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
+                const item_is_above_view = item_top <= wrapper_top;
+
+                if (item_is_above_view) {
+                    const top_of_list = this.list_item_ref.current.offsetTop - item_height;
+                    this.list_ref.current.scrollTop(top_of_list);
+                }
                 this.setState({ active_index: next });
             }
         }
@@ -96,16 +104,23 @@ class Autocomplete extends React.PureComponent {
         if (typeof active_index === 'number') {
             const next = active_index + 1;
 
-            if (this.list_ref.current) {
-                if (next >= filtered_items.length) {
-                    this.setState({ active_index: 0 });
-                    this.list_ref.current.scrollTop();
-                } else {
-                    this.list_ref.current.scrollTop(to);
-                    const to = this.list_item_ref.current.offsetTop + 40;
-                    this.setState({ active_index: next });
+            if (next >= filtered_items.length) {
+                this.setState({ active_index: 0 });
+                this.list_ref.current.scrollTop();
+            } else {
+                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top);
+                const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
+                const list_height        = this.list_ref.current.getClientHeight()
+                const wrapper_bottom     = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height - item_height - 20;
+                const item_is_below_view = item_top >= wrapper_bottom;
+
+                if (item_is_below_view) {
+                    const bottom_of_list = this.list_item_ref.current.offsetTop - 140;
+                    this.list_ref.current.scrollTop(bottom_of_list);
                 }
+                this.setState({ active_index: next });
             }
+
         }
     }
 
@@ -140,8 +155,8 @@ class Autocomplete extends React.PureComponent {
     hideDropdownList = () => this.setState({ should_show_list: false });
 
     filterList = (e) => {
-        const val = e.target.value.toLowerCase();
-        let filtered_items = get_filtered_items(val, this.props.list_items);
+        const val            = e.target.value.toLowerCase();
+        const filtered_items = get_filtered_items(val, this.props.list_items);
 
         if (!filtered_items.length) {
             // TODO: investigate this
@@ -169,7 +184,7 @@ class Autocomplete extends React.PureComponent {
                         className='dc-autocomplete__field'
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
-                        onFocus={(e) => this.showDropdownList(e) }
+                        onFocus={(e) => this.showDropdownList(e)}
                         onInput={this.filterList}
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={this.onBlur}
@@ -182,23 +197,23 @@ class Autocomplete extends React.PureComponent {
                         }
                         trailing_icon={
                             <IconArrow
-                                className={ {
+                                className={{
                                     'dc-autocomplete__trailing-icon'        : true,
                                     'dc-autocomplete__trailing-icon--opened': this.state.should_show_list,
-                                } }
+                                }}
                             />
                         }
                     />
                 </div>
                 <DropdownList
-                    ref={{ list_ref: this.list_ref, list_item_ref: this.list_item_ref }}
+                    ref={{ list_ref: this.list_ref, list_item_ref: this.list_item_ref, list_wrapper_ref: this.list_wrapper_ref }}
                     active_index={this.state.active_index}
-                    style={ {
+                    style={{
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',
                         marginTop: dropdown_offset ? `calc(-${dropdown_offset} + 8px)` : '8px', // 4px is the standard margin. In case of error, the list should overlap the error
                         // TODO confirm placement of dropdown list and positioning of error
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
-                    } }
+                    }}
                     is_visible={this.state.should_show_list}
                     list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both

@@ -19,7 +19,7 @@
     border-radius: 4px;
     max-width: 348px;
     padding: 16px;
-    color: $color-white;
+    color: var(--text-colored-background);
 
     &--danger {
         background-color: var(--status-danger);
@@ -67,7 +67,7 @@
             content: '\0000D7';
             font-size: 30px;
             font-weight: 300;
-            color: $color-white;
+            color: var(--text-colored-background);
         }
     }
     &__icon {

@@ -87,7 +87,9 @@ export const runBot = (limitations = {}) => {
         .every(block => top_blocks.filter(top_block => top_block.type === block).length);
 
     if (!has_mandatory_blocks) {
-        globalObserver.emit('Error', new Error('Root Block(s) missing from workspace'));
+        globalObserver.emit('Error',
+            new Error('One or more mandatory blocks are missing from your workspace.' +
+        'Please add the required block(s) and then try again.'));
         return;
     }
     

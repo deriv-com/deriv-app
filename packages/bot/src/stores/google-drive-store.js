@@ -45,7 +45,7 @@ export default class GoogleDriveStore {
                         },
                         error => {
                             // TODO
-                            console.error(error); // eslint-disable-line
+                            // console.error(error); // eslint-disable-line
                         }
                     );
             },

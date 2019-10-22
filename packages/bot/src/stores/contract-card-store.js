@@ -23,7 +23,7 @@ export default class ContractCardStore {
     get is_contract_completed() {
         return this.contract &&
         isEnded(this.contract) &&
-        (this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECIEVED.index);
+        (this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index);
     }
 
     @computed

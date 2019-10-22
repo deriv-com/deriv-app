@@ -1,5 +1,5 @@
 import classnames           from 'classnames';
-import proptypes            from 'prop-types';
+import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
 import { message_types }    from '../constants/messages';

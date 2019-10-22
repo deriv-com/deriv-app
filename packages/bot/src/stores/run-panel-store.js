@@ -231,8 +231,8 @@ export default class RunPanelStore {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
                 break;
             }
-            case ('contract.purchase_recieved'): {
-                this.setContractStage(contract_stages.PURCHASE_RECIEVED);
+            case ('contract.purchase_received'): {
+                this.setContractStage(contract_stages.PURCHASE_RECEIVED);
                 break;
             }
             case ('contract.sold'): {

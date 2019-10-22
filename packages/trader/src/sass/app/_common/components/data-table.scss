@@ -54,6 +54,7 @@ $header-height: 52px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+        flex-basis: 0;
 
         .table__row-link:hover {
             background-color: var(--state-hover);

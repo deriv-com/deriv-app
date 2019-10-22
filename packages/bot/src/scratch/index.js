@@ -83,13 +83,13 @@ export const runBot = (limitations = {}) => {
         }
     });
 
-    const blocks_in_workspace = Blockly.derivWorkspace.blockDB_;
+    const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
     const has_tradeoptions = Object.keys(blocks_in_workspace)
         .some(key => blocks_in_workspace[key].type === 'trade_definition_tradeoptions');
 
     const { mandatoryMainBlocks } = config;
     const has_mandatory_blocks = mandatoryMainBlocks
-        .every(block => top_blocks.filter(top_block => top_block.type === block).length);
+        .every(block_type => top_blocks.some(top_block => top_block.type === block_type));
 
     if (!has_mandatory_blocks || !has_tradeoptions) {
         globalObserver.emit('Error',

@@ -3,7 +3,6 @@ import ReactDOM             from 'react-dom';
 import ScratchStore         from '../../stores/scratch-store';
 import { Arrow1Icon }       from '../../components/Icons.jsx';
 import { translate }        from '../../utils/lang/i18n';
-import { pushIfNotExists }  from '../../utils/tools';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -117,6 +116,12 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             return only_block_contents;
         })
         .flat();
+
+    const pushIfNotExists = (array, element_to_push) => {
+        if (!array.some(element => element === element_to_push)) {
+            array.push(element_to_push);
+        }
+    };
 
     const pushBlockWithName = ({ block_type, block_meta, block_content }) => {
         const block_name = block_meta.display_name;

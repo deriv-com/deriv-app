@@ -89,16 +89,9 @@ export const importExternal = url => {
 export const delayCallbackByMs = (callback, ms) => {
     let timer = 0;
     return new Promise(resolve => {
-        clearTimeout(timer);
         timer = setTimeout(() => {
             callback();
-            resolve();
+            resolve(timer);
         }, ms || 0);
     });
-};
-
-export const pushIfNotExists = (array, element_to_push) => {
-    if (!array.some(element => element === element_to_push)) {
-        array.push(element_to_push);
-    }
 };

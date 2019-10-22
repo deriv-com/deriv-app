@@ -36,9 +36,10 @@ export default class ToolbarStore {
     @action.bound
     onSearchKeyUp(submitForm) {
         this.is_search_loading = true;
-        delayCallbackByMs(submitForm, 1000).then(
-            action(() => this.is_search_loading = false)
-        );
+        delayCallbackByMs(submitForm, 1000).then(action(timer => {
+            clearTimeout(timer);
+            this.is_search_loading = false;
+        }));
     }
 
     @action.bound

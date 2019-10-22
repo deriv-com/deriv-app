@@ -85,9 +85,10 @@ class Autocomplete extends React.PureComponent {
         const { active_index, filtered_items } = this.state;
 
         if (typeof active_index === 'number') {
-            const next = active_index - 1;
+            const next                  = active_index - 1;
+            const should_scroll_to_last = next < 0;
 
-            if (next < 0) {
+            if (should_scroll_to_last) {
                 this.setState({ active_index: filtered_items.length - 1 });
                 this.dropdown_ref.current.scrollToBottom();
             } else {
@@ -111,9 +112,10 @@ class Autocomplete extends React.PureComponent {
         if (active_index === null || !this.list_item_ref.current) {
             this.setState({ active_index: 0 });
         } else if (typeof active_index === 'number') {
-            const next = active_index + 1;
+            const next                   = active_index + 1;
+            const should_scroll_to_first = next >= filtered_items.length;
 
-            if (next >= filtered_items.length) {
+            if (should_scroll_to_first) {
                 this.setState({ active_index: 0 });
                 this.dropdown_ref.current.scrollTop();
             } else {

@@ -2,7 +2,7 @@ import {
     observable,
     action,
     computed }                from 'mobx';
-import { CONTRACT_STAGES }    from '../constants/contract-stage';
+import { contract_stages }    from '../constants/contract-stage';
 import { isEnded ,
     getIndicativePrice }      from '../utils/contract';
 
@@ -23,14 +23,14 @@ export default class ContractCardStore {
     get is_contract_completed() {
         return this.contract &&
         isEnded(this.contract) &&
-        (this.root_store.run_panel.contract_stage.index !== CONTRACT_STAGES.purchase_recieved.index);
+        (this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECIEVED.index);
     }
 
     @computed
     get is_contract_loading() {
         return  (this.root_store.run_panel.is_running && this.contract === null) ||
-        (this.root_store.run_panel.contract_stage.index === CONTRACT_STAGES.purchase_sent.index) ||
-        (this.root_store.run_panel.contract_stage.index === CONTRACT_STAGES.starting.index);
+        (this.root_store.run_panel.contract_stage.index === contract_stages.PURCHASE_SENT.index) ||
+        (this.root_store.run_panel.contract_stage.index === contract_stages.STARTING.index);
     }
 
     @computed

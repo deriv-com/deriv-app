@@ -1,10 +1,8 @@
 import {
     observable,
-    action }                     from 'mobx';
-import { formatDate }            from 'deriv-shared/utils/date';
-import {
-    message_types,
-    unrecoverable_errors }        from '../constants/message-types';
+    action }                from 'mobx';
+import { formatDate }       from 'deriv-shared/utils/date';
+import { message_types }    from '../constants/messages';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -19,25 +17,17 @@ export default class JournalStore {
 
     @action.bound
     onLogSuccess(data) {
-        this.pushMessage(data, message_types.success);
+        this.pushMessage(data, message_types.SUCCESS);
     }
 
     @action.bound
     onError(data) {
-        if (unrecoverable_errors.includes(data.name)) {
-            this.root_store.contract_card.clear();
-            this.root_store.run_panel.is_continue_trading = false;
-        } else {
-            this.root_store.run_panel.is_continue_trading = true;
-        }
-        this.root_store.run_panel.setActiveTabIndex(2);
-        this.root_store.run_panel.is_error_happened = true;
-        this.pushMessage(data , message_types.error);
+        this.pushMessage(data , message_types.ERROR);
     }
 
     @action.bound
     onNotify(data) {
-        this.pushMessage(data , message_types.notify);
+        this.pushMessage(data , message_types.NOTIFY);
     }
     
     @action.bound

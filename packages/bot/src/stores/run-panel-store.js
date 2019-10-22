@@ -2,12 +2,18 @@ import {
     observable,
     action,
     reaction,
-    computed }             from 'mobx';
-import { CONTRACT_STAGES } from '../constants/contract-stage';
+    computed,
+}                          from 'mobx';
+import { contract_stages } from '../constants/contract-stage';
+import {
+    error_types,
+    unrecoverable_errors,
+}                          from '../constants/messages';
 import {
     runBot,
     stopBot,
-    terminateBot }         from '../scratch';
+    terminateBot,
+}                          from '../scratch';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';
@@ -18,35 +24,34 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
-    @observable active_index          = 0;
-    @observable contract_stage        = CONTRACT_STAGES.not_running;
-    @observable dialog_options        = {};
-    @observable has_open_contract     = false;
-    @observable is_running            = false;
-    @observable is_drawer_open        = true;
+    @observable active_index = 0;
+    @observable contract_stage = contract_stages.NOT_RUNNING;
+    @observable dialog_options = {};
+    @observable has_open_contract = false;
+    @observable is_running = false;
+    @observable is_drawer_open = true;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
-    // we activate run-button and clear trade info and set the ContractStage to not_running
-    // otherwise we keep opening new contracts and set the ContractStage to purchase_sent
-    is_error_happened   = false;
-    is_continue_trading = true;
+    // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
+    // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
+    error_type = undefined;
 
     // #region button clicks
     @computed
     get is_stop_button_disabled() {
-        return this.contract_stage.index === CONTRACT_STAGES.is_stopping.index;
+        return this.contract_stage.index === contract_stages.IS_STOPPING.index;
     }
 
     @computed
-    get is_stop_button_visible(){
+    get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
     }
-    
+
     @computed
     get is_clear_stat_disabled() {
         return this.is_running ||
-          this.has_open_contract ||
-          this.root_store.journal.messages.length === 0;
+            this.has_open_contract ||
+            this.root_store.journal.messages.length === 0;
     }
 
     @action.bound
@@ -67,7 +72,7 @@ export default class RunPanelStore {
         this.is_running = true;
         this.is_drawer_open = true;
         this.root_store.contract_card.clear();
-        this.setContractStage(CONTRACT_STAGES.starting);
+        this.setContractStage(contract_stages.STARTING);
 
         runBot();
     }
@@ -78,17 +83,16 @@ export default class RunPanelStore {
 
         this.is_running = false;
 
-        if (this.is_error_happened) {
+        if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
-            this.setContractStage(CONTRACT_STAGES.not_running);
-            this.is_error_happened = false;
-            this.is_continue_trading = true;
+            this.setContractStage(contract_stages.NOT_RUNNING);
+            this.error_type = undefined;
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
-            this.setContractStage(CONTRACT_STAGES.is_stopping);
+            this.setContractStage(contract_stages.IS_STOPPING);
         } else {
             // when user click stop button before bot start running
-            this.setContractStage(CONTRACT_STAGES.not_running);
+            this.setContractStage(contract_stages.NOT_RUNNING);
         }
     }
 
@@ -99,7 +103,7 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        const { contract_card , journal, summary, transactions } = this.root_store;
+        const { contract_card, journal, summary, transactions } = this.root_store;
 
         this.is_running = false;
         this.has_open_contract = false;
@@ -107,10 +111,10 @@ export default class RunPanelStore {
         contract_card.clear();
         summary.clear();
         transactions.clear();
-        this.setContractStage(CONTRACT_STAGES.not_running);
+        this.setContractStage(contract_stages.NOT_RUNNING);
     }
     // #endregion
-    
+
     // #region Drawer
     @action.bound
     toggleDrawer(is_open) {
@@ -170,7 +174,7 @@ export default class RunPanelStore {
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card , journal, summary, transactions } = this.root_store;
+        const { contract_card, journal, summary, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -182,6 +186,8 @@ export default class RunPanelStore {
         observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', journal.onError);
         observer.register('Error', journal.onError);
+        observer.register('ui.log.error', this.onError);
+        observer.register('Error', this.onError);
         observer.register('Notify', journal.onNotify);
     }
 
@@ -192,19 +198,19 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        if (this.is_error_happened && this.is_continue_trading) {
-            // When error happens but its not unrecoverable_errors, why we emit bot.stop here?
-            this.setContractStage(CONTRACT_STAGES.purchase_sent);
-            this.is_error_happened = false;
-        } else if (this.is_error_happened && !this.is_continue_trading) {
+        if (this.error_type === error_types.RECOVERABLE_ERRORS) {
+            // When error happens but its recoverable_errors, why we emit bot.stop here?
+            this.setContractStage(contract_stages.PURCHASE_SENT);
+            this.error_type = undefined;
+        } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // When error happens and its recoverable_errors, bot should stop
-            this.setContractStage(CONTRACT_STAGES.not_running);
-            this.is_error_happened = false;
+            this.setContractStage(contract_stages.NOT_RUNNING);
+            this.error_type = undefined;
             this.is_running = false;
             this.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now
-            this.setContractStage(CONTRACT_STAGES.contract_closed);
+            this.setContractStage(contract_stages.CONTRACT_CLOSED);
             this.unregisterBotListeners();
         }
         this.has_open_contract = false;
@@ -214,19 +220,19 @@ export default class RunPanelStore {
     onContractStatusEvent(data) {
         switch (data.id) {
             case ('contract.purchase_sent'): {
-                this.setContractStage(CONTRACT_STAGES.purchase_sent);
+                this.setContractStage(contract_stages.PURCHASE_SENT);
                 break;
             }
             case ('contract.purchase_recieved'): {
-                this.setContractStage(CONTRACT_STAGES.purchase_recieved);
+                this.setContractStage(contract_stages.PURCHASE_RECIEVED);
                 break;
             }
             case ('contract.sold'): {
-                this.setContractStage(CONTRACT_STAGES.contract_closed);
+                this.setContractStage(contract_stages.CONTRACT_CLOSED);
                 break;
             }
             default: {
-                this.setContractStage(CONTRACT_STAGES.not_running);
+                this.setContractStage(contract_stages.NOT_RUNNING);
                 break;
             }
         }
@@ -236,20 +242,31 @@ export default class RunPanelStore {
     onBotContractEvent(data) {
         const isClosed = isEnded(data);
         if (isClosed) {
-            this.setContractStage(CONTRACT_STAGES.contract_closed);
+            this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }
+    }
+
+    @action.bound
+    onError(data) {
+        if (unrecoverable_errors.includes(data.name)) {
+            this.root_store.contract_card.clear();
+            this.error_type = error_types.UNRECOVERABLE_ERRORS;
+        } else {
+            this.error_type = error_types.RECOVERABLE_ERRORS;
+        }
+        this.setActiveTabIndex(2);
     }
 
     unregisterBotListeners() {
         const { journal } = this.root_store;
-         
+
         observer.unregister('bot.running', this.onBotRunningEvent);
         observer.unregister('bot.stop', this.onBotStopEvent);
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
         observer.unregister('ui.log.success', journal.onLogSuccess);
-        observer.unregister('ui.log.error', journal.onError);
-        observer.unregister('Error', journal.onError);
+        observer.unregisterAll('ui.log.error');
+        observer.unregisterAll('Error');
         observer.unregister('Notify', journal.onNotify);
     }
 

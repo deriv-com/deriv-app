@@ -82,11 +82,15 @@ export const runBot = (limitations = {}) => {
         }
     });
 
+    const blocks_in_workspace = Blockly.derivWorkspace.blockDB_;
+    const has_tradeoptions = Object.keys(blocks_in_workspace)
+        .some(key => blocks_in_workspace[key].type === 'trade_definition_tradeoptions');
+
     const { mandatoryMainBlocks } = config;
     const has_mandatory_blocks = mandatoryMainBlocks
         .every(block => top_blocks.filter(top_block => top_block.type === block).length);
 
-    if (!has_mandatory_blocks) {
+    if (!has_mandatory_blocks || !has_tradeoptions) {
         globalObserver.emit('Error',
             new Error('One or more mandatory blocks are missing from your workspace.' +
         'Please add the required block(s) and then try again.'));

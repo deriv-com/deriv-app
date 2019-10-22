@@ -4,6 +4,7 @@ import Interpreter                    from '../services/tradeEngine/utils/interp
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
 import config                         from '../constants';
+import { translate } from '../utils/tools';
 
 export const scratchWorkspaceInit = async () => {
     try {
@@ -92,8 +93,8 @@ export const runBot = (limitations = {}) => {
 
     if (!has_mandatory_blocks || !has_tradeoptions) {
         globalObserver.emit('Error',
-            new Error('One or more mandatory blocks are missing from your workspace.' +
-        'Please add the required block(s) and then try again.'));
+            new Error(translate('One or more mandatory blocks are missing from your workspace.' +
+        'Please add the required block(s) and then try again.')));
         return;
     }
     

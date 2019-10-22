@@ -149,15 +149,15 @@
 .mt5-compare-accounts {
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
+    flex-grow: 1;
 
     &__data {
-    width: 845px;
     //height: 50vh;
 
         &__table {
             //height: 50vh;
             flex: 1;
+            padding: 0px 30px;
         }
         &__row {
             /*                     attribute   standard advanced synthetic */

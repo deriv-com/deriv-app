@@ -13,10 +13,10 @@ import BaseStore             from './base-store';
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_main_drawer_on           = false;
-    @observable is_notifications_drawer_on  = false;
-    @observable is_positions_drawer_on      = false;
     @observable is_account_settings_visible = false;
+    @observable is_main_drawer_on           = false;
+    @observable is_notifications_visible    = false;
+    @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
 
     @observable is_cashier_modal_on     = false;
@@ -288,6 +288,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleNotifications(is_visible) {
+        this.is_notifications_visible = is_visible;
+    }
+
+    @action.bound
     toggleAccountSettings(is_visible) {
         this.is_account_settings_visible = is_visible;
     }
@@ -303,19 +308,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showMainDrawer() { // show main Drawer
+    showMainDrawer() {
         this.is_main_drawer_on = true;
     }
 
     @action.bound
-    showNotificationsDrawer() { // show nofitications Drawer
-        this.is_notifications_drawer_on = true;
-    }
-
-    @action.bound
-    hideDrawers() { // hide both menu drawers
+    hideDrawers() {
         this.is_main_drawer_on = false;
-        this.is_notifications_drawer_on = false;
     }
 
     @action.bound

@@ -32,6 +32,7 @@ const Header = ({
     setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
+    toggleNotifications,
     openRealAccountSignup,
 }) => {
     const header_links = [
@@ -88,6 +89,7 @@ const Header = ({
                             setCashierActiveTab={setCashierActiveTab}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleCashierModal={toggleCashierModal}
+                            toggleNotifications={toggleNotifications}
                             openRealAccountSignup={openRealAccountSignup}
                         />
                     </div>
@@ -146,5 +148,6 @@ export default connect(
         setCashierActiveTab              : ui.setCashierActiveTab,
         toggleAccountsDialog             : ui.toggleAccountsDialog,
         toggleCashierModal               : ui.toggleCashierModal,
+        toggleNotifications              : ui.toggleNotifications,
     })
 )(Header);

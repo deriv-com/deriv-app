@@ -7,6 +7,7 @@ import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
+import ToggleNotifications  from './toggle-notifications.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 import { BinaryLink }       from '../../Routes';
@@ -46,11 +47,13 @@ export class AccountActions extends Component {
             openRealAccountSignup,
             setCashierActiveTab,
             toggleAccountsDialog,
+            toggleNotifications,
             toggleCashierModal,
         } = this.props;
         if (is_logged_in) {
             return (
                 <React.Fragment>
+                    <ToggleNotifications toggleDialog={toggleNotifications} />
                     <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                         <Icon icon='IconUser' />
                     </BinaryLink>
@@ -114,4 +117,5 @@ AccountActions.propTypes = {
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.any,
     toggleCashierModal               : PropTypes.any,
+    toggleNotifications              : PropTypes.any,
 };

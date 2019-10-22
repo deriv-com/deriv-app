@@ -92,6 +92,17 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     flyout.setVisibility(false);
 
     if (search_term.length <= 1) {
+        flyout.setIsSearchFlyout(true);
+        flyout.setContents(flyout_content, search);
+        return;
+    }
+
+    // avoid general term which the result will return most of the blocks
+    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS'];
+
+    if (general_term.includes(search_term))  {
+        flyout.setIsSearchFlyout(true);
+        flyout.setContents(flyout_content, search);
         return;
     }
 

@@ -127,36 +127,34 @@ const Transaction = ({ contract }) => {
     );
 };
 
-class Transactions extends React.PureComponent {
-    render() {
-        const { contracts } = this.props;
+const Transactions = ({
+    contracts }) => {
 
-        return (
-            <div className='transactions'>
-                <div className='transactions__header'>
-                    <span className='transactions__header--col'>{translate('Trade information')}</span>
-                    <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
-                    <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
-                </div>
-                <div className='transactions__content'>
-                    <ThemedScrollbars
-                        autoHide
-                        style={{ height: 'calc(100vh - 365px)' }}
-                    >
-                        {
-                            contracts.map((contract, index) => {
-                                return <Transaction
-                                    key={`${contract.refrence_id}${index}`}
-                                    contract={contract}
-                                />;
-                            })
-                        }
-                    </ThemedScrollbars>
-                </div>
+    return (
+        <div className='transactions'>
+            <div className='transactions__header'>
+                <span className='transactions__header--col'>{translate('Trade information')}</span>
+                <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
+                <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
             </div>
-        );
-    }
-}
+            <div className='transactions__content'>
+                <ThemedScrollbars
+                    autoHide
+                    style={{ height: 'calc(100vh - 365px)' }}
+                >
+                    {
+                        contracts.map((contract, index) => {
+                            return <Transaction
+                                key={`${contract.refrence_id}${index}`}
+                                contract={contract}
+                            />;
+                        })
+                    }
+                </ThemedScrollbars>
+            </div>
+        </div>
+    );
+};
 
 Transactions.propTypes = {
     contracts: PropTypes.array,

@@ -16,56 +16,54 @@ const SummaryTile = (props) => (
     </div>
 );
 
-class Summary extends React.PureComponent {
-    render() {
-        const {
-            total_stake,
-            total_payout,
-            number_of_runs,
-            lost_contracts,
-            won_contracts,
-            total_profit,
-            currency } = this.props;
+const Summary = ({
+    total_stake,
+    total_payout,
+    number_of_runs,
+    lost_contracts,
+    won_contracts,
+    total_profit,
+    currency,
+}) => {
 
-        return (
-            <div className='summary'>
-                <ContractCard />
-                <div className='summary__tiles'>
-                    <SummaryTile
-                        title={translate('Total stake')}
-                        content={ Money({ amount: total_stake, currency }) }
-                    />
-                    <SummaryTile
-                        title={translate('Total payout')}
-                        content={ Money({ amount: total_payout, currency }) }
-                    />
-                    <SummaryTile
-                        title={translate('No. of runs')}
-                        content={number_of_runs}
-                    />
-                    <SummaryTile
-                        title={translate('Loss contracts')}
-                        content={lost_contracts}
-                    />
-                    <SummaryTile
-                        title={translate('Win contracts')}
-                        content={won_contracts}
-                    />
-                    <SummaryTile
-                        title={translate('Profit/Loss')}
-                        content={Money({ amount: total_profit, currency, has_sign: true })}
-                        contentClassName={classNames(
-                            'summary__tile-content',
-                            'summary__amount', {
-                                'summary__amount--positive': total_profit > 0,
-                                'summary__amount--negative': total_profit < 0,
-                            })}
-                    />
-                </div>
+    return (
+        <div className='summary'>
+            <ContractCard />
+            <div className='summary__tiles'>
+                <SummaryTile
+                    title={translate('Total stake')}
+                    content={ Money({ amount: total_stake, currency }) }
+                />
+                <SummaryTile
+                    title={translate('Total payout')}
+                    content={ Money({ amount: total_payout, currency }) }
+                />
+                <SummaryTile
+                    title={translate('No. of runs')}
+                    content={number_of_runs}
+                />
+                <SummaryTile
+                    title={translate('Loss contracts')}
+                    content={lost_contracts}
+                />
+                <SummaryTile
+                    title={translate('Win contracts')}
+                    content={won_contracts}
+                />
+                <SummaryTile
+                    title={translate('Profit/Loss')}
+                    content={Money({ amount: total_profit, currency, has_sign: true })}
+                    contentClassName={classNames(
+                        'summary__tile-content',
+                        'summary__amount', {
+                            'summary__amount--positive': total_profit > 0,
+                            'summary__amount--negative': total_profit < 0,
+                        })}
+                />
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 Summary.propTypes = {
     contract      : PropTypes.object,

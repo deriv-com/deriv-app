@@ -96,7 +96,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
 
     if (search_term.length === 0) {
         return;
-    } else if (search_term.length <= 2 || general_term.includes(search_term)) {
+    } else if (search_term.length <= 1 || general_term.includes(search_term)) {
         flyout.setIsSearchFlyout(true);
         flyout.setContents(flyout_content, search);
         return;
@@ -121,15 +121,31 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     const pushBlockWithName = ({ block_type, block_meta, block_content }) => {
         const block_name = block_meta.display_name;
 
-        if (block_type.toUpperCase() === search_term || block_name.toUpperCase() === search_term) {
+        if (block_name.toUpperCase() === search_term ||
+        block_type.toUpperCase() === search_term) {
+            pushIfNotExists(flyout_content, block_content);
+        }
+    };
+
+    const pushBlockWithTerm = ({ block_type, block_meta, block_content }) => {
+        const block_name = block_meta.display_name;
+    
+        const block_type_terms = block_type.toUpperCase().split('_');
+        const block_name_terms = block_name.toUpperCase().split(' ');
+
+        if (block_type_terms.some(term => term === search_term) ||
+        block_name_terms.some(term => term === search_term)) {
             pushIfNotExists(flyout_content, block_content);
         }
     };
 
     const pushBlockMatchedName = ({ block_type, block_meta, block_content }) => {
         const block_name = block_meta.display_name;
-        // block_name matched
-        if (block_type.toUpperCase().includes(search_term) || block_name.toUpperCase().includes(search_term)) {
+        const block_type_terms = block_type.toUpperCase().split('_');
+        const block_name_terms = block_name.toUpperCase().split(' ');
+
+        if (block_type_terms.some(term => term.includes(search_term)) ||
+        block_name_terms.some(term => term.includes(search_term))) {
             pushIfNotExists(flyout_content, block_content);
         }
     };
@@ -176,7 +192,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         }
     };
 
-    const priority_order = ['exact_block_name', 'block_name', 'block_definitions', 'block_meta'];
+    const priority_order = ['exact_block_name', 'block_term', 'block_name', 'block_definitions', 'block_meta'];
 
     priority_order.forEach(priority => {
         block_contents.forEach(block_content => {
@@ -188,6 +204,9 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             switch (priority) {
                 case 'exact_block_name':
                     pushBlockWithName({ block_type, block_meta, block_content });
+                    break;
+                case 'block_term':
+                    pushBlockWithTerm({ block_type, block_meta, block_content });
                     break;
                 case 'block_name':
                     pushBlockMatchedName({ block_type, block_meta, block_content });

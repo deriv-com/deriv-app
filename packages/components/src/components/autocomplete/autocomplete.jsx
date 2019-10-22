@@ -24,6 +24,8 @@ const KEY_CODE = {
     KEYUP: 38,
 };
 
+const not_found_default_text = 'No results found';
+
 const get_filtered_items = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
 
@@ -33,9 +35,8 @@ const get_filtered_items = (val, list) => {
             : item.text.toLowerCase().includes(val)
     ));
 };
-
 class Autocomplete extends React.PureComponent {
-    list_ref         = React.createRef();
+    dropdown_ref     = React.createRef();
     list_wrapper_ref = React.createRef();
     list_item_ref    = React.createRef();
 
@@ -67,9 +68,7 @@ class Autocomplete extends React.PureComponent {
                 this.hideDropdownList();
                 break;
             case KEY_CODE.KEYDOWN:
-                if (!should_show_list) {
-                    this.showDropdownList();
-                }
+                if (!should_show_list) this.showDropdownList();
                 this.setActiveDown();
                 break;
             case KEY_CODE.KEYUP:
@@ -86,7 +85,7 @@ class Autocomplete extends React.PureComponent {
 
             if (next < 0) {
                 this.setState({ active_index: filtered_items.length - 1 });
-                this.list_ref.current.scrollToBottom();
+                this.dropdown_ref.current.scrollToBottom();
             } else {
                 const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
                 const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
@@ -95,7 +94,7 @@ class Autocomplete extends React.PureComponent {
 
                 if (item_is_above_view) {
                     const top_of_list = this.list_item_ref.current.offsetTop - item_height;
-                    this.list_ref.current.scrollTop(top_of_list);
+                    this.dropdown_ref.current.scrollTop(top_of_list);
                 }
                 this.setState({ active_index: next });
             }
@@ -112,18 +111,18 @@ class Autocomplete extends React.PureComponent {
 
             if (next >= filtered_items.length) {
                 this.setState({ active_index: 0 });
-                this.list_ref.current.scrollTop();
+                this.dropdown_ref.current.scrollTop();
             } else {
                 const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
                 const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height + (item_height / 2);
-                const list_height        = this.list_ref.current.getClientHeight();
+                const list_height        = this.dropdown_ref.current.getClientHeight();
                 const wrapper_bottom     = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
                 const item_is_below_view = item_top >= wrapper_bottom;
 
                 if (item_is_below_view) {
                     const items_above = (list_height / item_height) - 2;
                     const bottom_of_list = this.list_item_ref.current.offsetTop - (items_above * item_height);
-                    this.list_ref.current.scrollTop(bottom_of_list);
+                    this.dropdown_ref.current.scrollTop(bottom_of_list);
                 }
                 this.setState({ active_index: next });
             }
@@ -137,9 +136,9 @@ class Autocomplete extends React.PureComponent {
 
         this.setState({ filtered_items: this.props.list_items });
 
-        if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
+        if (this.state.input_value === '' && typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection({
-                text : 'No results found', // TODO: add localize
+                text : this.props.not_found_text || not_found_default_text,
                 value: '',
             });
         }
@@ -149,6 +148,8 @@ class Autocomplete extends React.PureComponent {
     };
 
     onItemSelection = (item) => {
+        if (!item) return;
+
         this.setState({ input_value: item.text ? item.text : item });
 
         if (typeof this.props.onItemSelection === 'function') {
@@ -156,7 +157,12 @@ class Autocomplete extends React.PureComponent {
         }
     };
 
-    showDropdownList = () => this.setState({ should_show_list: true });
+    showDropdownList = () => this.setState({ should_show_list: true }, () => {
+        if (this.state.active_index) {
+            const item = this.list_item_ref.current.offsetTop;
+            this.dropdown_ref.current.scrollTop(item);
+        }
+    });
 
     hideDropdownList = () => this.setState({ should_show_list: false });
 
@@ -165,8 +171,7 @@ class Autocomplete extends React.PureComponent {
         const filtered_items = get_filtered_items(val, this.props.list_items);
 
         if (!filtered_items.length) {
-            // TODO: investigate this
-            this.setState({ input_value: 'NaN' });
+            this.setState({ input_value: '' });
         }
         this.setState({ filtered_items });
     };
@@ -213,7 +218,7 @@ class Autocomplete extends React.PureComponent {
                     />
                 </div>
                 <DropdownList
-                    ref={{ list_ref: this.list_ref, list_item_ref: this.list_item_ref, list_wrapper_ref: this.list_wrapper_ref }}
+                    ref={{ dropdown_ref: this.dropdown_ref, list_item_ref: this.list_item_ref, list_wrapper_ref: this.list_wrapper_ref }}
                     active_index={this.state.active_index}
                     style={{
                         width    : this.input_wrapper_ref ? `${ this.input_wrapper_ref.offsetWidth }px` : '100%',
@@ -225,6 +230,7 @@ class Autocomplete extends React.PureComponent {
                     list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                     onItemSelection={this.onItemSelection}
+                    not_found_text={this.props.not_found_text || not_found_default_text}
                 />
             </div>
         );
@@ -243,5 +249,6 @@ Autocomplete.propTypes = {
             })
         ),
     ]),
+    not_found_text : PropTypes.string,
     onItemSelection: PropTypes.func,
 };

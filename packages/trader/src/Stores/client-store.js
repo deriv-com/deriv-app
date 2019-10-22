@@ -182,6 +182,20 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get current_fiat_currency () {
+        const values = Object.values(this.accounts)
+            .reduce((acc, item) => {
+                if (!item.is_virtual) {
+                    acc.push(item.currency);
+                }
+                return acc;
+            }, []);
+
+        return this.upgradeable_currencies
+            .filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value;
+    }
+
+    @computed
     get account_list() {
         return this.all_loginids.map(id => (
             this.getAccountInfo(id)

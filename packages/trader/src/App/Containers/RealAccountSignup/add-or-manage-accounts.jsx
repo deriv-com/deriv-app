@@ -106,9 +106,9 @@ class AddOrManageAccounts extends React.Component {
                                             />
                                             :
                                             <Localize
-                                                i18n_default_text='Currency change is not available for cryptocurrencies.'
+                                                i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
                                                 values={{
-                                                    currency: this.props.currency.toUpperCase(),
+                                                    fiat_currency: this.props.current_fiat_currency.toUpperCase(),
                                                 }}
                                             />
                                         }
@@ -140,8 +140,9 @@ AddOrManageAccounts.propTypes = {
 export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency   : client.can_change_fiat_currency,
-    current_currency_type      : client.current_currency_type,
     currency                   : client.currency,
+    current_currency_type      : client.current_currency_type,
+    current_fiat_currency      : client.current_fiat_currency,
     has_fiat                   : client.has_fiat,
     setCurrency                : client.setAccountCurrency,
     createCryptoAccount        : client.createCryptoAccount,

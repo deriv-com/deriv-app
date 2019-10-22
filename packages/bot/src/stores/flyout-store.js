@@ -34,13 +34,14 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setContents(xml_list, search_term = '') {
+        const text_limit = 20;
         const processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
         this.is_help_content = false;
-        this.search_term = search_term;
+        this.search_term = search_term.length > text_limit ? `${search_term.substring(0, text_limit)}...` : search_term;
 
         // const xml_list_group = this.groupBy(xml_list);
 

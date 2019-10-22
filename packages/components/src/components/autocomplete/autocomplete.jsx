@@ -163,7 +163,7 @@ class Autocomplete extends React.PureComponent {
     };
 
     showDropdownList = () => this.setState({ should_show_list: true }, () => {
-        if (this.state.active_index) {
+        if (this.state.active_index && this.list_item_ref.current) {
             const item = this.list_item_ref.current.offsetTop;
             this.dropdown_ref.current.scrollTop(item);
         }

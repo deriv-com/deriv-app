@@ -93,9 +93,10 @@ const Transaction = ({ contract }) => {
                                 className={className(
                                     'transactions__inline',
                                     'transactions__middle',
-                                    [Math.sign(contract.profit) !== -1 ?
-                                        'transactions__green' :
-                                        'transactions__red'])}
+                                    {
+                                        'transactions__green': contract.profit > 0,
+                                        'transactions__red'  : contract.profit < 0,
+                                    })}
                             >
                                 <Money
                                     amount={Math.abs(contract.profit)}
@@ -103,7 +104,7 @@ const Transaction = ({ contract }) => {
                                 />
                             </div>
                             :
-                            <span />
+                            null
                         }
                     </td>
                     <td className='transactions__col'>

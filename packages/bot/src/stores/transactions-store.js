@@ -24,7 +24,7 @@ export default class TransactionsStore {
             refrence_id  : data.transaction_ids.buy,
             entry_spot   : data.entry_tick_display_value,
             exit_spot    : data.exit_tick_display_value,
-            profit       : is_completed ? data.profit : undefined,
+            profit       : is_completed && data.profit,
             is_completed,
         };
         if (this.contracts.some(e => e.refrence_id === data.transaction_ids.buy)) {

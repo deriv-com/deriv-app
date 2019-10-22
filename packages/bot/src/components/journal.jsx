@@ -132,7 +132,7 @@ class Journal extends React.PureComponent {
 }
 
 Journal.propTypes = {
-    messages: proptypes.array,
+    messages: PropTypes.array,
 };
 
 export default connect(({ journal }) => ({

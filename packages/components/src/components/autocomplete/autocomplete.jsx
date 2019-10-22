@@ -72,7 +72,8 @@ class Autocomplete extends React.PureComponent {
                 this.setActiveDown();
                 break;
             case KEY_CODE.KEYUP:
-                this.setActiveUp();
+                if (!should_show_list) this.showDropdownList();
+                else this.setActiveUp();
                 break;
             default:
                 if (!should_show_list) this.showDropdownList();

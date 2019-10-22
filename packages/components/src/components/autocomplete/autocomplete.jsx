@@ -48,25 +48,33 @@ class Autocomplete extends React.PureComponent {
 
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
-    onKeyPressed = (event) => {
-        if (event.keyCode === KEY_CODE.ENTER) {
-            event.preventDefault();
-            this.hideDropdownList();
-            this.onItemSelection(this.state.filtered_items[this.state.active_index]);
-        }
-        if (this.state.should_show_list && event.keyCode === KEY_CODE.TAB) {
-            this.hideDropdownList();
-            this.onItemSelection(this.state.filtered_items[this.state.active_index]);
-        }
-        if (event.keyCode === KEY_CODE.ESCAPE) {
-            this.hideDropdownList();
-        }
-        if (event.keyCode === KEY_CODE.KEYDOWN) {
-            if (!this.state.should_show_list)  this.showDropdownList();
-            this.setActiveDown();
-        }
-        if (event.keyCode === KEY_CODE.KEYUP) {
-            this.setActiveUp();
+    onKeyPressed = event => {
+        const { active_index, filtered_items, should_show_list } = this.state;
+
+        switch (event.keyCode) {
+            case KEY_CODE.ENTER:
+                event.preventDefault();
+                this.hideDropdownList();
+                this.onItemSelection(filtered_items[active_index]);
+                break;
+            case KEY_CODE.TAB:
+                if (should_show_list) {
+                    this.hideDropdownList();
+                    this.onItemSelection(filtered_items[active_index]);
+                }
+                break;
+            case KEY_CODE.ESCAPE:
+                this.hideDropdownList();
+                break;
+            case KEY_CODE.KEYDOWN:
+                if (!should_show_list) {
+                    this.showDropdownList();
+                }
+                this.setActiveDown();
+                break;
+            case KEY_CODE.KEYUP:
+                this.setActiveUp();
+                break;
         }
     };
 
@@ -80,8 +88,8 @@ class Autocomplete extends React.PureComponent {
                 this.setState({ active_index: filtered_items.length - 1 });
                 this.list_ref.current.scrollToBottom();
             } else {
-                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top);
                 const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
+                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
                 const wrapper_top        = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
                 const item_is_above_view = item_top <= wrapper_top;
 
@@ -97,25 +105,24 @@ class Autocomplete extends React.PureComponent {
     setActiveDown = () => {
         const { active_index, filtered_items } = this.state;
 
-        if (active_index === null) {
+        if (active_index === null || !this.list_item_ref.current) {
             this.setState({ active_index: 0 });
-        }
-
-        if (typeof active_index === 'number') {
+        } else if (typeof active_index === 'number') {
             const next = active_index + 1;
 
             if (next >= filtered_items.length) {
                 this.setState({ active_index: 0 });
                 this.list_ref.current.scrollTop();
             } else {
-                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top);
                 const item_height        = this.list_item_ref.current.getBoundingClientRect().height;
-                const list_height        = this.list_ref.current.getClientHeight()
-                const wrapper_bottom     = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height - item_height - 20;
+                const item_top           = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height + (item_height / 2);
+                const list_height        = this.list_ref.current.getClientHeight();
+                const wrapper_bottom     = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
                 const item_is_below_view = item_top >= wrapper_bottom;
 
                 if (item_is_below_view) {
-                    const bottom_of_list = this.list_item_ref.current.offsetTop - 140;
+                    const items_above = (list_height / item_height) - 2;
+                    const bottom_of_list = this.list_item_ref.current.offsetTop - (items_above * item_height);
                     this.list_ref.current.scrollTop(bottom_of_list);
                 }
                 this.setState({ active_index: next });
@@ -128,9 +135,8 @@ class Autocomplete extends React.PureComponent {
         event.preventDefault();
         this.hideDropdownList();
 
-        this.setState({
-            filtered_items: this.props.list_items,
-        });
+        this.setState({ filtered_items: this.props.list_items });
+
         if (this.state.input_value === 'NaN' && typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection({
                 text : 'No results found', // TODO: add localize
@@ -185,6 +191,7 @@ class Autocomplete extends React.PureComponent {
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onFocus={(e) => this.showDropdownList(e)}
+                        onClick={(e) => this.showDropdownList(e)}
                         onInput={this.filterList}
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={this.onBlur}

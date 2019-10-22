@@ -22,7 +22,7 @@
         align-self: center;
         appearance: none;
         box-sizing: border-box;
-        background: $color-white;
+        background: var(--general-main-1);
 
         &:hover {
             border-color: var(--general-hover);

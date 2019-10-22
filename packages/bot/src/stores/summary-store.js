@@ -19,10 +19,6 @@ export default class SummaryStore {
 
     @action.bound
     onContractStatusEvent(contract_status) {
-        if (!this.root_store.core.client.is_virtual) {
-            // TODO remove after activate real account
-            return;
-        }
         switch (contract_status.id) {
             // TODO: Constants (coming from trade engine) for case labels below.
             case ('contract.purchase_received'): {

@@ -32,10 +32,6 @@ export default class JournalStore {
     
     @action.bound
     pushMessage(data, message_type) {
-        if (!this.root_store.core.client.is_virtual) {
-            return;
-        }
-
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         let message;

@@ -143,7 +143,7 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('please log in'),
+            title  : translate('Please log in'),
             message: translate('You need to log in to run the bot.'),
         };
     }

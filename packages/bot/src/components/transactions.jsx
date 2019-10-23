@@ -88,20 +88,24 @@ const Transaction = ({ contract }) => {
                         </div>
                     </td>
                     <td className='transactions__col'>
-                        <div
-                            className={className(
-                                'transactions__inline',
-                                'transactions__middle',
-                                [Math.sign(contract.profit) !== -1 ?
-                                    'transactions__green' :
-                                    'transactions__red'])}
-                        >
-                            <Money
-                                amount={Math.abs(contract.profit)}
-                                currency={contract.currency}
-                            />
-                        </div>
-
+                        {contract.profit ?
+                            <div
+                                className={className(
+                                    'transactions__inline',
+                                    'transactions__middle',
+                                    {
+                                        'transactions__green': contract.profit > 0,
+                                        'transactions__red'  : contract.profit < 0,
+                                    })}
+                            >
+                                <Money
+                                    amount={Math.abs(contract.profit)}
+                                    currency={contract.currency}
+                                />
+                            </div>
+                            :
+                            null
+                        }
                     </td>
                     <td className='transactions__col'>
                         {

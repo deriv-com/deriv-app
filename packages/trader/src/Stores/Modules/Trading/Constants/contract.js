@@ -25,6 +25,7 @@ export const getContractTypesConfig = () => (
         lb_call        : { title: localize('Close-Low'),                  trade_types: ['LBFLOATCALL'],               basis: ['multiplier'],      components: [] },
         lb_put         : { title: localize('High-Close'),                 trade_types: ['LBFLOATPUT'],                basis: ['multiplier'],      components: [] },
         lb_high_low    : { title: localize('High-Low'),                   trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'],      components: [] },
+        mult           : { title: localize('Multiplier option'),          trade_types: ['MULTUP', 'MULTDOWN'],        basis: ['stake'],           components: [], config: { hide_duration: true } }, // hide Duration for Multiplier contracts for now
     }
 );
 
@@ -36,5 +37,6 @@ export const getContractCategoriesConfig = () => (
         [localize('Asians')]        : ['asian'],
         [localize('Digits')]        : ['match_diff', 'even_odd', 'over_under'],
         // [localize('Lookback')]      : ['lb_call', 'lb_put', 'lb_high_low'],
+        [localize('Multiplier')]    : ['mult'],
     }
 );

@@ -63,16 +63,21 @@ const Amount = ({
         />;
 
     return (
-        <Fieldset className='trade-container__fieldset'>
-            <ButtonToggleMenu
-                id='dt_amount_toggle'
-                buttons_arr={basis_list}
-                className='dropdown--no-margin'
-                is_animated={true}
-                name='basis'
-                onChange={onChange}
-                value={basis}
-            />
+        <Fieldset
+            className='trade-container__fieldset center-text'
+            header={basis_list.length === 1 ? basis_list[0].text : undefined}
+        >
+            {basis_list.length > 1 &&
+                <ButtonToggleMenu
+                    id='dt_amount_toggle'
+                    buttons_arr={basis_list}
+                    className='dropdown--no-margin'
+                    is_animated={true}
+                    name='basis'
+                    onChange={onChange}
+                    value={basis}
+                />
+            }
             {!is_single_currency ?
                 <div className='trade-container__currency-options'>
                     <Dropdown

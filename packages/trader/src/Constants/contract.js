@@ -179,6 +179,14 @@ export const getSupportedContracts = is_high_low => ({
         name    : localize('No Touch'),
         position: 'bottom',
     },
+    MULTUP: {
+        name    : localize('Buy'),
+        position: 'top',
+    },
+    MULTDOWN: {
+        name    : localize('Sell'),
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({

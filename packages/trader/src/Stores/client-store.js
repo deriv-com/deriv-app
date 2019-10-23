@@ -191,8 +191,11 @@ export default class ClientStore extends BaseStore {
                 return acc;
             }, []);
 
-        return this.upgradeable_currencies
-            .filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value;
+        return this.has_fiat ?
+            this.upgradeable_currencies
+                .filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value
+            :
+            undefined;
     }
 
     @computed

@@ -1,5 +1,4 @@
 import classNames                     from 'classnames';
-import debounce                       from 'lodash.debounce';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { FixedSizeList as List }      from 'react-window';
 import { ThemedScrollbars }           from 'deriv-components';
@@ -51,37 +50,12 @@ class DataTable extends React.PureComponent {
         };
     }
 
-    resizeDimensions = debounce(() => {
-        this.setState({
-            width       : (window.innerWidth - this.state.window_width) + this.state.width,
-            window_width: window.innerWidth,
-        });
-    }, 250);
-
     componentDidMount() {
         this.setState({
             height      : this.props.custom_height || this.el_table_body.clientHeight,
             width       : this.props.custom_width || this.el_table_body.clientWidth,
             window_width: window.innerWidth,
         });
-        window.onresize = this.resizeDimensions;
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    componentWillUnmount() {
-        window.onresize = null;
-    }
-
-    componentDidUpdate() {
-        this.alignHeader();
-    }
-
-    alignHeader() {
-        // scrollbar inside table-body can push content (depending on the browser and if mouse is plugged in)
-        if (!this.props.data_source.length) return;
-        const first_body_row   = this.el_table_body.firstChild;
-        const scrollbar_offset = this.el_table_head.offsetWidth - first_body_row.offsetWidth;
-        this.el_table_head.style.paddingRight = `${scrollbar_offset}px`;
     }
 
     rowRenderer ({
@@ -93,6 +67,7 @@ class DataTable extends React.PureComponent {
             className,
             getRowAction,
             columns,
+            preloaderCheck,
             id } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
@@ -107,6 +82,7 @@ class DataTable extends React.PureComponent {
                 id={contract_id}
                 key={id}
                 to={typeof action === 'string' ? action : undefined}
+                show_preloader={(typeof preloaderCheck === 'function') ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
             />
         );

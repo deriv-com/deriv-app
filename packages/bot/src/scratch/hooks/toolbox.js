@@ -84,6 +84,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
     const search_term = search.trim().toUpperCase();
+    const search_regex = new RegExp(`\\b${search_term}\\b`);
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
     const { flyout } = ScratchStore.instance;
@@ -149,8 +150,8 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const block_type_terms = block_type.toUpperCase().split('_');
         const block_name_terms = block_name.toUpperCase().split(' ');
 
-        if (block_type_terms.some(term => term.includes(search_term)) ||
-        block_name_terms.some(term => term.includes(search_term))) {
+        if (block_type_terms.some(term => search_regex.test(term.toUpperCase())) ||
+        block_name_terms.some(term => search_regex.test(term.toUpperCase()))) {
             pushIfNotExists(flyout_content, block_content);
         }
     };
@@ -162,7 +163,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             const definition = block_definitions[key];
 
             if (definition_key_to_search.test(key) &&
-                definition.toUpperCase().includes(search_term)) {
+            search_regex.test(definition.toUpperCase())) {
                 return true;
             }
 
@@ -171,7 +172,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                 // eslint-disable-next-line consistent-return
                 definition.forEach(def => {
                     if (def.type === 'field_dropdown' &&
-                        JSON.stringify(def).toUpperCase().includes(search_term)) {
+                    search_regex.test(JSON.stringify(def).toUpperCase())) {
                         has_dropdown_and_in_search = true;
                     }
                 });
@@ -190,7 +191,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         // block_meta matched
         const matched_meta = Object.keys(block_meta)
             .filter(key => key !== 'display_name')
-            .find(key => block_meta[key].toUpperCase().includes(search_term));
+            .find(key => search_regex.test(block_meta[key].toUpperCase()));
         if (matched_meta && matched_meta.length) {
             pushIfNotExists(flyout_content, block_content);
             

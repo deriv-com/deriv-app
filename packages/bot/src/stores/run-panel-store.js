@@ -93,6 +93,7 @@ export default class RunPanelStore {
         } else {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
+            this.unregisterBotListeners();
         }
     }
 
@@ -265,18 +266,16 @@ export default class RunPanelStore {
         this.setActiveTabIndex(2);
     }
 
-    unregisterBotListeners() {
-        const { journal } = this.root_store;
-
-        observer.unregister('bot.running', this.onBotRunningEvent);
-        observer.unregister('bot.stop', this.onBotStopEvent);
-        observer.unregister('bot.trade_again', this.onBotTradeAgain);
+    unregisterBotListeners =() => {
+        observer.unregisterAll('bot.running');
+        observer.unregisterAll('bot.stop');
+        observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
-        observer.unregister('ui.log.success', journal.onLogSuccess);
+        observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
-        observer.unregister('Notify', journal.onNotify);
+        observer.unregisterAll('Notify');
     }
 
     // #endregion

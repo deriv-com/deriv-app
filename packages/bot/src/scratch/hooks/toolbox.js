@@ -111,7 +111,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     const block_contents = allCategories_
         .filter(category => !category.has_child_category_)
         .map(category => {
-            let contents = category.contents_;
+            let contents = category.contents_.length ? category.contents_ : category.dynamic_;
 
             if (typeof contents === 'string') {
                 const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(contents);
@@ -155,8 +155,8 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const block_type_terms = block_type.toUpperCase().split('_');
         const block_name_terms = block_name.toUpperCase().split(' ');
 
-        if (block_type_terms.some(term => search_regex.test(term.toUpperCase())) ||
-        block_name_terms.some(term => search_regex.test(term.toUpperCase()))) {
+        if (block_type_terms.some(term => search_regex.test(term) || term.includes(search_term)) ||
+        block_name_terms.some(term => search_regex.test(term) || term.includes(search_term))) {
             pushIfNotExists(flyout_content, block_content);
         }
     };

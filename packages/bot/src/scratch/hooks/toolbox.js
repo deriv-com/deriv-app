@@ -55,6 +55,11 @@ Blockly.Toolbox.prototype.init = function () {
     this.createFlyout_();
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
+    this.categoryMenu_.allCategories_ = [];
+    this.categoryMenu_.categories_.forEach(category => {
+        const clone_category = { ...category };
+        this.categoryMenu_.allCategories_.push(clone_category);
+    });
     this.position();
     this.toggle();
 };
@@ -102,11 +107,11 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         return;
     }
 
-    const { derivWorkspace: { toolbox_: { categoryMenu_: { categories_ } } } } = Blockly;
-    const block_contents = categories_
+    const { categoryMenu_: { allCategories_ } } = this;
+    const block_contents = allCategories_
         .filter(category => !category.has_child_category_)
         .map(category => {
-            let contents = category.getContents();
+            let contents = category.contents_;
 
             if (typeof contents === 'string') {
                 const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(contents);

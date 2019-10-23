@@ -29,5 +29,8 @@
         &:hover {
             background-color: var(--state-hover);
         }
+        &--active {
+            background-color: var(--state-active);
+        }
     }
 }

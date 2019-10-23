@@ -24,9 +24,7 @@ const KEY_CODE = {
     KEYUP  : 38,
 };
 
-const not_found_default_text = 'No results found';
-
-const get_filtered_items = (val, list) => {
+const getFilteredItems = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
 
     return list.filter(item => (
@@ -65,6 +63,7 @@ class Autocomplete extends React.PureComponent {
                 }
                 break;
             case KEY_CODE.ESCAPE:
+                event.preventDefault();
                 this.hideDropdownList();
                 break;
             case KEY_CODE.KEYDOWN:
@@ -151,7 +150,7 @@ class Autocomplete extends React.PureComponent {
 
         if (this.state.input_value === '' && typeof this.props.onItemSelection === 'function') {
             this.props.onItemSelection({
-                text : this.props.not_found_text || not_found_default_text,
+                text : this.props.not_found_text,
                 value: '',
             });
         }
@@ -181,7 +180,7 @@ class Autocomplete extends React.PureComponent {
 
     filterList = (e) => {
         const val            = e.target.value.toLowerCase();
-        const filtered_items = get_filtered_items(val, this.props.list_items);
+        const filtered_items = getFilteredItems(val, this.props.list_items);
 
         if (!filtered_items.length) {
             this.setState({ input_value: '' });
@@ -247,12 +246,15 @@ class Autocomplete extends React.PureComponent {
                     list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                     onItemSelection={this.onItemSelection}
-                    not_found_text={this.props.not_found_text || not_found_default_text}
+                    not_found_text={this.props.not_found_text}
                 />
             </div>
         );
     }
 }
+Autocomplete.defaultProps = {
+    not_found_text: 'No results found',
+};
 
 export default Autocomplete;
 

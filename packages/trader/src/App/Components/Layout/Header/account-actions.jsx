@@ -41,6 +41,7 @@ export class AccountActions extends Component {
             is_acc_switcher_on,
             is_cashier_modal_on,
             is_logged_in,
+            is_notifications_visible,
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_virtual,
@@ -53,7 +54,10 @@ export class AccountActions extends Component {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <ToggleNotifications toggleDialog={toggleNotifications} />
+                    <ToggleNotifications
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotifications}
+                    />
                     <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                         <Icon icon='IconUser' />
                     </BinaryLink>
@@ -110,6 +114,7 @@ AccountActions.propTypes = {
     is_acc_switcher_on               : PropTypes.any,
     is_cashier_modal_on              : PropTypes.any,
     is_logged_in                     : PropTypes.any,
+    is_notifications_visible         : PropTypes.any,
     is_payment_agent_transfer_visible: PropTypes.any,
     is_payment_agent_visible         : PropTypes.any,
     is_virtual                       : PropTypes.any,

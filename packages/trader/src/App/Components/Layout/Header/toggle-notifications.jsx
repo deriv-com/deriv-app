@@ -1,18 +1,24 @@
-import React             from 'react';
-import Notifications     from 'App/Containers/Notifications/notifications.jsx';
-import Icon              from 'Assets/icon.jsx';
-import { ToggleDrawer }  from 'App/Components/Elements/Drawer';
+import React         from 'react';
+import Notifications from 'App/Containers/Notifications/notifications.jsx';
+import Icon          from 'Assets/icon.jsx';
+import                    'Sass/app/modules/notifications.scss';
 
-const ToggleNotificationsDrawer = (is_visible, toggleNotifications) => (
-    <ToggleDrawer
-        alignment='right'
-        icon={<Icon icon='IconBell' />}
-        icon_class='notify-toggle'
-    >
+const ToggleNotificationsDrawer = ({ is_visible, toggleDialog }) =>  (
+    <div className='notifications-toggle'>
+        <div
+            className='notifications-toggle__icon-container'
+            onClick={toggleDialog}
+            style={{ cursor: is_visible ? 'default' : 'pointer' }}
+        >
+            <Icon
+                className='notifications-toggle__icon'
+                icon='IconBell'
+            />
+        </div>
         <Notifications
-            toggle={toggleNotifications}
+            toggleDialog={toggleDialog}
         />
-    </ToggleDrawer>
+    </div>
 );
 
 export default ToggleNotificationsDrawer;

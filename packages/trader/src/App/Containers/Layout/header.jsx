@@ -24,6 +24,7 @@ const Header = ({
     is_app_disabled,
     is_logged_in,
     is_mobile,
+    is_notifications_visible,
     is_payment_agent_visible,
     is_payment_agent_transfer_visible,
     is_route_modal_on,
@@ -82,6 +83,7 @@ const Header = ({
                             enableApp={enableApp}
                             is_acc_switcher_on={is_acc_switcher_on}
                             is_cashier_modal_on={is_cashier_modal_on}
+                            is_notifications_visible={is_notifications_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_logged_in={is_logged_in}
@@ -114,6 +116,7 @@ Header.propTypes = {
     is_dark_mode                     : PropTypes.bool,
     is_logged_in                     : PropTypes.bool,
     is_mobile                        : PropTypes.bool,
+    is_notifications_visible         : PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible         : PropTypes.bool,
     is_route_modal_on                : PropTypes.bool,
@@ -121,6 +124,7 @@ Header.propTypes = {
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.func,
     toggleCashierModal               : PropTypes.func,
+    toggleNotifications              : PropTypes.func,
 };
 
 export default connect(
@@ -138,6 +142,7 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
+        is_notifications_visible: ui.is_notifications_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
@@ -148,6 +153,6 @@ export default connect(
         setCashierActiveTab              : ui.setCashierActiveTab,
         toggleAccountsDialog             : ui.toggleAccountsDialog,
         toggleCashierModal               : ui.toggleCashierModal,
-        toggleNotifications              : ui.toggleNotifications,
+        toggleNotifications              : ui.toggleNotificationsModal,
     })
 )(Header);

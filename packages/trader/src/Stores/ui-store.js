@@ -288,8 +288,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleNotifications(is_visible) {
-        this.is_notifications_visible = is_visible;
+    toggleNotificationsModal() {
+        this.is_notifications_visible = !this.is_notifications_visible;
     }
 
     @action.bound

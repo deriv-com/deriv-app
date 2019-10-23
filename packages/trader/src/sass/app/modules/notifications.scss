@@ -1,0 +1,33 @@
+/** @define notifications; weak */
+.notifications {
+    &-toggle {
+        position: relative;
+        margin: 0 1.5rem;
+
+        &__icon {
+            width: 28px;
+            height: 28px;
+        }
+    }
+    &__dialog {
+        position: absolute;
+        top: 48px;
+        left: -50%;
+        width: 264px;
+        height: 525px;
+        background: var(--general-main-1);
+        padding: 16px;
+        border-radius: $BORDER_RADIUS;
+        box-shadow: 0 4px 8px 2px var(--shadow-menu);
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+
+        &--enter-done {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translate3d(0, -20px, 0);
+        }
+    }
+}

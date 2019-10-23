@@ -1,6 +1,7 @@
 import {
     observable,
-    action }        from 'mobx';
+    action }          from 'mobx';
+import { observer }   from '../utils/observer';
 
 export default class SummaryStore {
     @observable currency        = '';
@@ -68,5 +69,6 @@ export default class SummaryStore {
         this.total_payout   = 0;
         this.total_stake    = 0;
         this.won_contracts  = 0;
+        observer.emit('summary.clear');
     }
 }

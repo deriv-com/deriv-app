@@ -311,7 +311,7 @@ class PersonalDetailsForm extends React.Component {
                                                         disabled={form_initial_values.citizen && is_fully_authenticated}
                                                         list_items={this.props.residence_list}
                                                         onItemSelection={
-                                                            (item) => setFieldValue('citizen', item.text, false)
+                                                            ({ value, text }) => setFieldValue('citizen', value ? text : '', true)
                                                         }
                                                         required
                                                     />

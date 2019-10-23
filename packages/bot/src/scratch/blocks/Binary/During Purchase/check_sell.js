@@ -19,7 +19,7 @@ Blockly.Blocks.check_sell = {
     meta(){
         return {
             'display_name': translate('Can contract be sold?'),
-            'description' : translate('This block returns ‘True’ if purchased contract can be sold. Otherwise it returns an empty string.'),
+            'description' : translate('This block helps you check if your contract can be sold. If your contract can be sold, it returns “True”. Otherwise, it returns an empty string.'),
         };
     },
     onchange(event) {

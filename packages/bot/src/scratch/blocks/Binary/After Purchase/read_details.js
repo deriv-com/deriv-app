@@ -26,8 +26,8 @@ Blockly.Blocks.read_details = {
     },
     meta(){
         return {
-            'display_name': translate('Contract Details'),
-            'description' : translate('Contract Details block returns one of properties of the last sold or expired contract.'),
+            'display_name': translate('Contract details'),
+            'description' : translate('This block gives you information about your last contract.'),
 
         };
     },

@@ -27,7 +27,7 @@ Blockly.Blocks.ask_price = {
     meta(){
         return {
             'display_name': translate('Purchase Price'),
-            'description' : translate('This block returns purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root blocks.'),
+            'description' : translate('This block returns purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root block.'),
         };
     },
     onchange(event) {

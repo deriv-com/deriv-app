@@ -1,6 +1,6 @@
 {
     "text": [
-        "This block can be used only within “Sell conditions” root block.",
-        "The example below sells active contract in case if Sell profit/loss is greater than the stake assuming that variable \"my_stake\" was defined before."
+        "This block gives you the potential profit or loss if you decide to sell your contract. It can only be used within the “Sell conditions” root block.",
+        "In the example below, the contract will only be sold if the potential profit or loss is more than the stake."
     ]
 }

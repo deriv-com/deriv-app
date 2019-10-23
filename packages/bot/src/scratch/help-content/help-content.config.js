@@ -73,6 +73,9 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
     ],
     last_digit: [
         { type: TEXT },
@@ -291,7 +294,6 @@ export const config = {
     contract_check_result: [
         { type: TEXT },
         { type: BLOCK },
-        { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` }, // eslint-disable-line
     ], sell_price: [

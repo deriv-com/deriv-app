@@ -25,7 +25,6 @@ class Trade extends React.Component {
 
     render() {
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
         return (
             <div id='trade_container' className='trade-container'>
                 <PositionsDrawer />
@@ -56,7 +55,7 @@ class Trade extends React.Component {
                         is_dark_theme={this.props.is_dark_theme}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
-                        is_trade_enabled={is_trade_enabled}
+                        is_trade_enabled={this.props.is_trade_enabled}
                     />
                 </div>
             </div>
@@ -66,7 +65,6 @@ class Trade extends React.Component {
 
 export default connect(
     ({ modules, ui }) => ({
-        form_components : modules.trade.form_components,
         is_chart_loading: modules.trade.is_chart_loading,
         is_market_closed: modules.trade.is_market_closed,
         is_trade_enabled: modules.trade.is_trade_enabled,

@@ -116,7 +116,7 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
 
         if (is_tick_contract && this.granularity !== 0) {
-            this.root_store.ui.addNotification(
+            this.root_store.ui.addNotificationMessage(
                 clientNotifications().switch_to_tick_chart
             );
         }

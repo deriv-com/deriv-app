@@ -145,7 +145,7 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
-        notifications_count     : ui.notification_messages.length,
+        notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),

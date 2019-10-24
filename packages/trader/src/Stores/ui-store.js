@@ -2,13 +2,14 @@ import {
     action,
     autorun,
     computed,
-    observable }             from 'mobx';
+    observable }                  from 'mobx';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH }       from 'Constants/ui';
-import ObjectUtils           from 'deriv-shared/utils/object';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import BaseStore             from './base-store';
+    MAX_TABLET_WIDTH }            from 'Constants/ui';
+import ObjectUtils                from 'deriv-shared/utils/object';
+import { sortNotifications }      from 'App/Components/Elements/NotificationMessage';
+import { excluded_notifications } from './Helpers/client-notifications';
+import BaseStore                  from './base-store';
 
 const store_name = 'ui_store';
 
@@ -329,22 +330,33 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    addNotification(notification) {
-        if (!this.notifications.find(item => item.header === notification.header)) {
-            this.notifications = [...this.notifications, notification].sort(sortNotifications);
-            this.notification_messages   = this.notifications;
+    updateNotifications(notifications_array) {
+        this.notifications =
+            notifications_array.filter((message) => !excluded_notifications.includes(message.key));
+    }
+
+    @action.bound
+    removeNotifications() {
+        this.notification_messages = [];
+    }
+
+    @action.bound
+    addNotificationMessage(notification) {
+        if (!this.notification_messages.find(item => item.header === notification.header)) {
+            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+            this.updateNotifications(this.notification_messages);
         }
     }
 
     @action.bound
-    removeNotification({ key }) {
-        this.notifications = this.notifications
+    removeNotificationMessage({ key }) {
+        this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
     }
 
     @action.bound
-    removeAllNotifications() {
-        this.notifications = [];
+    removeAllNotificationMessages() {
+        this.notification_messages = [];
     }
 
     @action.bound

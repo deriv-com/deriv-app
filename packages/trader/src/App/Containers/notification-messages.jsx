@@ -7,7 +7,7 @@ import 'Sass/app/_common/components/notification-message.scss';
 
 const NotificationMessages = ({
     notification_messages,
-    removeNotification,
+    removeNotificationMessage,
 }) => (
     <div className='notification-messages'>
         {
@@ -17,7 +17,7 @@ const NotificationMessages = ({
                     <Notification
                         key={idx}
                         data={notification}
-                        removeNotification={removeNotification}
+                        removeNotificationMessage={removeNotificationMessage}
                     />
                 ))
         }
@@ -36,12 +36,12 @@ NotificationMessages.propTypes = {
             type         : PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']),
         }),
     ),
-    removeNotification: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
 };
 
 export default connect(
     ({ ui }) => ({
-        notification_messages: ui.notifications,
-        removeNotification   : ui.removeNotification,
+        notification_messages    : ui.notification_messages,
+        removeNotificationMessage: ui.removeNotificationMessage,
     })
 )(NotificationMessages);

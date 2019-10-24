@@ -5,8 +5,8 @@
         margin: 0 1.5rem;
 
         &__icon {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             pointer-events: none;
 
             &-wrapper {
@@ -15,6 +15,12 @@
                 &--active {
                     cursor: default;
                 }
+            }
+            .color1-fill {
+                fill: var(--text-general);
+            }
+            .color1-stroke {
+                stroke: var(--text-general);
             }
         }
         &__step {
@@ -52,13 +58,12 @@
         &-header {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             border-bottom: 1px solid var(--border-normal);
-            padding-left: 16px;
 
             &-text {
                 font-weight: bold;
-                font-size: 1.4rem;
+                font-size: 1.6rem;
                 margin: 1rem 0;
                 color: var(--text-prominent);
             }
@@ -87,24 +92,14 @@
             position: relative;
             line-height: 1.5;
 
-            &:before {
-                content: '';
+            &-icon {
                 position: absolute;
                 left: -24px;
-                top: 4px;
-                height: 14px;
-                width: 14px;
+                top: 2px;
+                height: 16px;
+                width: 16px;
                 border-radius: 10px;
                 pointer-events: none;
-            }
-            &--danger:before {
-                background: var(--status-danger);
-            }
-            &--info:before {
-                background: var(--status-info);
-            }
-            &--warning:before {
-                background: var(--status-warning);
             }
         }
         &-message {

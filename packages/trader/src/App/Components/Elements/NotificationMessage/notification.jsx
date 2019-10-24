@@ -9,10 +9,10 @@ import {
 
 const Notification = ({
     data,
-    removeNotification,
+    removeNotificationMessage,
 }) => {
     const destroy = (is_closed_by_user) => {
-        removeNotification(data);
+        removeNotificationMessage(data);
 
         if (data.closeOnClick) {
             data.closeOnClick(data, is_closed_by_user);
@@ -58,7 +58,7 @@ Notification.propTypes = {
         size                 : PropTypes.oneOf(['small']),
         type                 : PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']).isRequired,
     }),
-    removeNotification: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
 };
 
 export default Notification;

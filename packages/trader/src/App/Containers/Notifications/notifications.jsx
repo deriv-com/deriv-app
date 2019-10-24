@@ -1,9 +1,11 @@
 // import PropTypes             from 'prop-types';
-import classNames             from 'classnames';
+import classNames            from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
-import { localize }          from 'App/i18n';
 import { connect }           from 'Stores/connect';
+import { localize }          from 'App/i18n';
+import { toTitleCase }       from '_common/string_util';
+import Icon                  from 'Assets/icon.jsx';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class Notifications extends React.Component {
@@ -48,7 +50,7 @@ class Notifications extends React.Component {
                 <div className='notifications__dialog' ref={this.setWrapperRef}>
                     <div className='notifications__dialog-header'>
                         <h2 className='notifications__dialog-header-text'>
-                            {localize('Pending')}
+                            {localize('Notifications')}
                         </h2>
                     </div>
                     <div className='notifications__dialog-content'>
@@ -56,14 +58,24 @@ class Notifications extends React.Component {
                             this.props.notifications && this.props.notifications.length ?
                                 this.props.notifications.map((item, idx) => (
                                     <div className='notifications__item' key={idx}>
-                                        <h2
-                                            className={classNames('notifications__item-title', {
-                                                [`notifications__item-title--${item.type}`]: item.type,
-                                            })}
-                                        >
+                                        <h2 className='notifications__item-title'>
+                                            {item.type &&
+                                                <Icon
+                                                    icon={(item.type === 'info') ?
+                                                        'IconInfoBlue'
+                                                        :
+                                                        `Icon${toTitleCase(item.type)}`
+                                                    }
+                                                    className={classNames('notifications__item-title-icon', {
+                                                        [`notifications__item-title-icon--${item.type}`]: item.type,
+                                                    })}
+                                                />
+                                            }
                                             {item.header}
                                         </h2>
-                                        <div className='notifications__item-message'>{item.message}</div>
+                                        <div className='notifications__item-message'>
+                                            {item.message}
+                                        </div>
                                     </div>
                                 ))
                                 :
@@ -78,6 +90,6 @@ class Notifications extends React.Component {
 
 export default connect(
     ({ ui }) => ({
-        notifications: ui.notification_messages,
+        notifications: ui.notifications,
     })
 )(Notifications);

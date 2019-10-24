@@ -316,13 +316,13 @@ const getStatusValidations = status_arr =>
         return validations;
     }, {});
 
-const addVerificationNotifications = (identity, document, addNotification) => {
-    if (identity.status === 'expired') addNotification(clientNotifications().poi_expired);
+const addVerificationNotifications = (identity, document, addNotificationMessage) => {
+    if (identity.status === 'expired') addNotificationMessage(clientNotifications().poi_expired);
 
-    if (document.status === 'expired') addNotification(clientNotifications().poa_expired);
+    if (document.status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
 };
 
-const checkAccountStatus = (account_status, client, addNotification, loginid) => {
+const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
     if (!account_status.length) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -345,52 +345,54 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         professional,
     } = getStatusValidations(status);
 
-    addVerificationNotifications(identity, document, addNotification);
+    addVerificationNotifications(identity, document, addNotificationMessage);
 
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment  = getRiskAssessment(account_status);
 
-    if (cashier_locked)        addNotification(clientNotifications().cashier_locked);
-    if (withdrawal_locked)     addNotification(clientNotifications().withdrawal_locked);
-    if (mt5_withdrawal_locked) addNotification(clientNotifications().mt5_withdrawal_locked);
-    if (document_needs_action) addNotification(clientNotifications().document_needs_action);
-    if (unwelcome)             addNotification(clientNotifications().unwelcome);
-    if (is_mf_retail)          addNotification(clientNotifications().mf_retail);
+    if (cashier_locked)        addNotificationMessage(clientNotifications().cashier_locked);
+    if (withdrawal_locked)     addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
+    if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
+    if (unwelcome)             addNotificationMessage(clientNotifications().unwelcome);
+    if (is_mf_retail)          addNotificationMessage(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
-        addNotification(clientNotifications().financial_limit);
+        addNotificationMessage(clientNotifications().financial_limit);
     }
-    if (has_risk_assessment)               addNotification(clientNotifications().risk);
-    if (shouldCompleteTax(account_status)) addNotification(clientNotifications().tax);
-    if (needs_authentication)              addNotification(clientNotifications().authenticate);
+    if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
+    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
+    if (needs_authentication)              addNotificationMessage(clientNotifications().authenticate);
 
     return {
         has_risk_assessment,
     };
 };
 
+export const excluded_notifications = ['you_are_offline', 'password_changed', 'switch_to_tick_chart'];
+
 export const handleClientNotifications = (
     client,
     account_settings,
     account_status,
-    addNotification,
+    addNotificationMessage,
     loginid,
     ui
 ) => {
     const { currency, excluded_until } = client;
-    if (!currency)      addNotification(clientNotifications(ui).currency);
-    if (excluded_until) addNotification(clientNotifications(ui).self_exclusion(excluded_until));
+    if (!currency)      addNotificationMessage(clientNotifications(ui).currency);
+    if (excluded_until) addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
 
-    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotification, loginid);
+    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
-    if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications(ui).tnc);
+    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {
-        addNotification(clientNotifications(ui).required_fields);
+        addNotificationMessage(clientNotifications(ui).required_fields);
     }
 
     return {

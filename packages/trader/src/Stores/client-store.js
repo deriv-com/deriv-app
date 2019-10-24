@@ -439,7 +439,7 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
-                this.root_store.ui.removeNotification({ key: 'currency' });
+                this.root_store.ui.removeNotificationMessage({ key: 'currency' });
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);
@@ -510,7 +510,8 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
-        this.root_store.ui.removeAllNotifications();
+        this.root_store.ui.removeNotifications();
+        this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -522,13 +523,14 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     refreshNotifications() {
-        this.root_store.ui.removeAllNotifications();
+        this.root_store.ui.removeNotificationMessages();
+        this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
         const { has_missing_required_field } = handleClientNotifications(
             client,
             this.account_settings,
             this.account_status,
-            this.root_store.ui.addNotification,
+            this.root_store.ui.addNotificationMessage,
             this.loginid,
             this.root_store.ui,
         );
@@ -569,13 +571,13 @@ export default class ClientStore extends BaseStore {
                             client,
                             this.account_settings,
                             this.account_status,
-                            this.root_store.ui.addNotification,
+                            this.root_store.ui.addNotificationMessage,
                             this.loginid,
                             this.root_store.ui,
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     } else if (!client || client.is_virtual) {
-                        this.root_store.ui.removeAllNotifications();
+                        this.root_store.ui.removeAllNotificationMessages();
                     }
                 });
             }
@@ -704,7 +706,7 @@ export default class ClientStore extends BaseStore {
         if (!this.switched || !this.switched.length || !this.getAccount(this.switched).token) {
             // Logout if the switched_account doesn't belong to any loginid.
             if (!this.all_loginids.some(id => id !== this.switched) || this.switched === this.loginid) {
-                this.root_store.ui.addNotification({
+                this.root_store.ui.addNotificationMessage({
                     message: localize('Could not switch to default account.'),
                     type   : 'danger',
                 });
@@ -716,7 +718,7 @@ export default class ClientStore extends BaseStore {
 
             this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
-            this.root_store.ui.addNotification({
+            this.root_store.ui.addNotificationMessage({
                 message: localize('Switching to default account.'),
                 type   : 'info',
             });
@@ -800,7 +802,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();
         this.root_store.modules.trade.resetErrorServices();
-        this.root_store.ui.removeAllNotifications();
+        this.root_store.ui.removeAllNotificationMessages();
         this.root_store.modules.trade.refresh();
         this.root_store.modules.trade.debouncedProposal();
     }

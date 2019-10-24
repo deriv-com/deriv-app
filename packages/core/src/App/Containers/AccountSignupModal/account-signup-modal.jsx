@@ -109,7 +109,7 @@ class AccountSignup extends React.Component {
                                                         required
                                                         list_items={ residence_list }
                                                         onItemSelection={
-                                                            (item) => setFieldValue('residence', item.text, true)
+                                                            ({ value, text }) => setFieldValue('residence', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -182,7 +182,7 @@ const AccountSignupModal = ({
             is_visible={is_visible}
             disableApp={disableApp}
             enableApp={enableApp}
-            is_loading={is_loading}
+            is_loading={is_loading || !residence_list.length}
             is_content_centered
         >
             <AccountSignup

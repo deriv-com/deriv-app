@@ -141,7 +141,7 @@ class ToggleCashier extends React.Component {
                         is_open={is_cashier_visible}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
-                        height='616px'
+                        height='664px'
                         width='904px'
                     >
                         <ModalContent

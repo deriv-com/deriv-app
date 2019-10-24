@@ -175,7 +175,9 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotificationMessage(contractSold(this.root_store.client.currency, response.sell.sold_for));
+            this.root_store.ui.addNotificationMessage(
+                contractSold(this.root_store.client.currency, response.sell.sold_for)
+            );
         }
     }
 

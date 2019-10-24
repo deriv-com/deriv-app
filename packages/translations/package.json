@@ -1,0 +1,18 @@
+{
+  "name": "deriv-translations",
+  "version": "1.0.0",
+  "description": "Deriv translations",
+  "author": "Deriv",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binary-com/deriv-app.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/binary-com/deriv-app/issues"
+  }
+}

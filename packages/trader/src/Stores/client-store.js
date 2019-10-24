@@ -61,6 +61,8 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
     };
 
+    is_mt5_account_list_updated = false;
+
     constructor(root_store) {
         super({ root_store });
     }
@@ -299,6 +301,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get account_type() {
         return getClientAccountType(this.loginid);
+    }
+
+    @computed
+    get is_mt5_allowed() {
+        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
     /**
@@ -986,8 +993,20 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    async updateMt5LoginList() {
+        if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
+            const response = await WS.mt5LoginList();
+            this.responseMt5LoginList(response);
+        }
+    }
+
+    @action.bound
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
+        this.is_mt5_account_list_updated = true;
+        setTimeout(() => {
+            this.is_mt5_account_list_updated = false;
+        }, 60000);
 
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list;

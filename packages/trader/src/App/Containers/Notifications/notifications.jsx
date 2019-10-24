@@ -40,28 +40,28 @@ class Notifications extends React.Component {
             <CSSTransition
                 in={this.props.is_visible}
                 classNames={{
-                    enter    : 'notifications__dialog--enter',
-                    enterDone: 'notifications__dialog--enter-done',
-                    exit     : 'notifications__dialog--exit',
+                    enter    : 'notifications-dialog--enter',
+                    enterDone: 'notifications-dialog--enter-done',
+                    exit     : 'notifications-dialog--exit',
                 }}
                 timeout={150}
                 unmountOnExit
             >
-                <div className='notifications__dialog' ref={this.setWrapperRef}>
-                    <div className='notifications__dialog-header'>
-                        <h2 className='notifications__dialog-header-text'>
+                <div className='notifications-dialog' ref={this.setWrapperRef}>
+                    <div className='notifications-dialog__header'>
+                        <h2 className='notifications-dialog__header-text'>
                             {localize('Notifications')}
                         </h2>
                     </div>
-                    <div className={classNames('notifications__dialog-content', {
-                        'notifications__dialog-content--empty': !(this.props.notifications && this.props.notifications.length),
+                    <div className={classNames('notifications-dialog__content', {
+                        'notifications-dialog__content--empty': !(this.props.notifications && this.props.notifications.length),
                     })}
                     >
                         {
                             this.props.notifications && this.props.notifications.length ?
                                 this.props.notifications.map((item, idx) => (
-                                    <div className='notifications__item' key={idx}>
-                                        <h2 className='notifications__item-title'>
+                                    <div className='notifications-item' key={idx}>
+                                        <h2 className='notifications-item__title'>
                                             {item.type &&
                                                 <Icon
                                                     icon={(item.type === 'info') ?
@@ -69,14 +69,14 @@ class Notifications extends React.Component {
                                                         :
                                                         `Icon${toTitleCase(item.type)}`
                                                     }
-                                                    className={classNames('notifications__item-title-icon', {
-                                                        [`notifications__item-title-icon--${item.type}`]: item.type,
+                                                    className={classNames('notifications-item__title-icon', {
+                                                        [`notifications-item__title-icon--${item.type}`]: item.type,
                                                     })}
                                                 />
                                             }
                                             {item.header}
                                         </h2>
-                                        <div className='notifications__item-message'>
+                                        <div className='notifications-item__message'>
                                             {item.message}
                                         </div>
                                     </div>

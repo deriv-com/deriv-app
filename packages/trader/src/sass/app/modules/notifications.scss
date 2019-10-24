@@ -1,5 +1,5 @@
-/** @define notifications; weak */
 .notifications {
+    /** @define notifications-toggle; weak */
     &-toggle {
         position: relative;
         margin: 0 1.5rem;
@@ -49,7 +49,8 @@
             }
         }
     }
-    &__dialog {
+    /** @define notifications-dialog; weak */
+    &-dialog {
         position: absolute;
         top: 48px;
         left: calc(-50% - 10rem);
@@ -60,7 +61,7 @@
         box-shadow: 0 4px 8px 2px var(--shadow-menu);
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
 
-        &-header {
+        &__header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -73,7 +74,7 @@
                 color: var(--text-prominent);
             }
         }
-        &-content {
+        &__content {
             padding: 8px 0;
 
             &--empty {
@@ -91,18 +92,19 @@
             transform: translate3d(0, -20px, 0);
         }
     }
-    &__empty {
+    /** @define notifications-empty; weak */
+    &-empty {
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        &-container {
+        &__container {
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        &-icon {
+        &__icon {
             width: 64px;
             height: 64px;
             margin-bottom: 8px;
@@ -111,25 +113,26 @@
                 fill: var(--text-disabled);
             }
         }
-        &-header {
+        &__header {
             font-size: 1.4rem;
             font-weight: bold;
             text-align: center;
             color: var(--text-disabled);
             padding: 8px;
         }
-        &-message {
+        &__message {
             line-height: 1.5;
             font-size: 1.2rem;
             text-align: center;
             color: var(--text-disabled);
         }
     }
-    &__item {
+    /** @define notifications-item; weak */
+    &-item {
         padding: 8px;
         margin-left: 32px;
 
-        &-title {
+        &__title {
             font-size: 1.4rem;
             font-weight: bold;
             margin-bottom: 4px;
@@ -146,7 +149,7 @@
                 pointer-events: none;
             }
         }
-        &-message {
+        &__message {
             font-size: 1.2rem;
             color: var(--text-prominent);
             line-height: 1.5;

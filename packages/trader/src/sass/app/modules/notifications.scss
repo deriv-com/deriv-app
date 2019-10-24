@@ -52,7 +52,7 @@
     &__dialog {
         position: absolute;
         top: 48px;
-        left: -50%;
+        left: calc(-50% - 10rem);
         width: 264px;
         height: 525px;
         background: var(--general-main-1);

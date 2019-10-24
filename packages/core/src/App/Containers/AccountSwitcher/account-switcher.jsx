@@ -169,8 +169,8 @@ class AccountSwitcher extends React.Component {
                             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
                         }
                     }}
+                    icon={<Icon icon='IconAdd' />}
                 >
-                    <Icon icon='IconAdd' />
                     <Localize
                         i18n_default_text='Add a real account'
                     />

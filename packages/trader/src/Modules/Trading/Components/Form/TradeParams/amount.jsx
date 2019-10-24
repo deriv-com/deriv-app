@@ -25,6 +25,8 @@ const Amount = ({
     is_minimized,
     is_nativepicker,
     is_single_currency,
+    multiplier,
+    multiplier_range,
     onChange,
     validation_errors,
 }) => {
@@ -98,6 +100,23 @@ const Amount = ({
                 :
                 input
             }
+            {
+               contract_type === "mult" &&
+               <div className='trade-container__multiplier-options'>
+                    <Dropdown
+                        id='multiplier'
+                        className={classNames('trade-container__multiplier-options-dropdown')}
+                        classNameDisplay='trade-container__multiplier-options--display'
+                        is_alignment_left
+                        is_nativepicker={false}
+                        list={multiplier_range}
+                        name='multiplier'
+                        no_border={true}
+                        value={multiplier}
+                        onChange={onChange}
+                    />
+                </div> 
+            }
             <AllowEquals
                 contract_start_type={contract_start_type}
                 contract_type={contract_type}
@@ -149,6 +168,8 @@ export default connect(({ modules, client }) => ({
     expiry_type        : modules.trade.expiry_type,
     is_equal           : modules.trade.is_equal,
     is_single_currency : client.is_single_currency,
+    multiplier         : modules.trade.multiplier,
+    multiplier_range   : modules.trade.multiplier_range,
     onChange           : modules.trade.onChange,
     validation_errors  : modules.trade.validation_errors,
 }))(Amount);

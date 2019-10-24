@@ -111,6 +111,9 @@ export default class TradeStore extends BaseStore {
     // Chart loader observables
     @observable is_chart_loading;
 
+    @observable multiplier;
+    @observable multiplier_range = [];
+
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 
@@ -142,6 +145,7 @@ export default class TradeStore extends BaseStore {
             'expiry_type',
             'is_equal',
             'last_digit',
+            'multiplier',
             'start_date',
             'start_time',
             'symbol',

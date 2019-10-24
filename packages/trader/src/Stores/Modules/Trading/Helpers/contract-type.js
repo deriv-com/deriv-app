@@ -110,7 +110,7 @@ const ContractType = (() => {
             config.trade_types            = buildTradeTypesConfig(contract, config.trade_types);
             config.barriers               = buildBarriersConfig(contract, config.barriers);
             config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
-
+            config.multiplier_range       = contract.multiplier_range;
             available_contract_types[type].config = config;
         });
 
@@ -133,7 +133,7 @@ const ContractType = (() => {
     );
 
     const getContractValues = (store) => {
-        const { contract_expiry_type, contract_type, basis, duration_unit, start_date } = store;
+        const { contract_expiry_type, contract_type, basis, duration_unit, start_date, multiplier } = store;
         const form_components   = getComponents(contract_type);
         const obj_basis         = getBasis(contract_type, basis);
         const obj_trade_types   = getTradeTypes(contract_type);
@@ -145,6 +145,8 @@ const ContractType = (() => {
         const obj_duration_units_list    = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
+        const obj_multiplier_range       = getMultiplierRange(contract_type, multiplier);
+
         return {
             ...form_components,
             ...obj_basis,
@@ -155,6 +157,7 @@ const ContractType = (() => {
             ...obj_duration_unit,
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
+            ...obj_multiplier_range,
         };
     };
 
@@ -407,6 +410,15 @@ const ContractType = (() => {
         return {
             basis_list,
             basis: getArrayDefaultValue(arr_basis, basis),
+        };
+    };
+
+    const getMultiplierRange = (contract_type, multiplier) =>{
+        const arr_multiplier = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
+        
+        return {
+            multiplier_range: arr_multiplier && arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
+            multiplier      : getArrayDefaultValue(arr_multiplier, multiplier)
         };
     };
 

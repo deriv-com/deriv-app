@@ -31,6 +31,7 @@ class Icon extends React.PureComponent {
             IconDeposit           : React.lazy(() => import('./Common/icon-deposit.jsx')), // TODO: update big when design is ready
             IconDepositSmall      : React.lazy(() => import('./Common/icon-deposit-small.jsx')),
             IconEmergency         : React.lazy(() => import('./Common/icon-emergency.jsx')),
+            IconEmptyNotification : React.lazy(() => import('./Common/icon-empty-notification.jsx')),
             IconError             : React.lazy(() => import('./Common/icon-error.jsx')),
             IconExclamation       : React.lazy(() => import('./Common/icon-exclamation.jsx')),
             IconFlag              : React.lazy(() => import('./Common/icon-flag.jsx')),

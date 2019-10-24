@@ -337,7 +337,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeNotifications() {
-        this.notification_messages = [];
+        this.notifications = [];
     }
 
     @action.bound

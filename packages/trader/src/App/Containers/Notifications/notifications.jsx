@@ -53,7 +53,10 @@ class Notifications extends React.Component {
                             {localize('Notifications')}
                         </h2>
                     </div>
-                    <div className='notifications__dialog-content'>
+                    <div className={classNames('notifications__dialog-content', {
+                        'notifications__dialog-content--empty': !(this.props.notifications && this.props.notifications.length),
+                    })}
+                    >
                         {
                             this.props.notifications && this.props.notifications.length ?
                                 this.props.notifications.map((item, idx) => (

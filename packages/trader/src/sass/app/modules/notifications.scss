@@ -43,6 +43,11 @@
                 color: $color-white;
             }
         }
+        &--active {
+            .dc-popover {
+                pointer-events: none;
+            }
+        }
     }
     &__dialog {
         position: absolute;

@@ -6,7 +6,10 @@ import Icon          from 'Assets/icon.jsx';
 import                    'Sass/app/modules/notifications.scss';
 
 const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_message }) =>  (
-    <div className='notifications-toggle'>
+    <div className={classNames('notifications-toggle', {
+        'notifications-toggle--active': is_visible,
+    })}
+    >
         <Popover
             classNameBubble='notifications-toggle__tooltip'
             alignment='bottom'

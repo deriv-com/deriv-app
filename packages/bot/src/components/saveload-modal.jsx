@@ -105,7 +105,7 @@ const SaveLoadModal = ({
                                                 )}
                                             </Field>
                                             <div className='saveload-type__checkbox-description'>
-                                                {translate('A collection allow you to save block as an individual part which can be add into other bot')}
+                                                {translate('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
                                             </div>
                                         </>
                                         : <input

@@ -26,14 +26,14 @@ export default Engine =>
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
                 if (this.isSold) {
+                    contractSettled(contract);
+                    this.contractId = '';
+                    this.updateTotals(contract);
                     contractStatus({
                         id  : 'contract.sold',
                         data: contract.transaction_ids.sell,
                         contract,
                     });
-                    contractSettled(contract);
-                    this.contractId = '';
-                    this.updateTotals(contract);
                     if (this.afterPromise) {
                         this.afterPromise();
                     }

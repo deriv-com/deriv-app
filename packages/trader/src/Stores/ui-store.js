@@ -37,16 +37,17 @@ export default class UIStore extends BaseStore {
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
-    @observable is_chart_countdown_visible  = false;
-    @observable is_chart_layout_default     = true;
+    @observable is_chart_countdown_visible = false;
+    @observable is_chart_layout_default    = true;
 
     // PWA event and config
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
 
+    @observable notifications         = [];
     @observable notification_messages = [];
-    @observable push_notifications = [];
+    @observable push_notifications    = [];
 
     @observable is_advanced_duration   = false;
     @observable advanced_duration_unit = 't';
@@ -329,20 +330,21 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotification(notification) {
-        if (!this.notification_messages.find(item => item.header === notification.header)) {
-            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+        if (!this.notifications.find(item => item.header === notification.header)) {
+            this.notifications = [...this.notifications, notification].sort(sortNotifications);
+            this.notification_messages   = this.notifications;
         }
     }
 
     @action.bound
     removeNotification({ key }) {
-        this.notification_messages = this.notification_messages
+        this.notifications = this.notifications
             .filter(n => n.key !== key);
     }
 
     @action.bound
     removeAllNotifications() {
-        this.notification_messages = [];
+        this.notifications = [];
     }
 
     @action.bound

@@ -41,7 +41,7 @@ NotificationMessages.propTypes = {
 
 export default connect(
     ({ ui }) => ({
-        notification_messages: ui.notification_messages,
+        notification_messages: ui.notifications,
         removeNotification   : ui.removeNotification,
     })
 )(NotificationMessages);

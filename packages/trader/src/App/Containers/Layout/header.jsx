@@ -30,6 +30,7 @@ const Header = ({
     is_route_modal_on,
     is_virtual,
     disableApp,
+    notifications_count,
     setCashierActiveTab,
     toggleAccountsDialog,
     toggleCashierModal,
@@ -88,6 +89,7 @@ const Header = ({
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
+                            notifications_count={notifications_count}
                             setCashierActiveTab={setCashierActiveTab}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleCashierModal={toggleCashierModal}
@@ -121,6 +123,7 @@ Header.propTypes = {
     is_payment_agent_visible         : PropTypes.bool,
     is_route_modal_on                : PropTypes.bool,
     is_virtual                       : PropTypes.bool,
+    notifications_count              : PropTypes.any,
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.func,
     toggleCashierModal               : PropTypes.func,
@@ -142,6 +145,7 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
+        notifications_count     : ui.notification_messages.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),

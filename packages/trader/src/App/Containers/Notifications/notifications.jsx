@@ -1,6 +1,8 @@
 // import PropTypes             from 'prop-types';
+import classNames             from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
+import { localize }          from 'App/i18n';
 import { connect }           from 'Stores/connect';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
@@ -10,9 +12,10 @@ class Notifications extends React.Component {
     };
 
     handleClickOutside = (event) => {
+        const notifications_toggle_btn = !(event.target.classList.contains('notifications-toggle__icon-wrapper'));
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)
-            && this.props.is_visible) {
-            // this.props.toggleDialog();
+            && this.props.is_visible && notifications_toggle_btn) {
+            this.props.toggleDialog();
         }
     };
 
@@ -39,20 +42,34 @@ class Notifications extends React.Component {
                     enterDone: 'notifications__dialog--enter-done',
                     exit     : 'notifications__dialog--exit',
                 }}
-                timeout={250}
+                timeout={150}
                 unmountOnExit
             >
                 <div className='notifications__dialog' ref={this.setWrapperRef}>
-                    {
-                        this.props.notifications_messages && this.props.notifications_messages.length ?
-                            this.props.notifications_messages.map((item, idx) => (
-                                <React.Fragment key={idx}>
-                                    <span>item[idx] </span>
-                                </React.Fragment>
-                            ))
-                            :
-                            <EmptyNotification />
-                    }
+                    <div className='notifications__dialog-header'>
+                        <h2 className='notifications__dialog-header-text'>
+                            {localize('Pending')}
+                        </h2>
+                    </div>
+                    <div className='notifications__dialog-content'>
+                        {
+                            this.props.notifications && this.props.notifications.length ?
+                                this.props.notifications.map((item, idx) => (
+                                    <div className='notifications__item' key={idx}>
+                                        <h2
+                                            className={classNames('notifications__item-title', {
+                                                [`notifications__item-title--${item.type}`]: item.type,
+                                            })}
+                                        >
+                                            {item.header}
+                                        </h2>
+                                        <div className='notifications__item-message'>{item.message}</div>
+                                    </div>
+                                ))
+                                :
+                                <EmptyNotification />
+                        }
+                    </div>
                 </div>
             </CSSTransition>
         );
@@ -60,10 +77,7 @@ class Notifications extends React.Component {
 }
 
 export default connect(
-    ({ client, ui }) => ({
-        is_logged_in          : client.is_logged_in,
-        is_visible            : ui.is_notifications_visible,
-        notifications_messages: ui.notifications_messages,
-
+    ({ ui }) => ({
+        notifications: ui.notification_messages,
     })
 )(Notifications);

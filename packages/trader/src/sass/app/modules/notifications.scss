@@ -7,6 +7,35 @@
         &__icon {
             width: 28px;
             height: 28px;
+            pointer-events: none;
+
+            &-wrapper {
+                cursor: pointer;
+
+                &--active {
+                    cursor: default;
+                }
+            }
+        }
+        &__step {
+            position: absolute;
+            background: $color-red-1;
+            left: 14px;
+            top: -2px;
+            height: 18px;
+            width: 18px;
+            border-radius: 10px;
+            pointer-events: none;
+
+            &:after {
+                position: absolute;
+                left: 6px;
+                top: 4px;
+                content: attr(data-count);
+                font-size: 1rem;
+                font-weight: bold;
+                color: $color-white;
+            }
         }
     }
     &__dialog {
@@ -16,11 +45,27 @@
         width: 264px;
         height: 525px;
         background: var(--general-main-1);
-        padding: 16px;
         border-radius: $BORDER_RADIUS;
         box-shadow: 0 4px 8px 2px var(--shadow-menu);
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
 
+        &-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-bottom: 1px solid var(--border-normal);
+            padding-left: 16px;
+
+            &-text {
+                font-weight: bold;
+                font-size: 1.4rem;
+                margin: 1rem 0;
+                color: var(--text-prominent);
+            }
+        }
+        &-content {
+            padding: 8px 0;
+        }
         &--enter-done {
             opacity: 1;
             transform: translate3d(0, 0, 0);
@@ -28,6 +73,50 @@
         &--enter, &--exit {
             opacity: 0;
             transform: translate3d(0, -20px, 0);
+        }
+    }
+    &__item {
+        padding: 8px;
+        margin-left: 32px;
+
+        &-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: var(--text-prominent);
+            position: relative;
+            line-height: 1.5;
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: -24px;
+                top: 4px;
+                height: 14px;
+                width: 14px;
+                border-radius: 10px;
+                pointer-events: none;
+            }
+            &--danger:before {
+                background: var(--status-danger);
+            }
+            &--info:before {
+                background: var(--status-info);
+            }
+            &--warning:before {
+                background: var(--status-warning);
+            }
+        }
+        &-message {
+            font-size: 1.2rem;
+            color: var(--text-prominent);
+            line-height: 1.5;
+
+            a {
+                text-decoration: none;
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
         }
     }
 }

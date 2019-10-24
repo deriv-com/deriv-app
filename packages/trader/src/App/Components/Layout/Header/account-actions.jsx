@@ -24,11 +24,13 @@ export class AccountActions extends Component {
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
             nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
             nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
             nextProps.is_payment_agent_transfer_visible !== this.props.is_payment_agent_transfer_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
-            nextProps.loginid !== this.props.loginid
+            nextProps.loginid !== this.props.loginid ||
+            nextProps.notifications_count !== this.props.notifications_count
         );
     }
 
@@ -45,6 +47,7 @@ export class AccountActions extends Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_virtual,
+            notifications_count,
             openRealAccountSignup,
             setCashierActiveTab,
             toggleAccountsDialog,
@@ -55,6 +58,7 @@ export class AccountActions extends Component {
             return (
                 <React.Fragment>
                     <ToggleNotifications
+                        count={notifications_count}
                         is_visible={is_notifications_visible}
                         toggleDialog={toggleNotifications}
                     />
@@ -118,6 +122,7 @@ AccountActions.propTypes = {
     is_payment_agent_transfer_visible: PropTypes.any,
     is_payment_agent_visible         : PropTypes.any,
     is_virtual                       : PropTypes.any,
+    notifications_count              : PropTypes.any,
     openRealAccountSignup            : PropTypes.func,
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.any,

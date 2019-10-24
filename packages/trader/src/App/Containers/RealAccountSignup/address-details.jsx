@@ -108,7 +108,6 @@ class AddressDetails extends Component {
                                             />
                                             <fieldset className='address-state__fieldset'>
                                                 <Dropdown
-                                                    // is_alignment_top={(window.innerHeight < 930)}
                                                     id='address_state'
                                                     className='address_state-dropdown'
                                                     is_align_text_left

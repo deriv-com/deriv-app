@@ -19,7 +19,7 @@
     }
     &:after {
         border-radius: 50%;
-        background: $color-white;
+        background: var(--general-main-1);
         transition: all 0.2s ease;
         top: 1px;
         left: 1px;

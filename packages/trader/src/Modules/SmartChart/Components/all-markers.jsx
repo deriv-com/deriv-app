@@ -387,7 +387,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if ((barrier && entry) && (
+    if (barrier && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)

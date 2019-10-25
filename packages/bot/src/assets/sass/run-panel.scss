@@ -10,18 +10,12 @@
         height: 152px;
         margin: 16px 0;
     }
-    &__button {
+    &__buttons {
         display: inline-flex !important;
-        margin: 1.2rem 0.8rem;
-
-        &--disable {
-            pointer-events: none;
-            opacity: 0.5;
-        }
-        &--icon {
-            display: inline-flex;
-            vertical-align: middle;
-        }
+        justify-content: space-between;
+        width: 67%;
+        height: 6rem;
+        align-items: center;
     }
     &__icon-info {
         vertical-align: middle;

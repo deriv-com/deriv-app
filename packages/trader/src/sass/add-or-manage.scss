@@ -1,18 +1,11 @@
 @import 'app/_common/base/index';
 
 .add-or-manage {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-    flex-shrink: 0;
+    flex-direction: row; /* fix for Safari */
+    flex-wrap: wrap;
 
-    & > * {
-        flex-grow: 1;
-        display: flex;
+    form {
         flex-direction: column;
-        justify-content: center;
     }
 }
 
@@ -29,7 +22,7 @@
         width: 60%;
         justify-content: space-between;
         position: relative;
-        margin-top: 2em;
+        margin-top: 3rem;
 
         .bottom-right-overlay {
             position: absolute;
@@ -39,8 +32,8 @@
             height: 3rem;
         }
         svg.inline-icon {
-            width: 60px;
-            height: 60px;
+            width: 90px;
+            height: 120px;
         }
         svg {
             display: block;

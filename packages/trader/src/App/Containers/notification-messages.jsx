@@ -1,26 +1,44 @@
 import PropTypes                from 'prop-types';
 import React                    from 'react';
+import {
+    TransitionGroup,
+    CSSTransition }             from 'react-transition-group';
 import { connect }              from 'Stores/connect';
 import Notification, {
     max_display_notifications } from '../Components/Elements/NotificationMessage';
-import 'Sass/app/_common/components/notification-message.scss';
+import                               'Sass/app/_common/components/notification-message.scss';
 
 const NotificationMessages = ({
     notification_messages,
     removeNotificationMessage,
 }) => (
     <div className='notification-messages'>
-        {
-            notification_messages
-                .slice(0, max_display_notifications)
-                .map((notification, idx) => (
-                    <Notification
-                        key={idx}
-                        data={notification}
-                        removeNotificationMessage={removeNotificationMessage}
-                    />
-                ))
-        }
+        <TransitionGroup component='div'>
+            {
+                notification_messages
+                    .slice(0, max_display_notifications)
+                    .map((notification, idx) => (
+                        <CSSTransition
+                            appear
+                            key={idx}
+                            in={true}
+                            timeout={150}
+                            classNames={{
+                                appear   : 'notification--enter',
+                                enter    : 'notification--enter',
+                                enterDone: 'notification--enter-done',
+                                exit     : 'notification--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <Notification
+                                data={notification}
+                                removeNotificationMessage={removeNotificationMessage}
+                            />
+                        </CSSTransition>
+                    ))
+            }
+        </TransitionGroup>
     </div>
 );
 

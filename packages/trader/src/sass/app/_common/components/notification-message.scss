@@ -23,7 +23,16 @@
     background-color: var(--general-main-2);
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     overflow: hidden;
+    transition: transform 0.25s ease, opacity 0.25s linear;
 
+    &--enter-done {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    &--enter, &--exit {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
     &--small {
         max-width: 240px;
     }

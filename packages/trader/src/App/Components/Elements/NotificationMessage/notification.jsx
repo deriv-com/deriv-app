@@ -1,12 +1,11 @@
-import classNames  from 'classnames';
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import Icon        from 'Assets/icon.jsx';
-import CloseButton from './close-button.jsx';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import CloseButton             from './close-button.jsx';
+import NotificationStatusIcons from './notification-status-icons.jsx';
 import {
     default_delay,
-    icon_types,
-    types }        from './constants';
+    types }                    from './constants';
 
 const Notification = ({
     data,
@@ -26,19 +25,6 @@ const Notification = ({
         setTimeout(destroy, data.delay || default_delay);
     }
 
-    const IconTypes = ({ type, class_suffix }) => (
-        <React.Fragment>
-            { !!type &&
-                <Icon
-                    icon={icon_types[type]}
-                    className={classNames('notification__icon-type', {
-                        [`notification__icon-type--${class_suffix}`]: class_suffix,
-                    })}
-                />
-            }
-        </React.Fragment>
-    );
-
     return (
         <div className={
             classNames('notification', types[data.type], {
@@ -46,10 +32,10 @@ const Notification = ({
             })}
         >
             <div className='notification__icon-background'>
-                <IconTypes type={data.type} class_suffix='is-background' />
+                <NotificationStatusIcons type={data.type} class_suffix='is-background' />
             </div>
             <div className='notification__icon'>
-                <IconTypes type={data.type} />
+                <NotificationStatusIcons type={data.type} />
             </div>
             <div className='notification__text-container'>
                 <h4 className='notification__header'>

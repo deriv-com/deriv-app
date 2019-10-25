@@ -1,4 +1,4 @@
-// import PropTypes             from 'prop-types';
+import PropTypes             from 'prop-types';
 import classNames            from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
@@ -90,6 +90,12 @@ class NotificationsDialog extends React.Component {
         );
     }
 }
+
+NotificationsDialog.propTypes = {
+    is_visible   : PropTypes.bool,
+    notifications: PropTypes.array,
+    toggleDialog : PropTypes.func,
+};
 
 export default connect(
     ({ ui }) => ({

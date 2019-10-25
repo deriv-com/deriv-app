@@ -113,6 +113,8 @@ export default class TradeStore extends BaseStore {
 
     @observable multiplier;
     @observable multiplier_range_list = [];
+    @observable stop_loss;
+    @observable take_profit;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};

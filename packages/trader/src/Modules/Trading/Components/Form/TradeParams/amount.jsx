@@ -67,7 +67,6 @@ const Amount = ({
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
-            header={basis_list.length === 1 ? basis_list[0].text : undefined}
         >
             {basis_list.length > 1 &&
                 <ButtonToggleMenu
@@ -131,28 +130,30 @@ const Amount = ({
 };
 
 Amount.propTypes = {
-    amount: PropTypes.oneOfType([
+    amount               : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    basis              : PropTypes.string,
-    basis_list         : MobxPropTypes.arrayOrObservableArray,
-    contract_start_type: PropTypes.string,
-    contract_type      : PropTypes.string,
-    contract_types_list: MobxPropTypes.observableObject,
-    currencies_list    : MobxPropTypes.observableObject,
-    currency           : PropTypes.string,
-    duration_unit      : PropTypes.string,
-    expiry_type        : PropTypes.string,
-    is_equal           : PropTypes.oneOfType([
+    basis                : PropTypes.string,
+    basis_list           : MobxPropTypes.arrayOrObservableArray,
+    contract_start_type  : PropTypes.string,
+    contract_type        : PropTypes.string,
+    contract_types_list  : MobxPropTypes.observableObject,
+    currencies_list      : MobxPropTypes.observableObject,
+    currency             : PropTypes.string,
+    duration_unit        : PropTypes.string,
+    expiry_type          : PropTypes.string,
+    is_equal             : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    is_minimized      : PropTypes.bool,
-    is_nativepicker   : PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    onChange          : PropTypes.func,
-    validation_errors : PropTypes.object,
+    is_minimized         : PropTypes.bool,
+    is_nativepicker      : PropTypes.bool,
+    is_single_currency   : PropTypes.bool,
+    multiplier           : PropTypes.string,
+    multiplier_range_list: MobxPropTypes.observableObject,
+    onChange             : PropTypes.func,
+    validation_errors    : PropTypes.object,
 };
 
 export default connect(({ modules, client }) => ({

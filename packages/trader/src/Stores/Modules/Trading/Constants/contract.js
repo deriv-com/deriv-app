@@ -25,7 +25,7 @@ export const getContractTypesConfig = () => (
         lb_call        : { title: localize('Close-Low'),                  trade_types: ['LBFLOATCALL'],               basis: ['multiplier'],      components: [] },
         lb_put         : { title: localize('High-Close'),                 trade_types: ['LBFLOATPUT'],                basis: ['multiplier'],      components: [] },
         lb_high_low    : { title: localize('High-Low'),                   trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'],      components: [] },
-        mult           : { title: localize('Multiplier option'),          trade_types: ['MULTUP', 'MULTDOWN'],        basis: ['stake'],           components: [], config: { hide_duration: true } }, // hide Duration for Multiplier contracts for now
+        mult           : { title: localize('Multiplier option'),          trade_types: ['MULTUP', 'MULTDOWN'],        basis: ['stake'],           components: ['take_profit', 'stop_loss'], config: { hide_duration: true } }, // hide Duration for Multiplier contracts for now
     }
 );
 

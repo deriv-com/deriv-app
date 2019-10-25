@@ -262,13 +262,19 @@
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
     }
     &__multiplier-options-dropdown {
+        /* postcss-bem-linter: ignore */
         .dc-dropdown__display-text {
             padding-right: unset;
             padding-left: 1em;
         }
+        /* postcss-bem-linter: ignore */
         .dc-dropdown__display-text, .dc-list__item-text {
             text-transform: unset;
         }
+    }
+    /* postcss-bem-linter: ignore */
+    .symbols.disabled {
+        color: var(--text-disabled);
     }
 }
 

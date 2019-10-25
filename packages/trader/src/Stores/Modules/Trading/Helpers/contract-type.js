@@ -418,7 +418,7 @@ const ContractType = (() => {
         
         return {
             multiplier_range_list: arr_multiplier && arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
-            multiplier           : getArrayDefaultValue(arr_multiplier, multiplier)
+            multiplier           : getArrayDefaultValue(arr_multiplier, multiplier),
         };
     };
 

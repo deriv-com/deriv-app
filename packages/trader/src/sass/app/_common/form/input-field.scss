@@ -68,6 +68,9 @@
     &__icon {
         @extend %inline-icon;
     }
+    &--disabled {
+        pointer-events: none;
+    }
 }
 
 /** @define input */
@@ -161,5 +164,8 @@
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
+    }
+    &:disabled {
+        color: var(--text-disabled);
     }
 }

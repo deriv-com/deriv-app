@@ -65,9 +65,7 @@ const Amount = ({
         />;
 
     return (
-        <Fieldset
-            className='trade-container__fieldset center-text'
-        >
+        <Fieldset className='trade-container__fieldset center-text'>
             {basis_list.length > 1 &&
                 <ButtonToggleMenu
                     id='dt_amount_toggle'
@@ -100,8 +98,8 @@ const Amount = ({
                 input
             }
             {
-               contract_type === "mult" &&
-               <div className='trade-container__multiplier-options'>
+                contract_type === 'mult' &&
+                <div className='trade-container__multiplier-options'>
                     <Dropdown
                         id='multiplier'
                         className={classNames('trade-container__multiplier-options-dropdown')}
@@ -114,7 +112,7 @@ const Amount = ({
                         value={multiplier}
                         onChange={onChange}
                     />
-                </div> 
+                </div>
             }
             <AllowEquals
                 contract_start_type={contract_start_type}
@@ -130,20 +128,20 @@ const Amount = ({
 };
 
 Amount.propTypes = {
-    amount               : PropTypes.oneOfType([
+    amount: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    basis                : PropTypes.string,
-    basis_list           : MobxPropTypes.arrayOrObservableArray,
-    contract_start_type  : PropTypes.string,
-    contract_type        : PropTypes.string,
-    contract_types_list  : MobxPropTypes.observableObject,
-    currencies_list      : MobxPropTypes.observableObject,
-    currency             : PropTypes.string,
-    duration_unit        : PropTypes.string,
-    expiry_type          : PropTypes.string,
-    is_equal             : PropTypes.oneOfType([
+    basis              : PropTypes.string,
+    basis_list         : MobxPropTypes.arrayOrObservableArray,
+    contract_start_type: PropTypes.string,
+    contract_type      : PropTypes.string,
+    contract_types_list: MobxPropTypes.observableObject,
+    currencies_list    : MobxPropTypes.observableObject,
+    currency           : PropTypes.string,
+    duration_unit      : PropTypes.string,
+    expiry_type        : PropTypes.string,
+    is_equal           : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
@@ -157,20 +155,20 @@ Amount.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
-    amount                  : modules.trade.amount,
-    basis                   : modules.trade.basis,
-    basis_list              : modules.trade.basis_list,
-    contract_start_type     : modules.trade.contract_start_type,
-    contract_type           : modules.trade.contract_type,
-    contract_types_list     : modules.trade.contract_types_list,
-    currencies_list         : client.currencies_list,
-    currency                : modules.trade.currency,
-    duration_unit           : modules.trade.duration_unit,
-    expiry_type             : modules.trade.expiry_type,
-    is_equal                : modules.trade.is_equal,
-    is_single_currency      : client.is_single_currency,
-    multiplier              : modules.trade.multiplier,
-    multiplier_range_list   : modules.trade.multiplier_range_list,
-    onChange                : modules.trade.onChange,
-    validation_errors       : modules.trade.validation_errors,
+    amount               : modules.trade.amount,
+    basis                : modules.trade.basis,
+    basis_list           : modules.trade.basis_list,
+    contract_start_type  : modules.trade.contract_start_type,
+    contract_type        : modules.trade.contract_type,
+    contract_types_list  : modules.trade.contract_types_list,
+    currencies_list      : client.currencies_list,
+    currency             : modules.trade.currency,
+    duration_unit        : modules.trade.duration_unit,
+    expiry_type          : modules.trade.expiry_type,
+    is_equal             : modules.trade.is_equal,
+    is_single_currency   : client.is_single_currency,
+    multiplier           : modules.trade.multiplier,
+    multiplier_range_list: modules.trade.multiplier_range_list,
+    onChange             : modules.trade.onChange,
+    validation_errors    : modules.trade.validation_errors,
 }))(Amount);

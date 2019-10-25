@@ -185,9 +185,13 @@ class InputField extends React.Component {
         const increment_buttons =
             <IncrementButtons
                 id={id}
-                max_is_disabled={max_is_disabled}
+                max_is_disabled={max_is_disabled || !!is_disabled}
                 incrementValue={incrementValue}
-                min_is_disabled={min_is_disabled || (is_negative_disabled && calculateDecrementedValue() < 0)}
+                min_is_disabled={
+                    min_is_disabled ||
+                    (is_negative_disabled && calculateDecrementedValue() < 0) ||
+                    !!is_disabled
+                }
                 decrementValue={decrementValue}
             />;
 
@@ -205,7 +209,7 @@ class InputField extends React.Component {
                 <span className='input-field__helper'>{helper}</span>
                 }
                 {is_increment_input ?
-                    <div className='input-wrapper'>
+                    <div className={classNames('input-wrapper', { 'input-wrapper--disabled': !!is_disabled })}>
                         {increment_buttons}
                         {input}
                     </div>

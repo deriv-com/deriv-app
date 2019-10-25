@@ -21,7 +21,7 @@ const NotificationMessages = ({
                         <CSSTransition
                             appear
                             key={idx}
-                            in={true}
+                            in={!!notification.header}
                             timeout={150}
                             classNames={{
                                 appear   : 'notification--enter',

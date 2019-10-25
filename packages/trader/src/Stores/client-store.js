@@ -1003,6 +1003,10 @@ export default class ClientStore extends BaseStore {
         if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
+            // update total balance since MT5 total only comes in non-stream balance call
+            WS.balanceAll((response) => {
+                this.setBalance(response.balance);
+            });
         }
     }
 

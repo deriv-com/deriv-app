@@ -768,6 +768,15 @@ export default class CashierStore extends BaseStore {
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
                     this.config.account_transfer.selected_to.balance = account.balance;
                 }
+                // if one of the accounts was mt5
+                if (account.mt5_group) {
+                    // update the balance for account switcher by renewing the mt5_login_list response
+                    WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+                    // update total balance since MT5 total only comes in non-stream balance call
+                    WS.balanceAll((response) => {
+                        this.root_store.client.setBalance(response.balance);
+                    });
+                }
             });
             this.setIsTransferSuccessful(true);
         }

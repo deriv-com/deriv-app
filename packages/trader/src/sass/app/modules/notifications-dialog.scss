@@ -47,6 +47,11 @@
                 pointer-events: none;
             }
         }
+        &:hover {
+            svg {
+                @extend %inline-icon.active;
+            }
+        }
     }
     /** @define notifications-dialog; weak */
     &-dialog {

@@ -145,7 +145,7 @@ const ContractType = (() => {
         const obj_duration_units_list    = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
-        const obj_multiplier_range       = getMultiplierRange(contract_type, multiplier);
+        const obj_multiplier_range_list  = getMultiplierRange(contract_type, multiplier);
 
         return {
             ...form_components,
@@ -157,7 +157,7 @@ const ContractType = (() => {
             ...obj_duration_unit,
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
-            ...obj_multiplier_range,
+            ...obj_multiplier_range_list,
         };
     };
 
@@ -417,8 +417,8 @@ const ContractType = (() => {
         const arr_multiplier = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
         
         return {
-            multiplier_range: arr_multiplier && arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
-            multiplier      : getArrayDefaultValue(arr_multiplier, multiplier)
+            multiplier_range_list: arr_multiplier && arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
+            multiplier           : getArrayDefaultValue(arr_multiplier, multiplier)
         };
     };
 

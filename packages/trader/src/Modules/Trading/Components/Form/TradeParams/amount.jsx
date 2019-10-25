@@ -26,7 +26,7 @@ const Amount = ({
     is_nativepicker,
     is_single_currency,
     multiplier,
-    multiplier_range,
+    multiplier_range_list,
     onChange,
     validation_errors,
 }) => {
@@ -109,7 +109,7 @@ const Amount = ({
                         classNameDisplay='trade-container__multiplier-options--display'
                         is_alignment_left
                         is_nativepicker={false}
-                        list={multiplier_range}
+                        list={multiplier_range_list}
                         name='multiplier'
                         no_border={true}
                         value={multiplier}
@@ -156,20 +156,20 @@ Amount.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
-    amount             : modules.trade.amount,
-    basis              : modules.trade.basis,
-    basis_list         : modules.trade.basis_list,
-    contract_start_type: modules.trade.contract_start_type,
-    contract_type      : modules.trade.contract_type,
-    contract_types_list: modules.trade.contract_types_list,
-    currencies_list    : client.currencies_list,
-    currency           : modules.trade.currency,
-    duration_unit      : modules.trade.duration_unit,
-    expiry_type        : modules.trade.expiry_type,
-    is_equal           : modules.trade.is_equal,
-    is_single_currency : client.is_single_currency,
-    multiplier         : modules.trade.multiplier,
-    multiplier_range   : modules.trade.multiplier_range,
-    onChange           : modules.trade.onChange,
-    validation_errors  : modules.trade.validation_errors,
+    amount                  : modules.trade.amount,
+    basis                   : modules.trade.basis,
+    basis_list              : modules.trade.basis_list,
+    contract_start_type     : modules.trade.contract_start_type,
+    contract_type           : modules.trade.contract_type,
+    contract_types_list     : modules.trade.contract_types_list,
+    currencies_list         : client.currencies_list,
+    currency                : modules.trade.currency,
+    duration_unit           : modules.trade.duration_unit,
+    expiry_type             : modules.trade.expiry_type,
+    is_equal                : modules.trade.is_equal,
+    is_single_currency      : client.is_single_currency,
+    multiplier              : modules.trade.multiplier,
+    multiplier_range_list   : modules.trade.multiplier_range_list,
+    onChange                : modules.trade.onChange,
+    validation_errors       : modules.trade.validation_errors,
 }))(Amount);

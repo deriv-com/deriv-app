@@ -1004,6 +1004,11 @@ export default class ClientStore extends BaseStore {
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
         this.is_mt5_account_list_updated = true;
+        /** we need to update mt5_login_list on mount of account switcher
+         *  to get the new MT5 balances (balance does not stream for MT5 accounts due to API restriction)
+         *  but to avoid spamming this call since the rate limit is strict
+         *  keep the current mt5_login_list response cached for one minute
+         *  after one minute consider it outdated and allow re-requesting it */
         setTimeout(() => {
             this.is_mt5_account_list_updated = false;
         }, 60000);

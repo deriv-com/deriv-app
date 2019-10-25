@@ -64,7 +64,7 @@ class NotificationsDialog extends React.Component {
                                         <h2 className='notifications-item__title'>
                                             {item.type &&
                                                 <Icon
-                                                    icon={(item.type === 'info') ?
+                                                    icon={(item.type === 'info' || item.type === 'contract_sold') ?
                                                         'IconInfoBlue'
                                                         :
                                                         `Icon${toTitleCase(item.type)}`

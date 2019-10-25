@@ -577,6 +577,7 @@ export default class ClientStore extends BaseStore {
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     } else if (!client || client.is_virtual) {
+                        this.root_store.ui.removeNotifications();
                         this.root_store.ui.removeAllNotificationMessages();
                     }
                 });

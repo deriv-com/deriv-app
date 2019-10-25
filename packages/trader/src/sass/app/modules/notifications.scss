@@ -25,22 +25,21 @@
         }
         &__step {
             position: absolute;
-            background: $color-red-1;
-            left: 14px;
+            left: 1rem;
             top: -2px;
-            height: 18px;
-            width: 18px;
-            border-radius: 10px;
             pointer-events: none;
 
-            &:after {
-                position: absolute;
-                left: 6px;
-                top: 4px;
-                content: attr(data-count);
+            &-count {
+                background: $color-red-1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 1.6rem;
+                width: 1.6rem;
+                border-radius: 1rem;
+                color: $color-white;
                 font-size: 1rem;
                 font-weight: bold;
-                color: $color-white;
             }
         }
         &--active {

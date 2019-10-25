@@ -1,9 +1,9 @@
-import classNames    from 'classnames';
-import React         from 'react';
-import { Popover }   from 'deriv-components';
-import Notifications from 'App/Containers/Notifications/notifications.jsx';
-import Icon          from 'Assets/icon.jsx';
-import                    'Sass/app/modules/notifications.scss';
+import classNames          from 'classnames';
+import React               from 'react';
+import { Popover }         from 'deriv-components';
+import NotificationsDialog from 'App/Containers/NotificationsDialog';
+import Icon                from 'Assets/icon.jsx';
+import                          'Sass/app/modules/notifications.scss';
 
 const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_message }) =>  (
     <div className={classNames('notifications-toggle', {
@@ -26,11 +26,15 @@ const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_me
                     icon='IconBell'
                 />
                 {!!count &&
-                <i className='notifications-toggle__step' data-count={count} />
+                <div className='notifications-toggle__step'>
+                    <span className='notifications-toggle__step-count'>
+                        {count}
+                    </span>
+                </div>
                 }
             </div>
         </Popover>
-        <Notifications
+        <NotificationsDialog
             is_visible={is_visible}
             toggleDialog={toggleDialog}
         />

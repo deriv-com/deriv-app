@@ -1,6 +1,7 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
-import { getRiskAssessment,
+import {
+    getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';

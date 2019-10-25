@@ -8,7 +8,7 @@ import { toTitleCase }       from '_common/string_util';
 import Icon                  from 'Assets/icon.jsx';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
-class Notifications extends React.Component {
+class NotificationsDialog extends React.Component {
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
@@ -95,4 +95,4 @@ export default connect(
     ({ ui }) => ({
         notifications: ui.notifications,
     })
-)(Notifications);
+)(NotificationsDialog);

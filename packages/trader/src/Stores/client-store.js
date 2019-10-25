@@ -760,9 +760,15 @@ export default class ClientStore extends BaseStore {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
+                // TODO: stop doing the addition in FE once API starts sending the total of MT5 + real
+                const currency = obj_balance.total.real.currency;
+                let amount = +obj_balance.total.real.amount;
+                if ('mt5' in obj_balance.total && obj_balance.total.mt5.amount && obj_balance.total.mt5.currency === currency) {
+                    amount += +obj_balance.total.mt5.amount;
+                }
                 this.obj_total_balance = {
-                    amount  : obj_balance.total.real.amount,
-                    currency: obj_balance.total.real.currency,
+                    amount,
+                    currency,
                 };
             }
             this.resetLocalStorageValues(this.loginid);

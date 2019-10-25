@@ -239,6 +239,9 @@ class AccountSwitcher extends React.Component {
             if (/demo/.test(a.group) && !/demo/.test(b.group)) {
                 return 1;
             }
+            if (/demo/.test(b.group) && !/demo/.test(a.group)) {
+                return -1;
+            }
             if (/vanuatu/.test(a.group)) {
                 return -1;
             }

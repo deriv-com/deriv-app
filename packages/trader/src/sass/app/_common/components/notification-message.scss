@@ -24,18 +24,6 @@
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     overflow: hidden;
 
-    // &--danger {
-    //     background-color: var(--status-danger);
-    // }
-    // &--info {
-    //     background-color: var(--status-info);
-    // }
-    // &--success {
-    //     background-color: var(--status-success);
-    // }
-    // &--warning {
-    //     background-color: var(--status-warning);
-    // }
     &--small {
         max-width: 240px;
     }
@@ -45,11 +33,11 @@
         z-index: 2;
     }
     &__text-body {
-        font-size: 14px;
+        font-size: 1.4rem;
         line-height: 1.43;
     }
     &__header {
-        font-size: 16px;
+        font-size: 1.6rem;
         font-weight: bold;
         line-height: 1.5;
         margin-bottom: 8px;
@@ -78,9 +66,9 @@
     &__icon {
         &-type {
             margin-right: 8px;
-            margin-top: 6px;
-            width: 14px;
-            height: 14px;
+            margin-top: 0.5rem;
+            width: 1.4rem;
+            height: 1.4rem;
 
             &--is-background {
                 width: 160px;

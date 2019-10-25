@@ -131,10 +131,10 @@ const AccountDisplay = ({
 );
 
 const ButtonAddAccount = ({
-    onClickButton,
+    onClick,
     text,
 }) => (
-    <UpgradeButton onClick={onClickButton}>
+    <UpgradeButton onClick={onClick}>
         <Icon icon='IconAdd' />
         <div className='btn__text'>
             {text}

@@ -45,9 +45,9 @@
         }
     }
     &__description {
-        @include typeface(--paragraph-center-normal-black);
-        text-transform: none;
-        margin: 2em 0;
+        text-align: center;
+        font-size: var(--text-size-xxs);
+        margin: 1.6rem 0;
         color: var(--text-general);
     }
     .address-state__fieldset {

@@ -56,18 +56,18 @@ class TransitionBlocker extends React.Component {
                         >
                             <div className='account-management-flex-wrapper'>
                                 <Button
-                                    className='btn--tertiary--default'
                                     type='button'
                                     has_effect
                                     onClick={this.back}
                                     text={localize('Cancel')}
+                                    tertiary
                                 />
                                 <Button
-                                    className='btn--primary--default'
                                     type='button'
                                     has_effect
                                     onClick={this.leave}
                                     text={localize('Leave')}
+                                    primary
                                 />
                             </div>
                         </IconMessageContent>

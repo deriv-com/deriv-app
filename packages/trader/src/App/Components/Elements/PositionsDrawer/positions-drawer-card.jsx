@@ -217,13 +217,13 @@ const PositionsDrawerCard = ({
                     <Button
                         id={`dt_drawer_card_${id}_button`}
                         className={classNames(
-                            'btn--secondary--default',
                             'btn--sell', {
                                 'btn--loading': is_sell_requested,
                             })}
                         is_disabled={!is_valid_to_sell || is_sell_requested}
                         text={localize('Sell contract')}
                         onClick={() => onClickSell(id)}
+                        secondary
                     />
                 </div>
             </CSSTransition>

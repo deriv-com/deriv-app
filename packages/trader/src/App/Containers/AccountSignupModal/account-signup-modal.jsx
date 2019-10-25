@@ -118,6 +118,7 @@ class AccountSignup extends React.Component {
                                                 type='button'
                                                 is_disabled={ !values.residence || !!errors.residence }
                                                 onClick={this.onResidenceSelection}
+                                                primary
                                                 text={localize('Next')}
                                             />
                                         </div>
@@ -148,6 +149,7 @@ class AccountSignup extends React.Component {
                                                 type='submit'
                                                 is_disabled={ !values.password || !!errors.password || isSubmitting }
                                                 text={localize('Start trading')}
+                                                primary
                                             />
                                         </div>
                                 }

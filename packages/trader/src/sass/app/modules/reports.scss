@@ -330,6 +330,7 @@ $side-padding: 1.2em;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    justify-content: center;
     margin: auto;
 
     &__icon {

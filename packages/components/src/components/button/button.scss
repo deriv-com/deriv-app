@@ -1,22 +1,20 @@
 /** @define btn */
 .btn {
-    font-size: 1rem;
-    display: inline-block;
     vertical-align: middle;
+    align-items: center;
     justify-content: center;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
-    padding: 0 1.6em;
-    margin: 1.6em;
+    padding: 0 1.6rem;
+    display: flex;
     border: 0;
+    height: 3.2rem;
     border-radius: 4px;
-    height: 3.2em; // 32px
-    min-width: 9.6em; // 96px
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
-    background: var(--button-primary-default);
+    text-decoration: none;
     /*
      * Text will be transformed to sentence case in JS
      * text-transform is declared in .btn instead of .btn__text
@@ -24,240 +22,109 @@
      */
     text-transform: none !important;
 
-    &__text {
+    &__text, &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
-        color: var(--text-colored-background);
-        display: inline-block;
-        vertical-align: middle;
-    }
-    &--link {
-        max-width: 220px;
-        margin: 1em auto;
+        color: var(--text-general);
         display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
     }
     &__icon {
-        display: inline-block;
-        vertical-align: middle;
-        padding-right: 6px;
+        padding-right: 0.8rem;
     }
     &:not([disabled]):hover {
         text-decoration: none;
     }
     &--primary {
-        &--default {
+        background: var(--button-primary-default);
+        color: var(--text-colored-background);
+
+        &:hover:not([disabled]) {
+            background: var(--button-primary-hover);
+        }
+        &:active:not([disabled]) {
             background: var(--button-primary-default);
-            color: var(--text-colored-background);
-
-            &:hover:not([disabled]) {
-                background: var(--button-primary-hover);
-            }
-            &:active:not([disabled]) {
-                background: var(--button-primary-default);
-            }
-            &:disabled, &[disabled] {
-                opacity: 0.32;
-                cursor: not-allowed !important;
-            }
-            .btn__text {
-                color: var(--text-colored-background);
-            }
-        }
-        &--orange {
-            background: $COLOR_ORANGE;
-
-            &:hover:not([disabled]) {
-                background: rgba($COLOR_ORANGE, 0.84);
-            }
-            &:active:not([disabled]) {
-                background: $COLOR_ORANGE;
-            }
-            /* postcss-bem-linter: ignore */
-            &.effect:focus:not(:active):after {
-                border: 0 solid $COLOR_ORANGE;
-            }
-        }
-        &--green {
-            background: var(--status-success);
-
-            &:hover:not([disabled]) {
-                background: var(--transparent-success);
-            }
-            &:active:not([disabled]) {
-                background: var(--status-success);
-            }
-            /* postcss-bem-linter: ignore */
-            &.effect:focus:not(:active):after {
-                border: 0 solid var(--status-success);
-            }
         }
         &:disabled, &[disabled] {
-            background: $COLOR_LIGHT_BLACK_4;
-            cursor: not-allowed;
-
-            .btn__text {
-                color: $COLOR_LIGHT_BLACK_4;
-            }
+            opacity: 0.32;
+            cursor: not-allowed !important;
         }
-        // TODO: (colors) remove this line after colors migration complete -- End here
+        .btn__text, .btn__icon {
+            color: var(--text-colored-background);
+        }
     }
     &--secondary {
         background: transparent;
+        border: 1px solid var(--button-secondary-default);
 
-        &--default {
-            background: transparent;
+        &:hover:not([disabled]) {
+            background: var(--button-secondary-hover);
+        }
+        &:active:not([disabled]) {
             border: 1px solid var(--button-secondary-default);
-
-            &:hover:not([disabled]) {
-                background: var(--button-secondary-hover);
-            }
-            &:active:not([disabled]) {
-                border: 1px solid var(--button-secondary-default);
-            }
-            &:disabled, &[disabled] {
-                opacity: 0.32;
-                cursor: not-allowed !important;
-            }
-            .btn__text {
-                color: var(--text-prominent);
-            }
-        }
-        &--large {
-            background: transparent;
-            border: 2px solid var(--button-secondary-default);
-
-            &:hover:not([disabled]) {
-                background: var(--button-secondary-hover);
-            }
-            &:active:not([disabled]) {
-                border: 2px solid var(--button-secondary-default);
-            }
-            &:disabled, &[disabled] {
-                opacity: 0.32;
-                cursor: not-allowed !important;
-            }
-            .btn__text {
-                color: var(--text-prominent);
-            }
-        }
-        // TODO: (colors) remove this line after colors migration complete
-        &--orange {
-            .btn__text {
-                color: $COLOR_ORANGE;
-            }
-            &:hover:not([disabled]) {
-                background: rgba($COLOR_ORANGE, 0.16);
-            }
-            &:active:not([disabled]) {
-                color: $COLOR_ORANGE;
-            }
-            /* postcss-bem-linter: ignore */
-            &.effect:focus:not(:active):after {
-                border: 0 solid $COLOR_ORANGE;
-            }
-        }
-        &--red {
-            border: 1px solid var(--button-primary-default);
-
-            .btn__text {
-                color: var(--brand-red-coral);
-            }
-        }
-        &--green {
-            border: 1px solid $COLOR_GREEN_1;
-
-            .btn__text {
-                color: $COLOR_GREEN_1;
-            }
-            &:hover:not([disabled]) {
-                border: 1px solid $COLOR_GREEN_2;
-                color: $COLOR_GREEN_2;
-                background: rgba(76, 175, 80, 0.1);
-            }
-            &:active:not([disabled]) {
-                border: 1px solid $COLOR_GREEN_1;
-                color: $COLOR_GREEN_1;
-            }
-            /* postcss-bem-linter: ignore */
-            &.effect:focus:not(:active):after {
-                border: 0 solid $COLOR_GREEN_1;
-            }
         }
         &:disabled, &[disabled] {
-            background: $COLOR_LIGHT_BLACK_4;
-            border: 0 !important;
-            color: $COLOR_LIGHT_BLACK_4 !important;
+            opacity: 0.32;
             cursor: not-allowed !important;
         }
-        // TODO: (colors) remove this line after colors migration complete -- End here
+        .btn__text, .btn__icon {
+            color: var(--text-prominent);
+        }
     }
     &--tertiary {
-        &--default {
-            background: var(--button-tertiary-default);
+        background: var(--button-tertiary-default);
 
-            &:hover:not([disabled]) {
-                background: var(--button-tertiary-hover);
-            }
-            &:active:not([disabled]) {
-                background: var(--button-tertiary-default);
-            }
-            .btn__text {
-                color: var(--brand-red-coral); /* stylelint-disable-line color-no-hex */
-            }
-            &:disabled, &[disabled] {
-                opacity: 0.32;
-                cursor: not-allowed !important;
-            }
-        }
-    }
-    // TODO: (colors) remove this line after colors migration complete
-    &--flat {
-        background-color: transparent;
-        font-weight: bold;
-        border: solid 1px #999999; /* stylelint-disable-line color-no-hex */
-        height: 3.2em;
-
-        .btn__text {
-            color: #333333;  /* stylelint-disable-line color-no-hex */
-        }
         &:hover:not([disabled]) {
-            background: transparent;
+            background: var(--button-tertiary-hover);
         }
-        &:active:not([disabled]) span {
-            color: transparent;
+        &:active:not([disabled]) {
+            background: var(--button-tertiary-default);
         }
-        /* postcss-bem-linter: ignore */
-        &.effect:focus:not(:active):after {
-            border: 0 solid #4c5794; /* stylelint-disable-line color-no-hex */
+        .btn__text, .btn__icon {
+            color: var(--brand-red-coral);
         }
         &:disabled, &[disabled] {
-            background: transparent !important;
-            border: 1px solid $COLOR_LIGHT_BLACK_4 !important; /* stylelint-disable-line color-no-hex */
+            opacity: 0.32;
             cursor: not-allowed !important;
-
-            .btn__text {
-                color: $COLOR_LIGHT_BLACK_4 !important;
-            }
         }
     }
-    // TODO: (colors) remove this line after colors migration complete
-    &--alternate {
-        background: $COLOR_LIGHT_GRAY_2;
-        border-color: $COLOR_LIGHT_GRAY_2;
-        padding: 8px 0;
-        text-align: center;
-        line-height: 100%;
-        font-size: 1.2em;
-        font-weight: bold;
+    /* TODO: confirm this button with designer are we still using this? */
+    &--green {
+        background: var(--status-success);
+
+        &:hover:not([disabled]) {
+            background: var(--transparent-success);
+        }
+        &:active:not([disabled]) {
+            background: var(--status-success);
+        }
+        .btn__text, .btn__icon {
+            color: var(--text-colored-background);
+        }
+    }
+    &__small {
+        height: 2.4rem;
+        border-width: 1px;
 
         .btn__text {
-            color: $COLOR_DARK_BLUE_1;
+            font-size: 1.2rem;
         }
     }
-    /* postcss-bem-linter: ignore */
-    &.effect:focus:not(:active):after {
+    &__medium {
+        height: 3.2rem;
+        border-width: 1px;
+
+        .btn__text {
+            font-size: 1.4rem;
+        }
+    }
+    &__large {
+        height: 4rem;
+        border-width: 2px;
+
+        .btn__text {
+            font-size: 1.4rem;
+        }
+    }
+    &__effect:focus:not(:active):after {
         content: '';
         position: absolute;
         top: -0.1em;
@@ -271,6 +138,7 @@
         animation-fill-mode: forwards;
         display: block;
     }
+    /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */
     .initial-loader--btn {
         background-color: unset;

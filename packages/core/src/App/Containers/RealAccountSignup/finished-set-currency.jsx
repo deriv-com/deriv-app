@@ -50,13 +50,13 @@ const FinishedSetCurrency = ({
             <div className='success-change__btn-area'>
                 <Button
                     onClick={onCancel}
-                    className='btn--secondary--default'
                     text={localize('Maybe later')}
+                    secondary
                 />
                 <Button
                     onClick={onSubmit}
-                    className='btn--primary--default'
                     text={localize('Deposit now')}
+                    primary
                 />
             </div>
         </div>

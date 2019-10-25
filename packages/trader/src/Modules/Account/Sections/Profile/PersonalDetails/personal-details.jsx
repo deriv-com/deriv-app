@@ -524,8 +524,7 @@ class PersonalDetailsForm extends React.Component {
                                     </div>
                                     <Button
                                         className={classNames('account-form__footer-btn', {
-                                            'btn--primary--default': !is_submit_success,
-                                            'btn--primary--green'  : is_submit_success,
+                                            'btn--primary--green': is_submit_success,
                                         })}
                                         type='submit'
                                         is_disabled={isSubmitting || (
@@ -548,6 +547,8 @@ class PersonalDetailsForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
+                                        primary
+                                        large
                                     />
                                 </FormFooter>
                             </form>

@@ -205,9 +205,9 @@ class PersonalDetails extends Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
-                                        autohide
+                                        autoHide
                                         style={{
-                                            height: '100%',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
                                         <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
@@ -237,6 +237,7 @@ class PersonalDetails extends Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 cancel_label={localize('Previous')}
                                 has_cancel
                                 is_disabled={

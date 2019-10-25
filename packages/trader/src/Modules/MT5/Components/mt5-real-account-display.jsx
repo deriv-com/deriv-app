@@ -31,9 +31,10 @@ const MT5RealAccountDisplay = ({
                     />
                 </h1>
                 <Button
-                    className='btn--primary--default mt5-dashboard__missing-real--button'
+                    className='mt5-dashboard__missing-real--button'
                     onClick={ beginRealSignupForMt5 }
                     type='button'
+                    primary
                 >
                     <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
                 </Button>

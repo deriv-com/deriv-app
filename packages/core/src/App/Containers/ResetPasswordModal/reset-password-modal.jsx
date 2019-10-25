@@ -129,6 +129,7 @@ class ResetPassword extends React.Component {
                                             className={classNames('reset-password__btn', { 'reset-password__btn--disabled': !values.password || errors.password || isSubmitting })}
                                             type='submit'
                                             is_disabled={!values.password || errors.password || isSubmitting}
+                                            tertiary
                                         >
                                             <Localize i18n_default_text='Reset my password' />
                                         </Button>

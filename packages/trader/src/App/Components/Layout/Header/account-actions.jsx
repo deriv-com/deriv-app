@@ -70,8 +70,8 @@ export class AccountActions extends Component {
                                 onClick={openRealAccountSignup}
                                 has_effect
                                 type='button'
-                                className='btn btn--primary--default'
                                 text={localize('Set currency')}
+                                primary
                             />
                         </div>
                     }
